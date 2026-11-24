@@ -1,7 +1,7 @@
 // Reproductor de una pieza (una era): cadena de nodos, instrumentos y fundidos.
 // También el grafo de audio común (volumen maestro, limitador, bus de música, ducking, reverb)
 // y un renderizado sin conexión (OfflineAudioContext) para verificar la señal.
-import { SCORES } from './scores.js';
+import { getPiece } from './variants.js';
 import { INSTRUMENTS, WET, Budget } from './instruments.js';
 import { Sequencer } from './sequencer.js';
 import { makeImpulse } from './reverb.js';
@@ -40,9 +40,11 @@ export function createGraph(ctx) {
   return { master, limiter, musicBus, duck, sfxBus, reverbIn, convolver };
 }
 
-/** Un reproductor por era; al cambiar de era conviven dos durante el fundido cruzado. */
+/**
+ * Un reproductor por pieza (`era` o `era/variante`); al cambiar conviven dos durante el fundido cruzado.
+ */
 export function createMusicPlayer(ctx, graph, era) {
-  const piece = SCORES[era];
+  const piece = getPiece(era);
   const bus = ctx.createGain();
   const wetBus = ctx.createGain();
   bus.gain.value = 0;
@@ -109,7 +111,7 @@ export function createMusicPlayer(ctx, graph, era) {
   };
 }
 
-/** Renderiza una era sin conexión. Devuelve el AudioBuffer (para medir picos y RMS). */
+/** Renderiza una pieza sin conexión (clave de era o `era/variante`). Devuelve el AudioBuffer. */
 export async function renderEraOffline(era, seconds = 20, sampleRate = 44100) {
   const OAC = globalThis.OfflineAudioContext || globalThis.webkitOfflineAudioContext;
   const off = new OAC(2, Math.ceil(sampleRate * seconds), sampleRate);

@@ -5,11 +5,13 @@
 import { SCORES, ERAS } from './scores.js';
 import { SFX_NAMES, playSfx } from './sfx.js';
 import { createGraph, createMusicPlayer } from './player.js';
+import { variantsOf, pieceKey, getPiece, DEFAULT_VARIANT } from './variants.js';
 
 export { ERAS, SFX_NAMES };
 
 const CROSSFADE = 1.5; // s, cambio de era
-const state = { unlocked: false, era: 'menu', musicEnabled: true, sfxEnabled: true, volume: 0.7, playing: false };
+// `variants`: variante elegida por era (solo las que no son la original); por defecto suena la base.
+const state = { unlocked: false, era: 'menu', musicEnabled: true, sfxEnabled: true, volume: 0.7, playing: false, variants: {} };
 
 let ctx = null;
 let graph = null;
@@ -21,9 +23,12 @@ let visibilityBound = false;
 const num = (v, fb) => (v !== null && v !== '' && v !== undefined && Number.isFinite(Number(v)) ? Number(v) : fb);
 const safe = (fn, fallback) => (...args) => { try { return fn(...args); } catch { return fallback; } };
 
+/** Clave de la pieza que corresponde a una era con la variante elegida. */
+const currentKey = (era) => pieceKey(era, state.variants[era]);
+
 /** Desplazamiento de tónica (-6..5 semitonos) para transponer los efectos a la pieza actual. */
 const tonicOffset = () => {
-  const pc = SCORES[state.era]?.tonic ?? 0;
+  const pc = getPiece(currentKey(state.era))?.tonic ?? 0;
   return ((pc + 6) % 12) - 6;
 };
 
@@ -48,7 +53,7 @@ function bindVisibility() {
 }
 
 function launchPlayer(era, fade) {
-  const p = createMusicPlayer(ctx, graph, era);
+  const p = createMusicPlayer(ctx, graph, currentKey(era));
   p.start(fade);
   return p;
 }
@@ -94,6 +99,21 @@ function setEra(era) {
   current = launchPlayer(era, CROSSFADE);
 }
 
+/** Elige la variante de una era (`base` o un id de variantsOf). Si está sonando, cambia con fundido. */
+function setVariant(era, variant = DEFAULT_VARIANT) {
+  if (!SCORES[era] || !variantsOf(era).some((v) => v.id === variant)) return;
+  const prev = state.variants[era] || DEFAULT_VARIANT;
+  if (variant === DEFAULT_VARIANT) delete state.variants[era];
+  else state.variants[era] = variant;
+  if (prev === variant || era !== state.era || !current || !ctx) return;
+  const old = current;
+  old.fadeOutAndDispose(CROSSFADE);
+  current = launchPlayer(era, CROSSFADE);
+}
+
+/** Variantes disponibles de una era, sin la partitura: [{ id, name, label, character }]. */
+const listVariants = (era) => variantsOf(era).map(({ id, name, label, character }) => ({ id, name, label, character }));
+
 function startMusic() {
   wantMusic = true;
   startPlaying();
@@ -123,7 +143,7 @@ function setVolume(v) {
   applyVolume();
 }
 
-const readState = () => ({ ...state });
+const readState = () => ({ ...state, variants: { ...state.variants } });
 
 /** Carga preferencias guardadas por la app (admite estados parciales o corruptos). */
 function restoreState(saved) {
@@ -131,6 +151,9 @@ function restoreState(saved) {
   if ('musicEnabled' in saved) state.musicEnabled = !!saved.musicEnabled;
   if ('sfxEnabled' in saved) state.sfxEnabled = !!saved.sfxEnabled;
   if ('volume' in saved) setVolume(saved.volume);
+  if (saved.variants && typeof saved.variants === 'object') {
+    for (const [era, variant] of Object.entries(saved.variants)) if (typeof variant === 'string') setVariant(era, variant);
+  }
   if (typeof saved.era === 'string' && SCORES[saved.era]) setEra(saved.era);
   if (!state.musicEnabled) stopPlaying(0.5);
 }
@@ -144,7 +167,9 @@ export const audio = {
   setMusicEnabled: safe(setMusicEnabled),
   setSfxEnabled: safe(setSfxEnabled),
   setVolume: safe(setVolume),
-  getState: safe(readState, { unlocked: false, era: 'menu', musicEnabled: true, sfxEnabled: true, volume: 0.7, playing: false }),
+  setVariant: safe(setVariant),
+  listVariants: safe(listVariants, []),
+  getState: safe(readState, { unlocked: false, era: 'menu', musicEnabled: true, sfxEnabled: true, volume: 0.7, playing: false, variants: {} }),
   restore: safe(restoreState),
 };
 

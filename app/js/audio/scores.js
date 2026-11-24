@@ -8,8 +8,8 @@
 //   style: patrón de acompañamiento generado desde los acordes (ver styles.js).
 import { scalePcs } from './theory.js';
 
-const FORM4 = [['A', 'open'], ['A', 'close'], ['B'], ['A', 'close']]; // A–A'–B–A' = 32 compases
-const FORM3 = [['A', 'open'], ['A', 'close'], ['B']];                 // A–A'–B = 24 compases
+export const FORM4 = [['A', 'open'], ['A', 'close'], ['B'], ['A', 'close']]; // A–A'–B–A' = 32 compases
+export const FORM3 = [['A', 'open'], ['A', 'close'], ['B']];                 // A–A'–B = 24 compases
 
 export const ERAS = ['menu', 'renaissance', 'baroque', 'rococo', 'neoclassic', 'romantic',
   'realism', 'impressionism', 'postimpressionism', 'modern'];

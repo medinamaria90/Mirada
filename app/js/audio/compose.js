@@ -1,6 +1,7 @@
 // Del dato (partitura) al evento: compila acompañamiento, valida, da forma al tiempo
 // (rubato y ritardando de frase) y añade variación ligera en cada vuelta del bucle.
-import { SCORES, ERAS } from './scores.js';
+import { ERAS } from './scores.js';
+import { getPiece } from './variants.js';
 import { STYLES } from './styles.js';
 import { noteToMidi, parseChord, pcOf, stepIn, mulberry32 } from './theory.js';
 
@@ -45,10 +46,16 @@ export function parseChordCell(cell, beatsPerBar) {
 
 const cache = new Map();
 
-/** Compila una era: eventos en tiempos desde el inicio, ordenados. Nunca lanza (acumula `errors`). */
+const MEL_VEL = 0.62;
+const CNT_VEL = 0.46;
+
+/**
+ * Compila una pieza (clave de era, o `era/variante`): eventos en tiempos desde el inicio, ordenados.
+ * Nunca lanza (acumula `errors`). Además de `mel`, una sección puede traer `cnt` (contramelodía).
+ */
 export function compilePiece(era) {
   if (cache.has(era)) return cache.get(era);
-  const piece = SCORES[era];
+  const piece = getPiece(era);
   const out = { era, piece, bars: 0, beatsPerBar: 0, bpm: 0, events: [], parts: [], barTags: [], errors: [] };
   if (!piece) { out.errors.push(`era desconocida: ${era}`); return out; }
   const bpb = piece.beatsPerBar;
@@ -59,15 +66,20 @@ export function compilePiece(era) {
       const sec = piece.sections[secName];
       if (!sec) { out.errors.push(`sección ausente: ${secName}`); continue; }
       if (sec.chords.length !== sec.mel.length) out.errors.push(`${era}/${secName}: acordes y compases no coinciden`);
+      if (sec.cnt && sec.cnt.length !== sec.mel.length) out.errors.push(`${era}/${secName}: contramelodía y melodía no coinciden`);
       for (let i = 0; i < sec.mel.length; i++, bar++) {
         const t0 = bar * bpb;
         out.barTags.push({ sec: secName, pass });
         try {
-          const bm = parseBar(sec.mel[i]);
-          if (bm.error) out.errors.push(`${era}/${secName}[${i}]: ${bm.error}`);
-          else if (Math.abs(bm.total - bpb) > EPS) out.errors.push(`${era}/${secName}[${i}]: suma ${bm.total} != ${bpb}`);
-          for (const n of bm.notes) {
-            out.events.push({ t: t0 + n.t, dur: n.dur, midi: n.midi, vel: 0.62, voice: 'mel', sec: secName, bar });
+          const lines = [['mel', sec.mel[i], MEL_VEL]];
+          if (sec.cnt) lines.push(['cnt', sec.cnt[i], CNT_VEL]);
+          for (const [voice, text, vel] of lines) {
+            const bm = parseBar(text);
+            if (bm.error) out.errors.push(`${era}/${secName}[${i}]: ${bm.error}`);
+            else if (Math.abs(bm.total - bpb) > EPS) out.errors.push(`${era}/${secName}[${i}] ${voice}: suma ${bm.total} != ${bpb}`);
+            for (const n of bm.notes) {
+              out.events.push({ t: t0 + n.t, dur: n.dur, midi: n.midi, vel, voice, sec: secName, bar });
+            }
           }
           for (const p of parseChordCell(sec.chords[i], bpb)) {
             out.parts.push({ chord: p.chord, t: t0 + p.off, len: p.len, bar });
@@ -103,11 +115,14 @@ export function validatePiece(era) {
     if (!(e.midi >= 36 && e.midi <= 96)) errs.push(`${era}: nota fuera de rango ${e.midi} en t=${e.t}`);
     if (!(e.dur > 0) || !(e.vel > 0 && e.vel <= 1)) errs.push(`${era}: dur/vel no válidas en t=${e.t}`);
   }
-  const mel = c.events.filter((e) => e.voice === 'mel').sort((a, b) => a.t - b.t);
-  for (let i = 1; i < mel.length; i++) {
-    const leap = Math.abs(mel[i].midi - mel[i - 1].midi);
-    if (leap > 12) errs.push(`${era}: salto de ${leap} semitonos en t=${mel[i].t}`);
+  for (const voice of ['mel', 'cnt']) {
+    const line = c.events.filter((e) => e.voice === voice).sort((a, b) => a.t - b.t);
+    for (let i = 1; i < line.length; i++) {
+      const leap = Math.abs(line[i].midi - line[i - 1].midi);
+      if (leap > 12) errs.push(`${era}: salto de ${leap} semitonos (${voice}) en t=${line[i].t}`);
+    }
   }
+  const mel = c.events.filter((e) => e.voice === 'mel' || e.voice === 'cnt');
   for (const m of mel) {
     const part = c.parts.find((p) => m.t >= p.t - EPS && m.t < p.t + p.len - EPS);
     if (!part) { errs.push(`${era}: nota sin acorde en t=${m.t}`); continue; }
@@ -170,6 +185,18 @@ function ornament(ev, piece, rng, kind) {
 }
 
 /**
+ * Dinámica de la melodía: multiplicador por sección (`piece.dyn`) y arco de frase (crece hacia el
+ * tercer compás de cada frase de cuatro y cede al final). Solo si la pieza define `dyn`.
+ */
+export function sectionDyn(piece, ev, bpb) {
+  if (!piece.dyn) return 1;
+  const sec = piece.dyn[ev.sec] ?? 1;
+  const inPhrase = (Math.floor(ev.t / bpb) % 4);
+  const arc = [0.94, 1, 1.05, 0.97][inPhrase];
+  return sec * arc;
+}
+
+/**
  * Eventos de una vuelta concreta del bucle: pequeña humanización de velocidad y tiempo,
  * ornamentos ocasionales (más en la repetición conclusiva) y, en vueltas impares, la
  * sección B se dobla suavemente a la octava para que el bucle no sea idéntico.
@@ -177,11 +204,15 @@ function ornament(ev, piece, rng, kind) {
 export function varyLoop(compiled, loopIdx, rng) {
   const { piece } = compiled;
   const orn = piece.orn;
+  const bpb = compiled.beatsPerBar;
   const out = [];
   for (const base of compiled.events) {
     let list = [{ ...base }];
+    if (base.voice === 'mel' || base.voice === 'cnt') {
+      list[0].vel = base.vel * (0.94 + rng() * 0.12) * sectionDyn(piece, base, bpb);
+      if (piece.art && piece.art < 1) list[0].dur = Math.max(0.1, base.dur * piece.art);
+    }
     if (base.voice === 'mel') {
-      list[0].vel = base.vel * (0.94 + rng() * 0.12);
       if (orn && rng() < orn.prob * (loopIdx === 0 ? 0.5 : 1) * (base.sec === 'close' ? 1.6 : 1)) {
         list = ornament(list[0], piece, rng, orn.kind);
       }
