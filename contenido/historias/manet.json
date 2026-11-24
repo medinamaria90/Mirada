@@ -1,0 +1,26 @@
+{
+ "artistId": "manet",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Manet",
+   "cards": [
+    {
+     "text": "Manet (París, 1832-1883) influyó en quienes iniciaron el impresionismo. En 1865 viajó a España, vio a Velázquez en el Prado y quedó marcado por él.",
+     "artwork": "w26250",
+     "source": "https://es.wikipedia.org/wiki/%C3%89douard_Manet#Descubre_a_Diego_Vel%C3%A1zquez"
+    },
+    {
+     "text": "Almuerzo sobre la hierba se rechazó en el Salón de 1863 y se expuso en el Salón de los Rechazados. Es uno de sus cuadros más escandalosos.",
+     "artwork": "w152509",
+     "source": "https://es.wikipedia.org/wiki/%C3%89douard_Manet"
+    },
+    {
+     "text": "Fíjate en Olympia (1863): parodia la Venus de Urbino de Tiziano, pero con una mujer moderna. Rechazada en el Salón de 1865, escandalizó aún más.",
+     "artwork": "w737062",
+     "source": "https://es.wikipedia.org/wiki/%C3%89douard_Manet"
+    }
+   ]
+  }
+ ]
+}

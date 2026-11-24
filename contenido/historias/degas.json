@@ -1,0 +1,26 @@
+{
+ "artistId": "degas",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Degas",
+   "cards": [
+    {
+     "text": "Degas (París, 1834-1917) es uno de los fundadores del impresionismo, aunque prefería llamarlo realismo. Fue un dibujante magistral del movimiento: bailarinas, caballos y desnudos.",
+     "artwork": "w3821820",
+     "source": "https://es.wikipedia.org/wiki/Edgar_Degas"
+    },
+    {
+     "text": "Su primera gran obra es La familia Bellelli, que empezó en Italia hacia 1856 y no terminó hasta 1867. Sus retratos se aprecian por su verdad y su complejidad psicológica.",
+     "artwork": "w2622172",
+     "source": "https://es.wikipedia.org/wiki/Edgar_Degas"
+    },
+    {
+     "text": "Fíjate en cómo encuadra: lo influyeron las estampas japonesas y, más tarde, su pasión por la fotografía. Aquí, La tina (1886).",
+     "artwork": "w2912117",
+     "source": "https://es.wikipedia.org/wiki/Edgar_Degas"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "artistId": "cezanne",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Cézanne",
+   "cards": [
+    {
+     "text": "Cézanne (Aix-en-Provence, 1839-1906) es llamado el padre de la pintura moderna. En vida fue un pintor ignorado y aislado: hasta 1895 expuso solo de forma ocasional.",
+     "artwork": "w3956440",
+     "source": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne"
+    },
+    {
+     "text": "Desde 1890 pinta la serie Los jugadores de cartas, quizá inspirada en una obra de Louis Le Nain. Lo apreciaban otros pintores, no el público: un «pintor de pintores».",
+     "artwork": "w1165042",
+     "source": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne"
+    },
+    {
+     "text": "Fíjate en cómo simplifica las formas y explora cómo vemos. Esa geometría inspiró a Picasso, Braque y Gris, y al cubismo. Aquí, Cortina, jarra y frutero.",
+     "artwork": "w2349666",
+     "source": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne"
+    }
+   ]
+  }
+ ]
+}

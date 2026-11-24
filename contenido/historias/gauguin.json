@@ -1,0 +1,26 @@
+{
+ "artistId": "gauguin",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Gauguin",
+   "cards": [
+    {
+     "text": "Gauguin (París, 1848-islas Marquesas, 1903) fue un pintor posimpresionista. Su color experimental y su estilo sintetista lo apartan del impresionismo. Influyó en Picasso y Matisse.",
+     "artwork": "w890678",
+     "source": "https://es.wikipedia.org/wiki/Paul_Gauguin"
+    },
+    {
+     "text": "El Cristo amarillo (1889) es la obra cloisonista por excelencia: áreas de color puro separadas por bordes negros, sin perspectiva clásica ni matices suaves.",
+     "artwork": "w500951",
+     "source": "https://es.wikipedia.org/wiki/Paul_Gauguin#Cloisonismo_y_sintetismo"
+    },
+    {
+     "text": "En 1891 se marcha a Tahití con el dinero de una subasta en París. Allí pinta lo más suyo: desnudos y paisajes audaces, de color rotundo. Aquí, Mujeres de Tahití.",
+     "artwork": "w930535",
+     "source": "https://es.wikipedia.org/wiki/Paul_Gauguin#Primera_visita_a_Tahit%C3%AD"
+    }
+   ]
+  }
+ ]
+}

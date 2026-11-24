@@ -1,0 +1,26 @@
+{
+ "artistId": "renoir",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Renoir",
+   "cards": [
+    {
+     "text": "Renoir (Limoges, 1841-1919) dio una versión más sensual del impresionismo, con una paleta vibrante y luminosa. Empezó pintando porcelana en un taller.",
+     "artwork": "w1118456",
+     "source": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir"
+    },
+    {
+     "text": "Su sello es la alegría de vivir: aunque pinte trabajadores, siempre se divierten en una naturaleza agradable. Baile en el Moulin de la Galette lo pintó junto a su casa.",
+     "artwork": "w683274",
+     "source": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir"
+    },
+    {
+     "text": "Fíjate en Los paraguas, empezado en 1881 y acabado en 1885. La parte derecha es suave e impresionista y la izquierda, de dibujo más duro: su estilo estaba cambiando.",
+     "artwork": "w1114571",
+     "source": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir"
+    }
+   ]
+  }
+ ]
+}
