@@ -56,3 +56,67 @@ download rc=3
 build: 1233 obras (1233 con imagen, 1233 con ficha), 152 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 11, barroco 23, rococo-neoclasicismo 17, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 18
 60M	.git
 3.1M	catalogo
+== validate --parcial 20:24:41
+validate: 1233 obras (1233 con imagen), 152 pintores, imágenes 0.0 MB; 0 errores, 174 avisos
+aviso leonardo: nivel 2 «Primeras obras en Florencia» con 3 obras (< 5: faltan candidatas)
+aviso fortuny: nivel 2 «Roma y Marruecos» con 4 obras (< 5: faltan candidatas)
+aviso w2551625 (botticelli): ficha sin dimensions
+aviso w11947062 (berruguete): ficha sin technique
+aviso w133100866 (berruguete): ficha sin museum
+aviso w133100866 (berruguete): ficha sin technique
+aviso w133100866 (berruguete): ficha sin dimensions
+aviso w23936202 (berruguete): ficha sin technique
+aviso w2276130 (bosco): ficha sin dimensions
+aviso w1988321 (durero): ficha sin dimensions
+aviso w3685113 (durero): título pendiente de traducir: Lamentation of Christ
+aviso w3707697 (miguel-angel): ficha sin dimensions
+aviso w23922 (tiziano): título pendiente de traducir: Woman with a Mirror
+aviso w3842778 (tiziano): título pendiente de traducir: The Gypsy Madonna
+aviso w3937673 (tiziano): título pendiente de traducir: Portrait of Vincenzo Mosti
+aviso w125359587 (juan-de-juanes): ficha sin technique
+aviso w15074981 (veronese): título pendiente de traducir: The Feast in the House of Simon the Pharisee
+aviso w3849979 (veronese): título pendiente de traducir: Mars and Venus with Cupid and a Dog
+aviso w17994180 (sanchez-coello): ficha sin dimensions
+aviso w3078569 (el-greco): ficha sin technique
+aviso w2338417 (caravaggio): ficha sin dimensions
+aviso w3731232 (rubens): título pendiente de traducir: Hercules and Omphale
+aviso w3636299 (rubens): título pendiente de traducir: The Battle of the Amazons
+aviso w4009226 (rubens): título pendiente de traducir: A View of Het Steen in the Early Morning
+aviso w3699475 (rubens): título pendiente de traducir: Last Supper
+aviso w3464088 (zurbaran): ficha sin dimensions
+aviso w4274886 (velazquez): ficha sin dimensions
+aviso w3960488 (van-dyck): título pendiente de traducir: Drunken Silenus
+aviso w3630737 (van-dyck): título pendiente de traducir: Self-Portrait
+aviso w3948693 (van-dyck): título pendiente de traducir: Saint Ambrose Barring Theodosius from Milan Cathedral
+aviso w3937501 (van-dyck): título pendiente de traducir: Portrait of Cornelis van der Geest
+aviso w2225699 (rembrandt): título pendiente de traducir: Flora
+aviso w9351747 (rembrandt): título pendiente de traducir: A Polish Nobleman
+aviso w1679544 (rembrandt): título pendiente de traducir: Jacob Blessing the Sons of Joseph
+aviso w9397467 (murillo): título pendiente de traducir: The Angels Kitchen
+aviso w9396888 (murillo): título pendiente de traducir: Saint Roderick
+aviso w105525573 (murillo): ficha sin dimensions
+aviso w5289575 (murillo): título pendiente de traducir: Mater Dolorosa
+aviso w9248340 (murillo): título pendiente de traducir: The Infant Christ Distributing Bread to the Pilgrims
+aviso w27968621 (murillo): título pendiente de traducir: Walpole Immaculate Conception
+aviso w114039620 (valdes-leal): ficha sin technique
+aviso w114039620 (valdes-leal): ficha sin dimensions
+aviso w3222406 (watteau): título pendiente de traducir: The Chord
+aviso w17633041 (watteau): título pendiente de traducir: The two cousins
+aviso w3201763 (watteau): título pendiente de traducir: The Worried Lover
+aviso w11938457 (melendez): título pendiente de traducir: Still Life with Apples, Grapes, Melons, Bread, Jug and Bottle
+aviso w8703547 (fragonard): título pendiente de traducir: A Visit to the Nursery
+aviso w18686539 (fragonard): título pendiente de traducir: The Progress of Love: The Meeting
+aviso w19911872 (fragonard): título pendiente de traducir: A Woman with a Dog
+aviso w8049268 (goya): ficha sin technique
+aviso w16928483 (goya): título quizá en inglés: Portrait de la comtesse del Carpio, marquise de la Solana
+aviso w3543882 (goya): ficha sin technique
+aviso w28798007 (paret): ficha sin technique
+aviso w22893258 (vicente-lopez): ficha sin technique
+aviso w1652361 (friedrich): título pendiente de traducir: Cairn in Snow
+aviso w11753188 (friedrich): título pendiente de traducir: The Summer
+aviso w1587929 (friedrich): título pendiente de traducir: Morning in the Riesengebirge
+aviso w28539779 (turner): título pendiente de traducir: Norham Castle, Sunrise
+aviso w7733769 (turner): título pendiente de traducir: The Fifth Plague of Egypt
+aviso w52692816 (venetsianov): ficha sin technique
+60M	.git
+3.1M	catalogo
