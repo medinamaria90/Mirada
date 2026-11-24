@@ -251,8 +251,8 @@ test('migración v3 → v4: añade reto semanal y detalle sin perder progreso', 
     session: {},
   };
   const out = migrate(v3);
-  assert.equal(SCHEMA_VERSION, 4);
-  assert.equal(out.version, 4);
+  assert.ok(SCHEMA_VERSION >= 4, 'la v4 ya existe (las versiones siguientes encadenan)');
+  assert.equal(out.version, SCHEMA_VERSION);
   assert.deepEqual(out.progress.weekly, {});
   assert.deepEqual(out.progress.detail, {});
   assert.equal(out.progress.xp, 1200);
@@ -261,7 +261,7 @@ test('migración v3 → v4: añade reto semanal y detalle sin perder progreso', 
   assert.equal(out.progress.medals['artist-leonardo'], TODAY);
   const storage = memoryStorage({ [STORAGE_KEY]: JSON.stringify(v3) });
   const store = createStore({ storage });
-  assert.equal(store.get().version, 4);
+  assert.equal(store.get().version, SCHEMA_VERSION);
   store.update((s) => ({ ...s, progress: { ...s.progress, detail: { [TODAY]: { artworkId: 'a154', correct: true } } } }));
   assert.equal(createStore({ storage }).get().progress.detail[TODAY].correct, true);
 });

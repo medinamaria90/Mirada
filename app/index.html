@@ -11,12 +11,22 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/brand.css">
   <link rel="stylesheet" href="css/main.css">
+  <!-- Tema elegido en Ajustes, antes de pintar nada (el módulo llega después y así no parpadea). -->
+  <script>
+    try {
+      const theme = JSON.parse(localStorage.getItem('mirada.state')).settings.theme;
+      if (theme === 'light' || theme === 'dark') document.documentElement.setAttribute('data-theme', theme);
+    } catch {
+      document.documentElement.removeAttribute('data-theme'); // sin estado legible: como el móvil
+    }
+  </script>
   <!-- Cadena crítica del arranque (main.js y sus importaciones estáticas): se pide en paralelo. -->
   <link rel="modulepreload" href="js/main.js">
   <link rel="modulepreload" href="js/engine/catalog.js">
   <link rel="modulepreload" href="js/engine/dates.js">
   <link rel="modulepreload" href="js/state/store.js">
   <link rel="modulepreload" href="js/state/schema.js">
+  <link rel="modulepreload" href="js/ui/theme.js">
   <link rel="modulepreload" href="js/engine/progress.js">
   <link rel="modulepreload" href="js/engine/srs.js">
   <link rel="modulepreload" href="js/state/session.js">

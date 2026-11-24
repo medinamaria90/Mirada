@@ -1,4 +1,4 @@
-// Perfil y ajustes: estadísticas, semana, medallas, sonido, animaciones y reinicio.
+// Perfil y ajustes: estadísticas, semana, medallas, sonido, tema, animaciones y reinicio.
 
 import { esc, onAction, focusHeading, $, announce, longDate } from '../dom.js';
 import { page } from '../shell.js';
@@ -8,6 +8,7 @@ import { weekOf } from '../../engine/dates.js';
 import { medalBadge, medalZoom, allMedalIds, medalHow, eyeLabel } from './medals.js';
 import { applyAudioSettings, playEra } from '../audio-bridge.js';
 import { recognizedCount } from '../../engine/goals.js';
+import { themePicker, chooseTheme, markThemePicker } from '../theme.js';
 
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
 
@@ -83,6 +84,7 @@ export function renderProfile(ctx, el, opts = {}) {
       <label class="setting setting-range"><span>Volumen</span>
         <input type="range" min="0" max="100" step="5" value="${Math.round(s.volume * 100)}" data-setting="volume" aria-label="Volumen">
       </label>
+      ${themePicker(s.theme)}
       ${toggle('reducedMotion', 'Reducir animaciones')}
     </section>
     <section class="panel panel-danger" aria-labelledby="reset-h">
@@ -177,6 +179,10 @@ export function renderProfile(ctx, el, opts = {}) {
       $('#goal-h .panel-aside', el).textContent = `${Math.min(done, g)}/${g} XP`;
       const chip = $('.chip-goal', el);
       if (chip) chip.outerHTML = goalChip(done, g);
+    },
+    theme: (b) => {
+      ctx.audio.sfx('tap');
+      markThemePicker(el, chooseTheme(ctx.store, b.dataset.value));
     },
     'ask-reset': (b) => {
       ctx.audio.sfx('tap');

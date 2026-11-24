@@ -669,6 +669,11 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .setting { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 56px; border-top: 1px solid var(--line); font-weight: 600; cursor: pointer; }
 .panel-title + .setting { border-top: 0; }
 .setting-range input { width: 55%; accent-color: var(--brand); min-height: 48px; margin: 0; }
+/* Tema: la etiqueta y, debajo, los tres botones a todo el ancho. */
+.setting-theme { flex-wrap: wrap; gap: .5rem; padding: .7rem 0 .9rem; cursor: default; }
+.setting-theme > span { flex-basis: 100%; }
+.setting-theme .segs { flex-basis: 100%; }
+.setting-theme .seg { min-height: 48px; padding-inline: .4rem; }
 /* El interruptor se ve de 52×32 pero su área táctil mide 56×48 (relleno transparente). */
 .switch {
   appearance: none; -webkit-appearance: none; position: relative; box-sizing: content-box; width: 52px; height: 32px;

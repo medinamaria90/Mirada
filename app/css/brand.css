@@ -73,8 +73,11 @@
   color-scheme: light dark;
 }
 
+/* Tema oscuro. Vale en dos casos: el móvil va en oscuro y no se ha forzado «Claro» en Ajustes, o se ha
+   elegido «Oscuro» (data-theme en <html>, lo pone ui/theme.js). CSS no permite escribirlo una sola vez
+   para ambos sin JS, así que son dos copias idénticas: tests/tema.test.js comprueba que no se separan. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #1e1a16;
     --surface: #292420;
     --surface-2: #352e28;
@@ -101,3 +104,32 @@
     --scrim: rgba(0, 0, 0, .55);
   }
 }
+:root[data-theme="dark"] {
+  --bg: #1e1a16;
+  --surface: #292420;
+  --surface-2: #352e28;
+  --ink: #f2ece2;
+  --ink-2: #bdb3a5;
+  --line: #3f372f;
+  --line-2: #120f0c;
+  --ok: #9fcbab;
+  --ok-soft: #1f2b22;
+  --ok-shadow: #5f8a6d;
+  --on-ok: #1e1a16;
+  --bad: #eba79c;
+  --bad-soft: #33201c;
+  --brand-shadow: #a9523d;
+  --brand-soft: #3b2721;
+  --brand-text: #f0a08c;
+  --gold-text: #e2c06a;
+  --accent-ui: color-mix(in srgb, var(--accent) 62%, var(--ink));
+  --accent-soft: color-mix(in srgb, var(--accent) 20%, var(--surface));
+  --shadow-frame: 0 1px 1px rgba(0, 0, 0, .5), 0 10px 24px -8px rgba(0, 0, 0, .7);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, .4);
+  --shadow-sheet: 0 -12px 32px -18px rgba(0, 0, 0, .7);
+  --shadow-pop: 0 30px 60px -20px rgba(0, 0, 0, .8);
+  --scrim: rgba(0, 0, 0, .55);
+}
+/* Forzado desde Ajustes: también los controles nativos y la barra de desplazamiento. */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }

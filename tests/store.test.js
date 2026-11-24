@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { migrate, defaultState, SCHEMA_VERSION, mergeDefaults } from '../app/js/state/schema.js';
 import { createStore, safeStorage, STORAGE_KEY } from '../app/js/state/store.js';
 import { memoryStorage } from './helpers.js';
+import { DEFAULT_THEME } from '../app/js/state/schema.js';
 
 test('migración: vacío o corrupto da el estado por defecto', () => {
   assert.deepEqual(migrate(null), defaultState());
@@ -20,6 +21,32 @@ test('migración: datos sin versión se conservan y se completan', () => {
   assert.equal(out.settings.music, false);
   assert.equal(out.settings.sfx, true, 'se rellena lo que falta');
   assert.deepEqual(out.progress.streak, defaultState().progress.streak);
+});
+
+test('migración 4 → 5: añade settings.theme «como el móvil» y conserva el resto', () => {
+  const v4 = {
+    version: 4, onboarded: true,
+    progress: { xp: 510, artists: { velazquez: { plays: 3, best: 1, mastered: true } }, weekly: { '2026-W47': { done: true } }, detail: { '2026-11-23': { artworkId: 'w1', correct: true } } },
+    settings: { music: false, sfx: true, volume: 0.3, reducedMotion: true, dailyGoal: 100 },
+    session: { route: 'etapa-velazquez' },
+  };
+  const out = migrate(v4);
+  assert.equal(out.version, SCHEMA_VERSION);
+  assert.equal(SCHEMA_VERSION, 5);
+  assert.equal(out.settings.theme, DEFAULT_THEME);
+  assert.equal(out.settings.theme, 'system');
+  assert.deepEqual(out.settings, { music: false, sfx: true, volume: 0.3, reducedMotion: true, dailyGoal: 100, theme: 'system' });
+  assert.equal(out.progress.xp, 510);
+  assert.deepEqual(out.progress.artists, v4.progress.artists);
+  assert.deepEqual(out.progress.weekly, v4.progress.weekly);
+  assert.deepEqual(out.progress.detail, v4.progress.detail);
+  assert.deepEqual(out.session, v4.session);
+  assert.equal(defaultState().settings.theme, 'system');
+  // Un tema ya guardado se respeta; uno con tipo raro vuelve al defecto.
+  assert.equal(migrate({ ...v4, version: 5, settings: { ...v4.settings, theme: 'dark' } }).settings.theme, 'dark');
+  assert.equal(migrate({ ...v4, version: 5, settings: { ...v4.settings, theme: 7 } }).settings.theme, 'system');
+  // Desde muy atrás (sin versión) también llega con tema.
+  assert.equal(migrate({ onboarded: true }).settings.theme, 'system');
 });
 
 test('migración encadenada con migraciones propias y tipos incorrectos', () => {

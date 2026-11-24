@@ -2,14 +2,22 @@
 
 import { emptyProgress, DEFAULT_GOAL } from '../engine/progress.js';
 
-export const SCHEMA_VERSION = 4;
+export const SCHEMA_VERSION = 5;
+
+// Tema de la interfaz (settings.theme): claro, oscuro o como el móvil (el sistema).
+export const THEMES = ['light', 'dark', 'system'];
+export const DEFAULT_THEME = 'system';
+
+export function normalizeTheme(value) {
+  return THEMES.includes(value) ? value : DEFAULT_THEME;
+}
 
 export function defaultState() {
   return {
     version: SCHEMA_VERSION,
     onboarded: false,
     progress: emptyProgress(),
-    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL },
+    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME },
     // Ronda en curso para retomarla al volver ({} = ninguna). Ver state/session.js.
     session: {},
   };
@@ -36,6 +44,11 @@ export const MIGRATIONS = {
   3: (old) => ({
     ...old,
     progress: { ...(isPlain(old.progress) ? old.progress : {}), weekly: {}, detail: {} },
+  }),
+  // 4 → 5: tema de la interfaz en Ajustes (claro, oscuro o como el móvil). Lo demás se conserva.
+  4: (old) => ({
+    ...old,
+    settings: { ...(isPlain(old.settings) ? old.settings : {}), theme: DEFAULT_THEME },
   }),
 };
 

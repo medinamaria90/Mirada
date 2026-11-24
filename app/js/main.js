@@ -12,6 +12,7 @@ import { installArtListeners } from './ui/art.js';
 import { esc, onAction, focusHeading, clearAnnounce } from './ui/dom.js';
 import { toast, replayToast } from './ui/toast.js';
 import { readSession } from './state/session.js';
+import { applyTheme } from './ui/theme.js';
 
 const root = document.getElementById('app');
 const loadWelcome = () => import('./ui/screens/welcome.js');
@@ -102,6 +103,7 @@ async function boot() {
   installArtListeners(document);
   const store = createStore({ storage: safeStorage(() => window.localStorage) });
   document.documentElement.classList.toggle('reduce-motion', Boolean(store.get().settings.reducedMotion));
+  applyTheme(store.get().settings.theme);
   // La primera pantalla se pide ya, a la vez que el catálogo.
   const atHome = /^#?(inicio)?$/.test(location.hash || '');
   if (!store.get().onboarded) loadWelcome().catch(() => {});
