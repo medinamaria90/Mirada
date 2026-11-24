@@ -5,3 +5,4 @@ ok     van-gogh           Q5582       937 candidatas; de las 80 primeras, 77 con
 fin 2026-11-24 18:11:12
 48M	.git
 920K	catalogo
+fin Tue Nov 24 18:11:16 UTC 2026
