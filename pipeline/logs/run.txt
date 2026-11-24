@@ -16,3 +16,6 @@ ok   w28797693   schiele          1600x1296 737KB  Autorretrato con alquequenjes
 lote: 31/31 bien; quedan 0
 subidas 31 imágenes a la release catalogo-img-2
 build: 1180 obras (1180 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
+download rc=3
+58M	.git
+2.8M	catalogo
