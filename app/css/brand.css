@@ -26,15 +26,10 @@
   --brand-soft: #fbe7e1;
   --brand-text: #a84a35;
   --on-brand: #23201c;
-  /* Metales de los sellos. */
+  /* Oro: anillo y sello de lo dominado, cifra de nivel. */
   --gold: #c9a24a;
-  --gold-shadow: #a7832f;
   --gold-text: #7e5f17;
   --on-gold: #23201c;
-  --silver: #aeb4bc;
-  --silver-shadow: #8e949c;
-  --bronze: #b9805a;
-  --bronze-shadow: #966243;
   /* Acento por movimiento (lo pone el JS desde el catálogo); sin movimiento, el coral. */
   --accent: #e27d66;
   --on-accent: #ffffff;
@@ -96,7 +91,6 @@
     --brand-shadow: #a9523d;
     --brand-soft: #3b2721;
     --brand-text: #f0a08c;
-    --gold-shadow: #8c6c22;
     --gold-text: #e2c06a;
     --accent-ui: color-mix(in srgb, var(--accent) 62%, var(--ink));
     --accent-soft: color-mix(in srgb, var(--accent) 20%, var(--surface));
