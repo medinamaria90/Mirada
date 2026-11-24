@@ -273,6 +273,7 @@ async function viewerCheck(page, label, opener, { reveal = true, forbidden = [],
       caption: slide.querySelector('.viewer-caption')?.innerText || '',
       count: dlg.querySelector('.viewer-count')?.textContent.trim() || '',
       zoom: getComputedStyle(dlg.querySelector('.viewer-track')).touchAction,
+      stage: getComputedStyle(slide.querySelector('.viewer-stage')).touchAction,
     };
   });
   check(info.tag === 'DIALOG' && info.modal && info.name.trim().length > 0, `[visor ${label}] no es un diálogo modal con nombre ${JSON.stringify(info.name)}`);
@@ -283,11 +284,22 @@ async function viewerCheck(page, label, opener, { reveal = true, forbidden = [],
   check(info.close[0] >= 48 && info.close[1] >= 48, `[visor ${label}] cerrar de ${info.close.map(Math.round).join('×')}`);
   check(info.focusIn, `[visor ${label}] el foco no está en el visor`);
   check(info.zoom === 'pan-x pan-y', `[visor ${label}] touch-action ${info.zoom}`);
+  check(info.stage === 'none', `[visor ${label}] touch-action del escenario ${info.stage} (el pellizco debe ampliar el cuadro)`);
   if (reveal) {
     check(info.caption.trim().length > 0, `[visor ${label}] sin pie (título · autor · año)`);
   } else {
     const leaks = await viewerLeaks(page, forbidden);
     check(!leaks.length && !info.caption, `[visor ${label}] revela ${leaks.join(', ')}${info.caption ? ` · pie «${info.caption}»` : ''}`);
+    // Ampliar (teclado) tampoco revela nada; 0 restablece.
+    await page.keyboard.press('+');
+    await page.waitForTimeout(300);
+    const zoomed = await viewerFrameState(page);
+    check(zoomed && zoomed.scale > 1, `[visor ${label}] la tecla + no amplía`);
+    const leaks2 = await viewerLeaks(page, forbidden);
+    check(!leaks2.length && !(await page.locator('.viewer .viewer-caption').count()), `[visor ${label}] ampliado revela ${leaks2.join(', ')}`);
+    await page.keyboard.press('0');
+    await page.waitForTimeout(300);
+    check((await viewerFrameState(page)).scale === 1, `[visor ${label}] la tecla 0 no restablece`);
   }
   if (group > 1) {
     const m = /^(\d+) \/ (\d+)$/.exec(info.count);
@@ -373,6 +385,112 @@ async function touchTap(page, cdp, x, y) {
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
 }
+// Pellizco con dos dedos en (cx, cy), separándolos (o juntándolos) de d0 a d1 píxeles del centro.
+async function touchPinchAt(page, cdp, cx, cy, d0, d1) {
+  const two = (d) => [{ x: cx - d, y: cy, id: 1 }, { x: cx + d, y: cy, id: 2 }];
+  const step = d1 > d0 ? 8 : -8;
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: two(d0) });
+  for (let d = d0 + step; step > 0 ? d <= d1 : d >= d1; d += step) { await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: two(d) }); await page.waitForTimeout(16); }
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(400);
+}
+
+// Estado del cuadro actual del visor: centro y medidas del marco en pantalla, su escala (de la
+// transformación) y si el escenario recorta.
+async function viewerFrameState(page) {
+  return page.evaluate(() => {
+    const dlg = document.querySelector('.viewer');
+    const s = dlg && [...dlg.querySelectorAll('.viewer-slide')].find((x) => x.getAttribute('aria-hidden') === 'false');
+    if (!s) return null;
+    const f = s.querySelector('.viewer-frame');
+    const r = f.getBoundingClientRect();
+    const st = s.querySelector('.viewer-stage').getBoundingClientRect();
+    const tag = dlg.querySelector('.viewer-zoom');
+    return {
+      x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width, h: r.height,
+      scale: new DOMMatrixReadOnly(getComputedStyle(f).transform).a,
+      inStage: r.left <= st.left + 1 && r.right >= st.right - 1 || r.width <= st.width + 1,
+      zoomed: s.classList.contains('is-zoomed'),
+      stageTouch: getComputedStyle(s.querySelector('.viewer-stage')).touchAction,
+      tag: tag && !tag.hidden ? tag.textContent : '',
+      page: window.visualViewport.scale,
+    };
+  });
+}
+
+// Ampliar dentro del visor (abierto, con varios cuadros, en un contexto táctil): el pellizco por
+// CDP escala el marco (no la página), con el indicador «n×»; ampliado, deslizar no cambia de cuadro
+// y el dedo lo desplaza sin salirse; el doble toque alterna 2,5× ↔ 1×; a 1× deslizar sí pasa de
+// cuadro (y el cuadro nuevo llega a 1×); cerrar ampliado y volver a abrir empieza a 1×. Deja el
+// visor abierto, a 1×, en el cuadro siguiente al inicial.
+async function viewerZoomCheck(page, cdp, label, opener) {
+  const L = (m) => `[zoom ${label}] ${m}`;
+  const near = (a, b, tol = 0.05) => Math.abs(a - b) <= tol;
+  const at = await viewerFrameState(page);
+  check(at && at.stageTouch === 'none', L(`touch-action del escenario ${at && at.stageTouch}`));
+  check(at && at.scale === 1 && !at.zoomed, L('el cuadro no empieza a 1×'));
+  const count0 = await viewerCount(page);
+  // Pellizco: de 30 a 90 px del centro (×3), con un dedo a cada lado del centro del cuadro.
+  await touchPinchAt(page, cdp, at.x, at.y, 30, 90);
+  const big = await viewerFrameState(page);
+  check(near(big.scale, 3, 0.15) && near(big.w / at.w, 3, 0.15), L(`el pellizco no amplía el cuadro (escala ${big.scale.toFixed(2)}, ancho ×${(big.w / at.w).toFixed(2)})`));
+  check(big.page === 1, L(`el pellizco amplía la página (×${big.page})`));
+  check(big.zoomed && /^\d+(,\d)?×$/.test(big.tag), L(`indicador de escala «${big.tag}»`));
+  // Ampliado: deslizar no cambia de cuadro y el cuadro no deja hueco en el escenario.
+  await touchSwipe(page, cdp, { y: at.y, fromX: at.x + 120, toX: at.x - 160 });
+  const moved = await viewerFrameState(page);
+  check(await viewerCount(page) === count0, L(`ampliado, deslizar cambia de cuadro (${await viewerCount(page)})`));
+  check(near(moved.scale, big.scale, 0.01) && moved.inStage, L('al arrastrar ampliado, el cuadro deja hueco o cambia de escala'));
+  await page.waitForTimeout(ZOOM_TAG_HIDE_MS);
+  check(!(await viewerFrameState(page)).tag, L('el indicador de escala no se va solo'));
+  // Pellizco al revés: vuelve a 1× y el escenario deja de recortar.
+  await touchPinchAt(page, cdp, at.x, at.y, 90, 20);
+  await page.waitForTimeout(350);
+  const back = await viewerFrameState(page);
+  check(back.scale === 1 && !back.zoomed, L(`juntar los dedos no vuelve a 1× (escala ${back.scale.toFixed(2)})`));
+  // Doble toque: 2,5× centrado en el punto tocado; otro doble toque vuelve a 1×.
+  const tapX = at.x + at.w * 0.2;
+  const tapY = at.y;
+  await touchTap(page, cdp, tapX, tapY);
+  await page.waitForTimeout(70);
+  await touchTap(page, cdp, tapX, tapY);
+  await page.waitForTimeout(450);
+  const dbl = await viewerFrameState(page);
+  check(near(dbl.scale, 2.5, 0.01), L(`el doble toque no amplía a 2,5× (escala ${dbl.scale.toFixed(2)})`));
+  check(dbl.page === 1, L('el doble toque amplía la página'));
+  check(dbl.x < at.x - 10, L('el doble toque no amplía centrado en el punto tocado'));
+  await touchTap(page, cdp, tapX, tapY);
+  await page.waitForTimeout(70);
+  await touchTap(page, cdp, tapX, tapY);
+  await page.waitForTimeout(450);
+  check((await viewerFrameState(page)).scale === 1, L('el segundo doble toque no vuelve a 1×'));
+  check(await page.locator('.viewer[open]').count() === 1, L('el doble toque cierra el visor'));
+  // Teclado: + amplía, 0 restablece.
+  await page.keyboard.press('+');
+  await page.waitForTimeout(350);
+  check((await viewerFrameState(page)).scale > 1, L('la tecla + no amplía'));
+  await page.keyboard.press('0');
+  await page.waitForTimeout(350);
+  check((await viewerFrameState(page)).scale === 1, L('la tecla 0 no restablece'));
+  // A 1×, deslizar sí pasa al siguiente (y llega a 1×).
+  await touchSwipe(page, cdp, { y: at.y, fromX: at.x + 120, toX: at.x - 160 });
+  const m = /^(\d+) \/ (\d+)$/.exec(count0);
+  const next = m ? `${Number(m[1]) + 1} / ${m[2]}` : '';
+  check(await waitCount(page, next) === next, L(`a 1×, deslizar no pasa de cuadro (${await viewerCount(page)})`));
+  await page.waitForTimeout(400);
+  check((await viewerFrameState(page)).scale === 1, L('el cuadro siguiente no llega a 1×'));
+  // Cerrar ampliado y volver a abrir: empieza a 1×.
+  await page.keyboard.press('+');
+  await page.waitForTimeout(300);
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.viewer', { state: 'detached' });
+  await opener.tap();
+  await page.waitForSelector('.viewer[open]');
+  await page.waitForTimeout(300);
+  const again = await viewerFrameState(page);
+  check(again && again.scale === 1 && !again.zoomed && !again.tag, L('al volver a abrir, el cuadro no está a 1×'));
+}
+const ZOOM_TAG_HIDE_MS = 1100;
 
 async function assertPracticeVisible(page, label) {
   const box = await page.locator('[data-action="practice"]').boundingBox();
@@ -717,6 +835,20 @@ await assertLearnLayout(page, '390 conoce');
 await audit(page, '390 conoce');
 // Visor: un cuadro del carrusel en grande (Esc lo cierra y el foco vuelve).
 await viewerCheck(page, '390 conoce (humo)', page.locator('.slide .art-zoom').first(), { group: await page.locator('.slide .art-zoom').count(), close: 'esc' });
+// Ampliar dentro del visor: pellizco y doble toque reales (CDP) sobre el cuadro, sin zoom de página.
+if (await page.locator('.slide .art-zoom').count() > 1) {
+  await page.locator('.slide .art-zoom').first().tap();
+  await page.waitForSelector('.viewer[open]');
+  await page.waitForTimeout(300);
+  await viewerZoomCheck(page, await context.newCDPSession(page), '390 conoce (humo)', page.locator('.slide .art-zoom').first());
+  await shot(page, '05b-visor-ampliado-antes');
+  await page.keyboard.press('+');
+  await page.keyboard.press('+');
+  await page.waitForTimeout(350);
+  await shot(page, '05c-visor-ampliado');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.viewer', { state: 'detached' });
+}
 await page.locator('.learn h1').focus();
 await page.keyboard.press('Enter');
 await page.waitForSelector('.lesson .option');
@@ -1641,12 +1773,32 @@ for (const scheme of ['light', 'dark']) {
       await p8.waitForTimeout(300);
       await touchSwipe(p8, cdp, { y: 420, fromX: 330, toX: 50 });
       check(await waitCount(p8, `2 / ${nLearn}`) === `2 / ${nLearn}`, `deslizar en el visor no pasa de cuadro (${await viewerCount(p8)})`);
-      check(await touchPinch(p8, cdp) === 1, 'el pellizco amplía el visor');
+      // El pellizco dentro del visor amplía el cuadro (no la página); el doble toque también.
+      await viewerZoomCheck(p8, cdp, L('conoce'), p8.locator('.slide .art-zoom').first());
       await p8.keyboard.press('Escape');
       await p8.waitForSelector('.viewer', { state: 'detached' });
     }
     await viewerCheck(p8, L('conoce'), p8.locator('.slide .art-zoom').first(), { group: nLearn, close: cfg.desk ? 'esc' : 'back', touch: T, shotName: `visor-conoce-${cfg.tag}` });
     check(await p8.locator('.learn').count() === 1, `[${cfg.tag}] cerrar el visor con atrás sale de «Conoce a»`);
+    if (cfg.desk) {
+      // Escritorio: Ctrl+rueda sobre el cuadro amplía (sin zoom de página) y 0 restablece.
+      await p8.locator('.slide .art-zoom').first().click();
+      await p8.waitForSelector('.viewer[open]');
+      await p8.waitForTimeout(300);
+      const f = await viewerFrameState(p8);
+      await p8.mouse.move(f.x, f.y);
+      await p8.keyboard.down('Control');
+      await p8.mouse.wheel(0, -240);
+      await p8.keyboard.up('Control');
+      await p8.waitForTimeout(300);
+      const w = await viewerFrameState(p8);
+      check(w.scale > 1.2 && w.page === 1, `[${cfg.tag}] Ctrl+rueda no amplía el cuadro (escala ${w.scale.toFixed(2)}, página ×${w.page})`);
+      await p8.keyboard.press('0');
+      await p8.waitForTimeout(300);
+      check((await viewerFrameState(p8)).scale === 1, `[${cfg.tag}] 0 no restablece tras la rueda`);
+      await p8.keyboard.press('Escape');
+      await p8.waitForSelector('.viewer', { state: 'detached' });
+    }
 
     if (cfg.full || cfg.round) {
       // Ronda: imagen de la pregunta sin revelar nada, «¿Cuál es de X?» con el visor de las 4
