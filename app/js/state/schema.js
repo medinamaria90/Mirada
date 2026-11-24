@@ -4,7 +4,7 @@ import { emptyProgress, DEFAULT_GOAL } from '../engine/progress.js';
 import { addDays, isDayKey } from '../engine/dates.js';
 import { LEGACY_IDS } from './legacy-ids.js';
 
-export const SCHEMA_VERSION = 7;
+export const SCHEMA_VERSION = 8;
 
 // Tema de la interfaz (settings.theme): claro, oscuro o como el móvil (el sistema).
 export const THEMES = ['light', 'dark', 'system'];
@@ -14,12 +14,22 @@ export function normalizeTheme(value) {
   return THEMES.includes(value) ? value : DEFAULT_THEME;
 }
 
+// Nombre del perfil (settings.name): opcional, solo en este navegador. Texto corto sin saltos ni
+// caracteres de control; si no hay nombre, cadena vacía.
+export const NAME_MAX = 24;
+
+export function normalizeName(value) {
+  if (typeof value !== 'string') return '';
+  const clean = value.replace(/[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/g, ' ').trim();
+  return [...clean].slice(0, NAME_MAX).join('').trim();
+}
+
 export function defaultState() {
   return {
     version: SCHEMA_VERSION,
     onboarded: false,
     progress: emptyProgress(),
-    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME },
+    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '' },
     // Ronda en curso para retomarla al volver ({} = ninguna). Ver state/session.js.
     session: {},
   };
@@ -99,6 +109,11 @@ export const MIGRATIONS = {
       },
     };
   },
+  // 7 → 8 (perfil nuevo): nombre opcional del perfil, vacío por defecto. Lo demás se conserva.
+  7: (old) => ({
+    ...old,
+    settings: { ...(isPlain(old.settings) ? old.settings : {}), name: '' },
+  }),
 };
 
 export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, defaults = defaultState()) {
