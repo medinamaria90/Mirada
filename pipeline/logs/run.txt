@@ -30,3 +30,9 @@ ok   w17174298   delaroche        1600x916 379KB  El asesinato del duque de Guis
 lote: 150/150 bien; quedan 530
 build: 1180 obras (650 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
 subidas 150 imágenes a la release
+ok   w27780651   rosales          952x1600 404KB  Ciocciara
+ok   w27780689   rosales          1600x1017 506KB  Ofelia
+ok   w27780737   rosales          1600x956 353KB  Episodio de la Batalla de Tetuán
+lote: 150/150 bien; quedan 380
+build: 1180 obras (800 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
+subidas 150 imágenes a la release

@@ -1,152 +1,152 @@
-selección 1180, ya bajadas 500, pendientes 680; este lote 150
-ok   w27765779   melendez         1600x1047 441KB  Bodegón con besugos, naranjas, ajo, condimentos y utensilios
-ok   w26699645   melendez         1600x1204 455KB  Bodegón con naranjas y nueces
-ok   w18688130   melendez         1189x1600 306KB  Bodegón con frutas y jarra
-ok   w27760630   melendez         1182x1600 425KB  Bodegón con servicio de chocolate y bollos
-ok   w59710195   melendez         1600x1193 517KB  Bodegón con sandías y manzanas en un paisaje
-ok   w18915242   melendez         1500x1123 225KB  Bodegón con higos
-ok   w7712851    reynolds         1289x1536 254KB  La edad de la inocencia
-ok   w5794826    reynolds         1267x1600 461KB  Cupido desatando el cinto de Venus
-ok   w24657567   reynolds         1600x1368 384KB  Las hermanas Waldgrave
-ok   w6106762    reynolds         1278x1600 363KB  Retrato de Lady Cockburn con sus tres hijos
-ok   w6470018    reynolds         1267x1600 431KB  Lady Caroline Howard
-ok   w5036652    reynolds         991x1600 253KB  Capitán George K. H. Coussmaker
-ok   w6470123    reynolds         978x1600 352KB  Lady Elizabeth Delmé y sus hijos
-ok   w119011999  reynolds         1215x1600 289KB  Autorretrato
-ok   w19904884   greuze           1600x1242 307KB  Huevos rotos
-ok   w4388208    greuze           1279x1600 307KB  El cántaro roto
-ok   w20184617   greuze           1284x1600 555KB  La lavandera
-ok   w3201415    greuze           1600x1235 283KB  El compromiso pueblerino
-ok   w4340198    greuze           1471x1169 241KB  La maldición paterna: el hijo ingrato
-ok   w604761     gainsborough     1100x1600 244KB  El joven azul
-ok   w1619527    gainsborough     1600x938 235KB  El Señor y la Señora Andrews
-ok   w3700536    gainsborough     1277x1600 318KB  La mujer de azul
-ok   w12738203   gainsborough     1225x1600 348KB  El señor y la señora Hallett
-ok   w5966011    gainsborough     1321x1600 282KB  La carreta del mercado
-ok   w4373352    gainsborough     1039x1600 288KB  Retrato de la señora Mary Graham
-ok   w6929863    gainsborough     1128x1600 336KB  La señora de Richard Brinsley Sheridan
-ok   w18937395   gainsborough     1395x1600 591KB  Conversación en un parque
-ok   w2629559    fragonard        1274x1600 512KB  El columpio
-ok   w2629423    fragonard        1273x1600 409KB  La lectora
-ok   w3228069    fragonard        1600x1251 312KB  El cerrojo
-ok   w3211034    fragonard        1600x987 235KB  El nacimiento de Venus
-ok   w12859945   fragonard        1252x1600 700KB  El columpio
-ok   w2886017    fragonard        1246x1000 175KB  El camisón arrebatado
-ok   w3828528    fragonard        1600x1299 389KB  Las bañistas
-ok   w5967115    fragonard        1600x1447 669KB  La lección de música
-ok   w28801539   fragonard        1251x1600 488KB  Muchacha con perro
-ok   w152867     goya             1600x812 160KB  La maja desnuda
-ok   w1091086    goya             1600x1221 357KB  El tres de mayo de 1808 en Madrid
-ok   w1150997    goya             871x1600 343KB  Saturno devorando a su hijo
-ok   w920030     goya             1600x1335 229KB  La familia de Carlos IV
-ok   w2735507    goya             1600x804 193KB  La maja vestida
-ok   w2983399    goya             1600x1238 434KB  El dos de mayo de 1808 en Madrid
-ok   w500936     goya             942x1600 478KB  Perro semihundido
-ok   w2528477    goya             1600x507 211KB  El aquelarre
-ok   w3035829    goya             1180x1600 185KB  Don Manuel Osorio Manrique de Zúñiga, niño
-ok   w1585399    goya             1058x1600 266KB  Doña Isabel de Porcel
-ok   w15728649   goya             1121x1600 362KB  Vuelo de brujas
-ok   w2537138    goya             1600x1108 344KB  El quitasol
-ok   w5177084    goya             1067x1600 155KB  La condesa de Chinchón
-ok   w2736720    goya             1173x1600 283KB  Goya atendido por el doctor Arrieta
-ok   w952796     goya             919x1600 275KB  El pelele
-ok   w3788057    goya             1600x731 248KB  La pradera de San Isidro
-ok   w18688145   paret            1600x1085 404KB  Vista de El Arenal de Bilbao
-ok   w27766413   paret            1075x1600 560KB  Jura de Fernando VII como príncipe de Asturias
-ok   w27766006   paret            1256x1600 495KB  Autorretrato en el estudio
-ok   w28798007   paret            1600x1361 426KB  La tienda
-ok   w140606091  paret            1600x1233 401KB  Circunspección de Diógenes
-ok   w26699636   paret            1200x860 129KB  Vista de El Arenal de Bilbao
-ok   w27760099   paret            1280x988 336KB  Baile en máscara
-ok   w27760349   paret            1600x1248 664KB  Carlos III comiendo ante su corte
-ok   w1752990    david            1600x1065 176KB  La muerte de Sócrates
-ok   w476458     david            1600x1241 336KB  Juramento de los Horacios
-ok   w636537     david            1243x1600 184KB  La muerte de Marat
-ok   w1231009    david            1600x995 387KB  La coronación de Napoleón
-ok   w1314013    david            1600x1203 429KB  La intervención de las sabinas
-ok   w1313605    david            976x1600 218KB  Retrato de Napoleón en su gabinete de trabajo
-ok   w835286     david            1347x1600 262KB  Marte desarmado por Venus y las Gracias
-ok   w2619037    david            1600x1140 332KB  Madame Récamier
-ok   w972295     david            1600x1181 401KB  Leónidas en las Termópilas
-ok   w3937621    vigee-le-brun    1250x1600 327KB  María Antonieta y sus hijos
-ok   w3937618    vigee-le-brun    1318x1600 462KB  María Antonieta con una rosa
-ok   w18719540   vigee-le-brun    1152x1600 265KB  Autorretrato con sombrero de paja
-ok   w19273424   vigee-le-brun    1184x1600 360KB  Madame Vigée-Lebrun con su hija
-ok   w18923677   vigee-le-brun    1026x1354 245KB  Retrato de la princesa María Cristina
-ok   w19361572   vigee-le-brun    1253x1600 555KB  Autorretrato pintando a María Antonieta
-ok   w19006513   vigee-le-brun    1600x1237 373KB  Paz que trae de vuelta la prosperidad
-ok   w41433015   vigee-le-brun    1070x1600 180KB  Retrato de la condesa Catalina Skavronskaya
-ok   w4373337    borovikovski     1281x1600 299KB  Retrato de María Lopujiná
-ok   w18689466   borovikovski     1078x1600 317KB  Retrato del príncipe Alexander Kurakin
-ok   w12110766   borovikovski     1467x1600 380KB  Las hermanas Anna y Varvara Gagarina
-ok   w6106800    vicente-lopez    1297x1600 357KB  El pintor Francisco de Goya
-ok   w11945404   vicente-lopez    1216x1600 474KB  Retrato del Marqués de Labrador
-ok   w22893258   vicente-lopez    1600x959 384KB  Cabeza de mujer
-ok   w27766415   vicente-lopez    1273x1600 483KB  María Pilar de la Cerda y Marín de Resende, duquesa de Nájer
-ok   w142013319  vicente-lopez    1252x1600 273KB  El presbítero Juan Gutiérrez de León
-ok   w27766876   vicente-lopez    1039x1600 274KB  El sueño de San José
-ok   w27766904   vicente-lopez    1290x1600 259KB  Ignacio Gutiérrez Solana, veedor de las Reales Caballerizas
-ok   w27766915   vicente-lopez    1130x1600 359KB  Pedro de Alcántara Álvarez de Toledo y Salm Salm, XIII duque
-ok   w311243     friedrich        1256x1600 448KB  El caminante sobre el mar de nubes
-ok   w334360     friedrich        1600x1025 275KB  Abadía en el robledal
-ok   w194137     friedrich        1600x1213 291KB  El mar de hielo
-ok   w1787143    friedrich        940x1200 247KB  Acantilados blancos en Rügen
-ok   w693746     friedrich        1600x1028 401KB  Monje a la orilla del mar
-ok   w1214313    friedrich        1600x1243 488KB  Las etapas de la vida
-ok   w232087     friedrich        1600x1282 411KB  Dos hombres contemplando la luna
-ok   w884782     friedrich        1535x1600 322KB  Cruz en las montañas
-ok   w1198515    friedrich        1600x1223 359KB  El árbol solitario
-ok   w2339059    turner           1600x1201 380KB  Lluvia, vapor y velocidad. El gran ferrocarril del Oeste
-ok   w257580     turner           1600x1188 321KB  El Temerario remolcado a dique seco
-ok   w219344     turner           1600x1202 304KB  El barco de esclavos
-ok   w3027255    turner           1600x1075 268KB  Dido construyendo Cartago
-ok   w1772871    turner           1600x1128 259KB  La Batalla de Trafalgar
-ok   w16038731   turner           1600x1198 574KB  Tormenta de nieve: vapor a la entrada de un puerto
-ok   w4003071    turner           1600x1000 252KB  Ulises burlando a Polifemo
-ok   w28538656   turner           1536x1122 242KB  Régulo
-ok   w28537062   turner           1600x1005 416KB  La Rama Dorada
-ok   w2366825    constable        1600x1103 465KB  La carreta de heno
-ok   w398973     constable        1600x1245 646KB  La catedral de Salisbury, vista desde el jardín del palacio 
-ok   w2272625    constable        1038x1200 313KB  El maizal
-ok   w398126     constable        1600x1280 547KB  La catedral de Salisbury vista a través de los campos
-ok   w18589150   constable        1600x866 310KB  Wivenhoe Park
-ok   w18685512   constable        1357x1600 712KB  El valle de Dedham
-ok   w3794919    constable        1600x1277 361KB  El molino de Flatford
-ok   w3634799    constable        1600x1310 436KB  Construcción de barcas cerca del molino de Flatford
-ok   w4242050    tropinin         1289x1600 421KB  La encajera
-ok   w116432553  tropinin         1279x1600 334KB  Autorretrato ante el Kremlin
-ok   w20076612   tropinin         1199x1600 299KB  Dama de Podolia
-ok   w1978815    ingres           1600x893 249KB  La gran odalisca
-ok   w2027662    ingres           1600x1593 354KB  El baño turco
-ok   w3080509    ingres           1072x1600 263KB  La bañista de Valpinçon
-ok   w1282840    ingres           973x1600 403KB  Napoleón en su trono imperial
-ok   w3137278    ingres           1221x1600 362KB  Madame Moitessier
-ok   w2985455    ingres           1139x1400 111KB  Monsieur Bertin
-ok   w5818528    ingres           1223x1600 300KB  Edipo y la esfinge
-ok   w3202169    ingres           1600x1191 439KB  La apoteosis de Homero
-ok   w24011      ingres           1111x1600 371KB  Mademoiselle Caroline Rivière
-ok   w18683081   venetsianov      1600x1171 495KB  En el campo arado. Primavera
-ok   w18683079   venetsianov      1600x1287 486KB  La era
-ok   w52692816   venetsianov      1214x1600 483KB  Campesina con acianos
-ok   w212616     gericault        1600x1093 438KB  La balsa de la Medusa
-ok   w429753     gericault        1600x1163 326KB  Derbi en Epsom
-ok   w2459266    gericault        1344x1600 331KB  El cleptómano
-ok   w3349704    gericault        1074x1600 339KB  Oficial de cazadores a la carga
-ok   w3006832    gericault        1318x1600 320KB  Coracero herido
-ok   w3210764    gericault        1324x1600 393KB  Mujer demente
-ok   w3222938    gericault        1600x1273 486KB  La fábrica de cal
-ok   w15951392   gericault        1600x1308 223KB  Caballo gris
-ok   w24283      corot            1600x1087 369KB  Puente de Narni
-ok   w5442918    corot            1115x1600 403KB  Mujer leyendo
-ok   w3221688    corot            1600x1199 529KB  Concierto campestre
-ok   w18177816   corot            1600x1131 347KB  El camino de Sèvres a París
-ok   w18177483   corot            1600x1183 360KB  Agar en el desierto
-ok   w15709546   corot            1600x893 272KB  El castillo de Sant'Angelo y el Tíber, Roma
-ok   w20184292   corot            1168x1600 540KB  Diana y Acteón
-ok   w18177756   corot            1000x1260 243KB  La catedral de Chartres
-ok   w1213453    delaroche        1600x1337 284KB  La ejecución de Lady Jane Grey
-ok   w1224572    delaroche        1219x1600 288KB  Bonaparte cruzando los Alpes
-ok   w16915832   delaroche        1398x1600 241KB  La joven mártir
-ok   w17190332   delaroche        1600x1276 418KB  Los hijos de Eduardo
-ok   w17174298   delaroche        1600x916 379KB  El asesinato del duque de Guisa
-lote: 150/150 bien; quedan 530
+selección 1180, ya bajadas 650, pendientes 530; este lote 150
+ok   w29530      delacroix        1600x1280 367KB  La Libertad guiando al pueblo
+ok   w1133821    delacroix        1600x1253 395KB  La muerte de Sardanápalo
+ok   w2290433    delacroix        1347x1600 428KB  La matanza de Quíos
+ok   w2354251    delacroix        1600x1198 335KB  La barca de Dante
+ok   w1212737    delacroix        1600x1243 388KB  Mujeres de Argel
+ok   w3181999    delacroix        900x1337 172KB  Grecia expirante entre las ruinas de Missolonghi
+ok   w3119110    delacroix        1326x1600 497KB  Joven huérfana en el cementerio
+ok   w3055367    delacroix        1600x1297 427KB  Entrada de los Cruzados en Constantinopla
+ok   w11938897   delacroix        1600x1171 502KB  Boda judía en Marruecos
+ok   w2521909    briullov         1600x1123 328KB  El último día de Pompeya
+ok   w4127254    briullov         1123x1600 339KB  La amazona
+ok   w4205253    briullov         1359x1600 555KB  Mediodía italiano
+ok   w118746671  briullov         1600x1137 322KB  El asedio de Pskov por el rey polaco Esteban Báthory en 1581
+ok   w4536026    ivanov           1600x1116 427KB  La aparición de Cristo ante el pueblo
+ok   w11690350   ivanov           1600x1204 332KB  Aparición de Cristo a María Magdalena
+ok   w18683074   ivanov           1600x1184 445KB  La vía Apia al atardecer
+ok   w1368055    millet           1600x1198 407KB  Las espigadoras
+ok   w2571560    millet           1600x1330 441KB  El Ángelus
+ok   w3823264    millet           1200x948 234KB  La muerte y el leñador
+ok   w3212566    millet           1600x1322 286KB  La cosecha de patatas
+ok   w20540661   millet           1299x1600 435KB  El sembrador
+ok   w3228018    millet           1129x1600 347KB  El aventador
+ok   w20180844   millet           1600x1299 318KB  El hombre con la azada
+ok   w47013750   millet           1304x1600 338KB  El alcotán
+ok   w27766940   madrazo          1107x1600 335KB  La condesa de Vilches
+ok   w18719620   madrazo          1176x1600 201KB  Amelia de Vilanova y Nadal
+ok   w23073062   madrazo          1322x1600 367KB  Carolina Coronado
+ok   w23499014   madrazo          1211x1600 627KB  Retrato en busto del pintor Marià Fortuny
+ok   w59941283   madrazo          1242x1600 207KB  Carlos Ortiz de Taranco
+ok   w133310569  madrazo          1210x1600 358KB  Autorretrato
+ok   w27766935   madrazo          979x1600 317KB  Federico Flórez y Márquez
+ok   w115621185  madrazo          1030x1600 330KB  Retrato de Isabel II
+ok   w18688348   fedotov          1600x1241 428KB  La petición de mano del mayor
+ok   w18688347   fedotov          1403x1600 533KB  El caballero recién condecorado
+ok   w4066483    fedotov          1600x1105 406KB  ¡Otra vez, otra vez!
+ok   w1070896    aivazovski       1600x1075 184KB  Novena ola
+ok   w1982719    aivazovski       1600x1009 335KB  El bergantín «Mercury» atacado por dos barcos turcos
+ok   w4518724    aivazovski       1600x1148 228KB  Mar Negro
+ok   w60674337   aivazovski       1326x845 166KB  La furia de los mares
+ok   w4387907    aivazovski       1539x1200 256KB  Arcoíris
+ok   w7234368    aivazovski       1200x794 89KB  Una noche a la luz de la luna en el Bósforo
+ok   w4110560    aivazovski       1186x1600 395KB  Vista de la Torre Leandro en Constantinopla
+ok   w4384735    aivazovski       1600x1046 174KB  Pushkin a orillas del mar Negro
+ok   w6677931    aivazovski       1576x1200 164KB  Feodosia, noche de luna
+ok   w334138     courbet          1600x1326 437KB  El origen del mundo
+ok   w540488     courbet          1600x736 260KB  Entierro en Ornans
+ok   w326503     courbet          1600x1073 275KB  El sueño
+ok   w1167178    courbet          1600x943 326KB  El taller del pintor
+ok   w8030760    courbet          1600x1062 203KB  Mujer con loro
+ok   w39013      courbet          1319x1600 375KB  Mujer en las olas
+ok   w2914912    courbet          1600x976 309KB  Los rompe piedras
+ok   w3642171    courbet          1600x1385 388KB  El encuentro
+ok   w1293985    courbet          1600x1346 481KB  Cortesanas al borde del Sena
+ok   w1283024    bouguereau       1133x1600 348KB  El nacimiento de Venus
+ok   w2665048    bouguereau       1276x1600 316KB  Dante y Virgilio en el infierno
+ok   w5962062    bouguereau       803x1600 175KB  La Aurora
+ok   w512971     bouguereau       918x1600 341KB  La Pastora
+ok   w369810     bouguereau       1600x1278 235KB  El primer duelo
+ok   w1220030    bouguereau       1185x1600 275KB  La hermana mayor
+ok   w2344593    bouguereau       958x1600 220KB  El primer beso
+ok   w19826371   bouguereau       1293x1600 319KB  Gabrielle Cot
+ok   w293990     moreau           829x1600 218KB  Edipo y la esfinge
+ok   w3818663    moreau           1084x1600 411KB  La aparición
+ok   w3356655    moreau           1010x1600 391KB  Orfeo
+ok   w28758130   moreau           1074x1500 322KB  Salomé bailando ante Herodes
+ok   w12878041   moreau           897x1600 404KB  Jasón y Medea
+ok   w26708418   moreau           1082x1600 465KB  San Jorge
+ok   w977777     rossetti         724x1600 108KB  Proserpina
+ok   w4936154    rossetti         1360x1600 363KB  Bocca Baciata
+ok   w2425901    rossetti         909x1600 274KB  Ecce Ancilla Domini
+ok   w9248672    rossetti         1207x1536 430KB  La infancia de la Virgen María
+ok   w19897951   rossetti         921x1600 305KB  Sueño de día
+ok   w24055777   rossetti         1332x1600 403KB  Venus Verticordia
+ok   w1065493    millais          1600x1088 603KB  Ofelia
+ok   w477764     millais          1101x1600 473KB  La chica ciega
+ok   w960157     millais          1600x971 408KB  El Cristo en casa de sus padres
+ok   w822535     millais          1600x1129 537KB  Isabella
+ok   w822541     millais          1161x1600 329KB  La orden de liberación
+ok   w326887     millais          1059x1600 304KB  El brunswicker negro
+ok   w278722     pissarro         1277x1018 340KB  El puente Boieldieu en Ruan, día de lluvia
+ok   w5407253    pissarro         1600x1337 891KB  Cosecha de heno en Éragny
+ok   w19905366   pissarro         1600x1341 726KB  Vapores en el puerto de Ruan
+ok   w2843906    pissarro         1600x1329 631KB  Los tejados rojos
+ok   w4949655    pissarro         1600x1264 621KB  Bulevar de Montmartre, martes de Carnaval
+ok   w7715565    pissarro         1600x1091 402KB  Las orillas del Oise cerca de Pontoise
+ok   w21191272   pissarro         1289x1600 533KB  Rue Saint-Honoré por la tarde. Efecto de lluvia
+ok   w16984993   pissarro         1600x1277 716KB  Bulevar de Montmartre, primavera
+ok   w19938741   pissarro         1600x1060 410KB  La pequeña fábrica
+ok   w1993685    savrasov         1222x1600 558KB  Han llegado las grajillas
+ok   w4414026    savrasov         1600x1008 339KB  Vista rural
+ok   w18543540   savrasov         1600x1088 378KB  La isla de los Alces en Sokólniki
+ok   w152509     manet            1600x1243 357KB  Almuerzo sobre la hierba
+ok   w737062     manet            1600x1090 319KB  Olympia
+ok   w1245354    manet            1600x1190 391KB  Un bar del Folies Bergère
+ok   w775407     manet            1151x1600 350KB  El balcón
+ok   w210277     manet            1600x1016 450KB  La música en las Tullerías
+ok   w1212098    manet            1600x1303 499KB  El Ferrocarril o El Camino de Hierro
+ok   w26250      manet            938x1600 180KB  El pífano
+ok   w2899286    manet            1179x1600 289KB  Berthe Morisot con un ramo de violetas
+ok   w536024     manet            1205x1600 337KB  Nana
+ok   w59815      manet            1600x1210 325KB  El viejo músico
+ok   w2666439    shishkin         1600x1084 586KB  Mañana en un bosque de pinos
+ok   w4396378    shishkin         1600x902 370KB  Centeno
+ok   w4311015    shishkin         1105x1600 548KB  En el norte salvaje
+ok   w16346518   shishkin         1600x985 370KB  Lluvia en un robledal
+ok   w9339735    shishkin         1142x1600 510KB  Pinos iluminados por el sol
+ok   w78217292   shishkin         1200x1493 520KB  La linde del bosque
+ok   w84187289   shishkin         1600x1050 287KB  Pino en la arena
+ok   w47528314   shishkin         1600x1028 476KB  El claro
+ok   w62583833   shishkin         1217x1600 584KB  Otoño en la isla Krestovski
+ok   w27780832   martin-rico      1018x1600 700KB  La Torre de las Damas en la Alhambra de Granada
+ok   w19912613   martin-rico      1600x1205 371KB  Un canal en Venecia
+ok   w28796901   martin-rico      923x1600 325KB  Patio del Palacio Ducal de Venecia
+ok   w19969013   martin-rico      1600x1097 314KB  Un día de verano en el Sena
+ok   w104774383  martin-rico      1150x1600 443KB  Venecia, casa en el canal
+ok   w27780647   martin-rico      1600x1080 464KB  Un paisaje del Guadarrama
+ok   w19915289   gisbert          1600x1043 292KB  Fusilamiento de Torrijos y sus compañeros en las playas de M
+ok   w59856984   gisbert          1000x1600 204KB  Liuva I
+ok   w123221994  gisbert          1184x1600 282KB  Retrato de José María Calatrava
+ok   w140442039  gisbert          1600x1159 258KB  Desembarco de los puritanos en América
+ok   w59827382   gisbert          1001x1265 168KB  El capitán general Francisco de Serrano y Domínguez I duque 
+ok   w687182     whistler         1600x1423 383KB  Retrato de la madre del artista
+ok   w970968     whistler         798x1600 296KB  Sinfonía en blanco, n.º 1: La dama blanca
+ok   w646337     whistler         1204x1600 432KB  Nocturno en negro y oro: el cohete que cae
+ok   w720602     whistler         1600x1312 491KB  Nocturno: Azul y plata – Chelsea
+ok   w4290303    whistler         906x1600 369KB  La princesa del país de la porcelana
+ok   w4795850    whistler         1334x1600 159KB  Arreglo en gris y negro n.º 2: retrato de Thomas Carlyle
+ok   w7661692    whistler         1600x1056 260KB  Sinfonía en blanco n.º 3
+ok   w46271687   whistler         1175x1600 412KB  Arreglo en gris: retrato del pintor
+ok   w1239950    degas            1166x1600 473KB  El ajenjo
+ok   w2622172    degas            1600x1280 350KB  La familia Bellelli
+ok   w3821820    degas            1394x1600 538KB  Clase de ballet
+ok   w6046671    degas            1600x1107 306KB  Interior
+ok   w3842349    degas            1052x1600 252KB  Miss La La en el Circo Fernando
+ok   w1016012    degas            1600x1291 553KB  El Conde Lepic y sus hijas
+ok   w2912117    degas            1600x1168 421KB  La tina
+ok   w3794660    degas            1600x1263 458KB  Oficina de algodón en Nueva Orleans
+ok   w4025363    degas            1600x1468 812KB  Édouard Manet y su mujer
+ok   w7476471    degas            1600x1167 325KB  La clase de danza
+ok   w16518912   perov            1600x1168 303KB  La troika
+ok   w18689412   perov            1280x1600 345KB  Retrato de Fiódor Dostoyevski
+ok   w4340473    perov            1600x1042 355KB  Cazadores descansando
+ok   w3155095    rosales          1600x1152 354KB  Doña Isabel la Católica dictando su testamento
+ok   w16621762   rosales          1600x979 436KB  Presentación de don Juan de Austria al emperador Carlos V, e
+ok   w27780836   rosales          1600x1203 406KB  La muerte de Lucrecia
+ok   w59828514   rosales          1600x1286 379KB  Celda prioral del Monasterio de El Escorial
+ok   w27780646   rosales          1260x1600 285KB  Maximina Martínez de la Pedrosa, esposa del artista
+ok   w27780651   rosales          952x1600 404KB  Ciocciara
+ok   w27780689   rosales          1600x1017 506KB  Ofelia
+ok   w27780737   rosales          1600x956 353KB  Episodio de la Batalla de Tetuán
+lote: 150/150 bien; quedan 380
