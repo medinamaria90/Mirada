@@ -1,4 +1,4 @@
-/* Mirada — hoja principal. Las variables (colores, letra, medidas) viven en brand.css. */
+/* Sfumato — hoja principal. Las variables (colores, letra, medidas) viven en brand.css. */
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }

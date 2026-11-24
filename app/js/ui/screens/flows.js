@@ -387,8 +387,8 @@ export function renderWeekly(ctx, el) {
 }
 
 export function gridTitle(plan) {
-  if (plan.kind === 'weekly') return `Mirada · Reto semanal ${plan.week.slice(6)}`;
-  return `Mirada · Reto diario ${plan.date.slice(8)}/${plan.date.slice(5, 7)}`;
+  if (plan.kind === 'weekly') return `Sfumato · Reto semanal ${plan.week.slice(6)}`;
+  return `Sfumato · Reto diario ${plan.date.slice(8)}/${plan.date.slice(5, 7)}`;
 }
 
 function renderDailyDone(ctx, el, plan, done) {

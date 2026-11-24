@@ -240,7 +240,7 @@ test('resultado y texto para compartir: «n de m», nivel, percentil, cuadrados 
   assert.equal([...r.grid].length, TIERS.length);
   assert.ok(r.grid.endsWith(GRID_OFF.repeat(3)));
   const text = shareText(r, 'https://mirada.onrender.com/test/');
-  assert.match(text, new RegExp(`^He acertado ${r.correct} de ${r.asked} en el test de Mirada · ${r.level}\\n`));
+  assert.match(text, new RegExp(`^He acertado ${r.correct} de ${r.asked} en el test de Sfumato · ${r.level}\\n`));
   assert.match(text, new RegExp(`Sé más de pintura que el ${r.percentile} % de la gente `));
   assert.ok(text.endsWith('https://mirada.onrender.com/test/'));
   assert.doesNotMatch(text, /\b(ayer|mañana)\b/i);

@@ -38,7 +38,7 @@ export function topBar(ctx) {
   const goal = normalizeGoal(state.settings.dailyGoal);
   const done = todayXp(p, today);
   return `<header class="topbar">
-    <a class="brand" href="#inicio" aria-label="Mirada, inicio">${logoMark(30)}<span>Mirada</span></a>
+    <a class="brand" href="#inicio" aria-label="Sfumato, inicio">${logoMark(30)}<span>Sfumato</span></a>
     <div class="topbar-stats">
       ${goalChip(done, goal)}
       ${streakChip(streak)}

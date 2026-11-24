@@ -1,4 +1,4 @@
-// Motor de sonido de Mirada: música original por época + efectos, todo sintetizado con Web Audio.
+// Motor de sonido de Sfumato: música original por época + efectos, todo sintetizado con Web Audio.
 // Contrato (SPEC §5): unlock, setEra, startMusic, stopMusic, sfx, setMusicEnabled, setSfxEnabled,
 // setVolume, getState (+ restore para que la app persista las preferencias).
 // Ninguna función pública lanza: si algo falla o no hay Web Audio, simplemente no hace nada.

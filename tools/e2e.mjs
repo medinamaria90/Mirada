@@ -1122,13 +1122,13 @@ if (SMOKE) {
     check(/Has acertado 3 de 4/.test(rt), L(`resultado sin «n de 4»: «${rt.replace(/\s+/g, ' ').slice(0, 80)}»`));
     check(/Sabes más de pintura que el \d+ % de la gente/.test(rt) && /estimación/.test(rt), L('resultado sin percentil estimado'));
     check(/Has llegado al tramo fácil/.test(rt), L('resultado sin el tramo'));
-    check(await tp.locator('.test-result a[href="../#inicio"]').count() >= 1, L('falta «Sigue aprendiendo en Mirada»'));
+    check(await tp.locator('.test-result a[href="../#inicio"]').count() >= 1, L('falta «Sigue aprendiendo en Sfumato»'));
     await audit(tp, L('resultado'));
     if (scheme === 'light') await shot(tp, '15-test-resultado', true);
     await tp.locator('[data-action="share"]').tap();
     await tp.waitForTimeout(400);
     const shared = await tp.evaluate(() => navigator.clipboard.readText());
-    check(/^He acertado 3 de 4 en el test de Mirada · /.test(shared) && /\nSé más de pintura que el \d+ % de la gente/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
+    check(/^He acertado 3 de 4 en el test de Sfumato · /.test(shared) && /\nSé más de pintura que el \d+ % de la gente/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
     check(/Copiado/.test(await tp.locator('.copy-status').innerText()), L('no avisa de que se ha copiado'));
     // El último resultado se recuerda en la portada.
     await tp.goto(`${base}test/`);
@@ -1963,7 +1963,7 @@ for (const scheme of ['light', 'dark']) {
       const pinch = await touchPinch(p8, await c8.newCDPSession(p8));
       check(pinch === 1, `el pellizco amplía la página (escala ${pinch})`);
       check(ctrlScale > 1, `control del pellizco sin efecto (escala ${ctrlScale}): la prueba no discrimina`);
-      notes.push(`Pellizco con dos dedos (CDP): página de control ×${ctrlScale}, Mirada ×${pinch}.`);
+      notes.push(`Pellizco con dos dedos (CDP): página de control ×${ctrlScale}, Sfumato ×${pinch}.`);
     }
 
     await seed(p8, st8);

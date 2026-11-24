@@ -67,7 +67,7 @@ export function resultHtml(result, { last = false } = {}) {
   const tally = result.tiers.map((t) => `<div><dt>${esc(t.name)}</dt><dd>${t.correct}<span class="tally-of">/${t.asked}</span></dd></div>`).join('');
   return `<section class="result test-result">
     <div class="result-body">
-      <a class="brand" href="../#inicio" aria-label="Mirada, inicio">${logoMark(28)}Mirada</a>
+      <a class="brand" href="../#inicio" aria-label="Sfumato, inicio">${logoMark(28)}Sfumato</a>
       <p class="result-kicker">${last ? 'Tu último resultado' : 'Tu resultado'}</p>
       <h1 class="result-title" tabindex="-1">${esc(result.level)}</h1>
       <p class="result-score">Has acertado <strong>${result.correct} de ${result.asked}</strong></p>
@@ -78,7 +78,7 @@ export function resultHtml(result, { last = false } = {}) {
       <p class="result-cheer">${esc(result.phrase)}</p>
       <div class="result-actions">
         <button class="btn btn-primary btn-wide" data-action="share">${icons.copy(20)}Compartir</button>
-        <a class="btn btn-secondary btn-wide" href="../#inicio">Sigue aprendiendo en Mirada</a>
+        <a class="btn btn-secondary btn-wide" href="../#inicio">Sigue aprendiendo en Sfumato</a>
         <button class="btn btn-ghost" data-action="restart">Repetir el test</button>
         <p class="copy-status" role="status" aria-live="polite"></p>
         <textarea class="copy-fallback" aria-label="Texto para compartir" readonly hidden></textarea>

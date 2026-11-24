@@ -1,4 +1,4 @@
-// Portada: «tema principal de Mirada» en dos variantes. Comparten el motivo-firma (tercera menor
+// Portada: «tema principal de Sfumato» en dos variantes. Comparten el motivo-firma (tercera menor
 // ascendente, segunda y tercera: mi–sol–la–do', y la vuelta a sol), que puede asomar en celebraciones.
 import { scalePcs } from '../theory.js';
 import { FORM4 } from '../scores.js';

@@ -1,4 +1,4 @@
-/* Mirada — test de cultura pictórica (app/test/). Toma la identidad de brand.css y los componentes
+/* Sfumato — test de cultura pictórica (app/test/). Toma la identidad de brand.css y los componentes
    de main.css (botones, cuadros, pregunta, hoja de feedback, resultado); aquí solo lo propio. */
 @import url("brand.css");
 @import url("main.css");

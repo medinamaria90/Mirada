@@ -195,8 +195,8 @@ export function renderResult(ctx, el, opts) {
       ctx.audio.sfx('tap');
       const url = `${location.href.split('#')[0]}#${encodeChallenge(token, outcome.score)}`;
       const text = isDaily
-        ? shareText({ title: plan.kind === 'weekly' ? `Mirada · Reto semanal ${plan.week.slice(6)}` : `Mirada · Reto diario ${plan.date.slice(8)}/${plan.date.slice(5, 7)}`, score: outcome.score, total: outcome.total, grid: dailyGrid(firstTry), url })
-        : `He acertado ${outcome.score} de ${outcome.total} en Mirada${opts.shareTopic ? ` (${opts.shareTopic})` : ''}. ¿Me superas?\n${url}`;
+        ? shareText({ title: plan.kind === 'weekly' ? `Sfumato · Reto semanal ${plan.week.slice(6)}` : `Sfumato · Reto diario ${plan.date.slice(8)}/${plan.date.slice(5, 7)}`, score: outcome.score, total: outcome.total, grid: dailyGrid(firstTry), url })
+        : `He acertado ${outcome.score} de ${outcome.total} en Sfumato${opts.shareTopic ? ` (${opts.shareTopic})` : ''}. ¿Me superas?\n${url}`;
       copyText(el, text);
     },
   });

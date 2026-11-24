@@ -45,7 +45,7 @@ export function levelForScore(score, maxScore) {
 
 // Una frase según el tramo más alto jugado.
 const PHRASES = {
-  1: 'Empiezas por aquí: en Mirada se aprende mirando',
+  1: 'Empiezas por aquí: en Sfumato se aprende mirando',
   2: 'Reconoces lo más famoso; lo demás se aprende',
   3: 'Distingues a los grandes; los parecidos aún te lían',
   4: 'Ojo entrenado: separas pintores que se confunden',
@@ -84,7 +84,7 @@ export function buildResult(summary, maxScore) {
 
 export function shareText(result, url) {
   return [
-    `He acertado ${result.correct} de ${result.asked} en el test de Mirada · ${result.level}`,
+    `He acertado ${result.correct} de ${result.asked} en el test de Sfumato · ${result.level}`,
     `Sé más de pintura que el ${result.percentile} % de la gente ${result.grid}`,
     url,
   ].filter(Boolean).join('\n');
