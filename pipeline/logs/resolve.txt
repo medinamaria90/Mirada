@@ -1,4 +1,9 @@
+ok    cimabue            Q15790     Cimabue / Cimabue (1240-1302) sl=61
+ok    duccio             Q15792     Duccio / Duccio di Buoninsegna (1255-1319) sl=65
 ok    giotto             Q7814      Giotto / Giotto (1267-1337) sl=99
+ok    pietro-lorenzetti  Q309635    Pietro Lorenzetti / Pietro Lorenzetti (1280-1348) sl=43
+ok    simone-martini     Q221043    Simone Martini / Simone Martini (1284-1344) sl=52
+ok    ambrogio-lorenzetti Q211562    Ambrogio Lorenzetti / Ambrogio Lorenzetti (1290-1348) sl=49
 ok    van-eyck           Q102272    Jan van Eyck / Jan van Eyck (1390-1441) sl=87
 ok    fra-angelico       Q5664      Fra Angelico / Fra Angelico (1400-1455) sl=77  (QID dado; años no casan, revisar)
 ok    van-der-weyden     Q68631     Rogier van der Weyden / Rogier van der Weyden (1390-1464) sl=61  (QID dado; años no casan, revisar)
@@ -62,8 +67,11 @@ ok    fragonard          Q127171    Jean-Honoré Fragonard / Jean-Honoré Fragon
 ok    goya               Q5432      Francisco de Goya / Francisco Goya (1746-1828) sl=189
 ok    paret              Q283412    Luis Paret / Luis Paret y Alcázar (1746-1799) sl=13
 ok    david              Q83155     Jacques-Louis David / Jacques-Louis David (1748-1825) sl=95
+ok    utamaro            Q272045    Utamaro / Kitagawa Utamaro (1753-1806) sl=50
 ok    vigee-le-brun      Q213163    Élisabeth Vigée-Lebrun / Élisabeth Louise Vigée Le Brun (1755-1842) sl=69
 ok    borovikovski       Q262098    Vladímir Borovikovski / Vladimir Borovikovsky (1757-1825) sl=25
+ok    hokusai            Q5586      Katsushika Hokusai / Katsushika Hokusai (1760-1849) sl=178
+ok    sharaku            Q361174    Tōshūsai Sharaku / Sharaku (None-1801) sl=28  (QID dado; años no casan, revisar)
 ok    vicente-lopez      Q117543    Vicente López Portaña / Vicente López Portaña (1772-1850) sl=20
 ok    friedrich          Q104884    Caspar David Friedrich / Caspar David Friedrich (1774-1840) sl=92
 ok    turner             Q159758    Joseph Mallord William Turner / J. M. W. Turner (1775-1851) sl=87
@@ -74,6 +82,8 @@ ok    venetsianov        Q515879    Alekséi Venetsiánov / Alexey Venetsianov (
 ok    gericault          Q184212    Théodore Géricault / Théodore Géricault (1791-1824) sl=71
 ok    corot              Q148475    Camille Corot / Jean-Baptiste Camille Corot (1796-1875) sl=77
 ok    delaroche          Q322582    Paul Delaroche / Paul Delaroche (1797-1856) sl=41
+ok    kuniyoshi          Q317736    - / Utagawa Kuniyoshi (1798-1861) sl=35
+ok    hiroshige          Q200798    Utagawa Hiroshige / Utagawa Hiroshige (1797-1858) sl=69
 ok    delacroix          Q33477     Eugène Delacroix / Eugène Delacroix (1798-1863) sl=124
 ok    briullov           Q4768      Karl Briullov / Karl Bryullov (1799-1852) sl=54
 ok    ivanov             Q76829     Aleksandr Ivánov / Alexander Ivanov (1806-1858) sl=44
@@ -150,4 +160,4 @@ ok    malevich           Q130777    Kazimir Malévich / Kazimir Malevich (1878-1
 ok    modigliani         Q120993    Amedeo Modigliani / Amedeo Modigliani (1884-1920) sl=88
 ok    juan-gris          Q151152    Juan Gris / Juan Gris (1887-1927) sl=63
 ok    schiele            Q44032     Egon Schiele / Egon Schiele (1890-1918) sl=74
-total 152 resueltos 152
+total 162 resueltos 162

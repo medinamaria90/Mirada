@@ -1,5 +1,25 @@
 [
  {
+  "id": "cimabue",
+  "qid": "Q15790",
+  "es": "Cimabue",
+  "en": "Cimabue",
+  "nacimiento": 1240,
+  "muerte": 1302,
+  "sitelinks": 61,
+  "ok": true
+ },
+ {
+  "id": "duccio",
+  "qid": "Q15792",
+  "es": "Duccio",
+  "en": "Duccio di Buoninsegna",
+  "nacimiento": 1255,
+  "muerte": 1319,
+  "sitelinks": 65,
+  "ok": true
+ },
+ {
   "id": "giotto",
   "qid": "Q7814",
   "es": "Giotto",
@@ -7,6 +27,36 @@
   "nacimiento": 1267,
   "muerte": 1337,
   "sitelinks": 99,
+  "ok": true
+ },
+ {
+  "id": "pietro-lorenzetti",
+  "qid": "Q309635",
+  "es": "Pietro Lorenzetti",
+  "en": "Pietro Lorenzetti",
+  "nacimiento": 1280,
+  "muerte": 1348,
+  "sitelinks": 43,
+  "ok": true
+ },
+ {
+  "id": "simone-martini",
+  "qid": "Q221043",
+  "es": "Simone Martini",
+  "en": "Simone Martini",
+  "nacimiento": 1284,
+  "muerte": 1344,
+  "sitelinks": 52,
+  "ok": true
+ },
+ {
+  "id": "ambrogio-lorenzetti",
+  "qid": "Q211562",
+  "es": "Ambrogio Lorenzetti",
+  "en": "Ambrogio Lorenzetti",
+  "nacimiento": 1290,
+  "muerte": 1348,
+  "sitelinks": 49,
   "ok": true
  },
  {
@@ -640,6 +690,16 @@
   "ok": true
  },
  {
+  "id": "utamaro",
+  "qid": "Q272045",
+  "es": "Utamaro",
+  "en": "Kitagawa Utamaro",
+  "nacimiento": 1753,
+  "muerte": 1806,
+  "sitelinks": 50,
+  "ok": true
+ },
+ {
   "id": "vigee-le-brun",
   "qid": "Q213163",
   "es": "Élisabeth Vigée-Lebrun",
@@ -658,6 +718,26 @@
   "muerte": 1825,
   "sitelinks": 25,
   "ok": true
+ },
+ {
+  "id": "hokusai",
+  "qid": "Q5586",
+  "es": "Katsushika Hokusai",
+  "en": "Katsushika Hokusai",
+  "nacimiento": 1760,
+  "muerte": 1849,
+  "sitelinks": 178,
+  "ok": true
+ },
+ {
+  "id": "sharaku",
+  "qid": "Q361174",
+  "es": "Tōshūsai Sharaku",
+  "en": "Sharaku",
+  "nacimiento": null,
+  "muerte": 1801,
+  "sitelinks": 28,
+  "ok": false
  },
  {
   "id": "vicente-lopez",
@@ -757,6 +837,26 @@
   "nacimiento": 1797,
   "muerte": 1856,
   "sitelinks": 41,
+  "ok": true
+ },
+ {
+  "id": "kuniyoshi",
+  "qid": "Q317736",
+  "es": null,
+  "en": "Utagawa Kuniyoshi",
+  "nacimiento": 1798,
+  "muerte": 1861,
+  "sitelinks": 35,
+  "ok": true
+ },
+ {
+  "id": "hiroshige",
+  "qid": "Q200798",
+  "es": "Utagawa Hiroshige",
+  "en": "Utagawa Hiroshige",
+  "nacimiento": 1797,
+  "muerte": 1858,
+  "sitelinks": 69,
   "ok": true
  },
  {
