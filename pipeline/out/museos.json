@@ -1,0 +1,234 @@
+{
+ "Q51252": {
+  "name": "Galería Uffizi",
+  "types": [
+   "Q16560",
+   "Q207694",
+   "Q24699794"
+  ],
+  "adm": "Q3927157",
+  "loc": "Q3927157",
+  "parent": "Q28647411",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q165631": {
+  "name": "Gemäldegalerie de Berlín",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q163966",
+  "loc": null,
+  "parent": "Q386482",
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q207486": {
+  "name": "basílica de San Francisco de Asís",
+  "types": [
+   "Q120560",
+   "Q334383",
+   "Q2713379"
+  ],
+  "adm": "Q20103",
+  "loc": null,
+  "parent": "Q495217",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q531218": {
+  "name": "Museo Horne",
+  "types": [
+   "Q166118",
+   "Q207694",
+   "Q614316"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q963954": {
+  "name": "capilla de los Scrovegni",
+  "types": [
+   "Q108325",
+   "Q207694",
+   "Q92755865",
+   "Q124830213"
+  ],
+  "adm": "Q617",
+  "loc": null,
+  "parent": "Q3867519",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1232516": {
+  "name": "Kaiser Friedrich Museumsverein (KFMV)",
+  "types": [
+   "Q163740",
+   "Q123909628"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q3044768": {
+  "name": "Departamento de Pinturas del Museo del Louvre",
+  "types": [
+   "Q7328910",
+   "Q11681271"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": "Q19675",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q3330318": {
+  "name": "Museo diocesano di Santo Stefano al Ponte",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q1231888"
+  ],
+  "adm": "Q2044",
+  "loc": "Q2707802",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3469918": {
+  "name": "Room A4 Giotto — Cimabue",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q51252",
+  "parent": "Q51252",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q3635787": {
+  "name": "Basílica superior de San Francisco de Asís",
+  "types": [
+   "Q1088552"
+  ],
+  "adm": "Q20103",
+  "loc": null,
+  "parent": "Q207486",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q3670083": {
+  "name": "iglesia de San Francisco",
+  "types": [
+   "Q16970"
+  ],
+  "adm": "Q13375",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3945716": {
+  "name": "Salón Carré",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q161741",
+  "loc": "Q14619172",
+  "parent": "Q14619172",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q113644238": {
+  "name": "Italian paintings 13.-15th-century, Berlin, Room 41",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q165631",
+  "parent": "Q165631",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q19675": {
+  "name": "Museo del Louvre",
+  "types": [
+   "Q207694",
+   "Q3329412"
+  ],
+  "adm": "Q2409554",
+  "loc": "Q1075988",
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q386482": {
+  "name": "Kulturforum",
+  "types": [
+   "Q1497375"
+  ],
+  "adm": "Q163966",
+  "loc": "Q328672",
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q495217": {
+  "name": "Sacro Convento de San Francisco",
+  "types": [
+   "Q358",
+   "Q811165",
+   "Q76529788"
+  ],
+  "adm": "Q20103",
+  "loc": null,
+  "parent": "Q2636502",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q3867519": {
+  "name": "Museos cívicos de Padua",
+  "types": [
+   "Q207694",
+   "Q3329412",
+   "Q7328910",
+   "Q92755865",
+   "Q124830213"
+  ],
+  "adm": "Q617",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q14619172": {
+  "name": "ala Denon",
+  "types": [
+   "Q1125776"
+  ],
+  "adm": "Q161741",
+  "loc": "Q1075988",
+  "parent": "Q1075988",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q28647411": {
+  "name": "Gallerie degli Uffizi",
+  "types": [
+   "Q3867560",
+   "Q88667167",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ }
+}

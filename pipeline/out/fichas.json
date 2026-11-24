@@ -1,0 +1,207 @@
+{
+ "Q2016193": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Pan de oro y temple sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "325 × 204 cm",
+  "heightCm": 325.0,
+  "widthCm": 204.0,
+  "inception": "",
+  "depicts": [
+   "Virgen con Niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "pintura gótica",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q549172": {
+  "museum": "capilla de los Scrovegni",
+  "museumQid": "Q963954",
+  "city": "Padua",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "200 × 185 cm",
+  "heightCm": 200.0,
+  "widthCm": 185.0,
+  "inception": "1305",
+  "depicts": [
+   "José de Nazaret",
+   "Niño Jesús",
+   "Virgen María",
+   "asno",
+   "caravana",
+   "cielo",
+   "montaña",
+   "mujer",
+   "nimbo",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "arte gótico",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q23904": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "panel de álamo",
+   "témpera"
+  ],
+  "dimensions": "313 × 163 cm",
+  "heightCm": 313.0,
+  "widthCm": 163.0,
+  "inception": "",
+  "depicts": [
+   "Francisco de Asís",
+   "Orden Franciscana",
+   "San Francisco predicando a las aves"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3472935": {
+  "museum": "Museo Horne",
+  "museumQid": "Q531218",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "84 × 54 cm",
+  "heightCm": 84.0,
+  "widthCm": 54.0,
+  "inception": "1320",
+  "depicts": [
+   "Esteban"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3698217": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "témpera"
+  ],
+  "dimensions": "59,7 × 36,2 cm",
+  "heightCm": 59.7,
+  "widthCm": 36.2,
+  "inception": "",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Virgen María",
+   "mujer",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3714311": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "témpera"
+  ],
+  "dimensions": "75 × 179 cm",
+  "heightCm": 75.0,
+  "widthCm": 179.0,
+  "inception": "1310–1312",
+  "depicts": [
+   "Virgen María",
+   "mujer"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3276171": {
+  "museum": "Museo diocesano di Santo Stefano al Ponte",
+  "museumQid": "Q3330318",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "180 × 90 cm",
+  "heightCm": 180.0,
+  "widthCm": 90.0,
+  "inception": "1295",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3276180": {
+  "museum": "Basílica superior de San Francisco de Asís",
+  "museumQid": "Q3635787",
+  "city": "Asís",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "110 × 110 cm",
+  "heightCm": 110.0,
+  "widthCm": 110.0,
+  "inception": "1291",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ }
+}

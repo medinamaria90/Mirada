@@ -1,0 +1,3 @@
+selección 1180, con ficha 0, este lote 8
+ok lote 1: 8 fichas (8 en total)
+fin: 8 fichas; con museo 8, con ciudad 8, con técnica 7, con medidas 8, en España 0

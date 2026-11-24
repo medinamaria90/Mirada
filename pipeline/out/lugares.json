@@ -1,0 +1,144 @@
+{
+ "Q617": {
+  "label": "Padua",
+  "types": [
+   "Q133442",
+   "Q747074",
+   "Q1187811",
+   "Q1549591"
+  ],
+  "up": "Q16226",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q2044": {
+  "label": "Florencia",
+  "types": [
+   "Q747074",
+   "Q1549591"
+  ],
+  "up": "Q18288148",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q13375": {
+  "label": "Pisa",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1187811"
+  ],
+  "up": "Q16244",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q20103": {
+  "label": "Asís",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16240",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q51252": {
+  "label": "Galería Uffizi",
+  "types": [
+   "Q16560",
+   "Q207694",
+   "Q24699794"
+  ],
+  "up": "Q3927157",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q161741": {
+  "label": "I Distrito de París",
+  "types": [
+   "Q702842",
+   "Q4286337"
+  ],
+  "up": "Q96746729",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q163966": {
+  "label": "Mitte",
+  "types": [
+   "Q821435"
+  ],
+  "up": "Q64",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q165631": {
+  "label": "Gemäldegalerie de Berlín",
+  "types": [
+   "Q207694"
+  ],
+  "up": "Q163966",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q2409554": {
+  "label": "Barrio de Saint-Germain-l'Auxerrois",
+  "types": [
+   "Q252916"
+  ],
+  "up": "Q161741",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q3927157": {
+  "label": "borough 1",
+  "types": [
+   "Q3927247"
+  ],
+  "up": "Q2044",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q96746729": {
+  "label": "Paris Centre",
+  "types": [
+   "Q56061",
+   "Q96761925"
+  ],
+  "up": "Q90",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q90": {
+  "label": "París",
+  "types": [
+   "Q174844",
+   "Q200250",
+   "Q208511",
+   "Q22923920",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "up": "Q16665915",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q64": {
+  "label": "Berlín",
+  "types": [
+   "Q133442",
+   "Q200250",
+   "Q257391",
+   "Q707813",
+   "Q1221156",
+   "Q1901835",
+   "Q15974307",
+   "Q42744322",
+   "Q51929311",
+   "Q67123843",
+   "Q114401982"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": true
+ }
+}
