@@ -11,3 +11,5 @@ ok   w2376881    fra-angelico     1483x1600 458KB  Anunciación de Cortona
 ok   w3065237    fra-angelico     795x1600 459KB  Virgen de la Humildad
 lote: 20/20 bien; quedan 1160
 build: 1180 obras (20 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
+57M	.git
+11M	catalogo
