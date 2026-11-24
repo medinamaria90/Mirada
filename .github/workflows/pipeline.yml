@@ -30,6 +30,6 @@ jobs:
         run: |
           mkdir -p pipeline/logs
           echo "estado del job: ${{ job.status }} $(date -u)" >> pipeline/logs/run.txt
-          git add -A pipeline/logs pipeline/out catalogo 2>/dev/null
+          for x in pipeline/out pipeline/logs catalogo CREDITS.md; do [ -e "$x" ] && git add -A "$x"; done
           git commit -qm "datos: log final" || exit 0
           for i in 1 2 3 4; do git pull --rebase -q -X theirs && git push -q && exit 0; sleep 10; done

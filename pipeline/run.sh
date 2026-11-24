@@ -5,7 +5,7 @@ set -u
 cd "$(dirname "$0")/.."
 TRAILER=$'\n\nCo-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_019fDNM6fRf9wS5SBrUcjg2r'
 commit() {
-  git add -A pipeline/out pipeline/logs catalogo CREDITS.md 2>/dev/null
+  for x in pipeline/out pipeline/logs catalogo CREDITS.md; do [ -e "$x" ] && git add -A "$x"; done
   git commit -qm "$1$TRAILER" || return 0
   for i in 1 2 3 4 5 6; do
     git pull --rebase -q -X theirs && git push -q && return 0
@@ -18,7 +18,7 @@ while read -r step args <&3; do
   case "$step" in ''|'#'*) continue;; esac
   echo "== $step $args $(date -u +%H:%M:%S)" | tee -a pipeline/logs/run.txt
   case "$step" in
-    resolve)    python3 pipeline/resolve.py 2>&1 | tail -n 3 >> pipeline/logs/run.txt ;;
+    resolve)    python3 pipeline/resolve.py > pipeline/logs/resolve.stdout.txt 2>&1; tail -n 5 pipeline/logs/resolve.stdout.txt >> pipeline/logs/run.txt ;;
     candidates) python3 pipeline/candidates.py $args > pipeline/logs/candidates.stdout.txt 2>&1; tail -n 5 pipeline/logs/candidates.stdout.txt >> pipeline/logs/run.txt ;;
     download)
       for n in $(seq 1 "${args:-8}"); do
