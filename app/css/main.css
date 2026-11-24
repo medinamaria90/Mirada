@@ -205,69 +205,85 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .today-detail .card-detail { border: 0; border-radius: 0; box-shadow: none; padding: 0 .95rem .95rem; }
 .today-detail .detail-body > .card-kicker { display: none; }
 
-.path { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.4rem; }
+/* El escenario de época (ciudad vectorial por la que se avanza) se dibuja detrás del camino, en
+   .path-scene; aquí solo queda el hueco preparado, sin dibujo. */
+.home-main { position: relative; }
+.path-scene { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.path { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.4rem; }
 .movement { min-width: 0; }
-.movement-head { display: flex; align-items: flex-start; gap: .85rem; margin: 0; font: inherit; }
+/* Cabecera de época centrada, con un filete a cada lado. */
+.movement-head {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr); align-items: center; column-gap: .7rem;
+  margin: 0; font: inherit; text-align: center;
+}
+.movement-head::before, .movement-head::after { content: ""; height: 1.5px; background: var(--line); border-radius: 2px; }
 .movement-head-wrap { margin: 0; font: inherit; }
 .movement-head.is-button {
-  width: 100%; padding: .25rem .4rem .25rem 0; border: 0; background: transparent; text-align: left; cursor: pointer;
-  border-radius: 16px; transition: background-color .2s; align-items: center;
+  width: 100%; padding: .25rem 0; border: 0; background: transparent; cursor: pointer; color: inherit;
+  border-radius: var(--radius-btn); transition: background-color .2s;
 }
 .movement-head.is-button:hover { background: color-mix(in srgb, var(--surface-2) 70%, transparent); }
-.movement-titles { display: grid; flex: 1; min-width: 0; }
-.movement-more { flex: none; display: grid; place-items: center; width: 32px; height: 32px; color: var(--ink-2); }
+.movement-titles { display: grid; min-width: 0; }
+.movement-more { display: grid; place-items: center; width: 24px; height: 32px; color: var(--ink-2); }
 .movement-num {
-  flex: none; display: grid; place-items: center; min-width: 44px; height: 44px; padding: 0 .4rem; border-radius: 999px;
-  border: 1.5px solid var(--accent-ui); color: var(--accent-ui); font: 600 1.1rem/1 var(--font); letter-spacing: .04em;
+  display: grid; place-items: center; min-width: 32px; height: 32px; padding: 0 .4rem; border-radius: 999px;
+  background: var(--brand-soft); color: var(--brand-text); font: 600 .9rem/1 var(--font); letter-spacing: .04em;
 }
 .movement-name { font: 500 1.5rem/1.1 var(--font); letter-spacing: var(--track); }
-.movement-period { display: block; color: var(--ink-2); font-size: .88rem; font-weight: 400; margin-top: .2rem; font-variant-numeric: lining-nums tabular-nums; }
-.movement-blurb { color: var(--ink-2); margin: .55rem 0 .2rem 3.6rem; font-size: .95rem; max-width: 40ch; }
-.movement-lockline { display: flex; align-items: center; gap: .4rem; color: var(--ink-2); margin: .5rem 0 0 3.6rem; font-size: .92rem; }
+.movement-period { display: block; color: var(--ink-2); font-size: .85rem; font-weight: 400; margin-top: .1rem; letter-spacing: .02em; font-variant-numeric: lining-nums tabular-nums; }
+.movement-blurb { color: var(--ink-2); margin: .55rem auto .2rem; font-size: .95rem; max-width: 40ch; text-align: center; }
+.movement-lockline { display: flex; align-items: center; justify-content: center; gap: .4rem; color: var(--ink-2); margin: .5rem 0 0; font-size: .92rem; }
 .movement-lockline .icon { flex: none; }
-.movement-locked .movement-num { color: var(--ink-2); border-color: var(--line); border-style: dashed; }
+.movement-locked .movement-num { color: var(--ink-2); background: var(--surface-2); }
 .movement-locked .movement-name { color: var(--ink-2); }
 
-.stages { position: relative; margin: .9rem 0 0; padding-left: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: .35rem; }
+.stages { position: relative; margin: 1rem 0 0; padding-left: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: .55rem; }
+/* Sendero punteado que une los nodos. */
 .stages::before {
-  content: ""; position: absolute; left: 31px; top: 30px; bottom: 30px; width: 2px;
-  background: linear-gradient(var(--accent-ui), color-mix(in srgb, var(--accent-ui) 15%, transparent));
-  opacity: .45; border-radius: 2px;
+  content: ""; position: absolute; left: 30px; top: 30px; bottom: 30px; width: 4px;
+  background: radial-gradient(circle, var(--line-2) 1.6px, transparent 2px) 50% 0 / 4px 12px repeat-y;
 }
 .stage {
-  position: relative; display: flex; align-items: center; gap: .9rem; width: 100%; min-height: 72px;
-  padding: .3rem .6rem .3rem 0; border: 0; background: transparent; text-align: left; cursor: pointer; border-radius: 16px;
+  position: relative; display: flex; align-items: center; gap: 1rem; width: 100%; min-height: 80px;
+  padding: .5rem .6rem .5rem 0; border: 0; background: transparent; text-align: left; cursor: pointer; border-radius: var(--radius-btn);
   transition: background-color .2s;
 }
 .stage:hover { background: color-mix(in srgb, var(--surface-2) 70%, transparent); }
+/* Nodo redondo con el cuadro dentro y relieve. */
 .stage-dot {
   position: relative; flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 999px;
-  background: var(--surface); border: 2px solid var(--line); color: var(--ink-2);
-  transition: transform .2s var(--ease);
+  background: var(--surface); color: var(--ink-2);
+  box-shadow: 0 0 0 3px var(--line), 0 var(--relief-node) 0 3px var(--line-2);
+  transition: transform .15s var(--ease), box-shadow .15s var(--ease);
 }
-.stage:active .stage-dot { transform: scale(.94); }
-.stage-thumb { position: absolute; inset: 3px; border-radius: 999px; aspect-ratio: auto; box-shadow: none; }
+.stage:active .stage-dot { transform: translateY(3px); box-shadow: 0 0 0 3px var(--line), 0 2px 0 3px var(--line-2); }
+.stage-thumb { position: absolute; inset: 0; border-radius: 999px; aspect-ratio: auto; box-shadow: none; }
 .stage-thumb.is-broken::after { font: 600 1.15rem/1 var(--font); color: var(--ink); }
 .stage-text { display: grid; gap: 1px; min-width: 0; }
 .stage-name { font: 500 1.08rem/1.15 var(--font); }
 .stage-meta { font-size: .86rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.stage.is-locked .stage-dot { background: var(--surface-2); border-style: dashed; }
+.stage.is-locked .stage-dot { background: var(--surface-2); box-shadow: 0 var(--relief-node) 0 var(--line-2); }
+.stage.is-locked:active .stage-dot { box-shadow: 0 2px 0 var(--line-2); }
 .stage.is-locked .stage-name { color: var(--ink-2); }
-.stage.is-available .stage-dot { border-color: var(--accent-ui); box-shadow: 0 0 0 4px var(--accent-soft); }
+/* Nodo actual: anillo coral sobre un halo suave; el aro exterior respira. */
+.stage.is-available .stage-dot { box-shadow: 0 0 0 4px var(--bg), 0 0 0 8px var(--brand), 0 10px 0 4px var(--brand-soft); }
+.stage.is-available:active .stage-dot { box-shadow: 0 0 0 4px var(--bg), 0 0 0 8px var(--brand), 0 6px 0 4px var(--brand-soft); }
 .stage.is-available .stage-dot::after {
-  content: ""; position: absolute; inset: -8px; border-radius: 999px; border: 2px solid var(--accent-ui);
+  content: ""; position: absolute; inset: -13px; border-radius: 999px; border: 2px solid var(--brand);
   opacity: 0; animation: halo 2.4s var(--ease) infinite;
 }
-.stage.is-available .stage-meta { color: var(--ink); font-weight: 600; }
-.stage.is-started .stage-dot { border-color: var(--accent-ui); }
-.stage.is-mastered .stage-dot { border-color: var(--accent-ui); border-width: 3px; }
+.stage.is-available .stage-meta { color: var(--brand-text); font-weight: 600; }
+.stage.is-started .stage-dot { box-shadow: 0 0 0 3px var(--brand), 0 var(--relief-node) 0 3px var(--line-2); }
+/* Dominado: anillo de oro y sello con la marca de hecho. */
+.stage.is-mastered .stage-dot { box-shadow: 0 0 0 3px var(--gold), 0 var(--relief-node) 0 3px var(--line-2); }
 .stage-badge {
-  position: absolute; right: -3px; bottom: -3px; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 999px;
-  background: var(--accent); color: var(--on-accent); border: 2px solid var(--bg);
+  position: absolute; right: -8px; bottom: -4px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;
+  background: var(--gold); color: var(--on-gold); box-shadow: 0 0 0 3px var(--bg);
 }
+.stage-badge .icon { stroke-width: 2.6; }
 .stage-review .stage-dot { border-radius: 18px; }
-.stage-review.is-available .stage-dot, .stage-review.is-mastered .stage-dot { color: var(--accent-ui); }
-.stage-review.is-locked .stage-dot { border-style: dashed; background: var(--surface-2); }
+.stage-review.is-available .stage-dot, .stage-review.is-mastered .stage-dot { color: var(--brand-text); }
+.stage-review.is-locked .stage-dot { background: var(--surface-2); }
 @keyframes halo { 0% { opacity: .6; transform: scale(.92); } 70%, 100% { opacity: 0; transform: scale(1.12); } }
 
 .lock-note {
@@ -887,9 +903,8 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
   .topbar { padding-inline: .5rem; }
   .setting-range { flex-wrap: wrap; }
   .setting-range input { width: 100%; }
-  .movement-blurb, .movement-lockline { margin-left: 0; }
   .stage-dot { width: 52px; height: 52px; }
-  .stages::before { left: 25px; }
+  .stages::before { left: 24px; }
   .lock-note { margin-left: 0; }
   .key { display: none; }
   .option { padding-inline: .7rem; }
@@ -936,7 +951,7 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 .finale-count strong { font: 500 1.35rem/1 var(--font); color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
 
 /* Sala (galería) de un movimiento dominado: entrada en el mapa y en Colección */
-.stage-gallery .stage-dot { border-radius: 18px; color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
+.stage-gallery .stage-dot { border-radius: 18px; color: var(--on-accent); background: var(--accent); box-shadow: 0 var(--relief-node) 0 color-mix(in srgb, var(--accent) 72%, var(--ink)); }
 .coll-salas { margin-bottom: 1.8rem; }
 .welcome-note { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; font-weight: 600; font-size: .95rem; color: var(--ink-2); }
 .welcome-note svg { flex: none; }

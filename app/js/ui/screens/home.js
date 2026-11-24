@@ -137,6 +137,7 @@ export function renderHome(ctx, el) {
         ${sideExtras(ctx)}
       </aside>
       <div class="home-main">
+        <div class="path-scene" aria-hidden="true"></div>
         <ol class="path" aria-label="Camino por movimientos">${path}</ol>
         ${finale}
       </div>
