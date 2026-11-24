@@ -149,4 +149,4 @@ juan-gris            205    63        6/6   sin datos de imagen:124, sin imagen 
 schiele              124    55        8/8   sin datos de imagen:43, sin imagen apta:11, sin título:8, palabra:5, proporción ≠ medidas:2
 TOTAL 1180 obras de 148 pintores
 por país: España 336, Francia 279, Italia 174, Rusia 109, Países Bajos 68, Reino Unido 53, Flandes 39, Alemania 36, Estados Unidos 33, Austria 18, Dinamarca 14, Noruega 10, Suecia 6, Suiza 5
-títulos por fuente: {'traducir': 256, 'wikidata-es': 906, 'revisar-idioma': 1, 'manual': 17}
+títulos por fuente: {'wikidata-es': 906, 'manual': 17, 'revisar-idioma': 1, 'traducir': 256}

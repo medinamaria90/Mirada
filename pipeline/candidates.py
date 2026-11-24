@@ -83,9 +83,11 @@ def fname(uri):
     return urllib.parse.unquote(uri.rsplit("/", 1)[-1]).replace("_", " ")
 
 
-def query(pqid):
+def query(pqid, forced=()):
     badq = "\n  ".join("FILTER NOT EXISTS { ?st pq:%s [] }" % p for p in BAD_QUAL)
     rows = sparql(Q % dict(qid=pqid, badq=badq, types=" ".join("wd:" + t for t in TYPES)))
+    if forced:
+        rows += sparql(Q_FORCED % dict(values=" ".join("wd:" + q for q in forced)))
     items = {}
     for b in rows:
         q = qid(v(b, "item"))
