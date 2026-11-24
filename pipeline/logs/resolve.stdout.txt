@@ -23,7 +23,8 @@ ok    tintoretto         Q9319      Tintoretto / Jacopo Tintoretto (1518-1594) s
 ok    bruegel            Q43270     Pieter Brueghel el Viejo / Pieter Bruegel the Elder (1525-1569) sl=92
 ok    veronese           Q9440      Paolo Veronese / Paolo Veronese (1528-1588) sl=79
 ok    sanchez-coello     Q503386    Alonso Sánchez Coello / Alonso Sánchez Coello (1531-1588) sl=21
-ok    el-greco           Q301       El Greco / El Greco (1541-1614) sl=115
+ok    sofonisba          Q236038    Sofonisba Anguissola / Sofonisba Anguissola (1531-1625) sl=65
+ok    el-greco           Q301       El Greco / El Greco (1541-1614) sl=116
 ok    ribalta            Q338800    Francisco Ribalta / Francesc Ribalta (1565-1628) sl=18
 ok    caravaggio         Q42207     Caravaggio / Caravaggio (1571-1610) sl=117
 ok    rubens             Q5599      Pedro Pablo Rubens / Peter Paul Rubens (1577-1640) sl=176
@@ -39,6 +40,7 @@ ok    van-dyck           Q150679    Anton van Dyck / Anthony van Dyck (1599-1641
 ok    claudio-de-lorena  Q214074    Claudio de Lorena / Claude Lorrain (1600-1682) sl=54
 ok    alonso-cano        Q378783    Alonso Cano / Alonso Cano (1601-1667) sl=35
 ok    rembrandt          Q5598      Rembrandt / Rembrandt (1606-1669) sl=207
+ok    leyster            Q232423    Judith Leyster / Judith Leyster (1609-1660) sl=44
 ok    pereda             Q604088    Antonio de Pereda / Antonio de Pereda (1611-1678) sl=18
 ok    carreno            Q833224    Juan Carreño de Miranda / Juan Carreño de Miranda (1614-1685) sl=28
 ok    murillo            Q192062    Bartolomé Esteban Murillo / Bartolomé Esteban Murillo (1617-1682) sl=81
@@ -80,6 +82,7 @@ ok    madrazo            Q1345186   Federico Madrazo / Federico de Madrazo y Kun
 ok    fedotov            Q248597    Pável Fedótov / Pavel Fedotov (1815-1852) sl=26
 ok    aivazovski         Q181568    Iván Aivazovski / Ivan Aivazovsky (1817-1900) sl=73
 ok    courbet            Q34618     Gustave Courbet / Gustave Courbet (1819-1877) sl=89
+ok    bonheur            Q241732    Rosa Bonheur / Rosa Bonheur (1822-1899) sl=51
 ok    bouguereau         Q483992    William-Adolphe Bouguereau / William-Adolphe Bouguereau (1825-1905) sl=63
 ok    moreau             Q203828    Gustave Moreau / Gustave Moreau (1826-1898) sl=53
 ok    rossetti           Q186748    Dante Gabriel Rossetti / Dante Gabriel Rossetti (1828-1882) sl=85
@@ -104,6 +107,7 @@ ok    monet              Q296       Claude Monet / Claude Monet (1840-1926) sl=1
 ok    renoir             Q39931     Pierre-Auguste Renoir / Pierre-Auguste Renoir (1841-1919) sl=115
 ok    morisot            Q105320    Berthe Morisot / Berthe Morisot (1841-1895) sl=81
 ok    raimundo-madrazo   Q2506493   Raimundo Madrazo / Raimundo de Madrazo y Garreta (1841-1920) sl=22
+ok    bazille            Q207298    Frédéric Bazille / Frédéric Bazille (1841-1870) sl=58
 ok    kuindzhi           Q353628    Arkhip Kuindzhi / Arkhip Kuindzhi (1841-1910) sl=50
 ok    vereshchagin       Q127017    Vasili Vereschaguin / Vasily Vereshchagin (1842-1904) sl=56
 ok    rousseau           Q156386    Henri Rousseau / Henri Rousseau (1844-1910) sl=72
@@ -146,4 +150,4 @@ ok    malevich           Q130777    Kazimir Malévich / Kazimir Malevich (1878-1
 ok    modigliani         Q120993    Amedeo Modigliani / Amedeo Modigliani (1884-1920) sl=88
 ok    juan-gris          Q151152    Juan Gris / Juan Gris (1887-1927) sl=63
 ok    schiele            Q44032     Egon Schiele / Egon Schiele (1890-1918) sl=74
-total 148 resueltos 148
+total 152 resueltos 152

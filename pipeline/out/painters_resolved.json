@@ -250,13 +250,23 @@
   "ok": true
  },
  {
+  "id": "sofonisba",
+  "qid": "Q236038",
+  "es": "Sofonisba Anguissola",
+  "en": "Sofonisba Anguissola",
+  "nacimiento": 1531,
+  "muerte": 1625,
+  "sitelinks": 65,
+  "ok": true
+ },
+ {
   "id": "el-greco",
   "qid": "Q301",
   "es": "El Greco",
   "en": "El Greco",
   "nacimiento": 1541,
   "muerte": 1614,
-  "sitelinks": 115,
+  "sitelinks": 116,
   "ok": true
  },
  {
@@ -407,6 +417,16 @@
   "nacimiento": 1606,
   "muerte": 1669,
   "sitelinks": 207,
+  "ok": true
+ },
+ {
+  "id": "leyster",
+  "qid": "Q232423",
+  "es": "Judith Leyster",
+  "en": "Judith Leyster",
+  "nacimiento": 1609,
+  "muerte": 1660,
+  "sitelinks": 44,
   "ok": true
  },
  {
@@ -820,6 +840,16 @@
   "ok": true
  },
  {
+  "id": "bonheur",
+  "qid": "Q241732",
+  "es": "Rosa Bonheur",
+  "en": "Rosa Bonheur",
+  "nacimiento": 1822,
+  "muerte": 1899,
+  "sitelinks": 51,
+  "ok": true
+ },
+ {
   "id": "bouguereau",
   "qid": "Q483992",
   "es": "William-Adolphe Bouguereau",
@@ -1057,6 +1087,16 @@
   "nacimiento": 1841,
   "muerte": 1920,
   "sitelinks": 22,
+  "ok": true
+ },
+ {
+  "id": "bazille",
+  "qid": "Q207298",
+  "es": "Frédéric Bazille",
+  "en": "Frédéric Bazille",
+  "nacimiento": 1841,
+  "muerte": 1870,
+  "sitelinks": 58,
   "ok": true
  },
  {
