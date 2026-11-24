@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { planStage, subjectOf, FIRST_STAGE_ROUND, STAGE_ROUND } from '../app/js/engine/planner.js';
-import { firstStageOwnMastered, stageRoundMastered, emptyProgress, finishRound } from '../app/js/engine/progress.js';
+import { firstStageOwnMastered, stageRoundMastered, emptyProgress } from '../app/js/engine/progress.js';
+import { finishRound } from '../app/js/engine/finish.js';
 import { BOTS, roundContext, masteryProbability } from './lib/antibot.js';
 
 const here = dirname(fileURLToPath(import.meta.url));

@@ -27,7 +27,8 @@ const { bigIndex } = await import('./helpers.js');
 const { createRng } = await import('../app/js/engine/rng.js');
 const { makeWhoQuestion, makeWhichQuestion, makeMovementQuestion, retryQuestion } = await import('../app/js/engine/questions.js');
 const { planStage, createRound, answerRound, roundDone } = await import('../app/js/engine/planner.js');
-const { emptyProgress, finishRound } = await import('../app/js/engine/progress.js');
+const { emptyProgress } = await import('../app/js/engine/progress.js');
+const { finishRound } = await import('../app/js/engine/finish.js');
 const { updateFallados, falladoQuestion, oldestFallado, FALLADO_HITS } = await import('../app/js/engine/fallados.js');
 const { makeSession, readSession } = await import('../app/js/state/session.js');
 

@@ -4,12 +4,13 @@ import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotio
 import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
-import { levelFor, levelName, medalInfo, MASTERY, UNLOCK_MIN, isStepUnlocked } from '../../engine/progress.js';
+import { levelFor, levelName, MASTERY, UNLOCK_MIN, isStepUnlocked } from '../../engine/progress.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { weekOf } from '../../engine/dates.js';
 import { encodeChallenge, tokenForRound } from '../../engine/challenge.js';
 import { shareText, dailyGrid } from '../../engine/daily.js';
 import { medalBadge } from './medals.js';
+import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
 
 export function headline(accuracy) {

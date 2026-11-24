@@ -9,9 +9,8 @@ import { planStage, planSrsReview, QUICK_REVIEW } from '../app/js/engine/planner
 import { decodeChallenge, encodeChallenge, tokenForRound } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
 import { planDaily } from '../app/js/engine/daily.js';
-import {
-  emptyProgress, finishRound, artistStatus, isStepUnlocked, stepPassed, nextStep, UNLOCK_MIN,
-} from '../app/js/engine/progress.js';
+import { emptyProgress, artistStatus, isStepUnlocked, stepPassed, nextStep, UNLOCK_MIN } from '../app/js/engine/progress.js';
+import { finishRound } from '../app/js/engine/finish.js';
 import { isSpoiler } from '../app/js/engine/questions.js';
 import { parseRoute } from '../app/js/ui/router.js';
 import { bigIndex } from './helpers.js';

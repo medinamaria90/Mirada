@@ -13,9 +13,8 @@ import {
 import { planDaily, dailyPool } from '../app/js/engine/daily.js';
 import { tokenForRound, encodeChallenge, decodeChallenge } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
-import {
-  emptyProgress, finishRound, salaStatus, artistStatus, movementStatus, isReviewUnlocked, nextStep, needsIntro, MASTERY,
-} from '../app/js/engine/progress.js';
+import { emptyProgress, salaStatus, artistStatus, movementStatus, isReviewUnlocked, nextStep, needsIntro, MASTERY } from '../app/js/engine/progress.js';
+import { finishRound } from '../app/js/engine/finish.js';
 import { migrate, defaultState, SCHEMA_VERSION } from '../app/js/state/schema.js';
 import { createStore, STORAGE_KEY } from '../app/js/state/store.js';
 import { makeSession, readSession, withSession, clearSession, SESSION_TTL } from '../app/js/state/session.js';

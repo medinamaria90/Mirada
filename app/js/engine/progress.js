@@ -1,11 +1,9 @@
-// Progreso: experiencia, niveles, racha diaria, medallas y desbloqueo del mapa. Puro.
+// Progreso: experiencia, niveles, racha diaria, medallas y desbloqueo del mapa. Puro. Aplicar una ronda
+// terminada (finishRound) está en engine/finish.js: solo hace falta al acabar una ronda, no al arrancar.
 
-import { recordAnswer, artKey, artistKey } from './srs.js';
+import { artKey } from './srs.js';
 import { noAuthorQuestion } from './catalog.js';
-import { touchStreak } from './streak.js';
-import { updateFallados } from './fallados.js';
-
-export { touchStreak, visibleStreak, graceLeft, GRACE_PER_WEEK } from './streak.js';
+import { daysBetween, addDays, weekOf } from './dates.js';
 
 // Niveles con nombres del mundo del arte. Tras el último, la curva sigue: «Gran maestro II»,
 // «III»… cada LEVEL_STEP_AFTER puntos, para que nunca se agote.
@@ -157,6 +155,79 @@ export function normalizeGoal(goal) {
   return GOAL_OPTIONS.includes(goal) ? goal : DEFAULT_GOAL;
 }
 
+// --- Racha -------------------------------------------------------------------------
+// Cualquier ronda terminada la mantiene (la meta de XP va aparte). Días de gracia: GRACE_PER_WEEK por
+// semana (lunes a domingo); cada día perdido gasta uno de la semana en la que cae y se recargan solos
+// cada lunes. streak.graceDays guarda los días perdonados. (Aquí y no en un módulo aparte: va en la
+// cadena de arranque y cada módulo es una petición más.)
+
+export const GRACE_PER_WEEK = 2;
+const STREAK_KEEP_DAYS = 60;
+const KEEP_GRACE = 14;
+
+function mondayOf(day) {
+  return weekOf(day)[0];
+}
+
+function graceDays(streak) {
+  return Array.isArray(streak.graceDays) ? streak.graceDays.filter((d) => typeof d === 'string') : [];
+}
+
+// Días de gracia que quedan en la semana de `day`.
+export function graceLeft(streak, day) {
+  const monday = mondayOf(day);
+  const used = graceDays(streak).filter((d) => mondayOf(d) === monday).length;
+  return Math.max(0, GRACE_PER_WEEK - used);
+}
+
+// Días perdidos entre la última práctica y hoy (sin contar ninguno de los dos), o null si alguno no
+// cabe en los días de gracia de su semana.
+function forgivable(streak, today) {
+  const missed = [];
+  for (let d = addDays(streak.last, 1); d < today; d = addDays(d, 1)) missed.push(d);
+  const probe = { graceDays: graceDays(streak) };
+  for (const d of missed) {
+    if (graceLeft(probe, d) <= 0) return null;
+    probe.graceDays.push(d);
+  }
+  return missed;
+}
+
+// Un día seguido suma; con huecos, los días perdidos gastan días de gracia si quedan en su semana.
+// graceUsed: días perdonados en esta llamada (0, 1 o 2).
+export function touchStreak(streak, today) {
+  const s = { ...streak, days: streak.days ? streak.days.slice() : [], graceDays: graceDays(streak) };
+  if (s.last === today) return { streak: s, increased: false, graceUsed: 0 };
+  let graceUsed = 0;
+  if (!s.last) s.current = 1;
+  else {
+    const gap = daysBetween(s.last, today);
+    // Reloj hacia atrás: no se toca la racha.
+    if (gap <= 0) return { streak: s, increased: false, graceUsed: 0 };
+    const missed = gap === 1 ? [] : forgivable(s, today);
+    if (missed) {
+      s.current += 1;
+      if (missed.length) {
+        s.graceDays = [...s.graceDays, ...missed].slice(-KEEP_GRACE);
+        s.graceOn = today;
+        graceUsed = missed.length;
+      }
+    } else s.current = 1;
+  }
+  s.last = today;
+  s.best = Math.max(s.best || 0, s.current);
+  if (!s.days.includes(today)) s.days.push(today);
+  s.days = s.days.slice(-STREAK_KEEP_DAYS);
+  return { streak: s, increased: true, graceUsed };
+}
+
+// Racha que se muestra hoy (si ya se rompió, 0): sigue viva mientras los días perdidos quepan en la gracia.
+export function visibleStreak(streak, today) {
+  if (!streak.last) return 0;
+  if (daysBetween(streak.last, today) <= 1) return streak.current;
+  return forgivable(streak, today) ? streak.current : 0;
+}
+
 // --- Camino: paradas (pintores con etapa y salas) -----------------------------
 
 function stepRecord(progress, step) {
@@ -256,25 +327,6 @@ export function needsIntro(progress, index, movementId) {
   return !index.stepsOf(movementId).some((s) => stepPlayed(progress, s));
 }
 
-export function medalInfo(id, index) {
-  const [kind, ...rest] = id.split('-');
-  const ref = rest.join('-');
-  if (kind === 'artist') return { title: index.artist(ref)?.name || ref, sub: 'Pintor dominado' };
-  if (kind === 'movement') return { title: index.movement(ref)?.name || ref, sub: 'Movimiento dominado' };
-  if (kind === 'streak') return { title: `${ref} días`, sub: 'Racha' };
-  if (kind === 'eye') {
-    const a = index.artist(ref);
-    return { title: `Ojo de ${a ? a.short || a.name : ref}`, sub: 'Reconoces todos sus cuadros' };
-  }
-  if (id === 'weekly-1') return { title: 'Primer reto semanal', sub: 'Reto' };
-  if (id === 'goal-1') return { title: 'Primera meta del día', sub: 'Meta diaria' };
-  if (id === 'daily-1') return { title: 'Primer reto diario', sub: 'Reto' };
-  if (id === 'daily-perfect') return { title: 'Reto diario perfecto', sub: 'Reto' };
-  if (id === 'challenge-1') return { title: 'Primer duelo', sub: 'Reto a un amigo' };
-  if (id === 'new-1') return { title: 'Primer cuadro nuevo', sub: 'Lo has reconocido sin verlo antes' };
-  return { title: id, sub: '' };
-}
-
 // ¿Ya ha visto a este pintor? Con etapa: jugada alguna vez. Invitado: alguna parada de su movimiento
 // jugada (los invitados salen en salas, repasos y de distractor).
 export function isKnownArtist(progress, index, artistId) {
@@ -288,163 +340,4 @@ export function isKnownArtist(progress, index, artistId) {
 // nuevo): se avisa antes y sus preguntas no cuentan para la precisión, el repaso ni la colección.
 export function unseenArtists(progress, index, questions) {
   return [...new Set(questions.map((q) => q.artistId))].filter((id) => !isKnownArtist(progress, index, id));
-}
-
-function subjectArtwork(q) {
-  return q.type === 'which' ? q.targetArtworkId : q.artworkId;
-}
-
-// Aplica una ronda terminada. `result` = { kind, artistId?, movementId?, date?, answers, firstTry }
-// answers: [{ q, correct, retry, combo }]. opts.goal: meta diaria en XP.
-export function finishRound(progress, index, result, today, opts = {}) {
-  const events = [];
-  const p = structuredCloneSafe(progress);
-  p.salas = p.salas || {};
-  p.xpByDay = p.xpByDay && typeof p.xpByDay === 'object' ? p.xpByDay : {};
-  const levelBefore = levelFor(p.xp).index;
-  const award = (id) => {
-    if (!p.medals[id]) {
-      p.medals[id] = today;
-      events.push({ type: 'medal', id });
-    }
-  };
-
-  let xp = 0;
-  const unseen = new Set(result.unseen ? unseenArtists(progress, index, result.answers.map((a) => a.q)) : []);
-  for (const a of result.answers) {
-    xp += xpForAnswer({ correct: a.correct, isNew: a.q.isNew, combo: a.combo, retry: a.retry });
-    if (a.retry || unseen.has(a.q.artistId)) continue;
-    p.stats.answered += 1;
-    const artId = subjectArtwork(a.q);
-    if (a.correct) {
-      p.stats.correct += 1;
-      if (artId && !p.collection[artId]) p.collection[artId] = today;
-      if (a.q.isNew) {
-        p.stats.newCorrect += 1;
-        award('new-1');
-      }
-    }
-    if (artId) p.srs = recordAnswer(p.srs, artKey(artId), a.correct, today);
-  }
-
-  p.fallados = updateFallados(p.fallados, result.answers, today, (a) => unseen.has(a.q.artistId));
-  p.seen = markSeen(p.seen, index, result.answers, today, unseen);
-
-  const total = result.firstTry.length;
-  const score = result.firstTry.filter((v) => v === true).length;
-  const accuracy = total ? score / total : 0;
-  let roundMastered = accuracy >= MASTERY;
-  let ownShort = false;
-  xp += XP.complete + (total && score === total ? XP.perfect : 0);
-
-  if (result.kind === 'stage' && result.artistId && index.pathIndex(result.artistId) >= 0) {
-    const step = { type: 'artist', id: result.artistId };
-    const unlockCheck = watchNextStep(p, index, step);
-    const prev = p.artists[result.artistId] || { plays: 0, best: 0, mastered: false };
-    const first = index.pathIndex(result.artistId) === 0;
-    roundMastered = stageRoundMastered(result.answers, result.artistId, accuracy, { first });
-    ownShort = accuracy >= STAGE_MASTERY && !roundMastered;
-    const mastered = prev.mastered || roundMastered;
-    p.artists[result.artistId] = { plays: prev.plays + 1, best: Math.max(prev.best, accuracy), mastered, last: today, since: prev.since || today };
-    p.srs = recordAnswer(p.srs, artistKey(result.artistId), roundMastered, today);
-    if (mastered) award(`artist-${result.artistId}`);
-    unlockCheck(events);
-    const movId = index.artist(result.artistId).movementId;
-    if (mastered && !prev.mastered && movementStatus(p, index, movId) === 'mastered') {
-      if (!p.medals[`movement-${movId}`]) events.push({ type: 'movement-complete', movementId: movId });
-      award(`movement-${movId}`);
-      if (isReviewUnlocked(p, index, movId)) events.push({ type: 'review-unlock', movementId: movId });
-    }
-  }
-  if (result.kind === 'sala' && result.movementId && index.isSala(result.movementId)) {
-    const step = { type: 'sala', id: result.movementId };
-    const unlockCheck = watchNextStep(p, index, step);
-    const prev = p.salas[result.movementId] || { plays: 0, best: 0, mastered: false };
-    const mastered = prev.mastered || accuracy >= MASTERY;
-    p.salas[result.movementId] = { plays: prev.plays + 1, best: Math.max(prev.best, accuracy), mastered, last: today };
-    if (mastered && !p.medals[`movement-${result.movementId}`]) events.push({ type: 'movement-complete', movementId: result.movementId });
-    if (mastered) award(`movement-${result.movementId}`);
-    unlockCheck(events);
-  }
-  if (result.kind === 'review' && result.movementId) {
-    const prev = p.reviews[result.movementId] || { best: 0 };
-    p.reviews[result.movementId] = { best: Math.max(prev.best, accuracy), last: today };
-    if (accuracy >= MASTERY) award(`movement-${result.movementId}`);
-  }
-  if (result.kind === 'daily' && result.date && !p.daily[result.date]) {
-    p.daily[result.date] = { score, total, firstTry: result.firstTry.slice() };
-    award('daily-1');
-    if (total && score === total) award('daily-perfect');
-  }
-  if (result.kind === 'weekly' && result.week && !p.weekly?.[result.week]) {
-    p.weekly = { ...(p.weekly || {}), [result.week]: { score, total, firstTry: result.firstTry.slice() } };
-    award('weekly-1');
-  }
-  // Ojo de…: pintores de esta ronda con todas sus obras en la caja más alta.
-  const touched = new Set(result.answers.map((a) => a.q && a.q.artistId).filter((id) => index.pathIndex(id) >= 0));
-  for (const id of touched) if (hasEye(p, index, id)) award(`eye-${id}`);
-  if (result.challenge) {
-    p.challenges.played += 1;
-    award('challenge-1');
-  }
-
-  p.stats.rounds += 1;
-  p.xp += xp;
-  const dayBefore = Number(p.xpByDay[today]) || 0;
-  p.xpByDay[today] = dayBefore + xp;
-  p.xpByDay = pruneDays(p.xpByDay, 21);
-  const goal = opts.goal ? normalizeGoal(opts.goal) : null;
-  if (goal && dayBefore < goal && dayBefore + xp >= goal) {
-    events.push({ type: 'goal', goal });
-    award('goal-1');
-  }
-  const streakTouch = touchStreak(p.streak, today);
-  p.streak = streakTouch.streak;
-  // Cualquier ronda terminada mantiene la racha (la meta de XP va aparte). Se celebra desde el primer
-  // día; grace: días perdidos que se han perdonado con los días de gracia de la semana.
-  if (streakTouch.increased) events.push({ type: 'streak', value: p.streak.current, grace: streakTouch.graceUsed });
-  for (const n of STREAK_MEDALS) if (p.streak.current >= n) award(`streak-${n}`);
-
-  const levelAfter = levelFor(p.xp).index;
-  if (levelAfter > levelBefore) events.push({ type: 'levelup', level: levelAfter });
-
-  return { progress: p, events, xp, score, total, accuracy, mastered: roundMastered, ownShort };
-}
-
-// Último día en que salió cada pintor con etapa en una pregunta (sin reintentos ni pintores aún no
-// vistos): lo usan el cuadro de repaso de cada etapa y los pintores dormidos (engine/review.js).
-function markSeen(seen, index, answers, today, unseen) {
-  const out = seen && typeof seen === 'object' && !Array.isArray(seen) ? { ...seen } : {};
-  for (const a of answers) {
-    const id = a.q && a.q.artistId;
-    if (!a.retry && id && !unseen.has(id) && index.pathIndex(id) >= 0) out[id] = today;
-  }
-  return out;
-}
-
-// Recuerda si la parada siguiente estaba bloqueada y devuelve una función que, tras actualizar
-// el progreso, emite el evento de desbloqueo si ahora está abierta.
-function watchNextStep(p, index, step) {
-  const next = index.steps[index.stepIndex(step.type, step.id) + 1];
-  const wasLocked = next && !isStepUnlocked(p, index, next);
-  return (events) => {
-    if (!wasLocked || !isStepUnlocked(p, index, next)) return;
-    const newMovement = next.movementId !== index.steps[index.stepIndex(step.type, step.id)].movementId;
-    events.push({
-      type: 'unlock',
-      step: { type: next.type, id: next.id },
-      artistId: next.type === 'artist' ? next.id : null,
-      movementId: newMovement ? next.movementId : null,
-    });
-  };
-}
-
-// Conserva solo los últimos `keep` días (claves AAAA-MM-DD).
-function pruneDays(byDay, keep) {
-  const keys = Object.keys(byDay).filter((k) => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort().slice(-keep);
-  return Object.fromEntries(keys.map((k) => [k, Math.max(0, Number(byDay[k]) || 0)]));
-}
-
-function structuredCloneSafe(obj) {
-  return JSON.parse(JSON.stringify(obj));
 }

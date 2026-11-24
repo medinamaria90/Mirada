@@ -15,10 +15,8 @@ import { planFree } from '../app/js/engine/daily.js';
 import { tokenForRound, encodeChallenge, decodeChallenge } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
 import { feedbackFor, mainTrait, artistLines } from '../app/js/engine/feedback.js';
-import {
-  emptyProgress, finishRound, levelFor, levelAt, LEVELS, todayXp, normalizeGoal, DEFAULT_GOAL, GOAL_OPTIONS,
-  hasMovementReview, isReviewUnlocked, pathProgress, isPathComplete, movementStatus,
-} from '../app/js/engine/progress.js';
+import { emptyProgress, levelFor, levelAt, LEVELS, todayXp, normalizeGoal, DEFAULT_GOAL, GOAL_OPTIONS, hasMovementReview, isReviewUnlocked, pathProgress, isPathComplete, movementStatus } from '../app/js/engine/progress.js';
+import { finishRound } from '../app/js/engine/finish.js';
 import { madridDayKey } from '../app/js/engine/dates.js';
 import { migrate, defaultState, SCHEMA_VERSION } from '../app/js/state/schema.js';
 import { createStore, STORAGE_KEY } from '../app/js/state/store.js';

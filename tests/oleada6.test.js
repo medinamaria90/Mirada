@@ -11,10 +11,9 @@ import { planStage, planMovementReview, planSrsReview, planGeneral } from '../ap
 import { planDaily, planWeekly, planFree, dailyPool, WEEKLY_SIZE } from '../app/js/engine/daily.js';
 import { decodeChallenge, encodeChallenge, tokenForRound } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
-import {
-  emptyProgress, finishRound, stageRoundMastered, isPathMastered, isPathComplete, stepsToMaster, hasEye, medalInfo,
-  MASTERY, OWN_MASTERY, needed, EYE_BOX,
-} from '../app/js/engine/progress.js';
+import { emptyProgress, stageRoundMastered, isPathMastered, isPathComplete, stepsToMaster, hasEye, MASTERY, OWN_MASTERY, needed, EYE_BOX } from '../app/js/engine/progress.js';
+import { finishRound } from '../app/js/engine/finish.js';
+import { medalInfo } from '../app/js/engine/medal-info.js';
 import { isAttributed, noAuthorQuestion, makeWhoQuestion, makeWhichQuestion } from '../app/js/engine/questions.js';
 import {
   recognizedCount, RECOGNIZED_BOX, eyeProgress, isGalleryOpen, galleryWorks, openGalleries, planDetail, answerDetail, detailPool, DETAIL_XP, DETAIL_FAME,

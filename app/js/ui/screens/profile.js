@@ -2,7 +2,8 @@
 
 import { esc, onAction, focusHeading, $, announce, longDate } from '../dom.js';
 import { page } from '../shell.js';
-import { levelFor, visibleStreak, graceLeft, medalInfo, artistStatus, todayXp, normalizeGoal, GOAL_OPTIONS } from '../../engine/progress.js';
+import { medalInfo } from '../../engine/medal-info.js';
+import { levelFor, visibleStreak, graceLeft, artistStatus, todayXp, normalizeGoal, GOAL_OPTIONS } from '../../engine/progress.js';
 import { goalRing, goalChip } from '../shell.js';
 import { weekOf } from '../../engine/dates.js';
 import { medalBadge, medalZoom, allMedalIds, medalHow, eyeLabel } from './medals.js';

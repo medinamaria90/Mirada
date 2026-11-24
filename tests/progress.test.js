@@ -1,9 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  emptyProgress, xpForAnswer, levelFor, touchStreak, visibleStreak, finishRound, artistStatus, movementStatus,
-  isReviewUnlocked, nextStep, LEVELS, XP, graceLeft,
-} from '../app/js/engine/progress.js';
+import { emptyProgress, xpForAnswer, levelFor, touchStreak, visibleStreak, artistStatus, movementStatus, isReviewUnlocked, nextStep, LEVELS, XP, graceLeft } from '../app/js/engine/progress.js';
+import { finishRound } from '../app/js/engine/finish.js';
 import { planStage, planMovementReview } from '../app/js/engine/planner.js';
 import { bigIndex } from './helpers.js';
 
