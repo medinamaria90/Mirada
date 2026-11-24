@@ -95,6 +95,8 @@ def main():
             a = adj.get(q, {})
             if q in excl:
                 drop("excluida"); continue
+            if pq not in it["creators"]:
+                drop("autoría no preferente"); continue
             if len(it["creators"]) > 1 and q not in forced:
                 drop("varios autores"); continue
             if it["after"]:
@@ -102,7 +104,7 @@ def main():
             text = " ".join(filter(None, [it.get("es"), it.get("en"), it.get("des"), it.get("den")]))
             if BAD_WORDS.search(text) and q not in forced and "titulo" not in a:
                 drop("palabra"); continue
-            if CEILING.search(text) and q not in forced:
+            if CEILING.search(" ".join(filter(None, [it.get("es"), it.get("en")]))) and q not in forced:
                 drop("techo"); continue
             ytxt, ysort, yq = year_info(it["dates"], born, died)
             if "anio" in a:
@@ -161,11 +163,12 @@ def main():
                 title, src = it["en"], "traducir"
             else:
                 drop("sin título"); continue
+            title = re.sub(r"\s*\([^)]*\)\s*$", "", title).strip().rstrip(".").strip()
             title = title[0].upper() + title[1:]
             colls = [c for c in it["colls"].values() if c]
             ok.append(dict(score=score, q=q, title=title, src=src, ytxt=ytxt, ysort=ysort or (born + 35), yq=yq,
                            coll=colls[0] if colls else None, file=f, x=x, sl=it["sl"], flags=flags, conf=conf,
-                           key=norm(it.get("en") or it.get("es") or title), types=it["types"]))
+                           key=norm(re.sub(r"\([^)]*\)", "", it.get("en") or it.get("es") or title)), types=it["types"]))
         ok.sort(key=lambda o: -o["score"])
         seen_keys, seen_files, chosen = set(), set(), []
         for o in ok:

@@ -19,7 +19,7 @@ BAD_QUAL = ["P5102", "P1480", "P1774", "P1775", "P1776", "P1777", "P1877", "P178
 
 Q = """
 SELECT ?item ?type ?image ?sl ?les ?len ?des ?den ?inc ?prec ?circa ?coll ?collLabel ?h ?w ?hu ?wu ?creator ?after WHERE {
-  ?item p:P170 ?st . ?st ps:P170 wd:%(qid)s .
+  ?item p:P170 ?st . ?st ps:P170 wd:%(qid)s . ?st wikibase:rank ?rk . FILTER(?rk != wikibase:DeprecatedRank)
   %(badq)s
   ?item wdt:P31 ?type . VALUES ?type { %(types)s }
   ?item wdt:P18 ?image .

@@ -12,18 +12,6 @@
   "objetivo": 8
  },
  {
-  "id": "fra-angelico",
-  "nombre": "Fra Angelico",
-  "corto": "Fra Angelico",
-  "en": "Fra Angelico",
-  "qid": "Q5664",
-  "nacimiento": 1395,
-  "muerte": 1455,
-  "movimiento": "renacimiento",
-  "pais": "Italia",
-  "objetivo": 8
- },
- {
   "id": "van-eyck",
   "nombre": "Jan van Eyck",
   "corto": "Van Eyck",
@@ -33,6 +21,18 @@
   "muerte": 1441,
   "movimiento": "manierismo-y-norte",
   "pais": "Países Bajos",
+  "objetivo": 8
+ },
+ {
+  "id": "fra-angelico",
+  "nombre": "Fra Angelico",
+  "corto": "Fra Angelico",
+  "en": "Fra Angelico",
+  "qid": "Q5664",
+  "nacimiento": 1395,
+  "muerte": 1455,
+  "movimiento": "renacimiento",
+  "pais": "Italia",
   "objetivo": 8
  },
  {
@@ -60,18 +60,6 @@
   "objetivo": 8
  },
  {
-  "id": "mantegna",
-  "nombre": "Andrea Mantegna",
-  "corto": "Mantegna",
-  "en": "Andrea Mantegna",
-  "qid": "Q5681",
-  "nacimiento": 1431,
-  "muerte": 1506,
-  "movimiento": "renacimiento",
-  "pais": "Italia",
-  "objetivo": 8
- },
- {
   "id": "bellini",
   "nombre": "Giovanni Bellini",
   "corto": "Bellini",
@@ -79,6 +67,18 @@
   "qid": "Q17169",
   "nacimiento": 1430,
   "muerte": 1516,
+  "movimiento": "renacimiento",
+  "pais": "Italia",
+  "objetivo": 8
+ },
+ {
+  "id": "mantegna",
+  "nombre": "Andrea Mantegna",
+  "corto": "Mantegna",
+  "en": "Andrea Mantegna",
+  "qid": "Q5681",
+  "nacimiento": 1431,
+  "muerte": 1506,
   "movimiento": "renacimiento",
   "pais": "Italia",
   "objetivo": 8
@@ -93,7 +93,7 @@
   "muerte": 1510,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "berruguete",
@@ -108,18 +108,6 @@
   "objetivo": 8
  },
  {
-  "id": "leonardo",
-  "nombre": "Leonardo da Vinci",
-  "corto": "Leonardo",
-  "en": "Leonardo da Vinci",
-  "qid": "Q762",
-  "nacimiento": 1452,
-  "muerte": 1519,
-  "movimiento": "renacimiento",
-  "pais": "Italia",
-  "objetivo": 12
- },
- {
   "id": "bosco",
   "nombre": "El Bosco",
   "corto": "El Bosco",
@@ -129,6 +117,18 @@
   "muerte": 1516,
   "movimiento": "manierismo-y-norte",
   "pais": "Países Bajos",
+  "objetivo": 9
+ },
+ {
+  "id": "leonardo",
+  "nombre": "Leonardo da Vinci",
+  "corto": "Leonardo",
+  "en": "Leonardo da Vinci",
+  "qid": "Q762",
+  "nacimiento": 1452,
+  "muerte": 1519,
+  "movimiento": "renacimiento",
+  "pais": "Italia",
   "objetivo": 10
  },
  {
@@ -141,7 +141,7 @@
   "muerte": 1528,
   "movimiento": "manierismo-y-norte",
   "pais": "Alemania",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "cranach",
@@ -153,7 +153,7 @@
   "muerte": 1553,
   "movimiento": "manierismo-y-norte",
   "pais": "Alemania",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "miguel-angel",
@@ -189,7 +189,7 @@
   "muerte": 1520,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "tiziano",
@@ -201,7 +201,7 @@
   "muerte": 1576,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "correggio",
@@ -225,7 +225,7 @@
   "muerte": 1543,
   "movimiento": "manierismo-y-norte",
   "pais": "Alemania",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "juan-de-juanes",
@@ -261,7 +261,7 @@
   "muerte": 1594,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "bruegel",
@@ -273,7 +273,7 @@
   "muerte": 1569,
   "movimiento": "manierismo-y-norte",
   "pais": "Flandes",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "veronese",
@@ -285,7 +285,7 @@
   "muerte": 1588,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "sanchez-coello",
@@ -333,7 +333,7 @@
   "muerte": 1610,
   "movimiento": "barroco",
   "pais": "Italia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "rubens",
@@ -345,7 +345,7 @@
   "muerte": 1640,
   "movimiento": "barroco",
   "pais": "Flandes",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "maino",
@@ -369,7 +369,7 @@
   "muerte": 1666,
   "movimiento": "barroco",
   "pais": "Países Bajos",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "ribera",
@@ -417,7 +417,7 @@
   "muerte": 1665,
   "movimiento": "barroco",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "zurbaran",
@@ -453,7 +453,7 @@
   "muerte": 1641,
   "movimiento": "barroco",
   "pais": "Flandes",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "claudio-de-lorena",
@@ -465,7 +465,7 @@
   "muerte": 1682,
   "movimiento": "barroco",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "alonso-cano",
@@ -489,7 +489,7 @@
   "muerte": 1669,
   "movimiento": "barroco",
   "pais": "Países Bajos",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "pereda",
@@ -561,7 +561,7 @@
   "muerte": 1675,
   "movimiento": "barroco",
   "pais": "Países Bajos",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "claudio-coello",
@@ -609,7 +609,7 @@
   "muerte": 1768,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "chardin",
@@ -705,7 +705,7 @@
   "muerte": 1806,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "goya",
@@ -741,7 +741,7 @@
   "muerte": 1825,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "vigee-le-brun",
@@ -754,6 +754,18 @@
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
   "objetivo": 8
+ },
+ {
+  "id": "borovikovski",
+  "nombre": "Vladímir Borovikovski",
+  "corto": "Borovikovski",
+  "en": "Vladimir Borovikovsky",
+  "qid": null,
+  "nacimiento": 1757,
+  "muerte": 1825,
+  "movimiento": "rococo-neoclasicismo",
+  "pais": "Rusia",
+  "objetivo": 3
  },
  {
   "id": "vicente-lopez",
@@ -777,7 +789,7 @@
   "muerte": 1840,
   "movimiento": "romanticismo",
   "pais": "Alemania",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "turner",
@@ -789,7 +801,7 @@
   "muerte": 1851,
   "movimiento": "romanticismo",
   "pais": "Reino Unido",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "constable",
@@ -804,6 +816,18 @@
   "objetivo": 8
  },
  {
+  "id": "tropinin",
+  "nombre": "Vasili Tropinin",
+  "corto": "Tropinin",
+  "en": "Vasily Tropinin",
+  "qid": null,
+  "nacimiento": 1776,
+  "muerte": 1857,
+  "movimiento": "romanticismo",
+  "pais": "Rusia",
+  "objetivo": 3
+ },
+ {
   "id": "ingres",
   "nombre": "Jean-Auguste-Dominique Ingres",
   "corto": "Ingres",
@@ -813,7 +837,19 @@
   "muerte": 1867,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
+ },
+ {
+  "id": "venetsianov",
+  "nombre": "Alexéi Venetsiánov",
+  "corto": "Venetsiánov",
+  "en": "Alexey Venetsianov",
+  "qid": null,
+  "nacimiento": 1780,
+  "muerte": 1847,
+  "movimiento": "realismo",
+  "pais": "Rusia",
+  "objetivo": 3
  },
  {
   "id": "gericault",
@@ -861,7 +897,7 @@
   "muerte": 1863,
   "movimiento": "romanticismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "briullov",
@@ -874,6 +910,18 @@
   "movimiento": "romanticismo",
   "pais": "Rusia",
   "objetivo": 4
+ },
+ {
+  "id": "ivanov",
+  "nombre": "Alexander Ivánov",
+  "corto": "Ivánov",
+  "en": "Alexander Andreyevich Ivanov",
+  "qid": null,
+  "nacimiento": 1806,
+  "muerte": 1858,
+  "movimiento": "romanticismo",
+  "pais": "Rusia",
+  "objetivo": 3
  },
  {
   "id": "millet",
@@ -900,6 +948,18 @@
   "objetivo": 8
  },
  {
+  "id": "fedotov",
+  "nombre": "Pável Fedótov",
+  "corto": "Fedótov",
+  "en": "Pavel Fedotov",
+  "qid": null,
+  "nacimiento": 1815,
+  "muerte": 1852,
+  "movimiento": "realismo",
+  "pais": "Rusia",
+  "objetivo": 3
+ },
+ {
   "id": "aivazovski",
   "nombre": "Iván Aivazovski",
   "corto": "Aivazovski",
@@ -909,7 +969,7 @@
   "muerte": 1900,
   "movimiento": "romanticismo",
   "pais": "Rusia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "courbet",
@@ -921,7 +981,7 @@
   "muerte": 1877,
   "movimiento": "realismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "bouguereau",
@@ -981,7 +1041,19 @@
   "muerte": 1903,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
+ },
+ {
+  "id": "savrasov",
+  "nombre": "Alexéi Savrásov",
+  "corto": "Savrásov",
+  "en": "Alexei Savrasov",
+  "qid": null,
+  "nacimiento": 1830,
+  "muerte": 1897,
+  "movimiento": "realismo",
+  "pais": "Rusia",
+  "objetivo": 3
  },
  {
   "id": "manet",
@@ -993,7 +1065,7 @@
   "muerte": 1883,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "shishkin",
@@ -1005,7 +1077,7 @@
   "muerte": 1898,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "martin-rico",
@@ -1053,7 +1125,19 @@
   "muerte": 1917,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 12
+  "objetivo": 10
+ },
+ {
+  "id": "perov",
+  "nombre": "Vasili Perov",
+  "corto": "Perov",
+  "en": "Vasily Perov",
+  "qid": null,
+  "nacimiento": 1834,
+  "muerte": 1882,
+  "movimiento": "realismo",
+  "pais": "Rusia",
+  "objetivo": 3
  },
  {
   "id": "rosales",
@@ -1080,6 +1164,18 @@
   "objetivo": 8
  },
  {
+  "id": "kramskoi",
+  "nombre": "Iván Kramskói",
+  "corto": "Kramskói",
+  "en": "Ivan Kramskoi",
+  "qid": null,
+  "nacimiento": 1837,
+  "muerte": 1887,
+  "movimiento": "realismo",
+  "pais": "Rusia",
+  "objetivo": 3
+ },
+ {
   "id": "fortuny",
   "nombre": "Marià Fortuny",
   "corto": "Fortuny",
@@ -1101,7 +1197,7 @@
   "muerte": 1906,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "sisley",
@@ -1116,6 +1212,18 @@
   "objetivo": 8
  },
  {
+  "id": "makovski",
+  "nombre": "Konstantín Makovski",
+  "corto": "Makovski",
+  "en": "Konstantin Makovsky",
+  "qid": null,
+  "nacimiento": 1839,
+  "muerte": 1915,
+  "movimiento": "realismo",
+  "pais": "Rusia",
+  "objetivo": 3
+ },
+ {
   "id": "monet",
   "nombre": "Claude Monet",
   "corto": "Monet",
@@ -1125,7 +1233,7 @@
   "muerte": 1926,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "renoir",
@@ -1137,7 +1245,7 @@
   "muerte": 1919,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "morisot",
@@ -1176,6 +1284,18 @@
   "objetivo": 4
  },
  {
+  "id": "vereshchagin",
+  "nombre": "Vasili Vereshchagin",
+  "corto": "Vereshchagin",
+  "en": "Vasily Vereshchagin",
+  "qid": null,
+  "nacimiento": 1842,
+  "muerte": 1904,
+  "movimiento": "realismo",
+  "pais": "Rusia",
+  "objetivo": 3
+ },
+ {
   "id": "rousseau",
   "nombre": "Henri Rousseau",
   "corto": "Rousseau",
@@ -1209,7 +1329,19 @@
   "muerte": 1930,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 10
+  "objetivo": 9
+ },
+ {
+  "id": "polenov",
+  "nombre": "Vasili Polénov",
+  "corto": "Polénov",
+  "en": "Vasily Polenov",
+  "qid": null,
+  "nacimiento": 1844,
+  "muerte": 1927,
+  "movimiento": "realismo",
+  "pais": "Rusia",
+  "objetivo": 3
  },
  {
   "id": "beruete",
@@ -1245,7 +1377,7 @@
   "muerte": 1903,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "caillebotte",
@@ -1329,7 +1461,7 @@
   "muerte": 1890,
   "movimiento": "postimpresionismo",
   "pais": "Países Bajos",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "sargent",
@@ -1341,7 +1473,7 @@
   "muerte": 1925,
   "movimiento": "impresionismo",
   "pais": "Estados Unidos",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "vrubel",
@@ -1389,7 +1521,7 @@
   "muerte": 1900,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "zorn",
@@ -1425,7 +1557,19 @@
   "muerte": 1918,
   "movimiento": "simbolismo-modernismo",
   "pais": "Austria",
-  "objetivo": 12
+  "objetivo": 10
+ },
+ {
+  "id": "nesterov",
+  "nombre": "Mijaíl Nésterov",
+  "corto": "Nésterov",
+  "en": "Mikhail Nesterov",
+  "qid": null,
+  "nacimiento": 1862,
+  "muerte": 1942,
+  "movimiento": "simbolismo-modernismo",
+  "pais": "Rusia",
+  "objetivo": 3
  },
  {
   "id": "signac",
@@ -1461,7 +1605,7 @@
   "muerte": 1944,
   "movimiento": "simbolismo-modernismo",
   "pais": "Noruega",
-  "objetivo": 12
+  "objetivo": 10
  },
  {
   "id": "lautrec",
@@ -1473,7 +1617,7 @@
   "muerte": 1901,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "hammershoi",
@@ -1572,6 +1716,18 @@
   "objetivo": 8
  },
  {
+  "id": "petrov-vodkin",
+  "nombre": "Kuzmá Petrov-Vodkin",
+  "corto": "Petrov-Vodkin",
+  "en": "Kuzma Petrov-Vodkin",
+  "qid": null,
+  "nacimiento": 1878,
+  "muerte": 1939,
+  "movimiento": "simbolismo-modernismo",
+  "pais": "Rusia",
+  "objetivo": 3
+ },
+ {
   "id": "malevich",
   "nombre": "Kazimir Malévich",
   "corto": "Malévich",
@@ -1593,7 +1749,7 @@
   "muerte": 1920,
   "movimiento": "simbolismo-modernismo",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 9
  },
  {
   "id": "juan-gris",
