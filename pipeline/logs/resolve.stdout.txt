@@ -1,7 +1,7 @@
 ok    giotto             Q7814      Giotto / Giotto (1267-1337) sl=99
-FALLO fra-angelico       (Fra Angelico) candidatos=['Q5664', 'Q115869991', 'Q29576844', 'Q29576835', 'Q116213323']
+ok    fra-angelico       Q5664      Fra Angelico / Fra Angelico (1400-1455) sl=77  (QID dado; años no casan, revisar)
 ok    van-eyck           Q102272    Jan van Eyck / Jan van Eyck (1390-1441) sl=87
-FALLO van-der-weyden     (Rogier van der Weyden) candidatos=['Q68631', 'Q47038381', 'Q77826309', 'Q27587511', 'Q85070669']
+ok    van-der-weyden     Q68631     Rogier van der Weyden / Rogier van der Weyden (1390-1464) sl=61  (QID dado; años no casan, revisar)
 ok    piero              Q5822      Piero della Francesca / Piero della Francesca (1415-1492) sl=69
 ok    mantegna           Q5681      Andrea Mantegna / Andrea Mantegna (1431-1506) sl=71
 ok    bellini            Q17169     Giovanni Bellini / Giovanni Bellini (1430-1516) sl=74
@@ -28,10 +28,10 @@ ok    ribalta            Q338800    Francisco Ribalta / Francesc Ribalta (1565-1
 ok    caravaggio         Q42207     Caravaggio / Caravaggio (1571-1610) sl=117
 ok    rubens             Q5599      Pedro Pablo Rubens / Peter Paul Rubens (1577-1640) sl=176
 ok    maino              Q2555566   Juan Bautista Maíno / Juan Bautista Maíno (1581-1649) sl=15
-FALLO hals               (Frans Hals) candidatos=['Q167654', 'Q574961', 'Q17616737', 'Q63323669', 'Q4395612']
+ok    hals               Q167654    Frans Hals / Frans Hals (1591-1666) sl=68  (QID dado; años no casan, revisar)
 ok    ribera             Q297838    José de Ribera / Jusepe de Ribera (1591-1652) sl=68
 ok    la-tour            Q203371    Georges de La Tour / Georges de La Tour (1593-1652) sl=53
-FALLO artemisia          (Artemisia Gentileschi) candidatos=['Q212657', 'Q52843414', 'Q52831708', 'Q29032733', 'Q52799084']
+ok    artemisia          Q212657    Artemisia Gentileschi / Artemisia Gentileschi (1593-1653) sl=78  (QID dado; años no casan, revisar)
 ok    poussin            Q41554     - / Nicolas Poussin (1594-1665) sl=92
 ok    zurbaran           Q209615    Francisco de Zurbarán / Francisco de Zurbarán (1598-1664) sl=81
 ok    velazquez          Q297       Diego Velázquez / Diego Velázquez (1599-1660) sl=169
@@ -48,7 +48,7 @@ ok    vermeer            Q41264     Johannes Vermeer / Johannes Vermeer (1632-16
 ok    claudio-coello     Q332466    Claudio Coello / Claudio Coello (1642-1693) sl=20
 ok    watteau            Q183221    Antoine Watteau / Jean-Antoine Watteau (1684-1721) sl=70
 ok    tiepolo            Q186202    Giovanni Battista Tiepolo / Giovanni Battista Tiepolo (1696-1770) sl=67
-FALLO canaletto          (Canaletto) candidatos=['Q182664', 'Q164688', 'Q40441907', 'Q41591006', 'Q19145231']
+ok    canaletto          Q182664    Canaletto / Giovanni Antonio Canal (1697-1758) sl=72  (QID dado; años no casan, revisar)
 ok    chardin            Q207447    Jean Siméon Chardin / Jean-Baptiste-Siméon Chardin (1699-1779) sl=51
 ok    liotard            Q123757    Jean-Étienne Liotard / Jean-Étienne Liotard (1702-1789) sl=32
 ok    boucher            Q180932    François Boucher / François Boucher (1703-1770) sl=60
@@ -133,4 +133,4 @@ ok    malevich           Q130777    Kazimir Malévich / Kazimir Malevich (1878-1
 ok    modigliani         Q120993    Amedeo Modigliani / Amedeo Modigliani (1884-1920) sl=88
 ok    juan-gris          Q151152    Juan Gris / Juan Gris (1887-1927) sl=63
 ok    schiele            Q44032     Egon Schiele / Egon Schiele (1890-1918) sl=74
-total 135 resueltos 130
+total 135 resueltos 135

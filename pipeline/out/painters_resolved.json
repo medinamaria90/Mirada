@@ -11,7 +11,13 @@
  },
  {
   "id": "fra-angelico",
-  "qid": null
+  "qid": "Q5664",
+  "es": "Fra Angelico",
+  "en": "Fra Angelico",
+  "nacimiento": 1400,
+  "muerte": 1455,
+  "sitelinks": 77,
+  "ok": false
  },
  {
   "id": "van-eyck",
@@ -25,7 +31,13 @@
  },
  {
   "id": "van-der-weyden",
-  "qid": null
+  "qid": "Q68631",
+  "es": "Rogier van der Weyden",
+  "en": "Rogier van der Weyden",
+  "nacimiento": 1390,
+  "muerte": 1464,
+  "sitelinks": 61,
+  "ok": false
  },
  {
   "id": "piero",
@@ -289,7 +301,13 @@
  },
  {
   "id": "hals",
-  "qid": null
+  "qid": "Q167654",
+  "es": "Frans Hals",
+  "en": "Frans Hals",
+  "nacimiento": 1591,
+  "muerte": 1666,
+  "sitelinks": 68,
+  "ok": false
  },
  {
   "id": "ribera",
@@ -313,7 +331,13 @@
  },
  {
   "id": "artemisia",
-  "qid": null
+  "qid": "Q212657",
+  "es": "Artemisia Gentileschi",
+  "en": "Artemisia Gentileschi",
+  "nacimiento": 1593,
+  "muerte": 1653,
+  "sitelinks": 78,
+  "ok": false
  },
  {
   "id": "poussin",
@@ -477,7 +501,13 @@
  },
  {
   "id": "canaletto",
-  "qid": null
+  "qid": "Q182664",
+  "es": "Canaletto",
+  "en": "Giovanni Antonio Canal",
+  "nacimiento": 1697,
+  "muerte": 1758,
+  "sitelinks": 72,
+  "ok": false
  },
  {
   "id": "chardin",
