@@ -36,7 +36,8 @@ export function questionHtml(view, number) {
   }
   const opts = view.options.map((o, i) => `<button class="option" data-action="answer" data-id="${esc(o.id)}"><span class="key" aria-hidden="true">${i + 1}</span><span class="opt-text">${esc(o.label)}${o.detail ? `<span class="opt-sub">${esc(o.detail)}</span>` : ''}</span></button>`).join('');
   // El cuadro de la pregunta se abre en grande al tocarlo, sin responder ni revelar nada.
-  return `<div class="q-head">${head}</div><div class="q-art">${artFrame(view.artwork, { alt: ALT_WORK, eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${ALT_WORK}: ver en grande` } })}</div>
+  const titleLine = view.title ? `<p class="q-title">${esc(view.title)}</p>` : '';
+  return `<div class="q-head">${head}</div><div class="q-art">${artFrame(view.artwork, { alt: ALT_WORK, eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${ALT_WORK}: ver en grande` } })}${titleLine}</div>
     <div class="options options-list" role="group" aria-label="Respuestas">${opts}</div>`;
 }
 

@@ -8,6 +8,7 @@ import { isCorrect, questionAlt, optionText, makeQuestion, makeWhichQuestion, ar
 import { createRound, currentItem, answerRound, roundDone, roundProgress } from '../../engine/planner.js';
 import { xpForAnswer } from '../../engine/progress.js';
 import { feedbackFor } from '../../engine/feedback.js';
+import { revealedTitle } from '../../engine/title-reveal.js';
 
 const MAX_SUBSTITUTIONS = 3;
 const COMBO_SHOW = 3; // aciertos seguidos a partir de los que se ve el indicador
@@ -134,7 +135,10 @@ export function runLesson(ctx, el, config) {
     };
     const opts = q.options.map((o, i) => `<button class="option" data-action="answer" data-id="${esc(o.id)}"><span class="key" aria-hidden="true">${i + 1}</span>${optText(o)}</button>`).join('');
     // En escritorio, el cuadro a la izquierda y la pregunta con las opciones a la derecha.
-    return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}</div>
+    // El título va bajo el cuadro antes de responder, salvo que delate la respuesta.
+    const title = revealedTitle(index, art, q.type);
+    const titleLine = title ? `<p class="q-title">${esc(title)}</p>` : '';
+    return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}${titleLine}</div>
       <div class="options options-list" role="group" aria-label="Respuestas">${opts}</div>`;
   }
 

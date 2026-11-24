@@ -209,12 +209,13 @@ async function assertChosenFeedback(page, type, label) {
 // ---------------------------------------------------------------- Visor a pantalla completa (oleada 8)
 // Textos que el visor no puede mostrar en una pregunta sin responder: título, año y autor de cada
 // cuadro (en «¿Cuál es de X?», el pintor X sí está en la pregunta).
-function forbiddenFor(ids, allowArtist = null) {
+// allowTitle: en «¿Quién?» y «¿Movimiento?» el título puede verse antes de responder (si no delata).
+function forbiddenFor(ids, allowArtist = null, allowTitle = false) {
   const out = [];
   for (const id of ids) {
     const w = art.get(id);
     if (!w) continue;
-    out.push(w.title);
+    if (!allowTitle) out.push(w.title);
     if (w.year && /\d{4}/.test(w.year)) out.push(w.year);
     const a = artist.get(w.artistId);
     if (a && a.id !== allowArtist) out.push(a.name, a.short || a.name);
@@ -1089,7 +1090,7 @@ if (SMOKE) {
         await tp.locator('.q-art [data-action="zoom"]').tap();
         await tp.waitForSelector('.viewer[open]');
         check(await tp.locator('.feedback.is-open').count() === 0, L('tocar el cuadro responde'));
-        const leaks = await viewerLeaks(tp, forbiddenFor([q.artwork]));
+        const leaks = await viewerLeaks(tp, forbiddenFor([q.artwork], null, true));
         check(!leaks.length, L(`el visor de la pregunta revela ${leaks.join(', ')}`));
         if (i === 0) await audit(tp, L('visor de la pregunta'));
         await tp.locator('.viewer [data-v="close"]').tap();
@@ -2105,7 +2106,7 @@ for (const scheme of ['light', 'dark']) {
           for (let i = 0; i < n; i++) if ((await options.nth(i).innerText()).split('\n').pop().trim() === label) target = i;
           if (!done.has(type)) {
             done.add(type);
-            const forbidden = [...forbiddenFor([id]), movement.get(a.movementId).name];
+            const forbidden = [...forbiddenFor([id], null, true), movement.get(a.movementId).name];
             await viewerCheck(p8, L(`pregunta ${type}`), p8.locator('.q-art .art-zoom'), { reveal: false, forbidden, close: 'button', touch: T, shotName: `visor-${type}-${cfg.tag}` });
             check(await p8.locator('.feedback.is-open').count() === 0, `[${cfg.tag}] abrir la imagen responde`);
             await options.nth(target).click();

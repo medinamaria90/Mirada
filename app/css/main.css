@@ -394,7 +394,9 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 }
 .q-tag::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--brand); }
 .q-prompt { font: 500 1.6rem/1.1 var(--font); letter-spacing: var(--track); margin-bottom: .9rem; }
-.q-art { display: flex; justify-content: center; align-items: center; margin: 0 0 1.1rem; min-height: 0; }
+.q-art { display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 0 1.1rem; min-height: 0; }
+/* Título bajo el cuadro antes de responder (solo si no delata): pie de foto discreto. */
+.q-title { margin-top: .5rem; max-width: 100%; text-align: center; font-size: .85rem; line-height: 1.3; color: var(--ink-2); text-wrap: balance; }
 .art-hero {
   --h: min(44svh, 420px);
   width: min(100%, calc(var(--h) * var(--arw) / var(--arh)));
