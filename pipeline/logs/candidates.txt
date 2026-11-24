@@ -142,3 +142,17 @@ ya     sorolla            342 candidatas
 ya     munch              1822 candidatas
 ya     lautrec            235 candidatas
 fin 2026-11-24 11:08:51
+ya     hammershoi         114 candidatas
+ya     serov              65 candidatas
+ya     casas              105 candidatas
+ya     kandinsky          445 candidatas
+ya     zuloaga            49 candidatas
+ya     nonell             31 candidatas
+ya     mir                33 candidatas
+ya     romero-de-torres   171 candidatas
+ok     petrov-vodkin      Q364226      19 candidatas; de las 80 primeras, 15 con imagen >=1200px
+ya     malevich           148 candidatas
+ya     modigliani         536 candidatas
+ya     juan-gris          205 candidatas
+ya     schiele            124 candidatas
+fin 2026-11-24 11:08:55
