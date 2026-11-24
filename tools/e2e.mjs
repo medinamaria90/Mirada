@@ -2360,18 +2360,23 @@ for (const scheme of ['light', 'dark']) {
         const tagText = await p9.locator('.q-tag').innerText().catch(() => '');
         seq.push({ type: isWhich ? 'which' : 'who', id: isWhich ? ids[target] : subj, isNew: /nuevo/i.test(tagText) });
         if (step === 0 && isWhich) {
-          // «¿Cuál?» a 390 / 360: sin hueco sobre la rejilla y miniaturas grandes y enteras.
+          // «¿Cuál?» a 390 / 360: rejilla compacta, marcos de igual ancho, huecos de ~16 px, todo a la vista.
           const g = await p9.evaluate(() => {
-            const head = document.querySelector('.q-head').getBoundingClientRect();
             const grid = document.querySelector('.options-grid').getBoundingClientRect();
-            const arts = [...document.querySelectorAll('.option-art .art')].map((a) => { const r = a.getBoundingClientRect(); return { w: r.width, h: r.height }; });
+            const marcos = [...document.querySelectorAll('.option-art .marco')].map((a) => a.getBoundingClientRect());
             const cells = [...document.querySelectorAll('.option-art')].map((a) => a.getBoundingClientRect());
-            return { gap: grid.top - head.bottom, bottom: grid.bottom, vh: innerHeight, arts, cellH: cells[0].height, cellW: cells[0].width };
+            const arts = [...document.querySelectorAll('.option-art .art')].map((a) => { const r = a.getBoundingClientRect(); return r.width / r.height; });
+            return { bottom: grid.bottom, vh: innerHeight, marcos: marcos.map((r) => [r.left, r.top, r.width, r.height]), cellsMin: Math.min(...cells.map((r) => Math.min(r.width, r.height))), arts };
           });
-          check(g.gap <= 24, L(`hueco de ${Math.round(g.gap)} px sobre la rejilla de «¿Cuál?»`));
+          const widths = g.marcos.map((m) => m[2]);
+          check(Math.max(...widths) - Math.min(...widths) < 1, L(`marcos de «¿Cuál?» con anchos distintos ${JSON.stringify(widths.map(Math.round))}`));
+          const hGap = g.marcos[1][0] - (g.marcos[0][0] + g.marcos[0][2]);
+          const vGap = g.marcos[2][1] - Math.max(g.marcos[0][1] + g.marcos[0][3], g.marcos[1][1] + g.marcos[1][3]);
+          check(hGap >= 10 && hGap <= 20, L(`hueco horizontal de «¿Cuál?»: ${Math.round(hGap)} px`));
+          check(vGap >= 10 && vGap <= 32, L(`hueco vertical de «¿Cuál?»: ${Math.round(vGap)} px`));
           check(g.bottom <= g.vh + 2, L(`la rejilla de «¿Cuál?» no cabe (${Math.round(g.bottom)} > ${g.vh})`));
-          check(g.cellH >= (cfg.width >= 390 ? 260 : 200), L(`casillas de «¿Cuál?» bajas (${Math.round(g.cellW)}×${Math.round(g.cellH)})`));
-          check(g.arts.every((a) => Math.max(a.w, a.h) >= Math.min(g.cellW, g.cellH) - 54), L(`miniaturas pequeñas ${JSON.stringify(g.arts.map((a) => [Math.round(a.w), Math.round(a.h)]))}`));
+          check(g.cellsMin >= 48, L(`casilla de «¿Cuál?» menor de 48 px (${Math.round(g.cellsMin)})`));
+          check(g.arts.every((r) => r >= 0.74 && r <= 1.34), L(`proporción de marco fuera de 3:4–4:3 ${JSON.stringify(g.arts.map((r) => +r.toFixed(2)))}`));
           await shot(p9, `cual-${cfg.width}`);
           // Recargar con el visor abierto en la primera pregunta: vuelve a la pregunta, no a «Conoce a».
           const prompt0 = await p9.locator('.q-prompt').innerText();

@@ -42,6 +42,3 @@
 .tally dd { font-size: 1.45rem; }
 .tally-of { font-size: .95rem; color: var(--ink-2); }
 .test-result .result-actions .btn-ghost { justify-self: center; min-height: 48px; }
-
-/* Rejilla de «¿Cuál es de X?» del test: celdas cuadradas con el marco dentro. */
-.test-lesson .options-grid { gap: .6rem; margin-block: .4rem auto; }
