@@ -255,7 +255,9 @@ export function runLesson(ctx, el, config) {
     const overlapsX = marked.some((m) => { const r = m.getBoundingClientRect(); return r.right > sheet.left && r.left < sheet.right; });
     if (!overlapsX) return;
     const barBottom = $('.lesson-bar', el).getBoundingClientRect().bottom;
-    const sheetTop = window.innerHeight - sheet.height;
+    // La hoja aún está entrando: su borde superior final sale de su alto y de su separación del
+    // borde inferior (0 en móvil; en escritorio flota como tarjeta).
+    const sheetTop = window.innerHeight - sheet.height - (parseFloat(getComputedStyle(feedback).bottom) || 0);
     const span = () => {
       const rects = marked.map((m) => m.getBoundingClientRect());
       return { top: Math.min(...rects.map((r) => r.top)), bottom: Math.max(...rects.map((r) => r.bottom)) };
