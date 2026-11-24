@@ -30,3 +30,19 @@ ya     caravaggio         98 candidatas
 ya     rubens             1615 candidatas
 ya     maino              26 candidatas
 fin 2026-11-24 11:06:31
+ya     hals               298 candidatas
+ya     ribera             258 candidatas
+ya     la-tour            50 candidatas
+ya     artemisia          129 candidatas
+ya     poussin            232 candidatas
+ya     zurbaran           314 candidatas
+ya     velazquez          177 candidatas
+ya     van-dyck           1346 candidatas
+ya     claudio-de-lorena  225 candidatas
+ya     alonso-cano        62 candidatas
+ya     rembrandt          781 candidatas
+ya     pereda             33 candidatas
+ya     carreno            66 candidatas
+ya     murillo            317 candidatas
+ya     valdes-leal        71 candidatas
+fin 2026-11-24 11:06:33
