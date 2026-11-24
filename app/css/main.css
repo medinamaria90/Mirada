@@ -136,9 +136,9 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .chip-unit { font-size: .66rem; font-weight: 500; color: var(--ink-2); letter-spacing: .01em; }
 .chip-level { flex: 1 1 0; max-width: max-content; justify-content: flex-end; }
 .chip-level .chip-pill { min-width: 0; max-width: 100%; padding-right: .55rem; }
-.chip-level-text { display: grid; gap: 3px; font-size: .8rem; line-height: 1.1; min-width: 0; }
+.chip-level-text { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px; font-size: .8rem; line-height: 1.1; min-width: 0; }
 .chip-level-name { max-width: 7.6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.minibar { display: block; width: 58px; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.minibar { display: block; width: 58px; max-width: 100%; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
 .minibar > span { display: block; height: 100%; background: var(--brand); border-radius: inherit; }
 
 .bottomnav {
