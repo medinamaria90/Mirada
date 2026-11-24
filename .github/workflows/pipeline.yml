@@ -1,0 +1,35 @@
+name: pipeline
+on:
+  push:
+    branches: [main]
+    paths: ['pipeline/RUN']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: pipeline
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: herramientas
+        run: |
+          command -v convert || (sudo apt-get update -q && sudo apt-get install -yq imagemagick)
+          convert -version | head -1
+          git config user.name "mirada-bot"
+          git config user.email "mirada-bot@users.noreply.github.com"
+      - name: pasos
+        run: bash pipeline/run.sh
+      - name: log de emergencia
+        if: always()
+        run: |
+          mkdir -p pipeline/logs
+          echo "estado del job: ${{ job.status }} $(date -u)" >> pipeline/logs/run.txt
+          git add -A pipeline/logs pipeline/out catalogo 2>/dev/null
+          git commit -qm "datos: log final" || exit 0
+          for i in 1 2 3 4; do git pull --rebase -q -X theirs && git push -q && exit 0; sleep 10; done

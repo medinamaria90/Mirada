@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Ejecuta en GitHub Actions los pasos listados en pipeline/RUN (uno por línea: "<paso> [args]").
+# Siempre deja log en pipeline/logs/ y hace commit de las salidas tras cada paso.
+set -u
+cd "$(dirname "$0")/.."
+TRAILER=$'\n\nCo-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_019fDNM6fRf9wS5SBrUcjg2r'
+commit() {
+  git add -A pipeline/out pipeline/logs catalogo CREDITS.md 2>/dev/null
+  git commit -qm "$1$TRAILER" || return 0
+  for i in 1 2 3 4 5 6; do
+    git pull --rebase -q -X theirs && git push -q && return 0
+    sleep $((i*5))
+  done
+  echo "NO SE PUDO HACER PUSH" >> pipeline/logs/run.txt
+}
+echo "inicio $(date -u)" > pipeline/logs/run.txt
+while read -r step args <&3; do
+  case "$step" in ''|'#'*) continue;; esac
+  echo "== $step $args $(date -u +%H:%M:%S)" | tee -a pipeline/logs/run.txt
+  case "$step" in
+    resolve)    python3 pipeline/resolve.py 2>&1 | tail -n 3 >> pipeline/logs/run.txt ;;
+    candidates) python3 pipeline/candidates.py $args > pipeline/logs/candidates.stdout.txt 2>&1; tail -n 5 pipeline/logs/candidates.stdout.txt >> pipeline/logs/run.txt ;;
+    download)
+      for n in $(seq 1 "${args:-8}"); do
+        python3 pipeline/download.py --limit 150 > pipeline/logs/download.stdout.txt 2>&1; rc=$?
+        tail -n 4 pipeline/logs/download.stdout.txt >> pipeline/logs/run.txt
+        python3 pipeline/build.py >> pipeline/logs/run.txt 2>&1
+        commit "datos: lote de imágenes $n"
+        [ $rc -ne 0 ] && { echo "download rc=$rc" >> pipeline/logs/run.txt; break; }
+      done ;;
+    build)    python3 pipeline/build.py >> pipeline/logs/run.txt 2>&1 ;;
+    validate) python3 pipeline/validate.py >> pipeline/logs/run.txt 2>&1 ;;
+    *) echo "paso desconocido: $step" >> pipeline/logs/run.txt ;;
+  esac
+  du -sh .git catalogo 2>/dev/null >> pipeline/logs/run.txt
+  commit "datos: $step"
+done 3< pipeline/RUN
+echo "fin $(date -u)" >> pipeline/logs/run.txt
+commit "datos: fin de ejecución"
