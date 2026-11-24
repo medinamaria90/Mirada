@@ -74,6 +74,29 @@ export function mergeCatalogText(index, text) {
   return n;
 }
 
+// Categorías con etapa propia en el camino común (catálogo grande, SPEC §4 ter).
+const STAGE_CATEGORIES = ['gran-maestro', 'maestro'];
+export const levelOf = (w) => (Number.isInteger(w.level) ? w.level : 1);
+
+// Ficha de museo (data/catalog-ficha.json, se pide aparte: pesa más que el resto): museo, ciudad, país,
+// técnica, medidas y fuente de cada obra. Solo se aceptan cadenas cortas; lo demás se ignora.
+const FICHA_KEYS = ['museum', 'city', 'country', 'technique', 'dimensions'];
+const MAX_FICHA = 120;
+
+export function mergeCatalogFicha(index, data) {
+  let n = 0;
+  for (const [id, f] of Object.entries((data && data.ficha) || {})) {
+    const w = index.artwork(id);
+    if (!w || !f || typeof f !== 'object') continue;
+    for (const k of FICHA_KEYS) if (typeof f[k] === 'string' && f[k].length <= MAX_FICHA) w[k] = f[k];
+    if (f.source && typeof f.source === 'object') {
+      w.source = Object.fromEntries(['wikidata', 'file', 'license'].filter((k) => typeof f.source[k] === 'string').map((k) => [k, f.source[k]]));
+    }
+    n++;
+  }
+  return n;
+}
+
 export function buildIndex(catalog) {
   const movements = (catalog.movements || []).slice().sort((a, b) => a.order - b.order);
   const movementById = new Map(movements.map((m) => [m.id, m]));
@@ -88,12 +111,14 @@ export function buildIndex(catalog) {
   const worksByArtist = new Map(artists.map((a) => [a.id, []]));
   for (const w of artworks) worksByArtist.get(w.artistId).push(w);
 
+  // ¿El catálogo trae niveles (`level`)? Los catálogos pequeños y las fixtures no: se juega como antes.
+  const hasLevels = artworks.some((w) => Number.isInteger(w.level));
   const stageArtistsByMovement = new Map();
   const artistsByMovement = new Map();
   for (const m of movements) {
     const all = artists.filter((a) => a.movementId === m.id).sort((a, b) => a.order - b.order);
     artistsByMovement.set(m.id, all);
-    stageArtistsByMovement.set(m.id, all.filter((a) => isStageArtist(a, worksByArtist.get(a.id))));
+    stageArtistsByMovement.set(m.id, m.branch ? [] : all.filter((a) => isStageArtist(a, worksByArtist.get(a.id))));
   }
   // Orden global del camino: movimientos cronológicos y, dentro, el orden del catálogo.
   // `path` solo lleva pintores con etapa (los índices de los retos `s<idx>` dependen de él).
@@ -103,7 +128,7 @@ export function buildIndex(catalog) {
   // Movimientos sin pintores con etapa pero con obras suficientes: una «sala» (§ oleada 3).
   const salaIds = new Set(
     movements
-      .filter((m) => !stageArtistsByMovement.get(m.id).length)
+      .filter((m) => !m.branch && !stageArtistsByMovement.get(m.id).length)
       .filter((m) => isSalaMovement(artistsByMovement.get(m.id), worksByArtist))
       .map((m) => m.id),
   );
@@ -114,6 +139,27 @@ export function buildIndex(catalog) {
   const stepIndex = new Map(steps.map((s, i) => [`${s.type}:${s.id}`, i]));
   const visibleMovements = movements.filter((m) => salaIds.has(m.id) || stageArtistsByMovement.get(m.id).length);
 
+  // Ramas (catálogo grande): listas cronológicas de pintores que se abren por tramos de época.
+  const branches = (Array.isArray(catalog.branches) ? catalog.branches : [])
+    .map((b) => ({ ...b, artists: (b.artists || []).filter((id) => artistById.has(id)) }))
+    .filter((b) => SAFE_ID.test(b.id) && b.artists.length);
+  const branchById = new Map(branches.map((b) => [b.id, b]));
+  // Invitados del camino común (`onPath` sin etapa): salen intercalados, junto al pintor con etapa de
+  // su movimiento más cercano por fecha de nacimiento (no antes que el primero).
+  const guestsAt = new Map();
+  for (const g of artists.filter((a) => a.onPath && !pathIndex.has(a.id) && worksByArtist.get(a.id).length)) {
+    const mates = stageArtistsByMovement.get(g.movementId) || [];
+    const host = mates.filter((a) => (a.born || 0) <= (g.born || 0)).pop() || mates[0];
+    if (!host) continue;
+    if (!guestsAt.has(host.id)) guestsAt.set(host.id, []);
+    guestsAt.get(host.id).push(g);
+  }
+  // Pintores que preceden a uno de rama dentro de su rama (la primera que lo lista).
+  const branchBefore = (artistId) => {
+    const b = branches.find((x) => x.artists.includes(artistId));
+    return b ? b.artists.slice(0, b.artists.indexOf(artistId)).map((id) => artistById.get(id)) : [];
+  };
+
   return {
     movements,
     artists,
@@ -122,6 +168,29 @@ export function buildIndex(catalog) {
     artist: (id) => artistById.get(id),
     artwork: (id) => artworkById.get(id),
     worksOf: (artistId) => worksByArtist.get(artistId) || [],
+    hasLevels,
+    // Obras del nivel `level` (1 = básico; 2..n = «a fondo»).
+    levelWorks: (artistId, level) => (worksByArtist.get(artistId) || []).filter((w) => levelOf(w) === level),
+    // Niveles «a fondo» del pintor: [{ id, name, from, to, source, works }] (las etapas con obras).
+    deepLevels: (artistId) => ((artistById.get(artistId)?.stages) || [])
+      .map((s) => ({ ...s, works: (worksByArtist.get(artistId) || []).filter((w) => levelOf(w) === s.id) }))
+      .filter((s) => s.id >= 2 && s.works.length)
+      .sort((a, b) => a.id - b.id),
+    branches,
+    branch: (id) => branchById.get(id),
+    branchesOf: (artistId) => branches.filter((b) => b.artists.includes(artistId)),
+    branchBefore,
+    guestsAt: (artistId) => guestsAt.get(artistId) || [],
+    // Invitados del camino ya presentados al llegar a la etapa de `artistId` (incluida).
+    guestsUpTo: (artistId) => path.slice(0, pathIndex.get(artistId) + 1).flatMap((a) => guestsAt.get(a.id) || []),
+    // Posición de dificultad de un pintor: su parada y, fuera del camino, la del pintor del camino más cercano.
+    difficultyStep: (artistId) => {
+      if (pathIndex.has(artistId)) return pathIndex.get(artistId);
+      const a = artistById.get(artistId);
+      const peers = a ? (stageArtistsByMovement.get(a.movementId) || []) : [];
+      const near = peers.filter((p) => (p.born || 0) <= (a.born || 0)).pop() || peers[0];
+      return near ? pathIndex.get(near.id) : 0;
+    },
     learnWorks: (artistId) => (worksByArtist.get(artistId) || []).filter((w) => w.role === 'learn'),
     newWorks: (artistId) => (worksByArtist.get(artistId) || []).filter((w) => w.role === 'new'),
     stageArtists: (movementId) => stageArtistsByMovement.get(movementId) || [],
@@ -141,6 +210,7 @@ export function buildIndex(catalog) {
 }
 
 function isStageArtist(artist, works) {
+  if (artist.category) return Boolean(artist.onPath) && STAGE_CATEGORIES.includes(artist.category);
   if (artist.guest) return false;
   const learn = works.filter((w) => w.role === 'learn').length;
   const fresh = works.filter((w) => w.role === 'new').length;

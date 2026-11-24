@@ -5,3 +5,8 @@ marca/preview*/
 
 # Imágenes del catálogo: viven en la release «catalogo-img» de GitHub, no en el repo
 catalogo/img/
+
+# Imágenes del catálogo grande y su atlas: se bajan de la release al desplegar (tools/fetch_images.sh) y se
+# generan (tools/make_atlas.py); no entran en el repo
+app/img/w*.jpg
+app/img/s/

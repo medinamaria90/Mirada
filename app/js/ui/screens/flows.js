@@ -13,6 +13,7 @@ import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } 
 import { encodeChallenge } from '../../engine/challenge.js';
 import { artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
+import { seenWorks } from '../../engine/levels.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
@@ -268,7 +269,8 @@ export function renderStage(ctx, el, artistId) {
   withIntro(ctx, el, movement.id, () => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
-    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [] });
+    const seen = [...seenWorks(ctx.store.get().progress, artistId)];
+    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen });
     playEra(movement.era);
     const years = artist.born && artist.died ? `${artist.born}–${artist.died}` : '';
     learnScreen(ctx, el, {
@@ -280,7 +282,7 @@ export function renderStage(ctx, el, artistId) {
       badge: (() => { const e = eyeLabel(ctx, artistId); return e ? `<p class="eye-line">${icons.eye(16)}<span>${esc(e.text)}</span></p>` : ''; })(),
       works: plan.learn,
       caption: (w) => ({ alt: `${w.title}, de ${artist.name}`, sub: w.year || '' }),
-      aside: `<aside class="hint"><span class="hint-icon">${icons.eye(20)}</span><p>${esc(artist.hint || '')}</p></aside>`,
+      aside: artist.hint ? `<aside class="hint"><span class="hint-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : '',
       carouselLabel: `Obras de ${artist.short || artist.name}`,
       onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: { artistId }, shareTopic: artist.name })),
     });
@@ -498,7 +500,7 @@ function lookFirst(ctx, el, plan, accent, start) {
   if (plan.kind === 'stage') {
     const a = index.artist(plan.artistId);
     name = a.name;
-    works = (plan.learn || index.learnWorks(a.id)).slice(0, 3);
+    works = (plan.learn || index.learnWorks(a.id)).slice(0, 4);
     line = mainTrait(a);
   } else {
     const m = index.movement(plan.movementId);

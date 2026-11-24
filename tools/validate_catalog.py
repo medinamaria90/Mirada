@@ -1,23 +1,25 @@
-"""Valida app/data/catalog.json contra el contrato del §4 de docs/SPEC.md.
+"""Valida app/data/catalog.json (+ catalog-text.json y catalog-ficha.json) contra el contrato de docs/SPEC.md §4 y §4 ter.
 
-Uso: python3 -I validate_catalog.py <dir_app>   (código de salida != 0 si hay errores)
-
-Reglas de etapas (oleada 4): un pintor tiene etapa propia (guest=false) con ≥3 obras; con 3 obras,
-2 «learn» + 1 «new». Como máximo 4 pintores rusos con etapa: el resto de rusos son invitados
-aunque tengan ≥3 obras.
+Uso: python3 -I tools/validate_catalog.py <dir_app> [<dir_imagenes>]   (código de salida != 0 si hay errores)
+  dir_imagenes: si se da, comprueba además que cada obra tiene su w<QID>.jpg con las medidas del catálogo
+  y que las hojas del atlas de <dir_app>/img/s (si existen) tienen el tamaño declarado.
+Las imágenes no están en el repo (se bajan de la release al desplegar: tools/fetch_images.sh) ni el atlas
+(tools/make_atlas.py), así que sin dir_imagenes solo se valida lo que hay en el repo.
 """
-import json, os, re, sys
+import json
+import os
+import re
+import sys
 from collections import Counter, defaultdict
-from PIL import Image
 
-MIN_STAGE_WORKS = 3
-# Tope de archivos en app/. Venía del límite de 512 por versión de la página privada de Claude, que ya no
-# se usa (la app se publica en Render); se sube a 400 para dar cabida a los paisajes del mapa (img/mapa,
-# un SVG por época) y a los módulos de música, y seguir avisando si algo se dispara.
-MAX_APP_FILES = 400
-MAX_SHEETS = 24
-MAX_STAGE_RUSSIANS = 4
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from atlas_layout import layout, packed_size  # noqa: E402
+
+MAX_APP_FILES = 600  # con las 86 hojas del atlas generadas en local (no entran en el repo)
 LOOK_MAX = 100
+MIN_PATH_LEVEL1 = 4          # obras de nivel 1 sin spoiler de un pintor con etapa
+STAGE_CATEGORIES = ("gran-maestro", "maestro")
+CATEGORIES = STAGE_CATEGORIES + ("invitado", "rama")
 ERAS = {"menu", "renaissance", "baroque", "rococo", "neoclassic", "romantic", "realism",
         "impressionism", "postimpressionism", "modern"}
 errors = []
@@ -42,70 +44,29 @@ def name_tokens(artist):
     return words
 
 
-def check_look(w, artist):
-    look = w["look"]
+def check_look(wid, look, kind, title, artist):
     if not (isinstance(look, str) and look.strip() and "\n" not in look):
-        err(f"{w['id']}: look vacío o con saltos de línea")
+        err(f"{wid}: look vacío o con saltos de línea")
         return
-    check(len(look) <= LOOK_MAX, f"{w['id']}: look de {len(look)} caracteres (máx. {LOOK_MAX})")
+    check(len(look) <= LOOK_MAX, f"{wid}: look de {len(look)} caracteres (máx. {LOOK_MAX})")
     low = look.lower()
     words = set(re.findall(r"\w+", low))
-    # Un cuadro atípico se presenta como «No parece un X…»: ahí nombrar al autor es el sentido de la
-    # pista (el look no se muestra nunca antes de responder).
-    if artist and w.get("kind") != "atipico":
+    # Un cuadro atípico se presenta como «No parece un X…»: ahí nombrar al autor es el sentido de la pista.
+    if artist and kind != "atipico":
         bad = [t for t in name_tokens(artist) if (t in words if " " not in t else t in low)]
-        check(not bad, f"{w['id']}: el look nombra al autor ({bad})")
-    title = re.sub(r"\s*\(.*?\)", "", w["title"]).strip().lower()
-    check(title not in low, f"{w['id']}: el look nombra el título")
-
-
-def check_atlas(app, atlas):
-    """Hojas del atlas: existen, sin metadatos y con el tamaño declarado. Devuelve sus tamaños."""
-    sheets = atlas.get("sheets")
-    if not (isinstance(sheets, list) and sheets and isinstance(atlas.get("cell"), int)):
-        err("falta el atlas de miniaturas (bash tools/make_thumbs.sh app)")
-        return []
-    check(len(sheets) <= MAX_SHEETS, f"{len(sheets)} hojas en el atlas (máx. {MAX_SHEETS})")
-    check(len(atlas.get("size", [])) == len(sheets), "atlas.size no cuadra con atlas.sheets")
-    sizes = []
-    for i, src in enumerate(sheets):
-        check(re.fullmatch(r"img/s/[a-z0-9]+\.jpg", src), f"ruta de hoja rara: {src}")
-        path = f"{app}/{src}"
-        if not os.path.isfile(path):
-            err(f"falta la hoja {src}")
-            sizes.append((0, 0))
-            continue
-        with Image.open(path) as im:
-            sizes.append(im.size)
-            check(list(im.size) == list(atlas["size"][i]), f"{src}: tamaño {im.size} ≠ {atlas['size'][i]}")
-            check(im.format == "JPEG" and not im.getexif() and "icc_profile" not in im.info, f"{src}: no es JPEG limpio")
-    return sizes
-
-
-def check_thumb(w, atlas, sheet_sizes):
-    t = w.get("thumb")
-    if not (isinstance(t, list) and len(t) == 5 and all(isinstance(v, int) for v in t)):
-        err(f"{w['id']}: thumb debe ser [hoja, x, y, w, h]")
-        return
-    k, x, y, tw, th = t
-    if not (0 <= k < len(sheet_sizes)):
-        err(f"{w['id']}: hoja {k} inexistente")
-        return
-    sw, sh = sheet_sizes[k]
-    cell = atlas["cell"]
-    check(x >= 0 and y >= 0 and x + tw <= sw and y + th <= sh, f"{w['id']}: miniatura fuera de la hoja")
-    check(x // cell == (x + tw - 1) // cell and y // cell == (y + th - 1) // cell, f"{w['id']}: miniatura entre dos celdas")
-    check(tw <= cell - 4 and th <= cell - 4 and max(tw, th) >= cell // 2, f"{w['id']}: miniatura de {tw}×{th}")
-    check(abs(tw / th - w["w"] / w["h"]) <= 0.03 * (w["w"] / w["h"]) + 0.01, f"{w['id']}: miniatura sin las proporciones del cuadro")
+        check(not bad, f"{wid}: el look nombra al autor ({bad})")
+    t = re.sub(r"\s*\(.*?\)", "", title).strip().lower()
+    check(t not in low, f"{wid}: el look nombra el título")
 
 
 def main():
     app = sys.argv[1]
+    imgs = sys.argv[2] if len(sys.argv) > 2 else None
     cat = json.load(open(f"{app}/data/catalog.json", encoding="utf-8"))
-    # Textos aparte (data/catalog-text.json): `look`/`looks`, `kind` y `tags` de obra; `traits` y
-    # `traitTags` de pintor; vocabulario `tagLabels` y `negableTags` (versión 2).
     text = json.load(open(f"{app}/data/catalog-text.json", encoding="utf-8"))
-    check(text.get("version") == 2, "catalog-text: version debe ser 2")
+    ficha = json.load(open(f"{app}/data/catalog-ficha.json", encoding="utf-8"))
+    check(cat.get("version") == 2, "catalog.json: version debe ser 2")
+    check(text.get("version") == 3, "catalog-text: version debe ser 3")
     for k in ("look", "looks", "kind", "tags"):
         check(not any(k in w for w in cat["artworks"]), f"catalog.json no debe llevar {k} (va en catalog-text.json)")
     for k in ("traits", "traitTags"):
@@ -113,150 +74,169 @@ def main():
     labels = text.get("tagLabels", {})
     check(isinstance(labels, dict) and labels, "catalog-text: falta tagLabels")
     check(set(text.get("negableTags", [])) <= set(labels), "catalog-text: negableTags fuera del vocabulario")
-    for a in cat["artists"]:
-        a["traits"] = text.get("traits", {}).get(a["id"], [])
-        tt = text.get("traitTags", {}).get(a["id"])
-        if tt is not None:
-            check(len(tt) == 1 + len(a["traits"]) or (len(tt) == 1 and not a["traits"]),
-                  f"{a['id']}: traitTags no alineado con [hint, *traits]")
-            check(all(t in labels for group in tt for t in group.split()), f"{a['id']}: traitTags fuera del vocabulario")
-    known = {w["id"] for w in cat["artworks"]}
-    for k in ("look", "looks", "kind", "tags"):
-        check(set(text.get(k, {})) <= known, f"catalog-text: {k} de obras inexistentes")
-    for w in cat["artworks"]:
-        if w["id"] in text.get("look", {}):
-            w["look"] = text["look"][w["id"]]
-        if w["id"] in text.get("kind", {}):
-            w["kind"] = text["kind"][w["id"]]
-            check(w["kind"] in ("tipico", "atipico", "memoria"), f"{w['id']}: kind desconocido")
-        looks = text.get("looks", {}).get(w["id"])
-        if looks is not None:
-            check(1 <= len(looks) <= 2 and looks[0]["text"] == w.get("look"), f"{w['id']}: looks no empieza por look")
-            check(all(len(l["text"]) <= LOOK_MAX + 10 for l in looks), f"{w['id']}: pista larga en looks")
-        tags = text.get("tags", {}).get(w["id"], "").split()
-        check(all(t in labels for t in tags), f"{w['id']}: tags fuera del vocabulario")
-    check(cat.get("version") == 1, "version debe ser 1")
+
+    # --- Movimientos ---
     mids = [m["id"] for m in cat["movements"]]
     check(len(mids) == len(set(mids)), "ids de movimiento repetidos")
     check(len({m["order"] for m in cat["movements"]}) == len(mids), "order de movimientos repetido")
+    mov = {m["id"]: m for m in cat["movements"]}
     for m in cat["movements"]:
         for k in ("id", "name", "period", "order", "era", "blurb", "accent"):
             check(k in m, f"movimiento {m.get('id')} sin {k}")
         check(m.get("era") in ERAS, f"era inválida en {m['id']}")
         check(re.fullmatch(r"#[0-9a-fA-F]{6}", m.get("accent", "")), f"accent inválido en {m['id']}")
         check(re.fullmatch(r"[a-z0-9-]+", m["id"]), f"id de movimiento no ASCII-plano: {m['id']}")
-    check(len({m["accent"].lower() for m in cat["movements"]}) == len(mids), "accent repetido")
-    for m in cat["movements"]:
         t = m.get("traits")
         check(isinstance(t, list) and 1 <= len(t) <= 4 and all(isinstance(x, str) and x.strip() for x in t),
               f"traits de movimiento ausentes o inválidos en {m['id']}")
-        check(isinstance(m.get("blurb"), str) and m["blurb"].strip(), f"blurb vacío en {m['id']}")
+        if m.get("branch"):
+            check(m.get("opensAt") in mov and not mov[m["opensAt"]].get("branch"), f"{m['id']}: opensAt inválido")
+        else:
+            check("opensAt" not in m, f"{m['id']}: opensAt solo en ramas")
+    check(len({m["accent"].lower() for m in cat["movements"]}) == len(mids), "accent repetido")
 
+    # --- Pintores ---
     aids = [a["id"] for a in cat["artists"]]
     check(len(aids) == len(set(aids)), "ids de pintor repetidos")
+    by_id = {a["id"]: a for a in cat["artists"]}
     works = defaultdict(list)
     for w in cat["artworks"]:
         works[w["artistId"]].append(w)
-    stage_ids = {a["id"] for a in cat["artists"] if not a.get("guest")}
-    russians = sorted(a["id"] for a in cat["artists"] if not a.get("guest") and a.get("country") == "Rusia")
-    check(len(russians) <= MAX_STAGE_RUSSIANS, f"{len(russians)} pintores rusos con etapa (máx. {MAX_STAGE_RUSSIANS}): {russians}")
     orders = defaultdict(list)
     for a in cat["artists"]:
-        for k in ("id", "name", "short", "movementId", "born", "died", "country", "order",
-                  "guest", "hint", "traits", "similarTo"):
+        for k in ("id", "name", "short", "movementId", "born", "died", "country", "order", "guest", "category",
+                  "onPath", "stages", "branches", "hint", "similarTo"):
             check(k in a, f"pintor {a.get('id')} sin {k}")
         check(a["movementId"] in mids, f"movimiento inexistente en {a['id']}")
         check(a["died"] < 1956, f"{a['id']} murió en {a['died']} (>=1956)")
-        check(isinstance(a["order"], int), f"order no entero en {a['id']}")
+        check(a["category"] in CATEGORIES, f"{a['id']}: categoría {a['category']}")
         orders[a["movementId"]].append(a["order"])
         ws = works.get(a["id"], [])
         check(len(ws) > 0, f"{a['id']} sin obras")
-        if len(ws) < MIN_STAGE_WORKS:
-            check(a["guest"], f"{a['id']}: con {len(ws)} obras debe ser invitado")
-        elif a["guest"]:
-            check(a["country"] == "Rusia",
-                  f"{a['id']}: tiene {len(ws)} obras y no es ruso: debería tener etapa (guest=false)")
-        for s in a["similarTo"]:
-            check(s in aids and s != a["id"], f"similarTo inválido en {a['id']}: {s}")
-        if not a["guest"]:
-            roles = Counter(w["role"] for w in ws)
-            check(roles["learn"] >= 2 and roles["new"] >= 1, f"{a['id']}: roles {dict(roles)}")
-            check(roles["learn"] <= 3, f"{a['id']}: más de 3 learn")
-            if len(ws) == 3:
-                check(roles["learn"] == 2 and roles["new"] == 1, f"{a['id']}: con 3 obras se esperan 2 learn + 1 new")
-            # Hace falta material sin firma legible para «¿Quién lo pintó?» en práctica y en cuadros nuevos.
-            for r in ("learn", "new"):
-                check(any(w["role"] == r and not w.get("spoiler") and not w.get("attributed") for w in ws),
-                      f"{a['id']}: ninguna obra «{r}» sin spoiler ni atribución dudosa")
-            check(a["hint"].startswith("Fíjate en") and "\n" not in a["hint"], f"hint de {a['id']}")
-            check(len(a["traits"]) == 3, f"{a['id']}: se esperan 3 traits")
-            check(len(a["similarTo"]) >= 1, f"{a['id']}: similarTo vacío")
-            if a["similarTo"] and not any(s in stage_ids for s in a["similarTo"]):
-                warnings.append(f"{a['id']}: ningún similarTo con etapa propia ({a['similarTo']})")
+        stage = a["category"] in STAGE_CATEGORIES
+        check(a["guest"] == (not stage), f"{a['id']}: guest no casa con la categoría")
+        fame3 = any(w["fame"] == 3 for w in ws)
+        # Camino común: grandes maestros, maestros e invitados con alguna obra icónica; nunca las ramas.
+        check(a["onPath"] == (stage or (a["category"] == "invitado" and fame3)), f"{a['id']}: onPath no sigue la regla")
+        l1 = [w for w in ws if w["level"] == 1 and not w.get("spoiler") and not w.get("attributed")]
+        if stage:
+            check(len(l1) >= MIN_PATH_LEVEL1, f"{a['id']}: {len(l1)} obras de nivel 1 sin spoiler (mín. {MIN_PATH_LEVEL1})")
+            roles = Counter(w["role"] for w in ws if w["level"] == 1)
+            check(roles["learn"] >= 3 and roles["new"] >= 3, f"{a['id']}: roles de nivel 1 {dict(roles)}")
+            check(a["movementId"] in mov and not mov[a["movementId"]].get("branch"), f"{a['id']}: etapa en una rama")
         else:
-            check(a["hint"].strip() != "", f"{a['id']}: hint vacío")
+            check(len(ws) >= 3, f"{a['id']}: menos de 3 obras")
+        check(all(w["role"] == "new" for w in ws if w["level"] > 1), f"{a['id']}: obra «a fondo» con role learn")
+        levels = {s["id"] for s in a["stages"]}
+        check(all(w["level"] == 1 or w["level"] in levels for w in ws), f"{a['id']}: obra de un nivel sin etapa")
+        for s in a["stages"]:
+            check(s["id"] >= 2 and all(k in s for k in ("id", "name", "from", "to", "source")), f"{a['id']}: etapa mal formada {s}")
+            check(s.get("provisional") or s.get("source"), f"{a['id']}: etapa {s['id']} sin fuente")
+        for s in a["similarTo"]:
+            check(s in by_id and s != a["id"], f"similarTo inválido en {a['id']}: {s}")
+        check(isinstance(a["hint"], str) and "\n" not in a["hint"], f"hint de {a['id']}")
+        if a["hint"]:
+            check(a["hint"].startswith("Fíjate en"), f"hint de {a['id']} debe empezar por «Fíjate en»")
         if "section" in a:
-            check(not a["guest"] and isinstance(a["section"], str) and a["section"].strip(),
-                  f"{a['id']}: section solo en pintores con etapa y con texto")
+            check(stage and isinstance(a["section"], str) and a["section"].strip(), f"{a['id']}: section solo en pintores con etapa")
     for mid, os_ in orders.items():
         check(len(os_) == len(set(os_)), f"order repetido en movimiento {mid}")
+    path = sorted((a for a in cat["artists"] if a["category"] in STAGE_CATEGORIES), key=lambda a: (mov[a["movementId"]]["order"], a["order"]))
+    check(path and path[0]["id"] == "botticelli" and [a["id"] for a in path[2:4]] == ["rafael", "leonardo"],
+          "el camino abre con Botticelli; Rafael 3.º y Leonardo 4.º")
     # Los tramos de un movimiento son contiguos en el orden del camino.
     for mid in mids:
-        stage = sorted((a for a in cat["artists"] if a["movementId"] == mid and not a["guest"]), key=lambda a: a["order"])
+        stage = [a for a in path if a["movementId"] == mid]
         secs = [a.get("section") for a in stage]
-        if any(secs):
-            check(all(secs), f"{mid}: todos sus pintores con etapa necesitan section si alguno la tiene")
-            runs = [s for i, s in enumerate(secs) if i == 0 or s != secs[i - 1]]
-            check(len(runs) == len(set(runs)), f"{mid}: tramos no contiguos {runs}")
-            check(len(stage) > 4, f"{mid}: con {len(stage)} pintores con etapa no debe haber tramos")
+        runs = [s for i, s in enumerate(secs) if s and (i == 0 or s != secs[i - 1])]
+        check(len(runs) == len(set(runs)), f"{mid}: tramos no contiguos {runs}")
 
-    by_id = {a["id"]: a for a in cat["artists"]}
+    # --- Ramas: cronológicas por dentro y con el tramo en que se abre cada pintor ---
+    bids = [b["id"] for b in cat["branches"]]
+    check(len(bids) == len(set(bids)), "ids de rama repetidos")
+    for b in cat["branches"]:
+        check(b["artists"] and all(x in by_id for x in b["artists"]), f"rama {b['id']}: pintores inexistentes")
+        born = [by_id[x]["born"] for x in b["artists"]]
+        check(born == sorted(born), f"rama {b['id']}: no cronológica por nacimiento")
+        flat = [x for t in b["tramos"] for x in t["artists"]]
+        check(sorted(flat) == sorted(b["artists"]), f"rama {b['id']}: tramos no cubren a sus pintores")
+        orders_ = [mov[t["opensAt"]]["order"] for t in b["tramos"]]
+        check(orders_ == sorted(orders_) and b["opensAt"] == b["tramos"][0]["opensAt"], f"rama {b['id']}: tramos desordenados")
+        check(all(t["opensAt"] in mov and not mov[t["opensAt"]].get("branch") for t in b["tramos"]), f"rama {b['id']}: tramo en una rama")
+        for x in b["artists"]:
+            check(b["id"] in by_id[x]["branches"], f"{x}: no lista la rama {b['id']}")
+    off_path = {a["id"] for a in cat["artists"] if not a["onPath"]}
+    in_discover = {x for b in cat["branches"] if b["kind"] == "epoca" for x in b["artists"]}
+    check(in_discover <= off_path and {x for x in off_path if by_id[x]["category"] == "invitado"} <= in_discover,
+          "los invitados fuera del camino van, todos y solo ellos, en las ramas «Descubre…»")
+
+    # --- Obras ---
     wids = [w["id"] for w in cat["artworks"]]
     check(len(wids) == len(set(wids)), "ids de obra repetidos")
-    files = {f for f in os.listdir(f"{app}/img") if os.path.isfile(f"{app}/img/{f}")}
-    check(not os.path.isdir(f"{app}/img/t"), "img/t/ ya no se usa (miniaturas en el atlas img/s/)")
-    atlas = cat.get("atlas") or {}
-    sheet_sizes = check_atlas(app, atlas)
     for w in cat["artworks"]:
-        check(w["artistId"] in aids, f"{w['id']}: artista inexistente")
-        check(w["yearSort"] < 1930, f"{w['id']}: yearSort {w['yearSort']} >= 1930")
-        check(isinstance(w["yearSort"], int), f"{w['id']}: yearSort no entero")
+        check(re.fullmatch(r"w\d+", w["id"]), f"{w['id']}: id no w<QID>")
+        check(w["artistId"] in by_id, f"{w['id']}: artista inexistente")
+        check(w["yearSort"] < 1930 and isinstance(w["yearSort"], int), f"{w['id']}: yearSort {w['yearSort']}")
         check(w["fame"] in (1, 2, 3), f"{w['id']}: fame inválida")
         check(w["role"] in ("learn", "new"), f"{w['id']}: role inválido")
         check(w["confidence"] in ("high", "medium"), f"{w['id']}: confidence inválida")
+        check(isinstance(w["level"], int) and w["level"] >= 1, f"{w['id']}: level inválido")
         check(w["title"].strip() and w["year"].strip(), f"{w['id']}: título/año vacío")
-        check(w.get("spoiler", False) in (True, False) and ("spoiler" not in w or w["spoiler"] is True),
-              f"{w['id']}: spoiler debe ser true u omitirse")
+        check(isinstance(w["inSpain"], bool), f"{w['id']}: inSpain debe ser booleano")
+        check("spoiler" not in w or w["spoiler"] is True, f"{w['id']}: spoiler debe ser true u omitirse")
         check("attributed" not in w or w["attributed"] is True, f"{w['id']}: attributed debe ser true u omitirse")
-        if w.get("attributed"):
-            check("atribuida" in w["title"], f"{w['id']}: atribución dudosa sin «(atribuida)» en el título")
-        if "look" in w:
-            check_look(w, by_id.get(w["artistId"]))
+        if w.get("spoiler") or w.get("attributed"):
+            check(w["level"] != 1 or w["role"] == "learn" or by_id[w["artistId"]]["category"] not in STAGE_CATEGORIES,
+                  f"{w['id']}: obra de nivel 1 imposible de preguntar y sin «Conoce a»")
         if "focus" in w:
             f = w["focus"]
             check(isinstance(f, list) and len(f) == 2 and all(isinstance(v, (int, float)) and 0 <= v <= 1 for v in f),
                   f"{w['id']}: focus debe ser [x, y] entre 0 y 1")
-            check("look" in w, f"{w['id']}: focus sin look")
-        # Detalle del día: obras de fama 3 de pintores con etapa que se preguntan; todas llevan look.
-        a_ = by_id.get(w["artistId"])
-        if a_ and not a_["guest"] and w["fame"] == 3 and not w.get("spoiler") and not w.get("attributed"):
-            check("look" in w, f"{w['id']}: fama 3 sin look (sale en el detalle del día)")
-        check_thumb(w, atlas, sheet_sizes)
-        path = f"{app}/{w['img']}"
-        if not os.path.isfile(path):
-            err(f"{w['id']}: falta {w['img']}")
-            continue
-        with Image.open(path) as im:
-            check(im.size == (w["w"], w["h"]), f"{w['id']}: w/h no coinciden con {im.size}")
-            check(max(im.size) <= 1000, f"{w['id']}: imagen > 1000 px")
-            check(not im.getexif(), f"{w['id']}: lleva EXIF")
-    extra = files - {os.path.basename(w["img"]) for w in cat["artworks"]}
-    check(not extra, f"imágenes sobrantes en img/: {sorted(extra)[:5]}")
-    check(len(files) <= 250, f"{len(files)} imágenes (límite 250)")
-    sheets_used = {w["thumb"][0] for w in cat["artworks"] if isinstance(w.get("thumb"), list)}
-    check(sheets_used == set(range(len(atlas.get("sheets", [])))), "hojas del atlas sin usar")
-    thumbs_mb = sum(os.path.getsize(f"{app}/{s}") for s in atlas.get("sheets", []) if os.path.isfile(f"{app}/{s}")) / 1e6
-    check(thumbs_mb < 5, f"atlas: {thumbs_mb:.2f} MB (límite 5 MB)")
+    # --- Textos y ficha ---
+    known = set(wids)
+    for k in ("look", "looks", "kind", "tags"):
+        check(set(text.get(k, {})) <= known, f"catalog-text: {k} de obras inexistentes")
+    work_by_id = {w["id"]: w for w in cat["artworks"]}
+    for wid, look in text.get("look", {}).items():
+        w = work_by_id[wid]
+        check_look(wid, look, text.get("kind", {}).get(wid), w["title"], by_id.get(w["artistId"]))
+    for wid, kind in text.get("kind", {}).items():
+        check(kind in ("tipico", "atipico", "memoria"), f"{wid}: kind desconocido")
+    for wid, looks in text.get("looks", {}).items():
+        check(1 <= len(looks) <= 2 and looks[0]["text"] == text["look"].get(wid), f"{wid}: looks no empieza por look")
+    for wid, tags in text.get("tags", {}).items():
+        check(all(t in labels for t in tags.split()), f"{wid}: tags fuera del vocabulario")
+    for aid, tt in text.get("traitTags", {}).items():
+        check(aid in by_id and len(tt) == 1 + len(text.get("traits", {}).get(aid, [])), f"{aid}: traitTags no alineado con [hint, *traits]")
+        check(all(t in labels for g in tt for t in g.split()), f"{aid}: traitTags fuera del vocabulario")
+    check(set(ficha.get("ficha", {})) == known, "catalog-ficha: no cubre exactamente las obras")
+    for wid, f in ficha.get("ficha", {}).items():
+        check(f.get("source", {}).get("wikidata", "").startswith("Q"), f"{wid}: ficha sin fuente de Wikidata")
+
+    # --- Atlas: las coordenadas son función del catálogo ---
+    atlas, thumbs = layout(cat)
+    check(cat.get("atlas") == atlas, "atlas distinto del que sale de tools/atlas_layout.py (regenera el catálogo)")
+    for w in cat["artworks"]:
+        check(w.get("thumb") == thumbs[w["id"]], f"{w['id']}: thumb distinto del atlas")
+    check(sorted({w["thumb"][0] for w in cat["artworks"]}) == list(range(len(atlas["sheets"]))), "hojas del atlas sin usar")
+
+    # --- Imágenes y hojas (solo si se da la carpeta) ---
+    if imgs:
+        from PIL import Image
+        for w in cat["artworks"]:
+            path_ = f"{imgs}/{w['id']}.jpg"
+            if not os.path.isfile(path_):
+                err(f"{w['id']}: falta {path_}")
+                continue
+            with Image.open(path_) as im:
+                check(im.size == packed_size(w["w"], w["h"]), f"{w['id']}: mide {im.size}, el catálogo espera {packed_size(w['w'], w['h'])}")
+                check(not im.getexif(), f"{w['id']}: lleva EXIF")
+        for k, src in enumerate(atlas["sheets"]):
+            p = f"{app}/{src}"
+            if os.path.isfile(p):
+                with Image.open(p) as im:
+                    check(list(im.size) == atlas["size"][k], f"{src}: tamaño {im.size} ≠ {atlas['size'][k]}")
+                    check(im.format == "JPEG" and not im.getexif(), f"{src}: no es JPEG limpio")
     app_files = sum(len(fs) for _, _, fs in os.walk(app))
     check(app_files < MAX_APP_FILES, f"{app_files} archivos en {app} (límite {MAX_APP_FILES})")
 
@@ -266,11 +246,9 @@ def main():
         print(f"{len(errors)} ERRORES")
         print("\n".join(errors))
         sys.exit(1)
-    total = sum(os.path.getsize(f"{app}/img/{f}") for f in files) / 1e6
-    print(f"OK: {len(cat['movements'])} movimientos, {len(aids)} pintores "
-          f"({sum(not a['guest'] for a in cat['artists'])} con etapa), "
-          f"{len(wids)} obras, {len(files)} archivos, {total:.1f} MB; "
-          f"atlas de {len(atlas['sheets'])} hojas, {thumbs_mb:.2f} MB; {app_files} archivos en la app; "
+    cats = Counter(a["category"] for a in cat["artists"] if a["onPath"])
+    print(f"OK: {len(cat['movements'])} movimientos, {len(aids)} pintores (camino: {dict(cats)}), {len(wids)} obras, "
+          f"{len(cat['branches'])} ramas, atlas de {len(atlas['sheets'])} hojas, {app_files} archivos en la app; "
           f"{sum(1 for w in cat['artworks'] if w.get('spoiler'))} con spoiler; "
           f"{sum(1 for w in cat['artworks'] if w.get('attributed'))} atribuidas")
 

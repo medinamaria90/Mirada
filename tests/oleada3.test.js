@@ -49,7 +49,7 @@ function assertNoSpoilerLeak(index, questions, label) {
 
 test('catálogo: miniatura en el atlas para todas las obras y `spoiler` solo como true', () => {
   const cat = realCatalog();
-  assert.ok(cat.atlas && cat.atlas.sheets.length >= 1 && cat.atlas.sheets.length <= 24);
+  assert.ok(cat.atlas && cat.atlas.sheets.length >= 1 && cat.atlas.sheets.length <= 100);
   assert.ok(cat.artworks.every((w) => Array.isArray(w.thumb) && w.thumb.length === 5));
   for (const w of real.artworks) {
     const t = w.thumb;

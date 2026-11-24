@@ -18,7 +18,7 @@ import { feedbackFor, mainTrait, artistLines } from '../app/js/engine/feedback.j
 import { emptyProgress, levelFor, levelAt, LEVELS, todayXp, normalizeGoal, DEFAULT_GOAL, GOAL_OPTIONS, hasMovementReview, isReviewUnlocked, pathProgress, isPathComplete, movementStatus } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { madridDayKey } from '../app/js/engine/dates.js';
-import { migrate, defaultState, SCHEMA_VERSION } from '../app/js/state/schema.js';
+import { migrate, defaultState, SCHEMA_VERSION, MIGRATIONS } from '../app/js/state/schema.js';
 import { createStore, STORAGE_KEY } from '../app/js/state/store.js';
 import { bigIndex, sampleIndex, mixedCatalog, memoryStorage } from './helpers.js';
 
@@ -97,7 +97,7 @@ test('distractores: el parecido medio sigue al objetivo y hasta la mitad hay com
 
 test('movimiento: siempre una opción contigua en el tiempo; desde la mitad, ninguna absurdamente lejana', () => {
   for (const index of [real, mixed]) {
-    const list = index.movements;
+    const list = index.movements.filter((m) => !m.branch);
     for (let s = 0; s < 300; s++) {
       const rng = createRng(`mov:${s}`);
       const art = rng.pick(index.path.flatMap((a) => index.worksOf(a.id)).filter((w) => !w.spoiler));
@@ -314,9 +314,9 @@ test('migración v2 → v3: añade meta diaria y XP por día sin perder progreso
     settings: { music: false, sfx: true, volume: 0.3, reducedMotion: true },
     session: { route: 'etapa-p11', kind: 'stage' },
   };
-  const out = migrate(v2);
+  const out = migrate(v2, MIGRATIONS, 3);
   assert.ok(SCHEMA_VERSION >= 3);
-  assert.equal(out.version, SCHEMA_VERSION);
+  assert.equal(out.version, 3);
   assert.equal(out.settings.dailyGoal, DEFAULT_GOAL);
   assert.equal(out.settings.music, false);
   assert.equal(out.settings.reducedMotion, true);

@@ -60,9 +60,11 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
 node --test tests/                              # pruebas del motor y del estado (rápidas, sin navegador)
 MIRADA_E2E=1 node --test tests/e2e.test.js      # humo en Chrome (~20 s)
 bash tests/e2e.sh                               # recorrido completo con auditoría de contraste y táctil (~6 min)
-python3 -I tools/validate_catalog.py app        # valida catálogo, imágenes y atlas
-python3 -I tools/patch_catalog.py app           # regenera el catálogo desde tools/catalog_data.py
-cd app && python3 -m http.server 8000           # servir en local
+python3 -I tools/catalog_from_pipeline.py app    # regenera app/data/catalog*.json desde catalogo/ (+ textos de tools/catalog_data.py)
+bash tools/fetch_images.sh <carpeta>            # baja las imágenes (release catalogo-img); con «app/img» también pinta el atlas
+python3 -I tools/make_atlas.py app <carpeta>    # solo el atlas de miniaturas (app/img/s) con las imágenes de <carpeta>
+python3 -I tools/validate_catalog.py app [<carpeta>]   # valida catálogo, ramas, atlas y, si se da, las imágenes
+python3 tools/serve_local.py 8000 app <carpeta> # servir en local, montando las imágenes de <carpeta> bajo /img/
 ```
 
 El e2e usa Playwright con Chrome del sistema; si en tu máquina están en otro sitio, pásalos en las
@@ -76,4 +78,6 @@ variables `MIRADA_PLAYWRIGHT` (carpeta del paquete) y `MIRADA_CHROME` (ejecutabl
 - `docs/BITACORA.md` — decisiones y versiones, en orden. `docs/eval/` — evaluaciones y auditoría de UX.
 - `contenido/lecciones/` — fichas por pintor con fuentes (piloto de 3 pintores).
 - `marca/` — fuentes de la propuesta de identidad (en curso, por rondas con María).
-- `catalogo/` y `pipeline/` — proceso que reúne ~1.000 obras desde Wikidata/Commons con GitHub Actions.
+- `catalogo/` y `pipeline/` — proceso que reúne las 1.315 obras desde Wikidata/Commons con GitHub Actions. Las imágenes
+  (`app/img/w*.jpg`) y el atlas (`app/img/s/`) NO están en el repo: se bajan y se pintan al desplegar (`tools/fetch_images.sh`).
+  En local, bájalas a una carpeta temporal fuera del repo y pásala en `MIRADA_IMG_DIR` al e2e.

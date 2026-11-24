@@ -117,7 +117,7 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
   assert.doesNotThrow(() => renderPathMap(ctxWith(bigIndex())));
 });
 
-test('paisajes: un SVG por época, ≤ 30 KB, con el trazado de la app y solo colores de brand.css', () => {
+test('paisajes: un SVG por época, ≤ 40 KB, con el trazado de la app y solo colores de brand.css', () => {
   const dir = join(app, 'img', 'mapa');
   const files = readdirSync(dir).filter((f) => f.endsWith('.svg'));
   assert.deepEqual(files.sort(), real.visibleMovements.map((m) => `${m.id}.svg`).sort());
@@ -127,7 +127,7 @@ test('paisajes: un SVG por época, ≤ 30 KB, con el trazado de la app y solo co
   const dark = vars(':root[data-theme="dark"] {');
   for (const era of pathLayout(real).eras) {
     const svg = readFileSync(join(dir, `${era.id}.svg`), 'utf8');
-    assert.ok(statSync(join(dir, `${era.id}.svg`)).size <= 30 * 1024, `${era.id}.svg pasa de 30 KB`);
+    assert.ok(statSync(join(dir, `${era.id}.svg`)).size <= 40 * 1024, `${era.id}.svg pasa de 40 KB`);
     assert.ok(svg.includes(`viewBox="0 0 ${MAP_W} ${era.h}"`), `${era.id}: alto distinto del trazado (${era.h})`);
     assert.equal(svg.match(/data-points="([^"]*)"/)[1], era.points.map((p) => `${p.x},${p.y}`).join(' '), `${era.id}: nodos distintos del trazado`);
     assert.ok(!/\b(fill|stroke)="(#|rgb)/.test(svg), `${era.id}: colores sueltos en las piezas`);

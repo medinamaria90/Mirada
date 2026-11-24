@@ -206,6 +206,46 @@ fallecidos antes de 1956 y obras anteriores a 1930. Movimientos previstos (ids):
   si se acierta (cuenta para la meta, no para la racha).
 - Estado v4 (`state/schema.js`, migración 3 → 4): `progress.weekly` y `progress.detail`.
 
+## 4 ter. Catálogo grande (migración de 24/11, `catalog.json` versión 2)
+
+Lo genera `tools/catalog_from_pipeline.py` desde `catalogo/obras.json` + `catalogo/pintores.json` (proceso `pipeline/`),
+con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antiguos.json` (`a<N>`/`b<N>` → `w<QID>`).
+1.315 obras (ids `w<QID>`), 162 pintores, 9 movimientos del camino + 2 ramas-movimiento, 14 ramas.
+
+- **Archivos** (`app/data/`): `catalog.json` (lo mínimo para pintar), `catalog-text.json` (versión 3: `look`, `looks`, `kind`,
+  `tags`, `traits`, `traitTags`, vocabulario) y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
+  `technique`, `dimensions`, `source {wikidata, file, license}`; se pide aparte por peso, `mergeCatalogFicha` la une a las obras).
+- **Obra**: `id, artistId, title, year, yearSort, img, thumb, w, h, role, fame, confidence, level, stage?, inSpain, spoiler?,
+  attributed?, focus?`. `w`/`h` son los de la imagen empaquetada a 1200 px. `level`: 1 = básico, 2..n = «a fondo» (etapa
+  `stage` = nombre). Obras con año desconocido: «s. XVIII» (el siglo, por el pintor). `spoiler`/`attributed` solo en las 9 obras
+  ya revisadas del catálogo anterior: **las nuevas están sin revisar** (firma visible, atribución).
+- **`role`**: grandes maestros y maestros, 4 obras «learn» de nivel 1 («Conoce a»; las con firma o atribución dudosa primero) y
+  el resto «new»; invitados y pintores de ramas, 2 «learn» y el resto «new»; todo lo de nivel ≥ 2 es «new».
+- **Pintor**: `id, name, short, movementId, born, died, country, order, section?, category` (`gran-maestro` | `maestro` |
+  `invitado` | `rama`), `guest` (sin etapa en el camino común), `onPath`, `stages [{id, name, from, to, source, verificar?,
+  provisional?}]` (niveles «a fondo» 2..n), `branches` (ids de rama), `hint`, `similarTo`. **Camino común (`onPath`)**: grandes
+  maestros + maestros + invitados con alguna obra de fama 3 (19); solo grandes maestros y maestros (56) son paradas, en el orden
+  de `tools/camino.json` (abre Botticelli; Rafael 3.º, Leonardo 4.º); los invitados del camino salen intercalados en el repaso
+  (`index.guestsAt`) y los demás invitados solo en las ramas «Descubre…». `order` y `section`: tramos de `tools/camino.json`.
+- **Movimiento**: además `branch: true` y `opensAt` en `gotico` (orden 0,5, se abre en el Renacimiento) y `ukiyo-e` (7,5,
+  Impresionismo); no son paradas ni salas ni opción de «¿De qué movimiento es?» salvo como respuesta.
+- **`branches`**: `[{ id, name, kind: 'epoca'|'escuela'|'rama', opensAt, artists: [ids cronológicos por nacimiento],
+  tramos: [{ opensAt, artists }] }]`: nueve «Descubre <época>», «Escuela rusa», «Pintura británica», «Maestros españoles»,
+  «Gótico» y «Estampa japonesa». Un tramo se abre al llegar a su época en el camino común (`engine/branches.js`).
+- **Imágenes y atlas**: `img` = `img/w<QID>.jpg` (1200 px, fuera del repo: `tools/fetch_images.sh` las baja de la release y
+  pinta el atlas con `tools/make_atlas.py`, 86 hojas de 15,5 MB, fuera del repo). `thumb` y `atlas` salen de
+  `tools/atlas_layout.py`, función solo del catálogo (no de los píxeles): coordenadas y hojas encajan siempre.
+- **Motor**: `buildIndex` lee `category`/`onPath`/`level`/`branches`; con `index.hasLevels` (catálogo con niveles) la ronda del
+  pintor es de 9 preguntas (8 con un solo pintor antes): calentamiento + 3 obras no enseñadas (nivel 1 que aún no ha visto,
+  después nivel 2+) + repaso de pintores anteriores (+ una obra de un invitado del camino de vez en cuando). **Dominado = haber
+  visto todas las obras de nivel 1** (`engine/levels.js`; `progress.artists[id].works`) **y ≥ 75 %** en la ronda (más la regla de
+  preguntas propias). Niveles «a fondo»: `planStage(index, id, seed, { level })`, una ronda por etapa que se desbloquea al
+  dominar el básico y el nivel anterior; su estado en `progress.deep['pintor:nivel']`; no tocan la parada del camino. Rangos:
+  `engine/ranks.js` (8 rangos, XP + «a fondo»; `progress.rank` guarda el más alto). Pintores de rama: la misma ronda (`before` =
+  los anteriores de su rama). Anti-trampa intacto (bots ≤ 5 %, descarte ≤ 25 %); la prueba de «dificultad justa» pasa a 60–80 %.
+- **Estado v7** (`state/schema.js`): obras `a<N>` → `w<QID>` (`state/legacy-ids.js`, generado), lo sin equivalente se pierde;
+  `deep: {}` y `rank: 0` nuevos; se descarta la ronda en curso.
+
 ## 5. Contrato del audio — `app/js/audio/index.js`
 
 ```js

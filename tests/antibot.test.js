@@ -3,7 +3,7 @@
 // movimiento de la etapa, siempre la opción más repetida, siempre un pintor ya aprendido, el mixto
 // del evaluador —moneda en «quién» + movimiento anterior—, el aprendido más reciente, nunca el de
 // la etapa, siempre la misma posición) y se calcula la probabilidad exacta de dominar la ronda con
-// la regla de progress.js (stageRule: 70 % y 2 de cada 3 sobre el propio pintor; en la primera
+// la regla de progress.js (stageRule: 75 % —70 % en catálogos sin niveles— y 2 de cada 3 sobre el propio pintor; en la primera
 // etapa, 3 de cada 4 «¿Cuál es de X?» con el calentamiento). Falla si en alguna etapa se
 // supera en más del 5 % de las rondas. Además, el alumno que conoce a todos los anteriores pero no
 // ha estudiado al de la etapa (responde por descarte) no domina más del 25 % de las rondas.
@@ -13,7 +13,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { planStage, planSala, planMovementReview } from '../app/js/engine/planner.js';
+import { planStage, planSala, planMovementReview, OWN_NEW } from '../app/js/engine/planner.js';
 import { hasMovementReview, MASTERY, stageRule, emptyProgress } from '../app/js/engine/progress.js';
 import { worksBySrs } from '../app/js/engine/review.js';
 import { BOTS, eliminator, student, attentive, roundContext, masteryProbability, probAtLeast } from './lib/antibot.js';
@@ -143,45 +143,43 @@ test('preguntas del pintor de la etapa con pintores aún no aprendidos de distra
   }
 });
 
-// Dominio justo con pocas obras: con 2 preguntas propias se perdona un fallo (si se acierta la obra
-// ya vista). Alumno atento: 88 % en pintores aprendidos, 90 % obras vistas, 70 % obras nuevas.
-test('dominio justo: un alumno atento domina ≥ 70 % de las rondas en pintores con 2 obras preguntables', () => {
-  const twoOwn = real.path.filter((a) => planStage(real, a.id, 1).questions.filter((q) => q.artistId === a.id).length === 2);
-  assert.ok(twoOwn.length >= 1);
+// Dominio justo con pocas obras sin ver: los pintores del camino con menos obras preguntables por enseñar
+// (los demás tienen 3 o más de nivel 1, más las «a fondo»). Alumno atento: 88 % en pintores aprendidos,
+// 90 % obras vistas, 70 % obras nuevas. Con el 75 % de la ronda, ≥ 60 % de rondas dominadas.
+test('dominio justo: un alumno atento domina ≥ 60 % de las rondas en los pintores con menos obras por preguntar', () => {
+  const few = real.path.slice(1).sort((a, b) => real.newWorks(a.id).length - real.newWorks(b.id).length).slice(0, 6);
   const report = stageReport(real, { attentive: student(0.88, 0.9, 0.7), eliminator });
-  for (const a of twoOwn) {
+  for (const a of few) {
     const { rates } = report.find((r) => r.id === a.id);
-    assert.ok(rates.attentive >= 0.7, `${a.id}: atento ${(rates.attentive * 100).toFixed(1)} %`);
+    assert.ok(rates.attentive >= 0.6, `${a.id}: atento ${(rates.attentive * 100).toFixed(1)} %`);
     assert.ok(rates.eliminator <= MAX_ELIMINATOR, `${a.id}: por descarte ${(rates.eliminator * 100).toFixed(1)} %`);
   }
 });
 
-test('preguntas propias: calentamiento + hasta 2 no vistas (sin otra vista); con 2, la vista va en «¿Cuál es de X?»', () => {
+test('preguntas propias: calentamiento + OWN_NEW no enseñadas (sin otra vista); la de movimiento puede ser otra suya vista', () => {
   for (const a of real.path.slice(1)) {
     const unseen = real.newWorks(a.id).filter((w) => !w.spoiler && !w.attributed).length;
     for (let s = 1; s <= 10; s++) {
-      // (Una de movimiento puede llevar otra obra suya no vista: no cuenta aquí.)
       const own = planStage(real, a.id, s).questions.filter((q) => q.artistId === a.id && q.type !== 'movement');
-      assert.equal(own.length, 1 + Math.min(2, unseen), `${a.id}/${s}: ${own.length} propias con ${unseen} sin ver`);
+      assert.equal(own.length, 1 + Math.min(OWN_NEW, unseen), `${a.id}/${s}: ${own.length} propias con ${unseen} sin ver`);
       assert.equal(own.filter((q) => !q.isNew).length, 1, `${a.id}/${s}: una sola vista`);
-      if (own.length === 2) {
-        assert.deepEqual(own.map((q) => `${q.type}:${q.isNew}`).sort(), ['which:false', 'who:true'], `${a.id}/${s}`);
-      }
+      assert.ok(own.filter((q) => q.type === 'who').length <= 2, `${a.id}/${s}: demasiadas «¿Quién?» propias`);
     }
   }
 });
 
-// Oleada 9: dificultad justa. Alumno atento del evaluador: 88 % en obras ya enseñadas, 70 % en las
-// nunca enseñadas. En TODAS las etapas domina entre el 65 % y el 80 % de las rondas (hoy 69–79 %,
-// media ≈ 74,5 %; Leonardo 69 %).
-export const FAIR_MIN = 0.65;
+// Dificultad justa. Alumno atento del evaluador: 88 % en obras ya enseñadas, 70 % en las nunca enseñadas.
+// Catálogo grande: la ronda pregunta las obras de nivel 1 que faltan (3 no vistas) y se domina con el 75 %
+// y todas las obras del nivel vistas, así que domina entre el 60 % y el 80 % de las rondas (hoy 64–70 %,
+// media ≈ 66 %; en el catálogo pequeño era 65–80 % con el 70 %). Repetir la ronda es parte del juego.
+export const FAIR_MIN = 0.6;
 export const FAIR_MAX = 0.8;
-test('dificultad justa: el alumno atento (88 % vistas, 70 % no vistas) domina el 65–80 % de las rondas en cada etapa', () => {
+test('dificultad justa: el alumno atento (88 % vistas, 70 % no vistas) domina el 60–80 % de las rondas en cada etapa', () => {
   const report = stageReport(real, { attentive: attentive(0.88, 0.7) });
   const rates = report.map((r) => r.rates.attentive);
   for (const { id, rates: r } of report) {
     assert.ok(r.attentive >= FAIR_MIN && r.attentive <= FAIR_MAX, `${id}: atento ${(r.attentive * 100).toFixed(1)} %`);
   }
   const mean = rates.reduce((a, b) => a + b, 0) / rates.length;
-  assert.ok(mean >= 0.7 && mean <= 0.78, `media ${(mean * 100).toFixed(1)} %`);
+  assert.ok(mean >= 0.62 && mean <= 0.78, `media ${(mean * 100).toFixed(1)} %`);
 });

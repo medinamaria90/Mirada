@@ -1,7 +1,7 @@
 // Bienvenida (primera vez).
 
 import { onAction, focusHeading } from '../dom.js';
-import { artFrame } from '../art.js';
+import { artFrame, coverOf } from '../art.js';
 import { logoMark } from '../icons.js';
 
 export function renderWelcome(ctx, el) {
@@ -9,8 +9,9 @@ export function renderWelcome(ctx, el) {
   // Tres obras icónicas de movimientos distintos como pequeña sala de exposición.
   const picks = [];
   for (const m of index.movements) {
-    const works = index.stageArtists(m.id).flatMap((a) => index.learnWorks(a.id)).sort((a, b) => (b.fame || 0) - (a.fame || 0));
-    if (works[0]) picks.push(works[0]);
+    // La portada más conocida del movimiento (están juntas en la primera hoja del atlas).
+    const covers = index.stageArtists(m.id).map((a) => coverOf(index, a.id)).filter(Boolean).sort((a, b) => (b.fame || 0) - (a.fame || 0));
+    if (covers[0]) picks.push(covers[0]);
     if (picks.length === 3) break;
   }
   const wall = picks.map((w, i) => `<span class="wall-item wall-${i}">${artFrame(w, { alt: '', eager: true, label: '', thumb: true, zoom: { group: 'welcome' } })}</span>`).join('');

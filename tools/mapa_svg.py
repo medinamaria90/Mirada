@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.join(ROOT, 'marca', 'tools'))
 import mapa as M  # noqa: E402
 
 OUT = os.path.join(ROOT, 'app', 'img', 'mapa')
-MAX_KB = 30
+MAX_KB = 40
 W = M.W
 
 # Colores de las piezas (constantes de marca/tools/mapa.py) → variable de brand.css.

@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { realIndex, realCatalogJson } from './helpers-real.js';
+import { realIndex, realCatalogJson, W } from './helpers-real.js';
 import { bigIndex, sampleIndex } from './helpers.js';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { createRng } from '../app/js/engine/rng.js';
@@ -53,7 +53,7 @@ test('preguntas fijas: mezcla de mecánicas y de épocas; españoles en todos lo
     assert.equal(kinds.size, KINDS.length, `tramo ${t.name}: las tres mecánicas`);
   }
   const movementOf = (q) => index.artist(index.artwork(q.artwork).artistId).movementId;
-  assert.equal(new Set(questions.map(movementOf)).size, index.movements.length, 'todas las épocas del catálogo');
+  assert.equal(new Set(questions.map(movementOf)).size, index.movements.filter((m) => !m.branch).length, 'todas las épocas del camino');
   const spanish = questions.filter((q) => index.artist(index.artwork(q.artwork).artistId).country === 'España');
   assert.ok(spanish.length >= MIN_SPANISH, `${spanish.length} preguntas con pintor español`);
   for (const t of TIERS) assert.ok(spanish.some((q) => q.tier === t.id), `tramo ${t.name} con algún español`);
@@ -313,11 +313,12 @@ test('bolsa: cada tramo con al menos 24 candidatas, las tres mecánicas y algún
     assert.ok(new Set(pool.map((c) => c.movementId)).size >= MIN_ERAS, `tramo ${t.name}: pocas épocas`);
     assert.ok(pool.some((c) => c.spanish), `tramo ${t.name}: sin españoles`);
   }
-  // Toda obra que puede preguntarse (sin firma ni atribución dudosa) está en algún tramo.
+  // Toda obra que puede preguntarse (sin firma ni atribución dudosa) y tiene pista (suya o de su pintor) está en
+  // algún tramo; las nuevas del catálogo grande sin ninguna pista esperan a que se escriba.
   const inBolsa = new Set(bolsa.candidates.map((c) => c.artwork));
   const excluded = new Set(adjustments.excluir || []);
   for (const w of index.artworks) {
-    if (w.spoiler || w.attributed || excluded.has(w.id)) continue;
+    if (w.spoiler || w.attributed || excluded.has(w.id) || !w.look && !index.artist(w.artistId).hint) continue;
     assert.ok(inBolsa.has(w.id), `${w.id} (${w.title}) sin clasificar`);
   }
   assert.equal(bolsa.byId.size, bolsa.candidates.length, 'ids únicos');
@@ -361,9 +362,9 @@ test('bolsa: las 40 fijas siguen en su tramo (con sus opciones) y sus obras tamb
   for (const c of bolsa.candidates.filter((x) => x.source === 'regla')) assert.equal(c.tier, tierForScore(c.score), c.id);
   // Excluir quita la obra entera o solo una mecánica.
   const w = bolsa.candidates.find((c) => c.source === 'regla').artwork;
-  const without = buildBolsa(index, { fixed: questions, adjustments: { excluir: [w, 'a167:which'] } });
+  const without = buildBolsa(index, { fixed: questions, adjustments: { excluir: [w, `${W('a167')}:which`] } });
   assert.ok(!without.candidates.some((c) => c.artwork === w));
-  assert.ok(!without.byId.has('which-a167') && without.candidates.some((c) => c.artwork === 'a167'));
+  assert.ok(!without.byId.has(`which-${W('a167')}`) && without.candidates.some((c) => c.artwork === W('a167')));
 });
 
 test('bolsa: la dificultad crece con los tramos (obras menos famosas y distractores más parecidos arriba)', () => {

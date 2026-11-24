@@ -2,8 +2,9 @@
 
 import { emptyProgress, DEFAULT_GOAL } from '../engine/progress.js';
 import { addDays, isDayKey } from '../engine/dates.js';
+import { LEGACY_IDS } from './legacy-ids.js';
 
-export const SCHEMA_VERSION = 6;
+export const SCHEMA_VERSION = 7;
 
 // Tema de la interfaz (settings.theme): claro, oscuro o como el móvil (el sistema).
 export const THEMES = ['light', 'dark', 'system'];
@@ -61,6 +62,48 @@ export const MIGRATIONS = {
     return {
       ...old,
       progress: { ...progress, fallados: [], seen: {}, streak: { ...streak, graceDays } },
+    };
+  },
+  // 6 → 7 (catálogo grande): las obras pasan de a<N>/b<N> a w<QID> (state/legacy-ids.js); lo que no
+  // tiene equivalente se pierde sin romper nada. Los pintores conservan su id (los nuevos empiezan sin
+  // progreso). Nuevos: niveles «a fondo» (deep) y rango más alto alcanzado (rank). La ronda en curso
+  // se descarta (lleva obras con ids antiguos).
+  6: (old) => {
+    const progress = isPlain(old.progress) ? old.progress : {};
+    // a<N>/b<N> → w<QID>; un id que ya es del catálogo grande (w<QID>) se conserva; el resto se pierde.
+    const tr = (id) => (typeof id !== 'string' ? null : Object.hasOwn(LEGACY_IDS, id) ? LEGACY_IDS[id] : /^w\d+$/.test(id) ? id : null);
+    const byWork = (dict, wrap = (id) => id) => {
+      const out = {};
+      if (isPlain(dict)) for (const [k, v] of Object.entries(dict)) { const n = tr(k); if (n) out[wrap(n)] = v; }
+      return out;
+    };
+    const srs = {};
+    if (isPlain(progress.srs)) {
+      for (const [k, v] of Object.entries(progress.srs)) {
+        if (!k.startsWith('art:')) srs[k] = v;
+        else { const n = tr(k.slice(4)); if (n) srs[`art:${n}`] = v; }
+      }
+    }
+    const detail = {};
+    if (isPlain(progress.detail)) {
+      for (const [day, d] of Object.entries(progress.detail)) {
+        const n = isPlain(d) ? tr(d.artworkId) : null;
+        if (n) detail[day] = { ...d, artworkId: n };
+      }
+    }
+    return {
+      ...old,
+      session: {},
+      progress: {
+        ...progress,
+        collection: byWork(progress.collection),
+        srs,
+        detail,
+        fallados: (Array.isArray(progress.fallados) ? progress.fallados : [])
+          .filter((f) => f && tr(f.id)).map((f) => ({ ...f, id: tr(f.id) })),
+        deep: {},
+        rank: 0,
+      },
     };
   },
 };

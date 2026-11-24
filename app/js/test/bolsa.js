@@ -82,7 +82,7 @@ export function intrinsicScore(index, work, kind) {
 // Parte que ponen los distractores de la pregunta ya hecha (formato del motor).
 export function distractorScore(index, q, work) {
   if (q.type === 'movement') {
-    const list = index.movements;
+    const list = index.movements.filter((m) => !m.branch);
     const pos = list.findIndex((m) => m.id === q.answerId);
     const gaps = q.options.filter((o) => o.id !== q.answerId).map((o) => Math.abs(list.findIndex((m) => m.id === o.id) - pos));
     const mean = gaps.reduce((n, g) => n + g, 0) / gaps.length;
@@ -164,6 +164,9 @@ export function buildBolsa(index, { fixed = [], adjustments = null } = {}) {
     for (const kind of KINDS) {
       if (fixedKeys.has(`${work.id}:${kind}`)) continue;
       if (exclude.has(work.id) || exclude.has(`${work.id}:${kind}`)) continue;
+      // Sin pista de la obra (look) ni de su pintor (hint) no hay nada honesto que decir al fallar: la obra entra
+      // en la bolsa cuando alguien escriba una (catálogo grande: los textos de las obras nuevas están por escribir).
+      if (hintFor(index, work) === FALLBACK_HINT) continue;
       const id = `${kind}-${work.id}`;
       const intrinsic = intrinsicScore(index, work, kind);
       const q = engineQuestion(index, work, kind, intrinsic, id);

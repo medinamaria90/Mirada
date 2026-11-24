@@ -78,10 +78,10 @@ export function firstStageOwnMastered(own) {
 
 // ¿La ronda de etapa domina al pintor? answers: [{ q, correct, retry }] (las de reintento no cuentan).
 // first: primera etapa del camino.
-export function stageRoundMastered(answers, artistId, accuracy, { first = false } = {}) {
+export function stageRoundMastered(answers, artistId, accuracy, { first = false, mastery = STAGE_MASTERY } = {}) {
   const own = answers.filter((a) => !a.retry && a.q && a.q.artistId === artistId);
   if (first) return firstStageOwnMastered(own);
-  if (accuracy < STAGE_MASTERY) return false;
+  if (accuracy < mastery) return false;
   return ownRoundMastered(own);
 }
 
@@ -89,7 +89,12 @@ export function stageRoundMastered(answers, artistId, accuracy, { first = false 
 export function stageRule(index, artistId) {
   return index.pathIndex(artistId) === 0
     ? { mastery: 0, ownRule: firstStageOwnMastered }
-    : { mastery: STAGE_MASTERY, ownRule: ownRoundMastered };
+    : { mastery: stageMastery(index), ownRule: ownRoundMastered };
+}
+
+// Umbral de una etapa: 70 % en el catálogo pequeño y 75 % (decisión de María) en el grande con niveles.
+export function stageMastery(index) {
+  return index.hasLevels ? 0.75 : STAGE_MASTERY;
 }
 // Para abrir la parada siguiente hace falta acertar al menos la mitad en esta.
 export const UNLOCK_MIN = 0.5;
@@ -110,6 +115,10 @@ export function emptyProgress() {
     daily: {},
     weekly: {},
     detail: {},
+    // Niveles «a fondo»: { 'pintor:nivel': { plays, best, mastered, last } } (engine/levels.js).
+    deep: {},
+    // Rango más alto alcanzado (índice en engine/ranks.js): nunca baja.
+    rank: 0,
     challenges: { played: 0 },
     xpByDay: {},
     // Cuadros fallados que vuelven: [{ id, date, times, hits }] (engine/review.js).

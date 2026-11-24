@@ -321,8 +321,8 @@ async function viewerCheck(page, label, opener, { reveal = true, forbidden = [],
   });
   check(info.tag === 'DIALOG' && info.modal && info.name.trim().length > 0, `[visor ${label}] no es un diálogo modal con nombre ${JSON.stringify(info.name)}`);
   check(info.full, `[visor ${label}] no ocupa toda la ventana`);
-  check(/^img\/[ab]\d+\.jpg$/.test(info.src || '') && info.loaded, `[visor ${label}] sin la imagen grande cargada (${info.src})`);
-  check(!info.thumb || /^img\/(s\/|[ab]\d+\.jpg)/.test(info.thumb), `[visor ${label}] miniatura rara (${info.thumb})`);
+  check(/^img\/w\d+\.jpg$/.test(info.src || '') && info.loaded, `[visor ${label}] sin la imagen grande cargada (${info.src})`);
+  check(!info.thumb || /^img\/(s\/|w\d+\.jpg)/.test(info.thumb), `[visor ${label}] miniatura rara (${info.thumb})`);
   check(info.fit && info.inView && info.big, `[visor ${label}] el cuadro no se ve entero y grande ${JSON.stringify({ fit: info.fit, inView: info.inView, big: info.big })}`);
   check(info.close[0] >= 48 && info.close[1] >= 48, `[visor ${label}] cerrar de ${info.close.map(Math.round).join('×')}`);
   check(info.focusIn, `[visor ${label}] el foco no está en el visor`);
@@ -761,7 +761,9 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // de la parada actual y, si asoma, el del siguiente (≤ 30 KB cada uno; los demás se piden al acercarse):
 // 32 peticiones; los KB bajan (339 medidos) porque el mapa pinta menos miniaturas del atlas de golpe.
 // La bienvenida gana 7 KB por las variables del mapa en brand.css (claro + dos copias del oscuro).
-const BOOT_BUDGET = { welcome: { requests: 24, kb: 410 }, home: { requests: 32, kb: 440 } };
+// Catálogo grande: +1 petición en la bienvenida (state/legacy-ids.js, la tabla de la migración v7, que importa schema.js).
+// El servidor de pruebas comprime como Render (tools/serve_local.py), así que los KB son los comprimidos.
+const BOOT_BUDGET = { welcome: { requests: 25, kb: 410 }, home: { requests: 32, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -1355,7 +1357,7 @@ await dpage0.waitForTimeout(500);
 await shot(dpage0, '28b-detalle-del-dia');
 check(await detailCard.locator('.detail-option').count() === 4, 'el detalle no tiene 4 opciones');
 const cropImg = await detailCard.locator('.detail-crop img').evaluate((img) => ({ t: getComputedStyle(img).transform, src: img.getAttribute('src') }));
-check(cropImg.t !== 'none' && /^img\/[ab]\d+\.jpg$/.test(cropImg.src), `recorte del detalle raro: ${JSON.stringify(cropImg)}`);
+check(cropImg.t !== 'none' && /^img\/w\d+\.jpg$/.test(cropImg.src), `recorte del detalle raro: ${JSON.stringify(cropImg)}`);
 const xpBefore = await dpage0.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).progress.xp);
 await detailCard.locator('.detail-option').first().click();
 await dpage0.waitForSelector('.detail-result');
@@ -1531,7 +1533,7 @@ for (const mode of ['font', 'viewport']) {
   const zpage = await zoom.newPage();
   watch(zpage, `zoom-${mode}`);
   if (mode === 'font') await zpage.addInitScript(() => document.addEventListener('DOMContentLoaded', () => { document.documentElement.style.fontSize = '200%'; }));
-  await seed(zpage, seededState({ upTo: 9, extra: { collection: { [index.path[0].id === 'leonardo' ? 'a154' : catalog.artworks[0].id]: '2026-11-20' } } }));
+  await seed(zpage, seededState({ upTo: 9, extra: { collection: { [catalog.artworks[0].id]: '2026-11-20' } } }));
   await zpage.waitForSelector('.path');
   await noHorizontalScroll(zpage, `zoom ${mode} inicio`);
   await shot(zpage, `33-zoom200-${mode}-inicio`);
@@ -2239,7 +2241,7 @@ for (const scheme of ['light', 'dark']) {
       check(li.inside, `[lupa ${label}] la lente se sale de la pantalla ${JSON.stringify(li)}`);
       check(li.w >= (cfg.width >= 1000 ? 180 : 150) && li.w <= (cfg.width >= 1000 ? 240 : 175), `[lupa ${label}] lente de ${Math.round(li.w)} px`);
       check(li.z >= 1.5 && li.z <= 2.51, `[lupa ${label}] aumento ×${li.z.toFixed(2)}`);
-      check(/img\/[ab]\d+\.jpg/.test(li.bg), `[lupa ${label}] la lente no usa la imagen grande (${li.bg})`);
+      check(/img\/w\d+\.jpg/.test(li.bg), `[lupa ${label}] la lente no usa la imagen grande (${li.bg})`);
       if (cfg.touch) check(li.y + li.h <= at(1).y || li.y >= at(1).y, `[lupa ${label}] la lente tapa el dedo`);
       if (shotName) await shot(pg, shotName);
     }

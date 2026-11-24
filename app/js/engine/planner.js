@@ -3,7 +3,7 @@
 
 import { createRng } from './rng.js';
 import { makeQuestion, makeWhoQuestion, makeMovementQuestion, isSpoiler, noAuthorQuestion } from './questions.js';
-import { salaLearnWorks, SALA_LEARN } from './catalog.js';
+import { salaLearnWorks, SALA_LEARN, levelOf } from './catalog.js';
 import { REVIEW5_SIZE } from './review.js';
 
 // Ejecución de una ronda (cola, reintentos y puntuación): engine/round.js.
@@ -15,6 +15,13 @@ export const MIN_ROUND = 6; // preguntas mínimas de una etapa (salvo la primera
 export const STAGE_ROUND = 8; // preguntas de una etapa (propias + repaso)
 export const FIRST_STAGE_ROUND = 5; // primera etapa: calentamiento + 4 obras no vistas, sin repetir
 export const ROUND_SIZE = 10;
+// Catálogo grande (con niveles): ronda de 9 (8 con un solo pintor aprendido antes); «≥ 75 %» son 7 de 9.
+export const STAGE_ROUND_LEVELS = 9;
+// Obras no enseñadas que se preguntan en la ronda del pintor, además del calentamiento: primero las de nivel
+// 1 que aún no ha visto, luego las de nivel 2 o más (ración de «a fondo») y, si no quedan, las ya vistas.
+export const OWN_NEW = 3;
+export const GUEST_SHARE = 0.35; // probabilidad de que una pregunta de repaso «nueva» sea de un invitado del camino
+export const OWN_DEEP_MAX = 6; // preguntas propias de una ronda «a fondo» (todas las obras de su nivel)
 
 // Curva de dificultad del camino: 0,05 en la primera parada → 0,75 en la última, lineal por
 // parada (pintores y salas). Dentro de cada ronda sube ROUND_SPAN de forma continua.
@@ -23,7 +30,7 @@ export const CURVE_END = 0.75;
 export const ROUND_SPAN = 0.1;
 
 export function stepDifficulty(index, type, id) {
-  const i = index.stepIndex(type, id);
+  const i = type === 'artist' && index.stepIndex(type, id) < 0 ? index.difficultyStep(id) : index.stepIndex(type, id);
   const n = Math.max(1, index.steps.length - 1);
   return CURVE_START + (CURVE_END - CURVE_START) * (Math.max(0, i) / n);
 }
@@ -63,10 +70,16 @@ export function planStage(index, artistId, seed, opts = {}) {
   const rng = createRng(`stage:${artistId}:${seed}`);
   const base = baseDifficulty(index, artistId);
   const learn = index.learnWorks(artistId).slice().sort((a, b) => b.fame - a.fame);
-  const before = index.path.slice(0, Math.max(0, index.pathIndex(artistId)));
+  // Nivel 1 = «Conoce a» + ronda del pintor; 2..n = ronda «a fondo» de su etapa (todas sus obras).
+  const level = Number.isInteger(opts.level) && opts.level >= 2 ? opts.level : 1;
+  const seen = new Set(opts.seen || []);
+  const before = opts.before || (index.pathIndex(artistId) >= 0
+    ? index.path.slice(0, index.pathIndex(artistId))
+    : index.branchBefore(artistId));
+  const own = ownSelection(index, artist, learn, rng, { level, seen, first: !before.length });
   const slots = before.length
-    ? stageSlots(index, artist, learn, before, rng, opts.review || [])
-    : firstStageSlots(index, artist, learn, rng);
+    ? stageSlots(index, artist, learn, before, rng, opts.review || [], own)
+    : firstStageSlots(index, artist, learn, rng, own);
   const avoid = slots.map((s) => s.work.id).concat(slots.flatMap((s) => s.includeWorks || []));
   // Fase de cada pregunta: «practice» si el cuadro se enseña en «Conoce a» de su pintor y «fresh» si
   // no. Las dos van mezcladas en la ronda (sin pantalla intermedia).
@@ -74,7 +87,7 @@ export function planStage(index, artistId, seed, opts = {}) {
     .map((q) => ({ ...q, phase: index.artwork(subjectOf(q))?.role === 'learn' ? 'practice' : 'fresh' }));
   const practice = questions.filter((q) => q.phase === 'practice');
   const fresh = questions.filter((q) => q.phase === 'fresh');
-  return { kind: 'stage', artistId, seed, learn, practice, fresh, questions };
+  return { kind: 'stage', artistId, seed, ...(level > 1 ? { level } : {}), learn, practice, fresh, questions };
 }
 
 export function subjectOf(q) {
@@ -105,6 +118,27 @@ export function pickOwnWorks(index, artistId, learn, rng, fresh = OWN_FRESH) {
   return { warm, fresh: freshWorks, reserve };
 }
 
+// Selección de obras propias de una ronda. Sin niveles (catálogos pequeños): pickOwnWorks. Con niveles:
+//  · nivel 1: calentamiento (una de «Conoce a») + OWN_NEW obras no enseñadas (nivel 1 no vistas, después nivel 2+);
+//  · «a fondo» (level ≥ 2): las obras de ese nivel, primero las no vistas (hasta OWN_DEEP_MAX).
+function ownSelection(index, artist, learn, rng, { level, seen, first: noBefore }) {
+  if (!index.hasLevels) return pickOwnWorks(index, artist.id, learn, rng);
+  const unseenFirst = (list) => [...rng.shuffle(list.filter((w) => !seen.has(w.id))), ...rng.shuffle(list.filter((w) => seen.has(w.id)))];
+  if (level >= 2) {
+    const pool = unseenFirst(clean(index.levelWorks(artist.id, level)));
+    return { warm: [], fresh: pool.slice(0, OWN_DEEP_MAX), reserve: pool[OWN_DEEP_MAX] || clean(learn)[0] || null };
+  }
+  const warm = clean(learn).slice(0, 1);
+  const works = clean(index.worksOf(artist.id)).filter((w) => w.role === 'new');
+  const byLevel = (l) => unseenFirst(works.filter((w) => (l === 1 ? levelOf(w) === 1 : levelOf(w) >= 2)));
+  const pool = [...byLevel(1).filter((w) => !seen.has(w.id)), ...byLevel(2).filter((w) => !seen.has(w.id)),
+    ...byLevel(1).filter((w) => seen.has(w.id)), ...byLevel(2).filter((w) => seen.has(w.id))];
+  // Primera etapa (nadie antes): una obra más, para que la ronda llegue a FIRST_STAGE_ROUND.
+  const fresh = pool.slice(0, OWN_NEW + (noBefore || !warm.length ? 1 : 0));
+  const reserve = clean(learn)[1] || pool[fresh.length] || null;
+  return { warm, fresh, reserve };
+}
+
 // Obras propias sobrantes para «¿De qué movimiento es?»: mejor las que no se han enseñado.
 function spareWorks(works) {
   const unseen = works.filter((w) => w.role !== 'learn');
@@ -123,15 +157,22 @@ function interleave(a, b) {
 
 // Tamaño de la ronda: STAGE_ROUND; con un solo pintor aprendido antes (sus obras se acaban y casi
 // todas salieron en su ronda como no vistas), una menos.
-function stageRoundSize(before) {
-  return before.length < 2 ? STAGE_ROUND - 1 : STAGE_ROUND;
+function stageRoundSize(before, index) {
+  const size = index.hasLevels ? STAGE_ROUND_LEVELS : STAGE_ROUND;
+  return before.length < 2 ? size - 1 : size;
 }
 
-function stageSlots(index, artist, learn, before, rng, reviewIds = []) {
-  const { warm, fresh: ownFresh, reserve } = pickOwnWorks(index, artist.id, learn, rng);
+function stageSlots(index, artist, learn, before, rng, reviewIds, selection) {
+  const { warm, fresh: ownFresh, reserve } = selection;
   // Calentamiento (obra vista) primero; luego sus obras no vistas.
   const ownWorks = [...warm, ...ownFresh].map((w) => ({ w, phase: w.role === 'learn' ? 'practice' : 'fresh' }));
   const ownTypes = alternate(ownWorks.length, rng);
+  // Con muchas obras propias, como mucho dos «¿Quién?» (y una con un solo pintor aprendido): el resto,
+  // «¿Cuál es de X?», para que el repaso de pintores anteriores siga siendo la mitad de los «¿Quién?».
+  if (index.hasLevels && ownWorks.length >= 4) {
+    let who = 0;
+    ownTypes.forEach((t, i) => { if (t === 'who' && ++who > (before.length < 2 ? 1 : 2)) ownTypes[i] = 'which'; });
+  }
   // Con solo 2 obras suyas, la ya vista va en «¿Cuál es de X?» (relleno sin aprender: por descarte,
   // 1 de cada 4) y la nueva en «¿Quién?». La regla de dominio perdona un fallo si se acierta esa
   // (progress.ownRoundMastered).
@@ -141,7 +182,7 @@ function stageSlots(index, artist, learn, before, rng, reviewIds = []) {
   }
   // Con un solo pintor aprendido antes, todas las «¿Quién?» llevarían a los dos: solo una propia
   // (la segunda), para que elegir siempre la opción más repetida no baste.
-  if (before.length < 2 && ownWorks.length === 3) ownWorks.forEach((_, i) => { ownTypes[i] = i === 1 ? 'who' : 'which'; });
+  if (before.length < 2 && ownWorks.length === 3 && !index.hasLevels) ownWorks.forEach((_, i) => { ownTypes[i] = i === 1 ? 'who' : 'which'; });
   const ownWho = ownTypes.filter((t) => t === 'who').length;
 
   // Pintores ya aprendidos: primero los recientes (más parecidos), luego el resto.
@@ -152,6 +193,8 @@ function stageSlots(index, artist, learn, before, rng, reviewIds = []) {
   let cursor = 0;
   const beforeIds = new Set(before.map((a) => a.id));
   const hints = reviewIds.map((id) => index.artwork(id)).filter((w) => w && beforeIds.has(w.artistId) && !noAuthorQuestion(w));
+  // Invitados del camino ya presentados: sus obras (nunca enseñadas) salen intercaladas en el repaso.
+  const guestPool = index.hasLevels ? rng.shuffle(index.guestsUpTo(artist.id).flatMap((g) => clean(index.worksOf(g.id)).filter((w) => w.role === 'new'))) : [];
   const pickWork = (prefer, filter = () => true) => {
     const h = hints.findIndex((w) => !used.has(w.id) && filter(index.artist(w.artistId)));
     if (h >= 0) {
@@ -175,18 +218,24 @@ function stageSlots(index, artist, learn, before, rng, reviewIds = []) {
   // para llegar al tamaño de la ronda).
   const review = [];
   const reviewWho = Math.max(2, ownWho);
-  const phaseAt = (i) => (i % 2 ? 'fresh' : 'practice');
+  // Catálogo grande: el repaso es de obras ya enseñadas (las nuevas de cada ronda son las propias) y, de
+  // vez en cuando, una obra de un invitado del camino, que nunca se ha enseñado.
+  const phaseAt = (i) => (index.hasLevels ? 'practice' : i % 2 ? 'fresh' : 'practice');
   for (let i = 0; i < reviewWho; i++) {
-    const w = pickWork(phaseAt(i) === 'practice' ? 'learn' : 'new');
+    const guest = guestPool.length && rng.next() < GUEST_SHARE ? guestPool.shift() : null;
+    if (guest) used.add(guest.id);
+    const w = guest || pickWork(phaseAt(i) === 'practice' ? 'learn' : 'new');
     // Con el de la etapa y otro pintor ya aprendido de distractores: elegir siempre al aprendido
     // (o al más reciente) no basta.
     const mates = before.filter((a) => a.id !== w?.artistId);
-    if (w) review.push({ work: w, type: 'who', phase: phaseAt(i), include: [artist.id, ...(mates.length ? [rng.pick(mates).id] : [])] });
+    if (w) review.push({ work: w, type: 'who', phase: guest ? 'fresh' : phaseAt(i), include: [artist.id, ...(mates.length ? [rng.pick(mates).id] : [])] });
   }
   const movementSlot = movementReviewSlot(index, artist, before, rng, pickWork, {
-    spare: spareWorks(index.worksOf(artist.id).filter((w) => !isSpoiler(w) && w !== reserve && !ownWorks.some((o) => o.w === w))),
+    spare: index.hasLevels
+      ? clean(learn).filter((w) => w !== reserve && !ownWorks.some((o) => o.w === w))
+      : spareWorks(index.worksOf(artist.id).filter((w) => !isSpoiler(w) && w !== reserve && !ownWorks.some((o) => o.w === w))),
   });
-  const reviewWhich = Math.max(1, stageRoundSize(before) - ownWorks.length - review.length - (movementSlot ? 1 : 0));
+  const reviewWhich = Math.max(index.hasLevels ? 0 : 1, stageRoundSize(before, index) - ownWorks.length - review.length - (movementSlot ? 1 : 0));
   for (let i = 0; i < reviewWhich; i++) {
     const whichWork = pickWork('learn');
     if (!whichWork) break;
@@ -231,17 +280,18 @@ function movementReviewSlot(index, artist, before, rng, pickWork, { spare = [] }
   if (prevMovs.length + (canCurrent ? 1 : 0) < 2) return null;
   let work = null;
   if (canCurrent && rng.next() < MOVEMENT_CURRENT_SHARE) {
-    work = peers.length ? pickWork('new', (a) => a.movementId === artist.movementId) : null;
+    work = peers.length ? pickWork(index.hasLevels ? 'learn' : 'new', (a) => a.movementId === artist.movementId) : null;
     if (!work && spare.length) work = rng.pick(spare);
   }
   if (!work) {
     const target = rng.pick(prevMovs);
-    work = pickWork('new', (a) => a.movementId === target) || pickWork('new', (a) => prevMovs.includes(a.movementId));
+    const prefer = index.hasLevels ? 'learn' : 'new';
+    work = pickWork(prefer, (a) => a.movementId === target) || pickWork(prefer, (a) => prevMovs.includes(a.movementId));
   }
   if (!work) return null;
   const correct = index.artist(work.artistId).movementId;
   const includeMovements = [artist.movementId, nearest].filter((id) => id !== correct);
-  return { work, type: 'movement', phase: 'fresh', includeMovements };
+  return { work, type: 'movement', phase: work.role === 'learn' ? 'practice' : 'fresh', includeMovements };
 }
 
 // Primera etapa: no hay nadie aprendido antes. «¿Quién lo pintó?» siempre tendría la misma
@@ -250,11 +300,13 @@ function movementReviewSlot(index, artist, before, rng, pickWork, { spare = [] }
 // nunca la primera ni la última. Calentamiento con su obra más conocida y, después, solo obras no
 // vistas (FIRST_STAGE_ROUND − 1). Solo en catálogos pequeños, si no llegan, se recurre a las otras
 // vistas y, como último recurso, se repiten obras con otras miniaturas.
-function firstStageSlots(index, artist, learn, rng) {
+function firstStageSlots(index, artist, learn, rng, own) {
   const ownLearn = clean(learn);
-  const ownNew = rng.shuffle(clean(index.newWorks(artist.id)));
+  const ownNew = index.hasLevels ? own.fresh : rng.shuffle(clean(index.newWorks(artist.id)));
   const freshCount = FIRST_STAGE_ROUND - Math.min(1, ownLearn.length);
-  const works = [...ownLearn.slice(0, 1), ...ownNew.slice(0, freshCount)];
+  const works = index.hasLevels
+    ? [...own.warm, ...own.fresh].slice(0, FIRST_STAGE_ROUND)
+    : [...ownLearn.slice(0, 1), ...ownNew.slice(0, freshCount)];
   for (const w of ownLearn.slice(1)) if (works.length < FIRST_STAGE_ROUND) works.push(w);
   // Un relleno del mismo movimiento (mejor un invitado) para que no se acierte solo por la época.
   const peers = index.artistsOf(artist.movementId).filter((a) => a.id !== artist.id && clean(index.worksOf(a.id)).length);
@@ -385,7 +437,11 @@ export function planMovementReview(index, movementId, seed) {
   const questions = plan.map((p, i) => {
     const w = p.work || picked[j++];
     if (!w) return null;
-    const q = makeQuestion(p.type, index, w, 0.75 + 0.2 * (i / ROUND_SIZE), rng, { avoid: [...avoid], includeMovements: [movementId] });
+    // Con otro pintor del mismo movimiento entre las opciones: quien no mira no puede quedarse con «el único
+    // pintor conocido» (en un catálogo grande, casi todo el relleno son pintores aún no vistos).
+    const mates = stage.filter((x) => x.id !== w.artistId);
+    const include = mates.length && p.type !== 'movement' ? [rng.pick(mates).id] : [];
+    const q = makeQuestion(p.type, index, w, 0.75 + 0.2 * (i / ROUND_SIZE), rng, { avoid: [...avoid], includeMovements: [movementId], include });
     if (q && q.type === 'which') q.options.forEach((o) => avoid.add(o.artworkId));
     return tag(q, 'review');
   });

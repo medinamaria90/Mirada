@@ -2,6 +2,8 @@
 // día visto, dominio de etapas y salas, medallas, meta diaria, racha y nivel. Puro.
 
 import { recordAnswer, artKey, artistKey, updateFallados } from './srs.js';
+import { rankFor, RANKS } from './ranks.js';
+import { seenAfterRound, levelCovered, deepKey, LEVELS_MASTERY } from './levels.js';
 import { levelFor, xpForAnswer, unseenArtists, MASTERY, STAGE_MASTERY, XP, stageRoundMastered, movementStatus, isReviewUnlocked, hasEye, normalizeGoal, touchStreak, STREAK_MEDALS, isStepUnlocked } from './progress.js';
 
 function subjectArtwork(q) {
@@ -14,6 +16,7 @@ export function finishRound(progress, index, result, today, opts = {}) {
   const events = [];
   const p = structuredCloneSafe(progress);
   p.salas = p.salas || {};
+  p.deep = p.deep && typeof p.deep === 'object' ? p.deep : {};
   p.xpByDay = p.xpByDay && typeof p.xpByDay === 'object' ? p.xpByDay : {};
   const levelBefore = levelFor(p.xp).index;
   const award = (id) => {
@@ -51,24 +54,45 @@ export function finishRound(progress, index, result, today, opts = {}) {
   let ownShort = false;
   xp += XP.complete + (total && score === total ? XP.perfect : 0);
 
-  if (result.kind === 'stage' && result.artistId && index.pathIndex(result.artistId) >= 0) {
-    const step = { type: 'artist', id: result.artistId };
-    const unlockCheck = watchNextStep(p, index, step);
-    const prev = p.artists[result.artistId] || { plays: 0, best: 0, mastered: false };
-    const first = index.pathIndex(result.artistId) === 0;
-    roundMastered = stageRoundMastered(result.answers, result.artistId, accuracy, { first });
-    ownShort = accuracy >= STAGE_MASTERY && !roundMastered;
-    const mastered = prev.mastered || roundMastered;
-    p.artists[result.artistId] = { plays: prev.plays + 1, best: Math.max(prev.best, accuracy), mastered, last: today, since: prev.since || today };
-    p.srs = recordAnswer(p.srs, artistKey(result.artistId), roundMastered, today);
-    if (mastered) award(`artist-${result.artistId}`);
-    unlockCheck(events);
-    const movId = index.artist(result.artistId).movementId;
-    if (mastered && !prev.mastered && movementStatus(p, index, movId) === 'mastered') {
-      if (!p.medals[`movement-${movId}`]) events.push({ type: 'movement-complete', movementId: movId });
-      award(`movement-${movId}`);
-      if (isReviewUnlocked(p, index, movId)) events.push({ type: 'review-unlock', movementId: movId });
+  let coverShort = false;
+  const inBranch = result.kind === 'stage' && result.artistId && index.pathIndex(result.artistId) < 0 && index.branchesOf(result.artistId).length > 0;
+  if (result.kind === 'stage' && result.artistId && (index.pathIndex(result.artistId) >= 0 || inBranch)) {
+    const id = result.artistId;
+    const onPath = index.pathIndex(id) >= 0;
+    const level = Number.isInteger(result.level) && result.level >= 2 ? result.level : 1;
+    const step = { type: 'artist', id };
+    const unlockCheck = onPath && level === 1 ? watchNextStep(p, index, step) : () => {};
+    const prev = p.artists[id] || { plays: 0, best: 0, mastered: false };
+    const first = index.pathIndex(id) === 0;
+    // Catálogo con niveles: se domina viendo todas las obras del nivel y con el 75 % de la ronda.
+    const mastery = index.hasLevels ? LEVELS_MASTERY : STAGE_MASTERY;
+    const base = stageRoundMastered(result.answers, id, accuracy, { first, mastery });
+    const works = index.hasLevels ? seenAfterRound(p, index, id, level, result.answers) : prev.works;
+    const covered = !index.hasLevels || levelCovered(works || [], index, id, level);
+    roundMastered = base && covered;
+    coverShort = base && !covered;
+    ownShort = accuracy >= mastery && !base;
+    const keep = works ? { works } : {};
+    if (level === 1) {
+      const mastered = prev.mastered || roundMastered;
+      p.artists[id] = { ...prev, ...keep, plays: prev.plays + 1, best: Math.max(prev.best, accuracy), mastered, last: today, since: prev.since || today };
+      if (mastered) award(`artist-${id}`);
+      unlockCheck(events);
+      const movId = index.artist(id).movementId;
+      if (onPath && mastered && !prev.mastered && movementStatus(p, index, movId) === 'mastered') {
+        if (!p.medals[`movement-${movId}`]) events.push({ type: 'movement-complete', movementId: movId });
+        award(`movement-${movId}`);
+        if (isReviewUnlocked(p, index, movId)) events.push({ type: 'review-unlock', movementId: movId });
+      }
+    } else {
+      // Ronda «a fondo»: no toca la parada del camino (plays, best, mastered), solo su último día y lo visto.
+      const key = deepKey(id, level);
+      const d = p.deep[key] || { plays: 0, best: 0, mastered: false };
+      p.deep[key] = { plays: d.plays + 1, best: Math.max(d.best, accuracy), mastered: d.mastered || roundMastered, last: today };
+      p.artists[id] = { ...prev, ...keep, last: today };
+      if (roundMastered && !d.mastered) events.push({ type: 'deep-mastered', artistId: id, level });
     }
+    p.srs = recordAnswer(p.srs, artistKey(id), roundMastered, today);
   }
   if (result.kind === 'sala' && result.movementId && index.isSala(result.movementId)) {
     const step = { type: 'sala', id: result.movementId };
@@ -119,10 +143,16 @@ export function finishRound(progress, index, result, today, opts = {}) {
   if (streakTouch.increased) events.push({ type: 'streak', value: p.streak.current, grace: streakTouch.graceUsed });
   for (const n of STREAK_MEDALS) if (p.streak.current >= n) award(`streak-${n}`);
 
+  const rank = rankFor(p, index);
+  const rankBefore = Math.max(0, Number(p.rank) || 0);
+  if (rank.index > rankBefore) {
+    p.rank = rank.index;
+    events.push({ type: 'rank', index: rank.index, name: RANKS[rank.index].name });
+  }
   const levelAfter = levelFor(p.xp).index;
   if (levelAfter > levelBefore) events.push({ type: 'levelup', level: levelAfter });
 
-  return { progress: p, events, xp, score, total, accuracy, mastered: roundMastered, ownShort };
+  return { progress: p, events, xp, score, total, accuracy, mastered: roundMastered, ownShort, coverShort };
 }
 
 // Último día en que salió cada pintor con etapa en una pregunta (sin reintentos ni pintores aún no

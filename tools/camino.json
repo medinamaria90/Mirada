@@ -1,0 +1,196 @@
+{
+ "renacimiento": [
+  {
+   "section": "Florencia y Castilla",
+   "artists": [
+    "botticelli",
+    "berruguete"
+   ]
+  },
+  {
+   "section": "Alto Renacimiento",
+   "artists": [
+    "rafael",
+    "leonardo",
+    "miguel-angel"
+   ]
+  },
+  {
+   "section": "Venecia",
+   "artists": [
+    "tiziano",
+    "veronese"
+   ]
+  }
+ ],
+ "manierismo-y-norte": [
+  {
+   "section": "Primitivos flamencos",
+   "artists": [
+    "van-eyck",
+    "bosco"
+   ]
+  },
+  {
+   "section": "Alemania y Flandes",
+   "artists": [
+    "durero",
+    "bruegel"
+   ]
+  },
+  {
+   "section": null,
+   "artists": [
+    "el-greco"
+   ]
+  }
+ ],
+ "barroco": [
+  {
+   "section": "Claroscuro",
+   "artists": [
+    "caravaggio",
+    "artemisia",
+    "ribera",
+    "zurbaran"
+   ]
+  },
+  {
+   "section": "Pintores de corte",
+   "artists": [
+    "rubens",
+    "van-dyck",
+    "velazquez"
+   ]
+  },
+  {
+   "section": "Vida cotidiana",
+   "artists": [
+    "hals",
+    "rembrandt",
+    "vermeer",
+    "murillo"
+   ]
+  }
+ ],
+ "rococo-neoclasicismo": [
+  {
+   "section": "Rococó",
+   "artists": [
+    "watteau",
+    "fragonard"
+   ]
+  },
+  {
+   "section": "Bodegón",
+   "artists": [
+    "melendez"
+   ]
+  },
+  {
+   "section": "Neoclasicismo",
+   "artists": [
+    "david",
+    "ingres"
+   ]
+  }
+ ],
+ "romanticismo": [
+  {
+   "section": null,
+   "artists": [
+    "goya"
+   ]
+  },
+  {
+   "section": "Paisaje",
+   "artists": [
+    "friedrich",
+    "turner"
+   ]
+  },
+  {
+   "section": "Historia",
+   "artists": [
+    "delacroix",
+    "madrazo"
+   ]
+  }
+ ],
+ "realismo": [
+  {
+   "section": "Campo",
+   "artists": [
+    "millet",
+    "courbet"
+   ]
+  },
+  {
+   "section": "Historia y luz",
+   "artists": [
+    "rosales",
+    "fortuny",
+    "repin"
+   ]
+  }
+ ],
+ "impresionismo": [
+  {
+   "section": "Pioneros",
+   "artists": [
+    "manet",
+    "monet"
+   ]
+  },
+  {
+   "section": "El grupo",
+   "artists": [
+    "degas",
+    "renoir",
+    "pissarro",
+    "morisot",
+    "sisley"
+   ]
+  },
+  {
+   "section": "Luz mediterránea",
+   "artists": [
+    "sorolla"
+   ]
+  }
+ ],
+ "postimpresionismo": [
+  {
+   "section": "Forma y método",
+   "artists": [
+    "cezanne",
+    "seurat"
+   ]
+  },
+  {
+   "section": "Color y expresión",
+   "artists": [
+    "van-gogh",
+    "gauguin",
+    "lautrec"
+   ]
+  }
+ ],
+ "simbolismo-modernismo": [
+  {
+   "section": "Simbolismo",
+   "artists": [
+    "klimt",
+    "munch",
+    "romero-de-torres"
+   ]
+  },
+  {
+   "section": "Vanguardias",
+   "artists": [
+    "kandinsky",
+    "juan-gris"
+   ]
+  }
+ ]
+}

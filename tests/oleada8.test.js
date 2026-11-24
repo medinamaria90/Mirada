@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { planStage, subjectOf, OWN_MAX } from '../app/js/engine/planner.js';
+import { planStage, subjectOf, OWN_NEW } from '../app/js/engine/planner.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const real = buildIndex(JSON.parse(readFileSync(join(here, '..', 'app', 'data', 'catalog.json'), 'utf8')));
@@ -20,7 +20,7 @@ test('composición: una sola de calentamiento con lo visto; más vistas solo si 
     let maxSeen = 0;
     for (let s = 1; s <= SEEDS; s++) {
       const plan = planStage(real, a.id, s);
-      const own = plan.questions.filter((q) => q.artistId === a.id);
+      const own = plan.questions.filter((q) => q.artistId === a.id && q.type !== 'movement'); // la de movimiento puede llevar otra obra suya ya enseñada
       const first = plan.questions[0];
       assert.equal(first.artistId, a.id, `${a.id}/${s}: la primera es del pintor`);
       assert.ok(learnIds.has(subjectOf(first)), `${a.id}/${s}: la primera es de calentamiento (obra vista)`);
@@ -46,12 +46,13 @@ test('composición: una sola de calentamiento con lo visto; más vistas solo si 
   }
 });
 
-test('«Conoce a» enseña 3 cuadros solo si quedan al menos OWN_MAX − 1 sin enseñar para preguntar', () => {
+test('«Conoce a» enseña 3-4 cuadros de nivel 1 y quedan al menos OWN_NEW sin enseñar para preguntar', () => {
   for (const a of real.path) {
     const learn = real.learnWorks(a.id);
     const unseen = real.newWorks(a.id).filter(askable).length;
-    if (learn.filter(askable).length >= 3) assert.ok(unseen >= OWN_MAX - 1, `${a.id}: enseña ${learn.length} y solo quedan ${unseen} sin ver`);
-    assert.ok(learn.length >= 2 && learn.length <= 3, `${a.id}: ${learn.length} en «Conoce a»`);
+    assert.ok(unseen >= OWN_NEW, `${a.id}: enseña ${learn.length} y solo quedan ${unseen} sin ver`);
+    assert.ok(learn.length >= 3 && learn.length <= 4, `${a.id}: ${learn.length} en «Conoce a»`);
+    assert.ok(learn.every((w) => w.level === 1), `${a.id}: «Conoce a» solo con obras de nivel 1`);
   }
 });
 

@@ -19,12 +19,13 @@ import {
   recognizedCount, RECOGNIZED_BOX, eyeProgress, isGalleryOpen, galleryWorks, openGalleries, planDetail, answerDetail, detailPool, DETAIL_XP, DETAIL_FAME,
 } from '../app/js/engine/goals.js';
 import { isoWeek, expandWeek, isoWeeksIn } from '../app/js/engine/dates.js';
-import { migrate, SCHEMA_VERSION } from '../app/js/state/schema.js';
+import { migrate, SCHEMA_VERSION, MIGRATIONS } from '../app/js/state/schema.js';
 import { createStore, STORAGE_KEY } from '../app/js/state/store.js';
 import { parseRoute } from '../app/js/ui/router.js';
 import { createRng } from '../app/js/engine/rng.js';
 import { MAX_BOX } from '../app/js/engine/srs.js';
 import { memoryStorage } from './helpers.js';
+import { W } from './helpers-real.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const real = buildIndex(JSON.parse(readFileSync(join(here, '..', 'app', 'data', 'catalog.json'), 'utf8')));
@@ -83,22 +84,27 @@ test('camino completo solo con todo dominado; si no, cuántas quedan y cuál es 
 
 // --- Atribución dudosa ---------------------------------------------------------------------
 
-test('obra atribuida (a125): «(atribuida)» en el título y nunca en preguntas de autor', () => {
-  const litta = real.artwork('a125');
-  assert.ok(litta && isAttributed(litta) && /atribuida/.test(litta.title));
+test('obra atribuida (atributed: true): «(atribuida)» en el título y nunca en preguntas de autor', () => {
+  // El catálogo grande no trae obras de atribución dudosa (el proceso las excluye): se marca una de Leonardo.
+  const cat = JSON.parse(readFileSync(join(here, '..', 'app', 'data', 'catalog.json'), 'utf8'));
+  const id = W('a154');
+  cat.artworks.find((w) => w.id === id).attributed = true;
+  const idx = buildIndex(cat);
+  const litta = idx.artwork(id);
+  assert.ok(litta && isAttributed(litta));
   assert.ok(noAuthorQuestion(litta));
   const rng = createRng('x');
-  assert.equal(makeWhoQuestion(real, litta, 0.5, rng), null);
-  assert.equal(makeWhichQuestion(real, litta, 0.5, rng), null);
+  assert.equal(makeWhoQuestion(idx, litta, 0.5, rng), null);
+  assert.equal(makeWhichQuestion(idx, litta, 0.5, rng), null);
   const authorIds = (qs) => qs.filter((q) => q.type !== 'movement').flatMap((q) => [q.artworkId, q.targetArtworkId, ...q.options.map((o) => o.artworkId)]);
   for (let s = 1; s <= 40; s++) {
-    for (const a of real.path.slice(0, 6)) assert.ok(!authorIds(planStage(real, a.id, s).questions).includes('a125'), `etapa ${a.id}/${s}`);
-    assert.ok(!authorIds(planMovementReview(real, 'renacimiento', s).questions).includes('a125'));
-    assert.ok(!authorIds(planFree(real, s).questions).includes('a125'));
-    assert.ok(!authorIds(planGeneral(real, real.worksOf('leonardo'), `g${s}`)).includes('a125'));
+    for (const a of idx.path.slice(0, 6)) assert.ok(!authorIds(planStage(idx, a.id, s).questions).includes(id), `etapa ${a.id}/${s}`);
+    assert.ok(!authorIds(planMovementReview(idx, 'renacimiento', s).questions).includes(id));
+    assert.ok(!authorIds(planFree(idx, s).questions).includes(id));
+    assert.ok(!authorIds(planGeneral(idx, idx.worksOf('leonardo'), `g${s}`)).includes(id));
   }
-  assert.ok(!authorIds(planSrsReview(real, ['art:a125', 'artist:leonardo'], 1).questions).includes('a125'));
-  for (let d = 1; d <= 28; d++) assert.ok(!authorIds(planDaily(real, `2026-02-${String(d).padStart(2, '0')}`).questions).includes('a125'));
+  assert.ok(!authorIds(planSrsReview(idx, [`art:${id}`, 'artist:leonardo'], 1).questions).includes(id));
+  for (let d = 1; d <= 28; d++) assert.ok(!authorIds(planDaily(idx, `2026-02-${String(d).padStart(2, '0')}`).questions).includes(id));
 });
 
 // --- Reto semanal ----------------------------------------------------------------------------
@@ -249,9 +255,9 @@ test('migración v3 → v4: añade reto semanal y detalle sin perder progreso', 
     settings: { music: false, sfx: true, volume: 0.3, reducedMotion: true, dailyGoal: 100 },
     session: {},
   };
-  const out = migrate(v3);
+  const out = migrate(v3, MIGRATIONS, 4);
   assert.ok(SCHEMA_VERSION >= 4, 'la v4 ya existe (las versiones siguientes encadenan)');
-  assert.equal(out.version, SCHEMA_VERSION);
+  assert.equal(out.version, 4);
   assert.deepEqual(out.progress.weekly, {});
   assert.deepEqual(out.progress.detail, {});
   assert.equal(out.progress.xp, 1200);

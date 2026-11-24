@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Baja las imágenes de la app (app-img-1200.zip) de la release pública «catalogo-img» y las deja en <carpeta_destino>.
 # Pensado para el comando de construcción de Render:  bash tools/fetch_images.sh app/img
+# Después pinta las hojas del atlas de miniaturas (<carpeta_destino>/s) con tools/make_atlas.py a partir de esas imágenes y
+# de app/data/catalog.json (las coordenadas de las miniaturas salen del catálogo: hojas y catálogo van siempre a juego).
+# Necesita python3 con Pillow (si falta, lo instala con pip). MIRADA_SKIP_ATLAS=1 lo omite.
 # Solo necesita bash, curl, sha256sum (o shasum) y unzip (o python3). No usa gh ni token.
 # Variable opcional MIRADA_IMG_BASE: otra URL base (pruebas locales).
 set -euo pipefail
@@ -48,3 +51,13 @@ fi
 n="$(find "$DEST" -maxdepth 1 -name 'w*.jpg' | wc -l | tr -d ' ')"
 [ "$n" -ge "$MIN_IMG" ] || fallo "solo hay $n imágenes en $DEST (se esperaban al menos $MIN_IMG)"
 echo "fetch_images: $n imágenes en $DEST ($(du -sh "$DEST" | cut -f1))"
+
+if [ "${MIRADA_SKIP_ATLAS:-0}" != "1" ]; then
+  here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  app="$(cd "$DEST/.." && pwd)"
+  [ -f "$app/data/catalog.json" ] || fallo "no encuentro $app/data/catalog.json para pintar el atlas (¿la carpeta destino no es app/img?)"
+  PY="${MIRADA_PYTHON:-python3}"
+  command -v "$PY" >/dev/null || fallo "falta $PY para pintar el atlas"
+  "$PY" -c "import PIL" 2>/dev/null || "$PY" -m pip install --quiet pillow || fallo "no se pudo instalar Pillow para pintar el atlas"
+  "$PY" -I "$here/make_atlas.py" "$app" "$DEST" || fallo "no se pudo pintar el atlas de miniaturas"
+fi

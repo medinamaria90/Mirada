@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { migrate, defaultState, SCHEMA_VERSION, mergeDefaults } from '../app/js/state/schema.js';
+import { migrate, defaultState, SCHEMA_VERSION, mergeDefaults, MIGRATIONS } from '../app/js/state/schema.js';
 import { createStore, safeStorage, STORAGE_KEY } from '../app/js/state/store.js';
 import { memoryStorage } from './helpers.js';
 import { DEFAULT_THEME } from '../app/js/state/schema.js';
@@ -24,7 +24,7 @@ test('migración: datos sin versión se conservan y se completan', () => {
 });
 
 test('migración 5 → 6: cola de fallados, último día visto y días de gracia; conserva el resto', () => {
-  assert.equal(SCHEMA_VERSION, 6);
+  assert.ok(SCHEMA_VERSION >= 6);
   const v5 = {
     version: 5, onboarded: true,
     progress: {
@@ -35,7 +35,7 @@ test('migración 5 → 6: cola de fallados, último día visto y días de gracia
     settings: { music: true, sfx: false, volume: 0.5, reducedMotion: false, dailyGoal: 50, theme: 'dark' },
     session: {},
   };
-  const out = migrate(v5);
+  const out = migrate(v5, MIGRATIONS, 6);
   assert.equal(out.version, 6);
   assert.deepEqual(out.progress.fallados, []);
   assert.deepEqual(out.progress.seen, {});
@@ -47,8 +47,8 @@ test('migración 5 → 6: cola de fallados, último día visto y días de gracia
   assert.deepEqual(out.progress.srs, v5.progress.srs);
   assert.deepEqual(out.settings, v5.settings);
   // Sin gracia antigua, la lista empieza vacía; datos sin progreso llegan con los valores por defecto.
-  assert.deepEqual(migrate({ ...v5, progress: { ...v5.progress, streak: { current: 1, last: '2026-11-23', graceOn: null } } }).progress.streak.graceDays, []);
-  assert.deepEqual(migrate({ version: 5, onboarded: true }).progress.fallados, []);
+  assert.deepEqual(migrate({ ...v5, progress: { ...v5.progress, streak: { current: 1, last: '2026-11-23', graceOn: null } } }, MIGRATIONS, 6).progress.streak.graceDays, []);
+  assert.deepEqual(migrate({ version: 5, onboarded: true }, MIGRATIONS, 6).progress.fallados, []);
   assert.deepEqual(defaultState().progress.streak.graceDays, []);
 });
 
@@ -59,8 +59,8 @@ test('migración 4 → 5: añade settings.theme «como el móvil» y conserva el
     settings: { music: false, sfx: true, volume: 0.3, reducedMotion: true, dailyGoal: 100 },
     session: { route: 'etapa-velazquez' },
   };
-  const out = migrate(v4);
-  assert.equal(out.version, SCHEMA_VERSION);
+  const out = migrate(v4, MIGRATIONS, 5);
+  assert.equal(out.version, 5);
   assert.equal(out.settings.theme, DEFAULT_THEME);
   assert.equal(out.settings.theme, 'system');
   assert.deepEqual(out.settings, { music: false, sfx: true, volume: 0.3, reducedMotion: true, dailyGoal: 100, theme: 'system' });
@@ -71,8 +71,8 @@ test('migración 4 → 5: añade settings.theme «como el móvil» y conserva el
   assert.deepEqual(out.session, v4.session);
   assert.equal(defaultState().settings.theme, 'system');
   // Un tema ya guardado se respeta; uno con tipo raro vuelve al defecto.
-  assert.equal(migrate({ ...v4, version: 5, settings: { ...v4.settings, theme: 'dark' } }).settings.theme, 'dark');
-  assert.equal(migrate({ ...v4, version: 5, settings: { ...v4.settings, theme: 7 } }).settings.theme, 'system');
+  assert.equal(migrate({ ...v4, version: 5, settings: { ...v4.settings, theme: 'dark' } }, MIGRATIONS, 5).settings.theme, 'dark');
+  assert.equal(migrate({ ...v4, version: 5, settings: { ...v4.settings, theme: 7 } }, MIGRATIONS, 5).settings.theme, 'system');
   // Desde muy atrás (sin versión) también llega con tema.
   assert.equal(migrate({ onboarded: true }).settings.theme, 'system');
 });

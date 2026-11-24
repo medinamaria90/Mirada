@@ -170,3 +170,22 @@ Decisión de María: las imágenes **no entran en el repo ni en su PC**; Render 
 - Script: `bash tools/fetch_images.sh <carpeta>` (solo bash, curl, sha256sum, unzip o `python3 -m zipfile`; sin `gh` ni token): descarga, comprueba el sha256, valida que el zip solo trae `w<QID>.jpg`, descomprime y falla con mensaje claro si algo no cuadra (descarga imposible, sha distinto, menos de 1.000 imágenes).
 - **Comando de construcción de Render para la migración** (hoy sigue siendo `echo "sin compilación: sitio estático"`; NO cambiarlo hasta migrar): `bash tools/fetch_images.sh app/img`. El directorio de publicación sigue siendo `app`. `app/img/` deberá estar en `.gitignore` cuando el catálogo grande sustituya al actual (hoy `app/img/` contiene las 235 de 1000 px del catálogo viejo y el atlas `app/img/s/`: el zip las pisaría solo si coincide el nombre, y los ids son distintos, así que conviven; el atlas habrá que regenerarlo en la migración).
 - Ventana de riesgo: al volver a ejecutar `pack`, `gh release upload --clobber` borra y sube el zip: durante unos segundos puede no estar o no cuadrar con el sha; un despliegue de Render en ese instante fallaría con mensaje claro y basta reintentar.
+
+
+## Migración de la app al catálogo grande (hecha, parte A: datos, motor y estado)
+
+Sustituye al plan de arriba (que queda como historia). Qué se hizo y dónde está:
+- **Datos**: `tools/catalog_from_pipeline.py` (obras.json + pintores.json + `tools/camino.json` + textos de `tools/catalog_data.py` por
+  `tools/ids_antiguos.json`) → `app/data/catalog.json`, `catalog-text.json`, `catalog-ficha.json` y `app/js/state/legacy-ids.js`.
+  Contrato en `docs/SPEC.md` §4 ter. `ids_antiguos.json` (161 de las 235 obras antiguas) se generó cruzando pintor + imagen
+  (huella de la miniatura contra las imágenes del paquete; título cuando coincidía): las 74 restantes (Matisse, rusos sin
+  equivalente…) no tienen obra nueva y su progreso se pierde.
+- **Imágenes y atlas**: fuera del repo. `bash tools/fetch_images.sh app/img` (comando de construcción de Render, sin cambios) baja
+  `app-img-1200.zip`, comprueba el sha256 y **pinta el atlas** (86 hojas, 15,5 MB, ~50 s) con `tools/make_atlas.py`; necesita
+  python3 con Pillow (lo instala con pip si falta; `MIRADA_SKIP_ATLAS=1` lo omite). No se sube un `app-atlas.zip` desde `pack`
+  a propósito: las coordenadas de las miniaturas salen del catálogo del repo (`tools/atlas_layout.py`), y un zip generado en
+  Actions podría quedar desfasado respecto al catálogo que se despliega; pintarlo al desplegar garantiza que encajan.
+- **Pruebas locales**: `bash tools/fetch_images.sh <carpeta temporal>` + `MIRADA_IMG_DIR=<carpeta> bash tests/e2e.sh …`
+  (`tools/serve_local.py` monta las imágenes sin copiarlas a `app/img/`).
+- **Pendiente de revisión visual**: las obras nuevas no tienen marcado `spoiler` (firma visible) ni `attributed`; solo lo heredan
+  las 9 ya revisadas. Pasar hojas de contacto antes de subir el nivel de confianza.

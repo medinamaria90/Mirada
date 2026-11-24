@@ -147,10 +147,11 @@ export const MOVEMENT_MAX_GAP = 3;
 
 // opts.include: ids de movimiento que deben salir como distractores (p. ej. el de la etapa).
 export function makeMovementQuestion(index, artwork, difficulty, rng, opts = {}) {
-  const list = index.movements;
-  if (list.length < 3 || isSpoiler(artwork)) return null;
   const artist = index.artist(artwork.artistId);
   const correct = index.movement(artist.movementId);
+  // Las ramas-movimiento (gótico, ukiyo-e) solo salen como opción cuando son la respuesta.
+  const list = index.movements.filter((m) => !m.branch || m === correct);
+  if (list.length < 3 || isSpoiler(artwork)) return null;
   const pos = list.indexOf(correct);
   const need = Math.min(OPTION_COUNT - 1, list.length - 1);
   const gapOf = (m) => Math.abs(list.indexOf(m) - pos);
