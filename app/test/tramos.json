@@ -1,10 +1,15 @@
 {
   "version": 1,
-  "nota": "Ajustes de la bolsa del test (app/js/test/bolsa.js) para los casos que la regla clasifica mal. forzar: id → tramo (1 fácil … 5 friki); excluir: ids que no salen nunca. Un id es una obra («a51», todas sus mecánicas) o una obra y una mecánica («a51:who»; who, movement o which). Además, las 40 preguntas de preguntas.json están forzadas en su tramo, y sus obras también en las otras mecánicas salvo que aquí se diga otra cosa. a51 (Los tres bogatires): icónico en Rusia, no para el público español. a161:who (Los fusilamientos del 3 de mayo) y b4:who (El entierro del conde de Orgaz): conocidísimos en España; además el tramo fácil solo tenía dos obras españolas.",
+  "nota": "Ajustes de la bolsa del test (app/js/test/bolsa.js) para los casos que la regla clasifica mal. forzar: id → tramo (1 fácil … 5 friki); excluir: ids que no salen nunca. Un id es una obra («a51», todas sus mecánicas) o una obra y una mecánica («a51:who»; who, movement o which). Además, las 40 preguntas de preguntas.json están forzadas en su tramo, y sus obras también en las otras mecánicas salvo que aquí se diga otra cosa. a51 (Los tres bogatires): icónico en Rusia, no para el público español. a161:who (Los fusilamientos del 3 de mayo) y b4:who (El entierro del conde de Orgaz): conocidísimos en España; además el tramo fácil solo tenía dos obras españolas. a176, a3, a143 (Repin), a128 (Vasnetsov) y a173 (Levitán) en «¿Quién?»: famosos en Rusia, no en España; al tramo experto.",
   "forzar": {
     "a51": 4,
     "a161:who": 1,
-    "b4:who": 2
+    "b4:who": 2,
+    "a176:who": 4,
+    "a3:who": 4,
+    "a143:who": 4,
+    "a128:who": 4,
+    "a173:who": 4
   },
   "excluir": []
 }
