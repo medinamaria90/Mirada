@@ -2,6 +2,7 @@
 
 import { onAction, focusHeading } from '../dom.js';
 import { artFrame } from '../art.js';
+import { logoMark } from '../icons.js';
 
 export function renderWelcome(ctx, el) {
   const { index } = ctx;
@@ -16,6 +17,7 @@ export function renderWelcome(ctx, el) {
   el.innerHTML = `<div class="welcome">
     <main class="welcome-body" id="main">
       <div class="wall">${wall}</div>
+      <span class="welcome-mark" aria-hidden="true">${logoMark(64)}</span>
       <h1 class="welcome-title">Mirada</h1>
       <p class="welcome-line">Aprende a reconocer a los grandes pintores de un vistazo.</p>
       <button class="btn btn-primary btn-wide" data-action="start" data-primary>Empezar</button>

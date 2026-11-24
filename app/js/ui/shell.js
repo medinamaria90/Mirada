@@ -1,7 +1,7 @@
 // Marco común de las pantallas principales: cabecera compacta y navegación inferior.
 
 import { esc } from './dom.js';
-import { icons } from './icons.js';
+import { icons, logoMark } from './icons.js';
 import { levelFor, visibleStreak, todayXp, normalizeGoal } from '../engine/progress.js';
 
 // Anillo de la meta diaria (XP de hoy / meta). size en px.
@@ -26,12 +26,12 @@ export function topBar(ctx) {
   const goal = normalizeGoal(state.settings.dailyGoal);
   const done = todayXp(p, today);
   return `<header class="topbar">
-    <a class="brand" href="#inicio" aria-label="Mirada, inicio">Mirada</a>
+    <a class="brand" href="#inicio" aria-label="Mirada, inicio">${logoMark(30)}<span>Mirada</span></a>
     <div class="topbar-stats">
-      <a class="chip chip-goal" href="#perfil" aria-label="Meta de hoy: ${Math.min(done, goal)} de ${goal} XP">${goalRing(done, goal)}</a>
-      <a class="chip" href="#perfil" aria-label="Racha: ${streak} ${streak === 1 ? 'día' : 'días'}">${icons.sun(18)}<span>${streak}</span></a>
+      <a class="chip chip-goal" href="#perfil" aria-label="Meta de hoy: ${Math.min(done, goal)} de ${goal} XP"><span class="chip-pill">${goalRing(done, goal)}</span></a>
+      <a class="chip" href="#perfil" aria-label="Racha: ${streak} ${streak === 1 ? 'día' : 'días'}"><span class="chip-pill">${icons.sun(18)}<span>${streak}</span></span></a>
       <a class="chip chip-level" href="#perfil" aria-label="Nivel ${esc(level.name)}, ${p.xp} puntos de experiencia">
-        ${icons.gem(18)}<span class="chip-level-text"><span class="chip-level-name">${esc(level.name)}</span><span class="minibar" aria-hidden="true"><span style="width:${Math.round(level.progress * 100)}%"></span></span></span>
+        <span class="chip-pill">${icons.gem(18)}<span class="chip-level-text"><span class="chip-level-name">${esc(level.name)}</span><span class="minibar" aria-hidden="true"><span style="width:${Math.round(level.progress * 100)}%"></span></span></span></span>
       </a>
     </div>
   </header>`;

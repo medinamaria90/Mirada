@@ -3,6 +3,10 @@
 const svg = (body, size = 22) =>
   `<svg class="icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${body}</svg>`;
 
+// Logotipo «Pieza» (marca, ronda 2): el vano relleno con el punto en hueco. Hereda currentColor.
+export const logoMark = (s = 28) =>
+  `<svg class="logo" width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M10 38V23a14 14 0 0 1 28 0v15a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4ZM28.6 30.5a4.6 4.6 0 1 0-9.2 0a4.6 4.6 0 1 0 9.2 0Z" fill="currentColor" fill-rule="evenodd"/></svg>`;
+
 export const icons = {
   sun: (s) => svg('<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/>', s),
   gem: (s) => svg('<path d="M6 4h12l3 5-9 11L3 9z"/><path d="M3 9h18M9 4l3 16M15 4l-3 16"/>', s),
