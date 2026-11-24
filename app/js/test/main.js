@@ -23,6 +23,10 @@ const FEEDBACK_FOCUS_MS = 340;
 const KEY_OPTIONS = ['1', '2', '3', '4'];
 const ALT_WORK = 'Cuadro para identificar';
 
+// Contador de visitas sin cookies (js/stats.js; vacío por defecto: no pide nada). En diferido.
+const stats = (path) => import('../stats.js').then((m) => m.countEvent(path)).catch(() => {});
+setTimeout(() => import('../stats.js').then((m) => m.startStats()).catch(() => {}), 3000);
+
 const root = document.getElementById('test');
 const home = $('.test-home');
 
@@ -128,6 +132,7 @@ async function start() {
   } finally {
     btn.removeAttribute('aria-disabled');
   }
+  stats('test/empieza');
   const bank = newGame();
   ctx = { ...ctx, maxScore: perfectScore(bank) };
   state = createTest(bank);
@@ -234,6 +239,8 @@ function showResult() {
   document.documentElement.classList.remove('is-playing');
   lastResult = buildResult(summary(state), ctx.maxScore);
   saveLast(lastResult);
+  stats('test/termina');
+  stats(`test/tramo-${lastResult.top.id}`);
   root.innerHTML = resultHtml(lastResult);
   window.scrollTo(0, 0);
   $('.result-title', root).focus({ preventScroll: true });
@@ -243,6 +250,7 @@ function showResult() {
 async function share() {
   const url = location.href.split('#')[0];
   const text = shareText(lastResult, url);
+  stats('test/comparte');
   const status = $('.copy-status', root);
   if (navigator.share) {
     try {

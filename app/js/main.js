@@ -251,6 +251,8 @@ async function boot() {
   });
   loadAudioWhenIdle();
   bindBackgroundPause();
+  // Contador de visitas sin cookies (vacío por defecto: no pide nada). En reposo, como el audio.
+  setTimeout(() => import('./stats.js').then((m) => m.startStats({ store })).catch(() => {}), 3000);
 }
 
 boot();

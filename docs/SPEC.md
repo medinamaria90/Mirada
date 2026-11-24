@@ -270,6 +270,24 @@ Nunca lanza excepciones hacia fuera: si no hay audio, las llamadas no hacen nada
 - Diseño propio: no copiar marca, mascota, colores ni pantallas de Duolingo ni de otras apps.
 - En textos no usar "ayer"/"mañana": decir algo concreto.
 
+## 6 bis. Estadísticas
+
+Contador de visitas sin cookies ni datos personales: GoatCounter (`app/js/stats.js`), para saber si la
+gente vuelve. Vacío por defecto: sin código no se carga nada ni se hace ninguna petición.
+
+- **Activarlo**: poner el código de la cuenta (la parte `<código>` de `https://<código>.goatcounter.com`)
+  en `GOATCOUNTER_CODE`, en `app/js/stats-config.js`. Se carga en reposo, tras pintar, como el audio.
+- **Qué se mide** (nombres de evento fijos): la página vista (la cuenta GoatCounter sola);
+  `vuelve/dia-1`, `dia-2`, `dia-3`, `dia-4-a-6` y `dia-7-o-mas` al abrir la app (días distintos con
+  actividad, calculados en local; como mucho uno al día); `ronda/termina` y `racha/1`, `2-3`, `4-7`,
+  `8+` (racha, una vez al día); en el test, `test/empieza`, `test/termina`, `test/tramo-<1 a 5>` y
+  `test/comparte`.
+- **Qué no se mide**: ids de usuario, cuadros, respuestas, resultados ni cualquier dato personal. Con
+  «no rastrear» o control global de privacidad activos, y en `localhost`, no se cuenta nada.
+- **En el navegador** solo se guarda `mirada.stats` (días de visita y último envío de cada evento).
+- El e2e permite peticiones únicamente a `gc.zgo.at` y `*.goatcounter.com`, y comprueba que con el
+  código vacío no hay ninguna.
+
 ## 7. Calidad
 
 Puerta de calidad adversarial de la usuaria: evaluador independiente puntúa 8 criterios

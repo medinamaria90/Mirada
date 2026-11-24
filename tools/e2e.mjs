@@ -44,6 +44,9 @@ async function shot(page, name, full = false) {
   shots.push(path);
 }
 
+// Peticiones al contador permitido (GoatCounter); con el código vacío (por defecto) no debe haber ninguna.
+const externalCounter = [];
+
 function watch(page, label) {
   page.on('console', (m) => {
     if (m.type() === 'error' || m.type() === 'warning') problems.push(`[${label}] console.${m.type()}: ${m.text()}`);
@@ -55,7 +58,12 @@ function watch(page, label) {
     problems.push(`[${label}] requestfailed: ${r.url()} (${r.failure()?.errorText || ''})`);
   });
   page.on('request', (r) => {
-    if (!r.url().startsWith(new URL(base).origin) && !r.url().startsWith('data:')) problems.push(`[${label}] recurso remoto: ${r.url()}`);
+    if (!r.url().startsWith(new URL(base).origin) && !r.url().startsWith('data:')) {
+      // Único servicio externo permitido: el contador GoatCounter (solo si se configura su código).
+      const host = (() => { try { return new URL(r.url()).hostname; } catch { return ''; } })();
+      if (host === 'gc.zgo.at' || host.endsWith('.goatcounter.com')) externalCounter.push(r.url());
+      else problems.push(`[${label}] recurso remoto: ${r.url()}`);
+    }
   });
 }
 
@@ -2513,6 +2521,14 @@ for (const scheme of ['light', 'dark']) {
   }
 }
 } // fin de lo que no entra en el modo humo
+
+// Contador de visitas: con el código vacío (por defecto) no se pide nada fuera del origen.
+{
+  const cfg = await (await fetch(`${base}js/stats-config.js`)).text();
+  const code = (cfg.match(/GOATCOUNTER_CODE\s*=\s*'([^']*)'/) || [])[1];
+  if (code === '') check(externalCounter.length === 0, `contador: con el código vacío se han pedido ${externalCounter.join(', ')}`);
+  else notes.push(`contador: código configurado (${externalCounter.length} peticiones a GoatCounter)`);
+}
 
 await browser.close();
 console.log(JSON.stringify({ shots: shots.length, boot, budget: BOOT_BUDGET, audits: { contrastScreens: audits.contrast, targetScreens: audits.targets }, problems, notes, challengeText, dailyText }, null, 2));
