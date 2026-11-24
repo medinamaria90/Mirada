@@ -10,6 +10,25 @@
   "order": 1,
   "section": null,
   "qid": "Q15790",
+  "works": 5,
+  "category": "rama",
+  "branches": [
+   "gotico"
+  ],
+  "stages": [],
+  "level1": 5
+ },
+ {
+  "id": "duccio",
+  "name": "Duccio di Buoninsegna",
+  "short": "Duccio",
+  "born": 1255,
+  "died": 1319,
+  "country": "Italia",
+  "movementId": "gotico",
+  "order": 2,
+  "section": null,
+  "qid": "Q15792",
   "works": 6,
   "category": "rama",
   "branches": [
@@ -25,35 +44,7 @@
     "provisional": true
    }
   ],
-  "level1": 4
- },
- {
-  "id": "duccio",
-  "name": "Duccio di Buoninsegna",
-  "short": "Duccio",
-  "born": 1255,
-  "died": 1319,
-  "country": "Italia",
-  "movementId": "gotico",
-  "order": 2,
-  "section": null,
-  "qid": "Q15792",
-  "works": 8,
-  "category": "rama",
-  "branches": [
-   "gotico"
-  ],
-  "stages": [
-   {
-    "nivel": 2,
-    "nombre": "Más obras",
-    "desde": null,
-    "hasta": null,
-    "fuente": null,
-    "provisional": true
-   }
-  ],
-  "level1": 4
+  "level1": 2
  },
  {
   "id": "giotto",
@@ -85,21 +76,12 @@
   "order": 3,
   "section": null,
   "qid": "Q309635",
-  "works": 8,
+  "works": 4,
   "category": "rama",
   "branches": [
    "gotico"
   ],
-  "stages": [
-   {
-    "nivel": 2,
-    "nombre": "Más obras",
-    "desde": null,
-    "hasta": null,
-    "fuente": null,
-    "provisional": true
-   }
-  ],
+  "stages": [],
   "level1": 4
  },
  {
@@ -113,7 +95,7 @@
   "order": 4,
   "section": null,
   "qid": "Q221043",
-  "works": 8,
+  "works": 5,
   "category": "rama",
   "branches": [
    "gotico"
@@ -128,7 +110,7 @@
     "provisional": true
    }
   ],
-  "level1": 4
+  "level1": 2
  },
  {
   "id": "ambrogio-lorenzetti",
@@ -141,22 +123,13 @@
   "order": 5,
   "section": null,
   "qid": "Q211562",
-  "works": 8,
+  "works": 5,
   "category": "rama",
   "branches": [
    "gotico"
   ],
-  "stages": [
-   {
-    "nivel": 2,
-    "nombre": "Más obras",
-    "desde": null,
-    "hasta": null,
-    "fuente": null,
-    "provisional": true
-   }
-  ],
-  "level1": 4
+  "stages": [],
+  "level1": 5
  },
  {
   "id": "van-eyck",
@@ -197,11 +170,11 @@
   "order": 2,
   "section": null,
   "qid": "Q5664",
-  "works": 3,
+  "works": 2,
   "category": "invitado",
   "branches": [],
   "stages": [],
-  "level1": 3
+  "level1": 2
  },
  {
   "id": "van-der-weyden",
@@ -214,11 +187,11 @@
   "order": 1,
   "section": null,
   "qid": "Q68631",
-  "works": 3,
+  "works": 2,
   "category": "invitado",
   "branches": [],
   "stages": [],
-  "level1": 3
+  "level1": 2
  },
  {
   "id": "piero",
@@ -308,7 +281,7 @@
   "order": 7,
   "section": null,
   "qid": "Q561783",
-  "works": 12,
+  "works": 10,
   "category": "maestro",
   "branches": [],
   "stages": [
@@ -386,7 +359,7 @@
   "order": 4,
   "section": null,
   "qid": "Q5580",
-  "works": 12,
+  "works": 11,
   "category": "maestro",
   "branches": [],
   "stages": [

@@ -1,4 +1,4 @@
-// Catálogo grande (1.315 obras, 162 pintores): datos generados, camino común, ramas, niveles «a fondo»,
+// Catálogo grande (1.297 obras, 162 pintores): datos generados, camino común, ramas, niveles «a fondo»,
 // dominio con todas las obras de nivel 1 vistas, rangos y migración del estado a la v7.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -25,8 +25,8 @@ const catalog = json('data/catalog.json');
 const TODAY = '2026-11-24';
 const askable = (w) => !w.spoiler && !w.attributed;
 
-test('cifras: 1.315 obras, 162 pintores, 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
-  assert.equal(real.artworks.length, 1315);
+test('cifras: 1.297 obras, 162 pintores, 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
+  assert.equal(real.artworks.length, 1297);
   assert.equal(real.artists.length, 162);
   assert.equal(real.movements.length, 11);
   assert.deepEqual(real.movements.filter((m) => m.branch).map((m) => [m.id, m.opensAt]), [['gotico', 'renacimiento'], ['ukiyo-e', 'impresionismo']]);
@@ -307,7 +307,7 @@ test('ficha de museo: se pide aparte y se une a las obras', async () => {
   const { mergeCatalogFicha } = await import('../app/js/engine/catalog.js');
   const idx = buildIndex(catalog);
   const n = mergeCatalogFicha(idx, json('data/catalog-ficha.json'));
-  assert.equal(n, 1315);
+  assert.equal(n, 1297);
   const g = idx.artwork(W('a154'));
   assert.ok(g.museum && g.city, 'La Gioconda lleva museo y ciudad');
   assert.ok(g.source.wikidata.startsWith('Q'));
