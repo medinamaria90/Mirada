@@ -32,13 +32,18 @@
 .as-h { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.1rem/1.1 var(--font); padding-bottom: .4rem; border-bottom: 1px solid var(--line); }
 .as-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .as-stages { display: grid; gap: .4rem; margin: 0; padding: 0; list-style: none; }
-.as-stage { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .6rem; padding: .55rem .2rem; }
+.as-stage { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .6rem; min-height: 48px; padding: .4rem .2rem; }
+button.as-stage { grid-template-columns: auto 1fr auto auto; width: 100%; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; border-radius: var(--radius-sm); }
+button.as-stage:hover { background: var(--surface-2); }
+.as-stage-go { color: var(--ink-2); }
 .as-stage-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); }
 .as-stage.is-mastered .as-stage-mark { background: var(--gold); color: var(--on-gold); }
 .as-stage.is-started .as-stage-mark, .as-stage.is-available .as-stage-mark { background: var(--brand); color: var(--on-brand); }
 .as-stage-name { overflow-wrap: anywhere; }
 .as-stage-state { font: 600 .8rem/1 var(--font); color: var(--ink-2); }
+.as-grid .art { width: 100%; }
 .as-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: 0; padding: 0; list-style: none; }
+.as-gap { aspect-ratio: 1; border-radius: 10px; border: 2px dashed var(--line-2); }
 .as-actions { display: grid; gap: .6rem; position: sticky; bottom: -1.2rem; padding: .6rem 0 .2rem; background: linear-gradient(to top, var(--bg) 70%, transparent); }
 @media (min-width: 720px) { .artist-sheet { width: 560px; } }
 @media (prefers-reduced-motion: reduce) { .artist-sheet[open] { animation: none; } }

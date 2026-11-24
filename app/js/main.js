@@ -96,7 +96,7 @@ function installArtistLinks(getCtx) {
     if (!el || !ctx) return;
     ev.preventDefault();
     import('./ui/artist-sheet.js')
-      .then((m) => m.openArtistSheet(ctx, el.dataset.artist, { opener: el, playable: Boolean(el.closest('.page')) }))
+      .then((m) => m.openArtistSheet(ctx, el.dataset.artist, { opener: el, playable: Boolean(el.closest('.page')), focus: el.dataset.focus || '' }))
       .catch((err) => console.error(err));
   });
 }
@@ -184,7 +184,7 @@ async function boot() {
   window.addEventListener('pointerup', unlockOnce, true);
   window.addEventListener('keydown', unlockOnce, true);
 
-  const FLOW_ROUTES = new Set(['stage', 'sala', 'review', 'srs', 'quick', 'review5', 'daily', 'weekly', 'challenge', 'free']);
+  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'quick', 'review5', 'daily', 'weekly', 'challenge', 'free']);
   let firstRender = true;
   let renderToken = 0;
 
@@ -242,6 +242,7 @@ async function boot() {
     switch (route.name) {
       case 'welcome': return welcome();
       case 'stage': return flow((m) => m.renderStage(ctx, screen, route.artistId));
+      case 'deep': return flow((m) => m.renderDeep(ctx, screen, route.artistId, route.level));
       case 'sala': return flow((m) => m.renderSala(ctx, screen, route.movementId));
       case 'intro': return flow((m) => m.renderIntro(ctx, screen, route.movementId));
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));

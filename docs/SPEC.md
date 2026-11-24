@@ -256,6 +256,13 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   (con `index.json` de pintores y niveles, para no pedir archivos inexistentes); `tests/ficha-pintor.test.js` falla si la copia se
   desfasa: tras tocar una historia, ejecutar el script y subir ambas carpetas. Museo y ciudad (`catalog-ficha.json`, diferido,
   `ui/ficha-data.js`) salen bajo el cuadro en el visor y en la ficha de obra solo con la obra revelada.
+- **Obras desbloqueadas** = vistas (colección o enseñadas en rondas, `engine/collection.js` `unlockedMap`): una sola definición para las franjas
+  de Colección, la ficha (galería completa: miniaturas que abren el visor y huecos discretos «n de m» sin imagen ni título) y la lista de
+  pintores. «Ver todas» abre la ficha en esa galería (`data-focus="gallery"`).
+- **Niveles «a fondo»** (parte B, paquete 3): ruta `a-fondo-<pintor>-<nivel>` (`deepRoute`), historia de la etapa y ronda con
+  `planStage(..., { level })`; sello «+n» (o check) en el nodo del mapa de los pintores dominados (`ui/deep-badges.js`, añadido al DOM
+  desde `home.js`) que abre la ficha en «Etapas», jugables desde allí; el resultado celebra `deep-mastered` y `rank` y, con `coverShort`,
+  dice «Te faltan n cuadros suyos por ver: una ronda más».
 - **Colección «Pintores»**: por movimiento (cronológico), cada uno con «n de m pintores»; dentro solo los pintores con alguna obra vista
   (nunca se nombra a quien aún no se ha conocido) y al final «y k por descubrir» (no pulsable); un movimiento sin pintores conocidos no
   sale. El círculo de cada pintor es un anillo de progreso n/m (obras vistas de todas las suyas); el check dorado es «dominado» =

@@ -5,6 +5,7 @@
 import { esc, accentStyle } from './dom.js';
 import { icons } from './icons.js';
 import { artFrame } from './art.js';
+import { deepRoute } from './router.js';
 import { loadCss } from './lazy-css.js';
 import { loadStory } from './story-data.js';
 import { levelStory, sourceLabel } from '../engine/stories.js';
@@ -31,18 +32,27 @@ function sourcesHtml(lines) {
   return links.length ? `<p class="as-sources"><span>Fuente</span>${links.join('')}</p>` : '';
 }
 
-function stagesHtml(stages) {
+// Etapas («a fondo»): con la ficha abierta desde una pantalla con navegación, las abiertas se tocan para jugarlas.
+function stagesHtml(stages, playable) {
   if (!stages.length) return '';
-  return `<section class="as-section" aria-labelledby="as-stages-h"><h3 id="as-stages-h" class="as-h">Etapas</h3>
-    <ol class="as-stages">${stages.map((s) => `<li class="as-stage is-${s.status}">
-      <span class="as-stage-mark" aria-hidden="true">${icons[STAGE_ICON[s.status]](16)}</span>
-      <span class="as-stage-name">${esc(s.name)}</span><span class="as-stage-state">${STAGE_LABEL[s.status]}</span></li>`).join('')}</ol></section>`;
+  const item = (s) => {
+    const inner = `<span class="as-stage-mark" aria-hidden="true">${icons[STAGE_ICON[s.status]](16)}</span>
+      <span class="as-stage-name">${esc(s.name)}</span><span class="as-stage-state">${STAGE_LABEL[s.status]}</span>`;
+    return playable && s.status !== 'locked'
+      ? `<li><button type="button" class="as-stage is-${s.status}" data-as="deep" data-level="${s.id}" aria-label="${esc(s.name)}: ${STAGE_LABEL[s.status].toLowerCase()}, jugar">${inner}<span class="as-stage-go" aria-hidden="true">${icons.next(16)}</span></button></li>`
+      : `<li class="as-stage is-${s.status}">${inner}</li>`;
+  };
+  return `<section class="as-section as-stages-section" aria-labelledby="as-stages-h"><h3 id="as-stages-h" class="as-h">Etapas</h3>
+    <ul class="as-stages">${stages.map(item).join('')}</ul></section>`;
 }
 
-function seenHtml(artist, works, total) {
-  if (!works.length) return '';
-  return `<section class="as-section" aria-labelledby="as-seen-h"><h3 id="as-seen-h" class="as-h">Cuadros que has visto <span class="as-count">${works.length}/${total}</span></h3>
-    <ul class="as-grid">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, thumb: true, zoom: { group: `as-${artist.id}`, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}</ul></section>`;
+// Galería completa: las vistas, miniaturas que abren el visor (y se pasan deslizando); las que faltan, huecos discretos
+// sin imagen ni título («n de m»).
+function galleryHtml(artist, works, total) {
+  const gaps = Math.max(0, total - works.length);
+  return `<section class="as-section as-gallery" aria-labelledby="as-seen-h"><h3 id="as-seen-h" class="as-h">Sus obras <span class="as-count">${works.length} de ${total}</span></h3>
+    <ul class="as-grid">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, thumb: true, zoom: { group: `as-${artist.id}`, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}${'<li class="as-gap" aria-hidden="true"></li>'.repeat(gaps)}</ul>
+    ${gaps ? `<p class="sr-only">${gaps === 1 ? 'Falta 1 obra por descubrir' : `Faltan ${gaps} obras por descubrir`}</p>` : ''}</section>`;
 }
 
 function sheetHtml(ctx, artist, story, playable) {
@@ -53,7 +63,7 @@ function sheetHtml(ctx, artist, story, playable) {
   const total = index.worksOf(artist.id).length;
   const lines = lifeLines(artist, story, movement ? movement.name : '');
   const target = playable ? playTargets(progress, index, artist.id).stage : null;
-  const stages = artist.category === 'gran-maestro' ? stageList(progress, index, artist.id) : [];
+  const stages = stageList(progress, index, artist.id);
   const hasStory = Boolean(levelStory(story, 1));
   const pct = total ? Math.round((works.length / total) * 100) : 0;
   const meta = [lifeSpan(artist), artist.country].filter(Boolean).join(' · ');
@@ -70,8 +80,8 @@ function sheetHtml(ctx, artist, story, playable) {
     </div>
     <section class="as-life">${lines.map((l) => `<p>${esc(l.text)}</p>`).join('')}${sourcesHtml(lines)}</section>
     ${artist.hint ? `<aside class="as-look"><span class="as-look-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : ''}
-    ${stagesHtml(stages)}
-    ${seenHtml(artist, works, total)}
+    ${stagesHtml(stages, playable)}
+    ${galleryHtml(artist, works, total)}
     ${hasStory || target ? `<div class="as-actions">
       ${hasStory ? `<button type="button" class="btn btn-secondary btn-wide" data-as="story">${icons.play(18)}<span>Ver su historia</span></button>` : ''}
       ${target ? `<button type="button" class="btn btn-primary btn-wide" data-as="play">${esc(PLAY_LABEL[target])}</button>` : ''}
@@ -113,10 +123,13 @@ export async function openArtistSheet(ctx, artistId, opts = {}) {
     ctx.audio.sfx('tap');
     if (b.dataset.as === 'close') close();
     else if (b.dataset.as === 'story') import('./story-viewer.js').then((m) => m.playStory(ctx, artistId, 1, { force: true })).catch((err) => console.error(err));
+    else if (b.dataset.as === 'deep') { close(); ctx.go(deepRoute(artistId, Number(b.dataset.level))); }
     else if (b.dataset.as === 'play') { close(); ctx.go(`etapa-${artistId}`); }
   });
   dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); close(); });
   try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }
   dlg.querySelector('.as-close').focus({ preventScroll: true });
+  const anchor = { stages: '.as-stages-section', gallery: '.as-gallery' }[opts.focus];
+  if (anchor) dlg.querySelector(anchor)?.scrollIntoView({ block: 'start', behavior: 'auto' });
   return handle;
 }

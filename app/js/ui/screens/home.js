@@ -10,6 +10,7 @@ import { recognizedCount } from '../../engine/goals.js';
 import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf } from '../../engine/dates.js';
+import { addDeepBadges } from '../deep-badges.js';
 import { coachSeen } from '../../state/store.js';
 
 export function renderHome(ctx, el) {
@@ -59,6 +60,7 @@ export function renderHome(ctx, el) {
 
   playEra('menu');
   watchLandscapes(el);
+  addDeepBadges(ctx, el);
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
   if (!coachSeen()) {
     let stop = () => {};

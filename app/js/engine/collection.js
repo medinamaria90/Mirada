@@ -5,13 +5,23 @@ export const STRIP_THUMBS = 3;
 export const SEARCH_MIN_PAINTERS = 15; // el buscador sale con tantos pintores con alguna obra desbloqueada
 
 const isGuest = (artist) => artist.category === 'invitado';
+
+// Obras desbloqueadas = las que se han visto: reconocidas (colección) o enseñadas en alguna ronda. Es la misma
+// definición que la ficha del pintor y la lista de pintores (engine/painters.js `seenOf`). { id: día | '' }
+export function unlockedMap(progress, index) {
+  const out = {};
+  for (const [id, day] of Object.entries(progress.collection || {})) if (index.artwork(id)) out[id] = day || '';
+  for (const rec of Object.values(progress.artists || {})) for (const id of rec?.works || []) if (index.artwork(id) && !(id in out)) out[id] = '';
+  return out;
+}
+
 const byDayDesc = (owned) => (a, b) => (owned[a.id] < owned[b.id] ? 1 : owned[a.id] > owned[b.id] ? -1 : 0);
 
 // Obras desbloqueadas de un pintor, las más recientes primero (el día de la colección y, a igualdad, las últimas del catálogo).
 function unlockedOf(index, owned, artistId) {
   return index.worksOf(artistId)
     .map((w, i) => ({ w, i }))
-    .filter(({ w }) => owned[w.id])
+    .filter(({ w }) => w.id in owned)
     .sort((a, b) => byDayDesc(owned)(a.w, b.w) || b.i - a.i)
     .map(({ w }) => w);
 }
@@ -25,7 +35,7 @@ function strip(kind, id, name, movement, works, total, artist = null) {
 // Franjas: [{ kind: 'artist' | 'guests', id, name, artist, movement, works (todas las desbloqueadas, recientes primero),
 // shown (las 3 que se ven), count, total, latest }]
 export function collectionStrips(progress, index, { recent = false, movementId = null } = {}) {
-  const owned = progress.collection || {};
+  const owned = unlockedMap(progress, index);
   const own = [];
   const guests = [];
   for (const m of index.movements) {
@@ -51,19 +61,19 @@ export function collectionStrips(progress, index, { recent = false, movementId =
 
 // Pintores con alguna obra desbloqueada (cada invitado cuenta).
 export function unlockedPainterCount(progress, index) {
-  const owned = progress.collection || {};
-  return index.artists.filter((a) => index.worksOf(a.id).some((w) => owned[w.id])).length;
+  const owned = unlockedMap(progress, index);
+  return index.artists.filter((a) => index.worksOf(a.id).some((w) => w.id in owned)).length;
 }
 
 // Movimientos con obras desbloqueadas, en orden: los chips de filtro.
 export function unlockedMovements(progress, index) {
-  const owned = progress.collection || {};
-  return index.movements.filter((m) => index.artistsOf(m.id).some((a) => index.worksOf(a.id).some((w) => owned[w.id])));
+  const owned = unlockedMap(progress, index);
+  return index.movements.filter((m) => index.artistsOf(m.id).some((a) => index.worksOf(a.id).some((w) => w.id in owned)));
 }
 
 // Lo que puede sugerir el buscador: pintores y obras ya desbloqueados.
 export function suggestPool(progress, index) {
-  const owned = progress.collection || {};
+  const owned = unlockedMap(progress, index);
   const artists = [];
   const works = [];
   for (const a of index.artists) {

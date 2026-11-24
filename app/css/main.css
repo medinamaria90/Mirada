@@ -205,6 +205,10 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 /* Nodos: cada parada es un punto (0×0) del trazado; el botón cuelga de él hacia el lado ancho. */
 .stages { position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; list-style: none; }
 .stage-spot { position: absolute; width: 0; height: 0; }
+/* Sello de niveles «a fondo» encima del nodo de un pintor dominado (ui/deep-badges.js): zona táctil de 48 px. */
+.deep-badge { position: absolute; z-index: 1; top: -82px; left: -24px; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; background: none; cursor: pointer; }
+.deep-seal { display: grid; place-items: center; min-width: 28px; height: 28px; padding: 0 .35rem; border-radius: 999px; background: var(--gold); color: var(--on-gold); font: 600 .8rem/1 var(--font); font-variant-numeric: lining-nums tabular-nums; box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-sm) 0 3px var(--line-2); }
+.deep-badge:active .deep-seal { transform: translateY(2px); }
 .stage {
   position: absolute; top: -32px; left: -32px; display: flex; align-items: center; gap: 12px; min-height: 64px; width: max-content;
   padding: 0; border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer;

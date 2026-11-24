@@ -17,6 +17,9 @@ export const ROUTES = {
   weekly: 'reto-semanal',
 };
 
+// Ronda «a fondo» de un pintor: a-fondo-<pintor>-<nivel> (nivel 2 en adelante).
+export const deepRoute = (artistId, level) => `a-fondo-${artistId}-${level}`;
+
 // opts.today: día del reto diario (para rechazar retos de fechas futuras).
 // Un nombre que no es ninguna ruta devuelve { name: 'invalid' } (se avisa y se va al inicio).
 export function parseRoute(hash, opts = {}) {
@@ -34,7 +37,9 @@ export function parseRoute(hash, opts = {}) {
   if (name === ROUTES.medals) return { name: 'medals' };
   if (name === ROUTES.free) return { name: 'free' };
   if (name === ROUTES.weekly) return { name: 'weekly' };
-  let m = /^etapa-([a-z0-9-]+)$/.exec(name);
+  let m = /^a-fondo-([a-z0-9-]+)-([2-9])$/.exec(name);
+  if (m) return { name: 'deep', artistId: m[1], level: Number(m[2]) };
+  m = /^etapa-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'stage', artistId: m[1] };
   m = /^repaso-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'review', movementId: m[1] };

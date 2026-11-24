@@ -14,7 +14,7 @@ import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } 
 import { encodeChallenge } from '../../engine/challenge.js';
 import { artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
-import { seenWorks } from '../../engine/levels.js';
+import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
@@ -46,7 +46,7 @@ function complete(ctx, result) {
 }
 
 function planMeta(plan) {
-  return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week };
+  return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week, level: plan.level };
 }
 
 // Rondas que no llevan al final un cuadro fallado antes: los retos con un amigo y el semanal (iguales
@@ -297,6 +297,23 @@ export function renderStage(ctx, el, artistId) {
       onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: { artistId }, shareTopic: artist.name })),
     });
   }));
+}
+
+// --- Nivel «a fondo» de un pintor: la historia de su etapa y la ronda (no toca la parada del camino) ---
+
+export function renderDeep(ctx, el, artistId, level) {
+  const { index } = ctx;
+  const artist = index.artist(artistId);
+  const stage = index.deepLevels(artistId).find((l) => l.id === level);
+  if (!artist || !stage) return leave(ctx);
+  if (deepStatus(ctx.store.get().progress, index, artistId, level) === 'locked') return leave(ctx, 'Aún no está abierto');
+  const movement = index.movement(artist.movementId);
+  withStory(ctx, el, artistId, level, () => {
+    const progress = ctx.store.get().progress;
+    const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)] });
+    playEra(movement.era);
+    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `${artist.short || artist.name} · ${stage.name}`, kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stage.name}` }));
+  });
 }
 
 // --- Sala de movimiento (sin pintores con etapa) ---------------------------------

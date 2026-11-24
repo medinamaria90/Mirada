@@ -1008,6 +1008,38 @@ if (SMOKE) {
   await sp.waitForSelector('.learn');
   check(await sp.locator('.story').count() === 0, 'la historia vuelve a salir sola');
   await storyCtx.close();
+  // Niveles «a fondo»: sello «+n» en el nodo del pintor dominado, etapas jugables en su ficha, ronda propia con su
+  // celebración (nivel superado) o, si faltan cuadros por ver, el aviso de «una ronda más».
+  const deepArtist = index.path.find((a) => index.deepLevels(a.id).length >= 2);
+  const deepUpTo = index.pathIndex(deepArtist.id) + 1;
+  const deepLevel = index.deepLevels(deepArtist.id)[0];
+  const deepSeen = (all) => ({ artists: { ...seededState({ upTo: deepUpTo }).progress.artists, [deepArtist.id]: { plays: 1, best: 1, mastered: true, works: [...index.worksOf(deepArtist.id)].filter((w) => w.level === 1 || all).map((w) => w.id) } } });
+  await seed(page, seededState({ upTo: deepUpTo, extra: deepSeen(false) }), 'inicio');
+  await page.waitForSelector('.deep-badge');
+  const badge = await page.locator('.stage-spot[data-step="artist:' + deepArtist.id + '"] .deep-badge').evaluate((b) => ({ w: b.getBoundingClientRect().width, h: b.getBoundingClientRect().height, label: b.getAttribute('aria-label'), text: b.textContent.trim() }));
+  check(badge.w >= 48 && badge.h >= 48 && /^\+\d+$/.test(badge.text) && /a fondo por hacer/.test(badge.label), `sello a fondo: ${JSON.stringify(badge)}`);
+  await page.locator('.stage-spot[data-step="artist:' + deepArtist.id + '"] .deep-badge').scrollIntoViewIfNeeded();
+  await shot(page, '14h-mapa-sello-a-fondo');
+  await page.locator('.stage-spot[data-step="artist:' + deepArtist.id + '"] .deep-badge').click();
+  await page.waitForSelector('.artist-sheet[open] button.as-stage');
+  await shot(page, '14i-ficha-etapas');
+  await audit(page, '390 ficha con etapas');
+  await page.locator('button.as-stage[data-level="' + deepLevel.id + '"]').click();
+  await page.waitForSelector('.lesson');
+  check(page.url().endsWith('#a-fondo-' + deepArtist.id + '-' + deepLevel.id), `la etapa no lleva a su ronda: ${page.url()}`);
+  await playRound(page);
+  await page.waitForSelector('.result-title');
+  check(/por ver: una ronda más/.test(await page.locator('.result-actions').innerText()) || await page.locator('.event-deep').count() === 1, 'faltan cuadros por ver y el resultado no lo dice');
+  check(await page.locator('.result-actions [data-to="a-fondo-' + deepArtist.id + '-' + deepLevel.id + '"]').count() === 1 || await page.locator('.event-deep').count() === 1, 'sin «Repetir» en el nivel a fondo');
+  await shot(page, '14j-resultado-a-fondo-faltan', true);
+  await seed(page, seededState({ upTo: deepUpTo, extra: deepSeen(true) }), `a-fondo-${deepArtist.id}-${deepLevel.id}`);
+  await page.waitForSelector('.lesson');
+  await playRound(page);
+  await page.waitForSelector('.result-title');
+  check(await page.locator('.event-deep').count() === 1 && (await page.locator('.event-deep').innerText()).includes(deepLevel.name), 'el nivel a fondo superado no se celebra');
+  await shot(page, '14k-resultado-a-fondo-superado', true);
+  await audit(page, '390 resultado a fondo');
+
   // Colección → «Cuadros»: franjas por pintor; el buscador con sugerencias solo con 15 pintores o más.
   const fewColl = Object.fromEntries(index.path.slice(0, 3).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
   await seed(page, seededState({ upTo: 3, extra: { collection: fewColl } }), 'coleccion');
@@ -1015,6 +1047,31 @@ if (SMOKE) {
   check(await page.locator('.coll-strip').count() === 3 && await page.locator('.sg-input').count() === 0, 'con menos de 15 pintores aparece el buscador o faltan franjas');
   const countText = (await page.locator('.coll-strip .coll-count').first().innerText()).trim();
   check(/^1 de [0-9]+$/.test(countText), `la franja no dice «n de m»: ${countText}`);
+  // «Ver todas» lleva a la galería completa de la ficha: las desbloqueadas como miniaturas y el resto, huecos sin imagen.
+  const allArtist = index.path[0];
+  const allWorks = index.worksOf(allArtist.id);
+  const fourColl = Object.fromEntries(allWorks.slice(0, 4).map((w) => [w.id, '2026-11-20']));
+  await seed(page, seededState({ upTo: 3, extra: { collection: fourColl } }), 'coleccion');
+  await page.waitForSelector('.coll-strip');
+  check(/^4 de [0-9]+$/.test((await page.locator('.coll-strip .coll-count').first().innerText()).trim()), 'la franja no cuenta las 4 desbloqueadas');
+  await page.locator('.coll-all').first().click();
+  await page.waitForSelector('.artist-sheet[open] .as-gallery');
+  await page.waitForTimeout(300);
+  const gal = await page.evaluate(() => {
+    const g = document.querySelector('.as-gallery');
+    const body = document.querySelector('.as-body').getBoundingClientRect();
+    return { shown: g.querySelectorAll('li:not(.as-gap) img, li:not(.as-gap) .art').length, gaps: g.querySelectorAll('.as-gap').length, gapImgs: g.querySelectorAll('.as-gap img').length, count: g.querySelector('.as-count').textContent.trim(), top: g.getBoundingClientRect().top - body.top };
+  });
+  check(gal.shown === 4 && gal.gaps === allWorks.length - 4 && gal.gapImgs === 0 && gal.count === `4 de ${allWorks.length}`, `galería de la ficha: ${JSON.stringify(gal)}`);
+  check(gal.top < 200, `«Ver todas» no lleva al bloque de la galería (a ${Math.round(gal.top)} px)`);
+  await shot(page, '14l-ficha-galeria');
+  await page.locator('.as-gallery li:not(.as-gap) .art-zoom').first().click();
+  await page.waitForSelector('.viewer[open]');
+  check(await page.locator('.viewer-slide').count() === 4, 'el visor de la galería no pasa por las 4 obras');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.viewer', { state: 'detached' });
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.artist-sheet', { state: 'detached' });
   const manyColl = Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
   await seed(page, seededState({ upTo: 3, extra: { collection: manyColl } }), 'coleccion');
   await page.waitForSelector('.sg-input');

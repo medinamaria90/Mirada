@@ -8,7 +8,7 @@ import { page } from '../shell.js';
 import { artFrame } from '../art.js';
 import { playEra } from '../audio-bridge.js';
 import { openGalleries, galleryWorks } from '../../engine/goals.js';
-import { collectionStrips, unlockedPainterCount, unlockedMovements, suggestPool, SEARCH_MIN_PAINTERS } from '../../engine/collection.js';
+import { collectionStrips, unlockedMap, unlockedPainterCount, unlockedMovements, suggestPool, SEARCH_MIN_PAINTERS } from '../../engine/collection.js';
 import { eyeLabel } from './medals.js';
 import { renderPainters, collTabs } from './collection-painters.js';
 import { mountCard } from './collection-card.js';
@@ -26,7 +26,7 @@ function stripHtml(ctx, s) {
     : `<h2 class="coll-artist-name"><button type="button" class="coll-name-btn" data-artist="${esc(s.id)}">${esc(s.name)}${icons.next(16)}</button></h2>`;
   const all = isGuests
     ? '<button type="button" class="coll-all" data-action="painters">Ver todas</button>'
-    : `<button type="button" class="coll-all" data-artist="${esc(s.id)}" aria-label="Ver todas las obras de ${esc(s.name)}">Ver todas</button>`;
+    : `<button type="button" class="coll-all" data-artist="${esc(s.id)}" data-focus="gallery" aria-label="Ver todas las obras de ${esc(s.name)}">Ver todas</button>`;
   const eye = isGuests ? '' : eyeLine(ctx, s.id);
   return `<section class="coll-strip" style="${accentStyle(s.movement.accent)}" aria-label="${esc(s.name)}">
       <header class="coll-strip-head">${name}${count}${all}</header>${eye}
@@ -60,10 +60,10 @@ export async function renderCollection(ctx, el, { tab = 'works' } = {}) {
   await loadCss('css/ficha.css');
   const { index } = ctx;
   const progress = ctx.store.get().progress;
-  const owned = progress.collection;
+  const owned = unlockedMap(progress, index);
   // Obras que se pueden reconocer en el camino: las de pintores con etapa y las de las salas.
   const total = index.artworks.filter((w) => !index.artist(w.artistId).guest || index.isSala(index.artist(w.artistId).movementId)).length;
-  const ownedCount = Object.keys(owned).filter((id) => index.artwork(id)).length;
+  const ownedCount = Object.keys(owned).length;
   const searchable = unlockedPainterCount(progress, index) >= SEARCH_MIN_PAINTERS;
   if (!searchable) view.movementId = null;
   const strips = () => collectionStrips(ctx.store.get().progress, index, view);

@@ -5,6 +5,8 @@ import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
 import { levelFor, levelName, MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
+import { pendingWorks } from '../../engine/levels.js';
+import { deepRoute } from '../router.js';
 import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { weekOf, isoWeek } from '../../engine/dates.js';
@@ -108,6 +110,15 @@ export function renderResult(ctx, el, opts) {
     const m = index.movement(completed.movementId);
     blocks.push(`<section class="event event-seal" style="${accentStyle(m.accent)}">${medalBadge(ctx, `movement-${m.id}`, true)}<span class="event-text"><span class="event-kicker">Movimiento completo</span><span class="event-title">${esc(m.name)}</span></span></section>`);
   }
+  // Nivel «a fondo» superado y nuevo rango: se celebran con su propia tarjeta.
+  const deepDone = events.find((e) => e.type === 'deep-mastered');
+  if (deepDone) {
+    const stage = index.deepLevels(deepDone.artistId).find((l) => l.id === deepDone.level);
+    const who = index.artist(deepDone.artistId);
+    blocks.push(`<section class="event event-seal event-deep"><span class="event-icon">${icons.laurel(22)}</span><span class="event-text"><span class="event-kicker">${esc(who?.short || who?.name || '')} · a fondo</span><span class="event-title">${esc(stage?.name || 'Nivel superado')}</span></span></section>`);
+  }
+  const rankUp = events.find((e) => e.type === 'rank');
+  if (rankUp) blocks.push(eventCard({ icon: icons.gem(22), kicker: 'Nuevo rango', title: rankUp.name, to: 'perfil', cls: 'event-rank' }));
   if (levelUp) {
     blocks.push(eventCard({ icon: icons.gem(22), kicker: 'Nuevo nivel', title: levelName(levelUp.level), to: 'perfil', cls: 'event-level' }));
   }
@@ -128,11 +139,12 @@ export function renderResult(ctx, el, opts) {
   if (streak) blocks.push(weekStrip(ctx, streak.value, streak.grace));
 
   const roundMastered = outcome.mastered ?? outcome.accuracy >= MASTERY;
+  const isDeep = plan.kind === 'stage' && plan.level >= 2;
   const retry = (plan.kind === 'stage' || plan.kind === 'sala') && !roundMastered
-    ? (plan.kind === 'stage' ? `etapa-${plan.artistId}` : `sala-${plan.movementId}`) : null;
+    ? (plan.kind === 'stage' ? (isDeep ? deepRoute(plan.artistId, plan.level) : `etapa-${plan.artistId}`) : `sala-${plan.movementId}`) : null;
   // Con menos de la mitad de aciertos lo primero es repetir (y la parada siguiente, si estaba
   // cerrada, sigue cerrada).
-  const step = plan.kind === 'stage' ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
+  const step = plan.kind === 'stage' && !isDeep ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
   const nextOf = step ? index.steps[index.stepIndex(step.type, step.id) + 1] : null;
   const gated = Boolean(retry && nextOf && outcome.accuracy < UNLOCK_MIN && !isStepUnlocked(p, index, nextOf));
   // Cierre del día (meta cumplida): «Seguir» y, si la ronda se comparte, compartir; sin llamadas a
@@ -144,6 +156,9 @@ export function renderResult(ctx, el, opts) {
   // 75 % o más, pero sin acertar bastantes cuadros del propio pintor: aún no está dominado.
   const ownNote = outcome.ownShort && plan.artistId && index.artist(plan.artistId)
     ? `<p class="result-note">Para dominarlo, acierta más cuadros de ${esc(index.artist(plan.artistId).short || index.artist(plan.artistId).name)}</p>` : '';
+  // 75 % o más y bien repartido, pero faltan cuadros suyos por ver: una ronda más los enseña.
+  const missing = outcome.coverShort && plan.artistId ? pendingWorks(p, index, plan.artistId, plan.level || 1).length : 0;
+  const coverNote = missing ? `<p class="result-note">${missing === 1 ? 'Te falta 1 cuadro suyo por ver' : `Te faltan ${missing} cuadros suyos por ver`}: una ronda más</p>` : '';
   const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar a un amigo';
   const reduce = prefersReducedMotion();
   const fromPct = level.index === levelBefore.index ? Math.round(levelBefore.progress * 100) : 0;
@@ -170,7 +185,7 @@ export function renderResult(ctx, el, opts) {
         <span>${esc(level.next.name)}</span>
       </div>
       <div class="result-actions">
-        ${ownNote}
+        ${ownNote}${coverNote}
         ${blocked ? `${gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
         <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
