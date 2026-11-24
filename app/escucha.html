@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Mirada · escucha de músicas</title>
+<style>
+  :root {
+    --fondo: #ece8e1; --papel: #f8f5f0; --tinta: #2b2723; --tinta-suave: #6b6259; --linea: #d6cec3;
+    --borde: #b9b0a4; --acento: #8a6d3b; --activo: #2b2723; --radio: 12px; --toque: 44px;
+  }
+  * { box-sizing: border-box; }
+  body { font: 16px/1.4 system-ui, sans-serif; background: var(--fondo); color: var(--tinta); max-width: 680px; margin: 0 auto; padding: 20px 16px 96px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-suave); margin: 28px 0 8px; }
+  h2 small { text-transform: none; letter-spacing: 0; font-weight: normal; margin-left: 6px; }
+  p.intro { margin: 0 0 8px; color: var(--tinta-suave); }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  button { font: inherit; min-height: var(--toque); padding: 0 16px; border: 1px solid var(--borde); border-radius: 10px; background: var(--papel); color: inherit; cursor: pointer; }
+  button:hover { background: #fff; }
+  button.on { background: var(--activo); color: var(--papel); border-color: var(--activo); }
+  button:focus-visible, input:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+  .lista { display: flex; flex-direction: column; gap: 8px; }
+  .pieza { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 10px 12px; }
+  .pieza button.play { grid-row: 1 / span 2; min-width: 104px; }
+  .pieza .nombre { font-weight: 600; }
+  .pieza .nombre small { font-weight: normal; color: var(--tinta-suave); margin-left: 6px; }
+  .pieza .detalle { color: var(--tinta-suave); font-size: 14px; }
+  .pieza .caracter { grid-column: 1 / -1; color: var(--acento); font-size: 14px; font-style: italic; }
+  .pieza.on { border-color: var(--activo); box-shadow: inset 0 0 0 1px var(--activo); }
+  .barra { position: fixed; left: 0; right: 0; bottom: 0; background: var(--papel); border-top: 1px solid var(--linea); padding: 10px 16px; display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .barra .ahora { flex: 1 1 160px; font-size: 14px; color: var(--tinta-suave); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  label { display: inline-flex; align-items: center; gap: 8px; min-height: var(--toque); }
+  input[type=range] { width: 120px; }
+  pre { background: var(--papel); border: 1px solid var(--linea); border-radius: 8px; padding: 12px; font-size: 12px; overflow: auto; }
+  table { border-collapse: collapse; font-size: 13px; width: 100%; } td, th { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--linea); }
+</style>
+</head>
+<body>
+<h1>Mirada · escucha de músicas</h1>
+<p class="intro">Toca una pieza para oírla (el primer toque desbloquea el audio). La primera de cada época, marcada «actual», es la que suena hoy en la app.</p>
+
+<div id="eras"></div>
+
+<h2>Efectos</h2>
+<div class="row" id="sfx"></div>
+
+<h2>Diagnóstico sin conexión</h2>
+<div class="row"><button id="diag">Medir picos y nivel (todas las piezas y efectos)</button></div>
+<table id="diagout"></table>
+<pre id="state"></pre>
+
+<div class="barra">
+  <span class="ahora" id="ahora">Nada suena</span>
+  <label>Volumen <input id="vol" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volumen"></label>
+  <button id="stop">Parar</button>
+</div>
+
+<script type="module">
+import { audio, ERAS, SFX_NAMES } from './js/audio/index.js';
+import { renderEraOffline, renderSfxOffline } from './js/audio/player.js';
+import { variantsOf, pieceKey, allPieceKeys } from './js/audio/variants.js';
+
+// Portada primero y después las épocas en el orden del catálogo.
+const ERA_NAMES = {
+  menu: ['Portada', 'tema principal de Mirada'],
+  renaissance: ['Renacimiento', 'también manierismo y norte'],
+  baroque: ['Barroco', ''],
+  rococo: ['Rococó y Neoclasicismo', ''],
+  romantic: ['Romanticismo', ''],
+  realism: ['Realismo', ''],
+  impressionism: ['Impresionismo', ''],
+  postimpressionism: ['Postimpresionismo', ''],
+  modern: ['Simbolismo y vanguardias', ''],
+  neoclassic: ['Neoclásico', 'pieza de reserva, sin época en el catálogo'],
+};
+const ORDER = ['menu', 'renaissance', 'baroque', 'rococo', 'romantic', 'realism', 'impressionism', 'postimpressionism', 'modern', 'neoclassic']
+  .filter((e) => ERAS.includes(e));
+
+const $ = (id) => document.getElementById(id);
+
+const show = () => { $('state').textContent = JSON.stringify(audio.getState(), null, 2); };
+function mark() {
+  const st = audio.getState();
+  const key = st.playing ? pieceKey(st.era, st.variants[st.era]) : null;
+  document.querySelectorAll('.pieza').forEach((el) => {
+    const on = el.dataset.key === key;
+    el.classList.toggle('on', on);
+    const b = el.querySelector('button.play');
+    b.classList.toggle('on', on);
+    b.textContent = on ? 'Sonando' : 'Reproducir';
+  });
+  const card = key && document.querySelector(`.pieza[data-key="${key}"] .nombre`);
+  $('ahora').textContent = card ? `Suena: ${card.firstChild.textContent}` : 'Nada suena';
+  show();
+}
+
+function play(era, id) {
+  audio.unlock();
+  audio.setVariant(era, id);
+  audio.setEra(era);
+  audio.startMusic();
+  setTimeout(mark, 60);
+}
+
+for (const era of ORDER) {
+  const [title, sub] = ERA_NAMES[era] || [era, ''];
+  const h = document.createElement('h2');
+  h.textContent = title;
+  if (sub) { const s = document.createElement('small'); s.textContent = `· ${sub}`; h.append(s); }
+  const list = document.createElement('div');
+  list.className = 'lista';
+  variantsOf(era).forEach((v, i) => {
+    const key = pieceKey(era, v.id);
+    const card = document.createElement('div');
+    card.className = 'pieza';
+    card.dataset.key = key;
+    card.dataset.era = era;
+    card.dataset.variant = v.id;
+    const b = document.createElement('button');
+    b.className = 'play';
+    b.textContent = 'Reproducir';
+    b.setAttribute('aria-label', `Reproducir ${v.name}`);
+    b.onclick = () => play(era, v.id);
+    const name = document.createElement('div');
+    name.className = 'nombre';
+    name.textContent = v.name;
+    if (i === 0) { const s = document.createElement('small'); s.textContent = 'actual'; name.append(s); }
+    const det = document.createElement('div');
+    det.className = 'detalle';
+    det.textContent = v.label;
+    const car = document.createElement('div');
+    car.className = 'caracter';
+    car.textContent = v.character;
+    card.append(name, b, det, car);
+    list.append(card);
+  });
+  $('eras').append(h, list);
+}
+
+for (const name of SFX_NAMES) {
+  const b = document.createElement('button');
+  b.textContent = name;
+  b.onclick = () => { audio.unlock(); audio.sfx(name); };
+  $('sfx').append(b);
+}
+$('stop').onclick = () => { audio.stopMusic(); setTimeout(mark, 60); };
+$('vol').oninput = (e) => { audio.setVolume(Number(e.target.value)); show(); };
+show();
+
+// Mide pico y RMS (dBFS) de un AudioBuffer.
+function measure(buf) {
+  let peak = 0, sum = 0, n = 0;
+  for (let c = 0; c < buf.numberOfChannels; c++) {
+    const d = buf.getChannelData(c);
+    for (let i = 0; i < d.length; i++) { const a = Math.abs(d[i]); if (a > peak) peak = a; sum += d[i] * d[i]; }
+    n += d.length;
+  }
+  const db = (x) => (x > 0 ? 20 * Math.log10(x) : -Infinity);
+  return { peak, peakDb: db(peak), rmsDb: db(Math.sqrt(sum / n)), seconds: buf.duration };
+}
+window.__audioDiag = async function (seconds = 20, filter = null) {
+  const out = { pieces: {}, sfx: {} };
+  for (const key of allPieceKeys()) if (!filter || filter.includes(key)) out.pieces[key] = measure(await renderEraOffline(key, seconds));
+  if (!filter) for (const name of SFX_NAMES) out.sfx[name] = measure(await renderSfxOffline(name));
+  return out;
+};
+// WAV (PCM 16 bits) en base64 de una pieza renderizada sin conexión, para guardar muestras.
+window.__renderWav = async function (key, seconds = 25, sampleRate = 44100) {
+  const buf = await renderEraOffline(key, seconds, sampleRate);
+  const ch = buf.numberOfChannels, n = buf.length;
+  const fade = Math.floor(sampleRate * 1.5);
+  const bytes = new ArrayBuffer(44 + n * ch * 2);
+  const v = new DataView(bytes);
+  const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  str(0, 'RIFF'); v.setUint32(4, 36 + n * ch * 2, true); str(8, 'WAVE'); str(12, 'fmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, ch, true); v.setUint32(24, sampleRate, true);
+  v.setUint32(28, sampleRate * ch * 2, true); v.setUint16(32, ch * 2, true); v.setUint16(34, 16, true);
+  str(36, 'data'); v.setUint32(40, n * ch * 2, true);
+  const data = Array.from({ length: ch }, (_, c) => buf.getChannelData(c));
+  let o = 44;
+  for (let i = 0; i < n; i++) {
+    const g = i > n - fade ? (n - i) / fade : 1; // fundido de salida al final de la muestra
+    for (let c = 0; c < ch; c++) { v.setInt16(o, Math.max(-1, Math.min(1, data[c][i] * g)) * 32767, true); o += 2; }
+  }
+  let s = '';
+  const u8 = new Uint8Array(bytes);
+  for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+  return btoa(s);
+};
+$('diag').onclick = async () => {
+  $('diag').disabled = true;
+  const r = await window.__audioDiag(20);
+  const rows = [['', 'pico', 'pico dBFS', 'RMS dBFS']];
+  for (const [k, v] of Object.entries({ ...r.pieces, ...r.sfx })) rows.push([k, v.peak.toFixed(3), v.peakDb.toFixed(1), v.rmsDb.toFixed(1)]);
+  $('diagout').innerHTML = rows.map((r, i) => `<tr>${r.map((c) => `<${i ? 'td' : 'th'}>${c}</${i ? 'td' : 'th'}>`).join('')}</tr>`).join('');
+  $('diag').disabled = false;
+};
+window.__audio = audio;
+window.__ready = true;
+</script>
+</body>
+</html>
