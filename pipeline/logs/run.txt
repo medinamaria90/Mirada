@@ -18,3 +18,9 @@ ok   w1211943    velazquez        1187x1600 299KB  La dama del abanico
 lote: 150/150 bien; quedan 830
 build: 1180 obras (350 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
 subidas 150 imágenes a la release
+ok   w3548343    boucher          1000x1336 213KB  Un otoño pastoril
+ok   w19911689   melendez         1600x1103 356KB  La merienda
+ok   w5731132    melendez         1600x1046 333KB  Bodegón: un trozo de salmón, un limón y tres vasijas
+lote: 150/150 bien; quedan 680
+build: 1180 obras (500 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
+subidas 150 imágenes a la release
