@@ -94,3 +94,19 @@ ok     savrasov           Q353008      24 candidatas; de las 80 primeras, 19 con
 ya     manet              361 candidatas
 ya     shishkin           230 candidatas
 fin 2026-11-24 11:07:45
+ya     martin-rico        30 candidatas
+ya     gisbert            10 candidatas
+ya     whistler           371 candidatas
+ya     degas              371 candidatas
+ok     perov              Q315237      28 candidatas; de las 80 primeras, 22 con imagen >=1200px
+ya     rosales            19 candidatas
+ya     homer              563 candidatas
+ok     kramskoi           Q207758      85 candidatas; de las 80 primeras, 62 con imagen >=1200px
+ya     fortuny            72 candidatas
+ya     cezanne            739 candidatas
+ya     sisley             816 candidatas
+ok     makovski           Q460337      33 candidatas; de las 80 primeras, 24 con imagen >=1200px
+ya     monet              1264 candidatas
+ya     renoir             2303 candidatas
+ya     morisot            176 candidatas
+fin 2026-11-24 11:08:12
