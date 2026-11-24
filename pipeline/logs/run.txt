@@ -8,3 +8,8 @@ total 152 resueltos 152
 58M	.git
 2.8M	catalogo
 == candidates sofonisba leyster bonheur bazille 20:14:25
+ok     bonheur            Q241732     286 candidatas; de las 80 primeras, 59 con imagen >=1200px
+ok     bazille            Q207298      64 candidatas; de las 80 primeras, 52 con imagen >=1200px
+fin 2026-11-24 20:14:42
+58M	.git
+2.8M	catalogo
