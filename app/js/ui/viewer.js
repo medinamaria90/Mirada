@@ -11,10 +11,10 @@
 
 import { esc, prefersReducedMotion } from './dom.js';
 import { artFrame, isBroken } from './art.js';
+import { icons } from './icons.js';
 
 const CLOSE = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const PREV = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>';
-const LOUPE = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>';
 const NEXT = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg>';
 
 let current = null;
@@ -38,7 +38,7 @@ export function openViewer(opts) {
     <div class="viewer-top">
       ${opts.title ? `<p class="viewer-title" aria-hidden="true">${esc(opts.title)}</p>` : '<span></span>'}
       <div class="viewer-tools">
-        <button type="button" class="viewer-btn viewer-loupe" data-v="loupe" aria-pressed="false" aria-label="Lupa">${LOUPE}</button>
+        <button type="button" class="viewer-btn viewer-loupe" data-v="loupe" aria-pressed="false" aria-label="Lupa">${icons.loupe(24)}</button>
         <button type="button" class="viewer-btn viewer-close" data-v="close" aria-label="Cerrar">${CLOSE}</button>
       </div>
     </div>
