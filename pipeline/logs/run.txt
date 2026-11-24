@@ -125,3 +125,4 @@ aviso w26781788 (polenov): ficha sin dimensions
 aviso w4187532 (polenov): ficha sin technique
 61M	.git
 107M	catalogo
+fin Tue Nov 24 18:59:00 UTC 2026
