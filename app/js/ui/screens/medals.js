@@ -1,7 +1,7 @@
 // Medallas: insignia visual y catálogo completo para el perfil.
 // Pintor: su cuadro más conocido dentro del sello. Movimiento: laurel. Racha: sol y días.
 
-import { esc, accentStyle } from '../dom.js';
+import { esc, accentStyle, cssVar } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame, coverOf, isBroken, ZOOM_BADGE } from '../art.js';
 import { STREAK_MEDALS, artistStatus } from '../../engine/progress.js';
@@ -12,7 +12,7 @@ export function medalBadge(ctx, id, animate = false, size = 'sm') {
   const { index } = ctx;
   const [kind, ...rest] = id.split('-');
   const ref = rest.join('-');
-  let accent = '#8a7350';
+  let accent = cssVar('--medal-accent');
   let inner = icons.medal(size === 'lg' ? 34 : 22);
   let cls = '';
   if (kind === 'artist' && index.artist(ref)) {
@@ -33,7 +33,7 @@ export function medalBadge(ctx, id, animate = false, size = 'sm') {
     inner = icons.laurel(size === 'lg' ? 40 : 26);
   } else if (kind === 'streak') {
     // Lleva un número: fondo liso y oscuro para que se lea (AA) en claro y en oscuro.
-    accent = '#6a5434';
+    accent = cssVar('--medal-streak');
     cls = 'medal-streak';
     inner = `<span class="medal-stack">${icons.sun(size === 'lg' ? 26 : 16)}<span class="medal-num">${esc(ref)}</span></span>`;
   } else if (kind === 'daily' || kind === 'weekly') {

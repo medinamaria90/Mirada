@@ -1,0 +1,49 @@
+// Regla de CLAUDE.md: ningún color escrito a mano fuera del archivo de variables CSS, tampoco en JS.
+// Sin navegador: lee los archivos y busca colores hexadecimales y rgb()/rgba().
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const app = join(here, '..', 'app');
+
+// Colores que quedan en main.css fuera de los bloques :root (sombras rgba(), máscaras #000, el
+// blanco y el negro de la medalla…). Es un techo heredado: solo puede bajar, nunca subir.
+const CSS_COLORS_MAX = 18;
+
+const HEX = /#[0-9a-f]{3,8}\b/gi;
+const RGB = /\brgba?\(/g;
+
+function jsFiles(dir) {
+  return readdirSync(dir).flatMap((name) => {
+    const p = join(dir, name);
+    return statSync(p).isDirectory() ? jsFiles(p) : name.endsWith('.js') ? [p] : [];
+  });
+}
+
+test('colores: ningún .js de app/js lleva un color hexadecimal ni rgb()', () => {
+  const found = [];
+  for (const file of jsFiles(join(app, 'js'))) {
+    const src = readFileSync(file, 'utf8');
+    src.split('\n').forEach((line, i) => {
+      if (HEX.test(line) || RGB.test(line)) found.push(`${file.slice(app.length + 1)}:${i + 1}: ${line.trim()}`);
+      HEX.lastIndex = 0;
+      RGB.lastIndex = 0;
+    });
+  }
+  assert.deepEqual(found, []);
+});
+
+test('colores: main.css solo los define en :root (los que quedan fuera no aumentan)', () => {
+  const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
+  // Los bloques :root (tema claro y, dentro de @media, oscuro) son el archivo de variables.
+  const outside = css.replace(/:root\s*\{[^}]*\}/g, '');
+  const hex = outside.match(HEX) || [];
+  const rgb = outside.match(RGB) || [];
+  const n = hex.length + rgb.length;
+  assert.ok(n <= CSS_COLORS_MAX, `${n} colores a mano fuera de :root (techo ${CSS_COLORS_MAX}): ${[...hex, ...rgb].join(' ')}`);
+  // Y en :root tiene que haber variables de verdad (si alguien borra el bloque, el techo no vale).
+  assert.ok((css.match(/:root\s*\{[^}]*\}/g) || []).length >= 2, 'faltan los bloques :root claro y oscuro');
+});

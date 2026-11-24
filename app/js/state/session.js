@@ -68,7 +68,8 @@ export function readSession(state, index, now) {
       answers,
       xpLive: num(s.xpLive),
       friendScore: Number.isInteger(s.friendScore) ? s.friendScore : null,
-      accent: /^#[0-9a-f]{6}$/i.test(s.accent || '') ? s.accent : '#6b5b45',
+      // Sin acento válido queda vacío: la interfaz pone el suyo por defecto (el estado no sabe de colores).
+      accent: /^#[0-9a-f]{6}$/i.test(s.accent || '') ? s.accent : '',
       title: String(s.title || '').slice(0, 120),
       shareTopic: String(s.shareTopic || '').slice(0, 120),
       extra: pickExtra(s.extra || {}),

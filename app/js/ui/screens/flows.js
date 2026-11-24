@@ -1,7 +1,7 @@
 // Flujos de juego: etapa de pintor, sala de movimiento, intro de movimiento, repasos,
 // reto diario, reto de un amigo y ronda retomada.
 
-import { esc, onAction, accentStyle, focusHeading, announce, $, $$ } from '../dom.js';
+import { esc, onAction, accentStyle, defaultAccent, focusHeading, announce, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
 import { runLesson } from './lesson.js';
@@ -84,7 +84,7 @@ export function resumeSession(ctx, el, session) {
   ctx.setCleanup(play(ctx, el, {
     route: session.route,
     plan,
-    accent: session.accent,
+    accent: session.accent || defaultAccent(),
     title: session.title,
     kind: session.kind,
     extra: session.extra,
@@ -321,7 +321,7 @@ export function renderSrsReview(ctx, el, { quick = false } = {}) {
   if (!plan.questions.length) return leave(ctx, 'Hoy no hay nada que repasar');
   playEra('menu');
   ctx.setCleanup(play(ctx, el, {
-    plan, accent: '#6b5b45', title: quick ? 'Repaso rápido' : 'Repaso', kind: 'srs',
+    plan, accent: defaultAccent(), title: quick ? 'Repaso rápido' : 'Repaso', kind: 'srs',
     more: quick ? () => dueKeys(ctx.store.get().progress.srs, ctx.today()).length > 0 : null,
   }));
 }
@@ -336,7 +336,7 @@ export function renderDaily(ctx, el) {
   playEra('menu');
   if (done) return renderDailyDone(ctx, el, plan, done);
   if (plan.questions.length < 4) return ctx.go('inicio');
-  ctx.setCleanup(play(ctx, el, { plan, accent: '#6b5b45', title: 'Reto diario', kind: 'daily', extra: { date: today } }));
+  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Reto diario', kind: 'daily', extra: { date: today } }));
 }
 
 // --- Reto semanal (camino dominado): 15 preguntas de todo el camino, iguales para todos ---------
@@ -354,7 +354,7 @@ export function renderWeekly(ctx, el) {
   playEra('menu');
   if (done) return renderDailyDone(ctx, el, plan, done);
   if (plan.questions.length < 4) return ctx.go('inicio');
-  ctx.setCleanup(play(ctx, el, { plan, accent: '#6b5b45', title: 'Reto semanal', kind: 'weekly', extra: { week } }));
+  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Reto semanal', kind: 'weekly', extra: { week } }));
 }
 
 export function gridTitle(plan) {
@@ -406,7 +406,7 @@ export function renderChallenge(ctx, el, challenge) {
     : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).name
       : plan.kind === 'daily' ? 'Reto diario' : plan.kind === 'weekly' ? 'Reto semanal' : 'Ronda variada';
   const accent = plan.kind === 'stage' ? index.movementOf(plan.artistId).accent
-    : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).accent : '#6b5b45';
+    : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).accent : defaultAccent();
   const friendScore = Math.min(challenge.score, total);
   // Reto de todo el camino con pintores que aún no ha visto: se avisa (sin bloquear) y esas preguntas
   // no cuentan para su precisión.
@@ -505,6 +505,6 @@ export function renderFree(ctx, el) {
   const plan = planFree(index, randomSeed());
   if (!isPathMastered(ctx.store.get().progress, index) || plan.questions.length < 4) return leave(ctx, 'Se abre al dominar todo el camino');
   playEra('menu');
-  ctx.setCleanup(play(ctx, el, { plan, accent: '#6b5b45', title: 'Ronda libre', kind: 'general', shareTopic: 'ronda libre' }));
+  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Ronda libre', kind: 'general', shareTopic: 'ronda libre' }));
 }
 

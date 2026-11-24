@@ -52,21 +52,31 @@ export function announce(text) {
   }, 60);
 }
 
+// Valor de una variable CSS del documento (los colores viven en main.css, nunca en el JS).
+export function cssVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+// Acento por defecto (el de :root): rondas sin pintor ni movimiento.
+export function defaultAccent() {
+  return cssVar('--accent');
+}
+
 // Texto de color legible sobre un fondo dado (#rrggbb).
 export function onColor(hex) {
   const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
-  if (!m) return '#ffffff';
+  if (!m) return cssVar('--on-accent');
   const n = parseInt(m[1], 16);
   const lin = (c) => {
     const s = c / 255;
     return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
   };
   const L = 0.2126 * lin((n >> 16) & 255) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
-  return L > 0.35 ? '#1d1b18' : '#ffffff';
+  return L > 0.35 ? cssVar('--on-accent-dark') : cssVar('--on-accent');
 }
 
 export function safeAccent(hex) {
-  return /^#[0-9a-f]{6}$/i.test(hex || '') ? hex : '#6b5b45';
+  return /^#[0-9a-f]{6}$/i.test(hex || '') ? hex : defaultAccent();
 }
 
 export function accentStyle(hex) {
