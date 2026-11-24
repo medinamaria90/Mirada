@@ -2,13 +2,14 @@
 
 import { esc, onAction, accentStyle, longDate, announce, plural, $ } from '../dom.js';
 import { icons } from '../icons.js';
-import { page, topBar } from '../shell.js';
-import { artFrame, coverOf, ZOOM_BADGE } from '../art.js';
+import { page } from '../shell.js';
+import { artFrame, coverOf } from '../art.js';
+import { detailCard, detailRow, answerDetailCard } from './home-detail.js';
 import {
   artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, pathProgress, isPathComplete,
   isPathMastered, stepsToMaster,
 } from '../../engine/progress.js';
-import { recognizedCount, isGalleryOpen, galleryWorks, planDetail, answerDetail } from '../../engine/goals.js';
+import { recognizedCount, isGalleryOpen, galleryWorks, planDetail } from '../../engine/goals.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { readSession } from '../../state/session.js';
 import { dueKeys, QUICK_REVIEW } from '../../engine/srs.js';
@@ -65,7 +66,7 @@ export function renderHome(ctx, el) {
     </button>`);
   }
   // Tarjetas del día. Con tres o más (camino avanzado) se agrupan en un bloque «Hoy» compacto para
-  // que el mapa asome en la primera pantalla; el detalle se despliega desde su fila.
+  // que el mapa asome en la primera pantalla; la lupa del día se despliega desde su fila.
   const dayCards = [];
   if (mastered) {
     const week = isoWeek(ctx.dailyDay());
@@ -199,88 +200,6 @@ export function renderHome(ctx, el) {
     },
     detail: (b) => answerDetailCard(ctx, el, b),
   });
-}
-
-// --- Detalle del día: recorte ampliado de una obra ya aprendida y «¿De quién es?» ----------
-
-function detailCard(ctx) {
-  const { index } = ctx;
-  const p = ctx.store.get().progress;
-  const day = ctx.dailyDay();
-  const plan = planDetail(p, index, day);
-  if (!plan) return '';
-  const done = p.detail?.[day];
-  return `<section class="card-detail" aria-labelledby="detail-h" data-day="${esc(day)}">
-    ${done ? detailZoom(index, plan) : detailCrop(index, plan)}
-    <div class="detail-body">
-      <p class="card-kicker">Detalle del día</p>
-      <h2 id="detail-h" class="detail-q">¿De quién es?</h2>
-      ${done ? detailAnswered(index, plan, done) : `<div class="detail-options" role="group" aria-labelledby="detail-h">${plan.options.map((o) => `<button class="option detail-option" data-action="detail" data-id="${esc(o.id)}">${esc(o.label)}</button>`).join('')}</div>`}
-    </div>
-  </section>`;
-}
-
-// Fila plegable del bloque «Hoy»: un recorte pequeño de muestra; al abrirla, la tarjeta entera.
-function detailRow(ctx, plan) {
-  const { index } = ctx;
-  const done = ctx.store.get().progress.detail?.[plan.day];
-  const status = done ? (done.correct ? 'Bien visto' : 'Hecho') : '¿De quién es?';
-  return `<details class="today-detail">
-      <summary class="today-row">
-        <span class="today-icon today-crop" aria-hidden="true">${detailCrop(index, plan, '')}</span>
-        <span class="today-text"><span class="today-name">Detalle del día</span><span class="today-sub">${esc(status)}</span></span>
-        <span class="today-more" aria-hidden="true">${icons.next(18)}</span>
-      </summary>
-      ${detailCard(ctx)}
-    </details>`;
-}
-
-function detailCrop(index, plan, alt = 'Detalle de un cuadro') {
-  const w = index.artwork(plan.artworkId);
-  const { x, y, scale } = plan.crop;
-  return `<div class="detail-crop" style="--cx:${x}%;--cy:${y}%;--cs:${scale}">
-    <img src="${esc(w.img)}" alt="${esc(alt)}" width="${w.w}" height="${w.h}" loading="lazy" decoding="async">
-  </div>`;
-}
-
-// Tras responder, el recorte abre el cuadro entero en el visor (antes no: lo desvelaría).
-function detailZoom(index, plan) {
-  const w = index.artwork(plan.artworkId);
-  return `<button type="button" class="detail-zoom" data-zoom="${esc(w.id)}" aria-label="Ver en grande: ${esc(w.title)}">${detailCrop(index, plan, '')}${ZOOM_BADGE}</button>`;
-}
-
-function detailAnswered(index, plan, done) {
-  const w = index.artwork(plan.artworkId);
-  const a = index.artist(plan.answerId);
-  return `<p class="detail-result ${done.correct ? 'is-ok' : 'is-bad'}">${done.correct ? `${icons.check(18)}<span>Es de ${esc(a.name)}</span>` : `${icons.eye(18)}<span>Es de ${esc(a.name)}</span>`}</p>
-      <p class="detail-work"><em>${esc(w.title)}</em>${w.year ? ` · ${esc(w.year)}` : ''}</p>`;
-}
-
-function answerDetailCard(ctx, el, button) {
-  const { index } = ctx;
-  const card = button.closest('.card-detail');
-  const day = card?.dataset.day;
-  if (!card || day !== ctx.dailyDay()) return;
-  const plan = planDetail(ctx.store.get().progress, index, day);
-  let outcome = null;
-  ctx.store.update((s) => {
-    outcome = answerDetail(s.progress, plan, button.dataset.id, ctx.today());
-    return outcome ? { ...s, progress: outcome.progress } : s;
-  });
-  if (!outcome) return;
-  ctx.audio.sfx(outcome.correct ? 'correct' : 'wrong');
-  const done = { correct: outcome.correct };
-  const body = card.querySelector('.detail-body');
-  body.querySelector('.detail-options').outerHTML = `${detailAnswered(index, plan, done)}${outcome.xp ? `<p class="detail-xp">+${outcome.xp} XP</p>` : ''}`;
-  card.querySelector('.detail-crop')?.replaceWith(document.createRange().createContextualFragment(detailZoom(index, plan)));
-  const top = el.querySelector('.topbar');
-  if (top) top.outerHTML = topBar(ctx);
-  const rowSub = card.closest('.today-detail')?.querySelector('.today-sub');
-  if (rowSub) rowSub.textContent = outcome.correct ? 'Bien visto' : 'Hecho';
-  const result = body.querySelector('.detail-result');
-  result.setAttribute('tabindex', '-1');
-  result.focus({ preventScroll: true });
-  announce(`${outcome.correct ? 'Bien visto. ' : ''}${result.textContent.trim()}`);
 }
 
 // Escritorio: bajo las tarjetas del día, la semana y las últimas obras reconocidas (la columna

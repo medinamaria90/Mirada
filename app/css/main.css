@@ -180,7 +180,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .card:active .card-go { box-shadow: none; }
 .card-go .icon { fill: currentColor; }
 
-/* Bloque «Hoy» compacto (camino avanzado): filas en una sola superficie; el detalle se despliega */
+/* Bloque «Hoy» compacto (camino avanzado): filas en una sola superficie; la lupa se despliega */
 .today-block { border: 0; border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm); overflow: hidden; }
 .today-h { font: 500 1.1rem/1 var(--font); padding: .75rem .95rem .2rem; }
 .today-list { display: grid; }
@@ -921,7 +921,7 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 /* Resultado con menos de la mitad: una frase de ánimo en lugar de «Hoy has aprendido» */
 .result-cheer { text-align: center; font: 400 1.1rem/1.4 var(--font); color: var(--ink); max-width: 28ch; margin-inline: auto; }
 
-/* Detalle del día: recorte ampliado (CSS) de una obra ya aprendida y una pregunta */
+/* Lupa del día: recorte ampliado (CSS) de una obra ya aprendida y una pregunta */
 .card-detail {
   display: grid; grid-template-columns: minmax(0, 1fr); gap: .8rem; padding: .8rem;
   border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm);
@@ -945,6 +945,26 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 .detail-work { color: var(--ink-2); font-size: .9rem; }
 .detail-work em { font-size: 1.08rem; color: var(--ink); }
 .detail-xp { font-weight: 600; font-size: .9rem; color: var(--ok); }
+.detail-kicker { display: inline-flex; align-items: center; gap: .3rem; }
+.detail-kicker .icon { flex: none; }
+
+/* Lupa del día resuelta: una sola fila pulsable (abre el visor) con la miniatura del atlas, el
+   nombre pequeño y «Título · Pintor»; nada que parezca una pregunta pendiente. */
+.card-detail.is-done { display: block; padding: 0; overflow: hidden; }
+.detail-done {
+  display: flex; align-items: center; gap: .8rem; width: 100%; min-height: 64px; padding: .55rem .7rem .55rem .65rem;
+  border: 0; border-radius: inherit; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  transition: background-color .18s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) { .detail-done:hover { background: var(--bg); } }
+.detail-done:focus-visible { outline-offset: -3px; }
+.detail-thumb { width: 50px; height: 50px; flex: none; aspect-ratio: auto; border-radius: 10px; box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--line); }
+.detail-done-text { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.detail-done-work { font-size: .95rem; line-height: 1.25; color: var(--ink-2); overflow-wrap: anywhere; }
+.detail-done-work em { color: var(--ink); font-weight: 500; }
+.detail-done-go { display: grid; place-items: center; width: 32px; height: 32px; color: var(--ink-2); flex: none; }
+.today-list .card-detail.is-done { border-radius: 0; box-shadow: none; }
+.today-list .detail-done { min-height: 56px; padding-inline: .95rem; }
 
 /* Final del camino: cuadros que reconoces */
 .finale-count { color: var(--ink-2); }

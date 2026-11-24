@@ -1,5 +1,5 @@
 // Metas largas (después del camino): cuadros que reconoces, «Ojo de…» por pintor, salas de los
-// movimientos dominados y el detalle del día. Puro.
+// movimientos dominados y la lupa del día. Puro.
 
 import { artKey } from './srs.js';
 import { createRng } from './rng.js';
@@ -55,7 +55,7 @@ export function openGalleries(progress, index) {
   return index.visibleMovements.filter((m) => isGalleryOpen(progress, index, m.id));
 }
 
-// --- Detalle del día -----------------------------------------------------------------------
+// --- Lupa del día (detalle) -----------------------------------------------------------------------
 
 export const DETAIL_XP = 5;
 

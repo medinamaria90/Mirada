@@ -31,7 +31,7 @@ export const MIGRATIONS = {
     settings: { ...(isPlain(old.settings) ? old.settings : {}), dailyGoal: DEFAULT_GOAL },
     progress: { ...(isPlain(old.progress) ? old.progress : {}), xpByDay: {} },
   }),
-  // 3 → 4 (oleada 6): reto semanal y detalle del día. Lo demás se conserva; las medallas «Ojo de…»
+  // 3 → 4 (oleada 6): reto semanal y lupa del día (detail). Lo demás se conserva; las medallas «Ojo de…»
   // y los cuadros que reconoces se calculan del repaso espaciado que ya había.
   3: (old) => ({
     ...old,
