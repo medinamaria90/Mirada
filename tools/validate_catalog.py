@@ -11,7 +11,10 @@ from collections import Counter, defaultdict
 from PIL import Image
 
 MIN_STAGE_WORKS = 3
-MAX_APP_FILES = 320          # límite propio (el artifact admite 512 archivos por versión)
+# Tope de archivos en app/. Venía del límite de 512 por versión de la página privada de Claude, que ya no
+# se usa (la app se publica en Render); se sube a 400 para dar cabida a los paisajes del mapa (img/mapa,
+# un SVG por época) y a los módulos de música, y seguir avisando si algo se dispara.
+MAX_APP_FILES = 400
 MAX_SHEETS = 24
 MAX_STAGE_RUSSIANS = 4
 LOOK_MAX = 100
