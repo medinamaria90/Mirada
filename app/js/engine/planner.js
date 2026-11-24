@@ -3,9 +3,8 @@
 
 import { createRng } from './rng.js';
 import { makeQuestion, makeWhoQuestion, makeMovementQuestion, isSpoiler, noAuthorQuestion } from './questions.js';
-import { salaLearnWorks, SALA_LEARN, levelOf } from './catalog.js';
+import { salaLearnWorks, SALA_LEARN, levelOf, RELAX_MAX } from './catalog.js';
 import { REVIEW5_SIZE } from './review.js';
-import { RELAX_MAX } from './families.js';
 
 // Ejecución de una ronda (cola, reintentos y puntuación): engine/round.js.
 export { createRound, currentItem, answerRound, roundDone, roundProgress, roundScore } from './round.js';

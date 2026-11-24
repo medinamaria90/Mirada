@@ -1,8 +1,7 @@
 // Generación de preguntas de los tres tipos (§1) con distractores por parecido.
 // Puro: recibe el índice del catálogo y un RNG con semilla.
 
-import { isSpoiler, noAuthorQuestion } from './catalog.js';
-import { RELAX_STEPS, RELAX_MAX, MOVEMENT_HARD_GAP, ODD_TRIES, isOddOne } from './families.js';
+import { isSpoiler, noAuthorQuestion, RELAX_STEPS, RELAX_MAX, MOVEMENT_HARD_GAP, ODD_TRIES, isOddOne } from './catalog.js';
 
 export { isSpoiler, isAttributed, noAuthorQuestion } from './catalog.js';
 
@@ -175,7 +174,7 @@ export function makeMovementQuestion(index, artwork, difficulty, rng, opts = {})
   const artist = index.artist(artwork.artistId);
   const correct = index.movement(artist.movementId);
   // Las ramas-movimiento (gótico, ukiyo-e) solo salen como opción cuando son la respuesta.
-  // Solo salen movimientos de la familia de la obra y compatibles con su época (engine/families.js).
+  // Solo salen movimientos de la familia de la obra y compatibles con su época.
   const ref = index.refOfWork(artwork);
   const list = index.movements.filter((m) => (!m.branch || m === correct) && (m === correct || (index.movementAllowed(ref, m) && (!ref || Math.abs(m.order - correct.order) <= MOVEMENT_HARD_GAP))));
   if (list.length < 3 || isSpoiler(artwork) || (ref && correct.family && !index.movementAllowed(ref, correct))) return null;
