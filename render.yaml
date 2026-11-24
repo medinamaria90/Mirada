@@ -3,18 +3,23 @@
 # (tools/fetch_images.sh comprueba el sha256). El despliegue se lanza a mano tras comprobar main.
 services:
   - type: web
-    name: sfumato
+    name: sfumato-arte
     runtime: static
     repo: https://github.com/medinamaria90/Mirada
     branch: main
     buildCommand: bash tools/fetch_images.sh app/img
     staticPublishPath: ./app
     autoDeploy: false
+  # Dirección antigua: redirige todo a la nueva.
   - type: web
     name: mirada
     runtime: static
     repo: https://github.com/medinamaria90/Mirada
     branch: main
-    buildCommand: bash tools/fetch_images.sh app/img
+    buildCommand: echo "redirige a sfumato-arte"
     staticPublishPath: ./app
     autoDeploy: false
+    routes:
+      - type: redirect
+        source: /*
+        destination: https://sfumato-arte.onrender.com/*
