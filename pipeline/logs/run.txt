@@ -81,3 +81,4 @@ aviso w23499014 (madrazo): ficha sin dimensions
 57M	.git
 2.3M	catalogo
 fin Tue Nov 24 18:22:29 UTC 2026
+estado del job: success Tue Nov 24 18:22:30 UTC 2026
