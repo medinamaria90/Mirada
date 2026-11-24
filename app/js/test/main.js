@@ -8,6 +8,7 @@ import { buildIndex, mergeCatalogText } from '../engine/catalog.js';
 import { createRng, randomSeed } from '../engine/rng.js';
 import { $, $$, onAction, announce } from '../ui/dom.js';
 import { installArtListeners } from '../ui/art.js';
+import { upgradeMarcos } from '../ui/marco.js';
 import { createTest, answer, advance, resume, finish, summary, isAnswered, perfectScore } from './motor.js';
 import { buildResult, shareText } from './resultado.js';
 import { validateBank, viewOf, prefixImages } from './preguntas.js';
@@ -155,6 +156,7 @@ function renderQuestion() {
   resetReveal(root);
   stage.classList.remove('enter');
   stage.innerHTML = questionHtml(view, state.answers.length + 1);
+  upgradeMarcos(stage);
   requestAnimationFrame(() => stage.classList.add('enter'));
   const feedback = $('.feedback', root);
   feedback.className = 'feedback';

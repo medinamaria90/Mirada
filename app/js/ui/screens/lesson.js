@@ -2,7 +2,8 @@
 
 import { esc, onAction, accentStyle, announce, focusHeading, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
-import { artFrame, onArtworkError, isBroken, preload, ZOOM_BADGE } from '../art.js';
+import { artFrame, onArtworkError, isBroken, preload } from '../art.js';
+import { marcoHtml, upgradeMarcos } from '../marco.js';
 import { createRng } from '../../engine/rng.js';
 import { isCorrect, questionAlt, optionText, makeQuestion, makeWhichQuestion, artworksInQuestion, retryQuestion } from '../../engine/questions.js';
 import { createRound, currentItem, answerRound, roundDone, roundProgress } from '../../engine/planner.js';
@@ -95,6 +96,7 @@ export function runLesson(ctx, el, config) {
     const q = currentItem(round).q;
     stage.innerHTML = questionHtml(q, item.retry);
     stage.dataset.type = q.type;
+    upgradeMarcos(stage);
     stage.classList.remove('enter');
     void stage.offsetWidth;
     stage.classList.add('enter');
@@ -124,7 +126,7 @@ export function runLesson(ctx, el, config) {
     if (q.type === 'which') {
       // Pulsar una miniatura abre el visor con las 4 («Es este» responde); 1-4 responden directo.
       const opts = q.options.map((o, i) => `<button class="option option-art" data-action="pick" data-id="${esc(o.id)}" data-pos="${i}" aria-label="Opción ${i + 1}" aria-haspopup="dialog">
-          ${artFrame(index.artwork(o.artworkId), { alt: '', eager: true, label: o.artworkId, thumb: true })}<span class="key" aria-hidden="true">${i + 1}</span>${ZOOM_BADGE}</button>`).join('');
+          ${marcoHtml(index.artwork(o.artworkId), { alt: '', eager: true, label: o.artworkId })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
       return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>`;
     }
     const art = index.artwork(q.artworkId);
@@ -243,7 +245,7 @@ export function runLesson(ctx, el, config) {
     // En «¿Cuál es de X?», la miniatura elegida por error lleva el nombre de su pintor.
     const wrongArt = fb.chosen && fb.chosen.artworkId ? $('.option-art.is-wrong', stage) : null;
     if (wrongArt) {
-      wrongArt.insertAdjacentHTML('beforeend', `<span class="option-tag">${esc(fb.chosen.name)}</span>`);
+      ($('.marco', wrongArt) || wrongArt).insertAdjacentHTML('beforeend', `<span class="option-tag">${esc(fb.chosen.name)}</span>`);
       wrongArt.setAttribute('aria-label', `${wrongArt.getAttribute('aria-label')}, de ${fb.chosen.name}`);
     }
     // El texto se desplaza dentro de la hoja si no cabe (zoom de texto); «Seguir» siempre a la vista.

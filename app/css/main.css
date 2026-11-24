@@ -425,13 +425,8 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 @media (hover: none) { .key { display: none; } }
 /* Opciones no elegidas tras responder: se apagan sin opacidad (el texto y las teclas conservan
    contraste AA y la miniatura queda velada por encima, sin capas translúcidas sobre la imagen). */
-.option[aria-disabled="true"]:not(.is-correct):not(.is-wrong),
-.option-art.is-done:not(.is-correct):not(.is-wrong) {
+.option[aria-disabled="true"]:not(.is-correct):not(.is-wrong) {
   color: var(--ink-2); background: color-mix(in srgb, var(--surface) 55%, var(--bg)); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--line) 70%, var(--bg));
-}
-.option-art.is-done:not(.is-correct):not(.is-wrong)::after {
-  content: ""; position: absolute; inset: 8px; border-radius: 6px; pointer-events: none;
-  background: color-mix(in srgb, var(--bg) 58%, transparent);
 }
 .option.is-correct { background: var(--ok-soft); color: var(--ok); box-shadow: 0 var(--relief) 0 var(--ok-shadow), inset 0 0 0 2px var(--ok); }
 .option.is-correct .key { background: var(--ok); color: var(--surface); border-color: var(--ok); }
@@ -445,7 +440,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .option.is-correct .opt-sub, .option.is-wrong .opt-sub { color: inherit; }
 /* Miniatura elegida por error en «¿Cuál es de X?»: etiqueta con el nombre de su pintor. */
 .option-tag {
-  position: absolute; left: 10px; bottom: 10px; z-index: 2; max-width: calc(100% - 60px);
+  position: absolute; left: 10px; bottom: 10px; z-index: 2; max-width: calc(100% - 20px);
   padding: .15rem .55rem; border-radius: 999px; background: var(--bad); color: var(--surface);
   font-size: .74rem; font-weight: 600; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
@@ -453,9 +448,39 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 @keyframes nudge { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 
 .options-grid { grid-template-columns: 1fr 1fr; gap: .7rem; margin-block: auto; }
-.option-art { padding: 8px; min-height: 0; aspect-ratio: 1; justify-content: center; }
-.option-art .art { width: 100%; height: 100%; aspect-ratio: auto; box-shadow: none; border-radius: 6px; }
-.option-art .art img { object-fit: cover; }
+.option-art {
+  min-height: 0; aspect-ratio: 1; padding: 8px; display: grid; place-items: center; container-type: size;
+  background: transparent; box-shadow: none; border-radius: var(--radius-sm); cursor: zoom-in;
+}
+.options-grid .option-art:hover:not([aria-disabled="true"]):not(.is-done),
+.options-grid .option-art:active:not([aria-disabled="true"]):not(.is-done),
+.options-grid .option-art.is-correct, .options-grid .option-art.is-wrong,
+.options-grid .option-art.is-done:not(.is-correct):not(.is-wrong) { background: transparent; box-shadow: none; transform: none; }
+/* Marco de museo: paspartú hueso uniforme y moldura fina casi plana; el lienzo mantiene su proporción
+   y ocupa lo máximo de la celda. El anillo de estado rodea el marco. */
+.marco {
+  --moldura: 2px; --paspartu: clamp(8px, 5cqmin, 14px); --grosor: calc(var(--moldura) + var(--paspartu));
+  --anillo: transparent;
+  position: relative; display: block; padding: var(--moldura); border-radius: 2px;
+  background: linear-gradient(135deg, var(--frame-gold), var(--frame-gold-2));
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--anillo), var(--frame-shadow);
+}
+.marco-paspartu { display: block; padding: var(--paspartu); background: var(--frame-mat); }
+.marco .art {
+  width: min(calc(100cqw - 2 * var(--grosor)), calc((100cqh - 2 * var(--grosor)) * var(--arw) / var(--arh)));
+  height: auto; aspect-ratio: var(--arw) / var(--arh); border-radius: 0;
+  box-shadow: 0 0 0 1px var(--frame-mat-line);
+}
+.marco .art img { object-fit: cover; }
+.options-grid .option-art:hover:not([aria-disabled="true"]):not(.is-done) .marco { --anillo: var(--accent); }
+.options-grid .option-art:focus-visible { outline: none; }
+.options-grid .option-art:focus-visible .marco { --anillo: var(--ink); }
+.options-grid .option-art.is-correct .marco { --anillo: var(--ok); }
+.options-grid .option-art.is-wrong .marco { --anillo: var(--bad); }
+.option-art.is-done:not(.is-correct):not(.is-wrong) .marco::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: color-mix(in srgb, var(--bg) 58%, transparent);
+}
 .option-art .key { position: absolute; left: 12px; top: 12px; background: var(--surface); z-index: 2; }
 /* «¿Cuál es de X?»: la rejilla 2×2 ocupa el alto libre (sin hueco encima) y cada cuadro se ve
    entero y lo más grande que cabe en su casilla (sin recortar). Alto fijo: no encoge al abrirse la
@@ -465,11 +490,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   height: max(15rem, min(calc((100vw - 1.6rem) * 1.9), calc(100dvh - 11rem)));
   grid-template-rows: repeat(2, minmax(0, 1fr));
 }
-.lesson-stage[data-type="which"] .option-art { aspect-ratio: auto; container-type: size; display: grid; place-items: center; padding: 5px; }
-.lesson-stage[data-type="which"] .option-art .art {
-  width: min(100cqw, calc(100cqh * var(--arw) / var(--arh))); height: auto; aspect-ratio: var(--arw) / var(--arh);
-}
-.lesson-stage[data-type="which"] .option-art.is-done:not(.is-correct):not(.is-wrong)::after { inset: 5px; }
+.lesson-stage[data-type="which"] .option-art { aspect-ratio: auto; padding: 8px; }
 @media (max-width: 1023px) {
   .lesson-stage[data-type="which"] { padding-inline: .8rem; }
 }
@@ -1073,8 +1094,6 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
   background: color-mix(in srgb, var(--viewer-bg) 58%, transparent); color: var(--viewer-badge-ink);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--viewer-ink) 14%, transparent);
 }
-.option-art .zoom-badge { right: 14px; bottom: 14px; }
-.option-art.is-done:not(.is-correct):not(.is-wrong) .zoom-badge { opacity: .55; }
 .option-art.is-done { cursor: zoom-in; }
 .learned-art .zoom-badge, .wall-item .zoom-badge { width: 22px; height: 22px; right: 4px; bottom: 4px; }
 .learned-art .zoom-badge svg, .wall-item .zoom-badge svg { width: 12px; height: 12px; }

@@ -47,6 +47,12 @@
   --viewer-ink-hover: #fffaf1;
   --viewer-on-ink: #15120f;
   --viewer-badge-ink: #fbf8f2;
+  /* Marco de museo de «¿Cuál es de X?»: paspartú hueso, moldura fina en dorado apagado casi plano. */
+  --frame-mat: #f0eadc;
+  --frame-mat-line: #ddd4c0;
+  --frame-gold: #b5a073;
+  --frame-gold-2: #a8946a;
+  --frame-shadow: 0 1px 2px rgba(35, 32, 28, .16), 0 8px 18px -8px rgba(35, 32, 28, .28);
   /* Mapa del camino: sendero y personaje (CSS) y paisaje (tools/mapa_svg.py lee estas variables y las
      escribe en los SVG de app/img/mapa, con el bloque oscuro como media query). */
   --map-trail-edge: #d9cdb5;
@@ -143,6 +149,11 @@
     --shadow-card: 0 1px 2px rgba(0, 0, 0, .4);
     --shadow-sheet: 0 -12px 32px -18px rgba(0, 0, 0, .7);
     --shadow-pop: 0 30px 60px -20px rgba(0, 0, 0, .8);
+    --frame-mat: #3b352c;
+    --frame-mat-line: #2b2620;
+    --frame-gold: #86703f;
+    --frame-gold-2: #7a6538;
+    --frame-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 8px 18px -8px rgba(0, 0, 0, .7);
     --map-trail-edge: #3a3129;
     --map-trail: #4a3f35;
     --map-trail-step: #6b5d4e;
@@ -208,6 +219,11 @@
   --shadow-card: 0 1px 2px rgba(0, 0, 0, .4);
   --shadow-sheet: 0 -12px 32px -18px rgba(0, 0, 0, .7);
   --shadow-pop: 0 30px 60px -20px rgba(0, 0, 0, .8);
+  --frame-mat: #3b352c;
+  --frame-mat-line: #2b2620;
+  --frame-gold: #86703f;
+  --frame-gold-2: #7a6538;
+  --frame-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 8px 18px -8px rgba(0, 0, 0, .7);
   --map-trail-edge: #3a3129;
   --map-trail: #4a3f35;
   --map-trail-step: #6b5d4e;

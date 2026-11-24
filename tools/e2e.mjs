@@ -1073,7 +1073,7 @@ if (SMOKE) {
       // Primera a propósito mal, el resto bien: así se ven los dos feedbacks.
       const pick = i === 0 ? q.options.find((o) => o !== q.answer) : q.answer;
       if (q.kind === 'which') {
-        check(await tp.locator('.option-art .zoom-badge').count() === 4, L('las miniaturas no llevan la marca de ampliar'));
+        check(await tp.locator('.option-art .marco').count() === 4 && await tp.locator('.option-art .zoom-badge').count() === 0, L('las miniaturas van en marco y sin marca de ampliar'));
         // Tocar una miniatura abre el visor (sin responder y sin revelar nada); cerrar no responde.
         const pos = q.options.indexOf(pick);
         await tp.locator('.option-art').nth((pos + 1) % 4).tap();
@@ -2340,7 +2340,7 @@ for (const scheme of ['light', 'dark']) {
           check(g.gap <= 24, L(`hueco de ${Math.round(g.gap)} px sobre la rejilla de «¿Cuál?»`));
           check(g.bottom <= g.vh + 2, L(`la rejilla de «¿Cuál?» no cabe (${Math.round(g.bottom)} > ${g.vh})`));
           check(g.cellH >= (cfg.width >= 390 ? 260 : 200), L(`casillas de «¿Cuál?» bajas (${Math.round(g.cellW)}×${Math.round(g.cellH)})`));
-          check(g.arts.every((a) => Math.max(a.w, a.h) >= Math.min(g.cellW, g.cellH) - 14), L(`miniaturas pequeñas ${JSON.stringify(g.arts.map((a) => [Math.round(a.w), Math.round(a.h)]))}`));
+          check(g.arts.every((a) => Math.max(a.w, a.h) >= Math.min(g.cellW, g.cellH) - 54), L(`miniaturas pequeñas ${JSON.stringify(g.arts.map((a) => [Math.round(a.w), Math.round(a.h)]))}`));
           await shot(p9, `cual-${cfg.width}`);
           // Recargar con el visor abierto en la primera pregunta: vuelve a la pregunta, no a «Conoce a».
           const prompt0 = await p9.locator('.q-prompt').innerText();
