@@ -13,3 +13,4 @@ ok     canaletto          Q182664     412 candidatas; de las 80 primeras, 69 con
 fin 2026-11-24 11:04:27
 4.1M	.git
 808K	catalogo
+fin Tue Nov 24 11:04:31 UTC 2026
