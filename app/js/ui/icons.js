@@ -10,7 +10,7 @@ export const logoMark = (s = 28) =>
 export const icons = {
   sun: (s) => svg('<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/>', s),
   gem: (s) => svg('<path d="M6 4h12l3 5-9 11L3 9z"/><path d="M3 9h18M9 4l3 16M15 4l-3 16"/>', s),
-  home: (s) => svg('<path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9v10.5h13V9"/><path d="M10 19.5v-5h4v5"/>', s),
+  arch: (s) => svg('<path d="M6.5 20.5V11a5.5 5.5 0 0 1 11 0v9.5"/><path d="M4 20.5h16"/><circle cx="12" cy="14.5" r="1.6"/>', s),
   frames: (s) => svg('<rect x="3" y="4" width="8" height="10" rx="1"/><rect x="13" y="4" width="8" height="6" rx="1"/><rect x="13" y="12" width="8" height="8" rx="1"/><rect x="3" y="16" width="8" height="4" rx="1"/>', s),
   user: (s) => svg('<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.3-3.8 4.2-5.6 7.5-5.6s6.2 1.8 7.5 5.6"/>', s),
   close: (s) => svg('<path d="M6 6l12 12M18 6 6 18"/>', s),

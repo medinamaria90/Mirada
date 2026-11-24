@@ -228,14 +228,14 @@ export function runLesson(ctx, el, config) {
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
     const who = fb.who ? `<p class="fb-who">${esc(fb.who)}</p>` : '';
     const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('');
-    // El texto se desplaza dentro de la hoja si no cabe (zoom de texto); «Continuar» siempre a la vista.
+    // El texto se desplaza dentro de la hoja si no cabe (zoom de texto); «Seguir» siempre a la vista.
     feedback.innerHTML = `<div class="fb-inner">
       <div class="fb-text">
         <div class="fb-head"><span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>
         <p class="fb-title">${esc(fb.title)}</p>${gained ? `<span class="fb-xp">+${gained} XP</span>` : ''}</div>
         ${who}${lines}${caption}
       </div>
-      <button class="btn btn-primary btn-wide" data-action="continue">Continuar</button>
+      <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>
     </div>`;
     feedback.classList.add('is-open', correct ? 'is-correct' : 'is-wrong');
     const btn = $('[data-action="continue"]', feedback);
