@@ -1,17 +1,2 @@
-inicio Tue Nov 24 11:05:01 UTC 2026
-== resolve  11:05:01
-ok    malevich           Q130777    Kazimir Malévich / Kazimir Malevich (1878-1935) sl=85
-ok    modigliani         Q120993    Amedeo Modigliani / Amedeo Modigliani (1884-1920) sl=88
-ok    juan-gris          Q151152    Juan Gris / Juan Gris (1887-1927) sl=63
-ok    schiele            Q44032     Egon Schiele / Egon Schiele (1890-1918) sl=74
-total 148 resueltos 148
-3.8M	.git
-808K	catalogo
-== candidates  11:06:30
-ya     juan-gris          205 candidatas
-ya     schiele            124 candidatas
-fin 2026-11-24 11:08:55
-4.6M	.git
-808K	catalogo
-fin Tue Nov 24 11:08:58 UTC 2026
-estado del job: success Tue Nov 24 11:08:59 UTC 2026
+inicio Tue Nov 24 17:59:09 UTC 2026
+== candidates miguel-angel rafael madrazo pradilla cezanne van-gogh 17:59:09
