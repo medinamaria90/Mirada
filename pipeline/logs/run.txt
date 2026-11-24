@@ -1,9 +1,7 @@
-inicio Tue Nov 24 18:10:31 UTC 2026
-== candidates miguel-angel rafael madrazo pradilla cezanne van-gogh 18:10:31
-repito van-gogh           faltan datos de forzadas: Q18713070 Q21948567
-ok     van-gogh           Q5582       937 candidatas; de las 80 primeras, 77 con imagen >=1200px
-fin 2026-11-24 18:11:12
+inicio Tue Nov 24 18:14:27 UTC 2026
+== fichas  18:14:27
+ok lote 29: 40 fichas (1168 en total)
+ok lote 30: 12 fichas (1180 en total)
+fin: 1180 fichas; con museo 1158, con ciudad 1146, con técnica 1144, con medidas 1034, en España 274
 48M	.git
-920K	catalogo
-fin Tue Nov 24 18:11:16 UTC 2026
-estado del job: success Tue Nov 24 18:11:17 UTC 2026
+2.2M	catalogo

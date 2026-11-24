@@ -140,5 +140,3411 @@
   "up": "Q183",
   "country": "Alemania",
   "isCity": true
+ },
+ "Q60": {
+  "label": "Nueva York",
+  "types": [
+   "Q515",
+   "Q174844",
+   "Q200250",
+   "Q208511",
+   "Q1093829",
+   "Q1549591",
+   "Q2264924",
+   "Q15063611",
+   "Q51929311"
+  ],
+  "up": "Q1384",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q61": {
+  "label": "Washington D. C.",
+  "types": [
+   "Q257391",
+   "Q486972",
+   "Q1093829",
+   "Q1549591",
+   "Q15840617",
+   "Q114496982"
+  ],
+  "up": "Q3551781",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q239": {
+  "label": "Bruselas",
+  "types": [
+   "Q257391",
+   "Q493522",
+   "Q1375749",
+   "Q1549591"
+  ],
+  "up": "Q90870",
+  "country": "Bélgica",
+  "isCity": true
+ },
+ "Q240": {
+  "label": "Región de Bruselas-Capital",
+  "types": [
+   "Q83057"
+  ],
+  "up": "Q31",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q490": {
+  "label": "Milán",
+  "types": [
+   "Q515",
+   "Q200250",
+   "Q747074",
+   "Q956214",
+   "Q1549591",
+   "Q4115680"
+  ],
+  "up": "Q18288155",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q495": {
+  "label": "Turín",
+  "types": [
+   "Q747074",
+   "Q1549591"
+  ],
+  "up": "Q18288162",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q656": {
+  "label": "San Petersburgo",
+  "types": [
+   "Q43263",
+   "Q183342",
+   "Q200250",
+   "Q1549591",
+   "Q7930989",
+   "Q105742499",
+   "Q129268952",
+   "Q134445478"
+  ],
+  "up": "Q159",
+  "country": "Rusia",
+  "isCity": true
+ },
+ "Q980": {
+  "label": "Baviera",
+  "types": [
+   "Q1221156"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q1296": {
+  "label": "Gante",
+  "types": [
+   "Q493522",
+   "Q581830",
+   "Q1549591",
+   "Q15273785"
+  ],
+  "up": "Q90948",
+  "country": "Bélgica",
+  "isCity": true
+ },
+ "Q1741": {
+  "label": "Viena",
+  "types": [
+   "Q133442",
+   "Q171441",
+   "Q200250",
+   "Q257391",
+   "Q261543",
+   "Q262882",
+   "Q667509",
+   "Q871419",
+   "Q13539802",
+   "Q51929311"
+  ],
+  "up": "Q40",
+  "country": "Austria",
+  "isCity": true
+ },
+ "Q1794": {
+  "label": "Fráncfort del Meno",
+  "types": [
+   "Q208511",
+   "Q745456",
+   "Q1066984",
+   "Q1187811",
+   "Q1375749",
+   "Q1549591",
+   "Q42744322",
+   "Q61980648"
+  ],
+  "up": "Q7932",
+  "country": "ocupación aliada en Alemania",
+  "isCity": true
+ },
+ "Q371748": {
+  "label": "San Lorenzo de El Escorial",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q5756",
+  "country": "España",
+  "isCity": true
+ },
+ "Q656196": {
+  "label": "Fuencarral-El Pardo",
+  "types": [
+   "Q3032114"
+  ],
+  "up": "Q2807",
+  "country": "España",
+  "isCity": false
+ },
+ "Q681862": {
+  "label": "Distrito de Pau",
+  "types": [
+   "Q194203"
+  ],
+  "up": "Q12703",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q753075": {
+  "label": "Sants-Montjuic",
+  "types": [
+   "Q790344"
+  ],
+  "up": "Q1492",
+  "country": "España",
+  "isCity": false
+ },
+ "Q1473724": {
+  "label": "Locarno Subdistrict",
+  "types": [
+   "Q17276480"
+  ],
+  "up": "Q660653",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q1948674": {
+  "label": "Museo Groeninge",
+  "types": [
+   "Q207694"
+  ],
+  "up": "Q12994",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q3678587": {
+  "label": "ciudad metropolitana de Venecia",
+  "types": [
+   "Q15110"
+  ],
+  "up": "Q1243",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q3867184": {
+  "label": "Venezia-Murano-Burano",
+  "types": [
+   "Q3867183"
+  ],
+  "up": "Q641",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q10306766": {
+  "label": "Jerónimos",
+  "types": [
+   "Q10267336"
+  ],
+  "up": "Q2002296",
+  "country": "España",
+  "isCity": false
+ },
+ "Q2634": {
+  "label": "Nápoles",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1549591"
+  ],
+  "up": "Q18241891",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q2759": {
+  "label": "Urbino",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1200957"
+  ],
+  "up": "Q16241",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q2807": {
+  "label": "Madrid",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q5756",
+  "country": "España",
+  "isCity": true
+ },
+ "Q11299": {
+  "label": "Manhattan",
+  "types": [
+   "Q408804",
+   "Q3301053"
+  ],
+  "up": "Q60",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q12994": {
+  "label": "Brujas",
+  "types": [
+   "Q515",
+   "Q493522",
+   "Q1549591",
+   "Q15273785"
+  ],
+  "up": "Q91045",
+  "country": "Bélgica",
+  "isCity": true
+ },
+ "Q16115": {
+  "label": "Arezzo",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1273",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q16121": {
+  "label": "Beaune",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q3342",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q41358": {
+  "label": "Estiria",
+  "types": [
+   "Q82794",
+   "Q261543"
+  ],
+  "up": "Q40",
+  "country": "Primera República de Austria",
+  "isCity": false
+ },
+ "Q52080": {
+  "label": "Cortona",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16115",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q52098": {
+  "label": "Sansepolcro",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16115",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q95569": {
+  "label": "Museo de Historia del Arte de Viena",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q3152824"
+  ],
+  "up": "Q1741",
+  "country": "Austria",
+  "isCity": false
+ },
+ "Q118958": {
+  "label": "Lovaina",
+  "types": [
+   "Q493522",
+   "Q1549591",
+   "Q15273785"
+  ],
+  "up": "Q93392",
+  "country": "Bélgica",
+  "isCity": true
+ },
+ "Q124925": {
+  "label": "Senigallia",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16114",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q179351": {
+  "label": "Ciudad de Westminster",
+  "types": [
+   "Q515",
+   "Q211690",
+   "Q7897276",
+   "Q21503295"
+  ],
+  "up": "Q23306",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q180788": {
+  "label": "National Gallery de Londres",
+  "types": [
+   "Q17431399"
+  ],
+  "up": "Q179351",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q256547": {
+  "label": "Schwangau",
+  "types": [
+   "Q1595408",
+   "Q116457956"
+  ],
+  "up": "Q10405",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q262951": {
+  "label": "Altaussee",
+  "types": [
+   "Q667509",
+   "Q1802801",
+   "Q6882870"
+  ],
+  "up": "Q255834",
+  "country": "Austria",
+  "isCity": true
+ },
+ "Q31": {
+  "label": "Bélgica",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q1492": {
+  "label": "Barcelona",
+  "types": [
+   "Q515",
+   "Q33146843"
+  ],
+  "up": "Q15348",
+  "country": "España",
+  "isCity": true
+ },
+ "Q641": {
+  "label": "Venecia",
+  "types": [
+   "Q515",
+   "Q581830",
+   "Q747074",
+   "Q1549591",
+   "Q2264924",
+   "Q4115680"
+  ],
+  "up": "Q3678587",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q6247": {
+  "label": "Mantua",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16204",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q16168": {
+  "label": "Ferrara",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1263",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q16204": {
+  "label": "provincia de Mantua",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1210",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q31487": {
+  "label": "Cracovia",
+  "types": [
+   "Q925381",
+   "Q1200957",
+   "Q1549591",
+   "Q7930989",
+   "Q13539802"
+  ],
+  "up": "Q54159",
+  "country": "Polonia",
+  "isCity": true
+ },
+ "Q423043": {
+  "label": "Estrela",
+  "types": [
+   "Q1131296"
+  ],
+  "up": "Q597",
+  "country": "Portugal",
+  "isCity": false
+ },
+ "Q2680952": {
+  "label": "Róterdam",
+  "types": [
+   "Q2039348"
+  ],
+  "up": "Q694",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q597": {
+  "label": "Lisboa",
+  "types": [
+   "Q15647906",
+   "Q108178728",
+   "Q129676344"
+  ],
+  "up": "Q207199",
+  "country": "Portugal",
+  "isCity": false
+ },
+ "Q207199": {
+  "label": "Distrito de Lisboa",
+  "types": [
+   "Q192611",
+   "Q3032141"
+  ],
+  "up": "Q45",
+  "country": "Portugal",
+  "isCity": false
+ },
+ "Q45": {
+  "label": "Portugal",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Portugal",
+  "isCity": false
+ },
+ "Q183": {
+  "label": "Alemania",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q237": {
+  "label": "Ciudad del Vaticano",
+  "types": [
+   "Q6256",
+   "Q123480",
+   "Q133442",
+   "Q171441",
+   "Q702492",
+   "Q1200957",
+   "Q3624078",
+   "Q7396640",
+   "Q10551526",
+   "Q19691007",
+   "Q98116669",
+   "Q127693126"
+  ],
+  "up": null,
+  "country": "Ciudad del Vaticano",
+  "isCity": true
+ },
+ "Q456": {
+  "label": "Lyon",
+  "types": [
+   "Q484170",
+   "Q1187811",
+   "Q1549591",
+   "Q22927616"
+  ],
+  "up": "Q16665897",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q1273": {
+  "label": "Toscana",
+  "types": [
+   "Q16110"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1726": {
+  "label": "Múnich",
+  "types": [
+   "Q134626",
+   "Q200250",
+   "Q1066984",
+   "Q1180262",
+   "Q1187811",
+   "Q1418640",
+   "Q1549591",
+   "Q42744322",
+   "Q85631896"
+  ],
+  "up": "Q10562",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q1731": {
+  "label": "Dresde",
+  "types": [
+   "Q253030",
+   "Q1549591",
+   "Q42744322",
+   "Q61708099"
+  ],
+  "up": "Q1202",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q10551": {
+  "label": "Franconia Media",
+  "types": [
+   "Q22721",
+   "Q464235"
+  ],
+  "up": "Q980",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q16199": {
+  "label": "provincia de Lecco",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1210",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q16558": {
+  "label": "Fort Worth",
+  "types": [
+   "Q62049",
+   "Q1093829",
+   "Q1549591"
+  ],
+  "up": "Q109265",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q29352": {
+  "label": "Castelfranco Véneto",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16292",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q42935": {
+  "label": "Mandello del Lario",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16199",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q91108": {
+  "label": "Asciano",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16275",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q256012": {
+  "label": "Maxvorstadt",
+  "types": [
+   "Q123705",
+   "Q253270"
+  ],
+  "up": "Q1726",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q338330": {
+  "label": "Galería de la Academia de Venecia",
+  "types": [
+   "Q207694",
+   "Q3867560",
+   "Q24699794",
+   "Q97662266",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "up": "Q3867184",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q504125": {
+  "label": "Copenhague",
+  "types": [
+   "Q2177636"
+  ],
+  "up": "Q26073",
+  "country": "Dinamarca",
+  "isCity": false
+ },
+ "Q744598": {
+  "label": "Hradčany",
+  "types": [
+   "Q7930989",
+   "Q20871353",
+   "Q61089180"
+  ],
+  "up": "Q1085",
+  "country": "República Checa",
+  "isCity": true
+ },
+ "Q2742132": {
+  "label": "Dvortsovy Municipal Okrug",
+  "types": [
+   "Q42619282"
+  ],
+  "up": "Q656",
+  "country": "Rusia",
+  "isCity": false
+ },
+ "Q89503830": {
+  "label": "Sede principal del Museo Metropolitano de Arte",
+  "types": [
+   "Q207694"
+  ],
+  "up": "Q11299",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q26073": {
+  "label": "Región Capital",
+  "types": [
+   "Q62326"
+  ],
+  "up": "Q35",
+  "country": "Dinamarca",
+  "isCity": false
+ },
+ "Q35": {
+  "label": "Dinamarca",
+  "types": [
+   "Q6256",
+   "Q7275",
+   "Q20181813",
+   "Q63791824",
+   "Q66724388"
+  ],
+  "up": "Q756617",
+  "country": "Reino de Dinamarca",
+  "isCity": false
+ },
+ "Q756617": {
+  "label": "Reino de Dinamarca",
+  "types": [
+   "Q6256",
+   "Q41614",
+   "Q179164",
+   "Q417175",
+   "Q1250464",
+   "Q1323642",
+   "Q3624078",
+   "Q20181813"
+  ],
+  "up": null,
+  "country": null,
+  "isCity": false
+ },
+ "Q65": {
+  "label": "Los Ángeles",
+  "types": [
+   "Q13218391"
+  ],
+  "up": "Q104994",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q78": {
+  "label": "Basilea",
+  "types": [
+   "Q70208",
+   "Q902814",
+   "Q1187811",
+   "Q1549591",
+   "Q11183787",
+   "Q14770218",
+   "Q54935504"
+  ],
+  "up": "Q12172",
+  "country": "Suiza",
+  "isCity": true
+ },
+ "Q100": {
+  "label": "Boston",
+  "types": [
+   "Q1093829",
+   "Q1549591"
+  ],
+  "up": "Q54072",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q220": {
+  "label": "Roma",
+  "types": [
+   "Q5119",
+   "Q200250",
+   "Q747074",
+   "Q902814",
+   "Q1187811",
+   "Q1200957",
+   "Q1549591",
+   "Q3685476",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "up": "Q18288160",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q1711": {
+  "label": "Potsdam",
+  "types": [
+   "Q1187811",
+   "Q1549591",
+   "Q14784328",
+   "Q42744322",
+   "Q61793478"
+  ],
+  "up": "Q1208",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q2683": {
+  "label": "Parma",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1549591",
+   "Q5107861"
+  ],
+  "up": "Q16228",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q13362": {
+  "label": "Ferrara",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1392581",
+   "Q1549591"
+  ],
+  "up": "Q16168",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q14910": {
+  "label": "Schwäbisch Hall",
+  "types": [
+   "Q134626",
+   "Q42744322",
+   "Q116621859"
+  ],
+  "up": "Q8520",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q68965": {
+  "label": "Soleura",
+  "types": [
+   "Q70208",
+   "Q14770218",
+   "Q54935504"
+  ],
+  "up": "Q494663",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q126675": {
+  "label": "Chantilly",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q596974",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q2379199": {
+  "label": "City de Edimburgo",
+  "types": [
+   "Q15060255"
+  ],
+  "up": "Q22",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q2707802": {
+  "label": "Centro histórico de Florencia",
+  "types": [
+   "Q123705",
+   "Q149621",
+   "Q676050",
+   "Q702492",
+   "Q18608436"
+  ],
+  "up": "Q2044",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q3940419": {
+  "label": "Roma Capitale",
+  "types": [
+   "Q56061",
+   "Q3726248"
+  ],
+  "up": "Q18288160",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q18288160": {
+  "label": "ciudad metropolitana de Roma Capital",
+  "types": [
+   "Q15110"
+  ],
+  "up": "Q1282",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1282": {
+  "label": "Lacio",
+  "types": [
+   "Q16110"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q38": {
+  "label": "Italia",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q104994": {
+  "label": "condado de Los Ángeles",
+  "types": [
+   "Q131427665"
+  ],
+  "up": "Q99",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q99": {
+  "label": "California",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q30": {
+  "label": "Estados Unidos",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q494663": {
+  "label": "Distrito de Soleura",
+  "types": [
+   "Q3032131"
+  ],
+  "up": "Q2299305",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q2299305": {
+  "label": "Solothurn-Lebern",
+  "types": [
+   "Q17277975"
+  ],
+  "up": "Q11929",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q11929": {
+  "label": "Soleura",
+  "types": [
+   "Q23058"
+  ],
+  "up": "Q39",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q39": {
+  "label": "Suiza",
+  "types": [
+   "Q6256",
+   "Q7275",
+   "Q43702",
+   "Q123480",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": null,
+  "isCity": false
+ },
+ "Q2973": {
+  "label": "Darmstadt",
+  "types": [
+   "Q42744322"
+  ],
+  "up": "Q7932",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q8818": {
+  "label": "Valencia",
+  "types": [
+   "Q2074737",
+   "Q123754112"
+  ],
+  "up": "Q2263209",
+  "country": "España",
+  "isCity": true
+ },
+ "Q10305": {
+  "label": "Zaragoza",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q55180",
+  "country": "España",
+  "isCity": true
+ },
+ "Q126668": {
+  "label": "Senlis",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q12675",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q464955": {
+  "label": "Windsor",
+  "types": [
+   "Q3957",
+   "Q562061",
+   "Q7897276"
+  ],
+  "up": "Q1368496",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q1270723": {
+  "label": "Escuela Grande de San Roque",
+  "types": [
+   "Q207694",
+   "Q614316",
+   "Q992237",
+   "Q112132542"
+  ],
+  "up": "Q641",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1489": {
+  "label": "Ciudad de México",
+  "types": [
+   "Q515",
+   "Q174844",
+   "Q200250",
+   "Q257391",
+   "Q1422929",
+   "Q1549591",
+   "Q20528428",
+   "Q51929311"
+  ],
+  "up": "Q96",
+  "country": "México",
+  "isCity": true
+ },
+ "Q5836": {
+  "label": "Toledo",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q54929",
+  "country": "España",
+  "isCity": true
+ },
+ "Q8692": {
+  "label": "Bilbao",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q2355185",
+  "country": "España",
+  "isCity": true
+ },
+ "Q8717": {
+  "label": "Sevilla",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q95088",
+  "country": "España",
+  "isCity": true
+ },
+ "Q23800": {
+  "label": "La Valeta",
+  "types": [
+   "Q515",
+   "Q719592"
+  ],
+  "up": "Q120512566",
+  "country": "Malta",
+  "isCity": true
+ },
+ "Q228445": {
+  "label": "Zugló",
+  "types": [
+   "Q851110"
+  ],
+  "up": "Q1781",
+  "country": "Hungría",
+  "isCity": false
+ },
+ "Q486792": {
+  "label": "Aranjuez",
+  "types": [
+   "Q515",
+   "Q2074737"
+  ],
+  "up": "Q5756",
+  "country": "España",
+  "isCity": true
+ },
+ "Q1606474": {
+  "label": "Illescas",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q54929",
+  "country": "España",
+  "isCity": true
+ },
+ "Q3551781": {
+  "label": "Distrito de Columbia",
+  "types": [
+   "Q475050",
+   "Q852446",
+   "Q10864048"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1781": {
+  "label": "Budapest",
+  "types": [
+   "Q171441",
+   "Q13218690",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "up": "Q28",
+  "country": "Hungría",
+  "isCity": false
+ },
+ "Q28": {
+  "label": "Hungría",
+  "types": [
+   "Q6256",
+   "Q123480",
+   "Q3624078",
+   "Q127693126"
+  ],
+  "up": null,
+  "country": "Hungría",
+  "isCity": false
+ },
+ "Q1718": {
+  "label": "Düsseldorf",
+  "types": [
+   "Q1549591",
+   "Q14784328",
+   "Q15253706",
+   "Q42744322",
+   "Q85635630"
+  ],
+  "up": "Q7926",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q6346": {
+  "label": "Indianápolis",
+  "types": [
+   "Q62049",
+   "Q1074523",
+   "Q1093829",
+   "Q1549591",
+   "Q3301053"
+  ],
+  "up": "Q506230",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q9899": {
+  "label": "Amsterdam",
+  "types": [
+   "Q2039348"
+  ],
+  "up": "Q701",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q12892": {
+  "label": "Amberes",
+  "types": [
+   "Q493522",
+   "Q2264924",
+   "Q15273785"
+  ],
+  "up": "Q90895",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q1075988": {
+  "label": "Palacio del Louvre",
+  "types": [
+   "Q16560",
+   "Q751876"
+  ],
+  "up": "Q161741",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q1125500": {
+  "label": "Real Sitio de San Ildefonso",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q55283",
+  "country": "España",
+  "isCity": true
+ },
+ "Q1501215": {
+  "label": "Electoral Gallery Dusseldorf",
+  "types": [
+   "Q207694",
+   "Q7328910"
+  ],
+  "up": "Q1718",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q90895": {
+  "label": "distrito de Amberes",
+  "types": [
+   "Q91028"
+  ],
+  "up": "Q1116",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q1116": {
+  "label": "Amberes",
+  "types": [
+   "Q83116"
+  ],
+  "up": "Q31",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q321": {
+  "label": "Vía Láctea",
+  "types": [
+   "Q2490",
+   "Q1519541"
+  ],
+  "up": null,
+  "country": null,
+  "isCity": false
+ },
+ "Q647": {
+  "label": "Rennes",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q12549",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q1297": {
+  "label": "Chicago",
+  "types": [
+   "Q208511",
+   "Q1549591",
+   "Q110071194"
+  ],
+  "up": "Q108418",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q3005": {
+  "label": "Altstadt-Nord",
+  "types": [
+   "Q676050",
+   "Q15632166"
+  ],
+  "up": "Q446857",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q3326": {
+  "label": "Corrèze",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18678082",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q6441": {
+  "label": "Montpellier",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12545",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q10444": {
+  "label": "Bamberg",
+  "types": [
+   "Q56061",
+   "Q85482556"
+  ],
+  "up": "Q10554",
+  "country": "Imperio aleman (1871-1949)",
+  "isCity": false
+ },
+ "Q40898": {
+  "label": "Nancy",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12626",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q165271": {
+  "label": "Lens",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q12689",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q627521": {
+  "label": "Pommersfelden",
+  "types": [
+   "Q116457956"
+  ],
+  "up": "Q10444",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q446857": {
+  "label": "Köln-Innenstadt",
+  "types": [
+   "Q15632133"
+  ],
+  "up": "Q365",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q365": {
+  "label": "Colonia",
+  "types": [
+   "Q200250",
+   "Q707813",
+   "Q1549591",
+   "Q2202509",
+   "Q42744322",
+   "Q85635630"
+  ],
+  "up": "Q7927",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q10554": {
+  "label": "Alta Franconia",
+  "types": [
+   "Q22721",
+   "Q464235"
+  ],
+  "up": "Q980",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q84": {
+  "label": "Londres",
+  "types": [
+   "Q515",
+   "Q174844",
+   "Q200250",
+   "Q208511",
+   "Q1048835",
+   "Q1066984",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "up": "Q23306",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q32515": {
+  "label": "Richmond upon Thames",
+  "types": [
+   "Q211690",
+   "Q7897276"
+  ],
+  "up": "Q23306",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q33187": {
+  "label": "brazo de Orión",
+  "types": [
+   "Q2311038"
+  ],
+  "up": null,
+  "country": null,
+  "isCity": false
+ },
+ "Q34217": {
+  "label": "Oxford",
+  "types": [
+   "Q515",
+   "Q1187811",
+   "Q1357964",
+   "Q7897276"
+  ],
+  "up": "Q20986484",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q485176": {
+  "label": "Pasadena",
+  "types": [
+   "Q1549591",
+   "Q13218357",
+   "Q13218391"
+  ],
+  "up": "Q104994",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q5301115": {
+  "label": "Doughty House",
+  "types": [
+   "Q41176"
+  ],
+  "up": "Q32515",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q20986484": {
+  "label": "Oxford",
+  "types": [
+   "Q518343",
+   "Q1006876",
+   "Q1137272",
+   "Q1187580",
+   "Q21503295"
+  ],
+  "up": "Q23169",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q24449527": {
+  "label": "Eaton and Eccleston",
+  "types": [
+   "Q1115575"
+  ],
+  "up": "Q1070591",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23306": {
+  "label": "Gran Londres",
+  "types": [
+   "Q159313",
+   "Q180673"
+  ],
+  "up": "Q23939248",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23939248": {
+  "label": "London",
+  "types": [
+   "Q48091",
+   "Q6955655"
+  ],
+  "up": "Q21",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q21": {
+  "label": "Inglaterra",
+  "types": [
+   "Q3336843"
+  ],
+  "up": "Q145",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q145": {
+  "label": "Reino Unido",
+  "types": [
+   "Q6256",
+   "Q112099",
+   "Q3624078",
+   "Q20181813"
+  ],
+  "up": null,
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q1070591": {
+  "label": "Cheshire West and Chester",
+  "types": [
+   "Q769603",
+   "Q1006876",
+   "Q1136601",
+   "Q1187580"
+  ],
+  "up": "Q23064",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23064": {
+  "label": "Cheshire",
+  "types": [
+   "Q180673"
+  ],
+  "up": "Q21",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23169": {
+  "label": "Oxfordshire",
+  "types": [
+   "Q180673",
+   "Q769603"
+  ],
+  "up": "Q48015",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q48015": {
+  "label": "Sudeste de Inglaterra",
+  "types": [
+   "Q48091",
+   "Q6955655"
+  ],
+  "up": "Q21",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q19660": {
+  "label": "Bucarest",
+  "types": [
+   "Q640364",
+   "Q1187811",
+   "Q1549591",
+   "Q10864048",
+   "Q51929311"
+  ],
+  "up": "Q218",
+  "country": "Rumania",
+  "isCity": true
+ },
+ "Q29999": {
+  "label": "Reino de los Países Bajos",
+  "types": [
+   "Q6256",
+   "Q417175",
+   "Q1250464",
+   "Q3624078",
+   "Q20181813"
+  ],
+  "up": null,
+  "country": "Reino de los Países Bajos",
+  "isCity": false
+ },
+ "Q36600": {
+  "label": "La Haya",
+  "types": [
+   "Q515",
+   "Q1852859",
+   "Q2039348",
+   "Q13539802"
+  ],
+  "up": "Q694",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q188776": {
+  "label": "Castres",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q12772",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q202088": {
+  "label": "Camden",
+  "types": [
+   "Q211690",
+   "Q7897276"
+  ],
+  "up": "Q23306",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q764804": {
+  "label": "Kenwood House",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q2087181",
+   "Q5773747",
+   "Q16735822"
+  ],
+  "up": "Q202088",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q2163496": {
+  "label": "Museo de Bellas Artes de Sevilla",
+  "types": [
+   "Q207694",
+   "Q1128397",
+   "Q4989906"
+  ],
+  "up": "Q8717",
+  "country": "España",
+  "isCity": false
+ },
+ "Q13948": {
+  "label": "Vallés Occidental",
+  "types": [
+   "Q937876"
+  ],
+  "up": "Q249461",
+  "country": "España",
+  "isCity": false
+ },
+ "Q41329": {
+  "label": "Linz",
+  "types": [
+   "Q262882",
+   "Q667509",
+   "Q871419",
+   "Q1549591",
+   "Q13539802"
+  ],
+  "up": "Q41967",
+  "country": "Austria",
+  "isCity": true
+ },
+ "Q81949": {
+  "label": "provincia de Barcelona",
+  "types": [
+   "Q162620"
+  ],
+  "up": "Q5705",
+  "country": "España",
+  "isCity": false
+ },
+ "Q146766": {
+  "label": "Dulwich",
+  "types": [
+   "Q2755753"
+  ],
+  "up": "Q730706",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q275118": {
+  "label": "IX Distrito de París",
+  "types": [
+   "Q702842"
+  ],
+  "up": "Q90",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q290265": {
+  "label": "Villa San Donato",
+  "types": [
+   "Q3950"
+  ],
+  "up": "Q2044",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q848324": {
+  "label": "Voorschoten",
+  "types": [
+   "Q532",
+   "Q1852859",
+   "Q2039348"
+  ],
+  "up": "Q694",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q927931": {
+  "label": "Cabra",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q81972",
+  "country": "España",
+  "isCity": true
+ },
+ "Q5092": {
+  "label": "Baltimore",
+  "types": [
+   "Q1266818"
+  ],
+  "up": "Q1391",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q16555": {
+  "label": "Houston",
+  "types": [
+   "Q62049",
+   "Q1093829",
+   "Q1549591",
+   "Q2264924"
+  ],
+  "up": "Q26676",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q270230": {
+  "label": "VIII Distrito de París",
+  "types": [
+   "Q702842"
+  ],
+  "up": "Q90",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q808437": {
+  "label": "Barnard Castle",
+  "types": [
+   "Q3957",
+   "Q1115575"
+  ],
+  "up": "Q1137286",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q862100": {
+  "label": "Khamovniki District",
+  "types": [
+   "Q4389092"
+  ],
+  "up": "Q190412",
+  "country": "Rusia",
+  "isCity": false
+ },
+ "Q1919098": {
+  "label": "Ciudad de Melbourne",
+  "types": [
+   "Q1426035"
+  ],
+  "up": "Q36687",
+  "country": "Australia",
+  "isCity": false
+ },
+ "Q22": {
+  "label": "Escocia",
+  "types": [
+   "Q3336843"
+  ],
+  "up": "Q145",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q36687": {
+  "label": "Victoria",
+  "types": [
+   "Q5852411"
+  ],
+  "up": "Q408",
+  "country": "Australia",
+  "isCity": false
+ },
+ "Q408": {
+  "label": "Australia",
+  "types": [
+   "Q6256",
+   "Q43702",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Australia",
+  "isCity": false
+ },
+ "Q1391": {
+  "label": "Maryland",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q190412": {
+  "label": "Distrito administrativo Central de Moscú",
+  "types": [
+   "Q4057820"
+  ],
+  "up": "Q649",
+  "country": "Rusia",
+  "isCity": false
+ },
+ "Q649": {
+  "label": "Moscú",
+  "types": [
+   "Q43263",
+   "Q174844",
+   "Q183342",
+   "Q1549591",
+   "Q4442912",
+   "Q7930989",
+   "Q51929311"
+  ],
+  "up": "Q159",
+  "country": "Rusia",
+  "isCity": true
+ },
+ "Q1519": {
+  "label": "Abu Dhabi",
+  "types": [
+   "Q515",
+   "Q56061",
+   "Q200250",
+   "Q257391",
+   "Q486972"
+  ],
+  "up": "Q187712",
+  "country": "Emiratos Árabes Unidos",
+  "isCity": true
+ },
+ "Q1754": {
+  "label": "Estocolmo",
+  "types": [
+   "Q515",
+   "Q707813",
+   "Q1549591",
+   "Q2264924",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "up": "Q506250",
+  "country": "Suecia",
+  "isCity": true
+ },
+ "Q850869": {
+  "label": "San Marino",
+  "types": [
+   "Q1093829"
+  ],
+  "up": "Q104994",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q621": {
+  "label": "Versalles",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q12820",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q23482": {
+  "label": "Marsella",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q3240",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q36091": {
+  "label": "Minneapolis",
+  "types": [
+   "Q62049",
+   "Q1093829",
+   "Q1549591"
+  ],
+  "up": "Q486229",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q159": {
+  "label": "Rusia",
+  "types": [
+   "Q6256",
+   "Q859563",
+   "Q1323642",
+   "Q3624078",
+   "Q127693126"
+  ],
+  "up": null,
+  "country": "Rusia",
+  "isCity": false
+ },
+ "Q1626": {
+  "label": "Hamburg-Mitte",
+  "types": [
+   "Q278976"
+  ],
+  "up": "Q1055",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q2079": {
+  "label": "Leipzig",
+  "types": [
+   "Q515",
+   "Q253030",
+   "Q1549591",
+   "Q42744322",
+   "Q61708099"
+  ],
+  "up": "Q1202",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q9125": {
+  "label": "Winterthur",
+  "types": [
+   "Q70208",
+   "Q1549591",
+   "Q54935504"
+  ],
+  "up": "Q644300",
+  "country": "Suiza",
+  "isCity": true
+ },
+ "Q188801": {
+  "label": "Kensington y Chelsea",
+  "types": [
+   "Q211690",
+   "Q7897276"
+  ],
+  "up": "Q23306",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q693450": {
+  "label": "Municipio de Greenwich",
+  "types": [
+   "Q211690",
+   "Q7897276"
+  ],
+  "up": "Q23306",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q2326384": {
+  "label": "Stadt",
+  "types": [
+   "Q123705",
+   "Q64340309"
+  ],
+  "up": "Q9125",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q131336099": {
+  "label": "Victoria and Albert Museum",
+  "types": [
+   "Q24699794"
+  ],
+  "up": "Q188801",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q1055": {
+  "label": "Hamburgo",
+  "types": [
+   "Q57318",
+   "Q133442",
+   "Q200250",
+   "Q707813",
+   "Q1221156",
+   "Q1549591",
+   "Q2264924",
+   "Q15974307",
+   "Q42744322",
+   "Q85636199"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q25": {
+  "label": "Gales",
+  "types": [
+   "Q3336843"
+  ],
+  "up": "Q145",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q3159": {
+  "label": "Kursk",
+  "types": [
+   "Q1549591",
+   "Q106389302"
+  ],
+  "up": "Q3178",
+  "country": "Rusia",
+  "isCity": true
+ },
+ "Q10690": {
+  "label": "Cardiff",
+  "types": [
+   "Q515",
+   "Q1549591",
+   "Q51929311"
+  ],
+  "up": "Q24342199",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q30974": {
+  "label": "Ruan",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12758",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q160642": {
+  "label": "Salisbury",
+  "types": [
+   "Q515",
+   "Q1115575",
+   "Q27104997"
+  ],
+  "up": "Q21694746",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q213361": {
+  "label": "Pembrokeshire",
+  "types": [
+   "Q15979307"
+  ],
+  "up": "Q25",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q259463": {
+  "label": "VII Distrito de París",
+  "types": [
+   "Q702842"
+  ],
+  "up": "Q90",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q3801785": {
+  "label": "Ipswich",
+  "types": [
+   "Q518343",
+   "Q1006876",
+   "Q1137272",
+   "Q1187580",
+   "Q7897276"
+  ],
+  "up": "Q23111",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q648": {
+  "label": "Lille",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12661",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q1479": {
+  "label": "Burdeos",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12526",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q158491": {
+  "label": "Feodosia",
+  "types": [
+   "Q148837",
+   "Q203323",
+   "Q1502702",
+   "Q7930989",
+   "Q12131624"
+  ],
+  "up": "Q2371693",
+  "country": "Ucrania",
+  "isCity": true
+ },
+ "Q1439": {
+  "label": "Texas",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1486": {
+  "label": "Buenos Aires",
+  "types": [
+   "Q56061",
+   "Q192611",
+   "Q257391",
+   "Q475050",
+   "Q1094397",
+   "Q1422929",
+   "Q5770918",
+   "Q10864048",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "up": "Q414",
+  "country": "Argentina",
+  "isCity": false
+ },
+ "Q2256": {
+  "label": "Birmingham",
+  "types": [
+   "Q200250",
+   "Q1187811",
+   "Q7897276",
+   "Q141763519"
+  ],
+  "up": "Q20986424",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q12191": {
+  "label": "Nantes",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q3068",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q41572": {
+  "label": "Nicolaiev",
+  "types": [
+   "Q12131624"
+  ],
+  "up": "Q105564280",
+  "country": "Ucrania",
+  "isCity": false
+ },
+ "Q44989": {
+  "label": "Tulsa",
+  "types": [
+   "Q62049",
+   "Q1093829",
+   "Q1549591"
+  ],
+  "up": "Q489457",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q79867": {
+  "label": "Birmingham",
+  "types": [
+   "Q1093829",
+   "Q1549591"
+  ],
+  "up": "Q501084",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q170478": {
+  "label": "Bournemouth",
+  "types": [
+   "Q1115575",
+   "Q7897276",
+   "Q100503226"
+  ],
+  "up": "Q54366459",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q245546": {
+  "label": "VI Distrito de París",
+  "types": [
+   "Q702842"
+  ],
+  "up": "Q90",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q20986424": {
+  "label": "Birmingham",
+  "types": [
+   "Q1002812",
+   "Q21503295"
+  ],
+  "up": "Q23124",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q21665571": {
+  "label": "Liverpool",
+  "types": [
+   "Q518343",
+   "Q1002812",
+   "Q1137272",
+   "Q7897276",
+   "Q21503295"
+  ],
+  "up": "Q23100",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q92909922": {
+  "label": "Ueno-kōen",
+  "types": [
+   "Q5327369"
+  ],
+  "up": "Q232641",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q105564280": {
+  "label": "Mykolaiv urban hromada",
+  "types": [
+   "Q104841013"
+  ],
+  "up": "Q104530289",
+  "country": "Ucrania",
+  "isCity": false
+ },
+ "Q104530289": {
+  "label": "Raión de Nicolaiev",
+  "types": [
+   "Q1267632"
+  ],
+  "up": "Q181633",
+  "country": "Ucrania",
+  "isCity": false
+ },
+ "Q181633": {
+  "label": "Óblast de Mikoláyiv",
+  "types": [
+   "Q3348196"
+  ],
+  "up": "Q212",
+  "country": "Ucrania",
+  "isCity": false
+ },
+ "Q212": {
+  "label": "Ucrania",
+  "types": [
+   "Q6256",
+   "Q7270",
+   "Q179164",
+   "Q619610",
+   "Q3624078",
+   "Q4209223",
+   "Q4835091"
+  ],
+  "up": null,
+  "country": "Ucrania",
+  "isCity": true
+ },
+ "Q414": {
+  "label": "Argentina",
+  "types": [
+   "Q6256",
+   "Q6266",
+   "Q3624078",
+   "Q10551526",
+   "Q140892892"
+  ],
+  "up": null,
+  "country": "Argentina",
+  "isCity": false
+ },
+ "Q232641": {
+  "label": "Taitō",
+  "types": [
+   "Q5327704"
+  ],
+  "up": "Q1490",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q1490": {
+  "label": "Tokio",
+  "types": [
+   "Q50337",
+   "Q174844",
+   "Q200250",
+   "Q208511",
+   "Q1025961",
+   "Q1066984",
+   "Q1200957",
+   "Q1549591",
+   "Q51929311",
+   "Q124313007"
+  ],
+  "up": "Q17",
+  "country": "Japón",
+  "isCity": true
+ },
+ "Q54366459": {
+  "label": "Bournemouth, Christchurch and Poole",
+  "types": [
+   "Q1136601"
+  ],
+  "up": "Q23159",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23159": {
+  "label": "Dorset",
+  "types": [
+   "Q180673"
+  ],
+  "up": "Q48026",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q48026": {
+  "label": "Sudoeste de Inglaterra",
+  "types": [
+   "Q48091",
+   "Q6955655"
+  ],
+  "up": "Q21",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23124": {
+  "label": "Midlands Occidentales",
+  "types": [
+   "Q180673",
+   "Q769628"
+  ],
+  "up": "Q48038",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q48038": {
+  "label": "Midlands del Oeste",
+  "types": [
+   "Q48091",
+   "Q6955655"
+  ],
+  "up": "Q21",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23100": {
+  "label": "Merseyside",
+  "types": [
+   "Q180673",
+   "Q769628"
+  ],
+  "up": "Q47967",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q47967": {
+  "label": "Noroeste de Inglaterra",
+  "types": [
+   "Q48091",
+   "Q6955655"
+  ],
+  "up": "Q21",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q172": {
+  "label": "Toronto",
+  "types": [
+   "Q515",
+   "Q1066984",
+   "Q1549591",
+   "Q14762300",
+   "Q18810091",
+   "Q21507383",
+   "Q51929311"
+  ],
+  "up": "Q1904",
+  "country": "Canadá",
+  "isCity": true
+ },
+ "Q771": {
+  "label": "Massachusetts",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1761": {
+  "label": "Dublín",
+  "types": [
+   "Q15284",
+   "Q1549591",
+   "Q2264924",
+   "Q51929311"
+  ],
+  "up": "Q4169280",
+  "country": "Irlanda",
+  "isCity": true
+ },
+ "Q1899": {
+  "label": "Kiev",
+  "types": [
+   "Q1200957",
+   "Q7930989",
+   "Q12131624",
+   "Q51929311"
+  ],
+  "up": "Q212",
+  "country": "Ucrania",
+  "isCity": true
+ },
+ "Q1930": {
+  "label": "Ottawa",
+  "types": [
+   "Q257391",
+   "Q1549591",
+   "Q14762300",
+   "Q17457753",
+   "Q18810091"
+  ],
+  "up": "Q1904",
+  "country": "Canadá",
+  "isCity": true
+ },
+ "Q1953": {
+  "label": "Ereván",
+  "types": [
+   "Q1549591",
+   "Q10864048",
+   "Q20724701"
+  ],
+  "up": "Q399",
+  "country": "Armenia",
+  "isCity": true
+ },
+ "Q6602": {
+  "label": "Estrasburgo",
+  "types": [
+   "Q484170",
+   "Q902814",
+   "Q1549591"
+  ],
+  "up": "Q12717",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q8851": {
+  "label": "Málaga",
+  "types": [
+   "Q515",
+   "Q2074737"
+  ],
+  "up": "Q95028",
+  "country": "España",
+  "isCity": true
+ },
+ "Q24826": {
+  "label": "Liverpool",
+  "types": [
+   "Q515",
+   "Q1549591"
+  ],
+  "up": "Q21665571",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q193413": {
+  "label": "Rýbinsk",
+  "types": [
+   "Q192287",
+   "Q1549591",
+   "Q7930989"
+  ],
+  "up": "Q2448",
+  "country": "Rusia",
+  "isCity": true
+ },
+ "Q2756002": {
+  "label": "Port Sunlight",
+  "types": [
+   "Q188509",
+   "Q486972",
+   "Q6888356"
+  ],
+  "up": "Q11365639",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q11365639": {
+  "label": "Wirral",
+  "types": [
+   "Q1002812",
+   "Q7897276"
+  ],
+  "up": "Q23100",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q72": {
+  "label": "Zúrich",
+  "types": [
+   "Q70208",
+   "Q1187811",
+   "Q14770218",
+   "Q51929311"
+  ],
+  "up": "Q660732",
+  "country": "Suiza",
+  "isCity": true
+ },
+ "Q1345": {
+  "label": "Filadelfia",
+  "types": [
+   "Q62049",
+   "Q3301053",
+   "Q5888666",
+   "Q21010817"
+  ],
+  "up": "Q496900",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q12439": {
+  "label": "Detroit",
+  "types": [
+   "Q62049",
+   "Q902814",
+   "Q1093829",
+   "Q1549591"
+  ],
+  "up": "Q195664",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q12703": {
+  "label": "Pirineos Atlánticos",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18678082",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q677710": {
+  "label": "Riesbach",
+  "types": [
+   "Q123705",
+   "Q685309",
+   "Q19644409"
+  ],
+  "up": "Q72",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q858143": {
+  "label": "Tobata-ku",
+  "types": [
+   "Q137773"
+  ],
+  "up": "Q123258",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q3047556": {
+  "label": "Edgbaston",
+  "types": [
+   "Q188509",
+   "Q1115575"
+  ],
+  "up": "Q20986424",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q55934339": {
+  "label": "Ciudad de Glasgow",
+  "types": [
+   "Q15060255",
+   "Q21503295"
+  ],
+  "up": "Q22",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q496900": {
+  "label": "Condado de Filadelfia",
+  "types": [
+   "Q13414763"
+  ],
+  "up": "Q1400",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1400": {
+  "label": "Pensilvania",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q18678082": {
+  "label": "Nueva Aquitania",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q212429": {
+  "label": "Francia metropolitana",
+  "types": [
+   "Q192498"
+  ],
+  "up": "Q142",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q142": {
+  "label": "Francia",
+  "types": [
+   "Q6256",
+   "Q7270",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q123258": {
+  "label": "prefectura de Fukuoka",
+  "types": [
+   "Q50337"
+  ],
+  "up": "Q17",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q17": {
+  "label": "Japón",
+  "types": [
+   "Q6256",
+   "Q112099",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q62": {
+  "label": "San Francisco",
+  "types": [
+   "Q1093829",
+   "Q1549591",
+   "Q3559093",
+   "Q13218382"
+  ],
+  "up": "Q99",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q1204": {
+  "label": "Illinois",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q3336": {
+  "label": "Córcega del Sur",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q14112",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q108418": {
+  "label": "Condado de Cook",
+  "types": [
+   "Q11812346"
+  ],
+  "up": "Q1204",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q181376": {
+  "label": "Grodno",
+  "types": [
+   "Q1549591",
+   "Q7930989",
+   "Q79323854"
+  ],
+  "up": "Q191061",
+  "country": "Bielorrusia",
+  "isCity": true
+ },
+ "Q194420": {
+  "label": "XVI Distrito de París",
+  "types": [
+   "Q702842"
+  ],
+  "up": "Q90",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q1624461": {
+  "label": "Holešovice",
+  "types": [
+   "Q20871353",
+   "Q61089180"
+  ],
+  "up": "Q973974",
+  "country": "República Checa",
+  "isCity": false
+ },
+ "Q54803598": {
+  "label": "Stadtbezirk II (Essen)",
+  "types": [
+   "Q2740635"
+  ],
+  "up": "Q2066",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q2066": {
+  "label": "Essen",
+  "types": [
+   "Q707813",
+   "Q1187811",
+   "Q1549591",
+   "Q42744322",
+   "Q85635630",
+   "Q106517174"
+  ],
+  "up": "Q7926",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q973974": {
+  "label": "Praga 1",
+  "types": [
+   "Q74728036",
+   "Q75338598",
+   "Q75339006"
+  ],
+  "up": "Q1085",
+  "country": "República Checa",
+  "isCity": false
+ },
+ "Q1085": {
+  "label": "Praga",
+  "types": [
+   "Q38911",
+   "Q192611",
+   "Q548611",
+   "Q1200957",
+   "Q1549591",
+   "Q5153359",
+   "Q7819319",
+   "Q7841907",
+   "Q8452914",
+   "Q12031379",
+   "Q15978299",
+   "Q76007695",
+   "Q76009696",
+   "Q108178728"
+  ],
+  "up": "Q213",
+  "country": "República Checa",
+  "isCity": true
+ },
+ "Q5262": {
+  "label": "Riehen",
+  "types": [
+   "Q70208",
+   "Q902814",
+   "Q54935504"
+  ],
+  "up": "Q12172",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q5818": {
+  "label": "Córdoba",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q81972",
+  "country": "España",
+  "isCity": true
+ },
+ "Q40435": {
+  "label": "Búfalo",
+  "types": [
+   "Q902814",
+   "Q1549591",
+   "Q15063611"
+  ],
+  "up": "Q114843",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q2136510": {
+  "label": "Palacio",
+  "types": [
+   "Q10267336"
+  ],
+  "up": "Q1763376",
+  "country": "España",
+  "isCity": false
+ },
+ "Q2320761": {
+  "label": "Presnensky District",
+  "types": [
+   "Q4389092"
+  ],
+  "up": "Q190412",
+  "country": "Rusia",
+  "isCity": false
+ },
+ "Q12172": {
+  "label": "Basilea-Ciudad",
+  "types": [
+   "Q23058",
+   "Q107390",
+   "Q133442",
+   "Q692170"
+  ],
+  "up": "Q39",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q1763376": {
+  "label": "Centro",
+  "types": [
+   "Q3032114"
+  ],
+  "up": "Q2807",
+  "country": "España",
+  "isCity": false
+ },
+ "Q1415": {
+  "label": "Indiana",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q202628": {
+  "label": "Oldham",
+  "types": [
+   "Q3957",
+   "Q7897276"
+  ],
+  "up": "Q1278608",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q1094063": {
+  "label": "Ciudad de Adelaide",
+  "types": [
+   "Q55558027"
+  ],
+  "up": "Q35715",
+  "country": "Australia",
+  "isCity": false
+ },
+ "Q21525592": {
+  "label": "Mánchester",
+  "types": [
+   "Q1002812",
+   "Q21503295"
+  ],
+  "up": "Q23099",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23099": {
+  "label": "Gran Mánchester",
+  "types": [
+   "Q180673",
+   "Q769628"
+  ],
+  "up": "Q47967",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q35715": {
+  "label": "Australia Meridional",
+  "types": [
+   "Q5852411"
+  ],
+  "up": "Q408",
+  "country": "Australia",
+  "isCity": false
+ },
+ "Q26555": {
+  "label": "Ede",
+  "types": [
+   "Q2039348"
+  ],
+  "up": "Q775",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q41819": {
+  "label": "Kansas City",
+  "types": [
+   "Q62049",
+   "Q1093829",
+   "Q1549591",
+   "Q131338872"
+  ],
+  "up": "Q127238",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q49145": {
+  "label": "New Haven",
+  "types": [
+   "Q1093829",
+   "Q1549591"
+  ],
+  "up": "Q117287005",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q52502": {
+  "label": "Municipalidad de Gothenburg",
+  "types": [
+   "Q127448"
+  ],
+  "up": "Q103093",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q502168": {
+  "label": "Frederikshavn",
+  "types": [
+   "Q2177636"
+  ],
+  "up": "Q26067",
+  "country": "Dinamarca",
+  "isCity": false
+ },
+ "Q730706": {
+  "label": "municipio de Southwark",
+  "types": [
+   "Q211690",
+   "Q7897276"
+  ],
+  "up": "Q23306",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q103093": {
+  "label": "Provincia de Gotia Occidental",
+  "types": [
+   "Q200547"
+  ],
+  "up": "Q34",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q34": {
+  "label": "Suecia",
+  "types": [
+   "Q6256",
+   "Q41614",
+   "Q179164",
+   "Q3624078",
+   "Q63791824"
+  ],
+  "up": null,
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q26067": {
+  "label": "Jutlandia Septentrional",
+  "types": [
+   "Q62326"
+  ],
+  "up": "Q35",
+  "country": "Dinamarca",
+  "isCity": false
+ },
+ "Q15551": {
+  "label": "Sitges",
+  "types": [
+   "Q33146843"
+  ],
+  "up": "Q15354",
+  "country": "España",
+  "isCity": false
+ },
+ "Q16704": {
+  "label": "Monistrol de Montserrat",
+  "types": [
+   "Q33146843"
+  ],
+  "up": "Q15346",
+  "country": "España",
+  "isCity": false
+ },
+ "Q504239": {
+  "label": "Municipio de Mora",
+  "types": [
+   "Q127448"
+  ],
+  "up": "Q103732",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q519552": {
+  "label": "Landstraße",
+  "types": [
+   "Q261023"
+  ],
+  "up": "Q1741",
+  "country": "Austria",
+  "isCity": false
+ },
+ "Q664835": {
+  "label": "Neubau",
+  "types": [
+   "Q261023"
+  ],
+  "up": "Q1741",
+  "country": "Austria",
+  "isCity": false
+ },
+ "Q103732": {
+  "label": "Provincia de Dalecarlia",
+  "types": [
+   "Q200547"
+  ],
+  "up": "Q34",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q15354": {
+  "label": "Garraf",
+  "types": [
+   "Q937876"
+  ],
+  "up": "Q81949",
+  "country": "España",
+  "isCity": false
+ },
+ "Q5705": {
+  "label": "Cataluña",
+  "types": [
+   "Q10742",
+   "Q2736168"
+  ],
+  "up": "Q29",
+  "country": "España",
+  "isCity": false
+ },
+ "Q29": {
+  "label": "España",
+  "types": [
+   "Q6256",
+   "Q179671",
+   "Q1250464",
+   "Q3624078",
+   "Q51576574"
+  ],
+  "up": null,
+  "country": "España",
+  "isCity": false
+ },
+ "Q15346": {
+  "label": "Bages",
+  "types": [
+   "Q937876"
+  ],
+  "up": "Q81949",
+  "country": "España",
+  "isCity": false
+ },
+ "Q585": {
+  "label": "Q585",
+  "types": [
+   "Q1306755",
+   "Q1549591",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "up": "Q5245991",
+  "country": "Noruega",
+  "isCity": true
+ },
+ "Q1289": {
+  "label": "Grenoble",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12559",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q49239": {
+  "label": "Toledo",
+  "types": [
+   "Q62049",
+   "Q1549591",
+   "Q108569710"
+  ],
+  "up": "Q112107",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q132801": {
+  "label": "Albi",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q12772",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q193370": {
+  "label": "Montreuil",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q12761",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q5245991": {
+  "label": "Oslo",
+  "types": [
+   "Q192299",
+   "Q755707"
+  ],
+  "up": "Q20",
+  "country": "Noruega",
+  "isCity": false
+ },
+ "Q10428388": {
+  "label": "Bergen",
+  "types": [
+   "Q43229",
+   "Q755707"
+  ],
+  "up": "Q56407177",
+  "country": "Noruega",
+  "isCity": false
+ },
+ "Q20": {
+  "label": "Noruega",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Noruega",
+  "isCity": false
+ },
+ "Q56407177": {
+  "label": "Vestland",
+  "types": [
+   "Q192299"
+  ],
+  "up": "Q20",
+  "country": "Noruega",
+  "isCity": false
+ },
+ "Q10313": {
+  "label": "San Sebastián",
+  "types": [
+   "Q2074737"
+  ],
+  "up": "Q2602877",
+  "country": "España",
+  "isCity": true
+ },
+ "Q12618": {
+  "label": "Olot",
+  "types": [
+   "Q33146843"
+  ],
+  "up": "Q10932",
+  "country": "España",
+  "isCity": false
+ },
+ "Q17154": {
+  "label": "Barrio Gótico",
+  "types": [
+   "Q123705",
+   "Q1200957",
+   "Q75135432"
+  ],
+  "up": "Q941385",
+  "country": "España",
+  "isCity": false
+ },
+ "Q18419": {
+  "label": "Brooklyn",
+  "types": [
+   "Q408804"
+  ],
+  "up": "Q60",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q49111": {
+  "label": "Cambridge",
+  "types": [
+   "Q515",
+   "Q1093829"
+  ],
+  "up": "Q54073",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q506250": {
+  "label": "municipio de Estocolmo",
+  "types": [
+   "Q127448"
+  ],
+  "up": "Q104231",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q512457": {
+  "label": "Randers",
+  "types": [
+   "Q2177636"
+  ],
+  "up": "Q26586",
+  "country": "Dinamarca",
+  "isCity": false
+ },
+ "Q3413122": {
+  "label": "Barrio de Saint-Merri",
+  "types": [
+   "Q252916"
+  ],
+  "up": "Q230127",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q26586": {
+  "label": "Jutlandia Central",
+  "types": [
+   "Q62326"
+  ],
+  "up": "Q35",
+  "country": "Dinamarca",
+  "isCity": false
+ },
+ "Q104231": {
+  "label": "provincia de Estocolmo",
+  "types": [
+   "Q200547"
+  ],
+  "up": "Q34",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q10932": {
+  "label": "La Garrocha",
+  "types": [
+   "Q937876"
+  ],
+  "up": "Q7194",
+  "country": "España",
+  "isCity": false
+ },
+ "Q7194": {
+  "label": "provincia de Gerona",
+  "types": [
+   "Q162620"
+  ],
+  "up": "Q5705",
+  "country": "España",
+  "isCity": false
+ },
+ "Q230127": {
+  "label": "IV Distrito de París",
+  "types": [
+   "Q702842",
+   "Q4286337"
+  ],
+  "up": "Q96746729",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q174": {
+  "label": "São Paulo",
+  "types": [
+   "Q515",
+   "Q174844",
+   "Q1549591",
+   "Q3184121",
+   "Q51929311"
+  ],
+  "up": "Q175",
+  "country": "Brasil",
+  "isCity": true
+ },
+ "Q8686": {
+  "label": "Shanghái",
+  "types": [
+   "Q174844",
+   "Q200250",
+   "Q208511",
+   "Q1066538",
+   "Q1073535",
+   "Q1208802",
+   "Q1549591",
+   "Q2264924",
+   "Q51929311"
+  ],
+  "up": "Q148",
+  "country": "República Popular China",
+  "isCity": true
+ },
+ "Q5722492": {
+  "label": "District 6",
+  "types": [
+   "Q5377740"
+  ],
+  "up": "Q3616",
+  "country": "Irán",
+  "isCity": false
+ },
+ "Q3616": {
+  "label": "Teherán",
+  "types": [
+   "Q174844",
+   "Q208511",
+   "Q56557504",
+   "Q108178728"
+  ],
+  "up": "Q5060982",
+  "country": "Irán",
+  "isCity": true
  }
 }
