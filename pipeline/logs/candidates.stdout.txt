@@ -1,13 +1,13 @@
 repito miguel-angel       faltan datos de forzadas: Q500242 Q567861
-ERROR  miguel-angel       SPARQL query() takes 1 positional argument but 2 were given
+ok     miguel-angel       Q5592        40 candidatas; de las 80 primeras, 20 con imagen >=1200px
 repito rafael             faltan datos de forzadas: Q186953
-ERROR  rafael             SPARQL query() takes 1 positional argument but 2 were given
+ok     rafael             Q5597       229 candidatas; de las 80 primeras, 75 con imagen >=1200px
 repito madrazo            faltan datos de forzadas: Q27766940
-ERROR  madrazo            SPARQL query() takes 1 positional argument but 2 were given
+ok     madrazo            Q1345186     87 candidatas; de las 80 primeras, 68 con imagen >=1200px
 repito cezanne            faltan datos de forzadas: Q1165042
-ERROR  cezanne            SPARQL query() takes 1 positional argument but 2 were given
+ok     cezanne            Q35548      739 candidatas; de las 80 primeras, 76 con imagen >=1200px
 repito pradilla           faltan datos de forzadas: Q19032360
-ERROR  pradilla           SPARQL query() takes 1 positional argument but 2 were given
+ok     pradilla           Q553258      19 candidatas; de las 80 primeras, 11 con imagen >=1200px
 repito van-gogh           faltan datos de forzadas: Q18713070 Q21948567
-ERROR  van-gogh           SPARQL query() takes 1 positional argument but 2 were given
-fin 2026-11-24 18:00:09
+ok     van-gogh           Q5582       937 candidatas; de las 80 primeras, 77 con imagen >=1200px
+fin 2026-11-24 18:11:12
