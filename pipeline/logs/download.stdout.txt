@@ -1,22 +1,32 @@
-selección 1180, ya bajadas 0, pendientes 1180; este lote 20
-ok   w2016193    giotto           1041x1600 360KB  Maestà di Ognissanti
-ok   w549172     giotto           1574x1600 692KB  Huida a Egipto
-ok   w23904      giotto           862x1600 361KB  St. Francis of Assisi Receiving the Stigmata
-ok   w3472935    giotto           1036x1600 678KB  Saint Stephen
-ok   w3698217    giotto           983x1600 386KB  Crucifixión
-ok   w3714311    giotto           1600x670 322KB  Dormición de la Virgen
-ok   w3276171    giotto           839x1600 310KB  Madonna de San Giorgio alla Costa
-ok   w3276180    giotto           1600x1550 559KB  Madonna with the laughing Child
-ok   w734834     van-eyck         1600x1179 516KB  Políptico de Gante
-ok   w220859     van-eyck         1170x1600 280KB  Retrato de Arnolfini y su esposa
-ok   w1516449    van-eyck         1540x1600 550KB  Virgen del canciller Rolin
-ok   w1747569    van-eyck         670x1500 158KB  La Virgen en una iglesia
-ok   w2480921    van-eyck         1600x1242 494KB  Virgen del canónigo Van der Paele
-ok   w474409     van-eyck         1205x1600 325KB  Virgen de Lucca
-ok   w2392901    van-eyck         1163x1600 282KB  Retrato de hombre con turbante
-ok   w2734881    van-eyck         607x1600 258KB  Anunciación
-ok   w2378567    fra-angelico     1600x1280 605KB  La Anunciación
-ok   w3797771    fra-angelico     1560x1600 779KB  Coronación de la Virgen
-ok   w2376881    fra-angelico     1483x1600 458KB  Anunciación de Cortona
-ok   w3065237    fra-angelico     795x1600 459KB  Virgen de la Humildad
-lote: 20/20 bien; quedan 1160
+selección 1180, ya bajadas 20, pendientes 1160; este lote 30
+ok   w4009968    fra-angelico     1206x1255 217KB  La Virgen con el Niño
+ok   w3698209    fra-angelico     924x1500 237KB  Crucifixión con santo Domingo orante
+ok   w3685114    fra-angelico     1600x1046 382KB  El Descendimiento de la cruz
+ok   w27970998   fra-angelico     1088x1600 520KB  La Virgen con el Niño y cuatro ángeles
+ok   w568847     van-der-weyden   1600x1242 371KB  Descendimiento de la cruz
+ok   w2439462    van-der-weyden   1168x1600 455KB  Retrato de una dama
+ok   w1169199    van-der-weyden   1600x661 206KB  Políptico del juicio final
+ok   w24160      van-der-weyden   1600x479 190KB  Tríptico Braque
+ok   w5316837    van-der-weyden   795x1600 303KB  Madonna Durán
+ok   w3399411    van-der-weyden   1077x1600 340KB  Retrato de una mujer joven
+ok   w3999110    van-der-weyden   1309x670 172KB  Tríptico de la Anunciación
+ok   w17066005   van-der-weyden   1600x1078 364KB  Piedad
+ok   w1212920    piero            1600x1125 501KB  La flagelación
+ok   w1796098    piero            1116x1600 401KB  Sacra Conversación
+ok   w2632688    piero            1114x1600 394KB  El bautismo de Cristo
+ok   w1227359    piero            1438x1011 201KB  Duques de Urbino
+ok   w3211055    piero            1560x1600 608KB  Natividad
+ok   w2247307    piero            1200x1064 192KB  Políptico de la Misericordia
+ok   w2755121    piero            1222x1600 472KB  Retrato de Sigismondo Pandolfo Malatesta
+ok   w1092638    piero            1361x1600 521KB  La Virgen de Senigallia
+ok   w15008032   bellini          1600x1480 585KB  El festín de los dioses
+ok   w1115613    bellini          1600x1238 368KB  Virgen del prado
+ok   w1759759    bellini          1141x1600 302KB  El dux Leonardo Loredan
+ok   w1751408    bellini          933x1600 370KB  Sacra Conversación
+ok   w3947115    bellini          1600x1403 585KB  San Francisco en éxtasis
+ok   w1762826    bellini          1219x1600 419KB  Madonna Contarini
+ok   w3766167    bellini          1600x1255 440KB  Joven desnuda al espejo
+ok   w3997723    bellini          1600x1214 502KB  La transfiguración
+ok   w546297     mantegna         1600x1353 763KB  Lamentación sobre Cristo muerto
+ok   w965822     mantegna         937x1600 472KB  Madonna de la Victoria
+lote: 30/30 bien; quedan 1130
