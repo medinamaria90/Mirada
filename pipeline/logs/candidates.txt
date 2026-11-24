@@ -14,3 +14,19 @@ ya     cranach            907 candidatas
 ya     miguel-angel       39 candidatas
 ya     giorgione          43 candidatas
 fin 2026-11-24 11:06:30
+ya     rafael             233 candidatas
+ya     tiziano            341 candidatas
+ya     correggio          121 candidatas
+ya     holbein            152 candidatas
+ya     juan-de-juanes     32 candidatas
+ya     morales            60 candidatas
+ya     tintoretto         369 candidatas
+ya     bruegel            55 candidatas
+ya     veronese           311 candidatas
+ya     sanchez-coello     58 candidatas
+ya     el-greco           538 candidatas
+ya     ribalta            14 candidatas
+ya     caravaggio         98 candidatas
+ya     rubens             1615 candidatas
+ya     maino              26 candidatas
+fin 2026-11-24 11:06:31
