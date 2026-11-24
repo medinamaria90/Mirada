@@ -64,6 +64,7 @@ export function renderCollection(ctx, el) {
     dialog.setAttribute('style', accentStyle(index.movement(a.movementId).accent));
     dialog.innerHTML = `<div class="dlg-body">
         <div class="dlg-art">${artFrame(w, { alt: `${w.title}, de ${a.name}`, eager: true, cls: 'art-dialog', label: w.title, zoom: { action: 'zoom', label: `Ver en grande: ${w.title}` } })}</div>
+        <div class="dlg-text">
         ${n > 1 ? `<div class="dlg-nav" role="group" aria-label="Cuadros">
           <button type="button" class="icon-btn" data-action="prev" aria-label="Cuadro anterior"${cur === 0 ? ' disabled' : ''}>${icons.prev(22)}</button>
           <span class="dlg-count" aria-live="polite">${cur + 1} / ${n}</span>
@@ -73,6 +74,7 @@ export function renderCollection(ctx, el) {
         <p class="dlg-meta">${esc(a.name)}${w.year ? ` · ${esc(w.year)}` : ''}</p>
         <p class="dlg-hint">${esc(w.look || a.hint || '')}</p>
         <button class="btn btn-secondary btn-wide" data-action="close">Cerrar</button>
+        </div>
       </div>`;
     // Las vecinas, ya pedidas para que pasar sea inmediato.
     for (const k of [cur - 1, cur + 1]) if (list[k]) new Image().src = list[k].img;

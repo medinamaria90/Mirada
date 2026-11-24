@@ -631,10 +631,13 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .card-dialog[open] { animation: rise .3s var(--ease); }
 .dlg-body { display: grid; gap: .4rem; padding: 1.2rem; }
 .art-dialog { --h: min(52dvh, 460px); width: min(100%, calc(var(--h) * var(--arw) / var(--arh))); justify-self: center; margin-bottom: .7rem; }
-/* Ficha de Colección: el cuadro en grande de entrada; deslizar en horizontal pasa de cuadro. */
+/* Ficha de Colección: el cuadro en grande de entrada; deslizar en horizontal pasa de cuadro.
+   Todo (cuadro, título · autor · año, frase y «Cerrar») cabe sin desplazar: el cuadro cede el alto
+   que necesita el texto (--dlg-text-h, con el título y la frase a dos o tres líneas). */
 .dlg-art { display: grid; justify-items: center; margin: -.4rem -.6rem 0; }
 .dlg-art, .dlg-art * { touch-action: pan-y; }
-.dlg-art .art-dialog { --h: min(60dvh, 620px); margin-bottom: .2rem; }
+.dlg-art .art-dialog { --dlg-text-h: 350px; --h: min(60dvh, 620px, calc(92dvh - var(--dlg-text-h))); margin-bottom: .2rem; }
+.dlg-text { display: grid; gap: .4rem; }
 .dlg-nav { display: flex; align-items: center; justify-content: center; gap: .4rem; margin-bottom: .2rem; }
 .dlg-count { min-width: 4.2em; text-align: center; font-weight: 600; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .card-dialog:has(.dlg-art) { width: min(96vw, 560px); }
@@ -1121,6 +1124,13 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 .viewer-lens.is-on { animation: lens-in .12s var(--ease); }
 @keyframes lens-in { from { opacity: 0; transform: scale(.92); } }
 .viewer-lens[hidden] { display: none; }
+/* Móvil en horizontal: la ficha de Colección va a dos columnas (cuadro | texto) para no desplazar. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .card-dialog:has(.dlg-art) { width: min(96vw, 760px); }
+  .dlg-body:has(.dlg-art) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; column-gap: 1rem; }
+  .dlg-art { margin: 0; }
+  .dlg-art .art-dialog { --h: 78dvh; margin-bottom: 0; }
+}
 /* Móvil en horizontal: el cuadro ocupa la pantalla y los controles flotan encima. */
 @media (orientation: landscape) and (max-height: 540px) {
   .viewer { grid-template-rows: minmax(0, 1fr); }
