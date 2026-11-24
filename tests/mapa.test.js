@@ -118,7 +118,7 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
   const html = renderPathMap(ctxWith(real));
   const reviews = real.visibleMovements.filter((m) => hasMovementReview(real, m.id));
   assert.equal((html.match(/class="stage stage-review is-/g) || []).length, reviews.length);
-  assert.ok(html.includes(`aria-label="Repaso de ${reviews[0].name}, bloqueado"`));
+  assert.ok(html.includes(`aria-label="Repaso de ${reviews[0].name}, bloqueado`));
   for (const era of pathLayout(real).eras) assert.equal(era.points.length, real.stepsOf(era.id).length + (hasMovementReview(real, era.id) ? 1 : 0));
   const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
   assert.equal((all.match(/class="stage stage-gallery is-mastered"/g) || []).length, real.visibleMovements.length, 'sin salas con todo dominado');
@@ -221,4 +221,18 @@ test('paisajes: un SVG por época, ≤ 30 KB, con el trazado de la app y solo co
     }
   }
   assert.equal(STEP, 112);
+});
+
+test('mapa: el repaso cerrado dice qué pintores faltan por dominar', () => {
+  const real = bigIndex();
+  const m = real.visibleMovements.find((x) => hasMovementReview(real, x.id));
+  const artists = real.stepsOf(m.id).filter((s) => s.type === 'artist');
+  const progress = emptyProgress();
+  for (const s of artists.slice(0, -1)) progress.artists[s.id] = { plays: 1, best: 0.9, mastered: true, last: '2026-11-20' };
+  const last = real.artist(artists[artists.length - 1].id);
+  const html = renderPathMap(ctxWith(real, progress));
+  assert.ok(html.includes(`Falta dominar a ${last.short || last.name}`), 'el repaso no nombra al pintor que falta');
+  assert.ok(html.includes(`data-lock="Falta dominar a ${last.short || last.name}"`), 'la nota al pulsar no nombra al pintor');
+  const none = renderPathMap(ctxWith(real, emptyProgress()));
+  assert.ok(/Faltan .+ y \d+ más|Faltan .+ y .+/.test(none), 'con todos pendientes debe resumir («Faltan X y n más»)');
 });

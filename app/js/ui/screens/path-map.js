@@ -239,16 +239,32 @@ function salaNode(ctx, movement, currentKey) {
   return { type: 'sala', key, status, html };
 }
 
+// Qué le falta al jugador para abrir el repaso: los pintores del tramo aún no dominados, por su
+// nombre («Falta dominar a Veronés», «Faltan Tiziano y 2 más»), para que el candado se explique solo.
+const PENDING_NAMES_MAX = 2;
+function pendingLine(ctx, progress, movementId) {
+  const names = ctx.index.stepsOf(movementId)
+    .filter((s) => s.type === 'artist' && artistStatus(progress, ctx.index, s.id) !== 'mastered')
+    .map((s) => ctx.index.artist(s.id).short || ctx.index.artist(s.id).name);
+  if (!names.length) return '';
+  if (names.length === 1) return `Falta dominar a ${names[0]}`;
+  const shown = names.slice(0, PENDING_NAMES_MAX);
+  const rest = names.length - shown.length;
+  return `Faltan ${shown.join(' y ')}${rest ? ` y ${rest} más` : ''}`;
+}
+
 function reviewNode(ctx, movement) {
   const p = ctx.store.get().progress;
   const open = isReviewUnlocked(p, ctx.index, movement.id);
   const best = p.reviews[movement.id]?.best;
   const medal = (best || 0) >= 0.75;
   const status = medal ? 'mastered' : open ? 'available' : 'locked';
+  const pending = open ? '' : pendingLine(ctx, p, movement.id);
+  const meta = best ? `Mejor: ${Math.round(best * 100)}%` : pending;
   const html = `<button class="stage stage-review is-${status}" data-action="review" data-id="${esc(movement.id)}" data-status="${open ? 'open' : 'locked'}"
-        aria-label="Repaso de ${esc(movement.name)}${open ? '' : ', bloqueado'}" data-lock="Se abre al dominar a todos sus pintores">
+        aria-label="Repaso de ${esc(movement.name)}${open ? '' : `, bloqueado. ${esc(pending)}`}" data-lock="${esc(pending || 'Se abre al dominar a todos sus pintores')}">
         <span class="stage-dot">${medal ? icons.medal(22) : open ? icons.arch(24) : icons.lock(18)}</span>
-        <span class="stage-text"><span class="stage-name">Repaso</span>${best ? `<span class="stage-meta">Mejor: ${Math.round(best * 100)}%</span>` : ''}</span>
+        <span class="stage-text"><span class="stage-name">Repaso</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
       </button>`;
   return { type: 'review', key: `review:${movement.id}`, status, html };
 }
