@@ -756,7 +756,9 @@ const browser = await chromium.launch({ executablePath: CHROME_PATH, headless: t
 const rawNewContext = browser.newContext.bind(browser);
 browser.newContext = async (opts) => {
   const c = await rawNewContext(opts);
-  await c.addInitScript(() => { try { window.localStorage.setItem('sfumato.coach', '1'); } catch { /* sin almacenamiento */ } });
+  // Las historias de inicio de nivel también salen una vez: se dan todas por vistas (salvo en su comprobación).
+  const storyKeys = index.artists.flatMap((a) => [`${a.id}:1`, ...index.deepLevels(a.id).map((l) => `${a.id}:${l.id}`)]);
+  await c.addInitScript((keys) => { try { window.localStorage.setItem('sfumato.coach', '1'); window.localStorage.setItem('sfumato.stories', JSON.stringify(keys)); } catch { /* sin almacenamiento */ } }, storyKeys);
   return c;
 };
 const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES', permissions: ['clipboard-read', 'clipboard-write'], hasTouch: true };
@@ -975,6 +977,37 @@ if (SMOKE) {
   await page.keyboard.press('Escape');
   await page.waitForSelector('.artist-sheet', { state: 'detached' });
   check(await page.evaluate(() => document.activeElement?.classList.contains('pl-row')), 'al cerrar la ficha el foco no vuelve a la lista');
+  // Historia al empezar el nivel: tarjetas (≤ 3) con barra de progreso, saltable, solo la primera vez.
+  const storyCtx = await rawNewContext({ viewport: { width: 390, height: 844 } });
+  const sp = await storyCtx.newPage();
+  watch(sp, 'historia');
+  await sp.goto(base);
+  await sp.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 0 }));
+  const storyArtist = index.path[0];
+  await sp.goto(`${base}#etapa-${storyArtist.id}`);
+  await sp.reload();
+  await sp.waitForSelector('.intro, .story[open]');
+  if (await sp.locator('.intro').count()) await sp.click('.intro [data-action="enter"]');
+  await sp.waitForSelector('.story[open] .story-text');
+  const nCards = await sp.locator('.story-bar').count();
+  check(nCards >= 1 && nCards <= 3, `la historia tiene ${nCards} tarjetas`);
+  check(await sp.locator('.story-img').count() === 1 && await sp.locator('.story-text').innerText() !== '', 'la tarjeta no enseña cuadro y texto');
+  await sp.waitForTimeout(400);
+  await shot(sp, '14g-historia');
+  await audit(sp, '390 historia');
+  for (let k = 0; k < nCards - 1; k++) {
+    await sp.click('.story-next');
+    await sp.waitForTimeout(150);
+  }
+  check(await sp.locator('.story-bar.is-done').count() === nCards && /Seguir/.test(await sp.locator('.story-next').innerText()), 'al llegar a la última tarjeta no dice «Seguir»');
+  await sp.click('.story-next');
+  await sp.waitForSelector('.learn');
+  check(await sp.locator('.story').count() === 0, 'la historia no se cierra al terminar');
+  await sp.goto(`${base}#inicio`);
+  await sp.goto(`${base}#etapa-${storyArtist.id}`);
+  await sp.waitForSelector('.learn');
+  check(await sp.locator('.story').count() === 0, 'la historia vuelve a salir sola');
+  await storyCtx.close();
   // Colección → «Cuadros»: franjas por pintor; el buscador con sugerencias solo con 15 pintores o más.
   const fewColl = Object.fromEntries(index.path.slice(0, 3).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
   await seed(page, seededState({ upTo: 3, extra: { collection: fewColl } }), 'coleccion');

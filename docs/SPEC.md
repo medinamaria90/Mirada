@@ -261,6 +261,10 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   «Invitados» al final de su movimiento; tocar el nombre o «Ver todas» abre la ficha. Con 15 pintores o más con alguna obra
   desbloqueada sale el buscador con sugerencias (`engine/suggest.js`, `ui/suggest-box.js`: combobox/listbox, como mucho 6, pintores y
   luego títulos, sin tildes, principio de cualquier palabra, una errata) y chips por movimiento.
+- **Historias de inicio de nivel** (`ui/story-viewer.js`, `engine/stories.js`): tarjetas a pantalla completa (barras de progreso, detalle con
+  `focus`, texto, fuente discreta), saltables, una vez por «pintor:nivel» (`state/stories-seen.js`, clave `sfumato.stories`) tras la
+  presentación del movimiento y antes de «Conoce a»; la ficha del pintor tiene «Ver su historia». `playStory(ctx, artistId, level)`
+  vale para los «a fondo». Sin historia no se muestra nada.
 - **Guía de bienvenida** (`ui/coach.js`): tres pasos sobre el nodo actual, la franja «Hoy» y Colección; una vez por navegador
   (`sfumato.coach` en localStorage), se salta con «Saltar» o Esc. La cabecera ya no lleva el chip de rango (irá en el perfil) y lleva el reto diario
   (`dailyChip`: calendario con punto si está pendiente, «4/5» si está hecho). Ya no hay franja «Hoy» ni lupa del día (su registro

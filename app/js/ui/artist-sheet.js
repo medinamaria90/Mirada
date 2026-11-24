@@ -7,6 +7,7 @@ import { icons } from './icons.js';
 import { artFrame } from './art.js';
 import { loadCss } from './lazy-css.js';
 import { loadStory } from './story-data.js';
+import { levelStory, sourceLabel } from '../engine/stories.js';
 import { lifeLines, lifeSpan, seenOf, playTargets, stageList } from '../engine/painters.js';
 
 const STAGE_LABEL = { mastered: 'Dominada', started: 'En marcha', available: 'Abierta', locked: 'Por abrir' };
@@ -16,16 +17,6 @@ const PLAY_LABEL = { available: 'Empezar', started: 'Seguir', mastered: 'Jugar o
 let current = null;
 
 export const initials = (name) => String(name || '').split(/\s+/).filter((w) => /^\p{Lu}/u.test(w)).slice(0, 2).map((w) => w[0]).join('') || '·';
-
-// «es.wikipedia.org» → «Wikipedia»; el resto, el nombre del sitio.
-export function sourceLabel(url) {
-  try {
-    const host = new URL(url).hostname.replace(/^www\./, '');
-    if (/wikipedia\.org$/.test(host)) return 'Wikipedia';
-    if (/wikidata\.org$/.test(host)) return 'Wikidata';
-    return host;
-  } catch { return ''; }
-}
 
 function sourcesHtml(lines) {
   const seen = new Set();
@@ -63,6 +54,7 @@ function sheetHtml(ctx, artist, story, playable) {
   const lines = lifeLines(artist, story, movement ? movement.name : '');
   const target = playable ? playTargets(progress, index, artist.id).stage : null;
   const stages = artist.category === 'gran-maestro' ? stageList(progress, index, artist.id) : [];
+  const hasStory = Boolean(levelStory(story, 1));
   const pct = total ? Math.round((works.length / total) * 100) : 0;
   const meta = [lifeSpan(artist), artist.country].filter(Boolean).join(' · ');
   return `<div class="as-body">
@@ -80,7 +72,10 @@ function sheetHtml(ctx, artist, story, playable) {
     ${artist.hint ? `<aside class="as-look"><span class="as-look-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : ''}
     ${stagesHtml(stages)}
     ${seenHtml(artist, works, total)}
-    ${target ? `<div class="as-actions"><button type="button" class="btn btn-primary btn-wide" data-as="play">${esc(PLAY_LABEL[target])}</button></div>` : ''}
+    ${hasStory || target ? `<div class="as-actions">
+      ${hasStory ? `<button type="button" class="btn btn-secondary btn-wide" data-as="story">${icons.play(18)}<span>Ver su historia</span></button>` : ''}
+      ${target ? `<button type="button" class="btn btn-primary btn-wide" data-as="play">${esc(PLAY_LABEL[target])}</button>` : ''}
+    </div>` : ''}
   </div>`;
 }
 
@@ -117,6 +112,7 @@ export async function openArtistSheet(ctx, artistId, opts = {}) {
     if (!b) return;
     ctx.audio.sfx('tap');
     if (b.dataset.as === 'close') close();
+    else if (b.dataset.as === 'story') import('./story-viewer.js').then((m) => m.playStory(ctx, artistId, 1, { force: true })).catch((err) => console.error(err));
     else if (b.dataset.as === 'play') { close(); ctx.go(`etapa-${artistId}`); }
   });
   dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); close(); });

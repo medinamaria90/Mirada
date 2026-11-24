@@ -9,7 +9,8 @@ import { buildIndex, mergeCatalogFicha } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
 import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, eraReached } from '../app/js/engine/painters.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
-import { initials, sourceLabel } from '../app/js/ui/artist-sheet.js';
+import { initials } from '../app/js/ui/artist-sheet.js';
+import { sourceLabel } from '../app/js/engine/stories.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const app = join(here, '..', 'app');

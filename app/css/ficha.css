@@ -39,7 +39,7 @@
 .as-stage-name { overflow-wrap: anywhere; }
 .as-stage-state { font: 600 .8rem/1 var(--font); color: var(--ink-2); }
 .as-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: 0; padding: 0; list-style: none; }
-.as-actions { position: sticky; bottom: -1.2rem; padding: .6rem 0 .2rem; background: linear-gradient(to top, var(--bg) 70%, transparent); }
+.as-actions { display: grid; gap: .6rem; position: sticky; bottom: -1.2rem; padding: .6rem 0 .2rem; background: linear-gradient(to top, var(--bg) 70%, transparent); }
 @media (min-width: 720px) { .artist-sheet { width: 560px; } }
 @media (prefers-reduced-motion: reduce) { .artist-sheet[open] { animation: none; } }
 html.reduce-motion .artist-sheet[open] { animation: none; }

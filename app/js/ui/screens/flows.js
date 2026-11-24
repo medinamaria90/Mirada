@@ -259,6 +259,14 @@ function withIntro(ctx, el, movementId, show) {
   return show();
 }
 
+// Historia al empezar un nivel (una vez, saltable): después se muestra lo que sigue. Sin historia, de seguido.
+function withStory(ctx, el, artistId, level, show) {
+  import('../story-viewer.js')
+    .then((m) => m.playStory(ctx, artistId, level))
+    .catch((err) => { console.error(err); })
+    .then(() => { if (el.isConnected) show(); });
+}
+
 // --- Etapa de pintor -------------------------------------------------------
 
 export function renderStage(ctx, el, artistId) {
@@ -267,7 +275,7 @@ export function renderStage(ctx, el, artistId) {
   if (!artist || index.pathIndex(artistId) < 0) return leave(ctx);
   if (artistStatus(ctx.store.get().progress, index, artistId) === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
-  withIntro(ctx, el, movement.id, () => {
+  withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, () => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
@@ -288,7 +296,7 @@ export function renderStage(ctx, el, artistId) {
       carouselLabel: `Obras de ${artist.short || artist.name}`,
       onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: { artistId }, shareTopic: artist.name })),
     });
-  });
+  }));
 }
 
 // --- Sala de movimiento (sin pintores con etapa) ---------------------------------
