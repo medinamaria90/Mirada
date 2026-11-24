@@ -5,7 +5,8 @@
 
 import { buildIndex, mergeCatalogText } from './engine/catalog.js';
 import { dayKey, madridDayKey } from './engine/dates.js';
-import { createStore, safeStorage } from './state/store.js';
+import { createStore, safeStorage, STORAGE_KEY } from './state/store.js';
+import { importFromHash, IMPORT_PREFIX } from './state/import-state.js';
 import { parseRoute, go } from './ui/router.js';
 import { audio, loadAudioWhenIdle, applyAudioSettings, bindBackgroundPause } from './ui/audio-bridge.js';
 import { installArtListeners } from './ui/art.js';
@@ -101,7 +102,13 @@ function blockPageZoom() {
 async function boot() {
   blockPageZoom();
   installArtListeners(document);
-  const store = createStore({ storage: safeStorage(() => window.localStorage) });
+  const storage = safeStorage(() => window.localStorage);
+  // Progreso que llega de la dirección antigua (ver state/import-state.js); el fragmento se limpia.
+  if ((location.hash || '').startsWith(IMPORT_PREFIX)) {
+    importFromHash(storage, STORAGE_KEY, location.hash);
+    history.replaceState(null, '', `${location.pathname}${location.search}#inicio`);
+  }
+  const store = createStore({ storage });
   document.documentElement.classList.toggle('reduce-motion', Boolean(store.get().settings.reducedMotion));
   applyTheme(store.get().settings.theme);
   // La primera pantalla se pide ya, a la vez que el catálogo.

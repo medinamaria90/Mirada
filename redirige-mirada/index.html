@@ -5,8 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mirada ahora es Sfumato</title>
   <link rel="canonical" href="https://sfumato-arte.onrender.com/">
-  <meta http-equiv="refresh" content="0; url=https://sfumato-arte.onrender.com/">
-  <script>location.replace('https://sfumato-arte.onrender.com' + location.pathname + location.search + location.hash);</script>
+  <script>
+    // El progreso se guarda por dirección: se lleva a la nueva en el fragmento (#importar=…), que el
+    // navegador nunca envía al servidor. La app nueva lo importa (app/js/state/import-state.js).
+    (function () {
+      var dest = 'https://sfumato-arte.onrender.com' + location.pathname + location.search;
+      var raw = null;
+      try { raw = localStorage.getItem('mirada.state'); } catch (e) { raw = null; }
+      if (raw) {
+        try {
+          var bytes = new TextEncoder().encode(raw), bin = '';
+          for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+          var b64 = btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+          location.replace(dest + '#importar=' + b64);
+          return;
+        } catch (e) { /* sin progreso que llevar: redirección normal */ }
+      }
+      location.replace(dest + location.hash);
+    })();
+  </script>
+  <noscript><meta http-equiv="refresh" content="0; url=https://sfumato-arte.onrender.com/"></noscript>
 </head>
 <body>
   <p>Mirada ahora se llama Sfumato: <a href="https://sfumato-arte.onrender.com/">sfumato-arte.onrender.com</a></p>
