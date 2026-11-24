@@ -8,3 +8,8 @@ total 162 resueltos 162
 58M	.git
 3.1M	catalogo
 == candidates cimabue duccio simone-martini pietro-lorenzetti ambrogio-lorenzetti hokusai utamaro sharaku kuniyoshi hiroshige 20:32:01
+ya     kuniyoshi          341 candidatas
+ya     hiroshige          364 candidatas
+fin 2026-11-24 20:32:01
+58M	.git
+3.1M	catalogo
