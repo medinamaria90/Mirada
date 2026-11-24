@@ -206,20 +206,20 @@ Decisiones de la tarde del 24/11:
     tramos al mismo ritmo que el camino común (el tramo del Realismo de la rama rusa, al llegar al
     Realismo): nunca aparece un pintor de una época aún no vista.
 21. **Historia al empezar cada nivel (23:30, decidido; «muy Duolingo, un placer visual, fundamental»):**
-    al entrar en el nivel básico de un pintor, 3-5 tarjetas deslizables tipo historias de Instagram
+    al entrar en el nivel básico de un pintor, **como mucho 3 tarjetas** (María: «5 es mucho, no nos
+    pasemos»; invitados, 1) deslizables tipo historias de Instagram
     (barra de progreso, detalle grande de un cuadro, 2-3 líneas): quién es, qué aportó, una obra
     clave, «Fíjate en…». Al entrar en cada «a fondo», una historia de esa etapa (dónde vivía, qué le
     pasaba, qué cambia en su pintura). Sin examen, saltable; la misma historia queda en la ficha del
     pintor. Texto con fuente (museo o monografía). Fase 1: ~55 historias de pintor + ~90 de etapa;
     orden: grandes maestros, maestros, invitados con una tarjeta. Base: piloto de
     `contenido/lecciones/`. Entra en la migración con la ficha de pintor.
-20. **Medieval, clásico y asiático (23:25; propuesta pendiente de su OK):** en la v1, rama
+20. **Medieval, clásico y asiático (23:25; decidido 23:35):** **arte clásico antiguo, fuera** (ni v1
+    ni v2). En la v1, rama
     **medieval y gótica** (Cimabue, Duccio, Giotto, Simone Martini, Lorenzetti, Van Eyck; ya en el
     diseño del mapa) y rama **«Japón y el japonismo»** (ukiyo-e: Hokusai, Hiroshige, Utamaro, Sharaku,
     Kuniyoshi; se abre al llegar al Impresionismo, por la influencia en Van Gogh, Monet y Degas):
-    ~60-80 obras más. En la v2, **arte clásico antiguo** (Pompeya, El Fayum, Rávena, cerámica griega:
-    casi todo anónimo, necesita la mecánica «¿de qué cultura o época es?») y el resto del arte
-    asiático (pintura china, miniatura persa e india).
+    ~60-80 obras más. En la v2, el resto del arte asiático (pintura china, miniatura persa e india).
 18. **Menos invitados en el camino común (23:10, decidido):** solo los invitados con alguna obra
     icónica (fame 3; p. ej. Ofelia, La balsa de la Medusa, El caminante sobre el mar de nubes) van
     intercalados en el camino común (≈ 25-30 en vez de 93); el resto pasa a **ramas opcionales por
