@@ -82,3 +82,4 @@ aviso w3630756 (van-dyck): ficha sin dimensions
 57M	.git
 11M	catalogo
 fin Tue Nov 24 18:19:06 UTC 2026
+estado del job: success Tue Nov 24 18:19:07 UTC 2026
