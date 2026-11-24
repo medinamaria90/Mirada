@@ -3546,5 +3546,1266 @@
   "up": "Q5060982",
   "country": "Irán",
   "isCity": true
+ },
+ "Q18288148": {
+  "label": "ciudad metropolitana de Florencia",
+  "types": [
+   "Q15110"
+  ],
+  "up": "Q1273",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q16226": {
+  "label": "Padua",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1243",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1243": {
+  "label": "Véneto",
+  "types": [
+   "Q16110"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q16665915": {
+  "label": "Metrópolis del Gran París",
+  "types": [
+   "Q18706073"
+  ],
+  "up": "Q13917",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q16240": {
+  "label": "Perugia",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1280",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1280": {
+  "label": "Umbría",
+  "types": [
+   "Q16110"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q91045": {
+  "label": "Arrondissement de Brujas",
+  "types": [
+   "Q91028"
+  ],
+  "up": "Q1113",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q1113": {
+  "label": "Flandes Occidental",
+  "types": [
+   "Q83116"
+  ],
+  "up": "Q9337",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q9337": {
+  "label": "Región Flamenca",
+  "types": [
+   "Q83057"
+  ],
+  "up": "Q31",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q7932": {
+  "label": "Región de Darmstadt",
+  "types": [
+   "Q22721"
+  ],
+  "up": "Q1199",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q1199": {
+  "label": "Hesse",
+  "types": [
+   "Q1221156"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q5756": {
+  "label": "Comunidad de Madrid",
+  "types": [
+   "Q10742"
+  ],
+  "up": "Q29",
+  "country": "España",
+  "isCity": false
+ },
+ "Q15348": {
+  "label": "Barcelonés",
+  "types": [
+   "Q937876"
+  ],
+  "up": "Q249461",
+  "country": "España",
+  "isCity": false
+ },
+ "Q249461": {
+  "label": "Ámbito metropolitano de Barcelona",
+  "types": [
+   "Q697390",
+   "Q113303812"
+  ],
+  "up": "Q81949",
+  "country": "España",
+  "isCity": false
+ },
+ "Q3342": {
+  "label": "Côte-d’Or",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18578267",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q18578267": {
+  "label": "Borgoña-Franco Condado",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q18288162": {
+  "label": "ciudad metropolitana de Turín",
+  "types": [
+   "Q15110"
+  ],
+  "up": "Q1216",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1216": {
+  "label": "Piamonte",
+  "types": [
+   "Q16110"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q16241": {
+  "label": "Pesaro y Urbino",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1279",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1279": {
+  "label": "Marcas",
+  "types": [
+   "Q16110"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q18288155": {
+  "label": "ciudad metropolitana de Milán",
+  "types": [
+   "Q15110"
+  ],
+  "up": "Q1210",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1210": {
+  "label": "Lombardía",
+  "types": [
+   "Q16110",
+   "Q3502482"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1384": {
+  "label": "Nueva York",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q40": {
+  "label": "Austria",
+  "types": [
+   "Q6256",
+   "Q123480",
+   "Q3624078",
+   "Q4209223",
+   "Q127693126"
+  ],
+  "up": null,
+  "country": "Austria",
+  "isCity": false
+ },
+ "Q18241891": {
+  "label": "ciudad metropolitana de Nápoles",
+  "types": [
+   "Q15110"
+  ],
+  "up": "Q1438",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1438": {
+  "label": "Campania",
+  "types": [
+   "Q16110"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q90948": {
+  "label": "Arrondissement de Gante",
+  "types": [
+   "Q91028"
+  ],
+  "up": "Q1114",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q1114": {
+  "label": "Flandes Oriental",
+  "types": [
+   "Q83116"
+  ],
+  "up": "Q9337",
+  "country": "Bélgica",
+  "isCity": false
+ },
+ "Q694": {
+  "label": "Holanda Meridional",
+  "types": [
+   "Q134390"
+  ],
+  "up": "Q55",
+  "country": "Países Bajos",
+  "isCity": false
+ },
+ "Q55": {
+  "label": "Países Bajos",
+  "types": [
+   "Q6256",
+   "Q15304003"
+  ],
+  "up": "Q29999",
+  "country": "Reino de los Países Bajos",
+  "isCity": false
+ },
+ "Q54159": {
+  "label": "Voivodato de Pequeña Polonia",
+  "types": [
+   "Q150093"
+  ],
+  "up": "Q36",
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q36": {
+  "label": "Polonia",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q10562": {
+  "label": "Alta Baviera",
+  "types": [
+   "Q22721",
+   "Q464235"
+  ],
+  "up": "Q980",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q16665897": {
+  "label": "Metrópoli de Lyon",
+  "types": [
+   "Q200250",
+   "Q3333855",
+   "Q22923920"
+  ],
+  "up": "Q18338206",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q18338206": {
+  "label": "Auvernia-Ródano-Alpes",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q109265": {
+  "label": "condado de Denton",
+  "types": [
+   "Q11774097"
+  ],
+  "up": "Q1439",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1202": {
+  "label": "Sajonia",
+  "types": [
+   "Q1221156"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q16292": {
+  "label": "Treviso",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1243",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q596974": {
+  "label": "Distrito de Senlis",
+  "types": [
+   "Q194203"
+  ],
+  "up": "Q12675",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q12675": {
+  "label": "Oise",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18677767",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q18677767": {
+  "label": "Alta Francia",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q54072": {
+  "label": "condado de Suffolk",
+  "types": [
+   "Q13410485"
+  ],
+  "up": "Q771",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q16228": {
+  "label": "Parma",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1263",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1263": {
+  "label": "Emilia-Romaña",
+  "types": [
+   "Q16110"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q8520": {
+  "label": "Schwäbisch Hall",
+  "types": [
+   "Q20738676"
+  ],
+  "up": "Q8172",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q8172": {
+  "label": "Región Administrativa de Stuttgart",
+  "types": [
+   "Q56061",
+   "Q42612577"
+  ],
+  "up": "Q985",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q985": {
+  "label": "Baden-Wurtemberg",
+  "types": [
+   "Q1221156"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q55180": {
+  "label": "provincia de Zaragoza",
+  "types": [
+   "Q162620"
+  ],
+  "up": "Q4040",
+  "country": "España",
+  "isCity": false
+ },
+ "Q4040": {
+  "label": "Aragón",
+  "types": [
+   "Q10742"
+  ],
+  "up": "Q29",
+  "country": "España",
+  "isCity": false
+ },
+ "Q2263209": {
+  "label": "Comarca de Valencia",
+  "types": [
+   "Q766277"
+  ],
+  "up": "Q54939",
+  "country": "España",
+  "isCity": false
+ },
+ "Q54939": {
+  "label": "provincia de Valencia",
+  "types": [
+   "Q162620"
+  ],
+  "up": "Q5720",
+  "country": "España",
+  "isCity": false
+ },
+ "Q5720": {
+  "label": "Comunidad Valenciana",
+  "types": [
+   "Q10742",
+   "Q2736168"
+  ],
+  "up": "Q29",
+  "country": "España",
+  "isCity": false
+ },
+ "Q96": {
+  "label": "México",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "México",
+  "isCity": false
+ },
+ "Q2355185": {
+  "label": "Gran Bilbao",
+  "types": [
+   "Q1215981"
+  ],
+  "up": "Q93366",
+  "country": "España",
+  "isCity": false
+ },
+ "Q93366": {
+  "label": "Vizcaya",
+  "types": [
+   "Q162620",
+   "Q3179682"
+  ],
+  "up": "Q3995",
+  "country": "España",
+  "isCity": false
+ },
+ "Q3995": {
+  "label": "País Vasco",
+  "types": [
+   "Q10742",
+   "Q2736168",
+   "Q104117291"
+  ],
+  "up": "Q29",
+  "country": "España",
+  "isCity": false
+ },
+ "Q54929": {
+  "label": "provincia de Toledo",
+  "types": [
+   "Q162620"
+  ],
+  "up": "Q5748",
+  "country": "España",
+  "isCity": false
+ },
+ "Q5748": {
+  "label": "Castilla-La Mancha",
+  "types": [
+   "Q10742"
+  ],
+  "up": "Q29",
+  "country": "España",
+  "isCity": false
+ },
+ "Q95088": {
+  "label": "provincia de Sevilla",
+  "types": [
+   "Q162620"
+  ],
+  "up": "Q5783",
+  "country": "España",
+  "isCity": false
+ },
+ "Q5783": {
+  "label": "Andalucía",
+  "types": [
+   "Q10742"
+  ],
+  "up": "Q29",
+  "country": "España",
+  "isCity": false
+ },
+ "Q120512566": {
+  "label": "Port Region",
+  "types": [
+   "Q7309296",
+   "Q15631694"
+  ],
+  "up": "Q233",
+  "country": "Malta",
+  "isCity": false
+ },
+ "Q233": {
+  "label": "Malta",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Malta",
+  "isCity": false
+ },
+ "Q701": {
+  "label": "Holanda Septentrional",
+  "types": [
+   "Q134390"
+  ],
+  "up": "Q55",
+  "country": "Países Bajos",
+  "isCity": false
+ },
+ "Q506230": {
+  "label": "condado de Marion",
+  "types": [
+   "Q13410438"
+  ],
+  "up": "Q1415",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q12545": {
+  "label": "Hérault",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18678265",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q18678265": {
+  "label": "Occitania",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q7927": {
+  "label": "Región de Colonia",
+  "types": [
+   "Q829277"
+  ],
+  "up": "Q1198",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q1198": {
+  "label": "Renania del Norte-Westfalia",
+  "types": [
+   "Q1221156"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q12549": {
+  "label": "Ille y Vilaine",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q12130",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q12130": {
+  "label": "Bretaña",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q12626": {
+  "label": "Meurthe y Mosela",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18677983",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q18677983": {
+  "label": "Gran Este",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q12772": {
+  "label": "Tarn",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18678265",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q218": {
+  "label": "Rumania",
+  "types": [
+   "Q6256",
+   "Q179671",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Rumania",
+  "isCity": false
+ },
+ "Q81972": {
+  "label": "provincia de Córdoba",
+  "types": [
+   "Q162620"
+  ],
+  "up": "Q5783",
+  "country": "España",
+  "isCity": false
+ },
+ "Q41967": {
+  "label": "Alta Austria",
+  "types": [
+   "Q261543"
+  ],
+  "up": "Q40",
+  "country": "Austria",
+  "isCity": false
+ },
+ "Q1137286": {
+  "label": "County Durham",
+  "types": [
+   "Q769603",
+   "Q1136601",
+   "Q1187580",
+   "Q21272231"
+  ],
+  "up": "Q23082",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23082": {
+  "label": "Durham",
+  "types": [
+   "Q180673"
+  ],
+  "up": "Q47983",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q47983": {
+  "label": "Nordeste de Inglaterra",
+  "types": [
+   "Q48091",
+   "Q6955655"
+  ],
+  "up": "Q21",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q13917": {
+  "label": "Isla de Francia",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q26676": {
+  "label": "Condado de Harris",
+  "types": [
+   "Q11774097"
+  ],
+  "up": "Q1439",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q187712": {
+  "label": "Abu Dabi",
+  "types": [
+   "Q19833031"
+  ],
+  "up": "Q878",
+  "country": "Emiratos Árabes Unidos",
+  "isCity": false
+ },
+ "Q878": {
+  "label": "Emiratos Árabes Unidos",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Emiratos Árabes Unidos",
+  "isCity": false
+ },
+ "Q3240": {
+  "label": "Bocas del Ródano",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q15104",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q15104": {
+  "label": "Provenza-Alpes-Costa Azul",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q486229": {
+  "label": "condado de Hennepin",
+  "types": [
+   "Q12262532"
+  ],
+  "up": "Q1527",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1527": {
+  "label": "Minnesota",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q12820": {
+  "label": "Yvelines",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q13917",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q644300": {
+  "label": "Distrito de Winterthur",
+  "types": [
+   "Q15644465"
+  ],
+  "up": "Q11943",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q11943": {
+  "label": "Zúrich",
+  "types": [
+   "Q23058"
+  ],
+  "up": "Q39",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q3178": {
+  "label": "óblast de Kursk",
+  "types": [
+   "Q43263",
+   "Q835714"
+  ],
+  "up": "Q159",
+  "country": "Rusia",
+  "isCity": false
+ },
+ "Q12758": {
+  "label": "Sena Marítimo",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18677875",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q18677875": {
+  "label": "Normandía",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q12526": {
+  "label": "Gironda",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18678082",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q12661": {
+  "label": "Norte",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18677767",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q2371693": {
+  "label": "Feodosia",
+  "types": [
+   "Q15284",
+   "Q1849719",
+   "Q3154693",
+   "Q4057732"
+  ],
+  "up": "Q756294",
+  "country": "Ucrania",
+  "isCity": true
+ },
+ "Q756294": {
+  "label": "República autónoma de Crimea",
+  "types": [
+   "Q1977835",
+   "Q15239622",
+   "Q84823091"
+  ],
+  "up": "Q212",
+  "country": "Ucrania",
+  "isCity": false
+ },
+ "Q501084": {
+  "label": "Condado de Shelby",
+  "types": [
+   "Q13410400"
+  ],
+  "up": "Q173",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q173": {
+  "label": "Alabama",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q489457": {
+  "label": "condado de Wagoner",
+  "types": [
+   "Q13414760"
+  ],
+  "up": "Q1649",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1649": {
+  "label": "Oklahoma",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1904": {
+  "label": "Ontario",
+  "types": [
+   "Q11828004"
+  ],
+  "up": "Q16",
+  "country": "Canadá",
+  "isCity": false
+ },
+ "Q16": {
+  "label": "Canadá",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Canadá",
+  "isCity": false
+ },
+ "Q12717": {
+  "label": "Bajo Rin",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q2677074",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q2677074": {
+  "label": "República francesa",
+  "types": [
+   "Q4167410"
+  ],
+  "up": null,
+  "country": null,
+  "isCity": false
+ },
+ "Q399": {
+  "label": "Armenia",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Armenia",
+  "isCity": false
+ },
+ "Q2448": {
+  "label": "Óblast de Yaroslavl",
+  "types": [
+   "Q43263",
+   "Q835714"
+  ],
+  "up": "Q159",
+  "country": "Rusia",
+  "isCity": false
+ },
+ "Q95028": {
+  "label": "provincia de Málaga",
+  "types": [
+   "Q162620"
+  ],
+  "up": "Q5783",
+  "country": "España",
+  "isCity": false
+ },
+ "Q195664": {
+  "label": "Condado de Wayne",
+  "types": [
+   "Q13410496"
+  ],
+  "up": "Q1166",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1166": {
+  "label": "Míchigan",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q660732": {
+  "label": "Distrito de Zúrich",
+  "types": [
+   "Q15644465"
+  ],
+  "up": "Q11943",
+  "country": "Suiza",
+  "isCity": false
+ },
+ "Q191061": {
+  "label": "Provincia de Grodno",
+  "types": [
+   "Q209325"
+  ],
+  "up": "Q184",
+  "country": "Bielorrusia",
+  "isCity": false
+ },
+ "Q184": {
+  "label": "Bielorrusia",
+  "types": [
+   "Q6256",
+   "Q123480",
+   "Q179164",
+   "Q619610",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Bielorrusia",
+  "isCity": true
+ },
+ "Q24342199": {
+  "label": "Cardiff",
+  "types": [
+   "Q15979307",
+   "Q21503295"
+  ],
+  "up": "Q25",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q7926": {
+  "label": "Región de Düsseldorf",
+  "types": [
+   "Q829277"
+  ],
+  "up": "Q1198",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q114843": {
+  "label": "Condado de Erie",
+  "types": [
+   "Q13414757"
+  ],
+  "up": "Q1384",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1278608": {
+  "label": "distrito metropolitano de Oldham",
+  "types": [
+   "Q1002812"
+  ],
+  "up": "Q23099",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q775": {
+  "label": "Güeldres",
+  "types": [
+   "Q134390"
+  ],
+  "up": "Q55",
+  "country": "Países Bajos",
+  "isCity": false
+ },
+ "Q117287005": {
+  "label": "Región de Planificación de South Central Connecticut",
+  "types": [
+   "Q1188782",
+   "Q117286571"
+  ],
+  "up": "Q779",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q779": {
+  "label": "Connecticut",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q127238": {
+  "label": "condado de Jackson",
+  "types": [
+   "Q13410520"
+  ],
+  "up": "Q1581",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1581": {
+  "label": "Misuri",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q112107": {
+  "label": "condado de Lucas",
+  "types": [
+   "Q13414759"
+  ],
+  "up": "Q1397",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1397": {
+  "label": "Ohio",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q12761": {
+  "label": "Sena-Saint Denis",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q13917",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q12559": {
+  "label": "Isère",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18338206",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q54073": {
+  "label": "condado de Middlesex",
+  "types": [
+   "Q13410485"
+  ],
+  "up": "Q771",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q2602877": {
+  "label": "Comarca de San Sebastián",
+  "types": [
+   "Q5150553"
+  ],
+  "up": "Q95010",
+  "country": "España",
+  "isCity": false
+ },
+ "Q95010": {
+  "label": "Guipúzcoa",
+  "types": [
+   "Q162620",
+   "Q3179682"
+  ],
+  "up": "Q3995",
+  "country": "España",
+  "isCity": false
+ },
+ "Q148": {
+  "label": "República Popular China",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "República Popular China",
+  "isCity": false
+ },
+ "Q5060982": {
+  "label": "Central District",
+  "types": [
+   "Q11353"
+  ],
+  "up": "Q643031",
+  "country": "Irán",
+  "isCity": false
+ },
+ "Q643031": {
+  "label": "Tehran County",
+  "types": [
+   "Q137535"
+  ],
+  "up": "Q590866",
+  "country": "Irán",
+  "isCity": false
+ },
+ "Q590866": {
+  "label": "Teherán",
+  "types": [
+   "Q1344695"
+  ],
+  "up": "Q794",
+  "country": "Irán",
+  "isCity": false
+ },
+ "Q175": {
+  "label": "São Paulo",
+  "types": [
+   "Q485258",
+   "Q20617590"
+  ],
+  "up": "Q155",
+  "country": "Brasil",
+  "isCity": false
+ },
+ "Q155": {
+  "label": "Brasil",
+  "types": [
+   "Q6256",
+   "Q859563",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Brasil",
+  "isCity": false
  }
 }

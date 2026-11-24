@@ -181,8 +181,8 @@
   "fetched": "2026-11-24"
  },
  "Q3276180": {
-  "museum": "Basílica superior de San Francisco de Asís",
-  "museumQid": "Q3635787",
+  "museum": "basílica de San Francisco de Asís",
+  "museumQid": "Q207486",
   "city": "Asís",
   "country": "Italia",
   "inSpain": false,
@@ -215,9 +215,9 @@
    "panel de roble",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "375 × 520 cm",
+  "heightCm": 375.0,
+  "widthCm": 520.0,
   "inception": "1432",
   "depicts": [
    "Adán",
@@ -238,7 +238,7 @@
  "Q220859": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -366,7 +366,7 @@
   "city": "Fráncfort del Meno",
   "country": "Alemania",
   "inSpain": false,
-  "technique": "Tabla y técnica mixta",
+  "technique": "Técnica mixta sobre tabla",
   "materials": [
    "panel de roble",
    "técnica mixta"
@@ -393,7 +393,7 @@
  "Q2392901": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -416,7 +416,7 @@
  "Q2734881": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre transferido a lienzo y tabla",
@@ -525,9 +525,9 @@
    "tabla",
    "témpera"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "147 × 91 cm",
+  "heightCm": 147.0,
+  "widthCm": 91.0,
   "inception": "1433",
   "depicts": [
    "Niño Jesús",
@@ -680,7 +680,7 @@
  "Q2439462": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -833,9 +833,9 @@
   "fetched": "2026-11-24"
  },
  "Q17066005": {
-  "museum": "Oldmasters Museum",
-  "museumQid": "Q3330782",
-  "city": "Bruselas",
+  "museum": "Museos Reales de Bellas Artes de Bélgica",
+  "museumQid": "Q377500",
+  "city": "Región de Bruselas-Capital",
   "country": "Bélgica",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -918,7 +918,7 @@
  "Q2632688": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Temple sobre tabla",
@@ -971,7 +971,7 @@
  "Q3211055": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -1070,7 +1070,7 @@
  "Q15008032": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -1094,7 +1094,7 @@
  "Q1115613": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre transferido a lienzo y tabla",
@@ -1121,7 +1121,7 @@
  "Q1759759": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -1340,8 +1340,8 @@
   "fetched": "2026-11-24"
  },
  "Q959537": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -1366,7 +1366,7 @@
  "Q3884945": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Temple sobre tabla",
@@ -1533,11 +1533,11 @@
  },
  "Q549847": {
   "museum": "Galería Uffizi",
-  "museumQid": "Q16335227",
+  "museumQid": "Q51252",
   "city": "Florencia",
   "country": "Italia",
   "inSpain": false,
-  "technique": "Temple sobre yeso y tabla",
+  "technique": "Temple sobre tabla y yeso",
   "materials": [
    "tabla",
    "témpera",
@@ -1567,7 +1567,7 @@
  "Q2293953": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Temple al huevo y óleo sobre tabla",
@@ -1717,7 +1717,7 @@
   "city": "Fráncfort del Meno",
   "country": "Alemania",
   "inSpain": false,
-  "technique": "Temple sobre técnica mixta y tabla de álamo y plátano",
+  "technique": "Técnica mixta y temple sobre tabla de álamo y plátano",
   "materials": [
    "madera de álamo",
    "plátano",
@@ -1743,7 +1743,7 @@
  "Q974674": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -1855,9 +1855,9 @@
   "inSpain": true,
   "technique": "",
   "materials": [],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "85,5 × 70 cm",
+  "heightCm": 85.5,
+  "widthCm": 70.0,
   "inception": "1495",
   "depicts": [],
   "genre": "arte religioso",
@@ -1891,9 +1891,9 @@
   "inSpain": true,
   "technique": "",
   "materials": [],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "571 × 405 cm",
+  "heightCm": 571.0,
+  "widthCm": 405.0,
   "inception": "1495",
   "depicts": [
    "Catalina de Alejandría"
@@ -2146,7 +2146,7 @@
  "Q2203011": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -2291,7 +2291,7 @@
  "Q1267893": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -2428,7 +2428,7 @@
   "city": "Florencia",
   "country": "Italia",
   "inSpain": false,
-  "technique": "Acuarela y carboncillo y óleo y pan de oro sobre tabla y dibujo",
+  "technique": "Carboncillo y óleo y pan de oro y acuarela sobre dibujo y tabla",
   "materials": [
    "acuarela",
    "carboncillo",
@@ -2448,7 +2448,7 @@
    "mujer"
   ],
   "genre": "arte religioso",
-  "movement": "Renacimiento florentino",
+  "movement": "Primer Renacimiento",
   "source": "wikidata",
   "fetched": "2026-11-24"
  },
@@ -2641,9 +2641,9 @@
   "fetched": "2026-11-24"
  },
  "Q1170194": {
-  "museum": "Sternberg Palace",
-  "museumQid": "Q1291597",
-  "city": "Hradčany",
+  "museum": "Galería Nacional de Praga",
+  "museumQid": "Q1419555",
+  "city": null,
   "country": "República Checa",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -3108,9 +3108,9 @@
   "materials": [
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "47 × 33,7 cm",
+  "heightCm": 47.0,
+  "widthCm": 33.7,
   "inception": "",
   "depicts": [
    "Antonio Abad"
@@ -3123,7 +3123,7 @@
  "Q1213160": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo y temple sobre tabla",
@@ -3216,8 +3216,8 @@
   "fetched": "2026-11-24"
  },
  "Q500812": {
-  "museum": "Gemäldegalerie Alte Meister",
-  "museumQid": "Q4890",
+  "museum": "Staatliche Kunstsammlungen Dresden",
+  "museumQid": "Q653002",
   "city": "Dresde",
   "country": "Alemania",
   "inSpain": false,
@@ -3377,9 +3377,9 @@
    "tabla",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "41 × 33,6 cm",
+  "heightCm": 41.0,
+  "widthCm": 33.6,
   "inception": "1506",
   "depicts": [
    "Laura de Noves",
@@ -3401,7 +3401,7 @@
  "Q3605563": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -3445,7 +3445,7 @@
    "Juicio de Salomón"
   ],
   "genre": "arte religioso",
-  "movement": "Alto Renacimiento",
+  "movement": "escuela veneciana",
   "source": "wikidata",
   "fetched": "2026-11-24"
  },
@@ -3481,8 +3481,8 @@
   "fetched": "2026-11-24"
  },
  "Q328079": {
-  "museum": "Gemäldegalerie Alte Meister",
-  "museumQid": "Q4890",
+  "museum": "Staatliche Kunstsammlungen Dresden",
+  "museumQid": "Q653002",
   "city": "Dresde",
   "country": "Alemania",
   "inSpain": false,
@@ -3670,7 +3670,7 @@
    "varón"
   ],
   "genre": "arte religioso",
-  "movement": "Alto Renacimiento",
+  "movement": "pintura renacentista de Italia",
   "source": "wikidata",
   "fetched": "2026-11-24"
  },
@@ -3932,7 +3932,7 @@
  "Q2528177": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -3964,7 +3964,7 @@
  "Q2528145": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -3995,7 +3995,7 @@
  "Q1206860": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -4118,7 +4118,7 @@
  "Q7920648": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -4182,9 +4182,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "163,5 × 72 cm",
+  "heightCm": 163.5,
+  "widthCm": 72.0,
   "inception": "1530",
   "depicts": [
    "Ganimedes",
@@ -4198,9 +4198,9 @@
   "fetched": "2026-11-24"
  },
  "Q3829339": {
-  "museum": "Pinacoteca de Sanssouci",
-  "museumQid": "Q451555",
-  "city": "Potsdam",
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
   "country": "Alemania",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -4339,8 +4339,8 @@
   "fetched": "2026-11-24"
  },
  "Q4009400": {
-  "museum": "Getty Center",
-  "museumQid": "Q29247",
+  "museum": "Museo J. Paul Getty",
+  "museumQid": "Q731126",
   "city": "Los Ángeles",
   "country": "Estados Unidos",
   "inSpain": false,
@@ -4349,9 +4349,9 @@
    "tabla",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "28,6 × 23,5 cm",
+  "heightCm": 28.6,
+  "widthCm": 23.5,
   "inception": "1521",
   "depicts": [
    "Jesús de Nazaret",
@@ -4365,7 +4365,7 @@
  "Q1212937": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -4465,7 +4465,7 @@
  "Q4373334": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -4606,8 +4606,8 @@
   "fetched": "2026-11-24"
  },
  "Q27698085": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -4656,7 +4656,7 @@
  "Q125359587": {
   "museum": "Museo de Bellas Artes de Valencia",
   "museumQid": "Q1748404",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "",
@@ -4674,7 +4674,7 @@
  "Q65047099": {
   "museum": "Museo de Bellas Artes de Valencia",
   "museumQid": "Q1748404",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "",
@@ -4700,9 +4700,9 @@
    "tabla",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "112 × 42,5 cm",
+  "heightCm": 112.0,
+  "widthCm": 42.5,
   "inception": "",
   "depicts": [],
   "genre": "arte religioso",
@@ -4721,9 +4721,9 @@
    "tabla",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "113 × 42,5 cm",
+  "heightCm": 113.0,
+  "widthCm": 42.5,
   "inception": "",
   "depicts": [],
   "genre": "arte religioso",
@@ -4732,8 +4732,8 @@
   "fetched": "2026-11-24"
  },
  "Q27698097": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -4791,9 +4791,9 @@
    "tabla",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "82,7 × 57,7 cm",
+  "heightCm": 82.7,
+  "widthCm": 57.7,
   "inception": "",
   "depicts": [
    "Jesús de Nazaret"
@@ -5000,8 +5000,8 @@
   "fetched": "2026-11-24"
  },
  "Q2393412": {
-  "museum": "Pinacoteca Antigua de Múnich",
-  "museumQid": "Q154568",
+  "museum": "Colecciones de Pinturas del Estado de Baviera",
+  "museumQid": "Q812285",
   "city": "Múnich",
   "country": "Alemania",
   "inSpain": false,
@@ -5066,7 +5066,7 @@
  "Q2274267": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -5114,7 +5114,7 @@
    "Marcos el Evangelista"
   ],
   "genre": "arte religioso",
-  "movement": "escuela veneciana",
+  "movement": "manierismo",
   "source": "wikidata",
   "fetched": "2026-11-24"
  },
@@ -5149,7 +5149,7 @@
  "Q1984131": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -5682,7 +5682,7 @@
  "Q7733345": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -5732,7 +5732,7 @@
  "Q19574577": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -6086,7 +6086,7 @@
  "Q2255224": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -6109,7 +6109,7 @@
  "Q6119366": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -6141,7 +6141,7 @@
  "Q6106760": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -6372,7 +6372,7 @@
  "Q35485695": {
   "museum": "Museo de Bellas Artes de Valencia",
   "museumQid": "Q1748404",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -6412,9 +6412,9 @@
   "fetched": "2026-11-24"
  },
  "Q27699443": {
-  "museum": "Palacio Real de Aranjuez",
-  "museumQid": "Q530129",
-  "city": "Aranjuez",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -6481,8 +6481,8 @@
   "fetched": "2026-11-24"
  },
  "Q969377": {
-  "museum": "Capilla Contarelli",
-  "museumQid": "Q3657340",
+  "museum": "iglesia de San Luis de los Franceses",
+  "museumQid": "Q638283",
   "city": "Roma",
   "country": "Italia",
   "inSpain": false,
@@ -6531,7 +6531,7 @@
  "Q318947": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -6757,8 +6757,8 @@
   "fetched": "2026-11-24"
  },
  "Q2273517": {
-  "museum": "Capilla Cerasi",
-  "museumQid": "Q5063707",
+  "museum": "basílica de Santa María del Popolo",
+  "museumQid": "Q869513",
   "city": "Roma",
   "country": "Italia",
   "inSpain": false,
@@ -6810,10 +6810,10 @@
   "fetched": "2026-11-24"
  },
  "Q2653851": {
-  "museum": "Museo del Louvre",
-  "museumQid": "Q19675",
-  "city": "París",
-  "country": "Francia",
+  "museum": "Catedral de Amberes",
+  "museumQid": "Q5901",
+  "city": "Amberes",
+  "country": "Bélgica",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
   "materials": [
@@ -7014,8 +7014,8 @@
   "fetched": "2026-11-24"
  },
  "Q3605057": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -7056,9 +7056,9 @@
    "tabla",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "176 × 83 cm",
+  "heightCm": 176.0,
+  "widthCm": 83.0,
   "inception": "1638",
   "depicts": [
    "Helena Fourment",
@@ -7130,8 +7130,8 @@
   "fetched": "2026-11-24"
  },
  "Q6122115": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -7205,8 +7205,8 @@
   "fetched": "2026-11-24"
  },
  "Q27699409": {
-  "museum": "Museo de la Trinidad",
-  "museumQid": "Q6034310",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -7346,7 +7346,7 @@
  "Q965124": {
   "museum": "Colección Wallace",
   "museumQid": "Q1327919",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -7401,7 +7401,7 @@
  "Q3777363": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -7454,8 +7454,8 @@
   "fetched": "2026-11-24"
  },
  "Q880502": {
-  "museum": "Pinacoteca Antigua de Múnich",
-  "museumQid": "Q154568",
+  "museum": "Colecciones de Pinturas del Estado de Baviera",
+  "museumQid": "Q812285",
   "city": "Múnich",
   "country": "Alemania",
   "inSpain": false,
@@ -7564,9 +7564,9 @@
   "fetched": "2026-11-24"
  },
  "Q2052008": {
-  "museum": "Palacio Real de La Granja de San Ildefonso",
-  "museumQid": "Q1540732",
-  "city": "Real Sitio de San Ildefonso",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -7588,8 +7588,8 @@
   "fetched": "2026-11-24"
  },
  "Q3716086": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -7616,9 +7616,9 @@
   "fetched": "2026-11-24"
  },
  "Q3842290": {
-  "museum": "Real Academia de Bellas Artes de San Fernando",
-  "museumQid": "Q1322403",
-  "city": "Madrid",
+  "museum": "Museo Fundación Duque de Lerma",
+  "museumQid": "Q18755349",
+  "city": "Toledo",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -7673,8 +7673,8 @@
   "fetched": "2026-11-24"
  },
  "Q728027": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -7707,9 +7707,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "124,5 × 99,1 cm",
+  "heightCm": 124.5,
+  "widthCm": 99.1,
   "inception": "1637",
   "depicts": [
    "Aristóteles"
@@ -8370,7 +8370,7 @@
  "Q377810": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -8466,7 +8466,7 @@
  "Q2513438": {
   "museum": "Colección Wallace",
   "museumQid": "Q1327919",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -8668,7 +8668,7 @@
  "Q3464529": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -8796,8 +8796,8 @@
   "fetched": "2026-11-24"
  },
  "Q15943274": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -8942,7 +8942,7 @@
  "Q2361683": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -9054,8 +9054,8 @@
   "fetched": "2026-11-24"
  },
  "Q208758": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -9086,8 +9086,8 @@
   "fetched": "2026-11-24"
  },
  "Q1133420": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -9120,7 +9120,7 @@
  "Q275349": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9150,9 +9150,9 @@
   "fetched": "2026-11-24"
  },
  "Q2471800": {
-  "museum": "Doughty House",
-  "museumQid": "Q5301115",
-  "city": "Richmond upon Thames",
+  "museum": "Galerías nacionales de Escocia",
+  "museumQid": "Q2051997",
+  "city": "Edimburgo",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9198,8 +9198,8 @@
   "fetched": "2026-11-24"
  },
  "Q123935": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -9224,8 +9224,8 @@
   "fetched": "2026-11-24"
  },
  "Q247282": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -9252,7 +9252,7 @@
  "Q2627810": {
   "museum": "Apsley House",
   "museumQid": "Q622206",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9325,7 +9325,7 @@
  "Q1087226": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9349,7 +9349,7 @@
  "Q1211943": {
   "museum": "Colección Wallace",
   "museumQid": "Q1327919",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9402,7 +9402,7 @@
  "Q1090371": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9424,8 +9424,8 @@
   "fetched": "2026-11-24"
  },
  "Q1133875": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -9590,9 +9590,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "146 × 254 cm",
+  "heightCm": 146.0,
+  "widthCm": 254.0,
   "inception": "1630",
   "depicts": [
    "Dalila",
@@ -9604,9 +9604,9 @@
   "fetched": "2026-11-24"
  },
  "Q3630756": {
-  "museum": "Eaton Hall",
-  "museumQid": "Q3046650",
-  "city": "Eaton and Eccleston",
+  "museum": "Duke of Westminster collection",
+  "museumQid": "Q18588457",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9614,9 +9614,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "58,4 × 73 cm",
+  "heightCm": 58.4,
+  "widthCm": 73.0,
   "inception": "1632",
   "depicts": [
    "Anton van Dyck",
@@ -9638,7 +9638,7 @@
  "Q3937593": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9684,7 +9684,7 @@
  "Q7731855": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9711,7 +9711,7 @@
  "Q3909309": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -9772,9 +9772,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "71,1 × 97,8 cm",
+  "heightCm": 71.1,
+  "widthCm": 97.8,
   "inception": "1635",
   "depicts": [],
   "genre": "arte religioso",
@@ -9914,8 +9914,8 @@
   "fetched": "2026-11-24"
  },
  "Q106839951": {
-  "museum": "Museo Bode",
-  "museumQid": "Q157825",
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
   "city": "Berlín",
   "country": "Alemania",
   "inSpain": false,
@@ -9939,7 +9939,7 @@
  "Q24260524": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -10039,9 +10039,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "222 × 175 cm",
+  "heightCm": 222.0,
+  "widthCm": 175.0,
   "inception": "1655",
   "depicts": [
    "Annunciation in Christian art",
@@ -10272,7 +10272,7 @@
  "Q1167932": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -10327,8 +10327,8 @@
   "fetched": "2026-11-24"
  },
  "Q1170480": {
-  "museum": "Museo de Ámsterdam",
-  "museumQid": "Q1820897",
+  "museum": "Rijksmuseum",
+  "museumQid": "Q190804",
   "city": "Amsterdam",
   "country": "Países Bajos",
   "inSpain": false,
@@ -10393,7 +10393,7 @@
  "Q3630751": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -10417,7 +10417,7 @@
  "Q2872725": {
   "museum": "Kenwood House",
   "museumQid": "Q764804",
-  "city": "Camden",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -10521,9 +10521,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "139,5 × 174 cm",
+  "heightCm": 139.5,
+  "widthCm": 174.0,
   "inception": "1654",
   "depicts": [],
   "genre": "vanitas",
@@ -10555,9 +10555,9 @@
   "fetched": "2026-11-24"
  },
  "Q27701761": {
-  "museum": "Palacio Real de Aranjuez",
-  "museumQid": "Q530129",
-  "city": "Aranjuez",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -10739,9 +10739,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "19,9 × 15,5 cm",
+  "heightCm": 19.9,
+  "widthCm": 15.5,
   "inception": "",
   "depicts": [],
   "genre": "retrato",
@@ -10778,8 +10778,8 @@
   "fetched": "2026-11-24"
  },
  "Q3918296": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -10832,7 +10832,7 @@
  "Q3757652": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -10914,8 +10914,8 @@
   "fetched": "2026-11-24"
  },
  "Q2450139": {
-  "museum": "Pinacoteca Antigua de Múnich",
-  "museumQid": "Q154568",
+  "museum": "Colecciones de Pinturas del Estado de Baviera",
+  "museumQid": "Q812285",
   "city": "Múnich",
   "country": "Alemania",
   "inSpain": false,
@@ -11002,8 +11002,8 @@
   "fetched": "2026-11-24"
  },
  "Q11694421": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -11025,7 +11025,7 @@
  "Q12184056": {
   "museum": "Dulwich Picture Gallery",
   "museumQid": "Q1241163",
-  "city": "Dulwich",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -11033,9 +11033,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "120,7 × 98,3 cm",
+  "heightCm": 120.7,
+  "widthCm": 98.3,
   "inception": "1665",
   "depicts": [
    "chal",
@@ -11054,7 +11054,7 @@
  "Q3947097": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11077,9 +11077,9 @@
   "fetched": "2026-11-24"
  },
  "Q6102310": {
-  "museum": "Palacio Real de La Granja de San Ildefonso",
-  "museumQid": "Q1540732",
-  "city": "Real Sitio de San Ildefonso",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11102,7 +11102,7 @@
  "Q2880218": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11125,8 +11125,8 @@
   "fetched": "2026-11-24"
  },
  "Q11770877": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -11175,7 +11175,7 @@
  "Q42189928": {
   "museum": "Hospital de la Santa Caridad",
   "museumQid": "Q858907",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11196,7 +11196,7 @@
  "Q28220571": {
   "museum": "Hospital de la Santa Caridad",
   "museumQid": "Q858907",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11292,9 +11292,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "199 × 358 cm",
+  "heightCm": 199.0,
+  "widthCm": 358.0,
   "inception": "1663",
   "depicts": [
    "Jesús de Nazaret",
@@ -11345,9 +11345,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "70 × 33 cm",
+  "heightCm": 70.0,
+  "widthCm": 33.0,
   "inception": "",
   "depicts": [
    "Juan el Evangelista"
@@ -11381,8 +11381,8 @@
   "fetched": "2026-11-24"
  },
  "Q17342250": {
-  "museum": "Museo de Ámsterdam",
-  "museumQid": "Q1820897",
+  "museum": "Rijksmuseum",
+  "museumQid": "Q190804",
   "city": "Amsterdam",
   "country": "Países Bajos",
   "inSpain": false,
@@ -11483,10 +11483,10 @@
   "fetched": "2026-11-24"
  },
  "Q17276053": {
-  "museum": "Galerie Georges Petit",
-  "museumQid": "Q18662018",
-  "city": "París",
-  "country": "Francia",
+  "museum": "Mauritshuis",
+  "museumQid": "Q221092",
+  "city": "La Haya",
+  "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
   "materials": [
@@ -11509,7 +11509,7 @@
  "Q20177586": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -11672,10 +11672,10 @@
   "fetched": "2026-11-24"
  },
  "Q544315": {
-  "museum": "Museo del Louvre",
-  "museumQid": "Q19675",
-  "city": "París",
-  "country": "Francia",
+  "museum": "Museo del Führer",
+  "museumQid": "Q475667",
+  "city": "Linz",
+  "country": "Imperio aleman (1871-1949)",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
   "materials": [
@@ -11732,7 +11732,7 @@
  "Q969367": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -11785,8 +11785,8 @@
   "fetched": "2026-11-24"
  },
  "Q63692": {
-  "museum": "Gemäldegalerie Alte Meister",
-  "museumQid": "Q4890",
+  "museum": "Staatliche Kunstsammlungen Dresden",
+  "museumQid": "Q653002",
   "city": "Dresde",
   "country": "Alemania",
   "inSpain": false,
@@ -11986,9 +11986,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "129 × 194 cm",
+  "heightCm": 129.0,
+  "widthCm": 194.0,
   "inception": "1717",
   "depicts": [
    "Citera",
@@ -12089,9 +12089,9 @@
   "fetched": "2026-11-24"
  },
  "Q5861788": {
-  "museum": "Galería nacional de Escocia",
-  "museumQid": "Q942713",
-  "city": "City de Edimburgo",
+  "museum": "Galerías nacionales de Escocia",
+  "museumQid": "Q2051997",
+  "city": "Edimburgo",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -12256,9 +12256,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "27,9 × 48,8 cm",
+  "heightCm": 27.9,
+  "widthCm": 48.8,
   "inception": "1719",
   "depicts": [
    "Escipión el Africano"
@@ -12395,7 +12395,7 @@
  "Q2943415": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -12476,7 +12476,7 @@
  "Q11152607": {
   "museum": "Dulwich Picture Gallery",
   "museumQid": "Q1241163",
-  "city": "Dulwich",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -12484,9 +12484,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "48,7 × 76,4 cm",
+  "heightCm": 48.7,
+  "widthCm": 76.4,
   "inception": "1754",
   "depicts": [
    "Londres",
@@ -12551,7 +12551,7 @@
  "Q19660446": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -12835,7 +12835,7 @@
  "Q12859898": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -12854,8 +12854,8 @@
   "fetched": "2026-11-24"
  },
  "Q445627": {
-  "museum": "Gemäldegalerie Alte Meister",
-  "museumQid": "Q4890",
+  "museum": "Staatliche Kunstsammlungen Dresden",
+  "museumQid": "Q653002",
   "city": "Dresde",
   "country": "Alemania",
   "inSpain": false,
@@ -13048,7 +13048,7 @@
  "Q18552705": {
   "museum": "Colección Wallace",
   "museumQid": "Q1327919",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13071,7 +13071,7 @@
  "Q3211033": {
   "museum": "Colección Wallace",
   "museumQid": "Q1327919",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13160,7 +13160,7 @@
  "Q3796075": {
   "museum": "Colección Wallace",
   "museumQid": "Q1327919",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13192,7 +13192,7 @@
  "Q3548343": {
   "museum": "Colección Wallace",
   "museumQid": "Q1327919",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13244,9 +13244,9 @@
   "fetched": "2026-11-24"
  },
  "Q5731132": {
-  "museum": "Palacio Real de Aranjuez",
-  "museumQid": "Q530129",
-  "city": "Aranjuez",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -13269,9 +13269,9 @@
   "fetched": "2026-11-24"
  },
  "Q27765779": {
-  "museum": "Palacio Real de Aranjuez",
-  "museumQid": "Q530129",
-  "city": "Aranjuez",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -13295,7 +13295,7 @@
  "Q26699645": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13324,9 +13324,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "49 × 36,8 cm",
+  "heightCm": 49.0,
+  "widthCm": 36.8,
   "inception": "",
   "depicts": [
    "cereza",
@@ -13339,9 +13339,9 @@
   "fetched": "2026-11-24"
  },
  "Q27760630": {
-  "museum": "Palacio Real de Aranjuez",
-  "museumQid": "Q530129",
-  "city": "Aranjuez",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -13362,9 +13362,9 @@
   "fetched": "2026-11-24"
  },
  "Q59710195": {
-  "museum": "Palacio Real de Aranjuez",
-  "museumQid": "Q530129",
-  "city": "Aranjuez",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -13411,7 +13411,7 @@
  "Q7712851": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13456,9 +13456,9 @@
   "fetched": "2026-11-24"
  },
  "Q24657567": {
-  "museum": "Galería nacional de Escocia",
-  "museumQid": "Q942713",
-  "city": "City de Edimburgo",
+  "museum": "Galerías nacionales de Escocia",
+  "museumQid": "Q2051997",
+  "city": "Edimburgo",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13483,7 +13483,7 @@
  "Q6106762": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13509,7 +13509,7 @@
  "Q6470018": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13564,7 +13564,7 @@
  "Q6470123": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13585,7 +13585,7 @@
  "Q119011999": {
   "museum": "Real Academia de Artes",
   "museumQid": "Q270920",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -13665,8 +13665,8 @@
   "fetched": "2026-11-24"
  },
  "Q20184617": {
-  "museum": "Getty Center",
-  "museumQid": "Q29247",
+  "museum": "Museo J. Paul Getty",
+  "museumQid": "Q731126",
   "city": "Los Ángeles",
   "country": "Estados Unidos",
   "inSpain": false,
@@ -13675,9 +13675,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "40,6 × 32,7 cm",
+  "heightCm": 40.6,
+  "widthCm": 32.7,
   "inception": "1761",
   "depicts": [],
   "genre": "escena de género",
@@ -13773,7 +13773,7 @@
  "Q1619527": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13828,7 +13828,7 @@
  "Q12738203": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13849,7 +13849,7 @@
  "Q5966011": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13868,9 +13868,9 @@
   "fetched": "2026-11-24"
  },
  "Q4373352": {
-  "museum": "Galería nacional de Escocia",
-  "museumQid": "Q942713",
-  "city": "City de Edimburgo",
+  "museum": "Galerías nacionales de Escocia",
+  "museumQid": "Q2051997",
+  "city": "Edimburgo",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13893,7 +13893,7 @@
  "Q6929863": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13948,7 +13948,7 @@
  "Q2629559": {
   "museum": "Colección Wallace",
   "museumQid": "Q1327919",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -13980,7 +13980,7 @@
  "Q2629423": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -14182,8 +14182,8 @@
   "fetched": "2026-11-24"
  },
  "Q28801539": {
-  "museum": "Pinacoteca Antigua de Múnich",
-  "museumQid": "Q154568",
+  "museum": "Colecciones de Pinturas del Estado de Baviera",
+  "museumQid": "Q812285",
   "city": "Múnich",
   "country": "Alemania",
   "inSpain": false,
@@ -14260,7 +14260,7 @@
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
-  "technique": "Técnica mixta y lienzo y pared",
+  "technique": "Técnica mixta sobre lienzo y pared",
   "materials": [
    "lienzo",
    "pared",
@@ -14286,8 +14286,8 @@
   "fetched": "2026-11-24"
  },
  "Q920030": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -14459,7 +14459,7 @@
  "Q1585399": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -14512,8 +14512,8 @@
   "fetched": "2026-11-24"
  },
  "Q2537138": {
-  "museum": "Museo Nacional Centro de Arte Reina Sofía",
-  "museumQid": "Q460889",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -14569,9 +14569,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "114,6 × 76,5 cm",
+  "heightCm": 114.6,
+  "widthCm": 76.5,
   "inception": "1820",
   "depicts": [
    "Francisco de Goya",
@@ -14643,9 +14643,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "74 × 110,5 cm",
+  "heightCm": 74.0,
+  "widthCm": 110.5,
   "inception": "1783",
   "depicts": [
    "mujer",
@@ -14659,8 +14659,8 @@
   "fetched": "2026-11-24"
  },
  "Q27766413": {
-  "museum": "Palacio Real de Madrid",
-  "museumQid": "Q171517",
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
   "city": "Madrid",
   "country": "España",
   "inSpain": true,
@@ -14722,9 +14722,9 @@
   "inSpain": true,
   "technique": "",
   "materials": [],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "5 × 5,8 cm",
+  "heightCm": 5.0,
+  "widthCm": 5.8,
   "inception": "1772",
   "depicts": [],
   "genre": null,
@@ -14756,7 +14756,7 @@
  "Q26699636": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -14917,9 +14917,9 @@
   "fetched": "2026-11-24"
  },
  "Q1231009": {
-  "museum": "Palacio de Versalles",
-  "museumQid": "Q3469929",
-  "city": "Versalles",
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
   "country": "Francia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -14983,7 +14983,7 @@
  "Q1313605": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15158,7 +15158,7 @@
  "Q18719540": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15423,9 +15423,9 @@
   "inSpain": true,
   "technique": "",
   "materials": [],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "28,2 × 46,4 cm",
+  "heightCm": 28.2,
+  "widthCm": 46.4,
   "inception": "1826",
   "depicts": [],
   "genre": null,
@@ -15718,8 +15718,8 @@
   "fetched": "2026-11-24"
  },
  "Q232087": {
-  "museum": "Albertinum",
-  "museumQid": "Q699780",
+  "museum": "Staatliche Kunstsammlungen Dresden",
+  "museumQid": "Q653002",
   "city": "Dresde",
   "country": "Alemania",
   "inSpain": false,
@@ -15750,8 +15750,8 @@
   "fetched": "2026-11-24"
  },
  "Q884782": {
-  "museum": "Albertinum",
-  "museumQid": "Q699780",
+  "museum": "Staatliche Kunstsammlungen Dresden",
+  "museumQid": "Q653002",
   "city": "Dresde",
   "country": "Alemania",
   "inSpain": false,
@@ -15805,7 +15805,7 @@
  "Q2339059": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15834,7 +15834,7 @@
  "Q257580": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15882,7 +15882,7 @@
  "Q3027255": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15907,7 +15907,7 @@
  "Q1772871": {
   "museum": "Museo Marítimo Nacional",
   "museumQid": "Q1199924",
-  "city": "Municipio de Greenwich",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15932,9 +15932,9 @@
   "fetched": "2026-11-24"
  },
  "Q16038731": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15958,7 +15958,7 @@
  "Q4003071": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15977,9 +15977,9 @@
   "fetched": "2026-11-24"
  },
  "Q28538656": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16002,7 +16002,7 @@
  "Q28537062": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16023,7 +16023,7 @@
  "Q2366825": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16053,7 +16053,7 @@
  "Q398973": {
   "museum": "Museo de Victoria y Alberto",
   "museumQid": "Q213322",
-  "city": "Kensington y Chelsea",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16079,7 +16079,7 @@
  "Q2272625": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16142,7 +16142,7 @@
  "Q18589150": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16174,7 +16174,7 @@
  "Q18685512": {
   "museum": "Galerías nacionales de Escocia",
   "museumQid": "Q2051997",
-  "city": "City de Edimburgo",
+  "city": "Edimburgo",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16195,9 +16195,9 @@
   "fetched": "2026-11-24"
  },
  "Q3794919": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16220,7 +16220,7 @@
  "Q3634799": {
   "museum": "Museo de Victoria y Alberto",
   "museumQid": "Q213322",
-  "city": "Kensington y Chelsea",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16441,7 +16441,7 @@
  "Q3137278": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -17084,7 +17084,7 @@
  "Q1213453": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -17574,9 +17574,9 @@
   "fetched": "2026-11-24"
  },
  "Q4536026": {
-  "museum": "Museo Rumyantsev",
-  "museumQid": "Q948457",
-  "city": "Moscú",
+  "museum": "Galería Tretiakov",
+  "museumQid": "Q183334",
+  "city": "Rusia",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -17609,9 +17609,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "242 × 321 cm",
+  "heightCm": 242.0,
+  "widthCm": 321.0,
   "inception": "1835",
   "depicts": [
    "Cinco llagas de Jesucristo",
@@ -17781,7 +17781,7 @@
  "Q3228018": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -17804,8 +17804,8 @@
   "fetched": "2026-11-24"
  },
  "Q20180844": {
-  "museum": "Getty Center",
-  "museumQid": "Q29247",
+  "museum": "Museo J. Paul Getty",
+  "museumQid": "Q731126",
   "city": "Los Ángeles",
   "country": "Estados Unidos",
   "inSpain": false,
@@ -17937,9 +17937,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "54 × 42,5 cm",
+  "heightCm": 54.0,
+  "widthCm": 42.5,
   "inception": "1867",
   "depicts": [],
   "genre": "retrato",
@@ -18359,9 +18359,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "315 × 668 cm",
+  "heightCm": 315.0,
+  "widthCm": 668.0,
   "inception": "201–1850",
   "depicts": [
    "Max Buchon",
@@ -18381,8 +18381,8 @@
   "fetched": "2026-11-24"
  },
  "Q326503": {
-  "museum": "Petit Palais",
-  "museumQid": "Q820892",
+  "museum": "Musée des Beaux-Arts de la ville de Paris",
+  "museumQid": "Q59546080",
   "city": "París",
   "country": "Francia",
   "inSpain": false,
@@ -18567,14 +18567,14 @@
    "capote",
    "carretera"
   ],
-  "genre": "autorretrato",
+  "genre": "retrato",
   "movement": "pintura del Realismo",
   "source": "wikidata",
   "fetched": "2026-11-24"
  },
  "Q1293985": {
-  "museum": "Petit Palais",
-  "museumQid": "Q820892",
+  "museum": "Musée des Beaux-Arts de la ville de Paris",
+  "museumQid": "Q59546080",
   "city": "París",
   "country": "Francia",
   "inSpain": false,
@@ -18598,9 +18598,9 @@
   "fetched": "2026-11-24"
  },
  "Q1283024": {
-  "museum": "Museo de artes de Nantes",
-  "museumQid": "Q1783956",
-  "city": "Nantes",
+  "museum": "Museo de Orsay",
+  "museumQid": "Q23402",
+  "city": "París",
   "country": "Francia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -18757,9 +18757,9 @@
   "fetched": "2026-11-24"
  },
  "Q1220030": {
-  "museum": "Audrey Jones Beck Building",
-  "museumQid": "Q107317766",
-  "city": "Texas",
+  "museum": "Museo de Bellas Artes de Houston",
+  "museumQid": "Q1565911",
+  "city": "Houston",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -18767,9 +18767,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "130,2 × 97,2 cm",
+  "heightCm": 130.2,
+  "widthCm": 97.2,
   "inception": "1869",
   "depicts": [
    "grupo de hermanos o hermanas",
@@ -18890,9 +18890,9 @@
   "materials": [
    "acuarela"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "106 × 72 cm",
+  "heightCm": 106.0,
+  "widthCm": 72.0,
   "inception": "1876",
   "depicts": [],
   "genre": "arte religioso",
@@ -18978,7 +18978,7 @@
  "Q26708418": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -18988,7 +18988,7 @@
   ],
   "dimensions": "141 × 95,1 cm",
   "heightCm": 141.0,
-  "widthCm": 95.13,
+  "widthCm": 95.1,
   "inception": "",
   "depicts": [
    "San Jorge"
@@ -19001,7 +19001,7 @@
  "Q977777": {
   "museum": "Tate Britain",
   "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19050,9 +19050,9 @@
   "fetched": "2026-11-24"
  },
  "Q2425901": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19080,7 +19080,7 @@
  "Q9248672": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19104,7 +19104,7 @@
  "Q19897951": {
   "museum": "Museo de Victoria y Alberto",
   "museumQid": "Q213322",
-  "city": "Kensington y Chelsea",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19147,9 +19147,9 @@
   "fetched": "2026-11-24"
  },
  "Q1065493": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19205,9 +19205,9 @@
   "fetched": "2026-11-24"
  },
  "Q960157": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19261,9 +19261,9 @@
   "fetched": "2026-11-24"
  },
  "Q822541": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19458,9 +19458,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "38,1 × 55,2 cm",
+  "heightCm": 38.1,
+  "widthCm": 55.2,
   "inception": "1873",
   "depicts": [
    "Camino de sirga",
@@ -19512,9 +19512,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "65 × 81 cm",
+  "heightCm": 65.0,
+  "widthCm": 81.0,
   "inception": "1897",
   "depicts": [
    "boulevard Montmartre"
@@ -19542,7 +19542,7 @@
   "depicts": [
    "fábrica"
   ],
-  "genre": "pintura del paisaje",
+  "genre": "pintura arquitectónica",
   "movement": null,
   "source": "wikidata",
   "fetched": "2026-11-24"
@@ -19674,7 +19674,7 @@
  "Q1245354": {
   "museum": "Courtauld Gallery",
   "museumQid": "Q12110695",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19732,7 +19732,7 @@
  "Q210277": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19755,7 +19755,7 @@
  "Q1212098": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19820,9 +19820,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "55,5 × 40,5 cm",
+  "heightCm": 55.5,
+  "widthCm": 40.5,
   "inception": "1872",
   "depicts": [
    "Berthe Morisot",
@@ -19867,7 +19867,7 @@
  "Q59815": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -20142,9 +20142,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "141 × 81 cm",
+  "heightCm": 141.0,
+  "widthCm": 81.0,
   "inception": "1883",
   "depicts": [],
   "genre": null,
@@ -20361,7 +20361,7 @@
  "Q970968": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -20409,7 +20409,7 @@
  "Q720602": {
   "museum": "Tate Britain",
   "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -20436,7 +20436,7 @@
  "Q4290303": {
   "museum": "Galería Freer",
   "museumQid": "Q1075126",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -20541,9 +20541,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "92 × 68 cm",
+  "heightCm": 92.0,
+  "widthCm": 68.0,
   "inception": "1875–1876",
   "depicts": [
    "Café de la Nouvelle Athènes",
@@ -20655,7 +20655,7 @@
  "Q3842349": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -21091,8 +21091,8 @@
    "óleo"
   ],
   "dimensions": "76,8 × 123,2 cm",
-  "heightCm": 76.83,
-  "widthCm": 123.19,
+  "heightCm": 76.8,
+  "widthCm": 123.2,
   "inception": "1885",
   "depicts": [],
   "genre": "marinas",
@@ -21103,7 +21103,7 @@
  "Q4960357": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -21191,9 +21191,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "96,5 × 174 cm",
+  "heightCm": 96.5,
+  "widthCm": 174.0,
   "inception": "1893",
   "depicts": [
    "Vulpes vulpes"
@@ -21242,8 +21242,8 @@
    "óleo"
   ],
   "dimensions": "61,1 × 96,8 cm",
-  "heightCm": 61.12,
-  "widthCm": 96.84,
+  "heightCm": 61.1,
+  "widthCm": 96.8,
   "inception": "1876",
   "depicts": [],
   "genre": "escena de género",
@@ -21634,8 +21634,8 @@
   "fetched": "2026-11-24"
  },
  "Q2270805": {
-  "museum": "Kunsthaus Zürich",
-  "museumQid": "Q685038",
+  "museum": "Fundación de la colección E. G. Bührle",
+  "museumQid": "Q666331",
   "city": "Zúrich",
   "country": "Suiza",
   "inSpain": false,
@@ -21944,7 +21944,7 @@
  "Q3231001": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -22021,7 +22021,7 @@
  "Q21595802": {
   "museum": "Hillwood Estate, Museum & Gardens",
   "museumQid": "Q2058611",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -22063,8 +22063,8 @@
   "fetched": "2026-11-24"
  },
  "Q20199850": {
-  "museum": "Museo Legion of Honor",
-  "museumQid": "Q2468251",
+  "museum": "Museo de Bellas Artes de San Francisco",
+  "museumQid": "Q1416890",
   "city": "San Francisco",
   "country": "Estados Unidos",
   "inSpain": false,
@@ -22118,7 +22118,7 @@
  "Q2395218": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -22222,9 +22222,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "89 × 130 cm",
+  "heightCm": 89.0,
+  "widthCm": 130.0,
   "inception": "1868",
   "depicts": [
    "A contraluz",
@@ -22315,9 +22315,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "48 × 75 cm",
+  "heightCm": 48.0,
+  "widthCm": 75.0,
   "inception": "1872",
   "depicts": [
    "Argenteuil",
@@ -22366,9 +22366,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "50 × 65 cm",
+  "heightCm": 50.0,
+  "widthCm": 65.0,
   "inception": "1873",
   "depicts": [
    "Argenteuil",
@@ -22412,10 +22412,10 @@
   "fetched": "2026-11-24"
  },
  "Q3220338": {
-  "museum": "National Gallery de Londres",
-  "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
-  "country": "Reino Unido",
+  "museum": "Museo de Orsay",
+  "museumQid": "Q23402",
+  "city": "París",
+  "country": "Francia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
   "materials": [
@@ -22440,8 +22440,8 @@
   "fetched": "2026-11-24"
  },
  "Q683274": {
-  "museum": "musée du Luxembourg",
-  "museumQid": "Q1411180",
+  "museum": "Museo de Orsay",
+  "museumQid": "Q23402",
   "city": "París",
   "country": "Francia",
   "inSpain": false,
@@ -22474,7 +22474,7 @@
  "Q1167907": {
   "museum": "Colección Phillips",
   "museumQid": "Q578485",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -22541,9 +22541,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "117,9 × 170,9 cm",
+  "heightCm": 117.9,
+  "widthCm": 170.9,
   "inception": "",
   "depicts": [
    "Aline Renoir",
@@ -22573,9 +22573,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "116 × 90 cm",
+  "heightCm": 116.0,
+  "widthCm": 90.0,
   "inception": "1892",
   "depicts": [
    "cortina",
@@ -22605,9 +22605,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "100,5 × 81 cm",
+  "heightCm": 100.5,
+  "widthCm": 81.0,
   "inception": "1881",
   "depicts": [
    "Jeanne Darlot",
@@ -22621,7 +22621,7 @@
  "Q1114571": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -22690,9 +22690,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "180 × 90 cm",
+  "heightCm": 180.0,
+  "widthCm": 90.0,
   "inception": "1883",
   "depicts": [
    "abanico",
@@ -22768,7 +22768,7 @@
    "melena",
    "mujer"
   ],
-  "genre": "escena de género",
+  "genre": "retrato",
   "movement": "impresionismo",
   "source": "wikidata",
   "fetched": "2026-11-24"
@@ -22776,7 +22776,7 @@
  "Q14942039": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -22806,8 +22806,8 @@
   "fetched": "2026-11-24"
  },
  "Q80112683": {
-  "museum": "Petit Palais",
-  "museumQid": "Q820892",
+  "museum": "Musée des Beaux-Arts de la ville de Paris",
+  "museumQid": "Q59546080",
   "city": "París",
   "country": "Francia",
   "inSpain": false,
@@ -22861,7 +22861,7 @@
  "Q3225805": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -22994,9 +22994,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "140,5 × 88,5 cm",
+  "heightCm": 140.5,
+  "widthCm": 88.5,
   "inception": "1897",
   "depicts": [
    "mujer"
@@ -23255,7 +23255,7 @@
  "Q960447": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23342,9 +23342,9 @@
   "fetched": "2026-11-24"
  },
  "Q3319184": {
-  "museum": "Trade Fair Palace",
-  "museumQid": "Q496259",
-  "city": "Praga",
+  "museum": "Galería Nacional de Praga",
+  "museumQid": "Q1419555",
+  "city": null,
   "country": "República Checa",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23372,7 +23372,7 @@
  "Q4952174": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23426,9 +23426,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "117,4 × 89,6 cm",
+  "heightCm": 117.4,
+  "widthCm": 89.6,
   "inception": "1886",
   "depicts": [],
   "genre": "escena de género",
@@ -23447,9 +23447,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "100,3 × 66,1 cm",
+  "heightCm": 100.3,
+  "widthCm": 66.1,
   "inception": "1893",
   "depicts": [
    "alfombra",
@@ -23492,7 +23492,7 @@
  "Q3640080": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23552,7 +23552,7 @@
  "Q3633620": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23576,7 +23576,7 @@
  "Q15876324": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23631,9 +23631,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "89,8 × 130,6 cm",
+  "heightCm": 89.8,
+  "widthCm": 130.6,
   "inception": "1881",
   "depicts": [],
   "genre": null,
@@ -23948,9 +23948,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "50 × 38 cm",
+  "heightCm": 50.0,
+  "widthCm": 38.0,
   "inception": "1901",
   "depicts": [
    "Isole",
@@ -23972,9 +23972,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "67,5 × 101 cm",
+  "heightCm": 67.5,
+  "widthCm": 101.0,
   "inception": "1907",
   "depicts": [],
   "genre": null,
@@ -23993,9 +23993,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "45,5 × 73,5 cm",
+  "heightCm": 45.5,
+  "widthCm": 73.5,
   "inception": "1909",
   "depicts": [],
   "genre": null,
@@ -24353,8 +24353,8 @@
    "óleo"
   ],
   "dimensions": "92,1 × 73,3 cm",
-  "heightCm": 92.07,
-  "widthCm": 73.34,
+  "heightCm": 92.1,
+  "widthCm": 73.3,
   "inception": "1889",
   "depicts": [
    "Chapelle de Trémalo",
@@ -24421,9 +24421,9 @@
   "fetched": "2026-11-24"
  },
  "Q1764395": {
-  "museum": "Galería nacional de Escocia",
-  "museumQid": "Q942713",
-  "city": "City de Edimburgo",
+  "museum": "Galerías nacionales de Escocia",
+  "museumQid": "Q2051997",
+  "city": "Edimburgo",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24545,7 +24545,7 @@
  "Q4354644": {
   "museum": "Galería Nacional de Arte",
   "museumQid": "Q214867",
-  "city": "Washington D. C.",
+  "city": "Washington",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24581,9 +24581,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "212,2 × 276,2 cm",
+  "heightCm": 212.2,
+  "widthCm": 276.2,
   "inception": "1877",
   "depicts": [
    "lluvia",
@@ -24637,9 +24637,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "64 × 82 cm",
+  "heightCm": 64.0,
+  "widthCm": 82.0,
   "inception": "1878",
   "depicts": [
    "París",
@@ -24659,9 +24659,9 @@
   "fetched": "2026-11-24"
  },
  "Q4067988": {
-  "museum": "Audrey Jones Beck Building",
-  "museumQid": "Q107317766",
-  "city": "Texas",
+  "museum": "Museo de Bellas Artes de Houston",
+  "museumQid": "Q1565911",
+  "city": "Houston",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24669,9 +24669,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "154,9 × 116,8 cm",
+  "heightCm": 154.9,
+  "widthCm": 116.8,
   "inception": "1878",
   "depicts": [],
   "genre": "escena de género",
@@ -24833,9 +24833,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "156 × 282 cm",
+  "heightCm": 156.0,
+  "widthCm": 282.0,
   "inception": "1891",
   "depicts": [],
   "genre": "escena de género",
@@ -24963,7 +24963,7 @@
  "Q107308907": {
   "museum": "Instituto Valenciano de Arte Moderno",
   "museumQid": "Q1600831",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -24971,9 +24971,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "105 × 265 cm",
+  "heightCm": 105.0,
+  "widthCm": 265.0,
   "inception": "",
   "depicts": [],
   "genre": null,
@@ -24992,9 +24992,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "206 × 153 cm",
+  "heightCm": 206.0,
+  "widthCm": 153.0,
   "inception": "1889",
   "depicts": [],
   "genre": null,
@@ -25013,9 +25013,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "41 × 35 cm",
+  "heightCm": 41.0,
+  "widthCm": 35.0,
   "inception": "1900",
   "depicts": [],
   "genre": "retrato",
@@ -25115,7 +25115,7 @@
  "Q110401565": {
   "museum": "Instituto Valenciano de Arte Moderno",
   "museumQid": "Q1600831",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "",
@@ -25159,9 +25159,9 @@
   "fetched": "2026-11-24"
  },
  "Q2445726": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25264,9 +25264,9 @@
   "fetched": "2026-11-24"
  },
  "Q7401211": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25399,7 +25399,7 @@
   "city": "Copenhague",
   "country": "Dinamarca",
   "inSpain": false,
-  "technique": "Óleo sobre lienzo y óxido de zinc",
+  "technique": "Óleo sobre óxido de zinc y lienzo",
   "materials": [
    "lienzo",
    "óleo",
@@ -25421,7 +25421,7 @@
    "dog collar",
    "marcha"
   ],
-  "genre": "retrato",
+  "genre": "nocturno",
   "movement": null,
   "source": "wikidata",
   "fetched": "2026-11-24"
@@ -25532,7 +25532,7 @@
  "Q21948567": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25583,8 +25583,8 @@
   "fetched": "2026-11-24"
  },
  "Q2282256": {
-  "museum": "Getty Center",
-  "museumQid": "Q29247",
+  "museum": "Museo J. Paul Getty",
+  "museumQid": "Q731126",
   "city": "Los Ángeles",
   "country": "Estados Unidos",
   "inSpain": false,
@@ -25649,9 +25649,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "72 × 92,1 cm",
+  "heightCm": 72.0,
+  "widthCm": 92.1,
   "inception": "1888",
   "depicts": [
    "Arlés",
@@ -25848,9 +25848,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "243,2 × 143,8 cm",
+  "heightCm": 243.2,
+  "widthCm": 143.8,
   "inception": "1884",
   "depicts": [
    "Virginie Amélie Avegno Gautreau",
@@ -25870,9 +25870,9 @@
   "fetched": "2026-11-24"
  },
  "Q1560719": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25904,8 +25904,8 @@
    "óleo"
   ],
   "dimensions": "221,9 × 222,6 cm",
-  "heightCm": 221.93,
-  "widthCm": 222.57,
+  "heightCm": 221.9,
+  "widthCm": 222.6,
   "inception": "1882",
   "depicts": [
    "Florence Dumaresq Boit",
@@ -25927,7 +25927,7 @@
  "Q5526647": {
   "museum": "Museo Imperial de la Guerra",
   "museumQid": "Q749808",
-  "city": "municipio de Southwark",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25950,9 +25950,9 @@
   "fetched": "2026-11-24"
  },
  "Q18344787": {
-  "museum": "Galería nacional de Escocia",
-  "museumQid": "Q942713",
-  "city": "City de Edimburgo",
+  "museum": "Galerías nacionales de Escocia",
+  "museumQid": "Q2051997",
+  "city": "Edimburgo",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26016,7 +26016,7 @@
   ],
   "dimensions": "152,4 × 102,5 cm",
   "heightCm": 152.4,
-  "widthCm": 102.55,
+  "widthCm": 102.5,
   "inception": "1903",
   "depicts": [
    "Gretchen Osgood Warren",
@@ -26078,9 +26078,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "167,6 × 137,8 cm",
+  "heightCm": 167.6,
+  "widthCm": 137.8,
   "inception": "1886",
   "depicts": [
    "mujer"
@@ -26168,9 +26168,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "138,5 × 430,5 cm",
+  "heightCm": 138.5,
+  "widthCm": 430.5,
   "inception": "1899",
   "depicts": [],
   "genre": "arte religioso",
@@ -26189,9 +26189,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "75 × 90,5 cm",
+  "heightCm": 75.0,
+  "widthCm": 90.5,
   "inception": "1900",
   "depicts": [
    "Bahía de Santoña",
@@ -26215,9 +26215,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "73,5 × 100,5 cm",
+  "heightCm": 73.5,
+  "widthCm": 100.5,
   "inception": "1888",
   "depicts": [
    "San Sebastián",
@@ -26239,9 +26239,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "65 × 54 cm",
+  "heightCm": 65.0,
+  "widthCm": 54.0,
   "inception": "1903",
   "depicts": [],
   "genre": null,
@@ -26281,9 +26281,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "76,5 × 57,5 cm",
+  "heightCm": 76.5,
+  "widthCm": 57.5,
   "inception": "1900",
   "depicts": [
    "baño",
@@ -26305,9 +26305,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "81 × 65,5 cm",
+  "heightCm": 81.0,
+  "widthCm": 65.5,
   "inception": "1904",
   "depicts": [
    "monje",
@@ -26331,9 +26331,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "90,5 × 120 cm",
+  "heightCm": 90.5,
+  "widthCm": 120.0,
   "inception": "1901",
   "depicts": [],
   "genre": null,
@@ -26352,9 +26352,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "26 × 35 cm",
+  "heightCm": 26.0,
+  "widthCm": 35.0,
   "inception": "1908",
   "depicts": [],
   "genre": null,
@@ -26396,7 +26396,7 @@
  "Q1090837": {
   "museum": "National Gallery de Londres",
   "museumQid": "Q180788",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26428,9 +26428,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "185 × 152 cm",
+  "heightCm": 185.0,
+  "widthCm": 152.0,
   "inception": "1891",
   "depicts": [
    "Circo Medrano",
@@ -26476,7 +26476,7 @@
  "Q3766163": {
   "museum": "Courtauld Gallery",
   "museumQid": "Q12110695",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26522,8 +26522,8 @@
   "fetched": "2026-11-24"
  },
  "Q3821251": {
-  "museum": "Museo Legion of Honor",
-  "museumQid": "Q2468251",
+  "museum": "Museo de Bellas Artes de San Francisco",
+  "museumQid": "Q1416890",
   "city": "San Francisco",
   "country": "Estados Unidos",
   "inSpain": false,
@@ -26938,9 +26938,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "88,5 × 115,2 cm",
+  "heightCm": 88.5,
+  "widthCm": 115.2,
   "inception": "1894",
   "depicts": [
    "mujer"
@@ -26961,9 +26961,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "89,5 × 111 cm",
+  "heightCm": 89.5,
+  "widthCm": 111.0,
   "inception": "1894",
   "depicts": [
    "Erik Satie",
@@ -26987,9 +26987,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "97,5 × 130,5 cm",
+  "heightCm": 97.5,
+  "widthCm": 130.5,
   "inception": "1890",
   "depicts": [
    "Moulin de la Galette",
@@ -27011,9 +27011,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "33,5 × 41,5 cm",
+  "heightCm": 33.5,
+  "widthCm": 41.5,
   "inception": "",
   "depicts": [
    "jardín"
@@ -27246,9 +27246,9 @@
   "fetched": "2026-11-24"
  },
  "Q5967091": {
-  "museum": "Trade Fair Palace",
-  "museumQid": "Q496259",
-  "city": "Praga",
+  "museum": "Galería Nacional de Praga",
+  "museumQid": "Q1419555",
+  "city": null,
   "country": "República Checa",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -27281,9 +27281,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "180,5 × 200,5 cm",
+  "heightCm": 180.5,
+  "widthCm": 200.5,
   "inception": "1910",
   "depicts": [
    "Muerte",
@@ -27353,9 +27353,9 @@
   "inSpain": false,
   "technique": "",
   "materials": [],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "110,5 × 110,5 cm",
+  "heightCm": 110.5,
+  "widthCm": 110.5,
   "inception": "1907",
   "depicts": [],
   "genre": "alegoría",
@@ -27478,8 +27478,8 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": "73,5 × 92,5 cm",
-  "heightCm": 73.5,
+  "dimensions": "73,7 × 92,5 cm",
+  "heightCm": 73.7,
   "widthCm": 92.5,
   "inception": "1890",
   "depicts": [
@@ -27595,9 +27595,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": "89 × 115 cm",
+  "dimensions": "89 × 116 cm",
   "heightCm": 89.0,
-  "widthCm": 115.0,
+  "widthCm": 116.0,
   "inception": "1887",
   "depicts": [
    "ama de llaves",
@@ -27955,7 +27955,7 @@
   "city": "Q585",
   "country": "Noruega",
   "inSpain": false,
-  "technique": "Temple sobre lápiz de cera y cartón",
+  "technique": "Temple sobre cartón y lápiz de cera",
   "materials": [
    "cartón",
    "lápiz de cera",
@@ -28100,8 +28100,8 @@
   "fetched": "2026-11-24"
  },
  "Q18748731": {
-  "museum": "Rasmus Meyer",
-  "museumQid": "Q40914682",
+  "museum": "Art Museums of Bergen",
+  "museumQid": "Q1770313",
   "city": "Bergen",
   "country": "Noruega",
   "inSpain": false,
@@ -28127,8 +28127,8 @@
   "fetched": "2026-11-24"
  },
  "Q18209775": {
-  "museum": "Getty Center",
-  "museumQid": "Q29247",
+  "museum": "Museo J. Paul Getty",
+  "museumQid": "Q731126",
   "city": "Los Ángeles",
   "country": "Estados Unidos",
   "inSpain": false,
@@ -28213,9 +28213,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "123 × 141 cm",
+  "heightCm": 123.0,
+  "widthCm": 141.0,
   "inception": "1892",
   "depicts": [],
   "genre": "escena de género",
@@ -28259,9 +28259,9 @@
    "cartón",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "67 × 54 cm",
+  "heightCm": 67.0,
+  "widthCm": 54.0,
   "inception": "1889–1896",
   "depicts": [
    "desnudo",
@@ -28387,8 +28387,8 @@
   "fetched": "2026-11-24"
  },
  "Q12015473": {
-  "museum": "Galería Nacional del Juego de Palma",
-  "museumQid": "Q656296",
+  "museum": "Museo de Orsay",
+  "museumQid": "Q23402",
   "city": "París",
   "country": "Francia",
   "inSpain": false,
@@ -28444,8 +28444,8 @@
   "fetched": "2026-11-24"
  },
  "Q58411216": {
-  "museum": "Getty Center",
-  "museumQid": "Q29247",
+  "museum": "Museo J. Paul Getty",
+  "museumQid": "Q731126",
   "city": "Los Ángeles",
   "country": "Estados Unidos",
   "inSpain": false,
@@ -28653,9 +28653,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "147 × 233 cm",
+  "heightCm": 147.0,
+  "widthCm": 233.0,
   "inception": "1910",
   "depicts": [
    "Ida Rubinstein"
@@ -28722,9 +28722,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "188 × 215,5 cm",
+  "heightCm": 188.0,
+  "widthCm": 215.5,
   "inception": "1897",
   "depicts": [
    "Barcelona",
@@ -28856,9 +28856,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "50,5 × 65,5 cm",
+  "heightCm": 50.5,
+  "widthCm": 65.5,
   "inception": "1890",
   "depicts": [
    "botella",
@@ -28882,9 +28882,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "115,5 × 196 cm",
+  "heightCm": 115.5,
+  "widthCm": 196.0,
   "inception": "1907",
   "depicts": [],
   "genre": null,
@@ -29252,9 +29252,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "136 × 136 cm",
+  "heightCm": 136.0,
+  "widthCm": 136.0,
   "inception": "1903",
   "depicts": [],
   "genre": null,
@@ -29315,9 +29315,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "120,5 × 120,5 cm",
+  "heightCm": 120.5,
+  "widthCm": 120.5,
   "inception": "1904",
   "depicts": [],
   "genre": null,
@@ -29357,9 +29357,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "100,5 × 80,6 cm",
+  "heightCm": 100.5,
+  "widthCm": 80.6,
   "inception": "1910",
   "depicts": [],
   "genre": null,
@@ -29378,9 +29378,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "54,5 × 66,5 cm",
+  "heightCm": 54.5,
+  "widthCm": 66.5,
   "inception": "1908",
   "depicts": [],
   "genre": null,
@@ -29459,9 +29459,9 @@
   "inSpain": true,
   "technique": "",
   "materials": [],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "100,5 × 126 cm",
+  "heightCm": 100.5,
+  "widthCm": 126.0,
   "inception": "1896",
   "depicts": [],
   "genre": null,
@@ -29501,9 +29501,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "95,5 × 80 cm",
+  "heightCm": 95.5,
+  "widthCm": 80.0,
   "inception": "1894",
   "depicts": [],
   "genre": null,
@@ -29603,9 +29603,9 @@
   "fetched": "2026-11-24"
  },
  "Q15093245": {
-  "museum": "Museo Julio Romero de Torres",
-  "museumQid": "Q6033464",
-  "city": "Córdoba",
+  "museum": "Museo Nacional Centro de Arte Reina Sofía",
+  "museumQid": "Q460889",
+  "city": "Madrid",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo y temple sobre lienzo",
@@ -29792,9 +29792,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "100,2 × 110 cm",
+  "heightCm": 100.2,
+  "widthCm": 110.0,
   "inception": "1914",
   "depicts": [],
   "genre": "arte religioso",
@@ -30004,7 +30004,7 @@
  "Q3879280": {
   "museum": "Courtauld Gallery",
   "museumQid": "Q12110695",
-  "city": "Ciudad de Westminster",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -30073,9 +30073,9 @@
   "fetched": "2026-11-24"
  },
  "Q3793584": {
-  "museum": "Tate Britain",
-  "museumQid": "Q195436",
-  "city": "Ciudad de Westminster",
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
   "country": "Reino Unido",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -30193,9 +30193,9 @@
    "lienzo",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "93,3 × 74,4 cm",
+  "heightCm": 93.3,
+  "widthCm": 74.4,
   "inception": "1912",
   "depicts": [
    "Pablo Picasso",
@@ -30254,8 +30254,8 @@
   "fetched": "2026-11-24"
  },
  "Q60329141": {
-  "museum": "Centro Pompidou",
-  "museumQid": "Q178065",
+  "museum": "Museo Nacional de Arte Moderno",
+  "museumQid": "Q1895953",
   "city": "París",
   "country": "Francia",
   "inSpain": false,
@@ -30314,9 +30314,9 @@
    "tabla",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "32 × 39,8 cm",
+  "heightCm": 32.0,
+  "widthCm": 39.8,
   "inception": "1912",
   "depicts": [
    "Wally Neuzil"
@@ -30364,9 +30364,9 @@
    "tabla",
    "óleo"
   ],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "37,3 × 29,8 cm",
+  "heightCm": 37.3,
+  "widthCm": 29.8,
   "inception": "1911",
   "depicts": [
    "Český Krumlov"
@@ -30405,9 +30405,9 @@
   "inSpain": false,
   "technique": "",
   "materials": [],
-  "dimensions": null,
-  "heightCm": null,
-  "widthCm": null,
+  "dimensions": "181 × 181 cm",
+  "heightCm": 181.0,
+  "widthCm": 181.0,
   "inception": "1912",
   "depicts": [],
   "genre": null,

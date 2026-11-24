@@ -1,605 +1,4 @@
 {
- "Q51252": {
-  "name": "Galería Uffizi",
-  "types": [
-   "Q16560",
-   "Q207694",
-   "Q24699794"
-  ],
-  "adm": "Q3927157",
-  "loc": "Q3927157",
-  "parent": "Q28647411",
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q165631": {
-  "name": "Gemäldegalerie de Berlín",
-  "types": [
-   "Q207694"
-  ],
-  "adm": "Q163966",
-  "loc": null,
-  "parent": "Q386482",
-  "country": "Alemania",
-  "isMuseum": true
- },
- "Q207486": {
-  "name": "basílica de San Francisco de Asís",
-  "types": [
-   "Q120560",
-   "Q334383",
-   "Q2713379"
-  ],
-  "adm": "Q20103",
-  "loc": null,
-  "parent": "Q495217",
-  "country": "Italia",
-  "isMuseum": false
- },
- "Q531218": {
-  "name": "Museo Horne",
-  "types": [
-   "Q166118",
-   "Q207694",
-   "Q614316"
-  ],
-  "adm": "Q2044",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q963954": {
-  "name": "capilla de los Scrovegni",
-  "types": [
-   "Q108325",
-   "Q207694",
-   "Q92755865",
-   "Q124830213"
-  ],
-  "adm": "Q617",
-  "loc": null,
-  "parent": "Q3867519",
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q1232516": {
-  "name": "Kaiser Friedrich Museumsverein (KFMV)",
-  "types": [
-   "Q163740",
-   "Q123909628"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": "Alemania",
-  "isMuseum": false
- },
- "Q3044768": {
-  "name": "Departamento de Pinturas del Museo del Louvre",
-  "types": [
-   "Q7328910",
-   "Q11681271"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": "Q19675",
-  "country": "Francia",
-  "isMuseum": false
- },
- "Q3330318": {
-  "name": "Museo diocesano di Santo Stefano al Ponte",
-  "types": [
-   "Q33506",
-   "Q207694",
-   "Q1231888"
-  ],
-  "adm": "Q2044",
-  "loc": "Q2707802",
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q3469918": {
-  "name": "Room A4 Giotto — Cimabue",
-  "types": [
-   "Q15206795"
-  ],
-  "adm": null,
-  "loc": "Q51252",
-  "parent": "Q51252",
-  "country": "Italia",
-  "isMuseum": false
- },
- "Q3635787": {
-  "name": "Basílica superior de San Francisco de Asís",
-  "types": [
-   "Q1088552"
-  ],
-  "adm": "Q20103",
-  "loc": null,
-  "parent": "Q207486",
-  "country": "Italia",
-  "isMuseum": false
- },
- "Q3670083": {
-  "name": "iglesia de San Francisco",
-  "types": [
-   "Q16970"
-  ],
-  "adm": "Q13375",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q3945716": {
-  "name": "Salón Carré",
-  "types": [
-   "Q180516"
-  ],
-  "adm": "Q161741",
-  "loc": "Q14619172",
-  "parent": "Q14619172",
-  "country": "Francia",
-  "isMuseum": false
- },
- "Q113644238": {
-  "name": "Italian paintings 13.-15th-century, Berlin, Room 41",
-  "types": [
-   "Q15206795"
-  ],
-  "adm": null,
-  "loc": "Q165631",
-  "parent": "Q165631",
-  "country": null,
-  "isMuseum": false
- },
- "Q19675": {
-  "name": "Museo del Louvre",
-  "types": [
-   "Q207694",
-   "Q3329412"
-  ],
-  "adm": "Q2409554",
-  "loc": "Q1075988",
-  "parent": null,
-  "country": "Francia",
-  "isMuseum": true
- },
- "Q386482": {
-  "name": "Kulturforum",
-  "types": [
-   "Q1497375"
-  ],
-  "adm": "Q163966",
-  "loc": "Q328672",
-  "parent": null,
-  "country": "Alemania",
-  "isMuseum": false
- },
- "Q495217": {
-  "name": "Sacro Convento de San Francisco",
-  "types": [
-   "Q358",
-   "Q811165",
-   "Q76529788"
-  ],
-  "adm": "Q20103",
-  "loc": null,
-  "parent": "Q2636502",
-  "country": "Italia",
-  "isMuseum": false
- },
- "Q3867519": {
-  "name": "Museos cívicos de Padua",
-  "types": [
-   "Q207694",
-   "Q3329412",
-   "Q7328910",
-   "Q92755865",
-   "Q124830213"
-  ],
-  "adm": "Q617",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q14619172": {
-  "name": "ala Denon",
-  "types": [
-   "Q1125776"
-  ],
-  "adm": "Q161741",
-  "loc": "Q1075988",
-  "parent": "Q1075988",
-  "country": "Francia",
-  "isMuseum": false
- },
- "Q28647411": {
-  "name": "Gallerie degli Uffizi",
-  "types": [
-   "Q3867560",
-   "Q88667167",
-   "Q121076356",
-   "Q124830411"
-  ],
-  "adm": "Q2044",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": false
- },
- "Q38": {
-  "name": "Italia",
-  "types": [
-   "Q6256",
-   "Q3624078"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": "Q8932",
-  "country": "Italia",
-  "isMuseum": false
- },
- "Q641": {
-  "name": "Venecia",
-  "types": [
-   "Q515",
-   "Q581830",
-   "Q747074",
-   "Q1549591",
-   "Q2264924",
-   "Q4115680"
-  ],
-  "adm": "Q3678587",
-  "loc": null,
-  "parent": "Q2641492",
-  "country": "Italia",
-  "isMuseum": false
- },
- "Q4152": {
-  "name": "Neuschwanstein",
-  "types": [
-   "Q16560",
-   "Q23413",
-   "Q33506",
-   "Q751876"
-  ],
-  "adm": "Q256547",
-  "loc": null,
-  "parent": "Q64825541",
-  "country": "Alemania",
-  "isMuseum": true
- },
- "Q11935": {
-  "name": "Locarno",
-  "types": [
-   "Q70208",
-   "Q54935504"
-  ],
-  "adm": "Q1473724",
-  "loc": null,
-  "parent": null,
-  "country": "Suiza",
-  "isMuseum": false
- },
- "Q28471": {
-  "name": "Real Monasterio de San Lorenzo de El Escorial",
-  "types": [
-   "Q907116",
-   "Q53536964",
-   "Q132296770"
-  ],
-  "adm": "Q371748",
-  "loc": "Q31923752",
-  "parent": "Q1891189",
-  "country": "España",
-  "isMuseum": false
- },
- "Q52098": {
-  "name": "Sansepolcro",
-  "types": [
-   "Q747074"
-  ],
-  "adm": "Q16115",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": false
- },
- "Q95569": {
-  "name": "Museo de Historia del Arte de Viena",
-  "types": [
-   "Q33506",
-   "Q207694",
-   "Q3152824"
-  ],
-  "adm": "Q1741",
-  "loc": "Q1741",
-  "parent": null,
-  "country": "Austria",
-  "isMuseum": true
- },
- "Q132671": {
-  "name": "Pau",
-  "types": [
-   "Q515",
-   "Q484170"
-  ],
-  "adm": "Q681862",
-  "loc": null,
-  "parent": null,
-  "country": "Francia",
-  "isMuseum": false
- },
- "Q132783": {
-  "name": "Museo del Hermitage",
-  "types": [
-   "Q33506"
-  ],
-  "adm": "Q656",
-  "loc": null,
-  "parent": null,
-  "country": "Rusia",
-  "isMuseum": true
- },
- "Q150066": {
-  "name": "Pinacoteca de Brera",
-  "types": [
-   "Q207694",
-   "Q1007870",
-   "Q2385804",
-   "Q3867560",
-   "Q97662266",
-   "Q121076356",
-   "Q124830411"
-  ],
-  "adm": "Q490",
-  "loc": "Q21748501",
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q160112": {
-  "name": "Museo del Prado",
-  "types": [
-   "Q43229",
-   "Q207694",
-   "Q1200957",
-   "Q17431399"
-  ],
-  "adm": "Q2807",
-  "loc": "Q5818335",
-  "parent": null,
-  "country": "España",
-  "isMuseum": true
- },
- "Q163804": {
-  "name": "Museo Städel",
-  "types": [
-   "Q163740",
-   "Q207694"
-  ],
-  "adm": "Q1794",
-  "loc": null,
-  "parent": null,
-  "country": "Alemania",
-  "isMuseum": true
- },
- "Q176251": {
-  "name": "Museo Nacional Thyssen-Bornemisza",
-  "types": [
-   "Q33506",
-   "Q207694"
-  ],
-  "adm": "Q2807",
-  "loc": "Q5358601",
-  "parent": null,
-  "country": "España",
-  "isMuseum": true
- },
- "Q180788": {
-  "name": "National Gallery de Londres",
-  "types": [
-   "Q17431399"
-  ],
-  "adm": "Q179351",
-  "loc": "Q129143",
-  "parent": null,
-  "country": "Reino Unido",
-  "isMuseum": true
- },
- "Q214867": {
-  "name": "Galería Nacional de Arte",
-  "types": [
-   "Q163740",
-   "Q221096",
-   "Q2085381",
-   "Q3844310",
-   "Q20857065"
-  ],
-  "adm": "Q61",
-  "loc": null,
-  "parent": null,
-  "country": "Estados Unidos",
-  "isMuseum": false
- },
- "Q290549": {
-  "name": "Museo Nacional de Capodimonte",
-  "types": [
-   "Q207694",
-   "Q3867560",
-   "Q17431399",
-   "Q97662266",
-   "Q121076356",
-   "Q124830411"
-  ],
-  "adm": "Q2634",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q338330": {
-  "name": "Galería de la Academia de Venecia",
-  "types": [
-   "Q207694",
-   "Q3867560",
-   "Q24699794",
-   "Q97662266",
-   "Q121076356",
-   "Q124830411"
-  ],
-  "adm": "Q3867184",
-  "loc": "Q52422",
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q377500": {
-  "name": "Museos Reales de Bellas Artes de Bélgica",
-  "types": [
-   "Q207694",
-   "Q2288140"
-  ],
-  "adm": "Q240",
-  "loc": null,
-  "parent": null,
-  "country": "Bélgica",
-  "isMuseum": true
- },
- "Q606494": {
-  "name": "Museo Civico di Sansepolcro",
-  "types": [
-   "Q207694",
-   "Q124830213"
-  ],
-  "adm": "Q52098",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q682827": {
-  "name": "Colección Frick",
-  "types": [
-   "Q207694",
-   "Q7328910"
-  ],
-  "adm": "Q11299",
-  "loc": "Q105979668",
-  "parent": "Q17148329",
-  "country": "Estados Unidos",
-  "isMuseum": true
- },
- "Q820370": {
-  "name": "Q820370",
-  "types": [
-   "Q43229",
-   "Q1497375",
-   "Q7328910"
-  ],
-  "adm": "Q262951",
-  "loc": null,
-  "parent": "Q1635896",
-  "country": "Austria",
-  "isMuseum": false
- },
- "Q861252": {
-  "name": "Museo Nacional de Arte de Cataluña",
-  "types": [
-   "Q207694",
-   "Q17431399"
-  ],
-  "adm": "Q753075",
-  "loc": "Q753075",
-  "parent": null,
-  "country": "España",
-  "isMuseum": true
- },
- "Q938154": {
-  "name": "Catedral de San Bavón",
-  "types": [
-   "Q2977"
-  ],
-  "adm": "Q1296",
-  "loc": null,
-  "parent": null,
-  "country": "Bélgica",
-  "isMuseum": true
- },
- "Q1080108": {
-  "name": "Galería Nacional de las Marcas",
-  "types": [
-   "Q16560",
-   "Q207694",
-   "Q3329412",
-   "Q3867560",
-   "Q17431399",
-   "Q97662266",
-   "Q121076356",
-   "Q124830411"
-  ],
-  "adm": "Q2759",
-  "loc": "Q1267721",
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q3673989": {
-  "name": "Santa Maria delle Grazie",
-  "types": [
-   "Q1128397"
-  ],
-  "adm": "Q124925",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q13453137": {
-  "name": "Museo Nacional de San Marcos",
-  "types": [
-   "Q33506",
-   "Q44613",
-   "Q207694",
-   "Q3867560",
-   "Q124830411"
-  ],
-  "adm": "Q2044",
-  "loc": null,
-  "parent": "Q2990489",
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q3330320": {
-  "name": "Museo Diocesano de Cortona",
-  "types": [
-   "Q33506",
-   "Q207694",
-   "Q614316",
-   "Q1231888",
-   "Q92755865"
-  ],
-  "adm": "Q52080",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
- },
- "Q3330782": {
-  "name": "Oldmasters Museum",
-  "types": [
-   "Q207694"
-  ],
-  "adm": "Q239",
-  "loc": null,
-  "parent": "Q377500",
-  "country": "Bélgica",
-  "isMuseum": true
- },
  "Q18572487": {
   "name": "Hall 707",
   "types": [
@@ -688,14 +87,14 @@
   "country": null,
   "isMuseum": false
  },
- "Q111145598": {
-  "name": "Italian Renaissance - cabinet 4",
+ "Q113644238": {
+  "name": "Italian paintings 13.-15th-century, Berlin, Room 41",
   "types": [
    "Q15206795"
   ],
   "adm": null,
-  "loc": "Q95569",
-  "parent": "Q95569",
+  "loc": "Q165631",
+  "parent": "Q165631",
   "country": null,
   "isMuseum": false
  },
@@ -721,15 +120,336 @@
   "country": null,
   "isMuseum": false
  },
- "Q136674481": {
-  "name": "Room 63 La Serenissima: Painting in Venice 1450–1500",
+ "Q3673989": {
+  "name": "Santa Maria delle Grazie",
   "types": [
-   "Q15206795"
+   "Q1128397"
+  ],
+  "adm": "Q124925",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3945716": {
+  "name": "Salón Carré",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q161741",
+  "loc": "Q14619172",
+  "parent": "Q14619172",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q13453137": {
+  "name": "Museo Nacional de San Marcos",
+  "types": [
+   "Q33506",
+   "Q44613",
+   "Q207694",
+   "Q3867560",
+   "Q124830411"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": "Q2990489",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q38": {
+  "name": "Italia",
+  "types": [
+   "Q6256",
+   "Q3624078"
   ],
   "adm": null,
-  "loc": "Q180788",
-  "parent": "Q180788",
-  "country": null,
+  "loc": null,
+  "parent": "Q8932",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q4152": {
+  "name": "Neuschwanstein",
+  "types": [
+   "Q16560",
+   "Q23413",
+   "Q33506",
+   "Q751876"
+  ],
+  "adm": "Q256547",
+  "loc": null,
+  "parent": "Q64825541",
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q11935": {
+  "name": "Locarno",
+  "types": [
+   "Q70208",
+   "Q54935504"
+  ],
+  "adm": "Q1473724",
+  "loc": null,
+  "parent": null,
+  "country": "Suiza",
+  "isMuseum": false
+ },
+ "Q28471": {
+  "name": "Real Monasterio de San Lorenzo de El Escorial",
+  "types": [
+   "Q907116",
+   "Q53536964",
+   "Q132296770"
+  ],
+  "adm": "Q371748",
+  "loc": "Q31923752",
+  "parent": "Q1891189",
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q51252": {
+  "name": "Galería Uffizi",
+  "types": [
+   "Q16560",
+   "Q207694",
+   "Q24699794"
+  ],
+  "adm": "Q3927157",
+  "loc": "Q3927157",
+  "parent": "Q28647411",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q52098": {
+  "name": "Sansepolcro",
+  "types": [
+   "Q747074"
+  ],
+  "adm": "Q16115",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q132671": {
+  "name": "Pau",
+  "types": [
+   "Q515",
+   "Q484170"
+  ],
+  "adm": "Q681862",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q132783": {
+  "name": "Museo del Hermitage",
+  "types": [
+   "Q33506"
+  ],
+  "adm": "Q656",
+  "loc": null,
+  "parent": null,
+  "country": "Rusia",
+  "isMuseum": true
+ },
+ "Q150066": {
+  "name": "Pinacoteca de Brera",
+  "types": [
+   "Q207694",
+   "Q1007870",
+   "Q2385804",
+   "Q3867560",
+   "Q97662266",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q490",
+  "loc": "Q21748501",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q160112": {
+  "name": "Museo del Prado",
+  "types": [
+   "Q43229",
+   "Q207694",
+   "Q1200957",
+   "Q17431399"
+  ],
+  "adm": "Q2807",
+  "loc": "Q5818335",
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q163804": {
+  "name": "Museo Städel",
+  "types": [
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q1794",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q165631": {
+  "name": "Gemäldegalerie de Berlín",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q163966",
+  "loc": null,
+  "parent": "Q386482",
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q176251": {
+  "name": "Museo Nacional Thyssen-Bornemisza",
+  "types": [
+   "Q33506",
+   "Q207694"
+  ],
+  "adm": "Q2807",
+  "loc": "Q5358601",
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q180788": {
+  "name": "National Gallery de Londres",
+  "types": [
+   "Q17431399"
+  ],
+  "adm": "Q179351",
+  "loc": "Q129143",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q207486": {
+  "name": "basílica de San Francisco de Asís",
+  "types": [
+   "Q120560",
+   "Q334383",
+   "Q2713379"
+  ],
+  "adm": "Q20103",
+  "loc": null,
+  "parent": "Q495217",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q214867": {
+  "name": "Galería Nacional de Arte",
+  "types": [
+   "Q163740",
+   "Q221096",
+   "Q2085381",
+   "Q3844310",
+   "Q20857065"
+  ],
+  "adm": "Q61",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": false
+ },
+ "Q377500": {
+  "name": "Museos Reales de Bellas Artes de Bélgica",
+  "types": [
+   "Q207694",
+   "Q2288140"
+  ],
+  "adm": "Q240",
+  "loc": null,
+  "parent": null,
+  "country": "Bélgica",
+  "isMuseum": true
+ },
+ "Q531218": {
+  "name": "Museo Horne",
+  "types": [
+   "Q166118",
+   "Q207694",
+   "Q614316"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q606494": {
+  "name": "Museo Civico di Sansepolcro",
+  "types": [
+   "Q207694",
+   "Q124830213"
+  ],
+  "adm": "Q52098",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q820370": {
+  "name": "Q820370",
+  "types": [
+   "Q43229",
+   "Q1497375",
+   "Q7328910"
+  ],
+  "adm": "Q262951",
+  "loc": null,
+  "parent": "Q1635896",
+  "country": "Austria",
+  "isMuseum": false
+ },
+ "Q861252": {
+  "name": "Museo Nacional de Arte de Cataluña",
+  "types": [
+   "Q207694",
+   "Q17431399"
+  ],
+  "adm": "Q753075",
+  "loc": "Q753075",
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q1080108": {
+  "name": "Galería Nacional de las Marcas",
+  "types": [
+   "Q16560",
+   "Q207694",
+   "Q3329412",
+   "Q3867560",
+   "Q17431399",
+   "Q97662266",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q2759",
+  "loc": "Q1267721",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1232516": {
+  "name": "Kaiser Friedrich Museumsverein (KFMV)",
+  "types": [
+   "Q163740",
+   "Q123909628"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
   "isMuseum": false
  },
  "Q1284848": {
@@ -793,6 +513,18 @@
   "country": "Bélgica",
   "isMuseum": false
  },
+ "Q3044768": {
+  "name": "Departamento de Pinturas del Museo del Louvre",
+  "types": [
+   "Q7328910",
+   "Q11681271"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": "Q19675",
+  "country": "Francia",
+  "isMuseum": false
+ },
  "Q3314337": {
   "name": "El Pardo",
   "types": [
@@ -803,6 +535,103 @@
   "parent": null,
   "country": "España",
   "isMuseum": false
+ },
+ "Q3330318": {
+  "name": "Museo diocesano di Santo Stefano al Ponte",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q1231888"
+  ],
+  "adm": "Q2044",
+  "loc": "Q2707802",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3330320": {
+  "name": "Museo Diocesano de Cortona",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q614316",
+   "Q1231888",
+   "Q92755865"
+  ],
+  "adm": "Q52080",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3330782": {
+  "name": "Oldmasters Museum",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q239",
+  "loc": null,
+  "parent": "Q377500",
+  "country": "Bélgica",
+  "isMuseum": true
+ },
+ "Q3469918": {
+  "name": "Room A4 Giotto — Cimabue",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q51252",
+  "parent": "Q51252",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q3635787": {
+  "name": "Basílica superior de San Francisco de Asís",
+  "types": [
+   "Q1088552"
+  ],
+  "adm": "Q20103",
+  "loc": null,
+  "parent": "Q207486",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q3670083": {
+  "name": "iglesia de San Francisco",
+  "types": [
+   "Q16970"
+  ],
+  "adm": "Q13375",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q938154": {
+  "name": "Catedral de San Bavón",
+  "types": [
+   "Q2977"
+  ],
+  "adm": "Q1296",
+  "loc": null,
+  "parent": null,
+  "country": "Bélgica",
+  "isMuseum": true
+ },
+ "Q963954": {
+  "name": "capilla de los Scrovegni",
+  "types": [
+   "Q108325",
+   "Q207694",
+   "Q92755865",
+   "Q124830213"
+  ],
+  "adm": "Q617",
+  "loc": null,
+  "parent": "Q3867519",
+  "country": "Italia",
+  "isMuseum": true
  },
  "Q8932": {
   "name": "Espacio Económico Europeo",
@@ -821,17 +650,41 @@
   "country": null,
   "isMuseum": false
  },
- "Q1075988": {
-  "name": "Palacio del Louvre",
+ "Q19675": {
+  "name": "Museo del Louvre",
   "types": [
-   "Q16560",
-   "Q751876"
+   "Q207694",
+   "Q3329412"
   ],
-  "adm": "Q161741",
-  "loc": null,
+  "adm": "Q2409554",
+  "loc": "Q1075988",
   "parent": null,
   "country": "Francia",
   "isMuseum": true
+ },
+ "Q386482": {
+  "name": "Kulturforum",
+  "types": [
+   "Q1497375"
+  ],
+  "adm": "Q163966",
+  "loc": "Q328672",
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q495217": {
+  "name": "Sacro Convento de San Francisco",
+  "types": [
+   "Q358",
+   "Q811165",
+   "Q76529788"
+  ],
+  "adm": "Q20103",
+  "loc": null,
+  "parent": "Q2636502",
+  "country": "Italia",
+  "isMuseum": false
  },
  "Q1635896": {
   "name": "Altaussee salt mine",
@@ -856,31 +709,6 @@
   "country": "España",
   "isMuseum": false
  },
- "Q2636502": {
-  "name": "propiedades de la Santa Sede",
-  "types": [
-   "Q13406463"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": null,
-  "isMuseum": false
- },
- "Q2641492": {
-  "name": "Triveneto",
-  "types": [
-   "Q82794",
-   "Q1151616",
-   "Q3024240",
-   "Q3502482"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": "Croacia",
-  "isMuseum": false
- },
  "Q2990489": {
   "name": "San Marco complex",
   "types": [],
@@ -890,17 +718,30 @@
   "country": null,
   "isMuseum": false
  },
- "Q17148329": {
-  "name": "New York Art Resources Consortium",
+ "Q3867519": {
+  "name": "Museos cívicos de Padua",
   "types": [
-   "Q8513",
-   "Q166118",
-   "Q194166"
+   "Q207694",
+   "Q3329412",
+   "Q7328910",
+   "Q92755865",
+   "Q124830213"
   ],
-  "adm": "Q60",
+  "adm": "Q617",
   "loc": null,
   "parent": null,
-  "country": "Estados Unidos",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q14619172": {
+  "name": "ala Denon",
+  "types": [
+   "Q1125776"
+  ],
+  "adm": "Q161741",
+  "loc": "Q1075988",
+  "parent": "Q1075988",
+  "country": "Francia",
   "isMuseum": false
  },
  "Q17309944": {
@@ -912,6 +753,20 @@
   "loc": "Q1075988",
   "parent": "Q19675",
   "country": "Francia",
+  "isMuseum": false
+ },
+ "Q28647411": {
+  "name": "Gallerie degli Uffizi",
+  "types": [
+   "Q3867560",
+   "Q88667167",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
   "isMuseum": false
  },
  "Q51674344": {
@@ -952,6 +807,22 @@
   "country": "Alemania",
   "isMuseum": false
  },
+ "Q641": {
+  "name": "Venecia",
+  "types": [
+   "Q515",
+   "Q581830",
+   "Q747074",
+   "Q1549591",
+   "Q2264924",
+   "Q4115680"
+  ],
+  "adm": "Q3678587",
+  "loc": null,
+  "parent": "Q2641492",
+  "country": "Italia",
+  "isMuseum": false
+ },
  "Q6247": {
   "name": "Mantua",
   "types": [
@@ -976,6 +847,19 @@
   "parent": null,
   "country": "Italia",
   "isMuseum": false
+ },
+ "Q95569": {
+  "name": "Museo de Historia del Arte de Viena",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q3152824"
+  ],
+  "adm": "Q1741",
+  "loc": "Q1741",
+  "parent": null,
+  "country": "Austria",
+  "isMuseum": true
  },
  "Q160236": {
   "name": "Museo Metropolitano de Arte",
@@ -1007,19 +891,6 @@
   "country": "España",
   "isMuseum": true
  },
- "Q195311": {
-  "name": "Museo Nacional de Cracovia",
-  "types": [
-   "Q207694",
-   "Q2772772",
-   "Q17431399"
-  ],
-  "adm": "Q31487",
-  "loc": null,
-  "parent": "Q49123914",
-  "country": "Polonia",
-  "isMuseum": true
- },
  "Q212459": {
   "name": "Museo Nacional de Arte Antiguo",
   "types": [
@@ -1033,29 +904,49 @@
   "country": "Portugal",
   "isMuseum": true
  },
- "Q244952": {
-  "name": "Santa Maria delle Grazie",
+ "Q290549": {
+  "name": "Museo Nacional de Capodimonte",
   "types": [
-   "Q16970",
-   "Q120560",
-   "Q334383"
+   "Q207694",
+   "Q3867560",
+   "Q17431399",
+   "Q97662266",
+   "Q121076356",
+   "Q124830411"
   ],
-  "adm": "Q490",
+  "adm": "Q2634",
   "loc": null,
-  "parent": "Q112172720",
+  "parent": null,
   "country": "Italia",
   "isMuseum": true
  },
- "Q679527": {
-  "name": "Museo Boymans Van Beuningen",
+ "Q338330": {
+  "name": "Galería de la Academia de Venecia",
   "types": [
-   "Q3196771"
+   "Q207694",
+   "Q3867560",
+   "Q24699794",
+   "Q97662266",
+   "Q121076356",
+   "Q124830411"
   ],
-  "adm": "Q2680952",
-  "loc": "Q2399655",
+  "adm": "Q3867184",
+  "loc": "Q52422",
   "parent": null,
-  "country": "Países Bajos",
-  "isMuseum": false
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q682827": {
+  "name": "Colección Frick",
+  "types": [
+   "Q207694",
+   "Q7328910"
+  ],
+  "adm": "Q11299",
+  "loc": "Q105979668",
+  "parent": "Q17148329",
+  "country": "Estados Unidos",
+  "isMuseum": true
  },
  "Q911047": {
   "name": "Palacio Medici Riccardi",
@@ -1072,31 +963,6 @@
   "parent": null,
   "country": "Italia",
   "isMuseum": true
- },
- "Q1450630": {
-  "name": "Museo Czartoryski",
-  "types": [
-   "Q207694",
-   "Q811165",
-   "Q3329412",
-   "Q17431399"
-  ],
-  "adm": "Q31487",
-  "loc": "Q31487",
-  "parent": "Q195311",
-  "country": "Polonia",
-  "isMuseum": true
- },
- "Q2074027": {
-  "name": "Samuel H. Kress Collection",
-  "types": [
-   "Q7328910"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": "Estados Unidos",
-  "isMuseum": false
  },
  "Q2365880": {
   "name": "Museo de Bellas Artes de Gante",
@@ -1121,18 +987,6 @@
   "parent": null,
   "country": "España",
   "isMuseum": true
- },
- "Q10292830": {
-  "name": "Salle des États",
-  "types": [
-   "Q180516",
-   "Q15206795"
-  ],
-  "adm": "Q161741",
-  "loc": null,
-  "parent": "Q14619172",
-  "country": "Francia",
-  "isMuseum": false
  },
  "Q12269950": {
   "name": "Room 710",
@@ -1191,6 +1045,17 @@
   "country": "Italia",
   "isMuseum": false
  },
+ "Q111145598": {
+  "name": "Italian Renaissance - cabinet 4",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q95569",
+  "parent": "Q95569",
+  "country": null,
+  "isMuseum": false
+ },
  "Q116844750": {
   "name": "Bedroom of Lorenzo il Magnifico of Palazzo Medici",
   "types": [
@@ -1213,6 +1078,17 @@
   "country": null,
   "isMuseum": false
  },
+ "Q136674481": {
+  "name": "Room 63 La Serenissima: Painting in Venice 1450–1500",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q180788",
+  "parent": "Q180788",
+  "country": null,
+  "isMuseum": false
+ },
  "Q920379": {
   "name": "Ministerio de la Presidencia y para las Administraciones Territoriales",
   "types": [
@@ -1223,6 +1099,43 @@
   "loc": null,
   "parent": null,
   "country": "España",
+  "isMuseum": false
+ },
+ "Q1075988": {
+  "name": "Palacio del Louvre",
+  "types": [
+   "Q16560",
+   "Q751876"
+  ],
+  "adm": "Q161741",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q2636502": {
+  "name": "propiedades de la Santa Sede",
+  "types": [
+   "Q13406463"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q2641492": {
+  "name": "Triveneto",
+  "types": [
+   "Q82794",
+   "Q1151616",
+   "Q3024240",
+   "Q3502482"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Croacia",
   "isMuseum": false
  },
  "Q12269951": {
@@ -1247,15 +1160,17 @@
   "country": "Italia",
   "isMuseum": false
  },
- "Q49123914": {
-  "name": "National Museum of Poland",
+ "Q17148329": {
+  "name": "New York Art Resources Consortium",
   "types": [
-   "Q13406463"
+   "Q8513",
+   "Q166118",
+   "Q194166"
   ],
-  "adm": null,
+  "adm": "Q60",
   "loc": null,
   "parent": null,
-  "country": "Polonia",
+  "country": "Estados Unidos",
   "isMuseum": false
  },
  "Q64699564": {
@@ -1279,18 +1194,6 @@
   "parent": null,
   "country": "Austria",
   "isMuseum": false
- },
- "Q112172720": {
-  "name": "Q112172720",
-  "types": [
-   "Q1128397",
-   "Q1497375"
-  ],
-  "adm": "Q490",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": true
  },
  "Q237": {
   "name": "Ciudad del Vaticano",
@@ -1351,17 +1254,6 @@
   "country": "Ciudad del Vaticano",
   "isMuseum": true
  },
- "Q4890": {
-  "name": "Gemäldegalerie Alte Meister",
-  "types": [
-   "Q207694"
-  ],
-  "adm": "Q1731",
-  "loc": null,
-  "parent": "Q653002",
-  "country": "Alemania",
-  "isMuseum": true
- },
  "Q182955": {
   "name": "Museos Vaticanos",
   "types": [
@@ -1372,6 +1264,32 @@
   "loc": null,
   "parent": null,
   "country": "Ciudad del Vaticano",
+  "isMuseum": true
+ },
+ "Q195311": {
+  "name": "Museo Nacional de Cracovia",
+  "types": [
+   "Q207694",
+   "Q2772772",
+   "Q17431399"
+  ],
+  "adm": "Q31487",
+  "loc": null,
+  "parent": "Q49123914",
+  "country": "Polonia",
+  "isMuseum": true
+ },
+ "Q244952": {
+  "name": "Santa Maria delle Grazie",
+  "types": [
+   "Q16970",
+   "Q120560",
+   "Q334383"
+  ],
+  "adm": "Q490",
+  "loc": null,
+  "parent": "Q112172720",
+  "country": "Italia",
   "isMuseum": true
  },
  "Q371908": {
@@ -1385,17 +1303,6 @@
   "country": "Austria",
   "isMuseum": true
  },
- "Q653002": {
-  "name": "Staatliche Kunstsammlungen Dresden",
-  "types": [
-   "Q207694"
-  ],
-  "adm": "Q1731",
-  "loc": "Q1731",
-  "parent": "Q2378820",
-  "country": "Alemania",
-  "isMuseum": true
- },
  "Q671384": {
   "name": "Galería Nacional de Dinamarca",
   "types": [
@@ -1405,6 +1312,17 @@
   "loc": null,
   "parent": null,
   "country": "Dinamarca",
+  "isMuseum": false
+ },
+ "Q679527": {
+  "name": "Museo Boymans Van Beuningen",
+  "types": [
+   "Q3196771"
+  ],
+  "adm": "Q2680952",
+  "loc": "Q2399655",
+  "parent": null,
+  "country": "Países Bajos",
   "isMuseum": false
  },
  "Q812285": {
@@ -1417,17 +1335,6 @@
   "loc": null,
   "parent": null,
   "country": "Alemania",
-  "isMuseum": true
- },
- "Q1236579": {
-  "name": "Dome of Castlefranco Veneto",
-  "types": [
-   "Q16970"
-  ],
-  "adm": "Q29352",
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
   "isMuseum": true
  },
  "Q1247143": {
@@ -1469,6 +1376,20 @@
   "country": "República Checa",
   "isMuseum": true
  },
+ "Q1450630": {
+  "name": "Museo Czartoryski",
+  "types": [
+   "Q207694",
+   "Q811165",
+   "Q3329412",
+   "Q17431399"
+  ],
+  "adm": "Q31487",
+  "loc": "Q31487",
+  "parent": "Q195311",
+  "country": "Polonia",
+  "isMuseum": true
+ },
  "Q1741629": {
   "name": "Museo de Arte Kimbell",
   "types": [
@@ -1480,6 +1401,17 @@
   "country": "Estados Unidos",
   "isMuseum": true
  },
+ "Q2074027": {
+  "name": "Samuel H. Kress Collection",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": false
+ },
  "Q3861962": {
   "name": "Monte San Martino",
   "types": [
@@ -1490,6 +1422,18 @@
   "loc": null,
   "parent": "Q1060445",
   "country": "Italia",
+  "isMuseum": false
+ },
+ "Q10292830": {
+  "name": "Salle des États",
+  "types": [
+   "Q180516",
+   "Q15206795"
+  ],
+  "adm": "Q161741",
+  "loc": null,
+  "parent": "Q14619172",
+  "country": "Francia",
   "isMuseum": false
  },
  "Q19018240": {
@@ -1566,17 +1510,6 @@
   "adm": null,
   "loc": null,
   "parent": "Q4279216",
-  "country": null,
-  "isMuseum": false
- },
- "Q81687031": {
-  "name": "Hall VIII",
-  "types": [
-   "Q15206795"
-  ],
-  "adm": null,
-  "loc": "Q338330",
-  "parent": "Q338330",
   "country": null,
   "isMuseum": false
  },
@@ -1683,20 +1616,6 @@
   "country": "Italia",
   "isMuseum": false
  },
- "Q2378820": {
-  "name": "State Ministry of Science and Cultural Affairs of Saxony",
-  "types": [
-   "Q1313096",
-   "Q1792533",
-   "Q1802122",
-   "Q2446662"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": "Alemania",
-  "isMuseum": false
- },
  "Q4279216": {
   "name": "Small Hermitage",
   "types": [
@@ -1706,6 +1625,17 @@
   "loc": null,
   "parent": "Q132783",
   "country": "Rusia",
+  "isMuseum": false
+ },
+ "Q49123914": {
+  "name": "National Museum of Poland",
+  "types": [
+   "Q13406463"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Polonia",
   "isMuseum": false
  },
  "Q105525743": {
@@ -1720,16 +1650,27 @@
   "country": "Austria",
   "isMuseum": false
  },
- "Q29247": {
-  "name": "Getty Center",
+ "Q112172720": {
+  "name": "Q112172720",
   "types": [
-   "Q33506",
+   "Q1128397",
    "Q1497375"
   ],
-  "adm": "Q65",
-  "loc": "Q65",
-  "parent": "Q5554709",
-  "country": "Estados Unidos",
+  "adm": "Q490",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q4890": {
+  "name": "Gemäldegalerie Alte Meister",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q1731",
+  "loc": null,
+  "parent": "Q653002",
+  "country": "Alemania",
   "isMuseum": true
  },
  "Q49135": {
@@ -1743,30 +1684,6 @@
   "parent": null,
   "country": "Estados Unidos",
   "isMuseum": true
- },
- "Q194626": {
-  "name": "Museo de Arte de Basilea",
-  "types": [
-   "Q33506",
-   "Q1497649",
-   "Q3196771"
-  ],
-  "adm": "Q78",
-  "loc": "Q69541078",
-  "parent": null,
-  "country": "Suiza",
-  "isMuseum": true
- },
- "Q212594": {
-  "name": "Würth Collection",
-  "types": [
-   "Q7328910"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": "Alemania",
-  "isMuseum": false
  },
  "Q224961": {
   "name": "basílica de Santa María dei Frari",
@@ -1792,28 +1709,15 @@
   "country": "Alemania",
   "isMuseum": true
  },
- "Q683163": {
-  "name": "Kunstmuseum Solothurn",
-  "types": [
-   "Q207694",
-   "Q1497649",
-   "Q24699794"
-  ],
-  "adm": "Q68965",
-  "loc": null,
-  "parent": "Q14549683",
-  "country": "Suiza",
-  "isMuseum": true
- },
- "Q731126": {
-  "name": "Museo J. Paul Getty",
+ "Q653002": {
+  "name": "Staatliche Kunstsammlungen Dresden",
   "types": [
    "Q207694"
   ],
-  "adm": "Q65",
-  "loc": "Q65",
-  "parent": null,
-  "country": "Estados Unidos",
+  "adm": "Q1731",
+  "loc": "Q1731",
+  "parent": "Q2378820",
+  "country": "Alemania",
   "isMuseum": true
  },
  "Q772890": {
@@ -1905,16 +1809,15 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q1628138": {
-  "name": "Johanniterkirche",
+ "Q1236579": {
+  "name": "Dome of Castlefranco Veneto",
   "types": [
-   "Q16970",
-   "Q207694"
+   "Q16970"
   ],
-  "adm": "Q14910",
+  "adm": "Q29352",
   "loc": null,
-  "parent": "Q212594",
-  "country": "Alemania",
+  "parent": null,
+  "country": "Italia",
   "isMuseum": true
  },
  "Q2051997": {
@@ -1967,14 +1870,14 @@
   "country": "Francia",
   "isMuseum": false
  },
- "Q65560378": {
-  "name": "Room 4 The Spectacle of Portraiture: European Painting 1500–1600",
+ "Q81687031": {
+  "name": "Hall VIII",
   "types": [
    "Q15206795"
   ],
   "adm": null,
-  "loc": null,
-  "parent": "Q180788",
+  "loc": "Q338330",
+  "parent": "Q338330",
   "country": null,
   "isMuseum": false
  },
@@ -2064,55 +1967,67 @@
   "country": "Italia",
   "isMuseum": true
  },
- "Q5554709": {
-  "name": "Getty Foundation",
+ "Q2378820": {
+  "name": "State Ministry of Science and Cultural Affairs of Saxony",
   "types": [
-   "Q163740"
-  ],
-  "adm": "Q65",
-  "loc": null,
-  "parent": null,
-  "country": "Estados Unidos",
-  "isMuseum": false
- },
- "Q14549683": {
-  "name": "list of cultural properties in Solothurn",
-  "types": [
-   "Q13406463"
+   "Q1313096",
+   "Q1792533",
+   "Q1802122",
+   "Q2446662"
   ],
   "adm": null,
-  "loc": "Q68965",
-  "parent": null,
-  "country": "Suiza",
-  "isMuseum": false
- },
- "Q42646": {
-  "name": "Castillo de Windsor",
-  "types": [
-   "Q16560",
-   "Q23413",
-   "Q751876",
-   "Q1343246",
-   "Q2087181",
-   "Q53536964",
-   "Q131986827"
-  ],
-  "adm": "Q464955",
-  "loc": "Q464955",
-  "parent": "Q1459037",
-  "country": "Reino Unido",
-  "isMuseum": true
- },
- "Q452362": {
-  "name": "Museo estatal de Hesse",
-  "types": [
-   "Q33506",
-   "Q24699794"
-  ],
-  "adm": "Q2973",
-  "loc": "Q2973",
+  "loc": null,
   "parent": null,
   "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q29247": {
+  "name": "Getty Center",
+  "types": [
+   "Q33506",
+   "Q1497375"
+  ],
+  "adm": "Q65",
+  "loc": "Q65",
+  "parent": "Q5554709",
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q194626": {
+  "name": "Museo de Arte de Basilea",
+  "types": [
+   "Q33506",
+   "Q1497649",
+   "Q3196771"
+  ],
+  "adm": "Q78",
+  "loc": "Q69541078",
+  "parent": null,
+  "country": "Suiza",
+  "isMuseum": true
+ },
+ "Q212594": {
+  "name": "Würth Collection",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q683163": {
+  "name": "Kunstmuseum Solothurn",
+  "types": [
+   "Q207694",
+   "Q1497649",
+   "Q24699794"
+  ],
+  "adm": "Q68965",
+  "loc": null,
+  "parent": "Q14549683",
+  "country": "Suiza",
   "isMuseum": true
  },
  "Q713558": {
@@ -2125,6 +2040,17 @@
   "loc": "Q3320338",
   "parent": "Q3320338",
   "country": "Italia",
+  "isMuseum": true
+ },
+ "Q731126": {
+  "name": "Museo J. Paul Getty",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q65",
+  "loc": "Q65",
+  "parent": null,
+  "country": "Estados Unidos",
   "isMuseum": true
  },
  "Q1053735": {
@@ -2165,17 +2091,16 @@
   "country": "Italia",
   "isMuseum": true
  },
- "Q1459037": {
-  "name": "Royal Collection",
+ "Q1628138": {
+  "name": "Johanniterkirche",
   "types": [
-   "Q33506",
-   "Q7328910",
-   "Q106668099"
+   "Q16970",
+   "Q207694"
   ],
-  "adm": null,
+  "adm": "Q14910",
   "loc": null,
-  "parent": null,
-  "country": "Reino Unido",
+  "parent": "Q212594",
+  "country": "Alemania",
   "isMuseum": true
  },
  "Q1748404": {
@@ -2212,15 +2137,15 @@
   "country": "España",
   "isMuseum": true
  },
- "Q106622805": {
-  "name": "Prado hall 026",
+ "Q65560378": {
+  "name": "Room 4 The Spectacle of Portraiture: European Painting 1500–1600",
   "types": [
    "Q15206795"
   ],
-  "adm": "Q10306766",
-  "loc": "Q160112",
-  "parent": "Q160112",
-  "country": "España",
+  "adm": null,
+  "loc": null,
+  "parent": "Q180788",
+  "country": null,
   "isMuseum": false
  },
  "Q136767198": {
@@ -2267,6 +2192,28 @@
   "country": "Reino de Italia",
   "isMuseum": false
  },
+ "Q5554709": {
+  "name": "Getty Foundation",
+  "types": [
+   "Q163740"
+  ],
+  "adm": "Q65",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": false
+ },
+ "Q14549683": {
+  "name": "list of cultural properties in Solothurn",
+  "types": [
+   "Q13406463"
+  ],
+  "adm": null,
+  "loc": "Q68965",
+  "parent": null,
+  "country": "Suiza",
+  "isMuseum": false
+ },
  "Q29": {
   "name": "España",
   "types": [
@@ -2298,6 +2245,23 @@
   "country": "Estados Unidos",
   "isMuseum": false
  },
+ "Q42646": {
+  "name": "Castillo de Windsor",
+  "types": [
+   "Q16560",
+   "Q23413",
+   "Q751876",
+   "Q1343246",
+   "Q2087181",
+   "Q53536964",
+   "Q131986827"
+  ],
+  "adm": "Q464955",
+  "loc": "Q464955",
+  "parent": "Q1459037",
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
  "Q49133": {
   "name": "Museo de Bellas Artes de Boston",
   "types": [
@@ -2323,40 +2287,16 @@
   "country": "España",
   "isMuseum": true
  },
- "Q530129": {
-  "name": "Palacio Real de Aranjuez",
+ "Q452362": {
+  "name": "Museo estatal de Hesse",
   "types": [
    "Q33506",
-   "Q53536964"
+   "Q24699794"
   ],
-  "adm": "Q486792",
-  "loc": null,
-  "parent": "Q6057341",
-  "country": "España",
-  "isMuseum": true
- },
- "Q613619": {
-  "name": "Concatedral de San Juan",
-  "types": [
-   "Q2977",
-   "Q16970"
-  ],
-  "adm": "Q23800",
-  "loc": null,
+  "adm": "Q2973",
+  "loc": "Q2973",
   "parent": null,
-  "country": "Malta",
-  "isMuseum": true
- },
- "Q638283": {
-  "name": "iglesia de San Luis de los Franceses",
-  "types": [
-   "Q16970",
-   "Q1649443"
-  ],
-  "adm": "Q220",
-  "loc": "Q1814200",
-  "parent": null,
-  "country": "Italia",
+  "country": "Alemania",
   "isMuseum": true
  },
  "Q840886": {
@@ -2381,6 +2321,19 @@
   "parent": null,
   "country": "España",
   "isMuseum": false
+ },
+ "Q1459037": {
+  "name": "Royal Collection",
+  "types": [
+   "Q33506",
+   "Q7328910",
+   "Q106668099"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
  },
  "Q2097646": {
   "name": "Museo Soumaya",
@@ -2418,17 +2371,6 @@
   "country": "España",
   "isMuseum": true
  },
- "Q3657340": {
-  "name": "Capilla Contarelli",
-  "types": [
-   "Q108325"
-  ],
-  "adm": "Q220",
-  "loc": "Q638283",
-  "parent": "Q638283",
-  "country": "Italia",
-  "isMuseum": true
- },
  "Q16558514": {
   "name": "Hospital de la Caridad de Illescas",
   "types": [
@@ -2451,15 +2393,15 @@
   "country": "Estados Unidos",
   "isMuseum": false
  },
- "Q138914903": {
-  "name": "Room 32 Baroque Splendour: Italian Painting 1600–1700",
+ "Q106622805": {
+  "name": "Prado hall 026",
   "types": [
    "Q15206795"
   ],
-  "adm": null,
-  "loc": "Q180788",
-  "parent": "Q180788",
-  "country": null,
+  "adm": "Q10306766",
+  "loc": "Q160112",
+  "parent": "Q160112",
+  "country": "España",
   "isMuseum": false
  },
  "Q141591232": {
@@ -2485,17 +2427,6 @@
   "loc": null,
   "parent": "Q828",
   "country": "Estados Unidos",
-  "isMuseum": false
- },
- "Q6057341": {
-  "name": "Paisaje cultural de Aranjuez",
-  "types": [
-   "Q1129474"
-  ],
-  "adm": "Q486792",
-  "loc": null,
-  "parent": null,
-  "country": "España",
   "isMuseum": false
  },
  "Q16303321": {
@@ -2562,6 +2493,42 @@
   "country": "Italia",
   "isMuseum": true
  },
+ "Q530129": {
+  "name": "Palacio Real de Aranjuez",
+  "types": [
+   "Q33506",
+   "Q53536964"
+  ],
+  "adm": "Q486792",
+  "loc": null,
+  "parent": "Q6057341",
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q613619": {
+  "name": "Concatedral de San Juan",
+  "types": [
+   "Q2977",
+   "Q16970"
+  ],
+  "adm": "Q23800",
+  "loc": null,
+  "parent": null,
+  "country": "Malta",
+  "isMuseum": true
+ },
+ "Q638283": {
+  "name": "iglesia de San Luis de los Franceses",
+  "types": [
+   "Q16970",
+   "Q1649443"
+  ],
+  "adm": "Q220",
+  "loc": "Q1814200",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
  "Q869513": {
   "name": "basílica de Santa María del Popolo",
   "types": [
@@ -2585,32 +2552,6 @@
   "loc": "Q3891390",
   "parent": "Q815611",
   "country": "Italia",
-  "isMuseum": true
- },
- "Q1117704": {
-  "name": "Museo de Arte de Indianápolis",
-  "types": [
-   "Q163740",
-   "Q207694"
-  ],
-  "adm": "Q6346",
-  "loc": null,
-  "parent": null,
-  "country": "Estados Unidos",
-  "isMuseum": true
- },
- "Q1322403": {
-  "name": "Real Academia de Bellas Artes de San Fernando",
-  "types": [
-   "Q33506",
-   "Q207694",
-   "Q383092",
-   "Q1966910"
-  ],
-  "adm": "Q2807",
-  "loc": null,
-  "parent": "Q3100331",
-  "country": "España",
   "isMuseum": true
  },
  "Q1327919": {
@@ -2638,32 +2579,6 @@
   "country": "Alemania",
   "isMuseum": true
  },
- "Q1540732": {
-  "name": "Palacio Real de La Granja de San Ildefonso",
-  "types": [
-   "Q33506",
-   "Q53536964",
-   "Q116651321"
-  ],
-  "adm": "Q1125500",
-  "loc": null,
-  "parent": null,
-  "country": "España",
-  "isMuseum": true
- },
- "Q2037255": {
-  "name": "Hospital de Tavera",
-  "types": [
-   "Q180370",
-   "Q24699794",
-   "Q64578911"
-  ],
-  "adm": "Q5836",
-  "loc": "Q31844059",
-  "parent": null,
-  "country": "España",
-  "isMuseum": false
- },
  "Q2686991": {
   "name": "Sint-Walburgiskerk",
   "types": [
@@ -2674,6 +2589,17 @@
   "loc": null,
   "parent": null,
   "country": "Bélgica",
+  "isMuseum": true
+ },
+ "Q3657340": {
+  "name": "Capilla Contarelli",
+  "types": [
+   "Q108325"
+  ],
+  "adm": "Q220",
+  "loc": "Q638283",
+  "parent": "Q638283",
+  "country": "Italia",
   "isMuseum": true
  },
  "Q5063707": {
@@ -2698,18 +2624,6 @@
   "country": "España",
   "isMuseum": true
  },
- "Q18755349": {
-  "name": "Museo Fundación Duque de Lerma",
-  "types": [
-   "Q33506",
-   "Q207694"
-  ],
-  "adm": "Q5836",
-  "loc": "Q2037255",
-  "parent": null,
-  "country": "España",
-  "isMuseum": true
- },
  "Q19018800": {
   "name": "Room 846",
   "types": [
@@ -2719,17 +2633,6 @@
   "adm": "Q161741",
   "loc": null,
   "parent": "Q17309944",
-  "country": "Francia",
-  "isMuseum": false
- },
- "Q19059868": {
-  "name": "Reservas del Museo del Louvre",
-  "types": [
-   "Q1191732"
-  ],
-  "adm": null,
-  "loc": "Q1075988",
-  "parent": null,
   "country": "Francia",
   "isMuseum": false
  },
@@ -2799,6 +2702,17 @@
   "country": null,
   "isMuseum": false
  },
+ "Q138914903": {
+  "name": "Room 32 Baroque Splendour: Italian Painting 1600–1700",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q180788",
+  "parent": "Q180788",
+  "country": null,
+  "isMuseum": false
+ },
  "Q828": {
   "name": "América",
   "types": [
@@ -2848,12 +2762,12 @@
   "country": "Italia",
   "isMuseum": false
  },
- "Q3100331": {
-  "name": "Instituto de España",
+ "Q6057341": {
+  "name": "Paisaje cultural de Aranjuez",
   "types": [
-   "Q37178026"
+   "Q1129474"
   ],
-  "adm": null,
+  "adm": "Q486792",
   "loc": null,
   "parent": null,
   "country": "España",
@@ -2922,19 +2836,6 @@
   "country": "Alemania",
   "isMuseum": true
  },
- "Q239303": {
-  "name": "Instituto de Arte de Chicago",
-  "types": [
-   "Q163740",
-   "Q2385804",
-   "Q3196771"
-  ],
-  "adm": "Q1297",
-  "loc": null,
-  "parent": null,
-  "country": "Estados Unidos",
-  "isMuseum": false
- },
  "Q405543": {
   "name": "Museo Louvre-Lens",
   "types": [
@@ -2957,6 +2858,32 @@
   "country": "Alemania",
   "isMuseum": true
  },
+ "Q1117704": {
+  "name": "Museo de Arte de Indianápolis",
+  "types": [
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q6346",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q1322403": {
+  "name": "Real Academia de Bellas Artes de San Fernando",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q383092",
+   "Q1966910"
+  ],
+  "adm": "Q2807",
+  "loc": null,
+  "parent": "Q3100331",
+  "country": "España",
+  "isMuseum": true
+ },
  "Q1519002": {
   "name": "Museo Fabre",
   "types": [
@@ -2967,6 +2894,32 @@
   "parent": null,
   "country": "Francia",
   "isMuseum": true
+ },
+ "Q1540732": {
+  "name": "Palacio Real de La Granja de San Ildefonso",
+  "types": [
+   "Q33506",
+   "Q53536964",
+   "Q116651321"
+  ],
+  "adm": "Q1125500",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q2037255": {
+  "name": "Hospital de Tavera",
+  "types": [
+   "Q180370",
+   "Q24699794",
+   "Q64578911"
+  ],
+  "adm": "Q5836",
+  "loc": "Q31844059",
+  "parent": null,
+  "country": "España",
+  "isMuseum": false
  },
  "Q2418618": {
   "name": "Casa Buonarroti",
@@ -3033,6 +2986,18 @@
   "country": "Italia",
   "isMuseum": true
  },
+ "Q18755349": {
+  "name": "Museo Fundación Duque de Lerma",
+  "types": [
+   "Q33506",
+   "Q207694"
+  ],
+  "adm": "Q5836",
+  "loc": "Q2037255",
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
  "Q19009568": {
   "name": "Room 826",
   "types": [
@@ -3044,13 +3009,13 @@
   "country": "Francia",
   "isMuseum": false
  },
- "Q19009660": {
-  "name": "Room 825",
+ "Q19059868": {
+  "name": "Reservas del Museo del Louvre",
   "types": [
-   "Q180516"
+   "Q1191732"
   ],
-  "adm": "Q161741",
-  "loc": "Q17309954",
+  "adm": null,
+  "loc": "Q1075988",
   "parent": null,
   "country": "Francia",
   "isMuseum": false
@@ -3102,6 +3067,17 @@
   "country": "Italia",
   "isMuseum": true
  },
+ "Q3100331": {
+  "name": "Instituto de España",
+  "types": [
+   "Q37178026"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": false
+ },
  "Q25861166": {
   "name": "Rijksmuseum",
   "types": [
@@ -3141,6 +3117,19 @@
   "country": "Reino Unido",
   "isMuseum": true
  },
+ "Q239303": {
+  "name": "Instituto de Arte de Chicago",
+  "types": [
+   "Q163740",
+   "Q2385804",
+   "Q3196771"
+  ],
+  "adm": "Q1297",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": false
+ },
  "Q622206": {
   "name": "Apsley House",
   "types": [
@@ -3152,18 +3141,6 @@
   "adm": "Q179351",
   "loc": "Q2166146",
   "parent": null,
-  "country": "Reino Unido",
-  "isMuseum": true
- },
- "Q636400": {
-  "name": "museo Ashmolean",
-  "types": [
-   "Q207694",
-   "Q866133"
-  ],
-  "adm": "Q20986484",
-  "loc": "Q4877597",
-  "parent": "Q34433",
   "country": "Reino Unido",
   "isMuseum": true
  },
@@ -3257,6 +3234,17 @@
   "country": "Reino Unido",
   "isMuseum": false
  },
+ "Q19009660": {
+  "name": "Room 825",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q161741",
+  "loc": "Q17309954",
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": false
+ },
  "Q19018629": {
   "name": "Room 853",
   "types": [
@@ -3290,17 +3278,6 @@
   "country": "España",
   "isMuseum": false
  },
- "Q135455144": {
-  "name": "Clowes Collection",
-  "types": [
-   "Q7328910"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": null,
-  "isMuseum": false
- },
  "Q544": {
   "name": "sistema solar",
   "types": [
@@ -3310,21 +3287,6 @@
   "loc": "Q33187",
   "parent": "Q321",
   "country": null,
-  "isMuseum": false
- },
- "Q34433": {
-  "name": "Universidad de Oxford",
-  "types": [
-   "Q38723",
-   "Q875538",
-   "Q3354859",
-   "Q5341295",
-   "Q5420001"
-  ],
-  "adm": "Q34217",
-  "loc": "Q23169",
-  "parent": null,
-  "country": "Reino Unido",
   "isMuseum": false
  },
  "Q2349901": {
@@ -3396,16 +3358,16 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q386570": {
-  "name": "Museo Lázaro Galdiano",
+ "Q636400": {
+  "name": "museo Ashmolean",
   "types": [
-   "Q33506",
-   "Q207694"
+   "Q207694",
+   "Q866133"
   ],
-  "adm": "Q2807",
-  "loc": null,
-  "parent": null,
-  "country": "España",
+  "adm": "Q20986484",
+  "loc": "Q4877597",
+  "parent": "Q34433",
+  "country": "Reino Unido",
   "isMuseum": true
  },
  "Q764804": {
@@ -3513,21 +3475,6 @@
   "country": "Países Bajos",
   "isMuseum": false
  },
- "Q97639944": {
-  "name": "Antiguo Hospital de Venerables Sacerdotes",
-  "types": [
-   "Q16917",
-   "Q16970",
-   "Q4989906",
-   "Q24699794",
-   "Q64578911"
-  ],
-  "adm": "Q8717",
-  "loc": null,
-  "parent": "Q97643027",
-  "country": "España",
-  "isMuseum": true
- },
  "Q108259072": {
   "name": "Museo de Bellas Artes de Sevilla - Sala IV",
   "types": [
@@ -3536,6 +3483,17 @@
   "adm": null,
   "loc": "Q2163496",
   "parent": "Q2163496",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q135455144": {
+  "name": "Clowes Collection",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
   "country": null,
   "isMuseum": false
  },
@@ -3560,6 +3518,21 @@
   "loc": null,
   "parent": "Q3944",
   "country": null,
+  "isMuseum": false
+ },
+ "Q34433": {
+  "name": "Universidad de Oxford",
+  "types": [
+   "Q38723",
+   "Q875538",
+   "Q3354859",
+   "Q5341295",
+   "Q5420001"
+  ],
+  "adm": "Q34217",
+  "loc": "Q23169",
+  "parent": null,
+  "country": "Reino Unido",
   "isMuseum": false
  },
  "Q700216": {
@@ -3607,17 +3580,16 @@
   "country": "España",
   "isMuseum": false
  },
- "Q475667": {
-  "name": "Museo del Führer",
+ "Q386570": {
+  "name": "Museo Lázaro Galdiano",
   "types": [
-   "Q207694",
-   "Q811683",
-   "Q2668072"
+   "Q33506",
+   "Q207694"
   ],
-  "adm": "Q41329",
+  "adm": "Q2807",
   "loc": null,
   "parent": null,
-  "country": "Imperio aleman (1871-1949)",
+  "country": "España",
   "isMuseum": true
  },
  "Q858907": {
@@ -3659,17 +3631,6 @@
   "country": "Países Bajos",
   "isMuseum": true
  },
- "Q2982834": {
-  "name": "Demidov collection",
-  "types": [
-   "Q7328910"
-  ],
-  "adm": null,
-  "loc": "Q290265",
-  "parent": null,
-  "country": "Italia",
-  "isMuseum": false
- },
  "Q18662018": {
   "name": "Galerie Georges Petit",
   "types": [
@@ -3693,6 +3654,21 @@
   "parent": null,
   "country": "España",
   "isMuseum": false
+ },
+ "Q97639944": {
+  "name": "Antiguo Hospital de Venerables Sacerdotes",
+  "types": [
+   "Q16917",
+   "Q16970",
+   "Q4989906",
+   "Q24699794",
+   "Q64578911"
+  ],
+  "adm": "Q8717",
+  "loc": null,
+  "parent": "Q97643027",
+  "country": "España",
+  "isMuseum": true
  },
  "Q105062070": {
   "name": "Kabinet van Heteren Gevers",
@@ -3802,6 +3778,19 @@
   "country": "Francia",
   "isMuseum": false
  },
+ "Q475667": {
+  "name": "Museo del Führer",
+  "types": [
+   "Q207694",
+   "Q811683",
+   "Q2668072"
+  ],
+  "adm": "Q41329",
+  "loc": null,
+  "parent": null,
+  "country": "Imperio aleman (1871-1949)",
+  "isMuseum": true
+ },
  "Q895434": {
   "name": "Bowes Museum",
   "types": [
@@ -3879,6 +3868,17 @@
   "country": "Italia",
   "isMuseum": true
  },
+ "Q2982834": {
+  "name": "Demidov collection",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": "Q290265",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
  "Q18572802": {
   "name": "Room 725",
   "types": [
@@ -3931,17 +3931,6 @@
   "adm": "Q161741",
   "loc": null,
   "parent": "Q17309954",
-  "country": "Francia",
-  "isMuseum": false
- },
- "Q19061113": {
-  "name": "Room 831",
-  "types": [
-   "Q180516"
-  ],
-  "adm": "Q161741",
-  "loc": null,
-  "parent": "Q17309944",
   "country": "Francia",
   "isMuseum": false
  },
@@ -3999,28 +3988,6 @@
   "parent": "Q1075988",
   "country": "Francia",
   "isMuseum": false
- },
- "Q21": {
-  "name": "Inglaterra",
-  "types": [
-   "Q3336843"
-  ],
-  "adm": "Q145",
-  "loc": null,
-  "parent": null,
-  "country": "Reino Unido",
-  "isMuseum": false
- },
- "Q182147": {
-  "name": "Palacio de Invierno",
-  "types": [
-   "Q16560"
-  ],
-  "adm": "Q2742132",
-  "loc": null,
-  "parent": "Q132783",
-  "country": "Rusia",
-  "isMuseum": true
  },
  "Q270920": {
   "name": "Real Academia de Artes",
@@ -4144,6 +4111,17 @@
   "country": "Francia",
   "isMuseum": false
  },
+ "Q19061113": {
+  "name": "Room 831",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q161741",
+  "loc": null,
+  "parent": "Q17309944",
+  "country": "Francia",
+  "isMuseum": false
+ },
  "Q29865840": {
   "name": "Alte Pinakothek, upper floor, gallery XII",
   "types": [
@@ -4188,6 +4166,28 @@
   "country": "Reino Unido",
   "isMuseum": false
  },
+ "Q21": {
+  "name": "Inglaterra",
+  "types": [
+   "Q3336843"
+  ],
+  "adm": "Q145",
+  "loc": null,
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": false
+ },
+ "Q182147": {
+  "name": "Palacio de Invierno",
+  "types": [
+   "Q16560"
+  ],
+  "adm": "Q2742132",
+  "loc": null,
+  "parent": "Q132783",
+  "country": "Rusia",
+  "isMuseum": true
+ },
  "Q460889": {
   "name": "Museo Nacional Centro de Arte Reina Sofía",
   "types": [
@@ -4226,28 +4226,6 @@
   "parent": null,
   "country": "Francia",
   "isMuseum": true
- },
- "Q3469929": {
-  "name": "Sacre Hall",
-  "types": [
-   "Q7328910"
-  ],
-  "adm": "Q621",
-  "loc": null,
-  "parent": "Q2946",
-  "country": "Francia",
-  "isMuseum": false
- },
- "Q4032340": {
-  "name": "Sala 702",
-  "types": [
-   "Q15206795"
-  ],
-  "adm": "Q161741",
-  "loc": "Q14619172",
-  "parent": "Q14619172",
-  "country": "Francia",
-  "isMuseum": false
  },
  "Q12316997": {
   "name": "hola djfantasma",
@@ -4292,20 +4270,6 @@
   "parent": "Q89503830",
   "country": "Estados Unidos",
   "isMuseum": false
- },
- "Q2946": {
-  "name": "Palacio de Versalles",
-  "types": [
-   "Q16560",
-   "Q207694",
-   "Q751876",
-   "Q53536964"
-  ],
-  "adm": "Q621",
-  "loc": null,
-  "parent": "Q3034552",
-  "country": "Francia",
-  "isMuseum": true
  },
  "Q17863945": {
   "name": "Laniakea",
@@ -4377,32 +4341,6 @@
   "country": "Rusia",
   "isMuseum": true
  },
- "Q195436": {
-  "name": "Tate Britain",
-  "types": [
-   "Q207694",
-   "Q17431399"
-  ],
-  "adm": "Q179351",
-  "loc": "Q124233",
-  "parent": "Q430682",
-  "country": "Reino Unido",
-  "isMuseum": true
- },
- "Q213322": {
-  "name": "Museo de Victoria y Alberto",
-  "types": [
-   "Q1200701",
-   "Q3196771",
-   "Q17000320",
-   "Q17431399"
-  ],
-  "adm": "Q188801",
-  "loc": "Q5187677",
-  "parent": null,
-  "country": "Reino Unido",
-  "isMuseum": true
- },
  "Q566661": {
   "name": "Museo de Bellas Artes de Leipzig",
   "types": [
@@ -4451,19 +4389,6 @@
   "country": "Italia",
   "isMuseum": true
  },
- "Q1199924": {
-  "name": "Museo Marítimo Nacional",
-  "types": [
-   "Q1863818",
-   "Q2772772",
-   "Q17431399"
-  ],
-  "adm": "Q693450",
-  "loc": "Q179385",
-  "parent": "Q7374509",
-  "country": "Reino Unido",
-  "isMuseum": true
- },
  "Q2853149": {
   "name": "Antichambre de la reine du Château de Versailles",
   "types": [
@@ -4487,26 +4412,26 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q7374509": {
-  "name": "Royal Museums Greenwich",
+ "Q3469929": {
+  "name": "Sacre Hall",
   "types": [
-   "Q88667167"
+   "Q7328910"
   ],
-  "adm": null,
+  "adm": "Q621",
   "loc": null,
-  "parent": null,
-  "country": "Reino Unido",
+  "parent": "Q2946",
+  "country": "Francia",
   "isMuseum": false
  },
- "Q124039071": {
-  "name": "Victoria and Albert museum prints, drawings, & paintings collection",
+ "Q4032340": {
+  "name": "Sala 702",
   "types": [
-   "Q2668072"
+   "Q15206795"
   ],
-  "adm": null,
-  "loc": null,
-  "parent": "Q213322",
-  "country": "Reino Unido",
+  "adm": "Q161741",
+  "loc": "Q14619172",
+  "parent": "Q14619172",
+  "country": "Francia",
   "isMuseum": false
  },
  "Q130342875": {
@@ -4520,16 +4445,19 @@
   "country": "España",
   "isMuseum": false
  },
- "Q131413924": {
-  "name": "Room 87",
+ "Q2946": {
+  "name": "Palacio de Versalles",
   "types": [
-   "Q15206795"
+   "Q16560",
+   "Q207694",
+   "Q751876",
+   "Q53536964"
   ],
-  "adm": null,
-  "loc": "Q131336099",
-  "parent": "Q131413879",
-  "country": null,
-  "isMuseum": false
+  "adm": "Q621",
+  "loc": null,
+  "parent": "Q3034552",
+  "country": "Francia",
+  "isMuseum": true
  },
  "Q24571": {
   "name": "Complejo de Supercúmulos Piscis-Cetus",
@@ -4576,17 +4504,6 @@
   "country": "Francia",
   "isMuseum": false
  },
- "Q3034552": {
-  "name": "Dominio de Versalles",
-  "types": [
-   "Q12292478"
-  ],
-  "adm": "Q621",
-  "loc": null,
-  "parent": null,
-  "country": "Francia",
-  "isMuseum": false
- },
  "Q14913799": {
   "name": "list of cultural properties in Winterthur/district 1",
   "types": [
@@ -4598,16 +4515,17 @@
   "country": "Suiza",
   "isMuseum": false
  },
- "Q131413879": {
-  "name": "Painting Galleries",
+ "Q195436": {
+  "name": "Tate Britain",
   "types": [
-   "Q15206795"
+   "Q207694",
+   "Q17431399"
   ],
-  "adm": null,
-  "loc": "Q131336099",
-  "parent": "Q131336099",
-  "country": null,
-  "isMuseum": false
+  "adm": "Q179351",
+  "loc": "Q124233",
+  "parent": "Q430682",
+  "country": "Reino Unido",
+  "isMuseum": true
  },
  "Q211043": {
   "name": "Museo Estatal Ruso",
@@ -4618,6 +4536,33 @@
   "loc": null,
   "parent": null,
   "country": "Rusia",
+  "isMuseum": true
+ },
+ "Q213322": {
+  "name": "Museo de Victoria y Alberto",
+  "types": [
+   "Q1200701",
+   "Q3196771",
+   "Q17000320",
+   "Q17431399"
+  ],
+  "adm": "Q188801",
+  "loc": "Q5187677",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q1199924": {
+  "name": "Museo Marítimo Nacional",
+  "types": [
+   "Q1863818",
+   "Q2772772",
+   "Q17431399"
+  ],
+  "adm": "Q693450",
+  "loc": "Q179385",
+  "parent": "Q7374509",
+  "country": "Reino Unido",
   "isMuseum": true
  },
  "Q1321874": {
@@ -4657,17 +4602,6 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q3094671": {
-  "name": "Louvre-Lens 2013",
-  "types": [
-   "Q29023906"
-  ],
-  "adm": "Q165271",
-  "loc": "Q16508151",
-  "parent": null,
-  "country": "Francia",
-  "isMuseum": false
- },
  "Q4032385": {
   "name": "Sala 700",
   "types": [
@@ -4702,6 +4636,17 @@
   "country": "Reino Unido",
   "isMuseum": true
  },
+ "Q7374509": {
+  "name": "Royal Museums Greenwich",
+  "types": [
+   "Q88667167"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": false
+ },
  "Q7404829": {
   "name": "Salisbury Museum",
   "types": [
@@ -4712,17 +4657,6 @@
   "loc": null,
   "parent": null,
   "country": "Reino Unido",
-  "isMuseum": false
- },
- "Q15298167": {
-  "name": "Room 701",
-  "types": [
-   "Q180516"
-  ],
-  "adm": "Q161741",
-  "loc": null,
-  "parent": "Q14619172",
-  "country": "Francia",
   "isMuseum": false
  },
  "Q19015236": {
@@ -4758,17 +4692,6 @@
   "country": "Francia",
   "isMuseum": false
  },
- "Q19060449": {
-  "name": "Room 947",
-  "types": [
-   "Q180516"
-  ],
-  "adm": "Q161741",
-  "loc": "Q17309954",
-  "parent": "Q17309954",
-  "country": "Francia",
-  "isMuseum": false
- },
  "Q26719044": {
   "name": "Oriel y Parc",
   "types": [
@@ -4781,6 +4704,28 @@
   "parent": null,
   "country": "Reino Unido",
   "isMuseum": true
+ },
+ "Q124039071": {
+  "name": "Victoria and Albert museum prints, drawings, & paintings collection",
+  "types": [
+   "Q2668072"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": "Q213322",
+  "country": "Reino Unido",
+  "isMuseum": false
+ },
+ "Q131413924": {
+  "name": "Room 87",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q131336099",
+  "parent": "Q131413879",
+  "country": null,
+  "isMuseum": false
  },
  "Q221392": {
   "name": "universo observable",
@@ -4806,6 +4751,17 @@
   "country": "Reino Unido",
   "isMuseum": false
  },
+ "Q3034552": {
+  "name": "Dominio de Versalles",
+  "types": [
+   "Q12292478"
+  ],
+  "adm": "Q621",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": false
+ },
  "Q5109085": {
   "name": "Christchurch Park",
   "types": [
@@ -4828,15 +4784,15 @@
   "country": "Suiza",
   "isMuseum": false
  },
- "Q131336099": {
-  "name": "Victoria and Albert Museum",
+ "Q131413879": {
+  "name": "Painting Galleries",
   "types": [
-   "Q24699794"
+   "Q15206795"
   ],
-  "adm": "Q188801",
-  "loc": null,
-  "parent": "Q213322",
-  "country": "Reino Unido",
+  "adm": null,
+  "loc": "Q131336099",
+  "parent": "Q131336099",
+  "country": null,
   "isMuseum": false
  },
  "Q649": {
@@ -4914,19 +4870,27 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q4314838": {
-  "name": "Feodosia National Gallery I. K. Aivazovsky",
+ "Q3094671": {
+  "name": "Louvre-Lens 2013",
   "types": [
-   "Q33506",
-   "Q207694",
-   "Q10624527",
-   "Q17431399"
+   "Q29023906"
   ],
-  "adm": "Q158491",
-  "loc": "Q158491",
+  "adm": "Q165271",
+  "loc": "Q16508151",
   "parent": null,
-  "country": "Ucrania",
-  "isMuseum": true
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q15298167": {
+  "name": "Room 701",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q161741",
+  "loc": null,
+  "parent": "Q14619172",
+  "country": "Francia",
+  "isMuseum": false
  },
  "Q19015157": {
   "name": "Room 950",
@@ -4950,15 +4914,15 @@
   "country": "Francia",
   "isMuseum": false
  },
- "Q56326462": {
-  "name": "embajada de España ante la Santa Sede",
+ "Q19060449": {
+  "name": "Room 947",
   "types": [
-   "Q3917681"
+   "Q180516"
   ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": "Italia",
+  "adm": "Q161741",
+  "loc": "Q17309954",
+  "parent": "Q17309954",
+  "country": "Francia",
   "isMuseum": false
  },
  "Q1": {
@@ -4994,6 +4958,17 @@
   "loc": null,
   "parent": null,
   "country": "Francia",
+  "isMuseum": false
+ },
+ "Q131336099": {
+  "name": "Victoria and Albert Museum",
+  "types": [
+   "Q24699794"
+  ],
+  "adm": "Q188801",
+  "loc": null,
+  "parent": "Q213322",
+  "country": "Reino Unido",
   "isMuseum": false
  },
  "Q84": {
@@ -5086,18 +5061,6 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q1536471": {
-  "name": "Walker Art Gallery",
-  "types": [
-   "Q207694",
-   "Q17431399"
-  ],
-  "adm": "Q21665571",
-  "loc": null,
-  "parent": null,
-  "country": "Reino Unido",
-  "isMuseum": true
- },
  "Q1783956": {
   "name": "Museo de artes de Nantes",
   "types": [
@@ -5107,19 +5070,6 @@
   "loc": "Q16024149",
   "parent": null,
   "country": "Francia",
-  "isMuseum": true
- },
- "Q1799857": {
-  "name": "Museo y Galería de Arte de Birmingham",
-  "types": [
-   "Q207694",
-   "Q1595639",
-   "Q115154402"
-  ],
-  "adm": "Q20986424",
-  "loc": null,
-  "parent": "Q4916759",
-  "country": "Reino Unido",
   "isMuseum": true
  },
  "Q1848918": {
@@ -5147,6 +5097,20 @@
   "country": "Estados Unidos",
   "isMuseum": true
  },
+ "Q4314838": {
+  "name": "Feodosia National Gallery I. K. Aivazovsky",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q10624527",
+   "Q17431399"
+  ],
+  "adm": "Q158491",
+  "loc": "Q158491",
+  "parent": null,
+  "country": "Ucrania",
+  "isMuseum": true
+ },
  "Q4320542": {
   "name": "V. V. Vereshchagin Mykolaiv Art Museum",
   "types": [
@@ -5158,31 +5122,16 @@
   "country": "Ucrania",
   "isMuseum": true
  },
- "Q4916759": {
-  "name": "Birmingham Museums Trust",
+ "Q56326462": {
+  "name": "embajada de España ante la Santa Sede",
   "types": [
-   "Q708676",
-   "Q1030034"
+   "Q3917681"
   ],
-  "adm": "Q2256",
+  "adm": null,
   "loc": null,
   "parent": null,
-  "country": "Reino Unido",
-  "isMuseum": true
- },
- "Q7381305": {
-  "name": "Museo y Galería de Arte Russell-Cotes",
-  "types": [
-   "Q3947",
-   "Q207694",
-   "Q2087181",
-   "Q115154402"
-  ],
-  "adm": "Q170478",
-  "loc": null,
-  "parent": null,
-  "country": "Reino Unido",
-  "isMuseum": true
+  "country": "Italia",
+  "isMuseum": false
  },
  "Q59546080": {
   "name": "Musée des Beaux-Arts de la ville de Paris",
@@ -5323,16 +5272,16 @@
   "country": "Canadá",
   "isMuseum": false
  },
- "Q1465805": {
-  "name": "Instituto de Arte Clark",
+ "Q1536471": {
+  "name": "Walker Art Gallery",
   "types": [
-   "Q31855",
-   "Q207694"
+   "Q207694",
+   "Q17431399"
   ],
-  "adm": "Q771",
+  "adm": "Q21665571",
   "loc": null,
   "parent": null,
-  "country": "Estados Unidos",
+  "country": "Reino Unido",
   "isMuseum": true
  },
  "Q1586957": {
@@ -5344,6 +5293,19 @@
   "adm": "Q2756002",
   "loc": "Q2756002",
   "parent": "Q1967497",
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q1799857": {
+  "name": "Museo y Galería de Arte de Birmingham",
+  "types": [
+   "Q207694",
+   "Q1595639",
+   "Q115154402"
+  ],
+  "adm": "Q20986424",
+  "loc": null,
+  "parent": "Q4916759",
   "country": "Reino Unido",
   "isMuseum": true
  },
@@ -5382,16 +5344,30 @@
   "country": "Rusia",
   "isMuseum": false
  },
- "Q5043601": {
-  "name": "Museo Carmen Thyssen",
+ "Q4916759": {
+  "name": "Birmingham Museums Trust",
   "types": [
-   "Q33506",
-   "Q207694"
+   "Q708676",
+   "Q1030034"
   ],
-  "adm": "Q8851",
+  "adm": "Q2256",
   "loc": null,
   "parent": null,
-  "country": "España",
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q7381305": {
+  "name": "Museo y Galería de Arte Russell-Cotes",
+  "types": [
+   "Q3947",
+   "Q207694",
+   "Q2087181",
+   "Q115154402"
+  ],
+  "adm": "Q170478",
+  "loc": null,
+  "parent": null,
+  "country": "Reino Unido",
   "isMuseum": true
  },
  "Q12110695": {
@@ -5405,17 +5381,6 @@
   "parent": "Q734266",
   "country": "Reino Unido",
   "isMuseum": true
- },
- "Q18608337": {
-  "name": "Fundación Banco Santander",
-  "types": [
-   "Q157031"
-  ],
-  "adm": "Q2807",
-  "loc": null,
-  "parent": "Q806215",
-  "country": "España",
-  "isMuseum": false
  },
  "Q27468": {
   "name": "Europa Oriental",
@@ -5440,19 +5405,6 @@
   "loc": "Q84",
   "parent": null,
   "country": "Reino Unido",
-  "isMuseum": false
- },
- "Q806215": {
-  "name": "Grupo Santander",
-  "types": [
-   "Q891723",
-   "Q2512624",
-   "Q141145821"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": "Q938032",
-  "country": "España",
   "isMuseum": false
  },
  "Q1967497": {
@@ -5585,28 +5537,13 @@
   "country": "Estados Unidos",
   "isMuseum": true
  },
- "Q1641836": {
-  "name": "Museo de Arte del Condado de Los Ángeles",
+ "Q1465805": {
+  "name": "Instituto de Arte Clark",
   "types": [
-   "Q33506",
-   "Q163740",
+   "Q31855",
    "Q207694"
   ],
-  "adm": "Q65",
-  "loc": null,
-  "parent": null,
-  "country": "Estados Unidos",
-  "isMuseum": true
- },
- "Q1952033": {
-  "name": "Academia de Bellas Artes de Pensilvania",
-  "types": [
-   "Q33506",
-   "Q207694",
-   "Q383092",
-   "Q23002054"
-  ],
-  "adm": "Q1345",
+  "adm": "Q771",
   "loc": null,
   "parent": null,
   "country": "Estados Unidos",
@@ -5647,6 +5584,29 @@
   "country": "Reino Unido",
   "isMuseum": true
  },
+ "Q5043601": {
+  "name": "Museo Carmen Thyssen",
+  "types": [
+   "Q33506",
+   "Q207694"
+  ],
+  "adm": "Q8851",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q18608337": {
+  "name": "Fundación Banco Santander",
+  "types": [
+   "Q157031"
+  ],
+  "adm": "Q2807",
+  "loc": null,
+  "parent": "Q806215",
+  "country": "España",
+  "isMuseum": false
+ },
  "Q46": {
   "name": "Europa",
   "types": [
@@ -5683,15 +5643,16 @@
   "country": "Reino Unido",
   "isMuseum": false
  },
- "Q938032": {
-  "name": "IBEX 35",
+ "Q806215": {
+  "name": "Grupo Santander",
   "types": [
-   "Q223371",
-   "Q135267675"
+   "Q891723",
+   "Q2512624",
+   "Q141145821"
   ],
   "adm": null,
   "loc": null,
-  "parent": null,
+  "parent": "Q938032",
   "country": "España",
   "isMuseum": false
  },
@@ -5754,17 +5715,6 @@
   "country": "Estados Unidos",
   "isMuseum": false
  },
- "Q241567": {
-  "name": "Porto Vecchio",
-  "types": [
-   "Q484170"
-  ],
-  "adm": "Q3336",
-  "loc": null,
-  "parent": null,
-  "country": "Francia",
-  "isMuseum": false
- },
  "Q639791": {
   "name": "Museo Whitney de Arte Estadounidense",
   "types": [
@@ -5805,17 +5755,6 @@
   "country": "Estados Unidos",
   "isMuseum": true
  },
- "Q1327886": {
-  "name": "Museo Marmottan Monet",
-  "types": [
-   "Q207694"
-  ],
-  "adm": "Q194420",
-  "loc": null,
-  "parent": null,
-  "country": "Francia",
-  "isMuseum": true
- },
  "Q1416890": {
   "name": "Museo de Bellas Artes de San Francisco",
   "types": [
@@ -5824,6 +5763,33 @@
    "Q207694"
   ],
   "adm": "Q62",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q1641836": {
+  "name": "Museo de Arte del Condado de Los Ángeles",
+  "types": [
+   "Q33506",
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q65",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q1952033": {
+  "name": "Academia de Bellas Artes de Pensilvania",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q383092",
+   "Q23002054"
+  ],
+  "adm": "Q1345",
   "loc": null,
   "parent": null,
   "country": "Estados Unidos",
@@ -5876,6 +5842,18 @@
   "country": "Estados Unidos",
   "isMuseum": true
  },
+ "Q938032": {
+  "name": "IBEX 35",
+  "types": [
+   "Q223371",
+   "Q135267675"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": false
+ },
  "Q1754965": {
   "name": "Área metropolitana de Chicago",
   "types": [
@@ -5921,33 +5899,16 @@
   "country": "Alemania",
   "isMuseum": false
  },
- "Q188740": {
-  "name": "Museo de Arte Moderno",
+ "Q241567": {
+  "name": "Porto Vecchio",
   "types": [
-   "Q33506",
-   "Q163740",
-   "Q207694",
-   "Q11396960",
-   "Q24699794",
-   "Q97662266"
+   "Q484170"
   ],
-  "adm": "Q11299",
-  "loc": "Q11249",
-  "parent": "Q17148329",
-  "country": "Estados Unidos",
-  "isMuseum": true
- },
- "Q496259": {
-  "name": "Trade Fair Palace",
-  "types": [
-   "Q207694",
-   "Q24699794"
-  ],
-  "adm": "Q1624461",
+  "adm": "Q3336",
   "loc": null,
   "parent": null,
-  "country": "República Checa",
-  "isMuseum": true
+  "country": "Francia",
+  "isMuseum": false
  },
  "Q578485": {
   "name": "Colección Phillips",
@@ -5972,6 +5933,33 @@
   "country": "Francia",
   "isMuseum": true
  },
+ "Q1327886": {
+  "name": "Museo Marmottan Monet",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q194420",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q188740": {
+  "name": "Museo de Arte Moderno",
+  "types": [
+   "Q33506",
+   "Q163740",
+   "Q207694",
+   "Q11396960",
+   "Q24699794",
+   "Q97662266"
+  ],
+  "adm": "Q11299",
+  "loc": "Q11249",
+  "parent": "Q17148329",
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
  "Q215539": {
   "name": "Conservatorio de Moscú",
   "types": [
@@ -5984,6 +5972,18 @@
   "country": "Rusia Soviética",
   "isMuseum": false
  },
+ "Q496259": {
+  "name": "Trade Fair Palace",
+  "types": [
+   "Q207694",
+   "Q24699794"
+  ],
+  "adm": "Q1624461",
+  "loc": null,
+  "parent": null,
+  "country": "República Checa",
+  "isMuseum": true
+ },
  "Q673833": {
   "name": "Fundación Beyeler",
   "types": [
@@ -5994,19 +5994,6 @@
   "loc": null,
   "parent": "Q14549417",
   "country": "Suiza",
-  "isMuseum": true
- },
- "Q1970945": {
-  "name": "Museo Albright-Knox",
-  "types": [
-   "Q33506",
-   "Q163740",
-   "Q207694"
-  ],
-  "adm": "Q40435",
-  "loc": null,
-  "parent": null,
-  "country": "Estados Unidos",
   "isMuseum": true
  },
  "Q6033943": {
@@ -6043,18 +6030,6 @@
   "country": "Suiza",
   "isMuseum": false
  },
- "Q705557": {
-  "name": "Art Gallery of South Australia",
-  "types": [
-   "Q207694",
-   "Q11396960"
-  ],
-  "adm": "Q1094063",
-  "loc": "Q7056959",
-  "parent": null,
-  "country": "Australia",
-  "isMuseum": true
- },
  "Q1600831": {
   "name": "Instituto Valenciano de Arte Moderno",
   "types": [
@@ -6066,16 +6041,17 @@
   "country": "España",
   "isMuseum": true
  },
- "Q2638817": {
-  "name": "Manchester Art Gallery",
+ "Q1970945": {
+  "name": "Museo Albright-Knox",
   "types": [
-   "Q207694",
-   "Q115154345"
+   "Q33506",
+   "Q163740",
+   "Q207694"
   ],
-  "adm": "Q21525592",
-  "loc": "Q6916381",
+  "adm": "Q40435",
+  "loc": null,
   "parent": null,
-  "country": "Reino Unido",
+  "country": "Estados Unidos",
   "isMuseum": true
  },
  "Q3450880": {
@@ -6088,20 +6064,6 @@
   "parent": "Q16024163",
   "country": "Francia",
   "isMuseum": false
- },
- "Q5518996": {
-  "name": "Gallery Oldham",
-  "types": [
-   "Q207694",
-   "Q1595639",
-   "Q1970365",
-   "Q115154345"
-  ],
-  "adm": "Q202628",
-  "loc": "Q202628",
-  "parent": "Q17017730",
-  "country": "Reino Unido",
-  "isMuseum": true
  },
  "Q6023573": {
   "name": "Eskenazi Museum of Art",
@@ -6125,17 +6087,6 @@
   "country": "Francia",
   "isMuseum": false
  },
- "Q17017730": {
-  "name": "Oldham Metropolitan Borough Council",
-  "types": [
-   "Q19414242"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": "Reino Unido",
-  "isMuseum": false
- },
  "Q224124": {
   "name": "Museo van Gogh",
   "types": [
@@ -6147,6 +6098,18 @@
   "loc": "Q42296997",
   "parent": null,
   "country": "Países Bajos",
+  "isMuseum": true
+ },
+ "Q705557": {
+  "name": "Art Gallery of South Australia",
+  "types": [
+   "Q207694",
+   "Q11396960"
+  ],
+  "adm": "Q1094063",
+  "loc": "Q7056959",
+  "parent": null,
+  "country": "Australia",
   "isMuseum": true
  },
  "Q749808": {
@@ -6225,6 +6188,18 @@
   "country": "Suecia",
   "isMuseum": true
  },
+ "Q2638817": {
+  "name": "Manchester Art Gallery",
+  "types": [
+   "Q207694",
+   "Q115154345"
+  ],
+  "adm": "Q21525592",
+  "loc": "Q6916381",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
  "Q2982867": {
   "name": "Colección Hirschsprung",
   "types": [
@@ -6248,6 +6223,20 @@
   "country": "Dinamarca",
   "isMuseum": true
  },
+ "Q5518996": {
+  "name": "Gallery Oldham",
+  "types": [
+   "Q207694",
+   "Q1595639",
+   "Q1970365",
+   "Q115154345"
+  ],
+  "adm": "Q202628",
+  "loc": "Q202628",
+  "parent": "Q17017730",
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
  "Q49112": {
   "name": "Universidad Yale",
   "types": [
@@ -6262,6 +6251,17 @@
   "loc": null,
   "parent": null,
   "country": "Estados Unidos",
+  "isMuseum": false
+ },
+ "Q17017730": {
+  "name": "Oldham Metropolitan Borough Council",
+  "types": [
+   "Q19414242"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Reino Unido",
   "isMuseum": false
  },
  "Q18776166": {
@@ -6286,17 +6286,6 @@
   "parent": null,
   "country": "Reino Unido",
   "isMuseum": false
- },
- "Q59435": {
-  "name": "Museo Leopold",
-  "types": [
-   "Q207694"
-  ],
-  "adm": "Q1741",
-  "loc": "Q1741",
-  "parent": "Q699943",
-  "country": "Austria",
-  "isMuseum": true
  },
  "Q59468": {
   "name": "Neue Galerie",
@@ -6330,33 +6319,6 @@
   "loc": null,
   "parent": "Q771935",
   "country": "España",
-  "isMuseum": true
- },
- "Q768717": {
-  "name": "colección privada",
-  "types": [],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": null,
-  "isMuseum": false
- },
- "Q1492387": {
-  "name": "Galería Nacional de Arte Moderno",
-  "types": [
-   "Q33506",
-   "Q207694",
-   "Q1007870",
-   "Q3867560",
-   "Q17431399",
-   "Q97662266",
-   "Q121076356",
-   "Q124830411"
-  ],
-  "adm": "Q3940419",
-  "loc": "Q54863582",
-  "parent": null,
-  "country": "Italia",
   "isMuseum": true
  },
  "Q4894835": {
@@ -6404,20 +6366,6 @@
   "country": "Austria",
   "isMuseum": true
  },
- "Q699943": {
-  "name": "Museumsquartier",
-  "types": [
-   "Q33506",
-   "Q207694",
-   "Q1329623",
-   "Q1497375"
-  ],
-  "adm": "Q664835",
-  "loc": null,
-  "parent": null,
-  "country": "Austria",
-  "isMuseum": true
- },
  "Q771935": {
   "name": "Monasterio de Montserrat",
   "types": [
@@ -6427,6 +6375,26 @@
   "loc": null,
   "parent": null,
   "country": "España",
+  "isMuseum": false
+ },
+ "Q59435": {
+  "name": "Museo Leopold",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q1741",
+  "loc": "Q1741",
+  "parent": "Q699943",
+  "country": "Austria",
+  "isMuseum": true
+ },
+ "Q768717": {
+  "name": "colección privada",
+  "types": [],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
   "isMuseum": false
  },
  "Q844926": {
@@ -6451,6 +6419,24 @@
   "loc": null,
   "parent": null,
   "country": "Noruega",
+  "isMuseum": true
+ },
+ "Q1492387": {
+  "name": "Galería Nacional de Arte Moderno",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q1007870",
+   "Q3867560",
+   "Q17431399",
+   "Q97662266",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q3940419",
+  "loc": "Q54863582",
+  "parent": null,
+  "country": "Italia",
   "isMuseum": true
  },
  "Q1592523": {
@@ -6501,17 +6487,6 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q2538129": {
-  "name": "Museo Toulouse-Lautrec",
-  "types": [
-   "Q207694"
-  ],
-  "adm": "Q132801",
-  "loc": "Q3361047",
-  "parent": null,
-  "country": "Francia",
-  "isMuseum": true
- },
  "Q3330707": {
   "name": "Galería Nacional de Noruega",
   "types": [
@@ -6536,18 +6511,6 @@
   "loc": "Q756807",
   "parent": null,
   "country": "Italia",
-  "isMuseum": true
- },
- "Q12715958": {
-  "name": "KODE Art museums and composer homes",
-  "types": [
-   "Q163740",
-   "Q207694"
-  ],
-  "adm": "Q10428388",
-  "loc": null,
-  "parent": null,
-  "country": "Noruega",
   "isMuseum": true
  },
  "Q24082986": {
@@ -6596,6 +6559,32 @@
   "country": "Liechtenstein",
   "isMuseum": false
  },
+ "Q699943": {
+  "name": "Museumsquartier",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q1329623",
+   "Q1497375"
+  ],
+  "adm": "Q664835",
+  "loc": null,
+  "parent": null,
+  "country": "Austria",
+  "isMuseum": true
+ },
+ "Q12715958": {
+  "name": "KODE Art museums and composer homes",
+  "types": [
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q10428388",
+  "loc": null,
+  "parent": null,
+  "country": "Noruega",
+  "isMuseum": true
+ },
  "Q178065": {
   "name": "Centro Pompidou",
   "types": [
@@ -6631,19 +6620,6 @@
   "loc": "Q10431415",
   "parent": null,
   "country": "Suecia",
-  "isMuseum": true
- },
- "Q632682": {
-  "name": "Museo Brooklyn",
-  "types": [
-   "Q33506",
-   "Q163740",
-   "Q207694"
-  ],
-  "adm": "Q18419",
-  "loc": null,
-  "parent": "Q17148329",
-  "country": "Estados Unidos",
   "isMuseum": true
  },
  "Q809600": {
@@ -6696,18 +6672,15 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q3329346": {
-  "name": "Museo San Telmo",
+ "Q2538129": {
+  "name": "Museo Toulouse-Lautrec",
   "types": [
-   "Q33506",
-   "Q178706",
-   "Q1128397",
-   "Q4989906"
+   "Q207694"
   ],
-  "adm": "Q10313",
-  "loc": null,
+  "adm": "Q132801",
+  "loc": "Q3361047",
   "parent": null,
-  "country": "España",
+  "country": "Francia",
   "isMuseum": true
  },
  "Q3615336": {
@@ -6789,6 +6762,88 @@
   "country": "Estados Unidos",
   "isMuseum": false
  },
+ "Q632682": {
+  "name": "Museo Brooklyn",
+  "types": [
+   "Q33506",
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q18419",
+  "loc": null,
+  "parent": "Q17148329",
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q1756399": {
+  "name": "Tehran Museum of Contemporary Art",
+  "types": [
+   "Q108860927"
+  ],
+  "adm": "Q5722492",
+  "loc": null,
+  "parent": "Q1518503",
+  "country": "Irán",
+  "isMuseum": false
+ },
+ "Q3329346": {
+  "name": "Museo San Telmo",
+  "types": [
+   "Q33506",
+   "Q178706",
+   "Q1128397",
+   "Q4989906"
+  ],
+  "adm": "Q10313",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q6033464": {
+  "name": "Museo Julio Romero de Torres",
+  "types": [
+   "Q33506"
+  ],
+  "adm": "Q5818",
+  "loc": "Q5903140",
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q18712414": {
+  "name": "Long Museum",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q8686",
+  "loc": null,
+  "parent": null,
+  "country": "República Popular China",
+  "isMuseum": true
+ },
+ "Q28777335": {
+  "name": "Brett Gorvy",
+  "types": [
+   "Q5"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q1518503": {
+  "name": "El Parque de Laleh",
+  "types": [
+   "Q22746"
+  ],
+  "adm": "Q5722492",
+  "loc": null,
+  "parent": null,
+  "country": "Irán",
+  "isMuseum": true
+ },
  "Q857276": {
   "name": "Museo de Arte Moderno de París",
   "types": [
@@ -6824,17 +6879,6 @@
   "country": "Francia",
   "isMuseum": true
  },
- "Q1756399": {
-  "name": "Tehran Museum of Contemporary Art",
-  "types": [
-   "Q108860927"
-  ],
-  "adm": "Q5722492",
-  "loc": null,
-  "parent": "Q1518503",
-  "country": "Irán",
-  "isMuseum": false
- },
  "Q2557770": {
   "name": "Museo de Arte Contemporáneo de la Universidad de São Paulo",
   "types": [
@@ -6847,28 +6891,6 @@
   "country": "Brasil",
   "isMuseum": false
  },
- "Q6033464": {
-  "name": "Museo Julio Romero de Torres",
-  "types": [
-   "Q33506"
-  ],
-  "adm": "Q5818",
-  "loc": "Q5903140",
-  "parent": null,
-  "country": "España",
-  "isMuseum": true
- },
- "Q18712414": {
-  "name": "Long Museum",
-  "types": [
-   "Q207694"
-  ],
-  "adm": "Q8686",
-  "loc": null,
-  "parent": null,
-  "country": "República Popular China",
-  "isMuseum": true
- },
  "Q22317527": {
   "name": "Helen Birch Bartlett Memorial Collection",
   "types": [
@@ -6879,27 +6901,5 @@
   "parent": null,
   "country": null,
   "isMuseum": false
- },
- "Q28777335": {
-  "name": "Brett Gorvy",
-  "types": [
-   "Q5"
-  ],
-  "adm": null,
-  "loc": null,
-  "parent": null,
-  "country": null,
-  "isMuseum": false
- },
- "Q1518503": {
-  "name": "El Parque de Laleh",
-  "types": [
-   "Q22746"
-  ],
-  "adm": "Q5722492",
-  "loc": null,
-  "parent": null,
-  "country": "Irán",
-  "isMuseum": true
  }
 }
