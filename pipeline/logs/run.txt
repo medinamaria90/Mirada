@@ -1,0 +1,12 @@
+408K	.git
+4.0K	catalogo
+== candidates  10:26:07
+SIN QID malevich
+SIN QID modigliani
+SIN QID juan-gris
+SIN QID schiele
+fin 2026-11-24 10:26:07
+412K	.git
+4.0K	catalogo
+fin Tue Nov 24 10:26:07 UTC 2026
+estado del job: success Tue Nov 24 10:26:07 UTC 2026
