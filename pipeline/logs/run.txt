@@ -49,3 +49,6 @@ ok   w18687780   juan-gris        1031x1600 287KB  Portrait de Madame Josette Gr
 lote: 94/94 bien; quedan 0
 subidas 94 imágenes a la release catalogo-img-2
 build: 1233 obras (1233 con imagen, 1233 con ficha), 152 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 11, barroco 23, rococo-neoclasicismo 17, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 18
+download rc=3
+60M	.git
+3.1M	catalogo
