@@ -1,0 +1,12 @@
+# Configuración de Render (Blueprint) del sitio estático de Mirada.
+# Las imágenes del catálogo no están en el repo: se bajan al construir desde la release de GitHub
+# (tools/fetch_images.sh comprueba el sha256). El despliegue se lanza a mano tras comprobar main.
+services:
+  - type: web
+    name: mirada
+    runtime: static
+    repo: https://github.com/medinamaria90/Mirada
+    branch: main
+    buildCommand: bash tools/fetch_images.sh app/img
+    staticPublishPath: ./app
+    autoDeploy: false
