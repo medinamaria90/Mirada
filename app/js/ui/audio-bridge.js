@@ -106,3 +106,43 @@ export function playEra(era) {
   audio.setEra(era || 'menu');
   if (audio.getState().unlocked) audio.startMusic();
 }
+
+// En segundo plano la música se calla. El motor ya atiende `visibilitychange`, pero algunos
+// navegadores de Android y las pestañas abiertas desde otra app no lo disparan (o lo hacen tarde):
+// aquí se escuchan también `pagehide`, `freeze` y la pérdida de foco de la ventana, y se para la
+// música sin olvidar que estaba pedida, para reanudarla al volver.
+const BLUR_GRACE_MS = 800; // perder el foco un instante (teclado, barra de direcciones) no cuenta
+let pausedInBackground = false;
+let blurTimer = null;
+
+function pauseInBackground() {
+  if (pausedInBackground || !pending.music) return;
+  pausedInBackground = true;
+  call('stopMusic');
+}
+
+function resumeFromBackground() {
+  if (blurTimer) { clearTimeout(blurTimer); blurTimer = null; }
+  if (!pausedInBackground) return;
+  pausedInBackground = false;
+  if (pending.music && pending.unlocked) call('startMusic');
+}
+
+export const isPausedInBackground = () => pausedInBackground;
+
+export function bindBackgroundPause(doc = globalThis.document, win = globalThis.window, graceMs = BLUR_GRACE_MS) {
+  if (!doc || !win || typeof doc.addEventListener !== 'function') return;
+  const onVisibility = () => { if (doc.hidden) pauseInBackground(); else resumeFromBackground(); };
+  doc.addEventListener('visibilitychange', onVisibility);
+  doc.addEventListener('freeze', pauseInBackground);
+  win.addEventListener('pagehide', pauseInBackground);
+  win.addEventListener('blur', () => {
+    if (blurTimer) clearTimeout(blurTimer);
+    blurTimer = setTimeout(() => {
+      blurTimer = null;
+      if (doc.hidden || (typeof doc.hasFocus === 'function' && !doc.hasFocus())) pauseInBackground();
+    }, graceMs);
+  });
+  win.addEventListener('focus', resumeFromBackground);
+  win.addEventListener('pageshow', resumeFromBackground);
+}

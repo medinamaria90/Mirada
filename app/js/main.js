@@ -7,7 +7,7 @@ import { buildIndex, mergeCatalogText } from './engine/catalog.js';
 import { dayKey, madridDayKey } from './engine/dates.js';
 import { createStore, safeStorage } from './state/store.js';
 import { parseRoute, go } from './ui/router.js';
-import { audio, loadAudioWhenIdle, applyAudioSettings } from './ui/audio-bridge.js';
+import { audio, loadAudioWhenIdle, applyAudioSettings, bindBackgroundPause } from './ui/audio-bridge.js';
 import { installArtListeners } from './ui/art.js';
 import { esc, onAction, focusHeading, clearAnnounce } from './ui/dom.js';
 import { toast, replayToast } from './ui/toast.js';
@@ -247,6 +247,7 @@ async function boot() {
     loadFlows().catch(() => {});
   });
   loadAudioWhenIdle();
+  bindBackgroundPause();
 }
 
 boot();
