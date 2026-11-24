@@ -94,3 +94,29 @@ Efecto a vigilar: dominar es más difícil en pintores con muchas obras (alumno 
 Duda: dentro del iframe de claude.ai el zoom depende de la página exterior; hay que probarlo en su móvil.
 Publicada antes de la evaluación independiente porque María la estaba probando; evaluador ronda 6 en curso.
 Peticiones nuevas de María (10:40): pasar a 1.000 obras (pendiente de que cree el repositorio GitHub `mirada`), fichas con datos de la vida del pintor, recompensas tipo Dibulíos (cofres, colección, obras animadas con Gemini).
+
+## Evaluación independiente, ronda 6 (v6) — NO APRUEBA (UX 7)
+Material 3: 8 · UX: 7 · Accesibilidad: 8 · Rendimiento: 8 · Adaptativo: 8 · Pulido: 8 · Originalidad: 8 · Calidad técnica: 8. Sin fallos graves. Informe: docs/eval/ronda6.md.
+Imprescindible: Leonardo repite cuadro y saca dos recién vistos; responder «¿Cuál es de X?» cuesta dos toques; dificultad dura para el alumno atento (49-71 % de rondas dominadas). Mejoras: Colección y medallas no abren el visor directo, apaisados pequeños en vertical, carrera de «Es este», hueco sobre la rejilla.
+
+## v7 (commit cf42d6f, 24/11 11:41) — correcciones de la ronda 6
+Leonardo sin repetir y con un solo cuadro recién visto por ronda; dificultad recalibrada a 65-80 %; «Es este» espera al final del deslizamiento; lupa en el visor; paso entre cuadros en Colección manteniendo el texto. Tests 109 + humo. Publicada como página privada de Claude. Sin evaluador independiente al cerrar la sesión; traspaso escrito.
+
+## Evaluación v7, intento 1 de 5 — NO APRUEBA (UX 7, Adaptativo 7, Calidad técnica 7) (24/11, 14:20)
+Material 3: 8 · UX: 7 · Accesibilidad: 8 · Rendimiento: 8 · Adaptativo: 7 · Pulido: 8 · Originalidad: 8 · Calidad técnica: 7. Informe: docs/eval/v7-intento1.md (capturas en docs/eval/v7-1/). Evaluador: agente de Claude nuevo, app ejecutada en Chrome con Playwright en 5 tamaños, motor real con 1.000 semillas en Leonardo y 400 por parada; e2e completo del proyecto 155 pantallas sin fallos de contraste ni táctiles.
+Lo imprescindible de la ronda 6, verificado y bien: Leonardo (5 preguntas, 5 cuadros distintos, 1 recién vista), dificultad 69-79 % (media 74 %), bots ≤ 4,6 %, descarte 25 %, sin carrera, lupa, Colección, sin zoom, sin fugas, consola limpia.
+Fallos graves: título de a89 («del Prado» por «del Prato»); Matisse († 1954) frente al «1946» de CLAUDE.md (SPEC y validador decían 1956). Imprescindible: feedback «¡Y sin haberlo visto antes!» al repetir una pregunta fallada; ficha de Colección no cabe en móviles bajos ni apaisado; «¿Cuál?» en escritorio con miniaturas de 173 px; imagen de a201 recortada; e2e completo en rojo por 4 `ERR_ABORTED`; 12 colores a mano del visor y 7 en JS; código muerto.
+A partir de aquí la nomenclatura es «vN, intento K de 5» (los informes `docs/eval/ronda1-6.md` son los intentos de v1-v6).
+
+## Decisiones de María (24/11, tarde)
+- Límite de fallecimiento: **1956** (dominio público en Europa); CLAUDE.md alineado con SPEC y el validador. Matisse se queda.
+- Imagen de a201 (La Virgen de las rocas, Louvre): sustituida por la completa de Wikimedia Commons (dominio público), 612×1000.
+- Mapa, tarjeta «Continuar» y medallas siguen llevando a su sitio; CLAUDE.md lo dice ahora.
+- **Gemini solo para imágenes** (escenario de época, obras animadas). Nunca como evaluador ni para código.
+- **Publicada en Render**: https://mirada.onrender.com (sitio estático desde `main`, carpeta `app/`, despliegue automático en cada push). Pendiente 4 cerrado.
+- **Puerta de calidad en pausa**: no se hace el intento 2 de la v7. María quiere la marca primero («no tiene sentido pulir sin el rebranding»). Orden nuevo: ronda 2 de marca → aplicar la marca a la app → retomar la puerta de calidad sobre la app con marca. Los arreglos objetivos del intento 1 (errores, no estética) sí se han hecho (v8).
+
+## Marca, ronda 2 publicada y respondida (24/11, 15:00-15:30)
+Lienzo: https://claude.ai/artifact/3cjPwnjMsCBboSL6mGP15w (una página: 3 logos, 3 letras, 3 colores, 7 pantallas, camino entero con rama, 5 preguntas; fuentes en `marca/project-r2/` y `marca/tools/r2_*.py`).
+María elige a lápiz sobre el lienzo: **logo 2 «Pieza», letra Outfit, coral contenido**. Rama extra opcional. Escenario: la versión tenue de un edificio no le convence; quiere una ciudad de época continua y rica, vectorial. Ve líneas rotas en el camino entero. Gemini no genera imágenes con su clave gratuita (cuota 0 en todos los modelos de imagen; gratis solo en la app de Gemini): se hace en SVG.
+Siguiente: aplicar la marca a la app (v9) y las ciudades de época; todo visible en Render.

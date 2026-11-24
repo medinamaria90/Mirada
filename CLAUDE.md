@@ -30,11 +30,13 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
 - Todo lo que parece pulsable se puede pulsar.
 - Colores armoniosos, nada estridente. La interfaz no compite con los cuadros.
 - Nunca «ayer» ni «mañana» en textos de la app (los títulos de cuadros no cuentan).
-- Cualquier cuadro se abre a pantalla completa al pulsarlo. Sin zoom de página (pellizco o doble toque);
-  para ver detalles está la lupa del visor.
+- Cualquier cuadro se abre a pantalla completa al pulsarlo, salvo donde el cuadro es la carátula de un
+  destino (mapa, tarjeta «Continuar», medallas), que lleva a su sitio. Sin zoom de página (pellizco o
+  doble toque); para ver detalles está la lupa del visor.
 - Sin `alert`/`confirm`/`prompt`, sin recursos remotos en tiempo de ejecución.
 - Datos de arte verificados con fuentes (museos, Wikidata, enciclopedias) y con su fuente anotada.
-  Nada de memoria del modelo. Solo pintores muertos antes de 1946 y obras anteriores a 1930.
+  Nada de memoria del modelo. Solo pintores muertos antes de 1956 (dominio público en Europa) y obras
+  anteriores a 1930; lo comprueba `tools/validate_catalog.py`.
 - Los autores españoles van sobrerrepresentados, mezclados en su época (no en un bloque aparte).
 
 ## Código (skill `buenas-practicas-codigo`)
