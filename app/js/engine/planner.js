@@ -13,7 +13,7 @@ export { salaLearnWorks, SALA_LEARN };
 
 export const MIN_ROUND = 6; // preguntas mínimas de una etapa (salvo la primera: FIRST_STAGE_ROUND)
 export const STAGE_ROUND = 8; // preguntas de una etapa (propias + repaso)
-export const FIRST_STAGE_ROUND = 5; // primera etapa: calentamiento + 4 obras no vistas, sin repetir
+export const FIRST_STAGE_ROUND = 4; // primera etapa: calentamiento + 3 obras no vistas, sin repetir, todo «¿Cuál es de X?»
 export const ROUND_SIZE = 10;
 // Catálogo grande (con niveles): ronda de 9 (8 con un solo pintor aprendido antes); «≥ 75 %» son 7 de 9.
 export const STAGE_ROUND_LEVELS = 9;
@@ -57,7 +57,19 @@ function rampAt(base, i, n) {
 // Una obra por pregunta, sin repetir; la dificultad sube en rampa continua.
 export const OWN_MAX = 3; // preguntas sobre obras del pintor: calentamiento + OWN_FRESH no vistas
 export const OWN_FRESH = 2; // obras no vistas del pintor por ronda (salvo en la primera etapa)
-export const FIRST_STAGE_WHO = 1; // «¿Quién lo pintó?» en la primera etapa (la respuesta es siempre el pintor)
+// Con menos pintores conocidos que estos, no hay «¿Quién lo pintó?» ni «¿De qué movimiento es?»: la
+// respuesta sería siempre el mismo pintor (o movimiento) y no enseña nada. Solo «¿Cuál es de X?».
+export const MIN_PAINTERS_FOR_OTHER_QUESTIONS = 2;
+
+// Pintores que conoce el jugador en una ronda de etapa: los anteriores del camino más el de la etapa.
+export function knownPainters(before, stageArtistId) {
+  return new Set([...before.map((a) => a.id), stageArtistId]).size;
+}
+
+// ¿Valen «¿Quién?» y «¿De qué movimiento?» con `count` pintores conocidos?
+export function allowsOtherQuestions(count) {
+  return count >= MIN_PAINTERS_FOR_OTHER_QUESTIONS;
+}
 // Probabilidad de que la de movimiento tenga como respuesta el movimiento de la etapa.
 export const MOVEMENT_CURRENT_SHARE = 0.34;
 
@@ -76,18 +88,33 @@ export function planStage(index, artistId, seed, opts = {}) {
   const before = opts.before || (index.pathIndex(artistId) >= 0
     ? index.path.slice(0, index.pathIndex(artistId))
     : index.branchBefore(artistId));
-  const own = ownSelection(index, artist, learn, rng, { level, seen, first: !before.length });
-  const slots = before.length
+  const onlyWhich = !allowsOtherQuestions(knownPainters(before, artistId));
+  const own = ownSelection(index, artist, learn, rng, { level, seen, first: onlyWhich });
+  const slots = !onlyWhich
     ? stageSlots(index, artist, learn, before, rng, opts.review || [], own)
     : firstStageSlots(index, artist, learn, rng, own);
   const avoid = slots.map((s) => s.work.id).concat(slots.flatMap((s) => s.includeWorks || []));
   // Fase de cada pregunta: «practice» si el cuadro se enseña en «Conoce a» de su pintor y «fresh» si
   // no. Las dos van mezcladas en la ronda (sin pantalla intermedia).
-  const questions = buildSlots(index, slots, base, rng, avoid)
+  const built = buildSlots(index, slots, base, rng, avoid);
+  const questions = (onlyWhich ? balanceAnswerPositions(built, rng) : built)
     .map((q) => ({ ...q, phase: index.artwork(subjectOf(q))?.role === 'learn' ? 'practice' : 'fresh' }));
   const practice = questions.filter((q) => q.phase === 'practice');
   const fresh = questions.filter((q) => q.phase === 'fresh');
   return { kind: 'stage', artistId, seed, ...(level > 1 ? { level } : {}), learn, practice, fresh, questions };
+}
+
+// Solo «¿Cuál es de X?» (primera etapa): la respuesta ocupa cada posición una vez (en orden al azar),
+// así elegir siempre la misma casilla no sirve de nada ni por mala suerte del sorteo.
+function balanceAnswerPositions(questions, rng) {
+  const order = rng.shuffle(Array.from({ length: Math.max(...questions.map((q) => q.options.length), 0) }, (_, i) => i));
+  return questions.map((q, i) => {
+    const at = order[i % order.length];
+    if (at >= q.options.length) return q;
+    const rest = q.options.filter((o) => o.id !== q.answerId);
+    const answer = q.options.find((o) => o.id === q.answerId);
+    return { ...q, options: [...rest.slice(0, at), answer, ...rest.slice(at)] };
+  });
 }
 
 export function subjectOf(q) {
@@ -133,8 +160,8 @@ function ownSelection(index, artist, learn, rng, { level, seen, first: noBefore 
   const byLevel = (l) => unseenFirst(works.filter((w) => (l === 1 ? levelOf(w) === 1 : levelOf(w) >= 2)));
   const pool = [...byLevel(1).filter((w) => !seen.has(w.id)), ...byLevel(2).filter((w) => !seen.has(w.id)),
     ...byLevel(1).filter((w) => seen.has(w.id)), ...byLevel(2).filter((w) => seen.has(w.id))];
-  // Primera etapa (nadie antes): una obra más, para que la ronda llegue a FIRST_STAGE_ROUND.
-  const fresh = pool.slice(0, OWN_NEW + (noBefore || !warm.length ? 1 : 0));
+  // Sin calentamiento (no hay obra de «Conoce a»), una no vista más para llegar al mismo número.
+  const fresh = pool.slice(0, OWN_NEW + (!warm.length ? 1 : 0));
   const reserve = clean(learn)[1] || pool[fresh.length] || null;
   return { warm, fresh, reserve };
 }
@@ -295,9 +322,8 @@ function movementReviewSlot(index, artist, before, rng, pickWork, { spare = [] }
 }
 
 // Primera etapa: no hay nadie aprendido antes. «¿Quién lo pintó?» siempre tendría la misma
-// respuesta (no prueba nada y no cuenta para dominar: progress.firstStageOwnMastered), así que casi
-// todo es «¿Cuál es de X?» (sus obras entre otras muy distintas) y solo FIRST_STAGE_WHO «¿Quién?»,
-// nunca la primera ni la última. Calentamiento con su obra más conocida y, después, solo obras no
+// respuesta (no prueba nada), así que todo es «¿Cuál es de X?» (sus obras entre otras muy distintas).
+// Calentamiento con su obra más conocida y, después, solo obras no
 // vistas (FIRST_STAGE_ROUND − 1). Solo en catálogos pequeños, si no llegan, se recurre a las otras
 // vistas y, como último recurso, se repiten obras con otras miniaturas.
 function firstStageSlots(index, artist, learn, rng, own) {
@@ -313,10 +339,7 @@ function firstStageSlots(index, artist, learn, rng, own) {
   const guests = peers.filter((a) => index.pathIndex(a.id) < 0);
   const peerPool = guests.length ? guests : peers;
   const include = () => (peerPool.length ? [rng.pick(peerPool).id] : []);
-  const unseenAt = works.map((w, i) => (i > 0 && w.role !== 'learn' ? i : -1)).filter((i) => i > 0);
-  const whoChoices = unseenAt.length > 1 ? unseenAt.slice(0, -1) : unseenAt;
-  const whoAt = FIRST_STAGE_WHO > 0 && whoChoices.length ? rng.pick(whoChoices) : -1;
-  const slots = works.map((w, i) => ({ work: w, phase: w.role === 'learn' ? 'practice' : 'fresh', type: i === whoAt ? 'who' : 'which', include: include() }));
+  const slots = works.map((w, i) => ({ work: w, phase: w.role === 'learn' ? 'practice' : 'fresh', type: 'which', include: include() }));
   // Catálogos muy pequeños: se repiten obras (primero las no vistas) con otras miniaturas.
   const again = [...ownNew, ...ownLearn.slice(1), ...ownLearn.slice(0, 1)];
   for (let k = 0; slots.length < FIRST_STAGE_ROUND && again.length && k < FIRST_STAGE_ROUND; k++) {
@@ -472,8 +495,9 @@ export function planSrsReview(index, dueKeys, seed, max = SRS_MAX) {
     if (works.length >= max) break;
   }
   const avoid = new Set(works.map((w) => w.id));
+  const onlyWhich = !allowsOtherQuestions(new Set(works.map((w) => w.artistId)).size);
   const questions = rng.shuffle(works).map((w, i) => {
-    const q = makeQuestion(i % 4 === 3 ? 'which' : 'who', index, w, 0.6, rng, { avoid: [...avoid] });
+    const q = makeQuestion(onlyWhich || i % 4 === 3 ? 'which' : 'who', index, w, 0.6, rng, { avoid: [...avoid] });
     if (q && q.type === 'which') q.options.forEach((o) => avoid.add(o.artworkId));
     return tag(q, 'srs');
   });

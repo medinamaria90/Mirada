@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { planStage, subjectOf, FIRST_STAGE_ROUND, STAGE_ROUND_LEVELS } from '../app/js/engine/planner.js';
+import { planStage, planSrsReview, knownPainters, allowsOtherQuestions, subjectOf, FIRST_STAGE_ROUND, STAGE_ROUND_LEVELS } from '../app/js/engine/planner.js';
 import { firstStageOwnMastered, stageRoundMastered, emptyProgress } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { BOTS, roundContext, masteryProbability } from './lib/antibot.js';
@@ -27,7 +27,7 @@ test('Botticelli abre el camino: «Conoce a» enseña 4 obras de nivel 1; quedan
   assert.ok(unseen.length >= 3, `${unseen.length} obras de nivel 1 sin ver`);
 });
 
-test('primera etapa: 5 preguntas, 5 cuadros distintos, solo el primero recién visto, una «¿Quién?» en medio', () => {
+test('primera etapa: 4 preguntas, 4 cuadros distintos, solo el primero recién visto, todas «¿Cuál es de X?»', () => {
   const learn = real.learnWorks(first.id).slice().sort((a, b) => b.fame - a.fame);
   const warmId = learn.find((w) => !w.spoiler && !w.attributed).id;
   for (let s = 1; s <= 80; s++) {
@@ -38,8 +38,7 @@ test('primera etapa: 5 preguntas, 5 cuadros distintos, solo el primero recién v
     assert.equal(subjects[0], warmId, `${s}: calentamiento con la obra más conocida de «Conoce a»`);
     assert.equal(qs.filter((q) => !q.isNew).length, 1, `${s}: una sola recién vista`);
     const types = qs.map((q) => q.type);
-    assert.equal(types.filter((t) => t === 'who').length, 1, `${s}: ${types}`);
-    assert.ok(types[0] !== 'who' && types[types.length - 1] !== 'who', `${s}: ${types}`);
+    assert.ok(types.every((t) => t === 'which'), `${s}: ${types}`);
     assert.ok(qs.every((q) => !real.artwork(subjectOf(q)).spoiler && !real.artwork(subjectOf(q)).attributed));
   }
 });
@@ -86,4 +85,23 @@ test('demás etapas: 9 preguntas (8 con un solo pintor antes) y una sola obra re
       assert.equal(qs.filter((q) => q.type !== 'movement' && learnIds.has(subjectOf(q)) && q.artistId === a.id).length, 1, `${a.id}/${s}`);
     }
   }
+});
+
+test('pocos pintores conocidos: sin «¿Quién?» ni «¿De qué movimiento?»; con 2 o más vuelven', () => {
+  assert.equal(knownPainters([], first.id), 1);
+  assert.equal(allowsOtherQuestions(1), false);
+  assert.equal(allowsOtherQuestions(knownPainters([first], real.path[1].id)), true);
+  // Reintento o ronda con un solo pintor conocido: planStage con `before` vacío.
+  for (let s = 1; s <= 40; s++) {
+    const qs = planStage(real, first.id, s, { before: [] }).questions;
+    assert.ok(qs.every((q) => q.type === 'which'), `${s}`);
+  }
+  // Segunda etapa: ya hay 2 pintores y salen otras mecánicas.
+  const types = new Set();
+  for (let s = 1; s <= 40; s++) planStage(real, real.path[1].id, s).questions.forEach((q) => types.add(q.type));
+  assert.ok(types.has('who'), [...types].join());
+  // Repaso con obras de un solo pintor: solo «¿Cuál?».
+  const works = real.learnWorks(first.id).filter((w) => !w.spoiler && !w.attributed).slice(0, 3);
+  const srs = planSrsReview(real, works.map((w) => `art:${w.id}`), 5);
+  assert.ok(srs.questions.every((q) => q.type === 'which'));
 });

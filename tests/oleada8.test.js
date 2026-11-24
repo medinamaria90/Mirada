@@ -56,18 +56,12 @@ test('«Conoce a» enseña 3-4 cuadros de nivel 1 y quedan al menos OWN_NEW sin 
   }
 });
 
-test('primera etapa: no son todo «¿Cuál es de X?» seguidos con lo recién visto', () => {
+test('primera etapa: solo «¿Cuál es de X?» (un único pintor conocido) y una sola obra recién vista', () => {
   const first = real.path[0];
   const learnIds = new Set(real.learnWorks(first.id).map((w) => w.id));
   for (let s = 1; s <= SEEDS; s++) {
     const plan = planStage(real, first.id, s);
-    const types = plan.questions.map((q) => q.type);
-    assert.ok(types.includes('who'), `${s}: sin «¿Quién lo pintó?»`);
-    assert.notEqual(types[0], 'who', `${s}: la primera no es «¿Quién?» (siempre sería él)`);
-    let run = 0;
-    let maxRun = 0;
-    for (const t of types) { run = t === 'which' ? run + 1 : 0; maxRun = Math.max(maxRun, run); }
-    assert.ok(maxRun <= 4, `${s}: ${maxRun} «¿Cuál?» seguidos`);
+    assert.ok(plan.questions.every((q) => q.type === 'which'), `${s}: ${plan.questions.map((q) => q.type)}`);
     const seenQs = plan.questions.filter((q) => learnIds.has(subjectOf(q))).length;
     assert.ok(seenQs <= 1, `${s}: ${seenQs} preguntas con obras de «Conoce a»`);
     assert.ok(plan.questions.slice(1, 4).every((q) => !learnIds.has(subjectOf(q))), `${s}: tras el calentamiento vienen obras no vistas`);
