@@ -110,7 +110,7 @@ export function renderResult(ctx, el, opts) {
   if (reviewUnlock && index.movement(reviewUnlock.movementId)) {
     blocks.push(eventCard({ icon: icons.repeat(22), kicker: 'Repaso disponible', title: index.movement(reviewUnlock.movementId).name, to: `repaso-${reviewUnlock.movementId}` }));
   }
-  if (streak) blocks.push(weekStrip(ctx, streak.value));
+  if (streak) blocks.push(weekStrip(ctx, streak.value, streak.grace));
 
   const roundMastered = outcome.mastered ?? outcome.accuracy >= MASTERY;
   const retry = (plan.kind === 'stage' || plan.kind === 'sala') && !roundMastered
@@ -226,14 +226,21 @@ export async function copyText(el, text) {
   status.classList.add('is-visible');
 }
 
-function weekStrip(ctx, value) {
+// Días perdidos que ha perdonado la gracia de la semana (1 o 2).
+export function graceSavedText(n) {
+  if (!n) return '';
+  return n === 1 ? 'Racha a salvo: te quedaba un día de gracia' : 'Racha a salvo: te quedaban dos días de gracia';
+}
+
+function weekStrip(ctx, value, grace = 0) {
   const p = ctx.store.get().progress;
   const days = new Set(p.streak.days);
   const today = ctx.today();
   const labels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
   const cells = weekOf(today).map((d, i) => `<span class="day ${days.has(d) ? 'is-on' : ''} ${d === today ? 'is-today' : ''}"><span class="day-dot"></span><span class="day-label">${labels[i]}</span></span>`).join('');
   const title = value === 1 ? 'Primer día' : `${value} días seguidos`;
-  return `<section class="event event-streak"><span class="event-icon">${icons.flame(22)}</span><span class="event-text"><span class="event-kicker">Racha</span><span class="event-title">${title}</span></span></section>
+  const saved = graceSavedText(grace);
+  return `<section class="event event-streak"><span class="event-icon">${icons.flame(22)}</span><span class="event-text"><span class="event-kicker">Racha</span><span class="event-title">${title}</span>${saved ? `<span class="event-sub">${esc(saved)}</span>` : ''}</span></section>
     <div class="week" aria-hidden="true">${cells}</div>`;
 }
 

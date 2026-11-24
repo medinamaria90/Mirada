@@ -1,8 +1,9 @@
 // Esquema versionado del estado persistente y migraciones. Puro.
 
 import { emptyProgress, DEFAULT_GOAL } from '../engine/progress.js';
+import { addDays, isDayKey } from '../engine/dates.js';
 
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 6;
 
 // Tema de la interfaz (settings.theme): claro, oscuro o como el móvil (el sistema).
 export const THEMES = ['light', 'dark', 'system'];
@@ -50,6 +51,18 @@ export const MIGRATIONS = {
     ...old,
     settings: { ...(isPlain(old.settings) ? old.settings : {}), theme: DEFAULT_THEME },
   }),
+  // 5 → 6 (repaso «sin deprimir»): cola de cuadros fallados, último día visto de cada pintor y días
+  // de gracia por semana. El día que perdonó la gracia antigua (graceOn, un día por semana) pasa a la
+  // lista de días perdonados para que esa semana no regale uno de más. Lo demás se conserva.
+  5: (old) => {
+    const progress = isPlain(old.progress) ? old.progress : {};
+    const streak = isPlain(progress.streak) ? progress.streak : {};
+    const graceDays = isDayKey(streak.graceOn) ? [addDays(streak.graceOn, -1)] : [];
+    return {
+      ...old,
+      progress: { ...progress, fallados: [], seen: {}, streak: { ...streak, graceDays } },
+    };
+  },
 };
 
 export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, defaults = defaultState()) {

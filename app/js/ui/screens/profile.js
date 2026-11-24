@@ -2,7 +2,7 @@
 
 import { esc, onAction, focusHeading, $, announce, longDate } from '../dom.js';
 import { page } from '../shell.js';
-import { levelFor, visibleStreak, medalInfo, artistStatus, todayXp, normalizeGoal, GOAL_OPTIONS } from '../../engine/progress.js';
+import { levelFor, visibleStreak, graceLeft, medalInfo, artistStatus, todayXp, normalizeGoal, GOAL_OPTIONS } from '../../engine/progress.js';
 import { goalRing, goalChip } from '../shell.js';
 import { weekOf } from '../../engine/dates.js';
 import { medalBadge, medalZoom, allMedalIds, medalHow, eyeLabel } from './medals.js';
@@ -11,6 +11,12 @@ import { recognizedCount } from '../../engine/goals.js';
 import { themePicker, chooseTheme, markThemePicker } from '../theme.js';
 
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
+
+// Días de gracia que quedan esta semana (se recargan el lunes): un día perdido no rompe la racha.
+export function graceLine(left) {
+  if (left <= 0) return 'Sin días de gracia hasta el lunes';
+  return left === 1 ? 'Te queda 1 día de gracia esta semana' : `Te quedan ${left} días de gracia esta semana`;
+}
 
 // opts.focus: 'medals' para abrir directamente en las medallas (#medallas).
 export function renderProfile(ctx, el, opts = {}) {
@@ -70,6 +76,7 @@ export function renderProfile(ctx, el, opts = {}) {
     <section class="panel" aria-labelledby="week-h">
       <h2 id="week-h" class="panel-title">Esta semana <span class="panel-aside">${activeThisWeek}/7</span></h2>
       <div class="week" role="img" aria-label="${activeThisWeek} días con práctica esta semana">${week}</div>
+      <p class="panel-foot">${graceLine(graceLeft(p.streak, today))}</p>
     </section>
     <section class="panel" id="medallas-panel" aria-labelledby="medals-h">
       <h2 id="medals-h" class="panel-title">Medallas <span class="panel-aside">${got.length}/${ids.length}</span></h2>

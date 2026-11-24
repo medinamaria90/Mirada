@@ -1,8 +1,10 @@
 // Progreso: experiencia, niveles, racha diaria, medallas y desbloqueo del mapa. Puro.
 
-import { daysBetween } from './dates.js';
 import { recordAnswer, artKey, artistKey } from './srs.js';
 import { noAuthorQuestion } from './catalog.js';
+import { touchStreak } from './streak.js';
+
+export { touchStreak, visibleStreak, graceLeft, GRACE_PER_WEEK } from './streak.js';
 
 // Niveles con nombres del mundo del arte. Tras el último, la curva sigue: «Gran maestro II»,
 // «III»… cada LEVEL_STEP_AFTER puntos, para que nunca se agote.
@@ -97,7 +99,7 @@ export const STREAK_MEDALS = [3, 7, 30];
 export function emptyProgress() {
   return {
     xp: 0,
-    streak: { current: 0, best: 0, last: null, graceOn: null, days: [] },
+    streak: { current: 0, best: 0, last: null, graceOn: null, graceDays: [], days: [] },
     artists: {},
     salas: {},
     intros: {},
@@ -111,6 +113,10 @@ export function emptyProgress() {
     detail: {},
     challenges: { played: 0 },
     xpByDay: {},
+    // Cuadros fallados que vuelven: [{ id, date, times, hits }] (engine/review.js).
+    fallados: [],
+    // Último día en que salió cada pintor en una pregunta: { artistId: 'AAAA-MM-DD' } (engine/review.js).
+    seen: {},
   };
 }
 
@@ -148,40 +154,6 @@ export function todayXp(progress, today) {
 
 export function normalizeGoal(goal) {
   return GOAL_OPTIONS.includes(goal) ? goal : DEFAULT_GOAL;
-}
-
-// Racha: un día seguido suma; se perdona un día perdido como mucho una vez por semana.
-export function touchStreak(streak, today) {
-  const s = { ...streak, days: streak.days ? streak.days.slice() : [] };
-  if (s.last === today) return { streak: s, increased: false, graceUsed: false };
-  let graceUsed = false;
-  if (!s.last) s.current = 1;
-  else {
-    const gap = daysBetween(s.last, today);
-    if (gap === 1) s.current += 1;
-    else if (gap === 2 && (!s.graceOn || daysBetween(s.graceOn, today) >= 7)) {
-      s.current += 1;
-      s.graceOn = today;
-      graceUsed = true;
-    } else if (gap <= 0) {
-      // Reloj hacia atrás: no se toca la racha.
-      return { streak: s, increased: false, graceUsed: false };
-    } else s.current = 1;
-  }
-  s.last = today;
-  s.best = Math.max(s.best || 0, s.current);
-  if (!s.days.includes(today)) s.days.push(today);
-  s.days = s.days.slice(-60);
-  return { streak: s, increased: true, graceUsed };
-}
-
-// Racha que se muestra hoy (si ya se rompió, 0).
-export function visibleStreak(streak, today) {
-  if (!streak.last) return 0;
-  const gap = daysBetween(streak.last, today);
-  if (gap <= 1) return streak.current;
-  if (gap === 2 && (!streak.graceOn || daysBetween(streak.graceOn, today) >= 7)) return streak.current;
-  return 0;
 }
 
 // --- Camino: paradas (pintores con etapa y salas) -----------------------------
@@ -424,8 +396,9 @@ export function finishRound(progress, index, result, today, opts = {}) {
   }
   const streakTouch = touchStreak(p.streak, today);
   p.streak = streakTouch.streak;
-  // La racha se celebra desde el primer día.
-  if (streakTouch.increased) events.push({ type: 'streak', value: p.streak.current });
+  // Cualquier ronda terminada mantiene la racha (la meta de XP va aparte). Se celebra desde el primer
+  // día; grace: días perdidos que se han perdonado con los días de gracia de la semana.
+  if (streakTouch.increased) events.push({ type: 'streak', value: p.streak.current, grace: streakTouch.graceUsed });
   for (const n of STREAK_MEDALS) if (p.streak.current >= n) award(`streak-${n}`);
 
   const levelAfter = levelFor(p.xp).index;

@@ -23,6 +23,35 @@ test('migración: datos sin versión se conservan y se completan', () => {
   assert.deepEqual(out.progress.streak, defaultState().progress.streak);
 });
 
+test('migración 5 → 6: cola de fallados, último día visto y días de gracia; conserva el resto', () => {
+  assert.equal(SCHEMA_VERSION, 6);
+  const v5 = {
+    version: 5, onboarded: true,
+    progress: {
+      xp: 800, artists: { velazquez: { plays: 2, best: 0.9, mastered: true, last: '2026-11-10' } },
+      srs: { 'art:w1': { box: 3, due: '2026-11-30' } }, collection: { w1: '2026-11-10' },
+      streak: { current: 6, best: 9, last: '2026-11-23', graceOn: '2026-11-19', days: ['2026-11-23'] },
+    },
+    settings: { music: true, sfx: false, volume: 0.5, reducedMotion: false, dailyGoal: 50, theme: 'dark' },
+    session: {},
+  };
+  const out = migrate(v5);
+  assert.equal(out.version, 6);
+  assert.deepEqual(out.progress.fallados, []);
+  assert.deepEqual(out.progress.seen, {});
+  // El día que perdonó la gracia antigua (la víspera de graceOn) cuenta como gastado en su semana.
+  assert.deepEqual(out.progress.streak.graceDays, ['2026-11-18']);
+  assert.equal(out.progress.streak.current, 6);
+  assert.equal(out.progress.streak.graceOn, '2026-11-19');
+  assert.deepEqual(out.progress.artists, v5.progress.artists);
+  assert.deepEqual(out.progress.srs, v5.progress.srs);
+  assert.deepEqual(out.settings, v5.settings);
+  // Sin gracia antigua, la lista empieza vacía; datos sin progreso llegan con los valores por defecto.
+  assert.deepEqual(migrate({ ...v5, progress: { ...v5.progress, streak: { current: 1, last: '2026-11-23', graceOn: null } } }).progress.streak.graceDays, []);
+  assert.deepEqual(migrate({ version: 5, onboarded: true }).progress.fallados, []);
+  assert.deepEqual(defaultState().progress.streak.graceDays, []);
+});
+
 test('migración 4 → 5: añade settings.theme «como el móvil» y conserva el resto', () => {
   const v4 = {
     version: 4, onboarded: true,
@@ -32,7 +61,6 @@ test('migración 4 → 5: añade settings.theme «como el móvil» y conserva el
   };
   const out = migrate(v4);
   assert.equal(out.version, SCHEMA_VERSION);
-  assert.equal(SCHEMA_VERSION, 5);
   assert.equal(out.settings.theme, DEFAULT_THEME);
   assert.equal(out.settings.theme, 'system');
   assert.deepEqual(out.settings, { music: false, sfx: true, volume: 0.3, reducedMotion: true, dailyGoal: 100, theme: 'system' });

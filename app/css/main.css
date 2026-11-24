@@ -622,6 +622,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .event-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ui); flex: none; }
 .event-kicker { font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
 .event-title { font: 500 1.2rem/1.15 var(--font); }
+.event-sub { font-size: .9rem; color: var(--ink-2); }
 
 .medal {
   position: relative; display: grid; place-items: center; width: 52px; height: 52px; flex: none; border-radius: 999px;
