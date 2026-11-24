@@ -5,3 +5,9 @@ ok lote 30: 12 fichas (1180 en total)
 fin: 1180 fichas; con museo 1158, con ciudad 1146, con técnica 1144, con medidas 1034, en España 274
 48M	.git
 2.2M	catalogo
+== download 1 20 18:18:38
+ok   w3797771    fra-angelico     1560x1600 779KB  Coronación de la Virgen
+ok   w2376881    fra-angelico     1483x1600 458KB  Anunciación de Cortona
+ok   w3065237    fra-angelico     795x1600 459KB  Virgen de la Humildad
+lote: 20/20 bien; quedan 1160
+build: 1180 obras (20 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
