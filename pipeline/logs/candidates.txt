@@ -1,6 +1,16 @@
-ok     fra-angelico       Q5664       194 candidatas; de las 80 primeras, 69 con imagen >=1200px
-ok     van-der-weyden     Q68631       88 candidatas; de las 80 primeras, 66 con imagen >=1200px
-ok     hals               Q167654     298 candidatas; de las 80 primeras, 67 con imagen >=1200px
-ok     artemisia          Q212657     129 candidatas; de las 80 primeras, 56 con imagen >=1200px
-ok     canaletto          Q182664     412 candidatas; de las 80 primeras, 69 con imagen >=1200px
-fin 2026-11-24 11:04:27
+ya     giotto             55 candidatas
+ya     van-eyck           57 candidatas
+ya     fra-angelico       194 candidatas
+ya     van-der-weyden     88 candidatas
+ya     piero              34 candidatas
+ya     bellini            180 candidatas
+ya     mantegna           99 candidatas
+ya     botticelli         176 candidatas
+ya     berruguete         46 candidatas
+ya     bosco              86 candidatas
+ya     leonardo           40 candidatas
+ya     durero             162 candidatas
+ya     cranach            907 candidatas
+ya     miguel-angel       39 candidatas
+ya     giorgione          43 candidatas
+fin 2026-11-24 11:06:30
