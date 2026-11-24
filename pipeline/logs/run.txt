@@ -150,3 +150,9 @@ aviso w3960488 (van-dyck): título pendiente de traducir: Drunken Silenus
 aviso w3630737 (van-dyck): título pendiente de traducir: Self-Portrait
 60M	.git
 3.3M	catalogo
+== pack 1200 20:35:18
+pack 1200px: 1315 imágenes, 301.0 MB de JPEG (media 223 KB), zip 301.1 MB, sha256 7f4f95c804153ec2…
+obras del catálogo 1315; sin imagen 0; con fallo 0
+paquete app-img-1200 subido a catalogo-img (288M)
+60M	.git
+3.3M	catalogo
