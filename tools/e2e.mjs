@@ -950,10 +950,10 @@ if (SMOKE) {
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
   await page.goto(`${base}#perfil`);
-  await page.waitForSelector('.stats');
+  await page.waitForSelector('.pf-figs');
   await audit(page, '390 perfil');
-  check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
-  check(await page.locator('button.medal-item').count() >= 1, 'las medallas del perfil no son pulsables');
+  check(/cuadros?/i.test(await page.locator('.pf-figs').innerText()), 'perfil sin la cifra de cuadros');
+  check(await page.locator('button.pf-medal').count() >= 1, 'las medallas del perfil no son pulsables');
   // Colección → «Pintores»: lista por épocas con buscador; la ficha se abre sobre la pantalla y solo enseña lo ya visto.
   await seed(page, seededState({ upTo: 3 }), 'coleccion-pintores');
   await page.waitForSelector('.pl-row');
@@ -1279,23 +1279,27 @@ await page.keyboard.press('Escape');
 
 // Perfil: meta diaria ajustable, medallas con icono, reinicio con borde
 await page.click('.nav-item[href="#perfil"]');
-await page.waitForSelector('.stats');
+await page.waitForSelector('.pf-figs');
 await shot(page, '18-perfil', true);
 await audit(page, '390 perfil');
-check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
+check(/cuadros?/i.test(await page.locator('.pf-figs').innerText()), 'perfil sin la cifra de cuadros');
+await page.click('[data-action="open-settings"]');
+await page.waitForSelector('.settings-dialog[open]');
 const range = await page.locator('[data-setting="volume"]').boundingBox();
 check(range.height >= 48, `deslizador de volumen de ${Math.round(range.height)} px`);
 await page.click('[data-action="goal"][data-goal="100"]');
 check((await page.locator('.chip-goal').getAttribute('aria-label')).includes('de 100 XP'), 'la cabecera no refleja la nueva meta');
 check(await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.dailyGoal) === 100, 'meta no persistida');
-check(await page.locator('.medal-item.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
+check(await page.locator('.pf-medal.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
 await page.goto(`${base}#coleccion`);
 await page.waitForSelector('.coll-grid');
 await page.waitForTimeout(500);
 await shot(page, '17b-coleccion');
 await audit(page, '390 coleccion');
 await page.goto(`${base}#perfil`);
-await page.waitForSelector('.stats');
+await page.waitForSelector('.pf-figs');
+await page.click('[data-action="open-settings"]');
+await page.waitForSelector('.settings-dialog[open]');
 for (const sw of await page.$$eval('.switch', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return [r.width, r.height]; }))) {
   check(sw[0] >= 48 && sw[1] >= 48, `interruptor de ${sw.map(Math.round).join('×')}`);
 }
@@ -1321,16 +1325,33 @@ check(themeInfo.bg !== bgDark && themeInfo.meta.every((c) => c === themeInfo.bg)
 await shot(page, '18b-perfil-claro-forzado');
 await audit(page, '390 perfil claro forzado');
 await page.reload();
-await page.waitForSelector('.stats');
+await page.waitForSelector('.pf-figs');
 check(await page.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'light', 'el tema forzado no sobrevive a la recarga');
+await page.click('[data-action="open-settings"]');
+await page.waitForSelector('.settings-dialog[open]');
 await page.click('[data-action="theme"][data-value="system"]');
 const backToSystem = await page.evaluate(() => ({ attr: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() }));
 check(backToSystem.attr === null && backToSystem.bg === bgDark, `«Como el móvil» no vuelve al tema del sistema: ${JSON.stringify(backToSystem)}`);
 await page.emulateMedia({ colorScheme: 'light' });
+// Perfil nuevo: nombre editable (se guarda solo en el navegador), objetivos táctiles y enlaces.
+await page.keyboard.press('Escape');
+for (const sel of ['.pf-gear', '.pf-name-btn', '.pf-actions .btn']) {
+  const b = await page.locator(sel).first().boundingBox();
+  check(b && b.height >= 48 && b.width >= 48, `${sel} < 48 px`);
+}
+check((await page.locator('.pf-actions a').first().getAttribute('href')) === 'test/', '«Hacer el test» no lleva a test/');
+await page.click('[data-action="edit-name"]');
+await page.fill('.name-dialog .pf-input', 'María Medina Cañete con un nombre larguísimo');
+await page.click('.name-dialog button[type="submit"]');
+const savedName = await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.name);
+check(savedName.length <= 24 && savedName.startsWith('María'), `nombre guardado: «${savedName}»`);
+check((await page.locator('.pf-greeting').innerText()).includes('Hola, María'), 'el saludo no usa el nombre');
+check((await page.locator('.pf-initial').innerText()) === 'M', 'el avatar no muestra la inicial');
+await noHorizontalScroll(page, 'perfil con nombre largo');
 await page.goto(`${base}#medallas`);
-await page.waitForSelector('#medallas-panel');
+await page.waitForSelector('#logros');
 await page.waitForTimeout(400);
-check(await page.locator('.medal-item.is-got .medal-thumb img').count() >= 1, 'medalla sin miniatura del atlas');
+check(await page.locator('.pf-medal.is-got .medal-thumb img').count() >= 1, 'medalla sin miniatura del atlas');
 await shot(page, '19-medallas');
 
 // ---------------------------------------------------------------- Reto de etapa sin conocer al pintor
@@ -1501,8 +1522,8 @@ await shot(dpage0, '29-ronda-libre-fin', true);
 const freeGap = await dpage0.evaluate(() => document.querySelector('.result-actions').getBoundingClientRect().top - document.querySelector('.level-line').getBoundingClientRect().bottom);
 check(freeGap < 120, `resultado de la ronda libre con hueco central de ${Math.round(freeGap)} px`);
 await dpage0.goto(`${base}#perfil`);
-await dpage0.waitForSelector('.stats');
-check((await dpage0.locator('.stats').innerText()).includes(String(expectRecognized)), 'el perfil no muestra los cuadros que reconoces');
+await dpage0.waitForSelector('.pf-figs');
+check((await dpage0.locator('.pf-figs').innerText()).includes(String(expectRecognized)), 'el perfil no muestra los cuadros que reconoces');
 
 // ---------------------------------------------------------------- Ojo de… (todas las obras de un pintor en la caja más alta)
 const eyeCtx = await browser.newContext(ctxOpts);
@@ -1521,8 +1542,8 @@ watch(epage, 'ojo');
   check(await eyeCard.count() === 1, `no se gana «Ojo de ${who.short || who.name}»`);
   await shot(epage, '29e-ojo-de', true);
   await eyeCard.click();
-  await epage.waitForSelector('#medallas-panel');
-  check(await epage.locator('.medal-item.is-got .medal-eye').count() === 1, 'la medalla «Ojo de…» no está en el perfil');
+  await epage.waitForSelector('#logros');
+  check(await epage.locator('.pf-medal.is-got .medal-eye').count() === 1, 'la medalla «Ojo de…» no está en el perfil');
 }
 
 // ---------------------------------------------------------------- Ronda retomada tras recargar
@@ -1637,7 +1658,7 @@ for (const mode of ['font', 'viewport']) {
   await noHorizontalScroll(zpage, `zoom ${mode} resultado`);
   await shot(zpage, `35-zoom200-${mode}-resultado`, true);
   await zpage.goto(`${base}#perfil`);
-  await zpage.waitForSelector('.stats');
+  await zpage.waitForSelector('.pf-figs');
   await noHorizontalScroll(zpage, `zoom ${mode} perfil`);
   await shot(zpage, `36-zoom200-${mode}-perfil`, true);
   await zoom.close();
@@ -1747,7 +1768,7 @@ await kpage.waitForTimeout(1500);
 await shot(kpage, '36-oscuro-fin');
 await audit(kpage, 'oscuro resultado');
 await kpage.goto(`${base}#perfil`);
-await kpage.waitForSelector('.stats');
+await kpage.waitForSelector('.pf-figs');
 await shot(kpage, '37-oscuro-perfil', true);
 await audit(kpage, 'oscuro perfil');
 await kpage.goto(`${base}#coleccion`);
@@ -1895,7 +1916,7 @@ for (const scheme of ['light', 'dark']) {
       await audit(p7, `o7 ${tag} inicio hoy`);
       // Medallas: sellos pendientes con número legible, «Ojo de X · n/m» y hoja de detalle.
       await p7.goto(`${base}#medallas`);
-      await p7.waitForSelector('#medallas-panel');
+      await p7.waitForSelector('#logros');
       await p7.waitForTimeout(500);
       check(await p7.locator('.medal-item.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
       const eyeText = `Ojo de ${eyeWho.short || eyeWho.name} · 2/${eyeWorks.length}`;
@@ -1930,8 +1951,8 @@ for (const scheme of ['light', 'dark']) {
       await shot(p7, `etapa-ojo-${tag}`);
       await audit(p7, `o7 ${tag} etapa`);
       await p7.goto(`${base}#perfil`);
-      await p7.waitForSelector('.stats');
-      check(/reconoces\s*\d+\s*cuadros?/i.test(await p7.locator('.stats').innerText()), `[${tag}] Perfil sin «Reconoces N cuadros»`);
+      await p7.waitForSelector('.pf-figs');
+      check(/\d+\s*cuadros?/i.test(await p7.locator('.pf-figs').innerText()), `[${tag}] Perfil sin la cifra de cuadros`);
       await shot(p7, `perfil-${tag}`);
       await c7.close();
       // Reto semanal aceptado por un jugador nuevo: aviso breve, sin bloquear.
@@ -2190,8 +2211,8 @@ for (const scheme of ['light', 'dark']) {
 
     // Medallas: el sello de un pintor en su hoja.
     await p8.goto(`${base}#medallas`);
-    await p8.waitForSelector('#medallas-panel');
-    await p8.locator('.medal-item.is-got .medal-art').first().click();
+    await p8.waitForSelector('#logros');
+    await p8.locator('.pf-medal.is-got .medal-art').first().click();
     await p8.waitForSelector('.medal-dialog[open]');
     await p8.waitForTimeout(350);
     check(await p8.locator('.medal-dialog .medal-zoom').count() === 1, `[${cfg.tag}] el sello del pintor no se puede ver en grande`);

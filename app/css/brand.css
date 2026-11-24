@@ -30,6 +30,10 @@
   --gold: #c9a24a;
   --gold-text: #7e5f17;
   --on-gold: #23201c;
+  /* Metales de los logros del perfil: anillo de la medalla (≥ 3:1 con el fondo en claro y en oscuro). */
+  --tier-gold: #a9791a;
+  --tier-silver: #7f8893;
+  --tier-bronze: #b0703f;
   /* Acento por movimiento (lo pone el JS desde el catálogo); sin movimiento, el coral. */
   --accent: #e27d66;
   --on-accent: #ffffff;
