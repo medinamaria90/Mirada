@@ -651,10 +651,12 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .art-dialog { --h: min(52dvh, 460px); width: min(100%, calc(var(--h) * var(--arw) / var(--arh))); justify-self: center; margin-bottom: .7rem; }
 /* Ficha de Colección: el cuadro en grande de entrada; deslizar en horizontal pasa de cuadro.
    Todo (cuadro, título · autor · año, frase y «Cerrar») cabe sin desplazar: el cuadro cede el alto
-   que necesita el texto (--dlg-text-h, con el título y la frase a dos o tres líneas). */
+   que necesita el texto (--dlg-text-h, con el título y la frase a dos o tres líneas), pero nunca
+   baja de --dlg-art-min (con zoom de texto al 200 % la ficha se desplaza y el cuadro sigue siendo
+   un objetivo táctil). */
 .dlg-art { display: grid; justify-items: center; margin: -.4rem -.6rem 0; }
 .dlg-art, .dlg-art * { touch-action: pan-y; }
-.dlg-art .art-dialog { --dlg-text-h: 350px; --h: min(60dvh, 620px, calc(92dvh - var(--dlg-text-h))); margin-bottom: .2rem; }
+.dlg-art .art-dialog { --dlg-text-h: 350px; --dlg-art-min: 120px; --h: max(var(--dlg-art-min), min(60dvh, 620px, calc(92dvh - var(--dlg-text-h)))); margin-bottom: .2rem; }
 .dlg-text { display: grid; gap: .4rem; }
 .dlg-nav { display: flex; align-items: center; justify-content: center; gap: .4rem; margin-bottom: .2rem; }
 .dlg-count { min-width: 4.2em; text-align: center; font-weight: 600; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
