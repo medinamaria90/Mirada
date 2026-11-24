@@ -11,8 +11,11 @@ Documento para el agente que continúa el proyecto en Claude Code. Las reglas pe
   es? / ¿Cuál es de X?) mezclando pintores ya aprendidos. Racha, meta diaria, niveles, medallas, reto
   diario y semanal, reto a un amigo por enlace, colección, salas por movimiento, detalle del día,
   repaso espaciado, música sintetizada por época.
-- **Dónde se ve:** https://mirada.onrender.com (Render, sitio estático que sirve `app/` desde `main`;
-  se redespliega solo con cada push, en segundos). María la mira ahí desde el móvil y da feedback: es
+- **Dónde se ve:** https://mirada.onrender.com (Render, sitio estático que sirve `app/` desde `main`).
+  El sitio se creó por URL pública sin conectar la cuenta de GitHub, así que **el push no dispara el
+  despliegue**: tras cada push hay que lanzarlo (conector de Render, `trigger_deploy`, servicio
+  `srv-dc2p5uks728c73b8ke80`; tarda unos 10 s) o que María conecte GitHub en el panel de Render para
+  que sea automático. María la mira ahí desde el móvil y da feedback: es
   su forma de aportar, así que cada cambio visible se sube cuanto antes. La página privada de Claude
   (https://claude.ai/artifact/J1Vrn64uAxVn3agRDpbBFm, v7) ya no se actualiza.
 - **Repositorio:** github.com/medinamaria90/Mirada (público por ahora para que GitHub Actions sea gratis).
@@ -67,10 +70,19 @@ Documento para el agente que continúa el proyecto en Claude Code. Las reglas pe
    preparar las dos en el lienzo antes de tocar la app. Arte clásico antiguo: se le desaconsejó como
    rama de pintores (casi no hay autores); ella lo sigue nombrando, así que buscar un formato
    (mosaicos, frescos, cerámica, retrato de El Fayum) antes de descartarlo.
-9. **Escenario de época en el camino:** fondo con arquitectura/paisaje de la época por la que avanzas
-   (edificios renacentistas, catedrales en la rama medieval…). Quiere encargarlo a **Gemini** (su clave
-   está en su Claude Code). Recomendación dada: probar antes una versión vectorial sobria y de bajo
-   contraste; si se queda corta, Gemini con guía de estilo única.
+9. **Escenario de época en el camino:** fondo con arquitectura/paisaje de la época por la que avanzas.
+   **Hecho (24/11, versión 1):** nueve ciudades vectoriales de baja intensidad, una por movimiento,
+   continuas y sin costuras (`app/img/escenas/<movimiento>.svg`, generador `marca/tools/escenas.py`,
+   guía de estilo en `marca/RONDA2.md`; página «Ciudades» del lienzo de la ronda 2). María: «está
+   bien», pero los nodos y los puntos del camino pierden presencia sobre los edificios. **Decisión:
+   NO se integran en la app** (los SVG se guardan como piezas en `marca/`, no en `app/img/`): se pasa
+   directamente al mapa tipo Super Mario, que «va a dar un buen salto de calidad». Gemini no genera
+   imágenes con su clave gratuita (cuota 0): se descartó para esto.
+   **Dirección para la versión 2 (su idea de verdad):** un **mapa de mundo tipo Super Mario**: el
+   camino serpentea por un paisaje en falsa 3D (isométrico) y entre parada y parada hay casitas,
+   árboles, una iglesia, un puente, monumentos de la época en pequeño, a escala del camino, no
+   fachadas grandes de fondo. Casa con los nodos redondos y con las ramas (un desvío literal del
+   camino). Hacerlo cuando se diseñe el mapa en árbol (§3.8).
 10. **Recompensas tipo Dibulíos:** experiencia, metas visibles y duraderas, cofres, objetos
     coleccionables del mundo del arte, y **obras icónicas animadas** (con Gemini) como premio raro. La
     auditoría propone «El taller» (pigmentos, herramientas, objetos de maestro, cuadros vivos). Se le
@@ -101,6 +113,45 @@ Decisiones de la tarde del 24/11:
     meme». Recomendación dada: pellizco y doble toque sobre la imagen del visor como gesto principal
     (sin tocar el bloqueo del zoom de página); la lupa se queda solo si la marca la convierte en gesto
     de identidad (y como herramienta de escritorio). Se decide al cerrar la marca.
+
+### Feedback de María jugando en Render (móvil real, tema oscuro, 24/11 16:00)
+
+1. **Reto diario y detalle del día se confunden:** tras terminar el reto (10 preguntas), al subir ve el
+   «Detalle del día» ya resuelto («Es de Johannes Vermeer») y cree que es el reto repetido. Dos bloques
+   «del día» seguidos, el segundo ocupando media pantalla una vez resuelto. Propuesta dada: diferenciarlos
+   (nombre propio tipo «Lupa del día», con la lupa como guiño, y que al resolverse se encoja a una línea
+   con miniatura) o fusionarlos en un solo bloque «Hoy». **Decidido (María: «lo que tú me
+   recomiendes»): diferenciarlos.** Nombre propio con el tono de voz A (p. ej. «Lupa del día») y
+   bloque que se encoge a una línea con miniatura al resolverse. Hacerlo justo después de la v9 (marca),
+   en la portada (`ui/screens/home.js`), con su prueba.
+2. **«No puede ser que el Renacimiento sean 5 autores»:** ve 4 etapas (Leonardo, Rafael, Tiziano,
+   Veronés) + repaso y le parece inaceptable; Botticelli y Miguel Ángel están de invitados (2 obras) y
+   el resto del Renacimiento va en otro tramo («Manierismo y Renacimiento del Norte»), lo que también
+   confunde. Respuesta dada: lo arregla el catálogo de 1.000 obras (26 pintores renacentistas), y el
+   camino debe agrupar por tramos con sentido (Florencia temprana, Alto Renacimiento, Venecia, Norte,
+   España), manteniendo al pintor como unidad. **El catálogo grande sube a pendiente inmediato tras la
+   v9.** Sugirió «a lo mejor no dividir tanto por autores»: tenerlo presente al diseñar los tramos.
+3. **Cuántas obras reconoce una persona culta:** se le explicó la diferencia entre reconocer obras
+   concretas (200-400 una persona culta; > 1.000 es nivel historiador) y atribuir cuadros nuevos a un
+   pintor por su mano (80-150 pintores), que es lo que enseña Mirada. Las 1.000 obras son material
+   de aprendizaje, no lista a memorizar. El perfil debería mostrar las dos cifras: «cuadros que
+   reconoces» y «pintores que distingues».
+4. **Camino lateral para profundizar por época (DECIDIDO por María el 24/11: sí, «Barroco a fondo» y
+   equivalentes; se construye después del catálogo grande):** acabado el Barroco, poder
+   elegir entre seguir al Rococó o entrar en «Barroco a fondo»: otra tanda de obras de los mismos
+   pintores, pintores secundarios de la época y las preguntas sin imagen entre autores. Es el «nivel
+   2» de §3.7 convertido en rama opcional. Condiciona el catálogo: cada obra lleva su nivel (1 o 2)
+   desde la selección.
+6. **Ficha de obra (DECIDIDO 24/11):** cada obra tiene ficha: qué representa (2-3 líneas, sin
+   empollar), cuándo se pintó, dónde está hoy (museo y ciudad; decir si es en España), técnica y
+   tamaño. Se abre **voluntaria y a un toque** desde el feedback de la ronda (una «i» junto al título;
+   la tarjeta se gira; si no se toca, «Siguiente» sin más) y es **la misma ficha de la Colección**
+   (ampliar la actual). Nunca obligatoria en medio de la ronda. Datos con fuente: museo, fecha, técnica
+   y medidas desde Wikidata en el catálogo grande; el «qué representa» se escribe y contrasta con la
+   web del museo al seleccionar cada obra (como las fichas de pintor del piloto).
+5. **Obras representativas, nunca al azar:** la selección del catálogo grande ordena por fama con datos
+   públicos (sitelinks de Wikipedia, museo, enlaces) y entran primero las más representativas de cada
+   pintor; las menos conocidas, al nivel 2. Antes de darla por buena, revisión obra a obra.
 
 ## 4. Marca: dónde quedó
 
