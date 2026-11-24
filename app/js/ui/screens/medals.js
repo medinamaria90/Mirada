@@ -35,7 +35,7 @@ export function medalBadge(ctx, id, animate = false, size = 'sm') {
     // Lleva un número: fondo liso y oscuro para que se lea (AA) en claro y en oscuro.
     accent = cssVar('--medal-streak');
     cls = 'medal-streak';
-    inner = `<span class="medal-stack">${icons.sun(size === 'lg' ? 26 : 16)}<span class="medal-num">${esc(ref)}</span></span>`;
+    inner = `<span class="medal-stack">${icons.flame(size === 'lg' ? 26 : 16)}<span class="medal-num">${esc(ref)}</span></span>`;
   } else if (kind === 'daily' || kind === 'weekly') {
     inner = icons.calendar(size === 'lg' ? 32 : 20);
   } else if (kind === 'challenge') {

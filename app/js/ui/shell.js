@@ -17,6 +17,18 @@ export function goalRing(done, goal, size = 30) {
     </svg>${met ? `<span class="ring-mark">${icons.check(Math.round(size * 0.5))}</span>` : ''}</span>`;
 }
 
+// Chip de la meta diaria: anillo con la cifra «hecho/meta» al lado. Abre el perfil.
+export function goalChip(done, goal) {
+  const shown = Math.min(done, goal);
+  return `<a class="chip chip-goal" href="#perfil" aria-label="Meta de hoy: ${shown} de ${goal} XP"><span class="chip-pill">${goalRing(done, goal)}<span class="chip-goal-text">${shown}/${goal}</span></span></a>`;
+}
+
+// Chip de la racha: llama y «n día(s)» (el número solo, junto a un sol, parecía un interruptor de tema).
+export function streakChip(streak) {
+  const unit = streak === 1 ? 'día' : 'días';
+  return `<a class="chip chip-streak" href="#perfil" aria-label="Racha: ${streak} ${unit}"><span class="chip-pill">${icons.flame(18)}<span class="chip-stack"><span class="chip-num">${streak}</span><span class="chip-unit">${unit}</span></span></span></a>`;
+}
+
 export function topBar(ctx) {
   const state = ctx.store.get();
   const p = state.progress;
@@ -28,8 +40,8 @@ export function topBar(ctx) {
   return `<header class="topbar">
     <a class="brand" href="#inicio" aria-label="Mirada, inicio">${logoMark(30)}<span>Mirada</span></a>
     <div class="topbar-stats">
-      <a class="chip chip-goal" href="#perfil" aria-label="Meta de hoy: ${Math.min(done, goal)} de ${goal} XP"><span class="chip-pill">${goalRing(done, goal)}</span></a>
-      <a class="chip" href="#perfil" aria-label="Racha: ${streak} ${streak === 1 ? 'día' : 'días'}"><span class="chip-pill">${icons.sun(18)}<span>${streak}</span></span></a>
+      ${goalChip(done, goal)}
+      ${streakChip(streak)}
       <a class="chip chip-level" href="#perfil" aria-label="Nivel ${esc(level.name)}, ${p.xp} puntos de experiencia">
         <span class="chip-pill">${icons.gem(18)}<span class="chip-level-text"><span class="chip-level-name">${esc(level.name)}</span><span class="minibar" aria-hidden="true"><span style="width:${Math.round(level.progress * 100)}%"></span></span></span></span>
       </a>

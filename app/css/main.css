@@ -105,17 +105,18 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .topbar {
   position: sticky; top: 0; z-index: 5;
   display: flex; align-items: center; justify-content: space-between; gap: .5rem;
-  padding: .5rem .75rem .5rem 1.1rem;
+  padding: .5rem .6rem .5rem 1rem;
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
 }
-.brand { display: inline-flex; align-items: center; gap: .4rem; min-height: 48px; font: 500 1.4rem/1 var(--font); text-decoration: none; letter-spacing: var(--track); padding: 0 .2rem; border-radius: 10px; }
+.brand { display: inline-flex; align-items: center; gap: .35rem; min-height: 48px; font: 500 1.4rem/1 var(--font); text-decoration: none; letter-spacing: var(--track); padding: 0 .1rem; border-radius: 10px; flex: none; }
 .brand .logo { color: var(--brand); flex: none; }
-.topbar { flex-wrap: wrap; }
-.topbar-stats { display: flex; align-items: center; gap: .15rem; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
-/* Chips de racha y nivel: pastilla blanca con relieve dentro de un enlace de 48 px (objetivo táctil). */
-.chip { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: 0 .15rem; text-decoration: none; }
+/* Los chips van siempre en una línea: el de nivel toma el sitio que sobra (hasta su contenido) y, si
+   falta, acorta el nombre con puntos suspensivos en vez de saltar la barra a dos líneas. */
+.topbar-stats { display: flex; align-items: center; gap: .1rem; margin-left: auto; justify-content: flex-end; flex: 1 1 0; min-width: 0; }
+/* Chips de meta, racha y nivel: pastilla blanca con relieve dentro de un enlace de 48 px (objetivo táctil). */
+.chip { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; text-decoration: none; }
 .chip-pill {
   display: inline-flex; align-items: center; gap: .3rem; height: 36px; padding: 0 .65rem 0 .5rem; border-radius: 999px;
   background: var(--surface); box-shadow: 0 2px 0 var(--line), inset 0 0 0 1px var(--line);
@@ -126,8 +127,16 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .chip:active .chip-pill { transform: translateY(2px); box-shadow: inset 0 0 0 1px var(--line); }
 .chip .icon { color: var(--brand-text); }
 .chip-level .icon { color: var(--gold-text); }
-.chip-goal .chip-pill { padding: 0 .25rem; }
-.chip-level-text { display: grid; gap: 3px; font-size: .82rem; line-height: 1.1; min-width: 0; }
+.chip-goal .chip-pill { padding: 0 .4rem 0 .2rem; gap: .2rem; }
+.chip-goal-text { font-size: .74rem; color: var(--ink-2); }
+/* Racha: el número con «día(s)» debajo, como el nivel lleva su barra: cabe en una línea de 390 px. */
+.chip-streak .chip-pill { padding: 0 .5rem 0 .4rem; }
+.chip-stack { display: grid; justify-items: center; line-height: 1; }
+.chip-num { font-size: .95rem; }
+.chip-unit { font-size: .66rem; font-weight: 500; color: var(--ink-2); letter-spacing: .01em; }
+.chip-level { flex: 1 1 0; max-width: max-content; justify-content: flex-end; }
+.chip-level .chip-pill { min-width: 0; max-width: 100%; padding-right: .55rem; }
+.chip-level-text { display: grid; gap: 3px; font-size: .8rem; line-height: 1.1; min-width: 0; }
 .chip-level-name { max-width: 7.6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .minibar { display: block; width: 58px; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
 .minibar > span { display: block; height: 100%; background: var(--brand); border-radius: inherit; }
@@ -900,7 +909,9 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 @media (max-width: 300px), (max-width: 18.75em) {
   .content { padding-inline: .7rem; }
   .lesson-stage { padding-inline: .7rem; }
-  .topbar { padding-inline: .5rem; }
+  .topbar { padding-inline: .5rem; gap: .25rem; }
+  .topbar-stats { gap: 0; }
+  .chip-goal-text { display: none; }
   .setting-range { flex-wrap: wrap; }
   .setting-range input { width: 100%; }
   .stage-dot { width: 52px; height: 52px; }

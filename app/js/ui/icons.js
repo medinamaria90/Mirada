@@ -8,7 +8,8 @@ export const logoMark = (s = 28) =>
   `<svg class="logo" width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M10 38V23a14 14 0 0 1 28 0v15a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4ZM28.6 30.5a4.6 4.6 0 1 0-9.2 0a4.6 4.6 0 1 0 9.2 0Z" fill="currentColor" fill-rule="evenodd"/></svg>`;
 
 export const icons = {
-  sun: (s) => svg('<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/>', s),
+  // Racha: una llama (no un sol, que parecía el interruptor de modo claro). Lengua exterior e interior.
+  flame: (s) => svg('<path d="M12 3.2c.9 3 3.1 4.5 4.6 6.5a6.5 6.5 0 0 1 1.8 4.4 6.4 6.4 0 0 1-12.8 0c0-1.7.6-3.2 1.7-4.4.4 1.2 1.1 2 2 2.5C8.9 9.1 10.3 6.1 12 3.2Z"/><path d="M12 20.5a3 3 0 0 1-3-3c0-1.9 1.6-2.9 3-5.1 1.4 2.2 3 3.2 3 5.1a3 3 0 0 1-3 3Z"/>', s),
   gem: (s) => svg('<path d="M6 4h12l3 5-9 11L3 9z"/><path d="M3 9h18M9 4l3 16M15 4l-3 16"/>', s),
   arch: (s) => svg('<path d="M6.5 20.5V11a5.5 5.5 0 0 1 11 0v9.5"/><path d="M4 20.5h16"/><circle cx="12" cy="14.5" r="1.6"/>', s),
   frames: (s) => svg('<rect x="3" y="4" width="8" height="10" rx="1"/><rect x="13" y="4" width="8" height="6" rx="1"/><rect x="13" y="12" width="8" height="8" rx="1"/><rect x="3" y="16" width="8" height="4" rx="1"/>', s),

@@ -3,7 +3,7 @@
 import { esc, onAction, focusHeading, $, announce, longDate } from '../dom.js';
 import { page } from '../shell.js';
 import { levelFor, visibleStreak, medalInfo, artistStatus, todayXp, normalizeGoal, GOAL_OPTIONS } from '../../engine/progress.js';
-import { goalRing } from '../shell.js';
+import { goalRing, goalChip } from '../shell.js';
 import { weekOf } from '../../engine/dates.js';
 import { medalBadge, medalZoom, allMedalIds, medalHow, eyeLabel } from './medals.js';
 import { applyAudioSettings, playEra } from '../audio-bridge.js';
@@ -176,10 +176,7 @@ export function renderProfile(ctx, el, opts = {}) {
       $('.goal-row .ring', el).outerHTML = goalRing(done, g, 56);
       $('#goal-h .panel-aside', el).textContent = `${Math.min(done, g)}/${g} XP`;
       const chip = $('.chip-goal', el);
-      if (chip) {
-        chip.innerHTML = goalRing(done, g);
-        chip.setAttribute('aria-label', `Meta de hoy: ${Math.min(done, g)} de ${g} XP`);
-      }
+      if (chip) chip.outerHTML = goalChip(done, g);
     },
     'ask-reset': (b) => {
       ctx.audio.sfx('tap');

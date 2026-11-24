@@ -233,7 +233,7 @@ function weekStrip(ctx, value) {
   const labels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
   const cells = weekOf(today).map((d, i) => `<span class="day ${days.has(d) ? 'is-on' : ''} ${d === today ? 'is-today' : ''}"><span class="day-dot"></span><span class="day-label">${labels[i]}</span></span>`).join('');
   const title = value === 1 ? 'Primer día' : `${value} días seguidos`;
-  return `<section class="event event-streak"><span class="event-icon">${icons.sun(22)}</span><span class="event-text"><span class="event-kicker">Racha</span><span class="event-title">${title}</span></span></section>
+  return `<section class="event event-streak"><span class="event-icon">${icons.flame(22)}</span><span class="event-text"><span class="event-kicker">Racha</span><span class="event-title">${title}</span></span></section>
     <div class="week" aria-hidden="true">${cells}</div>`;
 }
 
