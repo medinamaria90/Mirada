@@ -1,0 +1,5 @@
+/* Mirada — identidad (marca, ronda 2): letra, color y medidas. Se carga antes de main.css.
+   Es el archivo de variables: ningún otro CSS ni el JS escribe colores a mano. */
+
+/* Outfit (OFL), variable en peso 300-600, subconjunto latino, servida con la app. */
+@font-face { font-family: "Outfit"; font-style: normal; font-weight: 300 600; font-display: swap; src: url("../fonts/outfit-latin-wght-normal.woff2") format("woff2"); }
