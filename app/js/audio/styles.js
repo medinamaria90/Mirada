@@ -2,11 +2,13 @@
 // Cada estilo recibe (part, next, piece) y devuelve [{o, dur, midi, vel, voice}],
 // con `o` = desplazamiento en tiempos desde el inicio de la parte.
 import { bassMidi, pcMidi, voicing, stepIn } from './theory.js';
+import { DANCE_STYLES } from './styles-dance.js';
 
 const roll = (notes, o, dur, vel, voice, gap = 0.04) =>
   notes.map((midi, i) => ({ o: o + i * gap, dur, midi, vel, voice }));
 
 export const STYLES = {
+  ...DANCE_STYLES,
   // Laúd: bajo + acorde rasgueado en los tiempos fuertes (danza lenta).
   lute({ chord: c, len }) {
     const out = [];

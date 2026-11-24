@@ -3,6 +3,7 @@
 // Cada nota crea pocos nodos y se desconecta sola al terminar.
 import { midiToFreq, clamp } from './theory.js';
 import { pluckBuffer } from './ks.js';
+import { WINDS } from './sustained.js';
 
 // ---------------------------------------------------------------- utilidades
 const waves = new WeakMap(); // ctx -> { nombre: PeriodicWave }
@@ -44,6 +45,8 @@ const KS = {
   lute: { t60: 1.8, blend: 0.5, bright: 0.42, pick: 0.2, seconds: 1.6, rel: 0.5, peak: 0.9, octave: 0 },
   harpsichord: { t60: 1.5, blend: 0.64, bright: 0.95, pick: 0.13, seconds: 1.2, rel: 0.07, peak: 0.8, octave: 0.3 },
   harpsiLite: { t60: 0.85, blend: 0.6, bright: 0.75, pick: 0.27, seconds: 0.8, rel: 0.05, peak: 0.8, octave: 0.18 },
+  guitar: { t60: 2.6, blend: 0.5, bright: 0.55, pick: 0.28, seconds: 2.2, rel: 0.6, peak: 0.85, octave: 0 },
+  pizz: { t60: 0.55, blend: 0.5, bright: 0.45, pick: 0.32, seconds: 0.6, rel: 0.12, peak: 0.9, octave: 0 },
 };
 
 function plucked(kind) {
@@ -122,21 +125,36 @@ function pianoLike(name) {
 }
 
 // ---------------------------------------------------------------- caja de música y campanas
-function pinged(name, amps, tau) {
+function pinged(name, amps, tau, { peak = 0.5, trem = null } = {}) {
   return (ctx, dest, when, midi, dur, vel, o = {}) => {
     const t = o.decay ?? tau;
     const g = ctx.createGain();
     g.gain.setValueAtTime(0.0001, when);
-    g.gain.linearRampToValueAtTime(vel * 0.5, when + 0.002);
+    g.gain.linearRampToValueAtTime(vel * peak, when + 0.002);
     g.gain.exponentialRampToValueAtTime(0.0001, when + t);
     const s = ctx.createOscillator();
     s.setPeriodicWave(wave(ctx, name, amps));
     s.frequency.value = midiToFreq(midi);
-    s.connect(g);
     g.connect(dest);
     s.start(when);
     s.stop(when + t + 0.03);
-    return finish(when + t + 0.03, s, g);
+    const extra = [];
+    if (trem) { // vibráfono: el motor hace ondular la amplitud (etapa aparte, sin tocar la envolvente)
+      const tg = ctx.createGain();
+      const lfo = ctx.createOscillator();
+      const depth = ctx.createGain();
+      tg.gain.value = 1 - trem.depth;
+      lfo.frequency.value = trem.rate;
+      depth.gain.value = trem.depth;
+      lfo.connect(depth);
+      depth.connect(tg.gain);
+      s.connect(tg);
+      tg.connect(g);
+      lfo.start(when);
+      lfo.stop(when + t + 0.03);
+      extra.push(tg, lfo, depth);
+    } else s.connect(g);
+    return finish(when + t + 0.03, s, ...extra, g);
   };
 }
 
@@ -221,20 +239,27 @@ export const INSTRUMENTS = {
   lute: plucked('lute'),
   harpsichord: plucked('harpsichord'),
   harpsiLite: plucked('harpsiLite'),
+  guitar: plucked('guitar'),
+  pizz: plucked('pizz'),
   piano: pianoLike('piano'),
   felt: pianoLike('felt'),
   fortepiano: pianoLike('fortepiano'),
   musicbox: pinged('musicbox', [1, 0.3, 0, 0, 0, 0.1], 1.4),
   chime: pinged('chime', [1, 0.4, 0.12], 0.6),
+  celesta: pinged('celesta', [1, 0.12, 0, 0.32, 0, 0, 0, 0.06], 1.3, { peak: 0.45 }),
+  glock: pinged('glock', [1, 0.25, 0, 0, 0.08], 0.9, { peak: 0.4 }),
+  vibraphone: pinged('vibraphone', [1, 0.08, 0, 0.1], 2.6, { peak: 0.42, trem: { rate: 4.5, depth: 0.35 } }),
   bell,
   cello: bowed({ attack: 0.12, release: 0.5, cut: 5, peak: 0.28, detune: 5 }),
   pad: bowed({ attack: 0.5, release: 0.8, cut: 3, peak: 0.16, detune: 7 }),
   soft,
+  ...WINDS,
 };
 
 /** Envío a reverb por instrumento (0..1, se multiplica por el de la pieza). */
-export const WET = { lute: 1, harpsichord: 0.8, harpsiLite: 0.8, piano: 1, felt: 1, fortepiano: 0.7,
-  musicbox: 1, bell: 1, cello: 1, pad: 1, chime: 1, soft: 0.5 };
+export const WET = { lute: 1, harpsichord: 0.8, harpsiLite: 0.8, guitar: 0.9, pizz: 0.6, piano: 1, felt: 1,
+  fortepiano: 0.7, musicbox: 1, celesta: 1, glock: 0.9, vibraphone: 1, bell: 1, cello: 1, pad: 1, chime: 1, soft: 0.5,
+  recorder: 0.9, flute: 0.9, clarinet: 0.8, accordion: 0.6, viola: 1, strings: 1 };
 
 /** Control de polifonía: limita las notas simultáneas; descarta las menos importantes. */
 export class Budget {

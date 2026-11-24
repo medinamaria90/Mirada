@@ -31,6 +31,8 @@ export const CHORD_QUALITIES = {
   dim: [0, 3, 6], aug: [0, 4, 8], sus4: [0, 5, 7], sus2: [0, 2, 7],
   9: [0, 4, 7, 10, 14], maj9: [0, 4, 7, 11, 14], m9: [0, 3, 7, 10, 14],
   m7b5: [0, 3, 6, 10], q3: [0, 5, 10], 6: [0, 4, 7, 9], add9: [0, 4, 7, 14],
+  m6: [0, 3, 7, 9], '7sus4': [0, 5, 7, 10], dim7: [0, 3, 6, 9], 69: [0, 4, 7, 9, 14], madd9: [0, 3, 7, 14],
+  '7#11': [0, 4, 7, 10, 18], mmaj7: [0, 3, 7, 11],
 };
 
 /** "Dm7", "Eb/G", "F#q3" -> { name, root, bass, intervals, pcs }. Lanza si no se entiende. */
@@ -92,6 +94,8 @@ export function mulberry32(seed) {
 export const MODES = {
   major: [0, 2, 4, 5, 7, 9, 11], dorian: [0, 2, 3, 5, 7, 9, 10],
   minor: [0, 2, 3, 5, 7, 8, 10], mixolydian: [0, 2, 4, 5, 7, 9, 10],
+  lydian: [0, 2, 4, 6, 7, 9, 11], phrygian: [0, 1, 3, 5, 7, 8, 10],
+  wholetone: [0, 2, 4, 6, 8, 10], pentatonic: [0, 2, 4, 7, 9],
 };
 export const scalePcs = (tonic, mode, extra = []) =>
   new Set([...MODES[mode].map((i) => (tonic + i) % 12), ...extra]);
