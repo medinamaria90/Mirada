@@ -314,3 +314,33 @@ test('ficha de museo: se pide aparte y se une a las obras', async () => {
   assert.equal(mergeCatalogFicha(idx, { ficha: { nope: { museum: 'x' } } }), 0);
   assert.equal(stepStatus(emptyProgress(), idx, idx.steps[0]), 'available');
 });
+
+test('«¿De qué movimiento es?»: opciones en orden cronológico y la buena repartida entre las cuatro posiciones', async () => {
+  const { makeMovementQuestion, retryQuestion } = await import('../app/js/engine/questions.js');
+  const { createRng } = await import('../app/js/engine/rng.js');
+  const order = (id) => real.movement(id).order;
+  const works = real.path.flatMap((a) => real.worksOf(a.id)).filter(askable);
+  const byPos = [0, 0, 0, 0];
+  const byMovement = new Map();
+  let n = 0;
+  for (let s = 0; s < 1500; s++) {
+    const rng = createRng(`pos:${s}`);
+    const q = makeMovementQuestion(real, works[s % works.length], (s % 10) / 10, rng);
+    const orders = q.options.map((o) => order(o.id));
+    assert.deepEqual(orders, orders.slice().sort((x, y) => x - y), 'opciones en orden cronológico');
+    assert.equal(new Set(orders).size, 4);
+    assert.deepEqual(retryQuestion(real, q, rng).options, q.options, 'el reintento mantiene el orden');
+    const pos = q.options.findIndex((o) => o.id === q.answerId);
+    byPos[pos]++; n++;
+    const m = byMovement.get(q.answerId) || [0, 0, 0, 0];
+    m[pos]++; byMovement.set(q.answerId, m);
+  }
+  // En los extremos de la línea del tiempo la buena no puede ir más que primera o última; en las épocas del
+  // medio, con vecinas por los dos lados, se reparte por las cuatro posiciones.
+  for (const id of ['rococo-neoclasicismo', 'romanticismo', 'realismo']) {
+    const m = byMovement.get(id);
+    const total = m.reduce((x, y) => x + y, 0);
+    assert.ok(m.every((c) => c / total >= 0.15), `${id}: ${m}`);
+  }
+  assert.ok(byPos.every((c) => c > 0), `posiciones de la buena ${byPos}`);
+});

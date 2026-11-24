@@ -156,7 +156,11 @@ export function makeMovementQuestion(index, artwork, difficulty, rng, opts = {})
   const need = Math.min(OPTION_COUNT - 1, list.length - 1);
   const gapOf = (m) => Math.abs(list.indexOf(m) - pos);
   const neighbours = list.filter((m) => gapOf(m) === 1);
-  const others = [rng.pick(neighbours)];
+  // Posición (0-3, de la más antigua a la más reciente) que ocupará la buena entre las opciones; el vecino
+  // contiguo obligatorio se toma del lado que deje sitio a esa posición.
+  const target = rng.int(OPTION_COUNT);
+  const side = neighbours.filter((m) => (target === 0 ? list.indexOf(m) > pos : target === OPTION_COUNT - 1 ? list.indexOf(m) < pos : true));
+  const others = [rng.pick(side.length ? side : neighbours)];
   for (const id of opts.include || []) {
     const m = index.movement(id);
     if (m && m !== correct && !others.includes(m) && others.length < need) others.push(m);
@@ -165,8 +169,19 @@ export function makeMovementQuestion(index, artwork, difficulty, rng, opts = {})
   const near = clamp(difficulty, 0, 1) >= MOVEMENT_NEAR_FROM;
   const pool = near ? rest.filter((m) => gapOf(m) <= MOVEMENT_MAX_GAP) : rest;
   const fallback = rest.filter((m) => !pool.includes(m)).sort((a, b) => gapOf(a) - gapOf(b));
-  others.push(...[...pool, ...fallback].slice(0, need - others.length));
-  const options = rng.shuffle([correct, ...others]).map((m) => ({ id: m.id, label: m.name }));
+  // Las opciones van en orden cronológico. Para que la buena no caiga casi siempre en el centro (los
+  // distractores suelen ser épocas vecinas), se sortea la posición que ocupará y se eligen los distractores
+  // por arriba y por abajo en consecuencia (lo que permitan los extremos de la línea del tiempo).
+  const ordered = [...pool, ...fallback];
+  const earlier = ordered.filter((m) => list.indexOf(m) < pos);
+  const later = ordered.filter((m) => list.indexOf(m) > pos);
+  const slots = need - others.length;
+  const placedBefore = others.filter((m) => list.indexOf(m) < pos).length;
+  let nBefore = Math.min(earlier.length, clamp(target - placedBefore, 0, slots));
+  let nAfter = Math.min(later.length, slots - nBefore);
+  nBefore = Math.min(earlier.length, slots - nAfter);
+  others.push(...earlier.slice(0, nBefore), ...later.slice(0, nAfter));
+  const options = [correct, ...others].sort((x, y) => list.indexOf(x) - list.indexOf(y)).map((m) => ({ id: m.id, label: m.name }));
   return {
     type: 'movement',
     prompt: '¿De qué movimiento es?',
@@ -232,11 +247,12 @@ export function makeQuestion(type, index, artwork, difficulty, rng, opts = {}) {
 
 // Reintento al final de la ronda de un cuadro fallado: la misma obra con otra mecánica («¿Quién lo
 // pintó?» ↔ «¿Cuál es de X?»), para que no baste con recordar la posición de la respuesta. Las de
-// movimiento (y si la otra mecánica no es posible) solo barajan las opciones.
+// movimiento no cambian (opciones en orden cronológico) y, si la otra mecánica no es posible, se barajan.
 export const RETRY_DIFFICULTY = 0.4;
 export function retryQuestion(index, q, rng) {
+  // Las de movimiento mantienen el orden cronológico (solo las otras barajan sus opciones).
+  if (q.type === 'movement') return { ...q };
   const shuffled = { ...q, options: rng.shuffle(q.options) };
-  if (q.type === 'movement') return shuffled;
   const work = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
   if (!work) return shuffled;
   const other = q.type === 'who'

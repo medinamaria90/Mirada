@@ -97,6 +97,17 @@ export const BOTS = {
   first(q) {
     return q.options[0].id === q.answerId ? 1 : 0;
   },
+  // Siempre la 2.ª, la 3.ª o la 4.ª opción: en «¿De qué movimiento es?» las opciones van en orden cronológico,
+  // así que la posición de la buena no puede ser predecible.
+  second(q) {
+    return q.options[1].id === q.answerId ? 1 : 0;
+  },
+  third(q) {
+    return q.options[2].id === q.answerId ? 1 : 0;
+  },
+  fourth(q) {
+    return q.options[3].id === q.answerId ? 1 : 0;
+  },
 };
 
 // Alumno que conoce a todos los pintores anteriores pero NO ha estudiado al de la etapa, y responde
