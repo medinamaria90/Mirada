@@ -62,6 +62,9 @@
   --relief: 4px;
   --relief-sm: 3px;
   --relief-node: 5px;
+  --lift: 0 var(--relief) 0 var(--line), inset 0 0 0 1.5px var(--line);
+  --lift-sm: 0 var(--relief-sm) 0 var(--line), inset 0 0 0 1.5px var(--line);
+  --lift-down: inset 0 0 0 1.5px var(--line);
   /* Medidas. */
   --radius: 18px;
   --radius-sm: 12px;
