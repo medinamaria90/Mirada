@@ -164,3 +164,40 @@ test('cuadro de repaso: va en una pregunta de repaso sin cambiar la ronda (tama�
   const own = big.worksOf(big.path[3].id)[4].id;
   assert.deepEqual(planStage(big, big.path[3].id, 7, { review: [own] }).questions, planStage(big, big.path[3].id, 7).questions);
 });
+
+// ---------------------------------------------------------------- 5. Pintor dormido
+const { renderPathMap, DORMANT_TEXT } = await import('../app/js/ui/screens/path-map.js');
+const { readFileSync } = await import('node:fs');
+
+function stageButton(html, id) {
+  return html.match(new RegExp(`<button class="stage [^"]*" data-action="stage" data-id="${id}"[^]*?</button>`))?.[0] || '';
+}
+
+test('pintor dormido: dominado y sin salir en 7 días se apaga y pregunta «¿Lo recuerdas?»; al jugarlo vuelve', () => {
+  const today = '2026-11-24';
+  const [a, b, c] = big.path;
+  const p = masteredProgress({ [a.id]: { on: '2026-11-17' }, [b.id]: { on: '2026-11-18' }, [c.id]: { on: '2026-11-10', seen: '2026-11-20' } });
+  assert.equal(isDormant(p, a.id, today), true, '7 días');
+  assert.equal(isDormant(p, b.id, today), false, '6 días');
+  assert.equal(isDormant(p, c.id, today), false, 'salió en una pregunta hace 4 días');
+  assert.equal(lastSeen(p, c.id), '2026-11-20');
+  const html = renderPathMap({ index: big, today: () => today, store: { get: () => ({ progress: p }) } });
+  const btnA = stageButton(html, a.id);
+  assert.match(btnA, /class="stage is-dormant is-mastered"/);
+  assert.match(btnA, /data-status="mastered"/, 'sigue dominado (nunca se bloquea)');
+  assert.ok(btnA.includes(`<span class="stage-meta">${DORMANT_TEXT}</span>`));
+  assert.ok(btnA.includes('stage-badge'), 'conserva el sello de dominado');
+  assert.doesNotMatch(stageButton(html, b.id), /is-dormant|Lo recuerdas/);
+  // Al jugar su ronda (aunque falle), vuelve a su estado y sigue dominado.
+  const plan = planStage(big, a.id, 3);
+  const answers = plan.questions.map((q) => ({ q, correct: false, retry: false, combo: 0 }));
+  const after = finishRound(p, big, { kind: 'stage', artistId: a.id, answers, firstTry: answers.map(() => false) }, today).progress;
+  assert.equal(isDormant(after, a.id, today), false);
+  assert.equal(after.artists[a.id].mastered, true);
+  const html2 = renderPathMap({ index: big, today: () => today, store: { get: () => ({ progress: after }) } });
+  assert.doesNotMatch(stageButton(html2, a.id), /is-dormant/);
+  // Colores por variable: el anillo apagado vive en brand.css (claro y las dos copias del oscuro).
+  const brand = readFileSync(new URL('../app/css/brand.css', import.meta.url), 'utf8');
+  assert.equal((brand.match(/--map-dormant:/g) || []).length, 3);
+  assert.match(readFileSync(new URL('../app/css/main.css', import.meta.url), 'utf8'), /\.stage\.is-mastered\.is-dormant \.stage-dot \{[^}]*var\(--map-dormant\)/);
+});

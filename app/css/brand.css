@@ -85,6 +85,9 @@
   --map-tint-impresionismo: #e5e4ee;
   --map-tint-postimpresionismo: #f0e7c9;
   --map-tint-simbolismo-modernismo: #e7e1ea;
+  /* Pintor dormido (dominado y sin salir en una semana): anillo apagado y cuadro sin saturación. */
+  --map-dormant: #cbbfae;
+  --map-dormant-saturate: .25;
   --character-skin: #f0cfae;
   --character-beret: #23201c;
   /* Sombras y velos. */
@@ -177,6 +180,8 @@
     --map-tint-impresionismo: #242229;
     --map-tint-postimpresionismo: #28251c;
     --map-tint-simbolismo-modernismo: #25222a;
+    --map-dormant: #5c5246;
+    --map-dormant-saturate: .25;
     --character-skin: #e3bf9b;
     --character-beret: #2a211c;
     --scrim: rgba(0, 0, 0, .55);
@@ -242,6 +247,8 @@
   --map-tint-impresionismo: #242229;
   --map-tint-postimpresionismo: #28251c;
   --map-tint-simbolismo-modernismo: #25222a;
+  --map-dormant: #5c5246;
+  --map-dormant-saturate: .25;
   --character-skin: #e3bf9b;
   --character-beret: #2a211c;
   --scrim: rgba(0, 0, 0, .55);

@@ -310,6 +310,9 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   background: var(--gold); color: var(--on-gold); box-shadow: 0 0 0 3px var(--surface);
 }
 .stage-badge .icon { stroke-width: 2.6; }
+/* Dormido: dominado y sin salir en una semana. Se apaga (anillo y cuadro) sin perder el sello de hecho. */
+.stage.is-dormant .stage-thumb { filter: saturate(var(--map-dormant-saturate)); }
+.stage.is-mastered.is-dormant .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--map-dormant), 0 var(--relief-node) 0 6px var(--line-2); }
 /* Repaso de la época: arco coral; medalla cuando se supera. */
 .stage-review .stage-dot { width: 58px; height: 58px; color: var(--brand-text); }
 .stage-review { top: -29px; }

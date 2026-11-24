@@ -12,6 +12,7 @@ import {
   artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep,
 } from '../../engine/progress.js';
 import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
+import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { characterHtml } from '../path-character.js';
 
@@ -179,6 +180,8 @@ function artistNodes(ctx, movement, currentKey) {
 }
 
 const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'por repasar', mastered: 'dominado' };
+// Pintor dormido (engine/review.js): dominado y sin salir en una semana.
+export const DORMANT_TEXT = '¿Lo recuerdas?';
 
 // Texto bajo el nombre solo cuando dice algo: «Empezar»/«Seguir» en el nodo actual y «Repite · n %»
 // (pintado como botón) en lo jugado que aún no está dominado: el repaso de la época solo se abre al
@@ -211,11 +214,12 @@ function artistNode(ctx, artist, currentKey) {
   const isCurrent = key === currentKey;
   const prevStep = index.steps[index.stepIndex('artist', artist.id) - 1];
   const prev = prevStep ? (prevStep.type === 'sala' ? index.movement(prevStep.id).name : index.artist(prevStep.id).short || index.artist(prevStep.id).name) : '';
+  const dormant = status === 'mastered' && isDormant(p, artist.id, ctx.today ? ctx.today() : null);
   const html = nodeHtml({
-    cls: '', action: 'stage', id: artist.id, status,
+    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status,
     lock: prev ? `Se abre con la mitad de aciertos en ${prev}` : '',
-    label: `${artist.name}, ${STATE_LABEL[status]}`,
-    name: artist.name, meta: metaFor(status, p.artists[artist.id], isCurrent),
+    label: `${artist.name}, ${STATE_LABEL[status]}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
+    name: artist.name, meta: dormant ? DORMANT_TEXT : metaFor(status, p.artists[artist.id], isCurrent),
     dot: dotFor(status, coverOf(index, artist.id), initials(artist.name)),
   });
   return { type: 'artist', key, status, html };
