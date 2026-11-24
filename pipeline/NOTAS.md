@@ -8,9 +8,11 @@ que se lanza al hacer push de `pipeline/RUN` (una línea por paso) y hace commit
 1. `resolve` — verifica el QID de cada pintor (`pipeline/painters.json`) → `pipeline/out/painters_resolved.json`.
 2. `candidates` — obras candidatas por pintor (Wikidata SPARQL + datos del archivo en Commons) → `pipeline/out/candidates/<id>.json`.
 3. `seleccionar.py` (local, sin red; `PYTHONUTF8=1 python pipeline/seleccionar.py`) — elige las obras con `extra.json`, `excluir.json` y `ajustes.json` → `catalogo/seleccion.json` (con `level`).
-4. `download [lotes] [tamaño]` — descarga en lotes (150 por defecto), reanudable por `catalogo/img_meta.json`, commit tras cada lote. Las imágenes **no entran en main** (pesarían ~400 MB y cualquier `git pull` las bajaría a un PC): `run.sh` las sube a la **release `catalogo-img`** del repo (un JPEG por obra, `https://github.com/medinamaria90/Mirada/releases/download/catalogo-img/<id>.jpg`) y las borra del checkout; `img-release` sube las que haya en `catalogo/img/` y las saca de main. Para traerlas a un sitio: `gh release download catalogo-img -D catalogo/img` (o `--pattern 'w208758.jpg'`).
+4. `download [lotes] [tamaño]` — descarga en lotes (150 por defecto), reanudable por `catalogo/img_meta.json`, commit tras cada lote. Las imágenes **no entran en main** (pesarían ~400 MB y cualquier `git pull` las bajaría a un PC): `run.sh` las sube a la **release `catalogo-img`** del repo (un JPEG por obra, `https://github.com/medinamaria90/Mirada/releases/download/catalogo-img/<id>.jpg`) y las borra del checkout; `img-release` sube las que haya en `catalogo/img/` y las saca de main. **GitHub admite como máximo 1.000 recursos por release**: `run.sh` reparte las sueltas en `catalogo-img`, `catalogo-img-2`… (`TOPE` 995 por release) y deja en `catalogo-img` hueco para el zip y el sha256. Para traerlas a un sitio: `gh release download catalogo-img -D catalogo/img` (y `-2`; o `--pattern 'w208758.jpg'`).
 5. `fichas` — museo, ciudad, país, técnica, medidas, fecha y «qué aparece» de cada obra desde Wikidata → `pipeline/out/fichas.json` (reanudable; museos en `out/museos.json`, niveles administrativos en `out/lugares.json`).
 6. `build` / `validate [--parcial]` — `catalogo/obras.json` (esquema de la app + ficha), `catalogo/pintores.json`, `CREDITS.md` y comprobaciones.
+7. `pack [lado] [--parcial]` (por defecto 1200) — `pipeline/pack.py`: toma las imágenes sueltas de las releases (y las de `catalogo/img/` si las hay), deja solo las de `catalogo/obras.json` a lado mayor 1200 px (JPEG 82, progresivo, sin metadatos; Pillow las abre como no confiables: solo JPEG, tope de píxeles y de bytes), y sube **un único recurso** `app-img-1200.zip` (+ `app-img-1200.sha256`) a la release `catalogo-img`, sustituyendo el anterior. Si faltan imágenes no sube nada salvo con `--parcial`. Peso e imágenes quedan en `pipeline/logs/pack.txt`.
+8. `reconciliar` — quita de `catalogo/img_meta.json` lo que no está en ninguna release (para que `download` lo vuelva a bajar).
 
 ## Bitácora
 
@@ -74,6 +76,23 @@ de Granada*, *Los jugadores de cartas*, *El dormitorio en Arlés* y *Los girasol
 `candidates miguel-angel rafael madrazo pradilla cezanne van-gogh` las trae y después se vuelve a ejecutar
 `seleccionar.py` en local.
 
+### 24/11 (noche) — imágenes: tope de la release y paquete para Render
+
+- **Fallo encontrado.** GitHub admite 1.000 recursos por release: `catalogo-img` se llenó con el lote 6 y las 180 imágenes de los
+  lotes 7 y 8 no se pudieron subir, pero `img_meta.json` ya las daba por bajadas (se habrían perdido al acabar el job).
+- **Arreglo.** `push_img` reparte en `catalogo-img`, `catalogo-img-2`… (tope 995) y, si no sube, deshace el `img_meta.json` del lote y
+  corta; paso nuevo `reconciliar` (quita de `img_meta.json` lo que no está en ninguna release). Se volvieron a bajar las 180 y quedaron
+  las 1.180 sueltas a 1600 px: 995 en `catalogo-img`, 185 en `catalogo-img-2`.
+- **Paquete.** Nuevo paso `pack 1200` (`pipeline/pack.py`): 1.180 imágenes, 267,1 MB de JPEG (media 221 KB), `app-img-1200.zip` de
+  255 MiB (267,2 MB) + `app-img-1200.sha256` en `catalogo-img`, 0 obras sin imagen, 0 fallos. Para hacerle sitio se pasaron 4 sueltas
+  de `catalogo-img` a `-2` (`liberar_hueco`).
+- **Prueba.** `bash tools/fetch_images.sh <carpeta>` con el zip real: 39 s, sha256 correcto, 1.180 imágenes (258 MB); también probados
+  sha256 erróneo, recurso inexistente y pocas imágenes (los tres fallan con mensaje claro). Carpeta de prueba borrada.
+- **Render (migración, no aplicado):** comando de construcción `bash tools/fetch_images.sh app/img`; ver «Imágenes en el despliegue».
+- Pillow se instala en el job (`python3-pil`) en `pipeline.yml`.
+- Ojo: `pack` descarga todas las sueltas (~400 MB) en el runner, no en el PC; relanzarlo (`pack 1200` en `pipeline/RUN`) basta si cambia la
+  selección tras `download`.
+
 ## Plan de migración de la app al catálogo grande (sin tocar `app/` hasta que acabe la portada)
 
 Hoy la app vive de `tools/catalog_data.py` (datos a mano de 235 obras y 75 pintores, ids `a<N>`/`b<N>`,
@@ -118,3 +137,11 @@ imágenes `app/img/<id>.jpg` a 1000 px) → `tools/patch_catalog.py` / `tools/ma
    pintor sin cambios; las nuevas siguen su plantilla.
 7. **Textos pendientes de escribir** (no automatizables): `about` y `look` de 1.180 obras (empezar por las 637
    de nivel 1), `hint`/`traits`/`similarTo` de los ~70 pintores nuevos con etapa.
+
+## Imágenes en el despliegue (Render)
+
+Decisión de María: las imágenes **no entran en el repo ni en su PC**; Render las baja de la release al construir.
+- Paquete: `https://github.com/medinamaria90/Mirada/releases/download/catalogo-img/app-img-1200.zip` (+ `app-img-1200.sha256`), lo genera el paso `pack`.
+- Script: `bash tools/fetch_images.sh <carpeta>` (solo bash, curl, sha256sum, unzip o `python3 -m zipfile`; sin `gh` ni token): descarga, comprueba el sha256, valida que el zip solo trae `w<QID>.jpg`, descomprime y falla con mensaje claro si algo no cuadra (descarga imposible, sha distinto, menos de 1.000 imágenes).
+- **Comando de construcción de Render para la migración** (hoy sigue siendo `echo "sin compilación: sitio estático"`; NO cambiarlo hasta migrar): `bash tools/fetch_images.sh app/img`. El directorio de publicación sigue siendo `app`. `app/img/` deberá estar en `.gitignore` cuando el catálogo grande sustituya al actual (hoy `app/img/` contiene las 235 de 1000 px del catálogo viejo y el atlas `app/img/s/`: el zip las pisaría solo si coincide el nombre, y los ids son distintos, así que conviven; el atlas habrá que regenerarlo en la migración).
+- Ventana de riesgo: al volver a ejecutar `pack`, `gh release upload --clobber` borra y sube el zip: durante unos segundos puede no estar o no cuadrar con el sha; un despliegue de Render en ese instante fallaría con mensaje claro y basta reintentar.
