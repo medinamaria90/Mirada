@@ -1,2 +1,7 @@
 inicio Tue Nov 24 18:10:31 UTC 2026
 == candidates miguel-angel rafael madrazo pradilla cezanne van-gogh 18:10:31
+repito van-gogh           faltan datos de forzadas: Q18713070 Q21948567
+ok     van-gogh           Q5582       937 candidatas; de las 80 primeras, 77 con imagen >=1200px
+fin 2026-11-24 18:11:12
+48M	.git
+920K	catalogo
