@@ -1,0 +1,236 @@
+{
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-24T14:12:36Z"
+ },
+ "title": "Mirada · identidad, ronda 2",
+ "launch": {
+  "view": "canvas",
+  "page": "p0"
+ },
+ "pages": [
+  {
+   "id": "p0",
+   "name": "Ronda 2"
+  }
+ ],
+ "boards": {
+  "Main.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 1182,
+   "title": "Portada · ronda 2",
+   "page": "p0"
+  },
+  "Logo-1.dc.html": {
+   "x": 0,
+   "y": 1562,
+   "w": 390,
+   "h": 831,
+   "title": "Logo 1",
+   "page": "p0"
+  },
+  "Logo-2.dc.html": {
+   "x": 470,
+   "y": 1562,
+   "w": 390,
+   "h": 831,
+   "title": "Logo 2",
+   "page": "p0"
+  },
+  "Logo-3.dc.html": {
+   "x": 940,
+   "y": 1562,
+   "w": 390,
+   "h": 1020,
+   "title": "Logo 3",
+   "page": "p0"
+  },
+  "Letra-1.dc.html": {
+   "x": 0,
+   "y": 2962,
+   "w": 390,
+   "h": 1026,
+   "title": "Letra 1",
+   "page": "p0"
+  },
+  "Letra-2.dc.html": {
+   "x": 470,
+   "y": 2962,
+   "w": 390,
+   "h": 972,
+   "title": "Letra 2",
+   "page": "p0"
+  },
+  "Letra-3.dc.html": {
+   "x": 940,
+   "y": 2962,
+   "w": 390,
+   "h": 1038,
+   "title": "Letra 3",
+   "page": "p0"
+  },
+  "Color-coral.dc.html": {
+   "x": 0,
+   "y": 4380,
+   "w": 390,
+   "h": 1279,
+   "title": "Color · Coral contenido",
+   "page": "p0"
+  },
+  "Color-granate.dc.html": {
+   "x": 470,
+   "y": 4380,
+   "w": 390,
+   "h": 1279,
+   "title": "Color · Granate laca",
+   "page": "p0"
+  },
+  "Color-azul.dc.html": {
+   "x": 940,
+   "y": 4380,
+   "w": 390,
+   "h": 1300,
+   "title": "Color · Azul lapislázuli",
+   "page": "p0"
+  },
+  "P-camino-renacimiento.dc.html": {
+   "x": 0,
+   "y": 6060,
+   "w": 390,
+   "h": 844,
+   "title": "Camino · Renacimiento",
+   "page": "p0"
+  },
+  "P-camino-barroco.dc.html": {
+   "x": 470,
+   "y": 6060,
+   "w": 390,
+   "h": 844,
+   "title": "Camino · Barroco",
+   "page": "p0"
+  },
+  "P-camino-siluetas.dc.html": {
+   "x": 940,
+   "y": 6060,
+   "w": 390,
+   "h": 844,
+   "title": "Camino · variante de siluetas",
+   "page": "p0"
+  },
+  "P-pregunta.dc.html": {
+   "x": 1410,
+   "y": 6060,
+   "w": 390,
+   "h": 844,
+   "title": "Pregunta",
+   "page": "p0"
+  },
+  "P-ficha.dc.html": {
+   "x": 1880,
+   "y": 6060,
+   "w": 390,
+   "h": 844,
+   "title": "Ficha tipo historia",
+   "page": "p0"
+  },
+  "P-celebracion.dc.html": {
+   "x": 2350,
+   "y": 6060,
+   "w": 390,
+   "h": 844,
+   "title": "Celebración",
+   "page": "p0"
+  },
+  "P-perfil.dc.html": {
+   "x": 2820,
+   "y": 6060,
+   "w": 390,
+   "h": 844,
+   "title": "Perfil",
+   "page": "p0"
+  },
+  "Camino-entero.dc.html": {
+   "x": 0,
+   "y": 7284,
+   "w": 390,
+   "h": 2920,
+   "title": "Camino entero, con rama",
+   "page": "p0"
+  },
+  "Preguntas.dc.html": {
+   "x": 470,
+   "y": 7284,
+   "w": 390,
+   "h": 1202,
+   "title": "Cinco preguntas",
+   "page": "p0"
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "Logo-1.dc.html",
+  "Logo-2.dc.html",
+  "Logo-3.dc.html",
+  "Letra-1.dc.html",
+  "Letra-2.dc.html",
+  "Letra-3.dc.html",
+  "Color-coral.dc.html",
+  "Color-granate.dc.html",
+  "Color-azul.dc.html",
+  "P-camino-renacimiento.dc.html",
+  "P-camino-barroco.dc.html",
+  "P-camino-siluetas.dc.html",
+  "P-pregunta.dc.html",
+  "P-ficha.dc.html",
+  "P-celebracion.dc.html",
+  "P-perfil.dc.html",
+  "Camino-entero.dc.html",
+  "Preguntas.dc.html"
+ ],
+ "notes": {
+  "t1": {
+   "x": 0,
+   "y": 1322,
+   "text": "Logo: tres variantes del vano con punto",
+   "kind": "title1",
+   "maxW": 1330,
+   "page": "p0"
+  },
+  "t2": {
+   "x": 0,
+   "y": 2722,
+   "text": "Letra: tres parejas finas",
+   "kind": "title1",
+   "maxW": 1330,
+   "page": "p0"
+  },
+  "t3": {
+   "x": 0,
+   "y": 4140,
+   "text": "Color protagonista: tres opciones",
+   "kind": "title1",
+   "maxW": 1330,
+   "page": "p0"
+  },
+  "t4": {
+   "x": 0,
+   "y": 5820,
+   "text": "Pantallas con la mezcla elegida",
+   "kind": "title1",
+   "maxW": 3210,
+   "page": "p0"
+  },
+  "t5": {
+   "x": 0,
+   "y": 7044,
+   "text": "Camino entero y preguntas",
+   "kind": "title1",
+   "maxW": 860,
+   "page": "p0"
+  }
+ },
+ "designSystems": []
+}

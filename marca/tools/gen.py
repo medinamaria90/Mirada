@@ -5,7 +5,7 @@ from common import R, FONTS, NEUTRAL, col, symbol, lockup, app_icon, ico, cr, fm
 from brand import brand_board, type_board
 from screens import SCREENS
 
-ROOT = '/home/claude/mirada/marca'
+ROOT = os.environ.get('MIRADA_MARCA') or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJ = ROOT + '/project'
 PREV = ROOT + '/preview'
 N = NEUTRAL
@@ -175,7 +175,7 @@ def main():
     bs = boards()
     os.makedirs(PREV, exist_ok=True)
     for f, t, p, keys, body, fixed in bs:
-        open(f'{PREV}/{f[:-8]}.html', 'w').write(preview(t, body))
+        open(f'{PREV}/{f[:-8]}.html', 'w', encoding='utf-8').write(preview(t, body))
     # medir
     files = [f'{PREV}/{f[:-8]}.html' for f, *_ in bs]
     res = subprocess.run(['node', ROOT + '/tools/measure.js'] + files, capture_output=True, text=True)
@@ -190,7 +190,7 @@ def main():
         if fixed and heights[f'{PREV}/{f[:-8]}.html'] > 846:
             print('DESBORDA', f, heights[f'{PREV}/{f[:-8]}.html'])
         b2 = body.replace('<div data-root style="width: 390px;', f'<div data-root style="width: 390px; height: {h}px;', 1) if not fixed else body
-        open(f'{PROJ}/{f}', 'w').write(dc(t, keys.replace('N', 'N') if True else keys, b2, 390, h))
+        open(f'{PROJ}/{f}', 'w', encoding='utf-8').write(dc(t, keys.replace('N', 'N') if True else keys, b2, 390, h))
         x = xs.get(p, 0)
         xs[p] = x + 390 + 80
         boards_idx[f] = {'x': x, 'y': 0, 'w': 390, 'h': h, 'title': t, 'page': p}
@@ -206,7 +206,7 @@ def main():
     canvas = {'v': 3, 'createdOnFiles': {'v': 1, 'at': now}, 'title': 'Mirada · identidad (prepropuesta 1)',
               'launch': {'view': 'canvas', 'page': 'p0'}, 'pages': pages, 'boards': boards_idx, 'order': order,
               'notes': notes, 'designSystems': []}
-    json.dump(canvas, open(f'{PROJ}/canvas.json', 'w'), ensure_ascii=False, indent=1)
+    json.dump(canvas, open(f'{PROJ}/canvas.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
 
 if __name__ == '__main__':
