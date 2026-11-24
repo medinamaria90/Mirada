@@ -1009,7 +1009,9 @@ if (SMOKE) {
       const id = await tp.locator('.q-art .art').getAttribute('data-art');
       return bank.find((x) => x.artwork === id);
     };
-    for (let i = 0; i < 3; i++) {
+    // Cuatro preguntas: tres de cuadro grande (la primera se falla a propósito) y la cuarta, una
+    // «¿Cuál es de X?», se responde desde el visor con «Es este» (tocar la miniatura no responde).
+    for (let i = 0; i < 4; i++) {
       const q = await questionOnScreen();
       check(Boolean(q), L(`pregunta ${i + 1} no está en el banco`));
       if (!q) break;
@@ -1024,7 +1026,31 @@ if (SMOKE) {
       if (i === 0 && scheme === 'light') await shot(tp, '15-test-pregunta');
       // Primera a propósito mal, el resto bien: así se ven los dos feedbacks.
       const pick = i === 0 ? q.options.find((o) => o !== q.answer) : q.answer;
-      await tp.locator(`.lesson-stage .option[data-id="${pick}"]`).tap();
+      if (q.kind === 'which') {
+        check(await tp.locator('.option-art .zoom-badge').count() === 4, L('las miniaturas no llevan la marca de ampliar'));
+        // Tocar una miniatura abre el visor (sin responder y sin revelar nada); cerrar no responde.
+        const pos = q.options.indexOf(pick);
+        await tp.locator('.option-art').nth((pos + 1) % 4).tap();
+        await tp.waitForSelector('.viewer[open]');
+        check(await tp.locator('.feedback.is-open').count() === 0, L('tocar una miniatura responde'));
+        const leaks = await viewerLeaks(tp, forbiddenFor(q.options, art.get(q.answer).artistId));
+        check(!leaks.length, L(`el visor revela ${leaks.join(', ')}`));
+        await tp.keyboard.press('Escape');
+        await tp.waitForSelector('.viewer', { state: 'detached' });
+        check(await tp.locator('.feedback.is-open').count() === 0 && await tp.locator('.lesson-stage .option.is-done').count() === 0, L('cerrar el visor responde'));
+        await answerWhichInViewer(tp, pos, { navigate: true, label: 'test' });
+      } else {
+        // El cuadro de la pregunta se abre en grande sin responder ni revelar nada.
+        await tp.locator('.q-art [data-action="zoom"]').tap();
+        await tp.waitForSelector('.viewer[open]');
+        check(await tp.locator('.feedback.is-open').count() === 0, L('tocar el cuadro responde'));
+        const leaks = await viewerLeaks(tp, forbiddenFor([q.artwork]));
+        check(!leaks.length, L(`el visor de la pregunta revela ${leaks.join(', ')}`));
+        if (i === 0) await audit(tp, L('visor de la pregunta'));
+        await tp.locator('.viewer [data-v="close"]').tap();
+        await tp.waitForSelector('.viewer', { state: 'detached' });
+        await tp.locator(`.lesson-stage .option[data-id="${pick}"]`).tap();
+      }
       await tp.waitForSelector('.feedback.is-open');
       await tp.waitForTimeout(400);
       const fb = await tp.locator('.feedback').innerText();
@@ -1032,6 +1058,15 @@ if (SMOKE) {
       check(fb.includes(q.hint), L(`feedback ${i + 1} sin la pista`));
       await assertAnswersVisible(tp, L(`feedback ${i + 1}`));
       if (i === 0) await audit(tp, L('feedback'));
+      if (q.kind === 'which') {
+        // Respondida: la miniatura sigue abriendo el visor, ya con su ficha.
+        await tp.locator('.option-art.is-correct').tap();
+        await tp.waitForSelector('.viewer[open]');
+        const w = art.get(q.answer);
+        check((await tp.locator('.viewer').innerText()).includes(w.title), L('tras responder, el visor no muestra la ficha'));
+        await tp.keyboard.press('Escape');
+        await tp.waitForSelector('.viewer', { state: 'detached' });
+      }
       await tp.locator('.feedback [data-action="continue"]').tap();
       await tp.waitForTimeout(200);
     }
@@ -1039,7 +1074,7 @@ if (SMOKE) {
     await tp.waitForSelector('.test-result');
     await tp.waitForTimeout(500);
     const rt = await tp.locator('.test-result').innerText();
-    check(/Has acertado 2 de 3/.test(rt), L(`resultado sin «n de 3»: «${rt.replace(/\s+/g, ' ').slice(0, 80)}»`));
+    check(/Has acertado 3 de 4/.test(rt), L(`resultado sin «n de 4»: «${rt.replace(/\s+/g, ' ').slice(0, 80)}»`));
     check(/Sabes más de pintura que el \d+ % de la gente/.test(rt) && /estimación/.test(rt), L('resultado sin percentil estimado'));
     check(/Has llegado al tramo fácil/.test(rt), L('resultado sin el tramo'));
     check(await tp.locator('.test-result a[href="../#inicio"]').count() >= 1, L('falta «Sigue aprendiendo en Mirada»'));
@@ -1048,12 +1083,12 @@ if (SMOKE) {
     await tp.locator('[data-action="share"]').tap();
     await tp.waitForTimeout(400);
     const shared = await tp.evaluate(() => navigator.clipboard.readText());
-    check(/^He acertado 2 de 3 en el test de Mirada · /.test(shared) && /\nSé más de pintura que el \d+ % de la gente/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
+    check(/^He acertado 3 de 4 en el test de Mirada · /.test(shared) && /\nSé más de pintura que el \d+ % de la gente/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
     check(/Copiado/.test(await tp.locator('.copy-status').innerText()), L('no avisa de que se ha copiado'));
     // El último resultado se recuerda en la portada.
     await tp.goto(`${base}test/`);
     await tp.waitForSelector('.test-last:not([hidden])');
-    check(/La última vez: 2 de 3/.test(await tp.locator('.test-last').innerText()), L('la portada no recuerda el último resultado'));
+    check(/La última vez: 3 de 4/.test(await tp.locator('.test-last').innerText()), L('la portada no recuerda el último resultado'));
     await tctx.close();
   }
 }

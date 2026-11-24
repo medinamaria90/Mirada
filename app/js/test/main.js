@@ -16,6 +16,7 @@ const LAST_KEY = 'mirada.test.last';
 const IMG_PREFIX = '../';
 const FEEDBACK_FOCUS_MS = 340;
 const KEY_OPTIONS = ['1', '2', '3', '4'];
+const ALT_WORK = 'Cuadro para identificar';
 
 const root = document.getElementById('test');
 const home = $('.test-home');
@@ -117,12 +118,36 @@ function renderQuestion() {
   h.focus({ preventScroll: true });
 }
 
-function pick(optionId) {
+// Visor a pantalla completa (ui/viewer.js, diferido: no cuenta en el arranque). Sin responder no
+// revela nada; en «¿Cuál es de X?» lleva las 4 miniaturas y «Es este» responde con la que se ve.
+// Tras responder, el visor muestra las fichas (título, autor y año).
+let viewerMod = null;
+const loadViewer = () => (viewerMod ? Promise.resolve(viewerMod) : import('../ui/viewer.js').then((m) => { viewerMod = m; return m; }));
+function zoom(opener, start = 0) {
+  if (!state || state.status !== 'playing' || !view) return;
+  const which = view.kind === 'which';
+  const works = which ? view.options.map((o) => o.artwork) : [view.artwork];
+  const reveal = isAnswered(state);
+  const askedId = state.current.id;
+  loadViewer().then((m) => {
+    if (!state || state.status !== 'playing' || state.current.id !== askedId || isAnswered(state) !== reveal) return;
+    m.openViewer({
+      index: ctx.index, works, start, reveal, opener,
+      label: which ? view.prompt : reveal ? null : ALT_WORK,
+      title: which ? view.prompt : null,
+      pick: which && !reveal ? { label: 'Es este', onPick: (i) => choose(view.options[i].id) } : null,
+    });
+  }).catch((err) => console.error(err));
+}
+
+function choose(optionId) {
   if (!state || state.status !== 'playing' || isAnswered(state)) return;
   state = answer(state, optionId);
   const correct = optionId === view.answer;
   for (const b of $$('.lesson-stage .option', root)) {
-    b.setAttribute('aria-disabled', 'true');
+    // Las miniaturas siguen activas tras responder: abren el visor, ya con las fichas.
+    if (b.classList.contains('option-art')) b.setAttribute('aria-label', `${b.getAttribute('aria-label')}: ver en grande`);
+    else b.setAttribute('aria-disabled', 'true');
     b.classList.add('is-done');
     if (b.dataset.id === view.answer) b.classList.add('is-correct');
     else if (b.dataset.id === optionId) {
@@ -203,7 +228,9 @@ async function share() {
 // ---------------------------------------------------------------- Eventos
 onAction(document.body, {
   start,
-  answer: (b) => pick(b.dataset.id),
+  answer: (b) => choose(b.dataset.id),
+  pick: (b) => zoom(b, Number(b.dataset.pos) || 0),
+  zoom: (b) => zoom(b),
   continue: next,
   finish: () => { if (state && state.status !== 'done') { state = finish(state); showResult(); } },
   resume: () => { if (state && state.status === 'pause') { state = resume(state); render(); } },
@@ -212,10 +239,11 @@ onAction(document.body, {
 });
 
 document.addEventListener('keydown', (ev) => {
-  if (!state || state.status !== 'playing' || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+  // Con el visor abierto, el teclado es suyo (flechas, Esc, «Es este»).
+  if (!state || state.status !== 'playing' || ev.altKey || ev.ctrlKey || ev.metaKey || document.querySelector('.viewer')) return;
   if (KEY_OPTIONS.includes(ev.key) && !isAnswered(state)) {
     const b = $$('.lesson-stage .option', root)[Number(ev.key) - 1];
-    if (b) { ev.preventDefault(); pick(b.dataset.id); }
+    if (b) { ev.preventDefault(); choose(b.dataset.id); }
   } else if (ev.key === 'Enter' && isAnswered(state) && !ev.target.closest('button, a')) {
     ev.preventDefault();
     next();
