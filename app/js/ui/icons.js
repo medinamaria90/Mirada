@@ -15,6 +15,8 @@ export const icons = {
   frames: (s) => svg('<rect x="3" y="4" width="8" height="10" rx="1"/><rect x="13" y="4" width="8" height="6" rx="1"/><rect x="13" y="12" width="8" height="8" rx="1"/><rect x="3" y="16" width="8" height="4" rx="1"/>', s),
   user: (s) => svg('<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.3-3.8 4.2-5.6 7.5-5.6s6.2 1.8 7.5 5.6"/>', s),
   close: (s) => svg('<path d="M6 6l12 12M18 6 6 18"/>', s),
+  // Cofre del camino (cerrado, por ahora solo visual).
+  chest: (s) => svg('<path d="M4 10.5A2.5 2.5 0 0 1 6.5 8h11a2.5 2.5 0 0 1 2.5 2.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M4 13h16"/><rect x="10.5" y="11.5" width="3" height="3.5" rx=".8"/>', s),
   lock: (s) => svg('<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>', s),
   check: (s) => svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>', s),
   play: (s) => svg('<path d="M8 5.5v13l10-6.5z"/>', s),

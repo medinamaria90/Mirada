@@ -214,106 +214,144 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .today-detail .card-detail { border: 0; border-radius: 0; box-shadow: none; padding: 0 .95rem .95rem; }
 .today-detail .detail-body > .card-kicker { display: none; }
 
-/* El escenario de época (ciudad vectorial por la que se avanza) se dibuja detrás del camino, en
-   .path-scene; aquí solo queda el hueco preparado, sin dibujo. */
+/* ---------- Mapa del camino ----------
+   De abajo arriba: el DOM va en orden cronológico (Renacimiento primero) y column-reverse lo invierte,
+   así el tabulador y el lector recorren el camino en el orden del juego. Cada tramo (época) tiene su
+   paisaje (img, SVG aparte en img/mapa), el sendero (svg con un path), la cartela y los nodos en
+   porcentajes del trazado (390 de ancho); los nodos y el texto no escalan. */
 .home-main { position: relative; }
-.path-scene { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-.path { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.4rem; }
-.movement { min-width: 0; }
-/* Cabecera de época centrada, con un filete a cada lado. */
+.path-map { position: relative; display: flex; flex-direction: column-reverse; margin: 1.2rem -1.1rem 0; padding: 0; list-style: none; overflow: hidden; }
+.path-era, .path-museum { position: relative; width: 100%; min-width: 0; background: var(--era-tint); }
+.path-land, .path-trail, .path-museum-art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.path-land { z-index: 0; object-fit: fill; }
+.path-trail { z-index: 1; }
+.path-museum-art { z-index: 0; }
+.trail-edge, .trail-fill, .trail-steps { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.trail-edge { stroke: var(--map-trail-edge); stroke-width: 30; }
+.trail-fill { stroke: var(--map-trail); stroke-width: 24; }
+.trail-steps { stroke: var(--map-trail-step); stroke-width: 3; stroke-dasharray: 3 9; }
+.land-far { fill: var(--map-stone-far); }
+.land-front { fill: var(--map-stone-front); }
+.land-side { fill: var(--map-stone-side); }
+.land-top { fill: var(--map-stone-top); }
+.land-window { fill: var(--map-window); }
+.land-shade { fill: var(--map-shade); }
+.land-leaf { fill: var(--map-leaf); }
+.land-leaf-2 { fill: var(--map-leaf-2); }
+/* Cartela de época (y la de «Tu museo»): píldora blanca centrada en la entrada del tramo. */
+.movement-head-wrap, .path-era > .movement-head, .path-museum-head { position: absolute; z-index: 3; margin: 0; transform: translate(-50%, -50%); max-width: 88%; font: inherit; }
 .movement-head {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr); align-items: center; column-gap: .7rem;
-  margin: 0; font: inherit; text-align: center;
+  display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .9rem .55rem; border-radius: 16px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 2px 0 var(--line), inset 0 0 0 1.5px var(--line); text-align: center;
 }
-.movement-head::before, .movement-head::after { content: ""; height: 1.5px; background: var(--line); border-radius: 2px; }
-.movement-head-wrap { margin: 0; font: inherit; }
-.movement-head.is-button {
-  width: 100%; padding: .25rem 0; border: 0; background: transparent; cursor: pointer; color: inherit;
-  border-radius: var(--radius-btn); transition: background-color .2s;
-}
-.movement-head.is-button:hover { background: color-mix(in srgb, var(--surface-2) 70%, transparent); }
-.movement-titles { display: grid; min-width: 0; }
-.movement-more { display: grid; place-items: center; width: 24px; height: 32px; color: var(--ink-2); }
-.movement-num {
-  display: grid; place-items: center; min-width: 32px; height: 32px; padding: 0 .4rem; border-radius: 999px;
-  background: var(--brand-soft); color: var(--brand-text); font: 600 .9rem/1 var(--font); letter-spacing: .04em;
-}
-.movement-name { font: 500 1.5rem/1.1 var(--font); letter-spacing: var(--track); }
-.movement-period { display: block; color: var(--ink-2); font-size: .85rem; font-weight: 400; margin-top: .1rem; letter-spacing: .02em; font-variant-numeric: lining-nums tabular-nums; }
-.movement-blurb { color: var(--ink-2); margin: .55rem auto .2rem; font-size: .95rem; max-width: 40ch; text-align: center; }
-.movement-lockline { display: flex; align-items: center; justify-content: center; gap: .4rem; color: var(--ink-2); margin: .5rem 0 0; font-size: .92rem; }
+.movement-head.is-button { border: 0; cursor: pointer; font: inherit; transition: transform .15s var(--ease); }
+.movement-head.is-button:active { transform: translateY(2px); box-shadow: inset 0 0 0 1.5px var(--line); }
+.movement-titles { display: grid; justify-items: center; min-width: 0; }
+.movement-name { font: 500 1.12rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: anywhere; }
+.movement-period { display: block; color: var(--ink-2); font-size: .78rem; margin-top: .15rem; letter-spacing: .02em; font-variant-numeric: lining-nums tabular-nums; }
+.movement-lockline { display: flex; align-items: center; gap: .3rem; margin-top: .2rem; color: var(--ink-2); font-size: .76rem; }
 .movement-lockline .icon { flex: none; }
-.movement-locked .movement-num { color: var(--ink-2); background: var(--surface-2); }
 .movement-locked .movement-name { color: var(--ink-2); }
-
-.stages { position: relative; margin: 1rem 0 0; padding-left: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: .55rem; }
-/* Sendero punteado que une los nodos. */
-.stages::before {
-  content: ""; position: absolute; left: 30px; top: 30px; bottom: 30px; width: 4px;
-  background: radial-gradient(circle, var(--line-2) 1.6px, transparent 2px) 50% 0 / 4px 12px repeat-y;
-}
+.movement-seal { display: grid; place-items: center; color: var(--gold-text); }
+.movement-more { display: grid; place-items: center; color: var(--ink-2); }
+.movement-locked .path-land, .movement-locked .path-trail { opacity: .72; }
+/* Nodos: cada parada es un punto (0×0) del trazado; el botón cuelga de él hacia el lado ancho. */
+.stages { position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; list-style: none; }
+.stage-spot { position: absolute; width: 0; height: 0; }
 .stage {
-  position: relative; display: flex; align-items: center; gap: 1rem; width: 100%; min-height: 80px;
-  padding: .5rem .6rem .5rem 0; border: 0; background: transparent; text-align: left; cursor: pointer; border-radius: var(--radius-btn);
-  transition: background-color .2s;
+  position: absolute; top: -32px; left: -32px; display: flex; align-items: center; gap: 12px; min-height: 64px; width: max-content;
+  padding: 0; border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer;
 }
-.stage:hover { background: color-mix(in srgb, var(--surface-2) 70%, transparent); }
-/* Nodo redondo con el cuadro dentro y relieve. */
+.stage-spot.is-right .stage { left: auto; right: -32px; flex-direction: row-reverse; text-align: right; }
+/* Nodo redondo con el cuadro dentro, anillo blanco de 3 px siempre y relieve. */
 .stage-dot {
   position: relative; flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 999px;
   background: var(--surface); color: var(--ink-2);
-  box-shadow: 0 0 0 3px var(--line), 0 var(--relief-node) 0 3px var(--line-2);
+  box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--line), 0 var(--relief-node) 0 5px var(--line-2);
   transition: transform .15s var(--ease), box-shadow .15s var(--ease);
 }
-.stage:active .stage-dot { transform: translateY(3px); box-shadow: 0 0 0 3px var(--line), 0 2px 0 3px var(--line-2); }
+.stage:active .stage-dot { transform: translateY(3px); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--line), 0 2px 0 5px var(--line-2); }
 .stage-thumb { position: absolute; inset: 0; border-radius: 999px; aspect-ratio: auto; box-shadow: none; }
 .stage-thumb.is-broken::after { font: 600 1.15rem/1 var(--font); color: var(--ink); }
-.stage-text { display: grid; gap: 1px; min-width: 0; }
-.stage-name { font: 500 1.08rem/1.15 var(--font); }
-.stage-meta { font-size: .86rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.stage.is-locked .stage-dot { background: var(--surface-2); box-shadow: 0 var(--relief-node) 0 var(--line-2); }
-.stage.is-locked:active .stage-dot { box-shadow: 0 2px 0 var(--line-2); }
-.stage.is-locked .stage-name { color: var(--ink-2); }
-/* Nodo actual: anillo coral sobre un halo suave; el aro exterior respira. */
-.stage.is-available .stage-dot { box-shadow: 0 0 0 4px var(--bg), 0 0 0 8px var(--brand), 0 10px 0 4px var(--brand-soft); }
-.stage.is-available:active .stage-dot { box-shadow: 0 0 0 4px var(--bg), 0 0 0 8px var(--brand), 0 6px 0 4px var(--brand-soft); }
+.stage-text {
+  display: grid; gap: 1px; padding: .38rem .7rem; border-radius: 999px; background: var(--surface); color: var(--ink);
+  box-shadow: 0 1.5px 0 var(--line), inset 0 0 0 1px var(--line); font: 500 .92rem/1.15 var(--font); max-width: min(220px, 42vw);
+}
+.stage-name { overflow-wrap: anywhere; }
+.stage-meta { font-size: .78rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.stage.is-locked .stage-dot { background: var(--surface-2); box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px var(--line-2); }
+.stage.is-locked:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 2px 0 3px var(--line-2); }
+.stage.is-locked .stage-text { color: var(--ink-2); }
+/* Nodo actual: anillo coral y halo; el nombre en píldora y debajo el botón «Empezar»/«Seguir». */
+.stage.is-available .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--brand), 0 0 0 16px var(--brand-soft); }
+.stage.is-available:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--brand), 0 0 0 12px var(--brand-soft); }
 .stage.is-available .stage-dot::after {
-  content: ""; position: absolute; inset: -13px; border-radius: 999px; border: 2px solid var(--brand);
+  content: ""; position: absolute; inset: -18px; border-radius: 999px; border: 2px solid var(--brand);
   opacity: 0; animation: halo 2.4s var(--ease) infinite;
 }
-.stage.is-available .stage-meta { color: var(--brand-text); font-weight: 600; }
-.stage.is-started .stage-dot { box-shadow: 0 0 0 3px var(--brand), 0 var(--relief-node) 0 3px var(--line-2); }
+.stage.is-started .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--brand), 0 var(--relief-node) 0 6px var(--line-2); }
+.stage-spot.is-current .stage-text { background: transparent; box-shadow: none; padding: 0; gap: 6px; justify-items: start; }
+.stage-spot.is-current.is-right .stage-text { justify-items: end; }
+.stage-spot.is-current .stage-name { padding: .38rem .7rem; border-radius: 999px; background: var(--surface); box-shadow: 0 1.5px 0 var(--line), inset 0 0 0 1px var(--line); font-weight: 600; }
+.stage-spot.is-current .stage-meta {
+  padding: .45rem .8rem; border-radius: 12px; background: var(--brand); color: var(--on-brand); font: 600 .88rem/1 var(--font);
+  box-shadow: 0 3px 0 var(--brand-shadow); transition: transform .15s var(--ease), box-shadow .15s var(--ease);
+}
+.stage-spot.is-current .stage:active .stage-meta { transform: translateY(2px); box-shadow: 0 1px 0 var(--brand-shadow); }
 /* Dominado: anillo de oro y sello con la marca de hecho. */
-.stage.is-mastered .stage-dot { box-shadow: 0 0 0 3px var(--gold), 0 var(--relief-node) 0 3px var(--line-2); }
+.stage.is-mastered .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--gold), 0 var(--relief-node) 0 6px var(--line-2); }
 .stage-badge {
-  position: absolute; right: -8px; bottom: -4px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;
-  background: var(--gold); color: var(--on-gold); box-shadow: 0 0 0 3px var(--bg);
+  position: absolute; right: -10px; bottom: -6px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;
+  background: var(--gold); color: var(--on-gold); box-shadow: 0 0 0 3px var(--surface);
 }
 .stage-badge .icon { stroke-width: 2.6; }
-.stage-review .stage-dot { border-radius: 18px; }
-.stage-review.is-available .stage-dot, .stage-review.is-mastered .stage-dot { color: var(--brand-text); }
-.stage-review.is-locked .stage-dot { background: var(--surface-2); }
-@keyframes halo { 0% { opacity: .6; transform: scale(.92); } 70%, 100% { opacity: 0; transform: scale(1.12); } }
-
-.lock-note {
-  margin: 0 0 0 80px; font-size: .88rem; color: var(--ink-2); max-height: 0; overflow: hidden; opacity: 0;
-  transition: max-height .25s var(--ease), opacity .25s;
-}
-.lock-note.is-visible { max-height: 3em; opacity: 1; }
-
-/* Tramos dentro de un movimiento largo */
-.stage-section {
-  position: relative; z-index: 1; display: flex; align-items: baseline; gap: .6rem;
-  margin: .9rem 0 .15rem 80px; padding-bottom: .3rem; border-bottom: 1px solid var(--line);
-}
-.stage-section:first-child { margin-top: .1rem; }
-.stage-section-name { font: 500 1.02rem/1.1 var(--font); color: var(--accent-ui); }
-.stage-section-count { margin-left: auto; font-size: .8rem; font-weight: 600; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-
-/* Sala: una sola parada, con marco cuadrado para distinguirla de los pintores */
+/* Repaso de la época: arco coral; medalla cuando se supera. */
+.stage-review .stage-dot { width: 58px; height: 58px; color: var(--brand-text); }
+.stage-review { top: -29px; }
+.stage-spot.is-left .stage-review { left: -29px; }
+.stage-spot.is-right .stage-review { right: -29px; }
+.stage-review.is-available .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--brand), 0 var(--relief-node) 0 6px var(--line-2); }
+.stage-review.is-available .stage-dot::after { display: none; }
+.stage-review.is-mastered .stage-dot { color: var(--gold-text); }
+.stage-review.is-locked .stage-dot { color: var(--ink-2); }
+/* Sala del movimiento y galería: marco cuadrado para distinguirlos de los pintores. */
 .stage-sala .stage-dot { border-radius: 18px; }
 .stage-sala .stage-thumb { border-radius: 14px; }
-.movement-sala .stages::before { display: none; }
+.stage-spot-aside .stage { flex-direction: column; gap: 6px; top: -24px; left: -24px; min-height: 0; }
+.stage-spot-aside .stage-text { text-align: center; justify-items: center; }
+.stage-gallery .stage-dot { width: 48px; height: 48px; border-radius: 14px; color: var(--on-accent); background: var(--accent); box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px color-mix(in srgb, var(--accent) 72%, var(--ink)); }
+@keyframes halo { 0% { opacity: .6; transform: scale(.92); } 70%, 100% { opacity: 0; transform: scale(1.12); } }
+/* Aviso al pulsar una parada cerrada: bajo el nodo. */
+.lock-note {
+  position: absolute; top: 40px; left: 50%; z-index: 3; width: max-content; max-width: 190px; margin: 0; padding: .3rem .6rem;
+  transform: translateX(-50%); border-radius: 10px; background: var(--surface); box-shadow: 0 1.5px 0 var(--line), inset 0 0 0 1px var(--line);
+  font-size: .8rem; line-height: 1.25; color: var(--ink-2); text-align: center; opacity: 0; pointer-events: none;
+  transition: opacity .25s;
+}
+.lock-note.is-visible { opacity: 1; }
+/* Tramos dentro de un movimiento largo: cartel sobre el sendero, entre dos paradas. */
+.stage-section {
+  position: absolute; z-index: 2; display: flex; gap: .5rem; align-items: baseline; padding: .25rem .65rem; border-radius: 999px;
+  transform: translate(-50%, -50%); background: var(--surface); box-shadow: 0 1.5px 0 var(--line), inset 0 0 0 1px var(--line); white-space: nowrap;
+}
+.stage-section-name { font: 500 .85rem/1.1 var(--font); color: var(--accent-ui); }
+.stage-section-count { font-size: .75rem; font-weight: 600; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+/* Cofre del camino: por ahora cerrado y solo visual (el sistema de recompensas no existe aún). */
+.path-chest {
+  position: absolute; z-index: 2; width: 44px; height: 44px; margin: -22px 0 0 -22px; display: grid; place-items: center; border-radius: 13px;
+  background: var(--surface-2); color: var(--ink-2); box-shadow: 0 0 0 3px var(--surface), 0 4px 0 3px var(--line-2); transform: rotate(-7deg);
+}
+/* Personaje: en el sendero, justo bajo el nodo actual (56 px bajo su centro). Respira; al caminar, se mece. */
+.path-character { position: absolute; left: -18px; top: 38px; z-index: 4; width: 36px; height: 36px; pointer-events: none; }
+.pc { display: block; transform-origin: 50% 100%; animation: pc-breathe 3s ease-in-out infinite alternate; }
+.path-character.is-walking .pc { animation: pc-walk .32s ease-in-out infinite alternate; }
+.pc-head { fill: var(--character-skin); }
+.pc-body { fill: var(--brand); }
+.pc-beret, .pc-eye { fill: var(--character-beret); }
+.pc-foot { fill: var(--ink-2); }
+.pc-shade { fill: var(--map-shade); }
+@keyframes pc-breathe { from { transform: scale(1); } to { transform: scale(1.03); } }
+@keyframes pc-walk { from { transform: translateY(0) rotate(-4deg); } to { transform: translateY(-2px) rotate(4deg); } }
 
 /* ---------- Bienvenida ---------- */
 .welcome { min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem 1.4rem calc(1.5rem + var(--safe-b)); }
@@ -784,7 +822,6 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 .overall-count { font-size: .86rem; font-weight: 600; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .overall-bar { display: block; height: 6px; border-radius: 6px; background: var(--line); overflow: hidden; }
 .overall-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--brand); }
-.movement-seal { background: var(--accent); border-color: var(--accent); color: var(--on-accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .finale { display: grid; justify-items: center; gap: .7rem; margin-top: 2.6rem; padding: 1.4rem 1.1rem; border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm); text-align: center; }
 .finale-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
 .finale-title { font: 500 1.45rem/1.1 var(--font); }
@@ -829,6 +866,7 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
   .home-grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 2.6rem; align-items: start; }
   .home-side { position: static; }
   .home-main { min-width: 0; max-width: 620px; }
+  .path-map { max-width: 520px; margin-inline: auto; border-radius: var(--radius); }
   .overall { margin-top: .4rem; }
   /* Ronda: cuadro a la izquierda, pregunta y opciones a la derecha */
   .lesson-stage:not([data-type="which"]) {
@@ -891,9 +929,6 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 }
 
 /* Texto grande (zoom 200 %): nada se sale por la derecha */
-.movement-lockline { align-items: flex-start; }
-.movement-lockline > span { min-width: 0; overflow-wrap: anywhere; }
-.movement-lockline .icon { margin-top: .2em; }
 .result { overflow-x: clip; }
 .stats { grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.4rem), 1fr)); }
 .tally { grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.2rem), 1fr)); overflow: hidden; }
@@ -913,15 +948,13 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 .tally dd, .stats dd { overflow-wrap: anywhere; }
 @media (max-width: 300px), (max-width: 18.75em) {
   .content { padding-inline: .7rem; }
+  .path-map { margin-inline: -.7rem; }
   .lesson-stage { padding-inline: .7rem; }
   .topbar { padding-inline: .5rem; gap: .25rem; }
   .topbar-stats { gap: 0; }
   .chip-goal-text { display: none; }
   .setting-range { flex-wrap: wrap; }
   .setting-range input { width: 100%; }
-  .stage-dot { width: 52px; height: 52px; }
-  .stages::before { left: 24px; }
-  .lock-note { margin-left: 0; }
   .key { display: none; }
   .option { padding-inline: .7rem; }
   .card { gap: .6rem; padding-inline: .7rem; flex-wrap: wrap; }
@@ -987,7 +1020,6 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 .finale-count strong { font: 500 1.35rem/1 var(--font); color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
 
 /* Sala (galería) de un movimiento dominado: entrada en el mapa y en Colección */
-.stage-gallery .stage-dot { border-radius: 18px; color: var(--on-accent); background: var(--accent); box-shadow: 0 var(--relief-node) 0 color-mix(in srgb, var(--accent) 72%, var(--ink)); }
 .coll-salas { margin-bottom: 1.8rem; }
 .welcome-note { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; font-weight: 600; font-size: .95rem; color: var(--ink-2); }
 .welcome-note svg { flex: none; }

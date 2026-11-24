@@ -1,22 +1,18 @@
-// Inicio: tarjetas del día y camino por movimientos.
+// Inicio: tarjetas del día, progreso y el mapa del camino (ui/screens/path-map.js).
 
-import { esc, onAction, accentStyle, longDate, announce, plural, $ } from '../dom.js';
+import { esc, onAction, accentStyle, longDate, plural, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
 import { page } from '../shell.js';
 import { artFrame, coverOf } from '../art.js';
 import { detailCard, detailRow, answerDetailCard } from './home-detail.js';
-import {
-  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, pathProgress, isPathComplete,
-  isPathMastered, stepsToMaster,
-} from '../../engine/progress.js';
-import { recognizedCount, isGalleryOpen, galleryWorks, planDetail } from '../../engine/goals.js';
-import { salaLearnWorks } from '../../engine/catalog.js';
+import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, salaCover, initials } from './path-map.js';
+import { settleCharacter } from '../path-character.js';
+import { nextStep, pathProgress, isPathComplete, isPathMastered, stepsToMaster } from '../../engine/progress.js';
+import { recognizedCount, planDetail } from '../../engine/goals.js';
 import { readSession } from '../../state/session.js';
 import { dueKeys, QUICK_REVIEW } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf, isoWeek } from '../../engine/dates.js';
-
-const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
 export function renderHome(ctx, el) {
   const { index } = ctx;
@@ -97,8 +93,6 @@ export function renderHome(ctx, el) {
       <h2 id="today-h" class="today-h">Hoy</h2>
       <ul class="today-list">${dayCards.map(dayRow).join('')}${detailPlan ? `<li>${detailRow(ctx, detailPlan)}</li>` : ''}</ul>
     </section>` : '';
-  const visible = index.visibleMovements;
-  const path = visible.map((m, i) => movementBlock(ctx, m, i, visible[i - 1])).join('');
   const pp = pathProgress(p, index);
   const pct = pp.total ? Math.round((pp.mastered / pp.total) * 100) : 0;
   const overall = `<section class="overall" aria-label="Progreso del camino">
@@ -138,37 +132,20 @@ export function renderHome(ctx, el) {
         ${sideExtras(ctx)}
       </aside>
       <div class="home-main">
-        <div class="path-scene" aria-hidden="true"></div>
-        <ol class="path" aria-label="Camino por movimientos">${path}</ol>
         ${finale}
+        <ol class="path path-map" aria-label="Camino por movimientos, del Renacimiento arriba hacia tu museo">${renderPathMap(ctx)}</ol>
       </div>
     </div>`);
 
   playEra('menu');
+  watchLandscapes(el);
+  settleCharacter(el, { reduced: prefersReducedMotion() });
 
   onAction(el, {
-    stage: (b) => {
-      ctx.audio.sfx('tap');
-      if (b.dataset.status === 'locked') return showLockNote(ctx, b);
-      ctx.go(`etapa-${b.dataset.id}`);
-    },
-    sala: (b) => {
-      ctx.audio.sfx('tap');
-      if (b.dataset.status === 'locked') return showLockNote(ctx, b);
-      ctx.go(`sala-${b.dataset.id}`);
-    },
-    intro: (b) => {
-      ctx.audio.sfx('tap');
-      ctx.go(`movimiento-${b.dataset.id}`);
-    },
+    ...pathActions(ctx),
     resume: () => {
       ctx.audio.sfx('tap');
       if (session) ctx.go(session.route);
-    },
-    review: (b) => {
-      ctx.audio.sfx('tap');
-      if (b.dataset.status === 'locked') return showLockNote(ctx, b);
-      ctx.go(`repaso-${b.dataset.id}`);
     },
     daily: () => {
       ctx.audio.sfx('tap');
@@ -193,10 +170,6 @@ export function renderHome(ctx, el) {
     weekly: () => {
       ctx.audio.sfx('tap');
       ctx.go('reto-semanal');
-    },
-    gallery: (b) => {
-      ctx.audio.sfx('tap');
-      ctx.go(`galeria-${b.dataset.id}`);
     },
     detail: (b) => answerDetailCard(ctx, el, b),
   });
@@ -234,154 +207,4 @@ function sideExtras(ctx) {
     </div>`;
 }
 
-function movementBlock(ctx, movement, i, prevMovement) {
-  const { index } = ctx;
-  const p = ctx.store.get().progress;
-  const status = movementStatus(p, index, movement.id);
-  const sala = index.isSala(movement.id);
-  const steps = index.stepsOf(movement.id);
-  if (!steps.length) return '';
-  const done = sala
-    ? (salaStatus(p, index, movement.id) === 'mastered' ? 1 : 0)
-    : index.stageArtists(movement.id).filter((a) => artistStatus(p, index, a.id) === 'mastered').length;
-  const lockedNote = status === 'locked' && prevMovement ? `Termina ${esc(prevMovement.name)} para abrirlo` : '';
-  const sealed = Boolean(p.medals[`movement-${movement.id}`]);
-  const num = sealed
-    ? `<span class="movement-num movement-seal" aria-hidden="true">${icons.laurel(26)}</span>`
-    : `<span class="movement-num" aria-hidden="true">${ROMAN[i] || i + 1}</span>`;
-  const titles = `${num}
-      <span class="movement-titles">
-        <span class="movement-name">${esc(movement.name)}</span>
-        <span class="movement-period">${esc(movement.period)}${status !== 'locked' ? ` · ${done}/${steps.length}` : ''}</span>
-      </span>${sealed ? '<span class="sr-only">, completo</span>' : ''}`;
-  // Abierta, la cabecera vuelve a mostrar la intro del movimiento.
-  const head = status === 'locked'
-    ? `<h2 class="movement-head">${titles}</h2>`
-    : `<h2 class="movement-head-wrap"><button class="movement-head is-button" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}: ver presentación">${titles}<span class="movement-more" aria-hidden="true">${icons.next(18)}</span></button></h2>`;
-  const gallery = isGalleryOpen(p, index, movement.id) ? galleryButton(ctx, movement) : '';
-  const body = (sala ? salaButton(ctx, movement) : `${stageList(ctx, movement)}${hasMovementReview(index, movement.id) ? reviewButton(ctx, movement) : ''}`) + gallery;
-  return `<li class="movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" style="${accentStyle(movement.accent)}">
-    ${head}
-    ${status === 'locked' ? `<p class="movement-lockline">${icons.lock(16)}<span>${lockedNote}</span></p>` : `<p class="movement-blurb">${esc(movement.blurb)}</p>`}
-    <ol class="stages">${body}</ol>
-  </li>`;
-}
-
-// Pintores del movimiento; si tienen tramos (section), un subtítulo al empezar cada uno.
-function stageList(ctx, movement) {
-  const { index } = ctx;
-  const p = ctx.store.get().progress;
-  const artists = index.stageArtists(movement.id);
-  let html = '';
-  artists.forEach((a, k) => {
-    if (a.section && a.section !== artists[k - 1]?.section) {
-      const group = artists.filter((x) => x.section === a.section);
-      const got = group.filter((x) => artistStatus(p, index, x.id) === 'mastered').length;
-      html += `<li class="stage-section" aria-hidden="false"><span class="stage-section-name">${esc(a.section)}</span><span class="stage-section-count">${got}/${group.length}</span></li>`;
-    }
-    html += stageButton(ctx, a);
-  });
-  return html;
-}
-
-function reviewButton(ctx, movement) {
-  const p = ctx.store.get().progress;
-  const reviewOpen = isReviewUnlocked(p, ctx.index, movement.id);
-  const reviewBest = p.reviews[movement.id]?.best;
-  const reviewMedal = (reviewBest || 0) >= 0.75;
-  return `<li><button class="stage stage-review ${reviewMedal ? 'is-mastered' : reviewOpen ? 'is-available' : 'is-locked'}" data-action="review" data-id="${esc(movement.id)}" data-status="${reviewOpen ? 'open' : 'locked'}"
-        aria-label="Repaso de ${esc(movement.name)}${reviewOpen ? '' : ', bloqueado'}" data-lock="Se abre al dominar a todos sus pintores">
-        <span class="stage-dot">${reviewMedal ? icons.medal(20) : reviewOpen ? icons.repeat(20) : icons.lock(18)}</span>
-        <span class="stage-text"><span class="stage-name">Repaso de ${esc(movement.name)}</span>
-        <span class="stage-meta">${reviewBest ? `Mejor: ${Math.round(reviewBest * 100)}%` : reviewOpen ? 'Todos mezclados' : 'Domina a todos para abrirlo'}</span></span>
-      </button><p class="lock-note"></p></li>`;
-}
-
-// Sala del movimiento dominado (galería): se abre junto al sello.
-function galleryButton(ctx, movement) {
-  const n = galleryWorks(ctx.store.get().progress, ctx.index, movement.id).length;
-  return `<li><button class="stage stage-gallery is-mastered" data-action="gallery" data-id="${esc(movement.id)}" aria-label="Sala de ${esc(movement.name)}">
-      <span class="stage-dot">${icons.laurel(26)}</span>
-      <span class="stage-text"><span class="stage-name">Sala de ${esc(movement.name)}</span><span class="stage-meta">${n ? plural(n, 'obra', 'obras') : 'Sus cuadros, con calma'}</span></span>
-    </button></li>`;
-}
-
-function salaButton(ctx, movement) {
-  const { index } = ctx;
-  const p = ctx.store.get().progress;
-  const status = salaStatus(p, index, movement.id);
-  const info = p.salas?.[movement.id];
-  const cover = salaCover(index, movement.id);
-  const i = index.stepIndex('sala', movement.id);
-  const prev = index.steps[i - 1];
-  const prevName = prev ? (prev.type === 'sala' ? index.movement(prev.id).name : (index.artist(prev.id).short || index.artist(prev.id).name)) : '';
-  const meta = {
-    locked: 'Sala del movimiento',
-    available: 'Empezar',
-    started: `Por repasar · ${Math.round((info?.best || 0) * 100)}%`,
-    mastered: 'Dominado',
-  }[status];
-  const stateLabel = { locked: 'bloqueado', available: 'disponible', started: 'por repasar', mastered: 'dominado' }[status];
-  const dot = status === 'locked'
-    ? icons.lock(18)
-    : `${cover ? artFrame(cover, { cls: 'stage-thumb', alt: '', label: initials(movement.name), thumb: true }) : ''}${status === 'mastered' ? `<span class="stage-badge">${icons.check(14)}</span>` : ''}`;
-  return `<li><button class="stage stage-sala is-${status}" data-action="sala" data-id="${esc(movement.id)}" data-status="${status}"
-      data-lock="${prev ? `Se abre con la mitad de aciertos en ${esc(prevName)}` : ''}" aria-label="Conoce el movimiento ${esc(movement.name)}, ${stateLabel}">
-      <span class="stage-dot">${dot}</span>
-      <span class="stage-text"><span class="stage-name">Conoce el movimiento</span><span class="stage-meta">${esc(meta)}</span></span>
-    </button><p class="lock-note"></p></li>`;
-}
-
-export function salaCover(index, movementId) {
-  const works = salaLearnWorks(index, movementId);
-  return works.slice().sort((a, b) => (b.fame || 0) - (a.fame || 0))[0] || null;
-}
-
-function stageButton(ctx, artist) {
-  const { index } = ctx;
-  const p = ctx.store.get().progress;
-  const status = artistStatus(p, index, artist.id);
-  const info = p.artists[artist.id];
-  const cover = coverOf(index, artist.id);
-  const prevStep = index.steps[index.stepIndex('artist', artist.id) - 1];
-  const prev = prevStep ? (prevStep.type === 'sala' ? { short: index.movement(prevStep.id).name, sala: true } : index.artist(prevStep.id)) : null;
-  const years = artist.born && artist.died ? `${artist.born}–${artist.died}` : '';
-  const meta = {
-    locked: years,
-    available: 'Empezar',
-    started: `Por repasar · ${Math.round((info?.best || 0) * 100)}%`,
-    mastered: 'Dominado',
-  }[status];
-  const stateLabel = { locked: 'bloqueado', available: 'disponible', started: 'por repasar', mastered: 'dominado' }[status];
-  const dot = status === 'locked'
-    ? icons.lock(18)
-    : `${cover ? artFrame(cover, { cls: 'stage-thumb', alt: '', label: initials(artist.name), thumb: true }) : ''}${status === 'mastered' ? `<span class="stage-badge">${icons.check(14)}</span>` : ''}`;
-  return `<li><button class="stage is-${status}" data-action="stage" data-id="${esc(artist.id)}" data-status="${status}"
-      data-lock="${prev ? `Se abre con la mitad de aciertos en ${esc(prev.short || prev.name)}` : ''}" aria-label="${esc(artist.name)}, ${stateLabel}">
-      <span class="stage-dot">${dot}</span>
-      <span class="stage-text"><span class="stage-name">${esc(artist.name)}</span><span class="stage-meta">${esc(meta)}</span></span>
-    </button><p class="lock-note"></p></li>`;
-}
-
-function showLockNote(ctx, button) {
-  const note = button.parentElement.querySelector('.lock-note');
-  if (!note) return;
-  note.textContent = button.dataset.lock || 'Aún bloqueado';
-  note.classList.add('is-visible');
-  announce(note.textContent);
-  clearTimeout(note._t);
-  note._t = setTimeout(() => note.classList.remove('is-visible'), 2600);
-}
-
-export { coverOf };
-
-export function initials(name) {
-  return String(name).split(/\s+/).filter((w) => /^[A-ZÁÉÍÓÚÑ]/.test(w)).slice(0, 2).map((w) => w[0]).join('');
-}
-
-export function scrollToCurrent(el) {
-  const target = $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
-  if (target && target.getBoundingClientRect().top > window.innerHeight * 0.8) {
-    target.scrollIntoView({ block: 'center' });
-  }
-}
+export { coverOf, scrollToCurrent };
