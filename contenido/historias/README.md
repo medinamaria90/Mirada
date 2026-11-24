@@ -28,3 +28,9 @@ La mayoría de los textos de la primera tanda se redactan a partir del artículo
 ## Tono
 
 «Museo vivo»: cálido, culto, sin gritar, frases cortas, lenguaje humano, nada de jerga. Nunca «ayer» ni «mañana».
+
+## Estado
+
+- Grandes maestros (14): nivel básico y todas las etapas.
+- Maestros: solo el nivel básico, y por ahora 12 (Miguel Ángel, Vermeer, Botticelli, Durero, El Bosco, Ribera, Manet, Degas, Cézanne, Renoir, Gauguin, Turner). Faltan el resto.
+- Los archivos de maestros no tienen niveles de etapa: aún no se han escrito.
