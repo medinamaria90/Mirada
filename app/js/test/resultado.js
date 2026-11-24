@@ -9,16 +9,18 @@ import { TIERS } from './motor.js';
 // al. 2023, Encuesta de Hábitos y Prácticas Culturales 2024-25; sin encuesta española de
 // reconocimiento, así que es una ESTIMACIÓN y la interfaz lo dice). Población general que se para en
 // cada tramo: T1 12 % · T2 35 % · T3 28 % · T4 13 % · T5 12 %. Bandas por puntuación acumulada
-// (acierto = puntos de su tramo, 1-5; 120 si se acertasen las 40): [desde, hasta, percentil desde,
-// percentil hasta], interpolando dentro de cada banda; monótono; se muestra entero entre 1 y 99.
+// (acierto = puntos de su tramo, 1-5), reescaladas al máximo honesto de 80 puntos (el jugador
+// perfecto sube de tramo con cada bloque y apura el friki: 4·(1+2+3+4+5) + 4·5; los cortes del
+// documento, pensados para 120, se multiplican por 80/120 y se redondean): [desde, hasta,
+// percentil desde, percentil hasta], interpolando dentro de cada banda; monótono; entero entre 1 y 99.
 export const PERCENTILE_BANDS = [
-  [0, 3, 1, 12],
-  [4, 14, 13, 47],
-  [15, 33, 48, 75],
-  [34, 50, 76, 88],
-  [51, 70, 89, 92],
-  [71, 95, 93, 96],
-  [96, 120, 97, 99],
+  [0, 2, 1, 12],
+  [3, 9, 13, 47],
+  [10, 22, 48, 75],
+  [23, 33, 76, 88],
+  [34, 46, 89, 92],
+  [47, 63, 93, 96],
+  [64, 80, 97, 99],
 ];
 export const PERCENTILE_MIN = 1;
 export const PERCENTILE_MAX = 99;

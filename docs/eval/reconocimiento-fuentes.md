@@ -42,9 +42,11 @@ muy marcado · T5 atribuir a autores de segundo nivel o escuelas próximas (Zurb
 | T4 | 13 % | estudiantes de arte 78 % en estilo marcado; legos ≈ azar (dato); mitad pasa (supuesto) |
 | T5 | 12 % | 7 % «muy familiarizado», 7,6 % por profesión (dato); 5-8 aciertos en T5 ≈ 3 % (supuesto) |
 
-Percentil por puntuación acumulada (puntos = aciertos × tramo; máx. 120): 0-3 → 1-12 · 4-14 → 13-47 ·
-15-33 → 48-75 · 34-50 → 76-88 · 51-70 → 89-92 · 71-95 → 93-96 · 96-120 → 97-99 (interpolar dentro
-de cada banda). Los cortes vienen de la estructura del test; los percentiles de cada banda son supuesto.
+Percentil por puntuación acumulada (puntos = aciertos × tramo; máximo honesto 80, el del jugador que
+sube con cada bloque y apura el friki; los cortes pensados para 120 se reescalan por 80/120): 0-2 → 1-12 ·
+3-9 → 13-47 · 10-22 → 48-75 · 23-33 → 76-88 · 34-46 → 89-92 · 47-63 → 93-96 · 64-80 → 97-99 (interpolar
+dentro de cada banda; `app/js/test/resultado.js`). Los cortes vienen de la estructura del test; los
+percentiles de cada banda son supuesto.
 
 Advertencias: el formato de opción múltiple es más fácil que nombrar en abierto (Vermeer: 18 % abierto,
 54 % de notoriedad); el percentil es frente a la población general, no frente a usuarios de la app, que

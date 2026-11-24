@@ -126,7 +126,7 @@ test('jugador perfecto: llega al friki, agota el banco con 24 preguntas, suma el
   assert.deepEqual(slow.pauses, [20, 24, 28, 32, 36]);
   const r = buildResult(s, perfectScore(questions));
   assert.equal(r.level, LEVELS[LEVELS.length - 1].name);
-  assert.equal(r.percentile, percentileFor(s.score));
+  assert.equal(r.percentile, 99);
   assert.equal(r.grid, GRID_OK.repeat(TIERS.length));
 });
 
@@ -187,7 +187,7 @@ test('puntuación acumulada: cada acierto suma los puntos de su tramo (1-5); ver
 test('percentil: monótono con la puntuación, acotado entre 1 y 99, bandas de la calibración en sus extremos', () => {
   // Bandas de docs/eval/reconocimiento-fuentes.md: contiguas, crecientes, de 0 a 120.
   assert.equal(PERCENTILE_BANDS[0][0], 0);
-  assert.equal(PERCENTILE_BANDS[PERCENTILE_BANDS.length - 1][1], 120);
+  assert.equal(PERCENTILE_BANDS[PERCENTILE_BANDS.length - 1][1], perfectScore(questions), 'la última banda acaba en el máximo honesto (80)');
   for (let i = 0; i < PERCENTILE_BANDS.length; i++) {
     const [lo, hi, p0, p1] = PERCENTILE_BANDS[i];
     assert.ok(hi > lo && p1 > p0, `banda ${i}`);
@@ -195,7 +195,8 @@ test('percentil: monótono con la puntuación, acotado entre 1 y 99, bandas de l
     assert.equal(percentileFor(hi), p1, `final de la banda ${lo}-${hi}`);
     if (i) assert.equal(lo, PERCENTILE_BANDS[i - 1][1] + 1, 'bandas contiguas');
   }
-  assert.deepEqual([0, 3, 4, 14, 15, 33, 34, 50, 51, 70, 71, 95, 96, 120].map(percentileFor), [1, 12, 13, 47, 48, 75, 76, 88, 89, 92, 93, 96, 97, 99]);
+  // Cortes del documento (para 120) reescalados a 80: 0-2, 3-9, 10-22, 23-33, 34-46, 47-63, 64-80.
+  assert.deepEqual([0, 2, 3, 9, 10, 22, 23, 33, 34, 46, 47, 63, 64, 80].map(percentileFor), [1, 12, 13, 47, 48, 75, 76, 88, 89, 92, 93, 96, 97, 99]);
   let prev = 0;
   for (let score = 0; score <= 130; score++) {
     const p = percentileFor(score);
@@ -204,7 +205,7 @@ test('percentil: monótono con la puntuación, acotado entre 1 y 99, bandas de l
     prev = p;
   }
   assert.equal(percentileFor(-5), percentileFor(0));
-  assert.ok(percentileFor(perfectScore(questions)) >= 93, 'el jugador perfecto queda en la banda alta');
+  assert.equal(percentileFor(perfectScore(questions)), 99, 'el jugador perfecto llega al 99 %');
 });
 
 test('nivel: nombres de la escala de la app, monótono con la puntuación, de Curioso a Gran maestro', () => {
