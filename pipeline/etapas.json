@@ -1611,6 +1611,116 @@
     "fase": 2,
     "provisional": true
    }
+  ],
+  "cimabue": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "duccio": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "simone-martini": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "pietro-lorenzetti": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "ambrogio-lorenzetti": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "hokusai": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "utamaro": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "sharaku": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "kuniyoshi": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "hiroshige": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
   ]
  }
 }
