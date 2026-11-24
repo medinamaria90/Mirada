@@ -40646,5 +40646,1968 @@
   "movement": null,
   "source": "wikidata",
   "fetched": "2026-11-24"
+ },
+ "Q1569622": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "384 × 223 cm",
+  "heightCm": 384.0,
+  "widthCm": 223.0,
+  "inception": "",
+  "depicts": [
+   "Abraham",
+   "David",
+   "Isaías",
+   "Jeremías",
+   "Jesús de Nazaret",
+   "Niño Jesús",
+   "Virgen María",
+   "Virgen con Niño",
+   "madre",
+   "mujer"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q68496636": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q19675",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Pan de oro sobre tabla y pintura",
+  "materials": [
+   "oro",
+   "panel de álamo",
+   "pintura"
+  ],
+  "dimensions": "25,8 × 20,3 cm",
+  "heightCm": 25.8,
+  "widthCm": 20.3,
+  "inception": "1280",
+  "depicts": [
+   "Burlas de Jesús"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3276414": {
+  "museum": "basilica di Santa Maria dei Servi",
+  "museumQid": "Q1021897",
+  "city": "Bolonia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "218 × 118 cm",
+  "heightCm": 218.0,
+  "widthCm": 118.0,
+  "inception": "1280",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q16556250": {
+  "museum": "Colección Frick",
+  "museumQid": "Q682827",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "témpera"
+  ],
+  "dimensions": "24,7 × 20 cm",
+  "heightCm": 24.7,
+  "widthCm": 20.0,
+  "inception": "1280",
+  "depicts": [
+   "Jesús de Nazaret",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q68961087": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "Tabla de álamo",
+  "materials": [
+   "madera de álamo"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q15974342": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "25,6 × 20,8 cm",
+  "heightCm": 25.6,
+  "widthCm": 20.8,
+  "inception": "",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q667202": {
+  "museum": "Catedral de Siena",
+  "museumQid": "Q282554",
+  "city": "Siena",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "madera",
+   "témpera"
+  ],
+  "dimensions": "211 × 426 cm",
+  "heightCm": 211.0,
+  "widthCm": 426.0,
+  "inception": "1308",
+  "depicts": [
+   "Maestà",
+   "Niño Jesús",
+   "The Annunciation",
+   "niño",
+   "resurrección de Lázaro",
+   "ángel"
+  ],
+  "genre": "pintura religiosa",
+  "movement": "pintura gótica",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q948745": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "450 × 290 cm",
+  "heightCm": 450.0,
+  "widthCm": 290.0,
+  "inception": "1285",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q644734": {
+  "museum": "Galleria Sabauda",
+  "museumQid": "Q2245152",
+  "city": "Turín",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "157 × 86 cm",
+  "heightCm": 157.0,
+  "widthCm": 86.0,
+  "inception": "1280",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q6728394": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "23,8 × 16,5 cm",
+  "heightCm": 23.8,
+  "widthCm": 16.5,
+  "inception": "",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "Virgen con Niño",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3842715": {
+  "museum": "Museo dell'Opera Metropolitana del Duomo",
+  "museumQid": "Q869130",
+  "city": "Siena",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "89 × 60 cm",
+  "heightCm": 89.0,
+  "widthCm": 60.0,
+  "inception": "1283",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18684720": {
+  "museum": "Museo Nacional Thyssen-Bornemisza",
+  "museumQid": "Q176251",
+  "city": "Madrid",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "43,5 × 46 cm",
+  "heightCm": 43.5,
+  "widthCm": 46.0,
+  "inception": "1310",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q6728425": {
+  "museum": "Galería Nacional de Umbría",
+  "museumQid": "Q2739127",
+  "city": "Perugia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "97 × 63 cm",
+  "heightCm": 97.0,
+  "widthCm": 63.0,
+  "inception": "",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3873252": {
+  "museum": "Galería Nacional de Arte",
+  "museumQid": "Q214867",
+  "city": "Washington",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "48 × 87 cm",
+  "heightCm": 48.0,
+  "widthCm": 87.0,
+  "inception": "1308",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3873247": {
+  "museum": "Museo dell'Opera Metropolitana del Duomo",
+  "museumQid": "Q869130",
+  "city": "Siena",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "187 × 182 cm",
+  "heightCm": 187.0,
+  "widthCm": 182.0,
+  "inception": "1335–1342",
+  "depicts": [
+   "Virgen María"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3948917": {
+  "museum": "Museo de Tessé",
+  "museumQid": "Q3329758",
+  "city": "Le Mans",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "64,9 × 33,3 cm",
+  "heightCm": 64.9,
+  "widthCm": 33.3,
+  "inception": "1315",
+  "depicts": [
+   "Margarita de Antioquía",
+   "cruz cristiana",
+   "peinado",
+   "santo",
+   "Águeda de Catania"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3842761": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "145 × 122 cm",
+  "heightCm": 145.0,
+  "widthCm": 122.0,
+  "inception": "1340",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3843026": {
+  "museum": "Museo Diocesano de Cortona",
+  "museumQid": "Q3330320",
+  "city": "Cortona",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "126 × 83 cm",
+  "heightCm": 126.0,
+  "widthCm": 83.0,
+  "inception": "1315–1320",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3889218": {
+  "museum": "Pinacoteca Nacional de Siena",
+  "museumQid": "Q2095405",
+  "city": "Siena",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "191 × 328 cm",
+  "heightCm": 191.0,
+  "widthCm": 328.0,
+  "inception": "1327",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3709298": {
+  "museum": "Basílica inferior de San Francisco de Asís",
+  "museumQid": "Q3635780",
+  "city": "Asís",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1310",
+  "depicts": [
+   "Jesús de Nazaret",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3933563": {
+  "museum": "Basílica inferior de San Francisco de Asís",
+  "museumQid": "Q3635780",
+  "city": "Asís",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1310",
+  "depicts": [
+   "Jesús de Nazaret",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3842573": {
+  "museum": "Q3657359",
+  "museumQid": "Q3657359",
+  "city": "Asís",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1310",
+  "depicts": [
+   "Juan el Bautista",
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q979440": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "265 × 305 cm",
+  "heightCm": 265.0,
+  "widthCm": 305.0,
+  "inception": "1333",
+  "depicts": [
+   "Ansanus",
+   "Anunciación",
+   "Virgen María",
+   "fond d'or",
+   "médaillon",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Gótico internacional",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3947520": {
+  "museum": "Museo Nacional de Capodimonte",
+  "museumQid": "Q290549",
+  "city": "Nápoles",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "200 × 138 cm",
+  "heightCm": 200.0,
+  "widthCm": 138.0,
+  "inception": "1317",
+  "depicts": [
+   "Luis de Tolosa"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3907529": {
+  "museum": "Museo nazionale di San Matteo",
+  "museumQid": "Q1081881",
+  "city": "Pisa",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "195 × 340 cm",
+  "heightCm": 195.0,
+  "widthCm": 340.0,
+  "inception": "1320",
+  "depicts": [
+   "Catalina de Alejandría",
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q20183716": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "57,2 × 38,4 cm",
+  "heightCm": 57.2,
+  "widthCm": 38.4,
+  "inception": "",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "Virgen con Niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q21711295": {
+  "museum": "Museo Nacional Thyssen-Bornemisza",
+  "museumQid": "Q176251",
+  "city": "Madrid",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "58 × 38,5 cm",
+  "heightCm": 58.0,
+  "widthCm": 38.5,
+  "inception": "1326",
+  "depicts": [
+   "Pedro"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3225814": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "panel de álamo",
+   "témpera"
+  ],
+  "dimensions": "30 × 20,5 cm",
+  "heightCm": 30.0,
+  "widthCm": 20.5,
+  "inception": "1335",
+  "depicts": [
+   "Jesús de Nazaret",
+   "María Magdalena",
+   "Virgen María",
+   "antemuralla",
+   "soldado"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q19607289": {
+  "museum": "Walker Art Gallery",
+  "museumQid": "Q1536471",
+  "city": "Liverpool",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "49,5 × 35,1 cm",
+  "heightCm": 49.5,
+  "widthCm": 35.1,
+  "inception": "1342",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q20173074": {
+  "museum": "Galería Nacional de Arte",
+  "museumQid": "Q214867",
+  "city": "Washington",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "31 × 22 cm",
+  "heightCm": 31.0,
+  "widthCm": 22.0,
+  "inception": "1333",
+  "depicts": [
+   "Anunciación"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3910903": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "257 × 168 cm",
+  "heightCm": 257.0,
+  "widthCm": 168.0,
+  "inception": "1342",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3618171": {
+  "museum": "Pinacoteca Nacional de Siena",
+  "museumQid": "Q2095405",
+  "city": "Siena",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "127 × 120 cm",
+  "heightCm": 127.0,
+  "widthCm": 120.0,
+  "inception": "1344",
+  "depicts": [
+   "Anunciación",
+   "Virgen María",
+   "mujer",
+   "pendiente",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3842740": {
+  "museum": "Giuliano Ghelli Museum in San Casciano Val di Pesa",
+  "museumQid": "Q1634195",
+  "city": "San Casciano in Val di Pesa",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "150 × 78 cm",
+  "heightCm": 150.0,
+  "widthCm": 78.0,
+  "inception": "1319",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3843028": {
+  "museum": "Museum of Religious Art",
+  "museumQid": "Q3868200",
+  "city": "Massa Marittima",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "155 × 206 cm",
+  "heightCm": 155.0,
+  "widthCm": 206.0,
+  "inception": "1335",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18572975": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "panel de álamo",
+   "témpera"
+  ],
+  "dimensions": "30 × 20,5 cm",
+  "heightCm": 30.0,
+  "widthCm": 20.5,
+  "inception": "",
+  "depicts": [
+   "Nicolás de Bari",
+   "arquitectura",
+   "cama",
+   "caridad",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q20382178": {
+  "museum": "Galería Nacional de Dinamarca",
+  "museumQid": "Q671384",
+  "city": "Copenhague",
+  "country": "Dinamarca",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "52,3 × 47 cm",
+  "heightCm": 52.3,
+  "widthCm": 47.0,
+  "inception": "1337–1342",
+  "depicts": [
+   "Juan el Bautista"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q125399429": {
+  "museum": "Museo diocesano de arte sacra",
+  "museumQid": "Q19426724",
+  "city": "Siena",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "90 × 45 cm",
+  "heightCm": 90.0,
+  "widthCm": 45.0,
+  "inception": "1330",
+  "depicts": [
+   "Virgen con Niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q55831798": {
+  "museum": "Pinacoteca Nacional de Siena",
+  "museumQid": "Q2095405",
+  "city": "Siena",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18210019": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "37,9 × 24,9 cm",
+  "heightCm": 37.9,
+  "widthCm": 24.9,
+  "inception": "",
+  "depicts": [
+   "Naniwaya Okita",
+   "Takashimaya Ohisa",
+   "Tomimoto Toyohina",
+   "kanzashi",
+   "kimono",
+   "obi",
+   "peine",
+   "three beauties of the Kansei era",
+   "uchiwa"
+  ],
+  "genre": "ukiyo-e",
+  "movement": "ukiyo-e",
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q28941252": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "199 × 341 cm",
+  "heightCm": 199.0,
+  "widthCm": 341.0,
+  "inception": "",
+  "depicts": [
+   "Fukagawa",
+   "Tatsumi geisha",
+   "nieve"
+  ],
+  "genre": "nikuhitsu-ga",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q30589460": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q30590576": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "Pan de oro sobre papel",
+  "materials": [
+   "papel",
+   "tinta"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q28747818": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q30589413": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q30591109": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q60404497": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q252485": {
+  "museum": "Tokyo Fuji Art Museum",
+  "museumQid": "Q1233913",
+  "city": "Hachiōji",
+  "country": "Japón",
+  "inSpain": false,
+  "technique": "Papel y azul de prusia",
+  "materials": [
+   "azul de Prusia",
+   "papel"
+  ],
+  "dimensions": "26 × 38 cm",
+  "heightCm": 26.0,
+  "widthCm": 38.0,
+  "inception": "",
+  "depicts": [
+   "Bahía de Tokio",
+   "Monte Fuji",
+   "Ola gigante",
+   "Oshiokuribune"
+  ],
+  "genre": "nishiki-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q3565037": {
+  "museum": "MOA",
+  "museumQid": "Q843638",
+  "city": "Atami",
+  "country": "Japón",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "25,7 × 38 cm",
+  "heightCm": 25.7,
+  "widthCm": 38.0,
+  "inception": "1831",
+  "depicts": [
+   "Red Fuji",
+   "cresta",
+   "moco",
+   "sunny"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q2717022": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "Papel y tabla",
+  "materials": [
+   "madera",
+   "papel"
+  ],
+  "dimensions": "16,5 × 22,2 cm",
+  "heightCm": 16.5,
+  "widthCm": 22.2,
+  "inception": "1820",
+  "depicts": [
+   "Ama",
+   "Octopoda",
+   "baño de mar",
+   "cunnilingus",
+   "desnudo",
+   "female pubic hair",
+   "mujer",
+   "natación al desnudo",
+   "zoofilia"
+  ],
+  "genre": "desnudo",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18173384": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1831",
+  "depicts": [
+   "Monte Fuji",
+   "aguacero",
+   "nube",
+   "rayo"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q17227585": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "Tabla",
+  "materials": [
+   "grabado en madera"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1831",
+  "depicts": [
+   "Monte Fuji",
+   "Río Fuji",
+   "esparavel",
+   "niño",
+   "ola",
+   "pescador"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18173387": {
+  "museum": "Museo de Arte de Cleveland",
+  "museumQid": "Q657415",
+  "city": "Cleveland",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "24,8 × 36,5 cm",
+  "heightCm": 24.8,
+  "widthCm": 36.5,
+  "inception": "1831",
+  "depicts": [
+   "Furiuri",
+   "Monte Fuji",
+   "Río Kanda",
+   "bushi"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18173402": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1831",
+  "depicts": [
+   "Castillo Takashima",
+   "Hokora",
+   "Lago Suwa",
+   "Monte Fuji",
+   "pino",
+   "wasen"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q2963437": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "mar"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18173386": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1831",
+  "depicts": [
+   "Chokibune",
+   "Mannen Bridge",
+   "Monte Fuji",
+   "Onagi River",
+   "Río Sumida",
+   "buke yashiki",
+   "muro de piedra",
+   "pesca de fondo"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18173408": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "25,5 × 38,3 cm",
+  "heightCm": 25.5,
+  "widthCm": 38.3,
+  "inception": "1831",
+  "depicts": [
+   "Gohyakurakan-ji Temple",
+   "Monte Fuji",
+   "balsa de agua",
+   "niño",
+   "sazae-dō"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q17210582": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1831",
+  "depicts": [
+   "Monte Fuji",
+   "artesano",
+   "garlopa",
+   "martillo",
+   "tub"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18173389": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1831",
+  "depicts": [
+   "Monte Fuji",
+   "agricultor",
+   "caballo",
+   "dachin-umakasegi",
+   "kasa",
+   "pesca de fondo",
+   "vertedero hidráulico"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q59915220": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "38,1 × 25,1 cm",
+  "heightCm": 38.1,
+  "widthCm": 25.1,
+  "inception": "1794",
+  "depicts": [
+   "Nakamura Nakazō II",
+   "actor",
+   "varón"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q62029258": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "36,5 × 24 cm",
+  "heightCm": 36.5,
+  "widthCm": 24.0,
+  "inception": "1794",
+  "depicts": [
+   "Ichikawa Danjūrō V",
+   "actor",
+   "varón"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q62030437": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1794",
+  "depicts": [
+   "Iwai Hanshirō IV",
+   "actor",
+   "mujer",
+   "varón"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q62030967": {
+  "museum": "Museo de Bellas Artes de Boston",
+  "museumQid": "Q49133",
+  "city": "Boston",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1794",
+  "depicts": [
+   "Monnosuke Ichikawa II"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q62060190": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1794",
+  "depicts": [
+   "Bandō Hikosaburō III",
+   "actor",
+   "farol",
+   "varón"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q62084368": {
+  "museum": "Harvard Art Museums",
+  "museumQid": "Q3783572",
+  "city": "Cambridge",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Osagawa Tsuneyo II"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q7678417": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1844",
+  "depicts": [
+   "Gashadokuro",
+   "Makimono",
+   "Takiyasha-hime",
+   "Ōya Mitsukuni"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q96471562": {
+  "museum": "Museo Británico",
+  "museumQid": "Q6373",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "36 × 25 cm",
+  "heightCm": 36.0,
+  "widthCm": 25.0,
+  "inception": "1847",
+  "depicts": [
+   "gato doméstico"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q69729449": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1830",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q70738658": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q96675024": {
+  "museum": "Museo Británico",
+  "museumQid": "Q6373",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Papel",
+  "materials": [
+   "papel"
+  ],
+  "dimensions": "38,6 × 26,4 cm",
+  "heightCm": 38.6,
+  "widthCm": 26.4,
+  "inception": "",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q97657866": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1819",
+  "depicts": [
+   "Rōben fall"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q98168850": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1847",
+  "depicts": [
+   "Bakeneko"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q104525540": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1852",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q5826309": {
+  "museum": "Galería Freer",
+  "museumQid": "Q1075126",
+  "city": "Washington",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Pan de oro sobre papel",
+  "materials": [
+   "papel",
+   "tinta"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1857",
+  "depicts": [
+   "Río Sumida",
+   "Shin-Ōhashi Bridge",
+   "balsa",
+   "barca",
+   "convectional rain",
+   "paraguas",
+   "puente de madera",
+   "straw mat"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q21127606": {
+  "museum": "Chester Beatty Library",
+  "museumQid": "Q391976",
+  "city": "Dublín",
+  "country": "Irlanda",
+  "inSpain": false,
+  "technique": "Pan de oro sobre papel",
+  "materials": [
+   "papel",
+   "tinta"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1857",
+  "depicts": [
+   "Kameido Umeyashiki",
+   "Prunus mume",
+   "turista"
+  ],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q18686018": {
+  "museum": "Museo de Bellas Artes de Bilbao",
+  "museumQid": "Q127064",
+  "city": "Bilbao",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Papel",
+  "materials": [
+   "papel"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1831",
+  "depicts": [
+   "Abe River",
+   "Fuchū-shuku",
+   "Kago",
+   "kawagoe ninsoku",
+   "mujer",
+   "varón"
+  ],
+  "genre": "pintura del paisaje",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q75089333": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Furiuri",
+   "Nihonbashi",
+   "daimyō gyōretsu",
+   "mañana"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q75089352": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Monte Fuji",
+   "Yoshiwara-juku"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q75089364": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Kanbara-juku",
+   "nieve",
+   "noche"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q75089376": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Kano River",
+   "Numazu-juku",
+   "caída de la noche"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q75089388": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Bahía de Suruga",
+   "Monte Fuji",
+   "Satta Pass",
+   "Yui-shuku"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q75089437": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Mariko-juku",
+   "chaya",
+   "mugitoro"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q75089462": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Fujieda-juku",
+   "caballo",
+   "carga",
+   "ninsoku"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
+ },
+ "Q2269788": {
+  "museum": "Museo Pushkin",
+  "museumQid": "Q4872",
+  "city": "Moscú",
+  "country": "Rusia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "64 × 53 cm",
+  "heightCm": 64.0,
+  "widthCm": 53.0,
+  "inception": "1889",
+  "depicts": [
+   "varón"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-24"
  }
 }

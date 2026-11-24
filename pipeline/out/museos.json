@@ -8385,5 +8385,440 @@
   "parent": null,
   "country": "Austria",
   "isMuseum": true
+ },
+ "Q2751": {
+  "name": "Siena",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1187811"
+  ],
+  "adm": "Q16275",
+  "loc": null,
+  "parent": "Q16275",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q282554": {
+  "name": "Catedral de Siena",
+  "types": [
+   "Q56242215"
+  ],
+  "adm": "Q2751",
+  "loc": null,
+  "parent": "Q17163322",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q869130": {
+  "name": "Museo dell'Opera Metropolitana del Duomo",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q614316",
+   "Q92755865",
+   "Q97662266"
+  ],
+  "adm": "Q2751",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1021897": {
+  "name": "basilica di Santa Maria dei Servi",
+  "types": [
+   "Q16970",
+   "Q120560",
+   "Q35112127"
+  ],
+  "adm": "Q1891",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1081881": {
+  "name": "Museo nazionale di San Matteo",
+  "types": [
+   "Q207694",
+   "Q3867560",
+   "Q17431399",
+   "Q92755865",
+   "Q96371565",
+   "Q124830411"
+  ],
+  "adm": "Q13375",
+  "loc": "Q941727",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1634195": {
+  "name": "Giuliano Ghelli Museum in San Casciano Val di Pesa",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q3329412",
+   "Q92755865",
+   "Q94701721",
+   "Q124830213"
+  ],
+  "adm": "Q82822",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q2095405": {
+  "name": "Pinacoteca Nacional de Siena",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q3867560",
+   "Q17431399",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q2751",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q2739127": {
+  "name": "Galería Nacional de Umbría",
+  "types": [
+   "Q207694",
+   "Q3867560",
+   "Q92755865",
+   "Q97662266",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q3437",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3329758": {
+  "name": "Museo de Tessé",
+  "types": [
+   "Q207694",
+   "Q3329412"
+  ],
+  "adm": "Q1476",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q3635780": {
+  "name": "Basílica inferior de San Francisco de Asís",
+  "types": [
+   "Q1088552"
+  ],
+  "adm": "Q20103",
+  "loc": "Q207486",
+  "parent": "Q207486",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q3657359": {
+  "name": "Q3657359",
+  "types": [
+   "Q108325"
+  ],
+  "adm": "Q20103",
+  "loc": "Q3635780",
+  "parent": "Q3997493",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3683047": {
+  "name": "Riccardo Gualino Collection",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": "Q495",
+  "loc": null,
+  "parent": "Q2245152",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q3868200": {
+  "name": "Museum of Religious Art",
+  "types": [
+   "Q207694",
+   "Q92755865",
+   "Q97662266",
+   "Q124830213"
+  ],
+  "adm": "Q214725",
+  "loc": "Q3671756",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q19342429": {
+  "name": "Room A5 Lorenzetti - Simone Martini",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q51252",
+  "parent": "Q51252",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q19426724": {
+  "name": "Museo diocesano de arte sacra",
+  "types": [
+   "Q207694",
+   "Q614316",
+   "Q1231888",
+   "Q92755865"
+  ],
+  "adm": "Q2751",
+  "loc": null,
+  "parent": "Q23054626",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q141649127": {
+  "name": "Room 65 - Piety and Passion: Italian Painting 1260–1350",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q180788",
+  "parent": "Q180788",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q16275": {
+  "name": "Siena",
+  "types": [
+   "Q15089"
+  ],
+  "adm": "Q1273",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q3997493": {
+  "name": "Q3997493",
+  "types": [
+   "Q202949"
+  ],
+  "adm": "Q20103",
+  "loc": null,
+  "parent": "Q3635780",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q17163322": {
+  "name": "Historic Centre of Siena",
+  "types": [
+   "Q676050"
+  ],
+  "adm": "Q2751",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q23054626": {
+  "name": "Saint Bernardino Oratory and Diocesan Museum of Holy Art",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q580499"
+  ],
+  "adm": "Q2751",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q6373": {
+  "name": "Museo Británico",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q708676",
+   "Q3343298",
+   "Q17431399"
+  ],
+  "adm": "Q202088",
+  "loc": "Q150120",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q128316": {
+  "name": "Museo de Arte de Honolulu",
+  "types": [
+   "Q33506",
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q18094",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q131454": {
+  "name": "Biblioteca del Congreso de Estados Unidos",
+  "types": [
+   "Q22806",
+   "Q11422631",
+   "Q53251146",
+   "Q115456878"
+  ],
+  "adm": "Q61",
+  "loc": "Q54109",
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": false
+ },
+ "Q391976": {
+  "name": "Chester Beatty Library",
+  "types": [
+   "Q7075",
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q1761",
+  "loc": null,
+  "parent": null,
+  "country": "Irlanda",
+  "isMuseum": true
+ },
+ "Q653433": {
+  "name": "Museo Nacional de Tokio",
+  "types": [
+   "Q17431399"
+  ],
+  "adm": "Q92909922",
+  "loc": "Q576781",
+  "parent": "Q746216",
+  "country": "Japón",
+  "isMuseum": true
+ },
+ "Q657415": {
+  "name": "Museo de Arte de Cleveland",
+  "types": [
+   "Q33506",
+   "Q163740",
+   "Q207694",
+   "Q2085381",
+   "Q96888669"
+  ],
+  "adm": "Q37320",
+  "loc": "Q14716915",
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q843638": {
+  "name": "MOA",
+  "types": [
+   "Q207694",
+   "Q614316"
+  ],
+  "adm": "Q653364",
+  "loc": null,
+  "parent": null,
+  "country": "Japón",
+  "isMuseum": true
+ },
+ "Q896052": {
+  "name": "Museo de Artes y Oficios de Hamburgo",
+  "types": [
+   "Q207694",
+   "Q24699794"
+  ],
+  "adm": "Q1626",
+  "loc": "Q1560",
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q1129820": {
+  "name": "Museo Smithsonian de Diseño Cooper Hewitt",
+  "types": [
+   "Q33506",
+   "Q811979"
+  ],
+  "adm": "Q11299",
+  "loc": "Q455587",
+  "parent": "Q131626",
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q1233913": {
+  "name": "Tokyo Fuji Art Museum",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q109599743",
+  "loc": null,
+  "parent": null,
+  "country": "Japón",
+  "isMuseum": true
+ },
+ "Q3180768": {
+  "name": "Centre Céramique",
+  "types": [
+   "Q7075",
+   "Q1329623"
+  ],
+  "adm": "Q1309",
+  "loc": "Q2689406",
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": true
+ },
+ "Q3951945": {
+  "name": "Waseda University Tsubouchi Memorial Theatre Museum",
+  "types": [
+   "Q866133",
+   "Q17000320"
+  ],
+  "adm": "Q11628428",
+  "loc": "Q11511504",
+  "parent": null,
+  "country": "Japón",
+  "isMuseum": false
+ },
+ "Q6735528": {
+  "name": "Maidstone Museum and Bentlif Art Gallery",
+  "types": [
+   "Q207694",
+   "Q1595639",
+   "Q1970365",
+   "Q115154345"
+  ],
+  "adm": "Q737114",
+  "loc": "Q213180",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q7813956": {
+  "name": "Tokyo Metropolitan Library",
+  "types": [
+   "Q11582691",
+   "Q26271642"
+  ],
+  "adm": "Q1490",
+  "loc": null,
+  "parent": null,
+  "country": "Japón",
+  "isMuseum": false
  }
 }

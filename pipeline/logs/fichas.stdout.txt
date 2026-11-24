@@ -1,12 +1,5 @@
-selección 1233, con ficha 839, este lote 394
-ok lote 1: 40 fichas (1220 en total)
-ok lote 2: 40 fichas (1260 en total)
-ok lote 3: 40 fichas (1300 en total)
-ok lote 4: 40 fichas (1340 en total)
-ok lote 5: 40 fichas (1380 en total)
-ok lote 6: 40 fichas (1420 en total)
-ok lote 7: 40 fichas (1460 en total)
-ok lote 8: 40 fichas (1500 en total)
-ok lote 9: 40 fichas (1540 en total)
-ok lote 10: 34 fichas (1574 en total)
-fin: 1574 fichas; con museo 1547, con ciudad 1528, con técnica 1532, con medidas 1519, en España 360
+selección 1315, con ficha 1232, este lote 83
+ok lote 1: 40 fichas (1614 en total)
+ok lote 2: 40 fichas (1654 en total)
+ok lote 3: 3 fichas (1657 en total)
+fin: 1657 fichas; con museo 1602, con ciudad 1583, con técnica 1576, con medidas 1564, en España 363

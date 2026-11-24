@@ -5811,5 +5811,206 @@
   "up": "Q5818",
   "country": "España",
   "isCity": false
+ },
+ "Q1476": {
+  "label": "Le Mans",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12740",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q2751": {
+  "label": "Siena",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1187811"
+  ],
+  "up": "Q16275",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q3437": {
+  "label": "Perugia",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1200957",
+   "Q1549591"
+  ],
+  "up": "Q16240",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q16275": {
+  "label": "Siena",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1273",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q82822": {
+  "label": "San Casciano in Val di Pesa",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q18288148",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q214725": {
+  "label": "Massa Marittima",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16185",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q12740": {
+  "label": "Sarthe",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q16994",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q16994": {
+  "label": "Países del Loira",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q16244": {
+  "label": "Pisa",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1273",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q16185": {
+  "label": "Grosseto",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1273",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1309": {
+  "label": "Maastricht",
+  "types": [
+   "Q902814",
+   "Q1549591",
+   "Q1852859",
+   "Q2039348",
+   "Q2202509",
+   "Q13539802",
+   "Q15303838"
+  ],
+  "up": "Q1093",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q18094": {
+  "label": "Honolulu",
+  "types": [
+   "Q62049",
+   "Q1549591",
+   "Q3301053"
+  ],
+  "up": "Q487704",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q37320": {
+  "label": "Cleveland",
+  "types": [
+   "Q62049",
+   "Q1093829",
+   "Q1549591",
+   "Q108569710"
+  ],
+  "up": "Q251267",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q653364": {
+  "label": "Atami",
+  "types": [
+   "Q494721"
+  ],
+  "up": "Q131320",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q737114": {
+  "label": "Municipio de Maidstone",
+  "types": [
+   "Q1006876",
+   "Q1187580"
+  ],
+  "up": "Q21694674",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q11628428": {
+  "label": "Nishi-Waseda",
+  "types": [
+   "Q5327369"
+  ],
+  "up": "Q179645",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q109599743": {
+  "label": "Yanomachi",
+  "types": [
+   "Q5327369"
+  ],
+  "up": "Q208863",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q208863": {
+  "label": "Hachiōji",
+  "types": [
+   "Q494721",
+   "Q1137833",
+   "Q1187811",
+   "Q1549591"
+  ],
+  "up": "Q1490",
+  "country": "Japón",
+  "isCity": true
+ },
+ "Q131320": {
+  "label": "Prefectura de Shizuoka",
+  "types": [
+   "Q50337"
+  ],
+  "up": "Q17",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q251267": {
+  "label": "condado de Cuyahoga",
+  "types": [
+   "Q13414759"
+  ],
+  "up": "Q1397",
+  "country": "Estados Unidos",
+  "isCity": false
  }
 }
