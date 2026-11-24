@@ -464,6 +464,17 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .option.is-picked { animation: pop .42s var(--ease); }
 .option.is-wrong { background: var(--bad-soft); color: var(--bad); box-shadow: 0 var(--relief) 0 color-mix(in srgb, var(--bad) 70%, var(--ink)), inset 0 0 0 2px var(--bad); animation: nudge .32s ease; }
 .option.is-wrong .key { background: var(--bad); color: var(--surface); border-color: var(--bad); }
+/* Opciones de movimiento: el periodo debajo del nombre, más pequeño y en tinta secundaria (hereda el
+   color al marcarse como acierto o fallo para no perder contraste). */
+.option .opt-text { display: grid; gap: .1rem; min-width: 0; }
+.option .opt-sub { font-size: .8rem; font-weight: 400; line-height: 1.2; color: var(--ink-2); }
+.option.is-correct .opt-sub, .option.is-wrong .opt-sub { color: inherit; }
+/* Miniatura elegida por error en «¿Cuál es de X?»: etiqueta con el nombre de su pintor. */
+.option-tag {
+  position: absolute; left: 10px; bottom: 10px; z-index: 2; max-width: calc(100% - 60px);
+  padding: .15rem .55rem; border-radius: 999px; background: var(--bad); color: var(--surface);
+  font-size: .74rem; font-weight: 600; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 @keyframes pop { 40% { transform: scale(1.03); } }
 @keyframes nudge { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 

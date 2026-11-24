@@ -4,7 +4,7 @@ import { esc, onAction, accentStyle, announce, focusHeading, $, $$ } from '../do
 import { icons } from '../icons.js';
 import { artFrame, onArtworkError, isBroken, preload, ZOOM_BADGE } from '../art.js';
 import { createRng } from '../../engine/rng.js';
-import { isCorrect, questionAlt, makeQuestion, makeWhichQuestion, artworksInQuestion } from '../../engine/questions.js';
+import { isCorrect, questionAlt, optionText, makeQuestion, makeWhichQuestion, artworksInQuestion } from '../../engine/questions.js';
 import { createRound, currentItem, answerRound, roundDone, roundProgress, reshuffleOptions } from '../../engine/planner.js';
 import { xpForAnswer } from '../../engine/progress.js';
 import { feedbackFor } from '../../engine/feedback.js';
@@ -126,7 +126,12 @@ export function runLesson(ctx, el, config) {
       return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>`;
     }
     const art = index.artwork(q.artworkId);
-    const opts = q.options.map((o, i) => `<button class="option" data-action="answer" data-id="${esc(o.id)}"><span class="key" aria-hidden="true">${i + 1}</span><span>${esc(o.label)}</span></button>`).join('');
+    // En las de movimiento, el periodo debajo del nombre («s. XV–XVI»), en tinta secundaria.
+    const optText = (o) => {
+      const { label, detail } = optionText(index, q, o);
+      return `<span class="opt-text">${esc(label)}${detail ? `<span class="opt-sub">${esc(detail)}</span>` : ''}</span>`;
+    };
+    const opts = q.options.map((o, i) => `<button class="option" data-action="answer" data-id="${esc(o.id)}"><span class="key" aria-hidden="true">${i + 1}</span>${optText(o)}</button>`).join('');
     // En escritorio, el cuadro a la izquierda y la pregunta con las opciones a la derecha.
     return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}</div>
       <div class="options options-list" role="group" aria-label="Respuestas">${opts}</div>`;
@@ -218,16 +223,24 @@ export function runLesson(ctx, el, config) {
     const milestone = correct && round.combo >= COMBO_SHOW && round.combo % COMBO_SHOW === 0;
     if (correct) ctx.audio.sfx(milestone ? 'streak' : 'correct');
     else ctx.audio.sfx('wrong');
-    showFeedback(q, correct, gained, item.retry);
+    showFeedback(q, correct, gained, item.retry, optionId);
     updateBar(milestone);
   }
 
-  function showFeedback(q, correct, gained, retry) {
+  function showFeedback(q, correct, gained, retry, chosenId) {
     const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
-    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry });
+    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId });
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
     const who = fb.who ? `<p class="fb-who">${esc(fb.who)}</p>` : '';
-    const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('');
+    // Tras un fallo de autor: de quién era lo elegido («No es de X…» / «El que has elegido es de X · título»).
+    const chosen = fb.chosen ? `<p class="fb-line-2">${esc(fb.chosen.line)}</p>` : '';
+    const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('') + chosen;
+    // En «¿Cuál es de X?», la miniatura elegida por error lleva el nombre de su pintor.
+    const wrongArt = fb.chosen && fb.chosen.artworkId ? $('.option-art.is-wrong', stage) : null;
+    if (wrongArt) {
+      wrongArt.insertAdjacentHTML('beforeend', `<span class="option-tag">${esc(fb.chosen.name)}</span>`);
+      wrongArt.setAttribute('aria-label', `${wrongArt.getAttribute('aria-label')}, de ${fb.chosen.name}`);
+    }
     // El texto se desplaza dentro de la hoja si no cabe (zoom de texto); «Seguir» siempre a la vista.
     feedback.innerHTML = `<div class="fb-inner">
       <div class="fb-text">

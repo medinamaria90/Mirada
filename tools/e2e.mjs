@@ -129,9 +129,18 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
       const id = await page.locator('.q-art .art').getAttribute('data-art');
       const a = artist.get(art.get(id).artistId);
       type = prompt.includes('movimiento') ? 'movement' : 'who';
-      const label = type === 'movement' ? movement.get(a.movementId).name : a.name;
+      const wanted = type === 'movement' ? a.movementId : a.id;
       const n = await options.count();
-      for (let i = 0; i < n; i++) if ((await options.nth(i).innerText()).split('\n').pop().trim() === label) target = i;
+      for (let i = 0; i < n; i++) {
+        const id = await options.nth(i).getAttribute('data-id');
+        if (id === wanted) target = i;
+        // Las opciones de movimiento llevan el nombre y, debajo, el periodo del catálogo.
+        if (type === 'movement') {
+          const m = movement.get(id);
+          const text = (await options.nth(i).innerText()).replace(/^\d\s*/, '').trim();
+          check(m && text.startsWith(m.name) && text.endsWith(m.period), `opción de movimiento sin periodo: ${text}`);
+        }
+      }
     }
     const key = `q-${type}`;
     if (shotsFor[key] && !seenTypes.has(type)) { seenTypes.add(type); await shot(page, shotsFor[key]); }
@@ -161,6 +170,32 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
     step++;
   }
   throw new Error('La ronda no terminó');
+}
+
+// Tras un fallo de autor, la hoja dice de quién era lo elegido («No es de X…» en «¿Quién?»; «El que
+// has elegido es de X · título» en «¿Cuál?», donde además la miniatura elegida lleva su pintor).
+// En las de movimiento no hay línea del elegido.
+async function assertChosenFeedback(page, type, label) {
+  const line = page.locator('.feedback .fb-line-2');
+  if (type === 'movement') {
+    check(await line.count() === 0, `${label}: línea del elegido en una pregunta de movimiento`);
+    return;
+  }
+  check(await line.count() === 1, `${label}: falta la línea de quién era lo elegido`);
+  const text = (await line.innerText()).trim();
+  const wrongOpt = page.locator('.lesson-stage .option.is-wrong');
+  if (type === 'which') {
+    const id = await wrongOpt.locator('.art').getAttribute('data-art');
+    const w = art.get(id);
+    const a = artist.get(w.artistId);
+    const name = a.short || a.name;
+    check(text === `El que has elegido es de ${name} · ${w.title}`, `${label}: la línea no nombra al pintor del cuadro elegido: ${text}`);
+    const tag = wrongOpt.locator('.option-tag');
+    check(await tag.count() === 1 && (await tag.innerText()).trim() === name, `${label}: la miniatura elegida no lleva su pintor`);
+  } else {
+    const a = artist.get(await wrongOpt.getAttribute('data-id'));
+    check(Boolean(a) && text.startsWith(`No es de ${a.short || a.name}`), `${label}: la línea no nombra al pintor elegido: ${text}`);
+  }
 }
 
 // ---------------------------------------------------------------- Visor a pantalla completa (oleada 8)
@@ -858,8 +893,9 @@ await playRound(page, {
   keys: true,
   checkReveal: '390',
   shotsFor: { 'q-who': '06-pregunta-quien', 'q-which': '07-pregunta-cual', 'q-movement': '08-pregunta-movimiento', wrong: '09-fallo', right: '10-acierto', interlude: '11-cuadros-nuevos', combo: '11b-combo' },
-  onStep: async ({ step }) => {
+  onStep: async ({ step, wrong, type }) => {
     fbTexts.push(await page.locator('.feedback .fb-inner').innerText());
+    if (wrong) await assertChosenFeedback(page, type, `390 fallo paso ${step}`);
     if (step === 1) await audit(page, '390 pregunta con fallo');
     if (step === 2) {
       // Botón atrás del navegador durante la ronda: pide confirmación y no sale.
