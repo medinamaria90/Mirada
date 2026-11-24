@@ -196,6 +196,20 @@ Decisiones de la tarde del 24/11:
     línea «El que has elegido es de <pintor> · <título>» y etiqueta con el pintor sobre el cuadro
     elegido en la rejilla; en «¿Quién lo pintó?», «No es de <elegido>» (+ rasgo ausente si es seguro);
     el cuadro elegido se abre en el visor ya revelado. En curso en la misma tanda de feedback.
+18. **Menos invitados en el camino común (23:10, decidido):** solo los invitados con alguna obra
+    icónica (fame 3; p. ej. Ofelia, La balsa de la Medusa, El caminante sobre el mar de nubes) van
+    intercalados en el camino común (≈ 25-30 en vez de 93); el resto pasa a **ramas opcionales por
+    época, «Descubre <época>: pintores menos conocidos»**, que cuentan para subir de rango como los
+    «a fondo». El catálogo no cambia (las obras se descargan igual); se decide en la migración con esa
+    regla y ajustes a mano. Lavinia Fontana o Elisabetta Sirani: posible invitada más (pendiente).
+17. **Ficha de pintor consultable (23:00, idea de María; recomendada dentro de la migración):** para
+    los pintores que aparecen «por la cara» (93 invitados). En Colección, pestañas «Cuadros» y
+    «Pintores» (lista por épocas, buscador, estado); se abre tocando el nombre del pintor en feedback,
+    «Conoce a» y ficha de obra. Lleva fechas, país, época, 3-4 líneas de vida y aportación con fuente,
+    «Fíjate en…», etapas (grandes maestros), **solo obras ya vistas** (sin spoilers), progreso y botón
+    para jugar su etapa o «a fondo». Biografías breves de Wikipedia/Wikidata con enlace al principio;
+    las de grandes maestros, con el piloto de `contenido/lecciones/`. **Aprobado (23:15): entra en la
+    migración del catálogo.**
 16. **Menos pintores con etapa, más obras cada uno (21:25, idea de María; recomendada):** con el
     catálogo tal cual saldrían ~100 etapas de ~8 obras (camino largo y plano; «a fondo» vacío en los
     pequeños). Propuesta: ~50 pintores con etapa (imprescindibles por época, españoles
@@ -232,6 +246,10 @@ Decisiones de la tarde del 24/11:
     +355); ampliar candidatas de Goya, El Greco, Murillo, Sorolla y Monet en la fase 2; abre
     Botticelli; invitados españoles con 4 obras; etapas de Murillo por las secciones de Wikipedia.
     En curso: aplicar la fase 1 al proceso de catálogo (Actions).
+    Ajustes (22:55): Sisley a maestro (criterio del coordinador: núcleo del grupo impresionista);
+    Caillebotte sigue de invitado con 1 «a fondo»; Cassatt y Vigée Le Brun con 1 «a fondo» (poca
+    representación femenina; Artemisia y Morisot ya son maestras); nuevos invitados: Sofonisba
+    Anguissola, Judith Leyster, Rosa Bonheur y Bazille; Regoyos invitado sin «a fondo».
 15. **Más machacón, sin deprimir (19:50):** hoy «avanzo súper rápido»; con 1.000 obras teme que el
     avance se haga lento. Duolingo repite «una y otra vez lo mismo» sin desmotivar: quiere una
     **auditoría de cómo gestiona Duolingo el avance y la repetición** para copiarlo (en curso, con
