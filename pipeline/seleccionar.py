@@ -6,7 +6,8 @@ Entrada: pipeline/painters.json, pipeline/out/candidates/*.json, pipeline/out/pa
            dos autores, palabras sospechosas o medidas que no casan, y con imagen >= 1000 px),
          pipeline/ajustes.json (QID -> {titulo, archivo, archivoInfo, anio, anioSort} correcciones a mano),
          pipeline/titulos_es.json (QID -> título en español para las que no tienen etiqueta es).
-Salida:  catalogo/seleccion.json (con `level` 1|2: las 4-6 más conocidas de cada pintor son nivel 1),
+         pipeline/etapas.json (pintor -> etapas con años y fuente; la `categoria` de cada pintor está en painters.json).
+Salida:  catalogo/seleccion.json (con `level` 1..n y `etapa`: nivel 1 = básico; 2..n = «a fondo», uno por etapa),
          pipeline/logs/select.txt (recuento por pintor) y pipeline/logs/select_drops.txt (descartes con fama).
 """
 import math, os, re, sys, unicodedata
@@ -33,9 +34,57 @@ MIN_SIDE, MIN_SIDE_FORCED = 1200, 1000
 BLANK = "http://www.wikidata.org/.well-known/"
 
 
-def level1_count(n):
-    """Cuántas obras de un pintor van al nivel 1 (camino): 4 si tiene <= 8, 5 si <= 12, 6 si más."""
-    return min(n, 4 if n <= 8 else 5 if n <= 12 else 6)
+# Obras por categoría (docs/propuesta-pintores.md): (nivel básico, cada «a fondo»). Los invitados españoles llevan 4 en el básico.
+CUPOS = {"gran-maestro": (8, 6), "maestro": (7, 5), "invitado": (3, 5)}
+FASE = int(os.environ.get("FASE", "1"))  # fase 1: grandes maestros completos, maestros con su 1.er «a fondo», invitados solo el básico
+
+
+def cupo_basico(p):
+    n = CUPOS[p["categoria"]][0]
+    return 4 if p["categoria"] == "invitado" and p["pais"] == "España" else n
+
+
+def corte(h):
+    """`hasta` de una etapa: 1648 o «1888-02» -> (año, mes|None); None -> sin corte."""
+    if h is None:
+        return None
+    if isinstance(h, int):
+        return h, None
+    y, m = h.split("-")
+    return int(y), int(m)
+
+
+def mes_de(dates, y):
+    """Mes de la fecha de creación si Wikidata la da con precisión de mes o día (y no es circa) en el año y."""
+    for t, prec, c in dates:
+        try:
+            neg = t[0] in "+-"
+            ty = int(t[:5]) if neg else int(t[:4])
+            tm = int(t[6:8]) if neg else int(t[5:7])
+        except Exception:
+            continue
+        if prec >= 10 and not c and ty == y:
+            return tm
+    return None
+
+
+def etapa_de(etapas, o, adj):
+    """Etapa (de todas las del pintor, también las de la fase 2) a la que pertenece la obra, o None.
+    ajustes.json[QID].etapa fija el nivel a mano. Si no: la primera etapa cuyo `hasta` alcanza el año (mismo año con
+    corte de mes: el mes de la fecha; sin mes, la etapa siguiente). Las obras sin año exacto no tienen etapa."""
+    fijo = adj.get(o["q"], {}).get("etapa")
+    if fijo:
+        return next((e for e in etapas if e["nivel"] == fijo), None)
+    if o["yq"] not in ("exact", "circa"):
+        return None
+    y = o["ysort"]
+    for e in etapas:
+        c = corte(e.get("hasta"))
+        if c is None or y < c[0]:
+            return e
+        if y == c[0] and (c[1] is None or (o["mes"] is not None and o["mes"] <= c[1])):
+            return e
+    return None
 
 
 def dims_ok(it, img_w, img_h):
@@ -97,8 +146,9 @@ def main():
     adj = load(os.path.join(PIPE, "ajustes.json"), {})
     tit = load(os.path.join(PIPE, "titulos_es.json"), {})
     extra = load(os.path.join(PIPE, "extra.json"), {})  # pintor -> {QID: motivo} obras a forzar
+    etapas_all = (load(os.path.join(PIPE, "etapas.json"), {}) or {}).get("pintores", {})
     sel, total, pais = [], 0, {}
-    log(f"{'pintor':18} {'cand':>5} {'aptas':>5} {'elegidas':>8}/obj  motivos de descarte")
+    log(f"{'pintor':18} {'categ':5} {'cand':>5} {'aptas':>5} {'elegidas':>4}/obj  nivel 1 y «a fondo»  | motivos de descarte")
     for p in painters:
         r = resolved.get(p["id"], {})
         pq = p.get("qid") or r.get("qid")
@@ -198,36 +248,56 @@ def main():
             title = title[0].upper() + title[1:]
             colls = [c for k, c in it["colls"].items() if c and not str(k).startswith(BLANK) and not str(c).startswith("http")]
             ok.append(dict(score=score, q=q, title=title, src=src, ytxt=ytxt, ysort=ysort or (born + 35), yq=yq,
+                           mes=mes_de(it["dates"], ysort) if ysort else None,
                            coll=colls[0] if colls else None, file=f, x=x, sl=it["sl"], flags=flags, conf=conf,
                            key=norm(re.sub(r"\([^)]*\)", "", it.get("en") or it.get("es") or title)), types=it["types"]))
         ok.sort(key=lambda o: -o["score"])
-        seen_keys, seen_files, chosen = set(), set(), []
+        seen_keys, seen_files, pool = set(), set(), []  # sin duplicados, de más a menos famosa (score)
         for o in ok:
             if o["key"] in seen_keys or o["file"] in seen_files:
                 why["duplicado/versión"] = why.get("duplicado/versión", 0) + 1
                 continue
             seen_keys.add(o["key"]); seen_files.add(o["file"])
-            if len(chosen) < p["objetivo"]:
-                chosen.append(o)
-        n1 = level1_count(len(chosen))
-        # Nivel: por fama real (sitelinks), no por la bonificación de forzada; ajustes.json puede fijar level=1
-        # para icónicas cuya fama está repartida entre versiones (El grito, Los girasoles, La torre de Babel...).
-        chosen.sort(key=lambda o: (0 if adj.get(o["q"], {}).get("level") == 1 else 1, -o["sl"], -o["score"]))
-        for i, o in enumerate(chosen):
+            pool.append(o)
+        cat = p["categoria"]
+        etapas = sorted(etapas_all.get(p["id"]) or [], key=lambda e: e["nivel"])
+        # Nivel 1 (básico): las icónicas forzadas (extra.json) y las fijadas a mano (ajustes.json level=1) siempre entran,
+        # aunque pasen del cupo; el resto, las más famosas. Una icónica de una etapa tardía sigue en el nivel 1 y no cuenta para su etapa.
+        prio = [o for o in pool if o["q"] in forced or adj.get(o["q"], {}).get("level") == 1]
+        n1 = max(cupo_basico(p), len(prio))
+        nivel1 = prio + [o for o in pool if o not in prio][:n1 - len(prio)]
+        chosen = [(1, None, o) for o in nivel1]
+        usadas = {o["q"] for o in nivel1}
+        porNivel = {}
+        for e in etapas:  # «a fondo»: una etapa por nivel; las de fase posterior se dejan para más adelante
+            if e["fase"] > FASE:
+                continue
+            if e.get("provisional"):
+                aptas = [o for o in pool if o["q"] not in usadas]
+            else:
+                aptas = [o for o in pool if o["q"] not in usadas and etapa_de(etapas, o, adj) is e]
+            toma = aptas[:CUPOS[cat][1]]
+            usadas.update(o["q"] for o in toma)
+            porNivel[e["nivel"]] = len(toma)
+            chosen += [(e["nivel"], e["nombre"], o) for o in toma]
+        for nivel, nombre, o in chosen:
             if o["src"] in ("traducir", "revisar-idioma"):
                 o["conf"] = "medium"
             sel.append(dict(
                 id="w" + o["q"][1:], pintorId=p["id"], qid=o["q"], titulo=o["title"], tituloFuente=o["src"],
-                level=1 if i < n1 else 2, forzada=o["q"] in forced,
+                level=nivel, etapa=nombre, forzada=o["q"] in forced,
                 anio=o["ytxt"], anioSort=o["ysort"], anioCalidad=o["yq"], coleccion=o["coll"], tipo=o["types"],
                 archivo=o["file"], archivoUrl="https://commons.wikimedia.org/wiki/File:" + o["file"].replace(" ", "_"),
                 srcW=o["x"]["width"], srcH=o["x"]["height"], mime=o["x"]["mime"],
                 licencia=o["x"].get("license"), autorArchivo=o["x"].get("artist"), creditoArchivo=o["x"].get("credit"),
                 sitelinks=o["sl"], confianza=o["conf"], avisos=o["flags"]))
+        corto = len(nivel1) < cupo_basico(p) or any(n < CUPOS[cat][1] for n in porNivel.values())
+        objetivo = cupo_basico(p) + CUPOS[cat][1] * len(porNivel)
         total += len(chosen)
         pais[p["pais"]] = pais.get(p["pais"], 0) + len(chosen)
-        mark = "" if len(chosen) >= p["objetivo"] else "  <-- corto"
-        log(f"{p['id']:18} {len(cand['items']):5} {len(ok):5} {len(chosen):8}/{p['objetivo']:<3} "
+        mark = "  <-- corto" if corto else ""
+        log(f"{p['id']:18} {cat[:5]:5} {len(cand['items']):5} {len(ok):5} {len(chosen):4}/{objetivo:<3} n1={len(nivel1)} "
+            + " ".join(f"L{k}:{v}" for k, v in sorted(porNivel.items())) + "  | "
             + ", ".join(f"{k}:{v}" for k, v in sorted(why.items(), key=lambda kv: -kv[1])) + mark)
     # fama 1-3 por cuantiles de sitelinks
     sls = sorted(s["sitelinks"] for s in sel)

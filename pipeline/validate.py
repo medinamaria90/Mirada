@@ -4,7 +4,9 @@ import os, re, struct, sys
 from lib import *
 
 EN = re.compile(r"\b(the|of|with|and|portrait|lady|young|woman|girl|boy|saint|still life|landscape|view|holy)\b", re.I)
-LEVEL1_MIN, LEVEL1_MAX = 3, 6
+# Nivel básico por categoría (propuesta de pintores): mínimo y máximo (las icónicas forzadas pueden pasar del cupo)
+LEVEL1 = {"gran-maestro": (8, 11), "maestro": (7, 9), "invitado": (3, 5)}
+FONDO_MIN, FONDO_AVISO = 3, 5  # «a fondo»: error por debajo de 3 obras, aviso por debajo de 5
 
 
 def jpeg_size(path):
@@ -28,6 +30,7 @@ def main():
     pintores = {p["id"]: p for p in cat.get("artists", [])}
     movs = {m["id"] for m in cat.get("movements", [])}
     err, warn = [], []
+    POCAS = set()
     ids = [o["id"] for o in obras]
     if len(ids) != len(set(ids)):
         err.append("ids repetidos: %s" % sorted({i for i in ids if ids.count(i) > 1}))
@@ -45,8 +48,23 @@ def main():
         if not p["order"]:
             err.append(f"{p['id']}: sin order")
         n1 = p.get("level1", 0)
-        if p["works"] >= LEVEL1_MIN and not (LEVEL1_MIN <= n1 <= LEVEL1_MAX):
-            err.append(f"{p['id']}: {n1} obras de nivel 1 (deben ser entre {LEVEL1_MIN} y {LEVEL1_MAX})")
+        cat = p.get("category")
+        if cat not in LEVEL1:
+            err.append(f"{p['id']}: categoría desconocida {cat}")
+        else:
+            lo, hi = LEVEL1[cat]
+            if p["id"] in POCAS and n1 >= 3:
+                lo = 3  # tope de candidatas aptas (Fedótov, Gisbert…)
+            if not (lo <= n1 <= hi):
+                err.append(f"{p['id']}: {n1} obras de nivel 1 ({cat}: entre {lo} y {hi})")
+        for st in p.get("stages", []):
+            if not st.get("fuente") and not st.get("provisional"):
+                err.append(f"{p['id']}: etapa «{st['nombre']}» sin fuente")
+            n = sum(1 for o in obras if o["artistId"] == p["id"] and o["level"] == st["nivel"])
+            if n < FONDO_MIN:
+                err.append(f"{p['id']}: nivel {st['nivel']} «{st['nombre']}» con {n} obras (mínimo {FONDO_MIN})")
+            elif n < FONDO_AVISO:
+                warn.append(f"{p['id']}: nivel {st['nivel']} «{st['nombre']}» con {n} obras (< {FONDO_AVISO}: faltan candidatas)")
     for o in obras:
         p = pintores.get(o["artistId"])
         tag = f"{o['id']} ({o['artistId']})"
@@ -68,7 +86,7 @@ def main():
             err.append(f"{tag}: año fuera de rango ({o['year']} / {y})")
         if not o["title"].strip():
             err.append(f"{tag}: título vacío")
-        if o["level"] not in (1, 2):
+        if o["level"] != 1 and o["level"] not in {st["nivel"] for st in p.get("stages", [])}:
             err.append(f"{tag}: level inválido {o['level']}")
         if o["titleSource"] in ("traducir", "revisar-idioma"):
             if o["confidence"] != "medium":

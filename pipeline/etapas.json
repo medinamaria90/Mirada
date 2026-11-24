@@ -1,0 +1,1616 @@
+{
+ "_doc": "Etapas por pintor (docs/propuesta-pintores.md). nivel 1 = básico (no se lista); 2..n = «a fondo». hasta: año (o «AAAA-MM») hasta el que llega la etapa; la obra cae en la primera etapa cuyo `hasta` la alcanza; null = sin corte (última o provisional). fase: 1 se selecciona ahora, 2 queda para la fase 2. verificar: la propuesta lo marca «(verificar)». corteInferido: el año de corte no lo da la propuesta. provisional: sin etapas con fuente, son «más obras» del pintor.",
+ "pintores": {
+  "velazquez": [
+   {
+    "nivel": 2,
+    "nombre": "Sevilla",
+    "desde": null,
+    "hasta": 1622,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez",
+    "fase": 1
+   },
+   {
+    "nivel": 3,
+    "nombre": "Corte joven y 1.er viaje a Italia",
+    "desde": 1623,
+    "hasta": 1631,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Madurez en Madrid",
+    "desde": 1631,
+    "hasta": 1648,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez",
+    "fase": 1
+   },
+   {
+    "nivel": 5,
+    "nombre": "2.º viaje a Italia y última década",
+    "desde": 1649,
+    "hasta": 1660,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez",
+    "fase": 1
+   }
+  ],
+  "goya": [
+   {
+    "nivel": 2,
+    "nombre": "Formación y cartones",
+    "desde": 1763,
+    "hasta": 1792,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya",
+    "fase": 1,
+    "nota": "Zaragoza se une a los cartones; Restauración y Burdeos, a las pinturas negras (propuesta, apartado Goya). Los años se solapan en 1790-1792: gana la etapa anterior."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Década de los noventa",
+    "desde": 1790,
+    "hasta": 1799,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Albores del siglo XIX",
+    "desde": 1800,
+    "hasta": 1807,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya",
+    "fase": 1
+   },
+   {
+    "nivel": 5,
+    "nombre": "Los desastres de la guerra",
+    "desde": 1808,
+    "hasta": 1814,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya",
+    "fase": 1
+   },
+   {
+    "nivel": 6,
+    "nombre": "Restauración, Quinta del Sordo y Burdeos",
+    "desde": 1815,
+    "hasta": 1828,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya",
+    "fase": 1
+   }
+  ],
+  "el-greco": [
+   {
+    "nivel": 2,
+    "nombre": "Creta, Venecia y Roma",
+    "desde": null,
+    "hasta": 1576,
+    "fuente": "https://es.wikipedia.org/wiki/El_Greco",
+    "fase": 1,
+    "nota": "Creta y Venecia no llegan a 5 obras: van con Roma. La llegada a Toledo se une a la madurez."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Llegada y madurez en Toledo",
+    "desde": 1577,
+    "hasta": 1596,
+    "fuente": "https://es.wikipedia.org/wiki/El_Greco",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Último periodo",
+    "desde": 1596,
+    "hasta": 1614,
+    "fuente": "https://es.wikipedia.org/wiki/El_Greco",
+    "fase": 1
+   }
+  ],
+  "murillo": [
+   {
+    "nivel": 2,
+    "nombre": "Primeros encargos y años de la peste",
+    "desde": null,
+    "hasta": 1655,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo",
+    "fase": 1,
+    "nota": "Formación y peste se unen (la fuente las enlaza). La división «frío, cálido y vaporoso» no está en el artículo de Wikipedia (decisión de María: por secciones de Wikipedia)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Pleno barroco y plenitud",
+    "desde": 1655,
+    "hasta": 1661,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Los grandes encargos",
+    "desde": 1662,
+    "hasta": 1672,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo",
+    "fase": 1
+   },
+   {
+    "nivel": 5,
+    "nombre": "Últimos trabajos",
+    "desde": 1673,
+    "hasta": 1682,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo",
+    "fase": 1
+   }
+  ],
+  "sorolla": [
+   {
+    "nivel": 2,
+    "nombre": "Formación y consolidación",
+    "desde": 1863,
+    "hasta": 1899,
+    "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla",
+    "fase": 1,
+    "nota": "Formación se une a la consolidación."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Culminación",
+    "desde": 1900,
+    "hasta": 1910,
+    "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Etapa final",
+    "desde": 1911,
+    "hasta": 1920,
+    "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla",
+    "fase": 1
+   }
+  ],
+  "leonardo": [
+   {
+    "nivel": 2,
+    "nombre": "Primeras obras en Florencia",
+    "desde": null,
+    "hasta": 1482,
+    "fuente": "https://es.wikipedia.org/wiki/Leonardo_da_Vinci",
+    "fase": 1,
+    "nota": "Solo hay un «a fondo»: unas 16 pinturas. Las de los tres últimos tramos (Milán, Venecia y Florencia, Roma y Francia) caben en el nivel 1."
+   }
+  ],
+  "rafael": [
+   {
+    "nivel": 2,
+    "nombre": "Primeros años en Umbría",
+    "desde": null,
+    "hasta": 1504,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio",
+    "fase": 1,
+    "nota": "Roma se parte en dos: Estancias y últimos años."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Periodo florentino",
+    "desde": 1504,
+    "hasta": 1508,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Las Estancias vaticanas",
+    "desde": 1509,
+    "hasta": 1513,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio",
+    "fase": 1
+   },
+   {
+    "nivel": 5,
+    "nombre": "Últimos años en Roma",
+    "desde": 1514,
+    "hasta": 1520,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio",
+    "fase": 1
+   }
+  ],
+  "tiziano": [
+   {
+    "nivel": 2,
+    "nombre": "Primeros años",
+    "desde": null,
+    "hasta": 1516,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano",
+    "fase": 1
+   },
+   {
+    "nivel": 3,
+    "nombre": "Madurez",
+    "desde": 1516,
+    "hasta": 1530,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Consolidación",
+    "desde": 1530,
+    "hasta": 1550,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano",
+    "fase": 1
+   },
+   {
+    "nivel": 5,
+    "nombre": "Años finales",
+    "desde": 1550,
+    "hasta": 1576,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano",
+    "fase": 1
+   }
+  ],
+  "caravaggio": [
+   {
+    "nivel": 2,
+    "nombre": "Roma",
+    "desde": 1592,
+    "hasta": 1600,
+    "fuente": "https://es.wikipedia.org/wiki/Caravaggio",
+    "fase": 1,
+    "nota": "De Milán (1571-1592) no hay obra conservada entre las candidatas."
+   },
+   {
+    "nivel": 3,
+    "nombre": "El pintor más famoso de Roma",
+    "desde": 1600,
+    "hasta": 1606,
+    "fuente": "https://es.wikipedia.org/wiki/Caravaggio",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Exilio",
+    "desde": 1606,
+    "hasta": 1610,
+    "fuente": "https://es.wikipedia.org/wiki/Caravaggio",
+    "fase": 1
+   }
+  ],
+  "rubens": [
+   {
+    "nivel": 2,
+    "nombre": "Italia",
+    "desde": 1600,
+    "hasta": 1608,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens",
+    "fase": 1,
+    "nota": "«Primeros años» no tiene obras entre las candidatas."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Amberes",
+    "desde": 1608,
+    "hasta": 1621,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "María de Médici y misiones diplomáticas",
+    "desde": 1621,
+    "hasta": 1630,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens",
+    "fase": 1
+   },
+   {
+    "nivel": 5,
+    "nombre": "Última década",
+    "desde": 1630,
+    "hasta": 1640,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens",
+    "fase": 1
+   }
+  ],
+  "rembrandt": [
+   {
+    "nivel": 2,
+    "nombre": "Leiden",
+    "desde": 1625,
+    "hasta": 1631,
+    "fuente": "https://es.wikipedia.org/wiki/Rembrandt",
+    "fase": 1
+   },
+   {
+    "nivel": 3,
+    "nombre": "Primer periodo en Ámsterdam",
+    "desde": 1632,
+    "hasta": 1636,
+    "fuente": "https://es.wikipedia.org/wiki/Rembrandt",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Segundo periodo en Ámsterdam",
+    "desde": 1636,
+    "hasta": 1650,
+    "fuente": "https://es.wikipedia.org/wiki/Rembrandt",
+    "fase": 1
+   },
+   {
+    "nivel": 5,
+    "nombre": "Periodo tardío",
+    "desde": 1650,
+    "hasta": 1669,
+    "fuente": "https://es.wikipedia.org/wiki/Rembrandt",
+    "fase": 1
+   }
+  ],
+  "monet": [
+   {
+    "nivel": 2,
+    "nombre": "Formación y Salón",
+    "desde": null,
+    "hasta": 1870,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet",
+    "fase": 1,
+    "nota": "Formación y Salón van juntos (la fuente los separa sin años y son seguidos)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Exposiciones impresionistas",
+    "desde": 1871,
+    "hasta": 1882,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Giverny",
+    "desde": 1883,
+    "hasta": 1899,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet",
+    "fase": 1
+   },
+   {
+    "nivel": 5,
+    "nombre": "Últimos años y nenúfares",
+    "desde": 1900,
+    "hasta": 1926,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet",
+    "fase": 1
+   }
+  ],
+  "van-gogh": [
+   {
+    "nivel": 2,
+    "nombre": "Países Bajos",
+    "desde": 1880,
+    "hasta": 1885,
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "fase": 1,
+    "nota": "Los años de la propuesta (1886-1888, 1888-1889, 1889-1890, 1890) se solapan: los cortes de mes (feb. 1888, mayo 1889, mayo 1890) son de la biografía del Museo Van Gogh; las obras fechadas solo por año se reparten a mano en ajustes.json (clave `etapa`)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Amberes y París",
+    "desde": 1886,
+    "hasta": "1888-02",
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "fase": 1,
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Arlés",
+    "desde": 1888,
+    "hasta": "1889-05",
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "fase": 1,
+    "corteInferido": true
+   },
+   {
+    "nivel": 5,
+    "nombre": "Saint-Rémy",
+    "desde": 1889,
+    "hasta": "1890-05",
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "fase": 1,
+    "corteInferido": true
+   },
+   {
+    "nivel": 6,
+    "nombre": "Auvers",
+    "desde": 1890,
+    "hasta": 1890,
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "fase": 1
+   }
+  ],
+  "zurbaran": [
+   {
+    "nivel": 2,
+    "nombre": "Primera etapa",
+    "desde": null,
+    "hasta": 1629,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n",
+    "fase": 1,
+    "nota": "Sube a gran maestro (decisión de María). La propuesta indica que 1641-1658 solo tiene 2 candidatas y lo une al final."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Década prodigiosa",
+    "desde": 1630,
+    "hasta": 1640,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Del 1641 hasta el final",
+    "desde": 1641,
+    "hasta": 1664,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n",
+    "fase": 1
+   }
+  ],
+  "botticelli": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Sandro_Botticelli",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "miguel-angel": [],
+  "berruguete": [
+   {
+    "nivel": 2,
+    "nombre": "Etapa castellana",
+    "desde": 1483,
+    "hasta": 1503,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Berruguete",
+    "fase": 1,
+    "nota": "La fuente da 3 etapas, pero solo hay obra de la castellana (1483-1503)."
+   }
+  ],
+  "veronese": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Paolo_Veronese",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "van-eyck": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jan_van_Eyck",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "bosco": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/El_Bosco",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "durero": [
+   {
+    "nivel": 2,
+    "nombre": "Aprendizaje y 1.er viaje a Italia",
+    "desde": null,
+    "hasta": 1505,
+    "fuente": "https://es.wikipedia.org/wiki/Alberto_Durero",
+    "fase": 1
+   },
+   {
+    "nivel": 3,
+    "nombre": "2.º viaje a Italia",
+    "desde": 1505,
+    "hasta": 1507,
+    "fuente": "https://es.wikipedia.org/wiki/Alberto_Durero",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Último viaje y últimas obras",
+    "desde": 1508,
+    "hasta": 1528,
+    "fuente": "https://es.wikipedia.org/wiki/Alberto_Durero",
+    "fase": 2
+   }
+  ],
+  "bruegel": [
+   {
+    "nivel": 2,
+    "nombre": "Primeras composiciones",
+    "desde": null,
+    "hasta": 1564,
+    "fuente": "https://es.wikipedia.org/wiki/Pieter_Brueghel_el_Viejo",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 3,
+    "nombre": "Las estaciones",
+    "desde": 1565,
+    "hasta": 1565,
+    "fuente": "https://es.wikipedia.org/wiki/Pieter_Brueghel_el_Viejo",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Últimos cuadros",
+    "desde": 1566,
+    "hasta": 1569,
+    "fuente": "https://es.wikipedia.org/wiki/Pieter_Brueghel_el_Viejo",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "ribera": [
+   {
+    "nivel": 2,
+    "nombre": "Hasta 1639",
+    "desde": null,
+    "hasta": 1639,
+    "fuente": "https://es.wikipedia.org/wiki/Jos%C3%A9_de_Ribera",
+    "fase": 1,
+    "nota": "Los años veinte solo tienen 3 candidatas, por eso el primer nivel llega hasta 1639."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Década de 1640 y últimos años",
+    "desde": 1640,
+    "hasta": 1652,
+    "fuente": "https://es.wikipedia.org/wiki/Jos%C3%A9_de_Ribera",
+    "fase": 2
+   }
+  ],
+  "vermeer": [
+   {
+    "nivel": 2,
+    "nombre": "Primera etapa",
+    "desde": null,
+    "hasta": 1661,
+    "fuente": "https://es.wikipedia.org/wiki/Johannes_Vermeer",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "La periodización solo está en el resumen de Wikipedia (verificar)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Madurez",
+    "desde": 1662,
+    "hasta": 1666,
+    "fuente": "https://es.wikipedia.org/wiki/Johannes_Vermeer",
+    "fase": 2,
+    "verificar": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Última época",
+    "desde": 1667,
+    "hasta": 1675,
+    "fuente": "https://es.wikipedia.org/wiki/Johannes_Vermeer",
+    "fase": 2,
+    "verificar": true
+   }
+  ],
+  "hals": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Frans_Hals",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "van-dyck": [
+   {
+    "nivel": 2,
+    "nombre": "Amberes joven",
+    "desde": null,
+    "hasta": 1620,
+    "fuente": "https://es.wikipedia.org/wiki/Anton_van_Dyck",
+    "fase": 1,
+    "corteInferido": true,
+    "nota": "El corte de Amberes joven (1620) lo infiere el proceso: la propuesta solo da Italia (1621-1627). Las obras de 1628-1631 caen en Inglaterra (gana la siguiente etapa)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Italia",
+    "desde": 1621,
+    "hasta": 1627,
+    "fuente": "https://es.wikipedia.org/wiki/Anton_van_Dyck",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Inglaterra",
+    "desde": 1632,
+    "hasta": 1641,
+    "fuente": "https://es.wikipedia.org/wiki/Anton_van_Dyck",
+    "fase": 2
+   }
+  ],
+  "artemisia": [
+   {
+    "nivel": 2,
+    "nombre": "Florencia",
+    "desde": 1613,
+    "hasta": 1620,
+    "fuente": "https://es.wikipedia.org/wiki/Artemisia_Gentileschi",
+    "fase": 1,
+    "nota": "La propuesta da 1621-1630 y «desde 1630»: el año 1630 cae en Roma y Venecia."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Roma y Venecia",
+    "desde": 1621,
+    "hasta": 1630,
+    "fuente": "https://es.wikipedia.org/wiki/Artemisia_Gentileschi",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Nápoles e Inglaterra",
+    "desde": 1630,
+    "hasta": 1656,
+    "fuente": "https://es.wikipedia.org/wiki/Artemisia_Gentileschi",
+    "fase": 2
+   }
+  ],
+  "watteau": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Antoine_Watteau",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "fragonard": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jean-Honor%C3%A9_Fragonard",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "melendez": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Luis_Egidio_Mel%C3%A9ndez",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "david": [
+   {
+    "nivel": 2,
+    "nombre": "Primeras obras",
+    "desde": null,
+    "hasta": 1788,
+    "fuente": "https://es.wikipedia.org/wiki/Jacques-Louis_David",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "La propuesta no da años de corte: se infieren de la Revolución (1789), el Directorio (1795) y la Restauración (1816). Contrastar."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Revolución",
+    "desde": 1789,
+    "hasta": 1794,
+    "fuente": "https://es.wikipedia.org/wiki/Jacques-Louis_David",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Directorio y Napoleón",
+    "desde": 1795,
+    "hasta": 1815,
+    "fuente": "https://es.wikipedia.org/wiki/Jacques-Louis_David",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 5,
+    "nombre": "Exilio",
+    "desde": 1816,
+    "hasta": 1825,
+    "fuente": "https://es.wikipedia.org/wiki/Jacques-Louis_David",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "ingres": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jean-Auguste-Dominique_Ingres",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "friedrich": [
+   {
+    "nivel": 2,
+    "nombre": "Formación",
+    "desde": 1801,
+    "hasta": 1814,
+    "fuente": "https://es.wikipedia.org/wiki/Caspar_David_Friedrich",
+    "fase": 1,
+    "nota": "La fuente no titula la etapa 1824-1840."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Madurez",
+    "desde": 1815,
+    "hasta": 1823,
+    "fuente": "https://es.wikipedia.org/wiki/Caspar_David_Friedrich",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Años finales (1824-1840)",
+    "desde": 1824,
+    "hasta": 1840,
+    "fuente": "https://es.wikipedia.org/wiki/Caspar_David_Friedrich",
+    "fase": 2
+   }
+  ],
+  "turner": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/J._M._W._Turner",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "delacroix": [
+   {
+    "nivel": 2,
+    "nombre": "Primeros años",
+    "desde": null,
+    "hasta": 1831,
+    "fuente": "https://es.wikipedia.org/wiki/Eug%C3%A8ne_Delacroix",
+    "fase": 1,
+    "corteInferido": true,
+    "nota": "El corte de 1831 lo infiere el proceso (el viaje a Marruecos es de 1832)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Viaje a África y encargos oficiales",
+    "desde": 1832,
+    "hasta": 1863,
+    "fuente": "https://es.wikipedia.org/wiki/Eug%C3%A8ne_Delacroix",
+    "fase": 2
+   }
+  ],
+  "madrazo": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Federico_Madrazo",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "courbet": [
+   {
+    "nivel": 2,
+    "nombre": "En sus inicios",
+    "desde": null,
+    "hasta": 1848,
+    "fuente": "https://es.wikipedia.org/wiki/Gustave_Courbet",
+    "fase": 1,
+    "corteInferido": true,
+    "nota": "El corte de 1848 lo infiere el proceso (la fuente dice «a partir de 1849»)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Realista a partir de 1849",
+    "desde": 1849,
+    "hasta": 1877,
+    "fuente": "https://es.wikipedia.org/wiki/Gustave_Courbet",
+    "fase": 2
+   }
+  ],
+  "millet": [
+   {
+    "nivel": 2,
+    "nombre": "Juventud y París",
+    "desde": null,
+    "hasta": 1848,
+    "fuente": "https://es.wikipedia.org/wiki/Jean-Fran%C3%A7ois_Millet",
+    "fase": 1,
+    "corteInferido": true,
+    "nota": "La propuesta solo da 1849 (Barbizon); el corte de «Juventud y París» (1848) lo infiere el proceso."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Barbizon",
+    "desde": 1849,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jean-Fran%C3%A7ois_Millet",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Últimos años",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jean-Fran%C3%A7ois_Millet",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "fortuny": [
+   {
+    "nivel": 2,
+    "nombre": "Roma y Marruecos",
+    "desde": null,
+    "hasta": 1862,
+    "fuente": "https://es.wikipedia.org/wiki/Mariano_Fortuny",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Sin años en la propuesta: el corte de 1862 (segundo viaje a Marruecos) es provisional."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Éxito",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Mariano_Fortuny",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Últimos años",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Mariano_Fortuny",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "rosales": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Eduardo_Rosales",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "repin": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Ili%C3%A1_Repin",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "manet": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/%C3%89douard_Manet",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "degas": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Edgar_Degas",
+    "fase": 1,
+    "provisional": true,
+    "verificar": true
+   }
+  ],
+  "renoir": [
+   {
+    "nivel": 2,
+    "nombre": "Juventud",
+    "desde": null,
+    "hasta": 1870,
+    "fuente": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Sin años en la propuesta: el corte de 1870 es provisional; la propuesta añade un 4.º nivel si se verifica el resumen."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Madurez",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Periodo ingresco",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "pissarro": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Camille_Pissarro",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "morisot": [
+   {
+    "nivel": 2,
+    "nombre": "Comienzos",
+    "desde": 1864,
+    "hasta": 1874,
+    "fuente": "https://es.wikipedia.org/wiki/Berthe_Morisot",
+    "fase": 1
+   },
+   {
+    "nivel": 3,
+    "nombre": "Maestría e innovación",
+    "desde": 1875,
+    "hasta": 1883,
+    "fuente": "https://es.wikipedia.org/wiki/Berthe_Morisot",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Pleno florecimiento",
+    "desde": 1884,
+    "hasta": 1894,
+    "fuente": "https://es.wikipedia.org/wiki/Berthe_Morisot",
+    "fase": 2
+   }
+  ],
+  "sisley": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Alfred_Sisley",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "cezanne": [
+   {
+    "nivel": 2,
+    "nombre": "Periodo oscuro e impresionista",
+    "desde": 1861,
+    "hasta": 1878,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne",
+    "fase": 1,
+    "nota": "El periodo oscuro solo tiene 4 candidatas, por eso se une al impresionista."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Madurez",
+    "desde": 1878,
+    "hasta": 1890,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Final",
+    "desde": 1890,
+    "hasta": 1906,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne",
+    "fase": 2
+   }
+  ],
+  "gauguin": [
+   {
+    "nivel": 2,
+    "nombre": "Francia y Bretaña",
+    "desde": null,
+    "hasta": 1890,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_Gauguin",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Años deducidos del resumen de la fuente (verificar)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "1.ª Tahití",
+    "desde": 1891,
+    "hasta": 1893,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_Gauguin",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Regreso a Francia",
+    "desde": 1893,
+    "hasta": 1895,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_Gauguin",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 5,
+    "nombre": "2.ª Tahití y Marquesas",
+    "desde": 1895,
+    "hasta": 1903,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_Gauguin",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "seurat": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Georges_Pierre_Seurat",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "lautrec": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Henri_de_Toulouse-Lautrec",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "klimt": [
+   {
+    "nivel": 2,
+    "nombre": "Juventud y Secesión",
+    "desde": null,
+    "hasta": 1898,
+    "fuente": "https://es.wikipedia.org/wiki/Gustav_Klimt",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Sin años en la propuesta: cortes provisionales (Secesión 1897, etapa dorada desde 1899, vejez desde 1911). La juventud solo tiene 4 candidatas."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Etapa dorada",
+    "desde": 1899,
+    "hasta": 1910,
+    "fuente": "https://es.wikipedia.org/wiki/Gustav_Klimt",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Vejez",
+    "desde": 1911,
+    "hasta": 1918,
+    "fuente": "https://es.wikipedia.org/wiki/Gustav_Klimt",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "munch": [
+   {
+    "nivel": 2,
+    "nombre": "Inicios",
+    "desde": null,
+    "hasta": 1892,
+    "fuente": "https://es.wikipedia.org/wiki/Edvard_Munch",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Sin años en la propuesta: cortes provisionales (Berlín 1892-1893, crisis desde 1909). La etapa final solo llega hasta 1929."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Berlín y Friso de la vida",
+    "desde": 1893,
+    "hasta": 1908,
+    "fuente": "https://es.wikipedia.org/wiki/Edvard_Munch",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Crisis y años finales",
+    "desde": 1909,
+    "hasta": 1929,
+    "fuente": "https://es.wikipedia.org/wiki/Edvard_Munch",
+    "fase": 2,
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "kandinsky": [
+   {
+    "nivel": 2,
+    "nombre": "Metamorfosis",
+    "desde": null,
+    "hasta": 1910,
+    "fuente": "https://es.wikipedia.org/wiki/Vasili_Kandinski",
+    "fase": 1,
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Rusia y Bauhaus (1914-1929) se pueden separar en dos niveles."
+   },
+   {
+    "nivel": 3,
+    "nombre": "El Jinete Azul",
+    "desde": 1911,
+    "hasta": 1914,
+    "fuente": "https://es.wikipedia.org/wiki/Vasili_Kandinski",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Rusia y Bauhaus",
+    "desde": 1914,
+    "hasta": 1929,
+    "fuente": "https://es.wikipedia.org/wiki/Vasili_Kandinski",
+    "fase": 2
+   }
+  ],
+  "juan-gris": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Juan_Gris",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "romero-de-torres": [
+   {
+    "nivel": 2,
+    "nombre": "Primera etapa",
+    "desde": 1900,
+    "hasta": 1908,
+    "fuente": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres",
+    "fase": 1,
+    "nota": "Justo 5 y 5 obras por etapa. Los años se solapan en 1908: gana la etapa anterior."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Simbolismo",
+    "desde": 1908,
+    "hasta": 1915,
+    "fuente": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres",
+    "fase": 2
+   },
+   {
+    "nivel": 4,
+    "nombre": "Madurez",
+    "desde": 1916,
+    "hasta": 1930,
+    "fuente": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres",
+    "fase": 2
+   }
+  ],
+  "giotto": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "fra-angelico": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "piero": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "bellini": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "mantegna": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "giorgione": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "correggio": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "tintoretto": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "van-der-weyden": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "cranach": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "holbein": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "sanchez-coello": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "poussin": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "claudio-de-lorena": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "alonso-cano": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "valdes-leal": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "tiepolo": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "canaletto": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "gainsborough": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "vicente-lopez": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "constable": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "gericault": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "aivazovski": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "corot": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "caillebotte": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "sargent": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "cassatt": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "vigee-le-brun": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "casas": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "modigliani": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ],
+  "schiele": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "fase": 2,
+    "provisional": true
+   }
+  ]
+ }
+}

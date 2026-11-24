@@ -43,7 +43,7 @@ def main():
         obras.append(dict(
             id=s["id"], artistId=s["pintorId"], title=s["titulo"], titleSource=s["tituloFuente"],
             year=s["anio"], yearSort=s["anioSort"], yearQuality=s["anioCalidad"],
-            level=s.get("level", 2), fame=s.get("fama", 1), sitelinks=s["sitelinks"],
+            level=s.get("level", 2), stage=s.get("etapa"), fame=s.get("fama", 1), sitelinks=s["sitelinks"],
             img="img/%s.jpg" % s["id"], w=m["w"] if ok else None, h=m["h"] if ok else None, downloaded=ok,
             museum=cap(f.get("museum")) if f.get("museum") else (s.get("coleccion") or None),
             city=f.get("city"), country=f.get("country"), inSpain=bool(f.get("inSpain")),
@@ -53,6 +53,7 @@ def main():
             source=dict(wikidata=s["qid"], commons=s["archivoUrl"], file=s["archivo"], license=s.get("licencia"),
                         credit=s.get("creditoArchivo"), ficha=f.get("source"), fetched=f.get("fetched")),
             confidence=s["confianza"], warnings=warnings))
+    etapas_all = (load(os.path.join(PIPE, "etapas.json"), {}) or {}).get("pintores", {})
     pintores = []
     by_mov = {}
     for p in painters:
@@ -62,7 +63,9 @@ def main():
             continue
         row = dict(id=p["id"], name=p["nombre"], short=p["corto"], born=r.get("nacimiento") or p["nacimiento"],
                    died=r.get("muerte") or p["muerte"], country=p["pais"], movementId=p["movimiento"], order=None,
-                   section=None, qid=p.get("qid") or r.get("qid"), works=n,
+                   section=None, qid=p.get("qid") or r.get("qid"), works=n, category=p.get("categoria"),
+                   stages=[{k: v for k, v in e.items() if k not in ("fase",)} for e in etapas_all.get(p["id"], [])
+                           if any(o["artistId"] == p["id"] and o["level"] == e["nivel"] for o in obras)],
                    level1=sum(1 for o in obras if o["artistId"] == p["id"] and o["level"] == 1))
         pintores.append(row)
         by_mov.setdefault(p["movimiento"], []).append(row)

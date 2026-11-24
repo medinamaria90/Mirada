@@ -9,7 +9,8 @@
   "muerte": 1337,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "van-eyck",
@@ -21,7 +22,8 @@
   "muerte": 1441,
   "movimiento": "manierismo-y-norte",
   "pais": "Países Bajos",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "fra-angelico",
@@ -33,7 +35,8 @@
   "muerte": 1455,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "van-der-weyden",
@@ -45,7 +48,8 @@
   "muerte": 1464,
   "movimiento": "manierismo-y-norte",
   "pais": "Flandes",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "piero",
@@ -57,7 +61,8 @@
   "muerte": 1492,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "bellini",
@@ -69,7 +74,8 @@
   "muerte": 1516,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "mantegna",
@@ -81,7 +87,8 @@
   "muerte": 1506,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "botticelli",
@@ -93,7 +100,8 @@
   "muerte": 1510,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "berruguete",
@@ -105,7 +113,8 @@
   "muerte": 1504,
   "movimiento": "renacimiento",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "bosco",
@@ -117,7 +126,8 @@
   "muerte": 1516,
   "movimiento": "manierismo-y-norte",
   "pais": "Países Bajos",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "leonardo",
@@ -129,7 +139,8 @@
   "muerte": 1519,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 12
+  "objetivo": 12,
+  "categoria": "gran-maestro"
  },
  {
   "id": "durero",
@@ -141,7 +152,8 @@
   "muerte": 1528,
   "movimiento": "manierismo-y-norte",
   "pais": "Alemania",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "cranach",
@@ -153,7 +165,8 @@
   "muerte": 1553,
   "movimiento": "manierismo-y-norte",
   "pais": "Alemania",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "miguel-angel",
@@ -165,7 +178,8 @@
   "muerte": 1564,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "giorgione",
@@ -177,7 +191,8 @@
   "muerte": 1510,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "rafael",
@@ -189,7 +204,8 @@
   "muerte": 1520,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 12
+  "objetivo": 12,
+  "categoria": "gran-maestro"
  },
  {
   "id": "tiziano",
@@ -201,7 +217,8 @@
   "muerte": 1576,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 12
+  "objetivo": 12,
+  "categoria": "gran-maestro"
  },
  {
   "id": "correggio",
@@ -213,7 +230,8 @@
   "muerte": 1534,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "holbein",
@@ -225,7 +243,8 @@
   "muerte": 1543,
   "movimiento": "manierismo-y-norte",
   "pais": "Alemania",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "juan-de-juanes",
@@ -237,7 +256,8 @@
   "muerte": 1579,
   "movimiento": "renacimiento",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "morales",
@@ -249,7 +269,8 @@
   "muerte": 1586,
   "movimiento": "manierismo-y-norte",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "tintoretto",
@@ -261,7 +282,8 @@
   "muerte": 1594,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "bruegel",
@@ -273,7 +295,8 @@
   "muerte": 1569,
   "movimiento": "manierismo-y-norte",
   "pais": "Flandes",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "veronese",
@@ -285,7 +308,8 @@
   "muerte": 1588,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "sanchez-coello",
@@ -297,7 +321,21 @@
   "muerte": 1588,
   "movimiento": "manierismo-y-norte",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
+ },
+ {
+  "id": "sofonisba",
+  "nombre": "Sofonisba Anguissola",
+  "corto": "Sofonisba",
+  "en": "Sofonisba Anguissola",
+  "qid": "Q236038",
+  "nacimiento": 1532,
+  "muerte": 1625,
+  "movimiento": "manierismo-y-norte",
+  "pais": "Italia",
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "el-greco",
@@ -309,7 +347,8 @@
   "muerte": 1614,
   "movimiento": "manierismo-y-norte",
   "pais": "España",
-  "objetivo": 15
+  "objetivo": 15,
+  "categoria": "gran-maestro"
  },
  {
   "id": "ribalta",
@@ -321,7 +360,8 @@
   "muerte": 1628,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "caravaggio",
@@ -333,7 +373,8 @@
   "muerte": 1610,
   "movimiento": "barroco",
   "pais": "Italia",
-  "objetivo": 12
+  "objetivo": 12,
+  "categoria": "gran-maestro"
  },
  {
   "id": "rubens",
@@ -345,7 +386,8 @@
   "muerte": 1640,
   "movimiento": "barroco",
   "pais": "Flandes",
-  "objetivo": 12
+  "objetivo": 12,
+  "categoria": "gran-maestro"
  },
  {
   "id": "maino",
@@ -357,7 +399,8 @@
   "muerte": 1649,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "hals",
@@ -369,7 +412,8 @@
   "muerte": 1666,
   "movimiento": "barroco",
   "pais": "Países Bajos",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "ribera",
@@ -381,7 +425,8 @@
   "muerte": 1652,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 15
+  "objetivo": 15,
+  "categoria": "maestro"
  },
  {
   "id": "la-tour",
@@ -393,7 +438,8 @@
   "muerte": 1652,
   "movimiento": "barroco",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "artemisia",
@@ -405,7 +451,8 @@
   "muerte": 1656,
   "movimiento": "barroco",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "poussin",
@@ -417,7 +464,8 @@
   "muerte": 1665,
   "movimiento": "barroco",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "zurbaran",
@@ -429,7 +477,8 @@
   "muerte": 1664,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 15
+  "objetivo": 15,
+  "categoria": "gran-maestro"
  },
  {
   "id": "velazquez",
@@ -441,7 +490,8 @@
   "muerte": 1660,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 16
+  "objetivo": 16,
+  "categoria": "gran-maestro"
  },
  {
   "id": "van-dyck",
@@ -453,7 +503,8 @@
   "muerte": 1641,
   "movimiento": "barroco",
   "pais": "Flandes",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "claudio-de-lorena",
@@ -465,7 +516,8 @@
   "muerte": 1682,
   "movimiento": "barroco",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "alonso-cano",
@@ -477,7 +529,8 @@
   "muerte": 1667,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "rembrandt",
@@ -489,7 +542,21 @@
   "muerte": 1669,
   "movimiento": "barroco",
   "pais": "Países Bajos",
-  "objetivo": 12
+  "objetivo": 12,
+  "categoria": "gran-maestro"
+ },
+ {
+  "id": "leyster",
+  "nombre": "Judith Leyster",
+  "corto": "Leyster",
+  "en": "Judith Leyster",
+  "qid": "Q232423",
+  "nacimiento": 1609,
+  "muerte": 1660,
+  "movimiento": "barroco",
+  "pais": "Países Bajos",
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "pereda",
@@ -501,7 +568,8 @@
   "muerte": 1678,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "carreno",
@@ -513,7 +581,8 @@
   "muerte": 1685,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "murillo",
@@ -525,7 +594,8 @@
   "muerte": 1682,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 15
+  "objetivo": 15,
+  "categoria": "gran-maestro"
  },
  {
   "id": "valdes-leal",
@@ -537,7 +607,8 @@
   "muerte": 1690,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "steen",
@@ -549,7 +620,8 @@
   "muerte": 1679,
   "movimiento": "barroco",
   "pais": "Países Bajos",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "vermeer",
@@ -561,7 +633,8 @@
   "muerte": 1675,
   "movimiento": "barroco",
   "pais": "Países Bajos",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "claudio-coello",
@@ -573,7 +646,8 @@
   "muerte": 1693,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "watteau",
@@ -585,7 +659,8 @@
   "muerte": 1721,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "tiepolo",
@@ -597,7 +672,8 @@
   "muerte": 1770,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Italia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "canaletto",
@@ -609,7 +685,8 @@
   "muerte": 1768,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Italia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "chardin",
@@ -621,7 +698,8 @@
   "muerte": 1779,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "liotard",
@@ -633,7 +711,8 @@
   "muerte": 1789,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Suiza",
-  "objetivo": 5
+  "objetivo": 5,
+  "categoria": "invitado"
  },
  {
   "id": "boucher",
@@ -645,7 +724,8 @@
   "muerte": 1770,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "melendez",
@@ -657,7 +737,8 @@
   "muerte": 1780,
   "movimiento": "rococo-neoclasicismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "reynolds",
@@ -669,7 +750,8 @@
   "muerte": 1792,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Reino Unido",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "greuze",
@@ -681,7 +763,8 @@
   "muerte": 1805,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 5
+  "objetivo": 5,
+  "categoria": "invitado"
  },
  {
   "id": "gainsborough",
@@ -693,7 +776,8 @@
   "muerte": 1788,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Reino Unido",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "fragonard",
@@ -705,7 +789,8 @@
   "muerte": 1806,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "goya",
@@ -717,7 +802,8 @@
   "muerte": 1828,
   "movimiento": "romanticismo",
   "pais": "España",
-  "objetivo": 16
+  "objetivo": 16,
+  "categoria": "gran-maestro"
  },
  {
   "id": "paret",
@@ -729,7 +815,8 @@
   "muerte": 1799,
   "movimiento": "rococo-neoclasicismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "david",
@@ -741,7 +828,8 @@
   "muerte": 1825,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "vigee-le-brun",
@@ -753,7 +841,8 @@
   "muerte": 1842,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "borovikovski",
@@ -765,7 +854,8 @@
   "muerte": 1825,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "vicente-lopez",
@@ -777,7 +867,8 @@
   "muerte": 1850,
   "movimiento": "rococo-neoclasicismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "friedrich",
@@ -789,7 +880,8 @@
   "muerte": 1840,
   "movimiento": "romanticismo",
   "pais": "Alemania",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "turner",
@@ -801,7 +893,8 @@
   "muerte": 1851,
   "movimiento": "romanticismo",
   "pais": "Reino Unido",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "constable",
@@ -813,7 +906,8 @@
   "muerte": 1837,
   "movimiento": "romanticismo",
   "pais": "Reino Unido",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "tropinin",
@@ -825,7 +919,8 @@
   "muerte": 1857,
   "movimiento": "romanticismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "ingres",
@@ -837,7 +932,8 @@
   "muerte": 1867,
   "movimiento": "rococo-neoclasicismo",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "venetsianov",
@@ -849,7 +945,8 @@
   "muerte": 1847,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "gericault",
@@ -861,7 +958,8 @@
   "muerte": 1824,
   "movimiento": "romanticismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "corot",
@@ -873,7 +971,8 @@
   "muerte": 1875,
   "movimiento": "realismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "delaroche",
@@ -885,7 +984,8 @@
   "muerte": 1856,
   "movimiento": "romanticismo",
   "pais": "Francia",
-  "objetivo": 5
+  "objetivo": 5,
+  "categoria": "invitado"
  },
  {
   "id": "delacroix",
@@ -897,7 +997,8 @@
   "muerte": 1863,
   "movimiento": "romanticismo",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "briullov",
@@ -909,7 +1010,8 @@
   "muerte": 1852,
   "movimiento": "romanticismo",
   "pais": "Rusia",
-  "objetivo": 4
+  "objetivo": 4,
+  "categoria": "invitado"
  },
  {
   "id": "ivanov",
@@ -921,7 +1023,8 @@
   "muerte": 1858,
   "movimiento": "romanticismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "millet",
@@ -933,7 +1036,8 @@
   "muerte": 1875,
   "movimiento": "realismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "madrazo",
@@ -945,7 +1049,8 @@
   "muerte": 1894,
   "movimiento": "romanticismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "fedotov",
@@ -957,7 +1062,8 @@
   "muerte": 1852,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "aivazovski",
@@ -969,7 +1075,8 @@
   "muerte": 1900,
   "movimiento": "romanticismo",
   "pais": "Rusia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "courbet",
@@ -981,7 +1088,21 @@
   "muerte": 1877,
   "movimiento": "realismo",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
+ },
+ {
+  "id": "bonheur",
+  "nombre": "Rosa Bonheur",
+  "corto": "Bonheur",
+  "en": "Rosa Bonheur",
+  "qid": "Q241732",
+  "nacimiento": 1822,
+  "muerte": 1899,
+  "movimiento": "realismo",
+  "pais": "Francia",
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "bouguereau",
@@ -993,7 +1114,8 @@
   "muerte": 1905,
   "movimiento": "realismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "moreau",
@@ -1005,7 +1127,8 @@
   "muerte": 1898,
   "movimiento": "simbolismo-modernismo",
   "pais": "Francia",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "rossetti",
@@ -1017,7 +1140,8 @@
   "muerte": 1882,
   "movimiento": "romanticismo",
   "pais": "Reino Unido",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "millais",
@@ -1029,7 +1153,8 @@
   "muerte": 1896,
   "movimiento": "romanticismo",
   "pais": "Reino Unido",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "pissarro",
@@ -1041,7 +1166,8 @@
   "muerte": 1903,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "savrasov",
@@ -1053,7 +1179,8 @@
   "muerte": 1897,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "manet",
@@ -1065,7 +1192,8 @@
   "muerte": 1883,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "shishkin",
@@ -1077,7 +1205,8 @@
   "muerte": 1898,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "martin-rico",
@@ -1089,7 +1218,8 @@
   "muerte": 1908,
   "movimiento": "realismo",
   "pais": "España",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "gisbert",
@@ -1101,7 +1231,8 @@
   "muerte": 1901,
   "movimiento": "realismo",
   "pais": "España",
-  "objetivo": 5
+  "objetivo": 5,
+  "categoria": "invitado"
  },
  {
   "id": "whistler",
@@ -1113,7 +1244,8 @@
   "muerte": 1903,
   "movimiento": "impresionismo",
   "pais": "Estados Unidos",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "degas",
@@ -1125,7 +1257,8 @@
   "muerte": 1917,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "perov",
@@ -1137,7 +1270,8 @@
   "muerte": 1882,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "rosales",
@@ -1149,7 +1283,8 @@
   "muerte": 1873,
   "movimiento": "realismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "homer",
@@ -1161,7 +1296,8 @@
   "muerte": 1910,
   "movimiento": "realismo",
   "pais": "Estados Unidos",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "kramskoi",
@@ -1173,7 +1309,8 @@
   "muerte": 1887,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "fortuny",
@@ -1185,7 +1322,8 @@
   "muerte": 1874,
   "movimiento": "realismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "cezanne",
@@ -1197,7 +1335,8 @@
   "muerte": 1906,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "sisley",
@@ -1209,7 +1348,8 @@
   "muerte": 1899,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "makovski",
@@ -1221,7 +1361,8 @@
   "muerte": 1915,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "monet",
@@ -1233,7 +1374,8 @@
   "muerte": 1926,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 12
+  "objetivo": 12,
+  "categoria": "gran-maestro"
  },
  {
   "id": "renoir",
@@ -1245,7 +1387,8 @@
   "muerte": 1919,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "morisot",
@@ -1257,7 +1400,8 @@
   "muerte": 1895,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "raimundo-madrazo",
@@ -1269,7 +1413,21 @@
   "muerte": 1920,
   "movimiento": "realismo",
   "pais": "España",
-  "objetivo": 5
+  "objetivo": 5,
+  "categoria": "invitado"
+ },
+ {
+  "id": "bazille",
+  "nombre": "Frédéric Bazille",
+  "corto": "Bazille",
+  "en": "Frédéric Bazille",
+  "qid": "Q207298",
+  "nacimiento": 1841,
+  "muerte": 1870,
+  "movimiento": "impresionismo",
+  "pais": "Francia",
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "kuindzhi",
@@ -1281,7 +1439,8 @@
   "muerte": 1910,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 4
+  "objetivo": 4,
+  "categoria": "invitado"
  },
  {
   "id": "vereshchagin",
@@ -1293,7 +1452,8 @@
   "muerte": 1904,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "rousseau",
@@ -1305,7 +1465,8 @@
   "muerte": 1910,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "cassatt",
@@ -1317,7 +1478,8 @@
   "muerte": 1926,
   "movimiento": "impresionismo",
   "pais": "Estados Unidos",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "repin",
@@ -1329,7 +1491,8 @@
   "muerte": 1930,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "polenov",
@@ -1341,7 +1504,8 @@
   "muerte": 1927,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "beruete",
@@ -1353,7 +1517,8 @@
   "muerte": 1912,
   "movimiento": "impresionismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "pradilla",
@@ -1365,7 +1530,8 @@
   "muerte": 1921,
   "movimiento": "realismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "gauguin",
@@ -1377,7 +1543,8 @@
   "muerte": 1903,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "caillebotte",
@@ -1389,7 +1556,8 @@
   "muerte": 1894,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "surikov",
@@ -1401,7 +1569,8 @@
   "muerte": 1916,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 4
+  "objetivo": 4,
+  "categoria": "invitado"
  },
  {
   "id": "vasnetsov",
@@ -1413,7 +1582,8 @@
   "muerte": 1926,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 4
+  "objetivo": 4,
+  "categoria": "invitado"
  },
  {
   "id": "pinazo",
@@ -1425,7 +1595,8 @@
   "muerte": 1916,
   "movimiento": "impresionismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "waterhouse",
@@ -1437,7 +1608,8 @@
   "muerte": 1917,
   "movimiento": "simbolismo-modernismo",
   "pais": "Reino Unido",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "kroyer",
@@ -1449,7 +1621,8 @@
   "muerte": 1909,
   "movimiento": "impresionismo",
   "pais": "Dinamarca",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "van-gogh",
@@ -1461,7 +1634,8 @@
   "muerte": 1890,
   "movimiento": "postimpresionismo",
   "pais": "Países Bajos",
-  "objetivo": 12
+  "objetivo": 12,
+  "categoria": "gran-maestro"
  },
  {
   "id": "sargent",
@@ -1473,7 +1647,8 @@
   "muerte": 1925,
   "movimiento": "impresionismo",
   "pais": "Estados Unidos",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "vrubel",
@@ -1485,7 +1660,8 @@
   "muerte": 1910,
   "movimiento": "simbolismo-modernismo",
   "pais": "Rusia",
-  "objetivo": 4
+  "objetivo": 4,
+  "categoria": "invitado"
  },
  {
   "id": "regoyos",
@@ -1497,7 +1673,8 @@
   "muerte": 1913,
   "movimiento": "impresionismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "seurat",
@@ -1509,7 +1686,8 @@
   "muerte": 1891,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "levitan",
@@ -1521,7 +1699,8 @@
   "muerte": 1900,
   "movimiento": "realismo",
   "pais": "Rusia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "zorn",
@@ -1533,7 +1712,8 @@
   "muerte": 1920,
   "movimiento": "impresionismo",
   "pais": "Suecia",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "invitado"
  },
  {
   "id": "rusinol",
@@ -1545,7 +1725,8 @@
   "muerte": 1931,
   "movimiento": "simbolismo-modernismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "klimt",
@@ -1557,7 +1738,8 @@
   "muerte": 1918,
   "movimiento": "simbolismo-modernismo",
   "pais": "Austria",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "nesterov",
@@ -1569,7 +1751,8 @@
   "muerte": 1942,
   "movimiento": "simbolismo-modernismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "signac",
@@ -1581,7 +1764,8 @@
   "muerte": 1935,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "sorolla",
@@ -1593,7 +1777,8 @@
   "muerte": 1923,
   "movimiento": "impresionismo",
   "pais": "España",
-  "objetivo": 14
+  "objetivo": 14,
+  "categoria": "gran-maestro"
  },
  {
   "id": "munch",
@@ -1605,7 +1790,8 @@
   "muerte": 1944,
   "movimiento": "simbolismo-modernismo",
   "pais": "Noruega",
-  "objetivo": 10
+  "objetivo": 10,
+  "categoria": "maestro"
  },
  {
   "id": "lautrec",
@@ -1617,7 +1803,8 @@
   "muerte": 1901,
   "movimiento": "postimpresionismo",
   "pais": "Francia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "maestro"
  },
  {
   "id": "hammershoi",
@@ -1629,7 +1816,8 @@
   "muerte": 1916,
   "movimiento": "simbolismo-modernismo",
   "pais": "Dinamarca",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "serov",
@@ -1641,7 +1829,8 @@
   "muerte": 1911,
   "movimiento": "impresionismo",
   "pais": "Rusia",
-  "objetivo": 4
+  "objetivo": 4,
+  "categoria": "invitado"
  },
  {
   "id": "casas",
@@ -1653,7 +1842,8 @@
   "muerte": 1932,
   "movimiento": "simbolismo-modernismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "kandinsky",
@@ -1665,7 +1855,8 @@
   "muerte": 1944,
   "movimiento": "simbolismo-modernismo",
   "pais": "Rusia",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "maestro"
  },
  {
   "id": "zuloaga",
@@ -1677,7 +1868,8 @@
   "muerte": 1945,
   "movimiento": "simbolismo-modernismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "nonell",
@@ -1689,7 +1881,8 @@
   "muerte": 1911,
   "movimiento": "simbolismo-modernismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "mir",
@@ -1701,7 +1894,8 @@
   "muerte": 1940,
   "movimiento": "postimpresionismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "romero-de-torres",
@@ -1713,7 +1907,8 @@
   "muerte": 1930,
   "movimiento": "simbolismo-modernismo",
   "pais": "España",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "maestro"
  },
  {
   "id": "petrov-vodkin",
@@ -1725,7 +1920,8 @@
   "muerte": 1939,
   "movimiento": "simbolismo-modernismo",
   "pais": "Rusia",
-  "objetivo": 3
+  "objetivo": 3,
+  "categoria": "invitado"
  },
  {
   "id": "malevich",
@@ -1737,7 +1933,8 @@
   "muerte": 1935,
   "movimiento": "simbolismo-modernismo",
   "pais": "Rusia",
-  "objetivo": 4
+  "objetivo": 4,
+  "categoria": "invitado"
  },
  {
   "id": "modigliani",
@@ -1749,7 +1946,8 @@
   "muerte": 1920,
   "movimiento": "simbolismo-modernismo",
   "pais": "Italia",
-  "objetivo": 9
+  "objetivo": 9,
+  "categoria": "invitado"
  },
  {
   "id": "juan-gris",
@@ -1761,7 +1959,8 @@
   "muerte": 1927,
   "movimiento": "simbolismo-modernismo",
   "pais": "España",
-  "objetivo": 6
+  "objetivo": 6,
+  "categoria": "maestro"
  },
  {
   "id": "schiele",
@@ -1773,6 +1972,7 @@
   "muerte": 1918,
   "movimiento": "simbolismo-modernismo",
   "pais": "Austria",
-  "objetivo": 8
+  "objetivo": 8,
+  "categoria": "invitado"
  }
 ]
