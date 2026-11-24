@@ -10,16 +10,6 @@
   "ok": true
  },
  {
-  "id": "fra-angelico",
-  "qid": "Q5664",
-  "es": "Fra Angelico",
-  "en": "Fra Angelico",
-  "nacimiento": 1400,
-  "muerte": 1455,
-  "sitelinks": 77,
-  "ok": false
- },
- {
   "id": "van-eyck",
   "qid": "Q102272",
   "es": "Jan van Eyck",
@@ -28,6 +18,16 @@
   "muerte": 1441,
   "sitelinks": 87,
   "ok": true
+ },
+ {
+  "id": "fra-angelico",
+  "qid": "Q5664",
+  "es": "Fra Angelico",
+  "en": "Fra Angelico",
+  "nacimiento": 1400,
+  "muerte": 1455,
+  "sitelinks": 77,
+  "ok": false
  },
  {
   "id": "van-der-weyden",
@@ -50,16 +50,6 @@
   "ok": true
  },
  {
-  "id": "mantegna",
-  "qid": "Q5681",
-  "es": "Andrea Mantegna",
-  "en": "Andrea Mantegna",
-  "nacimiento": 1431,
-  "muerte": 1506,
-  "sitelinks": 71,
-  "ok": true
- },
- {
   "id": "bellini",
   "qid": "Q17169",
   "es": "Giovanni Bellini",
@@ -67,6 +57,16 @@
   "nacimiento": 1430,
   "muerte": 1516,
   "sitelinks": 74,
+  "ok": true
+ },
+ {
+  "id": "mantegna",
+  "qid": "Q5681",
+  "es": "Andrea Mantegna",
+  "en": "Andrea Mantegna",
+  "nacimiento": 1431,
+  "muerte": 1506,
+  "sitelinks": 71,
   "ok": true
  },
  {
@@ -90,16 +90,6 @@
   "ok": true
  },
  {
-  "id": "leonardo",
-  "qid": "Q762",
-  "es": null,
-  "en": "Leonardo da Vinci",
-  "nacimiento": 1452,
-  "muerte": 1519,
-  "sitelinks": 309,
-  "ok": true
- },
- {
   "id": "bosco",
   "qid": "Q130531",
   "es": "Jerónimo Bosch",
@@ -107,6 +97,16 @@
   "nacimiento": 1450,
   "muerte": 1516,
   "sitelinks": 94,
+  "ok": true
+ },
+ {
+  "id": "leonardo",
+  "qid": "Q762",
+  "es": null,
+  "en": "Leonardo da Vinci",
+  "nacimiento": 1452,
+  "muerte": 1519,
+  "sitelinks": 309,
   "ok": true
  },
  {
@@ -630,6 +630,16 @@
   "ok": true
  },
  {
+  "id": "borovikovski",
+  "qid": "Q262098",
+  "es": "Vladímir Borovikovski",
+  "en": "Vladimir Borovikovsky",
+  "nacimiento": 1757,
+  "muerte": 1825,
+  "sitelinks": 25,
+  "ok": true
+ },
+ {
   "id": "vicente-lopez",
   "qid": "Q117543",
   "es": "Vicente López Portaña",
@@ -670,6 +680,16 @@
   "ok": true
  },
  {
+  "id": "tropinin",
+  "qid": "Q434561",
+  "es": "Vasili Tropinin",
+  "en": "Vasily Andreevich Tropinin",
+  "nacimiento": 1776,
+  "muerte": 1857,
+  "sitelinks": 31,
+  "ok": true
+ },
+ {
   "id": "ingres",
   "qid": "Q23380",
   "es": "Jean Auguste Dominique Ingres",
@@ -677,6 +697,16 @@
   "nacimiento": 1780,
   "muerte": 1867,
   "sitelinks": 133,
+  "ok": true
+ },
+ {
+  "id": "venetsianov",
+  "qid": "Q515879",
+  "es": "Alekséi Venetsiánov",
+  "en": "Alexey Venetsianov",
+  "nacimiento": 1780,
+  "muerte": 1847,
+  "sitelinks": 28,
   "ok": true
  },
  {
@@ -730,6 +760,16 @@
   "ok": true
  },
  {
+  "id": "ivanov",
+  "qid": "Q76829",
+  "es": "Aleksandr Ivánov",
+  "en": "Alexander Ivanov",
+  "nacimiento": 1806,
+  "muerte": 1858,
+  "sitelinks": 44,
+  "ok": true
+ },
+ {
   "id": "millet",
   "qid": "Q148458",
   "es": "Jean-François Millet",
@@ -747,6 +787,16 @@
   "nacimiento": 1815,
   "muerte": 1894,
   "sitelinks": 21,
+  "ok": true
+ },
+ {
+  "id": "fedotov",
+  "qid": "Q248597",
+  "es": "Pável Fedótov",
+  "en": "Pavel Fedotov",
+  "nacimiento": 1815,
+  "muerte": 1852,
+  "sitelinks": 26,
   "ok": true
  },
  {
@@ -820,6 +870,16 @@
   "ok": true
  },
  {
+  "id": "savrasov",
+  "qid": "Q353008",
+  "es": "Alekséi Savrásov",
+  "en": "Alexei Savrasov",
+  "nacimiento": 1830,
+  "muerte": 1897,
+  "sitelinks": 42,
+  "ok": true
+ },
+ {
   "id": "manet",
   "qid": "Q40599",
   "es": "Édouard Manet",
@@ -880,6 +940,16 @@
   "ok": true
  },
  {
+  "id": "perov",
+  "qid": "Q315237",
+  "es": "Vasili Perov",
+  "en": "Vasily Perov",
+  "nacimiento": 1833,
+  "muerte": 1882,
+  "sitelinks": 52,
+  "ok": true
+ },
+ {
   "id": "rosales",
   "qid": "Q615701",
   "es": "Eduardo Rosales",
@@ -897,6 +967,16 @@
   "nacimiento": 1836,
   "muerte": 1910,
   "sitelinks": 45,
+  "ok": true
+ },
+ {
+  "id": "kramskoi",
+  "qid": "Q207758",
+  "es": "Iván Kramskói",
+  "en": "Ivan Kramskoi",
+  "nacimiento": 1837,
+  "muerte": 1887,
+  "sitelinks": 57,
   "ok": true
  },
  {
@@ -927,6 +1007,16 @@
   "nacimiento": 1839,
   "muerte": 1899,
   "sitelinks": 80,
+  "ok": true
+ },
+ {
+  "id": "makovski",
+  "qid": "Q460337",
+  "es": "Konstantín Makovski",
+  "en": "Konstantin Makovsky",
+  "nacimiento": 1839,
+  "muerte": 1915,
+  "sitelinks": 33,
   "ok": true
  },
  {
@@ -980,6 +1070,16 @@
   "ok": true
  },
  {
+  "id": "vereshchagin",
+  "qid": "Q127017",
+  "es": "Vasili Vereschaguin",
+  "en": "Vasily Vereshchagin",
+  "nacimiento": 1842,
+  "muerte": 1904,
+  "sitelinks": 56,
+  "ok": true
+ },
+ {
   "id": "rousseau",
   "qid": "Q156386",
   "es": "Henri Rousseau",
@@ -1007,6 +1107,16 @@
   "nacimiento": 1844,
   "muerte": 1930,
   "sitelinks": 91,
+  "ok": true
+ },
+ {
+  "id": "polenov",
+  "qid": "Q318393",
+  "es": "Vasili Polénov",
+  "en": "Vasily Polenov",
+  "nacimiento": 1844,
+  "muerte": 1927,
+  "sitelinks": 40,
   "ok": true
  },
  {
@@ -1190,6 +1300,16 @@
   "ok": true
  },
  {
+  "id": "nesterov",
+  "qid": "Q318427",
+  "es": "Mijaíl Nésterov",
+  "en": "Mikhail Nesterov",
+  "nacimiento": 1862,
+  "muerte": 1942,
+  "sitelinks": 44,
+  "ok": true
+ },
+ {
   "id": "signac",
   "qid": "Q151573",
   "es": "Paul Signac",
@@ -1307,6 +1427,16 @@
   "nacimiento": 1874,
   "muerte": 1930,
   "sitelinks": 18,
+  "ok": true
+ },
+ {
+  "id": "petrov-vodkin",
+  "qid": "Q364226",
+  "es": "Kuzmá Petrov-Vodkin",
+  "en": "Kuzma Petrov-Vodkin",
+  "nacimiento": 1878,
+  "muerte": 1939,
+  "sitelinks": 38,
   "ok": true
  },
  {
