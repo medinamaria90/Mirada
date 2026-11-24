@@ -52,13 +52,15 @@ def main():
             sl = len(e.get("sitelinks", {}))
             row = dict(qid=qid, es=e.get("labels", {}).get("es", {}).get("value"),
                        en=e.get("labels", {}).get("en", {}).get("value"), nacimiento=b, muerte=d, sitelinks=sl, ok=bool(ok))
-            if ok and (best is None or sl > best["sitelinks"]):
+            if (ok or p.get("qid")) and (best is None or sl > best["sitelinks"]):
                 best = row
         if best is None:
             log(f"FALLO {p['id']:18} ({p['en']}) candidatos={cands[:5]}")
             res.append(dict(id=p["id"], qid=None))
             continue
-        flag = "" if best["muerte"] < 1946 else "  ¡MUERTE >=1946!"
+        flag = "" if (best["muerte"] or 9999) < 1946 else "  ¡MUERTE >=1946 o desconocida!"
+        if not best["ok"]:
+            flag += "  (QID dado; años no casan, revisar)"
         log(f"ok    {p['id']:18} {best['qid']:10} {best['es'] or '-'} / {best['en']} ({best['nacimiento']}-{best['muerte']}) sl={best['sitelinks']}{flag}")
         res.append(dict(id=p["id"], **best))
     save(os.path.join(OUT, "painters_resolved.json"), res)

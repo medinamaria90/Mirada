@@ -64,11 +64,11 @@ def get_json(url, **kw):
     return json.loads(http(url, **kw))
 
 
-def sparql(q):
+def sparql(q, tries=3):
     url = "https://query.wikidata.org/sparql"
     data = urllib.parse.urlencode({"query": q, "format": "json"}).encode()
     body = http(url, data=data, headers={"Accept": "application/sparql-results+json",
-                                         "Content-Type": "application/x-www-form-urlencoded"}, timeout=120)
+                                         "Content-Type": "application/x-www-form-urlencoded"}, timeout=70, tries=tries)
     return json.loads(body)["results"]["bindings"]
 
 

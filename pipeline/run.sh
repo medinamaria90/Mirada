@@ -19,7 +19,16 @@ while read -r step args <&3; do
   echo "== $step $args $(date -u +%H:%M:%S)" | tee -a pipeline/logs/run.txt
   case "$step" in
     resolve)    python3 pipeline/resolve.py > pipeline/logs/resolve.stdout.txt 2>&1; tail -n 5 pipeline/logs/resolve.stdout.txt >> pipeline/logs/run.txt ;;
-    candidates) python3 pipeline/candidates.py $args > pipeline/logs/candidates.stdout.txt 2>&1; tail -n 5 pipeline/logs/candidates.stdout.txt >> pipeline/logs/run.txt ;;
+    candidates)
+      ids=${args:-$(python3 -c "import json;print(' '.join(p['id'] for p in json.load(open('pipeline/painters.json'))))")}
+      set -- $ids; : > pipeline/logs/candidates.stdout.txt
+      while [ $# -gt 0 ]; do
+        chunk="${@:1:15}"; shift $(( $# < 15 ? $# : 15 ))
+        python3 pipeline/candidates.py $chunk >> pipeline/logs/candidates.stdout.txt 2>&1
+        cp pipeline/logs/candidates.stdout.txt pipeline/logs/candidates.txt
+        commit "datos: candidatas ($chunk)"
+      done
+      tail -n 3 pipeline/logs/candidates.stdout.txt >> pipeline/logs/run.txt ;;
     download)
       for n in $(seq 1 "${args:-8}"); do
         python3 pipeline/download.py --limit 150 > pipeline/logs/download.stdout.txt 2>&1; rc=$?
