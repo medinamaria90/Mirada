@@ -96,6 +96,23 @@ def pick_learn(works, n):
     return {w["id"] for w in (unaskable + rest)[:max(n, len(unaskable))]}
 
 
+def familias_del_catalogo(movements, artists):
+    """Familias visuales (catalogo/familias.json): marca cada movimiento y pintor con su familia."""
+    data = load("familias.json")
+    ids = {f["id"] for f in data["familias"]}
+    for m in movements:
+        m["family"] = data["porMovimiento"][m["id"]]
+        m.update(data["movimientos"][m["id"]])
+    for a in artists:
+        f = data["porPintor"].get(a["id"], data["porMovimiento"][a["movementId"]])
+        if isinstance(f, dict):
+            a["family"], a["familyFrom"] = f["antes"], dict(year=f["desde"], family=f["despues"])
+        else:
+            a["family"] = f
+    assert all(m["family"] in ids for m in movements) and all(a["family"] in ids for a in artists)
+    return dict(cutoff=data["corteAntiguo"], list=[{k: v for k, v in f.items()} for f in data["familias"]])
+
+
 def main(app):
     obras = load("obras.json")
     pintores = {p["id"]: p for p in load("pintores.json")}
@@ -281,12 +298,13 @@ def main(app):
             source=dict(wikidata=src.get("wikidata"), file=src.get("file"), license=src.get("license"))).items() if v}
         artworks.append(item)
 
+    families = familias_del_catalogo(movements, artists)
     cat = dict(version=2, movements=movements, artists=artists, artworks=artworks, branches=branches)
     atlas, thumbs = layout(cat)
     cat["atlas"] = atlas
     for item in artworks:
         item["thumb"] = thumbs[item["id"]]
-    core = dict(version=2, atlas=atlas, movements=movements, artists=artists, artworks=artworks, branches=branches)
+    core = dict(version=2, atlas=atlas, movements=movements, artists=artists, artworks=artworks, branches=branches, families=families)
 
     os.makedirs(f"{app}/data", exist_ok=True)
     for name, data in (("catalog.json", core), ("catalog-text.json", text), ("catalog-ficha.json", dict(version=1, ficha=ficha))):

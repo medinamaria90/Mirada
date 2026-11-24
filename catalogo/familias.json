@@ -1,0 +1,35 @@
+{
+  "nota": "Familias visuales: las opciones falsas de una pregunta salen de la familia de la buena. 'cercanas' son las familias de relleno si la propia no tiene pintores suficientes. 'moderna' marca las que no se mezclan nunca con obras anteriores a 1800. 'tope' son los años máximos entre la buena y una falsa (null: sin tope). 'familiaMovimiento' es la familia que se usa al elegir movimientos.",
+  "corteAntiguo": 1800,
+  "familias": [
+    {"id": "occidental", "nombre": "Pintura occidental figurativa", "tope": 250, "cercanas": []},
+    {"id": "medieval", "nombre": "Medieval, gótico e iconos", "tope": null, "cercanas": []},
+    {"id": "japones", "nombre": "Grabado japonés y arte asiático", "tope": null, "cercanas": []},
+    {"id": "vanguardia", "nombre": "Vanguardias figurativas (cubismo, expresionismo, fauvismo)", "tope": 250, "moderna": true, "familiaMovimiento": "occidental", "cercanas": ["occidental"]},
+    {"id": "abstracto", "nombre": "Pintura abstracta y no figurativa", "tope": null, "moderna": true, "familiaMovimiento": "occidental", "cercanas": ["vanguardia"]}
+  ],
+  "porMovimiento": {
+    "gotico": "medieval", "ukiyo-e": "japones", "renacimiento": "occidental", "manierismo-y-norte": "occidental",
+    "barroco": "occidental", "rococo-neoclasicismo": "occidental", "romanticismo": "occidental", "realismo": "occidental",
+    "impresionismo": "occidental", "postimpresionismo": "occidental", "simbolismo-modernismo": "occidental"
+  },
+  "porPintor": {
+    "giotto": "medieval",
+    "juan-gris": "vanguardia", "schiele": "vanguardia", "modigliani": "vanguardia", "petrov-vodkin": "vanguardia", "munch": "vanguardia",
+    "malevich": "abstracto",
+    "kandinsky": {"desde": 1911, "antes": "vanguardia", "despues": "abstracto"}
+  },
+  "movimientos": {
+    "gotico": {"desde": 1250, "hasta": 1400},
+    "renacimiento": {"desde": 1400, "hasta": 1600},
+    "manierismo-y-norte": {"desde": 1500, "hasta": 1620},
+    "barroco": {"desde": 1600, "hasta": 1700},
+    "rococo-neoclasicismo": {"desde": 1700, "hasta": 1800},
+    "romanticismo": {"desde": 1780, "hasta": 1850},
+    "realismo": {"desde": 1840, "hasta": 1890},
+    "impresionismo": {"desde": 1860, "hasta": 1890},
+    "ukiyo-e": {"desde": 1700, "hasta": 1870},
+    "postimpresionismo": {"desde": 1880, "hasta": 1905},
+    "simbolismo-modernismo": {"desde": 1885, "hasta": 1930, "vanguardias": true}
+  }
+}

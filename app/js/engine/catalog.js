@@ -1,5 +1,7 @@
 // Índices de consulta sobre el catálogo (§4). Puro: no toca el DOM.
 
+import { buildFamilies } from './families.js';
+
 const SAFE_ID = /^[a-z0-9-]+$/i;
 const SAFE_SRC = /^img\/[a-z0-9/_.-]+\.jpg$/;
 
@@ -160,10 +162,19 @@ export function buildIndex(catalog) {
     return b ? b.artists.slice(0, b.artists.indexOf(artistId)).map((id) => artistById.get(id)) : [];
   };
 
+  const families = buildFamilies(catalog, artistById, worksByArtist);
+
   return {
     movements,
     artists,
     artworks,
+    families,
+    // Familias visuales (engine/families.js): referencia de una obra o pintor y si pueden salir juntos.
+    refOfWork: (w) => (families ? families.refOfWork(w) : null),
+    refOfArtist: (a) => (families ? families.refOfArtist(a) : null),
+    relation: (ref, artist, relax = 1) => (families && ref ? families.relation(ref, families.refOfArtist(artist), relax) : 'strict'),
+    workRelation: (ref, work, relax = 1) => (families && ref ? families.relation(ref, families.refOfWork(work), relax) : 'strict'),
+    movementAllowed: (ref, m) => (families && ref ? families.movementAllowed(ref, m) : true),
     movement: (id) => movementById.get(id),
     artist: (id) => artistById.get(id),
     artwork: (id) => artworkById.get(id),

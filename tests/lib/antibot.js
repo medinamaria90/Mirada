@@ -25,7 +25,31 @@ function mostRecentLearned(q, ctx) {
   return cands.sort((a, b) => (ctx.learnedOrder.get(b) ?? -1) - (ctx.learnedOrder.get(a) ?? -1))[0];
 }
 
+// Distancia entre dos opciones para «el raro de los cuatro»: otra familia pesa más que cualquier
+// diferencia de siglos; después, los años (de la obra o del pintor).
+const FAMILY_GAP = 1000;
+function optionRef(q, o, index) {
+  if (q.type === 'which') return index.refOfWork(index.artwork(o.artworkId));
+  if (q.type === 'who') return index.refOfArtist(index.artist(o.id));
+  return null;
+}
+function oddDistance(q, a, b, index) {
+  const [ra, rb] = [optionRef(q, a, index), optionRef(q, b, index)];
+  if (!ra || !rb) return 0;
+  return (ra.family === rb.family ? 0 : FAMILY_GAP) + Math.abs(ra.year - rb.year);
+}
+
 export const BOTS = {
+  // «El raro de los cuatro»: elige la opción más distinta de las otras tres (por familia o siglo); empata al azar. La buena no debe ser casi nunca la rara.
+  // En «¿De qué movimiento?» las opciones van en orden cronológico y su posición ya la vigilan los bots
+  // de posición, así que ahí el raro elige al azar.
+  raro(q, ctx) {
+    if (q.type === 'movement') return uniform(q);
+    const odd = q.options.map((o) => q.options.reduce((n, other) => n + oddDistance(q, o, other, ctx.index), 0));
+    const max = Math.max(...odd);
+    const top = q.options.filter((o, i) => odd[i] === max).map((o) => o.id);
+    return among(q, top);
+  },
   // Siempre el pintor / movimiento de la etapa si está entre las opciones; si no, al azar.
   stage(q, ctx) {
     if (q.type === 'who' && has(q, ctx.stageArtist)) return q.answerId === ctx.stageArtist ? 1 : 0;

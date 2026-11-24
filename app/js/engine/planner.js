@@ -5,6 +5,7 @@ import { createRng } from './rng.js';
 import { makeQuestion, makeWhoQuestion, makeMovementQuestion, isSpoiler, noAuthorQuestion } from './questions.js';
 import { salaLearnWorks, SALA_LEARN, levelOf } from './catalog.js';
 import { REVIEW5_SIZE } from './review.js';
+import { RELAX_MAX } from './families.js';
 
 // Ejecución de una ronda (cola, reintentos y puntuación): engine/round.js.
 export { createRound, currentItem, answerRound, roundDone, roundProgress, roundScore } from './round.js';
@@ -254,7 +255,7 @@ function stageSlots(index, artist, learn, before, rng, reviewIds, selection) {
     const w = guest || pickWork(phaseAt(i) === 'practice' ? 'learn' : 'new');
     // Con el de la etapa y otro pintor ya aprendido de distractores: elegir siempre al aprendido
     // (o al más reciente) no basta.
-    const mates = before.filter((a) => a.id !== w?.artistId);
+    const mates = before.filter((a) => a.id !== w?.artistId && (!w || index.relation(index.refOfWork(w), a, RELAX_MAX)));
     if (w) review.push({ work: w, type: 'who', phase: guest ? 'fresh' : phaseAt(i), include: [artist.id, ...(mates.length ? [rng.pick(mates).id] : [])] });
   }
   const movementSlot = movementReviewSlot(index, artist, before, rng, pickWork, {
@@ -276,7 +277,10 @@ function stageSlots(index, artist, learn, before, rng, reviewIds, selection) {
   const learnedIds = before.map((a) => a.id);
   const own = ownWorks.map(({ w, phase }, i) => {
     if (ownTypes[i] !== 'who') return { work: w, type: 'which', phase, include: [], exclude: learnedIds };
-    const helper = recentFirst[i % Math.min(2, recentFirst.length)].id;
+    // El ayudante, de la familia de la obra (si hay alguno): un aprendido de otra familia no puede salir.
+    const kin = recentFirst.filter((a) => index.relation(index.refOfWork(w), a, RELAX_MAX));
+    const pool = kin.length ? kin : recentFirst;
+    const helper = pool[i % Math.min(2, pool.length)].id;
     return { work: w, type: 'who', phase, include: [helper], exclude: learnedIds.filter((id) => id !== helper) };
   });
 

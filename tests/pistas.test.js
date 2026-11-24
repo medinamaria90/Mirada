@@ -148,7 +148,7 @@ test('al acertar no hay línea del elegido; al fallar el movimiento tampoco, y e
 });
 
 test('opciones de movimiento: nombre y periodo del catálogo; en las demás, sin detalle', () => {
-  const w = real.artworks.find((x) => !x.spoiler);
+  const w = real.artworks.find((x) => !x.spoiler && real.artist(x.artistId).family === 'occidental');
   const mq = makeMovementQuestion(real, w, 0.5, createRng('opt'));
   for (const o of mq.options) {
     const { label, detail } = optionText(real, mq, o);

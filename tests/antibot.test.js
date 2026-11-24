@@ -132,7 +132,9 @@ test('preguntas del pintor de la etapa con pintores aún no aprendidos de distra
       for (const q of planStage(real, step.id, s).questions.filter((x) => x.artistId === step.id)) {
         if (q.type === 'who') {
           const unlearned = q.options.filter((o) => o.id !== step.id && !learned.has(o.id));
-          assert.ok(unlearned.length >= 2 && q.options.some((o) => learned.has(o.id)), `${step.id}/${s}: «¿Quién?» ${q.options.map((o) => o.id)}`);
+          // Los aprendidos solo pueden salir si son de la familia del pintor (las familias no se mezclan).
+          const kin = [...learned].filter((id) => real.artist(id).family === real.artist(step.id).family);
+          assert.ok(unlearned.length >= 2 && (!kin.length || q.options.some((o) => learned.has(o.id))), `${step.id}/${s}: «¿Quién?» ${q.options.map((o) => o.id)}`);
         }
         if (q.type === 'which') {
           const others = q.options.filter((o) => o.id !== q.answerId).map((o) => real.artwork(o.artworkId).artistId);

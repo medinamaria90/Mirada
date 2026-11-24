@@ -2,6 +2,7 @@
 // Puro: recibe el índice del catálogo y un RNG con semilla.
 
 import { isSpoiler, noAuthorQuestion } from './catalog.js';
+import { RELAX_STEPS, RELAX_MAX, MOVEMENT_HARD_GAP, ODD_TRIES, isOddOne } from './families.js';
 
 export { isSpoiler, isAttributed, noAuthorQuestion } from './catalog.js';
 
@@ -33,20 +34,23 @@ export const SIMILAR_CAP_UNTIL = 0.5;
 // cercano y la diferencia se compensa en los huecos siguientes. Así la curva es continua.
 // include: pintores que deben salir sí o sí (p. ej. el de la etapa en una pregunta de repaso);
 // cuentan para el parecido medio y los demás huecos compensan.
-export function pickDistractorArtists(index, target, count, difficulty, rng, exclude = [], include = []) {
+// opts.work: la obra por la que se pregunta (da la familia y el año de referencia; si no, los del pintor).
+export function pickDistractorArtists(index, target, count, difficulty, rng, exclude = [], include = [], opts = {}) {
   const banned = new Set([target.id, ...exclude]);
+  const ref = opts.work ? index.refOfWork(opts.work) : index.refOfArtist(target);
+  const eligible = eligibleArtists(index, ref, banned, count);
   const usedNames = new Set([target.name]);
   const forced = [];
   for (const id of include) {
     const a = typeof id === 'string' ? index.artist(id) : id;
-    if (!a || banned.has(a.id) || usedNames.has(a.name) || !index.worksOf(a.id).length || forced.length >= count) continue;
+    if (!a || banned.has(a.id) || !index.relation(ref, a, RELAX_MAX) || usedNames.has(a.name) || !index.worksOf(a.id).length || forced.length >= count) continue;
     forced.push(a);
     banned.add(a.id);
     usedNames.add(a.name);
   }
   const groups = [[], [], [], []];
   for (const a of index.artists) {
-    if (banned.has(a.id) || !index.worksOf(a.id).length) continue;
+    if (banned.has(a.id) || !eligible.has(a.id) || !index.worksOf(a.id).length) continue;
     groups[similarity(index, target, a)].push(a);
   }
   for (let i = 0; i < 4; i++) groups[i] = rng.shuffle(groups[i]);
@@ -89,6 +93,23 @@ export function pickDistractorArtists(index, target, count, difficulty, rng, exc
   return chosen;
 }
 
+// Pintores que pueden hacer de falsa: los de la familia de la buena dentro del tope de años; si no
+// llegan, los de las familias cercanas y, al final, un tope más holgado (nunca otra familia ni mezcla de
+// antiguos con modernos). Sin familias en el catálogo, todos.
+function eligibleArtists(index, ref, banned, count) {
+  const pool = index.artists.filter((a) => !banned.has(a.id) && index.worksOf(a.id).length);
+  let ids = new Set(pool.map((a) => a.id));
+  if (!ref) return ids;
+  for (const relax of RELAX_STEPS) {
+    const rel = pool.map((a) => [a, index.relation(ref, a, relax)]).filter(([, r]) => r);
+    const strict = rel.filter(([, r]) => r === 'strict');
+    const picked = strict.length >= count ? strict : rel;
+    ids = new Set(picked.map(([a]) => a.id));
+    if (new Set(picked.map(([a]) => a.name)).size >= count) break;
+  }
+  return ids;
+}
+
 // Parecido medio de los distractores de una pregunta (para medir la curva de dificultad).
 export function questionSimilarity(index, q) {
   const target = index.artist(q.artistId);
@@ -106,9 +127,11 @@ export function questionSimilarity(index, q) {
 export function makeWhoQuestion(index, artwork, difficulty, rng, opts = {}) {
   if (noAuthorQuestion(artwork)) return null;
   const artist = index.artist(artwork.artistId);
-  const distractors = opts.preferred && opts.preferred.length
-    ? preferredDistractors(index, artist, opts.preferred, difficulty, rng)
-    : pickDistractorArtists(index, artist, OPTION_COUNT - 1, difficulty, rng, opts.exclude || [], opts.include || []);
+  const pick = () => (opts.preferred && opts.preferred.length
+    ? preferredDistractors(index, artist, opts.preferred, difficulty, rng, artwork)
+    : pickDistractorArtists(index, artist, OPTION_COUNT - 1, difficulty, rng, opts.exclude || [], opts.include || [], { work: artwork }));
+  let distractors = pick();
+  for (let i = 1; i < ODD_TRIES && !(opts.preferred && opts.preferred.length) && isOddOne([artist, ...distractors].map((a) => index.refOfArtist(a)), 0); i++) distractors = pick();
   if (distractors.length < OPTION_COUNT - 1) return null;
   const options = rng.shuffle([artist, ...distractors]).map((a) => ({ id: a.id, label: a.name }));
   return {
@@ -122,8 +145,10 @@ export function makeWhoQuestion(index, artwork, difficulty, rng, opts = {}) {
   };
 }
 
-function preferredDistractors(index, artist, preferred, difficulty, rng) {
-  if (!preferred || !preferred.length) return pickDistractorArtists(index, artist, OPTION_COUNT - 1, difficulty, rng);
+function preferredDistractors(index, artist, preferred, difficulty, rng, work) {
+  if (!preferred || !preferred.length) return pickDistractorArtists(index, artist, OPTION_COUNT - 1, difficulty, rng, [], [], { work });
+  const ref = index.refOfWork(work);
+  preferred = preferred.filter((a) => index.relation(ref, a, RELAX_MAX));
   const names = new Set([artist.name]);
   const chosen = [];
   for (const a of preferred) {
@@ -133,7 +158,7 @@ function preferredDistractors(index, artist, preferred, difficulty, rng) {
     chosen.push(a);
   }
   if (chosen.length < OPTION_COUNT - 1) {
-    const rest = pickDistractorArtists(index, artist, OPTION_COUNT - 1 - chosen.length, difficulty, rng, chosen.map((a) => a.id))
+    const rest = pickDistractorArtists(index, artist, OPTION_COUNT - 1 - chosen.length, difficulty, rng, chosen.map((a) => a.id), [], { work })
       .filter((a) => !names.has(a.name));
     chosen.push(...rest);
   }
@@ -150,8 +175,10 @@ export function makeMovementQuestion(index, artwork, difficulty, rng, opts = {})
   const artist = index.artist(artwork.artistId);
   const correct = index.movement(artist.movementId);
   // Las ramas-movimiento (gótico, ukiyo-e) solo salen como opción cuando son la respuesta.
-  const list = index.movements.filter((m) => !m.branch || m === correct);
-  if (list.length < 3 || isSpoiler(artwork)) return null;
+  // Solo salen movimientos de la familia de la obra y compatibles con su época (engine/families.js).
+  const ref = index.refOfWork(artwork);
+  const list = index.movements.filter((m) => (!m.branch || m === correct) && (m === correct || (index.movementAllowed(ref, m) && (!ref || Math.abs(m.order - correct.order) <= MOVEMENT_HARD_GAP))));
+  if (list.length < 3 || isSpoiler(artwork) || (ref && correct.family && !index.movementAllowed(ref, correct))) return null;
   const pos = list.indexOf(correct);
   const need = Math.min(OPTION_COUNT - 1, list.length - 1);
   const gapOf = (m) => Math.abs(list.indexOf(m) - pos);
@@ -163,7 +190,7 @@ export function makeMovementQuestion(index, artwork, difficulty, rng, opts = {})
   const others = [rng.pick(side.length ? side : neighbours)];
   for (const id of opts.include || []) {
     const m = index.movement(id);
-    if (m && m !== correct && !others.includes(m) && others.length < need) others.push(m);
+    if (m && list.includes(m) && m !== correct && !others.includes(m) && others.length < need) others.push(m);
   }
   const rest = rng.shuffle(list.filter((m) => m !== correct && !others.includes(m)));
   const near = clamp(difficulty, 0, 1) >= MOVEMENT_NEAR_FROM;
@@ -201,19 +228,24 @@ export function makeWhichQuestion(index, artwork, difficulty, rng, avoidArtworkI
   if (noAuthorQuestion(artwork)) return null;
   const artist = index.artist(artwork.artistId);
   const avoid = new Set(avoidArtworkIds);
+  const ref = index.refOfWork(artwork);
+  const fits = (w) => index.workRelation(ref, w, RELAX_MAX);
   const fixed = (opts.includeWorks || [])
     .map((id) => index.artwork(id))
-    .filter((w) => w && w.artistId !== artist.id && !noAuthorQuestion(w))
+    .filter((w) => w && w.artistId !== artist.id && !noAuthorQuestion(w) && fits(w))
     .filter((w, i, list) => list.findIndex((x) => x.artistId === w.artistId) === i)
     .slice(0, OPTION_COUNT - 1);
-  const free = (a) => index.worksOf(a.id).filter((w) => !noAuthorQuestion(w) && !avoid.has(w.id));
+  const free = (a) => index.worksOf(a.id).filter((w) => !noAuthorQuestion(w) && !avoid.has(w.id) && fits(w));
   // Pintores sin obras libres (todas en la ronda o con firma) no sirven de relleno.
   const spent = index.artists.filter((a) => !free(a).length).map((a) => a.id);
   const exclude = [...spent, ...fixed.map((w) => w.artistId), ...(opts.exclude || [])];
-  const distractors = pickDistractorArtists(index, artist, OPTION_COUNT - 1 - fixed.length, difficulty, rng, exclude,
-    (opts.include || []).filter((id) => !exclude.includes(id)));
-  const works = fixed.slice();
-  for (const a of distractors) works.push(rng.pick(free(a)));
+  const pick = () => {
+    const distractors = pickDistractorArtists(index, artist, OPTION_COUNT - 1 - fixed.length, difficulty, rng, exclude,
+      (opts.include || []).filter((id) => !exclude.includes(id)), { work: artwork });
+    return [...fixed, ...distractors.map((a) => rng.pick(free(a)))];
+  };
+  let works = pick();
+  for (let i = 1; i < ODD_TRIES && isOddOne([artwork, ...works].map((w) => index.refOfWork(w)), 0); i++) works = pick();
   if (works.length < OPTION_COUNT - 1) return null;
   const options = rng.shuffle([artwork, ...works]).map((w) => ({ id: w.id, artworkId: w.id, label: '' }));
   return {
