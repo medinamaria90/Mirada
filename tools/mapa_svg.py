@@ -9,6 +9,9 @@
 # bloque oscuro): el SVG lleva su propio <style> con las dos paletas y una media query prefers-color-scheme,
 # que Chrome y Firefox evalúan con el color-scheme del <img> (así sigue al tema elegido en Ajustes).
 #
+# Bajo los carteles no se pinta relleno: el lado del cartel de la época (abajo) y el margen de las paradas
+# con el desvío de una rama quedan libres (los da el trazado: signSide y branchAt).
+#
 # Uso (desde la raíz del repositorio): python -I tools/mapa_svg.py
 import json
 import os
@@ -65,16 +68,25 @@ def tinte(h, tint_class):
     return (-10_000, f'<rect x="0" y="0" width="{W}" height="{h}" class="{tint_class}"/>')
 
 
+# Huecos de la época que se está pintando (los fija build): lado del cartel y paradas con rama.
+LIBRE = {'cartel': None, 'ramas': set()}
+
+
 def margenes(p, h, arbol):
-    """Relleno común: algo pequeño en el margen estrecho de cada nodo y a los lados de la cartela (abajo)."""
+    """Relleno común: algo pequeño en el margen estrecho de cada nodo y en las esquinas de abajo, salvo bajo
+    los carteles (el de la época y los de las ramas)."""
     out = []
     for i, q in enumerate(p):
+        if i in LIBRE['ramas']:
+            continue
         xm = mismo(q)
         out.append(arbol(xm, q[1] + 12 + (i % 2) * 6, i))
         if i + 1 < len(p):
             my = mid(q, p[i + 1])[1]
             out.append(arbol(xm + (14 if xm < 195 else -14), my + 10, i + 1))
-    out += [arbol(44, h - 42, 0), arbol(346, h - 38, 1), arbol(28, h - 20, 2), arbol(362, h - 16, 3)]
+    esquinas = [(44, h - 42, 0), (346, h - 38, 1), (28, h - 20, 2), (362, h - 16, 3)]
+    lado_cartel = LIBRE['cartel']
+    out += [arbol(x, y, i) for x, y, i in esquinas if not lado_cartel or (x < 195) != (lado_cartel == 'left')]
     return out
 
 
@@ -375,6 +387,8 @@ def style(light, dark, era):
 
 def build(era, light, dark):
     pts = [(q['x'], q['y']) for q in era['points']]
+    LIBRE['cartel'] = era.get('signSide')
+    LIBRE['ramas'] = set(era.get('branchAt', []))
     pieces = [tinte(era['h'], CLASS['tint'])] + DECO[era['id']](pts, era['h'])
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))

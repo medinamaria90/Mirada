@@ -1,0 +1,52 @@
+/* Hoja del mapa (ui/map-sheet.js): sube desde abajo al tocar el cartel de una época cerrada o de una rama.
+   Se carga al primer toque. Todo color sale de las variables de brand.css; el acento, de la época. */
+.map-sheet {
+  box-sizing: border-box; position: fixed; inset: auto 0 0; width: min(100%, 560px); max-width: 100%; max-height: 86dvh; margin: 0 auto;
+  padding: 0; border: 0; border-radius: var(--radius) var(--radius) 0 0; background: var(--bg); color: var(--ink);
+  box-shadow: var(--shadow-sheet); overflow: hidden;
+}
+.map-sheet::backdrop { background: var(--scrim); }
+.map-sheet[open] { display: grid; animation: sheet-up .32s var(--ease); }
+@keyframes sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.ms-body {
+  position: relative; display: grid; gap: .9rem; max-height: 86dvh; padding: .7rem 1.2rem calc(1.2rem + var(--safe-b));
+  overflow-y: auto; overscroll-behavior: contain;
+}
+.ms-grip { justify-self: center; width: 40px; height: 4px; border-radius: 4px; background: var(--line-2); }
+.ms-close { position: absolute; top: .35rem; right: .45rem; }
+.ms-head { display: grid; gap: .2rem; padding-right: 3rem; }
+.ms-kicker { margin: 0; font: 600 .78rem/1.2 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--accent-ui); }
+.ms-title { margin: 0; font: 500 1.45rem/1.15 var(--font); letter-spacing: var(--track); text-wrap: balance; }
+.ms-lock { display: flex; align-items: center; gap: .5rem; margin: 0; padding: .6rem .8rem; border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); font: 500 .95rem/1.3 var(--font); }
+.ms-lock .icon { flex: none; color: var(--ink-2); }
+.ms-about { margin: 0; color: var(--ink-2); font: 400 1rem/1.45 var(--font); }
+.ms-wait { display: grid; gap: .2rem; margin: 0; font: 400 1rem/1.45 var(--font); }
+.ms-label { font: 600 .78rem/1.2 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.ms-ok { margin-top: .2rem; }
+.ms-progress { display: flex; align-items: center; gap: .7rem; margin: 0; font: 600 .88rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.ms-bar { flex: 1; display: block; height: 8px; border-radius: 8px; background: var(--line); overflow: hidden; }
+.ms-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--accent-ui); }
+.ms-section { display: grid; gap: .3rem; }
+.ms-group {
+  display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin: .3rem 0 0; padding-bottom: .35rem;
+  border-bottom: 1px solid var(--line); font: 500 1rem/1.2 var(--font);
+}
+.ms-group-lock { display: inline-flex; align-items: center; gap: .3rem; flex: none; font: 600 .78rem/1 var(--font); color: var(--ink-2); }
+.ms-list { display: grid; margin: 0; padding: 0; list-style: none; }
+.ms-row {
+  box-sizing: border-box; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .7rem; width: 100%; min-height: 52px;
+  padding: .35rem .3rem; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--ink); font: inherit; text-align: left;
+}
+button.ms-row { cursor: pointer; }
+button.ms-row:hover { background: var(--surface-2); }
+.ms-row.is-locked { color: var(--ink-2); }
+.ms-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); }
+.ms-mark.is-mastered { background: var(--gold); color: var(--on-gold); }
+.ms-mark.is-started, .ms-mark.is-available { background: var(--accent-soft); color: var(--accent-ui); }
+.ms-who { display: grid; min-width: 0; }
+.ms-name { overflow-wrap: anywhere; font: 500 1rem/1.2 var(--font); }
+.ms-years { font: 400 .82rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.ms-state { font: 600 .8rem/1 var(--font); color: var(--ink-2); }
+@media (min-width: 900px) {
+  .map-sheet { inset: 0; margin: auto; max-height: 80dvh; border-radius: var(--radius); }
+}

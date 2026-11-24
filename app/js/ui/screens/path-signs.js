@@ -1,0 +1,118 @@
+// Señalética del mapa del camino: carteles de época al borde del sendero (poste y placa), hito de salida,
+// «Tu museo», desvíos de las ramas con su cartel y el sendero en SVG. Solo HTML (sin DOM ni estado propio).
+
+import { esc } from '../dom.js';
+import { icons } from '../icons.js';
+import { MAP_W, START_PLAZA } from './path-layout.js';
+import { branchStatus, movementReached } from '../../engine/branches.js';
+
+const f = (n) => String(Math.round(n * 100) / 100);
+export const pct = (v, total) => `${f((v / total) * 100)}%`;
+
+// Desvío (sendero estrecho de una rama): dos trazos como el camino, más finos.
+const spurSvg = (b) => `<path class="spur-edge${b.open ? '' : ' is-locked'}" d="${b.spur}"/><path class="spur-fill${b.open ? '' : ' is-locked'}" d="${b.spur}"/>`;
+
+export function trailSvg(h, d, spurs = []) {
+  return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" aria-hidden="true" focusable="false">
+      ${spurs.map(spurSvg).join('')}<path class="trail-edge" d="${d}"/><path class="trail-fill" d="${d}"/><path class="trail-steps" d="${d}"/></svg>`;
+}
+
+// Caja del cartel: su borde junto al camino en `edge`, el pie del poste en `y`; la placa crece hacia fuera.
+export function signBox(sign, h) {
+  const across = sign.side === 'left' ? `right:${pct(MAP_W - sign.edge, MAP_W)}` : `left:${pct(sign.edge, MAP_W)}`;
+  return `class="road-sign is-${sign.side}" style="${across};bottom:${pct(h - sign.y, h)};max-width:${pct(sign.room, MAP_W)}"`;
+}
+
+// Cartel de época: nombre (dos líneas como mucho), siglos y «n/m». Abierta, lleva a la presentación;
+// cerrada, abre una hoja con lo que hay que hacer (el motivo no ocupa el cartel).
+export function eraSign({ movement, status, sealed, done, total, prevName, sign, h }) {
+  const locked = status === 'locked';
+  const count = locked ? '' : ` · ${done}/${total}`;
+  const meta = `<span class="sign-meta">${locked ? icons.lock(12) : ''}<span>${esc(movement.period)}${count}</span></span>`;
+  const seal = sealed ? `<span class="sign-seal" aria-hidden="true">${icons.laurel(16)}</span>` : '';
+  const name = `<span class="sign-name">${esc(movement.name)}</span>`;
+  const why = prevName ? `Se abre al terminar ${prevName}` : 'Aún cerrada';
+  const button = locked
+    ? `<button type="button" class="sign-plate is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${meta}</button>`
+    : `<button type="button" class="sign-plate" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${done} de ${total}${sealed ? ', completa' : ''}: ver presentación">${seal}${name}${meta}<span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button>`;
+  return `<h2 ${signBox(sign, h)}>${button}</h2>`;
+}
+
+// Hito de salida: plaza al pie del sendero y arco de piedra por encima de él (dos capas: el dintel pasa sobre
+// el camino) y una placa a su lado.
+const START_GROUND = `<ellipse class="land-shade" cx="${START_PLAZA.x}" cy="${START_PLAZA.y + 8}" rx="74" ry="15"/>
+      <ellipse class="land-top" cx="${START_PLAZA.x}" cy="${START_PLAZA.y}" rx="64" ry="13"/>
+      <ellipse class="land-shade" cx="195" cy="131" rx="52" ry="6"/>
+      <path class="land-leaf-2" d="M134 136C126 120 126 98 134 86C142 98 142 120 134 136Z"/><path class="land-leaf" d="M134 136C126 120 126 98 134 86C136 98 136 120 134 136Z"/>
+      <path class="land-leaf-2" d="M258 136C250 122 250 102 258 90C266 102 266 122 258 136Z"/><path class="land-leaf" d="M258 136C250 122 250 102 258 90C260 102 260 122 258 136Z"/>`;
+const START_ARCH = `<rect class="land-front" x="160" y="80" width="12" height="52"/><rect class="land-side" x="172" y="82" width="4" height="50"/>
+      <rect class="land-front" x="218" y="80" width="12" height="52"/><rect class="land-side" x="230" y="82" width="4" height="50"/>
+      <rect class="land-side" x="157" y="128" width="19" height="5"/><rect class="land-side" x="215" y="128" width="19" height="5"/>
+      <path class="land-front" d="M154 70H238V82H154Z"/><path class="land-side" d="M238 70L244 66V78L238 82Z"/><path class="land-top" d="M154 70L160 66H244L238 70Z"/>
+      <path class="land-front" d="M164 66L197 50L230 66Z"/><path class="land-side" d="M197 50L236 64L230 66Z"/>
+      <rect class="land-window" x="180" y="73" width="32" height="5" rx="1"/>`;
+
+export function startBlock(start, eras, tint) {
+  const art = (cls, body) => `<svg class="${cls}" viewBox="0 0 ${MAP_W} ${start.h}" width="100%" height="100%" aria-hidden="true" focusable="false">${body}</svg>`;
+  const n = eras.length;
+  return `<li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/${start.h}">
+    ${art('path-start-art', START_GROUND)}${trailSvg(start.h, start.trail)}${art('path-start-art is-front', START_ARCH)}
+    <div ${signBox(start.sign, start.h)}><p class="sign-plate is-static"><span class="sign-name">Empieza aquí</span><span class="sign-meta"><span>${n === 1 ? 'Una época' : `${n} épocas`} por delante</span></span></p></div>
+  </li>`;
+}
+
+// «Tu museo»: la meta, arriba del todo. Cúpula y columnas en el estilo limpio del paisaje.
+export function museumBlock(museum, n) {
+  const building = `<svg class="path-museum-art" viewBox="0 0 390 200" width="100%" height="100%" aria-hidden="true" focusable="false">
+      <path class="land-far" d="M-10 92V62C60 40 130 66 200 48C270 32 330 62 400 44V92Z"/>
+      <path class="land-front" d="M-10 92V78C90 62 150 86 240 70C310 58 350 82 400 70V92Z"/>
+      <ellipse class="land-shade" cx="197" cy="100" rx="60" ry="8"/>
+      <rect class="land-front" x="146" y="66" width="98" height="30"/>
+      <rect class="land-side" x="232" y="66" width="12" height="30"/>
+      <path class="land-top" d="M140 66H250L256 60H146Z"/>
+      ${[158, 180, 202, 224].map((x) => `<rect class="land-window" x="${x}" y="72" width="8" height="24" rx="1"/>`).join('')}
+      <path class="land-side" d="M171 66C171 38 219 38 219 66Z"/>
+      <path class="land-front" d="M171 66C171 38 209 38 207 66Z"/>
+      <rect class="land-front" x="192" y="34" width="6" height="9"/><path class="land-side" d="M191 34L195 26L199 34Z"/>
+      <rect class="land-front" x="128" y="62" width="6" height="34"/><rect class="land-side" x="126" y="60" width="10" height="3"/>
+      <rect class="land-front" x="256" y="62" width="6" height="34"/><rect class="land-side" x="254" y="60" width="10" height="3"/>
+      <path class="land-leaf-2" d="M108 98C100 82 100 60 108 48C116 60 116 82 108 98Z"/><path class="land-leaf" d="M108 98C100 82 100 60 108 48C110 60 110 82 108 98Z"/>
+      <path class="land-leaf-2" d="M284 98C276 84 276 64 284 52C292 64 292 84 284 98Z"/><path class="land-leaf" d="M284 98C276 84 276 64 284 52C286 64 286 84 284 98Z"/>
+    </svg>`;
+  return `<li class="path-museum" style="aspect-ratio:${MAP_W}/${museum.h}">
+    ${building}${trailSvg(museum.h, museum.trail)}
+    <div ${signBox(museum.sign, museum.h)}><p class="sign-plate is-static path-museum-head"><span class="sign-name">Tu museo</span><span class="sign-meta"><span>${n === 1 ? 'Una época' : `${n} épocas`}, todos los pintores</span></span></p></div>
+  </li>`;
+}
+
+// Nombre corto para el cartel del desvío (el completo va en la hoja): «Descubre», «Estampa japonesa»…
+export function branchShort(branch) {
+  if (branch.kind === 'epoca') return 'Descubre';
+  return String(branch.name).replace(/\s*\([^)]*\)\s*$/, '');
+}
+
+// Estado de una rama para el mapa: abierta (se ha llegado a su época), pintores dominados y total.
+export function branchState(progress, index, branch) {
+  const list = branchStatus(progress, index, branch.id);
+  return {
+    open: movementReached(progress, index, branch.opensAt),
+    mastered: list.filter((s) => s.status === 'mastered').length,
+    total: list.length,
+  };
+}
+
+// Icono del desvío: un sendero que se bifurca (propio del mapa).
+const forkIcon = (s = 18) => `<svg class="icon" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-7"/><path d="M12 14c0-4-5-5-5-9"/><path d="M12 14c0-4 5-5 5-9"/><path d="M4.5 7.5 7 5l2.5 2.5"/><path d="M14.5 7.5 17 5l2.5 2.5"/></svg>`;
+
+export function branchSpot(spot, branch, st, movementName, h) {
+  const done = st.total && st.mastered === st.total;
+  const cls = done ? 'is-mastered' : st.open ? 'is-open' : 'is-locked';
+  const label = st.open
+    ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} pintores dominados`
+    : `${branch.name}: rama cerrada. Se abre al llegar a ${movementName}`;
+  return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
+      <button type="button" class="branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" aria-label="${esc(label)}">
+        <span class="branch-plate"><span class="branch-name">${esc(branchShort(branch))}</span>${st.open ? `<span class="branch-count">${st.mastered}/${st.total}</span>` : ''}</span>
+        <span class="branch-dot">${done ? icons.laurel(18) : st.open ? forkIcon(18) : icons.lock(12)}</span>
+      </button></li>`;
+}
