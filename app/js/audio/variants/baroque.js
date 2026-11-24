@@ -41,7 +41,7 @@ export const BAROQUE = [
       scale: scalePcs(5, 'major'), bpm: 104, beatsPerBar: 4, form: FORM4, style: 'continuo',
       voices: { mel: 'harpsichord', cnt: 'harpsichord', bass: 'cello' },
       vg: { mel: 1, cnt: 0.8, bass: 0.75 },
-      reverb: 0.22, level: 0.88, rubato: { amp: 0, ritard: 0.04 }, orn: { kind: 'mordent', prob: 0.14 },
+      reverb: 0.22, level: 0.82, rubato: { amp: 0, ritard: 0.04 }, orn: { kind: 'mordent', prob: 0.14 },
       dyn: { A: 1, open: 1, close: 0.97, B: 1.06 },
       sections: {
         A: {

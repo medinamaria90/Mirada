@@ -20,7 +20,7 @@ export const SCORES = {
     title: 'Pavana del alba', key: 'Re dórico', tonic: 2, mode: 'dorian',
     scale: scalePcs(2, 'dorian'), bpm: 72, beatsPerBar: 4, form: FORM4, style: 'lute',
     voices: { mel: 'lute', acc: 'lute', bass: 'lute' }, vg: { mel: 1, acc: 0.8, bass: 0.9 },
-    reverb: 0.35, level: 1.1, rubato: { amp: 0.012, ritard: 0.05 }, orn: { kind: 'mordent', prob: 0.14 },
+    reverb: 0.35, level: 1.05, rubato: { amp: 0.012, ritard: 0.05 }, orn: { kind: 'mordent', prob: 0.14 },
     sections: {
       A: {
         chords: ['Dm', 'C', 'F', 'C', 'Dm', 'F|C'],
@@ -42,7 +42,7 @@ export const SCORES = {
     title: 'Giga sin nombre', key: 'Re menor', tonic: 2, mode: 'minor',
     scale: scalePcs(2, 'minor', [1]), bpm: 96, beatsPerBar: 4, form: FORM4, style: 'continuo',
     voices: { mel: 'harpsichord', acc: 'harpsichord', bass: 'harpsichord' }, vg: { mel: 1, acc: 0.6, bass: 0.8 },
-    reverb: 0.22, level: 1.4, rubato: { amp: 0, ritard: 0.04 }, orn: { kind: 'mordent', prob: 0.18 },
+    reverb: 0.22, level: 1.13, rubato: { amp: 0, ritard: 0.04 }, orn: { kind: 'mordent', prob: 0.18 },
     sections: {
       A: {
         chords: ['Dm', 'Dm', 'Gm', 'C7', 'F', 'Bb'],
@@ -67,7 +67,7 @@ export const SCORES = {
     title: 'Minué de la caja', key: 'Sol mayor', tonic: 7, mode: 'major',
     scale: scalePcs(7, 'major'), bpm: 112, beatsPerBar: 3, form: FORM4, style: 'minuet',
     voices: { mel: 'musicbox', acc: 'harpsiLite', bass: 'harpsiLite' }, vg: { mel: 0.9, acc: 0.7, bass: 0.8 },
-    reverb: 0.3, level: 1.02, rubato: { amp: 0.008, ritard: 0.04 }, orn: { kind: 'grace', prob: 0.22 },
+    reverb: 0.3, level: 0.97, rubato: { amp: 0.008, ritard: 0.04 }, orn: { kind: 'grace', prob: 0.22 },
     sections: {
       A: {
         chords: ['G', 'D', 'G', 'C', 'G', 'Em'],
