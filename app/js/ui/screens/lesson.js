@@ -218,13 +218,13 @@ export function runLesson(ctx, el, config) {
     const milestone = correct && round.combo >= COMBO_SHOW && round.combo % COMBO_SHOW === 0;
     if (correct) ctx.audio.sfx(milestone ? 'streak' : 'correct');
     else ctx.audio.sfx('wrong');
-    showFeedback(q, correct, gained);
+    showFeedback(q, correct, gained, item.retry);
     updateBar(milestone);
   }
 
-  function showFeedback(q, correct, gained) {
+  function showFeedback(q, correct, gained, retry) {
     const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
-    const fb = feedbackFor(index, q, correct, traitMemo, rng);
+    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry });
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
     const who = fb.who ? `<p class="fb-who">${esc(fb.who)}</p>` : '';
     const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('');

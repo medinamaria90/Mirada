@@ -3,6 +3,8 @@
 
 const PRAISE = ['¡Bien visto!', 'Exacto', 'Eso es', 'Buen ojo', '¡Lo tienes!'];
 const PRAISE_NEW = ['¡Y sin haberlo visto antes!', 'Reconocido a la primera', 'Eso es aprender a mirar'];
+// Al acertar la repetición de una pregunta fallada: nada de «a la primera».
+const PRAISE_RETRY = ['Ahora sí', 'Ya lo tienes', 'Esta vez sí'];
 
 function capital(text) {
   const t = String(text || '').trim();
@@ -28,8 +30,10 @@ export function mainTrait(artist) {
 // Una sola frase que enseña: el `look` de ESE cuadro o, si no hay, un rasgo del pintor (que rota
 // para no repetir el mismo texto). En las de movimiento, al fallar, la línea del movimiento.
 // memo: Map artistId → veces que ya se ha mostrado un rasgo de ese pintor en la ronda.
+// opts.retry: la pregunta es la repetición de una fallada en esta ronda (el elogio de «cuadro nuevo»
+// solo vale la primera vez que se ve).
 // Devuelve { title, who, lines[] } con una línea como mucho (texto plano; la UI escapa).
-export function feedbackFor(index, q, correct, memo = new Map(), rng = null) {
+export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { retry = false } = {}) {
   const artist = index.artist(q.artistId);
   const movement = artist ? index.movement(artist.movementId) : null;
   const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
@@ -53,7 +57,7 @@ export function feedbackFor(index, q, correct, memo = new Map(), rng = null) {
   let line;
 
   if (correct) {
-    title = pick(q.isNew ? PRAISE_NEW : PRAISE);
+    title = pick(retry ? PRAISE_RETRY : q.isNew ? PRAISE_NEW : PRAISE);
     if (q.type === 'movement' && movement) who = `${artist.name} · ${movement.name}`;
     line = teach();
   } else if (q.type === 'movement' && movement) {

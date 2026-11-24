@@ -192,6 +192,26 @@ test('feedback: una sola frase que enseña (el `look` de la obra); al fallar, qu
   for (const fb of [ok, bad]) assert.ok(!(fb.lines.join(' ').includes('Mira') && fb.lines.join(' ').includes('Fíjate')));
 });
 
+test('feedback: al acertar la repetición de una pregunta nueva fallada nunca dice «a la primera»', () => {
+  const index = mixed;
+  const a = mixed.path[0];
+  const work = index.worksOf(a.id)[0];
+  const q = { type: 'who', artworkId: work.id, artistId: a.id, answerId: a.id, options: [], isNew: true };
+  const banned = /sin haberlo visto antes|a la primera/i;
+  for (let s = 1; s <= 30; s++) {
+    const rng = createRng(s);
+    const retry = feedbackFor(index, q, true, new Map(), rng, { retry: true });
+    assert.doesNotMatch(retry.title, banned, 'en repetición no se celebra el primer intento');
+    assert.ok(retry.title.trim(), 'hay título');
+  }
+  // Sin `retry` (primer intento de un cuadro nuevo) el elogio de novedad sigue saliendo.
+  const firsts = new Set();
+  for (let s = 1; s <= 30; s++) firsts.add(feedbackFor(index, q, true, new Map(), createRng(s)).title);
+  assert.ok([...firsts].some((t) => banned.test(t)));
+  // La misma pregunta vista antes (isNew false) tampoco presume de novedad.
+  assert.doesNotMatch(feedbackFor(index, { ...q, isNew: false }, true, new Map()).title, banned);
+});
+
 test('feedback: sin `look`, el rasgo rota y no se repite el mismo texto seguido', () => {
   const index = mixed;
   const a = mixed.path[0];
