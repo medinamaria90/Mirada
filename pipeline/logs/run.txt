@@ -13,3 +13,10 @@ ya     hiroshige          364 candidatas
 fin 2026-11-24 20:32:01
 58M	.git
 3.1M	catalogo
+== seleccionar  20:32:04
+schiele            invit   124    55    3/3   n1=3   | sin datos de imagen:43, sin imagen apta:11, sin título:8, palabra:5, proporción ≠ medidas:2
+TOTAL 1315 obras de 162 pintores
+por país: España 369, Francia 292, Italia 218, Países Bajos 124, Rusia 93, Flandes 59, Japón 44, Alemania 30, Reino Unido 30, Estados Unidos 17, Austria 15, Noruega 12, Dinamarca 6, Suiza 3, Suecia 3
+títulos por fuente: {'traducir': 143, 'revisar-idioma': 1, 'traducido': 145, 'wikidata-es': 1004, 'manual': 22}
+59M	.git
+3.2M	catalogo

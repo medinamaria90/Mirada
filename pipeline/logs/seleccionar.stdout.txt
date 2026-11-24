@@ -1,5 +1,12 @@
 pintor             categ  cand aptas elegidas/obj  nivel 1 y «a fondo»  | motivos de descarte
+cimabue          Q1608116   sl=  8 palabra                    La virgen y el Niño                           | 7134x10759 image/jpeg Public domain
+cimabue            rama     24    19    6/6   n1=4 L2:2  | palabra:2, sin imagen apta:1, techo:1, fecha fuera de vida:1
+duccio             rama     62    43    8/8   n1=4 L2:4  | sin imagen apta:8, palabra:4, fecha fuera de vida:3, proporción ≠ medidas:2, duplicado/versión:2, varios autores:1, sin título:1
 giotto             invit    55    21    3/3   n1=3   | sin imagen apta:20, varios autores:5, proporción ≠ medidas:3, palabra:2, sin título:2, excluida:1, autoría no preferente:1
+pietro-lorenzetti  rama     42    17    8/8   n1=4 L2:4  | sin imagen apta:23, sin título:1, varios autores:1
+simone-martini   Q14790751  sl=  8 proporción ≠ medidas       Orsini Polyptych                              | 6646x2313 image/jpeg CC0
+simone-martini     rama     41    27    8/8   n1=4 L2:4  | proporción ≠ medidas:5, sin imagen apta:5, duplicado/versión:4, varios autores:2, autoría no preferente:1, sin título:1
+ambrogio-lorenzetti rama     42    25    8/8   n1=4 L2:4  | sin imagen apta:11, sin título:3, duplicado/versión:3, proporción ≠ medidas:1, varios autores:1, palabra:1
 van-eyck         Q323079    sl= 17 proporción ≠ medidas       Tríptico de Dresden                           | 1245x1400 image/jpeg Public domain;3465x2553 image/jpeg Public domain
 van-eyck         Q574004    sl= 15 palabra                    Díptico: La Crucifixión y el Juicio Final     | 3904x5586 image/jpeg Public domain
 van-eyck         Q2157202   sl= 12 varios autores             Los Jueces Justos                             | 2007x5447 image/jpeg Public domain
@@ -222,8 +229,13 @@ david            Q3208369   sl= 14 sin imagen apta            El dolor y los lam
 david            Q3210841   sl= 14 proporción ≠ medidas       La muerte de Séneca                           | 4415x3572 image/jpeg Public domain
 david            Q2984817   sl= 10 sin imagen apta            Combate de Marte contra Minerva               | 1030x792 image/jpeg Public domain
 david              maest   139    63   12/12  n1=7 L2:5  | sin datos de imagen:52, sin imagen apta:14, varios autores:4, sin título:2, palabra:2, duplicado/versión:2, proporción ≠ medidas:1, autoría no preferente:1
+utamaro            rama    270    96    8/8   n1=4 L2:4  | sin datos de imagen:148, duplicado/versión:29, sin imagen apta:18, sin título:3, fecha fuera de vida:2, palabra:2, proporción ≠ medidas:1
 vigee-le-brun      invit   232    64    8/8   n1=3 L2:5  | sin datos de imagen:144, sin imagen apta:7, sin título:6, palabra:5, duplicado/versión:4, fecha fuera de vida:2, proporción ≠ medidas:2, autoría no preferente:1, varios autores:1
 borovikovski       invit   115    55    3/3   n1=3   | sin datos de imagen:35, sin título:14, sin imagen apta:10, fecha fuera de vida:1, duplicado/versión:1
+hokusai          Q227494    sl= 44 excluida                   Treinta y seis vistas del monte Fuji          | 4400x2937 image/jpeg Public domain
+hokusai          Q2489747   sl= 15 palabra                    Hokusai Manga                                 | 746x461 image/jpeg Public domain
+hokusai            rama    327    60   12/12  n1=4 L2:8  | sin datos de imagen:189, fecha fuera de vida:48, sin imagen apta:15, palabra:11, excluida:2, proporción ≠ medidas:1, varios autores:1
+sharaku            rama    151    59    6/6   n1=4 L2:2  | sin datos de imagen:71, sin imagen apta:21, duplicado/versión:1
 vicente-lopez      invit    68    46    4/4   n1=4   | sin imagen apta:18, fecha fuera de vida:1, sin título:1, palabra:1, varios autores:1, duplicado/versión:1
 friedrich          maest   196    70   12/12  n1=7 L2:5  | sin datos de imagen:113, sin imagen apta:9, duplicado/versión:3, proporción ≠ medidas:2, palabra:1, autoría no preferente:1
 turner           Q3412132   sl= 10 proporción ≠ medidas       Fishermen at Sea                              | 2258x1678 image/jpeg Public domain
@@ -248,6 +260,12 @@ venetsianov        invit    51    17    3/3   n1=3   | sin imagen apta:21, sin t
 gericault          invit   165    44    3/3   n1=3   | sin datos de imagen:77, sin imagen apta:22, palabra:9, sin título:5, varios autores:5, proporción ≠ medidas:1, autoría no preferente:1, fecha fuera de vida:1
 corot              invit   994    67    3/3   n1=3   | sin datos de imagen:894, palabra:14, sin imagen apta:8, fecha fuera de vida:4, proporción ≠ medidas:2, sin título:2, techo:1, autoría no preferente:1, varios autores:1, duplicado/versión:1
 delaroche          invit    75    39    3/3   n1=3   | sin imagen apta:25, sin título:8, palabra:2, varios autores:1, duplicado/versión:1
+kuniyoshi          rama    341    78    8/8   n1=4 L2:4  | sin datos de imagen:251, varios autores:5, sin imagen apta:3, palabra:3, duplicado/versión:3, sin título:1
+hiroshige        Q243248    sl= 25 excluida                   Las Cincuenta y Tres Estaciones de Tōkaidō    | 3292x2200 image/jpeg Public domain
+hiroshige        Q165190    sl= 18 excluida                   Cien famosas vistas de Edo                    | 2517x3837 image/jpeg Public domain
+hiroshige        Q2525862   sl= 14 excluida                   Treinta y seis vistas del monte Fuji          | 3277x4699 image/jpeg Public domain
+hiroshige        Q6724086   sl= 10 excluida                   Vistas de lugares famosos de más de sesenta p | 1084x1500 image/jpeg Public domain;1125x1600 image/jpeg Public domain
+hiroshige          rama    364    69   10/10  n1=4 L2:6  | sin datos de imagen:268, fecha fuera de vida:8, varios autores:7, sin imagen apta:7, excluida:4, duplicado/versión:2, palabra:1
 delacroix        Q4992187   sl=  9 sin imagen apta            Retrato de Frédéric Chopin y George Sand      | 929x727 image/jpeg Public domain
 delacroix        Q23912     sl=  8 sin imagen apta            Jeune tigre jouant avec sa mère               | 950x622 image/jpeg Public domain
 delacroix        Q6494773   sl=  8 palabra                    Últimas palabras del emperador Marco Aurelio  | 3524x2740 image/jpeg CC0
@@ -431,6 +449,6 @@ malevich           invit   148    26    3/3   n1=3   | sin datos de imagen:60, s
 modigliani         invit   536    64    3/3   n1=3   | sin datos de imagen:451, sin imagen apta:10, sin título:7, duplicado/versión:4, palabra:3, autoría no preferente:1
 juan-gris          maest   205    63   12/12  n1=7 L2:5  | sin datos de imagen:124, sin imagen apta:16, duplicado/versión:3, sin título:1, palabra:1
 schiele            invit   124    55    3/3   n1=3   | sin datos de imagen:43, sin imagen apta:11, sin título:8, palabra:5, proporción ≠ medidas:2
-TOTAL 1233 obras de 152 pintores
-por país: España 369, Francia 292, Italia 180, Países Bajos 124, Rusia 93, Flandes 59, Alemania 30, Reino Unido 30, Estados Unidos 17, Austria 15, Noruega 12, Dinamarca 6, Suiza 3, Suecia 3
-títulos por fuente: {'wikidata-es': 972, 'revisar-idioma': 1, 'traducir': 93, 'manual': 22, 'traducido': 145}
+TOTAL 1315 obras de 162 pintores
+por país: España 369, Francia 292, Italia 218, Países Bajos 124, Rusia 93, Flandes 59, Japón 44, Alemania 30, Reino Unido 30, Estados Unidos 17, Austria 15, Noruega 12, Dinamarca 6, Suiza 3, Suecia 3
+títulos por fuente: {'traducir': 143, 'revisar-idioma': 1, 'traducido': 145, 'wikidata-es': 1004, 'manual': 22}

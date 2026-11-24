@@ -1,5 +1,416 @@
 [
  {
+  "id": "w1569622",
+  "pintorId": "cimabue",
+  "qid": "Q1569622",
+  "titulo": "Maestà",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1290",
+  "anioSort": 1290,
+  "anioCalidad": "circa",
+  "coleccion": "Galería Uffizi",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Cimabue - Maestà di Santa Trinita - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Cimabue_-_Maestà_di_Santa_Trinita_-_Google_Art_Project.jpg",
+  "srcW": 2008,
+  "srcH": 3596,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Cimabue",
+  "creditoArchivo": "Google Arts &amp; Culture  — uQHfVH5CnUNhxA",
+  "sitelinks": 13,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w68496636",
+  "pintorId": "cimabue",
+  "qid": "Q68496636",
+  "titulo": "Cristo burlado",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1280",
+  "anioSort": 1280,
+  "anioCalidad": "circa",
+  "coleccion": "Departamento de Pinturas del Museo del Louvre",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "La Dérision du Christ - Cimabue - Musée du Louvre Peintures RFML.PE.2023.33.1 - après restauration.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:La_Dérision_du_Christ_-_Cimabue_-_Musée_du_Louvre_Peintures_RFML.PE.2023.33.1_-_après_restauration.jpg",
+  "srcW": 6404,
+  "srcH": 8134,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Shonagon",
+  "creditoArchivo": "Own work",
+  "sitelinks": 11,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w3276414",
+  "pintorId": "cimabue",
+  "qid": "Q3276414",
+  "titulo": "Maestà de Santa Maria dei Servi",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1280",
+  "anioSort": 1280,
+  "anioCalidad": "exact",
+  "coleccion": "basilica di Santa Maria dei Servi",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Cimabue, maestà di santa maria dei servi.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Cimabue,_maestà_di_santa_maria_dei_servi.jpg",
+  "srcW": 1019,
+  "srcH": 1790,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Cimabue",
+  "creditoArchivo": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"c/cimabue/madonna/madonnc\"",
+  "sitelinks": 6,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w16556250",
+  "pintorId": "cimabue",
+  "qid": "Q16556250",
+  "titulo": "La flagelación de Cristo",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1280",
+  "anioSort": 1280,
+  "anioCalidad": "circa",
+  "coleccion": "Colección Frick",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Cimabue - Flagellation.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Cimabue_-_Flagellation.jpg",
+  "srcW": 2053,
+  "srcH": 2587,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Cimabue",
+  "creditoArchivo": "Cimabue, de Luciano Bellosi et apparat critique de Giovanna Ragionieri, Arles : Actes Sud, Milano : Motto, 1998. ISBN 978-27-4271-925-9",
+  "sitelinks": 5,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w68961087",
+  "pintorId": "cimabue",
+  "qid": "Q68961087",
+  "titulo": "Diptych of Devotion",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1280",
+  "anioSort": 1280,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "diptych",
+   "polyptych"
+  ],
+  "archivo": "Diptyque de dévotion. Cimabue. Louvre 2025.JPG",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Diptyque_de_dévotion._Cimabue._Louvre_2025.JPG",
+  "srcW": 1680,
+  "srcH": 2144,
+  "mime": "image/jpeg",
+  "licencia": "CC BY-SA 4.0",
+  "autorArchivo": "Ismoon (talk) 22:52, 7 February 2025 (UTC)",
+  "creditoArchivo": "Own work",
+  "sitelinks": 4,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w15974342",
+  "pintorId": "cimabue",
+  "qid": "Q15974342",
+  "titulo": "The Virgin and Child with Two Angels",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1280",
+  "anioSort": 1280,
+  "anioCalidad": "circa",
+  "coleccion": "National Gallery de Londres",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Cimabue, The Virgin and Child Enthroned with Two Angels.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Cimabue,_The_Virgin_and_Child_Enthroned_with_Two_Angels.jpg",
+  "srcW": 7357,
+  "srcH": 9241,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Cimabue",
+  "creditoArchivo": "[1]",
+  "sitelinks": 4,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w667202",
+  "pintorId": "duccio",
+  "qid": "Q667202",
+  "titulo": "Maestà de la catedral de Siena",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "1308",
+  "anioSort": 1308,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "polyptych"
+  ],
+  "archivo": "Maest 0 duccio 1308-11 siena duomo.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Maest_0_duccio_1308-11_siena_duomo.jpg",
+  "srcW": 1902,
+  "srcH": 1800,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Duccio di Buoninsegna",
+  "creditoArchivo": "Web Gallery of Art",
+  "sitelinks": 20,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 2
+ },
+ {
+  "id": "w948745",
+  "pintorId": "duccio",
+  "qid": "Q948745",
+  "titulo": "Madonna Rucellai",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1285",
+  "anioSort": 1285,
+  "anioCalidad": "circa",
+  "coleccion": "Galería Uffizi",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Duccio - Maestà - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Duccio_-_Maestà_-_Google_Art_Project.jpg",
+  "srcW": 2600,
+  "srcH": 4248,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Duccio di Buoninsegna",
+  "creditoArchivo": "Google Arts &amp; Culture  — LgFyCpDuHQ6z1g",
+  "sitelinks": 14,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w644734",
+  "pintorId": "duccio",
+  "qid": "Q644734",
+  "titulo": "Madonna Gualino",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1280",
+  "anioSort": 1280,
+  "anioCalidad": "exact",
+  "coleccion": "Riccardo Gualino Collection",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Madone Gualino.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Madone_Gualino.jpg",
+  "srcW": 1486,
+  "srcH": 2632,
+  "mime": "image/jpeg",
+  "licencia": "CC BY-SA 4.0",
+  "autorArchivo": "Ismoon (talk) 12:30, 8 February 2025 (UTC)",
+  "creditoArchivo": "own work",
+  "sitelinks": 8,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w6728394",
+  "pintorId": "duccio",
+  "qid": "Q6728394",
+  "titulo": "La Virgen y el Niño",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1300",
+  "anioSort": 1300,
+  "anioCalidad": "circa",
+  "coleccion": "Museo Metropolitano de Arte",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Duccio Di Buoninsegna - Madonna col Bambino.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Duccio_Di_Buoninsegna_-_Madonna_col_Bambino.jpg",
+  "srcW": 2807,
+  "srcH": 3722,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Duccio di Buoninsegna",
+  "creditoArchivo": "Metropolitan Museum of Art",
+  "sitelinks": 9,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 1
+ },
+ {
+  "id": "w3842715",
+  "pintorId": "duccio",
+  "qid": "Q3842715",
+  "titulo": "Madonna di Crevole",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1283",
+  "anioSort": 1283,
+  "anioCalidad": "exact",
+  "coleccion": "Museo dell'Opera Metropolitana del Duomo",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Duccio — Crevole Madonna.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Duccio_—_Crevole_Madonna.jpg",
+  "srcW": 3579,
+  "srcH": 5415,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Gleb Simonov",
+  "creditoArchivo": "Own work",
+  "sitelinks": 7,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w18684720",
+  "pintorId": "duccio",
+  "qid": "Q18684720",
+  "titulo": "Cristo y la samaritana",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1310",
+  "anioSort": 1310,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Nacional Thyssen-Bornemisza",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Duccio di Buoninsegna - Christ and the Samaritan Woman - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Duccio_di_Buoninsegna_-_Christ_and_the_Samaritan_Woman_-_Google_Art_Project.jpg",
+  "srcW": 2750,
+  "srcH": 2569,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Duccio di Buoninsegna",
+  "creditoArchivo": "Google Arts &amp; Culture  — 4AFwhs-biXBQyg",
+  "sitelinks": 5,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w6728425",
+  "pintorId": "duccio",
+  "qid": "Q6728425",
+  "titulo": "Madonna with Child and six Angels",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1300",
+  "anioSort": 1300,
+  "anioCalidad": "circa",
+  "coleccion": "Galería Nacional de Umbría",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Duccio di Buoninsegna 008.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Duccio_di_Buoninsegna_008.jpg",
+  "srcW": 1576,
+  "srcH": 2412,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Duccio di Buoninsegna",
+  "creditoArchivo": "The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202.",
+  "sitelinks": 5,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3873252",
+  "pintorId": "duccio",
+  "qid": "Q3873252",
+  "titulo": "The Nativity with the Prophets Isaiah and Ezekiel",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1308",
+  "anioSort": 1308,
+  "anioCalidad": "exact",
+  "coleccion": "Galería Nacional de Arte",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Duccio di Buoninsegna - The Nativity with the Prophets Isaiah and Ezekiel - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Duccio_di_Buoninsegna_-_The_Nativity_with_the_Prophets_Isaiah_and_Ezekiel_-_Google_Art_Project.jpg",
+  "srcW": 8126,
+  "srcH": 4521,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Duccio di Buoninsegna",
+  "creditoArchivo": "Google Arts &amp; Culture  — VwFhxyyiHc20QA",
+  "sitelinks": 3,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
   "id": "w549172",
   "pintorId": "giotto",
   "qid": "Q549172",
@@ -83,6 +494,708 @@
   "creditoArchivo": "photo Shonagon 2025-03-29",
   "sitelinks": 7,
   "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3873247",
+  "pintorId": "pietro-lorenzetti",
+  "qid": "Q3873247",
+  "titulo": "Nativity of the Virgin",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1335–1342",
+  "anioSort": 1335,
+  "anioCalidad": "circa",
+  "coleccion": "Museo dell'Opera Metropolitana del Duomo",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Nativity of the Virgin (1335-42) by Pietro Lorenzetti.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Nativity_of_the_Virgin_(1335-42)_by_Pietro_Lorenzetti.jpg",
+  "srcW": 1275,
+  "srcH": 1300,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Pietro Lorenzetti",
+  "creditoArchivo": "https://www.lrb.co.uk/the-paper/v47/n10/erin-maglaque/at-the-national-gallery",
+  "sitelinks": 7,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3948917",
+  "pintorId": "pietro-lorenzetti",
+  "qid": "Q3948917",
+  "titulo": "Saint Margaret or Agatha",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1315",
+  "anioSort": 1315,
+  "anioCalidad": "circa",
+  "coleccion": "Museo de Tessé",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Sainte agathe-1315-Pietro Lorenzetti-musee de tesse-le mans.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Sainte_agathe-1315-Pietro_Lorenzetti-musee_de_tesse-le_mans.jpg",
+  "srcW": 2792,
+  "srcH": 5280,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Pietro Lorenzetti",
+  "creditoArchivo": "Cyrille Largillier",
+  "sitelinks": 4,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3842761",
+  "pintorId": "pietro-lorenzetti",
+  "qid": "Q3842761",
+  "titulo": "Madonna and Child Enthroned with Eight Angels",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1340",
+  "anioSort": 1340,
+  "anioCalidad": "exact",
+  "coleccion": "Galería Uffizi",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Pietro Lorenzetti - Madonna col Bambino fra otto angeli - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Pietro_Lorenzetti_-_Madonna_col_Bambino_fra_otto_angeli_-_Google_Art_Project.jpg",
+  "srcW": 2932,
+  "srcH": 3623,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Pietro Lorenzetti",
+  "creditoArchivo": "Google Arts &amp; Culture  — 3wFuot4bhawurA",
+  "sitelinks": 3,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3843026",
+  "pintorId": "pietro-lorenzetti",
+  "qid": "Q3843026",
+  "titulo": "Cortone Maesta",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1315–1320",
+  "anioSort": 1315,
+  "anioCalidad": "circa",
+  "coleccion": "Museo Diocesano de Cortona",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Pietro lorenzetti, maestà.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Pietro_lorenzetti,_maestà.jpg",
+  "srcW": 800,
+  "srcH": 1222,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Pietro Lorenzetti",
+  "creditoArchivo": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"/l/lorenzet/pietro/2/05virgin\"",
+  "sitelinks": 3,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3889218",
+  "pintorId": "pietro-lorenzetti",
+  "qid": "Q3889218",
+  "titulo": "Mary with child and saints",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1327",
+  "anioSort": 1327,
+  "anioCalidad": "exact",
+  "coleccion": "Pinacoteca Nacional de Siena",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Pietro lorenzetti, pala del carmine, 1328, 01.JPG",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Pietro_lorenzetti,_pala_del_carmine,_1328,_01.JPG",
+  "srcW": 2545,
+  "srcH": 1548,
+  "mime": "image/jpeg",
+  "licencia": "CC BY-SA 3.0",
+  "autorArchivo": "Combusken",
+  "creditoArchivo": "Own work",
+  "sitelinks": 3,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3709298",
+  "pintorId": "pietro-lorenzetti",
+  "qid": "Q3709298",
+  "titulo": "Descent into Limbo",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1310",
+  "anioSort": 1310,
+  "anioCalidad": "exact",
+  "coleccion": "Basílica inferior de San Francisco de Asís",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Pietro Lorenzetti - Descent into Limbo - WGA13520.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Pietro_Lorenzetti_-_Descent_into_Limbo_-_WGA13520.jpg",
+  "srcW": 1728,
+  "srcH": 900,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Pietro Lorenzetti",
+  "creditoArchivo": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"l/lorenzet/pietro/1/3arch/1descent\"",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3933563",
+  "pintorId": "pietro-lorenzetti",
+  "qid": "Q3933563",
+  "titulo": "La Resurrección",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1310",
+  "anioSort": 1310,
+  "anioCalidad": "exact",
+  "coleccion": "Basílica inferior de San Francisco de Asís",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Pietro Lorenzetti - Resurrection - WGA13521.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Pietro_Lorenzetti_-_Resurrection_-_WGA13521.jpg",
+  "srcW": 1731,
+  "srcH": 900,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Pietro Lorenzetti",
+  "creditoArchivo": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"l/lorenzet/pietro/1/3arch/2resurre\"",
+  "sitelinks": 2,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3842573",
+  "pintorId": "pietro-lorenzetti",
+  "qid": "Q3842573",
+  "titulo": "Madonna and Child with St Francis and St John the Baptist",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1310",
+  "anioSort": 1310,
+  "anioCalidad": "exact",
+  "coleccion": "cappella Orsini",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Pietro Lorenzetti - Madonna and Child with St Francis and St John the Baptist - WGA13526.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Pietro_Lorenzetti_-_Madonna_and_Child_with_St_Francis_and_St_John_the_Baptist_-_WGA13526.jpg",
+  "srcW": 1295,
+  "srcH": 700,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Pietro Lorenzetti",
+  "creditoArchivo": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"l/lorenzet/pietro/1/3arch/6triptyc\"",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w979440",
+  "pintorId": "simone-martini",
+  "qid": "Q979440",
+  "titulo": "Anunciación entre los santos Ansano y Margarita",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "1333",
+  "anioSort": 1333,
+  "anioCalidad": "exact",
+  "coleccion": "Galería Uffizi",
+  "tipo": [
+   "painting",
+   "triptych"
+  ],
+  "archivo": "Simone Martini — Annunciation with St. Margaret and St. Ansanus.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_—_Annunciation_with_St._Margaret_and_St._Ansanus.jpg",
+  "srcW": 10416,
+  "srcH": 9044,
+  "mime": "image/jpeg",
+  "licencia": "CC0",
+  "autorArchivo": "Gleb Simonov",
+  "creditoArchivo": "Own work",
+  "sitelinks": 19,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w3947520",
+  "pintorId": "simone-martini",
+  "qid": "Q3947520",
+  "titulo": "San Luis de Tolosa coronando a Roberto de Anjou, rey de Nápoles",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1317",
+  "anioSort": 1317,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Nacional de Capodimonte",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Simone Martini 013.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_013.jpg",
+  "srcW": 823,
+  "srcH": 1200,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202. \nWeb Gallery of Art:   Image  Info about artworkwga QS:P11807,\"s/simone/4altars/1louis/1s_louis\"",
+  "sitelinks": 10,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w3907529",
+  "pintorId": "simone-martini",
+  "qid": "Q3907529",
+  "titulo": "Políptico de Santa Catalina",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1320",
+  "anioSort": 1320,
+  "anioCalidad": "exact",
+  "coleccion": "Museo nazionale di San Matteo",
+  "tipo": [
+   "painting",
+   "polyptych"
+  ],
+  "archivo": "Simone Martini 012.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_012.jpg",
+  "srcW": 3200,
+  "srcH": 2255,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202.",
+  "sitelinks": 5,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 1
+ },
+ {
+  "id": "w20183716",
+  "pintorId": "simone-martini",
+  "qid": "Q20183716",
+  "titulo": "La Virgen y el Niño",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1326",
+  "anioSort": 1326,
+  "anioCalidad": "circa",
+  "coleccion": "Museo Metropolitano de Arte",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Madonna and Child MET DT704.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Madonna_and_Child_MET_DT704.jpg",
+  "srcW": 2679,
+  "srcH": 3722,
+  "mime": "image/jpeg",
+  "licencia": "CC0",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "This file was donated to Wikimedia Commons as part of a project by the Metropolitan Museum of Art. See the Image and Data Resources Open Access Policy",
+  "sitelinks": 2,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w21711295",
+  "pintorId": "simone-martini",
+  "qid": "Q21711295",
+  "titulo": "San Pedro",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1326",
+  "anioSort": 1326,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Nacional Thyssen-Bornemisza",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Simone Martini - San Pietro.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_-_San_Pietro.jpg",
+  "srcW": 2000,
+  "srcH": 2980,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "Colección Carmen Thyssen-Bornemisza en depósito en el Museo Thyssen-Bornemisza",
+  "sitelinks": 2,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3225814",
+  "pintorId": "simone-martini",
+  "qid": "Q3225814",
+  "titulo": "The Carrying of the Cross",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1335",
+  "anioSort": 1335,
+  "anioCalidad": "circa",
+  "coleccion": "Departamento de Pinturas del Museo del Louvre",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Simone Martini 067.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_067.jpg",
+  "srcW": 2064,
+  "srcH": 3336,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202.",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 1
+ },
+ {
+  "id": "w19607289",
+  "pintorId": "simone-martini",
+  "qid": "Q19607289",
+  "titulo": "Christ discovered in the temple",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1342",
+  "anioSort": 1342,
+  "anioCalidad": "exact",
+  "coleccion": "Walker Art Gallery",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Simone Martini - Christ Discovered in the Temple - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_-_Christ_Discovered_in_the_Temple_-_Google_Art_Project.jpg",
+  "srcW": 3049,
+  "srcH": 4287,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "Google Arts &amp; Culture  — jwG5CBwYZObuvA",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w20173074",
+  "pintorId": "simone-martini",
+  "qid": "Q20173074",
+  "titulo": "The Angel of the Annunciation",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1333",
+  "anioSort": 1333,
+  "anioCalidad": "exact",
+  "coleccion": "Galería Nacional de Arte",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Simone Martini - The Angel of the Annunciation - WGA21436.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_-_The_Angel_of_the_Annunciation_-_WGA21436.jpg",
+  "srcW": 3864,
+  "srcH": 5691,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"s/simone/6annunci/a_angel\" https://artsandculture.google.com/asset/the-angel-of-the-annunciation-simone-martini/ugHDOL-vk0oeBw",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3910903",
+  "pintorId": "ambrogio-lorenzetti",
+  "qid": "Q3910903",
+  "titulo": "Presentación del Niño en el Templo",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1342",
+  "anioSort": 1342,
+  "anioCalidad": "exact",
+  "coleccion": "Galería Uffizi",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Ambrogio Lorenzetti - Presentazione di Gesù al tempio - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ambrogio_Lorenzetti_-_Presentazione_di_Gesù_al_tempio_-_Google_Art_Project.jpg",
+  "srcW": 8387,
+  "srcH": 12003,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Ambrogio Lorenzetti",
+  "creditoArchivo": "Google Arts &amp; Culture  — 0gFEBgbfCMyrvA",
+  "sitelinks": 8,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3618171",
+  "pintorId": "ambrogio-lorenzetti",
+  "qid": "Q3618171",
+  "titulo": "Annunciation",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1344",
+  "anioSort": 1344,
+  "anioCalidad": "exact",
+  "coleccion": "Pinacoteca Nacional de Siena",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Ambrogio Lorenzetti Annunciation.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ambrogio_Lorenzetti_Annunciation.jpg",
+  "srcW": 4799,
+  "srcH": 5226,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Gleb Simonov",
+  "creditoArchivo": "Own work",
+  "sitelinks": 7,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3842740",
+  "pintorId": "ambrogio-lorenzetti",
+  "qid": "Q3842740",
+  "titulo": "Madonna with child",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1319",
+  "anioSort": 1319,
+  "anioCalidad": "exact",
+  "coleccion": "Giuliano Ghelli Museum in San Casciano Val di Pesa",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Lorenzetti Amb. madonna-and-child-1319г.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Lorenzetti_Amb._madonna-and-child-1319г.jpg",
+  "srcW": 801,
+  "srcH": 1500,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Ambrogio Lorenzetti",
+  "creditoArchivo": "http://www.aiwaz.net/gallery/lorenzetti-ambrogio/gc57",
+  "sitelinks": 4,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w3843028",
+  "pintorId": "ambrogio-lorenzetti",
+  "qid": "Q3843028",
+  "titulo": "Madonna and child with saints and angels",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1335",
+  "anioSort": 1335,
+  "anioCalidad": "exact",
+  "coleccion": "Museum of Religious Art",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Ambrogio lorenzetti, maestà di massa marittima.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ambrogio_lorenzetti,_maestà_di_massa_marittima.jpg",
+  "srcW": 1900,
+  "srcH": 1469,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Ambrogio Lorenzetti",
+  "creditoArchivo": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"l/lorenzet/ambrogio/50maesta\"",
+  "sitelinks": 3,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w18572975",
+  "pintorId": "ambrogio-lorenzetti",
+  "qid": "Q18572975",
+  "titulo": "The Charity of St. Nicholas of Bari",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1330",
+  "anioSort": 1330,
+  "anioCalidad": "circa",
+  "coleccion": "Departamento de Pinturas del Museo del Louvre",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Ambrogio lorenzetti, carità di san nicola, 1330-40 ca..JPG",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ambrogio_lorenzetti,_carità_di_san_nicola,_1330-40_ca..JPG",
+  "srcW": 1927,
+  "srcH": 2774,
+  "mime": "image/jpeg",
+  "licencia": "CC BY-SA 3.0",
+  "autorArchivo": "Sailko",
+  "creditoArchivo": "Own work",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w20382178",
+  "pintorId": "ambrogio-lorenzetti",
+  "qid": "Q20382178",
+  "titulo": "St. John the Baptist",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1337–1342",
+  "anioSort": 1337,
+  "anioCalidad": "exact",
+  "coleccion": "Galería Nacional de Dinamarca",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Ambrogio Lorenzetti - St. John the Baptist - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ambrogio_Lorenzetti_-_St._John_the_Baptist_-_Google_Art_Project.jpg",
+  "srcW": 6361,
+  "srcH": 7141,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Ambrogio Lorenzetti",
+  "creditoArchivo": "LAE5yrAVPdxd8g at Google Cultural Institute maximum zoom level",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w125399429",
+  "pintorId": "ambrogio-lorenzetti",
+  "qid": "Q125399429",
+  "titulo": "Madonna del Latte",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1330",
+  "anioSort": 1330,
+  "anioCalidad": "circa",
+  "coleccion": "Museo diocesano de arte sacra",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Ambrogio Lorenzetti - Madonna of Milk - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ambrogio_Lorenzetti_-_Madonna_of_Milk_-_Google_Art_Project.jpg",
+  "srcW": 1071,
+  "srcH": 2127,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Ambrogio Lorenzetti",
+  "creditoArchivo": "hQGQNIxf8WI4Gg at Google Cultural Institute maximum zoom level",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w55831798",
+  "pintorId": "ambrogio-lorenzetti",
+  "qid": "Q55831798",
+  "titulo": "Painted crucifix",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1325,
+  "anioCalidad": "none",
+  "coleccion": "Pinacoteca Nacional de Siena",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Ambrogio Lorenzetti, Crocifisso del Carmine di Siena, Post-restoration.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ambrogio_Lorenzetti,_Crocifisso_del_Carmine_di_Siena,_Post-restoration.jpg",
+  "srcW": 4310,
+  "srcH": 5290,
+  "mime": "image/jpeg",
+  "licencia": "CC0",
+  "autorArchivo": "Ambrogio Lorenzetti",
+  "creditoArchivo": "Own work - Gleb Simonov",
+  "sitelinks": 2,
+  "confianza": "medium",
   "avisos": [],
   "fama": 1
  },
@@ -495,7 +1608,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w4009968",
@@ -2572,7 +3685,7 @@
   "sitelinks": 10,
   "confianza": "medium",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w21151884",
@@ -2601,7 +3714,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w20828882",
@@ -4462,7 +5575,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3937673",
@@ -5916,7 +7029,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w16038642",
@@ -6007,7 +7120,7 @@
   "avisos": [
    "archivo-sospechoso"
   ],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3849979",
@@ -6212,7 +7325,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3630761",
@@ -6270,7 +7383,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w883994",
@@ -6533,7 +7646,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3078569",
@@ -6593,7 +7706,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w15711253",
@@ -6798,7 +7911,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w11837891",
@@ -8174,7 +9287,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3731232",
@@ -8377,7 +9490,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w2894005",
@@ -8464,7 +9577,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3605057",
@@ -8609,7 +9722,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w611583",
@@ -8638,7 +9751,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3788158",
@@ -9951,7 +11064,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3680519",
@@ -10067,7 +11180,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3224378",
@@ -10651,7 +11764,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w15943274",
@@ -10680,7 +11793,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w6034540",
@@ -11090,7 +12203,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w1090371",
@@ -11264,7 +12377,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w4274886",
@@ -11612,7 +12725,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w729194",
@@ -11641,7 +12754,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w1114361",
@@ -11670,7 +12783,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w208758",
@@ -11786,7 +12899,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3204168",
@@ -11844,7 +12957,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3998985",
@@ -12018,7 +13131,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w16038543",
@@ -12221,7 +13334,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3909309",
@@ -13093,7 +14206,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w9351747",
@@ -13151,7 +14264,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w2404992",
@@ -13675,7 +14788,7 @@
   "avisos": [
    "proporcion"
   ],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3918296",
@@ -13849,7 +14962,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w2450139",
@@ -14255,7 +15368,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3947097",
@@ -15763,7 +16876,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w5640196",
@@ -16459,7 +17572,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w4388208",
@@ -17304,7 +18417,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3825362",
@@ -17857,7 +18970,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w21728497",
@@ -18495,7 +19608,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3399505",
@@ -18523,6 +19636,238 @@
   "creditoArchivo": "Musée Fabre",
   "sitelinks": 8,
   "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w18210019",
+  "pintorId": "utamaro",
+  "qid": "Q18210019",
+  "titulo": "Tres Bellezas de Nuestros Días",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1790",
+  "anioSort": 1790,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Kitagawa Utamaro - Toji san bijin (Three Beauties of the Present Day)From Bijin-ga (Pictures of Beautiful Women), published by Tsutaya Juzaburo - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Kitagawa_Utamaro_-_Toji_san_bijin_(Three_Beauties_of_the_Present_Day)From_Bijin-ga_(Pictures_of_Beautiful_Women),_published_by_Tsutaya_Juzaburo_-_Google_Art_Project.jpg",
+  "srcW": 5621,
+  "srcH": 8231,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Kitagawa Utamaro",
+  "creditoArchivo": "cgH3Mn22MIBngA at Google Cultural Institute maximum zoom level",
+  "sitelinks": 14,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w28941252",
+  "pintorId": "utamaro",
+  "qid": "Q28941252",
+  "titulo": "Fukagawa no Yuki",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1800",
+  "anioSort": 1800,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Utamaro (c. 1788–91) Fukagawa no Yuki.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Utamaro_(c._1788–91)_Fukagawa_no_Yuki.jpg",
+  "srcW": 1914,
+  "srcH": 1147,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Kitagawa Utamaro",
+  "creditoArchivo": "Spice (archive)",
+  "sitelinks": 3,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w30589460",
+  "pintorId": "utamaro",
+  "qid": "Q30589460",
+  "titulo": "Kōmei Bijin Rokkasen",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1790",
+  "anioSort": 1790,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Utamaro (1795–96) Kōmei bijin rokkasen - Ōgiya Hanaōgi.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Utamaro_(1795–96)_Kōmei_bijin_rokkasen_-_Ōgiya_Hanaōgi.jpg",
+  "srcW": 1103,
+  "srcH": 1600,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Kitagawa Utamaro",
+  "creditoArchivo": "Museum of Fine Arts, Boston",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w30590576",
+  "pintorId": "utamaro",
+  "qid": "Q30590576",
+  "titulo": "Sugatami Shichinin Keshō",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1792",
+  "anioSort": 1792,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Utamaro (c. 1792–93) Sugatami Shichinin Keshō (MFA)FXD.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Utamaro_(c._1792–93)_Sugatami_Shichinin_Keshō_(MFA)FXD.jpg",
+  "srcW": 1068,
+  "srcH": 1600,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Kitagawa Utamaro",
+  "creditoArchivo": "This file was derived from:  Utamaro (c. 1792–93) Sugatami Shichinin Keshō (MFA).jpg:",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w28747818",
+  "pintorId": "utamaro",
+  "qid": "Q28747818",
+  "titulo": "Kasumi-ori Musume Hinagata",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1788,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Utamaro (c. 1794–95) Kasumi-ori Musume Hinagata - Sudare (MFA).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Utamaro_(c._1794–95)_Kasumi-ori_Musume_Hinagata_-_Sudare_(MFA).jpg",
+  "srcW": 1069,
+  "srcH": 1600,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Kitagawa Utamaro",
+  "creditoArchivo": "Museum of Fine, Arts",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w30589413",
+  "pintorId": "utamaro",
+  "qid": "Q30589413",
+  "titulo": "Fujin Sōgaku Jittai and Fujo Ninsō Juppin",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1788,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Utamaro - two rebuses from Fujin Sōgaku Jittai and Fujo Ninsō Juppin.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Utamaro_-_two_rebuses_from_Fujin_Sōgaku_Jittai_and_Fujo_Ninsō_Juppin.jpg",
+  "srcW": 2000,
+  "srcH": 2250,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Kitagawa Utamaro",
+  "creditoArchivo": "File:Kitagawa Utamaro - Ten physiognomic types of women, Coquettish type - Google Art Project.jpg and File:Utamaro (c. 1792–93) Uchiwa o Sakasa ni Motsu Onna.jpg",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w30591109",
+  "pintorId": "utamaro",
+  "qid": "Q30591109",
+  "titulo": "Kasen Koi no Bu",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1788,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Utamaro (1793–94) Kasen Koi no Bu - Mare ni Au Koi (MFA).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Utamaro_(1793–94)_Kasen_Koi_no_Bu_-_Mare_ni_Au_Koi_(MFA).jpg",
+  "srcW": 1071,
+  "srcH": 1600,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Kitagawa Utamaro",
+  "creditoArchivo": "Museum of Fine Arts, Boston",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w60404497",
+  "pintorId": "utamaro",
+  "qid": "Q60404497",
+  "titulo": "Twelve Hours in the Pleasure Quarters of the Yoshiwara",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1788,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Uur van het schaap Toekomst voorspellen Hitsuji no koku (titel op object) Twaalf uren in de lusthuizen (serietitel) Seiro junitoki (titel op object), RP-P-1965-442.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Uur_van_het_schaap_Toekomst_voorspellen_Hitsuji_no_koku_(titel_op_object)_Twaalf_uren_in_de_lusthuizen_(serietitel)_Seiro_junitoki_(titel_op_object),_RP-P-1965-442.jpg",
+  "srcW": 4088,
+  "srcH": 6172,
+  "mime": "image/jpeg",
+  "licencia": "CC0",
+  "autorArchivo": "Rijksmuseum",
+  "creditoArchivo": "http://hdl.handle.net/10934/RM0001.COLLECT.45522",
+  "sitelinks": 2,
+  "confianza": "medium",
   "avisos": [],
   "fama": 1
  },
@@ -18582,7 +19927,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w18719540",
@@ -18842,6 +20187,530 @@
   "creditoArchivo": "http://lj.rossia.org/users/john_petrov/414961.html",
   "sitelinks": 2,
   "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w252485",
+  "pintorId": "hokusai",
+  "qid": "Q252485",
+  "titulo": "La gran ola de Kanagawa",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "c. 1830",
+  "anioSort": 1830,
+  "anioCalidad": "circa",
+  "coleccion": "Museo de Artes Aplicadas de Viena",
+  "tipo": [
+   "?"
+  ],
+  "archivo": "Katsushika Hokusai - The Great Wave off the Coast of Kanagawa LCCN2008660568.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Katsushika_Hokusai_-_The_Great_Wave_off_the_Coast_of_Kanagawa_LCCN2008660568.jpg",
+  "srcW": 8561,
+  "srcH": 6037,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika, Hokusai, 1760-1849, artist",
+  "creditoArchivo": "Library of Congress\n\nCatalog: https://lccn.loc.gov/2008660568\nImage download: https://cdn.loc.gov/service/pnp/jpd/02000/02018v.jpg\nOriginal url: https://www.loc.gov/pictures/item/2008660568/",
+  "sitelinks": 63,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 3
+ },
+ {
+  "id": "w3565037",
+  "pintorId": "hokusai",
+  "qid": "Q3565037",
+  "titulo": "Fuji rojo",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "c. 1830–1831",
+  "anioSort": 1830,
+  "anioCalidad": "circa",
+  "coleccion": "Museo Británico",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Katsushika Hokusai - Fine Wind, Clear Morning (Gaifū kaisei) - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Katsushika_Hokusai_-_Fine_Wind,_Clear_Morning_(Gaifū_kaisei)_-_Google_Art_Project.jpg",
+  "srcW": 5803,
+  "srcH": 3918,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "iwHKYC1Qfk9NCg at Google Cultural Institute maximum zoom level",
+  "sitelinks": 24,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 3
+ },
+ {
+  "id": "w2717022",
+  "pintorId": "hokusai",
+  "qid": "Q2717022",
+  "titulo": "El sueño de la esposa del pescador",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1820",
+  "anioSort": 1820,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Tako to ama retouched.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Tako_to_ama_retouched.jpg",
+  "srcW": 1600,
+  "srcH": 1116,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "http://picasaweb.google.com/lh/photo/IqaZK0BxaIlKtTVWZJc0ew",
+  "sitelinks": 34,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 3
+ },
+ {
+  "id": "w18173384",
+  "pintorId": "hokusai",
+  "qid": "Q18173384",
+  "titulo": "Tormenta debajo de la cumbre",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Lightnings below the summit.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Lightnings_below_the_summit.jpg",
+  "srcW": 4501,
+  "srcH": 2966,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "http://visipix.com/index.htm",
+  "sitelinks": 10,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w17227585",
+  "pintorId": "hokusai",
+  "qid": "Q17227585",
+  "titulo": "Kajikazawa en la provincia de Kai",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Kajikazawa in Kai province.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Kajikazawa_in_Kai_province.jpg",
+  "srcW": 4486,
+  "srcH": 2948,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "http://visipix.com/index.htm",
+  "sitelinks": 7,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w18173387",
+  "pintorId": "hokusai",
+  "qid": "Q18173387",
+  "titulo": "Sundai en Edo",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Metropolitano de Arte",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "The Fuji seen from the Mishima pass.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:The_Fuji_seen_from_the_Mishima_pass.jpg",
+  "srcW": 4368,
+  "srcH": 2916,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "http://visipix.com/index.htm",
+  "sitelinks": 6,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w18173402",
+  "pintorId": "hokusai",
+  "qid": "Q18173402",
+  "titulo": "Una vista del monte Fuji tras el lago Suwa",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Lake Suwa in the Shinano province.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Lake_Suwa_in_the_Shinano_province.jpg",
+  "srcW": 4410,
+  "srcH": 2938,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "http://visipix.com/index.htm",
+  "sitelinks": 6,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w2963437",
+  "pintorId": "hokusai",
+  "qid": "Q2963437",
+  "titulo": "Oceans of Wisdom",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1834",
+  "anioSort": 1834,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Whaling off the Coast of the Goto Islands.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Whaling_off_the_Coast_of_the_Goto_Islands.jpg",
+  "srcW": 3000,
+  "srcH": 2216,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Hokusai",
+  "creditoArchivo": "https://www.artic.edu/artworks/100626/whaling-off-the-coast-of-the-goto-islands-goto-kujira-tsuki-from-the-series-one-thousand-pictures-of-the-ocean-chie-no-umi",
+  "sitelinks": 5,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w18173386",
+  "pintorId": "hokusai",
+  "qid": "Q18173386",
+  "titulo": "Bajo el puente Mannen en Fukagawa",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Smithsonian de Diseño Cooper Hewitt",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Fuji seen through the Mannen bridge at Fukagawa.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Fuji_seen_through_the_Mannen_bridge_at_Fukagawa.jpg",
+  "srcW": 4448,
+  "srcH": 2959,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "http://visipix.com/index.htm",
+  "sitelinks": 5,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w18173408",
+  "pintorId": "hokusai",
+  "qid": "Q18173408",
+  "titulo": "El salón Sazai en el templo de los quinientos rakan",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Brooklyn",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Sazai hall - 500 Rakan temples.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Sazai_hall_-_500_Rakan_temples.jpg",
+  "srcW": 4467,
+  "srcH": 3014,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "Source: http://visipix.com/index.htm",
+  "sitelinks": 4,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w17210582",
+  "pintorId": "hokusai",
+  "qid": "Q17210582",
+  "titulo": "Vista del Fuji desde un campo en la provincia de Owari",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Fujimi Fuji view field in the Owari province.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Fujimi_Fuji_view_field_in_the_Owari_province.jpg",
+  "srcW": 4525,
+  "srcH": 3026,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "http://visipix.com/index.htm",
+  "sitelinks": 4,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w18173389",
+  "pintorId": "hokusai",
+  "qid": "Q18173389",
+  "titulo": "Senju en la provincia de Musashi",
+  "tituloFuente": "wikidata-es",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Metropolitano de Arte",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Senju in the Musachi provimce.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Senju_in_the_Musachi_provimce.jpg",
+  "srcW": 4486,
+  "srcH": 3007,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Katsushika Hokusai",
+  "creditoArchivo": "http://visipix.com/index.htm",
+  "sitelinks": 4,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w59915220",
+  "pintorId": "sharaku",
+  "qid": "Q59915220",
+  "titulo": "Ōtani Oniji III como Yakko Edobei",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1794",
+  "anioSort": 1794,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Metropolitano de Arte",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Toshusai Sharaku- Otani Oniji, 1794.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Toshusai_Sharaku-_Otani_Oniji,_1794.jpg",
+  "srcW": 802,
+  "srcH": 1200,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Sharaku",
+  "creditoArchivo": "Metropolitan Museum of Art",
+  "sitelinks": 3,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w62029258",
+  "pintorId": "sharaku",
+  "qid": "Q62029258",
+  "titulo": "Ichikawa Ebizo as Takemura Sadanoshin",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1794",
+  "anioSort": 1794,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Brooklyn",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Ishikawa Ebizo IV dans le role de Takemura Sadanoshin.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ishikawa_Ebizo_IV_dans_le_role_de_Takemura_Sadanoshin.jpg",
+  "srcW": 900,
+  "srcH": 1402,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Toshusai Sharaku",
+  "creditoArchivo": "photographie d'une estampe en ma possession",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w62030437",
+  "pintorId": "sharaku",
+  "qid": "Q62030437",
+  "titulo": "Iwai Hanshirō IV as the wet nurse Shigenoi",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1794",
+  "anioSort": 1794,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Metropolitano de Arte",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Iwai Hanshirō IV as the wet nurse Shigenoi.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Iwai_Hanshirō_IV_as_the_wet_nurse_Shigenoi.jpg",
+  "srcW": 1601,
+  "srcH": 2500,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Tōshūsai Sharaku",
+  "creditoArchivo": "The British Museum (by request)",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w62030967",
+  "pintorId": "sharaku",
+  "qid": "Q62030967",
+  "titulo": "Ichikawa Monnosuke II as Date no Yosaku",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1794",
+  "anioSort": 1794,
+  "anioCalidad": "exact",
+  "coleccion": "Museo de Bellas Artes de Boston",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Tōshūsai Sharaku (1794) Nisei Ichikawa Monnosuke no Date no Yosaku 01.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Tōshūsai_Sharaku_(1794)_Nisei_Ichikawa_Monnosuke_no_Date_no_Yosaku_01.jpg",
+  "srcW": 1079,
+  "srcH": 1600,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Tōshūsai Sharaku",
+  "creditoArchivo": "Museum of Fine Arts, Boston (archive)",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w62060190",
+  "pintorId": "sharaku",
+  "qid": "Q62060190",
+  "titulo": "Bandō Hikosaburō III as Sagisaka Sanai in the Play \"Koinyōbō Somewake Tazuna\"",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1794",
+  "anioSort": 1794,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Metropolitano de Arte",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "MET DP130229.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:MET_DP130229.jpg",
+  "srcW": 2666,
+  "srcH": 3947,
+  "mime": "image/jpeg",
+  "licencia": "CC0",
+  "autorArchivo": "Sharaku",
+  "creditoArchivo": "This file was donated to Wikimedia Commons as part of a project by the Metropolitan Museum of Art. See the Image and Data Resources Open Access Policy",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [
+   "archivo-sospechoso"
+  ],
+  "fama": 1
+ },
+ {
+  "id": "w62084368",
+  "pintorId": "sharaku",
+  "qid": "Q62084368",
+  "titulo": "Osagawa Tsuneyo II, possibly in the rôle of Ippei's sister Osan",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1795,
+  "anioCalidad": "none",
+  "coleccion": "Harvard Art Museums",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Sharaku (1794) Osagawa Tsuneyo II as Ippei's sister Osan.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Sharaku_(1794)_Osagawa_Tsuneyo_II_as_Ippei's_sister_Osan.jpg",
+  "srcW": 1640,
+  "srcH": 2400,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Tōshūsai Sharaku",
+  "creditoArchivo": "Harvard Art Museums/Arthur M. Sackler Museum",
+  "sitelinks": 1,
+  "confianza": "medium",
   "avisos": [],
   "fama": 1
  },
@@ -19512,7 +21381,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w28538656",
@@ -19601,7 +21470,7 @@
   "avisos": [
    "proporcion"
   ],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w28539779",
@@ -20538,6 +22407,535 @@
   "fama": 1
  },
  {
+  "id": "w7678417",
+  "pintorId": "kuniyoshi",
+  "qid": "Q7678417",
+  "titulo": "Takiyasha la bruja y el espectro del esqueleto",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1844",
+  "anioSort": 1844,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "print",
+   "triptych"
+  ],
+  "archivo": "Takiyasha the Witch and the Skeleton Spectre, by Utagawa Kuniyoshi.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Takiyasha_the_Witch_and_the_Skeleton_Spectre,_by_Utagawa_Kuniyoshi.jpg",
+  "srcW": 7139,
+  "srcH": 3550,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "",
+  "creditoArchivo": "https://www.britishmuseum.org/collection/object/A_1915-0823-0-915-916",
+  "sitelinks": 8,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w96471562",
+  "pintorId": "kuniyoshi",
+  "qid": "Q96471562",
+  "titulo": "Michiyuki Nekoyanagi Sakari no Tsukikage",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1847",
+  "anioSort": 1847,
+  "anioCalidad": "circa",
+  "coleccion": "Museo Británico",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "(Michiyuki) nekoyanagi sakari no tsukikage (BM 1998,0218,0.21).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:(Michiyuki)_nekoyanagi_sakari_no_tsukikage_(BM_1998,0218,0.21).jpg",
+  "srcW": 1190,
+  "srcH": 1497,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Print artist:   Utagawa Kuniyoshi (歌川国芳)",
+  "creditoArchivo": "https://www.britishmuseum.org/collection/object/A_1998-0218-0-21",
+  "sitelinks": 3,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 1
+ },
+ {
+  "id": "w69729449",
+  "pintorId": "kuniyoshi",
+  "qid": "Q69729449",
+  "titulo": "Honchō suikoden gōyū 800 nin hitori",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1830",
+  "anioSort": 1830,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Honcho Suikoden Goketsu (BM 1973,0723,0.29 76).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Honcho_Suikoden_Goketsu_(BM_1973,0723,0.29_76).jpg",
+  "srcW": 617,
+  "srcH": 1600,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Print artist: Utagawa Kuniyoshi (歌川国芳)\n\nPrint artist: Utagawa Kunisada (歌川国貞 Toyokuni III)",
+  "creditoArchivo": "https://www.britishmuseum.org/collection/object/A_1973-0723-0-29",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w70738658",
+  "pintorId": "kuniyoshi",
+  "qid": "Q70738658",
+  "titulo": "One of the 108 Heroes of the Popular Water Margin",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "c. 1820",
+  "anioSort": 1820,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Tsuzoku Suikoden Goketsu Hyakuhachi-nin no Hitori (BM 1906,1220,0.1334 2).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Tsuzoku_Suikoden_Goketsu_Hyakuhachi-nin_no_Hitori_(BM_1906,1220,0.1334_2).jpg",
+  "srcW": 561,
+  "srcH": 1600,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "",
+  "creditoArchivo": "https://www.britishmuseum.org/collection/object/A_1906-1220-0-1334",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w96675024",
+  "pintorId": "kuniyoshi",
+  "qid": "Q96675024",
+  "titulo": "Caricatures of the One Hundred and Eight Heroes of the Popular Suikoden",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1830",
+  "anioSort": 1830,
+  "anioCalidad": "circa",
+  "coleccion": "Museo Británico",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Series- Kyoga Suikoden goketsu ippyaku hachinin 狂画水滸伝豪傑一百八人 (Caricatures of the One Hundred and Eight Heroes of the Popular Suikoden) (BM 2008,3037.00802).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Series-_Kyoga_Suikoden_goketsu_ippyaku_hachinin_狂画水滸伝豪傑一百八人_(Caricatures_of_the_One_Hundred_and_Eight_Heroes_of_the_Popular_Suikoden)_(BM_2008,3037.00802).jpg",
+  "srcW": 1089,
+  "srcH": 1600,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Print artist:   Utagawa Kuniyoshi (歌川国芳)",
+  "creditoArchivo": "https://www.britishmuseum.org/collection/object/A_2008-3037-00802",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w97657866",
+  "pintorId": "kuniyoshi",
+  "qid": "Q97657866",
+  "titulo": "Pilgrims at the Rōben waterfall, Ōyama",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "c. 1819",
+  "anioSort": 1819,
+  "anioCalidad": "circa",
+  "coleccion": null,
+  "tipo": [
+   "print",
+   "triptych"
+  ],
+  "archivo": "Pilgrims at the Roben waterfall, Oyama.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Pilgrims_at_the_Roben_waterfall,_Oyama.jpg",
+  "srcW": 2855,
+  "srcH": 1372,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Kuniyoshi",
+  "creditoArchivo": "http://visipix.com/search/search.php?userid=1616934267&amp;q=%272aAuthors/K/Kuniyoshi%201797-1861%2C%20Utagawa%2C%20Japan%27&amp;s=20&amp;l=en&amp;u=2&amp;ub=1&amp;k=1",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w98168850",
+  "pintorId": "kuniyoshi",
+  "qid": "Q98168850",
+  "titulo": "Onoe Kikugorō ichidai banashi Bakeneko",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1847",
+  "anioSort": 1847,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "print",
+   "triptych"
+  ],
+  "archivo": "Apparition of the monstrous cat.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Apparition_of_the_monstrous_cat.jpg",
+  "srcW": 3308,
+  "srcH": 1577,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "",
+  "creditoArchivo": "",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w104525540",
+  "pintorId": "kuniyoshi",
+  "qid": "Q104525540",
+  "titulo": "Famous Views of Edo Selected for the Twelve Months",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1852",
+  "anioSort": 1852,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "NDL-DC 9370007 Utagawa Kuniyoshi crd.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:NDL-DC_9370007_Utagawa_Kuniyoshi_crd.jpg",
+  "srcW": 3817,
+  "srcH": 5609,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Kuniyoshi",
+  "creditoArchivo": "National Diet Library Digital Collections: Persistent ID 9370007",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w5826309",
+  "pintorId": "hiroshige",
+  "qid": "Q5826309",
+  "titulo": "El puente Ōhashi en Atake bajo una lluvia repentina",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "1857",
+  "anioSort": 1857,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Brooklyn",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Hiroshige, Sudden shower over Shin-Ōhashi bridge and Atake, 1857.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Hiroshige,_Sudden_shower_over_Shin-Ōhashi_bridge_and_Atake,_1857.jpg",
+  "srcW": 5357,
+  "srcH": 8117,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "This image  is available from the United States Library of Congress's Prints and Photographs division under the digital ID jpd.02950.This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing.",
+  "sitelinks": 11,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w21127606",
+  "pintorId": "hiroshige",
+  "qid": "Q21127606",
+  "titulo": "Jardín de ciruelos en Kameido",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "1857",
+  "anioSort": 1857,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Brooklyn",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "De pruimenboomgaard te Kameido-Rijksmuseum RP-P-1956-743.jpeg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:De_pruimenboomgaard_te_Kameido-Rijksmuseum_RP-P-1956-743.jpeg",
+  "srcW": 2041,
+  "srcH": 3000,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa; Hiroshige (I) , Utagawa died 1858; Uoya Eikichi Hiroshige (I)",
+  "creditoArchivo": "http://www.rijksmuseum.nl/collectie/RP-P-1956-743 (handle)",
+  "sitelinks": 8,
+  "confianza": "medium",
+  "avisos": [
+   "archivo-sospechoso"
+  ],
+  "fama": 1
+ },
+ {
+  "id": "w18686018",
+  "pintorId": "hiroshige",
+  "qid": "Q18686018",
+  "titulo": "Fuchu",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "1831",
+  "anioSort": 1831,
+  "anioCalidad": "exact",
+  "coleccion": "Museo de Bellas Artes de Bilbao",
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Ando Hiroshige - Fuchu - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Ando_Hiroshige_-_Fuchu_-_Google_Art_Project.jpg",
+  "srcW": 4599,
+  "srcH": 3113,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "tQHvlImbNkH-yQ at Google Cultural Institute maximum zoom level",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w75089333",
+  "pintorId": "hiroshige",
+  "qid": "Q75089333",
+  "titulo": "Nihonbashi",
+  "tituloFuente": "traducir",
+  "level": 1,
+  "etapa": null,
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1832,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Hiroshige01 nihonbashi.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Hiroshige01_nihonbashi.jpg",
+  "srcW": 4307,
+  "srcH": 2820,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "The fifty-stree stages of Tokaido (one of 53 prints, +2 for start and terminus)",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w75089352",
+  "pintorId": "hiroshige",
+  "qid": "Q75089352",
+  "titulo": "Yoshiwara",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1832,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Print, Yoshiwara, Fuji, Rear View, in The Fifty-Three Stations of the Tokaido Road (Tokaido Gojusan Tsugi-no Uchi), ca. 1834 (CH 18608831).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Print,_Yoshiwara,_Fuji,_Rear_View,_in_The_Fifty-Three_Stations_of_the_Tokaido_Road_(Tokaido_Gojusan_Tsugi-no_Uchi),_ca._1834_(CH_18608831).jpg",
+  "srcW": 4096,
+  "srcH": 2683,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "Catalog Photo",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w75089364",
+  "pintorId": "hiroshige",
+  "qid": "Q75089364",
+  "titulo": "Kanbara",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1832,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Hiroshige16 kanbara.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Hiroshige16_kanbara.jpg",
+  "srcW": 4307,
+  "srcH": 2820,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "The fifty-stree stages of Tokaido (one of 53 prints, +2 for start and terminus)",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w75089376",
+  "pintorId": "hiroshige",
+  "qid": "Q75089376",
+  "titulo": "Numazu",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1832,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Print, Numazu Evening, in The Fifty-Three Stations of the Tokaido Road (Tokaido Gojusan Tsugi-no Uchi), ca. 1834 (CH 18608827).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Print,_Numazu_Evening,_in_The_Fifty-Three_Stations_of_the_Tokaido_Road_(Tokaido_Gojusan_Tsugi-no_Uchi),_ca._1834_(CH_18608827).jpg",
+  "srcW": 4096,
+  "srcH": 2636,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "Catalog Photo",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w75089388",
+  "pintorId": "hiroshige",
+  "qid": "Q75089388",
+  "titulo": "Yui",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1832,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Print, Yui, Summit of Mount Satta, in The Fifty-Three Stations of the Tokaido Road (Tokaido Gojusan Tsugi-no Uchi), ca. 1834 (CH 18608835).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Print,_Yui,_Summit_of_Mount_Satta,_in_The_Fifty-Three_Stations_of_the_Tokaido_Road_(Tokaido_Gojusan_Tsugi-no_Uchi),_ca._1834_(CH_18608835).jpg",
+  "srcW": 4096,
+  "srcH": 2662,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "Catalog Photo",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w75089437",
+  "pintorId": "hiroshige",
+  "qid": "Q75089437",
+  "titulo": "Mariko",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1832,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Print, Mariko Teahouse, in The Fifty-Three Stations of the Tokaido Road (Tokaido Gojusan Tsugi-no Uchi), ca. 1834 (CH 18608845).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Print,_Mariko_Teahouse,_in_The_Fifty-Three_Stations_of_the_Tokaido_Road_(Tokaido_Gojusan_Tsugi-no_Uchi),_ca._1834_(CH_18608845).jpg",
+  "srcW": 4096,
+  "srcH": 2673,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "Catalog Photo",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w75089462",
+  "pintorId": "hiroshige",
+  "qid": "Q75089462",
+  "titulo": "Fujieda",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "",
+  "anioSort": 1832,
+  "anioCalidad": "none",
+  "coleccion": null,
+  "tipo": [
+   "print"
+  ],
+  "archivo": "Print, Fujiyeda Post Station, in The Fifty-Three Stations of the Tokaido Road (Tokaido Gojusan Tsugi-no Uchi), ca. 1834 (CH 18608849).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Print,_Fujiyeda_Post_Station,_in_The_Fifty-Three_Stations_of_the_Tokaido_Road_(Tokaido_Gojusan_Tsugi-no_Uchi),_ca._1834_(CH_18608849).jpg",
+  "srcW": 4096,
+  "srcH": 2644,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Utagawa Hiroshige",
+  "creditoArchivo": "Catalog Photo",
+  "sitelinks": 2,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
   "id": "w29530",
   "pintorId": "delacroix",
   "qid": "Q29530",
@@ -21146,7 +23544,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3212566",
@@ -24091,7 +26489,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w2912117",
@@ -24120,7 +26518,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3794660",
@@ -24149,7 +26547,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w4025363",
@@ -24178,7 +26576,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w7476471",
@@ -24207,7 +26605,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3819661",
@@ -26595,7 +28993,7 @@
   "sitelinks": 10,
   "confianza": "medium",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w19912578",
@@ -27320,7 +29718,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w80112683",
@@ -27871,7 +30269,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w4085405",
@@ -28248,7 +30646,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w14915747",
@@ -29236,7 +31634,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w2093283",
@@ -29296,7 +31694,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w9162690",
@@ -29325,7 +31723,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w1766454",
@@ -29850,7 +32248,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w18386245",
@@ -30438,7 +32836,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w17511613",
@@ -30588,6 +32986,35 @@
   "fama": 3
  },
  {
+  "id": "w1118295",
+  "pintorId": "van-gogh",
+  "qid": "Q1118295",
+  "titulo": "Silla con pipa",
+  "tituloFuente": "wikidata-es",
+  "level": 4,
+  "etapa": "Arlés",
+  "forzada": false,
+  "anio": "1889",
+  "anioSort": 1889,
+  "anioCalidad": "exact",
+  "coleccion": "National Gallery de Londres",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Vincent Willem van Gogh 138.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Vincent_Willem_van_Gogh_138.jpg",
+  "srcW": 4678,
+  "srcH": 6000,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Vincent van Gogh",
+  "creditoArchivo": "1. The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202. \n\n2./3. National Gallery (NG3862), London",
+  "sitelinks": 19,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
   "id": "w4892867",
   "pintorId": "van-gogh",
   "qid": "Q4892867",
@@ -30612,35 +33039,6 @@
   "autorArchivo": "Vincent van Gogh",
   "creditoArchivo": "Google Arts &amp; Culture  — UAEejbUbf7fwSg",
   "sitelinks": 15,
-  "confianza": "high",
-  "avisos": [],
-  "fama": 2
- },
- {
-  "id": "w948894",
-  "pintorId": "van-gogh",
-  "qid": "Q948894",
-  "titulo": "La Mousmé",
-  "tituloFuente": "wikidata-es",
-  "level": 4,
-  "etapa": "Arlés",
-  "forzada": false,
-  "anio": "1888",
-  "anioSort": 1888,
-  "anioCalidad": "exact",
-  "coleccion": "Galería Nacional de Arte",
-  "tipo": [
-   "painting"
-  ],
-  "archivo": "Vangogh mousme.jpg",
-  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Vangogh_mousme.jpg",
-  "srcW": 12684,
-  "srcH": 15516,
-  "mime": "image/jpeg",
-  "licencia": "Public domain",
-  "autorArchivo": "Vincent van Gogh",
-  "creditoArchivo": "National Gallery of Art, Washington, D. C., online collection",
-  "sitelinks": 17,
   "confianza": "high",
   "avisos": [],
   "fama": 2
@@ -30702,35 +33100,6 @@
   "confianza": "high",
   "avisos": [],
   "fama": 3
- },
- {
-  "id": "w1118295",
-  "pintorId": "van-gogh",
-  "qid": "Q1118295",
-  "titulo": "Silla con pipa",
-  "tituloFuente": "wikidata-es",
-  "level": 5,
-  "etapa": "Saint-Rémy",
-  "forzada": false,
-  "anio": "1889",
-  "anioSort": 1889,
-  "anioCalidad": "exact",
-  "coleccion": "National Gallery de Londres",
-  "tipo": [
-   "painting"
-  ],
-  "archivo": "Vincent Willem van Gogh 138.jpg",
-  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Vincent_Willem_van_Gogh_138.jpg",
-  "srcW": 4678,
-  "srcH": 6000,
-  "mime": "image/jpeg",
-  "licencia": "Public domain",
-  "autorArchivo": "Vincent van Gogh",
-  "creditoArchivo": "1. The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202. \n\n2./3. National Gallery (NG3862), London",
-  "sitelinks": 19,
-  "confianza": "high",
-  "avisos": [],
-  "fama": 2
  },
  {
   "id": "w1132723",
@@ -30815,6 +33184,35 @@
   "autorArchivo": "Vincent van Gogh",
   "creditoArchivo": "EQF2FvGUZzLKOA at Google Cultural Institute maximum zoom level",
   "sitelinks": 15,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w2269788",
+  "pintorId": "van-gogh",
+  "qid": "Q2269788",
+  "titulo": "Retrato del doctor Félix Rey",
+  "tituloFuente": "wikidata-es",
+  "level": 5,
+  "etapa": "Saint-Rémy",
+  "forzada": false,
+  "anio": "1889",
+  "anioSort": 1889,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Pushkin",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Vincent van Gogh - Portrait of Doctor Félix Rey (F500).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_-_Portrait_of_Doctor_Félix_Rey_(F500).jpg",
+  "srcW": 8279,
+  "srcH": 10004,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Vincent van Gogh",
+  "creditoArchivo": "1. arthistory.about2. The Museum of Modern Western Art (NWM)",
+  "sitelinks": 13,
   "confianza": "high",
   "avisos": [],
   "fama": 2
@@ -31459,7 +33857,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w3793238",
@@ -31722,7 +34120,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w1219751",
@@ -32305,7 +34703,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w11788444",
@@ -33411,7 +35809,7 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
-  "fama": 1
+  "fama": 2
  },
  {
   "id": "w18753113",
