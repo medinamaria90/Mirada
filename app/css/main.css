@@ -1109,6 +1109,14 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 }
 .viewer-thumb { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 2px; box-shadow: none; background: var(--viewer-frame); }
 .viewer-thumb::before { display: none; }
+/* Señal de carga: el mismo brillo que recorre las miniaturas (.art::before), sobre el marco, hasta
+   que llega la imagen grande (con red lenta, el marco no queda negro y mudo). */
+.viewer-frame::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: 2px;
+  background: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--viewer-ink) 14%, transparent) 50%, transparent 70%);
+  background-size: 250% 100%; animation: sheen 1.4s linear infinite;
+}
+.viewer-slide.is-big .viewer-frame::before { display: none; }
 .viewer-thumb.is-broken::after { color: var(--viewer-ink-3); }
 .viewer-img {
   position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: contain;
