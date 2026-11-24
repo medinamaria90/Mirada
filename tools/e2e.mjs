@@ -1917,14 +1917,15 @@ for (const scheme of ['light', 'dark']) {
       // Medallas: sellos pendientes con número legible, «Ojo de X · n/m» y hoja de detalle.
       await p7.goto(`${base}#medallas`);
       await p7.waitForSelector('#logros');
+      await p7.click('[data-action="more-medals"]');
       await p7.waitForTimeout(500);
-      check(await p7.locator('.medal-item.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
+      check(await p7.locator('.pf-medal.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
       const eyeText = `Ojo de ${eyeWho.short || eyeWho.name} · 2/${eyeWorks.length}`;
-      check(await p7.locator('.medal-item', { hasText: eyeText }).count() === 1, `[${tag}] falta «${eyeText}» en Medallas`);
-      await p7.locator('.medal-item.is-missing').first().scrollIntoViewIfNeeded();
+      check(await p7.locator('.pf-medal', { hasText: eyeText }).count() === 1, `[${tag}] falta «${eyeText}» en Medallas`);
+      await p7.locator('.pf-medal.is-missing').first().scrollIntoViewIfNeeded();
       await shot(p7, `medallas-${tag}`);
       await audit(p7, `o7 ${tag} medallas`);
-      const opener = p7.locator('.medal-item.is-missing', { hasText: '7 días' });
+      const opener = p7.locator('.pf-medal.is-missing', { hasText: '7 días' });
       await opener.click();
       await p7.waitForSelector('.medal-dialog[open]');
       await p7.waitForTimeout(400);
