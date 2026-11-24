@@ -1,152 +1,156 @@
-pintor              cand aptas elegidas/obj  motivos de descarte
-giotto                55    21        8/8   sin imagen apta:20, varios autores:5, proporción ≠ medidas:3, palabra:2, sin título:2, excluida:1, autoría no preferente:1
-van-eyck              57    26        8/8   varios autores:16, autoría no preferente:5, sin imagen apta:4, proporción ≠ medidas:2, palabra:2, sin título:1, fecha fuera de vida:1, duplicado/versión:1
-fra-angelico         194    41        8/8   sin datos de imagen:92, palabra:38, sin imagen apta:10, varios autores:8, proporción ≠ medidas:5, duplicado/versión:5
-van-der-weyden        88    38        8/8   palabra:16, sin imagen apta:15, proporción ≠ medidas:7, varios autores:7, duplicado/versión:6, fecha fuera de vida:2, autoría no preferente:1, sin título:1, sin datos de imagen:1
-piero                 34    26        8/8   sin imagen apta:5, proporción ≠ medidas:1, sin título:1, varios autores:1
-bellini              180    64        8/8   sin datos de imagen:90, duplicado/versión:13, sin imagen apta:8, palabra:7, varios autores:4, proporción ≠ medidas:3, fecha fuera de vida:3, autoría no preferente:1
-mantegna              99    61        8/8   sin datos de imagen:18, sin imagen apta:7, proporción ≠ medidas:5, fecha fuera de vida:3, palabra:2, duplicado/versión:2, autoría no preferente:1, techo:1, varios autores:1
-botticelli           176    66       10/10  sin datos de imagen:68, palabra:13, varios autores:11, fecha fuera de vida:8, sin imagen apta:5, duplicado/versión:4, proporción ≠ medidas:3, autoría no preferente:2
-berruguete            46    25        8/8   varios autores:15, sin imagen apta:5, palabra:1, duplicado/versión:1
-bosco                 86    32        9/9   palabra:16, sin imagen apta:10, fecha fuera de vida:9, varios autores:9, proporción ≠ medidas:5, sin datos de imagen:4, duplicado/versión:4, sin título:1
-leonardo              40    17       12/12  palabra:7, varios autores:6, autoría no preferente:5, sin imagen apta:4, excluida:1, duplicado/versión:1
-durero               162    66        9/9   sin datos de imagen:60, palabra:10, autoría no preferente:9, sin imagen apta:8, duplicado/versión:6, fecha fuera de vida:5, proporción ≠ medidas:2, varios autores:1, sin título:1
-cranach              907    66        9/9   sin datos de imagen:644, palabra:93, varios autores:75, autoría no preferente:13, duplicado/versión:9, fecha fuera de vida:7, sin imagen apta:5, proporción ≠ medidas:3, según otra obra:1
-miguel-angel          40    13        8/8   sin imagen apta:19, excluida:4, proporción ≠ medidas:2, palabra:1, techo:1
-giorgione             43    25        8/8   sin imagen apta:5, fecha fuera de vida:4, varios autores:3, autoría no preferente:3, sin título:2, duplicado/versión:2, proporción ≠ medidas:1
-rafael               229    68       12/12  sin datos de imagen:109, palabra:28, varios autores:10, sin imagen apta:6, fecha fuera de vida:6, proporción ≠ medidas:1, autoría no preferente:1, duplicado/versión:1
-tiziano              341    77       12/12  sin datos de imagen:238, palabra:11, varios autores:7, autoría no preferente:7, duplicado/versión:2, sin imagen apta:1
-correggio            121    47        8/8   sin imagen apta:25, sin datos de imagen:24, palabra:21, fecha fuera de vida:3, proporción ≠ medidas:1
-holbein              152    57        9/9   sin datos de imagen:55, palabra:15, sin imagen apta:13, autoría no preferente:7, sin título:3, proporción ≠ medidas:1, varios autores:1
-juan-de-juanes        32    21        8/8   sin imagen apta:5, varios autores:3, proporción ≠ medidas:1, excluida:1, autoría no preferente:1, duplicado/versión:1
-morales               60    40        8/8   sin imagen apta:16, duplicado/versión:9, proporción ≠ medidas:2, palabra:2
-tintoretto           369    62        9/9   sin datos de imagen:276, sin imagen apta:15, palabra:10, autoría no preferente:3, varios autores:2, fecha fuera de vida:1, duplicado/versión:1
-bruegel               55    38       10/10  autoría no preferente:8, sin imagen apta:6, fecha fuera de vida:1, varios autores:1, palabra:1, duplicado/versión:1
-veronese             311    66        9/9   sin datos de imagen:190, palabra:29, duplicado/versión:13, sin imagen apta:10, varios autores:6, autoría no preferente:4, fecha fuera de vida:3, sin título:2, proporción ≠ medidas:1
-sanchez-coello        58    33        8/8   sin imagen apta:16, palabra:5, sin título:2, autoría no preferente:1, fecha fuera de vida:1
-el-greco             538    65       15/15  sin datos de imagen:371, autoría no preferente:39, varios autores:35, palabra:13, sin imagen apta:12, duplicado/versión:5, proporción ≠ medidas:2, fecha fuera de vida:1
-ribalta               14     9        6/6   sin imagen apta:3, sin título:1, fecha fuera de vida:1
-caravaggio            98    72       12/12  sin datos de imagen:14, duplicado/versión:9, sin imagen apta:4, proporción ≠ medidas:3, autoría no preferente:2, palabra:1, varios autores:1, fecha fuera de vida:1
-rubens              1615    67       12/12  sin datos de imagen:1077, varios autores:203, palabra:113, fecha fuera de vida:95, autoría no preferente:51, sin imagen apta:7, duplicado/versión:3, proporción ≠ medidas:1, según otra obra:1
-maino                 26    17        6/6   sin imagen apta:6, fecha fuera de vida:2, duplicado/versión:2, sin título:1
-hals                 298    56        9/9   sin datos de imagen:178, varios autores:30, sin imagen apta:16, palabra:14, duplicado/versión:4, autoría no preferente:2, proporción ≠ medidas:1, fecha fuera de vida:1
-ribera               258    50       15/15  sin datos de imagen:151, sin imagen apta:24, palabra:15, fecha fuera de vida:6, autoría no preferente:5, varios autores:3, sin título:3, duplicado/versión:3, proporción ≠ medidas:1
-la-tour               50    36        8/8   sin imagen apta:13, sin título:1, duplicado/versión:1
-artemisia            129    41        8/8   sin datos de imagen:40, sin imagen apta:24, varios autores:15, palabra:5, sin título:4, duplicado/versión:4
-poussin              232    67        9/9   sin datos de imagen:137, sin imagen apta:9, autoría no preferente:8, varios autores:4, proporción ≠ medidas:3, palabra:3, sin título:1, duplicado/versión:1
-zurbaran             314    60       15/15  sin datos de imagen:218, sin imagen apta:15, autoría no preferente:8, varios autores:8, excluida:2, duplicado/versión:2, palabra:1, proporción ≠ medidas:1, fecha fuera de vida:1
-velazquez            177    70       16/16  sin datos de imagen:76, autoría no preferente:11, palabra:7, sin imagen apta:5, varios autores:3, excluida:2, fecha fuera de vida:2, proporción ≠ medidas:1, duplicado/versión:1
-van-dyck            1346    65        9/9   sin datos de imagen:994, palabra:91, autoría no preferente:69, varios autores:66, fecha fuera de vida:48, sin imagen apta:9, duplicado/versión:9, proporción ≠ medidas:3, según otra obra:1
-claudio-de-lorena    225    61        9/9   sin datos de imagen:135, sin imagen apta:17, palabra:10, sin título:2, duplicado/versión:1
-alonso-cano           62    37        8/8   sin imagen apta:15, sin título:4, autoría no preferente:3, palabra:2, excluida:1, duplicado/versión:1
-rembrandt            781    74       12/12  sin datos de imagen:502, autoría no preferente:96, palabra:56, varios autores:49, sin imagen apta:3, duplicado/versión:3, proporción ≠ medidas:1
-pereda                33    19        6/6   sin imagen apta:11, palabra:2, duplicado/versión:2, autoría no preferente:1
-carreno               66    32        8/8   sin imagen apta:27, duplicado/versión:4, excluida:3, palabra:2, sin título:2
-murillo              317    56       15/15  sin datos de imagen:213, sin imagen apta:17, palabra:17, autoría no preferente:6, fecha fuera de vida:4, sin título:2, proporción ≠ medidas:1, varios autores:1, duplicado/versión:1
-valdes-leal           71    37        8/8   sin imagen apta:30, palabra:3, proporción ≠ medidas:1
-steen                410    55        8/8   sin datos de imagen:307, sin imagen apta:19, palabra:13, autoría no preferente:7, varios autores:4, fecha fuera de vida:3, duplicado/versión:3, proporción ≠ medidas:2
-vermeer               37    33       10/10  autoría no preferente:3, sin imagen apta:1
-claudio-coello        34    18        6/6   sin imagen apta:15, fecha fuera de vida:1, duplicado/versión:1
-watteau              135    50        8/8   sin datos de imagen:50, sin imagen apta:17, sin título:7, palabra:5, autoría no preferente:3, duplicado/versión:3, varios autores:2, fecha fuera de vida:1
-tiepolo              287    61        8/8   sin datos de imagen:193, sin imagen apta:13, palabra:10, sin título:5, varios autores:3, fecha fuera de vida:1, autoría no preferente:1, duplicado/versión:1
-canaletto            412    49        9/9   sin datos de imagen:265, palabra:64, fecha fuera de vida:12, sin imagen apta:11, varios autores:8, sin título:1, proporción ≠ medidas:1, autoría no preferente:1
-chardin              208    41        8/8   sin datos de imagen:118, sin imagen apta:26, palabra:14, sin título:5, duplicado/versión:4, varios autores:2, fecha fuera de vida:1, autoría no preferente:1
-liotard               72    42        5/5   sin imagen apta:18, sin título:6, palabra:3, varios autores:2, autoría no preferente:1
-boucher              329    55        8/8   sin datos de imagen:235, sin imagen apta:17, palabra:10, fecha fuera de vida:4, sin título:4, varios autores:3, proporción ≠ medidas:1, duplicado/versión:1
-melendez              64    56        8/8   sin imagen apta:6, palabra:1, sin título:1, duplicado/versión:1
-reynolds             775    52        8/8   sin datos de imagen:634, palabra:49, sin imagen apta:18, proporción ≠ medidas:8, fecha fuera de vida:7, autoría no preferente:4, varios autores:3
-greuze               233    40        5/5   sin datos de imagen:133, sin imagen apta:28, palabra:12, fecha fuera de vida:8, sin título:7, autoría no preferente:3, varios autores:2
-gainsborough         579    60        8/8   sin datos de imagen:462, palabra:28, sin imagen apta:16, fecha fuera de vida:5, autoría no preferente:4, proporción ≠ medidas:3, varios autores:1
-fragonard            188    39        9/9   sin datos de imagen:103, sin imagen apta:21, sin título:9, varios autores:8, palabra:6, proporción ≠ medidas:1, autoría no preferente:1, duplicado/versión:1
-goya                 518    69       16/16  sin datos de imagen:416, palabra:14, sin imagen apta:8, fecha fuera de vida:6, autoría no preferente:3, excluida:2, duplicado/versión:1
-paret                 15    13        8/8   palabra:2
-david                139    63        9/9   sin datos de imagen:52, sin imagen apta:14, varios autores:4, sin título:2, palabra:2, duplicado/versión:2, proporción ≠ medidas:1, autoría no preferente:1
-vigee-le-brun        232    64        8/8   sin datos de imagen:144, sin imagen apta:7, sin título:6, palabra:5, duplicado/versión:4, fecha fuera de vida:2, proporción ≠ medidas:2, autoría no preferente:1, varios autores:1
-borovikovski         115    55        3/3   sin datos de imagen:35, sin título:14, sin imagen apta:10, fecha fuera de vida:1, duplicado/versión:1
-vicente-lopez         68    46        8/8   sin imagen apta:18, fecha fuera de vida:1, sin título:1, palabra:1, varios autores:1, duplicado/versión:1
-friedrich            196    70        9/9   sin datos de imagen:113, sin imagen apta:9, duplicado/versión:3, proporción ≠ medidas:2, palabra:1, autoría no preferente:1
-turner               676    33        9/9   sin datos de imagen:545, palabra:48, sin imagen apta:23, proporción ≠ medidas:22, fecha fuera de vida:5
-constable            530    46        8/8   sin datos de imagen:390, palabra:57, sin imagen apta:27, proporción ≠ medidas:4, fecha fuera de vida:4, sin título:1, autoría no preferente:1, duplicado/versión:1
-tropinin              31    15        3/3   sin imagen apta:15, sin título:1
-ingres               219    54        9/9   sin datos de imagen:131, sin imagen apta:17, palabra:8, varios autores:4, proporción ≠ medidas:4, duplicado/versión:2, sin título:1
-venetsianov           51    17        3/3   sin imagen apta:21, sin título:11, palabra:1, proporción ≠ medidas:1
-gericault            165    44        8/8   sin datos de imagen:77, sin imagen apta:22, palabra:9, sin título:5, varios autores:5, proporción ≠ medidas:1, autoría no preferente:1, fecha fuera de vida:1
-corot                994    67        8/8   sin datos de imagen:894, palabra:14, sin imagen apta:8, fecha fuera de vida:4, proporción ≠ medidas:2, sin título:2, techo:1, autoría no preferente:1, varios autores:1, duplicado/versión:1
-delaroche             75    39        5/5   sin imagen apta:25, sin título:8, palabra:2, varios autores:1, duplicado/versión:1
-delacroix            425    54        9/9   sin datos de imagen:330, sin imagen apta:19, palabra:16, fecha fuera de vida:2, sin título:2, autoría no preferente:2
-briullov              65    37        4/4   sin imagen apta:25, sin título:2, palabra:1, duplicado/versión:1
-ivanov                29    15        3/3   sin imagen apta:8, sin título:3, palabra:2, fecha fuera de vida:1, duplicado/versión:1
-millet               206    49        8/8   sin datos de imagen:125, sin imagen apta:15, sin título:12, palabra:4, proporción ≠ medidas:1, duplicado/versión:1
-madrazo               87    66        8/8   sin imagen apta:11, sin datos de imagen:7, fecha fuera de vida:1, palabra:1, proporción ≠ medidas:1
-fedotov                6     4        3/3   sin imagen apta:2
-aivazovski           326    57        9/9   sin datos de imagen:238, sin imagen apta:20, palabra:6, sin título:2, proporción ≠ medidas:1, varios autores:1, fecha fuera de vida:1
-courbet              578    45        9/9   sin datos de imagen:487, sin imagen apta:21, sin título:9, palabra:8, varios autores:4, proporción ≠ medidas:2, fecha fuera de vida:1, autoría no preferente:1, duplicado/versión:1
-bouguereau           317    67        8/8   sin datos de imagen:230, sin imagen apta:11, palabra:6, fecha fuera de vida:2, duplicado/versión:2, proporción ≠ medidas:1
-moreau               158    44        6/6   sin datos de imagen:74, sin imagen apta:24, sin título:8, palabra:6, duplicado/versión:3, proporción ≠ medidas:2
-rossetti             116    45        6/6   sin imagen apta:32, sin datos de imagen:31, proporción ≠ medidas:4, varios autores:2, duplicado/versión:2, fecha fuera de vida:1, palabra:1
-millais              221    48        6/6   sin datos de imagen:130, sin imagen apta:28, palabra:10, proporción ≠ medidas:4, fecha fuera de vida:1
-pissarro             777    71        9/9   sin datos de imagen:690, sin imagen apta:8, palabra:6, proporción ≠ medidas:2, duplicado/versión:1
-savrasov              24    14        3/3   sin imagen apta:5, sin título:3, fecha fuera de vida:2
-manet                361    63       10/10  sin datos de imagen:276, sin imagen apta:15, palabra:5, duplicado/versión:2, autoría no preferente:1, proporción ≠ medidas:1
-shishkin             230    48        9/9   sin datos de imagen:146, sin imagen apta:24, palabra:6, sin título:3, proporción ≠ medidas:3, duplicado/versión:1
-martin-rico           30    17        6/6   sin imagen apta:10, fecha fuera de vida:2, sin título:1, duplicado/versión:1
-gisbert               10     5        5/5   proporción ≠ medidas:2, sin imagen apta:2, palabra:1
-whistler             371    62        8/8   sin datos de imagen:269, palabra:20, sin imagen apta:9, proporción ≠ medidas:5, varios autores:2, fecha fuera de vida:2, sin título:1, techo:1
-degas                371    59       10/10  sin datos de imagen:270, palabra:20, sin imagen apta:15, fecha fuera de vida:4, sin título:2, proporción ≠ medidas:1, duplicado/versión:1
-perov                 28    19        3/3   sin imagen apta:5, sin título:2, fecha fuera de vida:1, palabra:1
-rosales               19    14        8/8   sin imagen apta:3, palabra:2
-homer                563    70        8/8   sin datos de imagen:475, palabra:11, sin imagen apta:5, proporción ≠ medidas:2, duplicado/versión:1
-kramskoi              85    54        3/3   sin imagen apta:17, palabra:7, sin datos de imagen:5, duplicado/versión:5, sin título:2
-fortuny               72    41        8/8   sin imagen apta:26, palabra:4, sin título:1
-cezanne              739    75       10/10  sin datos de imagen:648, sin imagen apta:6, palabra:6, fecha fuera de vida:4, duplicado/versión:1
-sisley               816    51        8/8   sin datos de imagen:736, sin imagen apta:24, sin título:3, duplicado/versión:2, proporción ≠ medidas:1, palabra:1
-makovski              33    20        3/3   sin imagen apta:9, sin título:3, palabra:1, duplicado/versión:1
-monet               1264    65       12/12  sin datos de imagen:1176, sin imagen apta:12, palabra:6, fecha fuera de vida:3, proporción ≠ medidas:2, duplicado/versión:2
-renoir              2303    67       10/10  sin datos de imagen:2201, palabra:21, sin imagen apta:11, fecha fuera de vida:2, proporción ≠ medidas:1
-morisot              176    46        8/8   sin datos de imagen:90, sin título:18, sin imagen apta:16, palabra:6
-raimundo-madrazo      64    36        5/5   sin imagen apta:23, palabra:3, sin título:2
-kuindzhi              78    19        4/4   sin imagen apta:49, fecha fuera de vida:4, palabra:3, sin título:3
-vereshchagin          81    41        3/3   sin imagen apta:25, sin título:5, proporción ≠ medidas:5, fecha fuera de vida:2, palabra:2, sin datos de imagen:1
-rousseau             137    60        8/8   sin datos de imagen:53, sin imagen apta:19, fecha fuera de vida:3, palabra:2
-cassatt              117    61        8/8   sin datos de imagen:36, sin imagen apta:14, palabra:2, sin título:2, duplicado/versión:2, fecha fuera de vida:1, autoría no preferente:1
-repin                266    38        9/9   sin datos de imagen:177, sin imagen apta:25, sin título:16, sin fecha (pintor muerto ≥1930):5, palabra:3, proporción ≠ medidas:1, varios autores:1
-polenov              161    17        3/3   sin datos de imagen:81, sin título:54, sin imagen apta:9
-beruete               33     9        8/8   sin imagen apta:23, sin título:1
-pradilla              19    10        8/8   sin imagen apta:8, excluida:1
-gauguin              498    71       10/10  sin datos de imagen:417, sin imagen apta:6, proporción ≠ medidas:1, palabra:1, sin título:1, varios autores:1
-caillebotte          244    48        8/8   sin datos de imagen:161, sin imagen apta:22, sin título:10, palabra:3, duplicado/versión:1
-surikov               20    12        4/4   sin imagen apta:4, sin título:3, palabra:1
-vasnetsov             41    23        4/4   sin imagen apta:12, sin título:5, palabra:1
-pinazo                32    13        8/8   sin imagen apta:13, fecha fuera de vida:3, palabra:2, sin título:1
-waterhouse           134    48        8/8   sin datos de imagen:38, sin imagen apta:27, palabra:18, duplicado/versión:4, proporción ≠ medidas:2, fecha fuera de vida:1
-kroyer               272    56        6/6   sin datos de imagen:188, sin imagen apta:17, palabra:6, fecha fuera de vida:2, proporción ≠ medidas:1, sin título:1, varios autores:1
-van-gogh             937    71       12/12  sin datos de imagen:836, palabra:13, sin imagen apta:8, varios autores:5, proporción ≠ medidas:2, fecha fuera de vida:1, según otra obra:1, duplicado/versión:1
-sargent              649    57        9/9   sin datos de imagen:502, palabra:50, sin imagen apta:20, fecha fuera de vida:16, proporción ≠ medidas:2, sin título:1, techo:1
-vrubel                24     8        4/4   sin imagen apta:10, proporción ≠ medidas:3, palabra:3
-regoyos               33    25        8/8   sin imagen apta:7, proporción ≠ medidas:1, duplicado/versión:1
-seurat               152    55        8/8   sin datos de imagen:61, sin imagen apta:19, palabra:17, duplicado/versión:3
-levitan              229    29        9/9   sin datos de imagen:148, sin imagen apta:29, sin título:21, proporción ≠ medidas:1, palabra:1
-zorn                 313    63        6/6   sin datos de imagen:228, sin imagen apta:13, sin título:4, fecha fuera de vida:3, palabra:2, duplicado/versión:2
-rusinol               97    29        8/8   sin imagen apta:27, sin datos de imagen:15, sin título:12, sin fecha (pintor muerto ≥1930):11, varios autores:2, palabra:1, duplicado/versión:1
-klimt                158    70       10/10  sin datos de imagen:76, sin imagen apta:10, palabra:2
-nesterov              36    14        3/3   posterior a 1929:10, sin imagen apta:6, sin fecha (pintor muerto ≥1930):3, sin título:2, palabra:1
-signac               194    47        8/8   sin datos de imagen:96, sin imagen apta:26, sin fecha (pintor muerto ≥1930):15, posterior a 1929:7, proporción ≠ medidas:2, sin título:1
-sorolla              342    54       14/14  sin datos de imagen:253, sin imagen apta:23, palabra:8, fecha fuera de vida:2, excluida:1, sin título:1, duplicado/versión:1
-munch               1822    65       10/10  sin datos de imagen:1572, posterior a 1929:123, palabra:31, sin fecha (pintor muerto ≥1930):17, sin imagen apta:12, duplicado/versión:4, proporción ≠ medidas:1, techo:1
-lautrec              235    61        9/9   sin datos de imagen:155, sin imagen apta:11, proporción ≠ medidas:3, sin título:3, palabra:2
-hammershoi           114    53        8/8   sin datos de imagen:31, sin imagen apta:21, palabra:6, duplicado/versión:3, fecha fuera de vida:2, sin título:1
-serov                 65    34        4/4   sin imagen apta:27, sin título:3, duplicado/versión:2, fecha fuera de vida:1
-casas                105    34        8/8   sin imagen apta:27, sin datos de imagen:21, sin fecha (pintor muerto ≥1930):13, sin título:8, proporción ≠ medidas:1, varios autores:1, duplicado/versión:1
-kandinsky            445    41        6/6   sin datos de imagen:274, posterior a 1929:79, sin imagen apta:25, palabra:20, sin fecha (pintor muerto ≥1930):3, proporción ≠ medidas:3
-zuloaga               49    20        8/8   sin imagen apta:18, posterior a 1929:5, sin fecha (pintor muerto ≥1930):3, sin título:2, palabra:1, duplicado/versión:1
-nonell                31    20        8/8   sin imagen apta:10, sin título:1, duplicado/versión:1
-mir                   33     8        8/8   sin fecha (pintor muerto ≥1930):11, sin título:7, sin imagen apta:6, proporción ≠ medidas:1
-romero-de-torres     171    28        8/8   sin datos de imagen:73, sin imagen apta:39, sin fecha (pintor muerto ≥1930):18, palabra:8, posterior a 1929:4, varios autores:1, duplicado/versión:1
-petrov-vodkin         19     8        3/3   posterior a 1929:5, sin imagen apta:4, palabra:1, sin título:1
-malevich             148    26        4/4   sin datos de imagen:60, sin imagen apta:43, posterior a 1929:12, palabra:4, sin fecha (pintor muerto ≥1930):2, autoría no preferente:1, duplicado/versión:1
-modigliani           536    64        9/9   sin datos de imagen:451, sin imagen apta:10, sin título:7, duplicado/versión:4, palabra:3, autoría no preferente:1
-juan-gris            205    63        6/6   sin datos de imagen:124, sin imagen apta:16, duplicado/versión:3, sin título:1, palabra:1
-schiele              124    55        8/8   sin datos de imagen:43, sin imagen apta:11, sin título:8, palabra:5, proporción ≠ medidas:2
-TOTAL 1180 obras de 148 pintores
-por país: España 336, Francia 279, Italia 174, Rusia 109, Países Bajos 68, Reino Unido 53, Flandes 39, Alemania 36, Estados Unidos 33, Austria 18, Dinamarca 14, Noruega 10, Suecia 6, Suiza 5
-títulos por fuente: {'wikidata-es': 903, 'manual': 22, 'traducido': 255}
+pintor             categ  cand aptas elegidas/obj  nivel 1 y «a fondo»  | motivos de descarte
+giotto             invit    55    21    3/3   n1=3   | sin imagen apta:20, varios autores:5, proporción ≠ medidas:3, palabra:2, sin título:2, excluida:1, autoría no preferente:1
+van-eyck           maest    57    26   12/12  n1=7 L2:5  | varios autores:16, autoría no preferente:5, sin imagen apta:4, proporción ≠ medidas:2, palabra:2, sin título:1, fecha fuera de vida:1, duplicado/versión:1
+fra-angelico       invit   194    41    3/3   n1=3   | sin datos de imagen:92, palabra:38, sin imagen apta:10, varios autores:8, proporción ≠ medidas:5, duplicado/versión:5
+van-der-weyden     invit    88    38    3/3   n1=3   | palabra:16, sin imagen apta:15, proporción ≠ medidas:7, varios autores:7, duplicado/versión:6, fecha fuera de vida:2, autoría no preferente:1, sin título:1, sin datos de imagen:1
+piero              invit    34    26    3/3   n1=3   | sin imagen apta:5, proporción ≠ medidas:1, sin título:1, varios autores:1
+bellini            invit   180    64    3/3   n1=3   | sin datos de imagen:90, duplicado/versión:13, sin imagen apta:8, palabra:7, varios autores:4, proporción ≠ medidas:3, fecha fuera de vida:3, autoría no preferente:1
+mantegna           invit    99    61    3/3   n1=3   | sin datos de imagen:18, sin imagen apta:7, proporción ≠ medidas:5, fecha fuera de vida:3, palabra:2, duplicado/versión:2, autoría no preferente:1, techo:1, varios autores:1
+botticelli         maest   176    66   12/12  n1=7 L2:5  | sin datos de imagen:68, palabra:13, varios autores:11, fecha fuera de vida:8, sin imagen apta:5, duplicado/versión:4, proporción ≠ medidas:3, autoría no preferente:2
+berruguete         maest    46    25   12/12  n1=7 L2:5  | varios autores:15, sin imagen apta:5, palabra:1, duplicado/versión:1
+bosco              maest    86    32   12/12  n1=7 L2:5  | palabra:16, sin imagen apta:10, fecha fuera de vida:9, varios autores:9, proporción ≠ medidas:5, sin datos de imagen:4, duplicado/versión:4, sin título:1
+leonardo           gran-    40    16   11/14  n1=8 L2:3  | palabra:7, varios autores:6, autoría no preferente:5, sin imagen apta:4, excluida:2, duplicado/versión:1  <-- corto
+durero             maest   162    66   12/12  n1=7 L2:5  | sin datos de imagen:60, palabra:10, autoría no preferente:9, sin imagen apta:8, duplicado/versión:6, fecha fuera de vida:5, proporción ≠ medidas:2, varios autores:1, sin título:1
+cranach            invit   907    66    3/3   n1=3   | sin datos de imagen:644, palabra:93, varios autores:75, autoría no preferente:13, duplicado/versión:9, fecha fuera de vida:7, sin imagen apta:5, proporción ≠ medidas:3, según otra obra:1
+miguel-angel       maest    40    13    7/7   n1=7   | sin imagen apta:19, excluida:4, proporción ≠ medidas:2, palabra:1, techo:1
+giorgione          invit    43    25    3/3   n1=3   | sin imagen apta:5, fecha fuera de vida:4, varios autores:3, autoría no preferente:3, sin título:2, duplicado/versión:2, proporción ≠ medidas:1
+rafael             gran-   229    68   32/32  n1=8 L2:6 L3:6 L4:6 L5:6  | sin datos de imagen:109, palabra:28, varios autores:10, sin imagen apta:6, fecha fuera de vida:6, proporción ≠ medidas:1, autoría no preferente:1, duplicado/versión:1
+tiziano            gran-   341    77   32/32  n1=8 L2:6 L3:6 L4:6 L5:6  | sin datos de imagen:238, palabra:11, varios autores:7, autoría no preferente:7, duplicado/versión:2, sin imagen apta:1
+correggio          invit   121    47    3/3   n1=3   | sin imagen apta:25, sin datos de imagen:24, palabra:21, fecha fuera de vida:3, proporción ≠ medidas:1
+holbein            invit   152    57    3/3   n1=3   | sin datos de imagen:55, palabra:15, sin imagen apta:13, autoría no preferente:7, sin título:3, proporción ≠ medidas:1, varios autores:1
+juan-de-juanes     invit    32    21    4/4   n1=4   | sin imagen apta:5, varios autores:3, proporción ≠ medidas:1, excluida:1, autoría no preferente:1, duplicado/versión:1
+morales            invit    60    40    4/4   n1=4   | sin imagen apta:16, duplicado/versión:9, proporción ≠ medidas:2, palabra:2
+tintoretto         invit   369    62    3/3   n1=3   | sin datos de imagen:276, sin imagen apta:15, palabra:10, autoría no preferente:3, varios autores:2, fecha fuera de vida:1, duplicado/versión:1
+bruegel            maest    55    38   12/12  n1=7 L2:5  | autoría no preferente:8, sin imagen apta:6, fecha fuera de vida:1, varios autores:1, palabra:1, duplicado/versión:1
+veronese           maest   311    66   12/12  n1=7 L2:5  | sin datos de imagen:190, palabra:29, duplicado/versión:13, sin imagen apta:10, varios autores:6, autoría no preferente:4, fecha fuera de vida:3, sin título:2, proporción ≠ medidas:1
+sanchez-coello     invit    58    33    4/4   n1=4   | sin imagen apta:16, palabra:5, sin título:2, autoría no preferente:1, fecha fuera de vida:1
+sofonisba          invit    43    29    3/3   n1=3   | sin imagen apta:11, sin título:2, duplicado/versión:2, varios autores:1
+el-greco           gran-   538    65   26/26  n1=8 L2:6 L3:6 L4:6  | sin datos de imagen:371, autoría no preferente:39, varios autores:35, palabra:13, sin imagen apta:12, duplicado/versión:5, proporción ≠ medidas:2, fecha fuera de vida:1
+ribalta            invit    14     9    4/4   n1=4   | sin imagen apta:3, sin título:1, fecha fuera de vida:1
+caravaggio         gran-    98    72   26/26  n1=8 L2:6 L3:6 L4:6  | sin datos de imagen:14, duplicado/versión:9, sin imagen apta:4, proporción ≠ medidas:3, autoría no preferente:2, palabra:1, varios autores:1, fecha fuera de vida:1
+rubens             gran-  1615    67   32/32  n1=8 L2:6 L3:6 L4:6 L5:6  | sin datos de imagen:1077, varios autores:203, palabra:113, fecha fuera de vida:95, autoría no preferente:51, sin imagen apta:7, duplicado/versión:3, proporción ≠ medidas:1, según otra obra:1
+maino              invit    26    17    4/4   n1=4   | sin imagen apta:6, fecha fuera de vida:2, duplicado/versión:2, sin título:1
+hals               maest   298    56   12/12  n1=7 L2:5  | sin datos de imagen:178, varios autores:30, sin imagen apta:16, palabra:14, duplicado/versión:4, autoría no preferente:2, proporción ≠ medidas:1, fecha fuera de vida:1
+ribera             maest   258    50   12/12  n1=7 L2:5  | sin datos de imagen:151, sin imagen apta:24, palabra:15, fecha fuera de vida:6, autoría no preferente:5, varios autores:3, sin título:3, duplicado/versión:3, proporción ≠ medidas:1
+la-tour            invit    50    36    3/3   n1=3   | sin imagen apta:13, sin título:1, duplicado/versión:1
+artemisia          maest   129    41   12/12  n1=7 L2:5  | sin datos de imagen:40, sin imagen apta:24, varios autores:15, palabra:5, sin título:4, duplicado/versión:4
+poussin            invit   232    67    3/3   n1=3   | sin datos de imagen:137, sin imagen apta:9, autoría no preferente:8, varios autores:4, proporción ≠ medidas:3, palabra:3, sin título:1, duplicado/versión:1
+zurbaran           gran-   314    60   25/26  n1=8 L2:6 L3:6 L4:5  | sin datos de imagen:218, sin imagen apta:15, autoría no preferente:8, varios autores:8, excluida:2, duplicado/versión:2, palabra:1, proporción ≠ medidas:1, fecha fuera de vida:1  <-- corto
+velazquez          gran-   177    70   33/32  n1=9 L2:6 L3:6 L4:6 L5:6  | sin datos de imagen:76, autoría no preferente:11, palabra:7, sin imagen apta:5, varios autores:3, excluida:2, fecha fuera de vida:2, proporción ≠ medidas:1, duplicado/versión:1
+van-dyck           maest  1346    65   12/12  n1=7 L2:5  | sin datos de imagen:994, palabra:91, autoría no preferente:69, varios autores:66, fecha fuera de vida:48, sin imagen apta:9, duplicado/versión:9, proporción ≠ medidas:3, según otra obra:1
+claudio-de-lorena  invit   225    61    3/3   n1=3   | sin datos de imagen:135, sin imagen apta:17, palabra:10, sin título:2, duplicado/versión:1
+alonso-cano        invit    62    37    4/4   n1=4   | sin imagen apta:15, sin título:4, autoría no preferente:3, palabra:2, excluida:1, duplicado/versión:1
+rembrandt          gran-   781    74   32/32  n1=8 L2:6 L3:6 L4:6 L5:6  | sin datos de imagen:502, autoría no preferente:96, palabra:56, varios autores:49, sin imagen apta:3, duplicado/versión:3, proporción ≠ medidas:1
+leyster            invit    47    23    3/3   n1=3   | sin imagen apta:11, varios autores:8, palabra:2, autoría no preferente:2, sin título:1
+pereda             invit    33    19    4/4   n1=4   | sin imagen apta:11, palabra:2, duplicado/versión:2, autoría no preferente:1
+carreno            invit    66    32    4/4   n1=4   | sin imagen apta:27, duplicado/versión:4, excluida:3, palabra:2, sin título:2
+murillo            gran-   317    56   31/32  n1=8 L2:6 L3:5 L4:6 L5:6  | sin datos de imagen:213, sin imagen apta:17, palabra:17, autoría no preferente:6, fecha fuera de vida:4, sin título:2, proporción ≠ medidas:1, varios autores:1, duplicado/versión:1  <-- corto
+valdes-leal        invit    71    37    4/4   n1=4   | sin imagen apta:30, palabra:3, proporción ≠ medidas:1
+steen              invit   410    55    3/3   n1=3   | sin datos de imagen:307, sin imagen apta:19, palabra:13, autoría no preferente:7, varios autores:4, fecha fuera de vida:3, duplicado/versión:3, proporción ≠ medidas:2
+vermeer            maest    37    33   12/12  n1=7 L2:5  | autoría no preferente:3, sin imagen apta:1
+claudio-coello     invit    34    18    4/4   n1=4   | sin imagen apta:15, fecha fuera de vida:1, duplicado/versión:1
+watteau            maest   135    50   12/12  n1=7 L2:5  | sin datos de imagen:50, sin imagen apta:17, sin título:7, palabra:5, autoría no preferente:3, duplicado/versión:3, varios autores:2, fecha fuera de vida:1
+tiepolo            invit   287    61    3/3   n1=3   | sin datos de imagen:193, sin imagen apta:13, palabra:10, sin título:5, varios autores:3, fecha fuera de vida:1, autoría no preferente:1, duplicado/versión:1
+canaletto          invit   412    49    3/3   n1=3   | sin datos de imagen:265, palabra:64, fecha fuera de vida:12, sin imagen apta:11, varios autores:8, sin título:1, proporción ≠ medidas:1, autoría no preferente:1
+chardin            invit   208    41    3/3   n1=3   | sin datos de imagen:118, sin imagen apta:26, palabra:14, sin título:5, duplicado/versión:4, varios autores:2, fecha fuera de vida:1, autoría no preferente:1
+liotard            invit    72    42    3/3   n1=3   | sin imagen apta:18, sin título:6, palabra:3, varios autores:2, autoría no preferente:1
+boucher            invit   329    55    3/3   n1=3   | sin datos de imagen:235, sin imagen apta:17, palabra:10, fecha fuera de vida:4, sin título:4, varios autores:3, proporción ≠ medidas:1, duplicado/versión:1
+melendez           maest    64    56   12/12  n1=7 L2:5  | sin imagen apta:6, palabra:1, sin título:1, duplicado/versión:1
+reynolds           invit   775    52    3/3   n1=3   | sin datos de imagen:634, palabra:49, sin imagen apta:18, proporción ≠ medidas:8, fecha fuera de vida:7, autoría no preferente:4, varios autores:3
+greuze             invit   233    40    3/3   n1=3   | sin datos de imagen:133, sin imagen apta:28, palabra:12, fecha fuera de vida:8, sin título:7, autoría no preferente:3, varios autores:2
+gainsborough       invit   579    60    3/3   n1=3   | sin datos de imagen:462, palabra:28, sin imagen apta:16, fecha fuera de vida:5, autoría no preferente:4, proporción ≠ medidas:3, varios autores:1
+fragonard          maest   188    39   12/12  n1=7 L2:5  | sin datos de imagen:103, sin imagen apta:21, sin título:9, varios autores:8, palabra:6, proporción ≠ medidas:1, autoría no preferente:1, duplicado/versión:1
+goya               gran-   518    69   38/38  n1=8 L2:6 L3:6 L4:6 L5:6 L6:6  | sin datos de imagen:416, palabra:14, sin imagen apta:8, fecha fuera de vida:6, autoría no preferente:3, excluida:2, duplicado/versión:1
+paret              invit    15    13    4/4   n1=4   | palabra:2
+david              maest   139    63   12/12  n1=7 L2:5  | sin datos de imagen:52, sin imagen apta:14, varios autores:4, sin título:2, palabra:2, duplicado/versión:2, proporción ≠ medidas:1, autoría no preferente:1
+vigee-le-brun      invit   232    64    8/8   n1=3 L2:5  | sin datos de imagen:144, sin imagen apta:7, sin título:6, palabra:5, duplicado/versión:4, fecha fuera de vida:2, proporción ≠ medidas:2, autoría no preferente:1, varios autores:1
+borovikovski       invit   115    55    3/3   n1=3   | sin datos de imagen:35, sin título:14, sin imagen apta:10, fecha fuera de vida:1, duplicado/versión:1
+vicente-lopez      invit    68    46    4/4   n1=4   | sin imagen apta:18, fecha fuera de vida:1, sin título:1, palabra:1, varios autores:1, duplicado/versión:1
+friedrich          maest   196    70   12/12  n1=7 L2:5  | sin datos de imagen:113, sin imagen apta:9, duplicado/versión:3, proporción ≠ medidas:2, palabra:1, autoría no preferente:1
+turner             maest   676    33   12/12  n1=7 L2:5  | sin datos de imagen:545, palabra:48, sin imagen apta:23, proporción ≠ medidas:22, fecha fuera de vida:5
+constable          invit   530    46    3/3   n1=3   | sin datos de imagen:390, palabra:57, sin imagen apta:27, proporción ≠ medidas:4, fecha fuera de vida:4, sin título:1, autoría no preferente:1, duplicado/versión:1
+tropinin           invit    31    15    3/3   n1=3   | sin imagen apta:15, sin título:1
+ingres             maest   219    54   12/12  n1=7 L2:5  | sin datos de imagen:131, sin imagen apta:17, palabra:8, varios autores:4, proporción ≠ medidas:4, duplicado/versión:2, sin título:1
+venetsianov        invit    51    17    3/3   n1=3   | sin imagen apta:21, sin título:11, palabra:1, proporción ≠ medidas:1
+gericault          invit   165    44    3/3   n1=3   | sin datos de imagen:77, sin imagen apta:22, palabra:9, sin título:5, varios autores:5, proporción ≠ medidas:1, autoría no preferente:1, fecha fuera de vida:1
+corot              invit   994    67    3/3   n1=3   | sin datos de imagen:894, palabra:14, sin imagen apta:8, fecha fuera de vida:4, proporción ≠ medidas:2, sin título:2, techo:1, autoría no preferente:1, varios autores:1, duplicado/versión:1
+delaroche          invit    75    39    3/3   n1=3   | sin imagen apta:25, sin título:8, palabra:2, varios autores:1, duplicado/versión:1
+delacroix          maest   425    54   12/12  n1=7 L2:5  | sin datos de imagen:330, sin imagen apta:19, palabra:16, fecha fuera de vida:2, sin título:2, autoría no preferente:2
+briullov           invit    65    37    3/3   n1=3   | sin imagen apta:25, sin título:2, palabra:1, duplicado/versión:1
+ivanov             invit    29    15    3/3   n1=3   | sin imagen apta:8, sin título:3, palabra:2, fecha fuera de vida:1, duplicado/versión:1
+millet             maest   206    49   12/12  n1=7 L2:5  | sin datos de imagen:125, sin imagen apta:15, sin título:12, palabra:4, proporción ≠ medidas:1, duplicado/versión:1
+madrazo            maest    87    66   12/12  n1=7 L2:5  | sin imagen apta:11, sin datos de imagen:7, fecha fuera de vida:1, palabra:1, proporción ≠ medidas:1
+fedotov            invit     6     4    3/3   n1=3   | sin imagen apta:2
+aivazovski         invit   326    57    3/3   n1=3   | sin datos de imagen:238, sin imagen apta:20, palabra:6, sin título:2, proporción ≠ medidas:1, varios autores:1, fecha fuera de vida:1
+courbet            maest   578    45   12/12  n1=7 L2:5  | sin datos de imagen:487, sin imagen apta:21, sin título:9, palabra:8, varios autores:4, proporción ≠ medidas:2, fecha fuera de vida:1, autoría no preferente:1, duplicado/versión:1
+bonheur            invit   286    47    3/3   n1=3   | sin datos de imagen:204, sin imagen apta:21, sin título:9, palabra:4, duplicado/versión:2, varios autores:1
+bouguereau         invit   317    67    3/3   n1=3   | sin datos de imagen:230, sin imagen apta:11, palabra:6, fecha fuera de vida:2, duplicado/versión:2, proporción ≠ medidas:1
+moreau             invit   158    44    3/3   n1=3   | sin datos de imagen:74, sin imagen apta:24, sin título:8, palabra:6, duplicado/versión:3, proporción ≠ medidas:2
+rossetti           invit   116    45    3/3   n1=3   | sin imagen apta:32, sin datos de imagen:31, proporción ≠ medidas:4, varios autores:2, duplicado/versión:2, fecha fuera de vida:1, palabra:1
+millais            invit   221    48    3/3   n1=3   | sin datos de imagen:130, sin imagen apta:28, palabra:10, proporción ≠ medidas:4, fecha fuera de vida:1
+pissarro           maest   777    71   12/12  n1=7 L2:5  | sin datos de imagen:690, sin imagen apta:8, palabra:6, proporción ≠ medidas:2, duplicado/versión:1
+savrasov           invit    24    14    3/3   n1=3   | sin imagen apta:5, sin título:3, fecha fuera de vida:2
+manet              maest   361    63   12/12  n1=7 L2:5  | sin datos de imagen:276, sin imagen apta:15, palabra:5, duplicado/versión:2, autoría no preferente:1, proporción ≠ medidas:1
+shishkin           invit   230    48    3/3   n1=3   | sin datos de imagen:146, sin imagen apta:24, palabra:6, sin título:3, proporción ≠ medidas:3, duplicado/versión:1
+martin-rico        invit    30    17    4/4   n1=4   | sin imagen apta:10, fecha fuera de vida:2, sin título:1, duplicado/versión:1
+gisbert            invit    10     5    4/4   n1=4   | proporción ≠ medidas:2, sin imagen apta:2, palabra:1
+whistler           invit   371    62    3/3   n1=3   | sin datos de imagen:269, palabra:20, sin imagen apta:9, proporción ≠ medidas:5, varios autores:2, fecha fuera de vida:2, sin título:1, techo:1
+degas              maest   371    59   12/12  n1=7 L2:5  | sin datos de imagen:270, palabra:20, sin imagen apta:15, fecha fuera de vida:4, sin título:2, proporción ≠ medidas:1, duplicado/versión:1
+perov              invit    28    19    3/3   n1=3   | sin imagen apta:5, sin título:2, fecha fuera de vida:1, palabra:1
+rosales            maest    19    14   12/12  n1=7 L2:5  | sin imagen apta:3, palabra:2
+homer              invit   563    70    3/3   n1=3   | sin datos de imagen:475, palabra:11, sin imagen apta:5, proporción ≠ medidas:2, duplicado/versión:1
+kramskoi           invit    85    54    3/3   n1=3   | sin imagen apta:17, palabra:7, sin datos de imagen:5, duplicado/versión:5, sin título:2
+fortuny            maest    72    41   11/12  n1=7 L2:4  | sin imagen apta:26, palabra:4, sin título:1  <-- corto
+cezanne            maest   739    75   12/12  n1=7 L2:5  | sin datos de imagen:648, sin imagen apta:6, palabra:6, fecha fuera de vida:4, duplicado/versión:1
+sisley             maest   816    51   12/12  n1=7 L2:5  | sin datos de imagen:736, sin imagen apta:24, sin título:3, duplicado/versión:2, proporción ≠ medidas:1, palabra:1
+makovski           invit    33    20    3/3   n1=3   | sin imagen apta:9, sin título:3, palabra:1, duplicado/versión:1
+monet              gran-  1264    65   32/32  n1=8 L2:6 L3:6 L4:6 L5:6  | sin datos de imagen:1176, sin imagen apta:12, palabra:6, fecha fuera de vida:3, proporción ≠ medidas:2, duplicado/versión:2
+renoir             maest  2303    67   12/12  n1=7 L2:5  | sin datos de imagen:2201, palabra:21, sin imagen apta:11, fecha fuera de vida:2, proporción ≠ medidas:1
+morisot            maest   176    46   12/12  n1=7 L2:5  | sin datos de imagen:90, sin título:18, sin imagen apta:16, palabra:6
+raimundo-madrazo   invit    64    36    4/4   n1=4   | sin imagen apta:23, palabra:3, sin título:2
+bazille            invit    64    45    3/3   n1=3   | sin imagen apta:12, sin título:3, palabra:2, proporción ≠ medidas:1, varios autores:1, duplicado/versión:1
+kuindzhi           invit    78    19    3/3   n1=3   | sin imagen apta:49, fecha fuera de vida:4, palabra:3, sin título:3
+vereshchagin       invit    81    41    3/3   n1=3   | sin imagen apta:25, sin título:5, proporción ≠ medidas:5, fecha fuera de vida:2, palabra:2, sin datos de imagen:1
+rousseau           invit   137    60    3/3   n1=3   | sin datos de imagen:53, sin imagen apta:19, fecha fuera de vida:3, palabra:2
+cassatt            invit   117    61    8/8   n1=3 L2:5  | sin datos de imagen:36, sin imagen apta:14, palabra:2, sin título:2, duplicado/versión:2, fecha fuera de vida:1, autoría no preferente:1
+repin              maest   266    38   12/12  n1=7 L2:5  | sin datos de imagen:177, sin imagen apta:25, sin título:16, sin fecha (pintor muerto ≥1930):5, palabra:3, proporción ≠ medidas:1, varios autores:1
+polenov            invit   161    17    3/3   n1=3   | sin datos de imagen:81, sin título:54, sin imagen apta:9
+beruete            invit    33     9    4/4   n1=4   | sin imagen apta:23, sin título:1
+pradilla           invit    19    10    4/4   n1=4   | sin imagen apta:8, excluida:1
+gauguin            maest   498    71   12/12  n1=7 L2:5  | sin datos de imagen:417, sin imagen apta:6, proporción ≠ medidas:1, palabra:1, sin título:1, varios autores:1
+caillebotte        invit   244    48    3/3   n1=3   | sin datos de imagen:161, sin imagen apta:22, sin título:10, palabra:3, duplicado/versión:1
+surikov            invit    20    12    3/3   n1=3   | sin imagen apta:4, sin título:3, palabra:1
+vasnetsov          invit    41    23    3/3   n1=3   | sin imagen apta:12, sin título:5, palabra:1
+pinazo             invit    32    13    4/4   n1=4   | sin imagen apta:13, fecha fuera de vida:3, palabra:2, sin título:1
+waterhouse         invit   134    48    3/3   n1=3   | sin datos de imagen:38, sin imagen apta:27, palabra:18, duplicado/versión:4, proporción ≠ medidas:2, fecha fuera de vida:1
+kroyer             invit   272    56    3/3   n1=3   | sin datos de imagen:188, sin imagen apta:17, palabra:6, fecha fuera de vida:2, proporción ≠ medidas:1, sin título:1, varios autores:1
+van-gogh           gran-   937    71   38/38  n1=8 L2:6 L3:6 L4:6 L5:6 L6:6  | sin datos de imagen:836, palabra:13, sin imagen apta:8, varios autores:5, proporción ≠ medidas:2, fecha fuera de vida:1, según otra obra:1, duplicado/versión:1
+sargent            invit   649    57    3/3   n1=3   | sin datos de imagen:502, palabra:50, sin imagen apta:20, fecha fuera de vida:16, proporción ≠ medidas:2, sin título:1, techo:1
+vrubel             invit    24     8    3/3   n1=3   | sin imagen apta:10, proporción ≠ medidas:3, palabra:3
+regoyos            invit    33    25    4/4   n1=4   | sin imagen apta:7, proporción ≠ medidas:1, duplicado/versión:1
+seurat             maest   152    55   12/12  n1=7 L2:5  | sin datos de imagen:61, sin imagen apta:19, palabra:17, duplicado/versión:3
+levitan            invit   229    29    3/3   n1=3   | sin datos de imagen:148, sin imagen apta:29, sin título:21, proporción ≠ medidas:1, palabra:1
+zorn               invit   313    63    3/3   n1=3   | sin datos de imagen:228, sin imagen apta:13, sin título:4, fecha fuera de vida:3, palabra:2, duplicado/versión:2
+rusinol            invit    97    29    4/4   n1=4   | sin imagen apta:27, sin datos de imagen:15, sin título:12, sin fecha (pintor muerto ≥1930):11, varios autores:2, palabra:1, duplicado/versión:1
+klimt              maest   158    70   12/12  n1=7 L2:5  | sin datos de imagen:76, sin imagen apta:10, palabra:2
+nesterov           invit    36    14    3/3   n1=3   | posterior a 1929:10, sin imagen apta:6, sin fecha (pintor muerto ≥1930):3, sin título:2, palabra:1
+signac             invit   194    47    3/3   n1=3   | sin datos de imagen:96, sin imagen apta:26, sin fecha (pintor muerto ≥1930):15, posterior a 1929:7, proporción ≠ medidas:2, sin título:1
+sorolla            gran-   342    54   25/26  n1=8 L2:6 L3:6 L4:5  | sin datos de imagen:253, sin imagen apta:23, palabra:8, fecha fuera de vida:2, excluida:1, sin título:1, duplicado/versión:1  <-- corto
+munch              maest  1822    65   12/12  n1=7 L2:5  | sin datos de imagen:1572, posterior a 1929:123, palabra:31, sin fecha (pintor muerto ≥1930):17, sin imagen apta:12, duplicado/versión:4, proporción ≠ medidas:1, techo:1
+lautrec            maest   235    61   12/12  n1=7 L2:5  | sin datos de imagen:155, sin imagen apta:11, proporción ≠ medidas:3, sin título:3, palabra:2
+hammershoi         invit   114    53    3/3   n1=3   | sin datos de imagen:31, sin imagen apta:21, palabra:6, duplicado/versión:3, fecha fuera de vida:2, sin título:1
+serov              invit    65    34    3/3   n1=3   | sin imagen apta:27, sin título:3, duplicado/versión:2, fecha fuera de vida:1
+casas              invit   105    34    4/4   n1=4   | sin imagen apta:27, sin datos de imagen:21, sin fecha (pintor muerto ≥1930):13, sin título:8, proporción ≠ medidas:1, varios autores:1, duplicado/versión:1
+kandinsky          maest   445    41   12/12  n1=7 L2:5  | sin datos de imagen:274, posterior a 1929:79, sin imagen apta:25, palabra:20, sin fecha (pintor muerto ≥1930):3, proporción ≠ medidas:3
+zuloaga            invit    49    20    4/4   n1=4   | sin imagen apta:18, posterior a 1929:5, sin fecha (pintor muerto ≥1930):3, sin título:2, palabra:1, duplicado/versión:1
+nonell             invit    31    20    4/4   n1=4   | sin imagen apta:10, sin título:1, duplicado/versión:1
+mir                invit    33     8    4/4   n1=4   | sin fecha (pintor muerto ≥1930):11, sin título:7, sin imagen apta:6, proporción ≠ medidas:1
+romero-de-torres   maest   171    28   12/12  n1=7 L2:5  | sin datos de imagen:73, sin imagen apta:39, sin fecha (pintor muerto ≥1930):18, palabra:8, posterior a 1929:4, varios autores:1, duplicado/versión:1
+petrov-vodkin      invit    19     8    3/3   n1=3   | posterior a 1929:5, sin imagen apta:4, palabra:1, sin título:1
+malevich           invit   148    26    3/3   n1=3   | sin datos de imagen:60, sin imagen apta:43, posterior a 1929:12, palabra:4, sin fecha (pintor muerto ≥1930):2, autoría no preferente:1, duplicado/versión:1
+modigliani         invit   536    64    3/3   n1=3   | sin datos de imagen:451, sin imagen apta:10, sin título:7, duplicado/versión:4, palabra:3, autoría no preferente:1
+juan-gris          maest   205    63   12/12  n1=7 L2:5  | sin datos de imagen:124, sin imagen apta:16, duplicado/versión:3, sin título:1, palabra:1
+schiele            invit   124    55    3/3   n1=3   | sin datos de imagen:43, sin imagen apta:11, sin título:8, palabra:5, proporción ≠ medidas:2
+TOTAL 1233 obras de 152 pintores
+por país: España 369, Francia 292, Italia 180, Países Bajos 124, Rusia 93, Flandes 59, Alemania 30, Reino Unido 30, Estados Unidos 17, Austria 15, Noruega 12, Dinamarca 6, Suiza 3, Suecia 3
+títulos por fuente: {'wikidata-es': 972, 'revisar-idioma': 1, 'traducir': 93, 'manual': 22, 'traducido': 145}

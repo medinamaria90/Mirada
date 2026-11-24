@@ -13,3 +13,10 @@ ok     bazille            Q207298      64 candidatas; de las 80 primeras, 52 con
 fin 2026-11-24 20:14:42
 58M	.git
 2.8M	catalogo
+== seleccionar  20:14:45
+schiele            invit   124    55    3/3   n1=3   | sin datos de imagen:43, sin imagen apta:11, sin título:8, palabra:5, proporción ≠ medidas:2
+TOTAL 1233 obras de 152 pintores
+por país: España 369, Francia 292, Italia 180, Países Bajos 124, Rusia 93, Flandes 59, Alemania 30, Reino Unido 30, Estados Unidos 17, Austria 15, Noruega 12, Dinamarca 6, Suiza 3, Suecia 3
+títulos por fuente: {'wikidata-es': 972, 'revisar-idioma': 1, 'traducir': 93, 'manual': 22, 'traducido': 145}
+58M	.git
+2.8M	catalogo
