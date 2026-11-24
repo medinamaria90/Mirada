@@ -836,6 +836,16 @@ section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--lin
 .learned-text { display: grid; gap: 2px; min-width: 0; }
 .learned-name { font: 500 1.15rem/1.1 var(--font); }
 .learned-trait { font-size: .93rem; color: var(--ink); }
+/* Cierre del día (meta cumplida): lo aprendido hoy y la próxima parada. Informativo. */
+.day-done {
+  display: grid; gap: .45rem; padding: .9rem 1rem; border-radius: var(--radius);
+  box-shadow: inset 0 0 0 1.5px var(--line); animation: rise .5s var(--ease) both; animation-delay: .3s;
+}
+.day-done-line { font: 500 1.08rem/1.25 var(--font); }
+.day-done-thumbs { display: flex; gap: .5rem; margin: .15rem 0; }
+.day-done-thumb { width: 52px; height: 52px; flex: none; aspect-ratio: auto; border-radius: 8px; }
+.day-done-next { color: var(--ink-2); }
+.day-done-next strong { color: var(--ink); font-weight: 600; }
 
 /* Mapa: progreso global, sellos y final */
 .overall { display: grid; gap: .45rem; margin: -.6rem 0 2rem; }

@@ -201,3 +201,97 @@ test('pintor dormido: dominado y sin salir en 7 días se apaga y pregunta «¿Lo
   assert.equal((brand.match(/--map-dormant:/g) || []).length, 3);
   assert.match(readFileSync(new URL('../app/css/main.css', import.meta.url), 'utf8'), /\.stage\.is-mastered\.is-dormant \.stage-dot \{[^}]*var\(--map-dormant\)/);
 });
+
+// ---------------------------------------------------------------- 6. Repaso de 5
+const { review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } = await import('../app/js/engine/review.js');
+const { planReview5 } = await import('../app/js/engine/planner.js');
+const { parseRoute } = await import('../app/js/ui/router.js');
+
+test('repaso de 5: fallados, después vencidos y después los más antiguos, solo de pintores dominados', () => {
+  const today = '2026-11-24';
+  const [a, b, c] = big.path;
+  const p = masteredProgress({ [a.id]: { on: '2026-11-01' }, [b.id]: { on: '2026-11-02' } });
+  p.artists[c.id] = { plays: 1, best: 0.5, mastered: false, last: '2026-11-20' };
+  const wa = big.worksOf(a.id);
+  const wb = big.worksOf(b.id);
+  const wc = big.worksOf(c.id);
+  assert.deepEqual(review5Works(p, big, today), [], 'sin cuadros vistos no hay repaso');
+  assert.equal(hasReview5(p, big, today), false);
+  p.srs[`art:${wa[0].id}`] = { box: 3, due: '2026-12-01' };
+  p.srs[`art:${wa[1].id}`] = { box: 2, due: '2026-11-30' };
+  assert.equal(hasReview5(p, big, today), false, `con menos de ${REVIEW5_MIN} no se ofrece`);
+  p.srs[`art:${wb[0].id}`] = { box: 1, due: '2026-11-22' };
+  p.srs[`art:${wb[1].id}`] = { box: 4, due: '2026-12-20' };
+  p.srs[`art:${wc[0].id}`] = { box: 1, due: '2026-11-01' }; // pintor sin dominar: fuera
+  p.srs[`art:${wa[2].id}`] = { box: 1, due: '2026-11-24' };
+  p.fallados = [{ id: wb[1].id, date: '2026-11-23', times: 1, hits: 0 }, { id: wc[0].id, date: '2026-11-01', times: 1, hits: 0 }];
+  const ids = review5Works(p, big, today);
+  assert.deepEqual(ids, [wb[1].id, wb[0].id, wa[2].id, wa[1].id, wa[0].id]);
+  assert.equal(hasReview5(p, big, today), true);
+  const plan = planReview5(big, ids, 9);
+  assert.equal(plan.kind, 'review5');
+  assert.equal(plan.questions.length, 5);
+  assert.deepEqual(plan.questions.map(subjectOf).sort(), ids.slice().sort());
+  assert.deepEqual(parseRoute('#repaso5'), { name: 'review5' });
+  assert.equal(REVIEW5_NAME, 'Repaso de 5');
+  // Da XP y cuenta para meta y racha, sin tocar el dominio de nadie.
+  const answers = plan.questions.map((q) => ({ q, correct: true, retry: false, combo: 1 }));
+  const out = finishRound(p, big, { kind: 'review5', answers, firstTry: answers.map(() => true) }, today, { goal: 50 });
+  assert.ok(out.xp > 0 && out.events.some((e) => e.type === 'goal') && out.events.some((e) => e.type === 'streak'));
+  assert.deepEqual(out.progress.artists, p.artists);
+  assert.equal(out.progress.fallados.find((f) => f.id === wb[1].id).hits, 1, 'el acierto cuenta para sacar el fallado');
+  // La ronda a medias del repaso de 5 se puede retomar.
+  const session = makeSession({ route: 'repaso5', title: REVIEW5_NAME, kind: 'review5', plan: { kind: 'review5', seed: 9 } },
+    { round: createRound(plan.questions), answers: [], xpLive: 0 }, 1000);
+  assert.equal(readSession({ session }, big, 2000)?.kind, 'review5');
+});
+
+// ---------------------------------------------------------------- 9. Cierre del día y botones del resultado
+const { daySummary, listNames } = await import('../app/js/engine/closure.js');
+const { renderResult } = await import('../app/js/ui/screens/result.js');
+
+function renderResultHtml(progress, outcome, plan, opts = {}) {
+  const el = { innerHTML: '', querySelector: () => null, addEventListener() {}, removeEventListener() {} };
+  globalThis.window = { scrollTo() {}, matchMedia: () => ({ matches: true }) };
+  globalThis.document = { documentElement: { classList: { contains: () => true } }, getElementById: () => null };
+  const ctx = { index: big, today: () => '2026-11-24', store: { get: () => ({ progress, settings: { dailyGoal: 50 } }) }, audio: { sfx() {} } };
+  renderResult(ctx, el, { plan, outcome, title: 'Repaso de 5', accent: '', firstTry: [true, true, true], ...opts });
+  return el.innerHTML;
+}
+
+test('cierre del día: bloque «Hoy» con pintores y cuadros nuevos, «La próxima vez» y solo «Seguir»', () => {
+  const today = '2026-11-24';
+  const [a, b, c] = big.path;
+  const p = masteredProgress({ [a.id]: { on: '2026-11-20' }, [b.id]: { on: today } });
+  p.artists[b.id].since = today;
+  p.artists[c.id] = { plays: 1, best: 0.6, mastered: false, last: today, since: today };
+  p.collection = { [big.worksOf(a.id)[0].id]: '2026-11-20', [big.worksOf(b.id)[0].id]: today, [big.worksOf(c.id)[3].id]: today };
+  const sum = daySummary(p, big, today);
+  assert.deepEqual(sum.artists, [b.id, c.id]);
+  assert.equal(sum.works.length, 2);
+  assert.equal(sum.next.id, big.path[3].id, 'la próxima parada: la siguiente abierta del camino');
+  assert.equal(listNames(['A', 'B', 'C']), 'A, B y C');
+  const outcome = { xp: 60, score: 3, total: 3, accuracy: 1, mastered: true, events: [{ type: 'goal', goal: 50 }, { type: 'unlock', step: { type: 'artist', id: big.path[3].id }, artistId: big.path[3].id }] };
+  const html = renderResultHtml(p, outcome, { kind: 'stage', artistId: c.id, seed: 3 }, { more: { label: 'Repaso de 5', to: 'repaso5' } });
+  const hoy = html.match(/<section class="day-done"[^]*?<\/section>/)?.[0] || '';
+  assert.ok(hoy.includes('<h2 id="day-done-h" class="event-kicker">Hoy</h2>'));
+  assert.ok(hoy.includes(`Has conocido a ${big.artist(b.id).short} y ${big.artist(c.id).short}`));
+  assert.ok(hoy.includes('2 cuadros nuevos'));
+  assert.equal((hoy.match(/ day-done-thumb /g) || []).length, 2);
+  assert.ok(hoy.includes(`La próxima vez: <strong>${big.path[3].name}</strong>`));
+  assert.doesNotMatch(hoy, /<button(?![^>]*data-zoom)/, 'el bloque «Hoy» no lleva botones (solo los cuadros, que se amplían)');
+  assert.doesNotMatch(html, /ayer|mañana/i);
+  const actions = html.match(/<div class="result-actions">[^]*?<\/div>\s*<\/main>/)?.[0] || '';
+  assert.equal((actions.match(/<button/g) || []).length, 1, 'en el cierre, solo «Seguir»');
+  assert.match(actions, /data-action="done"[^>]*>Seguir</);
+  assert.doesNotMatch(html, /Siguiente etapa/, 'sin llamada a la siguiente etapa: va en «La próxima vez»');
+});
+
+test('resultado sin meta cumplida: sin bloque «Hoy» y con «Repaso de 5» cuando hay cuadros para él', () => {
+  const p = masteredProgress({ [big.path[0].id]: { on: '2026-11-20' } });
+  const outcome = { xp: 30, score: 2, total: 3, accuracy: 0.67, mastered: false, events: [{ type: 'streak', value: 4, grace: 1 }] };
+  const html = renderResultHtml(p, outcome, { kind: 'review5', seed: 3 }, { more: { label: 'Repaso de 5', to: 'repaso5' } });
+  assert.doesNotMatch(html, /day-done/);
+  assert.match(html, /data-to="repaso5"[^>]*>[^]*?<span>Repaso de 5<\/span>/);
+  assert.ok(html.includes('Racha a salvo: te quedaba un día de gracia'));
+});

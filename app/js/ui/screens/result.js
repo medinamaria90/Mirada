@@ -10,6 +10,7 @@ import { weekOf } from '../../engine/dates.js';
 import { encodeChallenge, tokenForRound } from '../../engine/challenge.js';
 import { shareText, dailyGrid } from '../../engine/daily.js';
 import { medalBadge } from './medals.js';
+import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
 
 export function headline(accuracy) {
   if (accuracy >= 1) return 'Impecable';
@@ -88,6 +89,7 @@ export function renderResult(ctx, el, opts) {
   }
   if (goal) {
     blocks.push(eventCard({ icon: goalRing(goal.goal, goal.goal, 30), kicker: 'Meta del día', title: 'Cumplida', to: 'perfil', cls: 'event-goal' }));
+    blocks.push(dayDone(ctx, p));
   }
   if (completed && index.movement(completed.movementId)) {
     const m = index.movement(completed.movementId);
@@ -100,14 +102,14 @@ export function renderResult(ctx, el, opts) {
     const info = medalInfo(m.id, index);
     blocks.push(`<button class="event event-link event-medal" data-action="go" data-to="medallas">${medalBadge(ctx, m.id, true)}<span class="event-text"><span class="event-kicker">${esc(info.sub)}</span><span class="event-title">${esc(info.title)}</span></span><span class="event-go" aria-hidden="true">${icons.next(20)}</span></button>`);
   }
-  if (unlock) {
+  if (unlock && !goal) {
     const a = unlock.artistId ? index.artist(unlock.artistId) : null;
     const m = unlock.movementId ? index.movement(unlock.movementId) : null;
     const isSala = unlock.step?.type === 'sala';
     const name = m ? m.name : a ? a.name : isSala ? index.movement(unlock.step.id)?.name : '';
     if (name) blocks.push(eventCard({ icon: icons.play(20), kicker: m ? 'Se abre un movimiento' : 'Siguiente etapa', title: name, to: stepRoute(index, unlock.step) }));
   }
-  if (reviewUnlock && index.movement(reviewUnlock.movementId)) {
+  if (reviewUnlock && !goal && index.movement(reviewUnlock.movementId)) {
     blocks.push(eventCard({ icon: icons.repeat(22), kicker: 'Repaso disponible', title: index.movement(reviewUnlock.movementId).name, to: `repaso-${reviewUnlock.movementId}` }));
   }
   if (streak) blocks.push(weekStrip(ctx, streak.value, streak.grace));
@@ -120,7 +122,9 @@ export function renderResult(ctx, el, opts) {
   const step = plan.kind === 'stage' ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
   const nextOf = step ? index.steps[index.stepIndex(step.type, step.id) + 1] : null;
   const gated = Boolean(retry && nextOf && outcome.accuracy < UNLOCK_MIN && !isStepUnlocked(p, index, nextOf));
-  const blocked = Boolean(retry && low);
+  // Cierre del día (meta cumplida): solo «Seguir», sin más llamadas.
+  const closing = Boolean(goal);
+  const blocked = Boolean(retry && low) && !closing;
   // 75 % o más, pero sin acertar bastantes cuadros del propio pintor: aún no está dominado.
   const ownNote = outcome.ownShort && plan.artistId && index.artist(plan.artistId)
     ? `<p class="result-note">Para dominarlo, acierta más cuadros de ${esc(index.artist(plan.artistId).short || index.artist(plan.artistId).name)}</p>` : '';
@@ -155,9 +159,9 @@ export function renderResult(ctx, el, opts) {
         <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
         <button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>
-        ${retry ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
-        ${opts.more ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
-        ${token ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
+        ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
+        ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
+        ${token && !closing ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
         <p class="copy-status" role="status"></p>
         <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="4"></textarea>
       </div>
@@ -224,6 +228,23 @@ export async function copyText(el, text) {
     status.textContent = 'Cópialo desde aquí:';
   }
   status.classList.add('is-visible');
+}
+
+// Cierre del día: pintores y cuadros nuevos de hoy y la próxima parada. Informativo: sin botones
+// (las miniaturas se abren a pantalla completa, como cualquier cuadro).
+function dayDone(ctx, p) {
+  const { index } = ctx;
+  const sum = daySummary(p, index, ctx.today());
+  const names = sum.artists.map((id) => index.artist(id).short || index.artist(id).name);
+  const thumbs = sum.works.slice(0, CLOSURE_THUMBS).map((id) => index.artwork(id))
+    .map((w) => artFrame(w, { cls: 'day-done-thumb', alt: w.title, label: w.title, thumb: true, zoom: {} })).join('');
+  const lines = [
+    names.length ? `<p class="day-done-line">Has conocido a ${esc(listNames(names))}</p>` : '',
+    sum.works.length ? `<p class="day-done-line">${sum.works.length === 1 ? '1 cuadro nuevo' : `${sum.works.length} cuadros nuevos`}</p>` : '',
+    thumbs ? `<div class="day-done-thumbs">${thumbs}</div>` : '',
+    sum.next ? `<p class="day-done-next">La próxima vez: <strong>${esc(sum.next.name)}</strong></p>` : '',
+  ].join('');
+  return `<section class="day-done" aria-labelledby="day-done-h"><h2 id="day-done-h" class="event-kicker">Hoy</h2>${lines}</section>`;
 }
 
 // Días perdidos que ha perdonado la gracia de la semana (1 o 2).
