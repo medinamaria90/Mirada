@@ -7,3 +7,11 @@ ok    schiele            Q44032     Egon Schiele / Egon Schiele (1890-1918) sl=7
 total 135 resueltos 130
 528K	.git
 4.0K	catalogo
+== candidates  10:33:04
+ok     malevich           Q130777     148 candidatas; de las 80 primeras, 33 con imagen >=1200px
+ok     modigliani         Q120993     536 candidatas; de las 80 primeras, 74 con imagen >=1200px
+ok     juan-gris          Q151152     205 candidatas; de las 80 primeras, 65 con imagen >=1200px
+ok     schiele            Q44032      124 candidatas; de las 80 primeras, 72 con imagen >=1200px
+fin 2026-11-24 11:01:16
+612K	.git
+4.0K	catalogo

@@ -1,136 +1,137 @@
-SIN QID giotto
+ok     giotto             Q7814        55 candidatas; de las 80 primeras, 30 con imagen >=1200px
 SIN QID fra-angelico
-SIN QID van-eyck
+ok     van-eyck           Q102272      57 candidatas; de las 80 primeras, 55 con imagen >=1200px
 SIN QID van-der-weyden
-SIN QID piero
-SIN QID mantegna
-SIN QID bellini
-SIN QID botticelli
-SIN QID berruguete
-SIN QID leonardo
-SIN QID bosco
-SIN QID durero
-SIN QID cranach
-SIN QID miguel-angel
-SIN QID giorgione
-SIN QID rafael
-SIN QID tiziano
-SIN QID correggio
-SIN QID holbein
-SIN QID juan-de-juanes
-SIN QID morales
-SIN QID tintoretto
-SIN QID bruegel
-SIN QID veronese
-SIN QID sanchez-coello
-SIN QID el-greco
-SIN QID ribalta
-SIN QID caravaggio
-SIN QID rubens
-SIN QID maino
+ok     piero              Q5822        34 candidatas; de las 80 primeras, 33 con imagen >=1200px
+ok     mantegna           Q5681        99 candidatas; de las 80 primeras, 73 con imagen >=1200px
+ok     bellini            Q17169      180 candidatas; de las 80 primeras, 72 con imagen >=1200px
+ok     botticelli         Q5669       176 candidatas; de las 80 primeras, 75 con imagen >=1200px
+ok     berruguete         Q561783      46 candidatas; de las 80 primeras, 36 con imagen >=1200px
+ok     leonardo           Q762         40 candidatas; de las 80 primeras, 32 con imagen >=1200px
+ok     bosco              Q130531      86 candidatas; de las 80 primeras, 70 con imagen >=1200px
+ok     durero             Q5580       162 candidatas; de las 80 primeras, 78 con imagen >=1200px
+ok     cranach            Q191748     907 candidatas; de las 80 primeras, 79 con imagen >=1200px
+ok     miguel-angel       Q5592        39 candidatas; de las 80 primeras, 18 con imagen >=1200px
+ok     giorgione          Q8459        43 candidatas; de las 80 primeras, 31 con imagen >=1200px
+ok     rafael             Q5597       233 candidatas; de las 80 primeras, 75 con imagen >=1200px
+ok     tiziano            Q47551      341 candidatas; de las 80 primeras, 79 con imagen >=1200px
+ok     correggio          Q8457       121 candidatas; de las 80 primeras, 54 con imagen >=1200px
+ok     holbein            Q48319      152 candidatas; de las 80 primeras, 69 con imagen >=1200px
+ok     juan-de-juanes     Q11287651    32 candidatas; de las 80 primeras, 27 con imagen >=1200px
+ok     morales            Q703250      60 candidatas; de las 80 primeras, 44 con imagen >=1200px
+ok     tintoretto         Q9319       369 candidatas; de las 80 primeras, 70 con imagen >=1200px
+ok     bruegel            Q43270       55 candidatas; de las 80 primeras, 52 con imagen >=1200px
+ok     veronese           Q9440       311 candidatas; de las 80 primeras, 73 con imagen >=1200px
+ok     sanchez-coello     Q503386      58 candidatas; de las 80 primeras, 41 con imagen >=1200px
+ok     el-greco           Q301        538 candidatas; de las 80 primeras, 71 con imagen >=1200px
+  HTTP 504, espero 5s: https://query.wikidata.org/sparql
+ok     ribalta            Q338800      14 candidatas; de las 80 primeras, 10 con imagen >=1200px
+ok     caravaggio         Q42207       98 candidatas; de las 80 primeras, 76 con imagen >=1200px
+ok     rubens             Q5599      1615 candidatas; de las 80 primeras, 81 con imagen >=1200px
+ok     maino              Q2555566     26 candidatas; de las 80 primeras, 19 con imagen >=1200px
 SIN QID hals
-SIN QID ribera
-SIN QID la-tour
+ok     ribera             Q297838     258 candidatas; de las 80 primeras, 57 con imagen >=1200px
+ok     la-tour            Q203371      50 candidatas; de las 80 primeras, 38 con imagen >=1200px
 SIN QID artemisia
-SIN QID poussin
-SIN QID zurbaran
-SIN QID velazquez
-SIN QID van-dyck
-SIN QID claudio-de-lorena
-SIN QID alonso-cano
-SIN QID rembrandt
-SIN QID pereda
-SIN QID carreno
-SIN QID murillo
-SIN QID valdes-leal
-SIN QID steen
-SIN QID vermeer
-SIN QID claudio-coello
-SIN QID watteau
-SIN QID tiepolo
+ok     poussin            Q41554      232 candidatas; de las 80 primeras, 77 con imagen >=1200px
+ok     zurbaran           Q209615     314 candidatas; de las 80 primeras, 66 con imagen >=1200px
+ok     velazquez          Q297        177 candidatas; de las 80 primeras, 76 con imagen >=1200px
+ok     van-dyck           Q150679    1346 candidatas; de las 80 primeras, 80 con imagen >=1200px
+ok     claudio-de-lorena  Q214074     225 candidatas; de las 80 primeras, 63 con imagen >=1200px
+ok     alonso-cano        Q378783      62 candidatas; de las 80 primeras, 44 con imagen >=1200px
+ok     rembrandt          Q5598       781 candidatas; de las 80 primeras, 82 con imagen >=1200px
+ok     pereda             Q604088      33 candidatas; de las 80 primeras, 20 con imagen >=1200px
+ok     carreno            Q833224      66 candidatas; de las 80 primeras, 38 con imagen >=1200px
+ok     murillo            Q192062     317 candidatas; de las 80 primeras, 66 con imagen >=1200px
+ok     valdes-leal        Q518898      71 candidatas; de las 80 primeras, 39 con imagen >=1200px
+ok     steen              Q205863     410 candidatas; de las 80 primeras, 74 con imagen >=1200px
+ok     vermeer            Q41264       37 candidatas; de las 80 primeras, 34 con imagen >=1200px
+ok     claudio-coello     Q332466      34 candidatas; de las 80 primeras, 20 con imagen >=1200px
+ok     watteau            Q183221     135 candidatas; de las 80 primeras, 64 con imagen >=1200px
+ok     tiepolo            Q186202     287 candidatas; de las 80 primeras, 68 con imagen >=1200px
 SIN QID canaletto
-SIN QID chardin
-SIN QID liotard
-SIN QID boucher
-SIN QID melendez
-SIN QID reynolds
-SIN QID greuze
-SIN QID gainsborough
-SIN QID fragonard
-SIN QID goya
-SIN QID paret
-SIN QID david
-SIN QID vigee-le-brun
-SIN QID vicente-lopez
-SIN QID friedrich
-SIN QID turner
-SIN QID constable
-SIN QID ingres
-SIN QID gericault
-SIN QID corot
-SIN QID delaroche
-SIN QID delacroix
-SIN QID briullov
-SIN QID millet
-SIN QID madrazo
-SIN QID aivazovski
-SIN QID courbet
-SIN QID bouguereau
-SIN QID moreau
-SIN QID rossetti
-SIN QID millais
-SIN QID pissarro
-SIN QID manet
-SIN QID shishkin
-SIN QID martin-rico
-SIN QID gisbert
-SIN QID whistler
-SIN QID degas
-SIN QID rosales
-SIN QID homer
-SIN QID fortuny
-SIN QID cezanne
-SIN QID sisley
-SIN QID monet
-SIN QID renoir
-SIN QID morisot
-SIN QID raimundo-madrazo
-SIN QID kuindzhi
-SIN QID rousseau
-SIN QID cassatt
-SIN QID repin
-SIN QID beruete
-SIN QID pradilla
-SIN QID gauguin
-SIN QID caillebotte
-SIN QID surikov
-SIN QID vasnetsov
-SIN QID pinazo
-SIN QID waterhouse
-SIN QID kroyer
-SIN QID van-gogh
-SIN QID sargent
-SIN QID vrubel
-SIN QID regoyos
-SIN QID seurat
-SIN QID levitan
-SIN QID zorn
-SIN QID rusinol
-SIN QID klimt
-SIN QID signac
-SIN QID sorolla
-SIN QID munch
-SIN QID lautrec
-SIN QID hammershoi
-SIN QID serov
-SIN QID casas
-SIN QID kandinsky
-SIN QID zuloaga
-SIN QID nonell
-SIN QID mir
-SIN QID romero-de-torres
-SIN QID malevich
-SIN QID modigliani
-SIN QID juan-gris
-SIN QID schiele
-fin 2026-11-24 10:26:07
+ok     chardin            Q207447     208 candidatas; de las 80 primeras, 55 con imagen >=1200px
+ok     liotard            Q123757      72 candidatas; de las 80 primeras, 54 con imagen >=1200px
+ok     boucher            Q180932     329 candidatas; de las 80 primeras, 63 con imagen >=1200px
+ok     melendez           Q707478      64 candidatas; de las 80 primeras, 59 con imagen >=1200px
+ok     reynolds           Q194402     775 candidatas; de las 80 primeras, 62 con imagen >=1200px
+ok     greuze             Q347139     233 candidatas; de las 80 primeras, 51 con imagen >=1200px
+ok     gainsborough       Q192720     579 candidatas; de las 80 primeras, 65 con imagen >=1200px
+ok     fragonard          Q127171     188 candidatas; de las 80 primeras, 57 con imagen >=1200px
+ok     goya               Q5432       518 candidatas; de las 80 primeras, 73 con imagen >=1200px
+ok     paret              Q283412      15 candidatas; de las 80 primeras, 15 con imagen >=1200px
+ok     david              Q83155      139 candidatas; de las 80 primeras, 67 con imagen >=1200px
+ok     vigee-le-brun      Q213163     232 candidatas; de las 80 primeras, 77 con imagen >=1200px
+ok     vicente-lopez      Q117543      68 candidatas; de las 80 primeras, 50 con imagen >=1200px
+ok     friedrich          Q104884     196 candidatas; de las 80 primeras, 71 con imagen >=1200px
+ok     turner             Q159758     676 candidatas; de las 80 primeras, 57 con imagen >=1200px
+ok     constable          Q159297     530 candidatas; de las 80 primeras, 55 con imagen >=1200px
+ok     ingres             Q23380      219 candidatas; de las 80 primeras, 66 con imagen >=1200px
+ok     gericault          Q184212     165 candidatas; de las 80 primeras, 56 con imagen >=1200px
+ok     corot              Q148475     994 candidatas; de las 80 primeras, 72 con imagen >=1200px
+ok     delaroche          Q322582      75 candidatas; de las 80 primeras, 50 con imagen >=1200px
+ok     delacroix          Q33477      425 candidatas; de las 80 primeras, 68 con imagen >=1200px
+ok     briullov           Q4768        65 candidatas; de las 80 primeras, 40 con imagen >=1200px
+ok     millet             Q148458     206 candidatas; de las 80 primeras, 64 con imagen >=1200px
+ok     madrazo            Q1345186     86 candidatas; de las 80 primeras, 68 con imagen >=1200px
+ok     aivazovski         Q181568     326 candidatas; de las 80 primeras, 61 con imagen >=1200px
+ok     courbet            Q34618      578 candidatas; de las 80 primeras, 62 con imagen >=1200px
+ok     bouguereau         Q483992     317 candidatas; de las 80 primeras, 71 con imagen >=1200px
+ok     moreau             Q203828     158 candidatas; de las 80 primeras, 60 con imagen >=1200px
+ok     rossetti           Q186748     116 candidatas; de las 80 primeras, 58 con imagen >=1200px
+ok     millais            Q159606     221 candidatas; de las 80 primeras, 52 con imagen >=1200px
+ok     pissarro           Q134741     777 candidatas; de las 80 primeras, 75 con imagen >=1200px
+ok     manet              Q40599      361 candidatas; de las 80 primeras, 72 con imagen >=1200px
+ok     shishkin           Q193064     230 candidatas; de las 80 primeras, 56 con imagen >=1200px
+ok     martin-rico        Q427999      30 candidatas; de las 80 primeras, 20 con imagen >=1200px
+ok     gisbert            Q2298247     10 candidatas; de las 80 primeras, 8 con imagen >=1200px
+ok     whistler           Q203643     371 candidatas; de las 80 primeras, 72 con imagen >=1200px
+ok     degas              Q46373      371 candidatas; de las 80 primeras, 67 con imagen >=1200px
+ok     rosales            Q615701      19 candidatas; de las 80 primeras, 16 con imagen >=1200px
+ok     homer              Q344838     563 candidatas; de las 80 primeras, 76 con imagen >=1200px
+ok     fortuny            Q380052      72 candidatas; de las 80 primeras, 44 con imagen >=1200px
+ok     cezanne            Q35548      739 candidatas; de las 80 primeras, 76 con imagen >=1200px
+ok     sisley             Q175130     816 candidatas; de las 80 primeras, 61 con imagen >=1200px
+ok     monet              Q296       1264 candidatas; de las 80 primeras, 73 con imagen >=1200px
+ok     renoir             Q39931     2303 candidatas; de las 80 primeras, 74 con imagen >=1200px
+ok     morisot            Q105320     176 candidatas; de las 80 primeras, 66 con imagen >=1200px
+ok     raimundo-madrazo   Q2506493     64 candidatas; de las 80 primeras, 40 con imagen >=1200px
+ok     kuindzhi           Q353628      78 candidatas; de las 80 primeras, 24 con imagen >=1200px
+ok     rousseau           Q156386     137 candidatas; de las 80 primeras, 61 con imagen >=1200px
+ok     cassatt            Q173223     117 candidatas; de las 80 primeras, 69 con imagen >=1200px
+ok     repin              Q172911     266 candidatas; de las 80 primeras, 55 con imagen >=1200px
+ok     beruete            Q1403669     33 candidatas; de las 80 primeras, 10 con imagen >=1200px
+ok     pradilla           Q553258      18 candidatas; de las 80 primeras, 10 con imagen >=1200px
+ok     gauguin            Q37693      498 candidatas; de las 80 primeras, 74 con imagen >=1200px
+ok     caillebotte        Q295144     244 candidatas; de las 80 primeras, 59 con imagen >=1200px
+ok     surikov            Q110228      20 candidatas; de las 80 primeras, 15 con imagen >=1200px
+ok     vasnetsov          Q204138      41 candidatas; de las 80 primeras, 29 con imagen >=1200px
+ok     pinazo             Q254379      32 candidatas; de las 80 primeras, 17 con imagen >=1200px
+ok     waterhouse         Q212754     134 candidatas; de las 80 primeras, 50 con imagen >=1200px
+ok     kroyer             Q365068     272 candidatas; de las 80 primeras, 61 con imagen >=1200px
+ok     van-gogh           Q5582       938 candidatas; de las 80 primeras, 74 con imagen >=1200px
+ok     sargent            Q155626     649 candidatas; de las 80 primeras, 63 con imagen >=1200px
+ok     vrubel             Q215100      24 candidatas; de las 80 primeras, 12 con imagen >=1200px
+ok     regoyos            Q1837855     33 candidatas; de las 80 primeras, 26 con imagen >=1200px
+ok     seurat             Q34013      152 candidatas; de las 80 primeras, 61 con imagen >=1200px
+ok     levitan            Q211356     229 candidatas; de las 80 primeras, 52 con imagen >=1200px
+ok     zorn               Q206820     313 candidatas; de las 80 primeras, 72 con imagen >=1200px
+ok     rusinol            Q366930      97 candidatas; de las 80 primeras, 51 con imagen >=1200px
+ok     klimt              Q34661      158 candidatas; de las 80 primeras, 71 con imagen >=1200px
+ok     signac             Q151573     194 candidatas; de las 80 primeras, 54 con imagen >=1200px
+ok     sorolla            Q351746     342 candidatas; de las 80 primeras, 56 con imagen >=1200px
+ok     munch              Q41406     1822 candidatas; de las 80 primeras, 74 con imagen >=1200px
+ok     lautrec            Q82445      235 candidatas; de las 80 primeras, 73 con imagen >=1200px
+ok     hammershoi         Q380706     114 candidatas; de las 80 primeras, 59 con imagen >=1200px
+ok     serov              Q217128      65 candidatas; de las 80 primeras, 39 con imagen >=1200px
+ok     casas              Q725681     105 candidatas; de las 80 primeras, 49 con imagen >=1200px
+ok     kandinsky          Q61064      445 candidatas; de las 80 primeras, 53 con imagen >=1200px
+ok     zuloaga            Q460198      49 candidatas; de las 80 primeras, 28 con imagen >=1200px
+ok     nonell             Q1393742     31 candidatas; de las 80 primeras, 21 con imagen >=1200px
+ok     mir                Q1357729     33 candidatas; de las 80 primeras, 22 con imagen >=1200px
+ok     romero-de-torres   Q1712402    171 candidatas; de las 80 primeras, 31 con imagen >=1200px
+ok     malevich           Q130777     148 candidatas; de las 80 primeras, 33 con imagen >=1200px
+ok     modigliani         Q120993     536 candidatas; de las 80 primeras, 74 con imagen >=1200px
+ok     juan-gris          Q151152     205 candidatas; de las 80 primeras, 65 con imagen >=1200px
+ok     schiele            Q44032      124 candidatas; de las 80 primeras, 72 con imagen >=1200px
+fin 2026-11-24 11:01:16
