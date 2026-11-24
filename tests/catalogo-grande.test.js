@@ -270,7 +270,7 @@ test('migración 6 → 7: obras a<N> → w<QID>, lo que no tiene equivalente se 
   assert.ok(!('art:a154' in out.progress.srs) && !('art:a41' in out.progress.srs));
   assert.deepEqual(out.progress.srs['artist:leonardo'], { box: 2, due: '2026-11-26' }, 'el repaso por pintor se conserva');
   assert.deepEqual(out.progress.fallados, [{ id: gioconda, date: '2026-11-22', times: 1, hits: 0 }]);
-  assert.deepEqual(out.progress.detail, { '2026-11-23': { artworkId: gioconda, correct: true } });
+  assert.ok(!('detail' in out.progress), 'la lupa del día ya no existe: su registro no pasa');
   assert.deepEqual(out.progress.artists, v6.progress.artists, 'los pintores conservan su id y su estado');
   assert.deepEqual(out.progress.medals, v6.progress.medals);
   assert.deepEqual(out.progress.daily, v6.progress.daily);

@@ -114,7 +114,6 @@ export function emptyProgress() {
     stats: { answered: 0, correct: 0, newCorrect: 0, rounds: 0 },
     daily: {},
     weekly: {},
-    detail: {},
     // Niveles «a fondo»: { 'pintor:nivel': { plays, best, mastered, last } } (engine/levels.js).
     deep: {},
     // Rango más alto alcanzado (índice en engine/ranks.js): nunca baja.

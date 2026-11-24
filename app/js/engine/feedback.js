@@ -176,7 +176,7 @@ export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { r
     who = '';
     line = teach();
   }
-  return { title, who, lines: line ? [line] : [], kind: kindOf(subject), source, chosen: chosen ? chosenLine(index, chosen, subject, line) : null };
+  return { title, who, artistId: artist ? artist.id : null, lines: line ? [line] : [], kind: kindOf(subject), source, chosen: chosen ? chosenLine(index, chosen, subject, line) : null };
 }
 
 // Línea sobre lo elegido por error: en «¿Cuál?», de quién es ese cuadro; en «¿Quién?», que no es

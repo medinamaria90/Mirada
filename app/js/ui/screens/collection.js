@@ -7,8 +7,12 @@ import { artFrame } from '../art.js';
 import { playEra } from '../audio-bridge.js';
 import { openGalleries, galleryWorks } from '../../engine/goals.js';
 import { eyeLabel } from './medals.js';
+import { renderPainters, collTabs } from './collection-painters.js';
+import { artistLink } from '../artist-link.js';
+import { museumLine } from '../ficha-data.js';
 
-export function renderCollection(ctx, el) {
+export function renderCollection(ctx, el, { tab = 'works' } = {}) {
+  if (tab === 'painters') return renderPainters(ctx, el);
   const { index } = ctx;
   const owned = ctx.store.get().progress.collection;
   // Obras que se pueden reconocer en el camino: las de pintores con etapa y las de las salas.
@@ -44,6 +48,7 @@ export function renderCollection(ctx, el) {
 
   el.innerHTML = page(ctx, 'collection', `
     <header class="section-head"><h1>Colección</h1><p class="section-sub">${ownedCount} de ${total} vistos</p></header>
+    ${collTabs('works')}
     ${salas}
     ${body}
     <dialog class="card-dialog" aria-labelledby="dlg-title"></dialog>`);
@@ -71,11 +76,15 @@ export function renderCollection(ctx, el) {
           <button type="button" class="icon-btn" data-action="next" aria-label="Cuadro siguiente"${cur === n - 1 ? ' disabled' : ''}>${icons.next(22)}</button>
         </div>` : ''}
         <h2 id="dlg-title" class="dlg-title">${esc(w.title)}</h2>
-        <p class="dlg-meta">${esc(a.name)}${w.year ? ` · ${esc(w.year)}` : ''}</p>
+        <p class="dlg-meta">${artistLink(a.id, a.name, 'dlg-artist')}${w.year ? `<span class="dlg-year"> · ${esc(w.year)}</span>` : ''}</p>
+        <p class="dlg-museum">${esc(museumLine(w))}</p>
         <p class="dlg-hint">${esc(w.look || a.hint || '')}</p>
         <button class="btn btn-secondary btn-wide" data-action="close">Cerrar</button>
         </div>
       </div>`;
+    // Museo y ciudad (ficha de museo, diferida): se rellenan al llegar.
+    const shown = w.id;
+    ctx.ensureFicha().then(() => { if (list[cur] && list[cur].id === shown) $('.dlg-museum', dialog).textContent = museumLine(w); });
     // Las vecinas, ya pedidas para que pasar sea inmediato.
     for (const k of [cur - 1, cur + 1]) if (list[k]) new Image().src = list[k].img;
   }

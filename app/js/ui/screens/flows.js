@@ -1,6 +1,7 @@
 // Flujos de juego: etapa de pintor, sala de movimiento, intro de movimiento, repasos,
 // reto diario, reto de un amigo y ronda retomada.
 
+import { artistLink } from '../artist-link.js';
 import { esc, onAction, accentStyle, defaultAccent, focusHeading, announce, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
@@ -168,7 +169,7 @@ export function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = nul
 
 // --- Pantalla «Conoce…» compartida (pintor y sala) -------------------------------
 
-function learnScreen(ctx, el, { cls = '', accent, barTitle, kicker, title, meta, badge = '', works, caption, aside, carouselLabel, onPractice }) {
+function learnScreen(ctx, el, { cls = '', titleArtistId = '', accent, barTitle, kicker, title, meta, badge = '', works, caption, aside, carouselLabel, onPractice }) {
   const slides = works.map((w, i) => `<figure class="slide" role="group" aria-roledescription="diapositiva" aria-label="${i + 1} de ${works.length}">
       ${artFrame(w, { alt: caption(w).alt, eager: i === 0, cls: 'art-slide', label: w.title, zoom: { group: 'learn' } })}
       <figcaption><span class="slide-title">${esc(w.title)}</span><span class="slide-year">${esc(caption(w).sub)}</span>${w.look ? `<span class="slide-look">${esc(w.look)}</span>` : ''}</figcaption>
@@ -183,7 +184,7 @@ function learnScreen(ctx, el, { cls = '', accent, barTitle, kicker, title, meta,
     </div>
     <main class="learn-body" id="main">
       <p class="kicker">${esc(kicker)}</p>
-      <h1 class="learn-title">${esc(title)}</h1>
+      <h1 class="learn-title">${titleArtistId ? artistLink(titleArtistId, title, 'learn-artist') : esc(title)}</h1>
       <p class="learn-meta">${esc(meta)}</p>
       ${badge}
       ${aside}
@@ -278,6 +279,7 @@ export function renderStage(ctx, el, artistId) {
       barTitle: movement.name,
       kicker: 'Conoce a',
       title: artist.name,
+      titleArtistId: artist.id,
       meta: [artist.country, years].filter(Boolean).join(' · '),
       badge: (() => { const e = eyeLabel(ctx, artistId); return e ? `<p class="eye-line">${icons.eye(16)}<span>${esc(e.text)}</span></p>` : ''; })(),
       works: plan.learn,

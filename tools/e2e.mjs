@@ -10,7 +10,6 @@ import { buildIndex } from '../app/js/engine/catalog.js';
 import { hasMovementReview } from '../app/js/engine/progress.js';
 import { isoWeek, dayKey } from '../app/js/engine/dates.js';
 import { madridDayKey } from '../app/js/engine/dates.js';
-import { planDetail, DETAIL_FAME } from '../app/js/engine/goals.js';
 
 const require = createRequire(import.meta.url);
 // Rutas de Playwright y Chrome: por variable de entorno (MIRADA_PLAYWRIGHT, MIRADA_CHROME) o las del
@@ -736,7 +735,7 @@ function seededState({ upTo = 0, mastered = true, xp = 900, extra = {} } = {}) {
     progress: {
       xp, artists, salas, intros, reviews: {}, srs: {}, collection: {}, medals,
       streak: { current: 0, best: 0, last: null, graceOn: null, days: [] },
-      stats: { answered: 0, correct: 0, newCorrect: 0, rounds: 0 }, daily: {}, weekly: {}, detail: {}, challenges: { played: 0 }, xpByDay: {}, ...extra,
+      stats: { answered: 0, correct: 0, newCorrect: 0, rounds: 0 }, daily: {}, weekly: {}, challenges: { played: 0 }, xpByDay: {}, ...extra,
     },
     settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: 50 },
     session: {},
@@ -751,6 +750,14 @@ async function seed(pg, state, hash = 'inicio') {
 
 // Sin ventana y sin sonido: el recorrido no debe oírse en la máquina donde corre.
 const browser = await chromium.launch({ executablePath: CHROME_PATH, headless: true, args: ['--no-sandbox', '--mute-audio'] });
+// La guía de bienvenida (ui/coach.js) sale una vez por navegador: en todos los contextos se da por vista, salvo en
+// su comprobación (rawNewContext).
+const rawNewContext = browser.newContext.bind(browser);
+browser.newContext = async (opts) => {
+  const c = await rawNewContext(opts);
+  await c.addInitScript(() => { try { window.localStorage.setItem('sfumato.coach', '1'); } catch { /* sin almacenamiento */ } });
+  return c;
+};
 const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES', permissions: ['clipboard-read', 'clipboard-write'], hasTouch: true };
 
 // ---------------------------------------------------------------- Arranque: peticiones y bytes hasta el primer pintado útil
@@ -758,7 +765,7 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // tipografías también. Presupuesto (falla si se supera). Antes de la oleada 6 (HEAD 4a3db26, misma
 // medida): bienvenida 30 peticiones / 424 KB, inicio 29 / 402 KB. El tema de Ajustes (ui/theme.js, 2 KB) va en
 // la cadena de arranque: +1 petición en el inicio; los KB absorben el bloque oscuro duplicado de brand.css.
-// Mapa v10 (inicio): +2 módulos (ui/screens/path-map.js y, desde la franja «Hoy», ui/screens/home-today.js) y el paisaje SVG del tramo
+// Mapa v10 (inicio): +2 módulos (ui/screens/path-map.js) y el paisaje SVG del tramo
 // de la parada actual y, si asoma, el del siguiente (≤ 30 KB cada uno; los demás se piden al acercarse):
 // 32 peticiones; los KB bajan (339 medidos) porque el mapa pinta menos miniaturas del atlas de golpe.
 // La bienvenida gana 7 KB por las variables del mapa en brand.css (claro + dos copias del oscuro).
@@ -806,7 +813,9 @@ await page.click('[data-action="start"]');
 await page.waitForSelector('.path');
 await shot(page, '02-mapa');
 await audit(page, '390 mapa');
-check(await page.locator('.today-strip').count() === 1, 'falta la franja «Hoy»');
+check(await page.locator('.today-strip, .lupa-dialog').count() === 0, 'quedan la franja «Hoy» o la lupa del día');
+check(await page.locator('.topbar .chip-daily').count() === 1 && await page.locator('.chip-level').count() === 0, 'la cabecera lleva el reto diario y ya no el rango');
+check((await page.locator('.chip-daily').getAttribute('aria-label')) === 'Reto diario, pendiente', 'el reto diario de la cabecera no dice «pendiente»');
 check(await page.locator('.overall-bar, .card-daily, .card-continue, .card-review, .today-block').count() === 0, 'quedan tarjetas de arriba del camino');
 // Cabecera: objetivos táctiles ≥ 48 px
 for (const box of await page.$$eval('.topbar a', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return { w: r.width, h: r.height, t: e.getAttribute('aria-label') }; }))) {
@@ -862,31 +871,6 @@ await page.waitForTimeout(300);
 check(await page.locator('.lock-note.is-visible').count() === 1, 'pulsar una parada cerrada no explica por qué');
 await shot(page, '03-mapa-bloqueado');
 await page.evaluate(() => window.scrollTo(0, 0));
-// Franja «Hoy»: fija bajo la cabecera (sigue ahí al desplazar el mapa), sin tapar el primer nodo, con
-// botones de ≥ 48 px, etiquetas cortas y un estado por botón.
-{
-  const strip = await page.evaluate(async () => {
-    const q = (sel) => document.querySelector(sel);
-    const box = (e) => e.getBoundingClientRect();
-    const buttons = [...document.querySelectorAll('.today-strip .today-btn')];
-    window.scrollTo(0, document.documentElement.scrollHeight);
-    await new Promise((r) => setTimeout(r, 150));
-    const after = box(q('.today-strip'));
-    const head = box(q('.topbar'));
-    return {
-      labels: buttons.map((b) => b.querySelector('.today-label').textContent.trim()),
-      sizes: buttons.map((b) => [Math.round(box(b).width), Math.round(box(b).height)]),
-      labelled: buttons.every((b) => /pendiente|hech/.test(b.getAttribute('aria-label'))),
-      stuck: Math.abs(after.top - head.bottom) < 2 && after.bottom < 160,
-    };
-  });
-  check(strip.labels.join() === 'Reto', `botones de la franja al empezar: ${strip.labels}`);
-  check(strip.sizes.every(([w, h]) => w >= 48 && h >= 48), `objetivos táctiles de la franja: ${JSON.stringify(strip.sizes)}`);
-  check(strip.labelled, 'los botones de la franja no dicen su estado');
-  check(strip.stuck, 'la franja «Hoy» no queda fija bajo la cabecera al desplazar');
-  await page.evaluate(() => window.scrollTo(0, 0));
-}
-
 // Primera etapa: intro del movimiento, conoce, práctica con un fallo y el botón atrás a mitad.
 await page.click('.stage-spot.is-current .stage');
 await page.waitForSelector('.intro');
@@ -967,39 +951,72 @@ if (SMOKE) {
   await audit(page, '390 perfil');
   check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
   check(await page.locator('button.medal-item').count() >= 1, 'las medallas del perfil no son pulsables');
-  // Franja «Hoy» con reto y lupa hechos: se pliega a «Hoy, hecho» (≥ 48 px), se despliega al tocarla y
-  // la lupa hecha abre el cuadro en el visor. Cada botón lleva a lo mismo que su tarjeta de antes.
-  const lupaDay = madridDayKey(new Date());
-  const lupaCollection = Object.fromEntries(index.artworks.filter((w) => (w.fame || 0) >= DETAIL_FAME).map((w) => [w.id, lupaDay]));
-  const lupaPlan = planDetail({ collection: lupaCollection }, index, lupaDay);
-  const lupaWork = index.artwork(lupaPlan.artworkId);
-  const lupaState = seededState({ upTo: 0, extra: { collection: lupaCollection, detail: { [lupaDay]: { artworkId: lupaWork.id, correct: true } }, daily: { [lupaDay]: { score: 8, total: 10 } } } });
-  await seed(page, lupaState);
+  // Colección → «Pintores»: lista por épocas con buscador; la ficha se abre sobre la pantalla y solo enseña lo ya visto.
+  await seed(page, seededState({ upTo: 3 }), 'coleccion-pintores');
+  await page.waitForSelector('.pl-row');
+  check(await page.locator('.coll-tab[aria-current="page"]').innerText() === 'Pintores', 'la pestaña «Pintores» no está marcada');
+  await audit(page, '390 pintores');
+  const rows = await page.locator('.pl-row').count();
+  await page.fill('.pl-input', 'zzzz');
+  check(await page.locator('.pl-row').count() === 0 && await page.locator('.pl-empty').count() === 1, 'la búsqueda sin resultados no lo dice');
+  await page.fill('.pl-input', '');
+  check(await page.locator('.pl-row').count() === rows, 'al vaciar la búsqueda no vuelve la lista');
+  await page.locator('.pl-row').first().click();
+  await page.waitForSelector('.artist-sheet[open] .as-name');
+  await page.waitForTimeout(400);
+  const sheetName = await page.locator('.as-name').innerText();
+  check(sheetName.length > 2, 'la ficha de pintor no tiene nombre');
+  const sheetInfo = await page.evaluate(() => ({ imgs: document.querySelectorAll('.artist-sheet .as-grid li').length, text: document.querySelector('.as-progress-text').textContent, life: document.querySelectorAll('.as-life p').length }));
+  check(sheetInfo.life >= 1, 'la ficha no tiene líneas de vida');
+  check(sheetInfo.imgs === Number(sheetInfo.text.split(' ')[0]), `la ficha enseña ${sheetInfo.imgs} cuadros y dice «${sheetInfo.text}»`);
+  await shot(page, '14d-ficha-pintor');
+  await audit(page, '390 ficha de pintor');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.artist-sheet', { state: 'detached' });
+  check(await page.evaluate(() => document.activeElement?.classList.contains('pl-row')), 'al cerrar la ficha el foco no vuelve a la lista');
+  // Guía de bienvenida: la primera vez, tres pasos que se saltan con Esc y no vuelven.
+  const coachCtx = await rawNewContext({ viewport: { width: 390, height: 844 } });
+  const cp = await coachCtx.newPage();
+  watch(cp, 'guía');
+  await cp.goto(base);
+  await cp.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 0 }));
+  await cp.goto(`${base}#inicio`);
+  await cp.reload();
+  await cp.waitForSelector('.coach-card');
+  check(await cp.locator('.coach-text').innerText() !== '', 'guía sin texto');
+  const coachBox = async () => cp.evaluate(() => { const t = document.querySelector('.coach-ring').getBoundingClientRect(); const c = document.querySelector('.coach-card').getBoundingClientRect(); return { overlap: !(c.bottom <= t.top || c.top >= t.bottom || c.right <= t.left || c.left >= t.right), inside: c.left >= 0 && c.right <= innerWidth && c.top >= 0 && c.bottom <= innerHeight }; });
+  for (let k = 0; k < 3; k++) {
+    await cp.waitForTimeout(450);
+    const b = await coachBox();
+    check(!b.overlap && b.inside, `guía paso ${k + 1}: la tarjeta tapa lo señalado o se sale ${JSON.stringify(b)}`);
+    if (k === 0) await shot(cp, '14e-guia');
+    if (k < 2) await cp.click('[data-coach="next"]'); else await cp.click('[data-coach="next"]');
+    await cp.waitForTimeout(450);
+  }
+  check(await cp.locator('.coach-card').count() === 0, 'la guía no se cierra al terminar');
+  await cp.reload();
+  await cp.waitForSelector('.path');
+  await cp.waitForTimeout(600);
+  check(await cp.locator('.coach-card').count() === 0, 'la guía vuelve a salir');
+  await coachCtx.close();
+  // Reto diario en la cabecera: hecho con «n/5» y verde; pendiente, solo el icono. Lleva al reto de 5 preguntas.
+  const dayKeyNow = madridDayKey(new Date());
+  await seed(page, seededState({ upTo: 0, extra: { daily: { [dayKeyNow]: { score: 4, total: 5 } } } }));
   await page.waitForSelector('.path');
-  await page.evaluate(() => window.scrollTo(0, 0));
-  const fold = page.locator('.today-fold');
-  check(await fold.count() === 1 && /Hoy, hecho/.test(await fold.innerText()), 'la franja no se pliega a «Hoy, hecho» con todo hecho');
-  check(await page.locator('.today-buttons').isHidden(), 'plegada, los botones siguen a la vista');
-  const foldBox = await fold.boundingBox();
-  check(foldBox && foldBox.height >= 48, `línea plegada de ${foldBox && Math.round(foldBox.height)} px`);
-  await shot(page, '14b-hoy-plegada');
-  await audit(page, '390 hoy plegada');
-  await fold.click();
-  check(await page.locator('.today-buttons').isVisible() && await fold.getAttribute('aria-expanded') === 'true', 'tocar la línea no despliega la franja');
-  const doneBtns = await page.$$eval('.today-btn.is-done', (els) => els.map((e) => ({ t: e.textContent.replace(/\s+/g, ' ').trim(), tick: Boolean(e.querySelector('.today-tick')) })));
-  check(doneBtns.length === 2 && doneBtns.every((b) => b.tick) && doneBtns.some((b) => /8\/10/.test(b.t)), `botones hechos: ${JSON.stringify(doneBtns)}`);
-  await shot(page, '14c-hoy-desplegada-hecha');
-  await audit(page, '390 hoy desplegada');
-  await viewerCheck(page, 'lupa del día resuelta', page.locator('.today-btn[data-zoom]'), { close: 'esc' });
-  await fold.click();
-  check(await page.locator('.today-buttons').isHidden(), 'tocar la línea desplegada no la pliega');
-  // Reto → ronda del reto diario.
-  await page.goto(`${base}#inicio`);
+  const doneChip = await page.locator('.chip-daily').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), w: a.getBoundingClientRect().width, h: a.getBoundingClientRect().height }));
+  check(doneChip.label === 'Reto diario, hecho: 4 de 5' && doneChip.text === '4/5', `reto diario hecho en la cabecera: ${JSON.stringify(doneChip)}`);
+  check(doneChip.w >= 48 && doneChip.h >= 48, `el reto diario de la cabecera mide ${Math.round(doneChip.w)}×${Math.round(doneChip.h)}`);
+  check((await page.locator('.topbar').boundingBox()).height < 80, 'la cabecera salta a dos líneas con el reto diario');
+  await shot(page, '14b-cabecera-reto-hecho');
+  await audit(page, '390 cabecera reto hecho');
+  await seed(page, seededState({ upTo: 0 }));
   await page.waitForSelector('.path');
-  await page.locator('.today-fold').click();
-  await page.locator('.today-btn[data-action="daily"]').click();
+  await page.locator('.chip-daily').click();
   await page.waitForSelector('.lesson, .result');
-  check(page.url().endsWith('#reto-diario'), `«Reto» lleva a ${page.url()}`);
+  check(page.url().endsWith('#reto-diario'), `el reto de la cabecera lleva a ${page.url()}`);
+  const dailySteps = await playRound(page);
+  check(dailySteps === 5, `el reto diario no es de 5 preguntas: ${dailySteps}`);
+  check(await page.locator('.grid-row .sq').count() === 5, 'el reto diario no muestra 5 casillas');
   await page.goto(`${base}#inicio`);
   await page.waitForSelector('.path');
 
@@ -1173,7 +1190,7 @@ await page.goBack();
 await page.waitForSelector('.path');
 
 // Reto diario
-await page.click('.today-btn[data-action="daily"]');
+await page.click('.chip-daily');
 await playRound(page, { wrongAt: [3, 7] });
 await shot(page, '15-reto-diario-fin', true);
 await page.click('[data-action="share"]');
@@ -1341,38 +1358,15 @@ check(await dpage0.locator('[data-action="free"]').count() >= 1, 'camino complet
 await dpage0.locator('.finale').scrollIntoViewIfNeeded();
 check((await dpage0.locator('.finale-count').innerText()).includes(String(expectRecognized)), `contador de cuadros que reconoces: ${await dpage0.locator('.finale-count').innerText()} (esperado ${expectRecognized})`);
 await shot(dpage0, '28-final-camino');
-// Lupa del día: una pregunta, una vez al día, +XP pequeña, persiste.
 await dpage0.evaluate(() => window.scrollTo(0, 0));
-// Camino avanzado: la franja «Hoy» fija arriba (reto y lupa pendientes) y la lupa se pregunta en un diálogo.
-check(await dpage0.locator('.today-strip').count() === 1 && await dpage0.locator('.today-fold').count() === 0, 'camino avanzado sin franja «Hoy» desplegada');
+// Camino avanzado: sin franja «Hoy» ni lupa; el mapa asoma en la primera pantalla.
+check(await dpage0.locator('.today-strip').count() === 0, 'queda la franja «Hoy»');
 const mapTop = await dpage0.evaluate(() => {
   const nav = document.querySelector('.bottomnav');
   const navTop = nav ? nav.getBoundingClientRect().top : innerHeight;
   return { top: document.querySelector('.path').getBoundingClientRect().top, limit: Math.min(innerHeight, navTop) };
 });
 check(mapTop.top < mapTop.limit - 40, `el mapa no asoma en la primera pantalla (${Math.round(mapTop.top)} de ${Math.round(mapTop.limit)})`);
-await dpage0.locator('.today-btn[data-action="lupa"]').click();
-const detailCard = dpage0.locator('.lupa-dialog[open] .card-detail');
-check(await detailCard.count() === 1, 'falta la lupa del día');
-await dpage0.waitForTimeout(500);
-await shot(dpage0, '28b-detalle-del-dia');
-check(await detailCard.locator('.detail-option').count() === 4, 'el detalle no tiene 4 opciones');
-const cropImg = await detailCard.locator('.detail-crop img').evaluate((img) => ({ t: getComputedStyle(img).transform, src: img.getAttribute('src') }));
-check(cropImg.t !== 'none' && /^img\/w\d+\.jpg$/.test(cropImg.src), `recorte del detalle raro: ${JSON.stringify(cropImg)}`);
-const xpBefore = await dpage0.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).progress.xp);
-await detailCard.locator('.detail-option').first().click();
-await dpage0.waitForSelector('.detail-result');
-check(await dpage0.locator('.today-btn.is-done[data-zoom]').count() === 1, 'al responder, la franja no marca la lupa como hecha');
-await shot(dpage0, '28c-detalle-respondido');
-await dpage0.locator('.lupa-close').click();
-check(await dpage0.locator('.lupa-dialog[open]').count() === 0, 'el diálogo de la lupa no se cierra');
-const afterDetail = await dpage0.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).progress);
-check(Object.keys(afterDetail.detail).length === 1, 'el detalle no se guarda');
-const detailOk = Object.values(afterDetail.detail)[0].correct;
-check(afterDetail.xp - xpBefore === (detailOk ? 5 : 0), `XP del detalle: ${afterDetail.xp - xpBefore}`);
-await dpage0.reload();
-await dpage0.waitForSelector('.path');
-check(await dpage0.locator('.today-btn[data-action="lupa"]').count() === 0 && await dpage0.locator('.today-btn.is-done[data-zoom]').count() === 1, 'la lupa se puede responder dos veces o no sale hecha al volver');
 // Sala de un movimiento dominado: desde el mapa y desde Colección.
 const galleryRow = dpage0.locator('.stage-gallery').first();
 check(await dpage0.locator('.stage-gallery').count() === index.visibleMovements.length, 'faltan salas en el mapa');
@@ -1399,8 +1393,8 @@ await dpage0.goto(`${base}#galeria-nope`);
 await dpage0.waitForSelector('#toast.is-on');
 // Reto semanal: 15 preguntas, compartible y una vez por semana.
 await dpage0.goto(`${base}#inicio`);
-await dpage0.waitForSelector('.today-btn[data-action="weekly"]');
-await dpage0.locator('.today-btn[data-action="weekly"]').click();
+await dpage0.waitForSelector('.finale [data-action="weekly"]');
+await dpage0.locator('.finale [data-action="weekly"]').click();
 const wSteps = await playRound(dpage0, { wrongAt: [2, 9] });
 check(wSteps === 17, `el reto semanal tiene ${wSteps} pasos (15 + 2 repeticiones)`);
 check(await dpage0.locator('.grid-row .sq').count() === 15, 'el reto semanal no muestra 15 casillas');
@@ -1415,8 +1409,8 @@ const weekNow = await dpage0.evaluate(() => {
 });
 check(weeklyText.includes(`#reto-${isoWeek(weekNow).compact}-13`) && weeklyText.includes('Reto semanal'), `texto del reto semanal: ${weeklyText}`);
 await dpage0.click('[data-action="done"]');
-await dpage0.waitForSelector('.today-btn[data-action="weekly"].is-done');
-check((await dpage0.locator('.today-btn[data-action="weekly"]').innerText()).includes('13/15'), 'el inicio no muestra el resultado semanal');
+await dpage0.waitForSelector('.path');
+check(JSON.parse(await dpage0.evaluate(() => JSON.stringify(Object.values(JSON.parse(localStorage.getItem('mirada.state')).progress.weekly))))[0]?.score === 13, 'el reto semanal no guarda su resultado');
 await dpage0.goto(`${base}#reto-semanal`);
 await dpage0.waitForSelector('.result-title');
 check(/Hecho esta semana/.test(await dpage0.locator('.result-title').innerText()), 'el reto semanal se puede repetir');
@@ -1452,8 +1446,7 @@ watch(epage, 'ojo');
   const srsEye = Object.fromEntries(works.map((w, i) => [`art:${w.id}`, i === 0 ? { box: 3, due: '2026-11-01' } : { box: i % 2 ? 4 : 5, due: '2027-01-30' }]));
   await seed(epage, seededState({ upTo: 8, extra: { srs: srsEye } }));
   // Con pintores dominados, el repaso de la portada es el «Repaso de 5» (v12).
-  await epage.waitForSelector('.today-btn[data-action="review5"]');
-  await epage.locator('.today-btn[data-action="review5"]').click();
+  await epage.goto(`${base}#repaso5`);
   await playRound(epage);
   await epage.waitForTimeout(900);
   const eyeCard = epage.locator('.event-medal', { hasText: `Ojo de ${who.short || who.name}` });
@@ -1632,10 +1625,7 @@ const quickState = seededState({ upTo: 4, mastered: false, extra: { srs } });
 quickState.settings.dailyGoal = 200;
 await seed(kq, quickState);
 await kq.waitForSelector('.path');
-const quickCard = kq.locator('.today-btn[data-action="quick"]');
-check(await quickCard.count() === 1, 'no aparece el repaso rápido con cuadros vencidos');
-await shot(kq, '38-repaso-rapido-inicio');
-await quickCard.click();
+await kq.goto(`${base}#repaso-rapido`);
 await kq.waitForSelector('.lesson .option');
 const qSteps = await playRound(kq);
 check(qSteps === 3, `el repaso rápido tiene ${qSteps} preguntas`);
@@ -1651,12 +1641,7 @@ const r5 = await r5Ctx.newPage();
 watch(r5, 'repaso-5');
 await seed(r5, seededState({ upTo: 4, extra: { srs } }));
 await r5.waitForSelector('.path');
-const r5Card = r5.locator('.today-btn[data-action="review5"]');
-check(await r5Card.count() === 1 && /Repaso de 5/.test(await r5Card.getAttribute('aria-label')), 'no aparece «Repaso de 5» con pintores dominados');
-check(await r5.locator('[data-action="quick"]').count() === 0, '«Repaso de hoy» y «Repaso de 5» a la vez');
-await shot(r5, '39b-repaso-5-inicio');
-await audit(r5, '390 inicio con repaso de 5');
-await r5Card.click();
+await r5.goto(`${base}#repaso5`);
 await r5.waitForSelector('.lesson .option');
 check(await playRound(r5) === 5, 'el repaso de 5 no tiene 5 preguntas');
 await r5.waitForTimeout(900);
@@ -1706,13 +1691,7 @@ await shot(kpage, '37b-oscuro-sala');
 await audit(kpage, 'oscuro sala');
 await kpage.goto(`${base}#inicio`);
 await kpage.waitForSelector('.path');
-await audit(kpage, 'oscuro franja hoy');
-if (await kpage.locator('.today-btn[data-action="lupa"]').count()) {
-  await kpage.locator('.today-btn[data-action="lupa"]').click();
-  await kpage.waitForSelector('.lupa-dialog[open] .card-detail');
-  await audit(kpage, 'oscuro detalle');
-  await kpage.locator('.lupa-close').click();
-}
+await audit(kpage, 'oscuro inicio con reto en la cabecera');
 
 // ---------------------------------------------------------------- Reduced motion
 const rm = await browser.newContext({ ...ctxOpts, reducedMotion: 'reduce' });
@@ -1837,21 +1816,15 @@ for (const scheme of ['light', 'dark']) {
       const c7 = await browser.newContext({ ...ctxOpts, viewport: { width, height: width === 390 ? 844 : 640 }, colorScheme: scheme });
       const p7 = await c7.newPage();
       watch(p7, `o7-${tag}`);
-      // Inicio avanzado: franja «Hoy» con Reto, Lupa y Repaso, y el mapa asomando.
+      // Inicio avanzado: reto diario en la cabecera y el mapa asomando.
       await seed(p7, st7);
-      await p7.waitForSelector('.today-strip');
-      const quick = await p7.locator('.today-strip').innerText();
-      check(/Reto/.test(quick) && /Lupa/.test(quick) && /Repaso/.test(quick), `[${tag}] franja del inicio: ${quick.replace(/\s+/g, ' ')}`);
+      await p7.waitForSelector('.chip-daily');
       if (width === 390) {
         const top = await p7.evaluate(() => ({ t: document.querySelector('.path').getBoundingClientRect().top, n: document.querySelector('.bottomnav').getBoundingClientRect().top }));
         check(top.t < top.n - 40, `[${tag}] el mapa no asoma (${Math.round(top.t)} / ${Math.round(top.n)})`);
       }
       await shot(p7, `inicio-hoy-${tag}`);
       await audit(p7, `o7 ${tag} inicio hoy`);
-      await p7.locator('.today-btn[data-action="lupa"]').click();
-      await p7.waitForTimeout(400);
-      await shot(p7, `inicio-detalle-${tag}`);
-      await audit(p7, `o7 ${tag} detalle abierto`);
       // Medallas: sellos pendientes con número legible, «Ojo de X · n/m» y hoja de detalle.
       await p7.goto(`${base}#medallas`);
       await p7.waitForSelector('#medallas-panel');
@@ -1988,16 +1961,6 @@ for (const scheme of ['light', 'dark']) {
       check(y > 100, `con touch-action el dedo ya no desplaza la página (scrollY ${y})`);
       await p8.evaluate(() => window.scrollTo(0, 0));
     }
-
-    // Lupa del día: tras responder, el recorte abre el cuadro entero.
-    if (await p8.locator('.today-btn[data-action="lupa"]').count()) await p8.locator('.today-btn[data-action="lupa"]').click();
-    const det = p8.locator('.lupa-dialog[open] .card-detail').first();
-    if (await det.count()) {
-      check(await det.locator('.detail-zoom').count() === 0, `[${cfg.tag}] el detalle sin responder se puede ampliar (desvelaría el cuadro)`);
-      await det.locator('.detail-option').first().click();
-      await p8.waitForSelector('.lupa-dialog .detail-zoom');
-      await viewerCheck(p8, L('lupa del día'), p8.locator('.lupa-dialog .detail-zoom'), { close: 'esc', touch: T, shotName: cfg.full ? 'visor-detalle-390-claro' : null });
-    } else notes.push(`[${cfg.tag}] sin lupa del día hoy`);
 
     // «Conoce a»: el carrusel entero en el visor.
     await p8.goto(`${base}#etapa-${roundStage.id}`);

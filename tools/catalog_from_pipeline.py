@@ -229,7 +229,7 @@ def main(app):
             stages.append(st)
         a = dict(id=pid, name=p["name"], short=p["short"], movementId=p["movementId"], born=p["born"], died=p["died"],
                  country=p["country"], order=order[pid], section=section.get(pid), category=cat,
-                 guest=cat not in STAGE_CATEGORIES, onPath=on_path[pid], stages=stages,
+                 guest=cat not in STAGE_CATEGORIES, onPath=on_path[pid], stages=stages, qid=p.get("qid"),
                  branches=member_of.get(pid, []), hint=old.get("hint", ""),
                  similarTo=[s for s in old.get("similarTo", []) if s in pintores])
         if not a["section"]:

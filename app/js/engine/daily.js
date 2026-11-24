@@ -1,4 +1,4 @@
-// Reto diario: las mismas 10 preguntas para todo el mundo en una fecha dada.
+// Reto diario: las mismas 5 preguntas para todo el mundo en una fecha dada.
 // Solo usa pintores con etapa propia y obras conocidas (nivel general).
 
 import { planGeneral, planStage, planMovementReview, planSala } from './planner.js';
@@ -16,8 +16,10 @@ export function planFree(index, seed) {
   return { kind: 'general', seed, questions: planGeneral(index, dailyPool(index), `general:${seed}`, FREE_DIFFICULTY) };
 }
 
+export const DAILY_SIZE = 5;
+
 export function planDaily(index, dateKey) {
-  const questions = planGeneral(index, dailyPool(index), `daily:${dateKey}`, [0.2, 0.55]);
+  const questions = planGeneral(index, dailyPool(index), `daily:${dateKey}`, [0.2, 0.55], DAILY_SIZE);
   return { kind: 'daily', date: dateKey, questions };
 }
 
@@ -31,7 +33,7 @@ export function planWeekly(index, weekKey) {
   return { kind: 'weekly', week: weekKey, questions };
 }
 
-// Cuadrícula compartible: una fila de 10 casillas.
+// Cuadrícula compartible: una fila con una casilla por pregunta (5 en el reto diario).
 export function dailyGrid(firstTry) {
   return firstTry.map((ok) => (ok ? '🟩' : '⬜')).join('');
 }

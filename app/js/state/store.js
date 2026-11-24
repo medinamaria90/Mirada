@@ -4,6 +4,20 @@ import { migrate, defaultState } from './schema.js';
 
 export const STORAGE_KEY = 'mirada.state';
 
+// Marca de «la guía de bienvenida ya se ha visto» (clave propia; sin almacenamiento vale la de la sesión).
+export const COACH_KEY = 'sfumato.coach';
+let coachShown = false;
+
+export function coachSeen() {
+  if (coachShown) return true;
+  try { return window.localStorage.getItem(COACH_KEY) === '1'; } catch { return false; }
+}
+
+export function markCoachSeen() {
+  coachShown = true;
+  try { window.localStorage.setItem(COACH_KEY, '1'); } catch { /* sin almacenamiento: vale la marca de la sesión */ }
+}
+
 export function safeStorage(getStorage) {
   try {
     const s = getStorage();

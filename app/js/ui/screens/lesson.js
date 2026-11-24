@@ -1,5 +1,6 @@
 // Ronda de preguntas: barra de progreso, respuesta, feedback inmediato y reintentos al final.
 
+import { artistLink } from '../artist-link.js';
 import { esc, onAction, accentStyle, announce, focusHeading, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame, onArtworkError, isBroken, preload } from '../art.js';
@@ -238,9 +239,12 @@ export function runLesson(ctx, el, config) {
     const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
     const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId });
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
-    const who = fb.who ? `<p class="fb-who">${esc(fb.who)}</p>` : '';
+    // El nombre del pintor abre su ficha: la línea «quién» o, en «Es de X», el propio título.
+    const who = fb.who ? `<p class="fb-who">${artistLink(fb.artistId, fb.who)}</p>` : '';
+    const titleLinked = !fb.who && fb.artistId && /^Es de /.test(fb.title);
+    const title = titleLinked ? artistLink(fb.artistId, fb.title, 'fb-title') : `<p class="fb-title">${esc(fb.title)}</p>`;
     // Tras un fallo de autor: de quién era lo elegido («No es de X…» / «El que has elegido es de X · título»).
-    const chosen = fb.chosen ? `<p class="fb-line-2">${esc(fb.chosen.line)}</p>` : '';
+    const chosen = fb.chosen ? `<p class="fb-line-2">${artistLink(fb.chosen.artistId, fb.chosen.line)}</p>` : '';
     const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('') + chosen;
     // En «¿Cuál es de X?», la miniatura elegida por error lleva el nombre de su pintor.
     const wrongArt = fb.chosen && fb.chosen.artworkId ? $('.option-art.is-wrong', stage) : null;
@@ -252,7 +256,7 @@ export function runLesson(ctx, el, config) {
     feedback.innerHTML = `<div class="fb-inner">
       <div class="fb-text">
         <div class="fb-head"><span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>
-        <p class="fb-title">${esc(fb.title)}</p>${gained ? `<span class="fb-xp">+${gained} XP</span>` : ''}</div>
+        ${title}${gained ? `<span class="fb-xp">+${gained} XP</span>` : ''}</div>
         ${who}${lines}${caption}
       </div>
       <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>

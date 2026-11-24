@@ -9,7 +9,7 @@ import {
 } from '../app/js/engine/planner.js';
 import { recordAnswer, dueKeys } from '../app/js/engine/srs.js';
 import { daysBetween, addDays, weekOf, dayKey, expandDay } from '../app/js/engine/dates.js';
-import { planDaily, dailyGrid } from '../app/js/engine/daily.js';
+import { planDaily, dailyGrid, DAILY_SIZE } from '../app/js/engine/daily.js';
 import { encodeChallenge, decodeChallenge, tokenForRound } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
 import { sampleIndex, bigIndex } from './helpers.js';
@@ -211,7 +211,7 @@ test('reto diario determinista por fecha y distinto entre fechas', () => {
   const a = planDaily(index, '2026-11-23');
   const b = planDaily(index, '2026-11-23');
   const c = planDaily(index, '2026-11-24');
-  assert.equal(a.questions.length, 10);
+  assert.equal(a.questions.length, DAILY_SIZE);
   assert.deepEqual(a, b);
   assert.notDeepEqual(a.questions, c.questions);
   a.questions.forEach((q) => assertValidQuestion(index, q));
@@ -235,7 +235,7 @@ test('reto a un amigo: codificar y decodificar hash plano y reconstruir la misma
   const review = planMovementReview(index, 'mov2', 55);
   assert.deepEqual(planChallenge(index, decodeChallenge(encodeChallenge(tokenForRound(index, review), 3))).questions, review.questions);
   const daily = planDaily(index, '2026-11-23');
-  const dd = decodeChallenge(encodeChallenge(tokenForRound(index, daily), 10));
+  const dd = decodeChallenge(encodeChallenge(tokenForRound(index, daily), DAILY_SIZE));
   assert.equal(dd.date, '2026-11-23');
   assert.deepEqual(planChallenge(index, dd).questions, daily.questions);
 

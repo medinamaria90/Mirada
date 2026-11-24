@@ -9,7 +9,7 @@ import { dirname, join } from 'node:path';
 import { defaultState } from '../app/js/state/schema.js';
 import { emptyProgress, DEFAULT_GOAL } from '../app/js/engine/progress.js';
 import { icons } from '../app/js/ui/icons.js';
-import { topBar, goalChip, streakChip } from '../app/js/ui/shell.js';
+import { topBar, goalChip, streakChip, dailyChip } from '../app/js/ui/shell.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const app = join(here, '..', 'app');
@@ -19,7 +19,7 @@ function ctxWith({ streak = 0, xpToday = 0, goal = DEFAULT_GOAL } = {}) {
   const progress = emptyProgress();
   if (streak) progress.streak = { current: streak, best: streak, last: TODAY, graceOn: null, days: [TODAY] };
   progress.xpByDay = { [TODAY]: xpToday };
-  return { store: { get: () => ({ progress, settings: { ...defaultState().settings, dailyGoal: goal } }) }, today: () => TODAY };
+  return { store: { get: () => ({ progress, settings: { ...defaultState().settings, dailyGoal: goal } }) }, today: () => TODAY, dailyDay: () => TODAY };
 }
 
 test('cabecera: la racha lleva una llama y «n día(s)», nunca un sol', () => {
@@ -46,4 +46,16 @@ test('cabecera: el anillo de la meta lleva la cifra «hecho/meta» y conserva su
   assert.ok(goalChip(80, 50).includes('>50/50<') && goalChip(80, 50).includes('is-met'), 'por encima de la meta se topa en la meta');
   const html = topBar(ctxWith({ xpToday: 20, goal: 100 }));
   assert.ok(html.includes('class="chip chip-goal"') && html.includes('Meta de hoy: 20 de 100 XP') && html.includes('>20/100<'));
+});
+
+test('cabecera: el reto diario está en la cabecera (sin chip de rango): pendiente o hecho con «4/5», hacia el reto', () => {
+  const pending = topBar(ctxWith());
+  assert.ok(pending.includes('class="chip chip-daily"') && pending.includes('href="#reto-diario"') && pending.includes('aria-label="Reto diario, pendiente"'));
+  assert.ok(!pending.includes('chip-level') && !pending.includes('minibar'), 'el chip del rango sigue en la cabecera');
+  const done = dailyChip({ score: 4, total: 5 });
+  assert.ok(done.includes('is-done') && done.includes('>4/5<') && done.includes('aria-label="Reto diario, hecho: 4 de 5"') && done.includes(icons.calendar(18)));
+  const ctx = ctxWith();
+  const state = ctx.store.get();
+  state.progress.daily = { [TODAY]: { score: 5, total: 5 } };
+  assert.ok(topBar(ctx).includes('>5/5<'));
 });

@@ -16,7 +16,7 @@ import { finishRound } from '../app/js/engine/finish.js';
 import { medalInfo } from '../app/js/engine/medal-info.js';
 import { isAttributed, noAuthorQuestion, makeWhoQuestion, makeWhichQuestion } from '../app/js/engine/questions.js';
 import {
-  recognizedCount, RECOGNIZED_BOX, eyeProgress, isGalleryOpen, galleryWorks, openGalleries, planDetail, answerDetail, detailPool, DETAIL_XP, DETAIL_FAME,
+  recognizedCount, RECOGNIZED_BOX, eyeProgress, isGalleryOpen, galleryWorks, openGalleries, 
 } from '../app/js/engine/goals.js';
 import { isoWeek, expandWeek, isoWeeksIn } from '../app/js/engine/dates.js';
 import { migrate, SCHEMA_VERSION, MIGRATIONS } from '../app/js/state/schema.js';
@@ -201,54 +201,9 @@ test('sala de movimiento: abierta solo con el movimiento dominado y con sus obra
   assert.equal(parseRoute('#galeria-barroco').name, 'gallery');
 });
 
-// --- Detalle del día ---------------------------------------------------------------------------
-
-test('detalle del día: determinista por fecha, de obras aprendidas, nunca spoiler ni atribuida', () => {
-  const p = emptyProgress();
-  assert.equal(planDetail(p, real, TODAY), null, 'sin nada aprendido no hay detalle');
-  for (const w of real.artworks) p.collection[w.id] = TODAY; // incluidas spoiler y atribuidas
-  const a = planDetail(p, real, TODAY);
-  assert.deepEqual(planDetail(p, real, TODAY), a, 'mismo día, misma pregunta');
-  const seen = new Set();
-  for (let d = 1; d <= 60; d++) {
-    const day = `2026-${String(1 + Math.floor((d - 1) / 28)).padStart(2, '0')}-${String(1 + ((d - 1) % 28)).padStart(2, '0')}`;
-    const plan = planDetail(p, real, day);
-    const w = real.artwork(plan.artworkId);
-    assert.ok(!w.spoiler && !w.attributed, `${day}: ${w.id}`);
-    assert.ok(real.pathIndex(w.artistId) >= 0);
-    assert.equal(plan.options.length, 4);
-    assert.ok(plan.options.some((o) => o.id === plan.answerId));
-    assert.equal(new Set(plan.options.map((o) => o.id)).size, 4);
-    assert.ok(w.fame >= DETAIL_FAME, `${w.id}: fama ${w.fame}`);
-    assert.ok(plan.crop.scale >= 1.5 && plan.crop.scale <= 1.85, `aumento ${plan.crop.scale}`);
-    if (w.focus) assert.deepEqual([plan.crop.x, plan.crop.y], w.focus.map((v) => Math.round(Math.min(92, Math.max(8, v * 100)))));
-    else assert.deepEqual([plan.crop.x, plan.crop.y], [50, 42]);
-    seen.add(plan.artworkId);
-  }
-  assert.ok(seen.size > 15, 'varía de un día a otro');
-  assert.ok(detailPool(p, real).every((w) => !noAuthorQuestion(w)));
-});
-
-test('detalle del día: una sola respuesta al día y XP pequeña solo si se acierta', () => {
-  const p = emptyProgress();
-  p.collection[real.artworks.find((w) => w.fame === DETAIL_FAME && real.pathIndex(w.artistId) >= 3 && !noAuthorQuestion(w)).id] = TODAY;
-  const plan = planDetail(p, real, TODAY);
-  const right = answerDetail(p, plan, plan.answerId, TODAY);
-  assert.equal(right.correct, true);
-  assert.equal(right.xp, DETAIL_XP);
-  assert.equal(right.progress.xp, DETAIL_XP);
-  assert.equal(right.progress.xpByDay[TODAY], DETAIL_XP);
-  assert.deepEqual(right.progress.detail[TODAY], { artworkId: plan.artworkId, correct: true });
-  assert.equal(answerDetail(right.progress, plan, plan.answerId, TODAY), null, 'una vez al día');
-  const wrongId = plan.options.find((o) => o.id !== plan.answerId).id;
-  const wrong = answerDetail(p, plan, wrongId, TODAY);
-  assert.equal(wrong.correct, false);
-  assert.equal(wrong.xp, 0);
-});
-
 // --- Estado: migración v3 → v4 -------------------------------------------------------------------
 
-test('migración v3 → v4: añade reto semanal y detalle sin perder progreso', () => {
+test('migración v3 → v4: añade reto semanal sin perder progreso', () => {
   const v3 = {
     version: 3, onboarded: true,
     progress: { xp: 1200, artists: { leonardo: { plays: 2, best: 0.8, mastered: true } }, srs: { 'art:a154': { box: 4, due: TODAY } }, xpByDay: { [TODAY]: 40 }, medals: { 'artist-leonardo': TODAY } },
@@ -259,7 +214,6 @@ test('migración v3 → v4: añade reto semanal y detalle sin perder progreso', 
   assert.ok(SCHEMA_VERSION >= 4, 'la v4 ya existe (las versiones siguientes encadenan)');
   assert.equal(out.version, 4);
   assert.deepEqual(out.progress.weekly, {});
-  assert.deepEqual(out.progress.detail, {});
   assert.equal(out.progress.xp, 1200);
   assert.deepEqual(out.progress.srs, v3.progress.srs);
   assert.equal(out.settings.dailyGoal, 100);
@@ -267,8 +221,8 @@ test('migración v3 → v4: añade reto semanal y detalle sin perder progreso', 
   const storage = memoryStorage({ [STORAGE_KEY]: JSON.stringify(v3) });
   const store = createStore({ storage });
   assert.equal(store.get().version, SCHEMA_VERSION);
-  store.update((s) => ({ ...s, progress: { ...s.progress, detail: { [TODAY]: { artworkId: 'a154', correct: true } } } }));
-  assert.equal(createStore({ storage }).get().progress.detail[TODAY].correct, true);
+  store.update((s) => ({ ...s, progress: { ...s.progress, weekly: { '2026-W48': { score: 9, total: 15 } } } }));
+  assert.equal(createStore({ storage }).get().progress.weekly['2026-W48'].score, 9);
 });
 
 test('feedback: si una obra vuelve a salir en la ronda, no se repite su `look` (rasgo del pintor)', async () => {

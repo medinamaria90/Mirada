@@ -41,11 +41,11 @@ export const MIGRATIONS = {
     settings: { ...(isPlain(old.settings) ? old.settings : {}), dailyGoal: DEFAULT_GOAL },
     progress: { ...(isPlain(old.progress) ? old.progress : {}), xpByDay: {} },
   }),
-  // 3 → 4 (oleada 6): reto semanal y lupa del día (detail). Lo demás se conserva; las medallas «Ojo de…»
+  // 3 → 4 (oleada 6): reto semanal. Lo demás se conserva; las medallas «Ojo de…»
   // y los cuadros que reconoces se calculan del repaso espaciado que ya había.
   3: (old) => ({
     ...old,
-    progress: { ...(isPlain(old.progress) ? old.progress : {}), weekly: {}, detail: {} },
+    progress: { ...(isPlain(old.progress) ? old.progress : {}), weekly: {} },
   }),
   // 4 → 5: tema de la interfaz en Ajustes (claro, oscuro o como el móvil). Lo demás se conserva.
   4: (old) => ({
@@ -69,7 +69,8 @@ export const MIGRATIONS = {
   // progreso). Nuevos: niveles «a fondo» (deep) y rango más alto alcanzado (rank). La ronda en curso
   // se descarta (lleva obras con ids antiguos).
   6: (old) => {
-    const progress = isPlain(old.progress) ? old.progress : {};
+    // La lupa del día (`detail`) ya no existe: su registro no se conserva.
+    const { detail: _lupa, ...progress } = isPlain(old.progress) ? old.progress : {};
     // a<N>/b<N> → w<QID>; un id que ya es del catálogo grande (w<QID>) se conserva; el resto se pierde.
     const tr = (id) => (typeof id !== 'string' ? null : Object.hasOwn(LEGACY_IDS, id) ? LEGACY_IDS[id] : /^w\d+$/.test(id) ? id : null);
     const byWork = (dict, wrap = (id) => id) => {
@@ -84,13 +85,6 @@ export const MIGRATIONS = {
         else { const n = tr(k.slice(4)); if (n) srs[`art:${n}`] = v; }
       }
     }
-    const detail = {};
-    if (isPlain(progress.detail)) {
-      for (const [day, d] of Object.entries(progress.detail)) {
-        const n = isPlain(d) ? tr(d.artworkId) : null;
-        if (n) detail[day] = { ...d, artworkId: n };
-      }
-    }
     return {
       ...old,
       session: {},
@@ -98,7 +92,6 @@ export const MIGRATIONS = {
         ...progress,
         collection: byWork(progress.collection),
         srs,
-        detail,
         fallados: (Array.isArray(progress.fallados) ? progress.fallados : [])
           .filter((f) => f && tr(f.id)).map((f) => ({ ...f, id: tr(f.id) })),
         deep: {},

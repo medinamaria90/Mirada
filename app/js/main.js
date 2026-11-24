@@ -87,6 +87,20 @@ function installZoom(getIndex) {
   });
 }
 
+// Cualquier nombre de pintor con data-artist="<id>" abre su ficha (módulo diferido). Dentro de una
+// ronda no se ofrece jugar desde la ficha: solo las pantallas con navegación inferior (.page) lo hacen.
+function installArtistLinks(getCtx) {
+  document.addEventListener('click', (ev) => {
+    const el = ev.target.closest('[data-artist]');
+    const ctx = getCtx();
+    if (!el || !ctx) return;
+    ev.preventDefault();
+    import('./ui/artist-sheet.js')
+      .then((m) => m.openArtistSheet(ctx, el.dataset.artist, { opener: el, playable: Boolean(el.closest('.page')) }))
+      .catch((err) => console.error(err));
+  });
+}
+
 // Sin zoom de página: Safari en iOS ignora user-scalable=no, así que se frenan también sus gestos
 // de pellizco y cualquier movimiento con dos dedos (el desplazamiento con uno sigue igual).
 function blockPageZoom() {
@@ -129,6 +143,7 @@ async function boot() {
 
   const index = buildIndex(catalog);
   installZoom(() => index);
+  installArtistLinks(() => ctx);
   // Textos de las pistas por obra (`look`) y rasgos: se piden tras pintar; sin ellos todo funciona.
   let textPromise = null;
   const ensureText = () => {
@@ -153,6 +168,7 @@ async function boot() {
     go,
     toast,
     ensureText,
+    ensureFicha: () => import('./ui/ficha-data.js').then((m) => m.ensureFicha(index)),
     setCleanup: (fn) => {
       cleanup = typeof fn === 'function' ? fn : null;
     },
@@ -237,7 +253,7 @@ async function boot() {
       case 'gallery': return lazy(token, screen, loadGallery, (m) => m.renderGallery(ctx, screen, route.movementId), true);
       case 'challenge': return flow((m) => m.renderChallenge(ctx, screen, route.challenge));
       case 'free': return flow((m) => m.renderFree(ctx, screen));
-      case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen), true);
+      case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen, { tab: route.tab }), true);
       case 'profile': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen));
       case 'medals': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen, { focus: 'medals' }));
       default:

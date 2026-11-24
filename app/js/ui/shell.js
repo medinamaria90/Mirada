@@ -2,7 +2,7 @@
 
 import { esc } from './dom.js';
 import { icons, logoMark } from './icons.js';
-import { levelFor, visibleStreak, todayXp, normalizeGoal } from '../engine/progress.js';
+import { visibleStreak, todayXp, normalizeGoal } from '../engine/progress.js';
 
 // Anillo de la meta diaria (XP de hoy / meta). size en px.
 export function goalRing(done, goal, size = 30) {
@@ -29,12 +29,17 @@ export function streakChip(streak) {
   return `<a class="chip chip-streak" href="#perfil" aria-label="Racha: ${streak} ${unit}"><span class="chip-pill">${icons.flame(18)}<span class="chip-stack"><span class="chip-num">${streak}</span><span class="chip-unit">${unit}</span></span></span></a>`;
 }
 
+// Reto diario: botón redondo con el calendario; pendiente, solo el icono con un punto de aviso; hecho, «4/5».
+export function dailyChip(daily) {
+  if (!daily) return `<a class="chip chip-daily" href="#reto-diario" aria-label="Reto diario, pendiente"><span class="chip-pill">${icons.calendar(20)}<span class="chip-dot" aria-hidden="true"></span></span></a>`;
+  return `<a class="chip chip-daily is-done" href="#reto-diario" aria-label="Reto diario, hecho: ${daily.score} de ${daily.total}"><span class="chip-pill">${icons.calendar(18)}<span class="chip-daily-text">${daily.score}/${daily.total}</span></span></a>`;
+}
+
 export function topBar(ctx) {
   const state = ctx.store.get();
   const p = state.progress;
   const today = ctx.today();
   const streak = visibleStreak(p.streak, today);
-  const level = levelFor(p.xp);
   const goal = normalizeGoal(state.settings.dailyGoal);
   const done = todayXp(p, today);
   return `<header class="topbar">
@@ -42,9 +47,7 @@ export function topBar(ctx) {
     <div class="topbar-stats">
       ${goalChip(done, goal)}
       ${streakChip(streak)}
-      <a class="chip chip-level" href="#perfil" aria-label="Nivel ${esc(level.name)}, ${p.xp} puntos de experiencia">
-        <span class="chip-pill">${icons.gem(18)}<span class="chip-level-text"><span class="chip-level-name">${esc(level.name)}</span><span class="minibar" aria-hidden="true"><span style="width:${Math.round(level.progress * 100)}%"></span></span></span></span>
-      </a>
+      ${dailyChip(p.daily?.[ctx.dailyDay()])}
     </div>
   </header>`;
 }

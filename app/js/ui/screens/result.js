@@ -4,9 +4,10 @@ import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotio
 import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
-import { levelFor, levelName, MASTERY, UNLOCK_MIN, isStepUnlocked } from '../../engine/progress.js';
+import { levelFor, levelName, MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
+import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { mainTrait } from '../../engine/feedback.js';
-import { weekOf } from '../../engine/dates.js';
+import { weekOf, isoWeek } from '../../engine/dates.js';
 import { encodeChallenge, tokenForRound } from '../../engine/challenge.js';
 import { shareText, dailyGrid } from '../../engine/daily.js';
 import { medalBadge } from './medals.js';
@@ -25,6 +26,16 @@ function eventCard({ icon, kicker, title, to = null, cls = '' }) {
   const body = `<span class="event-icon">${icon}</span><span class="event-text"><span class="event-kicker">${esc(kicker)}</span><span class="event-title">${esc(title)}</span></span>`;
   if (!to) return `<section class="event ${cls}">${body}</section>`;
   return `<button class="event event-link ${cls}" data-action="go" data-to="${esc(to)}">${body}<span class="event-go" aria-hidden="true">${icons.next(20)}</span></button>`;
+}
+
+// Otras rondas a mano, ya que la franja «Hoy» no existe: el Repaso de 5 (si hay material) y el reto
+// semanal (con el camino dominado y sin hacer esta semana). No se ofrece la que se acaba de jugar.
+export function extraRounds(ctx, plan) {
+  const p = ctx.store.get().progress;
+  const list = [];
+  if (plan.kind !== 'review5' && review5Works(p, ctx.index, ctx.today()).length >= REVIEW5_MIN) list.push({ to: 'repaso5', label: REVIEW5_NAME, icon: 'repeat' });
+  if (plan.kind !== 'weekly' && isPathMastered(p, ctx.index) && !p.weekly?.[isoWeek(ctx.dailyDay()).key]) list.push({ to: 'reto-semanal', label: 'Reto semanal', icon: 'target' });
+  return list;
 }
 
 function stepRoute(index, step) {
@@ -166,6 +177,7 @@ export function renderResult(ctx, el, opts) {
         <button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>
         ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
         ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
+        ${blocked ? '' : extraRounds(ctx, plan).map((r) => `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(r.to)}">${icons[r.icon](20)}<span>${esc(r.label)}</span></button>`).join('')}
         ${token ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
         <p class="copy-status" role="status"></p>
         <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="4"></textarea>

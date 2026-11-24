@@ -1,16 +1,16 @@
-// Inicio: la franja «Hoy» fija bajo la cabecera y el mapa del camino (ui/screens/path-map.js).
+// Inicio: el mapa del camino (ui/screens/path-map.js) y, al terminarlo, el cierre.
 
 import { esc, onAction } from '../dom.js';
 import { icons } from '../icons.js';
 import { page } from '../shell.js';
 import { artFrame } from '../art.js';
-import { todayStrip, todayDialog, todayActions } from './home-today.js';
 import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent } from './path-map.js';
 import { isPathMastered, stepsToMaster, isPathComplete } from '../../engine/progress.js';
 import { recognizedCount } from '../../engine/goals.js';
 import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf } from '../../engine/dates.js';
+import { coachSeen } from '../../state/store.js';
 
 export function renderHome(ctx, el) {
   const { index } = ctx;
@@ -49,8 +49,6 @@ export function renderHome(ctx, el) {
   }
   el.innerHTML = page(ctx, 'home', `
     <h1 class="sr-only">Tu camino</h1>
-    ${todayStrip(ctx)}
-    ${todayDialog()}
     <div class="home-grid">
       <aside class="home-side">${sideExtras(ctx)}</aside>
       <div class="home-main">
@@ -61,25 +59,19 @@ export function renderHome(ctx, el) {
 
   playEra('menu');
   watchLandscapes(el);
+  // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
+  if (!coachSeen()) {
+    let stop = () => {};
+    let left = false;
+    import('../coach.js').then((m) => { if (!left) stop = m.maybeStartCoach(el); }).catch((err) => console.error(err));
+    ctx.setCleanup(() => { left = true; stop(); });
+  }
 
   onAction(el, {
     ...pathActions(ctx),
-    ...todayActions(ctx, el),
-    daily: () => {
-      ctx.audio.sfx('tap');
-      ctx.go('reto-diario');
-    },
     srs: () => {
       ctx.audio.sfx('tap');
       ctx.go('repaso');
-    },
-    quick: () => {
-      ctx.audio.sfx('tap');
-      ctx.go('repaso-rapido');
-    },
-    review5: () => {
-      ctx.audio.sfx('tap');
-      ctx.go('repaso5');
     },
     collection: () => {
       ctx.audio.sfx('tap');

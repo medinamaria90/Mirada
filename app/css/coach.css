@@ -1,0 +1,18 @@
+/* Guía de bienvenida (ui/coach.js): aro sobre lo señalado y tarjeta al lado, sin tapar nada. */
+.coach-ring {
+  position: fixed; z-index: 20; pointer-events: none; border-radius: var(--radius);
+  box-shadow: 0 0 0 3px var(--brand), 0 0 0 9px color-mix(in srgb, var(--brand) 30%, transparent);
+  transition: top .25s var(--ease), left .25s var(--ease), width .25s var(--ease), height .25s var(--ease);
+}
+.coach-card {
+  position: fixed; z-index: 21; box-sizing: border-box; width: min(320px, calc(100vw - 24px)); padding: 1rem 1.1rem;
+  background: var(--surface); color: var(--ink); border-radius: var(--radius);
+  box-shadow: var(--shadow-pop), var(--lift); animation: rise .25s var(--ease);
+}
+.coach-step { font: 600 .78rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; margin-bottom: .45rem; }
+.coach-text { font: 400 1.05rem/1.4 var(--font); margin-bottom: .8rem; }
+.coach-actions { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+.coach-actions .btn { min-height: 48px; }
+@media (prefers-reduced-motion: reduce) { .coach-ring { transition: none; } .coach-card { animation: none; } }
+html.reduce-motion .coach-ring { transition: none; }
+html.reduce-motion .coach-card { animation: none; }

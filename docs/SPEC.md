@@ -246,6 +246,22 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
 - **Estado v7** (`state/schema.js`): obras `a<N>` → `w<QID>` (`state/legacy-ids.js`, generado), lo sin equivalente se pierde;
   `deep: {}` y `rank: 0` nuevos; se descarta la ronda en curso.
 
+- **Ficha de pintor (parte B, paquete 1)**: `ui/artist-sheet.js` (diálogo sobre cualquier pantalla; no cambia de ruta, así no pierde
+  una ronda; jugar solo si se abre desde una pantalla con navegación inferior). Se abre con cualquier `data-artist="<id>"`
+  (`ui/artist-link.js`, delegación en `main.js`): feedback («Es de X», «El que has elegido es de…»), «Conoce a» y ficha de obra.
+  Muestra fechas, país, época, líneas de vida (tarjetas del nivel 1 de `app/data/historias/<id>.json`; sin historia, un dato seco
+  con enlace a Wikidata por el `qid` del catálogo), «Fíjate en…» (`hint`), etapas (grandes maestros), SOLO obras ya vistas y
+  progreso. Colección tiene dos rutas, `#coleccion` (Cuadros) y `#coleccion-pintores` (lista por épocas alcanzadas con buscador).
+  **Historias servidas desde la app**: `tools/sync_historias.py` copia y valida `contenido/historias/` en `app/data/historias/`
+  (con `index.json` de pintores y niveles, para no pedir archivos inexistentes); `tests/ficha-pintor.test.js` falla si la copia se
+  desfasa: tras tocar una historia, ejecutar el script y subir ambas carpetas. Museo y ciudad (`catalog-ficha.json`, diferido,
+  `ui/ficha-data.js`) salen bajo el cuadro en el visor y en la ficha de obra solo con la obra revelada.
+- **Guía de bienvenida** (`ui/coach.js`): tres pasos sobre el nodo actual, la franja «Hoy» y Colección; una vez por navegador
+  (`sfumato.coach` en localStorage), se salta con «Saltar» o Esc. La cabecera ya no lleva el chip de rango (irá en el perfil) y lleva el reto diario
+  (`dailyChip`: calendario con punto si está pendiente, «4/5» si está hecho). Ya no hay franja «Hoy» ni lupa del día (su registro
+  `progress.detail` se descarta en la migración a v7); el reto diario es de 5 preguntas (`DAILY_SIZE`) y el Repaso de 5 y el reto
+  semanal se ofrecen al terminar una ronda (`extraRounds` en `ui/screens/result.js`).
+
 ## 5. Contrato del audio — `app/js/audio/index.js`
 
 ```js

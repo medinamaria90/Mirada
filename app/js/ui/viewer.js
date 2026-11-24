@@ -12,6 +12,7 @@
 // En una pregunta sin responder (reveal: false) no dice título, autor ni año (tampoco en alt ni
 // aria). Con pick, un botón «Es este» responde con el cuadro que se está viendo; cerrar no responde.
 
+import { ensureFicha, museumLine } from './ficha-data.js';
 import { esc, prefersReducedMotion } from './dom.js';
 import { artFrame, isBroken } from './art.js';
 import { icons } from './icons.js';
@@ -62,6 +63,12 @@ export function openViewer(opts) {
     <div class="viewer-zoom" role="status" hidden></div>`;
   document.body.appendChild(dlg);
 
+  // Museo y ciudad bajo el cuadro, solo con la obra revelada (antes de responder delatarían al pintor).
+  if (reveal) {
+    ensureFicha(index).then(() => {
+      dlg.querySelectorAll('.viewer-slide').forEach((el, k) => { const m = el.querySelector('.viewer-museum'); if (m) m.textContent = museumLine(works[k]); });
+    });
+  }
   const track = dlg.querySelector('.viewer-track');
   const slides = [...dlg.querySelectorAll('.viewer-slide')];
   const count = dlg.querySelector('.viewer-count');
@@ -411,7 +418,7 @@ function slideHtml(index, w, i, n, reveal, eager) {
   const big = broken ? '' : `<img class="viewer-img" data-src="${esc(w.img)}" alt="${esc(alt)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async"${eager ? ` src="${esc(w.img)}"` : ''}>`;
   return `<figure class="viewer-slide" role="group" aria-roledescription="cuadro" aria-label="${esc(slideLabel)}">
       <div class="viewer-stage"><div class="viewer-frame" style="--arw:${Math.max(1, w.w || 4)};--arh:${Math.max(1, w.h || 3)}">${thumb}${big}</div></div>
-      ${reveal ? `<figcaption class="viewer-caption"><span class="viewer-name">${esc(w.title)}</span><span class="viewer-meta">${esc(caption)}</span></figcaption>` : ''}
+      ${reveal ? `<figcaption class="viewer-caption"><span class="viewer-name">${esc(w.title)}</span><span class="viewer-meta">${esc(caption)}</span><span class="viewer-museum">${esc(museumLine(w))}</span></figcaption>` : ''}
     </figure>`;
 }
 
