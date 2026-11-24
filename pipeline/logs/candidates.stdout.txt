@@ -62,3 +62,19 @@ ya     gainsborough       579 candidatas
 ya     fragonard          188 candidatas
 ya     goya               518 candidatas
 fin 2026-11-24 11:06:34
+ya     paret              15 candidatas
+ya     david              139 candidatas
+ya     vigee-le-brun      232 candidatas
+ok     borovikovski       Q262098     115 candidatas; de las 80 primeras, 70 con imagen >=1200px
+ya     vicente-lopez      68 candidatas
+ya     friedrich          196 candidatas
+ya     turner             676 candidatas
+ya     constable          530 candidatas
+ok     tropinin           Q434561      31 candidatas; de las 80 primeras, 16 con imagen >=1200px
+ya     ingres             219 candidatas
+ok     venetsianov        Q515879      51 candidatas; de las 80 primeras, 30 con imagen >=1200px
+ya     gericault          165 candidatas
+ya     corot              994 candidatas
+ya     delaroche          75 candidatas
+ya     delacroix          425 candidatas
+fin 2026-11-24 11:07:29
