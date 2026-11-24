@@ -229,6 +229,21 @@ export function makeQuestion(type, index, artwork, difficulty, rng, opts = {}) {
   return null;
 }
 
+// Reintento al final de la ronda de un cuadro fallado: la misma obra con otra mecánica («¿Quién lo
+// pintó?» ↔ «¿Cuál es de X?»), para que no baste con recordar la posición de la respuesta. Las de
+// movimiento (y si la otra mecánica no es posible) solo barajan las opciones.
+export const RETRY_DIFFICULTY = 0.4;
+export function retryQuestion(index, q, rng) {
+  const shuffled = { ...q, options: rng.shuffle(q.options) };
+  if (q.type === 'movement') return shuffled;
+  const work = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
+  if (!work) return shuffled;
+  const other = q.type === 'who'
+    ? makeWhichQuestion(index, work, RETRY_DIFFICULTY, rng, [])
+    : makeWhoQuestion(index, work, RETRY_DIFFICULTY, rng);
+  return other ? { ...other, isNew: q.isNew, phase: q.phase } : shuffled;
+}
+
 // Artworks que aparecen en pantalla en una pregunta (para precarga y fallos de imagen).
 export function artworksInQuestion(q) {
   if (q.type === 'which') return q.options.map((o) => o.artworkId);

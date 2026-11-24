@@ -11,7 +11,8 @@ import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planSrsReview, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { finishRound, artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists } from '../../engine/progress.js';
+import { finishRound, artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
+import { falladoQuestion } from '../../engine/fallados.js';
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
@@ -44,6 +45,17 @@ function planMeta(plan) {
   return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week };
 }
 
+// Rondas que no llevan al final un cuadro fallado antes: los retos con un amigo y el semanal (iguales
+// para todos) y el repaso de 5 (ya lleva los fallados entre sus preguntas).
+const NO_EXTRA = new Set(['challenge', 'weekly', 'review5']);
+
+function falladoExtras(ctx, kind, plan) {
+  if (NO_EXTRA.has(kind)) return [];
+  const p = ctx.store.get().progress;
+  const q = falladoQuestion(p, ctx.index, plan.questions, plan.seed || plan.date || 1, (w) => isKnownArtist(p, ctx.index, w.artistId));
+  return q ? [q] : [];
+}
+
 // Ejecuta una ronda y la guarda tras cada respuesta para poder retomarla (state/session.js).
 function play(ctx, el, opts) {
   const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, more = null } = opts;
@@ -51,6 +63,7 @@ function play(ctx, el, opts) {
   const questions = resume ? resume.round.queue.map((it) => it.q) : plan.questions;
   return runLesson(ctx, el, {
     questions,
+    extras: resume ? [] : falladoExtras(ctx, kind, plan),
     accent,
     seed: plan.seed || plan.date || 1,
     label: title,

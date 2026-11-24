@@ -3,6 +3,7 @@
 import { recordAnswer, artKey, artistKey } from './srs.js';
 import { noAuthorQuestion } from './catalog.js';
 import { touchStreak } from './streak.js';
+import { updateFallados } from './fallados.js';
 
 export { touchStreak, visibleStreak, graceLeft, GRACE_PER_WEEK } from './streak.js';
 
@@ -326,6 +327,9 @@ export function finishRound(progress, index, result, today, opts = {}) {
     if (artId) p.srs = recordAnswer(p.srs, artKey(artId), a.correct, today);
   }
 
+  p.fallados = updateFallados(p.fallados, result.answers, today, (a) => unseen.has(a.q.artistId));
+  p.seen = markSeen(p.seen, index, result.answers, today, unseen);
+
   const total = result.firstTry.length;
   const score = result.firstTry.filter((v) => v === true).length;
   const accuracy = total ? score / total : 0;
@@ -341,7 +345,7 @@ export function finishRound(progress, index, result, today, opts = {}) {
     roundMastered = stageRoundMastered(result.answers, result.artistId, accuracy, { first });
     ownShort = accuracy >= STAGE_MASTERY && !roundMastered;
     const mastered = prev.mastered || roundMastered;
-    p.artists[result.artistId] = { plays: prev.plays + 1, best: Math.max(prev.best, accuracy), mastered, last: today };
+    p.artists[result.artistId] = { plays: prev.plays + 1, best: Math.max(prev.best, accuracy), mastered, last: today, since: prev.since || today };
     p.srs = recordAnswer(p.srs, artistKey(result.artistId), roundMastered, today);
     if (mastered) award(`artist-${result.artistId}`);
     unlockCheck(events);
@@ -405,6 +409,17 @@ export function finishRound(progress, index, result, today, opts = {}) {
   if (levelAfter > levelBefore) events.push({ type: 'levelup', level: levelAfter });
 
   return { progress: p, events, xp, score, total, accuracy, mastered: roundMastered, ownShort };
+}
+
+// Último día en que salió cada pintor con etapa en una pregunta (sin reintentos ni pintores aún no
+// vistos): lo usan el cuadro de repaso de cada etapa y los pintores dormidos (engine/review.js).
+function markSeen(seen, index, answers, today, unseen) {
+  const out = seen && typeof seen === 'object' && !Array.isArray(seen) ? { ...seen } : {};
+  for (const a of answers) {
+    const id = a.q && a.q.artistId;
+    if (!a.retry && id && !unseen.has(id) && index.pathIndex(id) >= 0) out[id] = today;
+  }
+  return out;
 }
 
 // Recuerda si la parada siguiente estaba bloqueada y devuelve una función que, tras actualizar

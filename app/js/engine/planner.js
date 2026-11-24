@@ -426,10 +426,12 @@ export function planGeneral(index, works, seedText, difficulty = [0.25, 0.6], co
     .filter(Boolean);
 }
 
-// Ejecución de una ronda (pura): los fallos vuelven al final una vez.
-export function createRound(questions) {
+// Ejecución de una ronda (pura): los fallos vuelven al final una vez. extras: preguntas que no cuentan
+// (cuadros fallados en rondas anteriores, engine/fallados.js); van al final como reintentos.
+export function createRound(questions, extras = []) {
+  const again = questions.length ? extras.map((q) => ({ q, base: 0, retry: true })) : [];
   return {
-    queue: questions.map((q, i) => ({ q, base: i, retry: false })),
+    queue: [...questions.map((q, i) => ({ q, base: i, retry: false })), ...again],
     pos: 0,
     baseCount: questions.length,
     firstTry: Array(questions.length).fill(null),
@@ -463,10 +465,6 @@ export function roundProgress(round) {
 
 export function roundScore(round) {
   return round.firstTry.filter((v) => v === true).length;
-}
-
-export function reshuffleOptions(q, rng) {
-  return { ...q, options: rng.shuffle(q.options) };
 }
 
 function tag(q, phase) {

@@ -4,22 +4,23 @@ import { esc, onAction, accentStyle, announce, focusHeading, $, $$ } from '../do
 import { icons } from '../icons.js';
 import { artFrame, onArtworkError, isBroken, preload, ZOOM_BADGE } from '../art.js';
 import { createRng } from '../../engine/rng.js';
-import { isCorrect, questionAlt, optionText, makeQuestion, makeWhichQuestion, artworksInQuestion } from '../../engine/questions.js';
-import { createRound, currentItem, answerRound, roundDone, roundProgress, reshuffleOptions } from '../../engine/planner.js';
+import { isCorrect, questionAlt, optionText, makeQuestion, makeWhichQuestion, artworksInQuestion, retryQuestion } from '../../engine/questions.js';
+import { createRound, currentItem, answerRound, roundDone, roundProgress } from '../../engine/planner.js';
 import { xpForAnswer } from '../../engine/progress.js';
 import { feedbackFor } from '../../engine/feedback.js';
 
 const MAX_SUBSTITUTIONS = 3;
 const COMBO_SHOW = 3; // aciertos seguidos a partir de los que se ve el indicador
 
-// config: { questions, accent, seed, kind, label, interlude?, onDone(summary), onQuit(), resume?, onSave? }
+// config: { questions, extras?, accent, seed, kind, label, interlude?, onDone(summary), onQuit(), resume?, onSave? }
+// extras: preguntas que no cuentan, al final (cuadros fallados en rondas anteriores).
 // resume: { round, answers, xpLive, freshIntroShown } de una ronda guardada (state/session.js).
 // onSave(snapshot) se llama tras cada respuesta para poder retomar la ronda.
 export function runLesson(ctx, el, config) {
   const { index } = ctx;
   const rng = createRng(`lesson:${config.seed}:${Date.now() % 100000}`);
   const resume = config.resume || null;
-  let round = resume ? resume.round : createRound(config.questions);
+  let round = resume ? resume.round : createRound(config.questions, config.extras || []);
   const answers = resume ? resume.answers.slice() : [];
   let xpLive = resume ? resume.xpLive : 0;
   let answered = false;
@@ -202,7 +203,7 @@ export function runLesson(ctx, el, config) {
     const item = currentItem(round);
     const q = item.q;
     const correct = isCorrect(q, optionId);
-    round = answerRound(round, correct, (qq) => reshuffleOptions(qq, rng));
+    round = answerRound(round, correct, (qq) => retryQuestion(index, qq, rng));
     const gained = xpForAnswer({ correct, isNew: q.isNew, combo: round.combo, retry: item.retry });
     xpLive += gained;
     answers.push({ q, correct, retry: item.retry, combo: round.combo });
