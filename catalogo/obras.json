@@ -2224,8 +2224,8 @@
   {
    "id": "w23904",
    "artistId": "giotto",
-   "title": "St. Francis of Assisi Receiving the Stigmata",
-   "titleSource": "traducir",
+   "title": "San Francisco recibiendo los estigmas",
+   "titleSource": "traducido",
    "year": "c. 1297",
    "yearSort": 1297,
    "yearQuality": "circa",
@@ -2260,14 +2260,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3472935",
    "artistId": "giotto",
-   "title": "Saint Stephen",
-   "titleSource": "traducir",
+   "title": "San Esteban",
+   "titleSource": "traducido",
    "year": "1320",
    "yearSort": 1320,
    "yearQuality": "exact",
@@ -2300,7 +2300,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -2434,8 +2434,8 @@
   {
    "id": "w3276180",
    "artistId": "giotto",
-   "title": "Madonna with the laughing Child",
-   "titleSource": "traducir",
+   "title": "La Virgen con el Niño riendo",
+   "titleSource": "traducido",
    "year": "1291",
    "yearSort": 1291,
    "yearQuality": "exact",
@@ -2472,7 +2472,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -3024,8 +3024,8 @@
   {
    "id": "w4009968",
    "artistId": "fra-angelico",
-   "title": "Madonna and Child",
-   "titleSource": "traducir",
+   "title": "La Virgen con el Niño",
+   "titleSource": "traducido",
    "year": "1430–1435",
    "yearSort": 1430,
    "yearQuality": "exact",
@@ -3064,14 +3064,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3698209",
    "artistId": "fra-angelico",
-   "title": "Crucifixion with St Dominic praying",
-   "titleSource": "traducir",
+   "title": "Crucifixión con santo Domingo orante",
+   "titleSource": "traducido",
    "year": "c. 1438",
    "yearSort": 1438,
    "yearQuality": "circa",
@@ -3109,7 +3109,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -3156,8 +3156,8 @@
   {
    "id": "w27970998",
    "artistId": "fra-angelico",
-   "title": "Madonna and Child with Four Аngels",
-   "titleSource": "traducir",
+   "title": "La Virgen con el Niño y cuatro ángeles",
+   "titleSource": "traducido",
    "year": "1420",
    "yearSort": 1420,
    "yearQuality": "exact",
@@ -3191,7 +3191,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -3460,8 +3460,8 @@
   {
    "id": "w3999110",
    "artistId": "van-der-weyden",
-   "title": "Annunciation Triptych",
-   "titleSource": "traducir",
+   "title": "Tríptico de la Anunciación",
+   "titleSource": "traducido",
    "year": "1434",
    "yearSort": 1434,
    "yearQuality": "exact",
@@ -3497,7 +3497,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -3852,8 +3852,8 @@
   {
    "id": "w1092638",
    "artistId": "piero",
-   "title": "Madonna di Senigallia",
-   "titleSource": "traducir",
+   "title": "La Virgen de Senigallia",
+   "titleSource": "traducido",
    "year": "c. 1476",
    "yearSort": 1476,
    "yearQuality": "circa",
@@ -3888,7 +3888,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -5183,8 +5183,8 @@
   {
    "id": "w133100866",
    "artistId": "berruguete",
-   "title": "Main altarpiece of the Cathedral of Ávila",
-   "titleSource": "traducir",
+   "title": "Retablo mayor de la catedral de Ávila",
+   "titleSource": "traducido",
    "year": "c. 1500",
    "yearSort": 1500,
    "yearQuality": "circa",
@@ -5215,7 +5215,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -6792,8 +6792,8 @@
   {
    "id": "w4289290",
    "artistId": "cranach",
-   "title": "Melancholy",
-   "titleSource": "traducir",
+   "title": "La melancolía",
+   "titleSource": "traducido",
    "year": "1532",
    "yearSort": 1532,
    "yearQuality": "exact",
@@ -6831,7 +6831,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -6879,8 +6879,8 @@
   {
    "id": "w19911426",
    "artistId": "cranach",
-   "title": "The Martyrdom of Saint Barbara",
-   "titleSource": "traducir",
+   "title": "El martirio de santa Bárbara",
+   "titleSource": "traducido",
    "year": "c. 1510",
    "yearSort": 1510,
    "yearQuality": "circa",
@@ -6919,7 +6919,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -7016,8 +7016,8 @@
   {
    "id": "w16038763",
    "artistId": "cranach",
-   "title": "Madonna and Child under the Apple Tree",
-   "titleSource": "traducir",
+   "title": "La Virgen con el Niño bajo el manzano",
+   "titleSource": "traducido",
    "year": "c. 1530",
    "yearSort": 1530,
    "yearQuality": "circa",
@@ -7050,7 +7050,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -7387,8 +7387,8 @@
   {
    "id": "w3887821",
    "artistId": "miguel-angel",
-   "title": "Uzziah, Jotham and Ahaz",
-   "titleSource": "traducir",
+   "title": "Ozías, Joatán y Acaz",
+   "titleSource": "traducido",
    "year": "1508",
    "yearSort": 1508,
    "yearQuality": "exact",
@@ -9174,8 +9174,8 @@
   {
    "id": "w3851966",
    "artistId": "correggio",
-   "title": "Mystic Marriage of Saint Catherine of Alexandria with Saint Sebastian",
-   "titleSource": "traducir",
+   "title": "Desposorios místicos de santa Catalina con san Sebastián",
+   "titleSource": "traducido",
    "year": "c. 1526",
    "yearSort": 1526,
    "yearQuality": "circa",
@@ -9217,14 +9217,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4009400",
    "artistId": "correggio",
-   "title": "Head of Christ",
-   "titleSource": "traducir",
+   "title": "Cabeza de Cristo",
+   "titleSource": "traducido",
    "year": "1521",
    "yearSort": 1521,
    "yearQuality": "exact",
@@ -9258,7 +9258,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -9798,7 +9798,7 @@
    "id": "w65047099",
    "artistId": "juan-de-juanes",
    "title": "Calavera",
-   "titleSource": "traducir",
+   "titleSource": "traducido",
    "year": "s. XVI",
    "yearSort": 1540,
    "yearQuality": "century",
@@ -9997,7 +9997,7 @@
    "id": "w11917963",
    "artistId": "morales",
    "title": "Ecce Homo",
-   "titleSource": "traducir",
+   "titleSource": "traducido",
    "year": "c. 1570",
    "yearSort": 1570,
    "yearQuality": "circa",
@@ -10030,7 +10030,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -10074,8 +10074,8 @@
   {
    "id": "w27968015",
    "artistId": "morales",
-   "title": "The Virgin and Child",
-   "titleSource": "traducir",
+   "title": "La Virgen con el Niño",
+   "titleSource": "traducido",
    "year": "c. 1570",
    "yearSort": 1570,
    "yearQuality": "circa",
@@ -10109,14 +10109,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w52936777",
    "artistId": "morales",
-   "title": "The Lamentation",
-   "titleSource": "traducir",
+   "title": "La lamentación sobre Cristo muerto",
+   "titleSource": "traducido",
    "year": "c. 1560",
    "yearSort": 1560,
    "yearQuality": "circa",
@@ -10522,8 +10522,8 @@
   {
    "id": "w3937806",
    "artistId": "tintoretto",
-   "title": "Finding of the body of St Mark",
-   "titleSource": "traducir",
+   "title": "El hallazgo del cuerpo de san Marcos",
+   "titleSource": "traducido",
    "year": "1562",
    "yearSort": 1562,
    "yearQuality": "exact",
@@ -10556,7 +10556,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -11402,8 +11402,8 @@
   {
    "id": "w1237250",
    "artistId": "veronese",
-   "title": "Allegory of the Battle of Lepanto",
-   "titleSource": "traducir",
+   "title": "Alegoría de la batalla de Lepanto",
+   "titleSource": "traducido",
    "year": "1571",
    "yearSort": 1571,
    "yearQuality": "exact",
@@ -11443,7 +11443,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -11535,8 +11535,8 @@
   {
    "id": "w19574577",
    "artistId": "veronese",
-   "title": "The Conversion of Mary Magdalene",
-   "titleSource": "traducir",
+   "title": "La conversión de María Magdalena",
+   "titleSource": "traducido",
    "year": "c. 1548",
    "yearSort": 1548,
    "yearQuality": "circa",
@@ -11569,7 +11569,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -11782,8 +11782,8 @@
   {
    "id": "w27966215",
    "artistId": "sanchez-coello",
-   "title": "Portrait of the Infanta Catalina Michaela of Austria",
-   "titleSource": "traducir",
+   "title": "Retrato de la infanta Catalina Micaela de Austria",
+   "titleSource": "traducido",
    "year": "c. 1582",
    "yearSort": 1582,
    "yearQuality": "circa",
@@ -11814,14 +11814,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w27980179",
    "artistId": "sanchez-coello",
-   "title": "Infante Don Carlos",
-   "titleSource": "traducir",
+   "title": "El príncipe don Carlos",
+   "titleSource": "traducido",
    "year": "1564",
    "yearSort": 1564,
    "yearQuality": "exact",
@@ -11854,7 +11854,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -12643,7 +12643,7 @@
    "id": "w18719595",
    "artistId": "ribalta",
    "title": "Ramon Llull",
-   "titleSource": "traducir",
+   "titleSource": "traducido",
    "year": "c. 1620",
    "yearSort": 1620,
    "yearQuality": "circa",
@@ -12674,7 +12674,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -13619,8 +13619,8 @@
   {
    "id": "w647202",
    "artistId": "rubens",
-   "title": "Head of Medusa",
-   "titleSource": "traducir",
+   "title": "Cabeza de Medusa",
+   "titleSource": "traducido",
    "year": "1618",
    "yearSort": 1618,
    "yearQuality": "exact",
@@ -13658,7 +13658,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -14065,7 +14065,7 @@
    "id": "w20017491",
    "artistId": "maino",
    "title": "Magdalena penitente en la gruta de Sainte-Baume",
-   "titleSource": "traducir",
+   "titleSource": "traducido",
    "year": "c. 1612–1613",
    "yearSort": 1612,
    "yearQuality": "circa",
@@ -14104,7 +14104,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -15135,8 +15135,8 @@
   {
    "id": "w67203478",
    "artistId": "ribera",
-   "title": "Apollo flaying Marsyas",
-   "titleSource": "traducir",
+   "title": "Apolo desollando a Marsias",
+   "titleSource": "traducido",
    "year": "1637",
    "yearSort": 1637,
    "yearQuality": "exact",
@@ -15169,7 +15169,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -16121,8 +16121,8 @@
   {
    "id": "w3900760",
    "artistId": "poussin",
-   "title": "The Plague at Ashdod",
-   "titleSource": "traducir",
+   "title": "La peste de Asdod",
+   "titleSource": "traducido",
    "year": "c. 1630",
    "yearSort": 1630,
    "yearQuality": "circa",
@@ -16159,7 +16159,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -17742,8 +17742,8 @@
   {
    "id": "w3937482",
    "artistId": "van-dyck",
-   "title": "Charles I (1600-1649) with M. de St Antoine",
-   "titleSource": "traducir",
+   "title": "Carlos I con el señor de Saint-Antoine",
+   "titleSource": "traducido",
    "year": "1636",
    "yearSort": 1636,
    "yearQuality": "exact",
@@ -17779,7 +17779,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -17877,8 +17877,8 @@
   {
    "id": "w3948607",
    "artistId": "van-dyck",
-   "title": "Samson and Delilah",
-   "titleSource": "traducir",
+   "title": "Sansón y Dalila",
+   "titleSource": "traducido",
    "year": "1630",
    "yearSort": 1630,
    "yearQuality": "exact",
@@ -17912,7 +17912,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -17967,8 +17967,8 @@
   {
    "id": "w3937593",
    "artistId": "van-dyck",
-   "title": "Lord John Stuart and His Brother, Lord Bernard Stuart",
-   "titleSource": "traducir",
+   "title": "Lord John Stuart y su hermano lord Bernard Stuart",
+   "titleSource": "traducido",
    "year": "c. 1638",
    "yearSort": 1638,
    "yearQuality": "circa",
@@ -18003,7 +18003,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -18720,8 +18720,8 @@
   {
    "id": "w125169827",
    "artistId": "alonso-cano",
-   "title": "Christ at the Column",
-   "titleSource": "traducir",
+   "title": "Cristo atado a la columna",
+   "titleSource": "traducido",
    "year": "s. XVII",
    "yearSort": 1636,
    "yearQuality": "century",
@@ -18752,7 +18752,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -19256,8 +19256,8 @@
   {
    "id": "w2872725",
    "artistId": "rembrandt",
-   "title": "Self Portrait with Two Circles",
-   "titleSource": "traducir",
+   "title": "Autorretrato con dos círculos",
+   "titleSource": "traducido",
    "year": "c. 1665",
    "yearSort": 1665,
    "yearQuality": "circa",
@@ -19460,8 +19460,8 @@
   {
    "id": "w63111264",
    "artistId": "pereda",
-   "title": "Still-Life with Fruit",
-   "titleSource": "traducir",
+   "title": "Bodegón con frutas",
+   "titleSource": "traducido",
    "year": "1650",
    "yearSort": 1650,
    "yearQuality": "exact",
@@ -19494,7 +19494,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -19756,8 +19756,8 @@
   {
    "id": "w28796847",
    "artistId": "carreno",
-   "title": "The Assumption of the Virgin",
-   "titleSource": "traducir",
+   "title": "La Asunción de la Virgen",
+   "titleSource": "traducido",
    "year": "c. 1657",
    "yearSort": 1657,
    "yearQuality": "circa",
@@ -19788,7 +19788,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -20683,8 +20683,8 @@
   {
    "id": "w19912239",
    "artistId": "valdes-leal",
-   "title": "Pietà",
-   "titleSource": "traducir",
+   "title": "Piedad",
+   "titleSource": "traducido",
    "year": "c. 1657",
    "yearSort": 1657,
    "yearQuality": "circa",
@@ -20720,14 +20720,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w56703179",
    "artistId": "valdes-leal",
-   "title": "Christ Served by the Angels",
-   "titleSource": "traducir",
+   "title": "Cristo servido por los ángeles",
+   "titleSource": "traducido",
    "year": "c. 1663",
    "yearSort": 1663,
    "yearQuality": "circa",
@@ -20769,14 +20769,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w21741372",
    "artistId": "valdes-leal",
-   "title": "Head of a Woman",
-   "titleSource": "traducir",
+   "title": "Cabeza de mujer",
+   "titleSource": "traducido",
    "year": "c. 1658",
    "yearSort": 1658,
    "yearQuality": "circa",
@@ -20807,7 +20807,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -21641,8 +21641,8 @@
   {
    "id": "w18684020",
    "artistId": "claudio-coello",
-   "title": "Teresa Francisca Mudarra y Herrera",
-   "titleSource": "traducir",
+   "title": "Retrato de Teresa Francisca Mudarra y Herrera",
+   "titleSource": "traducido",
    "year": "c. 1690",
    "yearSort": 1690,
    "yearQuality": "circa",
@@ -21676,7 +21676,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -21804,8 +21804,8 @@
   {
    "id": "w141690065",
    "artistId": "claudio-coello",
-   "title": "Immaculate Conception",
-   "titleSource": "traducir",
+   "title": "Inmaculada Concepción",
+   "titleSource": "traducido",
    "year": "1676",
    "yearSort": 1676,
    "yearQuality": "exact",
@@ -21836,7 +21836,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -22110,8 +22110,8 @@
   {
    "id": "w1713754",
    "artistId": "watteau",
-   "title": "Nymph and Satyr",
-   "titleSource": "traducir",
+   "title": "Ninfa y sátiro",
+   "titleSource": "traducido",
    "year": "1716",
    "yearSort": 1716,
    "yearQuality": "exact",
@@ -22153,7 +22153,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -22204,8 +22204,8 @@
   {
    "id": "w15973132",
    "artistId": "watteau",
-   "title": "Actors of the Comedie-Francaise",
-   "titleSource": "traducir",
+   "title": "Actores de la Comédie-Française",
+   "titleSource": "traducido",
    "year": "c. 1710",
    "yearSort": 1710,
    "yearQuality": "circa",
@@ -22236,7 +22236,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -22284,8 +22284,8 @@
   {
    "id": "w18167078",
    "artistId": "tiepolo",
-   "title": "The Banquet of Cleopatra",
-   "titleSource": "traducir",
+   "title": "El banquete de Cleopatra",
+   "titleSource": "traducido",
    "year": "c. 1743",
    "yearSort": 1743,
    "yearQuality": "circa",
@@ -22316,14 +22316,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w38197",
    "artistId": "tiepolo",
-   "title": "Scipio Africanus Freeing Massiva",
-   "titleSource": "traducir",
+   "title": "Escipión el Africano libera a Masiva",
+   "titleSource": "traducido",
    "year": "1719",
    "yearSort": 1719,
    "yearQuality": "exact",
@@ -22356,14 +22356,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w25442922",
    "artistId": "tiepolo",
-   "title": "The Rape of Europa",
-   "titleSource": "traducir",
+   "title": "El rapto de Europa",
+   "titleSource": "traducido",
    "year": "c. 1725",
    "yearSort": 1725,
    "yearQuality": "circa",
@@ -22397,7 +22397,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -22441,8 +22441,8 @@
   {
    "id": "w17390181",
    "artistId": "tiepolo",
-   "title": "Deposition",
-   "titleSource": "traducir",
+   "title": "El descendimiento",
+   "titleSource": "traducido",
    "year": "1767",
    "yearSort": 1767,
    "yearQuality": "exact",
@@ -22479,7 +22479,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -22525,8 +22525,8 @@
   {
    "id": "w18573906",
    "artistId": "tiepolo",
-   "title": "Apollo and Daphne",
-   "titleSource": "traducir",
+   "title": "Apolo y Dafne",
+   "titleSource": "traducido",
    "year": "c. 1743",
    "yearSort": 1743,
    "yearQuality": "circa",
@@ -22568,14 +22568,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w2943415",
    "artistId": "canaletto",
-   "title": "The Stonemason's Yard",
-   "titleSource": "traducir",
+   "title": "El patio del cantero",
+   "titleSource": "traducido",
    "year": "c. 1725",
    "yearSort": 1725,
    "yearQuality": "circa",
@@ -22610,7 +22610,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -22750,8 +22750,8 @@
   {
    "id": "w19660417",
    "artistId": "canaletto",
-   "title": "Pra' della Valle in Padua",
-   "titleSource": "traducir",
+   "title": "El Prato della Valle de Padua",
+   "titleSource": "traducido",
    "year": "c. 1743",
    "yearSort": 1743,
    "yearQuality": "circa",
@@ -22784,7 +22784,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -22875,8 +22875,8 @@
   {
    "id": "w19660561",
    "artistId": "canaletto",
-   "title": "The Bucintore Returning to the Molo on Ascension Day",
-   "titleSource": "traducir",
+   "title": "El regreso del Bucintoro al muelle el día de la Ascensión",
+   "titleSource": "traducido",
    "year": "c. 1729",
    "yearSort": 1729,
    "yearQuality": "circa",
@@ -22918,7 +22918,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -23105,8 +23105,8 @@
   {
    "id": "w3230728",
    "artistId": "chardin",
-   "title": "Allegory of Music, Arts and Science",
-   "titleSource": "traducir",
+   "title": "Alegoría de la música, las artes y las ciencias",
+   "titleSource": "traducido",
    "year": "1765",
    "yearSort": 1765,
    "yearQuality": "exact",
@@ -23143,7 +23143,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -23371,8 +23371,8 @@
   {
    "id": "w18686531",
    "artistId": "liotard",
-   "title": "Portrait of Maria Adelaide of France in Turkish-style clothes",
-   "titleSource": "traducir",
+   "title": "María Adelaida de Francia vestida a la turca",
+   "titleSource": "traducido",
    "year": "1753",
    "yearSort": 1753,
    "yearQuality": "exact",
@@ -23405,14 +23405,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w20178523",
    "artistId": "liotard",
-   "title": "Portrait of John, Lord Mountstuart, later 4th Earl and 1st Marquess of Bute",
-   "titleSource": "traducir",
+   "title": "Retrato de John, lord Mountstuart",
+   "titleSource": "traducido",
    "year": "1763",
    "yearSort": 1763,
    "yearQuality": "exact",
@@ -23445,14 +23445,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w29645145",
    "artistId": "liotard",
-   "title": "Monsieur Levett et Mademoiselle Glavani",
-   "titleSource": "traducir",
+   "title": "El señor Levett y la señorita Glavani con traje turco",
+   "titleSource": "traducido",
    "year": "c. 1740",
    "yearSort": 1740,
    "yearQuality": "circa",
@@ -23493,14 +23493,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w17319963",
    "artistId": "liotard",
-   "title": "Portrait of Mme Bouër",
-   "titleSource": "traducir",
+   "title": "Retrato de madame Bouër",
+   "titleSource": "traducido",
    "year": "1746",
    "yearSort": 1746,
    "yearQuality": "exact",
@@ -23537,7 +23537,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -24035,8 +24035,8 @@
   {
    "id": "w26699645",
    "artistId": "melendez",
-   "title": "Still Life with Oranges and Walnuts",
-   "titleSource": "traducir",
+   "title": "Bodegón con naranjas y nueces",
+   "titleSource": "traducido",
    "year": "1772",
    "yearSort": 1772,
    "yearQuality": "exact",
@@ -24067,14 +24067,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18688130",
    "artistId": "melendez",
-   "title": "Still Life with Fruit and Jug",
-   "titleSource": "traducir",
+   "title": "Bodegón con frutas y jarra",
+   "titleSource": "traducido",
    "year": "c. 1773",
    "yearSort": 1773,
    "yearQuality": "circa",
@@ -24109,7 +24109,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -24193,8 +24193,8 @@
   {
    "id": "w18915242",
    "artistId": "melendez",
-   "title": "Still Life with Figs",
-   "titleSource": "traducir",
+   "title": "Bodegón con higos",
+   "titleSource": "traducido",
    "year": "c. 1760",
    "yearSort": 1760,
    "yearQuality": "circa",
@@ -24230,7 +24230,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -24403,7 +24403,7 @@
    "id": "w6470018",
    "artistId": "reynolds",
    "title": "Lady Caroline Howard",
-   "titleSource": "revisar-idioma",
+   "titleSource": "traducido",
    "year": "1778",
    "yearSort": 1778,
    "yearQuality": "exact",
@@ -24436,7 +24436,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -24493,8 +24493,8 @@
   {
    "id": "w6470123",
    "artistId": "reynolds",
-   "title": "Lady Elizabeth Delmé and Her Children",
-   "titleSource": "traducir",
+   "title": "Lady Elizabeth Delmé y sus hijos",
+   "titleSource": "traducido",
    "year": "c. 1777",
    "yearSort": 1777,
    "yearQuality": "circa",
@@ -24525,14 +24525,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w119011999",
    "artistId": "reynolds",
-   "title": "Self-Portrait",
-   "titleSource": "traducir",
+   "title": "Autorretrato",
+   "titleSource": "traducido",
    "year": "c. 1780",
    "yearSort": 1780,
    "yearQuality": "circa",
@@ -24565,7 +24565,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -24744,8 +24744,8 @@
   {
    "id": "w4340198",
    "artistId": "greuze",
-   "title": "The Father's Curse - The Ungrateful Son",
-   "titleSource": "traducir",
+   "title": "La maldición paterna: el hijo ingrato",
+   "titleSource": "traducido",
    "year": "1777",
    "yearSort": 1777,
    "yearQuality": "exact",
@@ -24783,7 +24783,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -25043,8 +25043,8 @@
   {
    "id": "w6929863",
    "artistId": "gainsborough",
-   "title": "Mrs. Richard Brinsley Sheridan",
-   "titleSource": "traducir",
+   "title": "La señora de Richard Brinsley Sheridan",
+   "titleSource": "traducido",
    "year": "1785",
    "yearSort": 1785,
    "yearQuality": "exact",
@@ -25077,14 +25077,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18937395",
    "artistId": "gainsborough",
-   "title": "Conversation in a Park",
-   "titleSource": "traducir",
+   "title": "Conversación en un parque",
+   "titleSource": "traducido",
    "year": "c. 1746",
    "yearSort": 1746,
    "yearQuality": "circa",
@@ -25126,7 +25126,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -26381,8 +26381,8 @@
   {
    "id": "w28798007",
    "artistId": "paret",
-   "title": "The Shop",
-   "titleSource": "traducir",
+   "title": "La tienda",
+   "titleSource": "traducido",
    "year": "1772",
    "yearSort": 1772,
    "yearQuality": "exact",
@@ -26413,7 +26413,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -26457,8 +26457,8 @@
   {
    "id": "w26699636",
    "artistId": "paret",
-   "title": "View of El Arenal de Bilbao",
-   "titleSource": "traducir",
+   "title": "Vista de El Arenal de Bilbao",
+   "titleSource": "traducido",
    "year": "1784",
    "yearSort": 1784,
    "yearQuality": "exact",
@@ -26489,7 +26489,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -27189,8 +27189,8 @@
   {
    "id": "w18923677",
    "artistId": "vigee-le-brun",
-   "title": "Portrait of Princess Maria Christina",
-   "titleSource": "traducir",
+   "title": "Retrato de la princesa María Cristina",
+   "titleSource": "traducido",
    "year": "c. 1790",
    "yearSort": 1790,
    "yearQuality": "circa",
@@ -27223,7 +27223,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -27347,8 +27347,8 @@
   {
    "id": "w4373337",
    "artistId": "borovikovski",
-   "title": "Portrait of Maria Ivanovna Lopukhina",
-   "titleSource": "traducir",
+   "title": "Retrato de María Lopujiná",
+   "titleSource": "traducido",
    "year": "1797",
    "yearSort": 1797,
    "yearQuality": "exact",
@@ -27379,14 +27379,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18689466",
    "artistId": "borovikovski",
-   "title": "Portrait of Prince A.B.Kurakin",
-   "titleSource": "traducir",
+   "title": "Retrato del príncipe Alexander Kurakin",
+   "titleSource": "traducido",
    "year": "c. 1801",
    "yearSort": 1801,
    "yearQuality": "circa",
@@ -27419,14 +27419,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w12110766",
    "artistId": "borovikovski",
-   "title": "Anna and Varvara Gagarin",
-   "titleSource": "traducir",
+   "title": "Las hermanas Anna y Varvara Gagarina",
+   "titleSource": "traducido",
    "year": "1802",
    "yearSort": 1802,
    "yearQuality": "exact",
@@ -27457,7 +27457,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -27546,8 +27546,8 @@
   {
    "id": "w22893258",
    "artistId": "vicente-lopez",
-   "title": "Woman's Head",
-   "titleSource": "traducir",
+   "title": "Cabeza de mujer",
+   "titleSource": "traducido",
    "year": "1826",
    "yearSort": 1826,
    "yearQuality": "exact",
@@ -27578,7 +27578,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -27626,8 +27626,8 @@
   {
    "id": "w142013319",
    "artistId": "vicente-lopez",
-   "title": "The Priest Juan Gutiérrez de León",
-   "titleSource": "traducir",
+   "title": "El presbítero Juan Gutiérrez de León",
+   "titleSource": "traducido",
    "year": "1840",
    "yearSort": 1840,
    "yearQuality": "exact",
@@ -27658,7 +27658,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -28281,8 +28281,8 @@
   {
    "id": "w219344",
    "artistId": "turner",
-   "title": "The Slave Ship",
-   "titleSource": "traducir",
+   "title": "El barco de esclavos",
+   "titleSource": "traducido",
    "year": "1840",
    "yearSort": 1840,
    "yearQuality": "exact",
@@ -28316,14 +28316,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3027255",
    "artistId": "turner",
-   "title": "Dido building Carthage",
-   "titleSource": "traducir",
+   "title": "Dido construyendo Cartago",
+   "titleSource": "traducido",
    "year": "1815",
    "yearSort": 1815,
    "yearQuality": "exact",
@@ -28358,7 +28358,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -28408,8 +28408,8 @@
   {
    "id": "w16038731",
    "artistId": "turner",
-   "title": "Snow Storm: Steam-Boat off a Harbour's Mouth",
-   "titleSource": "traducir",
+   "title": "Tormenta de nieve: vapor a la entrada de un puerto",
+   "titleSource": "traducido",
    "year": "1842",
    "yearSort": 1842,
    "yearQuality": "exact",
@@ -28443,7 +28443,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -28487,8 +28487,8 @@
   {
    "id": "w28538656",
    "artistId": "turner",
-   "title": "Regulus",
-   "titleSource": "traducir",
+   "title": "Régulo",
+   "titleSource": "traducido",
    "year": "1828–1837",
    "yearSort": 1828,
    "yearQuality": "exact",
@@ -28521,7 +28521,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -28753,7 +28753,7 @@
    "id": "w18589150",
    "artistId": "constable",
    "title": "Wivenhoe Park",
-   "titleSource": "traducir",
+   "titleSource": "traducido",
    "year": "1816",
    "yearSort": 1816,
    "yearQuality": "exact",
@@ -28795,14 +28795,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18685512",
    "artistId": "constable",
-   "title": "The Vale of Dedham",
-   "titleSource": "traducir",
+   "title": "El valle de Dedham",
+   "titleSource": "traducido",
    "year": "1828",
    "yearSort": 1828,
    "yearQuality": "exact",
@@ -28835,14 +28835,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3794919",
    "artistId": "constable",
-   "title": "Flatford Mill",
-   "titleSource": "traducir",
+   "title": "El molino de Flatford",
+   "titleSource": "traducido",
    "year": "c. 1816",
    "yearSort": 1816,
    "yearQuality": "circa",
@@ -28875,14 +28875,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3634799",
    "artistId": "constable",
-   "title": "Boat-building near Flatford Mill",
-   "titleSource": "traducir",
+   "title": "Construcción de barcas cerca del molino de Flatford",
+   "titleSource": "traducido",
    "year": "1815",
    "yearSort": 1815,
    "yearQuality": "exact",
@@ -28915,14 +28915,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4242050",
    "artistId": "tropinin",
-   "title": "Lace-maker",
-   "titleSource": "traducir",
+   "title": "La encajera",
+   "titleSource": "traducido",
    "year": "1823",
    "yearSort": 1823,
    "yearQuality": "exact",
@@ -28958,14 +28958,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w116432553",
    "artistId": "tropinin",
-   "title": "Self-Portrait in Front of the Kremlin",
-   "titleSource": "traducir",
+   "title": "Autorretrato ante el Kremlin",
+   "titleSource": "traducido",
    "year": "1846",
    "yearSort": 1846,
    "yearQuality": "exact",
@@ -28998,14 +28998,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w20076612",
    "artistId": "tropinin",
-   "title": "Lady from Podolia",
-   "titleSource": "traducir",
+   "title": "Dama de Podolia",
+   "titleSource": "traducido",
    "year": "s. XIX",
    "yearSort": 1811,
    "yearQuality": "century",
@@ -29036,7 +29036,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -29474,8 +29474,8 @@
   {
    "id": "w18683081",
    "artistId": "venetsianov",
-   "title": "In the Ploughed Field: Spring",
-   "titleSource": "traducir",
+   "title": "En el campo arado. Primavera",
+   "titleSource": "traducido",
    "year": "c. 1820",
    "yearSort": 1820,
    "yearQuality": "circa",
@@ -29506,14 +29506,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18683079",
    "artistId": "venetsianov",
-   "title": "Threshing Barn",
-   "titleSource": "traducir",
+   "title": "La era",
+   "titleSource": "traducido",
    "year": "1822",
    "yearSort": 1822,
    "yearQuality": "exact",
@@ -29544,14 +29544,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w52692816",
    "artistId": "venetsianov",
-   "title": "Peasant Girl with Cornflowers",
-   "titleSource": "traducir",
+   "title": "Campesina con acianos",
+   "titleSource": "traducido",
    "year": "c. 1820",
    "yearSort": 1820,
    "yearQuality": "circa",
@@ -29584,7 +29584,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -29899,8 +29899,8 @@
   {
    "id": "w15951392",
    "artistId": "gericault",
-   "title": "Gray Horse",
-   "titleSource": "traducir",
+   "title": "Caballo gris",
+   "titleSource": "traducido",
    "year": "c. 1812",
    "yearSort": 1812,
    "yearQuality": "circa",
@@ -29934,7 +29934,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -29984,8 +29984,8 @@
   {
    "id": "w5442918",
    "artistId": "corot",
-   "title": "Femme Lisant",
-   "titleSource": "traducir",
+   "title": "Mujer leyendo",
+   "titleSource": "traducido",
    "year": "1869",
    "yearSort": 1869,
    "yearQuality": "exact",
@@ -30027,14 +30027,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3221688",
    "artistId": "corot",
-   "title": "Pastoral Concert",
-   "titleSource": "traducir",
+   "title": "Concierto campestre",
+   "titleSource": "traducido",
    "year": "1857",
    "yearSort": 1857,
    "yearQuality": "exact",
@@ -30072,14 +30072,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18177816",
    "artistId": "corot",
-   "title": "The road from Sèvres to Paris",
-   "titleSource": "traducir",
+   "title": "El camino de Sèvres a París",
+   "titleSource": "traducido",
    "year": "c. 1855",
    "yearSort": 1855,
    "yearQuality": "circa",
@@ -30119,14 +30119,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18177483",
    "artistId": "corot",
-   "title": "Hagar in the Wilderness",
-   "titleSource": "traducir",
+   "title": "Agar en el desierto",
+   "titleSource": "traducido",
    "year": "1835",
    "yearSort": 1835,
    "yearQuality": "exact",
@@ -30218,8 +30218,8 @@
   {
    "id": "w20184292",
    "artistId": "corot",
-   "title": "Diana and Actaeon",
-   "titleSource": "traducir",
+   "title": "Diana y Acteón",
+   "titleSource": "traducido",
    "year": "1836",
    "yearSort": 1836,
    "yearQuality": "exact",
@@ -30256,14 +30256,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18177756",
    "artistId": "corot",
-   "title": "Chartres Cathedral",
-   "titleSource": "traducir",
+   "title": "La catedral de Chartres",
+   "titleSource": "traducido",
    "year": "1830",
    "yearSort": 1830,
    "yearQuality": "exact",
@@ -30296,7 +30296,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -30390,8 +30390,8 @@
   {
    "id": "w16915832",
    "artistId": "delaroche",
-   "title": "The Young Martyr",
-   "titleSource": "traducir",
+   "title": "La joven mártir",
+   "titleSource": "traducido",
    "year": "1855",
    "yearSort": 1855,
    "yearQuality": "exact",
@@ -30426,14 +30426,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w17190332",
    "artistId": "delaroche",
-   "title": "The Children of Edward",
-   "titleSource": "traducir",
+   "title": "Los hijos de Eduardo",
+   "titleSource": "traducido",
    "year": "1830",
    "yearSort": 1830,
    "yearQuality": "exact",
@@ -30468,7 +30468,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -31026,8 +31026,8 @@
   {
    "id": "w4205253",
    "artistId": "briullov",
-   "title": "Italian Midday",
-   "titleSource": "traducir",
+   "title": "Mediodía italiano",
+   "titleSource": "traducido",
    "year": "1827",
    "yearSort": 1827,
    "yearQuality": "exact",
@@ -31058,14 +31058,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w118746671",
    "artistId": "briullov",
-   "title": "The siege of Pskov by the Polish king Stephen Báthory in 1581",
-   "titleSource": "traducir",
+   "title": "El asedio de Pskov por el rey polaco Esteban Báthory en 1581",
+   "titleSource": "traducido",
    "year": "1843",
    "yearSort": 1843,
    "yearQuality": "exact",
@@ -31098,7 +31098,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -31146,8 +31146,8 @@
   {
    "id": "w11690350",
    "artistId": "ivanov",
-   "title": "Appearance of Jesus Christ to Maria Magdalena",
-   "titleSource": "traducir",
+   "title": "Aparición de Cristo a María Magdalena",
+   "titleSource": "traducido",
    "year": "1835",
    "yearSort": 1835,
    "yearQuality": "exact",
@@ -31189,14 +31189,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18683074",
    "artistId": "ivanov",
-   "title": "Via Appia at Sunset",
-   "titleSource": "traducir",
+   "title": "La vía Apia al atardecer",
+   "titleSource": "traducido",
    "year": "1845",
    "yearSort": 1845,
    "yearQuality": "exact",
@@ -31227,7 +31227,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -31365,8 +31365,8 @@
   {
    "id": "w3212566",
    "artistId": "millet",
-   "title": "The Potato Harvest",
-   "titleSource": "traducir",
+   "title": "La cosecha de patatas",
+   "titleSource": "traducido",
    "year": "1855",
    "yearSort": 1855,
    "yearQuality": "exact",
@@ -31399,7 +31399,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -31525,8 +31525,8 @@
   {
    "id": "w47013750",
    "artistId": "millet",
-   "title": "The Beaked",
-   "titleSource": "traducir",
+   "title": "El alcotán",
+   "titleSource": "traducido",
    "year": "1860",
    "yearSort": 1860,
    "yearQuality": "exact",
@@ -31568,7 +31568,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -31771,8 +31771,8 @@
   {
    "id": "w133310569",
    "artistId": "madrazo",
-   "title": "Self-portrait of de Federico de Madrazo y Kunz",
-   "titleSource": "traducir",
+   "title": "Autorretrato",
+   "titleSource": "traducido",
    "year": "1837",
    "yearSort": 1837,
    "yearQuality": "exact",
@@ -31803,7 +31803,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -31849,8 +31849,8 @@
   {
    "id": "w115621185",
    "artistId": "madrazo",
-   "title": "Portrait of Isabella II of Spain",
-   "titleSource": "traducir",
+   "title": "Retrato de Isabel II",
+   "titleSource": "traducido",
    "year": "1850",
    "yearSort": 1850,
    "yearQuality": "exact",
@@ -31883,14 +31883,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18688348",
    "artistId": "fedotov",
-   "title": "Major's marriage proposal",
-   "titleSource": "traducir",
+   "title": "La petición de mano del mayor",
+   "titleSource": "traducido",
    "year": "1848",
    "yearSort": 1848,
    "yearQuality": "exact",
@@ -31921,14 +31921,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18688347",
    "artistId": "fedotov",
-   "title": "\"The fresh cavalier.\" The 'morning after' of an official who has received his first state order",
-   "titleSource": "traducir",
+   "title": "El caballero recién condecorado",
+   "titleSource": "traducido",
    "year": "1846",
    "yearSort": 1846,
    "yearQuality": "exact",
@@ -31959,14 +31959,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4066483",
    "artistId": "fedotov",
-   "title": "Encore, again Encore!",
-   "titleSource": "traducir",
+   "title": "¡Otra vez, otra vez!",
+   "titleSource": "traducido",
    "year": "1851",
    "yearSort": 1851,
    "yearQuality": "exact",
@@ -31997,7 +31997,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -32133,8 +32133,8 @@
   {
    "id": "w60674337",
    "artistId": "aivazovski",
-   "title": "The Wrath of the Seas",
-   "titleSource": "traducir",
+   "title": "La furia de los mares",
+   "titleSource": "traducido",
    "year": "1886",
    "yearSort": 1886,
    "yearQuality": "exact",
@@ -32168,7 +32168,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -32302,8 +32302,8 @@
   {
    "id": "w4384735",
    "artistId": "aivazovski",
-   "title": "A. S. Pushkin at the Black Sea coast",
-   "titleSource": "traducir",
+   "title": "Pushkin a orillas del mar Negro",
+   "titleSource": "traducido",
    "year": "1887",
    "yearSort": 1887,
    "yearQuality": "exact",
@@ -32339,14 +32339,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w6677931",
    "artistId": "aivazovski",
-   "title": "Theodosia. Moonlight night",
-   "titleSource": "traducir",
+   "title": "Feodosia, noche de luna",
+   "titleSource": "traducido",
    "year": "1852",
    "yearSort": 1852,
    "yearQuality": "exact",
@@ -32377,7 +32377,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -33589,8 +33589,8 @@
   {
    "id": "w9248672",
    "artistId": "rossetti",
-   "title": "The Girlhood of Mary Virgin",
-   "titleSource": "traducir",
+   "title": "La infancia de la Virgen María",
+   "titleSource": "traducido",
    "year": "c. 1848",
    "yearSort": 1848,
    "yearQuality": "circa",
@@ -33624,7 +33624,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -33895,8 +33895,8 @@
   {
    "id": "w822541",
    "artistId": "millais",
-   "title": "The Order of Release",
-   "titleSource": "traducir",
+   "title": "La orden de liberación",
+   "titleSource": "traducido",
    "year": "c. 1852",
    "yearSort": 1852,
    "yearQuality": "circa",
@@ -33932,7 +33932,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -33987,8 +33987,8 @@
   {
    "id": "w278722",
    "artistId": "pissarro",
-   "title": "Pont Boieldieu in Rouen, Rainy Weather",
-   "titleSource": "traducir",
+   "title": "El puente Boieldieu en Ruan, día de lluvia",
+   "titleSource": "traducido",
    "year": "1896",
    "yearSort": 1896,
    "yearQuality": "exact",
@@ -34022,7 +34022,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -34069,8 +34069,8 @@
   {
    "id": "w19905366",
    "artistId": "pissarro",
-   "title": "Steamboats in the Port of Rouen",
-   "titleSource": "traducir",
+   "title": "Vapores en el puerto de Ruan",
+   "titleSource": "traducido",
    "year": "1896",
    "yearSort": 1896,
    "yearQuality": "exact",
@@ -34107,7 +34107,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -34157,8 +34157,8 @@
   {
    "id": "w4949655",
    "artistId": "pissarro",
-   "title": "Boulevard Montmartre, Mardi Gras",
-   "titleSource": "traducir",
+   "title": "Bulevar de Montmartre, martes de Carnaval",
+   "titleSource": "traducido",
    "year": "1897",
    "yearSort": 1897,
    "yearQuality": "exact",
@@ -34195,14 +34195,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w7715565",
    "artistId": "pissarro",
-   "title": "The Banks of the Oise near Pontoise",
-   "titleSource": "traducir",
+   "title": "Las orillas del Oise cerca de Pontoise",
+   "titleSource": "traducido",
    "year": "1873",
    "yearSort": 1873,
    "yearQuality": "exact",
@@ -34242,7 +34242,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -34289,8 +34289,8 @@
   {
    "id": "w16984993",
    "artistId": "pissarro",
-   "title": "Boulevard Montmartre, Spring",
-   "titleSource": "traducir",
+   "title": "Bulevar de Montmartre, primavera",
+   "titleSource": "traducido",
    "year": "1897",
    "yearSort": 1897,
    "yearQuality": "exact",
@@ -34323,14 +34323,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w19938741",
    "artistId": "pissarro",
-   "title": "The Little Factory",
-   "titleSource": "traducir",
+   "title": "La pequeña fábrica",
+   "titleSource": "traducido",
    "year": "1868",
    "yearSort": 1868,
    "yearQuality": "exact",
@@ -34363,14 +34363,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w1993685",
    "artistId": "savrasov",
-   "title": "The Rooks Have Returned",
-   "titleSource": "traducir",
+   "title": "Han llegado las grajillas",
+   "titleSource": "traducido",
    "year": "1871",
    "yearSort": 1871,
    "yearQuality": "exact",
@@ -34406,14 +34406,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4414026",
    "artistId": "savrasov",
-   "title": "Rustic View",
-   "titleSource": "traducir",
+   "title": "Vista rural",
+   "titleSource": "traducido",
    "year": "1867",
    "yearSort": 1867,
    "yearQuality": "exact",
@@ -34444,14 +34444,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18543540",
    "artistId": "savrasov",
-   "title": "Elk Island in Sokolniki",
-   "titleSource": "traducir",
+   "title": "La isla de los Alces en Sokólniki",
+   "titleSource": "traducido",
    "year": "1869",
    "yearSort": 1869,
    "yearQuality": "exact",
@@ -34482,7 +34482,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -34978,8 +34978,8 @@
   {
    "id": "w4396378",
    "artistId": "shishkin",
-   "title": "Rye Fields",
-   "titleSource": "traducir",
+   "title": "Centeno",
+   "titleSource": "traducido",
    "year": "1878",
    "yearSort": 1878,
    "yearQuality": "exact",
@@ -35010,14 +35010,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4311015",
    "artistId": "shishkin",
-   "title": "In the Wild North…",
-   "titleSource": "traducir",
+   "title": "En el norte salvaje",
+   "titleSource": "traducido",
    "year": "1891",
    "yearSort": 1891,
    "yearQuality": "exact",
@@ -35048,14 +35048,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w16346518",
    "artistId": "shishkin",
-   "title": "Rain in an Oak Forest",
-   "titleSource": "traducir",
+   "title": "Lluvia en un robledal",
+   "titleSource": "traducido",
    "year": "1891",
    "yearSort": 1891,
    "yearQuality": "exact",
@@ -35086,14 +35086,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w9339735",
    "artistId": "shishkin",
-   "title": "The Sun Lit Pines",
-   "titleSource": "traducir",
+   "title": "Pinos iluminados por el sol",
+   "titleSource": "traducido",
    "year": "1886",
    "yearSort": 1886,
    "yearQuality": "exact",
@@ -35124,14 +35124,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w78217292",
    "artistId": "shishkin",
-   "title": "The Edge of the Forest",
-   "titleSource": "traducir",
+   "title": "La linde del bosque",
+   "titleSource": "traducido",
    "year": "1884",
    "yearSort": 1884,
    "yearQuality": "exact",
@@ -35162,14 +35162,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w84187289",
    "artistId": "shishkin",
-   "title": "Pine tree in the sand",
-   "titleSource": "traducir",
+   "title": "Pino en la arena",
+   "titleSource": "traducido",
    "year": "c. 1884",
    "yearSort": 1884,
    "yearQuality": "circa",
@@ -35200,14 +35200,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w47528314",
    "artistId": "shishkin",
-   "title": "The Clearing",
-   "titleSource": "traducir",
+   "title": "El claro",
+   "titleSource": "traducido",
    "year": "1878",
    "yearSort": 1878,
    "yearQuality": "exact",
@@ -35238,14 +35238,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w62583833",
    "artistId": "shishkin",
-   "title": "Autumn on Krestovsky Island",
-   "titleSource": "traducir",
+   "title": "Otoño en la isla Krestovski",
+   "titleSource": "traducido",
    "year": "1892",
    "yearSort": 1892,
    "yearQuality": "exact",
@@ -35276,7 +35276,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -35322,8 +35322,8 @@
   {
    "id": "w19912613",
    "artistId": "martin-rico",
-   "title": "A Canal in Venice",
-   "titleSource": "traducir",
+   "title": "Un canal en Venecia",
+   "titleSource": "traducido",
    "year": "c. 1875",
    "yearSort": 1875,
    "yearQuality": "circa",
@@ -35368,8 +35368,8 @@
   {
    "id": "w28796901",
    "artistId": "martin-rico",
-   "title": "Courtyard of the Palace of the Dux of Venice",
-   "titleSource": "traducir",
+   "title": "Patio del Palacio Ducal de Venecia",
+   "titleSource": "traducido",
    "year": "1883",
    "yearSort": 1883,
    "yearQuality": "exact",
@@ -35400,14 +35400,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w19969013",
    "artistId": "martin-rico",
-   "title": "A Summer’s Day on the Seine",
-   "titleSource": "traducir",
+   "title": "Un día de verano en el Sena",
+   "titleSource": "traducido",
    "year": "c. 1870",
    "yearSort": 1870,
    "yearQuality": "circa",
@@ -35440,14 +35440,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w104774383",
    "artistId": "martin-rico",
-   "title": "Venice, House on the Canal",
-   "titleSource": "traducir",
+   "title": "Venecia, casa en el canal",
+   "titleSource": "traducido",
    "year": "c. 1900",
    "yearSort": 1900,
    "yearQuality": "circa",
@@ -35478,7 +35478,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -35604,8 +35604,8 @@
   {
    "id": "w123221994",
    "artistId": "gisbert",
-   "title": "Porträt des José María Calatrava y Martínez",
-   "titleSource": "traducir",
+   "title": "Retrato de José María Calatrava",
+   "titleSource": "traducido",
    "year": "1872",
    "yearSort": 1872,
    "yearQuality": "exact",
@@ -35636,7 +35636,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -35808,8 +35808,8 @@
   {
    "id": "w646337",
    "artistId": "whistler",
-   "title": "Nocturne in Black and Gold – The Falling Rocket",
-   "titleSource": "traducir",
+   "title": "Nocturno en negro y oro: el cohete que cae",
+   "titleSource": "traducido",
    "year": "1875",
    "yearSort": 1875,
    "yearQuality": "exact",
@@ -35844,7 +35844,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -35941,8 +35941,8 @@
   {
    "id": "w4795850",
    "artistId": "whistler",
-   "title": "Arrangement in Grey and Black, No. 2: Portrait of Thomas Carlyle",
-   "titleSource": "traducir",
+   "title": "Arreglo en gris y negro n.º 2: retrato de Thomas Carlyle",
+   "titleSource": "traducido",
    "year": "c. 1873",
    "yearSort": 1873,
    "yearQuality": "circa",
@@ -35975,14 +35975,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w7661692",
    "artistId": "whistler",
-   "title": "Symphony in White, No. 3",
-   "titleSource": "traducir",
+   "title": "Sinfonía en blanco n.º 3",
+   "titleSource": "traducido",
    "year": "c. 1866",
    "yearSort": 1866,
    "yearQuality": "circa",
@@ -36013,14 +36013,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w46271687",
    "artistId": "whistler",
-   "title": "Arrangement in Gray: Portrait of the Painter",
-   "titleSource": "traducir",
+   "title": "Arreglo en gris: retrato del pintor",
+   "titleSource": "traducido",
    "year": "c. 1872",
    "yearSort": 1872,
    "yearQuality": "circa",
@@ -36053,7 +36053,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -36338,8 +36338,8 @@
   {
    "id": "w2912117",
    "artistId": "degas",
-   "title": "The Tub",
-   "titleSource": "traducir",
+   "title": "La tina",
+   "titleSource": "traducido",
    "year": "1886",
    "yearSort": 1886,
    "yearQuality": "exact",
@@ -36381,14 +36381,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3794660",
    "artistId": "degas",
-   "title": "A Cotton Office in New Orleans",
-   "titleSource": "traducir",
+   "title": "Oficina de algodón en Nueva Orleans",
+   "titleSource": "traducido",
    "year": "1873",
    "yearSort": 1873,
    "yearQuality": "exact",
@@ -36426,7 +36426,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -36477,8 +36477,8 @@
   {
    "id": "w7476471",
    "artistId": "degas",
-   "title": "The Dancing Class",
-   "titleSource": "traducir",
+   "title": "La clase de danza",
+   "titleSource": "traducido",
    "year": "c. 1870",
    "yearSort": 1870,
    "yearQuality": "circa",
@@ -36520,14 +36520,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w16518912",
    "artistId": "perov",
-   "title": "Triplet",
-   "titleSource": "traducir",
+   "title": "La troika",
+   "titleSource": "traducido",
    "year": "1866",
    "yearSort": 1866,
    "yearQuality": "exact",
@@ -36558,7 +36558,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -36604,8 +36604,8 @@
   {
    "id": "w4340473",
    "artistId": "perov",
-   "title": "The Hunters at Rest",
-   "titleSource": "traducir",
+   "title": "Cazadores descansando",
+   "titleSource": "traducido",
    "year": "1871",
    "yearSort": 1871,
    "yearQuality": "exact",
@@ -36636,7 +36636,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -36965,8 +36965,8 @@
   {
    "id": "w12162390",
    "artistId": "homer",
-   "title": "The Fog Warning",
-   "titleSource": "traducir",
+   "title": "Aviso de niebla",
+   "titleSource": "traducido",
    "year": "1885",
    "yearSort": 1885,
    "yearQuality": "exact",
@@ -36997,14 +36997,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4960357",
    "artistId": "homer",
-   "title": "Breezing Up",
-   "titleSource": "traducir",
+   "title": "Viento fresco",
+   "titleSource": "traducido",
    "year": "1873",
    "yearSort": 1873,
    "yearQuality": "exact",
@@ -37038,14 +37038,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w7738501",
    "artistId": "homer",
-   "title": "The Gulf Stream",
-   "titleSource": "traducir",
+   "title": "La corriente del Golfo",
+   "titleSource": "traducido",
    "year": "1899",
    "yearSort": 1899,
    "yearQuality": "exact",
@@ -37093,8 +37093,8 @@
   {
    "id": "w20171155",
    "artistId": "homer",
-   "title": "A Basket of Clams",
-   "titleSource": "traducir",
+   "title": "Una cesta de almejas",
+   "titleSource": "traducido",
    "year": "1873",
    "yearSort": 1873,
    "yearQuality": "exact",
@@ -37130,14 +37130,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w7735099",
    "artistId": "homer",
-   "title": "Fox Hunt",
-   "titleSource": "traducir",
+   "title": "La caza del zorro",
+   "titleSource": "traducido",
    "year": "1893",
    "yearSort": 1893,
    "yearQuality": "exact",
@@ -37170,7 +37170,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -37220,8 +37220,8 @@
   {
    "id": "w7727732",
    "artistId": "homer",
-   "title": "The Cotton Pickers",
-   "titleSource": "traducir",
+   "title": "Las recolectoras de algodón",
+   "titleSource": "traducido",
    "year": "1876",
    "yearSort": 1876,
    "yearQuality": "exact",
@@ -37252,14 +37252,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3172216",
    "artistId": "homer",
-   "title": "Dressing for the Carnival",
-   "titleSource": "traducir",
+   "title": "Vistiéndose para el carnaval",
+   "titleSource": "traducido",
    "year": "1877",
    "yearSort": 1877,
    "yearQuality": "exact",
@@ -37298,14 +37298,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w1217003",
    "artistId": "kramskoi",
-   "title": "Portrait of an Unknown Woman",
-   "titleSource": "traducir",
+   "title": "Retrato de una desconocida",
+   "titleSource": "traducido",
    "year": "1883",
    "yearSort": 1883,
    "yearQuality": "exact",
@@ -37338,14 +37338,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w2354080",
    "artistId": "kramskoi",
-   "title": "Christ in the Wilderness",
-   "titleSource": "traducir",
+   "title": "Cristo en el desierto",
+   "titleSource": "traducido",
    "year": "1872",
    "yearSort": 1872,
    "yearQuality": "exact",
@@ -37387,14 +37387,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4400244",
    "artistId": "kramskoi",
-   "title": "The Mermaids",
-   "titleSource": "traducir",
+   "title": "Las sirenas",
+   "titleSource": "traducido",
    "year": "1871",
    "yearSort": 1871,
    "yearQuality": "exact",
@@ -37427,7 +37427,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -37976,8 +37976,8 @@
   {
    "id": "w2349666",
    "artistId": "cezanne",
-   "title": "Rideau, Cruchon et Compotier",
-   "titleSource": "traducir",
+   "title": "Cortina, jarra y frutero",
+   "titleSource": "traducido",
    "year": "c. 1893",
    "yearSort": 1893,
    "yearQuality": "circa",
@@ -38018,7 +38018,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -38187,8 +38187,8 @@
   {
    "id": "w3235227",
    "artistId": "sisley",
-   "title": "The Regatta at Molesey",
-   "titleSource": "traducir",
+   "title": "Las regatas de Molesey",
+   "titleSource": "traducido",
    "year": "1874",
    "yearSort": 1874,
    "yearQuality": "exact",
@@ -38226,14 +38226,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w6382435",
    "artistId": "sisley",
-   "title": "The Bridge at Villeneuve-la-Garenne",
-   "titleSource": "traducir",
+   "title": "El puente de Villeneuve-la-Garenne",
+   "titleSource": "traducido",
    "year": "1872",
    "yearSort": 1872,
    "yearQuality": "exact",
@@ -38275,14 +38275,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3212767",
    "artistId": "sisley",
-   "title": "The Seine at Port-Marly, Piles of Sand",
-   "titleSource": "traducir",
+   "title": "El Sena en Port-Marly, montones de arena",
+   "titleSource": "traducido",
    "year": "1875",
    "yearSort": 1875,
    "yearQuality": "exact",
@@ -38366,8 +38366,8 @@
   {
    "id": "w3212765",
    "artistId": "sisley",
-   "title": "The Seine at Bougival",
-   "titleSource": "traducir",
+   "title": "El Sena en Bougival",
+   "titleSource": "traducido",
    "year": "1876",
    "yearSort": 1876,
    "yearQuality": "exact",
@@ -38404,7 +38404,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -38497,8 +38497,8 @@
   {
    "id": "w3492138",
    "artistId": "sisley",
-   "title": "Under the Bridge of Hampton Court",
-   "titleSource": "traducir",
+   "title": "Bajo el puente de Hampton Court",
+   "titleSource": "traducido",
    "year": "1874",
    "yearSort": 1874,
    "yearQuality": "exact",
@@ -38532,7 +38532,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -38576,8 +38576,8 @@
   {
    "id": "w22329906",
    "artistId": "makovski",
-   "title": "Christmastide Divination",
-   "titleSource": "traducir",
+   "title": "Adivinación de Navidad",
+   "titleSource": "traducido",
    "year": "c. 1905",
    "yearSort": 1905,
    "yearQuality": "circa",
@@ -38610,14 +38610,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w20199850",
    "artistId": "makovski",
-   "title": "The Russian Bride's Attire",
-   "titleSource": "traducir",
+   "title": "El atavío de la novia rusa",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -38648,7 +38648,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -39039,8 +39039,8 @@
   {
    "id": "w3947218",
    "artistId": "monet",
-   "title": "San Giorgio Maggiore at Dusk",
-   "titleSource": "traducir",
+   "title": "San Giorgio Maggiore al anochecer",
+   "titleSource": "traducido",
    "year": "1908",
    "yearSort": 1908,
    "yearQuality": "exact",
@@ -39073,14 +39073,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3231771",
    "artistId": "monet",
-   "title": "The Poppy Field near Argenteuil",
-   "titleSource": "traducir",
+   "title": "Campo de amapolas cerca de Argenteuil",
+   "titleSource": "traducido",
    "year": "1873",
    "yearSort": 1873,
    "yearQuality": "exact",
@@ -39122,14 +39122,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w20272169",
    "artistId": "monet",
-   "title": "Arrival of the Normandy Train, Gare Saint-Lazare",
-   "titleSource": "traducir",
+   "title": "La estación Saint-Lazare: llegada del tren de Normandía",
+   "titleSource": "traducido",
    "year": "1877",
    "yearSort": 1877,
    "yearQuality": "exact",
@@ -39163,14 +39163,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3220338",
    "artistId": "monet",
-   "title": "The Water Lily Pond: Green Harmony",
-   "titleSource": "traducir",
+   "title": "El estanque de nenúfares, armonía verde",
+   "titleSource": "traducido",
    "year": "1899",
    "yearSort": 1899,
    "yearQuality": "exact",
@@ -39208,7 +39208,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -39735,8 +39735,8 @@
   {
    "id": "w14942039",
    "artistId": "morisot",
-   "title": "Summer's Day",
-   "titleSource": "traducir",
+   "title": "Día de verano",
+   "titleSource": "traducido",
    "year": "1879",
    "yearSort": 1879,
    "yearQuality": "exact",
@@ -39778,7 +39778,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -39871,8 +39871,8 @@
   {
    "id": "w3225805",
    "artistId": "morisot",
-   "title": "The Port at Lorient",
-   "titleSource": "traducir",
+   "title": "El puerto de Lorient",
+   "titleSource": "traducido",
    "year": "1869",
    "yearSort": 1869,
    "yearQuality": "exact",
@@ -39908,14 +39908,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w26164546",
    "artistId": "morisot",
-   "title": "Eugène Manet on Isle of Wight",
-   "titleSource": "traducir",
+   "title": "Eugène Manet en la isla de Wight",
+   "titleSource": "traducido",
    "year": "1875",
    "yearSort": 1875,
    "yearQuality": "exact",
@@ -39951,7 +39951,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -39999,8 +39999,8 @@
   {
    "id": "w23926250",
    "artistId": "morisot",
-   "title": "The Little Girl from Nice",
-   "titleSource": "traducir",
+   "title": "La niña de Niza",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -40031,7 +40031,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -40082,8 +40082,8 @@
   {
    "id": "w18688570",
    "artistId": "raimundo-madrazo",
-   "title": "Lady in Blue",
-   "titleSource": "traducir",
+   "title": "Dama de azul",
+   "titleSource": "traducido",
    "year": "1897",
    "yearSort": 1897,
    "yearQuality": "exact",
@@ -40116,7 +40116,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -40160,8 +40160,8 @@
   {
    "id": "w104774332",
    "artistId": "raimundo-madrazo",
-   "title": "The Singer",
-   "titleSource": "traducir",
+   "title": "La cantante",
+   "titleSource": "traducido",
    "year": "c. 1880",
    "yearSort": 1880,
    "yearQuality": "circa",
@@ -40192,14 +40192,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w104774335",
    "artistId": "raimundo-madrazo",
-   "title": "Woman with a Guitar",
-   "titleSource": "traducir",
+   "title": "Mujer con guitarra",
+   "titleSource": "traducido",
    "year": "c. 1870",
    "yearSort": 1870,
    "yearQuality": "circa",
@@ -40230,7 +40230,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -40398,8 +40398,8 @@
   {
    "id": "w4068125",
    "artistId": "vereshchagin",
-   "title": "The Apotheosis of War",
-   "titleSource": "traducir",
+   "title": "La apoteosis de la guerra",
+   "titleSource": "traducido",
    "year": "1871",
    "yearSort": 1871,
    "yearQuality": "exact",
@@ -40432,14 +40432,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4424346",
    "artistId": "vereshchagin",
-   "title": "Mortally wounded",
-   "titleSource": "traducir",
+   "title": "Herido de muerte",
+   "titleSource": "traducido",
    "year": "1873",
    "yearSort": 1873,
    "yearQuality": "exact",
@@ -40477,14 +40477,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4089068",
    "artistId": "vereshchagin",
-   "title": "A Rich Kirghiz Huntsman with a Falcon",
-   "titleSource": "traducir",
+   "title": "Rico cazador kirguís con halcón",
+   "titleSource": "traducido",
    "year": "1871",
    "yearSort": 1871,
    "yearQuality": "exact",
@@ -40515,7 +40515,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -40751,8 +40751,8 @@
   {
    "id": "w4952174",
    "artistId": "rousseau",
-   "title": "Boy on the Rocks",
-   "titleSource": "traducir",
+   "title": "Niño sobre las rocas",
+   "titleSource": "traducido",
    "year": "1897",
    "yearSort": 1897,
    "yearQuality": "exact",
@@ -40783,7 +40783,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -41091,8 +41091,8 @@
   {
    "id": "w15876324",
    "artistId": "cassatt",
-   "title": "The Boating Party",
-   "titleSource": "traducir",
+   "title": "El paseo en barca",
+   "titleSource": "traducido",
    "year": "c. 1893",
    "yearSort": 1893,
    "yearQuality": "circa",
@@ -41128,7 +41128,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -41505,8 +41505,8 @@
   {
    "id": "w21029956",
    "artistId": "repin",
-   "title": "Saint Nicholas of Myra saves three innocents from death",
-   "titleSource": "traducir",
+   "title": "San Nicolás de Mira salva a tres inocentes de la muerte",
+   "titleSource": "traducido",
    "year": "1888",
    "yearSort": 1888,
    "yearQuality": "exact",
@@ -41542,14 +41542,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4423059",
    "artistId": "repin",
-   "title": "Slavic composers",
-   "titleSource": "traducir",
+   "title": "Los compositores eslavos",
+   "titleSource": "traducido",
    "year": "1872",
    "yearSort": 1872,
    "yearQuality": "exact",
@@ -41599,8 +41599,8 @@
   {
    "id": "w4304117",
    "artistId": "polenov",
-   "title": "Moscow courtyard",
-   "titleSource": "traducir",
+   "title": "Patio moscovita",
+   "titleSource": "traducido",
    "year": "1878",
    "yearSort": 1878,
    "yearQuality": "exact",
@@ -41633,7 +41633,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -41677,8 +41677,8 @@
   {
    "id": "w4187532",
    "artistId": "polenov",
-   "title": "An Overgrown Pond",
-   "titleSource": "traducir",
+   "title": "Estanque cubierto de vegetación",
+   "titleSource": "traducido",
    "year": "1879",
    "yearSort": 1879,
    "yearQuality": "exact",
@@ -41709,14 +41709,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18683377",
    "artistId": "beruete",
-   "title": "The River Isole at Quimperlé",
-   "titleSource": "traducir",
+   "title": "El río Isole en Quimperlé",
+   "titleSource": "traducido",
    "year": "1901",
    "yearSort": 1901,
    "yearQuality": "exact",
@@ -41750,7 +41750,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -41794,8 +41794,8 @@
   {
    "id": "w28801523",
    "artistId": "beruete",
-   "title": "View of Madrid from the Plantío de los Infantes or Madrid Seen from El Pardo",
-   "titleSource": "traducir",
+   "title": "Madrid desde El Pardo",
+   "titleSource": "traducido",
    "year": "1909",
    "yearSort": 1909,
    "yearQuality": "exact",
@@ -41826,7 +41826,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -41951,8 +41951,8 @@
   {
    "id": "w97823871",
    "artistId": "beruete",
-   "title": "View of the Sierra de Guadarrama from El Plantío",
-   "titleSource": "traducir",
+   "title": "La sierra de Guadarrama desde El Plantío",
+   "titleSource": "traducido",
    "year": "1901",
    "yearSort": 1901,
    "yearQuality": "exact",
@@ -41983,7 +41983,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -43214,8 +43214,8 @@
   {
    "id": "w4110459",
    "artistId": "surikov",
-   "title": "Taking a Snow Town",
-   "titleSource": "traducir",
+   "title": "La toma de la ciudad de nieve",
+   "titleSource": "traducido",
    "year": "1891",
    "yearSort": 1891,
    "yearQuality": "exact",
@@ -43246,14 +43246,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18689417",
    "artistId": "surikov",
-   "title": "Yermak's Conquest of Siberia",
-   "titleSource": "traducir",
+   "title": "La conquista de Siberia por Yermak",
+   "titleSource": "traducido",
    "year": "1895",
    "yearSort": 1895,
    "yearQuality": "exact",
@@ -43286,7 +43286,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -43333,8 +43333,8 @@
   {
    "id": "w4112530",
    "artistId": "vasnetsov",
-   "title": "Knight at the Crossroads",
-   "titleSource": "traducir",
+   "title": "El caballero en la encrucijada",
+   "titleSource": "traducido",
    "year": "1882",
    "yearSort": 1882,
    "yearQuality": "exact",
@@ -43367,14 +43367,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4063783",
    "artistId": "vasnetsov",
-   "title": "Alyonushka",
-   "titleSource": "traducir",
+   "title": "Aliónushka",
+   "titleSource": "traducido",
    "year": "1881",
    "yearSort": 1881,
    "yearQuality": "exact",
@@ -43405,14 +43405,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4195524",
    "artistId": "vasnetsov",
-   "title": "Ivan Tsarevich on the Grey Wolf",
-   "titleSource": "traducir",
+   "title": "Iván Tsarévich sobre el lobo gris",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -43448,7 +43448,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -43492,8 +43492,8 @@
   {
    "id": "w28796199",
    "artistId": "pinazo",
-   "title": "El Cid’s Daughters",
-   "titleSource": "traducir",
+   "title": "Las hijas del Cid",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -43524,14 +43524,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w28796717",
    "artistId": "pinazo",
-   "title": "Portrait",
-   "titleSource": "traducir",
+   "title": "Retrato de mujer",
+   "titleSource": "traducido",
    "year": "1900",
    "yearSort": 1900,
    "yearQuality": "exact",
@@ -43562,7 +43562,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -44251,8 +44251,8 @@
   {
    "id": "w18386242",
    "artistId": "kroyer",
-   "title": "Summer Evening at Skagen. The Artist's Wife and Dog by the Shore",
-   "titleSource": "traducir",
+   "title": "Tarde de verano en Skagen: la mujer del artista con el perro en la playa",
+   "titleSource": "traducido",
    "year": "1892",
    "yearSort": 1892,
    "yearQuality": "exact",
@@ -44287,14 +44287,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w17826909",
    "artistId": "kroyer",
-   "title": "Roses",
-   "titleSource": "traducir",
+   "title": "Rosas",
+   "titleSource": "traducido",
    "year": "1893",
    "yearSort": 1893,
    "yearQuality": "exact",
@@ -44329,14 +44329,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w12334558",
    "artistId": "kroyer",
-   "title": "Midsummer Eve Bonfire on Skagen Beach",
-   "titleSource": "traducir",
+   "title": "Hoguera de San Juan en la playa de Skagen",
+   "titleSource": "traducido",
    "year": "1906",
    "yearSort": 1906,
    "yearQuality": "exact",
@@ -44378,7 +44378,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -45105,8 +45105,8 @@
   {
    "id": "w18344787",
    "artistId": "sargent",
-   "title": "Lady Agnew of Lochnaw",
-   "titleSource": "traducir",
+   "title": "Lady Agnew de Lochnaw",
+   "titleSource": "traducido",
    "year": "1892",
    "yearSort": 1892,
    "yearQuality": "exact",
@@ -45144,7 +45144,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -45408,7 +45408,7 @@
    "id": "w4343804",
    "artistId": "vrubel",
    "title": "Pan",
-   "titleSource": "traducir",
+   "titleSource": "traducido",
    "year": "1899",
    "yearSort": 1899,
    "yearQuality": "exact",
@@ -45443,14 +45443,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18238631",
    "artistId": "vrubel",
-   "title": "The Flying Demon",
-   "titleSource": "traducir",
+   "title": "El demonio volador",
+   "titleSource": "traducido",
    "year": "1899",
    "yearSort": 1899,
    "yearQuality": "exact",
@@ -45481,7 +45481,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -45647,8 +45647,8 @@
   {
    "id": "w18684267",
    "artistId": "regoyos",
-   "title": "Bathing in Rentería",
-   "titleSource": "traducir",
+   "title": "Baños en Rentería",
+   "titleSource": "traducido",
    "year": "1900",
    "yearSort": 1900,
    "yearQuality": "exact",
@@ -45682,14 +45682,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18684283",
    "artistId": "regoyos",
-   "title": "Good Friday in Castile",
-   "titleSource": "traducir",
+   "title": "Viernes Santo en Castilla",
+   "titleSource": "traducido",
    "year": "1904",
    "yearSort": 1904,
    "yearQuality": "exact",
@@ -45725,7 +45725,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -45769,8 +45769,8 @@
   {
    "id": "w28791071",
    "artistId": "regoyos",
-   "title": "Blast Furnaces in Bilbao",
-   "titleSource": "traducir",
+   "title": "Altos hornos en Bilbao",
+   "titleSource": "traducido",
    "year": "1908",
    "yearSort": 1908,
    "yearQuality": "exact",
@@ -45801,7 +45801,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -46150,8 +46150,8 @@
   {
    "id": "w4110204",
    "artistId": "levitan",
-   "title": "Evening Bells",
-   "titleSource": "traducir",
+   "title": "Campanas al atardecer",
+   "titleSource": "traducido",
    "year": "1892",
    "yearSort": 1892,
    "yearQuality": "exact",
@@ -46182,14 +46182,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4458429",
    "artistId": "levitan",
-   "title": "A Quiet Monastery",
-   "titleSource": "traducir",
+   "title": "Monasterio tranquilo",
+   "titleSource": "traducido",
    "year": "1890",
    "yearSort": 1890,
    "yearQuality": "exact",
@@ -46220,14 +46220,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4113083",
    "artistId": "levitan",
-   "title": "The Vladimirka",
-   "titleSource": "traducir",
+   "title": "El camino de Vladímir",
+   "titleSource": "traducido",
    "year": "1892",
    "yearSort": 1892,
    "yearQuality": "exact",
@@ -46266,8 +46266,8 @@
   {
    "id": "w4282465",
    "artistId": "levitan",
-   "title": "March",
-   "titleSource": "traducir",
+   "title": "Marzo",
+   "titleSource": "traducido",
    "year": "1895",
    "yearSort": 1895,
    "yearQuality": "exact",
@@ -46298,14 +46298,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4193277",
    "artistId": "levitan",
-   "title": "Golden Autumn",
-   "titleSource": "traducir",
+   "title": "Otoño dorado",
+   "titleSource": "traducido",
    "year": "1895",
    "yearSort": 1895,
    "yearQuality": "exact",
@@ -46343,14 +46343,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4332076",
    "artistId": "levitan",
-   "title": "Lake. Russia",
-   "titleSource": "traducir",
+   "title": "El lago. Rusia",
+   "titleSource": "traducido",
    "year": "1899",
    "yearSort": 1899,
    "yearQuality": "exact",
@@ -46384,14 +46384,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w16679343",
    "artistId": "levitan",
-   "title": "Over Eternal Quiet",
-   "titleSource": "traducir",
+   "title": "Sobre la paz eterna",
+   "titleSource": "traducido",
    "year": "1894",
    "yearSort": 1894,
    "yearQuality": "exact",
@@ -46422,14 +46422,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4337609",
    "artistId": "levitan",
-   "title": "Sokolniki. Autumn",
-   "titleSource": "traducir",
+   "title": "Sokólniki. Otoño",
+   "titleSource": "traducido",
    "year": "1879",
    "yearSort": 1879,
    "yearQuality": "exact",
@@ -46460,14 +46460,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4085401",
    "artistId": "levitan",
-   "title": "Birch grove",
-   "titleSource": "traducir",
+   "title": "Bosque de abedules",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -46498,14 +46498,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w1219751",
    "artistId": "zorn",
-   "title": "Summer Fun",
-   "titleSource": "traducir",
+   "title": "Diversión de verano",
+   "titleSource": "traducido",
    "year": "1886",
    "yearSort": 1886,
    "yearQuality": "exact",
@@ -46544,14 +46544,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w18601560",
    "artistId": "zorn",
-   "title": "Omnibus",
-   "titleSource": "traducir",
+   "title": "El ómnibus",
+   "titleSource": "traducido",
    "year": "1891–1892",
    "yearSort": 1891,
    "yearQuality": "exact",
@@ -46586,14 +46586,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w10585101",
    "artistId": "zorn",
-   "title": "Midsummer Dance",
-   "titleSource": "traducir",
+   "title": "Baile de San Juan",
+   "titleSource": "traducido",
    "year": "1897",
    "yearSort": 1897,
    "yearQuality": "exact",
@@ -46643,8 +46643,8 @@
   {
    "id": "w22329812",
    "artistId": "zorn",
-   "title": "A Portrait of the Daughters of Ramón Subercaseaux",
-   "titleSource": "traducir",
+   "title": "Las hijas de Ramón Subercaseaux",
+   "titleSource": "traducido",
    "year": "1892",
    "yearSort": 1892,
    "yearQuality": "exact",
@@ -46675,14 +46675,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w13384999",
    "artistId": "zorn",
-   "title": "In Wikströms studio",
-   "titleSource": "traducir",
+   "title": "En el estudio de Wikström",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -46724,14 +46724,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w17265834",
    "artistId": "zorn",
-   "title": "Reflexer by Anders Zorn",
-   "titleSource": "traducir",
+   "title": "Reflejos",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -46773,7 +46773,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -46862,8 +46862,8 @@
   {
    "id": "w11931061",
    "artistId": "rusinol",
-   "title": "The kitchens of the Moulin de la Galette",
-   "titleSource": "traducir",
+   "title": "Las cocinas del Moulin de la Galette",
+   "titleSource": "traducido",
    "year": "c. 1890",
    "yearSort": 1890,
    "yearQuality": "circa",
@@ -46897,7 +46897,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -46943,8 +46943,8 @@
   {
    "id": "w109410549",
    "artistId": "rusinol",
-   "title": "Portrait of Ramon Casas",
-   "titleSource": "traducir",
+   "title": "Retrato de Ramon Casas",
+   "titleSource": "traducido",
    "year": "c. 1890",
    "yearSort": 1890,
    "yearQuality": "circa",
@@ -46977,14 +46977,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w23907194",
    "artistId": "rusinol",
-   "title": "The blue Yard",
-   "titleSource": "traducir",
+   "title": "El patio azul",
+   "titleSource": "traducido",
    "year": "1892",
    "yearSort": 1892,
    "yearQuality": "exact",
@@ -47019,7 +47019,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -47524,8 +47524,8 @@
   {
    "id": "w4110588",
    "artistId": "nesterov",
-   "title": "The Vision to the Youth Bartholomew",
-   "titleSource": "traducir",
+   "title": "La visión del joven Bartolomé",
+   "titleSource": "traducido",
    "year": "c. 1889",
    "yearSort": 1889,
    "yearQuality": "circa",
@@ -47556,14 +47556,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w11788444",
    "artistId": "nesterov",
-   "title": "In Russia. Soul of the people",
-   "titleSource": "traducir",
+   "title": "En Rusia. El alma del pueblo",
+   "titleSource": "traducido",
    "year": "1914",
    "yearSort": 1914,
    "yearQuality": "exact",
@@ -47594,14 +47594,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w105956031",
    "artistId": "nesterov",
-   "title": "Archbishop Anthony",
-   "titleSource": "traducir",
+   "title": "El arzobispo Antonio",
+   "titleSource": "traducido",
    "year": "1917",
    "yearSort": 1917,
    "yearQuality": "exact",
@@ -47632,7 +47632,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -47676,8 +47676,8 @@
   {
    "id": "w18744757",
    "artistId": "signac",
-   "title": "Venice, Grand Canal",
-   "titleSource": "traducir",
+   "title": "Venecia, el Gran Canal",
+   "titleSource": "traducido",
    "year": "1905",
    "yearSort": 1905,
    "yearQuality": "exact",
@@ -47708,14 +47708,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w19883434",
    "artistId": "signac",
-   "title": "Opus 217. Against the Enamel of a Background Rhythmic with Beats and Angles, Tones, and Tints, Portrait of M. Félix Fénéon in 1890",
-   "titleSource": "traducir",
+   "title": "Opus 217. Retrato de Félix Fénéon",
+   "titleSource": "traducido",
    "year": "1890",
    "yearSort": 1890,
    "yearQuality": "exact",
@@ -47748,7 +47748,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -47796,8 +47796,8 @@
   {
    "id": "w29222763",
    "artistId": "signac",
-   "title": "Au temps d'harmonie",
-   "titleSource": "traducir",
+   "title": "En tiempos de armonía",
+   "titleSource": "traducido",
    "year": "1895",
    "yearSort": 1895,
    "yearQuality": "exact",
@@ -47828,14 +47828,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w57285436",
    "artistId": "signac",
-   "title": "Le Sentier des Douanes",
-   "titleSource": "traducir",
+   "title": "El sendero de los aduaneros",
+   "titleSource": "traducido",
    "year": "1905",
    "yearSort": 1905,
    "yearQuality": "exact",
@@ -47872,14 +47872,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w14852381",
    "artistId": "signac",
-   "title": "Le port de Rotterdam",
-   "titleSource": "traducir",
+   "title": "El puerto de Róterdam",
+   "titleSource": "traducido",
    "year": "1907",
    "yearSort": 1907,
    "yearQuality": "exact",
@@ -47912,14 +47912,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w24018830",
    "artistId": "signac",
-   "title": "Breakfast",
-   "titleSource": "traducir",
+   "title": "El desayuno",
+   "titleSource": "traducido",
    "year": "c. 1886–1887",
    "yearSort": 1886,
    "yearQuality": "circa",
@@ -47961,7 +47961,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -49248,8 +49248,8 @@
   {
    "id": "w12899487",
    "artistId": "lautrec",
-   "title": "The Hangover",
-   "titleSource": "traducir",
+   "title": "La resaca",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -49283,7 +49283,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -49379,8 +49379,8 @@
   {
    "id": "w58411216",
    "artistId": "hammershoi",
-   "title": "Interior with an Easel, Bredgade 25",
-   "titleSource": "traducir",
+   "title": "Interior con caballete, Bredgade 25",
+   "titleSource": "traducido",
    "year": "1912",
    "yearSort": 1912,
    "yearQuality": "exact",
@@ -49413,14 +49413,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w20745460",
    "artistId": "hammershoi",
-   "title": "Interior with Young Woman Seen from the Back",
-   "titleSource": "traducir",
+   "title": "Interior con mujer joven de espaldas",
+   "titleSource": "traducido",
    "year": "1903",
    "yearSort": 1903,
    "yearQuality": "exact",
@@ -49462,8 +49462,8 @@
   {
    "id": "w17491674",
    "artistId": "hammershoi",
-   "title": "Rest",
-   "titleSource": "traducir",
+   "title": "Descanso",
+   "titleSource": "traducido",
    "year": "1905",
    "yearSort": 1905,
    "yearQuality": "exact",
@@ -49498,14 +49498,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w20355557",
    "artistId": "hammershoi",
-   "title": "Seated Female Nude",
-   "titleSource": "traducir",
+   "title": "Desnudo femenino sentado",
+   "titleSource": "traducido",
    "year": "1889",
    "yearSort": 1889,
    "yearQuality": "exact",
@@ -49539,14 +49539,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w118469029",
    "artistId": "hammershoi",
-   "title": "Interior. The Music Room, Strandgade 30",
-   "titleSource": "traducir",
+   "title": "Interior. La sala de música, Strandgade 30",
+   "titleSource": "traducido",
    "year": "1907",
    "yearSort": 1907,
    "yearQuality": "exact",
@@ -49583,14 +49583,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w14632140",
    "artistId": "hammershoi",
-   "title": "Interior with Woman at Piano, Strandgade 30",
-   "titleSource": "traducir",
+   "title": "Interior con mujer al piano, Strandgade 30",
+   "titleSource": "traducido",
    "year": "1901",
    "yearSort": 1901,
    "yearQuality": "exact",
@@ -49627,14 +49627,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w29044191",
    "artistId": "hammershoi",
-   "title": "Five Portraits",
-   "titleSource": "traducir",
+   "title": "Cinco retratos",
+   "titleSource": "traducido",
    "year": "c. 1901",
    "yearSort": 1901,
    "yearQuality": "circa",
@@ -49670,7 +49670,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -49716,8 +49716,8 @@
   {
    "id": "w4373329",
    "artistId": "serov",
-   "title": "Ida Rubinstein",
-   "titleSource": "traducir",
+   "title": "Retrato de Ida Rubinstein",
+   "titleSource": "traducido",
    "year": "1910",
    "yearSort": 1910,
    "yearQuality": "exact",
@@ -49750,14 +49750,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w66988420",
    "artistId": "serov",
-   "title": "Zinaida Yusupova",
-   "titleSource": "traducir",
+   "title": "Retrato de la princesa Zinaida Yusúpova",
+   "titleSource": "traducido",
    "year": "1902",
    "yearSort": 1902,
    "yearQuality": "exact",
@@ -49790,14 +49790,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w55822130",
    "artistId": "serov",
-   "title": "Portrait of Maria Yermolova",
-   "titleSource": "traducir",
+   "title": "Retrato de la actriz María Yermólova",
+   "titleSource": "traducido",
    "year": "1905",
    "yearSort": 1905,
    "yearQuality": "exact",
@@ -49830,7 +49830,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -50214,8 +50214,8 @@
   {
    "id": "w18705520",
    "artistId": "kandinsky",
-   "title": "On White II",
-   "titleSource": "traducir",
+   "title": "Sobre blanco II",
+   "titleSource": "traducido",
    "year": "1923",
    "yearSort": 1923,
    "yearQuality": "exact",
@@ -50248,14 +50248,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w19609199",
    "artistId": "kandinsky",
-   "title": "Composition VIII",
-   "titleSource": "traducir",
+   "title": "Composición VIII",
+   "titleSource": "traducido",
    "year": "1923",
    "yearSort": 1923,
    "yearQuality": "exact",
@@ -50289,14 +50289,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3609042",
    "artistId": "kandinsky",
-   "title": "Several Circles",
-   "titleSource": "traducir",
+   "title": "Varios círculos",
+   "titleSource": "traducido",
    "year": "1926",
    "yearSort": 1926,
    "yearQuality": "exact",
@@ -50330,14 +50330,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3874360",
    "artistId": "kandinsky",
-   "title": "In Grey",
-   "titleSource": "traducir",
+   "title": "En gris",
+   "titleSource": "traducido",
    "year": "1919",
    "yearSort": 1919,
    "yearQuality": "exact",
@@ -50368,14 +50368,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w4010255",
    "artistId": "kandinsky",
-   "title": "Upward",
-   "titleSource": "traducir",
+   "title": "Hacia arriba",
+   "titleSource": "traducido",
    "year": "1929",
    "yearSort": 1929,
    "yearQuality": "exact",
@@ -50406,7 +50406,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -50609,8 +50609,8 @@
   {
    "id": "w31187972",
    "artistId": "zuloaga",
-   "title": "Anita Ramírez, in black",
-   "titleSource": "traducir",
+   "title": "Anita Ramírez de negro",
+   "titleSource": "traducido",
    "year": "c. 1915",
    "yearSort": 1915,
    "yearQuality": "circa",
@@ -50641,7 +50641,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -51716,8 +51716,8 @@
   {
    "id": "w4089579",
    "artistId": "petrov-vodkin",
-   "title": "The Mother of God of Tenderness Towards Evil Hearts",
-   "titleSource": "traducir",
+   "title": "La Virgen de la ternura ante los corazones malvados",
+   "titleSource": "traducido",
    "year": "1914",
    "yearSort": 1914,
    "yearQuality": "exact",
@@ -51748,14 +51748,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w30067841",
    "artistId": "petrov-vodkin",
-   "title": "Death of Commissar",
-   "titleSource": "traducir",
+   "title": "La muerte del comisario",
+   "titleSource": "traducido",
    "year": "1928",
    "yearSort": 1928,
    "yearQuality": "exact",
@@ -51786,7 +51786,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -52004,7 +52004,7 @@
    "id": "w4062416",
    "artistId": "modigliani",
    "title": "Alice",
-   "titleSource": "traducir",
+   "titleSource": "traducido",
    "year": "c. 1918",
    "yearSort": 1918,
    "yearQuality": "circa",
@@ -52038,7 +52038,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -52214,8 +52214,8 @@
   {
    "id": "w3793584",
    "artistId": "modigliani",
-   "title": "The Little Peasant",
-   "titleSource": "traducir",
+   "title": "El pequeño campesino",
+   "titleSource": "traducido",
    "year": "1918",
    "yearSort": 1918,
    "yearQuality": "exact",
@@ -52257,7 +52257,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -52432,8 +52432,8 @@
   {
    "id": "w19922091",
    "artistId": "juan-gris",
-   "title": "Violin and Playing Cards on a Table",
-   "titleSource": "traducir",
+   "title": "Violín y naipes sobre una mesa",
+   "titleSource": "traducido",
    "year": "1913",
    "yearSort": 1913,
    "yearQuality": "exact",
@@ -52469,7 +52469,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -52513,8 +52513,8 @@
   {
    "id": "w60329141",
    "artistId": "juan-gris",
-   "title": "The Breakfast",
-   "titleSource": "traducir",
+   "title": "El desayuno",
+   "titleSource": "traducido",
    "year": "1915",
    "yearSort": 1915,
    "yearQuality": "exact",
@@ -52549,14 +52549,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w19922323",
    "artistId": "juan-gris",
-   "title": "Still Life with a Guitar",
-   "titleSource": "traducir",
+   "title": "Bodegón con guitarra",
+   "titleSource": "traducido",
    "year": "1913",
    "yearSort": 1913,
    "yearQuality": "exact",
@@ -52590,14 +52590,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w1555137",
    "artistId": "schiele",
-   "title": "Portrait of Wally",
-   "titleSource": "traducir",
+   "title": "Retrato de Wally",
+   "titleSource": "traducido",
    "year": "1912",
    "yearSort": 1912,
    "yearQuality": "exact",
@@ -52630,7 +52630,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -52680,8 +52680,8 @@
   {
    "id": "w2445555",
    "artistId": "schiele",
-   "title": "Dead City III",
-   "titleSource": "traducir",
+   "title": "Ciudad muerta III",
+   "titleSource": "traducido",
    "year": "1911",
    "yearSort": 1911,
    "yearQuality": "exact",
@@ -52714,7 +52714,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -52834,8 +52834,8 @@
   {
    "id": "w19973869",
    "artistId": "schiele",
-   "title": "The Port of Trieste",
-   "titleSource": "traducir",
+   "title": "El puerto de Trieste",
+   "titleSource": "traducido",
    "year": "1907",
    "yearSort": 1907,
    "yearQuality": "exact",
@@ -52866,14 +52866,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w28797693",
    "artistId": "schiele",
-   "title": "Self-Portrait with Physalis",
-   "titleSource": "traducir",
+   "title": "Autorretrato con alquequenjes",
+   "titleSource": "traducido",
    "year": "1912",
    "yearSort": 1912,
    "yearQuality": "exact",
@@ -52906,7 +52906,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   }
  ]
