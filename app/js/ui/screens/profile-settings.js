@@ -11,6 +11,7 @@ import { bindSheet } from './profile-sheet.js';
 
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
 const RING = 56;
+const TEST_KEYS = ['mirada.test.last', 'mirada.test.recent']; // los guarda el test de cultura (js/test/main.js)
 
 const toggle = (key, label, on) => `<label class="setting">
     <span>${label}</span>
@@ -108,7 +109,12 @@ export function wireSettings(ctx, el) {
       ask.focus();
     },
     reset: () => {
-      const keepSettings = ctx.store.get().settings;
+      // Se queda con los ajustes (tema, sonido…), pero el nombre, la portada, el avatar y el último
+      // resultado del test son tuyos y se van con el progreso.
+      const keepSettings = { ...ctx.store.get().settings, name: '', cover: '', avatar: '' };
+      for (const key of TEST_KEYS) {
+        try { localStorage.removeItem(key); } catch { /* sin almacenamiento: nada que borrar */ }
+      }
       ctx.store.reset();
       ctx.store.update((st) => ({ ...st, settings: keepSettings, onboarded: true }));
       announce('Progreso borrado');

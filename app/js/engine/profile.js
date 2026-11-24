@@ -1,8 +1,9 @@
-// Datos del perfil que no necesitan DOM: avance al siguiente rango, portada, «Mi museo», metal de los
-// logros, inicial del avatar y último resultado del test. Puro.
+// Datos del perfil que no necesitan DOM: avance al siguiente rango, portada y avatar, «Mi museo», metal
+// de los logros, inicial del avatar y último resultado del test. Puro.
 
 import { artKey } from './srs.js';
 import { STREAK_MEDALS } from './progress.js';
+import { TEST_LEVELS } from '../test/resultado.js';
 
 export const MUSEUM_SIZE = 9;
 
@@ -22,20 +23,36 @@ export function medalTier(id) {
   return 'bronze';
 }
 
-// Avance hacia el siguiente rango: media de lo cumplido en cada requisito (0..1) y lo que falta, en
-// frases cortas. Rango máximo: barra llena y sin nada pendiente.
+// Los logros de cada clase («artist», «eye», «streak»…) se reparten por turnos para que la muestra no
+// sean ocho «Ojo de…» seguidos. `ids` ya viene ordenado por importancia dentro de cada clase.
+export function interleaveByKind(ids) {
+  const groups = new Map();
+  for (const id of ids) {
+    const kind = String(id).split('-')[0];
+    if (!groups.has(kind)) groups.set(kind, []);
+    groups.get(kind).push(id);
+  }
+  const lists = [...groups.values()];
+  const out = [];
+  for (let i = 0; out.length < ids.length; i++) for (const l of lists) if (i < l.length) out.push(l[i]);
+  return out;
+}
+
+// Avance hacia el siguiente rango: media de lo cumplido en cada requisito (0..1) y, por requisito, lo que
+// falta en una frase y su avance. Rango máximo: barra llena y sin nada pendiente.
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
-const MISSING_TEXT = {
-  xp: (n) => `${n.toLocaleString('es-ES')} XP`,
-  deep: (n) => plural(n, 'nivel «a fondo»', 'niveles «a fondo»'),
-  eras: (n) => plural(n, 'época con «a fondo»', 'épocas con «a fondo»'),
-  complete: (n) => plural(n, 'gran maestro completo', 'grandes maestros completos'),
-  grand: (n, need) => `${plural(n, 'gran maestro', 'grandes maestros')} hasta el nivel ${need.upTo}`,
+const fmt = (n) => n.toLocaleString('es-ES');
+const NEED_TEXT = {
+  xp: (n) => `Ganar ${fmt(n)} XP más`,
+  deep: (n) => `Dominar ${plural(n, 'nivel «a fondo»', 'niveles «a fondo»')} más`,
+  eras: (n) => `«A fondo» en ${plural(n, 'época', 'épocas')} más`,
+  complete: (n) => `Completar ${plural(n, 'gran maestro', 'grandes maestros')} más`,
+  grand: (n, grand) => `${plural(n, 'gran maestro', 'grandes maestros')} más hasta el nivel ${grand.upTo}`,
 };
 
 export function rankProgress(rank) {
   const next = rank.next;
-  if (!next) return { fraction: 1, next: null, parts: [] };
+  if (!next) return { fraction: 1, next: null, parts: [], items: [] };
   const s = rank.stats;
   const have = {
     xp: s.xp,
@@ -46,30 +63,52 @@ export function rankProgress(rank) {
   };
   const want = { xp: next.xp, deep: next.deep, eras: next.eras, complete: next.complete, grand: next.grand?.count };
   const keys = Object.keys(want).filter((k) => want[k]);
-  const fraction = keys.reduce((sum, k) => sum + Math.min(1, have[k] / want[k]), 0) / keys.length;
-  const parts = rank.missing.map((m) => MISSING_TEXT[m.key](m.need - m.have, next.grand));
-  return { fraction, next: next.name, parts };
+  const ratio = (k) => Math.min(1, have[k] / want[k]);
+  const fraction = keys.reduce((sum, k) => sum + ratio(k), 0) / keys.length;
+  const items = rank.missing.map((m) => ({ key: m.key, text: NEED_TEXT[m.key](m.need - m.have, next.grand), fraction: ratio(m.key) }));
+  return { fraction, next: next.name, parts: items.map((i) => i.text), items };
+}
+
+// Cuadros de la colección (los mismos que cuentan Colección y el inicio).
+export function collectionIds(progress, index) {
+  return Object.keys(progress.collection || {}).filter((id) => index.artwork(id));
 }
 
 // Último cuadro de cada fecha primero; a igual fecha, el añadido más tarde (orden de inserción).
 export function museumWorks(progress, index, n = MUSEUM_SIZE) {
-  const entries = Object.entries(progress.collection || {}).filter(([id]) => index.artwork(id));
-  const rev = entries.map((e, i) => ({ id: e[0], date: String(e[1]), i }));
+  const rev = collectionIds(progress, index).map((id, i) => ({ id, date: String(progress.collection[id]), i }));
   rev.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.i - a.i));
   return rev.slice(0, n).map((e) => index.artwork(e.id));
 }
 
-// Portada: el cuadro más famoso del pintor del que más cuadros tiene el jugador (a igualdad, el
-// del repaso más avanzado). null si aún no tiene ninguno.
-export function coverWork(progress, index) {
-  const owned = Object.keys(progress.collection || {}).map((id) => index.artwork(id)).filter(Boolean);
+// Portada: la elegida si está en la colección; si no, el cuadro más famoso (y apaisado, que luce más en
+// la franja) del pintor del que más cuadros tiene el jugador. null si aún no tiene ninguno.
+export function coverWork(progress, index, chosen = '') {
+  const owned = collectionIds(progress, index).map((id) => index.artwork(id));
   if (!owned.length) return null;
+  if (chosen && progress.collection[chosen] && index.artwork(chosen)) return index.artwork(chosen);
   const count = new Map();
   for (const w of owned) count.set(w.artistId, (count.get(w.artistId) || 0) + 1);
   const box = (w) => progress.srs?.[artKey(w.id)]?.box || 0;
+  const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 1 : 0);
   const best = [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0][0];
   return owned.filter((w) => w.artistId === best)
-    .sort((a, b) => (b.fame || 0) - (a.fame || 0) || box(b) - box(a) || a.id.localeCompare(b.id))[0];
+    .sort((a, b) => score(b) - score(a) || box(b) - box(a) || a.id.localeCompare(b.id))[0];
+}
+
+// Avatar elegido (cuadro de la colección) o null: entonces va el logo o la inicial.
+export function avatarWork(progress, index, chosen = '') {
+  return chosen && progress.collection?.[chosen] && index.artwork(chosen) ? index.artwork(chosen) : null;
+}
+
+// Punto de interés de una obra (fracciones 0..1 de ancho y alto) como object-position en %.
+export function focusPosition(work, fallbackY = 30) {
+  const f = work?.focus;
+  if (Array.isArray(f) && f.length === 2 && f.every((v) => Number.isFinite(v))) {
+    const pct = (v) => Math.round(Math.min(1, Math.max(0, v)) * 100);
+    return `${pct(f[0])}% ${pct(f[1])}%`;
+  }
+  return `50% ${fallbackY}%`;
 }
 
 // Inicial del avatar (primera letra del nombre, en mayúscula); '' sin nombre.
@@ -78,17 +117,19 @@ export function initialOf(name) {
   return first ? first.toLocaleUpperCase('es-ES') : '';
 }
 
-// Último resultado del test de cultura (localStorage['mirada.test.last']): null si no hay o no vale.
+// Último resultado del test de cultura (localStorage['mirada.test.last']): null si no hay o no vale. El
+// nombre del nivel solo se da por bueno si es uno de los del test (resultados antiguos usaban los de los rangos).
 export function parseLastTest(raw) {
   let v = null;
   try { v = JSON.parse(raw); } catch { return null; }
   if (!v || !Number.isFinite(v.correct) || !Number.isFinite(v.asked) || v.asked <= 0 || typeof v.level !== 'string') return null;
   const pct = Number.isFinite(v.percentile) && v.percentile >= 1 && v.percentile <= 99 ? Math.round(v.percentile) : null;
-  return { correct: v.correct, asked: v.asked, level: v.level, percentile: pct };
+  const date = typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) ? v.date : '';
+  return { correct: v.correct, asked: v.asked, level: TEST_LEVELS.includes(v.level) ? v.level : '', percentile: pct, date };
 }
 
 export function testShareText(last, url) {
-  const lines = [`He acertado ${last.correct} de ${last.asked} en el test de Sfumato · ${last.level}`];
+  const lines = [`He acertado ${last.correct} de ${last.asked} en el test de Sfumato${last.level ? ` · ${last.level}` : ''}`];
   if (last.percentile != null) lines.push(`Sé más de pintura que el ${last.percentile} % de la gente`);
   if (url) lines.push(url);
   return lines.join('\n');

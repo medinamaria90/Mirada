@@ -24,12 +24,17 @@ export function normalizeName(value) {
   return [...clean].slice(0, NAME_MAX).join('').trim();
 }
 
+// Portada y avatar del perfil (settings.cover / settings.avatar): id de un cuadro de la colección o ''.
+export function normalizeArtworkId(value) {
+  return typeof value === 'string' && /^w\d+$/.test(value) ? value : '';
+}
+
 export function defaultState() {
   return {
     version: SCHEMA_VERSION,
     onboarded: false,
     progress: emptyProgress(),
-    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '' },
+    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '', cover: '', avatar: '' },
     // Ronda en curso para retomarla al volver ({} = ninguna). Ver state/session.js.
     session: {},
   };
@@ -109,10 +114,10 @@ export const MIGRATIONS = {
       },
     };
   },
-  // 7 → 8 (perfil nuevo): nombre opcional del perfil, vacío por defecto. Lo demás se conserva.
+  // 7 → 8 (perfil nuevo): nombre opcional, portada y avatar elegidos, vacíos por defecto. Lo demás se conserva.
   7: (old) => ({
     ...old,
-    settings: { ...(isPlain(old.settings) ? old.settings : {}), name: '' },
+    settings: { ...(isPlain(old.settings) ? old.settings : {}), name: '', cover: '', avatar: '' },
   }),
 };
 
@@ -128,7 +133,14 @@ export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, d
     v += 1;
     data.version = v;
   }
-  return mergeDefaults(defaults, data);
+  const out = mergeDefaults(defaults, data);
+  // Lo que llegue sin pasar por la interfaz (estado importado o editado a mano) también se limpia.
+  if (isPlain(out.settings)) {
+    out.settings.name = normalizeName(out.settings.name);
+    out.settings.cover = normalizeArtworkId(out.settings.cover);
+    out.settings.avatar = normalizeArtworkId(out.settings.avatar);
+  }
+  return out;
 }
 
 // Completa con valores por defecto sin perder datos guardados; respeta tipos.

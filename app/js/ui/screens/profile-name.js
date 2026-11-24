@@ -4,13 +4,14 @@
 import { $, announce } from '../dom.js';
 import { NAME_MAX, normalizeName } from '../../state/schema.js';
 import { bindSheet } from './profile-sheet.js';
-import { heroHtml } from './profile-parts.js';
+import { refreshHero } from './profile-hero.js';
 
 export function nameSheetHtml() {
   return `<dialog class="card-dialog sheet-dialog name-dialog" aria-labelledby="name-dlg-title">
     <form class="dlg-body name-form" novalidate>
       <h2 id="name-dlg-title" class="dlg-title">Tu nombre</h2>
-      <input class="pf-input" name="name" type="text" maxlength="${NAME_MAX}" autocomplete="off" autocapitalize="words" enterkeyhint="done" spellcheck="false" aria-labelledby="name-dlg-title">
+      <input class="pf-input" name="name" type="text" maxlength="${NAME_MAX}" autocomplete="off" autocapitalize="words" enterkeyhint="done" spellcheck="false" aria-labelledby="name-dlg-title" aria-describedby="name-note">
+      <p class="pf-note" id="name-note"><span>Solo se guarda en este dispositivo</span><span class="pf-counter" aria-hidden="true">0/${NAME_MAX}</span></p>
       <div class="sheet-actions">
         <button type="button" class="btn btn-secondary" data-action="close-sheet">Cancelar</button>
         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -29,17 +30,20 @@ export function wireName(ctx, el) {
     const name = normalizeName(input.value);
     ctx.store.update((st) => ({ ...st, settings: { ...st.settings, name } }));
     sheet.close();
-    // Solo se repinta la portada (el resto de la pantalla no cambia); el foco vuelve al nombre.
-    const hero = $('.pf-hero', el);
-    hero.outerHTML = heroHtml(ctx);
+    // Solo se repinta la identidad (el resto de la pantalla no cambia); el foco vuelve al nombre.
+    refreshHero(ctx, el);
     $('[data-action="edit-name"]', el).focus({ preventScroll: true });
     announce(name ? `Nombre guardado: ${name}` : 'Nombre quitado');
   });
+  const counter = $('.pf-counter', dialog);
+  const count = () => { counter.textContent = `${[...input.value].length}/${NAME_MAX}`; };
+  input.addEventListener('input', count);
   return {
     'edit-name': (b) => {
       ctx.audio.sfx('tap');
       input.value = ctx.store.get().settings.name || '';
       sheet.open(b, '.pf-input');
+      count();
       input.select();
     },
   };

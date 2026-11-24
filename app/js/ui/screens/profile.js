@@ -1,19 +1,23 @@
 // Perfil: quién eres (portada, nombre, rango), tus cifras, «Mi museo», logros, tu test de pintura,
-// accesos a seguir practicando y, aparte, la hoja de ajustes. Las piezas están en profile-*.js.
+// accesos a seguir practicando y, aparte, las hojas de ajustes, nombre y portada. Las piezas están en profile-*.js.
 
 import { onAction, focusHeading, $ } from '../dom.js';
 import { page } from '../shell.js';
 import { playEra } from '../audio-bridge.js';
-import { parseLastTest, testShareText } from '../../engine/profile.js';
-import { heroHtml, figuresHtml, museumHtml, testHtml, practiceHtml } from './profile-parts.js';
+import { parseLastTest, coverWork, collectionIds } from '../../engine/profile.js';
+import { heroHtml, upgradeCover } from './profile-hero.js';
+import { figuresHtml, museumHtml, testHtml, practiceHtml } from './profile-parts.js';
 import { medalsHtml, wireMedals } from './profile-medals.js';
 import { settingsHtml, wireSettings } from './profile-settings.js';
 import { nameSheetHtml, wireName } from './profile-name.js';
+import { lookSheetHtml, wireLook } from './profile-look.js';
+import { shareTest } from './profile-share.js';
 
-export { graceLine } from './profile-parts.js';
+const TEST_KEY = 'mirada.test.last'; // lo escribe el test de cultura (js/test/main.js)
+const STYLES_WAIT_MS = 1500; // si los estilos tardan más, se pinta igual
 
-// Los estilos del perfil se piden al abrirlo (no pesan en el arranque); el módulo espera a que lleguen
-// para que no parpadee sin estilo.
+// Los estilos del perfil se piden al abrirlo (no pesan en el arranque). Mientras llegan se enseña un
+// esqueleto; si no llegan en STYLES_WAIT_MS, se sigue sin ellos.
 function loadStyles() {
   if (typeof document === 'undefined' || typeof document.querySelector !== 'function') return Promise.resolve();
   const href = new URL('../../../css/profile.css', import.meta.url).href;
@@ -23,14 +27,12 @@ function loadStyles() {
     link.rel = 'stylesheet';
     link.href = href;
     link.onload = resolve;
-    link.onerror = resolve; // sin estilos el perfil se ve peor, pero se ve
+    link.onerror = resolve;
     document.head.append(link);
+    setTimeout(resolve, STYLES_WAIT_MS);
   });
 }
-await loadStyles();
-
-const TEST_KEY = 'mirada.test.last'; // lo escribe el test de cultura (js/test/main.js)
-const MEDALS_SCROLL_OFFSET = -72;
+const stylesReady = loadStyles();
 
 function readLastTest() {
   try {
@@ -40,55 +42,57 @@ function readLastTest() {
   }
 }
 
-async function shareTest(ctx, last) {
-  const text = testShareText(last, new URL('test/', location.href).href);
-  if (navigator.share) {
-    try {
-      await navigator.share({ text });
-      return;
-    } catch (err) {
-      if (err && err.name === 'AbortError') return;
-    }
-  }
-  try {
-    await navigator.clipboard.writeText(text);
-    ctx.toast('Copiado');
-  } catch {
-    ctx.toast('No se ha podido copiar');
-  }
+// Bloques grises con el tamaño del perfil (estilos en línea con variables: no dependen de profile.css).
+function skeletonHtml() {
+  const block = (h, extra = '') => `<div style="height:${h};border-radius:var(--radius-sm);background:var(--surface-2);${extra}"></div>`;
+  return `<div aria-hidden="true">${block('156px', 'border-radius:0')}
+    <div style="display:grid;gap:1.1rem;padding:1.6rem 1.1rem">${block('2rem', 'width:60%')}${block('12px')}${block('5rem')}${block('9rem')}</div></div>`;
 }
 
 // opts.focus: 'medals' para abrir directamente en los logros (#medallas).
-export function renderProfile(ctx, el, opts = {}) {
+export async function renderProfile(ctx, el, opts = {}) {
+  el.innerHTML = page(ctx, 'profile', skeletonHtml());
+  await stylesReady;
+  if (!el.isConnected) return; // mientras tanto se fue a otra pantalla
   const last = readLastTest();
+  const hasPictures = collectionIds(ctx.store.get().progress, ctx.index).length > 0;
   el.innerHTML = page(ctx, 'profile', `
-    ${heroHtml(ctx)}
-    <div class="pf-body">
-      ${figuresHtml(ctx)}
-      ${museumHtml(ctx)}
-      ${medalsHtml(ctx)}
-      ${testHtml(last)}
-      ${practiceHtml(ctx)}
+    <div class="pf-layout">
+      <div class="pf-col pf-col-side">
+        ${heroHtml(ctx)}
+        ${figuresHtml(ctx)}
+        ${testHtml(last, { primary: hasPictures })}
+        ${practiceHtml(ctx)}
+      </div>
+      <div class="pf-col pf-col-main">
+        ${museumHtml(ctx)}
+        ${medalsHtml(ctx)}
+      </div>
     </div>
     ${settingsHtml(ctx)}
-    ${nameSheetHtml()}`);
+    ${nameSheetHtml()}
+    ${lookSheetHtml()}`);
+  upgradeCover(el);
   if (opts.focus === 'medals') {
     const h = $('#pf-medals-h', el);
     h.setAttribute('tabindex', '-1');
     h.focus({ preventScroll: true });
     $('#logros', el).scrollIntoView({ block: 'start' });
-    window.scrollBy(0, MEDALS_SCROLL_OFFSET);
   } else focusHeading(el);
-  playEra('menu');
+  if (ctx.store.get().settings.music) playEra('menu'); // sin música no se carga el audio
 
   const go = (route) => () => { ctx.audio.sfx('tap'); ctx.go(route); };
   onAction(el, {
     ...wireMedals(ctx, el),
     ...wireSettings(ctx, el),
     ...wireName(ctx, el),
-    'close-sheet': (b) => { ctx.audio.sfx('tap'); b.closest('dialog')?.close(); },
+    ...wireLook(ctx, el),
     review5: go('repaso5'),
     weekly: go('reto-semanal'),
-    'share-test': () => { ctx.audio.sfx('tap'); if (last) shareTest(ctx, last); },
+    'share-test': () => {
+      ctx.audio.sfx('tap');
+      const st = ctx.store.get();
+      if (last) shareTest(ctx, last, coverWork(st.progress, ctx.index, st.settings.cover));
+    },
   });
 }

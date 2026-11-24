@@ -4,15 +4,15 @@
 import { esc, longDate, $ } from '../dom.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { medalBadge, medalZoom, allMedalIds, medalHow, eyeLabel } from './medals.js';
-import { medalTier, TIERS, TIER_NAMES } from '../../engine/profile.js';
+import { medalTier, interleaveByKind, TIERS, TIER_NAMES } from '../../engine/profile.js';
 import { bindSheet } from './profile-sheet.js';
 
 const FIRST_SHOWN = 8; // casillas visibles antes de «Ver todos»
 
 const medalName = (ctx, id, has) => (!has && id.startsWith('eye-') && eyeLabel(ctx, id.slice(4))?.text) || medalInfo(id, ctx.index).title;
 
-// Conseguidas (oro primero, y las más recientes antes) y, detrás, las pendientes: primero los «Ojo de…»
-// con avance, que son las más cercanas.
+// Conseguidas (oro primero, las más recientes antes, y de clases distintas por turnos) y, detrás, las
+// pendientes: primero el «Ojo de…» con más avance, que es el más cercano.
 export function medalList(ctx) {
   const p = ctx.store.get().progress;
   const ids = allMedalIds(ctx.index);
@@ -24,13 +24,18 @@ export function medalList(ctx) {
     .filter((x) => x.e && x.e.top > 0)
     .sort((x, y) => y.e.top / y.e.total - x.e.top / x.e.total)
     .map((x) => x.id);
-  return { got, rest: [...near, ...pending.filter((id) => !near.includes(id))], total: ids.length };
+  const nearest = near.slice(0, 1);
+  return { got: interleaveByKind(got), rest: [...nearest, ...interleaveByKind(pending.filter((id) => !nearest.includes(id)))], total: ids.length };
 }
+
+// Anillo metálico alrededor del sello (conseguidos): degradado del metal, no solo un color plano.
+export const tierRing = (tier, badge) => `<span class="pf-ring tier-${tier}">${badge}</span>`;
 
 function cell(ctx, id, has) {
   const tier = medalTier(id);
+  const badge = medalBadge(ctx, id);
   return `<li><button type="button" class="pf-medal tier-${tier} ${has ? 'is-got' : 'is-missing'}" data-action="medal" data-id="${esc(id)}" aria-haspopup="dialog">
-      ${medalBadge(ctx, id)}<span class="pf-medal-name">${esc(medalName(ctx, id, has))}</span><span class="sr-only">${has ? `${TIER_NAMES[tier]}, conseguida` : 'pendiente'}</span></button></li>`;
+      ${has ? tierRing(tier, badge) : badge}${has ? `<span class="pf-tier" aria-hidden="true">${TIER_NAMES[tier]}</span>` : ''}<span class="pf-medal-name">${esc(medalName(ctx, id, has))}</span><span class="sr-only">${has ? `${TIER_NAMES[tier]}, conseguida` : 'pendiente'}</span></button></li>`;
 }
 
 export function medalCells(ctx, all) {
@@ -42,12 +47,12 @@ export function medalCells(ctx, all) {
 export function medalsHtml(ctx) {
   const { got, total } = medalList(ctx);
   const { html, hidden } = medalCells(ctx, false);
-  return `<section class="pf-sec" id="logros" aria-labelledby="pf-medals-h">
+  return `<section class="pf-sec pf-medals-sec" id="logros" aria-labelledby="pf-medals-h">
     <div class="pf-sec-head"><h2 id="pf-medals-h">Logros</h2><span class="pf-count">${got.length} de ${total}</span></div>
     <ul class="pf-medals">${html}</ul>
     ${hidden ? `<button type="button" class="btn btn-secondary btn-wide pf-more" data-action="more-medals" aria-expanded="false">Ver todos</button>` : ''}
   </section>
-  <dialog class="card-dialog medal-dialog" aria-labelledby="medal-dlg-title"></dialog>`;
+  <dialog class="card-dialog sheet-dialog medal-dialog" aria-labelledby="medal-dlg-title"></dialog>`;
 }
 
 // Hoja de una medalla y el botón «Ver todos». Devuelve los manejadores de acciones.
@@ -63,7 +68,7 @@ export function wireMedals(ctx, el) {
       const eye = id.startsWith('eye-') ? eyeLabel(ctx, id.slice(4)) : null;
       const how = medalHow(id);
       dialog.innerHTML = `<div class="dlg-body medal-dlg tier-${medalTier(id)} ${date ? 'is-got' : 'is-missing'}">
-        ${medalZoom(ctx, id, medalBadge(ctx, id, false, 'lg'))}
+        ${date ? tierRing(medalTier(id), medalZoom(ctx, id, medalBadge(ctx, id, false, 'lg'))) : medalZoom(ctx, id, medalBadge(ctx, id, false, 'lg'))}
         <h2 id="medal-dlg-title" class="dlg-title">${esc(info.title)}</h2>
         <p class="dlg-meta">${esc(info.sub)} · ${TIER_NAMES[medalTier(id)]}</p>
         ${date ? `<p class="dlg-hint">Conseguida el ${esc(longDate(date).toLowerCase())}</p>` : how ? `<p class="dlg-hint">${esc(how)}</p>` : ''}

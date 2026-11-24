@@ -16,9 +16,8 @@ import {
   TIERS, PER_TIER, BLOCK, UP_FROM, STOP_BELOW, PAUSE_FROM, MAX_QUESTIONS, KINDS,
   createTest, answer, advance, resume, finish, summary, simulate, perfectScore, isAnswered,
 } from '../app/js/test/motor.js';
-import { percentileFor, levelForScore, buildResult, shareText, PERCENTILE_BANDS, GRID_OK, GRID_OFF } from '../app/js/test/resultado.js';
+import { percentileFor, levelForScore, TEST_LEVELS, buildResult, shareText, PERCENTILE_BANDS, GRID_OK, GRID_OFF } from '../app/js/test/resultado.js';
 import { validateBank, viewOf, prefixImages } from '../app/js/test/preguntas.js';
-import { LEVELS } from '../app/js/engine/progress.js';
 import { similarity } from '../app/js/engine/questions.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -133,7 +132,7 @@ test('jugador perfecto: llega al friki, agota el banco con 24 preguntas, suma el
   assert.equal(summary(slow.state).asked, MAX_QUESTIONS);
   assert.deepEqual(slow.pauses, [20, 24, 28, 32, 36]);
   const r = buildResult(s, perfectScore(questions));
-  assert.equal(r.level, LEVELS[LEVELS.length - 1].name);
+  assert.equal(r.level, TEST_LEVELS[TEST_LEVELS.length - 1]);
   assert.equal(r.percentile, 99);
   assert.equal(r.grid, GRID_OK.repeat(TIERS.length));
 });
@@ -216,19 +215,18 @@ test('percentil: monótono con la puntuación, acotado entre 1 y 99, bandas de l
   assert.equal(percentileFor(perfectScore(questions)), 99, 'el jugador perfecto llega al 99 %');
 });
 
-test('nivel: nombres de la escala de la app, monótono con la puntuación, de Curioso a Gran maestro', () => {
+test('nivel del test: nombres propios («Mirada…»), monótono con la puntuación, de principiante a experta', () => {
   const max = perfectScore(questions);
-  assert.equal(levelForScore(0, max).name, LEVELS[0].name);
-  assert.equal(levelForScore(max, max).name, LEVELS[LEVELS.length - 1].name);
+  assert.equal(levelForScore(0, max).name, TEST_LEVELS[0]);
+  assert.equal(levelForScore(max, max).name, TEST_LEVELS[TEST_LEVELS.length - 1]);
   let prev = -1;
-  const names = new Set(LEVELS.map((l) => l.name));
   for (let score = 0; score <= max; score++) {
     const lv = levelForScore(score, max);
-    assert.ok(names.has(lv.name), lv.name);
+    assert.ok(TEST_LEVELS.includes(lv.name), lv.name);
     assert.ok(lv.index >= prev);
     prev = lv.index;
   }
-  assert.ok(prev < LEVELS.length, 'nunca «Gran maestro II»');
+  assert.equal(new Set(TEST_LEVELS).size, TEST_LEVELS.length);
 });
 
 test('resultado y texto para compartir: «n de m», nivel, percentil, cuadrados y enlace', () => {
