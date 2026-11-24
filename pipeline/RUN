@@ -1,5 +1,5 @@
-# 19:21 — prueba de la release: sube las 20 imágenes de main y 30 más
-img-release
-download 1 30
+# 19:27 — fichas rehechas (museo/ciudad mejorados) y el resto de imágenes por lotes de 150
+fichas --force
+download 8 150
 build
 validate --parcial

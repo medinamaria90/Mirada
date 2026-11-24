@@ -15,6 +15,15 @@ FICHAS = os.path.join(OUT, "fichas.json")
 MUSEOS = os.path.join(OUT, "museos.json")
 LUGARES = os.path.join(OUT, "lugares.json")
 CM = "Q174728"
+UNITS = {"Q174728": 1.0, "Q174789": 0.1, "Q11573": 100.0, "Q218593": 2.54}  # cm, mm, m, pulgada -> cm
+CITY_ALIASES = {"Q23306": "Londres", "Q84": "Londres", "Q90": "París", "Q60": "Nueva York", "Q2807": "Madrid",
+                "Q23436": "Edimburgo", "Q2379199": "Edimburgo", "Q2044": "Florencia", "Q220": "Roma", "Q641": "Venecia", "Q64": "Berlín",
+                "Q1726": "Múnich", "Q1748": "Copenhague", "Q1754": "Estocolmo", "Q656": "San Petersburgo", "Q649": "Moscú",
+                "Q1741": "Viena", "Q727": "Ámsterdam", "Q239": "Bruselas", "Q12892": "Amberes", "Q1492": "Barcelona",
+                "Q8717": "Valencia", "Q8818": "Sevilla", "Q8692": "Bilbao", "Q1297": "Chicago", "Q100": "Boston",
+                "Q61": "Washington", "Q1345": "Filadelfia", "Q65": "Los Ángeles", "Q490": "Milán", "Q2634": "Nápoles"}
+PAINT_WORDS = {"técnica mixta", "mixed media", "grisalla", "aguada", "temple", "óleo", "fresco", "acuarela", "pastel",
+               "gouache", "pan de oro", "tinta", "carboncillo", "encáustica", "acrílico", "temple al huevo"}
 
 # Materiales que son «pintura» (van antes de «sobre») y traducción de los QID más corrientes.
 PAINTS = {"Q296955": "óleo", "Q175166": "temple", "Q4259259": "temple al huevo", "Q134194": "fresco",
@@ -47,10 +56,10 @@ MUSEUM_TYPES = {"Q33506", "Q207694", "Q1007870", "Q17431399", "Q2772772", "Q1697
                 "Q210272", "Q7075", "Q1329623", "Q3947", "Q1802963", "Q56750657", "Q106855583", "Q1060829"}
 
 Q_OBRAS = """
-SELECT ?item ?coll ?collLabel ?loc ?locLabel ?mat ?matLabel ?h ?w ?hu ?wu ?inc ?prec ?genre ?genreLabel
+SELECT ?item ?coll ?collLabel ?cstart ?loc ?locLabel ?mat ?matLabel ?h ?w ?hu ?wu ?inc ?prec ?genre ?genreLabel
        ?mov ?movLabel ?dep ?depLabel WHERE {
   VALUES ?item { %(values)s }
-  OPTIONAL { ?item p:P195 ?cs . ?cs ps:P195 ?coll . FILTER NOT EXISTS { ?cs pq:P582 [] } }
+  OPTIONAL { ?item p:P195 ?cs . ?cs ps:P195 ?coll . FILTER NOT EXISTS { ?cs pq:P582 [] } OPTIONAL { ?cs pq:P580 ?cstart } }
   OPTIONAL { ?item wdt:P276 ?loc }
   OPTIONAL { ?item wdt:P186 ?mat }
   OPTIONAL { ?item p:P2048 ?hs . ?hs psv:P2048 ?hv . ?hv wikibase:quantityAmount ?h ; wikibase:quantityUnit ?hu .
@@ -123,7 +132,7 @@ def technique(mats):
             if not t:
                 continue
             t = "tabla" if WOODS.search(t) and "tabla" not in t else t
-            lst = paints if t in PAINTS.values() else supports
+            lst = paints if t in PAINTS.values() or t in PAINT_WORDS else supports
         if t not in lst:
             lst.append(t)
     if paints and supports:
@@ -165,15 +174,17 @@ def fetch_obras(qids):
     out = {}
     for b in rows:
         q = qid(v(b, "item"))
-        it = out.setdefault(q, dict(colls={}, locs={}, mats={}, pairs=set(), dates=set(), genres={}, movs={}, deps={}))
+        it = out.setdefault(q, dict(colls={}, starts={}, locs={}, mats={}, pairs=set(), dates=set(), genres={}, movs={}, deps={}))
         if not blank(v(b, "coll")):
             it["colls"][qid(v(b, "coll"))] = v(b, "collLabel")
+            if v(b, "cstart"):
+                it["starts"][qid(v(b, "coll"))] = v(b, "cstart")[:4]
         if not blank(v(b, "loc")):
             it["locs"][qid(v(b, "loc"))] = v(b, "locLabel")
         if v(b, "mat"):
             it["mats"][qid(v(b, "mat"))] = v(b, "matLabel")
-        if v(b, "h") and v(b, "w") and qid(v(b, "hu")) == CM and qid(v(b, "wu")) == CM:
-            it["pairs"].add((float(v(b, "h")), float(v(b, "w"))))
+        if v(b, "h") and v(b, "w") and qid(v(b, "hu")) in UNITS and qid(v(b, "wu")) in UNITS:
+            it["pairs"].add((round(float(v(b, "h")) * UNITS[qid(v(b, "hu"))], 1), round(float(v(b, "w")) * UNITS[qid(v(b, "wu"))], 1)))
         if v(b, "inc"):
             it["dates"].add((v(b, "inc"), int(v(b, "prec") or 0)))
         for k in ("genre", "mov", "dep"):
@@ -233,18 +244,22 @@ class Lugares:
 
     def city(self, start):
         """Sube por P131 desde `start` hasta un municipio/ciudad (máx. 5 niveles)."""
-        q, seen = start, []
-        for _ in range(5):
-            if not q or q in seen:
+        q, chain = start, []
+        for _ in range(5):  # primero la cadena entera: si pasa por una ciudad con alias (Londres, París...) gana el alias
+            if not q or q in chain:
                 break
-            seen.append(q)
+            chain.append(q)
             self.ensure([q])
             x = self.data.get(q)
             if not x:
                 break
-            if x["isCity"]:
-                return x["label"], x.get("country")
             q = x["up"]
+        for q in chain:
+            if q in CITY_ALIASES:
+                return CITY_ALIASES[q], self.data[q].get("country")
+        for q in chain:
+            if self.data[q]["isCity"]:
+                return self.data[q]["label"], self.data[q].get("country")
         first = self.data.get(start)
         return (first["label"], first.get("country")) if first else (None, None)
 
@@ -265,7 +280,7 @@ def resolve_museo(mq, museos, lugares):
 
 def main():
     limit = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else 10 ** 6
-    force = os.environ.get("FORCE") == "1"
+    force = os.environ.get("FORCE") == "1" or "--force" in sys.argv
     sel = load(os.path.join(CAT, "seleccion.json"), [])
     fichas = {} if force else load(FICHAS, {})
     museos = {} if force else load(MUSEOS, {})
@@ -291,19 +306,22 @@ def main():
                 break
         lugares.ensure([m.get("adm") or m.get("loc") for m in museos.values()])
         for s in chunk:
-            it = data.get(s["qid"]) or dict(colls={}, locs={}, mats={}, pairs=set(), dates=set(), genres={}, movs={}, deps={})
-            # Dónde está hoy: primero la ubicación (P276), luego la colección (P195); la primera que sea museo,
-            # iglesia o palacio (o que forme parte de uno); si ninguna lo es, la primera colección.
-            cands = list(it["locs"]) + [c for c in it["colls"] if c not in it["locs"]]
+            it = data.get(s["qid"]) or dict(colls={}, starts={}, locs={}, mats={}, pairs=set(), dates=set(), genres={}, movs={}, deps={})
+            # Dónde está hoy: entre colección (P195 sin fecha de fin) y ubicación (P276) gana la que sea museo
+            # propiamente (o parte de uno), luego la que aparezca en ambas, luego la de ingreso más reciente;
+            # así el Prado gana al Palacio Real en Las meninas y la National Gallery a la Cook collection.
+            cands = list(it["colls"]) + [c for c in it["locs"] if c not in it["colls"]]
 
-            def rank(c):  # museo propiamente > parte de un museo > iglesia/palacio/capilla > otra cosa
+            def rank(c):
                 m = museos.get(c, {})
                 if set(m.get("types") or []) & STRICT_MUSEUM:
-                    return 3
-                if set(museos.get(m.get("parent") or "", {}).get("types") or []) & STRICT_MUSEUM:
-                    return 2
-                return 1 if m.get("isMuseum") else 0
-            coll_q = max(cands, key=lambda c: (rank(c), -cands.index(c))) if cands else None
+                    strict = 3
+                elif set(museos.get(m.get("parent") or "", {}).get("types") or []) & STRICT_MUSEUM:
+                    strict = 2
+                else:
+                    strict = 1 if m.get("isMuseum") else 0
+                return (strict, int(c in it["colls"] and c in it["locs"]), int(it["starts"].get(c) or 0), -cands.index(c))
+            coll_q = max(cands, key=rank) if cands else None
             name, city, country = resolve_museo(coll_q, museos, lugares) if coll_q else (None, None, None)
             name = name or it["colls"].get(coll_q) or it["locs"].get(coll_q)
             dims, h, w = pick_dims(sorted(it["pairs"]), ratio.get(s["qid"]))

@@ -29,6 +29,9 @@ def main():
     sel = load(os.path.join(CAT, "seleccion.json"), [])
     meta = load(os.path.join(CAT, "img_meta.json"), {})
     fichas = load(os.path.join(OUT, "fichas.json"), {})
+    for q, fix in load(os.path.join(PIPE, "fichas_ajustes.json"), {}).items():  # correcciones a mano (fuente en el archivo)
+        fichas.setdefault(q, {}).update({k: v for k, v in fix.items() if k != "fuente"})
+        fichas[q]["inSpain"] = fichas[q].get("country") == "España"
     obras = []
     for s in sel:
         m = meta.get(s["id"])
