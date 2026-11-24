@@ -1136,11 +1136,15 @@ if (!SMOKE) {
 await page.click('[data-action="share"]');
 await page.waitForTimeout(300);
 challengeText = await page.evaluate(() => navigator.clipboard.readText());
-// «Siguiente etapa» lleva a esa etapa
-const nextCard = page.locator('button.event-link', { hasText: 'Siguiente etapa' });
-check(await nextCard.count() === 1, 'falta la tarjeta pulsable de siguiente etapa');
+// La primera ronda cumple la meta del día (50 XP): cierre con «Hoy» y «La próxima vez: <segunda>», sin
+// tarjeta de siguiente etapa ni otras llamadas a seguir jugando (v12). Se sigue por el enlace de la etapa.
 const second = index.steps[1];
-await nextCard.click();
+const secondName = second.type === 'sala' ? movement.get(second.id).name : artist.get(second.id).name;
+const dayDone = (await page.locator('.day-done').innerText().catch(() => '')).replace(/\s+/g, ' ');
+check(/^Hoy\b/i.test(dayDone) && dayDone.includes(`La próxima vez: ${secondName}`), `cierre del día: «${dayDone}»`);
+check(await page.locator('button.event-link', { hasText: 'Siguiente etapa' }).count() === 0, 'el cierre del día lleva la tarjeta de siguiente etapa');
+check(!/Repetir|Repaso de 5|Repasar más/.test(await page.locator('.result-actions').innerText()), 'el cierre del día lleva llamadas a seguir jugando');
+await page.goto(`${base}#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`);
 await page.waitForSelector('.learn, .intro');
 check(page.url().endsWith(`#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`), `la tarjeta lleva a ${page.url()}`);
 if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
@@ -1428,8 +1432,9 @@ watch(epage, 'ojo');
   const works = index.worksOf(who.id).filter((w) => !w.spoiler && !w.attributed);
   const srsEye = Object.fromEntries(works.map((w, i) => [`art:${w.id}`, i === 0 ? { box: 3, due: '2026-11-01' } : { box: i % 2 ? 4 : 5, due: '2027-01-30' }]));
   await seed(epage, seededState({ upTo: 8, extra: { srs: srsEye } }));
-  await epage.waitForSelector('.card-review[data-action="quick"]');
-  await epage.locator('.card-review[data-action="quick"]').click();
+  // Con pintores dominados, el repaso de la portada es el «Repaso de 5» (v12).
+  await epage.waitForSelector('.card-review[data-action="review5"]');
+  await epage.locator('.card-review[data-action="review5"]').click();
   await playRound(epage);
   await epage.waitForTimeout(900);
   const eyeCard = epage.locator('.event-medal', { hasText: `Ojo de ${who.short || who.name}` });
@@ -1602,7 +1607,11 @@ const kq = await quickCtx.newPage();
 watch(kq, 'repaso-rapido');
 const dueWorks = index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).filter((w) => !w.spoiler).slice(0, 6);
 const srs = Object.fromEntries(dueWorks.map((w) => [`art:${w.id}`, { box: 1, due: '2026-11-01' }]));
-await seed(kq, seededState({ upTo: 4, extra: { srs } }));
+// Sin pintores dominados (si no, sale el «Repaso de 5») y con meta de 200 (si no, el cierre del día
+// quita «Repasar más»).
+const quickState = seededState({ upTo: 4, mastered: false, extra: { srs } });
+quickState.settings.dailyGoal = 200;
+await seed(kq, quickState);
 await kq.waitForSelector('.path');
 const quickCard = kq.locator('.card-review[data-action="quick"]');
 check(await quickCard.count() === 1, 'no aparece el repaso rápido con cuadros vencidos');
@@ -1613,9 +1622,31 @@ const qSteps = await playRound(kq);
 check(qSteps === 3, `el repaso rápido tiene ${qSteps} preguntas`);
 await kq.waitForTimeout(900);
 check(/Primer día/.test(await kq.locator('.event-streak').innerText()), 'el repaso rápido no cuenta para la racha');
-check(await kq.locator('.event-goal').count() === 1, 'el repaso rápido no cuenta para la meta');
+check(Number((await kq.locator('.countup').getAttribute('data-to')) || 0) > 0, 'el repaso rápido no da XP para la meta');
 check(await kq.locator('.result-actions [data-to="repaso"]').count() === 1, 'falta «Repasar más» con cuadros pendientes');
 await shot(kq, '39-repaso-rapido-fin', true);
+// Repaso de 5 (v12): con pintores dominados y cuadros vistos, en la portada; cuenta para meta y racha
+// y, al cumplir la meta, cierra con el bloque «Hoy».
+const r5Ctx = await browser.newContext(ctxOpts);
+const r5 = await r5Ctx.newPage();
+watch(r5, 'repaso-5');
+await seed(r5, seededState({ upTo: 4, extra: { srs } }));
+await r5.waitForSelector('.path');
+const r5Card = r5.locator('.card-review[data-action="review5"]');
+check(await r5Card.count() === 1 && /Repaso de 5/.test(await r5Card.innerText()), 'no aparece «Repaso de 5» con pintores dominados');
+check(await r5.locator('[data-action="quick"]').count() === 0, '«Repaso de hoy» y «Repaso de 5» a la vez');
+await shot(r5, '39b-repaso-5-inicio');
+await audit(r5, '390 inicio con repaso de 5');
+await r5Card.click();
+await r5.waitForSelector('.lesson .option');
+check(await playRound(r5) === 5, 'el repaso de 5 no tiene 5 preguntas');
+await r5.waitForTimeout(900);
+check(r5.url().endsWith('#repaso5'), `el repaso de 5 no va en su ruta: ${r5.url()}`);
+check(/Primer día/.test(await r5.locator('.event-streak').innerText()), 'el repaso de 5 no cuenta para la racha');
+check(await r5.locator('.event-goal').count() === 1 && await r5.locator('.day-done').count() === 1, 'el repaso de 5 no cumple la meta ni cierra el día');
+await shot(r5, '39c-repaso-5-fin', true);
+await audit(r5, '390 cierre del día');
+await r5Ctx.close();
 
 // ---------------------------------------------------------------- Oscuro
 const dark = await browser.newContext({ ...ctxOpts, colorScheme: 'dark' });
@@ -1655,6 +1686,9 @@ await kpage.waitForSelector('.gallery');
 await shot(kpage, '37b-oscuro-sala');
 await audit(kpage, 'oscuro sala');
 await kpage.goto(`${base}#inicio`);
+// Con el «Repaso de 5» ya hay tres tarjetas del día: la lupa va plegada en el bloque «Hoy» (v12).
+await kpage.waitForSelector('.path');
+if (await kpage.locator('.today-detail').count()) await kpage.locator('.today-detail summary').click();
 await kpage.waitForSelector('.card-detail');
 await audit(kpage, 'oscuro detalle');
 
@@ -1781,11 +1815,11 @@ for (const scheme of ['light', 'dark']) {
       const c7 = await browser.newContext({ ...ctxOpts, viewport: { width, height: width === 390 ? 844 : 640 }, colorScheme: scheme });
       const p7 = await c7.newPage();
       watch(p7, `o7-${tag}`);
-      // Inicio avanzado: bloque «Hoy», «Repaso de hoy · 3 cuadros» y el mapa asomando.
+      // Inicio avanzado: bloque «Hoy», «Repaso de 5 · 5 cuadros» y el mapa asomando.
       await seed(p7, st7);
       await p7.waitForSelector('.today-block');
       const quick = await p7.locator('.today-row.card-review').innerText();
-      check(/Repaso de hoy/.test(quick) && /\b3 cuadros\b/.test(quick), `[${tag}] repaso del inicio: ${quick.replace(/\s+/g, ' ')}`);
+      check(/Repaso de 5/.test(quick) && /\b5 cuadros\b/.test(quick), `[${tag}] repaso del inicio: ${quick.replace(/\s+/g, ' ')}`);
       if (width === 390) {
         const top = await p7.evaluate(() => ({ t: document.querySelector('.path').getBoundingClientRect().top, n: document.querySelector('.bottomnav').getBoundingClientRect().top }));
         check(top.t < top.n - 40, `[${tag}] el mapa no asoma (${Math.round(top.t)} / ${Math.round(top.n)})`);

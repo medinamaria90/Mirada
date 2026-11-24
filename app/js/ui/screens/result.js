@@ -123,7 +123,9 @@ export function renderResult(ctx, el, opts) {
   const step = plan.kind === 'stage' ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
   const nextOf = step ? index.steps[index.stepIndex(step.type, step.id) + 1] : null;
   const gated = Boolean(retry && nextOf && outcome.accuracy < UNLOCK_MIN && !isStepUnlocked(p, index, nextOf));
-  // Cierre del día (meta cumplida): solo «Seguir», sin más llamadas.
+  // Cierre del día (meta cumplida): «Seguir» y, si la ronda se comparte, compartir; sin llamadas a
+  // seguir jugando (repetir, más repaso, siguiente etapa: va en «La próxima vez»). Compartir se queda:
+  // la meta por defecto se cumple con la primera ronda del día y el reto diario vive de su cuadrícula.
   const closing = Boolean(goal);
   const blocked = Boolean(retry && low) && !closing;
   // 75 % o más, pero sin acertar bastantes cuadros del propio pintor: aún no está dominado.
@@ -162,7 +164,7 @@ export function renderResult(ctx, el, opts) {
         <button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>
         ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
         ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
-        ${token && !closing ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
+        ${token ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
         <p class="copy-status" role="status"></p>
         <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="4"></textarea>
       </div>
