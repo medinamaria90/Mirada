@@ -594,8 +594,9 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // ---------------------------------------------------------------- Arranque: peticiones y bytes hasta el primer pintado útil
 // «Útil»: la pantalla (bienvenida o inicio) está en el DOM, sus imágenes visibles han cargado y las
 // tipografías también. Presupuesto (falla si se supera). Antes de la oleada 6 (HEAD 4a3db26, misma
-// medida): bienvenida 30 peticiones / 424 KB, inicio 29 / 402 KB.
-const BOOT_BUDGET = { welcome: { requests: 24, kb: 400 }, home: { requests: 28, kb: 430 } };
+// medida): bienvenida 30 peticiones / 424 KB, inicio 29 / 402 KB. El tema de Ajustes (ui/theme.js, 2 KB) va en
+// la cadena de arranque: +1 petición en el inicio; los KB absorben el bloque oscuro duplicado de brand.css.
+const BOOT_BUDGET = { welcome: { requests: 24, kb: 400 }, home: { requests: 29, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -644,6 +645,13 @@ for (const box of await page.$$eval('.topbar a', (els) => els.map((e) => { const
 }
 const ringLabel = await page.locator('.chip-goal').getAttribute('aria-label');
 check(/Meta de hoy: 0 de 50 XP/.test(ringLabel), `anillo de meta: ${ringLabel}`);
+check(/\b0\/50\b/.test(await page.locator('.chip-goal').innerText()), 'el anillo de meta no lleva la cifra 0/50');
+// Racha: llama y «n día(s)» (el sol con un número parecía el interruptor de modo claro).
+const streakChip = await page.locator('.chip-streak').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), icon: Boolean(a.querySelector('.icon')) }));
+check(/^Racha: \d+ días?$/.test(streakChip.label) && streakChip.icon, `chip de racha: ${JSON.stringify(streakChip)}`);
+check(/\d+\s*días?$/.test(streakChip.text), `chip de racha sin «n día(s)»: ${streakChip.text}`);
+check(!/\bsol\b/i.test(await page.locator('.topbar').evaluate((e) => e.innerHTML)), 'la cabecera sigue hablando de un sol');
+check((await page.locator('.topbar').boundingBox()).height < 80, 'la cabecera salta a dos líneas a 390 px');
 const mapSrcs = await page.$$eval('.stage-thumb img, .card-thumb img', (els) => els.map((e) => e.getAttribute('src')));
 check(mapSrcs.length && mapSrcs.every((src) => src.startsWith('img/s/')), `miniaturas del mapa: ${mapSrcs.slice(0, 3)}`);
 // Miniatura del atlas bien recortada: la imagen cubre el marco y no se sale de la hoja.
@@ -808,6 +816,29 @@ check(resetBox.height >= 48, 'botón de reinicio < 48 px');
 await page.locator('[data-setting="reducedMotion"]').check();
 check(await page.evaluate(() => document.documentElement.classList.contains('reduce-motion')), 'reducir animaciones no aplica la clase');
 await page.locator('[data-setting="reducedMotion"]').uncheck();
+// Tema: tres opciones de 48 px; con el móvil en oscuro, «Claro» fuerza el claro (también en la barra del
+// navegador), se guarda y sobrevive a la recarga; «Como el móvil» vuelve al sistema.
+check(await page.locator('[data-action="theme"]').count() === 3, 'selector de tema sin tres opciones');
+for (const h of await page.$$eval('[data-action="theme"]', (els) => els.map((e) => e.getBoundingClientRect().height))) check(h >= 48, `opción de tema de ${Math.round(h)} px`);
+await page.emulateMedia({ colorScheme: 'dark' });
+const bgDark = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--bg').trim());
+await page.click('[data-action="theme"][data-value="light"]');
+const themeInfo = await page.evaluate(() => ({
+  attr: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
+  meta: [...document.querySelectorAll('meta[name="theme-color"]')].map((m) => m.getAttribute('content')),
+  saved: JSON.parse(localStorage.getItem('mirada.state')).settings.theme, pressed: document.querySelector('[data-action="theme"][aria-pressed="true"]')?.dataset.value,
+}));
+check(themeInfo.attr === 'light' && themeInfo.saved === 'light' && themeInfo.pressed === 'light', `tema claro forzado: ${JSON.stringify(themeInfo)}`);
+check(themeInfo.bg !== bgDark && themeInfo.meta.every((c) => c === themeInfo.bg), `con el móvil en oscuro, «Claro» no fuerza el claro o la barra del navegador: ${JSON.stringify(themeInfo)}`);
+await shot(page, '18b-perfil-claro-forzado');
+await audit(page, '390 perfil claro forzado');
+await page.reload();
+await page.waitForSelector('.stats');
+check(await page.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'light', 'el tema forzado no sobrevive a la recarga');
+await page.click('[data-action="theme"][data-value="system"]');
+const backToSystem = await page.evaluate(() => ({ attr: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() }));
+check(backToSystem.attr === null && backToSystem.bg === bgDark, `«Como el móvil» no vuelve al tema del sistema: ${JSON.stringify(backToSystem)}`);
+await page.emulateMedia({ colorScheme: 'light' });
 await page.goto(`${base}#medallas`);
 await page.waitForSelector('#medallas-panel');
 await page.waitForTimeout(400);
