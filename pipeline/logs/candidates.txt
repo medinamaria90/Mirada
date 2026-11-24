@@ -110,3 +110,19 @@ ya     monet              1264 candidatas
 ya     renoir             2303 candidatas
 ya     morisot            176 candidatas
 fin 2026-11-24 11:08:12
+ya     raimundo-madrazo   64 candidatas
+ya     kuindzhi           78 candidatas
+ok     vereshchagin       Q127017      81 candidatas; de las 80 primeras, 54 con imagen >=1200px
+ya     rousseau           137 candidatas
+ya     cassatt            117 candidatas
+ya     repin              266 candidatas
+ok     polenov            Q318393     161 candidatas; de las 80 primeras, 71 con imagen >=1200px
+ya     beruete            33 candidatas
+ya     pradilla           18 candidatas
+ya     gauguin            498 candidatas
+ya     caillebotte        244 candidatas
+ya     surikov            20 candidatas
+ya     vasnetsov          41 candidatas
+ya     pinazo             32 candidatas
+ya     waterhouse         134 candidatas
+fin 2026-11-24 11:08:46
