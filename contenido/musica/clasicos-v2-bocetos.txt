@@ -1,0 +1,71 @@
+Bocetos de los clásicos de dominio público para la v2 de la música de Mirada (no están en el repo).
+Formato del motor: secciones A (6 compases), open (2), close (2), B (8); mel con "Nota/duración".
+Regla del motor que condiciona todo: la nota que cae al inicio de cada acorde debe pertenecer al acorde;
+saltos de melodía <= 12 semitonos; 32 compases (FORM4) o 48 (FORM6); vuelta entre 40 y 150 s.
+
+RENACIMIENTO
+1) «Guárdame las vacas · Narváez (1538)» — romanesca en Sol menor, 3/4, laúd solo (style 'lute'), ~84 bpm.
+   Acordes A: Bb F Gm D Bb F | open: 'Gm:2|D:1' D | close: 'Gm:2|D:1' Gm | B: Bb F Gm D Bb F 'Gm:2|D:1' Gm
+   mel A: 'D5/1.5 Eb5/.5 D5/1' 'C5/2 A4/1' 'Bb4/1.5 A4/.5 G4/1' 'A4/2 F#4/1' 'D5/1 F5/1 D5/1' 'C5/1.5 Bb4/.5 A4/1'
+   open: 'Bb4/1 A4/1 F#4/1' 'A4/2 D5/1'   close: 'Bb4/1 A4/1 F#4/1' 'G4/3'
+   B (diferencia en corcheas): 'D5/.5 Eb5/.5 F5/.5 Eb5/.5 D5/.5 C5/.5' 'C5/.5 D5/.5 C5/.5 Bb4/.5 A4/.5 G4/.5'
+      'Bb4/.5 C5/.5 Bb4/.5 A4/.5 G4/.5 F#4/.5' 'A4/1 D5/.5 C5/.5 A4/1' 'F5/.5 G5/.5 F5/.5 Eb5/.5 D5/.5 C5/.5'
+      'A4/.5 Bb4/.5 C5/.5 D5/.5 C5/.5 Bb4/.5' 'G4/.5 A4/.5 Bb4/.5 C5/.5 D5/.5 F#5/.5' 'G5/1.5 F#5/.5 G5/1'
+   escala: scalePcs(7,'minor',[6]).
+2) «Greensleeves · anónimo inglés (c. 1580)» — La menor (con sol#), 3/4, flauta dulce + laúd + viola (style 'minuet'), ~100 bpm.
+   A: Am C G G Am Am | open: E E | close: E Am | B (estribillo): C C G G Am Am E E
+   mel A: 'C5/2 D5/1' 'E5/1.5 F5/.5 E5/1' 'D5/2 B4/1' 'G4/1.5 A4/.5 B4/1' 'C5/2 A4/1' 'A4/1.5 G#4/.5 A4/1'
+   open: 'B4/2 G#4/1' 'E4/2 A4/1'   close: 'B4/2 G#4/1' 'A4/3'
+   B: 'G5/3' 'G5/1.5 F5/.5 E5/1' 'D5/2 B4/1' 'G4/1.5 A4/.5 B4/1' 'C5/2 A4/1' 'A4/1.5 G#4/.5 A4/1' 'B4/2 G#4/1' 'E4/2 A4/1'
+   escala: scalePcs(9,'minor',[8]).
+
+BARROCO
+3) «Minueto en sol · Cuaderno de Anna Magdalena Bach (Petzold, 1725)» — Sol mayor, 3/4, clave (style 'minuet'), ~116 bpm.
+   A: G G C G C G | open: D 'G:2|D:1' | close: D G | B: G D G A7 D D7 'D:1|A:2' D
+   mel A: 'D5/1 G4/.5 A4/.5 B4/.5 C5/.5' 'D5/1 G4/1 G4/1' 'E5/1 C5/.5 D5/.5 E5/.5 F#5/.5' 'G5/1 G4/1 G4/1'
+      'C5/1 D5/.5 C5/.5 B4/.5 A4/.5' 'B4/1 C5/.5 B4/.5 A4/.5 G4/.5'
+   open: 'F#4/1 G4/.5 A4/.5 B4/.5 G4/.5' 'B4/2 A4/1'   close: 'A4/1 B4/.5 A4/.5 G4/.5 F#4/.5' 'G4/1 B4/1 D5/1' (el final sube para no saltar 16 st a B)
+   B: 'B5/1 G5/.5 A5/.5 B5/.5 G5/.5' 'A5/1 D5/.5 E5/.5 F#5/.5 D5/.5' 'G5/1 E5/.5 F#5/.5 G5/.5 D5/.5' 'C#5/1 B4/.5 C#5/.5 A4/1'
+      'A4/.5 B4/.5 C#5/.5 D5/.5 E5/.5 F#5/.5' 'G5/1 F#5/1 E5/1' 'F#5/1 A5/1 C#5/1' 'D5/3'
+4) «Canon en re · Pachelbel (c. 1680)» — Re mayor, 4/4, cuerdas + viola (cnt) + clave + cello (style 'ground'), ~60 bpm.
+   Bajo obstinado: 'D:2|A:2' 'Bm:2|F#m:2' 'G:2|D:2' 'G:2|A:2'
+   mel A: 'F#5/2 E5/2' 'D5/2 C#5/2' 'B4/2 A4/2' 'B4/2 C#5/2' 'D5/2 C#5/2' 'B4/2 A4/2'
+   open: 'G4/2 F#4/2' 'G4/2 E5/2'  close (acordes 'G:2|D:2' 'A:2|D:2'): 'B4/2 A4/2' 'C#5/2 D5/2'
+   cnt A: r r r r 'F#5/2 E5/2' 'D5/2 C#5/2' | open 'B4/2 A4/2' 'B4/2 C#5/2' | close 'D5/2 C#5/2' 'E5/2 F#5/2'
+   B (negras): 'D4 F#4 A4 G4' 'F#4 D4 F#4 E4' 'D4 B3 D4 A4' 'G4 B4 A4 G4' 'F#4 D4 E4 C#5' 'D5 F#5 A5 A4' 'B4 G4 A4 F#4' 'D4 D5 D5 C#5'
+      (último compás con acordes 'G:2|Asus4:1|A:1'); cnt B: 'D5/2 C#5/2' 'B4/2 A4/2' 'G4/2 F#4/2' 'G4/2 E4/2' 'D5/2 C#5/2' 'B4/2 A4/2' 'G4/2 F#4/2' 'G4/2 E5/2'
+
+ROCOCÓ Y NEOCLASICISMO
+5) «Ah, vous dirai-je, maman (tema) · Mozart, K. 265 (1781)» — Do mayor, 4/4, fortepiano + cuerdas suaves (style 'cradle'), ~100 bpm.
+   A: C 'F:2|C:2' 'F:2|C:2' 'G:2|C:2' 'C:2|G7:2' 'C:2|G:2' | open 'C:2|G7:2' 'C:2|G:2' | close 'F:2|C:2' 'G:2|C:2'
+   mel A: 'C5/1 C5/1 G5/1 G5/1' 'A5/1 A5/1 G5/2' 'F5/1 F5/1 E5/1 E5/1' 'D5/1 D5/1 C5/2' 'G5/1 G5/1 F5/1 F5/1' 'E5/1 E5/1 D5/2'
+   open: 'G5/1 G5/1 F5/1 F5/1' 'E5/1 E5/1 D5/2'   close: 'F5/1 F5/1 E5/1 E5/1' 'D5/1 D5/1 C5/2'
+   B: variación en semicorcheas sobre la frase a (bordaduras diatónicas X-sup-X-inf), p. ej. '*.25 C5 D5 C5 B4 C5 D5 C5 B4 G5 A5 G5 F5 G5 A5 G5 F5'.
+6) «Para Elisa · Beethoven (1810)» — La menor (con sol# y re#), 3/8 (beatsPerBar 3 = corcheas), piano con pedal, ~160 bpm, FORM6 (48 compases).
+   Nuevo patrón sugerido 'broken': bajo en 1 y dos notas del acorde en 2 y 3.
+   A (Am Am E Am Am Am): 'E5/.5 D#5/.5 E5/.5 B4/.5 D5/.5 C5/.5' 'A4/1 r/.5 C4/.5 E4/.5 A4/.5' 'B4/1 r/.5 E4/.5 G#4/.5 B4/.5'
+      'C5/1 r/.5 E4/.5 E5/.5 D#5/.5' 'E5/.5 D#5/.5 E5/.5 B4/.5 D5/.5 C5/.5' 'A4/1 r/.5 C4/.5 E4/.5 A4/.5'
+   open (E Am): 'B4/1 r/.5 E4/.5 C5/.5 B4/.5' 'A4/1 r/1 E5/.5 D#5/.5'   close: 'B4/1 r/.5 E4/.5 C5/.5 B4/.5' 'A4/1 r/.5 C4/.5 E4/.5 A4/.5'
+   B (Am C G7 Am E E E E): 'A4/1 r/.5 B4/.5 C5/.5 D5/.5' 'E5/1 r/.5 G4/.5 F5/.5 E5/.5' 'D5/1 r/.5 F4/.5 E5/.5 D5/.5' 'C5/1 r/.5 E4/.5 D5/.5 C5/.5'
+      'B4/1 r/.5 E4/.5 E5/.5 r/.5' 'r/.5 E5/.5 E6/.5 r/.5 E5/.5 D#5/.5' 'r/.5 D#5/.5 E5/.5 D#5/.5 E5/.5 D#5/.5' (×2)
+
+ROMANTICISMO
+7) «Himno de la alegría · Beethoven, 9.ª sinfonía (1824)» — Do mayor (re7 con fa#), 4/4, viola + fortepiano + cello (style 'folk'), ~92 bpm.
+   A (C 'C:3|G:1' C 'C:2|G:2' C 'C:3|G:1'): 'E5 E5 F5 G5' 'G5 F5 E5 D5' 'C5 C5 D5 E5' 'E5/1.5 D5/.5 D5/2' 'E5 E5 F5 G5' 'G5 F5 E5 D5'
+   open (C 'C:2|G:2'): 'C5 C5 D5 E5' 'E5/1.5 D5/.5 D5/2'   close (C 'G:2|C:2'): 'C5 C5 D5 E5' 'D5/1.5 C5/.5 C5/2'
+   B ('G:2|C:2' 'G:2|C:2' 'G:2|C:1|G:1' 'C:1|D7:1|G:2' C 'C:3|G:1' C 'G:2|C:2'): 'D5 D5 E5 C5' 'D5/1 E5/.5 F5/.5 E5/1 C5/1'
+      'D5/1 E5/.5 F5/.5 E5/1 D5/1' 'C5/1 D5/1 G4/2' 'E5 E5 F5 G5' 'G5 F5 E5 D5' 'C5 C5 D5 E5' 'D5/1.5 C5/.5 C5/2'
+   Segunda pieza romántica pendiente de verificar partitura (Chopin op. 9/2 u op. 28/7; Schubert «Serenata»).
+
+REALISMO
+8) «En la gruta del rey de la montaña · Grieg (1875)» — Si menor, 4/4, pizzicato/cello + piano, lento→, FORM4.
+   Tema: '*.5 B4 C#5 D5 E5 F#5 D5 F#5/1' '*.5 F5 C#5 F5/1 E5 C5 E5/1' '*.5 B4 C#5 D5 E5 F#5 D5 F#5 B5' '*.5 A5 F#5 D5 F#5 A5/2'
+   Respuesta a la 5.ª: '*.5 F#5 G5 A5 B5 C#6 A5 C#6/1' '*.5 C6 G#5 C6/1 B5 G5 B5/1' '*.5 F#5 G5 A5 B5 C#6 A5 C#6 F#6' '*.5 E6 C#6 A5 C#6 E6/2'
+   Acordes por confirmar con la regla del tiempo fuerte (Bm, F, E, D...; escala con alteraciones [5,0,8]).
+9) «Canción de cuna · Brahms, op. 49 n.º 4 (1868)» — pendiente de verificar el ritmo con la letra (fuente: partitura original en IMSLP).
+
+IMPRESIONISMO / POSTIMPRESIONISMO / VANGUARDIAS — pendientes de verificar: Satie «Gymnopédie n.º 1» (seguros los compases 5–12:
+   F#5/3 | A5 G5 F#5 | C#5/3 | B4/3 | C#5/3 | D5/3 | A4/3 | F#4/3 sobre Gmaj7/Dmaj7 alternos; la segunda parte no está segura),
+   Albéniz «Asturias» (secuencia E–D–C–B con pedal de si), Tárrega «Recuerdos de la Alhambra», Granados «Andaluza», Satie «Gnossienne n.º 1».
+Descartadas por no estar seguro de la partitura: Chopin nocturno op. 9/2 y preludio op. 28/4, Schubert «Serenata», Schumann «Träumerei»,
+   Haydn «Sorpresa» (segunda mitad), Mozart «Marcha turca» y K. 545 (a partir del c. 5), Boccherini, Soler, Smetana «Moldava», Brahms «Danza húngara n.º 5».

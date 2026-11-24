@@ -83,6 +83,35 @@ Documento para el agente que continúa el proyecto en Claude Code. Las reglas pe
    árboles, una iglesia, un puente, monumentos de la época en pequeño, a escala del camino, no
    fachadas grandes de fondo. Casa con los nodos redondos y con las ramas (un desvío literal del
    camino). Hacerlo cuando se diseñe el mapa en árbol (§3.8).
+   **Diseñado (24/11, 17:00):** página «Mapa» del lienzo
+   (https://claude.ai/artifact/3cjPwnjMsCBboSL6mGP15w#page-p2; generador `marca/tools/mapa.py`,
+   mesas `marca/project-r2/Mapa-*.dc.html`, guía de estilo en `marca/RONDA2.md`): camino en zigzag
+   por paisaje en falsa 3D (caballera), piezas pequeñas por época, nodos con anillo blanco, cofres,
+   ramas como desvíos con cartel. **María decide: de abajo arriba, con «Tu museo» arriba como meta.**
+   **Paisaje MÁS rico** (17:10: «se puede poner más edificaciones, más detalles, que sea más rico el
+   fondo»; «mejora lo que hay»): más piezas por tramo, hitos más grandes y algo más de color, sin
+   competir con cuadros ni texto. Isométrico limpio y cofres en el camino.
+   **HECHO en la app: v10 (24/11, 18:35, en Render).** `ui/screens/path-map.js` (trazado, HTML,
+   paisajes por IntersectionObserver, scroll a la parada actual), `ui/path-character.js` (muñeco con
+   boina: respira en la parada actual, camina por el sendero al cambiar; sin animación con movimiento
+   reducido), paisajes `app/img/mapa/<movimiento>.svg` (7-25 KB, generados por `tools/mapa_svg.py` +
+   `tools/mapa-layout.mjs` desde las piezas de `marca/tools/mapa.py`, con los colores de `brand.css`
+   y paleta nocturna por media query; la prueba avisa si quedan desincronizados: regenerar al cambiar
+   el catálogo o `brand.css`), DOM en orden cronológico y `column-reverse` para subir, cofres solo
+   visuales y cerrados, «Tu museo» arriba, `home.js` baja a 210 líneas. `tests/mapa.test.js` (8).
+   Tope de archivos de `app/` subido a 400 en `tools/validate_catalog.py` (app/ tiene 330). El
+   presupuesto de arranque del e2e completo oscila (33/492 frente a 32/440 con el mismo código, por
+   el orden de carga de atlas y paisajes): subir a 34/500 con nota. Fuera: ramas (esperan al
+   catálogo), ropa del personaje (fase 2), `blurb` del movimiento ya no sale en la cartela.
+9 bis. **Personaje en el camino (DECIDIDO 24/11, 17:20: sí, sencillo y propio, animación mínima con
+    sentido; estilo del mapa «limpio», no dibujado a mano; la fase 1 entra con el mapa):** un
+    muñeco que avanza por el mapa, «medio animado», al estilo de las caritas de Dibulíos (inspiración,
+    no las mismas), al que se le ponen los objetos que ganas: pincel en la mano, gorra o boina, túnica,
+    una mascota al lado. Recomendación dada: sí, por fases: (1) personaje sencillo y propio en el
+    estilo limpio del mapa, respira en el nodo actual y camina al siguiente al dominar un pintor (sin
+    animación con movimiento reducido); (2) cuatro huecos (cabeza, mano, cuerpo, compañía) con 8-10
+    objetos que salen de cofres y medallas, muchos como guiños a cuadros (boina de Velázquez,
+    turbante de Van Eyck, perro de Las meninas); (3) armario en el perfil nuevo. Enlaza con §3.10.
 10. **Recompensas tipo Dibulíos:** experiencia, metas visibles y duraderas, cofres, objetos
     coleccionables del mundo del arte, y **obras icónicas animadas** (con Gemini) como premio raro. La
     auditoría propone «El taller» (pigmentos, herramientas, objetos de maestro, cuadros vivos). Se le
@@ -112,7 +141,10 @@ Decisiones de la tarde del 24/11:
     solución»; le gustaría pellizco con dos dedos dentro del visor, y duda si dejar la lupa «por el
     meme». Recomendación dada: pellizco y doble toque sobre la imagen del visor como gesto principal
     (sin tocar el bloqueo del zoom de página); la lupa se queda solo si la marca la convierte en gesto
-    de identidad (y como herramienta de escritorio). Se decide al cerrar la marca.
+    de identidad (y como herramienta de escritorio). **Decidido: pellizco y doble toque dentro del
+    visor; la lupa se queda de guiño.** María lo echó en falta el 24/11 a las 18:10 («el zoom se
+    sigue sin poder hacer en las imágenes de mi galería»): en curso (`ui/viewer.js`, módulo
+    `ui/viewer-zoom.js` con límites puros y prueba; e2e con pellizco por CDP dentro del visor).
 
 ### Feedback de María jugando en Render (móvil real, tema oscuro, 24/11 16:00)
 
@@ -124,6 +156,105 @@ Decisiones de la tarde del 24/11:
    recomiendes»): diferenciarlos.** Nombre propio con el tono de voz A (p. ej. «Lupa del día») y
    bloque que se encoge a una línea con miniatura al resolverse. Hacerlo justo después de la v9 (marca),
    en la portada (`ui/screens/home.js`), con su prueba.
+7. **El sol de la racha parece un interruptor de tema** (16:45): lo pulsó esperando pasar a modo claro
+   (su móvil va en oscuro y la app sigue al sistema; no hay selector propio). Decidido: icono de
+   racha que no sea un sol (llama o días) con etiqueta corta («1 día»), anillo de meta con su cifra
+   («0/50»), y selector de tema en Perfil → Ajustes («Claro / Oscuro / Como el móvil», por defecto
+   como el móvil, guardado en el estado con migración y prueba). **Hecho (17:20, en Render):** llama
+   con «n días» apilado en el chip (en línea no cabía a 390 px), «20/50» junto al anillo, selector de
+   tema en Perfil → Ajustes (`settings.theme`, **esquema v5**, `ui/theme.js`, `data-theme` en
+   `<html>` puesto por un guion inline en `index.html` antes del primer pintado; `brand.css` lleva el
+   bloque oscuro duplicado para `prefers-color-scheme` y `[data-theme="dark"]`, con prueba de que
+   no se separen). Presupuesto de arranque del inicio: 29 peticiones / 440 KB. La «Lupa del día»
+   también está hecha y en Render (`ui/screens/home-detail.js`, `tests/lupa.test.js`).
+9. **Pistas de feedback que contradicen la respuesta (18:31):** en «¿Cuál es de Tiziano?» falló
+   eligiendo la Virgen del canciller Rolin (Van Eyck, mucha tela roja) y el feedback dijo «Fíjate en
+   los rojos intensos de las telas junto a pieles cálidas y doradas» con el Carlos V en Mühlberg
+   (oscuro) como correcto: la pista encajaba mejor con el distractor. Causa: pista genérica del
+   pintor (`traits`), no del cuadro. **Decidido: auditar y corregir** `engine/feedback.js`: tras un
+   fallo en «¿Cuál?», usar el `look` del cuadro correcto o un rasgo del pintor que NO se cumpla en el
+   cuadro elegido (anotar en el catálogo qué rasgos aplican a qué obras, o al menos evitar rasgos de
+   color cuando el distractor los comparte); revisar todas las pistas de `catalog_data.py` contra sus
+   cuadros; prueba que recorra todas las combinaciones correcto/distractor del motor.
+   **Modelo definitivo (María, 18:45; aceptado):** cada cuadro lleva **dos pistas propias**, escritas
+   mirando ese cuadro y con **fuente real** (comentario de museo o publicación), que expliquen por qué
+   se nota que es de ese autor; el motor rota la pista al repetir fallo. Cada cuadro declara su tipo:
+   **típico** (la pista enseña el rasgo del autor), **atípico** («no parece un X; lo reconoces por…»)
+   o **de memoria** («este hay que sabérselo»; la pista cuenta algo del cuadro para fijarlo). Se
+   escribe al seleccionar cada obra del catálogo grande (nivel 1 primero, ~400 obras), con revisión
+   obra a obra. Para las 235 actuales, la auditoría de hoy es el apaño.
+10. **Al fallar, decir de quién era lo elegido (18:50, «súper importante»):** en «¿Cuál es de X?»,
+    línea «El que has elegido es de <pintor> · <título>» y etiqueta con el pintor sobre el cuadro
+    elegido en la rejilla; en «¿Quién lo pintó?», «No es de <elegido>» (+ rasgo ausente si es seguro);
+    el cuadro elegido se abre en el visor ya revelado. En curso en la misma tanda de feedback.
+15. **Más machacón, sin deprimir (19:50):** hoy «avanzo súper rápido»; con 1.000 obras teme que el
+    avance se haga lento. Duolingo repite «una y otra vez lo mismo» sin desmotivar: quiere una
+    **auditoría de cómo gestiona Duolingo el avance y la repetición** para copiarlo (en curso, con
+    fuentes) y aplicarlo: más repaso (el `srs` existe pero apenas se ve), niveles por pintor, repaso
+    de errores, pintores que se «agrietan», sin bloquear el mapa. **Hecha:**
+    `docs/eval/auditoria-progresion-duolingo.md` (10 propuestas por impacto/coste; 1, 2, 5 y 6 con el
+    motor actual; 3 y 4 con el catálogo grande; no copiar corazones, ligas ni avisos pasivo-agresivos).
+    Pendiente de que María elija cuáles.
+14. **«Solo he visto 3 o 4 obras de Bruegel y ya está completado»** (19:10): hoy cada pintor tiene 4,8
+    obras de media (2 en «Conoce a» + 2-3 preguntadas en su ronda); le gusta el intercalado con
+    pintores anteriores (mantener). Propuesta para la migración al catálogo grande: «Conoce a» con 4-5
+    obras de nivel 1; ronda con 3-4 obras propias no vistas + repaso intercalado (≈ 8 obras del pintor
+    en su sección); el nivel 2 en la rama «a fondo», repasos, reto diario y Colección; y **«dominado»
+    exige haber visto todas las obras de nivel 1** (en 1 o 2 rondas), no solo una ronda al 75 %.
+    Pendiente de su OK.
+13. **Test de cultura pictórica como gancho (idea de María, 19:05; recomendado sí):** página propia e
+    indexable (`app/test/index.html`, título, descripción, imagen de vista previa), **24 preguntas
+    fijas en tres tramos de 8** (María: 12 «me parece poco»; «que el que no tiene ni idea saque algo y
+    el que sabe mucho saque mucho»): fácil (obras universales), media (pintor por estilo y época en
+    cuadros menos famosos), difícil (parecidos: Tiziano/Veronés, Zurbarán/Ribera, Monet/Sisley,
+    Manierismo/Barroco); las tres mecánicas y todas las épocas, con españoles. Resultado: nivel de la
+    app + «n de 24» + desglose por tramo + frase; resultado parcial disponible en cualquier momento;
+    compartir como el reto diario; «Sigue aprendiendo en Mirada». Sin progreso ni cuentas; reutiliza
+    motor y catálogo. Mejor con dominio propio (Render lo admite gratis). Orden: tras la tanda de
+    feedback, antes de migrar el catálogo grande. **Aprobado en lo esencial; arrancar.**
+    **Adaptativo (19:20-19:30, su algoritmo):** banco de 5 tramos × 8 = 40 (fácil, media, difícil,
+    experto, «friki»); bloques de 4: 3-4 aciertos sube de tramo, 2 repite, 0-1 se para («al tuntún»;
+    «que pare cuando vea que ya no lo estás sabiendo, para ver tu conocimiento real»); test largo
+    para quien sabe. Puntuación ACUMULADA (acierto × tramo: llegar más lejos es la medida).
+    Resultado: «n de m», nivel, y **«Sabes más de pintura que el X % de la gente»** (percentil con
+    distribución supuesta, documentada, marcada como estimación). En curso.
+12. **«¿De qué movimiento es?» con años** (18:56): las opciones solo decían el nombre del movimiento
+    («es un lío»); deben llevar su periodo («Renacimiento · s. XV–XVI»), y el feedback también. En
+    curso en la tanda de feedback.
+11. **«No me deja hacer el repaso»** (18:43): tenía 3/4 dominados y Veronés en «Por repasar · 63 %»;
+    el repaso se abre al **dominar** a todos (regla intacta), pero el nodo solo mostraba un candado.
+    **Hecho (en Render):** el repaso cerrado dice «Falta dominar a Veronés» / «Faltan X y n más» bajo el
+    nombre, en la nota al pulsar y en el `aria-label` (`path-map.js`, `pendingLine`; prueba en
+    `tests/mapa.test.js`). **Decidido (18:55): el repaso se abre al dominar** (no al jugar), y a
+    cambio «lo de repetir tiene que estar más claro»: el nodo jugado sin dominar muestra «Repite · n %»
+    como botón suave coral (hecho, en Render).
+8. **Música:** la ha oído por fin: «se puede hacer más variada, temas un poquito más variados y que
+   enganchen más». Plan: 2-3 variantes por época con más gancho (melodía memorable, bajo y ritmo
+   marcados, secciones, instrumentación por época), página de escucha para que vote desde el móvil,
+   y las elegidas entran en la app. Las pruebas de `tests/audio.test.js` (no satura, armonía) siguen.
+   También quiere **música propia en la sección principal** (portada con el camino): un «tema
+   principal de Mirada» con dos variantes, motivo corto reconocible que pueda asomar en celebraciones.
+   **Hecho (24/11, 17:40):** 22 piezas nuevas (portada: «Umbral» y «Paseo» con motivo-firma
+   mi–sol–la–do′; 2-3 por época) en `app/js/audio/variants/`, registro `audio/variants.js`, API
+   `audio.setVariant(era, id)` / `listVariants` / `getState().variants` / `restore({variants})`;
+   timbres y patrones de danza nuevos (`sustained.js`, `styles-dance.js`). **La original sigue
+   sonando por defecto hasta que María elija.** Página de escucha: https://mirada.onrender.com/escucha.html
+   (copia de `tools/audio-demo.html`; quitar de `app/` cuando se elija). Muestras wav de 28 s en la
+   carpeta temporal `scratchpad\musica\muestras\` (se borran con la sesión). Pendiente: guardar
+   `settings.variants` en el estado y pasarlo por `audio-bridge.js` a `restore`, o selector en Ajustes;
+   motivo-firma en `sfx.js` para celebraciones si lo quiere.
+   **Reacción de María (17:50):** «ha mejorado mucho»; le gusta el tema principal de la portada; el
+   Barroco «no me encanta». Propone **arreglos simplificados de obras de dominio público** (Bach,
+   Vivaldi, Mozart, Chopin, Debussy, Satie, y españoles: Narváez, Sanz, Soler, Albéniz, Granados,
+   Falla) «para partir de una partitura que ya sabemos que funciona». Es legal (autor muerto > 70 años
+   y lo toca nuestro sintetizador); arreglo propio, nunca copiar una edición moderna. En curso: fila
+   «Clásicos (dominio público)» por época en la página de escucha, con `source` y `arrangement`.
+   Le gusta la idea de «Guárdame las vacas». **Aviso suyo: un timbre de cuerda pulsada suena
+   «demasiado metálico»** (los Karplus-Strong: laúd, guitarra, clave): suavizar (filtro más cerrado,
+   ataque menos brillante, cuerpo de madera), medido por espectro.
+   **DECISIÓN (19:00): la música se aparca hasta la v2; antes va el catálogo grande.** Lo compuesto
+   queda en el repo (variantes, clásicos que se terminaran, página de escucha) sin cambiar lo que
+   suena por defecto; María no ha votado todavía.
 2. **«No puede ser que el Renacimiento sean 5 autores»:** ve 4 etapas (Leonardo, Rafael, Tiziano,
    Veronés) + repaso y le parece inaceptable; Botticelli y Miguel Ángel están de invitados (2 obras) y
    el resto del Renacimiento va en otro tramo («Manierismo y Renacimiento del Norte»), lo que también
