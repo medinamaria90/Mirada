@@ -132,8 +132,8 @@ export function renderHome(ctx, el) {
         ${sideExtras(ctx)}
       </aside>
       <div class="home-main">
-        ${finale}
         <ol class="path path-map" aria-label="Camino por movimientos, del Renacimiento arriba hacia tu museo">${renderPathMap(ctx)}</ol>
+        ${finale}
       </div>
     </div>`);
 

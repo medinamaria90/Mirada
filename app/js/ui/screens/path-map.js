@@ -256,8 +256,8 @@ function reviewNode(ctx, movement) {
 // Sala de la época dominada (galería): junto a la última parada, en el margen estrecho.
 function galleryNode(ctx, movement, last, h) {
   const n = galleryWorks(ctx.store.get().progress, ctx.index, movement.id).length;
-  const x = last.x < MAP_W / 2 ? SIDE_X.left : SIDE_X.right;
-  return `<li class="stage-spot stage-spot-aside" style="left:${pct(x, MAP_W)};top:${pct(last.y, h)}">
+  const side = last.x < MAP_W / 2 ? 'left' : 'right';
+  return `<li class="stage-spot stage-spot-aside is-${side}" style="left:${pct(SIDE_X[side], MAP_W)};top:${pct(last.y, h)}">
       <button class="stage stage-gallery is-mastered" data-action="gallery" data-id="${esc(movement.id)}" aria-label="Sala de ${esc(movement.name)}">
         <span class="stage-dot">${icons.laurel(24)}</span>
         <span class="stage-text"><span class="stage-name">Sala</span>${n ? `<span class="stage-meta">${plural(n, 'obra', 'obras')}</span>` : ''}</span>
