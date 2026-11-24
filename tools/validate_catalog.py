@@ -50,7 +50,9 @@ def check_look(w, artist):
     check(len(look) <= LOOK_MAX, f"{w['id']}: look de {len(look)} caracteres (máx. {LOOK_MAX})")
     low = look.lower()
     words = set(re.findall(r"\w+", low))
-    if artist:
+    # Un cuadro atípico se presenta como «No parece un X…»: ahí nombrar al autor es el sentido de la
+    # pista (el look no se muestra nunca antes de responder).
+    if artist and w.get("kind") != "atipico":
         bad = [t for t in name_tokens(artist) if (t in words if " " not in t else t in low)]
         check(not bad, f"{w['id']}: el look nombra al autor ({bad})")
     title = re.sub(r"\s*\(.*?\)", "", w["title"]).strip().lower()
@@ -100,18 +102,39 @@ def check_thumb(w, atlas, sheet_sizes):
 def main():
     app = sys.argv[1]
     cat = json.load(open(f"{app}/data/catalog.json", encoding="utf-8"))
-    # Textos aparte (data/catalog-text.json): `look` de obra y `traits` de pintor.
+    # Textos aparte (data/catalog-text.json): `look`/`looks`, `kind` y `tags` de obra; `traits` y
+    # `traitTags` de pintor; vocabulario `tagLabels` y `negableTags` (versión 2).
     text = json.load(open(f"{app}/data/catalog-text.json", encoding="utf-8"))
-    check(text.get("version") == 1, "catalog-text: version debe ser 1")
-    check(not any("look" in w for w in cat["artworks"]), "catalog.json no debe llevar look (va en catalog-text.json)")
-    check(not any("traits" in a for a in cat["artists"]), "catalog.json no debe llevar traits de pintor")
+    check(text.get("version") == 2, "catalog-text: version debe ser 2")
+    for k in ("look", "looks", "kind", "tags"):
+        check(not any(k in w for w in cat["artworks"]), f"catalog.json no debe llevar {k} (va en catalog-text.json)")
+    for k in ("traits", "traitTags"):
+        check(not any(k in a for a in cat["artists"]), f"catalog.json no debe llevar {k} de pintor")
+    labels = text.get("tagLabels", {})
+    check(isinstance(labels, dict) and labels, "catalog-text: falta tagLabels")
+    check(set(text.get("negableTags", [])) <= set(labels), "catalog-text: negableTags fuera del vocabulario")
     for a in cat["artists"]:
         a["traits"] = text.get("traits", {}).get(a["id"], [])
+        tt = text.get("traitTags", {}).get(a["id"])
+        if tt is not None:
+            check(len(tt) == 1 + len(a["traits"]) or (len(tt) == 1 and not a["traits"]),
+                  f"{a['id']}: traitTags no alineado con [hint, *traits]")
+            check(all(t in labels for group in tt for t in group.split()), f"{a['id']}: traitTags fuera del vocabulario")
     known = {w["id"] for w in cat["artworks"]}
-    check(set(text.get("look", {})) <= known, "catalog-text: look de obras inexistentes")
+    for k in ("look", "looks", "kind", "tags"):
+        check(set(text.get(k, {})) <= known, f"catalog-text: {k} de obras inexistentes")
     for w in cat["artworks"]:
         if w["id"] in text.get("look", {}):
             w["look"] = text["look"][w["id"]]
+        if w["id"] in text.get("kind", {}):
+            w["kind"] = text["kind"][w["id"]]
+            check(w["kind"] in ("tipico", "atipico", "memoria"), f"{w['id']}: kind desconocido")
+        looks = text.get("looks", {}).get(w["id"])
+        if looks is not None:
+            check(1 <= len(looks) <= 2 and looks[0]["text"] == w.get("look"), f"{w['id']}: looks no empieza por look")
+            check(all(len(l["text"]) <= LOOK_MAX + 10 for l in looks), f"{w['id']}: pista larga en looks")
+        tags = text.get("tags", {}).get(w["id"], "").split()
+        check(all(t in labels for t in tags), f"{w['id']}: tags fuera del vocabulario")
     check(cat.get("version") == 1, "version debe ser 1")
     mids = [m["id"] for m in cat["movements"]]
     check(len(mids) == len(set(mids)), "ids de movimiento repetidos")

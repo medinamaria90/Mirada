@@ -91,7 +91,7 @@ artist("rubens", "Pedro Pablo Rubens", "Rubens", "barroco", 1577, 1640, "Flandes
        ["cuerpos carnosos y rosados", "composición en espiral", "movimiento y energía"],
        ["tiziano", "delacroix"])
 artist("velazquez", "Diego Velázquez", "Velázquez", "barroco", 1599, 1660, "España", 3,
-       "Fíjate en los grises plateados y en las pinceladas que de cerca son manchas: el aire parece circular entre las figuras.",
+       "Fíjate en los grises plateados y en las pinceladas que de cerca son manchas, con aire entre las figuras.",
        ["grises y platas", "pinceladas sueltas, como manchas", "aire y espacio entre las figuras"],
        ["murillo", "rembrandt"])
 artist("rembrandt", "Rembrandt", "Rembrandt", "barroco", 1606, 1669, "Países Bajos", 4,
@@ -225,7 +225,7 @@ artist("monet", "Claude Monet", "Monet", "impresionismo", 1840, 1926, "Francia",
        ["pinceladas cortas y separadas", "agua, niebla y reflejos", "formas que se deshacen en luz"],
        ["renoir", "manet"])
 artist("degas", "Edgar Degas", "Degas", "impresionismo", 1834, 1917, "Francia", 3,
-       "Fíjate en el encuadre cortado, como una foto robada: figuras vistas de lado o desde arriba y partidas por el borde.",
+       "Fíjate en el encuadre cortado, como una foto robada: figuras de lado o desde arriba, partidas por el borde.",
        ["encuadres cortados, como una foto", "bailarinas y ensayos", "vistas desde arriba o de lado"],
        ["lautrec", "renoir"])
 artist("renoir", "Pierre-Auguste Renoir", "Renoir", "impresionismo", 1841, 1919, "Francia", 4,
@@ -712,7 +712,7 @@ LOOK = {
  "a104": "Mira el vestido rojo que ocupa el centro, junto a la piel dorada",
  "a79": "Mira la túnica roja intensa junto a la piel cálida y dorada",
  "a56": "Mira las pieles cálidas y doradas bajo el cielo azul intenso",
- "a147": "Mira el cielo de atardecer y los rojos de la banda y la gualdrapa",
+ "a147": "Mira el cielo de atardecer, azul y oro, detrás del jinete oscuro",
  "a77": "Mira la piel dorada que brilla contra el cielo azul oscuro",
  # Veronés
  "a53": "Mira las columnas blancas y la balaustrada llena de invitados",
@@ -732,7 +732,8 @@ LOOK = {
  "a151": "Mira la aldea vista desde arriba y los patinadores diminutos en el hielo",
  "a23": "Mira el pueblo nevado lleno de figuras pequeñas, cada una a lo suyo",
  "a198": "Mira la fila de campesinos que cae en diagonal ante la aldea tranquila",
- # El Greco (a236, obra de juventud, no muestra el rasgo: sin look)
+ # El Greco (a236, obra de juventud: atípica, véase KIND)
+ "a236": "No parece un Greco: obra de juventud en Roma, con la luz de la vela en la cara y el fondo a oscuras",
  "a127": "Mira las manos y las caras alargadas, y el manto amarillo ácido",
  "a121": "Mira los cuerpos estirados y retorcidos, con rosas y amarillos ácidos",
  "b4": "Mira las figuras estiradas del cielo entre nubes frías y grises",
@@ -751,7 +752,8 @@ LOOK = {
  "a211": "Mira la piel rosada y carnosa de la mujer junto al hombre moreno",
  "b6": "Mira la diagonal de cuerpos musculosos que empujan con todas sus fuerzas",
  "b7": "Mira la sábana blanca que baja en diagonal entre cuerpos que se inclinan",
- # Velázquez (a182, obra de juventud en penumbra, sin look)
+ # Velázquez (a182, obra de juventud en penumbra: atípica, véase KIND)
+ "a182": "No parece un Velázquez: obra de juventud, con luz de noche que despeja las sombras hacia el Niño",
  "a67": "Mira las caras curtidas y risueñas, resueltas con pocas manchas",
  "a142": "Mira la pared gris y el aire que hay entre las figuras",
  "a175": "Mira el paisaje gris azulado del fondo, como visto a través del aire",
@@ -807,7 +809,8 @@ LOOK = {
  "a70": "Mira la luz entre los troncos y cada rama rota, pintada con detalle",
  "a222": "Mira cada pino con su copa distinta y el camino con charcos",
  "a49": "Mira los troncos rectos uno a uno y las piedras del arroyo",
- # Repin (a180, escena fantástica atípica, sin look)
+ # Repin (a180, escena fantástica, poco habitual en él: la pista cuenta lo que se ve)
+ "a180": "Mira el fondo del mar de cuento: figuras y peces entre luces doradas en el agua oscura",
  "a87": "Mira cómo cada hombre de la fila tiene su propia cara y postura",
  "a11": "Mira las caras del grupo: cada una reacciona a su manera",
  "a143": "Mira las carcajadas: cada hombre se ríe de una forma distinta",
@@ -839,7 +842,8 @@ LOOK = {
  "a192": "Mira la vista desde arriba y el suelo vacío que ocupa medio cuadro",
  "a226": "Mira las bailarinas partidas por los bordes, como en una foto improvisada",
  "b18": "Mira las mesas vacías delante y la pareja empujada a un lado",
- # Renoir (a134, paisaje sin figuras, sin look)
+ # Renoir (a134, paisaje sin figuras: la pista va a la pincelada)
+ "a134": "Mira el agua y el cielo hechos a toques sueltos de azul y naranja",
  "a148": "Mira las mejillas rosadas y las caras felices alrededor de la mesa",
  "a140": "Mira las manchas de sol que caen entre los árboles sobre la gente",
  "a136": "Mira las caras rosadas y dulces de la niña y la mujer entre tanto gris",
@@ -880,6 +884,269 @@ LOOK = {
  "b25": "Mira la hierba y el agua hechas de toques diminutos de color",
  "b34": "Mira cómo la luz amarilla disuelve el puente y el tren en bruma",
  "b35": "Mira el cielo dorado que se deshace en bruma alrededor del sol",
+}
+
+# --- Pistas que no engañan (feedback de María, 24/11) -------------------------------------
+# Esquema que debe seguir el catálogo grande:
+#  · LOOK[id]         primera pista propia de la obra (texto corto, sin autor ni título).
+#  · LOOK2[id]        segunda pista propia: (texto, fuente). Se dice al repetir el fallo del mismo cuadro.
+#  · LOOK_SOURCE[id]  fuente de la primera pista (museo o publicación). Sin fuente, la pista no
+#                     cuenta como verificada (`verified: false` en el motor).
+#  · KIND[id]         tipo de cuadro: "tipico" (la pista enseña el rasgo del autor; es lo que se
+#                     supone si falta), "atipico" («no parece un X; lo reconoces por…») o "memoria"
+#                     («este hay que sabérselo»). En atípicos y de memoria el motor no enseña los
+#                     rasgos genéricos del pintor, solo sus pistas propias.
+#  · TAGS[id]         etiquetas visuales de la obra (vocabulario cerrado TAG_LABELS), escritas
+#                     mirando la imagen a 1000 px. Sirven para no dar, tras un fallo en «¿Cuál es de
+#                     X?», un rasgo de X que el cuadro elegido también cumpla, y para decir en
+#                     «¿Quién lo pintó?» qué seña del pintor elegido falta aquí.
+#  · TRAIT_TAGS[pintor] etiquetas de cada frase del pintor, alineadas con [hint, *traits]
+#                     (invitados: solo [hint]). Una frase sin etiquetas ([]) no se usa tras un fallo.
+# En data/catalog-text.json: look, looks ([{text, source}]), kind, tags, traits, traitTags,
+# tagLabels y negableTags.
+
+# Vocabulario visual cerrado: etiqueta -> cómo se dice en «aquí no hay …».
+TAG_LABELS = {
+    "rojo": "rojos intensos", "oro": "dorados", "azul": "azules intensos", "amarillo": "amarillos vivos",
+    "rosa": "tonos rosados", "verde": "verdes", "gris": "grises plateados", "negro": "negros intensos",
+    "oscuro": "fondo oscuro", "claro": "luz clara", "foco": "un foco de luz dura", "ventana": "luz de ventana",
+    "noche": "escena de noche", "suelta": "pincelada suelta", "nitido": "contornos nítidos", "difuminado": "bruma",
+    "grueso": "trazos gruesos", "puntos": "puntitos de color", "plano": "colores planos",
+    "bloques": "pinceladas en bloques", "lineas": "líneas largas y nerviosas", "ondulante": "líneas ondulantes",
+    "mosaico": "mosaicos y adornos", "multitud": "una multitud", "diminutas": "figuras diminutas",
+    "alargado": "figuras alargadas", "estatua": "figuras como estatuas", "desnudo": "cuerpos desnudos",
+    "retrato": "una cara en primer plano", "mirada": "una mirada de frente", "espaldas": "una figura de espaldas",
+    "expresion": "gestos expresivos", "cortado": "encuadre cortado", "dinamico": "composición en diagonal",
+    "triangulo": "composición en triángulo", "paisaje": "paisaje", "cielo": "un gran cielo", "mar": "mar",
+    "agua": "agua y reflejos", "nieve": "nieve", "arboles": "árboles", "arquitectura": "columnas y arcos",
+    "interior": "un interior", "sedas": "sedas brillantes", "baile": "bailarinas", "barcos": "barcos",
+    "monstruos": "criaturas imposibles", "dulzura": "caras dulces",
+}
+# Etiquetas tan claras que se puede afirmar que NO están en un cuadro («aquí no hay fondo oscuro»).
+# Las de pincelada o de tono (suelta, nítido, dorados…) no: dependen del ojo. Tampoco rojos, negros
+# ni desnudos: un detalle pequeño (una manga, un niño) desmentiría la negación; esas tres sirven solo
+# para no enseñar un rasgo que el cuadro elegido también cumple.
+NEGABLE_TAGS = ["oscuro", "foco", "ventana", "noche", "puntos", "grueso", "plano", "bloques",
+                "mosaico", "multitud", "diminutas", "alargado", "estatua", "espaldas", "ondulante",
+                "mar", "nieve", "arquitectura", "baile", "barcos", "monstruos"]
+
+# Etiquetas de cada frase del pintor: [pista, rasgo 1, rasgo 2, rasgo 3]; en invitados, [pista].
+# La primera etiqueta de la pista es la seña más inconfundible (es la que se niega primero).
+TRAIT_TAGS = {
+    "leonardo": [["difuminado"], ["difuminado"], ["difuminado", "paisaje", "azul"], ["oscuro", "difuminado"]],
+    "rafael": [["nitido", "triangulo"], ["nitido"], [], ["triangulo"]],
+    "tiziano": [["rojo", "desnudo"], ["rojo"], ["desnudo"], ["cielo"]],
+    "veronese": [["arquitectura", "multitud", "sedas"], ["arquitectura"], ["multitud"], ["sedas"]],
+    "bosco": [["monstruos", "diminutas", "desnudo"], ["monstruos"], ["diminutas", "desnudo"], ["monstruos"]],
+    "durero": [["nitido"], ["nitido"], ["nitido"], []],
+    "bruegel": [["diminutas", "paisaje"], ["diminutas"], ["diminutas"], ["paisaje"]],
+    "el-greco": [["alargado"], ["alargado"], ["amarillo", "rosa"], []],
+    "caravaggio": [["oscuro", "foco"], ["oscuro"], ["foco"], []],
+    "rubens": [["desnudo", "rosa", "dinamico"], ["desnudo", "rosa"], ["dinamico"], ["dinamico"]],
+    "velazquez": [["gris", "suelta"], ["gris"], ["suelta"], []],
+    "rembrandt": [["oscuro", "oro"], ["oscuro", "oro"], ["oscuro"], ["grueso"]],
+    "murillo": [["dulzura"], ["dulzura"], ["difuminado"], ["oro", "difuminado"]],
+    "vermeer": [["ventana", "azul", "amarillo"], ["ventana"], ["azul", "amarillo"], []],
+    "fragonard": [["suelta", "sedas"], ["suelta"], ["sedas", "rosa"], []],
+    "david": [["estatua", "nitido"], ["estatua"], ["nitido"], ["oscuro"]],
+    "goya": [["oscuro", "suelta"], ["oscuro", "suelta"], ["oscuro"], []],
+    "friedrich": [["espaldas", "paisaje"], ["espaldas", "diminutas"], ["paisaje"], []],
+    "delacroix": [["rojo", "suelta"], ["suelta"], ["rojo"], ["dinamico"]],
+    "aivazovski": [["mar", "verde"], ["mar", "verde"], ["cielo"], ["barcos"]],
+    "shishkin": [["arboles"], ["arboles"], ["claro"], []],
+    "repin": [["expresion"], ["expresion"], ["expresion"], []],
+    "levitan": [["cielo", "agua"], ["cielo", "agua"], ["suelta"], ["paisaje"]],
+    "manet": [["negro", "plano", "mirada"], ["negro"], ["plano"], ["mirada"]],
+    "monet": [["suelta"], ["suelta"], ["agua"], ["suelta"]],
+    "degas": [["cortado"], ["cortado"], ["baile"], ["cortado"]],
+    "renoir": [["rosa", "suelta"], ["rosa"], ["suelta", "claro"], ["multitud"]],
+    "gauguin": [["plano"], ["plano"], ["plano"], ["plano"]],
+    "van-gogh": [["grueso"], ["grueso"], ["azul", "amarillo"], ["grueso"]],
+    "lautrec": [["lineas"], ["lineas"], ["verde"], ["interior"]],
+    "munch": [["ondulante"], ["ondulante"], ["expresion"], ["suelta"]],
+    "klimt": [["oro", "mosaico"], ["oro", "mosaico"], ["mosaico"], ["mosaico"]],
+    # Invitados (solo la pista): sirven para decir qué seña suya falta cuando se les elige por error.
+    "botticelli": [["nitido"]], "miguel-angel": [["desnudo"]], "bellini": [[]], "correggio": [["desnudo"]],
+    "van-eyck": [["nitido", "interior"]], "van-dyck": [["sedas"]], "poussin": [["paisaje"]],
+    "claudio-de-lorena": [["mar", "barcos", "oro"]], "boucher": [["rosa", "azul", "desnudo"]],
+    "greuze": [["interior", "expresion"]], "liotard": [["nitido"]], "gainsborough": [["suelta", "retrato"]],
+    "borovikovski": [["retrato"]], "ingres": [["nitido"]],
+    "gericault": [["oscuro", "dinamico"]], "constable": [["cielo", "paisaje"]], "delaroche": [["nitido"]],
+    "ivanov": [["multitud"]], "tropinin": [["retrato"]], "courbet": [[]],
+    "savrasov": [["nieve"]], "kramskoi": [["retrato", "mirada"]],
+    "fedotov": [["interior"]], "vereshchagin": [[]], "venetsianov": [["claro", "paisaje"]], "serov": [["claro"]],
+    "rousseau": [["plano"]], "vrubel": [["bloques"]],
+    "nesterov": [["paisaje"]], "matisse": [["plano"]], "petrov-vodkin": [["plano", "rojo"]],
+    "kandinsky": [["plano"]], "malevich": [["plano"]],
+    # Invitados con tres rasgos (se enseñan en las salas): alineados con [pista, rasgo 1, 2, 3].
+    "briullov": [["nitido"], ["dinamico"], ["nitido"], []],
+    "kuindzhi": [["noche", "foco"], ["noche", "foco"], ["oscuro"], []],
+    "vasnetsov": [[], [], [], ["paisaje"]],
+    "polenov": [["claro"], ["claro"], ["paisaje"], ["paisaje"]],
+    "surikov": [["multitud"], [], ["multitud"], ["nieve"]],
+    "perov": [["expresion"], [], [], []],
+    "makovski": [["interior"], [], ["multitud"], ["nitido"]],
+    "turner": [["difuminado"], ["difuminado"], ["difuminado", "oro"], ["barcos", "difuminado"]],
+    "cezanne": [["bloques"], ["bloques"], ["bloques"], []],
+    "seurat": [["puntos"], ["puntos"], [], ["claro"]],
+}
+
+# Etiquetas visibles en cada cuadro, escritas mirando las imágenes (hojas de contacto a 420 px y
+# la imagen entera cuando hacía falta). Solo lo que se ve sin duda.
+TAGS = {
+ # Leonardo
+ "a82": ["paisaje", "difuminado", "claro", "rojo", "azul"], "a201": ["oscuro", "difuminado", "paisaje", "desnudo"],
+ "a66": ["oscuro", "retrato", "azul", "rojo"], "a125": ["rojo", "azul", "paisaje", "difuminado", "desnudo", "oscuro"],
+ "a93": ["multitud", "interior", "arquitectura", "paisaje", "rojo"], "a154": ["retrato", "difuminado", "paisaje", "oscuro"],
+ "a235": ["difuminado", "paisaje", "triangulo", "azul", "desnudo"],
+ # Rafael
+ "a144": ["retrato", "nitido", "claro", "mirada", "arquitectura", "paisaje"],
+ "a89": ["triangulo", "rojo", "azul", "claro", "paisaje", "nitido", "desnudo"], "a224": ["paisaje", "claro", "nitido", "azul"],
+ "a162": ["multitud", "desnudo", "rojo", "claro", "dinamico"], "a188": ["triangulo", "rojo", "azul", "verde", "claro", "desnudo"],
+ "a26": ["oscuro", "rojo", "oro", "nitido"], "a169": ["oscuro", "rojo", "azul", "triangulo", "desnudo"],
+ # Tiziano
+ "a84": ["paisaje", "rojo", "desnudo", "cielo"], "a104": ["rojo", "oscuro"], "a79": ["rojo", "azul", "oscuro", "retrato"],
+ "a56": ["multitud", "desnudo", "paisaje", "cielo", "rojo"], "a147": ["oscuro", "paisaje", "cielo"],
+ "a77": ["cielo", "azul", "oscuro"],
+ # Veronés
+ "a53": ["multitud", "arquitectura", "claro", "sedas", "rojo"], "a2": ["multitud", "arquitectura", "claro", "sedas", "rojo"],
+ "a12": ["desnudo", "rosa", "sedas", "arquitectura"],
+ # El Bosco, Durero
+ "a184": ["multitud", "diminutas", "monstruos", "claro", "paisaje", "desnudo"],
+ "a45": ["oscuro", "monstruos", "diminutas", "multitud", "desnudo"], "b9": ["monstruos", "paisaje", "agua"],
+ "b10": ["retrato", "oscuro", "mirada", "nitido"], "a120": ["multitud", "rojo", "azul", "claro", "nitido", "desnudo"],
+ "a157": ["oscuro", "desnudo", "nitido"],
+ # Brueghel
+ "a21": ["multitud", "diminutas", "paisaje", "claro", "rojo"], "a220": ["diminutas", "arquitectura", "paisaje", "claro", "multitud"],
+ "a151": ["nieve", "diminutas", "paisaje", "arboles", "claro"], "a23": ["nieve", "multitud", "diminutas", "paisaje", "rojo"],
+ "a198": ["paisaje", "claro", "dinamico", "expresion"],
+ # El Greco
+ "a236": ["oscuro", "foco", "retrato", "noche"], "b4": ["multitud", "alargado", "oscuro", "oro"],
+ "a127": ["oscuro", "amarillo", "rojo", "alargado"], "b5": ["paisaje", "cielo", "verde", "oscuro"],
+ "a121": ["multitud", "alargado", "rosa", "amarillo", "rojo", "arquitectura"],
+ # Caravaggio
+ "a206": ["oscuro", "foco", "retrato", "mirada", "desnudo"], "a91": ["oscuro", "foco", "retrato", "interior"],
+ "a160": ["foco", "paisaje", "rojo", "oscuro", "desnudo"], "b12": ["oscuro", "foco", "rojo", "expresion"],
+ "b11": ["oscuro", "foco", "interior"], "a119": ["oscuro", "foco"], "b13": ["oscuro", "foco", "interior", "rojo"],
+ # Rubens
+ "b6": ["oscuro", "desnudo", "dinamico", "multitud"], "b7": ["oscuro", "rojo", "dinamico", "desnudo"],
+ "a190": ["desnudo", "rosa", "rojo", "dinamico", "cielo"], "a186": ["desnudo", "rosa", "rojo", "dinamico", "paisaje"],
+ "a211": ["desnudo", "rosa", "rojo"],
+ # Velázquez
+ "a182": ["oscuro", "rojo", "foco"], "a67": ["expresion", "oscuro", "suelta", "rojo"], "a142": ["interior", "gris", "suelta", "foco"],
+ "a175": ["multitud", "paisaje", "gris", "suelta"], "a32": ["desnudo", "rojo", "gris", "espaldas"],
+ "a78": ["oscuro", "rojo", "retrato", "gris", "suelta"], "a62": ["interior", "gris", "oscuro", "suelta", "mirada"],
+ # Rembrandt
+ "a171": ["oscuro", "oro", "foco", "expresion", "rojo"], "a72": ["oscuro", "oro", "rojo", "interior"],
+ "a25": ["oscuro", "oro", "desnudo", "interior"], "a195": ["oscuro", "oro", "multitud", "foco", "rojo"],
+ "a34": ["oscuro", "oro", "diminutas", "foco", "interior"], "a205": ["oscuro", "rojo", "oro", "foco"],
+ # Murillo, Vermeer
+ "a20": ["oscuro", "rojo", "azul", "dulzura", "desnudo"], "a37": ["retrato", "expresion", "oscuro", "dulzura"],
+ "a68": ["oro", "azul", "claro", "difuminado", "dulzura", "desnudo"],
+ "a115": ["ventana", "azul", "amarillo", "interior", "claro", "rojo"], "b14": ["paisaje", "agua", "cielo", "claro"],
+ "a109": ["oscuro", "azul", "amarillo", "retrato", "mirada"], "a8": ["oscuro", "amarillo", "azul", "interior"],
+ "a210": ["ventana", "interior", "azul"], "a218": ["amarillo", "interior", "claro", "azul", "rojo"],
+ # Fragonard, David, Goya
+ "a16": ["rosa", "verde", "suelta", "sedas", "oscuro"], "a213": ["rojo", "oscuro", "suelta", "interior"], "a47": ["sedas", "interior", "rojo"],
+ "a156": ["estatua", "nitido", "rojo", "arquitectura", "oscuro"], "b29": ["estatua", "nitido", "rojo", "oscuro", "interior", "arquitectura"],
+ "b30": ["oscuro", "estatua", "nitido"], "b3": ["desnudo", "verde", "oscuro"],
+ "a161": ["oscuro", "noche", "foco", "multitud", "suelta", "rojo"], "b2": ["oscuro", "suelta", "expresion"],
+ # Friedrich, Delacroix, Aivazovski
+ "b33": ["paisaje", "mar", "cielo", "diminutas", "difuminado"], "b31": ["espaldas", "paisaje", "difuminado", "claro", "cielo"],
+ "b32": ["nieve", "paisaje", "claro", "cielo"], "b28": ["rojo", "desnudo", "multitud", "dinamico", "suelta", "oscuro"],
+ "a130": ["rojo", "azul", "multitud", "dinamico", "suelta", "desnudo"], "a240": ["retrato", "suelta", "oscuro", "mirada"],
+ "a116": ["mar", "cielo", "oro", "verde", "claro", "barcos"], "a217": ["mar", "verde", "cielo", "barcos"],
+ "a232": ["mar", "verde", "cielo", "barcos", "oscuro"], "a239": ["mar", "verde", "cielo", "barcos", "oscuro"],
+ # Shishkin, Repin, Levitán
+ "a98": ["paisaje", "arboles", "claro", "cielo", "oro"], "a28": ["paisaje", "arboles", "claro", "agua"],
+ "a70": ["paisaje", "arboles", "difuminado"], "a222": ["paisaje", "arboles", "claro", "cielo"], "a49": ["paisaje", "arboles", "claro", "agua"],
+ "a87": ["multitud", "claro", "expresion", "paisaje", "barcos", "rojo"], "a180": ["oscuro", "multitud", "oro"],
+ "a11": ["multitud", "expresion", "interior", "rojo", "oscuro"], "a143": ["multitud", "expresion", "rojo"], "a73": ["multitud", "claro", "paisaje", "rojo"],
+ "a15": ["multitud", "interior", "oscuro", "noche", "expresion", "rojo"], "a3": ["rojo", "interior", "oscuro", "expresion"],
+ "a176": ["interior", "claro", "ventana", "expresion", "negro"], "a228": ["claro", "cielo", "suelta"],
+ "a101": ["paisaje", "cielo", "agua", "claro"], "a123": ["nieve", "claro", "suelta", "arboles"],
+ "a173": ["paisaje", "arboles", "amarillo", "agua", "claro", "suelta", "cielo"], "a230": ["paisaje", "arboles", "agua", "claro", "cielo"],
+ # Manet, Monet, Degas, Renoir
+ "a58": ["desnudo", "mirada", "plano", "negro", "paisaje"], "b19": ["desnudo", "mirada", "plano", "oscuro", "negro"],
+ "a196": ["mirada", "interior", "noche", "plano", "negro", "multitud", "rojo"],
+ "a223": ["suelta", "claro", "verde", "paisaje"], "b17": ["nieve", "suelta", "claro"], "a204": ["difuminado", "agua", "suelta", "barcos", "cielo"],
+ "b16": ["suelta", "cielo", "claro"], "a212": ["suelta", "rojo", "paisaje", "claro"], "a216": ["verde", "suelta", "agua", "paisaje"],
+ "a229": ["difuminado", "agua", "rosa"],
+ "a233": ["baile", "interior", "verde", "cortado", "multitud", "espaldas", "rojo"], "b18": ["interior", "cortado", "negro"],
+ "a192": ["baile", "cortado", "interior"], "a226": ["baile", "cortado", "interior", "suelta"], "a1": ["baile", "azul", "suelta", "cortado"],
+ "a7": ["claro", "paisaje"], "a134": ["paisaje", "agua", "suelta", "claro"], "a140": ["multitud", "suelta", "claro", "rosa"],
+ "a179": ["retrato", "rosa", "suelta", "mirada"], "a148": ["multitud", "claro", "rosa", "suelta", "rojo"], "a136": ["multitud", "gris", "azul", "rosa"],
+ "a194": ["rojo", "rosa", "retrato", "claro", "suelta"], "a36": ["desnudo", "rosa", "claro", "nitido"], "a60": ["interior", "rosa", "claro", "suelta", "rojo"],
+ # Gauguin, Van Gogh, Toulouse-Lautrec, Munch, Klimt
+ "a221": ["plano", "rojo", "verde", "interior", "noche"], "b23": ["rojo", "plano", "multitud"], "b22": ["amarillo", "plano", "paisaje"],
+ "a19": ["amarillo", "azul", "plano", "multitud", "paisaje"],
+ "b15": ["oscuro", "interior", "noche", "grueso", "expresion"], "a117": ["amarillo", "grueso"], "a215": ["noche", "amarillo", "azul", "grueso", "oscuro"],
+ "a164": ["azul", "verde", "grueso"], "a167": ["azul", "amarillo", "grueso", "noche", "ondulante", "oscuro"],
+ "a203": ["retrato", "rojo", "grueso", "verde", "mirada"], "a208": ["grueso", "ondulante", "azul", "amarillo", "paisaje", "claro"],
+ "b27": ["espaldas", "lineas", "interior", "suelta"], "a76": ["lineas", "interior", "multitud", "verde"],
+ "b26": ["noche", "interior", "verde", "lineas", "multitud", "oscuro"],
+ "b36": ["interior", "retrato", "suelta"], "a112": ["ondulante", "rojo", "expresion"], "a42": ["ondulante", "desnudo", "oscuro"],
+ "b37": ["oro", "mosaico", "retrato", "desnudo"], "a50": ["oro", "mosaico", "retrato"], "a97": ["oro", "mosaico"],
+ # Invitados
+ "a135": ["multitud", "oscuro", "nitido", "desnudo"], "a200": ["desnudo", "claro", "nitido", "mar"], "a6": ["desnudo", "claro", "nitido"],
+ "b1": ["multitud", "azul", "desnudo"], "a65": ["multitud", "paisaje", "arboles", "azul", "rojo", "desnudo"], "a185": ["desnudo", "interior", "difuminado", "oscuro"],
+ "a22": ["interior", "verde", "rojo", "nitido", "ventana"], "b8": ["rojo", "interior", "arquitectura", "paisaje", "nitido", "azul"],
+ "a63": ["rosa", "sedas", "dinamico", "oscuro", "desnudo", "rojo"], "a197": ["paisaje", "arboles", "cielo", "diminutas"],
+ "a14": ["oro", "mar", "barcos", "arquitectura", "cielo", "claro", "rojo"],
+ "a177": ["desnudo", "rosa", "azul", "claro"], "a48": ["desnudo", "rosa", "azul", "claro"], "a85": ["interior", "multitud", "expresion", "oscuro"],
+ "a94": ["interior", "expresion", "oscuro"], "a71": ["nitido", "claro", "interior"], "a102": ["retrato", "azul", "suelta", "oscuro", "mirada"],
+ "a30": ["retrato", "paisaje", "mirada", "nitido"], "a187": ["desnudo", "azul", "nitido", "oscuro", "espaldas"],
+ "b35": ["difuminado", "oro", "mar", "barcos", "cielo"], "b34": ["difuminado", "suelta", "paisaje"],
+ "a149": ["retrato", "verde", "rojo", "nitido", "oscuro"], "a113": ["multitud", "rojo", "dinamico", "oscuro", "expresion", "desnudo"],
+ "a80": ["nitido", "rosa", "arquitectura"], "a219": ["retrato", "rojo", "oscuro", "mirada", "suelta", "negro"],
+ "a69": ["oscuro", "multitud", "desnudo", "dinamico", "mar"], "a166": ["paisaje", "arboles", "cielo", "claro", "arquitectura"],
+ "a165": ["oscuro", "nitido", "rojo", "interior", "arquitectura"], "a145": ["multitud", "paisaje", "claro", "desnudo", "nitido", "rojo"],
+ "a170": ["retrato", "mirada", "nitido", "interior", "oscuro"], "a90": ["retrato", "rosa", "nitido", "interior", "oscuro"],
+ "a137": ["interior", "multitud", "oscuro", "desnudo"], "a174": ["paisaje", "arboles", "agua"],
+ "a191": ["noche", "oscuro", "paisaje", "foco"], "a17": ["paisaje", "arboles", "verde", "claro"],
+ "a181": ["noche", "oscuro", "foco", "agua", "paisaje"], "a128": ["paisaje", "cielo"], "a152": ["paisaje", "cielo", "rojo"],
+ "a13": ["paisaje", "arboles", "agua", "oscuro"], "a51": ["paisaje", "cielo", "claro"], "a40": ["oscuro", "oro", "cielo", "rojo"],
+ "a199": ["oscuro", "arboles", "paisaje"], "a150": ["retrato", "oro", "interior", "nitido", "oscuro"], "a111": ["paisaje", "agua", "cielo", "claro"],
+ "a106": ["paisaje", "arboles", "claro"], "a131": ["paisaje", "verde", "claro", "arquitectura"],
+ "a9": ["paisaje", "claro", "cielo", "arquitectura", "verde"], "a55": ["multitud", "arquitectura", "expresion", "rojo"],
+ "a100": ["multitud", "nieve", "expresion"], "a27": ["multitud", "nieve", "dinamico", "rojo"], "a29": ["multitud", "agua", "dinamico", "rojo"],
+ "a172": ["multitud", "nieve", "dinamico"], "a44": ["multitud", "expresion", "rojo"], "a38": ["nieve", "expresion"],
+ "a5": ["interior", "expresion", "rojo"], "a159": ["paisaje", "arboles", "oscuro"], "a92": ["paisaje", "expresion", "rojo"],
+ "a24": ["paisaje", "cielo", "nitido"], "a139": ["multitud", "arquitectura", "claro", "rojo"], "a129": ["multitud", "interior", "oro", "oscuro", "rojo"],
+ "a133": ["interior", "oscuro", "foco", "noche"], "a83": ["nieve", "arboles", "cielo"], "a141": ["retrato", "mirada", "nitido", "negro"],
+ "a0": ["interior", "expresion", "nitido", "rojo"], "a81": ["paisaje", "claro", "cielo"], "a103": ["paisaje", "claro", "cielo", "nitido", "rojo"],
+ "a193": ["paisaje", "claro", "cielo", "nitido", "rojo"], "a74": ["paisaje", "claro", "cielo", "nitido"],
+ "a118": ["rosa", "ventana", "interior", "claro", "mirada", "suelta"], "b20": ["bloques", "interior", "oscuro"],
+ "b21": ["bloques", "desnudo", "azul", "paisaje", "triangulo"], "b24": ["puntos", "multitud", "claro", "verde", "rojo"],
+ "b25": ["puntos", "claro", "agua", "rojo"], "a110": ["plano", "noche", "nitido", "oscuro"], "a163": ["bloques", "azul", "cielo"],
+ "a88": ["paisaje", "claro", "nitido"], "a41": ["plano", "rojo", "azul", "verde", "desnudo"], "a132": ["plano", "interior", "rojo"],
+ "a96": ["rojo", "plano", "desnudo", "azul"], "a105": ["plano", "claro", "rojo"], "a126": ["plano", "oscuro"],
+}
+
+# Segunda pista propia (texto, fuente): sale al repetir el fallo del mismo cuadro en la ronda.
+LOOK2 = {
+ "a147": ("Mira al jinete solo ante el río, con el bosque detrás y la armadura labrada",
+          "Wikipedia ES, «Carlos V a caballo en Mühlberg»"),
+ "a62": ("Mira la puerta abierta del fondo, un segundo foco de luz tras la penumbra",
+         "Wikipedia ES, «Las meninas»"),
+ "a115": ("Mira cómo la luz se posa en el pan y la cesta en cientos de puntitos de color",
+          "Rijksmuseum, ficha «The Milkmaid» (SK-A-2344)"),
+ "a195": ("Mira cómo la luz destaca solo unos detalles: la mano del capitán y la niña",
+          "Rijksmuseum, ficha «The Night Watch» (SK-C-5)"),
+ "a112": ("Mira el cielo de rojo intenso sobre el fiordo y los colores irreales",
+          "Nasjonalmuseet, ficha «The Scream» (NG.M.00939)"),
+}
+
+# Fuente de la primera pista, cuando la hay (si no, la pista no cuenta como verificada).
+LOOK_SOURCE = {
+ "a182": "Wikipedia ES, «Adoración de los Reyes Magos (Velázquez)»",
+ "a236": "Wikipedia ES, «Muchacho encendiendo una candela»",
+}
+
+# Tipo de cuadro cuando no es el típico (véase el esquema de arriba). Solo con fuente.
+KIND = {
+ "a182": "atipico",  # Velázquez a los 20 años: luz de noche y modelos cercanos, sin grises ni manchas
+ "a236": "atipico",  # El Greco en Roma: la vela ilumina la cara, el fondo queda a oscuras
 }
 
 # Zona del «Detalle del día» (campo opcional `focus`: [x, y] de 0 a 1 sobre la imagen): rostro, mano

@@ -239,6 +239,15 @@ export function isCorrect(q, optionId) {
   return q.answerId === optionId;
 }
 
+// Texto de una opción de respuesta: la etiqueta y, en «¿De qué movimiento es?», el periodo del
+// movimiento como detalle («Renacimiento» · «s. XV–XVI»). En las demás, sin detalle.
+export function optionText(index, q, option) {
+  const label = String(option?.label || '');
+  if (q?.type !== 'movement') return { label, detail: '' };
+  const m = index.movement(option.id);
+  return { label, detail: m && typeof m.period === 'string' ? m.period : '' };
+}
+
 // Texto alternativo neutro: nunca revela autor ni título en las preguntas.
 export function questionAlt(q, position = 0) {
   if (q.type === 'which') return `Opción ${position + 1}`;

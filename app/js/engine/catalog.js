@@ -15,18 +15,61 @@ export function resolveThumb(thumb, atlas) {
   return { src, x, y, w, h, sw: Number(size[0]), sh: Number(size[1]) };
 }
 
-// Textos que llegan después de pintar (data/catalog-text.json): `look` de obra y `traits` de
-// pintor. Se añaden a los objetos del índice; lo que no encaja se ignora.
+// Textos que llegan después de pintar (data/catalog-text.json): `look`/`looks` (pistas con
+// fuente), `kind` y `tags` de obra; `traits` y `traitTags` de pintor; `tagLabels` y `negableTags`
+// del vocabulario visual. Se añaden a los objetos del índice; lo que no encaja se ignora.
+const MAX_TEXT = 140;
+const MAX_TAGS = 12;
+const MAX_NEGABLE = 60;
+const MAX_LOOKS = 2;
+const KINDS = ['tipico', 'atipico', 'memoria'];
+const SAFE_TAG = /^[a-z-]{2,24}$/;
+// Etiquetas: lista o cadena separada por espacios (así viaja en el archivo); '' = sin etiquetas.
+const tagList = (v) => {
+  const list = Array.isArray(v) ? v : typeof v === 'string' ? v.split(' ').filter(Boolean) : null;
+  return list ? list.filter((t) => typeof t === 'string' && SAFE_TAG.test(t)).slice(0, MAX_TAGS) : null;
+};
+
 export function mergeCatalogText(index, text) {
   if (!text || typeof text !== 'object') return 0;
   let n = 0;
   for (const [id, look] of Object.entries(text.look || {})) {
     const w = index.artwork(id);
-    if (w && typeof look === 'string' && look.length <= 140) { w.look = look; n++; }
+    if (w && typeof look === 'string' && look.length <= MAX_TEXT) { w.look = look; n++; }
+  }
+  for (const [id, looks] of Object.entries(text.looks || {})) {
+    const w = index.artwork(id);
+    if (!w || !Array.isArray(looks)) continue;
+    const list = looks
+      .filter((l) => l && typeof l.text === 'string' && l.text.length <= MAX_TEXT)
+      .map((l) => ({ text: l.text, source: typeof l.source === 'string' ? l.source : '' }))
+      .slice(0, MAX_LOOKS);
+    if (list.length) { w.looks = list; if (!w.look) w.look = list[0].text; n++; }
+  }
+  for (const [id, kind] of Object.entries(text.kind || {})) {
+    const w = index.artwork(id);
+    if (w && KINDS.includes(kind)) { w.kind = kind; n++; }
+  }
+  for (const [id, tags] of Object.entries(text.tags || {})) {
+    const w = index.artwork(id);
+    const list = tagList(tags);
+    if (w && list) { w.tags = list; n++; }
   }
   for (const [id, traits] of Object.entries(text.traits || {})) {
     const a = index.artist(id);
     if (a && Array.isArray(traits)) { a.traits = traits.filter((t) => typeof t === 'string').slice(0, 6); n++; }
+  }
+  for (const [id, tags] of Object.entries(text.traitTags || {})) {
+    const a = index.artist(id);
+    if (a && Array.isArray(tags)) { a.traitTags = tags.map(tagList).slice(0, 7); n++; }
+  }
+  if (text.tagLabels && typeof text.tagLabels === 'object') {
+    index.tagLabels = Object.fromEntries(Object.entries(text.tagLabels).filter(([k, v]) => SAFE_TAG.test(k) && typeof v === 'string' && v.length <= 40));
+    n++;
+  }
+  if (Array.isArray(text.negableTags)) {
+    index.negableTags = text.negableTags.filter((t) => typeof t === 'string' && SAFE_TAG.test(t)).slice(0, MAX_NEGABLE);
+    n++;
   }
   return n;
 }

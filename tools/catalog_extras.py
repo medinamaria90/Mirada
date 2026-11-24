@@ -13,9 +13,12 @@ LAYOUT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "atlas_la
 # Textos que la app no necesita para pintar la primera pantalla: van en data/catalog-text.json.
 TEXT_FILE = "catalog-text.json"
 ARTWORK_KEYS = ["id", "artistId", "title", "year", "yearSort", "img", "thumb", "w", "h", "role", "fame",
-                "confidence", "spoiler", "attributed", "focus", "look"]
+                "confidence", "spoiler", "attributed", "focus", "look", "looks", "kind", "tags"]
 ARTIST_KEYS = ["id", "name", "short", "movementId", "born", "died", "country", "order", "guest",
-               "section", "hint", "traits", "similarTo"]
+               "section", "hint", "traits", "traitTags", "similarTo"]
+# Campos de texto que van a data/catalog-text.json y no al catálogo compacto.
+ARTWORK_TEXT_KEYS = ["look", "looks", "kind", "tags"]
+ARTIST_TEXT_KEYS = ["traits", "traitTags"]
 
 
 def all_works():
@@ -48,6 +51,8 @@ def build(sizes):
         a = dict(a, guest=D.is_guest(a["id"], count[a["id"]]))
         if a["id"] in D.SECTIONS and not a["guest"]:
             a["section"] = D.SECTIONS[a["id"]]
+        if a["id"] in D.TRAIT_TAGS:
+            a["traitTags"] = [" ".join(t) for t in D.TRAIT_TAGS[a["id"]]]
         artists.append({k: a[k] for k in ARTIST_KEYS if k in a})
     artists.sort(key=lambda a: (mov_order[a["movementId"]], a["order"]))
     guest = {a["id"]: a["guest"] for a in artists}
@@ -64,6 +69,21 @@ def build(sizes):
             w["attributed"] = True
         if wid in D.LOOK:
             w["look"] = D.LOOK[wid]
+            # `looks` solo cuando aporta algo sobre `look` (fuente o segunda pista): el motor deriva
+            # la lista de `look` si falta, y así el archivo de textos no duplica cada pista.
+            if wid in D.LOOK2 or wid in D.LOOK_SOURCE:
+                looks = [dict(text=D.LOOK[wid], source=D.LOOK_SOURCE.get(wid, ""))]
+                if wid in D.LOOK2:
+                    text, source = D.LOOK2[wid]
+                    looks.append(dict(text=text, source=source))
+                w["looks"] = looks
+        elif wid in D.LOOK2:
+            raise SystemExit(f"{wid}: segunda pista sin primera (LOOK2 sin LOOK)")
+        if wid in D.KIND:
+            w["kind"] = D.KIND[wid]
+        if wid in D.TAGS:
+            # Etiquetas como cadena separada por espacios (pesa un tercio menos que la lista JSON).
+            w["tags"] = " ".join(D.TAGS[wid])
         if wid in getattr(D, "FOCUS", {}):
             w["focus"] = [round(float(v), 3) for v in D.FOCUS[wid]]
         artworks.append({k: w[k] for k in ARTWORK_KEYS if k in w})
@@ -81,14 +101,18 @@ def write_catalog(app, cat):
     if missing:
         raise SystemExit(f"obras sin miniatura en el atlas: {missing[:5]}… (bash tools/make_thumbs.sh app)")
     core = dict(version=cat["version"], atlas=layout["atlas"], movements=cat["movements"], artists=[], artworks=[])
-    text = dict(version=1, look={}, traits={})
+    text = dict(version=2, look={}, looks={}, kind={}, tags={}, traits={}, traitTags={},
+                tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for a in cat["artists"]:
-        text["traits"][a["id"]] = a["traits"]
-        core["artists"].append({k: v for k, v in a.items() if k != "traits"})
+        for k in ARTIST_TEXT_KEYS:
+            if k in a:
+                text[k][a["id"]] = a[k]
+        core["artists"].append({k: v for k, v in a.items() if k not in ARTIST_TEXT_KEYS})
     for w in cat["artworks"]:
-        if "look" in w:
-            text["look"][w["id"]] = w["look"]
-        core["artworks"].append(dict({k: v for k, v in w.items() if k != "look"}, thumb=layout["thumbs"][w["id"]]))
+        for k in ARTWORK_TEXT_KEYS:
+            if k in w:
+                text[k][w["id"]] = w[k]
+        core["artworks"].append(dict({k: v for k, v in w.items() if k not in ARTWORK_TEXT_KEYS}, thumb=layout["thumbs"][w["id"]]))
     for name, data in (("catalog.json", core), (TEXT_FILE, text)):
         with open(f"{app}/data/{name}", "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
