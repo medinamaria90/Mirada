@@ -43,3 +43,9 @@ ok   w19869126   monet            1600x1277 663KB  Garden at Bordighera, Impress
 lote: 150/150 bien; quedan 94
 subidas 150 imágenes a la release catalogo-img-2
 build: 1233 obras (1139 con imagen, 1233 con ficha), 152 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 11, barroco 23, rococo-neoclasicismo 17, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 18
+ok   w18687778   juan-gris        1172x1600 519KB  Violon et guitare
+ok   w18687779   juan-gris        1330x1600 354KB  Broc et verre
+ok   w18687780   juan-gris        1031x1600 287KB  Portrait de Madame Josette Gris
+lote: 94/94 bien; quedan 0
+subidas 94 imágenes a la release catalogo-img-2
+build: 1233 obras (1233 con imagen, 1233 con ficha), 152 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 11, barroco 23, rococo-neoclasicismo 17, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 18
