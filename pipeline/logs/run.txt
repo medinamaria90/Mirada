@@ -16,3 +16,4 @@ fin 2026-11-24 11:01:16
 612K	.git
 4.0K	catalogo
 fin Tue Nov 24 11:01:20 UTC 2026
+estado del job: success Tue Nov 24 11:01:21 UTC 2026
