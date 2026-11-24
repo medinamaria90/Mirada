@@ -977,11 +977,21 @@ if (SMOKE) {
   await audit(page, '390 lupa resuelta');
   await viewerCheck(page, 'lupa del día resuelta', lupa.locator('[data-zoom]'), { close: 'esc' });
 
-  // --- Test de cultura pictórica (app/test/): página indexable con su banco fijo (preguntas.json).
-  // Título y Open Graph, tres preguntas con el jugador omnisciente, «Ver mi resultado» con «n de m»,
-  // compartir (copia al portapapeles: se anula navigator.share, que en Chrome de escritorio existe
-  // y no hace nada en headless) y auditorías de contraste y táctil en claro y oscuro.
-  const bank = JSON.parse(readFileSync(new URL('../app/test/preguntas.json', import.meta.url), 'utf8')).questions;
+  // --- Test de cultura pictórica (app/test/): página indexable; cada partida sortea sus preguntas
+  // de la bolsa por tramos, así que la pregunta se lee de la pantalla y la respuesta sale del
+  // catálogo (como el jugador omnisciente). Título y Open Graph, cuatro preguntas (el primer bloque
+  // lleva las tres mecánicas), «Ver mi resultado» con «n de m», compartir (copia al portapapeles: se
+  // anula navigator.share, que en Chrome de escritorio existe y no hace nada en headless) y
+  // auditorías de contraste y táctil en claro y oscuro.
+  const fixedBank = JSON.parse(readFileSync(new URL('../app/test/preguntas.json', import.meta.url), 'utf8')).questions;
+  const catalogText = JSON.parse(readFileSync(new URL('../app/data/catalog-text.json', import.meta.url), 'utf8'));
+  // Pistas posibles del feedback: la escrita a mano (preguntas fijas), el «look» de la obra o la del pintor.
+  const hintsFor = (q) => [
+    fixedBank.find((f) => f.artwork === q.artwork && f.kind === q.kind)?.hint,
+    catalogText.look?.[q.artwork],
+    catalogText.looks?.[q.artwork]?.[0]?.text,
+    artist.get(art.get(q.artwork).artistId).hint,
+  ].filter(Boolean);
   for (const scheme of ['light', 'dark']) {
     const L = (s) => `[test ${scheme}] ${s}`;
     const tctx = await browser.newContext({ ...ctxOpts, colorScheme: scheme });
@@ -1001,20 +1011,30 @@ if (SMOKE) {
     if (scheme === 'light') await shot(tp, '15-test-portada');
     await tp.click('[data-action="start"]');
     await tp.waitForSelector('.lesson-stage .option');
+    // La pregunta en pantalla: mecánica, opciones y, del catálogo, la respuesta.
     const questionOnScreen = async () => {
-      if (await tp.locator('.option-art').count()) {
-        const ids = await tp.$$eval('.option-art', (els) => els.map((e) => e.dataset.id));
-        return bank.find((x) => x.kind === 'which' && ids.includes(x.answer));
+      const kind = await tp.locator('.lesson-stage').getAttribute('data-type');
+      const options = await tp.$$eval('.lesson-stage .option', (els) => els.map((e) => e.dataset.id));
+      if (kind === 'which') {
+        const short = (await tp.locator('.q-prompt').innerText()).replace(/^¿Cuál es de /, '').replace(/\?$/, '').trim();
+        const answer = options.find((id) => { const a = artist.get(art.get(id)?.artistId); return a && (a.short || a.name) === short; });
+        return answer ? { kind, options, answer, artwork: answer } : null;
       }
       const id = await tp.locator('.q-art .art').getAttribute('data-art');
-      return bank.find((x) => x.artwork === id);
+      const a = art.get(id) && artist.get(art.get(id).artistId);
+      if (!a) return null;
+      const answer = kind === 'movement' ? a.movementId : a.id;
+      return options.includes(answer) ? { kind, options, answer, artwork: id } : null;
     };
-    // Cuatro preguntas: tres de cuadro grande (la primera se falla a propósito) y la cuarta, una
-    // «¿Cuál es de X?», se responde desde el visor con «Es este» (tocar la miniatura no responde).
+    // Cuatro preguntas (la primera se falla a propósito). Las de cuadro grande se abren en el visor
+    // sin responder; la «¿Cuál es de X?» se responde desde el visor con «Es este» (tocar la miniatura
+    // no responde).
+    const kindsSeen = new Set();
     for (let i = 0; i < 4; i++) {
       const q = await questionOnScreen();
-      check(Boolean(q), L(`pregunta ${i + 1} no está en el banco`));
+      check(Boolean(q), L(`pregunta ${i + 1}: no se encuentra la respuesta en el catálogo`));
       if (!q) break;
+      kindsSeen.add(q.kind);
       const number = (await tp.locator('.q-tag').textContent()).trim();
       check(number === `Pregunta ${i + 1}`, L(`numeración «${number}»`));
       if (q.kind === 'movement') {
@@ -1055,7 +1075,8 @@ if (SMOKE) {
       await tp.waitForTimeout(400);
       const fb = await tp.locator('.feedback').innerText();
       check(i === 0 ? /No era esa/.test(fb) && /Era /.test(fb) : /¡Eso es!/.test(fb), L(`feedback ${i + 1}: «${fb.replace(/\s+/g, ' ').slice(0, 60)}»`));
-      check(fb.includes(q.hint), L(`feedback ${i + 1} sin la pista`));
+      const line = (await tp.locator('.feedback .fb-line').innerText()).trim();
+      check(line && hintsFor(q).some((h) => h.trim() === line), L(`feedback ${i + 1}: pista «${line}» que no es de la obra ni del pintor`));
       await assertAnswersVisible(tp, L(`feedback ${i + 1}`));
       if (i === 0) await audit(tp, L('feedback'));
       if (q.kind === 'which') {
@@ -1070,6 +1091,7 @@ if (SMOKE) {
       await tp.locator('.feedback [data-action="continue"]').tap();
       await tp.waitForTimeout(200);
     }
+    check(kindsSeen.size === 3, L(`el primer bloque no lleva las tres mecánicas: ${[...kindsSeen].join(', ')}`));
     await tp.locator('.test-finish').tap();
     await tp.waitForSelector('.test-result');
     await tp.waitForTimeout(500);
@@ -1089,6 +1111,14 @@ if (SMOKE) {
     await tp.goto(`${base}test/`);
     await tp.waitForSelector('.test-last:not([hidden])');
     check(/La última vez: 3 de 4/.test(await tp.locator('.test-last').innerText()), L('la portada no recuerda el último resultado'));
+    // Las vistas (las 4 respondidas y la 5.ª, que llegó a salir) quedan en el historial, que evita el
+    // sorteo siguiente: otra partida empieza distinta.
+    const recent = await tp.evaluate(() => JSON.parse(localStorage.getItem('mirada.test.recent') || '[]'));
+    check(Array.isArray(recent) && recent.length === 1 && recent[0].length === 5, L(`historial de vistas ${JSON.stringify(recent)}`));
+    await tp.click('[data-action="start"]');
+    await tp.waitForSelector('.lesson-stage .option');
+    const again = await tp.evaluate(() => JSON.parse(localStorage.getItem('mirada.test.recent') || '[]'));
+    check(again.length === 2 && !recent[0].includes(again[1][0]), L(`la partida nueva repite la primera pregunta ${JSON.stringify(again)}`));
     await tctx.close();
   }
 }

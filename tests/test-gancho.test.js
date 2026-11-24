@@ -1,11 +1,17 @@
-// Test de cultura pictórica (app/test/): el banco sobre el catálogo real, la regla adaptativa con
-// jugadores simulados, la puntuación acumulada, el percentil y el nivel. Sin navegador.
+// Test de cultura pictórica (app/test/): las preguntas fijas sobre el catálogo real, la bolsa por
+// tramos generada del catálogo y el sorteo de cada partida, la regla adaptativa con jugadores
+// simulados, la puntuación acumulada, el percentil y el nivel. Sin navegador.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { realIndex } from './helpers-real.js';
+import { realIndex, realCatalogJson } from './helpers-real.js';
+import { bigIndex, sampleIndex } from './helpers.js';
+import { buildIndex } from '../app/js/engine/catalog.js';
+import { createRng } from '../app/js/engine/rng.js';
+import { buildBolsa, shownWorks, TIER_CUTS, tierForScore } from '../app/js/test/bolsa.js';
+import { drawGame, startHistory, markSeen, MIN_PER_KIND, MIN_ERAS, MIN_SPANISH as MIN_SPANISH_PER_TIER, RECENT_GAMES, HISTORY_KEEP } from '../app/js/test/sorteo.js';
 import {
   TIERS, PER_TIER, BLOCK, UP_FROM, STOP_BELOW, PAUSE_FROM, MAX_QUESTIONS, KINDS,
   createTest, answer, advance, resume, finish, summary, simulate, perfectScore, isAnswered,
@@ -13,10 +19,12 @@ import {
 import { percentileFor, levelForScore, buildResult, shareText, PERCENTILE_BANDS, GRID_OK, GRID_OFF } from '../app/js/test/resultado.js';
 import { validateBank, viewOf, prefixImages } from '../app/js/test/preguntas.js';
 import { LEVELS } from '../app/js/engine/progress.js';
+import { similarity } from '../app/js/engine/questions.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const bank = JSON.parse(readFileSync(join(root, 'app', 'test', 'preguntas.json'), 'utf8'));
 const html = readFileSync(join(root, 'app', 'test', 'index.html'), 'utf8');
+const adjustments = JSON.parse(readFileSync(join(root, 'app', 'test', 'tramos.json'), 'utf8'));
 const index = realIndex();
 const questions = bank.questions;
 const MIN_SPANISH = 6;
@@ -27,7 +35,7 @@ function rng(seed) {
   return () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
 }
 
-test('banco: 40 preguntas válidas sobre el catálogo real, 8 por tramo, sin spoilers', () => {
+test('preguntas fijas: 40 válidas sobre el catálogo real, 8 por tramo, sin spoilers', () => {
   assert.deepEqual(validateBank(bank, index), []);
   assert.equal(questions.length, MAX_QUESTIONS);
   assert.equal(TIERS.length * PER_TIER, MAX_QUESTIONS);
@@ -39,7 +47,7 @@ test('banco: 40 preguntas válidas sobre el catálogo real, 8 por tramo, sin spo
   }
 });
 
-test('banco: mezcla de mecánicas y de épocas; españoles en todos los tramos', () => {
+test('preguntas fijas: mezcla de mecánicas y de épocas; españoles en todos los tramos', () => {
   for (const t of TIERS) {
     const kinds = new Set(questions.filter((q) => q.tier === t.id).map((q) => q.kind));
     assert.equal(kinds.size, KINDS.length, `tramo ${t.name}: las tres mecánicas`);
@@ -257,4 +265,213 @@ test('index.html: SEO y vista previa (título, descripción, canonical, Open Gra
     if (url) assert.doesNotMatch(url[1], /^(https?:)?\/\//, m[0]);
   }
   assert.doesNotMatch(html, /\b(ayer|mañana)\b/i);
+});
+
+// ---------------------------------------------------------------- Bolsa por tramos y sorteo
+
+const bolsa = buildBolsa(index, { fixed: questions, adjustments });
+const MIN_POOL = 24;
+const SEEDS = 60;
+const isSpanish = (q) => index.artist(index.artwork(q.artwork).artistId).country === 'España';
+const workOf = (id) => index.artwork(id);
+
+// Comprueba una candidata o pregunta sorteada contra el catálogo (lo que no mira validateBank).
+function assertPlayable(q, idx = index) {
+  const work = idx.artwork(q.artwork);
+  assert.ok(work, `${q.id}: obra ${q.artwork}`);
+  assert.ok(KINDS.includes(q.kind), `${q.id}: mecánica`);
+  assert.equal(new Set(q.options).size, 4, `${q.id}: 4 opciones distintas`);
+  assert.ok(q.options.includes(q.answer), `${q.id}: la respuesta está entre las opciones`);
+  for (const id of shownWorks(q)) {
+    const w = idx.artwork(id);
+    assert.ok(w, `${q.id}: obra en pantalla ${id}`);
+    assert.notEqual(w.spoiler, true, `${q.id}: ${id} lleva la firma`);
+    // Atribución dudosa: solo en la fija t38, de movimiento (la época no depende del autor).
+    if (w.attributed) assert.ok(q.kind === 'movement' && questions.some((f) => f.id === q.id), `${q.id}: ${id} es de atribución dudosa`);
+  }
+  const artist = idx.artist(work.artistId);
+  if (q.kind === 'who') {
+    assert.equal(q.answer, artist.id);
+    for (const id of q.options) assert.ok(idx.artist(id), `${q.id}: pintor ${id}`);
+  }
+  if (q.kind === 'movement') {
+    assert.equal(q.answer, artist.movementId);
+    for (const id of q.options) assert.ok(idx.movement(id), `${q.id}: movimiento ${id}`);
+  }
+  if (q.kind === 'which') {
+    assert.equal(q.answer, q.artwork);
+    assert.equal(new Set(q.options.map((id) => idx.artwork(id).artistId)).size, 4, `${q.id}: cuatro pintores distintos`);
+  }
+  assert.ok(typeof q.hint === 'string' && q.hint.trim() && !/\b(ayer|mañana)\b/i.test(q.hint), `${q.id}: pista`);
+}
+
+test('bolsa: cada tramo con al menos 24 candidatas, las tres mecánicas y algún español; todas las obras clasificadas', () => {
+  for (const t of TIERS) {
+    const pool = bolsa.byTier[t.id];
+    assert.ok(pool.length >= MIN_POOL, `tramo ${t.name}: ${pool.length} candidatas`);
+    for (const k of KINDS) assert.ok(pool.filter((c) => c.kind === k).length >= 2 * MIN_PER_KIND, `tramo ${t.name}: pocas de ${k}`);
+    assert.ok(new Set(pool.map((c) => c.movementId)).size >= MIN_ERAS, `tramo ${t.name}: pocas épocas`);
+    assert.ok(pool.some((c) => c.spanish), `tramo ${t.name}: sin españoles`);
+  }
+  // Toda obra que puede preguntarse (sin firma ni atribución dudosa) está en algún tramo.
+  const inBolsa = new Set(bolsa.candidates.map((c) => c.artwork));
+  const excluded = new Set(adjustments.excluir || []);
+  for (const w of index.artworks) {
+    if (w.spoiler || w.attributed || excluded.has(w.id)) continue;
+    assert.ok(inBolsa.has(w.id), `${w.id} (${w.title}) sin clasificar`);
+  }
+  assert.equal(bolsa.byId.size, bolsa.candidates.length, 'ids únicos');
+});
+
+test('bolsa: todo id existe, nada con firma ni atribución dudosa, respuestas correctas y reservas de miniaturas del mismo pintor', () => {
+  for (const c of bolsa.candidates) {
+    assertPlayable(c);
+    for (const [i, slot] of (c.slots || []).entries()) {
+      const artistId = workOf(c.options[i]).artistId;
+      for (const id of slot) {
+        assert.ok(workOf(id), `${c.id}: reserva ${id}`);
+        assert.equal(workOf(id).artistId, artistId, `${c.id}: la reserva ${id} es de otro pintor`);
+        assert.ok(!workOf(id).spoiler && !workOf(id).attributed, `${c.id}: reserva ${id} con firma o dudosa`);
+      }
+    }
+  }
+});
+
+test('bolsa: las 40 fijas siguen en su tramo (con sus opciones) y sus obras también; tramos.json manda', () => {
+  const forced = adjustments.forzar || {};
+  for (const q of questions) {
+    const c = bolsa.byId.get(q.id);
+    assert.ok(c, `${q.id} en la bolsa`);
+    assert.equal(c.tier, q.tier);
+    assert.deepEqual(c.options, q.options);
+    assert.equal(c.hint, q.hint);
+    for (const other of bolsa.candidates.filter((x) => x.artwork === q.artwork && x.id !== q.id)) {
+      const want = forced[`${other.artwork}:${other.kind}`] || forced[other.artwork] || q.tier;
+      assert.equal(other.tier, want, `${other.id}: la obra de ${q.id} fuera de su tramo`);
+    }
+  }
+  for (const [id, tier] of Object.entries(forced)) {
+    const [work, kind] = id.split(':');
+    const list = bolsa.candidates.filter((c) => c.artwork === work && (!kind || c.kind === kind) && c.source !== 'fija');
+    assert.ok(list.length, `ajuste ${id} sin candidatas`);
+    for (const c of list) assert.equal(c.tier, tier, `ajuste ${id}`);
+  }
+  // Las de regla llevan el tramo de su puntuación, y los cortes van en orden.
+  for (let i = 1; i < TIER_CUTS.length; i++) assert.ok(TIER_CUTS[i] > TIER_CUTS[i - 1]);
+  for (const c of bolsa.candidates.filter((x) => x.source === 'regla')) assert.equal(c.tier, tierForScore(c.score), c.id);
+  // Excluir quita la obra entera o solo una mecánica.
+  const w = bolsa.candidates.find((c) => c.source === 'regla').artwork;
+  const without = buildBolsa(index, { fixed: questions, adjustments: { excluir: [w, 'a167:which'] } });
+  assert.ok(!without.candidates.some((c) => c.artwork === w));
+  assert.ok(!without.byId.has('which-a167') && without.candidates.some((c) => c.artwork === 'a167'));
+});
+
+test('bolsa: la dificultad crece con los tramos (obras menos famosas y distractores más parecidos arriba)', () => {
+  const rule = bolsa.candidates.filter((c) => c.source === 'regla');
+  const mean = (list, f) => list.reduce((n, c) => n + f(c), 0) / list.length;
+  const fame = TIERS.map((t) => mean(rule.filter((c) => c.tier === t.id), (c) => workOf(c.artwork).fame));
+  const shown = fame.map((f) => f.toFixed(2)).join(' · ');
+  for (let i = 1; i < fame.length; i++) assert.ok(fame[i] <= fame[i - 1] + 0.05, `fama media por tramo ${shown}`);
+  assert.ok(fame[0] > 2.8 && fame[4] < 1.8, `fama media por tramo ${shown}`);
+  const near = (c) => c.options.filter((id) => id !== c.answer).map((id) => similarity(index, index.artist(workOf(c.artwork).artistId), index.artist(c.kind === 'who' ? id : workOf(id).artistId)));
+  const sim = TIERS.map((t) => mean(rule.filter((c) => c.tier === t.id && c.kind === 'who'), (c) => near(c).reduce((n, s) => n + s, 0) / 3));
+  assert.ok(sim[4] > sim[0], `parecido medio de los distractores por tramo ${sim.map((s) => s.toFixed(2)).join(' · ')}`);
+});
+
+test('sorteo: 8 por tramo con mezcla de mecánicas y épocas, un español por tramo, sin repetir obra; motor y máximo de 80 intactos', () => {
+  for (let seed = 1; seed <= SEEDS; seed++) {
+    const game = drawGame(bolsa, createRng(seed), []);
+    assert.deepEqual(validateBank({ questions: game }, index), [], `semilla ${seed}`);
+    assert.deepEqual(game.map((q) => q.tier), TIERS.flatMap((t) => Array(PER_TIER).fill(t.id)), 'en orden de tramo');
+    for (const t of TIERS) {
+      const list = game.filter((q) => q.tier === t.id);
+      for (const k of KINDS) assert.ok(list.filter((q) => q.kind === k).length >= MIN_PER_KIND, `semilla ${seed}, tramo ${t.name}: ${k}`);
+      assert.ok(new Set(list.map((q) => index.artist(workOf(q.artwork).artistId).movementId)).size >= MIN_ERAS, `semilla ${seed}, tramo ${t.name}: épocas`);
+      assert.ok(list.filter(isSpanish).length >= MIN_SPANISH_PER_TIER, `semilla ${seed}, tramo ${t.name}: sin español`);
+    }
+    for (let i = 0; i < game.length; i += BLOCK) {
+      assert.equal(new Set(game.slice(i, i + BLOCK).map((q) => q.kind)).size, KINDS.length, `semilla ${seed}: el bloque ${i / BLOCK + 1} sin las tres mecánicas`);
+    }
+    const shown = game.flatMap(shownWorks);
+    assert.equal(new Set(shown).size, shown.length, `semilla ${seed}: obra repetida en pantalla`);
+    for (const q of game) assertPlayable(q);
+    assert.equal(perfectScore(game), 80, 'el máximo honesto sigue en 80');
+  }
+  const { state } = simulate(drawGame(bolsa, createRng(7), []), () => true);
+  assert.equal(summary(state).top.key, 'friki');
+  assert.equal(summary(state).score, 80);
+});
+
+test('sorteo: misma semilla e historial, misma partida; otra semilla, otra; no toca la bolsa', () => {
+  const before = JSON.stringify(bolsa.candidates);
+  const hist = [['who-a82', 't01', 'no-existe']];
+  assert.deepEqual(drawGame(bolsa, createRng(42), hist), drawGame(bolsa, createRng(42), hist));
+  const a = drawGame(bolsa, createRng(42), []).map((q) => q.id);
+  const b = drawGame(bolsa, createRng(43), []).map((q) => q.id);
+  assert.notDeepEqual(a, b);
+  assert.equal(JSON.stringify(bolsa.candidates), before);
+  // Historial roto: se sortea igual.
+  assert.equal(drawGame(bolsa, createRng(1), 'basura').length, 40);
+  assert.equal(drawGame(bolsa, createRng(1), [null, 5, ['x']]).length, 40);
+});
+
+test('sorteo: siete partidas seguidas, siete contenidos; lo visto en las 2 últimas no vuelve (salvo españoles, que son pocos)', () => {
+  // Quien juega todo (40 vistas) y quien se queda en los dos primeros tramos (16).
+  for (const seenPerGame of [40, 16]) {
+    let repeats = 0;
+    let games = 0;
+    for (let run = 0; run < 10; run++) {
+      let hist = [];
+      const played = [];
+      for (let g = 0; g < 7; g++) {
+        const game = drawGame(bolsa, createRng(1000 * run + g + 1), hist).slice(0, seenPerGame);
+        const recent = played.slice(-RECENT_GAMES).flat();
+        if (recent.length) {
+          games++;
+          const works = new Set(recent.map((q) => q.artwork));
+          const ids = new Set(recent.map((q) => q.id));
+          const again = game.filter((q) => !isSpanish(q) && works.has(q.artwork));
+          assert.ok(again.length <= 2, `${seenPerGame} vistas, partida ${g}: ${again.map((q) => q.id)}`);
+          repeats += again.length;
+          assert.ok(game.filter((q) => ids.has(q.id) && !isSpanish(q)).length <= 1, 'pregunta idéntica repetida');
+        }
+        assert.ok(!played.some((p) => p.map((q) => q.id).join() === game.map((q) => q.id).join()), 'partida idéntica');
+        hist = startHistory(hist);
+        for (const q of game) hist = markSeen(hist, q.id);
+        played.push(game);
+      }
+    }
+    assert.ok(repeats / games <= 0.25, `${seenPerGame} vistas: ${repeats} obras repetidas en ${games} partidas`);
+  }
+});
+
+test('historial: una partida nueva al empezar, cada pregunta vista una vez, como mucho HISTORY_KEEP partidas', () => {
+  let h = startHistory(null);
+  assert.deepEqual(h, [[]]);
+  h = markSeen(markSeen(markSeen(h, 'a'), 'b'), 'a');
+  assert.deepEqual(h, [['a', 'b']]);
+  for (let i = 0; i < HISTORY_KEEP + 3; i++) h = markSeen(startHistory(h), `q${i}`);
+  assert.equal(h.length, HISTORY_KEEP);
+  assert.deepEqual(h[h.length - 1], [`q${HISTORY_KEEP + 2}`]);
+  assert.deepEqual(markSeen([], 'x'), [['x']]);
+  assert.ok(RECENT_GAMES < HISTORY_KEEP);
+});
+
+test('bolsa con catálogos más grandes: crece sin errores y el sorteo sigue valiendo', () => {
+  const small = buildBolsa(sampleIndex());
+  const bigIdx = bigIndex();
+  const big = buildBolsa(bigIdx);
+  assert.ok(big.candidates.length > small.candidates.length, `${big.candidates.length} > ${small.candidates.length}`);
+  for (const c of big.candidates) assertPlayable(c, bigIdx);
+  const bigGame = drawGame(big, createRng(3), []);
+  const shown = bigGame.flatMap(shownWorks);
+  assert.equal(new Set(shown).size, shown.length);
+  assert.ok(bigGame.length >= 4 * PER_TIER, `${bigGame.length} preguntas con el catálogo sintético`);
+  // El catálogo real triplicado (como si llegaran ~700 obras): la bolsa crece y las partidas valen.
+  const cat = realCatalogJson();
+  const copies = [1, 2].flatMap((k) => cat.artworks.map((w) => ({ ...w, id: `${w.id}x${k}` })));
+  const triple = buildIndex({ ...cat, artworks: [...cat.artworks, ...copies] });
+  const grown = buildBolsa(triple, { fixed: questions, adjustments });
+  assert.ok(grown.candidates.length > 2.5 * bolsa.candidates.length, `${grown.candidates.length} candidatas`);
+  for (let seed = 1; seed <= 5; seed++) assert.deepEqual(validateBank({ questions: drawGame(grown, createRng(seed), []) }, triple), []);
 });
