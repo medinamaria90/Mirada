@@ -59,8 +59,8 @@ python3 -I tools/patch_catalog.py app           # regenera el catálogo desde to
 cd app && python3 -m http.server 8000           # servir en local
 ```
 
-El e2e usa Playwright con Chrome del sistema; ajusta la ruta de Playwright y de Chrome en
-`tools/e2e.mjs` si en tu máquina están en otro sitio.
+El e2e usa Playwright con Chrome del sistema; si en tu máquina están en otro sitio, pásalos en las
+variables `MIRADA_PLAYWRIGHT` (carpeta del paquete) y `MIRADA_CHROME` (ejecutable).
 
 ## Estructura
 

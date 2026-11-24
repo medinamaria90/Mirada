@@ -11,7 +11,11 @@ import { hasMovementReview } from '../app/js/engine/progress.js';
 import { isoWeek, dayKey } from '../app/js/engine/dates.js';
 
 const require = createRequire(import.meta.url);
-const { chromium } = require('/opt/npm-tools/node_modules/playwright');
+// Rutas de Playwright y Chrome: por variable de entorno (MIRADA_PLAYWRIGHT, MIRADA_CHROME) o las del
+// entorno de referencia (Linux).
+const PLAYWRIGHT_PATH = process.env.MIRADA_PLAYWRIGHT || '/opt/npm-tools/node_modules/playwright';
+const CHROME_PATH = process.env.MIRADA_CHROME || '/usr/bin/google-chrome';
+const { chromium } = require(PLAYWRIGHT_PATH);
 
 const base = process.argv[2] || 'http://127.0.0.1:8881/';
 const catalog = JSON.parse(readFileSync(process.argv[3] || new URL('../app/data/catalog.json', import.meta.url), 'utf8'));
@@ -577,7 +581,7 @@ async function seed(pg, state, hash = 'inicio') {
   await pg.reload();
 }
 
-const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] });
+const browser = await chromium.launch({ executablePath: CHROME_PATH, args: ['--no-sandbox'] });
 const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES', permissions: ['clipboard-read', 'clipboard-write'], hasTouch: true };
 
 // ---------------------------------------------------------------- Arranque: peticiones y bytes hasta el primer pintado útil
