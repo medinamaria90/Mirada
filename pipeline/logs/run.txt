@@ -36,3 +36,9 @@ ok   w27780737   rosales          1600x956 353KB  Episodio de la Batalla de Tetu
 lote: 150/150 bien; quedan 380
 build: 1180 obras (800 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
 subidas 150 imágenes a la release
+ok   w18689417   surikov          1600x745 258KB  La conquista de Siberia por Yermak
+ok   w4089077    vasnetsov        1600x1060 381KB  Los bogatires
+ok   w4112530    vasnetsov        1600x900 279KB  El caballero en la encrucijada
+lote: 150/150 bien; quedan 230
+build: 1180 obras (950 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
+subidas 150 imágenes a la release
