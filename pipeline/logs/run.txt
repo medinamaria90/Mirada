@@ -1,2 +1,7 @@
 inicio Tue Nov 24 17:59:09 UTC 2026
 == candidates miguel-angel rafael madrazo pradilla cezanne van-gogh 17:59:09
+repito van-gogh           faltan datos de forzadas: Q18713070 Q21948567
+ERROR  van-gogh           SPARQL query() takes 1 positional argument but 2 were given
+fin 2026-11-24 18:00:09
+47M	.git
+920K	catalogo
