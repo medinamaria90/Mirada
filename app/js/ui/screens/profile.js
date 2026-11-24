@@ -15,7 +15,7 @@ export { graceLine } from './profile-parts.js';
 // Los estilos del perfil se piden al abrirlo (no pesan en el arranque); el módulo espera a que lleguen
 // para que no parpadee sin estilo.
 function loadStyles() {
-  if (typeof document === 'undefined') return Promise.resolve();
+  if (typeof document === 'undefined' || typeof document.querySelector !== 'function') return Promise.resolve();
   const href = new URL('../../../css/profile.css', import.meta.url).href;
   if (document.querySelector(`link[href="${href}"]`)) return Promise.resolve();
   return new Promise((resolve) => {
