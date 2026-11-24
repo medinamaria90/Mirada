@@ -78,3 +78,19 @@ ya     corot              994 candidatas
 ya     delaroche          75 candidatas
 ya     delacroix          425 candidatas
 fin 2026-11-24 11:07:29
+ya     briullov           65 candidatas
+ok     ivanov             Q76829       29 candidatas; de las 80 primeras, 19 con imagen >=1200px
+ya     millet             206 candidatas
+ya     madrazo            86 candidatas
+ok     fedotov            Q248597       6 candidatas; de las 80 primeras, 4 con imagen >=1200px
+ya     aivazovski         326 candidatas
+ya     courbet            578 candidatas
+ya     bouguereau         317 candidatas
+ya     moreau             158 candidatas
+ya     rossetti           116 candidatas
+ya     millais            221 candidatas
+ya     pissarro           777 candidatas
+ok     savrasov           Q353008      24 candidatas; de las 80 primeras, 19 con imagen >=1200px
+ya     manet              361 candidatas
+ya     shishkin           230 candidatas
+fin 2026-11-24 11:07:45
