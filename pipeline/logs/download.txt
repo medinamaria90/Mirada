@@ -1,4 +1,106 @@
-selección 1180, ya bajadas 1100, pendientes 80; este lote 80
+selección 1180, ya bajadas 999, pendientes 181; este lote 150
+ok   w4063783    vasnetsov        1125x1600 364KB  Aliónushka
+ok   w4195524    vasnetsov        1185x1600 526KB  Iván Tsarévich sobre el lobo gris
+ok   w28796199   pinazo           1166x1600 575KB  Las hijas del Cid
+ok   w28796717   pinazo           1362x1600 436KB  Retrato de mujer
+ok   w27781074   pinazo           1600x1168 503KB  Últimos momentos del rey don Jaime el Conquistador en el act
+ok   w27781252   pinazo           1188x1600 741KB  Autorretrato
+ok   w27781407   pinazo           1600x1083 543KB  Desnudo de mujer
+ok   w59828498   pinazo           1600x934 393KB  Niña
+ok   w110401565  pinazo           1600x1295 315KB  Merienda en la playa
+ok   w9295442    waterhouse       1600x961 439KB  Hilas y las ninfas
+ok   w2445726    waterhouse       1600x1228 372KB  La señora de Shalott
+ok   w5332757    waterhouse       1600x913 405KB  Eco y Narciso
+ok   w39537      waterhouse       977x1600 379KB  Circe ofreciendo la copa a Odiseo
+ok   w5121363    waterhouse       752x1600 215KB  Circe Invidiosa
+ok   w7401211    waterhouse       971x1600 360KB  Santa Eulalia
+ok   w7733565    waterhouse       1600x923 417KB  Los favoritos del emperador Honorio
+ok   w4944794    waterhouse       853x1200 256KB  Bóreas
+ok   w3135789    kroyer           1600x1304 354KB  Hip
+ok   w21948567   van-gogh         1259x1600 577KB  Los girasoles
+ok   w45585      van-gogh         1600x1267 708KB  La noche estrellada
+ok   w2282256    van-gogh         1600x1223 660KB  Lirios
+ok   w674846     van-gogh         1600x1263 568KB  El café de noche
+ok   w1926628    van-gogh         1600x1275 763KB  El viñedo rojo
+ok   w3630735    van-gogh         1316x1600 581KB  Autorretrato
+ok   w19363214   van-gogh         1434x1600 619KB  Autorretrato con la oreja vendada
+ok   w2664039    sargent          845x1600 146KB  Retrato de Madame X
+ok   w644106     sargent          1595x1600 322KB  Las hijas de Edward Darley Boit
+ok   w5526647    sargent          1600x603 159KB  Gassed
+ok   w20170430   sargent          1164x1600 296KB  Las hermanas Wyndham: Lady Elcho, Mrs. Adeane, y Mrs. Tennan
+ok   w5351449    sargent          1600x1082 269KB  El jaleo
+ok   w28796798   sargent          1322x1600 335KB  Retrato de la señora de Cecil Wade
+ok   w4157667    vrubel           1600x849 330KB  Demonio sentado
+ok   w4503153    vrubel           1051x1600 330KB  La princesa cisne
+ok   w4343804    vrubel           1309x1600 374KB  Pan
+ok   w23499053   regoyos          1600x1338 574KB  El chaparrón. Bahía de Santoña
+ok   w23936176   regoyos          1600x1160 709KB  Fiesta vasca
+ok   w23936448   regoyos          1316x1600 636KB  Madrugada del Viernes Santo en Orduña
+ok   w31187772   regoyos          1600x1333 715KB  La Concha, nocturno
+ok   w23935705   regoyos          1600x1209 544KB  Pancorbo: el tren que pasa
+ok   w28791071   regoyos          1600x1203 731KB  Altos hornos en Bilbao
+ok   w2275610    seurat           1291x1600 795KB  El circo
+ok   w3234845    seurat           1600x1288 701KB  Las modelos
+ok   w3766163    seurat           1329x1600 646KB  Mujer joven empolvándose
+ok   w3823444    seurat           1600x1070 529KB  La parada del circo
+ok   w3821251    seurat           1012x1600 587KB  La torre Eiffel
+ok   w3793238    seurat           1600x1259 539KB  El canal de Gravelines, Petit Fort Philippe
+ok   w4110204    levitan          1600x1281 252KB  Campanas al atardecer
+ok   w4458429    levitan          1600x1281 389KB  Monasterio tranquilo
+ok   w4113083    levitan          1600x1029 306KB  El camino de Vladímir
+ok   w4282465    levitan          1600x1311 818KB  Marzo
+ok   w4193277    levitan          1600x1029 567KB  Otoño dorado
+ok   w4332076    levitan          1600x1123 367KB  El lago. Rusia
+ok   w4337609    levitan          1239x1600 655KB  Sokólniki. Otoño
+ok   w4085401    levitan          1600x929 623KB  Bosque de abedules
+ok   w22329812   zorn             1278x1600 671KB  Las hijas de Ramón Subercaseaux
+ok   w5967388    rusinol          1600x1219 334KB  La morfina
+ok   w23934499   rusinol          1600x1269 446KB  Una romanza
+ok   w27574228   rusinol          1600x1263 692KB  Jardín de Montmartre
+ok   w23907194   rusinol          1200x1600 238KB  El patio azul
+ok   w23935128   rusinol          1191x1600 416KB  Figura femenina
+ok   w23935289   rusinol          1056x1600 291KB  Retrato de Miquel Utrillo
+ok   w698487     klimt            1594x1600 820KB  El beso
+ok   w354396     klimt            1600x1599 854KB  Retrato de Adele Bloch-Bauer I
+ok   w2324643    klimt            807x1600 354KB  Judit I
+ok   w3829156    klimt            1600x1592 616KB  Las tres edades de la mujer
+ok   w5967091    klimt            1600x1528 734KB  La joven
+ok   w4681871    klimt            973x1600 325KB  Retrato de Adele Bloch-Bauer II
+ok   w19883512   klimt            1578x1600 832KB  Esperanza II
+ok   w4110588    nesterov         1600x1198 442KB  La visión del joven Bartolomé
+ok   w105956031  nesterov         1600x1358 523KB  El arzobispo Antonio
+ok   w5826311    signac           1600x1324 657KB  El puerto de Marsella
+ok   w18744757   signac           1600x1271 875KB  Venecia, el Gran Canal
+ok   w19883434   signac           1600x1278 838KB  Opus 217. Retrato de Félix Fénéon
+ok   w5748612    signac           1316x1600 761KB  Capo di Noli, cerca de Génova
+ok   w29222763   signac           1420x1064 466KB  En tiempos de armonía
+ok   w57285436   signac           1600x1264 665KB  El sendero de los aduaneros
+ok   w24018830   signac           1600x1223 679KB  El desayuno
+ok   w5642417    sorolla          1600x1177 510KB  ¡Triste herencia!
+ok   w6169435    sorolla          1600x1207 408KB  Y aún dicen que el pescado es caro
+ok   w6065609    sorolla          1579x1600 579KB  Paseo a orillas del mar
+ok   w6043567    sorolla          1600x974 229KB  Chicos en la playa
+ok   w58336269   sorolla          1242x1589 238KB  Joaquín Sorolla García vestido de blanco
+ok   w19905355   sorolla          1024x1600 384KB  Clotilde con traje negro
+ok   w21045432   sorolla          1600x1035 294KB  Autorretrato Joaquín Sorolla
+ok   w51726313   sorolla          1600x1165 421KB  Cosiendo la vela
+ok   w19912406   sorolla          1600x1136 600KB  El baño
+ok   w18891156   munch            1294x1600 410KB  El grito
+ok   w3208135    munch            1600x1043 285KB  La danza de la vida
+ok   w18891111   munch            1307x1600 388KB  El Beso
+ok   w18748731   munch            1600x1250 464KB  Inger en la playa
+ok   w3955717    munch            1600x1112 416KB  Tarde en Karl Johan
+ok   w3607521    lautrec          1600x1399 377KB  En el Moulin Rouge
+ok   w3633443    lautrec          1600x1216 470KB  En el Moulin-Rouge, el baile
+ok   w3824633    lautrec          1279x1600 753KB  La toilette
+ok   w3607539    lautrec          1600x1358 593KB  Salón de la Rue des Moulins
+ok   w3607561    lautrec          1600x1008 359KB  En el circo Fernando
+ok   w3630732    lautrec          1229x1600 358KB  Autorretrato delante de un espejo
+ok   w20354158   hammershoi       1593x1600 420KB  Plaza de Amelienborg
+ok   w58411216   hammershoi       1431x1600 440KB  Interior con caballete, Bredgade 25
+ok   w20745460   hammershoi       1337x1600 310KB  Interior con mujer joven de espaldas
+ok   w20355557   hammershoi       1178x1600 209KB  Desnudo femenino sentado
+ok   w29044191   hammershoi       1600x1034 169KB  Cinco retratos
 ok   w4156438    serov            1422x1600 442KB  Muchacha con los melocotones
 ok   w4373329    serov            1600x987 236KB  Retrato de Ida Rubinstein
 ok   w66988420   serov            1156x1600 284KB  Retrato de la princesa Zinaida Yusúpova
@@ -26,7 +128,7 @@ ok   w31187972   zuloaga          1107x1600 280KB  Anita Ramírez de negro
 ok   w23935794   zuloaga          1174x1600 426KB  Amigas
 ok   w27668773   zuloaga          1600x1324 221KB  El Cristo de la sangre
 ok   w893162     nonell           1208x1600 620KB  La Paloma
-ok   w11917835   nonell           1600x1598 700KB  Dos gitanas
+ok   w11917835   nonell           1600x1598 701KB  Dos gitanas
 ok   w23935121   nonell           1270x1600 371KB  Dolores
 ok   w23936494   nonell           1347x1600 700KB  Consuelo
 ok   w23934486   nonell           1600x1598 552KB  Reposo
@@ -44,39 +146,7 @@ ok   w27665175   mir              1600x1428 529KB  Aguas de Moguda
 ok   w15714659   romero-de-torres 1600x988 263KB  La Venus de la poesía
 ok   w16913179   romero-de-torres 1600x1472 426KB  La gracia
 ok   w15093245   romero-de-torres 1600x1468 245KB  El pecado
-ok   w100432952  romero-de-torres 1303x1600 516KB  Las dos sendas
 ok   w110498870  romero-de-torres 1026x1600 456KB  Adela Carbone, La Tanagra
 ok   w16587317   romero-de-torres 1600x1043 321KB  La Buenaventura
 ok   w16610778   romero-de-torres 1156x1600 383KB  Naranjas y limones
-ok   w22330492   romero-de-torres 1024x1438 212KB  Mal de amores
-ok   w4247398    petrov-vodkin    1600x1408 381KB  Bañando al caballo rojo
-ok   w4089579    petrov-vodkin    1600x1455 467KB  La Virgen de la ternura ante los corazones malvados
-ok   w30067841   petrov-vodkin    1200x940 256KB  La muerte del comisario
-ok   w1170315    malevich         1196x1199 238KB  Cuadrado negro
-ok   w579455     malevich         1600x1600 428KB  Blanco sobre blanco
-ok   w1523466    malevich         1281x1600 260KB  Composición suprematista
-ok   w18112999   malevich         1593x1600 513KB  El afilador de cuchillos
-ok   w3877556    modigliani       1600x1008 279KB  Desnudo acostado
-ok   w4062416    modigliani       800x1600 426KB  Alice
-ok   w3879285    modigliani       1013x1600 300KB  Desnudo sentado en un diván
-ok   w3879280    modigliani       1034x1600 349KB  Mujer desnuda
-ok   w3806044    modigliani       1059x1600 309KB  Jacques y Berthe Lipchitz
-ok   w2921123    modigliani       989x1600 306KB  Desnudo sentado
-ok   w3793584    modigliani       980x1536 228KB  El pequeño campesino
-ok   w769461     modigliani       1001x1600 221KB  La Femme à l'Éventail
-ok   w3630728    modigliani       1028x1600 311KB  Autorretrato
-ok   w6461080    juan-gris        912x1600 467KB  La botella de anís
-ok   w3399451    juan-gris        1258x1600 475KB  Retrato de Pablo Picasso
-ok   w19922091   juan-gris        1043x1600 382KB  Violín y naipes sobre una mesa
-ok   w27658378   juan-gris        1600x1277 398KB  Guitarra y periódico
-ok   w60329141   juan-gris        1277x1600 468KB  El desayuno
-ok   w19922323   juan-gris        1600x1044 379KB  Bodegón con guitarra
-ok   w1555137    schiele          1600x1300 732KB  Retrato de Wally
-ok   w2438357    schiele          1600x1353 774KB  La Muerte y la doncella
-ok   w2445555    schiele          1283x1600 516KB  Ciudad muerta III
-ok   w28002609   schiele          1600x1511 848KB  La familia
-ok   w28797696   schiele          1579x1600 450KB  Los ermitaños
-ok   w19967004   schiele          1600x928 562KB  El abrazo
-ok   w19973869   schiele          1263x1600 438KB  El puerto de Trieste
-ok   w28797693   schiele          1600x1296 737KB  Autorretrato con alquequenjes
-lote: 80/80 bien; quedan 0
+lote: 150/150 bien; quedan 31
