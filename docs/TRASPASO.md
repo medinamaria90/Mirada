@@ -183,6 +183,15 @@ Decisiones de la tarde del 24/11:
    o **de memoria** («este hay que sabérselo»; la pista cuenta algo del cuadro para fijarlo). Se
    escribe al seleccionar cada obra del catálogo grande (nivel 1 primero, ~400 obras), con revisión
    obra a obra. Para las 235 actuales, la auditoría de hoy es el apaño.
+   **HECHO (24/11, 20:25, en Render):** motor `engine/feedback.js` con la regla (pista propia del
+   cuadro correcto → rasgo del pintor cuyas etiquetas se ven en el correcto y no en el elegido → nada;
+   «No es de X» con seña ausente solo si es segura); `feedbackFor(..., { retry, chosenId })` devuelve
+   `chosen`; esquema en `tools/catalog_data.py` (`LOOK`, `LOOK2` con fuente, `LOOK_SOURCE`, `KIND`,
+   `TAGS` con vocabulario cerrado `TAG_LABELS`/`NEGABLE_TAGS`, `TRAIT_TAGS`) y `catalog-text.json` v2;
+   357 pistas revisadas cuadro a cuadro (3 cambiadas, 4 looks nuevos, 5 segundas pistas con fuente,
+   2 atípicos: a182 Adoración de Velázquez y a236 Muchacho de El Greco); `tests/pistas.test.js`
+   recorre 29.000 combinaciones. Prado, Mauritshuis, MoMA y Orsay bloquean lecturas automáticas
+   (403): sus textos hay que leerlos a mano.
 10. **Al fallar, decir de quién era lo elegido (18:50, «súper importante»):** en «¿Cuál es de X?»,
     línea «El que has elegido es de <pintor> · <título>» y etiqueta con el pintor sobre el cuadro
     elegido en la rejilla; en «¿Quién lo pintó?», «No es de <elegido>» (+ rasgo ausente si es seguro);
@@ -194,7 +203,11 @@ Decisiones de la tarde del 24/11:
     de errores, pintores que se «agrietan», sin bloquear el mapa. **Hecha:**
     `docs/eval/auditoria-progresion-duolingo.md` (10 propuestas por impacto/coste; 1, 2, 5 y 6 con el
     motor actual; 3 y 4 con el catálogo grande; no copiar corazones, ligas ni avisos pasivo-agresivos).
-    Pendiente de que María elija cuáles.
+    **Decidido (20:50): aprobados 1, 2, 3, 4, 5, 6, 7, 9 y 10. El 8 (dificultad automática por
+    rendimiento) se descarta** porque un cambio invisible desconcierta, rompe el significado del 75 %
+    y descoloca el anti-trampa; su parte buena va en el 4 (coronas y «Legendario» con distractores
+    más parecidos, etiquetados como difíciles). En curso: 1, 2, 5, 6, 7 y 9 con el motor actual; 3, 4
+    y 10 con la migración al catálogo grande.
 14. **«Solo he visto 3 o 4 obras de Bruegel y ya está completado»** (19:10): hoy cada pintor tiene 4,8
     obras de media (2 en «Conoce a» + 2-3 preguntadas en su ronda); le gusta el intercalado con
     pintores anteriores (mantener). Propuesta para la migración al catálogo grande: «Conoce a» con 4-5
@@ -217,7 +230,17 @@ Decisiones de la tarde del 24/11:
     «que pare cuando vea que ya no lo estás sabiendo, para ver tu conocimiento real»); test largo
     para quien sabe. Puntuación ACUMULADA (acierto × tramo: llegar más lejos es la medida).
     Resultado: «n de m», nivel, y **«Sabes más de pintura que el X % de la gente»** (percentil con
-    distribución supuesta, documentada, marcada como estimación). En curso.
+    distribución supuesta, documentada, marcada como estimación).
+    **HECHO (24/11, 20:40, en Render): https://mirada.onrender.com/test/**. `app/test/` (index.html
+    indexable con Open Graph y `portada.jpg` 1200×630, `preguntas.json` con 40 preguntas fijas en 5
+    tramos), `app/js/test/` (motor adaptativo, resultado con percentil por bandas de
+    `docs/eval/reconocimiento-fuentes.md`, pantallas, compartir), `app/css/test.css`,
+    `tests/test-gancho.test.js` (12 pruebas con jugadores simulados). Pausa «Llevas 20 y vas muy bien»
+    desde la 20. Último resultado en `localStorage` (`mirada.test.last`). Sin visor ni audio en el
+    test. Faltan en el catálogo para el banco: Girasoles (firma), Guernica, Ofelia, Hay Wain, Sorolla,
+    Zurbarán, Ribera, Hals, Pissarro, Sisley → revisar el banco al migrar el catálogo grande.
+    Percentil reescalado al máximo honesto de 80 puntos (el perfecto ve 24 preguntas) para que llegue
+    al 99 %.
 12. **«¿De qué movimiento es?» con años** (18:56): las opciones solo decían el nombre del movimiento
     («es un lío»); deben llevar su periodo («Renacimiento · s. XV–XVI»), y el feedback también. En
     curso en la tanda de feedback.
