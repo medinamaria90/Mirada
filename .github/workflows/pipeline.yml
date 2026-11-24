@@ -24,6 +24,8 @@ jobs:
           git config user.name "mirada-bot"
           git config user.email "mirada-bot@users.noreply.github.com"
       - name: pasos
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: bash pipeline/run.sh
       - name: log de emergencia
         if: always()

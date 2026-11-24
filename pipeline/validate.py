@@ -53,9 +53,7 @@ def main():
         if not p:
             err.append(f"{tag}: pintor inexistente"); continue
         path = os.path.join(CAT, o["img"])
-        if o["downloaded"]:
-            if not os.path.exists(path):
-                err.append(f"{tag}: imagen marcada como descargada pero ausente"); continue
+        if o["downloaded"] and os.path.exists(path):  # las imágenes viven en la release; aquí solo si están en local
             wh = jpeg_size(path)
             if not wh:
                 err.append(f"{tag}: no es un JPEG válido")
@@ -63,7 +61,7 @@ def main():
                 err.append(f"{tag}: imagen pequeña {wh}")
             elif list(wh) != [o["w"], o["h"]]:
                 err.append(f"{tag}: w/h no casan con el archivo")
-        elif not parcial:
+        elif not o["downloaded"] and not parcial:
             err.append(f"{tag}: imagen sin descargar")
         y = o["yearSort"]
         if not y or y >= 1930 or y < p["born"] or y > p["died"] + 1:
@@ -87,7 +85,7 @@ def main():
             for k in ("museum", "technique", "dimensions"):
                 if not o.get(k):
                     warn.append(f"{tag}: ficha sin {k}")
-    size = sum(os.path.getsize(os.path.join(CAT, o["img"])) for o in obras if o["downloaded"] and os.path.exists(os.path.join(CAT, o["img"])))
+    size = sum(os.path.getsize(os.path.join(CAT, o["img"])) for o in obras if os.path.exists(os.path.join(CAT, o["img"])))
     print(f"validate: {len(obras)} obras ({sum(1 for o in obras if o['downloaded'])} con imagen), {len(pintores)} pintores, "
           f"imágenes {size/1e6:.1f} MB; {len(err)} errores, {len(warn)} avisos")
     for e in err[:120]:

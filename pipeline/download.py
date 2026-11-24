@@ -2,8 +2,10 @@
 
 - Pide a la API de Commons la URL de una miniatura (iiurlwidth) con tamaño estándar >= lo necesario.
 - Reduce a 1600 px de lado mayor (sin ampliar), JPEG calidad 82, sin metadatos (ImageMagick).
-- Guarda catalogo/img/<id>.jpg y catalogo/img_meta.json (id -> archivo, w, h, bytes).
-- No vuelve a bajar lo que ya está (mismo archivo de origen). Borra imágenes que ya no están en la selección.
+- Guarda catalogo/img/<id>.jpg y catalogo/img_meta.json (id -> archivo, w, h, bytes). En Actions, run.sh sube
+  después los JPEG a la release «catalogo-img» y los borra: img_meta.json es el registro de lo descargado.
+- No vuelve a bajar lo que ya consta en img_meta.json con el mismo archivo de origen. Borra imágenes locales
+  que ya no están en la selección.
 Uso: download.py --limit 150   (código de salida 0 = quedan pendientes, 3 = no queda nada, 1 = error)
 """
 import os, subprocess, sys, tempfile, time, urllib.parse
@@ -49,8 +51,7 @@ def main():
         if f.endswith(".jpg") and f[:-4] not in ids:
             os.remove(os.path.join(IMG, f)); meta.pop(f[:-4], None)
             log("borrada (ya no está en la selección)", f)
-    todo = [e for e in sel if not (os.path.exists(os.path.join(IMG, e["id"] + ".jpg"))
-                                   and meta.get(e["id"], {}).get("archivo") == e["archivo"])
+    todo = [e for e in sel if meta.get(e["id"], {}).get("archivo") != e["archivo"]
             and fails.get(e["id"], {}).get("archivo") != e["archivo"]]
     log(f"selección {len(sel)}, ya bajadas {len(sel) - len(todo)}, pendientes {len(todo)}; este lote {min(limit, len(todo))}")
     batch = todo[:limit]

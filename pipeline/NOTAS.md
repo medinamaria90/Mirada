@@ -8,7 +8,7 @@ que se lanza al hacer push de `pipeline/RUN` (una línea por paso) y hace commit
 1. `resolve` — verifica el QID de cada pintor (`pipeline/painters.json`) → `pipeline/out/painters_resolved.json`.
 2. `candidates` — obras candidatas por pintor (Wikidata SPARQL + datos del archivo en Commons) → `pipeline/out/candidates/<id>.json`.
 3. `seleccionar.py` (local, sin red; `PYTHONUTF8=1 python pipeline/seleccionar.py`) — elige las obras con `extra.json`, `excluir.json` y `ajustes.json` → `catalogo/seleccion.json` (con `level`).
-4. `download [lotes] [tamaño]` — descarga en lotes (150 por defecto), reanudable, commit tras cada lote → `catalogo/img/<id>.jpg`.
+4. `download [lotes] [tamaño]` — descarga en lotes (150 por defecto), reanudable por `catalogo/img_meta.json`, commit tras cada lote. Las imágenes **no entran en main** (pesarían ~400 MB y cualquier `git pull` las bajaría a un PC): `run.sh` las sube a la **release `catalogo-img`** del repo (un JPEG por obra, `https://github.com/medinamaria90/Mirada/releases/download/catalogo-img/<id>.jpg`) y las borra del checkout; `img-release` sube las que haya en `catalogo/img/` y las saca de main. Para traerlas a un sitio: `gh release download catalogo-img -D catalogo/img` (o `--pattern 'w208758.jpg'`).
 5. `fichas` — museo, ciudad, país, técnica, medidas, fecha y «qué aparece» de cada obra desde Wikidata → `pipeline/out/fichas.json` (reanudable; museos en `out/museos.json`, niveles administrativos en `out/lugares.json`).
 6. `build` / `validate [--parcial]` — `catalogo/obras.json` (esquema de la app + ficha), `catalogo/pintores.json`, `CREDITS.md` y comprobaciones.
 
@@ -63,13 +63,58 @@ Munch sin *El grito*, Van Gogh sin *Los girasoles* ni autorretratos, Millais sin
 - Límite de fallecimiento alineado a **1956** (dominio público en Europa; antes 1946) en `validate.py`,
   `build.py` y `resolve.py`.
 - `run.sh`: `download [lotes] [tamaño]` (antes solo lotes de 150), para probar con un lote pequeño.
-- Este PC no debe recibir descargas masivas: la copia de trabajo del catálogo usa `git sparse-checkout`
-  excluyendo `catalogo/img/` (`git sparse-checkout set --no-cone '/*' '!/catalogo/img/'`), así los
-  `pull` no bajan las imágenes. Las imágenes viven en el repo (`catalogo/img/`, ~1.180 × ~300 KB) porque
-  la app las necesita en Render; si pesa demasiado, alternativa: rama aparte o release con zip.
+- Este PC no debe recibir descargas masivas, y un `git pull` baja todo lo que haya en cualquier rama: por
+  eso las imágenes (~1.180 × ~300 KB) van a la **release `catalogo-img`** y no al repo (`catalogo/img/` está
+  en `.gitignore`). Cuando se migre la app habrá que decidir cómo llegan a Render (commit de las que use la
+  app a su tamaño, o descarga de la release en el despliegue).
 
 **Pendiente de datos (consulta en Actions):** faltan datos de archivo de 8 forzadas
 (*La creación de Adán*, *El Juicio Final*, *La escuela de Atenas*, *La condesa de Vilches*, *La rendición
 de Granada*, *Los jugadores de cartas*, *El dormitorio en Arlés* y *Los girasoles* de Londres); el RUN
 `candidates miguel-angel rafael madrazo pradilla cezanne van-gogh` las trae y después se vuelve a ejecutar
 `seleccionar.py` en local.
+
+## Plan de migración de la app al catálogo grande (sin tocar `app/` hasta que acabe la portada)
+
+Hoy la app vive de `tools/catalog_data.py` (datos a mano de 235 obras y 75 pintores, ids `a<N>`/`b<N>`,
+imágenes `app/img/<id>.jpg` a 1000 px) → `tools/patch_catalog.py` / `tools/make_thumbs.sh` →
+`app/data/catalog.json` + `app/data/catalog-text.json` + atlas `app/img/s/`. El catálogo grande llega como
+`catalogo/obras.json` (1.180 obras, ids `w<QID>`, esquema de la app + ficha) y la release `catalogo-img`.
+
+1. **Datos.** `tools/catalog_data.py` deja de ser la fuente de las obras: nuevo `tools/catalog_from_pipeline.py`
+   que lee `catalogo/obras.json` y produce `catalog.json` con el contrato de SPEC §4: `artworks` con
+   `id, artistId, title, year, yearSort, img, w, h, role, fame, confidence, level, museum, city, country,
+   inSpain, technique, dimensions, inception, source`; `artists` con `born, died, country, movementId, order,
+   section, guest, hint, traits, similarTo` (los textos `hint`/`traits`/`similarTo`/`look` se conservan de
+   `catalog_data.py` por id de pintor: hay que mapear los 75 ids actuales a los 148 nuevos, casi todos
+   coinciden; `look` de obra se pierde salvo las ~235 obras que ya estaban: mapear por QID→`a<N>` con una
+   tabla `tools/ids_antiguos.json` para no perder progreso ni textos). `role`: `learn` para nivel 1 hasta
+   3 por pintor con etapa, `new` el resto; `fame` 1-3 ya viene. `catalog-text.json` sigue llevando `look`
+   y `traits`; añadir `about` (qué representa) cuando exista.
+2. **Imágenes.** `tools/import_release.sh`: `gh release download catalogo-img -D staging/` y reducir a lo que
+   use la app (propuesta: 1600 px para el visor con zoom, o 1200 px si pesa demasiado; medir: 1.180 ×
+   ~300 KB ≈ 350 MB en `app/img/`). Decidir con María si entran en el repo (Render sirve estático) o si el
+   despliegue las baja de la release. Regenerar el atlas (`tools/make_thumbs.sh` → `make_atlas.py`,
+   portadas = obra de nivel 1 con más fama de cada pintor con etapa). El e2e vigila el presupuesto de
+   arranque (peticiones/KB): el atlas crece de 17 a ~80 hojas; cargar por tramo de época.
+3. **Camino.** Pintores con etapa: los que tengan ≥ 4 obras de nivel 1 (hoy 106); invitados el resto (los 13
+   rusos de 3 obras, Liotard, Greuze…). `section` por tramos con sentido (Florencia temprana, Alto
+   Renacimiento, Venecia, Norte, España del Siglo de Oro…) en un movimiento con > 4 pintores con etapa
+   (todos ahora): tabla a mano en `tools/catalog_data.py` o en `catalogo/tramos.json`. Orden dentro del
+   tramo: de más distinto a más parecido, no cronológico (hoy `order` = año de nacimiento, provisional).
+   La rama «a fondo» usa las obras de nivel 2 del mismo tramo. No empezar por Leonardo (decisión 6).
+4. **Validación y pruebas.** `tools/validate_catalog.py app` ya comprueba años (< 1930) y muerte (< 1956);
+   añadir: `level` ∈ {1, 2}, 3-6 obras de nivel 1 por pintor con etapa, `museum` y `source.wikidata`
+   presentes, ids únicos, imágenes de la selección presentes. `tests/engine.test.js`/`oleada*.test.js` usan
+   fixtures con ids `a<N>`: mantener las fixtures (motor puro) y añadir una prueba que cargue el catálogo real
+   y compruebe que cada pintor con etapa tiene ≥ 2 `learn` y ≥ 1 `new` sin `spoiler`. Revisar `spoiler`
+   (firma visible) y `attributed` en las obras nuevas: pasada visual con `tools/contact_sheets.py`.
+5. **Estado guardado.** El progreso de usuarias guarda ids de obra y pintor: migración de esquema en
+   `app/js/state` (v6) con la tabla `ids_antiguos.json` (`a<N>` → `w<QID>`), y los pintores nuevos empiezan
+   sin progreso.
+6. **Fichas y lecciones.** La ficha de obra (decisión 6 de María) se alimenta de `museum`, `city`, `inSpain`,
+   `technique`, `dimensions`, `year` y, cuando se escriba, `about` (2-3 líneas con fuente de museo) y
+   `look`. Las fichas de pintor de `contenido/lecciones/` (Leonardo, Rafael, Velázquez) se montan por id de
+   pintor sin cambios; las nuevas siguen su plantilla.
+7. **Textos pendientes de escribir** (no automatizables): `about` y `look` de 1.180 obras (empezar por las 637
+   de nivel 1), `hint`/`traits`/`similarTo` de los ~70 pintores nuevos con etapa.

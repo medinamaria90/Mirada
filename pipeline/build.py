@@ -2,7 +2,8 @@
 
 obras.json sigue el esquema de la app (docs/SPEC.md §4, claves en inglés) más los campos de la ficha:
 level, museum, city, country, inSpain, technique, dimensions, inception, depicts, genre, source. Entran
-todas las obras de la selección; `downloaded` dice si su imagen ya está en catalogo/img/ (w/h solo entonces).
+todas las obras de la selección; `downloaded` dice si su imagen consta en catalogo/img_meta.json (está en la
+release «catalogo-img» de GitHub; w/h solo entonces).
 Los textos humanos `about` («qué representa») y `look` («fíjate en») quedan vacíos para una pasada posterior
 con fuentes de museo. pintores.json: id, name, short, born, died, country, movementId, order (por año de
 nacimiento dentro del movimiento), section (vacío hasta diseñar los tramos del mapa), qid, works.
@@ -31,7 +32,7 @@ def main():
     obras = []
     for s in sel:
         m = meta.get(s["id"])
-        ok = bool(m and m.get("archivo") == s["archivo"] and os.path.exists(os.path.join(CAT, "img", s["id"] + ".jpg")))
+        ok = bool(m and m.get("archivo") == s["archivo"])
         f = fichas.get(s["qid"], {})
         warnings = list(s.get("avisos") or [])
         if not f:
@@ -75,7 +76,7 @@ def main():
              "obras anteriores a 1930), obtenidas de Wikimedia Commons. Metadatos de Wikidata (CC0).",
              "Para cada imagen se indica el archivo de origen, su licencia en Commons y el autor/crédito del archivo.", ""]
     bysel = {s["id"]: s for s in sel}
-    for o in sorted((o for o in obras if o["downloaded"]), key=lambda o: (names[o["artistId"]], o["yearSort"] or 0)):
+    for o in sorted(obras, key=lambda o: (names[o["artistId"]], o["yearSort"] or 0)):
         s = bysel[o["id"]]
         extra = "; ".join(filter(None, [s.get("autorArchivo") and "autor del archivo: " + s["autorArchivo"][:120],
                                         s.get("creditoArchivo") and "crédito: " + s["creditoArchivo"][:120]]))

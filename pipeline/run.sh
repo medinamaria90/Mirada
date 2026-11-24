@@ -13,6 +13,15 @@ commit() {
   done
   echo "NO SE PUDO HACER PUSH" >> pipeline/logs/run.txt
 }
+push_img() {  # sube las imágenes de catalogo/img/ a la release «catalogo-img» (no entran en main: pesarían ~400 MB) y las borra
+  ls catalogo/img/*.jpg >/dev/null 2>&1 || return 0
+  gh release view catalogo-img >/dev/null 2>&1 || gh release create catalogo-img --title "Imágenes del catálogo (1600 px)"     --notes "Imágenes de las obras de catalogo/seleccion.json a 1600 px de lado mayor (JPEG 82), generadas por el proceso de pipeline/. Metadatos y créditos en catalogo/img_meta.json y CREDITS.md." || true
+  for i in 1 2 3; do
+    gh release upload catalogo-img catalogo/img/*.jpg --clobber && { echo "subidas $(ls catalogo/img/*.jpg | wc -l) imágenes a la release" >> pipeline/logs/run.txt; rm -f catalogo/img/*.jpg; return 0; }
+    sleep $((i*20))
+  done
+  echo "NO SE PUDIERON SUBIR LAS IMÁGENES A LA RELEASE" >> pipeline/logs/run.txt
+}
 echo "inicio $(date -u)" > pipeline/logs/run.txt
 while read -r step args <&3; do
   case "$step" in ''|'#'*) continue;; esac
@@ -35,9 +44,11 @@ while read -r step args <&3; do
         python3 pipeline/download.py --limit "$tam" > pipeline/logs/download.stdout.txt 2>&1; rc=$?
         tail -n 4 pipeline/logs/download.stdout.txt >> pipeline/logs/run.txt
         python3 pipeline/build.py >> pipeline/logs/run.txt 2>&1
+        push_img
         commit "datos: lote de imágenes $n"
         [ $rc -ne 0 ] && { echo "download rc=$rc" >> pipeline/logs/run.txt; break; }
       done ;;
+    img-release) push_img; git rm -r -q --cached catalogo/img 2>/dev/null || true ;;  # saca de main las imágenes ya subidas
     fichas)   python3 pipeline/fichas.py $args > pipeline/logs/fichas.stdout.txt 2>&1; tail -n 3 pipeline/logs/fichas.stdout.txt >> pipeline/logs/run.txt ;;
     build)    python3 pipeline/build.py >> pipeline/logs/run.txt 2>&1 ;;
     validate) python3 pipeline/validate.py $args >> pipeline/logs/run.txt 2>&1 ;;  # validate --parcial mientras falten imágenes

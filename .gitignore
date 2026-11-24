@@ -2,3 +2,6 @@ node_modules
 __pycache__
 *.pyc
 marca/preview*/
+
+# Imágenes del catálogo: viven en la release «catalogo-img» de GitHub, no en el repo
+catalogo/img/
