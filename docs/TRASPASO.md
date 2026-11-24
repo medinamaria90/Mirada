@@ -240,7 +240,14 @@ Decisiones de la tarde del 24/11:
     test. Faltan en el catálogo para el banco: Girasoles (firma), Guernica, Ofelia, Hay Wain, Sorolla,
     Zurbarán, Ribera, Hals, Pissarro, Sisley → revisar el banco al migrar el catálogo grande.
     Percentil reescalado al máximo honesto de 80 puntos (el perfecto ve 24 preguntas) para que llegue
-    al 99 %.
+    al 99 %. **Fallo que sufrió María (19:35): tocar una miniatura en «¿Cuál?» respondía** (quería
+    verla en grande). Regla: el test se comporta como la app: tocar abre el visor, «Es este» responde;
+    en «¿Quién?» el cuadro se abre en grande sin responder. En curso.
+    **Rejugable (19:40, decidido):** «si hace 7 veces el test, 7 contenidos distintos»: clasificar todas
+    las obras en los 5 tramos por reglas (fama, pintor con etapa o invitado, parecidos, mecánica) con
+    ajustes manuales (`app/test/tramos.json`), bolsa generada en tiempo de ejecución, 8 por tramo
+    sorteadas por partida con mezcla de mecánicas y épocas, evitando las dos últimas partidas; crece
+    sola con el catálogo grande. En curso.
 12. **«¿De qué movimiento es?» con años** (18:56): las opciones solo decían el nombre del movimiento
     («es un lío»); deben llevar su periodo («Renacimiento · s. XV–XVI»), y el feedback también. En
     curso en la tanda de feedback.
