@@ -10,3 +10,5 @@ ok   w965822     mantegna         937x1600 472KB  Madonna de la Victoria
 lote: 30/30 bien; quedan 1130
 build: 1180 obras (50 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
 subidas 30 imágenes a la release
+57M	.git
+2.3M	catalogo
