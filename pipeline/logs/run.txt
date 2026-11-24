@@ -95,3 +95,4 @@ aviso w4187532 (polenov): ficha sin technique
 58M	.git
 2.8M	catalogo
 fin Tue Nov 24 19:09:32 UTC 2026
+estado del job: success Tue Nov 24 19:09:33 UTC 2026
