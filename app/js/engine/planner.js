@@ -7,15 +7,10 @@ import { salaLearnWorks, SALA_LEARN } from './catalog.js';
 
 export { salaLearnWorks, SALA_LEARN };
 
-export const PRACTICE_TARGET = 4; // preguntas de práctica: obras vistas + repaso intercalado
-export const FRESH_OWN_MAX = 3; // cuadros nuevos del pintor por ronda
 export const MIN_ROUND = 6; // preguntas mínimas de una etapa (salvo la primera: FIRST_STAGE_ROUND)
 export const STAGE_ROUND = 8; // preguntas de una etapa (propias + repaso)
 export const FIRST_STAGE_ROUND = 5; // primera etapa: calentamiento + 4 obras no vistas, sin repetir
 export const ROUND_SIZE = 10;
-// Compatibilidad: tamaño máximo de práctica.
-export const PRACTICE_SIZE = PRACTICE_TARGET;
-export const FRESH_MAX = FRESH_OWN_MAX + 1;
 
 // Curva de dificultad del camino: 0,05 en la primera parada → 0,75 en la última, lineal por
 // parada (pintores y salas). Dentro de cada ronda sube ROUND_SPAN de forma continua.
@@ -100,7 +95,7 @@ export function pickOwnWorks(index, artistId, learn, rng, fresh = OWN_FRESH) {
   const freshWorks = ownNew.slice(0, warm.length ? fresh : fresh + 1);
   // De relleno, mejor una vista: así las no vistas que sobren pueden salir en «¿De qué movimiento es?».
   const reserve = ownLearn[1] || ownNew[freshWorks.length] || null;
-  return { warm, fresh: freshWorks, extra: [], reserve };
+  return { warm, fresh: freshWorks, reserve };
 }
 
 // Obras propias sobrantes para «¿De qué movimiento es?»: mejor las que no se han enseñado.
@@ -126,9 +121,9 @@ function stageRoundSize(before) {
 }
 
 function stageSlots(index, artist, learn, before, rng) {
-  const { warm, fresh: ownFresh, extra, reserve } = pickOwnWorks(index, artist.id, learn, rng);
+  const { warm, fresh: ownFresh, reserve } = pickOwnWorks(index, artist.id, learn, rng);
   // Calentamiento (obra vista) primero; luego sus obras no vistas.
-  const ownWorks = [...warm, ...ownFresh, ...extra].map((w) => ({ w, phase: w.role === 'learn' ? 'practice' : 'fresh' }));
+  const ownWorks = [...warm, ...ownFresh].map((w) => ({ w, phase: w.role === 'learn' ? 'practice' : 'fresh' }));
   const ownTypes = alternate(ownWorks.length, rng);
   // Con solo 2 obras suyas, la ya vista va en «¿Cuál es de X?» (relleno sin aprender: por descarte,
   // 1 de cada 4) y la nueva en «¿Quién?». La regla de dominio perdona un fallo si se acierta esa
@@ -476,10 +471,6 @@ export function reshuffleOptions(q, rng) {
 
 function tag(q, phase) {
   return q ? { ...q, phase } : null;
-}
-
-function cleanFirst(works) {
-  return [...works.filter((w) => !isSpoiler(w)), ...works.filter((w) => isSpoiler(w))];
 }
 
 // Elige `n` obras evitando repetir pintor de forma consecutiva.

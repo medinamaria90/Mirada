@@ -215,10 +215,6 @@ export function stepStatus(progress, index, step) {
   return isStepUnlocked(progress, index, step) ? 'available' : 'locked';
 }
 
-export function isArtistUnlocked(progress, index, artistId) {
-  return isStepUnlocked(progress, index, { type: 'artist', id: artistId });
-}
-
 export function artistStatus(progress, index, artistId) {
   return stepStatus(progress, index, { type: 'artist', id: artistId });
 }
@@ -272,13 +268,6 @@ export function isPathMastered(progress, index) {
 // Paradas jugadas pero aún sin dominar, en orden del camino.
 export function stepsToMaster(progress, index) {
   return index.steps.filter((s) => stepStatus(progress, index, s) === 'started');
-}
-
-// Siguiente etapa recomendada del camino (solo pintores; se conserva por compatibilidad).
-export function nextStage(progress, index) {
-  return index.path.find((a) => artistStatus(progress, index, a.id) === 'available')
-    || index.path.find((a) => artistStatus(progress, index, a.id) === 'started')
-    || null;
 }
 
 // Siguiente parada del camino (pintor o sala).

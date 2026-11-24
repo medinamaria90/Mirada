@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   emptyProgress, xpForAnswer, levelFor, touchStreak, visibleStreak, finishRound, artistStatus, movementStatus,
-  isReviewUnlocked, nextStage, LEVELS, XP,
+  isReviewUnlocked, nextStep, LEVELS, XP,
 } from '../app/js/engine/progress.js';
 import { planStage, planMovementReview } from '../app/js/engine/planner.js';
 import { bigIndex } from './helpers.js';
@@ -71,7 +71,7 @@ test('desbloqueos: primer pintor disponible; terminar una etapa abre la siguient
   assert.equal(artistStatus(p, index, 'p11'), 'available');
   assert.equal(artistStatus(p, index, 'p12'), 'locked');
   assert.equal(movementStatus(p, index, 'mov2'), 'locked');
-  assert.equal(nextStage(p, index).id, 'p11');
+  assert.equal(nextStep(p, index).id, 'p11');
 
   let r = playStage(p, index, 'p11', (i) => i !== 0 && i !== 1, '2026-11-23'); // bajo acierto (falla el calentamiento)
   p = r.progress;

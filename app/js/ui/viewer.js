@@ -19,14 +19,6 @@ const NEXT = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill=
 
 let current = null;
 
-export function isViewerOpen() {
-  return Boolean(current);
-}
-
-export function closeViewer() {
-  if (current) current.close();
-}
-
 // opts: { index, works: [artwork], start, reveal = true, label (nombre accesible), title (texto
 //         visible arriba, p. ej. la pregunta), pick: { label, onPick(i) } | null,
 //         opener: elemento al que vuelve el foco, onChange(pos): al pasar de cuadro,
