@@ -88,8 +88,6 @@
   /* Pintor dormido (dominado y sin salir en una semana): anillo apagado y cuadro sin saturación. */
   --map-dormant: #cbbfae;
   --map-dormant-saturate: .25;
-  --character-skin: #f0cfae;
-  --character-beret: #23201c;
   /* Sombras y velos. */
   --shadow-frame: 0 1px 1px rgba(35, 32, 28, .10), 0 6px 16px -6px rgba(35, 32, 28, .26), 0 18px 40px -18px rgba(35, 32, 28, .30);
   --shadow-card: 0 1px 2px rgba(35, 32, 28, .05), 0 6px 18px -10px rgba(35, 32, 28, .16);
@@ -111,6 +109,7 @@
   --font: "Outfit", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --track: -0.02em;
   --col: 560px;
+  --topbar-h: 65px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
   color-scheme: light dark;
@@ -182,8 +181,6 @@
     --map-tint-simbolismo-modernismo: #25222a;
     --map-dormant: #5c5246;
     --map-dormant-saturate: .25;
-    --character-skin: #e3bf9b;
-    --character-beret: #2a211c;
     --scrim: rgba(0, 0, 0, .55);
   }
 }
@@ -249,8 +246,6 @@
   --map-tint-simbolismo-modernismo: #25222a;
   --map-dormant: #5c5246;
   --map-dormant-saturate: .25;
-  --character-skin: #e3bf9b;
-  --character-beret: #2a211c;
   --scrim: rgba(0, 0, 0, .55);
 }
 /* Forzado desde Ajustes: también los controles nativos y la barra de desplazamiento. */

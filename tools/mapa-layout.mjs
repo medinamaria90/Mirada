@@ -7,4 +7,4 @@ import { pathLayout, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
 
 const index = buildIndex(JSON.parse(readFileSync(process.argv[2], 'utf8')));
 const layout = pathLayout(index);
-process.stdout.write(JSON.stringify({ width: MAP_W, step: STEP, eras: layout.eras.map((e) => ({ id: e.id, h: e.h, points: e.points, chest: e.chest, start: e.start })) }));
+process.stdout.write(JSON.stringify({ width: MAP_W, step: STEP, eras: layout.eras.map((e) => ({ id: e.id, h: e.h, points: e.points, start: e.start })) }));

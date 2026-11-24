@@ -1,6 +1,6 @@
 // Mapa del camino (portada): el sendero serpentea de abajo arriba por un paisaje de época; cada
 // parada es un nodo redondo con el cuadro dentro. Por época: un tramo con su paisaje (SVG aparte,
-// cargado al acercarse), el sendero (un <svg> ligero con un path), la cartela, los nodos, un cofre y,
+// cargado al acercarse), el sendero (un <svg> ligero con un path), la cartela, los nodos y,
 // al final del todo, «Tu museo». El DOM va en orden cronológico (Renacimiento primero) y el CSS lo
 // invierte (column-reverse): así el tabulador y el lector de pantalla recorren el camino en el orden
 // del juego, y el primer nodo del DOM es el primero que se juega.
@@ -14,7 +14,6 @@ import {
 import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
 import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
-import { characterHtml } from '../path-character.js';
 
 // Trazado en coordenadas de diseño (ancho 390); en pantalla todo va en porcentajes y escala con la
 // columna. tools/mapa_svg.py pinta los paisajes con este mismo trazado (lo lee por tools/mapa-layout.mjs).
@@ -27,7 +26,6 @@ const MUSEUM_Y = 150;               // donde acaba el sendero bajo el museo
 const XS = [120, 268, 130, 274, 118, 270, 126, 272];   // zigzag de los nodos
 const SIDE_X = { left: 48, right: MAP_W - 48 };        // sala de la época, en el margen estrecho
 const LANDSCAPE_MARGIN = '240px 0px';                  // se pide el paisaje al acercarse a este margen
-const CHEST_T = 0.42;               // el cofre, en el sendero entre la 2.ª y la 3.ª parada, algo más cerca de la 2.ª
 
 const f = (n) => String(Math.round(n * 100) / 100);
 const pct = (v, total) => `${f((v / total) * 100)}%`;
@@ -35,13 +33,6 @@ const pct = (v, total) => `${f((v / total) * 100)}%`;
 function cubic(a, b) {
   const ym = (a.y + b.y) / 2;
   return `C${f(a.x)} ${f(ym)} ${f(b.x)} ${f(ym)} ${f(b.x)} ${f(b.y)}`;
-}
-
-// Punto del sendero entre dos nodos (la misma cúbica que dibuja trailD), en t de 0 a 1.
-export function trailPoint(a, b, t) {
-  const k = 1 - t;
-  const ym = (a.y + b.y) / 2;
-  return { x: a.x * k * k * k + 3 * a.x * k * k * t + 3 * b.x * k * t * t + b.x * t * t * t, y: a.y * k * k * k + 3 * ym * k * k * t + 3 * ym * k * t * t + b.y * t * t * t };
 }
 
 // Sendero: tangentes verticales en cada nodo; entra por abajo (xIn) y sale por arriba en vertical.
@@ -55,17 +46,15 @@ function trailD(start, points, end) {
   return `${d}L${f(end.x)} ${f(end.y)}`;
 }
 
-// Tramo de una época: alto, nodos (de abajo arriba), cofre en el sendero tras la 2.ª parada, cartela
+// Tramo de una época: alto, nodos (de abajo arriba), cartela
 // y sendero. phase: nodos acumulados antes (mantiene el zigzag entre épocas); xIn: x del último
 // nodo de la época anterior (el sendero entra por ahí).
 export function eraLayout(nodeCount, phase = 0, xIn = null) {
   const h = PAD_BOTTOM + nodeCount * STEP + PAD_TOP;
   const points = Array.from({ length: nodeCount }, (_, i) => ({ x: XS[(phase + i) % XS.length], y: h - PAD_BOTTOM - STEP / 2 - i * STEP }));
   const start = { x: xIn ?? points[0].x, y: h };
-  const k = Math.min(1, nodeCount - 2);
-  const chest = nodeCount >= 2 ? trailPoint(points[k], points[k + 1], CHEST_T) : null;
   const last = points[points.length - 1];
-  return { h, points, start, chest, ribbon: { x: MAP_W / 2, y: h - PAD_BOTTOM / 2 }, trail: trailD(start, points, { x: last.x, y: 0 }) };
+  return { h, points, start, ribbon: { x: MAP_W / 2, y: h - PAD_BOTTOM / 2 }, trail: trailD(start, points, { x: last.x, y: 0 }) };
 }
 
 function museumLayout(xIn) {
@@ -127,19 +116,16 @@ function eraBlock(ctx, era, prevEra, currentKey) {
     const isCurrent = node.key === currentKey;
     const section = node.section ? sectionLabel(node.section, pt, era.h) : '';
     return `${section}<li class="stage-spot is-${side}${isCurrent ? ' is-current' : ''}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)}">
-      ${node.html}<p class="lock-note"></p>${isCurrent ? characterHtml() : ''}
+      ${node.html}<p class="lock-note"></p>
     </li>`;
   }).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';
-  const chest = era.chest
-    ? `<li class="path-chest" aria-hidden="true" style="left:${pct(era.chest.x, MAP_W)};top:${pct(era.chest.y, era.h)}">${icons.chest(24)}</li>`
-    : '';
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/${era.h}">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
     ${trailSvg(era.h, era.trail)}
     ${ribbon(movement, status, sealed, nodes, prevName, era)}
-    <ol class="stages">${spots}${gallery}${chest}</ol>
+    <ol class="stages">${spots}${gallery}</ol>
   </li>`;
 }
 

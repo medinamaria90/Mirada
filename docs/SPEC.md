@@ -268,6 +268,7 @@ Nunca lanza excepciones hacia fuera: si no hay audio, las llamadas no hacen nada
   paredes de bienvenida/intro/«Antes de empezar», detalle del día ya respondido y sello de pintor en
   su hoja de medalla. El mapa y las tarjetas siguen llevando a su sitio.
 - Diseño propio: no copiar marca, mascota, colores ni pantallas de Duolingo ni de otras apps.
+- Portada: franja «Hoy» fija bajo la cabecera (Reto, Lupa, Repaso) y mapa; sin personaje ni cofres en la v1: vuelven en la v2 con premios de verdad.
 - En textos no usar "ayer"/"mañana": decir algo concreto.
 
 ## 6 bis. Estadísticas

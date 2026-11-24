@@ -4,7 +4,7 @@
 # paisaje más rico por tramo: hitos reconocibles algo más grandes y con algo más de color, casitas, árboles,
 # agua y terreno teñido por época. Sin trazos oscuros; las etiquetas van aparte (en el DOM, en píldoras).
 #
-# El trazado (alto del tramo, nodos, cofre) lo da la app (tools/mapa-layout.mjs → ui/screens/path-map.js),
+# El trazado (alto del tramo, nodos) lo da la app (tools/mapa-layout.mjs → ui/screens/path-map.js),
 # así que los dos pintan lo mismo. Los colores salen de app/css/brand.css (variables --map-*, tema claro y
 # bloque oscuro): el SVG lleva su propio <style> con las dos paletas y una media query prefers-color-scheme,
 # que Chrome y Firefox evalúan con el color-scheme del <img> (así sigue al tema elegido en Ajustes).

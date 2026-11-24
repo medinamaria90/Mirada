@@ -1,17 +1,15 @@
-// Mapa del camino (v10): de abajo arriba, nodo actual con «Empezar»/«Seguir», un cofre cerrado por
-// época, «Tu museo» arriba, el personaje junto al nodo actual (sin paseo con movimiento reducido) y
+// Mapa del camino (v10): de abajo arriba, nodo actual con «Empezar»/«Seguir», «Tu museo» arriba y
 // los paisajes SVG de app/img/mapa a juego con el trazado y con los colores de brand.css. Sin navegador:
-// el módulo construye HTML y se comprueba el texto; el personaje, con un DOM mínimo simulado.
+// el módulo construye HTML y se comprueba el texto.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress, hasMovementReview, nextStep } from '../app/js/engine/progress.js';
 import { icons } from '../app/js/ui/icons.js';
-import { renderPathMap, pathLayout, eraLayout, trailPoint, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
-import { characterHtml, walkFrames, settleCharacter, resetCharacter, WALK_MS } from '../app/js/ui/path-character.js';
+import { renderPathMap, pathLayout, eraLayout, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
 import { bigIndex, salaCatalog } from './helpers.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -74,30 +72,19 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
   assert.ok(html.includes(`Termina ${real.visibleMovements[1].name} para abrirlo`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'una época cerrada no dice cómo se abre');
 });
 
-test('mapa: un cofre cerrado por época en el sendero entre la segunda y la tercera parada, solo visual', () => {
+test('mapa: sin personaje ni cofres (vuelven en la v2 con premios de verdad)', () => {
   const html = renderPathMap(ctxWith(real));
-  assert.equal((html.match(/class="path-chest" aria-hidden="true"/g) || []).length, real.visibleMovements.length);
-  assert.ok(!/path-chest[^>]*data-action/.test(html), 'el cofre no debe ser pulsable todavía');
-  assert.ok(html.includes(icons.chest(24)));
-  const era = eraLayout(5);
-  const [a, b] = [era.points[1], era.points[2]];
-  assert.ok(era.chest.y < a.y && era.chest.y > (a.y + b.y) / 2, 'el cofre no está entre la 2.ª parada y la mitad del tramo');
-  assert.ok((era.chest.x > a.x) === (b.x > a.x) && Math.abs(era.chest.x - a.x) < Math.abs(b.x - a.x), 'el cofre se sale del sendero');
-  assert.deepEqual(trailPoint(a, b, 0), a);
-  assert.deepEqual(trailPoint(a, b, 1), b);
-  assert.deepEqual(trailPoint(a, b, 0.5), { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
-  const two = eraLayout(2);
-  assert.ok(two.chest.y < two.points[0].y && two.chest.y > two.points[1].y);
-  assert.equal(eraLayout(1).chest, null);
+  assert.ok(!/path-chest|path-character/.test(html), 'quedan cofres o personaje en el mapa');
+  assert.ok(!('chest' in eraLayout(5)) && !('chest' in eraLayout(2)));
+  assert.ok(!existsSync(join(app, 'js', 'ui', 'path-character.js')), 'sigue el módulo del personaje');
+  assert.ok(!/path-chest|path-character|\.pc-/.test(readFileSync(join(app, 'css', 'main.css'), 'utf8')), 'quedan estilos del personaje o los cofres');
 });
 
-test('mapa: el nodo actual lleva «Empezar» (o «Seguir» a medias), el personaje y el anillo; los demás, solo el nombre', () => {
+test('mapa: el nodo actual lleva «Empezar» (o «Seguir» a medias) y el anillo; los demás, solo el nombre', () => {
   let html = renderPathMap(ctxWith(real));
   const first = real.steps[0];
   assert.equal((html.match(/stage-spot is-(left|right) is-current/g) || []).length, 1);
   assert.ok(html.includes(`is-current" data-step="${first.type}:${first.id}"`), 'el nodo actual no es la primera parada');
-  assert.equal((html.match(/class="path-character"/g) || []).length, 1, 'el personaje va solo en el nodo actual');
-  assert.ok(html.includes(`${characterHtml()}`));
   assert.ok(html.includes('<span class="stage-meta">Empezar</span>'));
   assert.ok(!html.includes('1483–1520') && !html.includes('Dominado'), 'los nodos sin jugar o dominados no llevan texto de más');
   const p = masterFirst(real, 1);
@@ -128,75 +115,6 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
   assert.ok(sala.visibleMovements.some((m) => sala.isSala(m.id)));
   assert.ok(sh.includes('class="stage stage-sala is-') && sh.includes('Conoce el movimiento'));
   assert.doesNotThrow(() => renderPathMap(ctxWith(bigIndex())));
-});
-
-test('personaje: el paseo sigue el sendero (curva en S con tangentes verticales) y acaba en el sitio', () => {
-  const frames = walkFrames(150, 224);
-  assert.equal(frames[0].transform, 'translate(150.0px, 224.0px)');
-  assert.equal(frames[frames.length - 1].transform, 'translate(0.0px, 0.0px)');
-  const mid = frames[Math.floor(frames.length / 2)].transform;
-  assert.ok(/translate\(75\.0px, 112\.0px\)/.test(mid), `a mitad de camino: ${mid}`);
-  // Desde otro tramo: primero sube en vertical hasta la línea del tramo y luego la curva.
-  const far = walkFrames(150, 400, 180);
-  assert.ok(far.slice(0, 5).every((f) => f.transform.startsWith('translate(150.0px,')), 'no sube recto por el tramo anterior');
-  assert.equal(far[far.length - 1].transform, 'translate(0.0px, 0.0px)');
-  assert.equal(WALK_MS, 1000);
-});
-
-// DOM mínimo: dos paradas (la anterior y la actual) con el personaje en la actual.
-function fakeMap({ sameEra = true } = {}) {
-  const calls = [];
-  const rect = (left, top) => ({ left, top, width: 36, height: 36 });
-  const era = (top) => ({ getBoundingClientRect: () => rect(0, top) });
-  // La parada anterior (900) está en el tramo de abajo, que empieza en 800; la actual (700), en el de arriba.
-  const eraA = era(800);
-  const eraB = sameEra ? eraA : era(0);
-  const character = {
-    classes: new Set(),
-    classList: { add: (c) => character.classes.add(c), remove: (c) => character.classes.delete(c), contains: (c) => character.classes.has(c) },
-    animate: (frames, opts) => { calls.push({ frames, opts }); return {}; },
-    closest: () => current,
-  };
-  const prev = { dataset: { step: 'artist:a' }, getBoundingClientRect: () => rect(100, 900), closest: () => eraA };
-  const current = { dataset: { step: 'artist:b' }, getBoundingClientRect: () => rect(250, 700), closest: () => eraB };
-  const root = {
-    querySelector: (sel) => (sel === '.path-character' ? character : sel.includes('artist:a') ? prev : sel.includes('artist:b') ? current : null),
-  };
-  return { root, calls, character };
-}
-
-test('personaje: la primera vez aparece en su sitio; al cambiar la parada actual camina (≈1 s); con movimiento reducido, no', () => {
-  resetCharacter();
-  const a = fakeMap();
-  assert.equal(settleCharacter(a.root), false, 'la primera vez no hay de dónde venir');
-  assert.equal(a.calls.length, 0);
-  // Misma parada otra vez (p. ej. al volver sin dominar nada): quieto.
-  assert.equal(settleCharacter(a.root), false);
-  resetCharacter();
-  // Antes estaba en «a»; ahora la actual es «b».
-  const first = { root: { querySelector: (sel) => (sel === '.path-character' ? { closest: () => ({ dataset: { step: 'artist:a' } }), classList: { add() {}, remove() {} }, animate() {} } : null) } };
-  settleCharacter(first.root);
-  const b = fakeMap();
-  assert.equal(settleCharacter(b.root), true);
-  assert.equal(b.calls.length, 1);
-  assert.equal(b.calls[0].opts.duration, WALK_MS);
-  assert.equal(b.calls[0].frames[0].transform, 'translate(-150.0px, 200.0px)', 'sale de donde estaba la parada anterior');
-  assert.equal(b.calls[0].frames.at(-1).transform, 'translate(0.0px, 0.0px)');
-  assert.ok(b.character.classList.contains('is-walking'));
-  // Con movimiento reducido: ni animación ni clase, pero recuerda la parada.
-  resetCharacter();
-  settleCharacter(first.root);
-  const c = fakeMap();
-  assert.equal(settleCharacter(c.root, { reduced: true }), false);
-  assert.equal(c.calls.length, 0);
-  assert.ok(!c.character.classList.contains('is-walking'));
-  // Desde otro tramo: la línea del tramo anterior entra en los fotogramas (sube recto primero).
-  resetCharacter();
-  settleCharacter(first.root);
-  const d = fakeMap({ sameEra: false });
-  settleCharacter(d.root);
-  assert.ok(d.calls[0].frames.slice(0, 3).every((f) => f.transform.startsWith('translate(-150.0px,')));
-  resetCharacter();
 });
 
 test('paisajes: un SVG por época, ≤ 30 KB, con el trazado de la app y solo colores de brand.css', () => {

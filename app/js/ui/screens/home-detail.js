@@ -1,11 +1,11 @@
-// Lupa del día (portada): recorte ampliado de una obra ya aprendida y «¿De quién es?». Resuelta,
-// la tarjeta se encoge a una sola fila (miniatura, nombre y «Título · Pintor») que abre el visor,
-// para que no se confunda con el reto diario. Solo construye HTML; el DOM lo toca answerDetailCard.
+// Lupa del día: recorte ampliado de una obra ya aprendida y «¿De quién es?». La pregunta se hace en el
+// cuadro de diálogo que abre la franja «Hoy» (home-today.js); resuelta, la franja abre el cuadro en el
+// visor. Solo construye HTML; el DOM lo toca answerDetailCard.
 
 import { esc, announce } from '../dom.js';
 import { icons } from '../icons.js';
 import { topBar } from '../shell.js';
-import { artFrame, ZOOM_BADGE } from '../art.js';
+import { ZOOM_BADGE } from '../art.js';
 import { planDetail, answerDetail } from '../../engine/goals.js';
 
 export const DETAIL_NAME = 'Lupa del día';
@@ -16,55 +16,19 @@ export function detailCard(ctx) {
   const p = ctx.store.get().progress;
   const day = ctx.dailyDay();
   const plan = planDetail(p, index, day);
-  if (!plan) return '';
-  const done = p.detail?.[day];
-  if (done) return detailDone(index, plan, done, day);
+  if (!plan || p.detail?.[day]) return '';
   return `<section class="card-detail" aria-labelledby="detail-h" data-day="${esc(day)}">
     ${detailCrop(index, plan)}
     <div class="detail-body">
-      ${detailKicker('p')}
+      ${detailKicker()}
       <h2 id="detail-h" class="detail-q">¿De quién es?</h2>
       <div class="detail-options" role="group" aria-labelledby="detail-h">${plan.options.map((o) => `<button class="option detail-option" data-action="detail" data-id="${esc(o.id)}">${esc(o.label)}</button>`).join('')}</div>
     </div>
   </section>`;
 }
 
-// Fila del bloque «Hoy»: pendiente, plegable con un recorte pequeño de muestra (al abrirla, la
-// tarjeta entera); resuelta, la misma fila compacta de la portada.
-export function detailRow(ctx, plan) {
-  const { index } = ctx;
-  const done = ctx.store.get().progress.detail?.[plan.day];
-  if (done) return detailDone(index, plan, done, plan.day);
-  return `<details class="today-detail">
-      <summary class="today-row">
-        <span class="today-icon today-crop" aria-hidden="true">${detailCrop(index, plan, '')}</span>
-        <span class="today-text"><span class="today-name">${DETAIL_NAME}</span><span class="today-sub">¿De quién es?</span></span>
-        <span class="today-more" aria-hidden="true">${icons.next(18)}</span>
-      </summary>
-      ${detailCard(ctx)}
-    </details>`;
-}
-
-function detailKicker(tag) {
-  return `<${tag} class="card-kicker detail-kicker">${icons.loupe(KICKER_ICON)}<span>${DETAIL_NAME}</span></${tag}>`;
-}
-
-// Resuelta: una sola fila pulsable (abre el cuadro entero en el visor) con la miniatura del atlas,
-// el nombre pequeño y «Título · Pintor». Sin pregunta ni recorte grande: no parece un reto pendiente.
-// La obra sale de lo guardado (lo aprendido después puede cambiar el plan del día).
-function detailDone(index, plan, done, day) {
-  const w = index.artwork(done.artworkId) || index.artwork(plan.artworkId);
-  const a = index.artist(w.artistId);
-  return `<section class="card-detail is-done" aria-label="${DETAIL_NAME}" data-day="${esc(day)}">
-    <button type="button" class="detail-done" data-zoom="${esc(w.id)}" aria-label="Ver en grande: ${esc(w.title)}, de ${esc(a.name)}">
-      ${artFrame(w, { cls: 'detail-thumb', alt: '', label: '', thumb: true })}
-      <span class="detail-done-text">
-        ${detailKicker('span')}
-        <span class="detail-done-work"><em>${esc(w.title)}</em> · ${esc(a.short || a.name)}</span>
-      </span>
-      <span class="detail-done-go" aria-hidden="true">${icons.next(18)}</span>
-    </button>
-  </section>`;
+function detailKicker() {
+  return `<p class="card-kicker detail-kicker">${icons.loupe(KICKER_ICON)}<span>${DETAIL_NAME}</span></p>`;
 }
 
 function detailCrop(index, plan, alt = 'Detalle de un cuadro') {
@@ -88,8 +52,7 @@ function detailAnswered(index, plan, done) {
       <p class="detail-work"><em>${esc(w.title)}</em>${w.year ? ` · ${esc(w.year)}` : ''}</p>`;
 }
 
-// Respuesta en vivo: la tarjeta muestra el resultado en su sitio (la fila compacta llega al volver
-// a pintar la portada).
+// Respuesta en vivo: la tarjeta muestra el resultado en su sitio.
 export function answerDetailCard(ctx, el, button) {
   const { index } = ctx;
   const card = button.closest('.card-detail');
@@ -109,8 +72,6 @@ export function answerDetailCard(ctx, el, button) {
   card.querySelector('.detail-crop')?.replaceWith(document.createRange().createContextualFragment(detailZoom(index, plan)));
   const top = el.querySelector('.topbar');
   if (top) top.outerHTML = topBar(ctx);
-  const rowSub = card.closest('.today-detail')?.querySelector('.today-sub');
-  if (rowSub) rowSub.textContent = outcome.correct ? 'Bien visto' : 'Hecho';
   const result = body.querySelector('.detail-result');
   result.setAttribute('tabindex', '-1');
   result.focus({ preventScroll: true });
