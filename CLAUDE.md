@@ -33,7 +33,11 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
 - Cualquier cuadro se abre a pantalla completa al pulsarlo, salvo donde el cuadro es la carátula de un
   destino (mapa, tarjeta «Continuar», medallas), que lleva a su sitio. Sin zoom de página (pellizco o
   doble toque); para ver detalles está la lupa del visor.
-- Sin `alert`/`confirm`/`prompt`, sin recursos remotos en tiempo de ejecución.
+- Sin `alert`/`confirm`/`prompt`.
+- Código, letras, imágenes y música se sirven desde la propia app (más rápido y sin depender de nadie).
+  Un servicio externo se permite si aporta algo claro y no usa cookies ni datos personales: hoy, solo
+  el contador de visitas GoatCounter (`app/js/stats.js`). Cada servicio nuevo, con el visto bueno de
+  María y anotado aquí.
 - Datos de arte verificados con fuentes (museos, Wikidata, enciclopedias) y con su fuente anotada.
   Nada de memoria del modelo. Solo pintores muertos antes de 1956 (dominio público en Europa) y obras
   anteriores a 1930; lo comprueba `tools/validate_catalog.py`.
