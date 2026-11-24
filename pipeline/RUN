@@ -1,2 +1,5 @@
-# 19:09
-candidates miguel-angel rafael madrazo pradilla cezanne van-gogh
+# 19:13 — prueba: fichas de todo y un lote de 20 imágenes
+fichas
+download 1 20
+build
+validate --parcial

@@ -12,9 +12,9 @@ bosco                 86    32        9/9   palabra:16, sin imagen apta:10, fech
 leonardo              40    17       12/12  palabra:7, varios autores:6, autoría no preferente:5, sin imagen apta:4, excluida:1, duplicado/versión:1
 durero               162    66        9/9   sin datos de imagen:60, palabra:10, autoría no preferente:9, sin imagen apta:8, duplicado/versión:6, fecha fuera de vida:5, proporción ≠ medidas:2, varios autores:1, sin título:1
 cranach              907    66        9/9   sin datos de imagen:644, palabra:93, varios autores:75, autoría no preferente:13, duplicado/versión:9, fecha fuera de vida:7, sin imagen apta:5, proporción ≠ medidas:3, según otra obra:1
-miguel-angel          39    11        8/8   sin imagen apta:19, excluida:4, proporción ≠ medidas:2, palabra:1, techo:1, autoría no preferente:1
+miguel-angel          40    13        8/8   sin imagen apta:19, excluida:4, proporción ≠ medidas:2, palabra:1, techo:1
 giorgione             43    25        8/8   sin imagen apta:5, fecha fuera de vida:4, varios autores:3, autoría no preferente:3, sin título:2, duplicado/versión:2, proporción ≠ medidas:1
-rafael               233    68       12/12  sin datos de imagen:108, palabra:28, varios autores:10, sin imagen apta:6, fecha fuera de vida:6, autoría no preferente:6, proporción ≠ medidas:1, duplicado/versión:1
+rafael               229    68       12/12  sin datos de imagen:109, palabra:28, varios autores:10, sin imagen apta:6, fecha fuera de vida:6, proporción ≠ medidas:1, autoría no preferente:1, duplicado/versión:1
 tiziano              341    77       12/12  sin datos de imagen:238, palabra:11, varios autores:7, autoría no preferente:7, duplicado/versión:2, sin imagen apta:1
 correggio            121    47        8/8   sin imagen apta:25, sin datos de imagen:24, palabra:21, fecha fuera de vida:3, proporción ≠ medidas:1
 holbein              152    57        9/9   sin datos de imagen:55, palabra:15, sin imagen apta:13, autoría no preferente:7, sin título:3, proporción ≠ medidas:1, varios autores:1
@@ -77,7 +77,7 @@ delacroix            425    54        9/9   sin datos de imagen:330, sin imagen 
 briullov              65    37        4/4   sin imagen apta:25, sin título:2, palabra:1, duplicado/versión:1
 ivanov                29    15        3/3   sin imagen apta:8, sin título:3, palabra:2, fecha fuera de vida:1, duplicado/versión:1
 millet               206    49        8/8   sin datos de imagen:125, sin imagen apta:15, sin título:12, palabra:4, proporción ≠ medidas:1, duplicado/versión:1
-madrazo               86    66        8/8   sin imagen apta:11, sin datos de imagen:6, fecha fuera de vida:1, palabra:1, proporción ≠ medidas:1
+madrazo               87    66        8/8   sin imagen apta:11, sin datos de imagen:7, fecha fuera de vida:1, palabra:1, proporción ≠ medidas:1
 fedotov                6     4        3/3   sin imagen apta:2
 aivazovski           326    57        9/9   sin datos de imagen:238, sin imagen apta:20, palabra:6, sin título:2, proporción ≠ medidas:1, varios autores:1, fecha fuera de vida:1
 courbet              578    45        9/9   sin datos de imagen:487, sin imagen apta:21, sin título:9, palabra:8, varios autores:4, proporción ≠ medidas:2, fecha fuera de vida:1, autoría no preferente:1, duplicado/versión:1
@@ -98,7 +98,7 @@ rosales               19    14        8/8   sin imagen apta:3, palabra:2
 homer                563    70        8/8   sin datos de imagen:475, palabra:11, sin imagen apta:5, proporción ≠ medidas:2, duplicado/versión:1
 kramskoi              85    54        3/3   sin imagen apta:17, palabra:7, sin datos de imagen:5, duplicado/versión:5, sin título:2
 fortuny               72    41        8/8   sin imagen apta:26, palabra:4, sin título:1
-cezanne              739    74       10/10  sin datos de imagen:649, palabra:6, sin imagen apta:5, fecha fuera de vida:4, sin título:1, duplicado/versión:1
+cezanne              739    75       10/10  sin datos de imagen:648, sin imagen apta:6, palabra:6, fecha fuera de vida:4, duplicado/versión:1
 sisley               816    51        8/8   sin datos de imagen:736, sin imagen apta:24, sin título:3, duplicado/versión:2, proporción ≠ medidas:1, palabra:1
 makovski              33    20        3/3   sin imagen apta:9, sin título:3, palabra:1, duplicado/versión:1
 monet               1264    65       12/12  sin datos de imagen:1176, sin imagen apta:12, palabra:6, fecha fuera de vida:3, proporción ≠ medidas:2, duplicado/versión:2
@@ -112,7 +112,7 @@ cassatt              117    61        8/8   sin datos de imagen:36, sin imagen a
 repin                266    38        9/9   sin datos de imagen:177, sin imagen apta:25, sin título:16, sin fecha (pintor muerto ≥1930):5, palabra:3, proporción ≠ medidas:1, varios autores:1
 polenov              161    17        3/3   sin datos de imagen:81, sin título:54, sin imagen apta:9
 beruete               33     9        8/8   sin imagen apta:23, sin título:1
-pradilla              18     9        8/8   sin imagen apta:8, excluida:1
+pradilla              19    10        8/8   sin imagen apta:8, excluida:1
 gauguin              498    71       10/10  sin datos de imagen:417, sin imagen apta:6, proporción ≠ medidas:1, palabra:1, sin título:1, varios autores:1
 caillebotte          244    48        8/8   sin datos de imagen:161, sin imagen apta:22, sin título:10, palabra:3, duplicado/versión:1
 surikov               20    12        4/4   sin imagen apta:4, sin título:3, palabra:1
@@ -120,7 +120,7 @@ vasnetsov             41    23        4/4   sin imagen apta:12, sin título:5, p
 pinazo                32    13        8/8   sin imagen apta:13, fecha fuera de vida:3, palabra:2, sin título:1
 waterhouse           134    48        8/8   sin datos de imagen:38, sin imagen apta:27, palabra:18, duplicado/versión:4, proporción ≠ medidas:2, fecha fuera de vida:1
 kroyer               272    56        6/6   sin datos de imagen:188, sin imagen apta:17, palabra:6, fecha fuera de vida:2, proporción ≠ medidas:1, sin título:1, varios autores:1
-van-gogh             938    70       12/12  sin datos de imagen:837, palabra:13, sin imagen apta:8, varios autores:5, proporción ≠ medidas:2, fecha fuera de vida:1, según otra obra:1, autoría no preferente:1, duplicado/versión:1
+van-gogh             937    71       12/12  sin datos de imagen:836, palabra:13, sin imagen apta:8, varios autores:5, proporción ≠ medidas:2, fecha fuera de vida:1, según otra obra:1, duplicado/versión:1
 sargent              649    57        9/9   sin datos de imagen:502, palabra:50, sin imagen apta:20, fecha fuera de vida:16, proporción ≠ medidas:2, sin título:1, techo:1
 vrubel                24     8        4/4   sin imagen apta:10, proporción ≠ medidas:3, palabra:3
 regoyos               33    25        8/8   sin imagen apta:7, proporción ≠ medidas:1, duplicado/versión:1
@@ -149,4 +149,4 @@ juan-gris            205    63        6/6   sin datos de imagen:124, sin imagen 
 schiele              124    55        8/8   sin datos de imagen:43, sin imagen apta:11, sin título:8, palabra:5, proporción ≠ medidas:2
 TOTAL 1180 obras de 148 pintores
 por país: España 336, Francia 279, Italia 174, Rusia 109, Países Bajos 68, Reino Unido 53, Flandes 39, Alemania 36, Estados Unidos 33, Austria 18, Dinamarca 14, Noruega 10, Suecia 6, Suiza 5
-títulos por fuente: {'wikidata-es': 906, 'manual': 17, 'traducir': 256, 'revisar-idioma': 1}
+títulos por fuente: {'traducir': 254, 'revisar-idioma': 1, 'manual': 22, 'wikidata-es': 903}

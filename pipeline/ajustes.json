@@ -161,11 +161,15 @@
  },
  "Q500242": {
   "titulo": "La creación de Adán",
-  "level": 1
+  "level": 1,
+  "anio": "c. 1511",
+  "anioSort": 1511
  },
  "Q567861": {
   "titulo": "El Juicio Final",
-  "level": 1
+  "level": 1,
+  "anio": "1536–1541",
+  "anioSort": 1536
  },
  "Q186953": {
   "titulo": "La escuela de Atenas",
@@ -193,7 +197,8 @@
   "level": 1
  },
  "Q18713070": {
-  "level": 1
+  "level": 1,
+  "titulo": "El dormitorio en Arlés"
  },
  "Q19032360": {
   "level": 1
@@ -209,5 +214,9 @@
  },
  "Q6169435": {
   "level": 1
+ },
+ "Q500812": {
+  "anio": "c. 1508–1510",
+  "anioSort": 1508
  }
 }

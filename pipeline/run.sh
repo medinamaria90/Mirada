@@ -38,8 +38,9 @@ while read -r step args <&3; do
         commit "datos: lote de imágenes $n"
         [ $rc -ne 0 ] && { echo "download rc=$rc" >> pipeline/logs/run.txt; break; }
       done ;;
+    fichas)   python3 pipeline/fichas.py $args > pipeline/logs/fichas.stdout.txt 2>&1; tail -n 3 pipeline/logs/fichas.stdout.txt >> pipeline/logs/run.txt ;;
     build)    python3 pipeline/build.py >> pipeline/logs/run.txt 2>&1 ;;
-    validate) python3 pipeline/validate.py >> pipeline/logs/run.txt 2>&1 ;;
+    validate) python3 pipeline/validate.py $args >> pipeline/logs/run.txt 2>&1 ;;  # validate --parcial mientras falten imágenes
     *) echo "paso desconocido: $step" >> pipeline/logs/run.txt ;;
   esac
   du -sh .git catalogo 2>/dev/null >> pipeline/logs/run.txt

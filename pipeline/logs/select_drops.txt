@@ -70,6 +70,7 @@ rafael           Q1778000   sl= 13 varios autores             Baronci Altarpiece
 rafael           Q27033728  sl= 12 proporción ≠ medidas       Virgen con el Niño entronizados y santos      | 2880x3722 image/jpeg Public domain
 rafael           Q738038    sl= 12 autoría no preferente      Madonna con la diadema azul                   | 11112x15768 image/jpeg Public domain
 rafael           Q3399388   sl=  8 varios autores             Portrait of Doña Isabel de Requesens y Enríqu | 15113x19106 image/jpeg Public domain
+rafael           Q3464523   sl=  8 sin datos de imagen        Santa Margarita y el Dragón                   | sin archivos
 rafael           Q3842391   sl=  8 sin datos de imagen        Bridgewater Madonna                           | sin archivos
 rafael           Q3842604   sl=  8 sin datos de imagen        Madonna of the Baldacchino                    | sin archivos
 rafael           Q1986584   sl=  8 sin datos de imagen        Sagrada Familia del cordero                   | sin archivos

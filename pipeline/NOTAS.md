@@ -9,7 +9,8 @@ que se lanza al hacer push de `pipeline/RUN` (una línea por paso) y hace commit
 2. `candidates` — obras candidatas por pintor (Wikidata SPARQL + datos del archivo en Commons) → `pipeline/out/candidates/<id>.json`.
 3. `seleccionar.py` (local, sin red; `PYTHONUTF8=1 python pipeline/seleccionar.py`) — elige las obras con `extra.json`, `excluir.json` y `ajustes.json` → `catalogo/seleccion.json` (con `level`).
 4. `download [lotes] [tamaño]` — descarga en lotes (150 por defecto), reanudable, commit tras cada lote → `catalogo/img/<id>.jpg`.
-5. `build` / `validate` — `catalogo/obras.json`, `catalogo/pintores.json`, `CREDITS.md` y comprobaciones.
+5. `fichas` — museo, ciudad, país, técnica, medidas, fecha y «qué aparece» de cada obra desde Wikidata → `pipeline/out/fichas.json` (reanudable; museos en `out/museos.json`, niveles administrativos en `out/lugares.json`).
+6. `build` / `validate [--parcial]` — `catalogo/obras.json` (esquema de la app + ficha), `catalogo/pintores.json`, `CREDITS.md` y comprobaciones.
 
 ## Bitácora
 
