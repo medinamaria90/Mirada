@@ -9,6 +9,8 @@ import { readFileSync, mkdirSync } from 'node:fs';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { hasMovementReview } from '../app/js/engine/progress.js';
 import { isoWeek, dayKey } from '../app/js/engine/dates.js';
+import { madridDayKey } from '../app/js/engine/dates.js';
+import { planDetail, DETAIL_FAME } from '../app/js/engine/goals.js';
 
 const require = createRequire(import.meta.url);
 // Rutas de Playwright y Chrome: por variable de entorno (MIRADA_PLAYWRIGHT, MIRADA_CHROME) o las del
@@ -718,6 +720,26 @@ if (SMOKE) {
   await audit(page, '390 perfil');
   check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
   check(await page.locator('button.medal-item').count() >= 1, 'las medallas del perfil no son pulsables');
+  // Lupa del día resuelta: la portada la encoge a una fila compacta pulsable (≥ 48 px) con la
+  // miniatura y «Título · Pintor», sin pregunta ni recorte grande (se confundía con el reto diario).
+  const lupaDay = madridDayKey(new Date());
+  const lupaCollection = Object.fromEntries(index.artworks.filter((w) => (w.fame || 0) >= DETAIL_FAME).map((w) => [w.id, lupaDay]));
+  const lupaPlan = planDetail({ collection: lupaCollection }, index, lupaDay);
+  const lupaWork = index.artwork(lupaPlan.artworkId);
+  await seed(page, seededState({ upTo: 0, extra: { collection: lupaCollection, detail: { [lupaDay]: { artworkId: lupaWork.id, correct: true } } } }));
+  await page.waitForSelector('.path');
+  await page.evaluate(() => window.scrollTo(0, 0));
+  const lupa = page.locator('.card-detail.is-done');
+  check(await lupa.count() === 1, 'la lupa del día resuelta no se encoge a una fila');
+  check(await page.locator('.card-detail .detail-option, .card-detail .detail-q, .card-detail .detail-crop').count() === 0, 'la lupa resuelta sigue pareciendo una pregunta');
+  const lupaText = await lupa.innerText();
+  check(/lupa del día/i.test(lupaText) && lupaText.includes(lupaWork.title), `fila de la lupa: «${lupaText.replace(/\s+/g, ' ')}»`);
+  const lupaBox = await lupa.locator('[data-zoom]').boundingBox();
+  check(lupaBox && lupaBox.height >= 48 && lupaBox.height <= 110, `fila de la lupa de ${lupaBox && Math.round(lupaBox.height)} px`);
+  check(await page.locator('.card-daily').count() === 1, 'falta el reto diario junto a la lupa');
+  await shot(page, '14b-lupa-resuelta');
+  await audit(page, '390 lupa resuelta');
+  await viewerCheck(page, 'lupa del día resuelta', lupa.locator('[data-zoom]'), { close: 'esc' });
 }
 // Del recorrido completo en adelante (no entra en el modo humo).
 if (!SMOKE) {
@@ -886,9 +908,9 @@ check(await dpage0.locator('[data-action="free"]').count() >= 1, 'camino complet
 await dpage0.locator('.finale').scrollIntoViewIfNeeded();
 check((await dpage0.locator('.finale-count').innerText()).includes(String(expectRecognized)), `contador de cuadros que reconoces: ${await dpage0.locator('.finale-count').innerText()} (esperado ${expectRecognized})`);
 await shot(dpage0, '28-final-camino');
-// Detalle del día: una pregunta, una vez al día, +XP pequeña, persiste.
+// Lupa del día: una pregunta, una vez al día, +XP pequeña, persiste.
 await dpage0.evaluate(() => window.scrollTo(0, 0));
-// Camino avanzado: las tarjetas del día van en el bloque «Hoy» y el detalle se abre desde su fila.
+// Camino avanzado: las tarjetas del día van en el bloque «Hoy» y la lupa se abre desde su fila.
 check(await dpage0.locator('.today-block').count() === 1, 'camino avanzado sin bloque «Hoy»');
 const mapTop = await dpage0.evaluate(() => {
   const nav = document.querySelector('.bottomnav');
@@ -898,7 +920,7 @@ const mapTop = await dpage0.evaluate(() => {
 check(mapTop.top < mapTop.limit - 40, `el mapa no asoma en la primera pantalla (${Math.round(mapTop.top)} de ${Math.round(mapTop.limit)})`);
 await dpage0.locator('.today-detail summary').click();
 const detailCard = dpage0.locator('.card-detail');
-check(await detailCard.count() === 1, 'falta el detalle del día');
+check(await detailCard.count() === 1, 'falta la lupa del día');
 await detailCard.scrollIntoViewIfNeeded();
 await dpage0.waitForTimeout(500);
 await shot(dpage0, '28b-detalle-del-dia');
@@ -915,7 +937,7 @@ const detailOk = Object.values(afterDetail.detail)[0].correct;
 check(afterDetail.xp - xpBefore === (detailOk ? 5 : 0), `XP del detalle: ${afterDetail.xp - xpBefore}`);
 await dpage0.reload();
 await dpage0.waitForSelector('.path');
-check(await dpage0.locator('.card-detail .detail-option').count() === 0 && await dpage0.locator('.card-detail .detail-result').count() === 1, 'el detalle se puede responder dos veces');
+check(await dpage0.locator('.card-detail .detail-option').count() === 0 && await dpage0.locator('.card-detail.is-done [data-zoom]').count() === 1, 'la lupa se puede responder dos veces o no se encoge al volver');
 // Sala de un movimiento dominado: desde el mapa y desde Colección.
 const galleryRow = dpage0.locator('.stage-gallery').first();
 check(await dpage0.locator('.stage-gallery').count() === index.visibleMovements.length, 'faltan salas en el mapa');
@@ -1500,15 +1522,15 @@ for (const scheme of ['light', 'dark']) {
       await p8.evaluate(() => window.scrollTo(0, 0));
     }
 
-    // Detalle del día: tras responder, el recorte abre el cuadro entero.
+    // Lupa del día: tras responder, el recorte abre el cuadro entero.
     if (await p8.locator('.today-detail summary').count()) await p8.locator('.today-detail summary').click();
     const det = p8.locator('.card-detail').first();
     if (await det.count()) {
       check(await det.locator('.detail-zoom').count() === 0, `[${cfg.tag}] el detalle sin responder se puede ampliar (desvelaría el cuadro)`);
       await det.locator('.detail-option').first().click();
       await p8.waitForSelector('.card-detail .detail-zoom');
-      await viewerCheck(p8, L('detalle del día'), p8.locator('.card-detail .detail-zoom'), { close: 'esc', touch: T, shotName: cfg.full ? 'visor-detalle-390-claro' : null });
-    } else notes.push(`[${cfg.tag}] sin detalle del día hoy`);
+      await viewerCheck(p8, L('lupa del día'), p8.locator('.card-detail .detail-zoom'), { close: 'esc', touch: T, shotName: cfg.full ? 'visor-detalle-390-claro' : null });
+    } else notes.push(`[${cfg.tag}] sin lupa del día hoy`);
 
     // «Conoce a»: el carrusel entero en el visor.
     await p8.goto(`${base}#etapa-${roundStage.id}`);
