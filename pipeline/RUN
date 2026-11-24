@@ -1,5 +1,6 @@
 # 20:10 — recuperar las 180 imágenes que no cupieron en la release (tope de 1000 recursos) y empaquetar para la app
 # download reparte las sueltas en catalogo-img / catalogo-img-2; pack hace el zip único app-img-1200.zip (+ .sha256) en catalogo-img
+reconciliar
 download 2 150
 build
 pack 1200

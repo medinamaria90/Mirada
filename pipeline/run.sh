@@ -90,6 +90,10 @@ while read -r step args <&3; do
         [ $rc -ne 0 ] && { echo "download rc=$rc" >> pipeline/logs/run.txt; break; }
       done ;;
     img-release) push_img; git rm -r -q --cached catalogo/img 2>/dev/null || true ;;  # saca de main las imágenes ya subidas
+    reconciliar)  # quita de catalogo/img_meta.json las imágenes que no están en ninguna release (p. ej. lotes cuya subida falló)
+      TMPDIR_REC=$(mktemp)
+      for t in $TAGS; do [ "$(cuenta "$t")" -gt 0 ] && gh release view "$t" --json assets --jq '.assets[].name' >> "$TMPDIR_REC"; done
+      python3 pipeline/reconciliar.py "$TMPDIR_REC" >> pipeline/logs/run.txt 2>&1 ;;
     pack)  # pack [lado] [--parcial]: zip único app-img-<lado>.zip (+ .sha256) con <id>.jpg a <lado> px, subido a catalogo-img
       set -- $args; lado=${1:-1200}; parcial=${2:-}
       src=$(mktemp -d); out=$(mktemp -d)
