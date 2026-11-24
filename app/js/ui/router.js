@@ -37,7 +37,15 @@ export function parseRoute(hash, opts = {}) {
   if (name === ROUTES.medals) return { name: 'medals' };
   if (name === ROUTES.free) return { name: 'free' };
   if (name === ROUTES.weekly) return { name: 'weekly' };
-  let m = /^a-fondo-([a-z0-9-]+)-([2-9])$/.exec(name);
+  let m = /^obras-invitados-([a-z0-9-]+)$/.exec(name);
+  if (m) return { name: 'works', spec: { kind: 'guests', movementId: m[1] } };
+  m = /^obras-([a-z0-9-]+)$/.exec(name);
+  if (m) return { name: 'works', spec: { kind: 'artist', artistId: m[1] } };
+  m = /^pintor-([a-z0-9-]+)-etapas$/.exec(name);
+  if (m) return { name: 'artist', artistId: m[1], focus: 'stages' };
+  m = /^pintor-([a-z0-9-]+)$/.exec(name);
+  if (m) return { name: 'artist', artistId: m[1], focus: '' };
+  m = /^a-fondo-([a-z0-9-]+)-([2-9])$/.exec(name);
   if (m) return { name: 'deep', artistId: m[1], level: Number(m[2]) };
   m = /^etapa-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'stage', artistId: m[1] };

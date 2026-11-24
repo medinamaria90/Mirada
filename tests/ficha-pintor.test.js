@@ -10,7 +10,7 @@ import { emptyProgress, artistStatus } from '../app/js/engine/progress.js';
 import { pendingWorks } from '../app/js/engine/levels.js';
 import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, isMastered } from '../app/js/engine/painters.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
-import { initials } from '../app/js/ui/artist-sheet.js';
+import { initials } from '../app/js/ui/artist-profile.js';
 import { sourceLabel } from '../app/js/engine/stories.js';
 
 const here = dirname(fileURLToPath(import.meta.url));

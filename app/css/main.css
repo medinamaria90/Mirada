@@ -666,8 +666,6 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .card-dialog:has(.dlg-art) { width: min(96vw, 560px); }
 .dlg-title { font: 500 1.4rem/1.15 var(--font); }
 .dlg-meta { display: flex; flex-wrap: wrap; align-items: center; color: var(--ink-2); }
-.dlg-museum { color: var(--ink-2); font-size: .92rem; }
-.dlg-museum:empty { display: none; }
 .dlg-hint { font: 400 1.05rem/1.4 var(--font); padding: .7rem .9rem; background: var(--accent-soft); border-left: 3px solid var(--accent-ui); border-radius: var(--radius-sm); margin: .3rem 0 .6rem; }
 
 /* ---------- Perfil ---------- */

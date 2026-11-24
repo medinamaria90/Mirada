@@ -2,13 +2,14 @@
 // 2-3 líneas y la fuente discreta. Saltable en cualquier momento, sin examen. Una vez por nivel (se vuelve a
 // ver desde la ficha del pintor). Pintores sin historia: no se muestra nada.
 
-import { esc, accentStyle } from './dom.js';
+import { esc, accentStyle, prefersReducedMotion } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { loadStory } from './story-data.js';
-import { levelStory, cropOf, step, storyKey, sourceLabel } from '../engine/stories.js';
+import { levelStory, cropOf, step, storyKey, sourceLabel, cardDuration } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
+const HOLD_MS = 180; // mantener el dedo así de rato pausa la historia
 const SWIPE_MIN = 50; // px de arrastre horizontal para pasar de tarjeta
 const ZONE_BACK = 0.33; // el tercio izquierdo de la imagen vuelve; el resto avanza
 
@@ -60,7 +61,15 @@ export async function playStory(ctx, artistId, level, opts = {}) {
 
     const show = () => {
       body.innerHTML = cardHtml(index, lv.cards[pos], pos, lv.cards.length);
-      dlg.querySelectorAll('.story-bar').forEach((b, i) => b.classList.toggle('is-done', i <= pos));
+      const auto = !prefersReducedMotion();
+      dlg.querySelectorAll('.story-bar').forEach((b, i) => {
+        b.classList.toggle('is-done', i < pos || (i === pos && !auto));
+        b.classList.toggle('is-now', auto && i === pos);
+        b.style.setProperty('--dur', `${cardDuration(lv.cards[pos])}ms`);
+      });
+      // Reinicia la animación de la barra activa.
+      const now = dlg.querySelector('.story-bar.is-now > span');
+      if (now) { now.style.animation = 'none'; void now.offsetWidth; now.style.animation = ''; }
       dlg.querySelector('.story-next').focus({ preventScroll: true });
       const nextCard = lv.cards[pos + 1];
       const nextWork = nextCard && index.artwork(nextCard.artwork);
@@ -98,9 +107,21 @@ export async function playStory(ctx, artistId, level, opts = {}) {
         go(ev.clientX - r.left < r.width * ZONE_BACK ? -1 : 1);
       }
     });
+    // La barra activa llena y pasa a la siguiente tarjeta; mantener pulsado (o Espacio) pausa.
+    dlg.addEventListener('animationend', (ev) => { if (ev.target.parentElement?.classList.contains('is-now')) go(1); });
+    let holdTimer = null;
+    const pause = (on) => dlg.classList.toggle('is-paused', on);
     let from = null;
-    dlg.addEventListener('pointerdown', (ev) => { from = { x: ev.clientX, y: ev.clientY }; delete dlg.dataset.swiped; });
+    dlg.addEventListener('pointerdown', (ev) => {
+      from = { x: ev.clientX, y: ev.clientY };
+      delete dlg.dataset.swiped;
+      delete dlg.dataset.held;
+      if (ev.target.closest('.story-art, .story-card')) holdTimer = setTimeout(() => { pause(true); dlg.dataset.held = '1'; }, HOLD_MS);
+    });
+    const release = () => { clearTimeout(holdTimer); if (dlg.classList.contains('is-paused') && dlg.dataset.paused !== '1') pause(false); };
+    dlg.addEventListener('pointercancel', release);
     dlg.addEventListener('pointerup', (ev) => {
+      release();
       if (!from) return;
       const dx = ev.clientX - from.x;
       const dy = ev.clientY - from.y;
@@ -108,9 +129,16 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       if (Math.abs(dx) > SWIPE_MIN && Math.abs(dx) > Math.abs(dy) * 1.3) { dlg.dataset.swiped = '1'; go(dx < 0 ? 1 : -1); }
     });
     // Un arrastre no cuenta además como toque en la imagen.
-    dlg.addEventListener('click', (ev) => { if (dlg.dataset.swiped) { ev.stopImmediatePropagation(); delete dlg.dataset.swiped; } }, true);
+    dlg.addEventListener('click', (ev) => {
+      if (dlg.dataset.swiped || dlg.dataset.held) { ev.stopImmediatePropagation(); delete dlg.dataset.swiped; delete dlg.dataset.held; }
+    }, true);
     dlg.addEventListener('keydown', (ev) => {
       if (ev.key === 'ArrowRight') { ev.preventDefault(); go(1); } else if (ev.key === 'ArrowLeft') { ev.preventDefault(); go(-1); }
+      else if (ev.key === ' ' && !ev.target.closest('button, a')) {
+        ev.preventDefault();
+        dlg.dataset.paused = dlg.dataset.paused === '1' ? '0' : '1';
+        pause(dlg.dataset.paused === '1');
+      }
     });
     dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); finish(); });
     window.addEventListener('hashchange', finish);

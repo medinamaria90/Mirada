@@ -246,19 +246,21 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
 - **Estado v7** (`state/schema.js`): obras `a<N>` → `w<QID>` (`state/legacy-ids.js`, generado), lo sin equivalente se pierde;
   `deep: {}` y `rank: 0` nuevos; se descarta la ronda en curso.
 
-- **Ficha de pintor (parte B, paquete 1)**: `ui/artist-sheet.js` (diálogo sobre cualquier pantalla; no cambia de ruta, así no pierde
-  una ronda; jugar solo si se abre desde una pantalla con navegación inferior). Se abre con cualquier `data-artist="<id>"`
-  (`ui/artist-link.js`, delegación en `main.js`): feedback («Es de X», «El que has elegido es de…»), «Conoce a» y ficha de obra.
-  Muestra fechas, país, época, líneas de vida (tarjetas del nivel 1 de `app/data/historias/<id>.json`; sin historia, un dato seco
-  con enlace a Wikidata por el `qid` del catálogo), «Fíjate en…» (`hint`), etapas (grandes maestros), SOLO obras ya vistas y
-  progreso. Colección tiene dos rutas, `#coleccion` (Cuadros) y `#coleccion-pintores` (lista por épocas alcanzadas con buscador).
+- **Ficha de pintor (parte B)**, al estilo de un perfil de Instagram (`ui/artist-profile.js`): portada con su cuadro más famoso de los ya
+  vistos (sin spoilers), avatar con anillo de historia (degradado de marca si no se ha visto, gris si ya; tocarlo o «Ver su historia»
+  reproduce `playStory`), nombre, fechas, país y movimiento, líneas de vida con fuente (historia de nivel 1 de `app/data/historias/<id>.json`
+  o dato seco con Wikidata por el `qid`), «Cómo reconocerlo» (`traits`/`hint`), etapas jugables y las 6 primeras casillas de su galería con
+  «Ver sus n cuadros». Fuera de las rondas es una pantalla (`#pintor-<id>`, `#pintor-<id>-etapas`; `screens/artist-page.js`); dentro de una
+  ronda, un diálogo (`ui/artist-sheet.js`) para no perderla. Se abre con cualquier `data-artist="<id>"` (`ui/artist-link.js`, delegación en
+  `main.js`). **Galería del pintor** (`#obras-<id>`, `#obras-invitados-<movimiento>`; `screens/artist-works.js`): rejilla de 3 columnas con
+  todas sus obras desbloqueadas (abren el visor) y huecos discretos «n de m». Atrás devuelve a donde estabas, con su desplazamiento
+  (`main.js`: número en `history.state`). Colección tiene dos rutas, `#coleccion` (Cuadros) y `#coleccion-pintores`.
   **Historias servidas desde la app**: `tools/sync_historias.py` copia y valida `contenido/historias/` en `app/data/historias/`
-  (con `index.json` de pintores y niveles, para no pedir archivos inexistentes); `tests/ficha-pintor.test.js` falla si la copia se
-  desfasa: tras tocar una historia, ejecutar el script y subir ambas carpetas. Museo y ciudad (`catalog-ficha.json`, diferido,
-  `ui/ficha-data.js`) salen bajo el cuadro en el visor y en la ficha de obra solo con la obra revelada.
+  (con `index.json`); `tests/ficha-pintor.test.js` falla si la copia se desfasa. Museo y ciudad (`catalog-ficha.json`, diferido,
+  `ui/ficha-data.js`) salen bajo el cuadro en el visor solo con la obra revelada.
 - **Obras desbloqueadas** = vistas (colección o enseñadas en rondas, `engine/collection.js` `unlockedMap`): una sola definición para las franjas
   de Colección, la ficha (galería completa: miniaturas que abren el visor y huecos discretos «n de m» sin imagen ni título) y la lista de
-  pintores. «Ver todas» abre la ficha en esa galería (`data-focus="gallery"`).
+  pintores. «Ver sus n cuadros» abre su galería.
 - **Niveles «a fondo»** (parte B, paquete 3): ruta `a-fondo-<pintor>-<nivel>` (`deepRoute`), historia de la etapa y ronda con
   `planStage(..., { level })`; sello «+n» (o check) en el nodo del mapa de los pintores dominados (`ui/deep-badges.js`, añadido al DOM
   desde `home.js`) que abre la ficha en «Etapas», jugables desde allí; el resultado celebra `deep-mastered` y `rank` y, con `coverShort`,
@@ -270,7 +272,7 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   definición del perfil (`artistStatus`); `tests/ficha-pintor.test.js` vigila la coherencia.
 - **Colección «Cuadros»** (`ui/screens/collection.js`, `engine/collection.js`): una franja por pintor con «n de m» y sus 3 últimas obras
   desbloqueadas; por movimiento cronológico (o «lo último primero»); invitados (categoría `invitado`) juntos en una franja
-  «Invitados» al final de su movimiento; tocar el nombre o «Ver todas» abre la ficha. Con 15 pintores o más con alguna obra
+  «Invitados» al final de su movimiento; el nombre lleva a la ficha, «Ver sus n cuadros» a la galería y una miniatura abre el visor; sin casilla de orden. Con 15 pintores o más con alguna obra
   desbloqueada sale el buscador con sugerencias (`engine/suggest.js`, `ui/suggest-box.js`: combobox/listbox, como mucho 6, pintores y
   luego títulos, sin tildes, principio de cualquier palabra, una errata) y chips por movimiento.
 - **Historias de inicio de nivel** (`ui/story-viewer.js`, `engine/stories.js`): tarjetas a pantalla completa (barras de progreso, detalle con

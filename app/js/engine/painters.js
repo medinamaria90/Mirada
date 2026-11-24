@@ -78,3 +78,22 @@ export function stageList(progress, index, artistId) {
 }
 
 export const lifeSpan = (a) => (a.born && a.died ? `${a.born}–${a.died}` : '');
+
+// Portada de la ficha: la obra más famosa de las ya vistas (nunca una que no se haya visto: sin spoilers).
+export function coverWork(seen) {
+  return seen.slice().sort((a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b.yearSort || 0))[0] || null;
+}
+
+// Galería embebida en la ficha: las primeras `limit` casillas, con las obras vistas y huecos hasta completar
+// (como mucho tantos huecos como obras tiene el pintor).
+export const PREVIEW_CELLS = 6;
+export function previewCells(seen, total, limit = PREVIEW_CELLS) {
+  const shown = seen.slice(0, limit);
+  return { shown, gaps: Math.max(0, Math.min(limit, total) - shown.length) };
+}
+
+// Zona del cuadro que hace de avatar: el `focus` de la obra si lo tiene (centro 0-1) o la parte alta del centro.
+export function avatarCrop(work) {
+  const f = Array.isArray(work?.focus) && work.focus.length >= 2 ? work.focus : null;
+  return { x: Math.round((f ? f[0] : 0.5) * 100), y: Math.round((f ? f[1] : 0.35) * 100) };
+}

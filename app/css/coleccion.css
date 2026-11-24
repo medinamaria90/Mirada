@@ -1,0 +1,63 @@
+/* Colección: franjas por pintor, buscador con sugerencias, chips y lista de «Pintores». Colores solo de brand.css. */
+
+/* ---------- Colección (Cuadros): franjas por pintor, orden, filtro y buscador con sugerencias ---------- */
+.coll-controls { display: grid; gap: .7rem; margin-bottom: 1.2rem; }
+.coll-era { margin: 1.4rem 0 .6rem; font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.coll-era::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: .5rem; border-radius: 999px; background: var(--accent); }
+.coll-strip { margin-bottom: 1.2rem; }
+.coll-strip-head { display: flex; align-items: center; gap: .5rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); margin-bottom: .6rem; }
+.coll-artist-name { flex: 1; min-width: 0; font: 500 1.2rem/1.1 var(--font); }
+.coll-name-btn { display: inline-flex; align-items: center; gap: .3rem; min-height: 48px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.coll-name-btn .icon { flex: none; color: var(--brand-text); }
+.coll-all { min-height: 48px; padding: 0 .4rem; border: 0; background: none; color: var(--brand-text); font: 600 .9rem/1 var(--font); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; white-space: nowrap; }
+.coll-chips { display: flex; gap: .4rem; overflow-x: auto; padding-bottom: .2rem; scrollbar-width: none; }
+.chip-filter { flex: none; min-height: 48px; padding: 0 1rem; border: 0; border-radius: 999px; background: var(--surface); color: var(--ink); font: 500 .95rem/1 var(--font); box-shadow: var(--lift-sm); cursor: pointer; }
+.chip-filter[aria-pressed="true"] { background: var(--brand-soft); box-shadow: 0 var(--relief-sm) 0 var(--brand-shadow), inset 0 0 0 2px var(--brand); }
+.sg { position: relative; }
+.sg-input {
+  box-sizing: border-box; width: 100%; min-height: 52px; padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
+  background: var(--surface); color: var(--ink); font: 400 1.05rem/1 var(--font); box-shadow: var(--lift-down);
+}
+.sg-input::placeholder { color: var(--ink-2); }
+.sg-list { position: absolute; z-index: 3; left: 0; right: 0; top: calc(100% + 6px); margin: 0; padding: .3rem; list-style: none; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-pop), var(--lift); }
+.sg-list[hidden], .sg-empty[hidden] { display: none; }
+.sg-option { display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: .7rem; min-height: 56px; padding: .3rem .5rem; border-radius: var(--radius-sm); cursor: pointer; }
+.sg-option[aria-selected="true"], .sg-option:hover { background: var(--brand-soft); }
+.sg-thumb { display: block; width: 44px; height: 44px; border-radius: 8px; overflow: hidden; }
+.sg-thumb .art { width: 100%; height: 100%; }
+.sg-text { display: grid; min-width: 0; }
+.sg-label { overflow-wrap: anywhere; }
+.sg-label strong { font-weight: 600; color: var(--brand-text); }
+.sg-sub { font-size: .82rem; color: var(--ink-2); overflow-wrap: anywhere; }
+.sg-empty { margin: .6rem .2rem 0; color: var(--ink-2); }
+
+/* ---------- Colección: pestañas y lista de pintores ---------- */
+.pl-search { display: block; margin-bottom: 1rem; }
+.pl-input {
+  box-sizing: border-box; width: 100%; min-height: 52px; padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
+  background: var(--surface); color: var(--ink); font: 400 1.05rem/1 var(--font); box-shadow: var(--lift-down);
+}
+.pl-input::placeholder { color: var(--ink-2); }
+.pl-group { margin-bottom: 1.4rem; }
+.pl-era { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.1rem/1.1 var(--font); padding-bottom: .45rem; border-bottom: 2px solid var(--accent); margin-bottom: .3rem; }
+.pl-era-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pl-more { padding: .7rem .3rem 0; color: var(--ink-2); font-size: .9rem; }
+.pl-list { margin: 0; padding: 0; list-style: none; }
+.pl-row {
+  display: grid; grid-template-columns: 44px 1fr auto auto; align-items: center; gap: .7rem; width: 100%; min-height: 60px;
+  padding: .45rem .3rem; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink);
+  font: inherit; text-align: left; cursor: pointer;
+}
+.pl-row:hover { background: var(--surface-2); }
+.pl-node { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; }
+.pl-node svg { position: absolute; inset: 0; }
+.pl-ring-track { fill: none; stroke: var(--line-2); stroke-width: 4; }
+.pl-ring-fill { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; }
+.pl-initials { font: 600 .9rem/1 var(--font); color: var(--ink-2); }
+.pl-node.is-mastered { background: var(--gold); color: var(--on-gold); }
+.pl-text { display: grid; gap: 2px; min-width: 0; }
+.pl-name { font-weight: 500; overflow-wrap: anywhere; }
+.pl-sub { font-size: .85rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pl-count { font: 600 .85rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pl-go { color: var(--ink-2); }
+.pl-empty { padding: 2rem 0; text-align: center; color: var(--ink-2); }

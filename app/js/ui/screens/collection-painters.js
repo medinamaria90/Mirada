@@ -7,7 +7,7 @@ import { loadCss } from '../lazy-css.js';
 import { accentStyle, focusHeading } from '../dom.js';
 import { playEra } from '../audio-bridge.js';
 import { painterGroups, lifeSpan } from '../../engine/painters.js';
-import { initials } from '../artist-sheet.js';
+import { initials } from '../artist-profile.js';
 
 const STATE_TEXT = { mastered: 'dominado', started: 'en marcha' };
 const RING = 44;
@@ -50,7 +50,7 @@ export function groupsHtml(ctx, query) {
 }
 
 export async function renderPainters(ctx, el) {
-  await loadCss('css/ficha.css');
+  await loadCss('css/coleccion.css');
   const known = painterGroups(ctx.store.get().progress, ctx.index).reduce((n, g) => n + g.known, 0);
   el.innerHTML = page(ctx, 'collection', `
     <header class="section-head"><h1>Colección</h1><p class="section-sub">${known} ${known === 1 ? 'pintor' : 'pintores'}</p></header>

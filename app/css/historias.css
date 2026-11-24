@@ -7,8 +7,11 @@
 .story::backdrop { background: var(--viewer-bg); }
 .story-bars { display: flex; gap: 4px; padding: calc(env(safe-area-inset-top, 0px) + .7rem) .8rem 0; }
 .story-bar { flex: 1; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--viewer-ink) 30%, transparent); overflow: hidden; }
-.story-bar > span { display: block; width: 0; height: 100%; background: var(--viewer-ink); transition: width .25s var(--ease); }
+.story-bar > span { display: block; width: 0; height: 100%; background: var(--viewer-ink); }
 .story-bar.is-done > span { width: 100%; }
+.story-bar.is-now > span { animation: story-fill var(--dur, 6s) linear forwards; }
+.story.is-paused .story-bar.is-now > span { animation-play-state: paused; }
+@keyframes story-fill { from { width: 0; } to { width: 100%; } }
 .story-top { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .2rem .8rem 0 1rem; }
 .story-title { font: 500 1rem/1.2 var(--font); color: var(--viewer-ink-2); overflow-wrap: anywhere; }
 .story-skip { min-height: 48px; min-width: 48px; padding: 0 .8rem; border: 0; background: none; color: var(--viewer-ink); font: 600 1rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
@@ -23,7 +26,7 @@
 .story-back { color: var(--viewer-ink); }
 .story-back:hover { background: color-mix(in srgb, var(--viewer-ink) 14%, transparent); }
 .story-nav .story-next { flex: 1; }
-@media (prefers-reduced-motion: reduce) { .story[open] { animation: none; } .story-bar > span { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .story[open] { animation: none; } .story-bar.is-now > span { animation: none; width: 100%; } }
 html.reduce-motion .story[open] { animation: none; }
-html.reduce-motion .story-bar > span { transition: none; }
+html.reduce-motion .story-bar.is-now > span { animation: none; width: 100%; }
 .story-back[hidden] { display: none; }
