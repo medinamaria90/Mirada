@@ -20,3 +20,9 @@ por país: España 369, Francia 292, Italia 180, Países Bajos 124, Rusia 93, Fl
 títulos por fuente: {'wikidata-es': 972, 'revisar-idioma': 1, 'traducir': 93, 'manual': 22, 'traducido': 145}
 58M	.git
 2.8M	catalogo
+== fichas  20:14:47
+ok lote 9: 40 fichas (1540 en total)
+ok lote 10: 34 fichas (1574 en total)
+fin: 1574 fichas; con museo 1547, con ciudad 1528, con técnica 1532, con medidas 1519, en España 360
+58M	.git
+2.8M	catalogo

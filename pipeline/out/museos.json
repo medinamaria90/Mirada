@@ -6901,5 +6901,1489 @@
   "parent": null,
   "country": null,
   "isMuseum": false
+ },
+ "Q90": {
+  "name": "París",
+  "types": [
+   "Q174844",
+   "Q200250",
+   "Q208511",
+   "Q22923920",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "adm": "Q16665915",
+  "loc": null,
+  "parent": "Q13917",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q1731": {
+  "name": "Dresde",
+  "types": [
+   "Q253030",
+   "Q1549591",
+   "Q42744322",
+   "Q61708099"
+  ],
+  "adm": "Q1202",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q1741": {
+  "name": "Viena",
+  "types": [
+   "Q133442",
+   "Q171441",
+   "Q200250",
+   "Q257391",
+   "Q261543",
+   "Q262882",
+   "Q667509",
+   "Q871419",
+   "Q13539802",
+   "Q51929311"
+  ],
+  "adm": "Q40",
+  "loc": null,
+  "parent": null,
+  "country": "Austria",
+  "isMuseum": false
+ },
+ "Q318660": {
+  "name": "basílica de Santa María en Aracoeli",
+  "types": [
+   "Q16970",
+   "Q120560"
+  ],
+  "adm": "Q220",
+  "loc": "Q1031342",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q533082": {
+  "name": "abadía de Benediktbeuern",
+  "types": [
+   "Q44613",
+   "Q160742"
+  ],
+  "adm": "Q503628",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q661752": {
+  "name": "Iglesia de Todos los Santos",
+  "types": [
+   "Q62098579"
+  ],
+  "adm": "Q6837",
+  "loc": null,
+  "parent": "Q2250035",
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q700764": {
+  "name": "Castillo Ambras",
+  "types": [
+   "Q207694",
+   "Q751876",
+   "Q2772772"
+  ],
+  "adm": "Q1735",
+  "loc": null,
+  "parent": null,
+  "country": "Austria",
+  "isMuseum": true
+ },
+ "Q850207": {
+  "name": "Brukenthal National Museum",
+  "types": [
+   "Q17431399"
+  ],
+  "adm": "Q83324",
+  "loc": null,
+  "parent": null,
+  "country": "Rumania",
+  "isMuseum": true
+ },
+ "Q1103550": {
+  "name": "Pinacoteca Nacional de Bolonia",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q740437",
+   "Q3867560",
+   "Q97662266",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q1891",
+  "loc": "Q27989760",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1257947": {
+  "name": "Spedale degli Innocenti",
+  "types": [
+   "Q24699794"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q19317659": {
+  "name": "Italian painting 13. - 15th-century, hall XVIII",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": "Q163966",
+  "loc": "Q165631",
+  "parent": "Q165631",
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q55157191": {
+  "name": "Sant'Anna",
+  "types": [
+   "Q16970",
+   "Q44613"
+  ],
+  "adm": "Q20436",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q55373729": {
+  "name": "Museo degli Innocenti",
+  "types": [
+   "Q207694",
+   "Q112132542",
+   "Q124830213"
+  ],
+  "adm": "Q2044",
+  "loc": "Q1257947",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q131138546": {
+  "name": "Room 15",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q180788",
+  "parent": "Q180788",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q131812976": {
+  "name": "Room 9 Dido",
+  "types": [
+   "Q180516",
+   "Q15206795"
+  ],
+  "adm": "Q3940419",
+  "loc": "Q841506",
+  "parent": "Q841506",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q13917": {
+  "name": "Isla de Francia",
+  "types": [
+   "Q36784"
+  ],
+  "adm": "Q212429",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q2250035": {
+  "name": "Monumentos conmemorativos a Lutero",
+  "types": [
+   "Q18247357"
+  ],
+  "adm": "Q6837",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q194533": {
+  "name": "Muzeum Narodowe w Poznaniu",
+  "types": [
+   "Q207694",
+   "Q17431399"
+  ],
+  "adm": "Q268",
+  "loc": null,
+  "parent": null,
+  "country": "Polonia",
+  "isMuseum": true
+ },
+ "Q210087": {
+  "name": "Ermúpoli",
+  "types": [
+   "Q486972"
+  ],
+  "adm": "Q1383135",
+  "loc": null,
+  "parent": null,
+  "country": "Grecia",
+  "isMuseum": false
+ },
+ "Q816669": {
+  "name": "Museo Benaki",
+  "types": [
+   "Q7075",
+   "Q33506",
+   "Q207694"
+  ],
+  "adm": "Q1224979",
+  "loc": "Q1779602",
+  "parent": null,
+  "country": "Grecia",
+  "isMuseum": true
+ },
+ "Q1167467": {
+  "name": "National Gallery of Athens",
+  "types": [
+   "Q740437",
+   "Q3196771",
+   "Q17431399"
+  ],
+  "adm": "Q1224979",
+  "loc": null,
+  "parent": null,
+  "country": "Grecia",
+  "isMuseum": true
+ },
+ "Q1421440": {
+  "name": "Museo Fitzwilliam",
+  "types": [
+   "Q207694",
+   "Q866133",
+   "Q16735822"
+  ],
+  "adm": "Q21713103",
+  "loc": "Q350",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q1699233": {
+  "name": "Museum Mayer van den Bergh te Antwerpen",
+  "types": [
+   "Q33506",
+   "Q166118",
+   "Q207694"
+  ],
+  "adm": "Q12892",
+  "loc": null,
+  "parent": null,
+  "country": "Bélgica",
+  "isMuseum": true
+ },
+ "Q2274725": {
+  "name": "Museo de Santa Cruz",
+  "types": [
+   "Q33506"
+  ],
+  "adm": "Q5836",
+  "loc": "Q31844059",
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q3775034": {
+  "name": "Monasterio de Santo Domingo el Antiguo",
+  "types": [
+   "Q91315817"
+  ],
+  "adm": "Q5836",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q10601378": {
+  "name": "Nivaagaard",
+  "types": [
+   "Q33506"
+  ],
+  "adm": "Q503045",
+  "loc": null,
+  "parent": null,
+  "country": "Dinamarca",
+  "isMuseum": true
+ },
+ "Q12878117": {
+  "name": "Syros, Agios Nikolaos in Ermoupolis",
+  "types": [
+   "Q16970"
+  ],
+  "adm": "Q1383135",
+  "loc": "Q210087",
+  "parent": null,
+  "country": "Grecia",
+  "isMuseum": true
+ },
+ "Q18702931": {
+  "name": "Kroměříž Archdiocesan Museum",
+  "types": [
+   "Q33506"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "República Checa",
+  "isMuseum": true
+ },
+ "Q106596628": {
+  "name": "Room 8 - room of Silen",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q841506",
+  "parent": "Q841506",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q111748070": {
+  "name": "Pieter Breugelthe Elder  - Hall X",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q95569",
+  "parent": "Q95569",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q131813028": {
+  "name": "Hall of Venus",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q2707802",
+  "loc": "Q866498",
+  "parent": "Q866498",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q31": {
+  "name": "Bélgica",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Bélgica",
+  "isMuseum": false
+ },
+ "Q234": {
+  "name": "Flandes",
+  "types": [
+   "Q3920906"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q64266": {
+  "name": "Juan Guillermo del Palatinado",
+  "types": [
+   "Q5"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q151330": {
+  "name": "Palacio de Sanssouci",
+  "types": [
+   "Q16560"
+  ],
+  "adm": "Q1711",
+  "loc": "Q1711",
+  "parent": "Q852427",
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q403080": {
+  "name": "Wadsworth Atheneum",
+  "types": [
+   "Q33506",
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q33486",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q428765": {
+  "name": "Museo de Bellas Artes de Nancy",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q40898",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q574961": {
+  "name": "Museo Frans Hals",
+  "types": [
+   "Q33506",
+   "Q3152824",
+   "Q3196771"
+  ],
+  "adm": "Q9920",
+  "loc": "Q17201547",
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": true
+ },
+ "Q667321": {
+  "name": "basílica de Santa Lucía del Sepulcro",
+  "types": [
+   "Q16970"
+  ],
+  "adm": "Q13670",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1424095": {
+  "name": "basílica de Sant'Agostino in Campo Marzio",
+  "types": [
+   "Q120560",
+   "Q317557"
+  ],
+  "adm": "Q220",
+  "loc": "Q2223960",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q1526140": {
+  "name": "Regional museum of Messina",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q3329412",
+   "Q124830213"
+  ],
+  "adm": "Q13666",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q2551811": {
+  "name": "Proveniershuis",
+  "types": [
+   "Q574990"
+  ],
+  "adm": "Q9920",
+  "loc": null,
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": false
+ },
+ "Q3757699": {
+  "name": "Galería Spada",
+  "types": [
+   "Q207694",
+   "Q3329412",
+   "Q3867560",
+   "Q17431399",
+   "Q124830411"
+  ],
+  "adm": "Q220",
+  "loc": "Q1058475",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3785211": {
+  "name": "Heritage Malta",
+  "types": [
+   "Q166118",
+   "Q327333"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": "Q119776179",
+  "country": "Malta",
+  "isMuseum": false
+ },
+ "Q5171269": {
+  "name": "Cornelis van der Geest",
+  "types": [
+   "Q5"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q17254790": {
+  "name": "Prinsenhof",
+  "types": [
+   "Q41176"
+  ],
+  "adm": "Q9920",
+  "loc": null,
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": false
+ },
+ "Q18809941": {
+  "name": "Cavallini Sgarbi Foundation",
+  "types": [
+   "Q157031"
+  ],
+  "adm": "Q60583627",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q19018243": {
+  "name": "Room 802",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q161741",
+  "loc": null,
+  "parent": "Q17309944",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q19018244": {
+  "name": "Room 801",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q161741",
+  "loc": null,
+  "parent": "Q17309944",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q79883671": {
+  "name": "Caravaggio, hall 90",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q51252",
+  "parent": "Q51252",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q131160866": {
+  "name": "Gallery 637,  Metropolitan Museum of Art",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q160236",
+  "parent": "Q160236",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q131813019": {
+  "name": "Hall of Mars",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q2707802",
+  "loc": "Q866498",
+  "parent": "Q866498",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q852427": {
+  "name": "Palacios y parques de Potsdam y Berlín",
+  "types": [
+   "Q1129474"
+  ],
+  "adm": "Q64",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q119776179": {
+  "name": "Ministry for the National Heritage, The Arts and Local Government",
+  "types": [
+   "Q18204437",
+   "Q98545490",
+   "Q119774544"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Malta",
+  "isMuseum": false
+ },
+ "Q8717": {
+  "name": "Sevilla",
+  "types": [
+   "Q2074737"
+  ],
+  "adm": "Q95088",
+  "loc": "Q2655584",
+  "parent": "Q2655584",
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q962117": {
+  "name": "Palacio del Buen Retiro",
+  "types": [
+   "Q19860854",
+   "Q53536964"
+  ],
+  "adm": "Q2807",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q1329563": {
+  "name": "Museo Nacional de Breslavia",
+  "types": [
+   "Q207694",
+   "Q17431399"
+  ],
+  "adm": "Q1799",
+  "loc": "Q9378128",
+  "parent": null,
+  "country": "Polonia",
+  "isMuseum": true
+ },
+ "Q1368166": {
+  "name": "Museo de Arte de San Diego",
+  "types": [
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q16552",
+  "loc": "Q804697",
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q2404549": {
+  "name": "Musée des beaux-arts de Tours",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q288",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q5414364": {
+  "name": "Euston Hall",
+  "types": [
+   "Q2087181",
+   "Q16884952"
+  ],
+  "adm": "Q2290320",
+  "loc": null,
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q60276691": {
+  "name": "Ahmanson Building",
+  "types": [
+   "Q24699794"
+  ],
+  "adm": "Q65",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": false
+ },
+ "Q2655584": {
+  "name": "Comarca Metropolitana de Sevilla",
+  "types": [
+   "Q3141478"
+  ],
+  "adm": "Q95088",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q1501219": {
+  "name": "Gemäldegalerie Alte Meister",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q2865",
+  "loc": "Q687186",
+  "parent": "Q1954840",
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q1954840": {
+  "name": "Museumslandschaft Hessen Kassel",
+  "types": [
+   "Q88667167"
+  ],
+  "adm": "Q2865",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q5911386": {
+  "name": "Iglesia de San Vicente",
+  "types": [
+   "Q16970"
+  ],
+  "adm": "Q8717",
+  "loc": null,
+  "parent": "Q97643027",
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q15846074": {
+  "name": "Convento Casa Grande de San Francisco",
+  "types": [
+   "Q44613",
+   "Q76529788"
+  ],
+  "adm": "Q8717",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q28872849": {
+  "name": "Kunsthandel P. de Boer",
+  "types": [
+   "Q1007870",
+   "Q4830453"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": true
+ },
+ "Q105377016": {
+  "name": "Hermitage hall 254 - Rembrandt hall",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q3345111",
+  "parent": "Q3345111",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q3345111": {
+  "name": "New Hermitage",
+  "types": [
+   "Q358",
+   "Q24699794"
+  ],
+  "adm": "Q2742132",
+  "loc": null,
+  "parent": "Q132783",
+  "country": "Rusia",
+  "isMuseum": false
+ },
+ "Q153306": {
+  "name": "Museo Nacional de Varsovia",
+  "types": [
+   "Q207694",
+   "Q3329412",
+   "Q16735822",
+   "Q17431399"
+  ],
+  "adm": "Q7095",
+  "loc": "Q2118294",
+  "parent": null,
+  "country": "Polonia",
+  "isMuseum": true
+ },
+ "Q277333": {
+  "name": "Palace Museum in Wilanów",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q1887504",
+  "loc": "Q47473",
+  "parent": null,
+  "country": "Polonia",
+  "isMuseum": true
+ },
+ "Q666063": {
+  "name": "Biblioteca Nacional de Gales",
+  "types": [
+   "Q22806",
+   "Q166118",
+   "Q207694",
+   "Q708676",
+   "Q7981903"
+  ],
+  "adm": "Q217829",
+  "loc": "Q85098865",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q810684": {
+  "name": "Catedral-Basílica de Nuestra Señora del Pilar de Zaragoza",
+  "types": [
+   "Q120560",
+   "Q840482",
+   "Q907116",
+   "Q2577114",
+   "Q10631691",
+   "Q21850178",
+   "Q55876909",
+   "Q56242215"
+  ],
+  "adm": "Q10305",
+  "loc": "Q31926034",
+  "parent": "Q5412798",
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q1980210": {
+  "name": "Neuer Pavillon",
+  "types": [
+   "Q24699794"
+  ],
+  "adm": "Q158095",
+  "loc": "Q154996",
+  "parent": "Q154996",
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q2018379": {
+  "name": "Galería Nacional de Irlanda",
+  "types": [
+   "Q163740",
+   "Q207694",
+   "Q17431399"
+  ],
+  "adm": "Q4169280",
+  "loc": "Q1761",
+  "parent": null,
+  "country": "Irlanda",
+  "isMuseum": true
+ },
+ "Q3288223": {
+  "name": "Palacio de Liria",
+  "types": [
+   "Q16560",
+   "Q33506"
+  ],
+  "adm": "Q2807",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q3303786": {
+  "name": "Museo Meadows",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q1439",
+  "loc": "Q16557",
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q3747192": {
+  "name": "Fundación Magnani-Rocca",
+  "types": [
+   "Q157031",
+   "Q207694",
+   "Q614316",
+   "Q2087181",
+   "Q97662266"
+  ],
+  "adm": "Q100962",
+  "loc": "Q3844129",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q5871160": {
+  "name": "Fundación Casa de Alba",
+  "types": [
+   "Q157031",
+   "Q7328910"
+  ],
+  "adm": "Q2807",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q19276619": {
+  "name": "Room 714",
+  "types": [
+   "Q180516"
+  ],
+  "adm": "Q161741",
+  "loc": null,
+  "parent": "Q14619172",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q23817605": {
+  "name": "National Library of Wales Framed works of art collection",
+  "types": [
+   "Q2982955",
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": "Q85098865",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": false
+ },
+ "Q85098865": {
+  "name": "National Library of Wales",
+  "types": [
+   "Q856584"
+  ],
+  "adm": "Q213154",
+  "loc": "Q213154",
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": false
+ },
+ "Q141104495": {
+  "name": "Alte Pinakothek, ground floor, hall III",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q154568",
+  "parent": "Q170152",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q170152": {
+  "name": "Neue Pinakothek",
+  "types": [
+   "Q41176",
+   "Q207694",
+   "Q740437",
+   "Q17431399"
+  ],
+  "adm": "Q256012",
+  "loc": null,
+  "parent": "Q812285",
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q5412798": {
+  "name": "Red Mariana Europea",
+  "types": [
+   "Q337912"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q201428": {
+  "name": "Palacio de Fontainebleau",
+  "types": [
+   "Q33506",
+   "Q751876"
+  ],
+  "adm": "Q182872",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q698582": {
+  "name": "Arp Museum Bahnhof Rolandseck",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q486548",
+  "loc": "Q1638336",
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q795228": {
+  "name": "Galería Nacional de Australia",
+  "types": [
+   "Q163740",
+   "Q207694",
+   "Q2085381",
+   "Q17431399",
+   "Q110376455"
+  ],
+  "adm": "Q3114",
+  "loc": "Q532974",
+  "parent": null,
+  "country": "Australia",
+  "isMuseum": true
+ },
+ "Q965780": {
+  "name": "Musée Granet",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q47465",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q1393952": {
+  "name": "Museo de Arte Sinebrychoff",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q2087181"
+  ],
+  "adm": "Q1757",
+  "loc": "Q1393571",
+  "parent": "Q2983474",
+  "country": "Finlandia",
+  "isMuseum": true
+ },
+ "Q1782606": {
+  "name": "Musée national Eugène-Delacroix",
+  "types": [
+   "Q207694",
+   "Q17431399"
+  ],
+  "adm": "Q245546",
+  "loc": "Q245546",
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q2983474": {
+  "name": "Galería Nacional de Finlandia",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q1757",
+  "loc": null,
+  "parent": null,
+  "country": "Finlandia",
+  "isMuseum": true
+ },
+ "Q3329368": {
+  "name": "Musée Thomas-Henry",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q160199",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q3330225": {
+  "name": "Museum of Fine Arts of Reims",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q41876",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q20862230": {
+  "name": "Collection Rau for UNICEF",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": "Q698582",
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q136497529": {
+  "name": "Q136497529",
+  "types": [
+   "Q97662266"
+  ],
+  "adm": "Q594208",
+  "loc": null,
+  "parent": null,
+  "country": "Catar",
+  "isMuseum": false
+ },
+ "Q82941": {
+  "name": "Museo de Arte de São Paulo",
+  "types": [
+   "Q207694",
+   "Q1329623"
+  ],
+  "adm": "Q174",
+  "loc": "Q41068",
+  "parent": null,
+  "country": "Brasil",
+  "isMuseum": true
+ },
+ "Q468458": {
+  "name": "Kunsthalle Mannheim",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q2119",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q693591": {
+  "name": "Galería de arte de Bremen",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q1715951",
+  "loc": null,
+  "parent": "Q907935",
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q913808": {
+  "name": "Museo de Arte Bridgestone",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q1795217",
+  "loc": "Q107488785",
+  "parent": null,
+  "country": "Japón",
+  "isMuseum": true
+ },
+ "Q3329270": {
+  "name": "Musée Masséna",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q33959",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q5935366": {
+  "name": "Museo de Arte de Columbus",
+  "types": [
+   "Q41253",
+   "Q163740",
+   "Q207694"
+  ],
+  "adm": "Q16567",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q19013512": {
+  "name": "Musées Nationaux Récupération",
+  "types": [
+   "Q43229",
+   "Q327333",
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q907935": {
+  "name": "Wallanlagen, Bremen",
+  "types": [
+   "Q22698",
+   "Q1516079"
+  ],
+  "adm": "Q1715951",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": false
+ },
+ "Q1748": {
+  "name": "Copenhague",
+  "types": [
+   "Q515",
+   "Q1392581",
+   "Q1549591",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "adm": "Q26073",
+  "loc": null,
+  "parent": null,
+  "country": "Dinamarca",
+  "isMuseum": false
+ },
+ "Q9822": {
+  "name": "Breda",
+  "types": [
+   "Q2039348"
+  ],
+  "adm": "Q1101",
+  "loc": null,
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": false
+ },
+ "Q153516": {
+  "name": "Nuenen",
+  "types": [
+   "Q532",
+   "Q1852859"
+  ],
+  "adm": "Q9855",
+  "loc": null,
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": false
+ },
+ "Q478455": {
+  "name": "Museo de Artes Aplicadas de Viena",
+  "types": [
+   "Q207694",
+   "Q24699794",
+   "Q62098611"
+  ],
+  "adm": "Q267329",
+  "loc": null,
+  "parent": null,
+  "country": "Austria",
+  "isMuseum": true
+ },
+ "Q505873": {
+  "name": "Museo de Viena",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q2327632"
+  ],
+  "adm": "Q1741",
+  "loc": "Q50379321",
+  "parent": null,
+  "country": "Austria",
+  "isMuseum": true
+ },
+ "Q924335": {
+  "name": "Museo Stedelijk",
+  "types": [
+   "Q41176",
+   "Q3196771",
+   "Q98929991"
+  ],
+  "adm": "Q9899",
+  "loc": "Q727",
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": false
+ },
+ "Q1542668": {
+  "name": "Groninger Museum",
+  "types": [
+   "Q33506"
+  ],
+  "adm": "Q892526",
+  "loc": null,
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": true
+ },
+ "Q2436253": {
+  "name": "Tiroler Landesmuseum",
+  "types": [
+   "Q24699794"
+  ],
+  "adm": "Q1735",
+  "loc": null,
+  "parent": "Q109658974",
+  "country": "Austria",
+  "isMuseum": false
+ },
+ "Q2636176": {
+  "name": "Ginnekenstraat",
+  "types": [
+   "Q79007"
+  ],
+  "adm": "Q9822",
+  "loc": "Q40844",
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": false
+ },
+ "Q3329650": {
+  "name": "Musée d’Art moderne de Troyes",
+  "types": [
+   "Q207694",
+   "Q1007870"
+  ],
+  "adm": "Q5489",
+  "loc": "Q22915413",
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q26161257": {
+  "name": "Otto Krebs collection",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q109658974": {
+  "name": "Museo Estatal del Tirol",
+  "types": [
+   "Q33506"
+  ],
+  "adm": "Q1735",
+  "loc": null,
+  "parent": "Q80817622",
+  "country": "Austria",
+  "isMuseum": true
+ },
+ "Q262234": {
+  "name": "Lenbachhaus",
+  "types": [
+   "Q207694",
+   "Q24699794"
+  ],
+  "adm": "Q1726",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q526170": {
+  "name": "Biblioteca Museo Víctor Balaguer",
+  "types": [
+   "Q207694",
+   "Q12317349"
+  ],
+  "adm": "Q15553",
+  "loc": null,
+  "parent": "Q861252",
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q1782422": {
+  "name": "Van Abbemuseum",
+  "types": [
+   "Q2085381",
+   "Q3196771"
+  ],
+  "adm": "Q9832",
+  "loc": "Q9832",
+  "parent": null,
+  "country": "Países Bajos",
+  "isMuseum": false
+ },
+ "Q6129019": {
+  "name": "Museo de Arte Mildred Lane Kemper",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q38022",
+  "loc": "Q5215923",
+  "parent": "Q777403",
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q97626593": {
+  "name": "Palacio de los Marqueses de Viana",
+  "types": [
+   "Q16560"
+  ],
+  "adm": "Q5818",
+  "loc": null,
+  "parent": null,
+  "country": "España",
+  "isMuseum": true
+ },
+ "Q110459073": {
+  "name": "Colección Cajasur",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": null,
+  "loc": "Q97626593",
+  "parent": "Q97626593",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q777403": {
+  "name": "Universidad Washington en San Luis",
+  "types": [
+   "Q902104",
+   "Q23002054"
+  ],
+  "adm": "Q1581",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": false
+ },
+ "Q80817622": {
+  "name": "Tyrolean State Museums",
+  "types": [
+   "Q33506",
+   "Q6881511"
+  ],
+  "adm": "Q1735",
+  "loc": null,
+  "parent": null,
+  "country": "Austria",
+  "isMuseum": true
  }
 }

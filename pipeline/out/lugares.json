@@ -4807,5 +4807,1009 @@
   "up": null,
   "country": "Brasil",
   "isCity": false
+ },
+ "Q1735": {
+  "label": "Innsbruck",
+  "types": [
+   "Q515",
+   "Q262882",
+   "Q667509",
+   "Q871419",
+   "Q1549591",
+   "Q13539802"
+  ],
+  "up": "Q42880",
+  "country": "Austria",
+  "isCity": true
+ },
+ "Q1891": {
+  "label": "Bolonia",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q18288145",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q6837": {
+  "label": "Wittenberg",
+  "types": [
+   "Q134626",
+   "Q1180262",
+   "Q1547289",
+   "Q42744322"
+  ],
+  "up": "Q6075",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q20436": {
+  "label": "Foligno",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16240",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q83324": {
+  "label": "Sibiu",
+  "types": [
+   "Q640364",
+   "Q1549591",
+   "Q34843301"
+  ],
+  "up": "Q184797",
+  "country": "Rumania",
+  "isCity": true
+ },
+ "Q503628": {
+  "label": "Benediktbeuern",
+  "types": [
+   "Q116457956"
+  ],
+  "up": "Q10522",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q184797": {
+  "label": "Sibiu",
+  "types": [
+   "Q1776764"
+  ],
+  "up": "Q218",
+  "country": "Rumania",
+  "isCity": false
+ },
+ "Q18288145": {
+  "label": "ciudad metropolitana de Bolonia",
+  "types": [
+   "Q15110"
+  ],
+  "up": "Q1263",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q268": {
+  "label": "Poznań",
+  "types": [
+   "Q707813",
+   "Q925381",
+   "Q1549591",
+   "Q2616791"
+  ],
+  "up": "Q54187",
+  "country": "Polonia",
+  "isCity": true
+ },
+ "Q503045": {
+  "label": "Fredensborg",
+  "types": [
+   "Q2177636"
+  ],
+  "up": "Q26073",
+  "country": "Dinamarca",
+  "isCity": false
+ },
+ "Q841506": {
+  "label": "Galería Borghese",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q3329412",
+   "Q3867560",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "up": "Q3940419",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1224979": {
+  "label": "Municipio de Atenas",
+  "types": [
+   "Q1349648"
+  ],
+  "up": "Q755177",
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q1383135": {
+  "label": "Syros-Ermoupoli Municipality",
+  "types": [
+   "Q1349648"
+  ],
+  "up": "Q11723845",
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q21713103": {
+  "label": "Cambridge",
+  "types": [
+   "Q171441",
+   "Q518343",
+   "Q1006876",
+   "Q1187580",
+   "Q7897276",
+   "Q21503295"
+  ],
+  "up": "Q23112",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q23112": {
+  "label": "Cambridgeshire",
+  "types": [
+   "Q180673"
+  ],
+  "up": "Q48006",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q48006": {
+  "label": "Este de Inglaterra",
+  "types": [
+   "Q48091",
+   "Q6955655"
+  ],
+  "up": "Q21",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q54187": {
+  "label": "Voivodato de Gran Polonia",
+  "types": [
+   "Q150093"
+  ],
+  "up": "Q36",
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q11723845": {
+  "label": "unidad periférica de Syros",
+  "types": [
+   "Q1234255"
+  ],
+  "up": "Q173616",
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q173616": {
+  "label": "periferia del Egeo Meridional",
+  "types": [
+   "Q207299"
+  ],
+  "up": "Q9380366",
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q9380366": {
+  "label": "Decentralized Administration of the Aegean",
+  "types": [
+   "Q3559207"
+  ],
+  "up": "Q41",
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q41": {
+  "label": "Grecia",
+  "types": [
+   "Q6256",
+   "Q3624078"
+  ],
+  "up": null,
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q755177": {
+  "label": "unidad periférica de Atenas Central",
+  "types": [
+   "Q1234255"
+  ],
+  "up": "Q758056",
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q758056": {
+  "label": "periferia del Ática",
+  "types": [
+   "Q207299"
+  ],
+  "up": "Q9161823",
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q9161823": {
+  "label": "Decentralized Administration of Attica",
+  "types": [
+   "Q327333",
+   "Q3559207"
+  ],
+  "up": "Q41",
+  "country": "Grecia",
+  "isCity": false
+ },
+ "Q9920": {
+  "label": "Haarlem",
+  "types": [
+   "Q515",
+   "Q1549591",
+   "Q1852859",
+   "Q2039348",
+   "Q13539802"
+  ],
+  "up": "Q701",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q13666": {
+  "label": "Mesina",
+  "types": [
+   "Q515",
+   "Q148837",
+   "Q747074",
+   "Q1549591"
+  ],
+  "up": "Q20991250",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q13670": {
+  "label": "Siracusa",
+  "types": [
+   "Q515",
+   "Q148837",
+   "Q747074",
+   "Q1200957",
+   "Q1549591"
+  ],
+  "up": "Q25510290",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q33486": {
+  "label": "Hartford",
+  "types": [
+   "Q62049",
+   "Q1093829",
+   "Q1549591",
+   "Q15303838",
+   "Q21518270"
+  ],
+  "up": "Q117286854",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q160236": {
+  "label": "Museo Metropolitano de Arte",
+  "types": [
+   "Q163740",
+   "Q207694",
+   "Q2085381",
+   "Q11396960"
+  ],
+  "up": "Q11299",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q60583627": {
+  "label": "Riva del Po",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16168",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q1208": {
+  "label": "Brandemburgo",
+  "types": [
+   "Q1221156"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q20991250": {
+  "label": "ciudad metropolitana de Mesina",
+  "types": [
+   "Q15110"
+  ],
+  "up": "Q1460",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q1460": {
+  "label": "Sicilia",
+  "types": [
+   "Q1710033",
+   "Q3502482"
+  ],
+  "up": "Q38",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q25510290": {
+  "label": "libre consorcio municipal de Siracusa",
+  "types": [
+   "Q21190155"
+  ],
+  "up": "Q1460",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q117286854": {
+  "label": "Región de Planificación del Capitolio",
+  "types": [
+   "Q1188782",
+   "Q117286571"
+  ],
+  "up": "Q779",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q288": {
+  "label": "Tours",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12556",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q1799": {
+  "label": "Breslavia",
+  "types": [
+   "Q925381"
+  ],
+  "up": "Q54150",
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q16552": {
+  "label": "San Diego",
+  "types": [
+   "Q62049",
+   "Q902814",
+   "Q1093829",
+   "Q1549591",
+   "Q13218391"
+  ],
+  "up": "Q108143",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q2290320": {
+  "label": "Euston",
+  "types": [
+   "Q532",
+   "Q1115575"
+  ],
+  "up": "Q54554272",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q54150": {
+  "label": "Voivodato de Baja Silesia",
+  "types": [
+   "Q150093"
+  ],
+  "up": "Q36",
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q108143": {
+  "label": "Condado de San Diego",
+  "types": [
+   "Q131427665"
+  ],
+  "up": "Q99",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q12556": {
+  "label": "Indre y Loira",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q13947",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q13947": {
+  "label": "Centro-Valle de Loira",
+  "types": [
+   "Q36784"
+  ],
+  "up": "Q212429",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q2865": {
+  "label": "Kassel",
+  "types": [
+   "Q134626",
+   "Q253030",
+   "Q1180262",
+   "Q1549591",
+   "Q42744322",
+   "Q61980648"
+  ],
+  "up": "Q7928",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q3345111": {
+  "label": "New Hermitage",
+  "types": [
+   "Q358",
+   "Q24699794"
+  ],
+  "up": "Q2742132",
+  "country": "Rusia",
+  "isCity": false
+ },
+ "Q7928": {
+  "label": "Región de Kassel",
+  "types": [
+   "Q22721"
+  ],
+  "up": "Q1199",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q7095": {
+  "label": "Warszawa-Śródmieście",
+  "types": [
+   "Q738570",
+   "Q4286337"
+  ],
+  "up": "Q270",
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q100962": {
+  "label": "Traversetolo",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16228",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q154568": {
+  "label": "Pinacoteca Antigua de Múnich",
+  "types": [
+   "Q207694",
+   "Q17431399"
+  ],
+  "up": "Q1726",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q158095": {
+  "label": "Charlottenburg-Wilmersdorf",
+  "types": [
+   "Q821435"
+  ],
+  "up": "Q64",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q213154": {
+  "label": "Aberystwyth",
+  "types": [
+   "Q1187811",
+   "Q2630741",
+   "Q18511725"
+  ],
+  "up": "Q217829",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q217829": {
+  "label": "Ceredigion",
+  "types": [
+   "Q28575",
+   "Q15979307"
+  ],
+  "up": "Q25",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q1887504": {
+  "label": "Wilanów",
+  "types": [
+   "Q4286337"
+  ],
+  "up": "Q270",
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q4169280": {
+  "label": "Dublin City",
+  "types": [
+   "Q179872",
+   "Q13455645"
+  ],
+  "up": "Q159736",
+  "country": "Irlanda",
+  "isCity": false
+ },
+ "Q85098865": {
+  "label": "National Library of Wales",
+  "types": [
+   "Q856584"
+  ],
+  "up": "Q213154",
+  "country": "Reino Unido",
+  "isCity": false
+ },
+ "Q159736": {
+  "label": "Leinster",
+  "types": [
+   "Q202156"
+  ],
+  "up": "Q27",
+  "country": "Irlanda",
+  "isCity": false
+ },
+ "Q27": {
+  "label": "Irlanda",
+  "types": [
+   "Q6256",
+   "Q112099",
+   "Q3624078",
+   "Q127693126"
+  ],
+  "up": null,
+  "country": "Irlanda",
+  "isCity": false
+ },
+ "Q270": {
+  "label": "Varsovia",
+  "types": [
+   "Q515",
+   "Q56061",
+   "Q200250",
+   "Q925381",
+   "Q1200957",
+   "Q1549591",
+   "Q1901835",
+   "Q51929311",
+   "Q108178728"
+  ],
+  "up": "Q54169",
+  "country": "Polonia",
+  "isCity": true
+ },
+ "Q54169": {
+  "label": "Voivodato de Mazovia",
+  "types": [
+   "Q150093"
+  ],
+  "up": "Q36",
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q1757": {
+  "label": "Helsinki",
+  "types": [
+   "Q515",
+   "Q200250",
+   "Q856076",
+   "Q1549591",
+   "Q2264924"
+  ],
+  "up": "Q5711",
+  "country": "Finlandia",
+  "isCity": true
+ },
+ "Q3114": {
+  "label": "Canberra",
+  "types": [
+   "Q515",
+   "Q257391",
+   "Q1549591",
+   "Q15840617",
+   "Q114496982"
+  ],
+  "up": "Q3258",
+  "country": "Australia",
+  "isCity": true
+ },
+ "Q41876": {
+  "label": "Reims",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q12594",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q47465": {
+  "label": "Aix-en-Provence",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q3240",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q160199": {
+  "label": "Cherburgo-Octeville",
+  "types": [
+   "Q484170",
+   "Q21869758"
+  ],
+  "up": "Q12589",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q182872": {
+  "label": "Fontainebleau",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q12753",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q486548": {
+  "label": "Remagen",
+  "types": [
+   "Q3957",
+   "Q42744322"
+  ],
+  "up": "Q8596",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q594208": {
+  "label": "Doha",
+  "types": [
+   "Q685320"
+  ],
+  "up": "Q846",
+  "country": "Catar",
+  "isCity": false
+ },
+ "Q698582": {
+  "label": "Arp Museum Bahnhof Rolandseck",
+  "types": [
+   "Q207694"
+  ],
+  "up": "Q486548",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q12589": {
+  "label": "Mancha",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18677875",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q12594": {
+  "label": "Marne",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18677983",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q5711": {
+  "label": "Uusimaa",
+  "types": [
+   "Q193512"
+  ],
+  "up": "Q33",
+  "country": "Finlandia",
+  "isCity": false
+ },
+ "Q33": {
+  "label": "Finlandia",
+  "types": [
+   "Q6256",
+   "Q179164",
+   "Q3624078",
+   "Q63791824"
+  ],
+  "up": null,
+  "country": "Finlandia",
+  "isCity": false
+ },
+ "Q8596": {
+  "label": "Ahrweiler",
+  "types": [
+   "Q85493040"
+  ],
+  "up": "Q1200",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q1200": {
+  "label": "Renania-Palatinado",
+  "types": [
+   "Q1221156"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q3258": {
+  "label": "Territorio de la Capital Australiana",
+  "types": [
+   "Q171441",
+   "Q14192199",
+   "Q14192234"
+  ],
+  "up": "Q408",
+  "country": "Australia",
+  "isCity": false
+ },
+ "Q2119": {
+  "label": "Mannheim",
+  "types": [
+   "Q253030",
+   "Q1180262",
+   "Q1187811",
+   "Q1549591",
+   "Q2327515",
+   "Q42744322"
+  ],
+  "up": "Q8165",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q16567": {
+  "label": "Columbus",
+  "types": [
+   "Q62049",
+   "Q1549591",
+   "Q108569710"
+  ],
+  "up": "Q113237",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q33959": {
+  "label": "Niza",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q701950",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q1715951": {
+  "label": "Mitte",
+  "types": [
+   "Q676050",
+   "Q17278559"
+  ],
+  "up": "Q17278534",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q1795217": {
+  "label": "Kyōbashi",
+  "types": [
+   "Q5327369"
+  ],
+  "up": "Q212704",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q8165": {
+  "label": "Región de Karlsruhe",
+  "types": [
+   "Q42612577"
+  ],
+  "up": "Q985",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q17278534": {
+  "label": "Bremen-Mitte",
+  "types": [
+   "Q17278423"
+  ],
+  "up": "Q24879",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q24879": {
+  "label": "Bremen",
+  "types": [
+   "Q707813",
+   "Q1187811",
+   "Q1549591",
+   "Q42744322",
+   "Q85635638"
+  ],
+  "up": "Q1209",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q1209": {
+  "label": "Bremen",
+  "types": [
+   "Q133442",
+   "Q1221156",
+   "Q26830017",
+   "Q113136497"
+  ],
+  "up": "Q183",
+  "country": "Alemania",
+  "isCity": false
+ },
+ "Q113237": {
+  "label": "condado de Franklin",
+  "types": [
+   "Q13414759"
+  ],
+  "up": "Q1397",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q212704": {
+  "label": "Chūō",
+  "types": [
+   "Q5327704"
+  ],
+  "up": "Q1490",
+  "country": "Japón",
+  "isCity": false
+ },
+ "Q1101": {
+  "label": "Brabante Septentrional",
+  "types": [
+   "Q134390"
+  ],
+  "up": "Q55",
+  "country": "Países Bajos",
+  "isCity": false
+ },
+ "Q5489": {
+  "label": "Troyes",
+  "types": [
+   "Q484170"
+  ],
+  "up": "Q3194",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q9822": {
+  "label": "Breda",
+  "types": [
+   "Q2039348"
+  ],
+  "up": "Q1101",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q9855": {
+  "label": "Nuenen, Gerwen en Nederwetten",
+  "types": [
+   "Q2039348"
+  ],
+  "up": "Q1101",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q267329": {
+  "label": "Innere Stadt",
+  "types": [
+   "Q261023"
+  ],
+  "up": "Q1741",
+  "country": "Austria",
+  "isCity": false
+ },
+ "Q892526": {
+  "label": "Groninga",
+  "types": [
+   "Q2039348"
+  ],
+  "up": "Q752",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q752": {
+  "label": "Groninga",
+  "types": [
+   "Q134390"
+  ],
+  "up": "Q55",
+  "country": "Países Bajos",
+  "isCity": false
+ },
+ "Q3194": {
+  "label": "Aube",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18677983",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q42880": {
+  "label": "Tirol",
+  "types": [
+   "Q261543"
+  ],
+  "up": "Q40",
+  "country": "Austria",
+  "isCity": false
+ },
+ "Q9832": {
+  "label": "Eindhoven",
+  "types": [
+   "Q1549591",
+   "Q1852859",
+   "Q2039348",
+   "Q13539802"
+  ],
+  "up": "Q1101",
+  "country": "Países Bajos",
+  "isCity": true
+ },
+ "Q15553": {
+  "label": "Villanueva y Geltrú",
+  "types": [
+   "Q33146843"
+  ],
+  "up": "Q15354",
+  "country": "España",
+  "isCity": false
+ },
+ "Q38022": {
+  "label": "San Luis",
+  "types": [
+   "Q1093829",
+   "Q1266818",
+   "Q1549591"
+  ],
+  "up": "Q1581",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q97626593": {
+  "label": "Palacio de los Marqueses de Viana",
+  "types": [
+   "Q16560"
+  ],
+  "up": "Q5818",
+  "country": "España",
+  "isCity": false
  }
 }
