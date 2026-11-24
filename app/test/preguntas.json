@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "nota": "Banco fijo del test de cultura pictórica: 5 tramos × 8 preguntas, en orden dentro de cada tramo. Tramos calibrados con docs/eval/reconocimiento-fuentes.md: T1 iconos universales (> 70 % de reconocimiento), T2 obras conocidas (30-70 %), T3 de aficionado (< 30 %), T4 atribuir una obra no icónica a un autor de estilo muy marcado, T5 atribuir a autores de segundo nivel o escuelas próximas. Solo obras del catálogo (Girasoles lleva la firma; Guernica, Ofelia, Hay Wain, Sorolla, Zurbarán, Ribera, Hals o Pissarro no están: sustituidas por otras del mismo tramo). kind: who (options = ids de pintor), movement (options = ids de movimiento), which (artwork = la obra buscada, options = ids de obra). Las obras nunca llevan la firma visible (spoiler) y las de autor dudoso (attributed) solo salen en preguntas de movimiento. hint: una línea para el feedback (casi siempre el look del catálogo).",
+  "questions": [
+    { "id": "t01", "tier": 1, "kind": "who", "artwork": "a154", "answer": "leonardo", "options": ["leonardo", "botticelli", "rembrandt", "goya"], "hint": "Mira las comisuras de la boca y los ojos: no hay ni una línea dura" },
+    { "id": "t02", "tier": 1, "kind": "who", "artwork": "a62", "answer": "velazquez", "options": ["goya", "velazquez", "rubens", "monet"], "hint": "Mira la puerta luminosa del fondo y el aire gris de la sala" },
+    { "id": "t03", "tier": 1, "kind": "movement", "artwork": "a6", "answer": "renacimiento", "options": ["barroco", "renacimiento", "romanticismo", "postimpresionismo"], "hint": "Cuerpos como esculturas y un gesto que todo el mundo conoce: el techo de la Sixtina" },
+    { "id": "t04", "tier": 1, "kind": "which", "artwork": "a93", "answer": "a93", "options": ["a22", "a93", "a140", "a151"], "hint": "Mira el paisaje azulado de las ventanas, justo detrás de la figura central" },
+    { "id": "t05", "tier": 1, "kind": "movement", "artwork": "a97", "answer": "simbolismo-modernismo", "options": ["renacimiento", "barroco", "impresionismo", "simbolismo-modernismo"], "hint": "Mira la capa dorada llena de rectángulos y la cara realista en medio" },
+    { "id": "t06", "tier": 1, "kind": "who", "artwork": "a130", "answer": "delacroix", "options": ["goya", "delacroix", "david", "monet"], "hint": "Mira el rojo de la bandera y el humo que envuelve la escena" },
+    { "id": "t07", "tier": 1, "kind": "who", "artwork": "b1", "answer": "miguel-angel", "options": ["miguel-angel", "goya", "van-gogh", "rembrandt"], "hint": "El muro de la Sixtina: cuerpos como esculturas que giran alrededor del juez" },
+    { "id": "t08", "tier": 1, "kind": "who", "artwork": "a167", "answer": "van-gogh", "options": ["monet", "munch", "van-gogh", "gauguin"], "hint": "Mira el cielo que gira en remolinos alrededor de las estrellas" },
+
+    { "id": "t09", "tier": 2, "kind": "who", "artwork": "a112", "answer": "munch", "options": ["klimt", "goya", "van-gogh", "munch"], "hint": "Mira cómo el cielo y el agua ondulan en largas líneas alrededor de la figura" },
+    { "id": "t10", "tier": 2, "kind": "movement", "artwork": "a109", "answer": "barroco", "options": ["renacimiento", "barroco", "impresionismo", "romanticismo"], "hint": "Mira el turbante azul y amarillo y el punto de luz en los labios" },
+    { "id": "t11", "tier": 2, "kind": "who", "artwork": "a216", "answer": "monet", "options": ["renoir", "monet", "van-gogh", "turner"], "hint": "Mira el agua: manchas sueltas de color que forman flores y reflejos" },
+    { "id": "t12", "tier": 2, "kind": "which", "artwork": "a200", "answer": "a200", "options": ["b14", "a200", "a220", "a69"], "hint": "La diosa llega a la orilla sobre una concha, entre figuras ligeras y contornos limpios" },
+    { "id": "t13", "tier": 2, "kind": "who", "artwork": "a195", "answer": "rembrandt", "options": ["rembrandt", "goya", "monet", "botticelli"], "hint": "Mira la figura de amarillo dorado que brilla entre soldados en sombra" },
+    { "id": "t14", "tier": 2, "kind": "who", "artwork": "b3", "answer": "goya", "options": ["goya", "rubens", "renoir", "klimt"], "hint": "Mira el cuerpo claro sobre el sofá verde y los almohadones, sin ningún adorno" },
+    { "id": "t15", "tier": 2, "kind": "movement", "artwork": "a161", "answer": "romanticismo", "options": ["barroco", "romanticismo", "realismo", "rococo-neoclasicismo"], "hint": "Mira la camisa blanca que estalla en la noche, iluminada por el farol" },
+    { "id": "t16", "tier": 2, "kind": "who", "artwork": "a184", "answer": "bosco", "options": ["bosco", "bruegel", "goya", "munch"], "hint": "Mira las fuentes rosas y azules con forma de planta y los cuerpos diminutos" },
+
+    { "id": "t17", "tier": 3, "kind": "which", "artwork": "a32", "answer": "a32", "options": ["a84", "a32", "a177", "a187"], "hint": "Mira la cara del reflejo: solo unas manchas grises, sin detalle" },
+    { "id": "t18", "tier": 3, "kind": "who", "artwork": "b24", "answer": "seurat", "options": ["monet", "seurat", "van-gogh", "renoir"], "hint": "Mira el césped y el agua: todo está hecho de puntitos de color" },
+    { "id": "t19", "tier": 3, "kind": "movement", "artwork": "a87", "answer": "realismo", "options": ["romanticismo", "realismo", "impresionismo", "barroco"], "hint": "Mira cómo cada hombre de la fila tiene su propia cara y postura" },
+    { "id": "t20", "tier": 3, "kind": "who", "artwork": "a148", "answer": "renoir", "options": ["monet", "degas", "manet", "renoir"], "hint": "Mira las mejillas rosadas y las caras felices alrededor de la mesa" },
+    { "id": "t21", "tier": 3, "kind": "who", "artwork": "a175", "answer": "velazquez", "options": ["velazquez", "el-greco", "rubens", "delacroix"], "hint": "Mira el paisaje gris azulado del fondo, como visto a través del aire" },
+    { "id": "t22", "tier": 3, "kind": "movement", "artwork": "b4", "answer": "manierismo-y-norte", "options": ["renacimiento", "manierismo-y-norte", "barroco", "romanticismo"], "hint": "Mira las figuras estiradas del cielo entre nubes frías y grises" },
+    { "id": "t23", "tier": 3, "kind": "movement", "artwork": "a115", "answer": "barroco", "options": ["renacimiento", "barroco", "rococo-neoclasicismo", "realismo"], "hint": "Mira la luz de la ventana y el azul y amarillo de la ropa" },
+    { "id": "t24", "tier": 3, "kind": "movement", "artwork": "a16", "answer": "rococo-neoclasicismo", "options": ["barroco", "rococo-neoclasicismo", "romanticismo", "impresionismo"], "hint": "Mira el vestido rosa como espuma y el follaje pintado a toques rápidos" },
+
+    { "id": "t25", "tier": 4, "kind": "who", "artwork": "a215", "answer": "van-gogh", "options": ["gauguin", "munch", "monet", "van-gogh"], "hint": "Mira las estrellas como flores y los trazos gruesos del suelo" },
+    { "id": "t26", "tier": 4, "kind": "who", "artwork": "b17", "answer": "monet", "options": ["levitan", "renoir", "monet", "turner"], "hint": "Mira las sombras azules de la nieve, hechas con toques sueltos" },
+    { "id": "t27", "tier": 4, "kind": "who", "artwork": "b2", "answer": "goya", "options": ["velazquez", "goya", "rembrandt", "delacroix"], "hint": "Mira el fondo negro hecho a brochazos y la figura que surge de él" },
+    { "id": "t28", "tier": 4, "kind": "who", "artwork": "a121", "answer": "el-greco", "options": ["tiziano", "el-greco", "veronese", "murillo"], "hint": "Mira los cuerpos estirados y retorcidos, con rosas y amarillos ácidos" },
+    { "id": "t29", "tier": 4, "kind": "who", "artwork": "a50", "answer": "klimt", "options": ["munch", "klimt", "vrubel", "matisse"], "hint": "Mira el vestido de oro lleno de espirales y ojos, y la cara realista" },
+    { "id": "t30", "tier": 4, "kind": "which", "artwork": "a119", "answer": "a119", "options": ["a205", "a119", "b6", "a142"], "hint": "Mira el foco que ilumina al caído y al caballo sobre un fondo negro" },
+    { "id": "t31", "tier": 4, "kind": "who", "artwork": "a218", "answer": "vermeer", "options": ["rembrandt", "vermeer", "murillo", "degas"], "hint": "Mira el amarillo de la ropa y la luz suave que viene de la izquierda" },
+    { "id": "t32", "tier": 4, "kind": "movement", "artwork": "a233", "answer": "impresionismo", "options": ["realismo", "impresionismo", "postimpresionismo", "romanticismo"], "hint": "Mira la bailarina de espaldas en primer plano, cortada por el borde" },
+
+    { "id": "t33", "tier": 5, "kind": "who", "artwork": "a53", "answer": "veronese", "options": ["tiziano", "veronese", "rafael", "rubens"], "hint": "Mira las columnas blancas y la balaustrada llena de invitados" },
+    { "id": "t34", "tier": 5, "kind": "who", "artwork": "a147", "answer": "tiziano", "options": ["veronese", "el-greco", "tiziano", "van-dyck"], "hint": "Mira el cielo de atardecer, azul y oro, detrás del jinete oscuro" },
+    { "id": "t35", "tier": 5, "kind": "who", "artwork": "a37", "answer": "murillo", "options": ["velazquez", "murillo", "caravaggio", "rembrandt"], "hint": "Mira la sonrisa del niño y la luz suave y cálida en su cara" },
+    { "id": "t36", "tier": 5, "kind": "who", "artwork": "a72", "answer": "rembrandt", "options": ["caravaggio", "velazquez", "rembrandt", "vermeer"], "hint": "Mira el resplandor dorado sobre la mujer, entre marrones oscuros" },
+    { "id": "t37", "tier": 5, "kind": "who", "artwork": "a67", "answer": "velazquez", "options": ["murillo", "caravaggio", "velazquez", "rubens"], "hint": "Mira las caras curtidas y risueñas, resueltas con pocas manchas" },
+    { "id": "t38", "tier": 5, "kind": "movement", "artwork": "a125", "answer": "renacimiento", "options": ["renacimiento", "manierismo-y-norte", "barroco", "rococo-neoclasicismo"], "hint": "Atribución discutida entre Leonardo y su taller: las montañas azules asoman por las dos ventanas" },
+    { "id": "t39", "tier": 5, "kind": "which", "artwork": "a20", "answer": "a20", "options": ["a26", "a20", "a235", "b8"], "hint": "Mira la cara dulce del niño y los contornos suaves de las caras" },
+    { "id": "t40", "tier": 5, "kind": "who", "artwork": "a76", "answer": "lautrec", "options": ["degas", "lautrec", "manet", "van-gogh"], "hint": "Mira las líneas largas y nerviosas de los abrigos y la luz fría" }
+  ]
+}
