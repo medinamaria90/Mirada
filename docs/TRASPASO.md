@@ -196,6 +196,42 @@ Decisiones de la tarde del 24/11:
     línea «El que has elegido es de <pintor> · <título>» y etiqueta con el pintor sobre el cuadro
     elegido en la rejilla; en «¿Quién lo pintó?», «No es de <elegido>» (+ rasgo ausente si es seguro);
     el cuadro elegido se abre en el visor ya revelado. En curso en la misma tanda de feedback.
+16. **Menos pintores con etapa, más obras cada uno (21:25, idea de María; recomendada):** con el
+    catálogo tal cual saldrían ~100 etapas de ~8 obras (camino largo y plano; «a fondo» vacío en los
+    pequeños). Propuesta: ~50 pintores con etapa (imprescindibles por época, españoles
+    sobrerrepresentados) con 10-16 obras (6-8 de nivel 1 en su sección, el resto en su «a fondo»);
+    ~100 invitados con 3-6 obras intercalados en el avance (se enseñan, se preguntan y salen como
+    distractores) y con etapa propia en las ramas «a fondo». Se reajustan los objetivos por pintor
+    del proceso (hay hasta 80 candidatas) y se relanza en Actions; total ~1.100-1.200. Pendiente: que
+    María revise la lista de los 50 antes de tocar nada.
+    **Refinado (21:35, intuición de María: «no es lo mismo un pintor que otro»):** tres categorías.
+    (a) **Grandes maestros** (~12-15: Velázquez, Goya, El Greco, Leonardo, Rafael, Tiziano, Caravaggio,
+    Rembrandt, Rubens, Monet, Van Gogh, Sorolla…) con **camino propio de 3-4 niveles por etapas de su
+    vida** (ej. Goya: icónicas · cartones y juventud · retratos de corte y madurez · Desastres y
+    pinturas negras), 16-24 obras; solo el nivel 1 es obligatorio en el camino común; los demás se
+    desbloquean al hacer el 1 y son voluntarios. (b) **Maestros** (~35: Manet, Turner, Vermeer,
+    Zurbarán, Murillo…) con etapa de 6-8 obras + un «a fondo». (c) **Invitados** (~100) con 3-6 obras
+    intercaladas y etapa en el «a fondo» de su época. **Rango general tipo Duolingo**: subir de cierto
+    nivel exige haber completado niveles profundos (p. ej. «Conservador: 3 caminos de gran maestro
+    hasta el nivel 2»). Etapas de vida por año de Wikidata con cortes a mano y fuente biográfica.
+    Catálogo ~1.200-1.300. Pendiente: propuesta de categorías y niveles para que la revise.
+    **Profundidad variable (21:45; sin tope desde las 21:50):** cada pintor tiene su nivel básico más
+    **0 a n niveles «a fondo»**: tantos como etapas reales de su obra con fuente, con ≥ 5 obras nuevas
+    por nivel (Van Gogh, Goya, Rembrandt, Tiziano o Rubens pueden llegar a 5-6). **Las etapas son las
+    que establecen los historiadores del arte para cada pintor, una a una y con fuente; no es una
+    decisión algorítmica** (María, 21:55). Picasso, Dalí, Miró: fuera (muerte ≥ 1956); los
+    niveles por etapas de vida de los grandes maestros son esos «a fondo» sucesivos. **Propuesta
+    hecha (22:30): `docs/propuesta-pintores.md`**: 13 grandes maestros (Velázquez 4, Goya 5, El Greco 3,
+    Murillo 4, Sorolla 3, Leonardo 1, Rafael 4, Tiziano 4, Caravaggio 3, Rubens 4, Rembrandt 4, Monet 4,
+    Van Gogh 5 niveles «a fondo»), 42 maestros, 93 invitados; camino común de 55 etapas (abre
+    Botticelli, Rafael 3.º, Leonardo 4.º); 1.547 obras (27 % españolas), en dos fases (1.192 + 355);
+    8 rangos. Etapas de los artículos de Wikipedia en español con enlace; las marcadas «(verificar)» y
+    todo lo demás, contrastar con museo o monografía antes de escribir fichas.
+    **Decidido (22:40, María: «sigue con tus recomendaciones»):** Murillo gran maestro; Leonardo sigue
+    de gran maestro con 1 «a fondo»; Zurbarán sube a gran maestro (3 etapas); dos fases (1.192 y luego
+    +355); ampliar candidatas de Goya, El Greco, Murillo, Sorolla y Monet en la fase 2; abre
+    Botticelli; invitados españoles con 4 obras; etapas de Murillo por las secciones de Wikipedia.
+    En curso: aplicar la fase 1 al proceso de catálogo (Actions).
 15. **Más machacón, sin deprimir (19:50):** hoy «avanzo súper rápido»; con 1.000 obras teme que el
     avance se haga lento. Duolingo repite «una y otra vez lo mismo» sin desmotivar: quiere una
     **auditoría de cómo gestiona Duolingo el avance y la repetición** para copiarlo (en curso, con
@@ -223,7 +259,7 @@ Decisiones de la tarde del 24/11:
     Manierismo/Barroco); las tres mecánicas y todas las épocas, con españoles. Resultado: nivel de la
     app + «n de 24» + desglose por tramo + frase; resultado parcial disponible en cualquier momento;
     compartir como el reto diario; «Sigue aprendiendo en Mirada». Sin progreso ni cuentas; reutiliza
-    motor y catálogo. Mejor con dominio propio (Render lo admite gratis). Orden: tras la tanda de
+    motor y catálogo. Dominio propio: **más adelante, por ahora no** (María, 21:15). Orden: tras la tanda de
     feedback, antes de migrar el catálogo grande. **Aprobado en lo esencial; arrancar.**
     **Adaptativo (19:20-19:30, su algoritmo):** banco de 5 tramos × 8 = 40 (fácil, media, difícil,
     experto, «friki»); bloques de 4: 3-4 aciertos sube de tramo, 2 repite, 0-1 se para («al tuntún»;
@@ -354,7 +390,17 @@ Decisiones de la tarde del 24/11:
    - Los ~29 colores a mano que quedan en CSS fuera de `:root` → a variables (los del visor y los de JS
      ya están; una prueba en `tests/` vigila que el número solo baje y que en JS no haya ninguno).
    - Partir `engine/planner.js`, `engine/progress.js`, `ui/screens/flows.js`, `ui/screens/home.js` (>450 líneas).
-4. **Catálogo de ~1.000 obras** (`pipeline/`, `catalogo/`): hecho el diseño, la lista de pintores con QID
+4. **Catálogo de ~1.000 obras** — **estado 24/11, 20:50:** `catalogo/obras.json` con 1.180 obras de 148
+   pintores (336 de españoles), fichas de Wikidata (museo, ciudad, técnica, medidas) y `level` 1|2;
+   icónicas forzadas (`pipeline/extra.json`), descartes a mano (`excluir.json`), ajustes
+   (`ajustes.json`). Las imágenes NO van al repo ni al PC: release de GitHub `catalogo-img`, descarga
+   en Actions por 8 lotes de 150 (4 hechos a las 19:45). Plan de migración en 7 pasos al final de
+   `pipeline/NOTAS.md`. **Decidido por María (21:05): las imágenes llegan a Render al desplegar**:
+   Actions prepara un paquete a 1200 px como recurso de la release y el comando de construcción de
+   Render lo baja y lo coloca en `app/img/`; nada pesado en el repo ni en su PC; en local, un script lo
+   baja a una carpeta temporal. Render no se cambia hasta la migración. Migración después de la tanda de repaso (v12),
+   porque ambas tocan el esquema del estado (v6 el repaso, v7 la migración).
+   Texto original del pendiente: **Catálogo de ~1.000 obras** (`pipeline/`, `catalogo/`): hecho el diseño, la lista de pintores con QID
    verificados (`pipeline/painters.json`), las candidatas por pintor (`pipeline/out/candidates/`) y una
    primera selección (`catalogo/seleccion.json`). **No se ha descargado ninguna imagen.** Fuente
    principal: Wikidata + Wikimedia Commons (títulos en español, cuadros del Prado). Corre en GitHub
