@@ -1,7 +1,6 @@
 // Pintores como lista y como ficha: épocas visibles, búsqueda, estado, obras ya vistas (sin spoilers),
 // líneas de vida y qué se puede jugar. Puro: no toca el DOM.
 
-import { movementReached } from './branches.js';
 import { artistStatus } from './progress.js';
 import { seenWorks, deepStatus } from './levels.js';
 
@@ -9,12 +8,6 @@ export const MAX_LIFE_LINES = 4;
 
 // Sin tildes ni mayúsculas, para buscar «el greco» o «durero».
 export const fold = (text) => String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
-
-// ¿Ha llegado la jugadora a esa época? Las ramas-movimiento (Gótico, Estampa japonesa) siguen a la época en
-// la que se abren.
-export function eraReached(progress, index, movement) {
-  return movementReached(progress, index, movement.branch ? movement.opensAt : movement.id);
-}
 
 // Obras de un pintor que ya se han visto: en la colección o en alguna ronda (`progress.artists[id].works`).
 export function seenOf(progress, index, artistId) {
@@ -25,28 +18,36 @@ export function seenOf(progress, index, artistId) {
     .sort((a, b) => (a.yearSort || 0) - (b.yearSort || 0));
 }
 
-// 'mastered' (dominado) | 'started' (en marcha o con algo visto) | 'new' (aún sin ver).
-export function painterState(progress, index, artistId) {
-  const rec = progress.artists?.[artistId];
-  if (rec?.mastered) return 'mastered';
-  if (rec?.plays || seenOf(progress, index, artistId).length) return 'started';
-  return 'new';
+// Estado de un pintor: 'mastered' | 'started' | 'new'.
+// «Dominado» tiene UNA definición, la del motor: `progress.artists[id].mastered`, que se marca al superar una ronda de
+// su etapa habiendo visto todas sus obras de nivel 1 (engine/levels.js, engine/finish.js) y con ≥ 75 % de aciertos. Es la misma
+// que cuenta «pintores dominados» en el perfil (`artistStatus`) y la que pinta el check dorado de la lista. Las obras de los
+// niveles «a fondo» no hacen falta para dominarlo, por eso «n/m» (todas sus obras) puede ser menor que m/m con el check.
+export function isMastered(progress, artistId) {
+  return Boolean(progress.artists?.[artistId]?.mastered);
 }
 
-// Lista por épocas (cronológica) de los pintores de épocas ya alcanzadas, más cualquiera con algo visto.
-// `query` filtra por nombre. [{ movement, artists: [{ artist, state, seen, total }] }]
+// 'started': algo visto (colección o rondas). Sin nada visto, 'new': no se lista, no se revela quién viene.
+export function painterState(progress, index, artistId) {
+  if (isMastered(progress, artistId)) return 'mastered';
+  return seenOf(progress, index, artistId).length ? 'started' : 'new';
+}
+
+// Lista por movimientos (cronológica): solo pintores con alguna obra vista (o dominados), con el encabezado
+// «n de m pintores» (m = los del movimiento) y cuántos faltan por descubrir (sin decir quiénes). Un movimiento
+// sin ningún pintor conocido no sale. `query` filtra por nombre solo entre los conocidos.
+// [{ movement, known, total, hidden, artists: [{ artist, state, seen, total }] }]
 export function painterGroups(progress, index, query = '') {
   const q = fold(query);
   const groups = [];
   for (const movement of index.movements) {
-    const reached = eraReached(progress, index, movement);
-    const artists = index.artistsOf(movement.id)
-      .slice()
+    const all = index.artistsOf(movement.id).filter((a) => index.worksOf(a.id).length > 0)
       .sort((a, b) => (a.born || 0) - (b.born || 0) || a.order - b.order)
-      .map((artist) => ({ artist, state: painterState(progress, index, artist.id), seen: seenOf(progress, index, artist.id).length, total: index.worksOf(artist.id).length }))
-      .filter((row) => row.total > 0 && (reached || row.state !== 'new'))
-      .filter((row) => !q || fold(row.artist.name).includes(q) || fold(row.artist.short).includes(q));
-    if (artists.length) groups.push({ movement, artists });
+      .map((artist) => ({ artist, state: painterState(progress, index, artist.id), seen: seenOf(progress, index, artist.id).length, total: index.worksOf(artist.id).length }));
+    const known = all.filter((row) => row.state !== 'new');
+    if (!known.length) continue;
+    const artists = known.filter((row) => !q || fold(row.artist.name).includes(q) || fold(row.artist.short).includes(q));
+    if (artists.length) groups.push({ movement, known: known.length, total: all.length, hidden: all.length - known.length, artists });
   }
   return groups;
 }

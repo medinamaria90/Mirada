@@ -256,6 +256,11 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   (con `index.json` de pintores y niveles, para no pedir archivos inexistentes); `tests/ficha-pintor.test.js` falla si la copia se
   desfasa: tras tocar una historia, ejecutar el script y subir ambas carpetas. Museo y ciudad (`catalog-ficha.json`, diferido,
   `ui/ficha-data.js`) salen bajo el cuadro en el visor y en la ficha de obra solo con la obra revelada.
+- **Colección «Pintores»**: por movimiento (cronológico), cada uno con «n de m pintores»; dentro solo los pintores con alguna obra vista
+  (nunca se nombra a quien aún no se ha conocido) y al final «y k por descubrir» (no pulsable); un movimiento sin pintores conocidos no
+  sale. El círculo de cada pintor es un anillo de progreso n/m (obras vistas de todas las suyas); el check dorado es «dominado» =
+  `progress.artists[id].mastered` (engine/finish.js: ronda de su etapa superada con todas sus obras de nivel 1 vistas y ≥ 75 %), la misma
+  definición del perfil (`artistStatus`); `tests/ficha-pintor.test.js` vigila la coherencia.
 - **Colección «Cuadros»** (`ui/screens/collection.js`, `engine/collection.js`): una franja por pintor con «n de m» y sus 3 últimas obras
   desbloqueadas; por movimiento cronológico (o «lo último primero»); invitados (categoría `invitado`) juntos en una franja
   «Invitados» al final de su movimiento; tocar el nombre o «Ver todas» abre la ficha. Con 15 pintores o más con alguna obra

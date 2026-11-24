@@ -86,7 +86,9 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
 }
 .pl-input::placeholder { color: var(--ink-2); }
 .pl-group { margin-bottom: 1.4rem; }
-.pl-era { display: flex; align-items: center; gap: .5rem; font: 500 1.1rem/1.1 var(--font); padding-bottom: .45rem; border-bottom: 2px solid var(--accent); margin-bottom: .3rem; }
+.pl-era { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.1rem/1.1 var(--font); padding-bottom: .45rem; border-bottom: 2px solid var(--accent); margin-bottom: .3rem; }
+.pl-era-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pl-more { padding: .7rem .3rem 0; color: var(--ink-2); font-size: .9rem; }
 .pl-list { margin: 0; padding: 0; list-style: none; }
 .pl-row {
   display: grid; grid-template-columns: 44px 1fr auto auto; align-items: center; gap: .7rem; width: 100%; min-height: 60px;
@@ -94,12 +96,12 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
   font: inherit; text-align: left; cursor: pointer;
 }
 .pl-row:hover { background: var(--surface-2); }
-.pl-node {
-  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; font: 600 .95rem/1 var(--font);
-  background: var(--surface); color: var(--ink-2); box-shadow: inset 0 0 0 2px var(--line-2);
-}
-.pl-row.is-started .pl-node { box-shadow: inset 0 0 0 3px var(--accent-ui); color: var(--ink); }
-.pl-row.is-mastered .pl-node { background: var(--gold); color: var(--on-gold); box-shadow: none; }
+.pl-node { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; }
+.pl-node svg { position: absolute; inset: 0; }
+.pl-ring-track { fill: none; stroke: var(--line-2); stroke-width: 4; }
+.pl-ring-fill { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; }
+.pl-initials { font: 600 .9rem/1 var(--font); color: var(--ink-2); }
+.pl-node.is-mastered { background: var(--gold); color: var(--on-gold); }
 .pl-text { display: grid; gap: 2px; min-width: 0; }
 .pl-name { font-weight: 500; overflow-wrap: anywhere; }
 .pl-sub { font-size: .85rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }

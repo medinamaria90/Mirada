@@ -6,8 +6,9 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex, mergeCatalogFicha } from '../app/js/engine/catalog.js';
-import { emptyProgress } from '../app/js/engine/progress.js';
-import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, eraReached } from '../app/js/engine/painters.js';
+import { emptyProgress, artistStatus } from '../app/js/engine/progress.js';
+import { pendingWorks } from '../app/js/engine/levels.js';
+import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, isMastered } from '../app/js/engine/painters.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
 import { initials } from '../app/js/ui/artist-sheet.js';
 import { sourceLabel } from '../app/js/engine/stories.js';
@@ -18,18 +19,32 @@ const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
 const real = buildIndex(readJson(join(app, 'data', 'catalog.json')));
 const first = real.path[0];
 
-test('pintores: al empezar solo salen los de la primera época (nunca una época aún no vista)', () => {
-  const groups = painterGroups(emptyProgress(), real);
-  const eras = groups.map((g) => g.movement.id);
-  // El Gótico es una rama que se abre en el Renacimiento: sale con él, y nada más.
-  assert.deepEqual(eras.sort(), ['gotico', real.path[0].movementId]);
-  assert.ok(groups.some((g) => g.artists.some((r) => r.artist.id === first.id)));
+test('pintores: sin nada visto no sale ningún pintor ni movimiento (no se revela quién viene)', () => {
+  assert.deepEqual(painterGroups(emptyProgress(), real), []);
 });
 
-test('pintores: las épocas siguen el orden cronológico y dentro, el año de nacimiento', () => {
+test('pintores: cada movimiento con «n de m» y solo los conocidos; los demás, solo contados como «por descubrir»', () => {
   const p = emptyProgress();
-  for (const a of real.artists) p.artists[a.id] = { plays: 1 };
+  const w = real.worksOf(first.id)[0];
+  p.collection[w.id] = '2026-11-20';
   const groups = painterGroups(p, real);
+  assert.equal(groups.length, 1, 'solo el movimiento con algún pintor conocido');
+  const g = groups[0];
+  assert.equal(g.movement.id, first.movementId);
+  assert.deepEqual(g.artists.map((r) => r.artist.id), [first.id]);
+  assert.equal(g.known, 1);
+  assert.equal(g.total, real.artistsOf(g.movement.id).filter((a) => real.worksOf(a.id).length).length);
+  assert.equal(g.hidden, g.total - 1);
+  const names = JSON.stringify(g.artists);
+  for (const a of real.artistsOf(g.movement.id)) if (a.id !== first.id) assert.ok(!names.includes(a.name), `${a.name} aparece sin conocerlo`);
+});
+
+test('pintores: igual en todos los movimientos (también en el Renacimiento) y orden cronológico', () => {
+  const p = emptyProgress();
+  for (const a of real.artists) p.artists[a.id] = { plays: 1, works: [real.worksOf(a.id)[0]?.id].filter(Boolean) };
+  const groups = painterGroups(p, real);
+  assert.ok(groups.length >= 9);
+  assert.ok(groups.every((g) => g.known === g.total && g.hidden === 0));
   const orders = groups.map((g) => g.movement.order);
   assert.deepEqual(orders, [...orders].sort((a, b) => a - b));
   for (const g of groups) {
@@ -38,9 +53,32 @@ test('pintores: las épocas siguen el orden cronológico y dentro, el año de na
   }
 });
 
+test('pintores: «dominado» es la definición del motor y coincide con el perfil (artistStatus) y con n/m', () => {
+  const p = emptyProgress();
+  const [a, b, c] = real.path;
+  p.artists[a.id] = { plays: 2, best: 0.9, mastered: true, works: real.levelWorks(a.id, 1).map((w) => w.id) };
+  p.artists[b.id] = { plays: 1, best: 0.5, works: real.worksOf(b.id).map((w) => w.id) }; // todo visto pero sin dominar
+  p.collection[real.worksOf(c.id)[0].id] = '2026-11-20';
+  const rows = painterGroups(p, real).flatMap((g) => g.artists);
+  const row = (id) => rows.find((r) => r.artist.id === id);
+  for (const artist of real.path) {
+    const listed = row(artist.id);
+    const profileMastered = artistStatus(p, real, artist.id) === 'mastered';
+    assert.equal(isMastered(p, artist.id), profileMastered, artist.id);
+    if (listed) assert.equal(listed.state === 'mastered', profileMastered, `${artist.id}: el check no coincide con el perfil`);
+  }
+  assert.equal(row(a.id).state, 'mastered');
+  assert.equal(row(b.id).state, 'started', 'todo visto (12/12) pero sin superar la ronda: sin check');
+  assert.equal(row(b.id).seen, row(b.id).total);
+  assert.equal(row(c.id).state, 'started');
+  assert.ok(!row(real.path[3].id), 'un pintor sin nada visto no sale');
+  // Un dominado nuevo ha visto todas sus obras de nivel 1 (regla del motor).
+  assert.equal(pendingWorks(p, real, a.id, 1).length, 0);
+});
+
 test('pintores: la búsqueda ignora tildes y mayúsculas', () => {
   const p = emptyProgress();
-  for (const a of real.artists) p.artists[a.id] = { plays: 1 };
+  for (const a of real.artists) p.artists[a.id] = { plays: 1, works: [real.worksOf(a.id)[0]?.id].filter(Boolean) };
   const names = (q) => painterGroups(p, real, q).flatMap((g) => g.artists.map((r) => r.artist.id));
   assert.ok(names('DURERO').includes('durero'));
   assert.ok(names('el greco').includes('el-greco'));
@@ -51,7 +89,7 @@ test('pintores: la búsqueda ignora tildes y mayúsculas', () => {
 test('pintores: estado dominado / en marcha / sin ver', () => {
   const p = emptyProgress();
   assert.equal(painterState(p, real, first.id), 'new');
-  p.artists[first.id] = { plays: 1 };
+  p.collection[real.worksOf(first.id)[0].id] = '2026-11-20';
   assert.equal(painterState(p, real, first.id), 'started');
   p.artists[first.id] = { plays: 2, mastered: true };
   assert.equal(painterState(p, real, first.id), 'mastered');
@@ -87,12 +125,6 @@ test('ficha: jugar solo si es parada abierta del camino; etapas solo con niveles
   assert.equal(playTargets(p, real, 'giotto').stage, null);
   const goya = stageList(p, real, 'goya');
   assert.ok(goya.length >= 3 && goya.every((s) => s.status === 'locked'));
-});
-
-test('ficha: época alcanzada (y ramas-movimiento siguen a su época)', () => {
-  const p = emptyProgress();
-  const gotico = real.movement('gotico');
-  assert.equal(eraReached(p, real, gotico), eraReached(p, real, real.movement(gotico.opensAt)));
 });
 
 test('ficha: iniciales y etiqueta de fuente', () => {
