@@ -256,6 +256,11 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   (con `index.json` de pintores y niveles, para no pedir archivos inexistentes); `tests/ficha-pintor.test.js` falla si la copia se
   desfasa: tras tocar una historia, ejecutar el script y subir ambas carpetas. Museo y ciudad (`catalog-ficha.json`, diferido,
   `ui/ficha-data.js`) salen bajo el cuadro en el visor y en la ficha de obra solo con la obra revelada.
+- **Colección «Cuadros»** (`ui/screens/collection.js`, `engine/collection.js`): una franja por pintor con «n de m» y sus 3 últimas obras
+  desbloqueadas; por movimiento cronológico (o «lo último primero»); invitados (categoría `invitado`) juntos en una franja
+  «Invitados» al final de su movimiento; tocar el nombre o «Ver todas» abre la ficha. Con 15 pintores o más con alguna obra
+  desbloqueada sale el buscador con sugerencias (`engine/suggest.js`, `ui/suggest-box.js`: combobox/listbox, como mucho 6, pintores y
+  luego títulos, sin tildes, principio de cualquier palabra, una errata) y chips por movimiento.
 - **Guía de bienvenida** (`ui/coach.js`): tres pasos sobre el nodo actual, la franja «Hoy» y Colección; una vez por navegador
   (`sfumato.coach` en localStorage), se salta con «Saltar» o Esc. La cabecera ya no lleva el chip de rango (irá en el perfil) y lleva el reto diario
   (`dailyChip`: calendario con punto si está pendiente, «4/5» si está hecho). Ya no hay franja «Hoy» ni lupa del día (su registro

@@ -626,7 +626,6 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   font: 600 1rem/1 var(--font); text-decoration: none;
 }
 .coll-tab[aria-current="page"] { background: var(--surface); color: var(--ink); box-shadow: var(--lift-sm); }
-.coll-group { margin-bottom: 1.8rem; }
 .coll-artist { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.2rem/1.1 var(--font); padding-bottom: .5rem; margin-bottom: .75rem; border-bottom: 1px solid var(--line); }
 .coll-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .coll-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; }
