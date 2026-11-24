@@ -192,3 +192,4 @@ aviso w52692816 (venetsianov): ficha sin technique
 60M	.git
 3.1M	catalogo
 fin Tue Nov 24 20:28:02 UTC 2026
+estado del job: success Tue Nov 24 20:28:04 UTC 2026
