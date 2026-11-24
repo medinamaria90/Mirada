@@ -4,14 +4,16 @@
 let indexPromise = null;
 const stories = new Map();
 
-async function getJson(path) {
-  const res = await fetch(path, { cache: 'no-cache' });
+const DATA = new URL('../../data/historias/', import.meta.url);
+
+async function getJson(name) {
+  const res = await fetch(new URL(name, DATA), { cache: 'no-cache' });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
 
 export function loadStoryIndex() {
-  indexPromise = indexPromise || getJson('data/historias/index.json').catch((err) => {
+  indexPromise = indexPromise || getJson('index.json').catch((err) => {
     console.info('Historias no disponibles:', err.message);
     indexPromise = null;
     return {};
@@ -25,7 +27,7 @@ export async function loadStory(artistId) {
   const index = await loadStoryIndex();
   if (!Array.isArray(index[artistId])) return null;
   try {
-    const story = await getJson(`data/historias/${encodeURIComponent(artistId)}.json`);
+    const story = await getJson(`${encodeURIComponent(artistId)}.json`);
     stories.set(artistId, story);
     return story;
   } catch (err) {

@@ -51,6 +51,7 @@ function watch(page, label) {
     if (m.type() === 'error' || m.type() === 'warning') problems.push(`[${label}] console.${m.type()}: ${m.text()}`);
   });
   page.on('pageerror', (e) => problems.push(`[${label}] pageerror: ${e.message}`));
+  page.on('response', (r) => { if (r.status() >= 400) problems.push(`[${label}] HTTP ${r.status()}: ${r.url()}`); });
   page.on('requestfailed', (r) => {
     // Navegar justo después de cargar aborta las peticiones pendientes (net::ERR_ABORTED): no es un fallo.
     if (r.failure()?.errorText === 'net::ERR_ABORTED') return;
