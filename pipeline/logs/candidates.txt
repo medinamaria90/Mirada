@@ -126,3 +126,19 @@ ya     vasnetsov          41 candidatas
 ya     pinazo             32 candidatas
 ya     waterhouse         134 candidatas
 fin 2026-11-24 11:08:46
+ya     kroyer             272 candidatas
+ya     van-gogh           938 candidatas
+ya     sargent            649 candidatas
+ya     vrubel             24 candidatas
+ya     regoyos            33 candidatas
+ya     seurat             152 candidatas
+ya     levitan            229 candidatas
+ya     zorn               313 candidatas
+ya     rusinol            97 candidatas
+ya     klimt              158 candidatas
+ok     nesterov           Q318427      36 candidatas; de las 80 primeras, 22 con imagen >=1200px
+ya     signac             194 candidatas
+ya     sorolla            342 candidatas
+ya     munch              1822 candidatas
+ya     lautrec            235 candidatas
+fin 2026-11-24 11:08:51
