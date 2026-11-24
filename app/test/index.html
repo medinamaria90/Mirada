@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>¿Cuánta pintura reconoces? · Test de Mirada</title>
+  <meta name="description" content="Test gratuito de cultura pictórica: cuadros de verdad, de Leonardo a Klimt. Entre 8 y 40 preguntas adaptadas a lo que sabes, en pocos minutos, con tu nivel al final.">
+  <link rel="canonical" href="https://mirada.onrender.com/test/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mirada">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:url" content="https://mirada.onrender.com/test/">
+  <meta property="og:title" content="¿Cuánta pintura reconoces?">
+  <meta property="og:description" content="Un test de cultura pictórica con cuadros de verdad. Se adapta a lo que sabes y te dice tu nivel en pocos minutos.">
+  <meta property="og:image" content="https://mirada.onrender.com/test/portada.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Las meninas, de Velázquez, junto al título del test: ¿Cuánta pintura reconoces?">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="¿Cuánta pintura reconoces?">
+  <meta name="twitter:description" content="Un test de cultura pictórica con cuadros de verdad. Se adapta a lo que sabes y te dice tu nivel en pocos minutos.">
+  <meta name="twitter:image" content="https://mirada.onrender.com/test/portada.jpg">
+  <meta name="theme-color" content="#f7f3ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1e1a16" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/test.css">
+  <link rel="modulepreload" href="../js/test/main.js">
+  <link rel="modulepreload" href="../js/test/motor.js">
+  <link rel="modulepreload" href="../js/test/resultado.js">
+  <link rel="modulepreload" href="../js/test/preguntas.js">
+  <link rel="modulepreload" href="../js/test/pantallas.js">
+  <link rel="modulepreload" href="../js/test/revelar.js">
+  <link rel="modulepreload" href="../js/engine/catalog.js">
+  <link rel="modulepreload" href="../js/engine/progress.js">
+  <link rel="modulepreload" href="../js/ui/dom.js">
+  <link rel="modulepreload" href="../js/ui/art.js">
+  <link rel="modulepreload" href="../js/ui/icons.js">
+</head>
+<body>
+  <main class="test-home" id="portada">
+    <header class="test-head">
+      <a class="brand" href="../#inicio" aria-label="Mirada, inicio"><svg class="logo" width="28" height="28" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M10 38V23a14 14 0 0 1 28 0v15a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4ZM28.6 30.5a4.6 4.6 0 1 0-9.2 0a4.6 4.6 0 1 0 9.2 0Z" fill="currentColor" fill-rule="evenodd"/></svg>Mirada</a>
+    </header>
+    <div class="test-intro">
+      <p class="kicker">Test de cultura pictórica</p>
+      <h1 class="test-title">¿Cuánta pintura reconoces?</h1>
+      <p class="test-lead">Cuadros de verdad, de Leonardo a Klimt: quién los pintó, de qué época son y cuál es de cada pintor.</p>
+      <p class="test-lead">Entre 8 y 40 preguntas, según cómo vayas; se para cuando te pierde. De 3 a 8 minutos.</p>
+      <p class="test-lead">Al final, tu nivel y cuánta gente sabe menos de pintura que tú. Sin registro.</p>
+      <p class="test-last" hidden></p>
+      <button class="btn btn-primary btn-wide test-start" data-action="start">Empezar</button>
+      <noscript><p class="test-lead">El test necesita JavaScript. Mientras, puedes <a href="../">entrar en Mirada</a>.</p></noscript>
+    </div>
+  </main>
+  <div id="test" hidden></div>
+  <div id="live" class="sr-only" role="status" aria-live="polite"></div>
+  <script type="module" src="../js/test/main.js"></script>
+</body>
+</html>
