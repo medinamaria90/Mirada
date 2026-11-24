@@ -196,6 +196,12 @@ Decisiones de la tarde del 24/11:
     línea «El que has elegido es de <pintor> · <título>» y etiqueta con el pintor sobre el cuadro
     elegido en la rejilla; en «¿Quién lo pintó?», «No es de <elegido>» (+ rasgo ausente si es seguro);
     el cuadro elegido se abre en el visor ya revelado. En curso en la misma tanda de feedback.
+19. **Ramas por escuela en la v1 (23:20, decidido):** las ramas son listas de pintores que pueden ser
+    por época («Descubre el Barroco») o por escuela. Se estrenan en la migración **Escuela rusa** (~25
+    pintores: Repin, Súrikov, Vasnetsov, Levitán, Shishkin, Aivazovski, Kuindzhi, Vrubel, Serov…),
+    **Pintura británica** (Gainsborough, Reynolds, Turner, Constable, Rossetti, Millais, Waterhouse,
+    Sargent; los prerrafaelitas como plato fuerte) y **Maestros españoles**. Mismos pintores y obras
+    del catálogo, agrupados de otra forma; escenario propio en el mapa; cuentan para el rango.
 18. **Menos invitados en el camino común (23:10, decidido):** solo los invitados con alguna obra
     icónica (fame 3; p. ej. Ofelia, La balsa de la Medusa, El caminante sobre el mar de nubes) van
     intercalados en el camino común (≈ 25-30 en vez de 93); el resto pasa a **ramas opcionales por
