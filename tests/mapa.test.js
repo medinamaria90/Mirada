@@ -104,7 +104,7 @@ test('mapa: el nodo actual lleva «Empezar» (o «Seguir» a medias), el persona
   p.artists[real.steps[1].id] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
   html = renderPathMap(ctxWith(real, p));
   assert.ok(html.includes(`is-current" data-step="artist:${real.steps[2].id}"`) && html.includes('<span class="stage-meta">Empezar</span>'));
-  assert.ok(html.includes('Por repasar · 50%'), 'lo jugado a medias no dice su mejor resultado');
+  assert.ok(html.includes('Repite · 50%'), 'lo jugado a medias no invita a repetir con su mejor resultado');
   assert.ok(html.includes('class="stage  is-mastered"') && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
   // Camino jugado entero pero no dominado: el actual es el primero por repasar y dice «Seguir».
   const q = emptyProgress();

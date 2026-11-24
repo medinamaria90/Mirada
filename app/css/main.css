@@ -290,6 +290,11 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   opacity: 0; animation: halo 2.4s var(--ease) infinite;
 }
 .stage.is-started .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--brand), 0 var(--relief-node) 0 6px var(--line-2); }
+/* Jugado pero no dominado: «Repite · n %» como botón suave, para que se vea qué hacer. */
+.stage.is-started .stage-meta {
+  margin-top: 2px; padding: .3rem .6rem; border-radius: 10px; background: var(--brand-soft); color: var(--brand-text);
+  font: 600 .8rem/1 var(--font); box-shadow: 0 2px 0 var(--brand-shadow);
+}
 .stage-spot.is-current .stage-text { background: transparent; box-shadow: none; padding: 0; gap: 6px; justify-items: start; }
 .stage-spot.is-current.is-right .stage-text { justify-items: end; }
 .stage-spot.is-current .stage-name { padding: .38rem .7rem; border-radius: 999px; background: var(--surface); box-shadow: 0 1.5px 0 var(--line), inset 0 0 0 1px var(--line); font-weight: 600; }
@@ -1121,6 +1126,7 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
   background: var(--viewer-bg); color: var(--viewer-ink);
   display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
   animation: viewer-in .22s var(--ease);
+  --viewer-zoom-dur: .25s; /* vuelta a 1× y doble toque (viewer-gestures.js la repite en ms) */
 }
 .viewer:not([open]) { display: none; }
 .viewer::backdrop { background: var(--viewer-bg); }
@@ -1184,6 +1190,25 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 .viewer-pick[aria-disabled="true"] { opacity: .6; cursor: default; }
 .viewer-tools { display: flex; gap: .4rem; flex: none; }
 .viewer-loupe[aria-pressed="true"] { background: var(--viewer-ink); color: var(--viewer-on-ink); }
+/* Ampliar dentro del visor (pellizco, doble toque, Ctrl+rueda, teclado): el escenario no deja ningún
+   gesto al navegador (touch-action: none; deslizar entre cuadros lo hace viewer-gestures.js) y, con
+   el cuadro ampliado, recorta lo que sobresale; el marco se transforma desde su centro. Cerrar,
+   «Es este» y las flechas quedan fuera del escenario y no se transforman. */
+.viewer-stage, .viewer-stage * { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.viewer-frame { transform-origin: center; }
+.viewer-frame.is-settling { transition: transform var(--viewer-zoom-dur) var(--ease); }
+.viewer-slide.is-zoomed .viewer-stage { overflow: hidden; }
+.viewer-slide.is-zoomed .viewer-frame { will-change: transform; cursor: grab; }
+.viewer-track.is-dragging { scroll-snap-type: none; }
+.viewer-zoom {
+  position: absolute; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 68px); translate: -50% 0; z-index: 3;
+  padding: .3rem .8rem; border-radius: 999px; pointer-events: none;
+  font-weight: 600; font-variant-numeric: lining-nums tabular-nums; color: var(--viewer-ink);
+  background: color-mix(in srgb, var(--viewer-bg) 72%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--viewer-ink) 14%, transparent);
+  animation: lens-in .12s var(--ease);
+}
+.viewer-zoom[hidden] { display: none; }
 /* Lupa: con ella activa, arrastrar sobre el cuadro mueve la lente (no cambia de cuadro). */
 .viewer.is-loupe .viewer-frame, .viewer.is-loupe .viewer-frame * { touch-action: none; cursor: crosshair; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 .viewer-lens {
@@ -1219,5 +1244,6 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
   .viewer-name { font-size: 1rem; }
   .viewer-meta { font-size: .8rem; }
 }
-@media (prefers-reduced-motion: reduce) { .viewer, .viewer-lens.is-on { animation: none; } .viewer-img { transition: none; } }
-.reduce-motion .viewer, .reduce-motion .viewer-lens.is-on { animation: none; }
+@media (prefers-reduced-motion: reduce) { .viewer, .viewer-lens.is-on, .viewer-zoom { animation: none; } .viewer-img, .viewer-frame.is-settling { transition: none; } }
+.reduce-motion .viewer, .reduce-motion .viewer-lens.is-on, .reduce-motion .viewer-zoom { animation: none; }
+.reduce-motion .viewer-frame.is-settling { transition: none; }

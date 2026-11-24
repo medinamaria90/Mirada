@@ -180,11 +180,12 @@ function artistNodes(ctx, movement, currentKey) {
 
 const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'por repasar', mastered: 'dominado' };
 
-// Texto bajo el nombre solo cuando dice algo: «Empezar»/«Seguir» en el nodo actual y el mejor
-// resultado en lo que queda por repasar.
+// Texto bajo el nombre solo cuando dice algo: «Empezar»/«Seguir» en el nodo actual y «Repite · n %»
+// (pintado como botón) en lo jugado que aún no está dominado: el repaso de la época solo se abre al
+// dominarlos a todos, y María quería que se viera claro qué hacer.
 function metaFor(status, info, current) {
   if (current) return status === 'started' ? 'Seguir' : 'Empezar';
-  if (status === 'started') return `Por repasar · ${Math.round((info?.best || 0) * 100)}%`;
+  if (status === 'started') return `Repite · ${Math.round((info?.best || 0) * 100)}%`;
   return '';
 }
 

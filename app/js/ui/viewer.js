@@ -3,8 +3,11 @@
 // Fondo oscuro neutro, cuadro entero (contain) con la imagen grande y la miniatura del atlas
 // mientras carga; varios cuadros se pasan deslizando, con las flechas o con el teclado.
 // Se cierra con el aspa, Esc, el botón atrás del navegador y tocando fuera del cuadro (no al
-// deslizar). Sin zoom de página: para mirar detalles, una lupa (lente circular que amplía la zona
-// bajo el dedo con la imagen grande; con la lupa activa, arrastrar sobre el cuadro no lo cambia).
+// deslizar). Sin zoom de página: para mirar detalles se amplía el cuadro dentro del visor (pellizco,
+// doble toque, Ctrl+rueda o teclado + − 0; viewer-gestures.js) entre 1× y 4×; ampliado, el dedo
+// desplaza el cuadro y no cambia de cuadro; al pasar de cuadro, cerrar o activar la lupa vuelve a 1×.
+// Queda también la lupa (lente circular que amplía la zona bajo el dedo con la imagen grande; con la
+// lupa activa, arrastrar sobre el cuadro no lo cambia; funciona a 1× y ampliar la apaga).
 //
 // En una pregunta sin responder (reveal: false) no dice título, autor ni año (tampoco en alt ni
 // aria). Con pick, un botón «Es este» responde con el cuadro que se está viendo; cerrar no responde.
@@ -12,10 +15,14 @@
 import { esc, prefersReducedMotion } from './dom.js';
 import { artFrame, isBroken } from './art.js';
 import { icons } from './icons.js';
+import { attachZoom } from './viewer-gestures.js';
+import { formatZoom, isRest } from './viewer-zoom.js';
 
 const CLOSE = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const PREV = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>';
 const NEXT = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg>';
+
+const ZOOM_TAG_MS = 900; // el indicador «2,5×» se va solo
 
 let current = null;
 
@@ -51,7 +58,8 @@ export function openViewer(opts) {
       </div>` : ''}
       ${pick ? `<button type="button" class="btn viewer-pick" data-v="pick">${esc(pick.label || 'Es este')}</button>` : ''}
     </div>
-    <div class="viewer-lens" aria-hidden="true" hidden></div>`;
+    <div class="viewer-lens" aria-hidden="true" hidden></div>
+    <div class="viewer-zoom" role="status" hidden></div>`;
   document.body.appendChild(dlg);
 
   const track = dlg.querySelector('.viewer-track');
@@ -94,6 +102,12 @@ export function openViewer(opts) {
   let target = null;
   let targetTimer = 0;
   let lastPos = pos;
+  let zoom = null; // gestos de ampliar (se enlaza más abajo)
+  const settle = () => {
+    target = null;
+    clearTimeout(targetTimer);
+    track.classList.remove('is-dragging');
+  };
   const paint = () => {
     if (count) count.textContent = `${pos + 1} / ${n}`;
     const prev = dlg.querySelector('[data-v="prev"]');
@@ -109,24 +123,26 @@ export function openViewer(opts) {
     if (pos !== lastPos) {
       lastPos = pos;
       hideLens();
+      if (zoom) zoom.reset(false);
       if (opts.onChange) opts.onChange(pos);
     }
   };
   const sync = () => {
     if (closed) return;
     if (target != null) {
-      if (settledAt(target)) { target = null; clearTimeout(targetTimer); }
+      if (settledAt(target)) settle();
     } else pos = Math.max(0, Math.min(n - 1, indexAt()));
     paint();
   };
-  const goTo = (i) => {
+  // force: ir aunque sea el cuadro actual (al soltar un arrastre corto, el carril vuelve a su sitio).
+  const goTo = (i, force = false) => {
     const k = Math.max(0, Math.min(n - 1, i));
-    if (k === pos && target == null) return;
+    if (!force && k === pos && target == null) return;
     pos = k;
     target = k;
     clearTimeout(targetTimer);
     // Por si el navegador no llega a avisar del final del desplazamiento.
-    targetTimer = setTimeout(() => { target = null; sync(); }, 900);
+    targetTimer = setTimeout(() => { settle(); sync(); }, 900);
     track.scrollTo({ left: k * track.clientWidth, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     paint();
   };
@@ -192,6 +208,7 @@ export function openViewer(opts) {
     lensAt = { u, v };
   }
   function setLoupe(on) {
+    if (on && zoom) zoom.reset();
     loupeOn = on;
     dlg.classList.toggle('is-loupe', on);
     if (loupeBtn) loupeBtn.setAttribute('aria-pressed', String(on));
@@ -223,6 +240,30 @@ export function openViewer(opts) {
     dragging = null;
     hideLens();
   }
+
+  // --- Ampliar (pellizco, doble toque, rueda, teclado) ---------------------------------------------
+  const zoomTag = dlg.querySelector('.viewer-zoom');
+  let zoomTimer = 0;
+  zoom = attachZoom(dlg, {
+    track,
+    current: () => {
+      const s = closed ? null : slides[pos];
+      return s ? { slide: s, stage: s.querySelector('.viewer-stage'), frame: s.querySelector('.viewer-frame') } : null;
+    },
+    loupe: () => loupeOn,
+    moving: () => target != null || !settledAt(pos),
+    slide: () => ({ pos, n }),
+    snapTo: (k) => goTo(k, true),
+    onPinch: () => setLoupe(false),
+    onZoom(state) {
+      clearTimeout(zoomTimer);
+      if (isRest(state)) { zoomTag.hidden = true; return; }
+      if (loupeOn) setLoupe(false);
+      zoomTag.textContent = formatZoom(state.scale);
+      zoomTag.hidden = false;
+      zoomTimer = setTimeout(() => { zoomTag.hidden = true; }, ZOOM_TAG_MS);
+    },
+  });
 
   // Tocar fuera cierra, pero no si el dedo se ha movido (deslizar entre cuadros).
   let down = null;
@@ -267,7 +308,11 @@ export function openViewer(opts) {
       const at = lensAt || { u: 0.5, v: 0.5 };
       const step = ev.shiftKey ? 0.15 : 0.05;
       showLens(Math.max(0, Math.min(1, at.u + (lensAt ? dx * step : 0))), Math.max(0, Math.min(1, at.v + (lensAt ? dy * step : 0))));
-    } else if (ev.key === 'ArrowRight') goTo(pos + 1);
+    } else if (ev.key === '+' || ev.key === '=') zoom.step(1);
+    else if (ev.key === '-' || ev.key === '_') zoom.step(-1);
+    else if (ev.key === '0') zoom.reset();
+    else if (arrows[ev.key] && zoom.pan(...arrows[ev.key])) { /* ampliado, las flechas desplazan el cuadro */ }
+    else if (ev.key === 'ArrowRight') goTo(pos + 1);
     else if (ev.key === 'ArrowLeft') goTo(pos - 1);
     else if (pick && /^[1-9]$/.test(ev.key) && Number(ev.key) <= n) choose(Number(ev.key) - 1);
     else if (ev.key === 'Tab') {
@@ -300,6 +345,7 @@ export function openViewer(opts) {
     closed = true;
     current = null;
     clearTimeout(targetTimer);
+    clearTimeout(zoomTimer);
     document.removeEventListener('keydown', onKey, true);
     window.removeEventListener('popstate', onPop);
     window.removeEventListener('hashchange', onHash);
@@ -350,7 +396,7 @@ export function openViewer(opts) {
   const first = dlg.querySelector('[data-v="pick"]') || dlg.querySelector('[data-v="close"]');
   first.focus({ preventScroll: true });
 
-  current = { close, dialog: dlg, get pos() { return pos; }, goTo, setLoupe, get loupe() { return loupeOn; } };
+  current = { close, dialog: dlg, get pos() { return pos; }, goTo, setLoupe, get loupe() { return loupeOn; }, get zoom() { return zoom.scale; } };
   return current;
 }
 
