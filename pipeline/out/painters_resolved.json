@@ -1,0 +1,1322 @@
+[
+ {
+  "id": "giotto",
+  "qid": "Q7814",
+  "es": "Giotto",
+  "en": "Giotto",
+  "nacimiento": 1267,
+  "muerte": 1337,
+  "sitelinks": 99,
+  "ok": true
+ },
+ {
+  "id": "fra-angelico",
+  "qid": null
+ },
+ {
+  "id": "van-eyck",
+  "qid": "Q102272",
+  "es": "Jan van Eyck",
+  "en": "Jan van Eyck",
+  "nacimiento": 1390,
+  "muerte": 1441,
+  "sitelinks": 87,
+  "ok": true
+ },
+ {
+  "id": "van-der-weyden",
+  "qid": null
+ },
+ {
+  "id": "piero",
+  "qid": "Q5822",
+  "es": "Piero della Francesca",
+  "en": "Piero della Francesca",
+  "nacimiento": 1415,
+  "muerte": 1492,
+  "sitelinks": 69,
+  "ok": true
+ },
+ {
+  "id": "mantegna",
+  "qid": "Q5681",
+  "es": "Andrea Mantegna",
+  "en": "Andrea Mantegna",
+  "nacimiento": 1431,
+  "muerte": 1506,
+  "sitelinks": 71,
+  "ok": true
+ },
+ {
+  "id": "bellini",
+  "qid": "Q17169",
+  "es": "Giovanni Bellini",
+  "en": "Giovanni Bellini",
+  "nacimiento": 1430,
+  "muerte": 1516,
+  "sitelinks": 74,
+  "ok": true
+ },
+ {
+  "id": "botticelli",
+  "qid": "Q5669",
+  "es": "Sandro Botticelli",
+  "en": "Sandro Botticelli",
+  "nacimiento": 1445,
+  "muerte": 1510,
+  "sitelinks": 116,
+  "ok": true
+ },
+ {
+  "id": "berruguete",
+  "qid": "Q561783",
+  "es": "Pedro Berruguete",
+  "en": "Pedro Berruguete",
+  "nacimiento": 1450,
+  "muerte": 1504,
+  "sitelinks": 20,
+  "ok": true
+ },
+ {
+  "id": "leonardo",
+  "qid": "Q762",
+  "es": null,
+  "en": "Leonardo da Vinci",
+  "nacimiento": 1452,
+  "muerte": 1519,
+  "sitelinks": 309,
+  "ok": true
+ },
+ {
+  "id": "bosco",
+  "qid": "Q130531",
+  "es": "Jerónimo Bosch",
+  "en": "Hieronymus Bosch",
+  "nacimiento": 1450,
+  "muerte": 1516,
+  "sitelinks": 94,
+  "ok": true
+ },
+ {
+  "id": "durero",
+  "qid": "Q5580",
+  "es": "Alberto Durero",
+  "en": null,
+  "nacimiento": 1471,
+  "muerte": 1528,
+  "sitelinks": 189,
+  "ok": true
+ },
+ {
+  "id": "cranach",
+  "qid": "Q191748",
+  "es": "Lucas Cranach el Viejo",
+  "en": "Lucas Cranach the Elder",
+  "nacimiento": 1472,
+  "muerte": 1553,
+  "sitelinks": 60,
+  "ok": true
+ },
+ {
+  "id": "miguel-angel",
+  "qid": "Q5592",
+  "es": "Miguel Ángel",
+  "en": "Michelangelo",
+  "nacimiento": 1475,
+  "muerte": 1564,
+  "sitelinks": 260,
+  "ok": true
+ },
+ {
+  "id": "giorgione",
+  "qid": "Q8459",
+  "es": "Giorgione",
+  "en": "Giorgione",
+  "nacimiento": 1478,
+  "muerte": 1510,
+  "sitelinks": 67,
+  "ok": true
+ },
+ {
+  "id": "rafael",
+  "qid": "Q5597",
+  "es": "Rafael Sanzio",
+  "en": "Raphael",
+  "nacimiento": 1483,
+  "muerte": 1520,
+  "sitelinks": 197,
+  "ok": true
+ },
+ {
+  "id": "tiziano",
+  "qid": "Q47551",
+  "es": "Tiziano",
+  "en": "Titian",
+  "nacimiento": 1488,
+  "muerte": 1576,
+  "sitelinks": 110,
+  "ok": true
+ },
+ {
+  "id": "correggio",
+  "qid": "Q8457",
+  "es": "Antonio Allegri da Correggio",
+  "en": "Antonio da Correggio",
+  "nacimiento": 1489,
+  "muerte": 1534,
+  "sitelinks": 56,
+  "ok": true
+ },
+ {
+  "id": "holbein",
+  "qid": "Q48319",
+  "es": "Hans Holbein el Joven",
+  "en": "Hans Holbein the Younger",
+  "nacimiento": 1497,
+  "muerte": 1543,
+  "sitelinks": 73,
+  "ok": true
+ },
+ {
+  "id": "juan-de-juanes",
+  "qid": "Q11287651",
+  "es": "Juan de Juanes",
+  "en": "Juan de Juanes",
+  "nacimiento": 1505,
+  "muerte": 1579,
+  "sitelinks": 17,
+  "ok": true
+ },
+ {
+  "id": "morales",
+  "qid": "Q703250",
+  "es": "Luis de Morales",
+  "en": "Luis de Morales",
+  "nacimiento": 1509,
+  "muerte": 1586,
+  "sitelinks": 22,
+  "ok": true
+ },
+ {
+  "id": "tintoretto",
+  "qid": "Q9319",
+  "es": "Tintoretto",
+  "en": "Jacopo Tintoretto",
+  "nacimiento": 1518,
+  "muerte": 1594,
+  "sitelinks": 85,
+  "ok": true
+ },
+ {
+  "id": "bruegel",
+  "qid": "Q43270",
+  "es": "Pieter Brueghel el Viejo",
+  "en": "Pieter Bruegel the Elder",
+  "nacimiento": 1525,
+  "muerte": 1569,
+  "sitelinks": 92,
+  "ok": true
+ },
+ {
+  "id": "veronese",
+  "qid": "Q9440",
+  "es": "Paolo Veronese",
+  "en": "Paolo Veronese",
+  "nacimiento": 1528,
+  "muerte": 1588,
+  "sitelinks": 79,
+  "ok": true
+ },
+ {
+  "id": "sanchez-coello",
+  "qid": "Q503386",
+  "es": "Alonso Sánchez Coello",
+  "en": "Alonso Sánchez Coello",
+  "nacimiento": 1531,
+  "muerte": 1588,
+  "sitelinks": 21,
+  "ok": true
+ },
+ {
+  "id": "el-greco",
+  "qid": "Q301",
+  "es": "El Greco",
+  "en": "El Greco",
+  "nacimiento": 1541,
+  "muerte": 1614,
+  "sitelinks": 115,
+  "ok": true
+ },
+ {
+  "id": "ribalta",
+  "qid": "Q338800",
+  "es": "Francisco Ribalta",
+  "en": "Francesc Ribalta",
+  "nacimiento": 1565,
+  "muerte": 1628,
+  "sitelinks": 18,
+  "ok": true
+ },
+ {
+  "id": "caravaggio",
+  "qid": "Q42207",
+  "es": "Caravaggio",
+  "en": "Caravaggio",
+  "nacimiento": 1571,
+  "muerte": 1610,
+  "sitelinks": 117,
+  "ok": true
+ },
+ {
+  "id": "rubens",
+  "qid": "Q5599",
+  "es": "Pedro Pablo Rubens",
+  "en": "Peter Paul Rubens",
+  "nacimiento": 1577,
+  "muerte": 1640,
+  "sitelinks": 176,
+  "ok": true
+ },
+ {
+  "id": "maino",
+  "qid": "Q2555566",
+  "es": "Juan Bautista Maíno",
+  "en": "Juan Bautista Maíno",
+  "nacimiento": 1581,
+  "muerte": 1649,
+  "sitelinks": 15,
+  "ok": true
+ },
+ {
+  "id": "hals",
+  "qid": null
+ },
+ {
+  "id": "ribera",
+  "qid": "Q297838",
+  "es": "José de Ribera",
+  "en": "Jusepe de Ribera",
+  "nacimiento": 1591,
+  "muerte": 1652,
+  "sitelinks": 68,
+  "ok": true
+ },
+ {
+  "id": "la-tour",
+  "qid": "Q203371",
+  "es": "Georges de La Tour",
+  "en": "Georges de La Tour",
+  "nacimiento": 1593,
+  "muerte": 1652,
+  "sitelinks": 53,
+  "ok": true
+ },
+ {
+  "id": "artemisia",
+  "qid": null
+ },
+ {
+  "id": "poussin",
+  "qid": "Q41554",
+  "es": null,
+  "en": "Nicolas Poussin",
+  "nacimiento": 1594,
+  "muerte": 1665,
+  "sitelinks": 92,
+  "ok": true
+ },
+ {
+  "id": "zurbaran",
+  "qid": "Q209615",
+  "es": "Francisco de Zurbarán",
+  "en": "Francisco de Zurbarán",
+  "nacimiento": 1598,
+  "muerte": 1664,
+  "sitelinks": 81,
+  "ok": true
+ },
+ {
+  "id": "velazquez",
+  "qid": "Q297",
+  "es": "Diego Velázquez",
+  "en": "Diego Velázquez",
+  "nacimiento": 1599,
+  "muerte": 1660,
+  "sitelinks": 169,
+  "ok": true
+ },
+ {
+  "id": "van-dyck",
+  "qid": "Q150679",
+  "es": "Anton van Dyck",
+  "en": "Anthony van Dyck",
+  "nacimiento": 1599,
+  "muerte": 1641,
+  "sitelinks": 84,
+  "ok": true
+ },
+ {
+  "id": "claudio-de-lorena",
+  "qid": "Q214074",
+  "es": "Claudio de Lorena",
+  "en": "Claude Lorrain",
+  "nacimiento": 1600,
+  "muerte": 1682,
+  "sitelinks": 54,
+  "ok": true
+ },
+ {
+  "id": "alonso-cano",
+  "qid": "Q378783",
+  "es": "Alonso Cano",
+  "en": "Alonso Cano",
+  "nacimiento": 1601,
+  "muerte": 1667,
+  "sitelinks": 35,
+  "ok": true
+ },
+ {
+  "id": "rembrandt",
+  "qid": "Q5598",
+  "es": "Rembrandt",
+  "en": "Rembrandt",
+  "nacimiento": 1606,
+  "muerte": 1669,
+  "sitelinks": 207,
+  "ok": true
+ },
+ {
+  "id": "pereda",
+  "qid": "Q604088",
+  "es": "Antonio de Pereda",
+  "en": "Antonio de Pereda",
+  "nacimiento": 1611,
+  "muerte": 1678,
+  "sitelinks": 18,
+  "ok": true
+ },
+ {
+  "id": "carreno",
+  "qid": "Q833224",
+  "es": "Juan Carreño de Miranda",
+  "en": "Juan Carreño de Miranda",
+  "nacimiento": 1614,
+  "muerte": 1685,
+  "sitelinks": 28,
+  "ok": true
+ },
+ {
+  "id": "murillo",
+  "qid": "Q192062",
+  "es": "Bartolomé Esteban Murillo",
+  "en": "Bartolomé Esteban Murillo",
+  "nacimiento": 1617,
+  "muerte": 1682,
+  "sitelinks": 81,
+  "ok": true
+ },
+ {
+  "id": "valdes-leal",
+  "qid": "Q518898",
+  "es": "Juan de Valdés Leal",
+  "en": "Juan de Valdés Leal",
+  "nacimiento": 1622,
+  "muerte": 1690,
+  "sitelinks": 21,
+  "ok": true
+ },
+ {
+  "id": "steen",
+  "qid": "Q205863",
+  "es": "Jan Havicksz Steen",
+  "en": "Jan Steen",
+  "nacimiento": 1626,
+  "muerte": 1679,
+  "sitelinks": 54,
+  "ok": true
+ },
+ {
+  "id": "vermeer",
+  "qid": "Q41264",
+  "es": "Johannes Vermeer",
+  "en": "Johannes Vermeer",
+  "nacimiento": 1632,
+  "muerte": 1675,
+  "sitelinks": 116,
+  "ok": true
+ },
+ {
+  "id": "claudio-coello",
+  "qid": "Q332466",
+  "es": "Claudio Coello",
+  "en": "Claudio Coello",
+  "nacimiento": 1642,
+  "muerte": 1693,
+  "sitelinks": 20,
+  "ok": true
+ },
+ {
+  "id": "watteau",
+  "qid": "Q183221",
+  "es": "Antoine Watteau",
+  "en": "Jean-Antoine Watteau",
+  "nacimiento": 1684,
+  "muerte": 1721,
+  "sitelinks": 70,
+  "ok": true
+ },
+ {
+  "id": "tiepolo",
+  "qid": "Q186202",
+  "es": "Giovanni Battista Tiepolo",
+  "en": "Giovanni Battista Tiepolo",
+  "nacimiento": 1696,
+  "muerte": 1770,
+  "sitelinks": 67,
+  "ok": true
+ },
+ {
+  "id": "canaletto",
+  "qid": null
+ },
+ {
+  "id": "chardin",
+  "qid": "Q207447",
+  "es": "Jean Siméon Chardin",
+  "en": "Jean-Baptiste-Siméon Chardin",
+  "nacimiento": 1699,
+  "muerte": 1779,
+  "sitelinks": 51,
+  "ok": true
+ },
+ {
+  "id": "liotard",
+  "qid": "Q123757",
+  "es": "Jean-Étienne Liotard",
+  "en": "Jean-Étienne Liotard",
+  "nacimiento": 1702,
+  "muerte": 1789,
+  "sitelinks": 32,
+  "ok": true
+ },
+ {
+  "id": "boucher",
+  "qid": "Q180932",
+  "es": "François Boucher",
+  "en": "François Boucher",
+  "nacimiento": 1703,
+  "muerte": 1770,
+  "sitelinks": 60,
+  "ok": true
+ },
+ {
+  "id": "melendez",
+  "qid": "Q707478",
+  "es": "Luis Egidio Meléndez",
+  "en": "Luis Egidio Meléndez",
+  "nacimiento": 1716,
+  "muerte": 1780,
+  "sitelinks": 17,
+  "ok": true
+ },
+ {
+  "id": "reynolds",
+  "qid": "Q194402",
+  "es": "Joshua Reynolds",
+  "en": "Joshua Reynolds",
+  "nacimiento": 1723,
+  "muerte": 1792,
+  "sitelinks": 70,
+  "ok": true
+ },
+ {
+  "id": "greuze",
+  "qid": "Q347139",
+  "es": "Jean-Baptiste Greuze",
+  "en": "Jean-Baptiste Greuze",
+  "nacimiento": 1725,
+  "muerte": 1805,
+  "sitelinks": 37,
+  "ok": true
+ },
+ {
+  "id": "gainsborough",
+  "qid": "Q192720",
+  "es": "Thomas Gainsborough",
+  "en": "Thomas Gainsborough",
+  "nacimiento": 1727,
+  "muerte": 1788,
+  "sitelinks": 72,
+  "ok": true
+ },
+ {
+  "id": "fragonard",
+  "qid": "Q127171",
+  "es": "Jean-Honoré Fragonard",
+  "en": "Jean-Honoré Fragonard",
+  "nacimiento": 1732,
+  "muerte": 1806,
+  "sitelinks": 59,
+  "ok": true
+ },
+ {
+  "id": "goya",
+  "qid": "Q5432",
+  "es": "Francisco de Goya",
+  "en": "Francisco Goya",
+  "nacimiento": 1746,
+  "muerte": 1828,
+  "sitelinks": 189,
+  "ok": true
+ },
+ {
+  "id": "paret",
+  "qid": "Q283412",
+  "es": "Luis Paret",
+  "en": "Luis Paret y Alcázar",
+  "nacimiento": 1746,
+  "muerte": 1799,
+  "sitelinks": 13,
+  "ok": true
+ },
+ {
+  "id": "david",
+  "qid": "Q83155",
+  "es": "Jacques-Louis David",
+  "en": "Jacques-Louis David",
+  "nacimiento": 1748,
+  "muerte": 1825,
+  "sitelinks": 95,
+  "ok": true
+ },
+ {
+  "id": "vigee-le-brun",
+  "qid": "Q213163",
+  "es": "Élisabeth Vigée-Lebrun",
+  "en": "Élisabeth Louise Vigée Le Brun",
+  "nacimiento": 1755,
+  "muerte": 1842,
+  "sitelinks": 69,
+  "ok": true
+ },
+ {
+  "id": "vicente-lopez",
+  "qid": "Q117543",
+  "es": "Vicente López Portaña",
+  "en": "Vicente López Portaña",
+  "nacimiento": 1772,
+  "muerte": 1850,
+  "sitelinks": 20,
+  "ok": true
+ },
+ {
+  "id": "friedrich",
+  "qid": "Q104884",
+  "es": "Caspar David Friedrich",
+  "en": "Caspar David Friedrich",
+  "nacimiento": 1774,
+  "muerte": 1840,
+  "sitelinks": 92,
+  "ok": true
+ },
+ {
+  "id": "turner",
+  "qid": "Q159758",
+  "es": "Joseph Mallord William Turner",
+  "en": "J. M. W. Turner",
+  "nacimiento": 1775,
+  "muerte": 1851,
+  "sitelinks": 87,
+  "ok": true
+ },
+ {
+  "id": "constable",
+  "qid": "Q159297",
+  "es": "John Constable",
+  "en": "John Constable",
+  "nacimiento": 1776,
+  "muerte": 1837,
+  "sitelinks": 72,
+  "ok": true
+ },
+ {
+  "id": "ingres",
+  "qid": "Q23380",
+  "es": "Jean Auguste Dominique Ingres",
+  "en": "Jean-Auguste-Dominique Ingres",
+  "nacimiento": 1780,
+  "muerte": 1867,
+  "sitelinks": 133,
+  "ok": true
+ },
+ {
+  "id": "gericault",
+  "qid": "Q184212",
+  "es": "Théodore Géricault",
+  "en": "Théodore Géricault",
+  "nacimiento": 1791,
+  "muerte": 1824,
+  "sitelinks": 71,
+  "ok": true
+ },
+ {
+  "id": "corot",
+  "qid": "Q148475",
+  "es": "Camille Corot",
+  "en": "Jean-Baptiste Camille Corot",
+  "nacimiento": 1796,
+  "muerte": 1875,
+  "sitelinks": 77,
+  "ok": true
+ },
+ {
+  "id": "delaroche",
+  "qid": "Q322582",
+  "es": "Paul Delaroche",
+  "en": "Paul Delaroche",
+  "nacimiento": 1797,
+  "muerte": 1856,
+  "sitelinks": 41,
+  "ok": true
+ },
+ {
+  "id": "delacroix",
+  "qid": "Q33477",
+  "es": "Eugène Delacroix",
+  "en": "Eugène Delacroix",
+  "nacimiento": 1798,
+  "muerte": 1863,
+  "sitelinks": 124,
+  "ok": true
+ },
+ {
+  "id": "briullov",
+  "qid": "Q4768",
+  "es": "Karl Briullov",
+  "en": "Karl Bryullov",
+  "nacimiento": 1799,
+  "muerte": 1852,
+  "sitelinks": 54,
+  "ok": true
+ },
+ {
+  "id": "millet",
+  "qid": "Q148458",
+  "es": "Jean-François Millet",
+  "en": "Jean-François Millet",
+  "nacimiento": 1814,
+  "muerte": 1875,
+  "sitelinks": 69,
+  "ok": true
+ },
+ {
+  "id": "madrazo",
+  "qid": "Q1345186",
+  "es": "Federico Madrazo",
+  "en": "Federico de Madrazo y Kuntz",
+  "nacimiento": 1815,
+  "muerte": 1894,
+  "sitelinks": 21,
+  "ok": true
+ },
+ {
+  "id": "aivazovski",
+  "qid": "Q181568",
+  "es": "Iván Aivazovski",
+  "en": "Ivan Aivazovsky",
+  "nacimiento": 1817,
+  "muerte": 1900,
+  "sitelinks": 73,
+  "ok": true
+ },
+ {
+  "id": "courbet",
+  "qid": "Q34618",
+  "es": "Gustave Courbet",
+  "en": "Gustave Courbet",
+  "nacimiento": 1819,
+  "muerte": 1877,
+  "sitelinks": 89,
+  "ok": true
+ },
+ {
+  "id": "bouguereau",
+  "qid": "Q483992",
+  "es": "William-Adolphe Bouguereau",
+  "en": "William-Adolphe Bouguereau",
+  "nacimiento": 1825,
+  "muerte": 1905,
+  "sitelinks": 63,
+  "ok": true
+ },
+ {
+  "id": "moreau",
+  "qid": "Q203828",
+  "es": "Gustave Moreau",
+  "en": "Gustave Moreau",
+  "nacimiento": 1826,
+  "muerte": 1898,
+  "sitelinks": 53,
+  "ok": true
+ },
+ {
+  "id": "rossetti",
+  "qid": "Q186748",
+  "es": "Dante Gabriel Rossetti",
+  "en": "Dante Gabriel Rossetti",
+  "nacimiento": 1828,
+  "muerte": 1882,
+  "sitelinks": 85,
+  "ok": true
+ },
+ {
+  "id": "millais",
+  "qid": "Q159606",
+  "es": "John Everett Millais",
+  "en": "John Everett Millais",
+  "nacimiento": 1829,
+  "muerte": 1896,
+  "sitelinks": 56,
+  "ok": true
+ },
+ {
+  "id": "pissarro",
+  "qid": "Q134741",
+  "es": "Camille Pissarro",
+  "en": "Camille Pissarro",
+  "nacimiento": 1830,
+  "muerte": 1903,
+  "sitelinks": 94,
+  "ok": true
+ },
+ {
+  "id": "manet",
+  "qid": "Q40599",
+  "es": "Édouard Manet",
+  "en": "Édouard Manet",
+  "nacimiento": 1832,
+  "muerte": 1883,
+  "sitelinks": 118,
+  "ok": true
+ },
+ {
+  "id": "shishkin",
+  "qid": "Q193064",
+  "es": "Iván Shishkin",
+  "en": "Ivan Shishkin",
+  "nacimiento": 1831,
+  "muerte": 1898,
+  "sitelinks": 64,
+  "ok": true
+ },
+ {
+  "id": "martin-rico",
+  "qid": "Q427999",
+  "es": "Martín Rico",
+  "en": "Martín Rico",
+  "nacimiento": 1833,
+  "muerte": 1908,
+  "sitelinks": 11,
+  "ok": true
+ },
+ {
+  "id": "gisbert",
+  "qid": "Q2298247",
+  "es": "Antonio Gisbert",
+  "en": "Antonio Gisbert",
+  "nacimiento": 1834,
+  "muerte": 1901,
+  "sitelinks": 12,
+  "ok": true
+ },
+ {
+  "id": "whistler",
+  "qid": "Q203643",
+  "es": "James McNeill Whistler",
+  "en": "James McNeill Whistler",
+  "nacimiento": 1834,
+  "muerte": 1903,
+  "sitelinks": 70,
+  "ok": true
+ },
+ {
+  "id": "degas",
+  "qid": "Q46373",
+  "es": "Edgar Degas",
+  "en": "Edgar Degas",
+  "nacimiento": 1834,
+  "muerte": 1917,
+  "sitelinks": 119,
+  "ok": true
+ },
+ {
+  "id": "rosales",
+  "qid": "Q615701",
+  "es": "Eduardo Rosales",
+  "en": "Eduardo Rosales",
+  "nacimiento": 1836,
+  "muerte": 1873,
+  "sitelinks": 15,
+  "ok": true
+ },
+ {
+  "id": "homer",
+  "qid": "Q344838",
+  "es": "Winslow Homer",
+  "en": "Winslow Homer",
+  "nacimiento": 1836,
+  "muerte": 1910,
+  "sitelinks": 45,
+  "ok": true
+ },
+ {
+  "id": "fortuny",
+  "qid": "Q380052",
+  "es": "Mariano Fortuny",
+  "en": "Mariano Fortuny Marsal",
+  "nacimiento": 1838,
+  "muerte": 1874,
+  "sitelinks": 29,
+  "ok": true
+ },
+ {
+  "id": "cezanne",
+  "qid": "Q35548",
+  "es": "Paul Cézanne",
+  "en": "Paul Cézanne",
+  "nacimiento": 1839,
+  "muerte": 1906,
+  "sitelinks": 143,
+  "ok": true
+ },
+ {
+  "id": "sisley",
+  "qid": "Q175130",
+  "es": "Alfred Sisley",
+  "en": "Alfred Sisley",
+  "nacimiento": 1839,
+  "muerte": 1899,
+  "sitelinks": 80,
+  "ok": true
+ },
+ {
+  "id": "monet",
+  "qid": "Q296",
+  "es": "Claude Monet",
+  "en": "Claude Monet",
+  "nacimiento": 1840,
+  "muerte": 1926,
+  "sitelinks": 159,
+  "ok": true
+ },
+ {
+  "id": "renoir",
+  "qid": "Q39931",
+  "es": "Pierre-Auguste Renoir",
+  "en": "Pierre-Auguste Renoir",
+  "nacimiento": 1841,
+  "muerte": 1919,
+  "sitelinks": 115,
+  "ok": true
+ },
+ {
+  "id": "morisot",
+  "qid": "Q105320",
+  "es": "Berthe Morisot",
+  "en": "Berthe Morisot",
+  "nacimiento": 1841,
+  "muerte": 1895,
+  "sitelinks": 81,
+  "ok": true
+ },
+ {
+  "id": "raimundo-madrazo",
+  "qid": "Q2506493",
+  "es": "Raimundo Madrazo",
+  "en": "Raimundo de Madrazo y Garreta",
+  "nacimiento": 1841,
+  "muerte": 1920,
+  "sitelinks": 22,
+  "ok": true
+ },
+ {
+  "id": "kuindzhi",
+  "qid": "Q353628",
+  "es": "Arkhip Kuindzhi",
+  "en": "Arkhip Kuindzhi",
+  "nacimiento": 1841,
+  "muerte": 1910,
+  "sitelinks": 50,
+  "ok": true
+ },
+ {
+  "id": "rousseau",
+  "qid": "Q156386",
+  "es": "Henri Rousseau",
+  "en": "Henri Rousseau",
+  "nacimiento": 1844,
+  "muerte": 1910,
+  "sitelinks": 72,
+  "ok": true
+ },
+ {
+  "id": "cassatt",
+  "qid": "Q173223",
+  "es": "Mary Cassatt",
+  "en": "Mary Cassatt",
+  "nacimiento": 1844,
+  "muerte": 1926,
+  "sitelinks": 91,
+  "ok": true
+ },
+ {
+  "id": "repin",
+  "qid": "Q172911",
+  "es": "Iliá Repin",
+  "en": "Ilya Repin",
+  "nacimiento": 1844,
+  "muerte": 1930,
+  "sitelinks": 91,
+  "ok": true
+ },
+ {
+  "id": "beruete",
+  "qid": "Q1403669",
+  "es": "Aureliano de Beruete",
+  "en": "Aureliano de Beruete",
+  "nacimiento": 1845,
+  "muerte": 1912,
+  "sitelinks": 13,
+  "ok": true
+ },
+ {
+  "id": "pradilla",
+  "qid": "Q553258",
+  "es": "Francisco Pradilla y Ortiz",
+  "en": "Francisco Pradilla y Ortiz",
+  "nacimiento": 1848,
+  "muerte": 1921,
+  "sitelinks": 20,
+  "ok": true
+ },
+ {
+  "id": "gauguin",
+  "qid": "Q37693",
+  "es": "Paul Gauguin",
+  "en": "Paul Gauguin",
+  "nacimiento": 1848,
+  "muerte": 1903,
+  "sitelinks": 134,
+  "ok": true
+ },
+ {
+  "id": "caillebotte",
+  "qid": "Q295144",
+  "es": "Gustave Caillebotte",
+  "en": "Gustave Caillebotte",
+  "nacimiento": 1848,
+  "muerte": 1894,
+  "sitelinks": 55,
+  "ok": true
+ },
+ {
+  "id": "surikov",
+  "qid": "Q110228",
+  "es": "Vasili Súrikov",
+  "en": "Vasily Surikov",
+  "nacimiento": 1848,
+  "muerte": 1916,
+  "sitelinks": 53,
+  "ok": true
+ },
+ {
+  "id": "vasnetsov",
+  "qid": "Q204138",
+  "es": "Víktor Vasnetsov",
+  "en": "Viktor Vasnetsov",
+  "nacimiento": 1848,
+  "muerte": 1926,
+  "sitelinks": 64,
+  "ok": true
+ },
+ {
+  "id": "pinazo",
+  "qid": "Q254379",
+  "es": "Ignacio Pinazo Camarlench",
+  "en": "Ignacio Pinazo Camarlench",
+  "nacimiento": 1849,
+  "muerte": 1916,
+  "sitelinks": 10,
+  "ok": true
+ },
+ {
+  "id": "waterhouse",
+  "qid": "Q212754",
+  "es": "John William Waterhouse",
+  "en": "John William Waterhouse",
+  "nacimiento": 1849,
+  "muerte": 1917,
+  "sitelinks": 49,
+  "ok": true
+ },
+ {
+  "id": "kroyer",
+  "qid": "Q365068",
+  "es": "Peder Severin Krøyer",
+  "en": "Peder Severin Krøyer",
+  "nacimiento": 1851,
+  "muerte": 1909,
+  "sitelinks": 40,
+  "ok": true
+ },
+ {
+  "id": "van-gogh",
+  "qid": "Q5582",
+  "es": "Vincent van Gogh",
+  "en": "Vincent van Gogh",
+  "nacimiento": 1853,
+  "muerte": 1890,
+  "sitelinks": 268,
+  "ok": true
+ },
+ {
+  "id": "sargent",
+  "qid": "Q155626",
+  "es": null,
+  "en": null,
+  "nacimiento": 1856,
+  "muerte": 1925,
+  "sitelinks": 62,
+  "ok": true
+ },
+ {
+  "id": "vrubel",
+  "qid": "Q215100",
+  "es": "Mijaíl Vrúbel",
+  "en": "Mikhail Vrubel",
+  "nacimiento": 1856,
+  "muerte": 1910,
+  "sitelinks": 50,
+  "ok": true
+ },
+ {
+  "id": "regoyos",
+  "qid": "Q1837855",
+  "es": "Darío de Regoyos",
+  "en": "Darío de Regoyos",
+  "nacimiento": 1857,
+  "muerte": 1913,
+  "sitelinks": 11,
+  "ok": true
+ },
+ {
+  "id": "seurat",
+  "qid": "Q34013",
+  "es": "Georges Seurat",
+  "en": "Georges Seurat",
+  "nacimiento": 1859,
+  "muerte": 1891,
+  "sitelinks": 80,
+  "ok": true
+ },
+ {
+  "id": "levitan",
+  "qid": "Q211356",
+  "es": "Isaak Levitán",
+  "en": "Isaac Levitan",
+  "nacimiento": 1860,
+  "muerte": 1900,
+  "sitelinks": 54,
+  "ok": true
+ },
+ {
+  "id": "zorn",
+  "qid": "Q206820",
+  "es": "Anders Zorn",
+  "en": "Anders Zorn",
+  "nacimiento": 1860,
+  "muerte": 1920,
+  "sitelinks": 53,
+  "ok": true
+ },
+ {
+  "id": "rusinol",
+  "qid": "Q366930",
+  "es": "Santiago Rusiñol",
+  "en": "Santiago Rusiñol i Prats",
+  "nacimiento": 1861,
+  "muerte": 1931,
+  "sitelinks": 40,
+  "ok": true
+ },
+ {
+  "id": "klimt",
+  "qid": "Q34661",
+  "es": "Gustav Klimt",
+  "en": "Gustav Klimt",
+  "nacimiento": 1862,
+  "muerte": 1918,
+  "sitelinks": 107,
+  "ok": true
+ },
+ {
+  "id": "signac",
+  "qid": "Q151573",
+  "es": "Paul Signac",
+  "en": "Paul Signac",
+  "nacimiento": 1863,
+  "muerte": 1935,
+  "sitelinks": 64,
+  "ok": true
+ },
+ {
+  "id": "sorolla",
+  "qid": "Q351746",
+  "es": "Joaquín Sorolla",
+  "en": "Joaquín Sorolla",
+  "nacimiento": 1863,
+  "muerte": 1923,
+  "sitelinks": 46,
+  "ok": true
+ },
+ {
+  "id": "munch",
+  "qid": "Q41406",
+  "es": "Edvard Munch",
+  "en": "Edvard Munch",
+  "nacimiento": 1863,
+  "muerte": 1944,
+  "sitelinks": 120,
+  "ok": true
+ },
+ {
+  "id": "lautrec",
+  "qid": "Q82445",
+  "es": "Henri de Toulouse-Lautrec",
+  "en": "Henri de Toulouse-Lautrec",
+  "nacimiento": 1864,
+  "muerte": 1901,
+  "sitelinks": 97,
+  "ok": true
+ },
+ {
+  "id": "hammershoi",
+  "qid": "Q380706",
+  "es": "Vilhelm Hammershøi",
+  "en": "Vilhelm Hammershøi",
+  "nacimiento": 1864,
+  "muerte": 1916,
+  "sitelinks": 32,
+  "ok": true
+ },
+ {
+  "id": "serov",
+  "qid": "Q217128",
+  "es": "Valentín Serov",
+  "en": "Valentin Serov",
+  "nacimiento": 1865,
+  "muerte": 1911,
+  "sitelinks": 54,
+  "ok": true
+ },
+ {
+  "id": "casas",
+  "qid": "Q725681",
+  "es": "Ramón Casas",
+  "en": "Ramon Casas",
+  "nacimiento": 1866,
+  "muerte": 1932,
+  "sitelinks": 28,
+  "ok": true
+ },
+ {
+  "id": "kandinsky",
+  "qid": "Q61064",
+  "es": "Vasili Kandinski",
+  "en": "Wassily Kandinsky",
+  "nacimiento": 1866,
+  "muerte": 1944,
+  "sitelinks": 103,
+  "ok": true
+ },
+ {
+  "id": "zuloaga",
+  "qid": "Q460198",
+  "es": "Ignacio Zuloaga",
+  "en": "Ignacio Zuloaga",
+  "nacimiento": 1870,
+  "muerte": 1945,
+  "sitelinks": 22,
+  "ok": true
+ },
+ {
+  "id": "nonell",
+  "qid": "Q1393742",
+  "es": "Isidro Nonell",
+  "en": "Isidre Nonell",
+  "nacimiento": 1872,
+  "muerte": 1911,
+  "sitelinks": 13,
+  "ok": true
+ },
+ {
+  "id": "mir",
+  "qid": "Q1357729",
+  "es": "Joaquín Mir",
+  "en": "Joaquín Mir Trinxet",
+  "nacimiento": 1873,
+  "muerte": 1940,
+  "sitelinks": 12,
+  "ok": true
+ },
+ {
+  "id": "romero-de-torres",
+  "qid": "Q1712402",
+  "es": "Julio Romero de Torres",
+  "en": "Julio Romero de Torres",
+  "nacimiento": 1874,
+  "muerte": 1930,
+  "sitelinks": 18,
+  "ok": true
+ },
+ {
+  "id": "malevich",
+  "qid": "Q130777",
+  "es": "Kazimir Malévich",
+  "en": "Kazimir Malevich",
+  "nacimiento": 1878,
+  "muerte": 1935,
+  "sitelinks": 85,
+  "ok": true
+ },
+ {
+  "id": "modigliani",
+  "qid": "Q120993",
+  "es": "Amedeo Modigliani",
+  "en": "Amedeo Modigliani",
+  "nacimiento": 1884,
+  "muerte": 1920,
+  "sitelinks": 88,
+  "ok": true
+ },
+ {
+  "id": "juan-gris",
+  "qid": "Q151152",
+  "es": "Juan Gris",
+  "en": "Juan Gris",
+  "nacimiento": 1887,
+  "muerte": 1927,
+  "sitelinks": 63,
+  "ok": true
+ },
+ {
+  "id": "schiele",
+  "qid": "Q44032",
+  "es": "Egon Schiele",
+  "en": "Egon Schiele",
+  "nacimiento": 1890,
+  "muerte": 1918,
+  "sitelinks": 74,
+  "ok": true
+ }
+]

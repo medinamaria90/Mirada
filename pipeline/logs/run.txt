@@ -1,12 +1,9 @@
-408K	.git
+inicio Tue Nov 24 10:29:29 UTC 2026
+== resolve  10:29:29
+ok    malevich           Q130777    Kazimir Malévich / Kazimir Malevich (1878-1935) sl=85
+ok    modigliani         Q120993    Amedeo Modigliani / Amedeo Modigliani (1884-1920) sl=88
+ok    juan-gris          Q151152    Juan Gris / Juan Gris (1887-1927) sl=63
+ok    schiele            Q44032     Egon Schiele / Egon Schiele (1890-1918) sl=74
+total 135 resueltos 130
+528K	.git
 4.0K	catalogo
-== candidates  10:26:07
-SIN QID malevich
-SIN QID modigliani
-SIN QID juan-gris
-SIN QID schiele
-fin 2026-11-24 10:26:07
-412K	.git
-4.0K	catalogo
-fin Tue Nov 24 10:26:07 UTC 2026
-estado del job: success Tue Nov 24 10:26:07 UTC 2026
