@@ -40,3 +40,7 @@ build: 1315 obras (1315 con imagen, 1315 con ficha), 162 pintores, 38 españoles
 download rc=3
 60M	.git
 3.3M	catalogo
+== build  20:35:16
+build: 1315 obras (1315 con imagen, 1315 con ficha), 162 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 11, barroco 23, rococo-neoclasicismo 17, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 18, gotico 7, ukiyo-e 5
+60M	.git
+3.3M	catalogo
