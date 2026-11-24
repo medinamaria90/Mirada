@@ -17,7 +17,8 @@ services:
     repo: https://github.com/medinamaria90/Mirada
     branch: main
     buildCommand: echo "redirige a sfumato-arte"
-    staticPublishPath: ./app
+    # Solo una página de aviso: Render aplica la redirección cuando el archivo no existe.
+    staticPublishPath: ./redirige-mirada
     autoDeploy: false
     routes:
       - type: redirect
