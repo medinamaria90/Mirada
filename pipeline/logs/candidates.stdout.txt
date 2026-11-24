@@ -46,3 +46,19 @@ ya     carreno            66 candidatas
 ya     murillo            317 candidatas
 ya     valdes-leal        71 candidatas
 fin 2026-11-24 11:06:33
+ya     steen              410 candidatas
+ya     vermeer            37 candidatas
+ya     claudio-coello     34 candidatas
+ya     watteau            135 candidatas
+ya     tiepolo            287 candidatas
+ya     canaletto          412 candidatas
+ya     chardin            208 candidatas
+ya     liotard            72 candidatas
+ya     boucher            329 candidatas
+ya     melendez           64 candidatas
+ya     reynolds           775 candidatas
+ya     greuze             233 candidatas
+ya     gainsborough       579 candidatas
+ya     fragonard          188 candidatas
+ya     goya               518 candidatas
+fin 2026-11-24 11:06:34
