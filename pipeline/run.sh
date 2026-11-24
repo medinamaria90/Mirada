@@ -29,9 +29,10 @@ while read -r step args <&3; do
         commit "datos: candidatas ($chunk)"
       done
       tail -n 3 pipeline/logs/candidates.stdout.txt >> pipeline/logs/run.txt ;;
-    download)
-      for n in $(seq 1 "${args:-8}"); do
-        python3 pipeline/download.py --limit 150 > pipeline/logs/download.stdout.txt 2>&1; rc=$?
+    download)  # download [lotes] [tamaño]: n lotes de <tamaño> imágenes (150 por defecto), con commit tras cada lote
+      set -- $args; lotes=${1:-8}; tam=${2:-150}
+      for n in $(seq 1 "$lotes"); do
+        python3 pipeline/download.py --limit "$tam" > pipeline/logs/download.stdout.txt 2>&1; rc=$?
         tail -n 4 pipeline/logs/download.stdout.txt >> pipeline/logs/run.txt
         python3 pipeline/build.py >> pipeline/logs/run.txt 2>&1
         commit "datos: lote de imágenes $n"

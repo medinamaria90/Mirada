@@ -129,7 +129,7 @@
   "muerte": 1519,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 12
  },
  {
   "id": "durero",
@@ -189,7 +189,7 @@
   "muerte": 1520,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 12
  },
  {
   "id": "tiziano",
@@ -201,7 +201,7 @@
   "muerte": 1576,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 12
  },
  {
   "id": "correggio",
@@ -333,7 +333,7 @@
   "muerte": 1610,
   "movimiento": "barroco",
   "pais": "Italia",
-  "objetivo": 10
+  "objetivo": 12
  },
  {
   "id": "rubens",
@@ -345,7 +345,7 @@
   "muerte": 1640,
   "movimiento": "barroco",
   "pais": "Flandes",
-  "objetivo": 10
+  "objetivo": 12
  },
  {
   "id": "maino",
@@ -441,7 +441,7 @@
   "muerte": 1660,
   "movimiento": "barroco",
   "pais": "España",
-  "objetivo": 15
+  "objetivo": 16
  },
  {
   "id": "van-dyck",
@@ -489,7 +489,7 @@
   "muerte": 1669,
   "movimiento": "barroco",
   "pais": "Países Bajos",
-  "objetivo": 10
+  "objetivo": 12
  },
  {
   "id": "pereda",
@@ -717,7 +717,7 @@
   "muerte": 1828,
   "movimiento": "romanticismo",
   "pais": "España",
-  "objetivo": 15
+  "objetivo": 16
  },
  {
   "id": "paret",
@@ -1233,7 +1233,7 @@
   "muerte": 1926,
   "movimiento": "impresionismo",
   "pais": "Francia",
-  "objetivo": 10
+  "objetivo": 12
  },
  {
   "id": "renoir",
@@ -1461,7 +1461,7 @@
   "muerte": 1890,
   "movimiento": "postimpresionismo",
   "pais": "Países Bajos",
-  "objetivo": 10
+  "objetivo": 12
  },
  {
   "id": "sargent",
@@ -1593,7 +1593,7 @@
   "muerte": 1923,
   "movimiento": "impresionismo",
   "pais": "España",
-  "objetivo": 12
+  "objetivo": 14
  },
  {
   "id": "munch",

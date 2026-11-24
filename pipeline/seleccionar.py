@@ -1,15 +1,19 @@
 """Fase A.3 (local, sin red): elige las obras de cada pintor a partir de las candidatas.
 
 Entrada: pipeline/painters.json, pipeline/out/candidates/*.json, pipeline/out/painters_resolved.json,
-         pipeline/excluir.json (QID -> motivo, de la revisión visual),
-         pipeline/ajustes.json (QID -> {titulo, archivo, anio, ...} correcciones a mano),
+         pipeline/excluir.json (QID -> motivo, de la revisión obra a obra),
+         pipeline/extra.json (pintor -> {QID: motivo}: obras icónicas forzadas; entran aunque tengan
+           dos autores, palabras sospechosas o medidas que no casan, y con imagen >= 1000 px),
+         pipeline/ajustes.json (QID -> {titulo, archivo, archivoInfo, anio, anioSort} correcciones a mano),
          pipeline/titulos_es.json (QID -> título en español para las que no tienen etiqueta es).
-Salida:  catalogo/seleccion.json y pipeline/logs/select.txt (recuento por pintor).
+Salida:  catalogo/seleccion.json (con `level` 1|2: las 4-6 más conocidas de cada pintor son nivel 1),
+         pipeline/logs/select.txt (recuento por pintor) y pipeline/logs/select_drops.txt (descartes con fama).
 """
 import math, os, re, sys, unicodedata
 from lib import *
 
 log = Log("select")
+drops = Log("select_drops")  # descartes con fama (sitelinks >= 8), para revisar a mano
 
 BAD_WORDS = re.compile(r"\b(cop(y|ia|ie)|replica|réplica|taller|workshop|atelier|attributed|atribuid[oa]|attribu|circle of|c[ií]rculo de|"
                        r"follower|seguidor|school of|escuela de|manner of|manera de|after |según |d'après|nach |study for|estudio para|"
@@ -25,6 +29,24 @@ FILE_GOOD = re.compile(r"(Google Art Project|Google Cultural Institute|Museo del
 EN_WORDS = re.compile(r"\b(the|of|with|and|portrait|lady|young|man|woman|girl|boy|saint|virgin|still life|landscape|view|holy|family)\b", re.I)
 LIC_OK = re.compile(r"(public domain|^pd|cc0|cc[- ]by)", re.I)
 MIMES = {"image/jpeg", "image/png", "image/tiff", "image/webp"}
+MIN_SIDE, MIN_SIDE_FORCED = 1200, 1000
+BLANK = "http://www.wikidata.org/.well-known/"
+
+
+def level1_count(n):
+    """Cuántas obras de un pintor van al nivel 1 (camino): 4 si tiene <= 8, 5 si <= 12, 6 si más."""
+    return min(n, 4 if n <= 8 else 5 if n <= 12 else 6)
+
+
+def dims_ok(it, img_w, img_h):
+    """Compara la proporción de la imagen con las medidas declaradas; devuelve (comparable, desvío mínimo)."""
+    pairs = list(it.get("dims") or [])
+    if not pairs and it.get("h") and it.get("w") and it.get("hu") == it.get("wu"):
+        pairs = [[it["h"], it["w"]]]
+    if not pairs:
+        return False, 0.0
+    img = img_w / img_h
+    return True, min(abs(math.log(img / (w / h))) for h, w in pairs if h and w)
 
 
 def norm(s):
@@ -74,7 +96,7 @@ def main():
     excl = load(os.path.join(PIPE, "excluir.json"), {})
     adj = load(os.path.join(PIPE, "ajustes.json"), {})
     tit = load(os.path.join(PIPE, "titulos_es.json"), {})
-    extra = load(os.path.join(PIPE, "extra.json"), {})  # pintor -> [QID] obras a forzar
+    extra = load(os.path.join(PIPE, "extra.json"), {})  # pintor -> {QID: motivo} obras a forzar
     sel, total, pais = [], 0, {}
     log(f"{'pintor':18} {'cand':>5} {'aptas':>5} {'elegidas':>8}/obj  motivos de descarte")
     for p in painters:
@@ -87,15 +109,21 @@ def main():
         born, died = r.get("nacimiento") or p["nacimiento"], r.get("muerte") or p["muerte"]
         why = {}
         ok = []
-        forced = set(extra.get(p["id"], []))
+        forced = set(extra.get(p["id"]) or [])
         for it in cand["items"]:
+            q = it["qid"]
+
             def drop(k):
                 why[k] = why.get(k, 0) + 1
-            q = it["qid"]
+                if it["sl"] >= 8:
+                    files = it.get("files") or {}
+                    fi = ";".join(f"{x['width']}x{x['height']} {x.get('mime','')} {x.get('license','')}" if x else "sin info"
+                                  for x in files.values()) or "sin archivos"
+                    drops(f"{p['id']:16} {q:10} sl={it['sl']:3} {k:26} {(it.get('es') or it.get('en') or '')[:45]:45} | {fi}")
             a = adj.get(q, {})
             if q in excl:
                 drop("excluida"); continue
-            if pq not in it["creators"]:
+            if pq not in it["creators"] and not (q in forced and not it["creators"]):
                 drop("autoría no preferente"); continue
             if len(it["creators"]) > 1 and q not in forced:
                 drop("varios autores"); continue
@@ -104,7 +132,7 @@ def main():
             text = " ".join(filter(None, [it.get("es"), it.get("en"), it.get("des"), it.get("den")]))
             if BAD_WORDS.search(text) and q not in forced and "titulo" not in a:
                 drop("palabra"); continue
-            if CEILING.search(" ".join(filter(None, [it.get("es"), it.get("en")]))) and q not in forced:
+            if CEILING.search(" ".join(filter(None, [it.get("es"), it.get("en")]))) and q not in forced and "titulo" not in a:
                 drop("techo"); continue
             ytxt, ysort, yq = year_info(it["dates"], born, died)
             if "anio" in a:
@@ -118,30 +146,33 @@ def main():
             files = it.get("files") or {}
             pick = None
             names = [a["archivo"]] if "archivo" in a else list(files)
-            for f in names:
-                x = files.get(f) if "archivo" not in a else (files.get(f) or a.get("archivoInfo"))
-                if not x or x.get("mime") not in MIMES:
-                    continue
-                if max(x["width"], x["height"]) < 1200:
-                    continue
-                if FILE_BAD.search(f) and "archivo" not in a:
-                    continue
-                if x.get("license") and not LIC_OK.search(x["license"]):
-                    continue
-                pick = (f, x); break
+            min_side = MIN_SIDE_FORCED if q in forced else MIN_SIDE
+            for lax in (False, True):  # 2.ª pasada solo para forzadas: admite nombres de archivo sospechosos
+                for f in names:
+                    x = files.get(f) if "archivo" not in a else (files.get(f) or a.get("archivoInfo"))
+                    if not x or x.get("mime") not in MIMES:
+                        continue
+                    if max(x["width"], x["height"]) < min_side:
+                        continue
+                    if FILE_BAD.search(f) and "archivo" not in a and not lax:
+                        continue
+                    if x.get("license") and not LIC_OK.search(x["license"]):
+                        continue
+                    pick = (f, x); break
+                if pick or q not in forced:
+                    break
             if not pick:
                 drop("sin imagen apta" if files else "sin datos de imagen"); continue
             f, x = pick
             score = it["sl"] + 1
             flags = []
             conf = "high"
-            if it.get("h") and it.get("w") and it.get("hu") == it.get("wu"):
-                phys = it["w"] / it["h"]; img = x["width"] / x["height"]
-                d = abs(math.log(img / phys))
-                if d > 0.25 and "archivo" not in a:
+            comparable, d = dims_ok(it, x["width"], x["height"])
+            if comparable:
+                if d > 0.25 and "archivo" not in a and q not in forced:
                     drop("proporción ≠ medidas"); continue
                 if d > 0.08:
-                    flags.append("proporcion"); score *= 0.6; conf = "medium"
+                    flags.append("proporcion"); score *= (0.6 if d > 0.15 else 0.85); conf = "medium"
             if FILE_PEN.search(f):
                 flags.append("archivo-sospechoso"); score *= 0.7; conf = "medium"
             if FILE_GOOD.search(f):
@@ -165,7 +196,7 @@ def main():
                 drop("sin título"); continue
             title = re.sub(r"\s*\([^)]*\)\s*$", "", title).strip().rstrip(".").strip()
             title = title[0].upper() + title[1:]
-            colls = [c for c in it["colls"].values() if c]
+            colls = [c for k, c in it["colls"].items() if c and not str(k).startswith(BLANK) and not str(c).startswith("http")]
             ok.append(dict(score=score, q=q, title=title, src=src, ytxt=ytxt, ysort=ysort or (born + 35), yq=yq,
                            coll=colls[0] if colls else None, file=f, x=x, sl=it["sl"], flags=flags, conf=conf,
                            key=norm(re.sub(r"\([^)]*\)", "", it.get("en") or it.get("es") or title)), types=it["types"]))
@@ -178,11 +209,16 @@ def main():
             seen_keys.add(o["key"]); seen_files.add(o["file"])
             if len(chosen) < p["objetivo"]:
                 chosen.append(o)
-        for o in chosen:
+        n1 = level1_count(len(chosen))
+        # Nivel: por fama real (sitelinks), no por la bonificación de forzada; ajustes.json puede fijar level=1
+        # para icónicas cuya fama está repartida entre versiones (El grito, Los girasoles, La torre de Babel...).
+        chosen.sort(key=lambda o: (0 if adj.get(o["q"], {}).get("level") == 1 else 1, -o["sl"], -o["score"]))
+        for i, o in enumerate(chosen):
             if o["src"] in ("traducir", "revisar-idioma"):
                 o["conf"] = "medium"
             sel.append(dict(
                 id="w" + o["q"][1:], pintorId=p["id"], qid=o["q"], titulo=o["title"], tituloFuente=o["src"],
+                level=1 if i < n1 else 2, forzada=o["q"] in forced,
                 anio=o["ytxt"], anioSort=o["ysort"], anioCalidad=o["yq"], coleccion=o["coll"], tipo=o["types"],
                 archivo=o["file"], archivoUrl="https://commons.wikimedia.org/wiki/File:" + o["file"].replace(" ", "_"),
                 srcW=o["x"]["width"], srcH=o["x"]["height"], mime=o["x"]["mime"],

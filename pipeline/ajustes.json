@@ -67,5 +67,147 @@
   "anio": "1881–1898",
   "anioSort": 1881,
   "titulo": "Los bogatires"
+ },
+ "Q2378567": {
+  "archivo": "La Anunciación (Fra Angelico-Prado).jpg",
+  "archivoInfo": {
+   "width": 3498,
+   "height": 2798,
+   "mime": "image/jpeg",
+   "license": "Public domain"
+  },
+  "titulo": "La Anunciación"
+ },
+ "Q5642417": {
+  "archivo": "Joaquín Sorolla y Bastida - Triste Herencia (1899).jpg",
+  "archivoInfo": {
+   "width": 2500,
+   "height": 1838,
+   "mime": "image/jpeg",
+   "license": "Public domain"
+  },
+  "titulo": "¡Triste herencia!",
+  "level": 1
+ },
+ "Q1766454": {
+  "archivo": "Gustave Caillebotte - The Floor Planers - Google Art Project.jpg",
+  "archivoInfo": {
+   "width": 5224,
+   "height": 3670,
+   "mime": "image/jpeg",
+   "license": "Public domain"
+  }
+ },
+ "Q2324643": {
+  "archivo": "Judith 1.jpg",
+  "archivoInfo": {
+   "width": 1769,
+   "height": 3508,
+   "mime": "image/jpeg",
+   "license": "Public domain"
+  }
+ },
+ "Q27766940": {
+  "archivo": "Amalia de Llano y Dotres, condesa de Vilches (Federico de Madrazo).jpg",
+  "archivoInfo": {
+   "width": 2043,
+   "height": 2953,
+   "mime": "image/jpeg",
+   "license": "Public domain"
+  },
+  "titulo": "La condesa de Vilches",
+  "level": 1
+ },
+ "Q21948567": {
+  "archivo": "Vincent van Gogh - Sunflowers (1888, National Gallery London).jpg",
+  "archivoInfo": {
+   "width": 4719,
+   "height": 6000,
+   "mime": "image/jpeg",
+   "license": "Public domain"
+  },
+  "titulo": "Los girasoles",
+  "level": 1
+ },
+ "Q18891156": {
+  "titulo": "El grito",
+  "level": 1
+ },
+ "Q15293656": {
+  "titulo": "La torre de Babel",
+  "level": 1
+ },
+ "Q3757652": {
+  "titulo": "Mujeres en la ventana"
+ },
+ "Q1585399": {
+  "titulo": "Doña Isabel de Porcel"
+ },
+ "Q23073062": {
+  "titulo": "Carolina Coronado"
+ },
+ "Q571416": {
+  "anio": "c. 1609",
+  "anioSort": 1609,
+  "titulo": "Autorretrato con Isabel Brant"
+ },
+ "Q3208135": {
+  "anio": "1899–1900",
+  "anioSort": 1899
+ },
+ "Q4536026": {
+  "anio": "1837–1857",
+  "anioSort": 1837
+ },
+ "Q500242": {
+  "titulo": "La creación de Adán",
+  "level": 1
+ },
+ "Q567861": {
+  "titulo": "El Juicio Final",
+  "level": 1
+ },
+ "Q186953": {
+  "titulo": "La escuela de Atenas",
+  "level": 1
+ },
+ "Q2273890": {
+  "titulo": "El milagro del esclavo"
+ },
+ "Q2666439": {
+  "titulo": "Mañana en un bosque de pinos"
+ },
+ "Q3630735": {
+  "titulo": "Autorretrato"
+ },
+ "Q549172": {
+  "archivo": "Flight into Egypt - Capella dei Scrovegni - Padua 2016.jpg",
+  "archivoInfo": {
+   "width": 2368,
+   "height": 2408,
+   "mime": "image/jpeg",
+   "license": "CC BY-SA 4.0"
+  }
+ },
+ "Q1165042": {
+  "level": 1
+ },
+ "Q18713070": {
+  "level": 1
+ },
+ "Q19032360": {
+  "level": 1
+ },
+ "Q734834": {
+  "level": 1
+ },
+ "Q128910": {
+  "level": 1
+ },
+ "Q984058": {
+  "level": 1
+ },
+ "Q6169435": {
+  "level": 1
  }
 }

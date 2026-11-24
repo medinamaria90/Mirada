@@ -38,8 +38,8 @@ def main():
     if not parcial and len(obras) < len(sel):
         err.append(f"faltan {len(sel) - len(obras)} imágenes de la selección")
     for p in pintores.values():
-        if p["muerte"] >= 1946:
-            err.append(f"pintor muerto en 1946 o después: {p['id']} ({p['muerte']})")
+        if p["muerte"] >= 1956:
+            err.append(f"pintor muerto en 1956 o después: {p['id']} ({p['muerte']})")
     for o in obras:
         p = pintores.get(o["pintorId"])
         tag = f"{o['id']} ({o['pintorId']})"

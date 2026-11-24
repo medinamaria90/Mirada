@@ -1,8 +1,11 @@
 """Fase A.2: obras candidatas por pintor (Wikidata SPARQL) + datos del archivo en Commons.
 
 Salida: pipeline/out/candidates/<pintor>.json (una lista por pintor, reanudable: si el
-archivo existe y tiene la misma QID no se vuelve a consultar, salvo FORCE=1) y
-pipeline/logs/candidates.txt. No descarga imágenes.
+archivo existe, tiene la misma QID y ya incluye las obras forzadas de pipeline/extra.json
+con sus datos de archivo, no se vuelve a consultar, salvo FORCE=1) y pipeline/logs/candidates.txt.
+Las obras forzadas (extra.json) se consultan aparte por QID, sin exigir autor único ni tipo,
+para que entren obras icónicas que Wikidata modela como series, frescos o con dos autores.
+No descarga imágenes.
 """
 import json, os, re, sys, time, urllib.parse
 from lib import *
@@ -40,6 +43,33 @@ SELECT ?item ?type ?image ?sl ?les ?len ?des ?den ?inc ?prec ?circa ?coll ?collL
 """
 
 
+Q_FORCED = """
+SELECT ?item ?type ?image ?sl ?les ?len ?des ?den ?inc ?prec ?circa ?coll ?collLabel ?h ?w ?hu ?wu ?creator ?after WHERE {
+  VALUES ?item { %(values)s }
+  ?item wdt:P18 ?image .
+  ?item wikibase:sitelinks ?sl .
+  OPTIONAL { ?item wdt:P31 ?type }
+  OPTIONAL { ?item rdfs:label ?les FILTER(lang(?les)="es") }
+  OPTIONAL { ?item rdfs:label ?len FILTER(lang(?len)="en") }
+  OPTIONAL { ?item schema:description ?des FILTER(lang(?des)="es") }
+  OPTIONAL { ?item schema:description ?den FILTER(lang(?den)="en") }
+  OPTIONAL { ?item p:P571 ?is . ?is psv:P571 ?iv . ?iv wikibase:timeValue ?inc ; wikibase:timePrecision ?prec .
+             OPTIONAL { ?is pq:P1480 ?circa } }
+  OPTIONAL { ?item p:P195 ?cs . ?cs ps:P195 ?coll . FILTER NOT EXISTS { ?cs pq:P582 [] } }
+  OPTIONAL { ?item p:P2048/psv:P2048 ?hv . ?hv wikibase:quantityAmount ?h ; wikibase:quantityUnit ?hu }
+  OPTIONAL { ?item p:P2049/psv:P2049 ?wv . ?wv wikibase:quantityAmount ?w ; wikibase:quantityUnit ?wu }
+  OPTIONAL { ?item wdt:P170 ?creator }
+  OPTIONAL { ?item wdt:P1877 ?after }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "es,en,fr,it,de,nl". ?coll rdfs:label ?collLabel . }
+}
+"""
+
+
+def forced_qids(extra, pid):
+    x = extra.get(pid) or {}
+    return sorted(x.keys() if isinstance(x, dict) else x)
+
+
 def v(b, k):
     x = b.get(k)
     return x["value"] if x else None
@@ -61,18 +91,22 @@ def query(pqid):
         q = qid(v(b, "item"))
         it = items.setdefault(q, dict(qid=q, types=set(), images=[], sl=int(v(b, "sl")), es=v(b, "les"), en=v(b, "len"),
                                       des=v(b, "des"), den=v(b, "den"), dates=set(), colls={}, h=None, w=None, hu=None, wu=None,
-                                      creators=set(), after=False))
+                                      dims=[], creators=set(), after=False))
         it["types"].add(TYPES.get(qid(v(b, "type")), "?"))
         img = fname(v(b, "image"))
         if img not in it["images"]:
             it["images"].append(img)
         if v(b, "inc"):
             it["dates"].add((v(b, "inc"), int(v(b, "prec") or 0), bool(v(b, "circa"))))
-        if v(b, "coll"):
+        if v(b, "coll") and not v(b, "coll").startswith("http://www.wikidata.org/.well-known/"):
             it["colls"][qid(v(b, "coll"))] = v(b, "collLabel")
         for k in ("h", "w"):
             if v(b, k) and it[k] is None:
                 it[k] = float(v(b, k)); it[k + "u"] = qid(v(b, k + "u"))
+        if v(b, "h") and v(b, "w") and qid(v(b, "hu")) == qid(v(b, "wu")):
+            pair = [float(v(b, "h")), float(v(b, "w"))]
+            if pair not in it["dims"]:
+                it["dims"].append(pair)  # todas las combinaciones alto/ancho declaradas (una obra puede tener varias)
         if v(b, "creator"):
             it["creators"].add(qid(v(b, "creator")))
         if v(b, "after"):
@@ -122,6 +156,7 @@ def main():
             p["qid"] = resolved.get(p["id"])
     only = set(sys.argv[1:])
     force = os.environ.get("FORCE") == "1"
+    extra = load(os.path.join(PIPE, "extra.json"), {})
     for p in painters:
         if only and p["id"] not in only:
             continue
@@ -130,16 +165,21 @@ def main():
             continue
         path = os.path.join(CDIR, p["id"] + ".json")
         old = load(path)
+        forced = forced_qids(extra, p["id"])
         if old and old.get("qid") == p["qid"] and not force:
-            log(f"ya     {p['id']:18} {len(old['items'])} candidatas")
-            continue
+            have = {it["qid"] for it in old["items"] if it.get("files")}
+            missing = [q for q in forced if q not in have]
+            if not missing:
+                log(f"ya     {p['id']:18} {len(old['items'])} candidatas")
+                continue
+            log(f"repito {p['id']:18} faltan datos de forzadas: {' '.join(missing)}")
         try:
-            items = query(p["qid"])
+            items = query(p["qid"], forced)
         except Exception as e:
             log(f"ERROR  {p['id']:18} SPARQL {e}")
             time.sleep(10)
             continue
-        top = items[:80]  # solo pedimos datos de archivo de las 80 más famosas
+        top = items[:80] + [it for it in items[80:] if it["qid"] in forced]  # datos de archivo: 80 más famosas + forzadas
         files = list(dict.fromkeys(f for it in top for f in it["images"][:2]))
         try:
             info = imageinfo(files)

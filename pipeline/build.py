@@ -34,7 +34,7 @@ def main():
     save(os.path.join(CAT, "pintores.json"), pintores)
     names = {p["id"]: p["nombre"] for p in painters}
     lines = ["# Créditos de las imágenes", "",
-             "Reproducciones fotográficas fieles de pinturas bidimensionales en dominio público (autores muertos antes de 1946,",
+             "Reproducciones fotográficas fieles de pinturas bidimensionales en dominio público (autores muertos antes de 1956,",
              "obras anteriores a 1930), obtenidas de Wikimedia Commons. Metadatos de Wikidata (CC0).",
              "Para cada imagen se indica el archivo de origen, su licencia en Commons y el autor/crédito del archivo.", ""]
     for o in sorted(obras, key=lambda o: (names[o["pintorId"]], o["anioSort"] or 0)):

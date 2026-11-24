@@ -1,1 +1,176 @@
-{"miguel-angel": ["The Creation of Adam", "The Last Judgment"]}
+{
+ "giotto": {
+  "Q549172": "Huida a Egipto, fresco de la capilla Scrovegni (su obra cumbre está en frescos)"
+ },
+ "van-eyck": {
+  "Q734834": "Políptico de Gante: dos autores (Hubert y Jan), pero es su obra cumbre"
+ },
+ "fra-angelico": {
+  "Q2378567": "La Anunciación del Prado: su imagen en Wikidata era pequeña; archivo corregido en ajustes.json"
+ },
+ "piero": {
+  "Q1227359": "Díptico de los duques de Urbino: las medidas declaradas son de un solo panel"
+ },
+ "bellini": {
+  "Q15008032": "El festín de los dioses: acabado por Tiziano, pero es de Bellini"
+ },
+ "leonardo": {
+  "Q128910": "La Última Cena: medidas en Wikidata que no casan con la imagen",
+  "Q474338": "La dama del armiño: idem",
+  "Q1217213": "Anunciación (Uffizi): el archivo se llama «cropped»",
+  "Q11935346": "La Virgen de las Rocas (Louvre): pocos sitelinks por el reparto entre versiones"
+ },
+ "miguel-angel": {
+  "Q500242": "La creación de Adán (Wikidata no lo devuelve como obra de Miguel Ángel en la consulta general)",
+  "Q567861": "El Juicio Final (idem)"
+ },
+ "rafael": {
+  "Q186953": "La escuela de Atenas (fresco; no sale en la consulta general)",
+  "Q153441": "La Fornarina",
+  "Q2030685": "Los desposorios de la Virgen",
+  "Q2344437": "La transfiguración",
+  "Q546977": "Retrato de Baltasar Castiglione",
+  "Q966681": "Virgen de la silla",
+  "Q2610729": "León X con dos cardenales"
+ },
+ "giorgione": {
+  "Q500812": "Venus dormida: acabada por Tiziano, pero es de Giorgione"
+ },
+ "tiziano": {
+  "Q3632485": "La bacanal de los andrios (Prado)",
+  "Q18002417": "El rapto de Europa"
+ },
+ "bosco": {
+  "Q2304870": "Mesa de los pecados capitales (Prado)",
+  "Q2276130": "Adoración de los Magos (Prado)"
+ },
+ "durero": {
+  "Q829270": "Los cuatro apóstoles: medidas de un solo panel"
+ },
+ "bruegel": {
+  "Q15293656": "La torre de Babel de Viena: la fama está en el ítem de la serie"
+ },
+ "holbein": {
+  "Q118859377": "Retrato de Enrique VIII (Thyssen, Madrid)"
+ },
+ "tintoretto": {
+  "Q2273890": "El milagro del esclavo"
+ },
+ "el-greco": {
+  "Q6553555": "La Trinidad (Prado)"
+ },
+ "caravaggio": {
+  "Q969377": "La vocación de San Mateo",
+  "Q318947": "Cena de Emaús (Londres)",
+  "Q663133": "Los jugadores de cartas",
+  "Q655705": "Los músicos",
+  "Q2610936": "Niño con cesto de frutas",
+  "Q2270291": "Cesto con frutas",
+  "Q2273517": "Conversión de San Pablo"
+ },
+ "rubens": {
+  "Q2667782": "El descendimiento (Amberes)",
+  "Q644936": "El rapto de las hijas de Leucipo: dos autores en Wikidata",
+  "Q571416": "Autorretrato con Isabel Brant",
+  "Q6122115": "Saturno devorando a un hijo (Prado)"
+ },
+ "velazquez": {
+  "Q984058": "Las hilanderas",
+  "Q1087226": "Cristo en casa de Marta y María",
+  "Q1133881": "El príncipe Baltasar Carlos a caballo",
+  "Q1090371": "Felipe IV de castaño y plata",
+  "Q1211943": "La dama del abanico",
+  "Q1133875": "Marte",
+  "Q2528741": "Cristo crucificado",
+  "Q4717953": "Juan de Pareja",
+  "Q2627810": "El aguador de Sevilla"
+ },
+ "rembrandt": {
+  "Q3630751": "Autorretrato a los 34 años",
+  "Q2872725": "Autorretrato con dos círculos",
+  "Q32496": "Betsabé"
+ },
+ "carreno": {
+  "Q27752837": "Pedro Ivanowitz Potemkin",
+  "Q18811444": "La fundación de la Orden Trinitaria: dos autores en Wikidata",
+  "Q27753204": "El duque de Pastrana"
+ },
+ "zurbaran": {
+  "Q21711372": "Santa Casilda (Thyssen)",
+  "Q6038780": "Bodegón con cacharros (Prado)",
+  "Q2361683": "San Hugo en el refectorio",
+  "Q3464529": "Santa Margarita"
+ },
+ "murillo": {
+  "Q5659824": "Joven mendigo (Louvre)"
+ },
+ "valdes-leal": {
+  "Q42189928": "Finis gloriae mundi (imagen de 1118 px)"
+ },
+ "goya": {
+  "Q2537138": "El quitasol",
+  "Q952796": "El pelele",
+  "Q3788057": "La pradera de San Isidro",
+  "Q3035829": "Don Manuel Osorio Manrique de Zúñiga",
+  "Q2736720": "Goya atendido por el doctor Arrieta",
+  "Q5177084": "La condesa de Chinchón",
+  "Q15728649": "Vuelo de brujas"
+ },
+ "madrazo": {
+  "Q27766940": "La condesa de Vilches (no salía en la consulta general)"
+ },
+ "pradilla": {
+  "Q19032360": "La rendición de Granada"
+ },
+ "millais": {
+  "Q1065493": "Ofelia: medidas en Wikidata intercambiadas",
+  "Q477764": "La chica ciega"
+ },
+ "courbet": {
+  "Q1167178": "El taller del pintor"
+ },
+ "ingres": {
+  "Q1282840": "Napoleón en su trono imperial"
+ },
+ "caillebotte": {
+  "Q1766454": "Los acuchilladores de parqué: archivo corregido en ajustes.json"
+ },
+ "cezanne": {
+  "Q1165042": "Los jugadores de cartas (Orsay)"
+ },
+ "monet": {
+  "Q20272169": "La estación Saint-Lazare, llegada de un tren",
+  "Q3220338": "El estanque de nenúfares, armonía verde"
+ },
+ "van-gogh": {
+  "Q21948567": "Los girasoles (Londres)",
+  "Q3630735": "Autorretrato (Orsay, 1889)",
+  "Q19363214": "Autorretrato con la oreja vendada",
+  "Q18713070": "El dormitorio en Arlés (Ámsterdam)",
+  "Q1432536": "Almendro en flor"
+ },
+ "gauguin": {
+  "Q1764395": "La visión tras el sermón"
+ },
+ "shishkin": {
+  "Q2666439": "Mañana en un bosque de pinos: los osos son de Savitski, pero es su cuadro más famoso"
+ },
+ "sorolla": {
+  "Q5642417": "¡Triste herencia!: archivo corregido en ajustes.json",
+  "Q16596719": "Madre",
+  "Q16644191": "Una investigación"
+ },
+ "waterhouse": {
+  "Q9295442": "Hylas y las ninfas"
+ },
+ "munch": {
+  "Q18891156": "El grito (1893, Galería Nacional de Oslo): la fama está en el ítem del grupo",
+  "Q3208135": "La danza de la vida (sin fecha en Wikidata)"
+ },
+ "klimt": {
+  "Q2324643": "Judit I: archivo corregido en ajustes.json"
+ },
+ "malevich": {
+  "Q1170315": "Cuadrado negro (imagen de 1196 px)"
+ }
+}

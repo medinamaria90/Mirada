@@ -58,7 +58,7 @@ def main():
             log(f"FALLO {p['id']:18} ({p['en']}) candidatos={cands[:5]}")
             res.append(dict(id=p["id"], qid=None))
             continue
-        flag = "" if (best["muerte"] or 9999) < 1946 else "  ¡MUERTE >=1946 o desconocida!"
+        flag = "" if (best["muerte"] or 9999) < 1956 else "  ¡MUERTE >=1956 o desconocida!"
         if not best["ok"]:
             flag += "  (QID dado; años no casan, revisar)"
         log(f"ok    {p['id']:18} {best['qid']:10} {best['es'] or '-'} / {best['en']} ({best['nacimiento']}-{best['muerte']}) sl={best['sitelinks']}{flag}")
