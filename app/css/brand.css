@@ -3,3 +3,103 @@
 
 /* Outfit (OFL), variable en peso 300-600, subconjunto latino, servida con la app. */
 @font-face { font-family: "Outfit"; font-style: normal; font-weight: 300 600; font-display: swap; src: url("../fonts/outfit-latin-wght-normal.woff2") format("woff2"); }
+
+:root {
+  /* Paleta base: lino, blanco, tinta. La interfaz no compite con los cuadros. */
+  --bg: #f7f3ec;
+  --surface: #ffffff;
+  --surface-2: #efe9e0;
+  --ink: #23201c;
+  --ink-2: #5e574f;
+  --line: #e7e0d5;
+  --line-2: #ddd4c7;
+  --ok: #2f6a4c;
+  --ok-soft: #e4eee7;
+  --ok-shadow: #214e37;
+  --on-ok: #ffffff;
+  --bad: #a2461b;
+  --bad-soft: #f6e6dc;
+  /* Coral contenido, el protagonista: botones, nodo actual, pestaña activa y enlaces. Como texto,
+     solo en su variante oscura (--brand-text); sobre el coral, tinta. */
+  --brand: #e27d66;
+  --brand-shadow: #c4644e;
+  --brand-soft: #fbe7e1;
+  --brand-text: #a84a35;
+  --on-brand: #23201c;
+  /* Metales de los sellos. */
+  --gold: #c9a24a;
+  --gold-shadow: #a7832f;
+  --gold-text: #7e5f17;
+  --silver: #aeb4bc;
+  --silver-shadow: #8e949c;
+  --bronze: #b9805a;
+  --bronze-shadow: #966243;
+  /* Acento por movimiento (lo pone el JS desde el catálogo); sin movimiento, el coral. */
+  --accent: #e27d66;
+  --on-accent: #ffffff;
+  --on-accent-dark: #23201c;
+  --medal-accent: #b9805a;
+  --medal-streak: #7e5f17;
+  --accent-ui: color-mix(in srgb, var(--accent) 65%, var(--ink));
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  /* Visor a pantalla completa: siempre noche, en tema claro y en oscuro. */
+  --viewer-bg: #15120f;
+  --viewer-frame: #231f1a;
+  --viewer-ink: #f2ece2;
+  --viewer-ink-2: #ddd5c8;
+  --viewer-ink-3: #cfc6b8;
+  --viewer-ink-hover: #fffaf1;
+  --viewer-on-ink: #15120f;
+  --viewer-badge-ink: #fbf8f2;
+  /* Sombras y velos. */
+  --shadow-frame: 0 1px 1px rgba(35, 32, 28, .10), 0 6px 16px -6px rgba(35, 32, 28, .26), 0 18px 40px -18px rgba(35, 32, 28, .30);
+  --shadow-card: 0 1px 2px rgba(35, 32, 28, .05), 0 6px 18px -10px rgba(35, 32, 28, .16);
+  --shadow-sheet: 0 -12px 32px -18px rgba(35, 32, 28, .45);
+  --shadow-pop: 0 30px 60px -20px rgba(35, 32, 28, .5);
+  --shadow-viewer: 0 18px 50px -20px rgba(0, 0, 0, .9);
+  --scrim: rgba(35, 32, 28, .45);
+  /* Relieve («Juego de mirar»): sombra inferior sólida que se hunde al pulsar. */
+  --relief: 4px;
+  --relief-sm: 3px;
+  --relief-node: 5px;
+  /* Medidas. */
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-btn: 16px;
+  --font: "Outfit", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --track: -0.02em;
+  --col: 560px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1e1a16;
+    --surface: #292420;
+    --surface-2: #352e28;
+    --ink: #f2ece2;
+    --ink-2: #bdb3a5;
+    --line: #3f372f;
+    --line-2: #120f0c;
+    --ok: #9fcbab;
+    --ok-soft: #1f2b22;
+    --ok-shadow: #5f8a6d;
+    --on-ok: #1e1a16;
+    --bad: #eba79c;
+    --bad-soft: #33201c;
+    --brand-shadow: #a9523d;
+    --brand-soft: #3b2721;
+    --brand-text: #f0a08c;
+    --gold-shadow: #8c6c22;
+    --gold-text: #e2c06a;
+    --accent-ui: color-mix(in srgb, var(--accent) 62%, var(--ink));
+    --accent-soft: color-mix(in srgb, var(--accent) 20%, var(--surface));
+    --shadow-frame: 0 1px 1px rgba(0, 0, 0, .5), 0 10px 24px -8px rgba(0, 0, 0, .7);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, .4);
+    --shadow-sheet: 0 -12px 32px -18px rgba(0, 0, 0, .7);
+    --shadow-pop: 0 30px 60px -20px rgba(0, 0, 0, .8);
+    --scrim: rgba(0, 0, 0, .55);
+  }
+}

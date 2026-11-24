@@ -1,62 +1,4 @@
-/* Mirada — estética de sala de museo: pared marfil, tinta, acento sobrio por movimiento. */
-
-:root {
-  --bg: #f3efe7;
-  --surface: #fbf9f4;
-  --surface-2: #ece6db;
-  --ink: #1d1b18;
-  --ink-2: #57514a;
-  --line: #ddd5c7;
-  --ok: #3d6a4c;
-  --ok-soft: #e3ecdf;
-  --bad: #9a3f35;
-  --bad-soft: #f3e1dc;
-  --accent: #6b5b45;
-  --on-accent: #ffffff;
-  --on-accent-dark: #1d1b18;
-  --medal-accent: #8a7350;
-  --medal-streak: #6a5434;
-  /* Visor a pantalla completa: siempre oscuro, en tema claro y en oscuro. */
-  --viewer-bg: #11100d;
-  --viewer-frame: #1f1c17;
-  --viewer-ink: #f1ece3;
-  --viewer-ink-2: #ddd5c8;
-  --viewer-ink-3: #cfc6b8;
-  --viewer-ink-hover: #fffaf1;
-  --viewer-on-ink: #15130f;
-  --viewer-badge-ink: #fbf8f2;
-  --accent-ui: color-mix(in srgb, var(--accent) 65%, var(--ink));
-  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--surface));
-  --shadow-frame: 0 1px 1px rgba(40, 30, 15, .10), 0 6px 16px -6px rgba(40, 30, 15, .28), 0 18px 40px -18px rgba(40, 30, 15, .30);
-  --shadow-card: 0 1px 2px rgba(40, 30, 15, .06), 0 4px 14px -8px rgba(40, 30, 15, .18);
-  --radius: 14px;
-  --radius-sm: 10px;
-  --font: "Outfit", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --track: -0.02em;
-  --col: 560px;
-  --ease: cubic-bezier(.2, .7, .2, 1);
-  --safe-b: env(safe-area-inset-bottom, 0px);
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #15130f;
-    --surface: #1e1b16;
-    --surface-2: #29251e;
-    --ink: #efe9de;
-    --ink-2: #b9b0a2;
-    --line: #363027;
-    --ok: #9fcbab;
-    --ok-soft: #1f2b22;
-    --bad: #eba79c;
-    --bad-soft: #33201c;
-    --accent-ui: color-mix(in srgb, var(--accent) 62%, #ffffff);
-    --accent-soft: color-mix(in srgb, var(--accent) 20%, var(--surface));
-    --shadow-frame: 0 1px 1px rgba(0, 0, 0, .5), 0 10px 24px -8px rgba(0, 0, 0, .7);
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, .4);
-  }
-}
+/* Mirada — hoja principal. Las variables (colores, letra, medidas) viven en brand.css. */
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -102,7 +44,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 }
 .btn:active { transform: scale(.97); }
 .btn-wide { width: 100%; }
-.btn-primary { background: var(--ink); color: var(--bg); box-shadow: 0 6px 16px -10px rgba(0,0,0,.6); }
+.btn-primary { background: var(--ink); color: var(--bg); }
 .btn-primary:hover { background: color-mix(in srgb, var(--ink) 88%, var(--accent)); }
 .btn-secondary { background: transparent; border-color: var(--ink); color: var(--ink); }
 .btn-secondary:hover { background: var(--surface-2); }
@@ -475,7 +417,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   position: fixed; left: 50%; bottom: 0; z-index: 8; width: 100%; max-width: var(--col);
   transform: translate(-50%, 105%); transition: transform .32s var(--ease);
   background: var(--surface); border-top: 1px solid var(--line); border-radius: 22px 22px 0 0;
-  box-shadow: 0 -12px 32px -18px rgba(0, 0, 0, .45);
+  box-shadow: var(--shadow-sheet);
   padding: 1.05rem 1.1rem calc(1rem + var(--safe-b));
 }
 .feedback.is-open { transform: translate(-50%, 0); }
@@ -501,7 +443,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 @keyframes float-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .feedback.is-open ~ .lesson-stage, .lesson:has(.feedback.is-open) .lesson-stage { padding-bottom: 20rem; }
 
-.sheet-backdrop { position: fixed; inset: 0; z-index: 9; background: rgba(20, 16, 10, .42); }
+.sheet-backdrop { position: fixed; inset: 0; z-index: 9; background: var(--scrim); }
 .sheet {
   position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 10; width: 100%; max-width: var(--col);
   background: var(--surface); border-radius: 22px 22px 0 0; padding: 1.4rem 1.2rem calc(1.2rem + var(--safe-b));
@@ -527,7 +469,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
-.learn-cta .btn { flex: 1 1 9rem; min-width: 0; box-shadow: 0 8px 22px -12px rgba(0, 0, 0, .55); }
+.learn-cta .btn { flex: 1 1 9rem; min-width: 0; }
 .learn-body { padding-bottom: calc(var(--cta-h, 80px) + var(--safe-b)); }
 .kicker { font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
 .learn-title { font: 500 clamp(1.7rem, 8vw, 2.1rem)/1.05 var(--font); letter-spacing: var(--track); margin-top: .15rem; }
@@ -589,8 +531,8 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 
 .medal {
   position: relative; display: grid; place-items: center; width: 52px; height: 52px; flex: none; border-radius: 999px;
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--accent) 55%, #fff), var(--accent) 70%);
-  color: var(--on-accent); box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--accent) 60%, #000), 0 4px 10px -4px rgba(0,0,0,.4);
+  background: var(--accent); color: var(--on-accent);
+  box-shadow: inset 0 -4px 0 color-mix(in srgb, var(--accent) 72%, var(--ink)), inset 0 0 0 3px color-mix(in srgb, var(--on-accent) 35%, transparent);
 }
 .medal::after { content: ""; position: absolute; inset: 5px; border-radius: 999px; border: 1px dashed color-mix(in srgb, var(--on-accent) 55%, transparent); }
 .medal-inner { font: 600 1.05rem/1 var(--font); letter-spacing: .02em; }
@@ -638,9 +580,9 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 
 .card-dialog {
   width: min(92vw, 520px); max-height: 92dvh; padding: 0; border: 0; border-radius: 20px;
-  background: var(--surface); color: var(--ink); box-shadow: 0 30px 60px -20px rgba(0,0,0,.5);
+  background: var(--surface); color: var(--ink); box-shadow: var(--shadow-pop);
 }
-.card-dialog::backdrop { background: rgba(20, 16, 10, .55); }
+.card-dialog::backdrop { background: var(--scrim); }
 .card-dialog[open] { animation: rise .3s var(--ease); }
 .dlg-body { display: grid; gap: .4rem; padding: 1.2rem; }
 .art-dialog { --h: min(52dvh, 460px); width: min(100%, calc(var(--h) * var(--arw) / var(--arh))); justify-self: center; margin-bottom: .7rem; }
@@ -697,7 +639,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 }
 .switch::after {
   content: ""; position: absolute; top: 12px; left: 6px; width: 24px; height: 24px; border-radius: 999px;
-  background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .22s var(--ease);
+  background: var(--surface); box-shadow: var(--shadow-card); transition: transform .22s var(--ease);
 }
 .switch:checked { background: var(--ink); }
 .switch:checked::after { transform: translateX(20px); }
@@ -765,7 +707,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .medal-art .medal-inner { position: absolute; inset: 4px; border-radius: 999px; overflow: hidden; }
 .medal-thumb { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 999px; box-shadow: none; }
 .medal-lg.medal-art .medal-inner { inset: 6px; }
-.medal-art::after { z-index: 1; border-color: color-mix(in srgb, #fff 60%, transparent); }
+.medal-art::after { z-index: 1; border-color: color-mix(in srgb, var(--on-accent) 60%, transparent); }
 .medal-stack { display: grid; justify-items: center; gap: 1px; }
 .medal-num { font: 600 .82rem/1 var(--font); }
 .medal-streak { background: var(--accent); }
@@ -876,7 +818,7 @@ section.event { background: transparent; }
 .toast {
   position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top, 0px)); z-index: 20; translate: -50% -8px;
   max-width: min(92vw, 420px); padding: .7rem 1.1rem; border-radius: 999px; background: var(--ink); color: var(--bg);
-  font-weight: 600; font-size: .95rem; text-align: center; box-shadow: 0 10px 28px -12px rgba(0, 0, 0, .6);
+  font-weight: 600; font-size: .95rem; text-align: center; box-shadow: var(--shadow-pop);
   opacity: 0; transition: opacity .25s, translate .25s var(--ease); pointer-events: none; overflow-wrap: anywhere;
 }
 .toast.is-on { opacity: 1; translate: -50% 0; }
@@ -1105,7 +1047,7 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 .viewer-frame {
   position: relative; aspect-ratio: var(--arw) / var(--arh);
   width: min(100cqw, calc(100cqh * var(--arw) / var(--arh)));
-  box-shadow: 0 18px 50px -20px rgba(0, 0, 0, .9);
+  box-shadow: var(--shadow-viewer);
 }
 .viewer-thumb { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 2px; box-shadow: none; background: var(--viewer-frame); }
 .viewer-thumb::before { display: none; }
@@ -1143,7 +1085,7 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 .viewer-lens {
   position: fixed; z-index: 3; border-radius: 50%; pointer-events: none;
   border: 1.5px solid color-mix(in srgb, var(--viewer-ink) 85%, transparent); background-color: var(--viewer-frame); background-repeat: no-repeat;
-  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, .75);
+  box-shadow: var(--shadow-viewer);
 }
 .viewer-lens.is-on { animation: lens-in .12s var(--ease); }
 @keyframes lens-in { from { opacity: 0; transform: scale(.92); } }
