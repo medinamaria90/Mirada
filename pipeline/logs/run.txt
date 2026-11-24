@@ -26,3 +26,7 @@ ok lote 10: 34 fichas (1574 en total)
 fin: 1574 fichas; con museo 1547, con ciudad 1528, con técnica 1532, con medidas 1519, en España 360
 58M	.git
 2.8M	catalogo
+== reconciliar  20:16:38
+reconciliar: 1180 imágenes en releases, 1180 en img_meta, quitadas 0 que no estaban subidas
+59M	.git
+2.8M	catalogo
