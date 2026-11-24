@@ -90,7 +90,8 @@ export function renderResult(ctx, el, opts) {
   }
   if (goal) {
     blocks.push(eventCard({ icon: goalRing(goal.goal, goal.goal, 30), kicker: 'Meta del día', title: 'Cumplida', to: 'perfil', cls: 'event-goal' }));
-    blocks.push(dayDone(ctx, p));
+    // El pintor de la etapa ya sale arriba en «Hoy has aprendido»: no se repite.
+    blocks.push(dayDone(ctx, p, plan.kind === 'stage' && !low ? plan.artistId : null));
   }
   if (completed && index.movement(completed.movementId)) {
     const m = index.movement(completed.movementId);
@@ -126,8 +127,9 @@ export function renderResult(ctx, el, opts) {
   // Cierre del día (meta cumplida): «Seguir» y, si la ronda se comparte, compartir; sin llamadas a
   // seguir jugando (repetir, más repaso, siguiente etapa: va en «La próxima vez»). Compartir se queda:
   // la meta por defecto se cumple con la primera ronda del día y el reto diario vive de su cuadrícula.
+  // Con menos de la mitad de aciertos manda «Repetir» (y «Volver al camino»), también en el cierre.
   const closing = Boolean(goal);
-  const blocked = Boolean(retry && low) && !closing;
+  const blocked = Boolean(retry && low);
   // 75 % o más, pero sin acertar bastantes cuadros del propio pintor: aún no está dominado.
   const ownNote = outcome.ownShort && plan.artistId && index.artist(plan.artistId)
     ? `<p class="result-note">Para dominarlo, acierta más cuadros de ${esc(index.artist(plan.artistId).short || index.artist(plan.artistId).name)}</p>` : '';
@@ -235,10 +237,10 @@ export async function copyText(el, text) {
 
 // Cierre del día: pintores y cuadros nuevos de hoy y la próxima parada. Informativo: sin botones
 // (las miniaturas se abren a pantalla completa, como cualquier cuadro).
-function dayDone(ctx, p) {
+function dayDone(ctx, p, shownArtist = null) {
   const { index } = ctx;
   const sum = daySummary(p, index, ctx.today());
-  const names = sum.artists.map((id) => index.artist(id).short || index.artist(id).name);
+  const names = sum.artists.filter((id) => id !== shownArtist).map((id) => index.artist(id).short || index.artist(id).name);
   const thumbs = sum.works.slice(0, CLOSURE_THUMBS).map((id) => index.artwork(id))
     .map((w) => artFrame(w, { cls: 'day-done-thumb', alt: w.title, label: w.title, thumb: true, zoom: {} })).join('');
   const lines = [

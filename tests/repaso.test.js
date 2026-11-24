@@ -276,7 +276,8 @@ test('cierre del día: bloque «Hoy» con pintores y cuadros nuevos, «La próxi
   const html = renderResultHtml(p, outcome, { kind: 'stage', artistId: c.id, seed: 3 }, { more: { label: 'Repaso de 5', to: 'repaso5' } });
   const hoy = html.match(/<section class="day-done"[^]*?<\/section>/)?.[0] || '';
   assert.ok(hoy.includes('<h2 id="day-done-h" class="event-kicker">Hoy</h2>'));
-  assert.ok(hoy.includes(`Has conocido a ${big.artist(b.id).short} y ${big.artist(c.id).short}`));
+  // El pintor de la etapa ya sale en «Hoy has aprendido»: en «Hoy» solo los demás.
+  assert.ok(hoy.includes(`Has conocido a ${big.artist(b.id).short}</p>`), hoy);
   assert.ok(hoy.includes('2 cuadros nuevos'));
   assert.equal((hoy.match(/ day-done-thumb /g) || []).length, 2);
   assert.ok(hoy.includes(`La próxima vez: <strong>${big.path[3].name}</strong>`));
@@ -296,4 +297,15 @@ test('resultado sin meta cumplida: sin bloque «Hoy» y con «Repaso de 5» cuan
   assert.doesNotMatch(html, /day-done/);
   assert.match(html, /data-to="repaso5"[^>]*>[^]*?<span>Repaso de 5<\/span>/);
   assert.ok(html.includes('Racha a salvo: te quedaba un día de gracia'));
+});
+
+test('cierre del día con menos de la mitad de aciertos en una etapa: manda «Repetir» y «Volver al camino»', () => {
+  const p = masteredProgress({ [big.path[0].id]: { on: '2026-11-20' } });
+  p.artists[big.path[1].id] = { plays: 1, best: 0.3, mastered: false, last: '2026-11-24' };
+  const outcome = { xp: 55, score: 1, total: 6, accuracy: 1 / 6, mastered: false, events: [{ type: 'goal', goal: 50 }] };
+  const html = renderResultHtml(p, outcome, { kind: 'stage', artistId: big.path[1].id, seed: 2 });
+  assert.match(html, /class="day-done"/);
+  const actions = html.match(/<div class="result-actions">[^]*?<\/div>\s*<\/main>/)?.[0] || '';
+  assert.match(actions, /btn-primary[^>]*data-action="go" data-to="etapa-[^"]+"[^>]*data-primary>[^]*?Repetir/);
+  assert.match(actions, /data-action="done">Volver al camino/);
 });
