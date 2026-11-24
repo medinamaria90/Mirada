@@ -976,6 +976,86 @@ if (SMOKE) {
   await shot(page, '14b-lupa-resuelta');
   await audit(page, '390 lupa resuelta');
   await viewerCheck(page, 'lupa del día resuelta', lupa.locator('[data-zoom]'), { close: 'esc' });
+
+  // --- Test de cultura pictórica (app/test/): página indexable con su banco fijo (preguntas.json).
+  // Título y Open Graph, tres preguntas con el jugador omnisciente, «Ver mi resultado» con «n de m»,
+  // compartir (copia al portapapeles: se anula navigator.share, que en Chrome de escritorio existe
+  // y no hace nada en headless) y auditorías de contraste y táctil en claro y oscuro.
+  const bank = JSON.parse(readFileSync(new URL('../app/test/preguntas.json', import.meta.url), 'utf8')).questions;
+  for (const scheme of ['light', 'dark']) {
+    const L = (s) => `[test ${scheme}] ${s}`;
+    const tctx = await browser.newContext({ ...ctxOpts, colorScheme: scheme });
+    await tctx.addInitScript(() => { Object.defineProperty(navigator, 'share', { value: undefined, configurable: true }); });
+    const tp = await tctx.newPage();
+    watch(tp, `test-${scheme}`);
+    await tp.goto(`${base}test/`);
+    await tp.waitForFunction(() => document.fonts.status === 'loaded');
+    check(/¿Cuánta pintura reconoces\?/.test(await tp.title()), L(`título «${await tp.title()}»`));
+    const meta = await tp.evaluate(() => Object.fromEntries([...document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], link[rel="canonical"]')].map((m) => [m.getAttribute('property') || m.getAttribute('name') || m.getAttribute('rel'), m.getAttribute('content') || m.getAttribute('href')])));
+    for (const k of ['og:title', 'og:description', 'og:image', 'og:url', 'twitter:card', 'description', 'canonical']) check(Boolean(meta[k]), L(`falta la meta ${k}`));
+    check(/\/test\/portada\.jpg$/.test(meta['og:image'] || ''), L(`og:image ${meta['og:image']}`));
+    const cover = await tp.request.get(`${base}test/portada.jpg`);
+    check(cover.ok() && (await cover.body()).length <= 150 * 1024, L('portada.jpg no se sirve o pesa más de 150 KB'));
+    check(/Entre 8 y 40 preguntas/.test(await tp.locator('.test-home').innerText()), L('la portada no dice cuántas preguntas'));
+    await audit(tp, L('portada'));
+    if (scheme === 'light') await shot(tp, '15-test-portada');
+    await tp.click('[data-action="start"]');
+    await tp.waitForSelector('.lesson-stage .option');
+    const questionOnScreen = async () => {
+      if (await tp.locator('.option-art').count()) {
+        const ids = await tp.$$eval('.option-art', (els) => els.map((e) => e.dataset.id));
+        return bank.find((x) => x.kind === 'which' && ids.includes(x.answer));
+      }
+      const id = await tp.locator('.q-art .art').getAttribute('data-art');
+      return bank.find((x) => x.artwork === id);
+    };
+    for (let i = 0; i < 3; i++) {
+      const q = await questionOnScreen();
+      check(Boolean(q), L(`pregunta ${i + 1} no está en el banco`));
+      if (!q) break;
+      const number = (await tp.locator('.q-tag').textContent()).trim();
+      check(number === `Pregunta ${i + 1}`, L(`numeración «${number}»`));
+      if (q.kind === 'movement') {
+        const texts = await tp.$$eval('.lesson-stage .option .opt-sub', (els) => els.map((e) => e.textContent.trim()));
+        check(texts.length === 4 && texts.every(Boolean), L('las opciones de movimiento no llevan periodo'));
+      }
+      await tp.waitForSelector('.lesson-stage .art.is-loaded');
+      if (i === 0) await audit(tp, L('pregunta'));
+      if (i === 0 && scheme === 'light') await shot(tp, '15-test-pregunta');
+      // Primera a propósito mal, el resto bien: así se ven los dos feedbacks.
+      const pick = i === 0 ? q.options.find((o) => o !== q.answer) : q.answer;
+      await tp.locator(`.lesson-stage .option[data-id="${pick}"]`).tap();
+      await tp.waitForSelector('.feedback.is-open');
+      await tp.waitForTimeout(400);
+      const fb = await tp.locator('.feedback').innerText();
+      check(i === 0 ? /No era esa/.test(fb) && /Era /.test(fb) : /¡Eso es!/.test(fb), L(`feedback ${i + 1}: «${fb.replace(/\s+/g, ' ').slice(0, 60)}»`));
+      check(fb.includes(q.hint), L(`feedback ${i + 1} sin la pista`));
+      await assertAnswersVisible(tp, L(`feedback ${i + 1}`));
+      if (i === 0) await audit(tp, L('feedback'));
+      await tp.locator('.feedback [data-action="continue"]').tap();
+      await tp.waitForTimeout(200);
+    }
+    await tp.locator('.test-finish').tap();
+    await tp.waitForSelector('.test-result');
+    await tp.waitForTimeout(500);
+    const rt = await tp.locator('.test-result').innerText();
+    check(/Has acertado 2 de 3/.test(rt), L(`resultado sin «n de 3»: «${rt.replace(/\s+/g, ' ').slice(0, 80)}»`));
+    check(/Sabes más de pintura que el \d+ % de la gente/.test(rt) && /estimación/.test(rt), L('resultado sin percentil estimado'));
+    check(/Has llegado al tramo fácil/.test(rt), L('resultado sin el tramo'));
+    check(await tp.locator('.test-result a[href="../#inicio"]').count() >= 1, L('falta «Sigue aprendiendo en Mirada»'));
+    await audit(tp, L('resultado'));
+    if (scheme === 'light') await shot(tp, '15-test-resultado', true);
+    await tp.locator('[data-action="share"]').tap();
+    await tp.waitForTimeout(400);
+    const shared = await tp.evaluate(() => navigator.clipboard.readText());
+    check(/^He acertado 2 de 3 en el test de Mirada · /.test(shared) && /\nSé más de pintura que el \d+ % de la gente/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
+    check(/Copiado/.test(await tp.locator('.copy-status').innerText()), L('no avisa de que se ha copiado'));
+    // El último resultado se recuerda en la portada.
+    await tp.goto(`${base}test/`);
+    await tp.waitForSelector('.test-last:not([hidden])');
+    check(/La última vez: 2 de 3/.test(await tp.locator('.test-last').innerText()), L('la portada no recuerda el último resultado'));
+    await tctx.close();
+  }
 }
 // Del recorrido completo en adelante (no entra en el modo humo).
 if (!SMOKE) {
