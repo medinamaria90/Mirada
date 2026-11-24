@@ -5,3 +5,4 @@ ERROR  van-gogh           SPARQL query() takes 1 positional argument but 2 were 
 fin 2026-11-24 18:00:09
 47M	.git
 920K	catalogo
+fin Tue Nov 24 18:00:12 UTC 2026
