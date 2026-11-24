@@ -47,7 +47,11 @@ function watch(page, label) {
     if (m.type() === 'error' || m.type() === 'warning') problems.push(`[${label}] console.${m.type()}: ${m.text()}`);
   });
   page.on('pageerror', (e) => problems.push(`[${label}] pageerror: ${e.message}`));
-  page.on('requestfailed', (r) => problems.push(`[${label}] requestfailed: ${r.url()}`));
+  page.on('requestfailed', (r) => {
+    // Navegar justo después de cargar aborta las peticiones pendientes (net::ERR_ABORTED): no es un fallo.
+    if (r.failure()?.errorText === 'net::ERR_ABORTED') return;
+    problems.push(`[${label}] requestfailed: ${r.url()} (${r.failure()?.errorText || ''})`);
+  });
   page.on('request', (r) => {
     if (!r.url().startsWith(new URL(base).origin) && !r.url().startsWith('data:')) problems.push(`[${label}] recurso remoto: ${r.url()}`);
   });
@@ -581,7 +585,8 @@ async function seed(pg, state, hash = 'inicio') {
   await pg.reload();
 }
 
-const browser = await chromium.launch({ executablePath: CHROME_PATH, args: ['--no-sandbox'] });
+// Sin ventana y sin sonido: el recorrido no debe oírse en la máquina donde corre.
+const browser = await chromium.launch({ executablePath: CHROME_PATH, headless: true, args: ['--no-sandbox', '--mute-audio'] });
 const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES', permissions: ['clipboard-read', 'clipboard-write'], hasTouch: true };
 
 // ---------------------------------------------------------------- Arranque: peticiones y bytes hasta el primer pintado útil
