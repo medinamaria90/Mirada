@@ -5,7 +5,7 @@ from lib import *
 
 EN = re.compile(r"\b(the|of|with|and|portrait|lady|young|woman|girl|boy|saint|still life|landscape|view|holy)\b", re.I)
 # Nivel básico por categoría (propuesta de pintores): mínimo y máximo (las icónicas forzadas pueden pasar del cupo)
-LEVEL1 = {"gran-maestro": (8, 11), "maestro": (7, 9), "invitado": (3, 5)}
+LEVEL1 = {"gran-maestro": (8, 11), "maestro": (7, 9), "invitado": (3, 5), "rama": (4, 6)}
 FONDO_MIN, FONDO_AVISO = 3, 5  # «a fondo»: error por debajo de 3 obras, aviso por debajo de 5
 
 
@@ -61,7 +61,7 @@ def main():
             if not st.get("fuente") and not st.get("provisional"):
                 err.append(f"{p['id']}: etapa «{st['nombre']}» sin fuente")
             n = sum(1 for o in obras if o["artistId"] == p["id"] and o["level"] == st["nivel"])
-            if n < FONDO_MIN:
+            if n < FONDO_MIN and cat != "rama":
                 err.append(f"{p['id']}: nivel {st['nivel']} «{st['nombre']}» con {n} obras (mínimo {FONDO_MIN})")
             elif n < FONDO_AVISO:
                 warn.append(f"{p['id']}: nivel {st['nivel']} «{st['nombre']}» con {n} obras (< {FONDO_AVISO}: faltan candidatas)")

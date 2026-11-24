@@ -1,5 +1,31 @@
 [
  {
+  "id": "cimabue",
+  "nombre": "Cimabue",
+  "corto": "Cimabue",
+  "en": "Cimabue",
+  "qid": "Q15790",
+  "nacimiento": 1240,
+  "muerte": 1302,
+  "movimiento": "gotico",
+  "pais": "Italia",
+  "objetivo": 6,
+  "categoria": "rama"
+ },
+ {
+  "id": "duccio",
+  "nombre": "Duccio di Buoninsegna",
+  "corto": "Duccio",
+  "en": "Duccio di Buoninsegna",
+  "qid": "Q15792",
+  "nacimiento": 1255,
+  "muerte": 1319,
+  "movimiento": "gotico",
+  "pais": "Italia",
+  "objetivo": 8,
+  "categoria": "rama"
+ },
+ {
   "id": "giotto",
   "nombre": "Giotto",
   "corto": "Giotto",
@@ -10,7 +36,47 @@
   "movimiento": "renacimiento",
   "pais": "Italia",
   "objetivo": 8,
-  "categoria": "invitado"
+  "categoria": "invitado",
+  "rama": "gotico"
+ },
+ {
+  "id": "pietro-lorenzetti",
+  "nombre": "Pietro Lorenzetti",
+  "corto": "Pietro Lorenzetti",
+  "en": "Pietro Lorenzetti",
+  "qid": "Q309635",
+  "nacimiento": 1280,
+  "muerte": 1348,
+  "movimiento": "gotico",
+  "pais": "Italia",
+  "objetivo": 8,
+  "categoria": "rama"
+ },
+ {
+  "id": "simone-martini",
+  "nombre": "Simone Martini",
+  "corto": "Simone Martini",
+  "en": "Simone Martini",
+  "qid": "Q221043",
+  "nacimiento": 1284,
+  "muerte": 1344,
+  "movimiento": "gotico",
+  "pais": "Italia",
+  "objetivo": 8,
+  "categoria": "rama"
+ },
+ {
+  "id": "ambrogio-lorenzetti",
+  "nombre": "Ambrogio Lorenzetti",
+  "corto": "Ambrogio Lorenzetti",
+  "en": "Ambrogio Lorenzetti",
+  "qid": "Q211562",
+  "nacimiento": 1290,
+  "muerte": 1348,
+  "movimiento": "gotico",
+  "pais": "Italia",
+  "objetivo": 8,
+  "categoria": "rama"
  },
  {
   "id": "van-eyck",
@@ -23,7 +89,8 @@
   "movimiento": "manierismo-y-norte",
   "pais": "Países Bajos",
   "objetivo": 8,
-  "categoria": "maestro"
+  "categoria": "maestro",
+  "rama": "gotico"
  },
  {
   "id": "fra-angelico",
@@ -832,6 +899,24 @@
   "categoria": "maestro"
  },
  {
+  "id": "utamaro",
+  "nombre": "Kitagawa Utamaro",
+  "corto": "Utamaro",
+  "en": "Kitagawa Utamaro",
+  "qid": "Q272045",
+  "nacimiento": 1753,
+  "muerte": 1806,
+  "movimiento": "ukiyo-e",
+  "pais": "Japón",
+  "objetivo": 8,
+  "categoria": "rama",
+  "tipos": [
+   "Q11060274",
+   "Q18219090",
+   "Q19960510"
+  ]
+ },
+ {
   "id": "vigee-le-brun",
   "nombre": "Élisabeth Vigée Le Brun",
   "corto": "Vigée Le Brun",
@@ -856,6 +941,42 @@
   "pais": "Rusia",
   "objetivo": 3,
   "categoria": "invitado"
+ },
+ {
+  "id": "hokusai",
+  "nombre": "Katsushika Hokusai",
+  "corto": "Hokusai",
+  "en": "Katsushika Hokusai",
+  "qid": "Q5586",
+  "nacimiento": 1760,
+  "muerte": 1849,
+  "movimiento": "ukiyo-e",
+  "pais": "Japón",
+  "objetivo": 12,
+  "categoria": "rama",
+  "tipos": [
+   "Q11060274",
+   "Q18219090",
+   "Q19960510"
+  ]
+ },
+ {
+  "id": "sharaku",
+  "nombre": "Tōshūsai Sharaku",
+  "corto": "Sharaku",
+  "en": "Tōshūsai Sharaku",
+  "qid": "Q361174",
+  "nacimiento": 1760,
+  "muerte": 1801,
+  "movimiento": "ukiyo-e",
+  "pais": "Japón",
+  "objetivo": 6,
+  "categoria": "rama",
+  "tipos": [
+   "Q11060274",
+   "Q18219090",
+   "Q19960510"
+  ]
  },
  {
   "id": "vicente-lopez",
@@ -986,6 +1107,42 @@
   "pais": "Francia",
   "objetivo": 5,
   "categoria": "invitado"
+ },
+ {
+  "id": "kuniyoshi",
+  "nombre": "Utagawa Kuniyoshi",
+  "corto": "Kuniyoshi",
+  "en": "Utagawa Kuniyoshi",
+  "qid": "Q317736",
+  "nacimiento": 1797,
+  "muerte": 1861,
+  "movimiento": "ukiyo-e",
+  "pais": "Japón",
+  "objetivo": 8,
+  "categoria": "rama",
+  "tipos": [
+   "Q11060274",
+   "Q18219090",
+   "Q19960510"
+  ]
+ },
+ {
+  "id": "hiroshige",
+  "nombre": "Utagawa Hiroshige",
+  "corto": "Hiroshige",
+  "en": "Utagawa Hiroshige",
+  "qid": "Q200798",
+  "nacimiento": 1797,
+  "muerte": 1858,
+  "movimiento": "ukiyo-e",
+  "pais": "Japón",
+  "objetivo": 10,
+  "categoria": "rama",
+  "tipos": [
+   "Q11060274",
+   "Q18219090",
+   "Q19960510"
+  ]
  },
  {
   "id": "delacroix",

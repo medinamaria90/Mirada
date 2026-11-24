@@ -16,7 +16,11 @@ MOVEMENTS = [  # mismos ids que tools/catalog_data.py (la app); la migración lo
     ("barroco", "Barroco", 3), ("rococo-neoclasicismo", "Rococó y Neoclasicismo", 4), ("romanticismo", "Romanticismo", 5),
     ("realismo", "Realismo", 6), ("impresionismo", "Impresionismo", 7), ("postimpresionismo", "Postimpresionismo", 8),
     ("simbolismo-modernismo", "Simbolismo y vanguardias", 9),
+    ("gotico", "Gótico", 10), ("ukiyo-e", "Estampa japonesa (ukiyo-e)", 11),  # ramas, no camino común
 ]
+RAMAS = {  # rama -> (nombre del movimiento, abre al llegar a...): la medieval, desde el Renacimiento; la japonesa, en el Impresionismo
+    "gotico": "renacimiento", "ukiyo-e": "impresionismo",
+}
 
 
 def cap(s):
@@ -63,7 +67,7 @@ def main():
             continue
         row = dict(id=p["id"], name=p["nombre"], short=p["corto"], born=r.get("nacimiento") or p["nacimiento"],
                    died=r.get("muerte") or p["muerte"], country=p["pais"], movementId=p["movimiento"], order=None,
-                   section=None, qid=p.get("qid") or r.get("qid"), works=n, category=p.get("categoria"),
+                   section=None, qid=p.get("qid") or r.get("qid"), works=n, category=p.get("categoria"), branches=[b for b in [p["movimiento"] if p["movimiento"] in RAMAS else None, p.get("rama")] if b],
                    stages=[{k: v for k, v in e.items() if k not in ("fase",)} for e in etapas_all.get(p["id"], [])
                            if any(o["artistId"] == p["id"] and o["level"] == e["nivel"] for o in obras)],
                    level1=sum(1 for o in obras if o["artistId"] == p["id"] and o["level"] == 1))
@@ -72,7 +76,8 @@ def main():
     for rows in by_mov.values():
         for i, row in enumerate(sorted(rows, key=lambda r: (r["born"], r["id"]))):
             row["order"] = i + 1
-    movements = [dict(id=i, name=n, order=o, painters=len(by_mov.get(i, []))) for i, n, o in MOVEMENTS]
+    movements = [dict(id=i, name=n, order=o, painters=len(by_mov.get(i, [])) + sum(1 for r in pintores if r.get("branches") == [i] and r["movementId"] != i),
+                      branch=i in RAMAS, opensAt=RAMAS.get(i)) for i, n, o in MOVEMENTS]
     save(os.path.join(CAT, "obras.json"), dict(version=1, generated=__import__("time").strftime("%Y-%m-%d"),
                                                movements=movements, artists=pintores, artworks=obras))
     save(os.path.join(CAT, "pintores.json"), pintores)

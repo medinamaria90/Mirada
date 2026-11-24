@@ -21,6 +21,9 @@ BAD_WORDS = re.compile(r"\b(cop(y|ia|ie)|replica|réplica|taller|workshop|atelie
                        r"sketch|boceto|bozzetto|esbozo|modello|oil sketch|detail|detalle|fragment|fragmento|x-ray|radiograf|infrared|"
                        r"reverse|reverso|verso|back of|frame|marco|drawing|dibujo|etching|grabado|engraving|lithograph|litograf|print\b|"
                        r"cartoon for|cartón para)", re.I)
+# Estampas (ukiyo-e): «print», «grabado» o «dibujo» no son sospechosos; sí las reimpresiones tardías y las copias
+BAD_WORDS_ESTAMPA = re.compile(BAD_WORDS.pattern.replace(r"|etching|grabado|engraving|lithograph|litograf|print\b", "")
+                               .replace("(cop", "(reprint|reimpresi|restrike|facsimile|later impression|cop", 1), re.I)
 CEILING = re.compile(r"\b(ceiling|techo|b[óo]veda|vault|cupola|c[úu]pula|dome|soffitto)\b", re.I)
 FILE_BAD = re.compile(r"(detail|detalle|ausschnitt|crop|x-?ray|infrared|reverse|verso|back side|r[üu]ckseite|in situ|"
                       r"exhibition|ausstellung|install|room|sala |\bwall\b)", re.I)
@@ -35,13 +38,17 @@ BLANK = "http://www.wikidata.org/.well-known/"
 
 
 # Obras por categoría (docs/propuesta-pintores.md): (nivel básico, cada «a fondo»). Los invitados españoles llevan 4 en el básico.
-CUPOS = {"gran-maestro": (8, 6), "maestro": (7, 5), "invitado": (3, 5)}
+CUPOS = {"gran-maestro": (8, 6), "maestro": (7, 5), "invitado": (3, 5), "rama": (4, 0)}  # rama: 4 en el básico y el resto hasta `objetivo` en un único «a fondo»
 FASE = int(os.environ.get("FASE", "1"))  # fase 1: grandes maestros completos, maestros con su 1.er «a fondo», invitados solo el básico
 
 
 def cupo_basico(p):
     n = CUPOS[p["categoria"]][0]
     return 4 if p["categoria"] == "invitado" and p["pais"] == "España" else n
+
+
+def cupo_fondo(p):
+    return max(0, p["objetivo"] - 4) if p["categoria"] == "rama" else CUPOS[p["categoria"]][1]
 
 
 def corte(h):
@@ -180,7 +187,7 @@ def main():
             if it["after"]:
                 drop("según otra obra"); continue
             text = " ".join(filter(None, [it.get("es"), it.get("en"), it.get("des"), it.get("den")]))
-            if BAD_WORDS.search(text) and q not in forced and "titulo" not in a:
+            if (BAD_WORDS_ESTAMPA if p.get("tipos") else BAD_WORDS).search(text) and q not in forced and "titulo" not in a:
                 drop("palabra"); continue
             if CEILING.search(" ".join(filter(None, [it.get("es"), it.get("en")]))) and q not in forced and "titulo" not in a:
                 drop("techo"); continue
@@ -261,6 +268,8 @@ def main():
             pool.append(o)
         cat = p["categoria"]
         etapas = sorted(etapas_all.get(p["id"]) or [], key=lambda e: e["nivel"])
+        if cat == "rama" and not etapas and cupo_fondo(p):  # ramas (gótico, ukiyo-e): un solo «a fondo» con las siguientes más famosas
+            etapas = [dict(nivel=2, nombre="Más obras", desde=None, hasta=None, fuente=None, fase=1, provisional=True)]
         # Nivel 1 (básico): las icónicas forzadas (extra.json) y las fijadas a mano (ajustes.json level=1) siempre entran,
         # aunque pasen del cupo; el resto, las más famosas. Una icónica de una etapa tardía sigue en el nivel 1 y no cuenta para su etapa.
         prio = [o for o in pool if o["q"] in forced or adj.get(o["q"], {}).get("level") == 1]
@@ -276,7 +285,7 @@ def main():
                 aptas = [o for o in pool if o["q"] not in usadas]
             else:
                 aptas = [o for o in pool if o["q"] not in usadas and etapa_de(etapas, o, adj) is e]
-            toma = aptas[:CUPOS[cat][1]]
+            toma = aptas[:cupo_fondo(p)]
             usadas.update(o["q"] for o in toma)
             porNivel[e["nivel"]] = len(toma)
             chosen += [(e["nivel"], e["nombre"], o) for o in toma]
@@ -291,8 +300,8 @@ def main():
                 srcW=o["x"]["width"], srcH=o["x"]["height"], mime=o["x"]["mime"],
                 licencia=o["x"].get("license"), autorArchivo=o["x"].get("artist"), creditoArchivo=o["x"].get("credit"),
                 sitelinks=o["sl"], confianza=o["conf"], avisos=o["flags"]))
-        corto = len(nivel1) < cupo_basico(p) or any(n < CUPOS[cat][1] for n in porNivel.values())
-        objetivo = cupo_basico(p) + CUPOS[cat][1] * len(porNivel)
+        corto = len(nivel1) < cupo_basico(p) or any(n < cupo_fondo(p) for n in porNivel.values())
+        objetivo = cupo_basico(p) + cupo_fondo(p) * len(porNivel)
         total += len(chosen)
         pais[p["pais"]] = pais.get(p["pais"], 0) + len(chosen)
         mark = "  <-- corto" if corto else ""

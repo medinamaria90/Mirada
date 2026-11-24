@@ -18,6 +18,7 @@ TYPES = {
     "Q3305213": "painting", "Q79218": "triptych", "Q475476": "diptych", "Q1278452": "polyptych",
     "Q134194": "fresco", "Q219423": "mural", "Q18761202": "watercolor",
 }
+PRINT_TYPES = {"Q11060274", "Q18219090", "Q19960510"}  # estampas (ukiyo-e): se piden solo si painters.json lleva `tipos`
 BAD_QUAL = ["P5102", "P1480", "P1774", "P1775", "P1776", "P1777", "P1877", "P1780", "P2354", "P1773"]
 
 Q = """
@@ -83,9 +84,9 @@ def fname(uri):
     return urllib.parse.unquote(uri.rsplit("/", 1)[-1]).replace("_", " ")
 
 
-def query(pqid, forced=()):
+def query(pqid, forced=(), tipos=()):
     badq = "\n  ".join("FILTER NOT EXISTS { ?st pq:%s [] }" % p for p in BAD_QUAL)
-    rows = sparql(Q % dict(qid=pqid, badq=badq, types=" ".join("wd:" + t for t in TYPES)))
+    rows = sparql(Q % dict(qid=pqid, badq=badq, types=" ".join("wd:" + t for t in list(TYPES) + list(tipos))))
     if forced:
         rows += sparql(Q_FORCED % dict(values=" ".join("wd:" + q for q in forced)))
     items = {}
@@ -94,7 +95,7 @@ def query(pqid, forced=()):
         it = items.setdefault(q, dict(qid=q, types=set(), images=[], sl=int(v(b, "sl")), es=v(b, "les"), en=v(b, "len"),
                                       des=v(b, "des"), den=v(b, "den"), dates=set(), colls={}, h=None, w=None, hu=None, wu=None,
                                       dims=[], creators=set(), after=False))
-        it["types"].add(TYPES.get(qid(v(b, "type")), "?"))
+        it["types"].add(TYPES.get(qid(v(b, "type")), "print" if qid(v(b, "type")) in PRINT_TYPES else "?"))
         img = fname(v(b, "image"))
         if img not in it["images"]:
             it["images"].append(img)
@@ -176,7 +177,7 @@ def main():
                 continue
             log(f"repito {p['id']:18} faltan datos de forzadas: {' '.join(missing)}")
         try:
-            items = query(p["qid"], forced)
+            items = query(p["qid"], forced, p.get("tipos") or ())
         except Exception as e:
             log(f"ERROR  {p['id']:18} SPARQL {e}")
             time.sleep(10)
