@@ -424,6 +424,9 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   border: 1px solid var(--line); font-size: .8rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums;
 }
 .option[aria-disabled="true"] { cursor: default; }
+/* El numerito 1-4 solo tiene sentido con teclado: en pantallas táctiles (sin puntero que se pose)
+   no se pinta. Las teclas siguen respondiendo igual. */
+@media (hover: none) { .key { display: none; } }
 /* Opciones no elegidas tras responder: se apagan sin opacidad (el texto y las teclas conservan
    contraste AA y la miniatura queda velada por encima, sin capas translúcidas sobre la imagen). */
 .option[aria-disabled="true"]:not(.is-correct):not(.is-wrong),
