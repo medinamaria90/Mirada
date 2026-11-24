@@ -305,7 +305,7 @@ W = [
  # Rafael
  (188,"rafael","La Madonna Sixtina","c. 1513",1513,3,"learn","high"),
  (26,"rafael","La Virgen de la silla","c. 1513–1514",1513,2,"learn","high"),
- (89,"rafael","La Madonna del Prado","1505–1506",1505,2,"learn","high"),
+ (89,"rafael","La Madonna del Prato","1505–1506",1505,2,"learn","high"),
  (162,"rafael","El triunfo de Galatea","c. 1512",1512,2,"new","high"),
  (144,"rafael","La dama del unicornio","c. 1505–1506",1505,1,"new","high"),
  (224,"rafael","San Jorge y el dragón","c. 1506",1506,1,"new","high"),

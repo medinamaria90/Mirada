@@ -120,8 +120,8 @@ Documento para el agente que continúa el proyecto en Claude Code. Las reglas pe
 - No se ha probado en **móvil real, Safari/iOS ni lector de pantalla**. El bloqueo del pellizco en iPhone
   depende de `touch-action` y hay que comprobarlo.
 - Títulos y años del catálogo actual salen del conocimiento de agentes; ~150 obras contrastadas con su
-  imagen sin errores, 17 años sin confirmar (`confidence: medium`). «La Madonna del Prado» de Rafael
-  (a89) es en realidad la «Madonna del Prato» (Viena): **corregir el título**.
+  imagen sin errores, 17 años sin confirmar (`confidence: medium`). El título de a89 (Rafael) ya está
+  corregido a «La Madonna del Prato» (Viena).
 - Los enlaces de reto de versiones anteriores abren rondas distintas (el planificador ha cambiado).
 - María detuvo los tres agentes que quedaban en marcha (ronda 2 de marca, descarga de obras y la tanda
   de lupa/Colección/dificultad). Lo de la tanda estaba ya en commits y es la v7.

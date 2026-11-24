@@ -9,7 +9,7 @@ Formato: un JSON por pintor con 12 tarjetas (`kind`: tecnica, vida, obra, epoca)
 - Los decoys son de la misma época o país, pero claramente incorrectos para esa pista. Los he elegido a mano, sin comprobar que cada pista sea 100 % exclusiva entre los 32; en la app conviene que otro revisor mire las 24 pistas.
 
 ## Dudas
-- "La Madonna del Prado" (a89) es la Madonna del Prato de Viena, no el Museo del Prado; se aclara en la tarjeta. Sugiero retitularla en el catálogo. "prato = prado" es traducción directa, no viene en la fuente.
+- La obra a89 de Rafael es la Madonna del Prato de Viena, no el Museo del Prado; ya está retitulada así en el catálogo y en esta ficha, y la tarjeta lo aclara.
 - La Virgen de las rocas (a201): no verifiqué si la imagen es la versión del Louvre o la de Londres; la tarjeta habla de las dos.
 - La Sixtina: la fecha varía según la fuente; no se usa.
 - Pistas con posible competidor entre los "grandes maestros" (no entre los 32): "pintor sevillano" de bodegones (Zurbarán, no está en la lista); Panteón (Annibale Carracci también está enterrado allí, por eso se añade "último gran cuadro sin acabar"); salas del Vaticano (Miguel Ángel pintó la Sixtina, pero no son "salas con filósofos").
