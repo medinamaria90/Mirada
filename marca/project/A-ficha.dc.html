@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>A · Ficha</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+button{cursor:pointer}
+h1,h2,h3,p{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: #15120F; font-family: 'Figtree', 'Inter', system-ui, sans-serif; color: #F2ECE2">
+<div style="display: flex; gap: 5px; padding: 16px 16px 0"><div style="flex: 1; height: 3px; border-radius: 3px; background: #F2ECE2"></div><div style="flex: 1; height: 3px; border-radius: 3px; background: rgba(242,236,226,.3)"></div><div style="flex: 1; height: 3px; border-radius: 3px; background: rgba(242,236,226,.3)"></div></div>
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px">
+<div style="display: flex; align-items: center; gap: 10px"><svg width="28" height="28" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M12 41V22a12 12 0 0 1 24 0v19" stroke="#E3949E" stroke-width="4.5" stroke-linecap="round"/><path d="M7 41h34" stroke="#E3949E" stroke-width="4.5" stroke-linecap="round"/><circle cx="24" cy="29" r="4.4" fill="#E3BC68"/></svg><span style="font-size: 14px; font-weight: 600">Ficha · Barroco</span></div>
+<button type="button" aria-label="Cerrar" style="border: 0; background: none; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F2ECE2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</header>
+<div style="padding: 4px 16px 0">
+<img src="img/a62.jpg" alt="Las meninas, de Velázquez" style="display: block; width: 100%; height: 420px; object-fit: cover; object-position: 30% 35%; border-radius: 180px 180px 10px 10px">
+</div>
+<div style="padding: 22px 22px 0; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; color: #F2ECE2; opacity: .85">Diego Velázquez · <em>Las meninas</em>, 1656</span>
+<h1 style="margin: 0; font-family: 'Fraunces', 'Lora', Georgia, serif; font-weight: 600; font-size: 31px; line-height: 1.08; letter-spacing: -0.015em">Se pintó a sí mismo dentro del cuadro.</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.5">Búscalo a la izquierda, pincel en mano, mirando hacia fuera.</p>
+</div>
+<div style="position: absolute; left: 22px; right: 22px; bottom: 28px; display: flex; gap: 10px">
+<button type="button" style="flex: 1; height: 52px; border: 0; border-radius: 14px; background: #F2ECE2; color: #7D2735; font-family: 'Figtree', 'Inter', system-ui, sans-serif; font-size: 16px; font-weight: 700">Siguiente</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

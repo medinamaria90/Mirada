@@ -1,0 +1,175 @@
+{
+ "artistId": "rafael",
+ "cards": [
+  {
+   "id": "rafael-c1",
+   "kind": "vida",
+   "title": "Hijo de un pintor",
+   "text": "Nació en Urbino. Su padre era pintor de la corte del duque. Se quedó huérfano hacia los once años y probablemente ayudó a llevar el taller familiar.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Raphael"
+   ],
+   "clue": "¿Qué pintor era hijo del pintor de la corte del duque de Urbino?",
+   "decoys": [
+    "tiziano",
+    "durero",
+    "leonardo"
+   ]
+  },
+  {
+   "id": "rafael-c2",
+   "kind": "vida",
+   "title": "De Perugino a Leonardo",
+   "text": "Probablemente aprendió con Perugino. Hacia 1504 llegó a Florencia y miró con atención a Leonardo y Miguel Ángel. De Leonardo tomó la costumbre de agrupar figuras en pirámide.",
+   "artworkId": "a89",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Raphael",
+    "https://www.britannica.com/biography/Raphael-Italian-painter-and-architect",
+    "https://en.wikipedia.org/wiki/Madonna_del_Prato_(Raphael)"
+   ]
+  },
+  {
+   "id": "rafael-c3",
+   "kind": "tecnica",
+   "title": "Figuras en pirámide",
+   "text": "Coloca a María y a los niños formando una pirámide, como había visto hacer a Leonardo. El resultado es una escena clara y equilibrada, que se entiende de un vistazo.",
+   "artworkId": "a89",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Madonna_del_Prato_(Raphael)",
+    "https://www.britannica.com/biography/Raphael-Italian-painter-and-architect"
+   ]
+  },
+  {
+   "id": "rafael-c4",
+   "kind": "tecnica",
+   "title": "Claridad y equilibrio",
+   "text": "Frente a la bruma de Leonardo, destaca por la claridad: figuras bien repartidas, formas limpias y una composición equilibrada donde nada estorba a la mirada.",
+   "artworkId": "a26",
+   "sources": [
+    "https://www.britannica.com/biography/Raphael-Italian-painter-and-architect"
+   ]
+  },
+  {
+   "id": "rafael-c5",
+   "kind": "tecnica",
+   "title": "Una belleza pensada",
+   "text": "En una carta que se le atribuye, cuenta que, si no encuentra modelos bellos, usa «una idea» que le viene a la mente. Sus figuras muestran una belleza imaginada, no una copia.",
+   "artworkId": "a162",
+   "sources": [
+    "https://en.wikipedia.org/wiki/The_Triumph_of_Galatea"
+   ],
+   "clue": "¿Qué pintor escribió que, sin modelos bellos, usaba «una idea» que le venía a la mente?",
+   "decoys": [
+    "tiziano",
+    "durero",
+    "leonardo"
+   ]
+  },
+  {
+   "id": "rafael-c6",
+   "kind": "vida",
+   "title": "Llamado a Roma",
+   "text": "En 1508 el papa Julio II lo llamó a Roma para decorar salas del Vaticano. Allí pintó una gran escena de filósofos de la Antigüedad conversando.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Raphael",
+    "https://www.britannica.com/biography/Raphael-Italian-painter-and-architect"
+   ],
+   "clue": "¿Qué pintor decoró salas del Vaticano para Julio II con una escena de filósofos antiguos?",
+   "decoys": [
+    "tiziano",
+    "veronese",
+    "leonardo"
+   ]
+  },
+  {
+   "id": "rafael-c7",
+   "kind": "vida",
+   "title": "Un taller grande",
+   "text": "En Roma dirigía un gran taller con ayudantes, como Giulio Romano. Además de pintor, fue arquitecto y trabajó en la basílica de San Pedro.",
+   "sources": [
+    "https://www.britannica.com/biography/Raphael-Italian-painter-and-architect"
+   ],
+   "clue": "¿Qué pintor dirigía un taller con Giulio Romano y fue arquitecto en San Pedro?",
+   "decoys": [
+    "tiziano",
+    "rubens",
+    "leonardo"
+   ]
+  },
+  {
+   "id": "rafael-c8",
+   "kind": "obra",
+   "title": "La Madonna Sixtina",
+   "text": "La encargó Julio II para el altar de una iglesia de Piacenza. María avanza sobre las nubes entre san Sixto y santa Bárbara, con dos angelitos apoyados abajo. Hoy está en Dresde.",
+   "artworkId": "a188",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sistine_Madonna"
+   ],
+   "clue": "¿Quién pintó una Virgen sobre nubes con dos angelitos apoyados abajo, hoy en Dresde?",
+   "decoys": [
+    "tiziano",
+    "murillo",
+    "leonardo"
+   ]
+  },
+  {
+   "id": "rafael-c9",
+   "kind": "obra",
+   "title": "Un cuadro viajero",
+   "text": "La Madonna Sixtina se vendió en 1754 al rey Augusto III y acabó en Dresde. En 1945 el ejército soviético se la llevó a Moscú, y volvió a Alemania en 1955.",
+   "artworkId": "a188",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sistine_Madonna"
+   ]
+  },
+  {
+   "id": "rafael-c10",
+   "kind": "obra",
+   "title": "La Madonna del Prado",
+   "text": "María, Jesús niño y san Juan niño en un prado (de ahí el nombre; no es el museo). Jesús alarga la mano hacia la pequeña cruz de Juan, anuncio de su Pasión. Está en Viena.",
+   "artworkId": "a89",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Madonna_del_Prato_(Raphael)",
+    "https://en.wikipedia.org/wiki/Sfumato"
+   ],
+   "clue": "¿Quién pintó una Virgen con dos niños en un prado, hoy en el museo de Viena?",
+   "decoys": [
+    "leonardo",
+    "murillo",
+    "tiziano"
+   ]
+  },
+  {
+   "id": "rafael-c11",
+   "kind": "obra",
+   "title": "El triunfo de Galatea",
+   "text": "Es un fresco de la Villa Farnesina, en Roma, para el banquero Agostino Chigi. Galatea va en un carro-concha tirado por delfines, rodeada de tritones. Lo inspiró un poema de Poliziano.",
+   "artworkId": "a162",
+   "sources": [
+    "https://en.wikipedia.org/wiki/The_Triumph_of_Galatea"
+   ],
+   "clue": "¿Quién pintó al fresco una ninfa marina en carro-concha para un banquero de Roma?",
+   "decoys": [
+    "tiziano",
+    "veronese",
+    "rubens"
+   ]
+  },
+  {
+   "id": "rafael-c12",
+   "kind": "vida",
+   "title": "Una vida corta",
+   "text": "Murió en Roma en 1520 y fue enterrado en el Panteón. Dejó sin terminar su último gran cuadro, La Transfiguración.",
+   "sources": [
+    "https://www.britannica.com/biography/Raphael-Italian-painter-and-architect",
+    "https://en.wikipedia.org/wiki/Raphael"
+   ],
+   "clue": "¿Quién murió en 1520 con su último gran cuadro sin acabar y reposa en el Panteón de Roma?",
+   "decoys": [
+    "leonardo",
+    "tiziano",
+    "durero"
+   ]
+  }
+ ]
+}

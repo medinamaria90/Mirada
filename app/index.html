@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Mirada</title>
+  <meta name="description" content="Aprende a reconocer a los grandes pintores de un vistazo.">
+  <meta name="theme-color" content="#f3efe7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#15130f" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Cadena crítica del arranque (main.js y sus importaciones estáticas): se pide en paralelo. -->
+  <link rel="modulepreload" href="js/main.js">
+  <link rel="modulepreload" href="js/engine/catalog.js">
+  <link rel="modulepreload" href="js/engine/dates.js">
+  <link rel="modulepreload" href="js/state/store.js">
+  <link rel="modulepreload" href="js/state/schema.js">
+  <link rel="modulepreload" href="js/engine/progress.js">
+  <link rel="modulepreload" href="js/engine/srs.js">
+  <link rel="modulepreload" href="js/state/session.js">
+  <link rel="modulepreload" href="js/ui/router.js">
+  <link rel="modulepreload" href="js/engine/challenge.js">
+  <link rel="modulepreload" href="js/ui/audio-bridge.js">
+  <link rel="modulepreload" href="js/ui/art.js">
+  <link rel="modulepreload" href="js/ui/dom.js">
+  <link rel="modulepreload" href="js/ui/toast.js">
+</head>
+<body>
+  <div id="app" aria-live="off">
+    <div class="boot" role="status"><span class="boot-mark">Mirada</span></div>
+  </div>
+  <div id="live" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

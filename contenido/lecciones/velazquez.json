@@ -1,0 +1,174 @@
+{
+ "artistId": "velazquez",
+ "cards": [
+  {
+   "id": "velazquez-c1",
+   "kind": "vida",
+   "title": "Aprendiz en Sevilla",
+   "text": "Nació en Sevilla y aprendió con el pintor Francisco Pacheco, con cuya hija Juana se casó en 1618.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+   ],
+   "clue": "¿Qué pintor se casó con la hija de su maestro Francisco Pacheco?",
+   "decoys": [
+    "murillo",
+    "el-greco",
+    "goya"
+   ]
+  },
+  {
+   "id": "velazquez-c2",
+   "kind": "tecnica",
+   "title": "Cocinas y sombras",
+   "text": "De joven pintó bodegones: escenas de cocina con la comida bien a la vista. Usaba luces y sombras muy marcadas, al estilo de Caravaggio.",
+   "sources": [
+    "https://www.britannica.com/biography/Diego-Velazquez",
+    "https://en.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+   ],
+   "clue": "¿Qué pintor sevillano empezó pintando escenas de cocina con luces y sombras marcadas?",
+   "decoys": [
+    "murillo",
+    "el-greco",
+    "caravaggio"
+   ]
+  },
+  {
+   "id": "velazquez-c3",
+   "kind": "vida",
+   "title": "Pintor del rey",
+   "text": "En 1623 el conde-duque de Olivares lo llamó a Madrid. Retrató a Felipe IV y quedó como pintor de la corte; la familia real fue su tema principal.",
+   "sources": [
+    "https://www.britannica.com/biography/Diego-Velazquez",
+    "https://en.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+   ],
+   "clue": "¿Quién fue pintor de cámara de Felipe IV, llamado a Madrid por el conde-duque de Olivares?",
+   "decoys": [
+    "rubens",
+    "murillo",
+    "el-greco"
+   ]
+  },
+  {
+   "id": "velazquez-c4",
+   "kind": "tecnica",
+   "title": "Mirar a Tiziano",
+   "text": "En su segundo viaje a Italia (1649-1651) le inspiró sobre todo Tiziano. Después, su pincelada se hizo más libre y suelta.",
+   "sources": [
+    "https://www.britannica.com/biography/Diego-Velazquez"
+   ]
+  },
+  {
+   "id": "velazquez-c5",
+   "kind": "tecnica",
+   "title": "Pinceladas sueltas",
+   "text": "En su etapa madura pinta con pincelada suelta y rápida. De cerca, un vestido son manchas; desde lejos, tu ojo las junta y ves tela y brillo.",
+   "artworkId": "a78",
+   "sources": [
+    "https://www.britannica.com/biography/Diego-Velazquez"
+   ]
+  },
+  {
+   "id": "velazquez-c6",
+   "kind": "tecnica",
+   "title": "Aire entre las figuras",
+   "text": "En Las Meninas usa la perspectiva aérea: lo lejano se ve más pálido y menos nítido. Así figuras y sala forman un solo espacio, y casi se siente el aire entre ellos.",
+   "artworkId": "a62",
+   "sources": [
+    "https://www.britannica.com/biography/Diego-Velazquez",
+    "https://en.wikipedia.org/wiki/Atmospheric_perspective"
+   ]
+  },
+  {
+   "id": "velazquez-c7",
+   "kind": "obra",
+   "title": "Las Meninas",
+   "text": "La infanta Margarita, de unos cinco años, con sus damas, dos enanos, un perro y el pintor ante su lienzo. Al fondo, un espejo refleja a los reyes. Está en el Prado.",
+   "artworkId": "a62",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Las_Meninas"
+   ],
+   "clue": "¿Quién se retrató pintando junto a una infanta, sus damas y un espejo con los reyes?",
+   "decoys": [
+    "murillo",
+    "goya",
+    "rubens"
+   ]
+  },
+  {
+   "id": "velazquez-c8",
+   "kind": "obra",
+   "title": "La cruz del pecho",
+   "text": "La cruz roja de Santiago en el pecho del pintor se añadió en 1659, tres años después. Una leyenda dice que la pintó el propio rey.",
+   "artworkId": "a62",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Las_Meninas"
+   ]
+  },
+  {
+   "id": "velazquez-c9",
+   "kind": "obra",
+   "title": "La rendición de Breda",
+   "text": "Justino de Nassau entrega la llave de la ciudad a Spínola, que no lo humilla: le impide arrodillarse. Colgó en el Salón de Reinos del Buen Retiro, como propaganda del rey. Está en el Prado.",
+   "artworkId": "a175",
+   "sources": [
+    "https://www.museodelprado.es/en/whats-on/multimedia/the-lances-or-the-surrender-of-breda-velazquez/927265db-4827-b737-08c0-6c2bf722764b",
+    "https://en.wikipedia.org/wiki/The_Surrender_of_Breda"
+   ],
+   "clue": "¿Quién pintó, para el Salón de Reinos, al vencedor que impide arrodillarse al vencido?",
+   "decoys": [
+    "goya",
+    "rubens",
+    "murillo"
+   ]
+  },
+  {
+   "id": "velazquez-c10",
+   "kind": "obra",
+   "title": "La Venus del espejo",
+   "text": "Venus, de espaldas, se mira en un espejo que sostiene Cupido; su rostro reflejado está borroso. Es su único desnudo femenino conservado. Está en la National Gallery de Londres.",
+   "artworkId": "a32",
+   "sources": [
+    "https://www.nationalgallery.org.uk/paintings/diego-velazquez-the-toilet-of-venus-the-rokeby-venus",
+    "https://en.wikipedia.org/wiki/Rokeby_Venus"
+   ],
+   "clue": "¿Quién pintó una Venus de espaldas con el rostro del espejo borroso?",
+   "decoys": [
+    "rubens",
+    "tiziano",
+    "goya"
+   ]
+  },
+  {
+   "id": "velazquez-c11",
+   "kind": "epoca",
+   "title": "Un desnudo raro",
+   "text": "En la España del siglo XVII los desnudos eran poco habituales y la Inquisición los vigilaba. En 1914 una sufragista acuchilló la Venus siete veces; se restauró.",
+   "artworkId": "a32",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Rokeby_Venus"
+   ],
+   "clue": "¿De quién es la Venus acuchillada en 1914 por una sufragista en Londres?",
+   "decoys": [
+    "rubens",
+    "tiziano",
+    "goya"
+   ]
+  },
+  {
+   "id": "velazquez-c12",
+   "kind": "vida",
+   "title": "Un cargo de palacio",
+   "text": "En 1652 recibió un cargo en palacio: organizar las estancias reales y los viajes del rey. Era un trabajo exigente que le dejó menos tiempo para pintar.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Diego_Vel%C3%A1zquez",
+    "https://www.britannica.com/biography/Diego-Velazquez"
+   ],
+   "clue": "¿Qué pintor fue aposentador del rey, encargado de sus estancias y viajes?",
+   "decoys": [
+    "murillo",
+    "el-greco",
+    "rubens"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,174 @@
+{
+ "artistId": "leonardo",
+ "cards": [
+  {
+   "id": "leonardo-c1",
+   "kind": "tecnica",
+   "title": "Humo en lugar de línea",
+   "text": "No rodea las caras con una línea: pasa de la luz a la sombra poco a poco. Él lo describía como pintar «sin líneas ni bordes, a la manera del humo». Se llama sfumato, «ahumado» en italiano.",
+   "artworkId": "a154",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sfumato"
+   ],
+   "clue": "¿Quién describió su pintura como «sin líneas ni bordes, a manera de humo»?",
+   "decoys": [
+    "rafael",
+    "tiziano",
+    "rembrandt"
+   ]
+  },
+  {
+   "id": "leonardo-c2",
+   "kind": "tecnica",
+   "title": "Capas casi transparentes",
+   "text": "Las sombras suaves se logran con capas finísimas, una sobre otra. Un estudio con rayos X de cuadros suyos del Louvre las midió en milésimas de milímetro.",
+   "artworkId": "a201",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sfumato"
+   ]
+  },
+  {
+   "id": "leonardo-c3",
+   "kind": "tecnica",
+   "title": "Lo lejano se vuelve azul",
+   "text": "En el fondo, montañas y agua se ven más pálidas, azuladas y con menos detalle, como las vemos en la realidad por el aire de en medio. Se llama perspectiva aérea.",
+   "artworkId": "a82",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Atmospheric_perspective"
+   ]
+  },
+  {
+   "id": "leonardo-c4",
+   "kind": "tecnica",
+   "title": "Grupos en pirámide",
+   "text": "La Virgen arriba y los demás debajo forman una pirámide. En la Gioconda incluyó las manos y giró el cuerpo de la modelo, para que pareciera natural y viva.",
+   "artworkId": "a201",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Virgin_of_the_Rocks",
+    "https://smarthistory.org/heni-mona-lisa"
+   ]
+  },
+  {
+   "id": "leonardo-c5",
+   "kind": "vida",
+   "title": "Escritura en espejo",
+   "text": "Escribía sus notas de derecha a izquierda y con las letras invertidas, como vistas en un espejo. Era zurdo, y probablemente así le resultaba más cómodo.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Leonardo_da_Vinci"
+   ],
+   "clue": "¿Qué pintor escribía sus notas de derecha a izquierda, como en un espejo?",
+   "decoys": [
+    "durero",
+    "rembrandt",
+    "el-greco"
+   ]
+  },
+  {
+   "id": "leonardo-c6",
+   "kind": "vida",
+   "title": "Un cuaderno sin fin",
+   "text": "Sus notas y dibujos llenan unas 13.000 páginas. En ellas imaginó máquinas voladoras, un vehículo blindado y el doble casco para los barcos.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Leonardo_da_Vinci"
+   ],
+   "clue": "¿Qué pintor llenó 13.000 páginas de notas, con máquinas voladoras y un vehículo blindado?",
+   "decoys": [
+    "durero",
+    "rubens",
+    "bosco"
+   ]
+  },
+  {
+   "id": "leonardo-c7",
+   "kind": "vida",
+   "title": "Un ingeniero para el duque",
+   "text": "Hacia 1482 se fue a Milán tras escribir a Ludovico Sforza ofreciéndole sus servicios como ingeniero y experto en armas. Trabajó allí hasta 1499.",
+   "artworkId": "a93",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Leonardo_da_Vinci",
+    "https://en.wikipedia.org/wiki/The_Last_Supper_(Leonardo)"
+   ],
+   "clue": "¿Qué pintor se ofreció por carta al duque de Milán como ingeniero y experto en armas?",
+   "decoys": [
+    "rafael",
+    "tiziano",
+    "caravaggio"
+   ]
+  },
+  {
+   "id": "leonardo-c8",
+   "kind": "vida",
+   "title": "Un final en Francia",
+   "text": "El rey Francisco I lo invitó a Francia, donde vivió sus últimos años junto al castillo de Amboise y murió en 1519.",
+   "artworkId": "a154",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Leonardo_da_Vinci"
+   ],
+   "clue": "¿Qué pintor pasó sus últimos años en Francia, invitado por el rey Francisco I?",
+   "decoys": [
+    "tiziano",
+    "durero",
+    "rafael"
+   ]
+  },
+  {
+   "id": "leonardo-c9",
+   "kind": "obra",
+   "title": "El robo de la Gioconda",
+   "text": "En 1911 un empleado del Louvre la robó porque creía que debía estar en Italia. Se recuperó en 1913. El robo la hizo famosa en todo el mundo. Es un óleo sobre tabla de álamo.",
+   "artworkId": "a154",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Mona_Lisa",
+    "https://www.britannica.com/topic/Mona-Lisa-painting"
+   ],
+   "clue": "¿De quién es el retrato que robó en 1911 un empleado del Louvre?",
+   "decoys": [
+    "rafael",
+    "vermeer",
+    "tiziano"
+   ]
+  },
+  {
+   "id": "leonardo-c10",
+   "kind": "obra",
+   "title": "La última cena",
+   "text": "Está en el refectorio (el comedor) del convento de Santa Maria delle Grazie, en Milán, por encargo de Ludovico Sforza. Muestra el momento en que Jesús anuncia que uno lo traicionará.",
+   "artworkId": "a93",
+   "sources": [
+    "https://en.wikipedia.org/wiki/The_Last_Supper_(Leonardo)"
+   ],
+   "clue": "¿Quién pintó en un comedor de convento de Milán a Jesús anunciando la traición?",
+   "decoys": [
+    "rafael",
+    "tiziano",
+    "veronese"
+   ]
+  },
+  {
+   "id": "leonardo-c11",
+   "kind": "obra",
+   "title": "Una pintura frágil",
+   "text": "Pintó con temple sobre el muro, no al fresco, y se estropeó pronto por la humedad. En 1943 una bomba cayó en el refectorio; los sacos de arena protegieron la pared.",
+   "artworkId": "a93",
+   "sources": [
+    "https://en.wikipedia.org/wiki/The_Last_Supper_(Leonardo)"
+   ]
+  },
+  {
+   "id": "leonardo-c12",
+   "kind": "obra",
+   "title": "La Virgen de las rocas",
+   "text": "Existe en dos versiones, una en el Louvre y otra en la National Gallery de Londres. María, Jesús niño, san Juan niño y un ángel están en una gruta, algo poco habitual para este tema.",
+   "artworkId": "a201",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Virgin_of_the_Rocks"
+   ],
+   "clue": "¿Quién pintó dos versiones de una Virgen en una gruta, hoy en París y Londres?",
+   "decoys": [
+    "rafael",
+    "tiziano",
+    "durero"
+   ]
+  }
+ ]
+}

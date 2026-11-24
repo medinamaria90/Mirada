@@ -1,0 +1,2064 @@
+// Recorrido real en Chrome headless. Uso: node tools/e2e.mjs <baseUrl> <catalogPath> [outDir] [prefix]
+// No depende de pintores concretos: lee el catálogo con el motor de la app (buildIndex).
+// MIRADA_E2E_MODE=smoke: modo «humo» (~20 s): arranque, una etapa completa (con teclado en la intro,
+// «Conoce a» y las respuestas 1-4), un cuadro en el visor, resultado, perfil y auditorías de
+// contraste y táctiles. Es el que corre dentro de `node --test` con MIRADA_E2E=1; el completo, con
+// e2e.sh (incluye el visor en cada pantalla, oleada 8).
+import { createRequire } from 'node:module';
+import { readFileSync, mkdirSync } from 'node:fs';
+import { buildIndex } from '../app/js/engine/catalog.js';
+import { hasMovementReview } from '../app/js/engine/progress.js';
+import { isoWeek, dayKey } from '../app/js/engine/dates.js';
+
+const require = createRequire(import.meta.url);
+const { chromium } = require('/opt/npm-tools/node_modules/playwright');
+
+const base = process.argv[2] || 'http://127.0.0.1:8881/';
+const catalog = JSON.parse(readFileSync(process.argv[3] || new URL('../app/data/catalog.json', import.meta.url), 'utf8'));
+const out = process.argv[4] || '/home/claude/mirada/docs/screens';
+const prefix = process.argv[5] ?? 'o9-';
+const SMOKE = process.env.MIRADA_E2E_MODE === 'smoke';
+let challengeText = '';
+let dailyText = '';
+mkdirSync(out, { recursive: true });
+
+const index = buildIndex(catalog);
+const art = new Map(catalog.artworks.map((w) => [w.id, w]));
+const artist = new Map(catalog.artists.map((a) => [a.id, a]));
+const movement = new Map(catalog.movements.map((m) => [m.id, m]));
+
+const problems = [];
+const notes = [];
+const shots = [];
+const check = (cond, msg) => { if (!cond) problems.push(msg); };
+async function shot(page, name, full = false) {
+  const path = `${out}/${prefix}${name}.png`;
+  await page.waitForTimeout(500);
+  await page.screenshot({ path, fullPage: full });
+  shots.push(path);
+}
+
+function watch(page, label) {
+  page.on('console', (m) => {
+    if (m.type() === 'error' || m.type() === 'warning') problems.push(`[${label}] console.${m.type()}: ${m.text()}`);
+  });
+  page.on('pageerror', (e) => problems.push(`[${label}] pageerror: ${e.message}`));
+  page.on('requestfailed', (r) => problems.push(`[${label}] requestfailed: ${r.url()}`));
+  page.on('request', (r) => {
+    if (!r.url().startsWith(new URL(base).origin) && !r.url().startsWith('data:')) problems.push(`[${label}] recurso remoto: ${r.url()}`);
+  });
+}
+
+// Jugador «omnisciente»: deduce la respuesta del DOM + catálogo. wrongAt = pasos a fallar a propósito.
+// La opción elegida y la correcta quedan por encima de la hoja de feedback y bajo la barra.
+async function assertAnswersVisible(page, label) {
+  const r = await page.evaluate(() => {
+    const sheet = document.querySelector('.feedback').getBoundingClientRect();
+    const bar = document.querySelector('.lesson-bar').getBoundingClientRect();
+    const marked = [...document.querySelectorAll('.option.is-correct, .option.is-wrong')].map((o) => o.getBoundingClientRect());
+    const crosses = (m) => m.right > sheet.left && m.left < sheet.right;
+    return { ok: marked.every((m) => !crosses(m) || (m.bottom <= sheet.top + 1 && m.top >= bar.bottom - 1)), n: marked.length, sheetTop: sheet.top, marks: marked.map((m) => [Math.round(m.top), Math.round(m.bottom)]) };
+  });
+  check(r.ok, `${label}: respuesta tapada por la hoja ${JSON.stringify(r)}`);
+}
+
+// La frase que explica el cuadro (fb-line) se lee entera por encima de «Continuar» (no queda en la
+// zona que se desvanece ni bajo el botón).
+async function assertLookVisible(page, label) {
+  const r = await page.evaluate(() => {
+    const line = document.querySelector('.feedback .fb-line');
+    if (!line) return { ok: true };
+    const l = line.getBoundingClientRect();
+    const box = document.querySelector('.feedback .fb-text').getBoundingClientRect();
+    const btn = document.querySelector('.feedback [data-action="continue"]').getBoundingClientRect();
+    return { ok: l.bottom <= btn.top && l.bottom <= box.bottom - 8, line: [Math.round(l.top), Math.round(l.bottom)], box: Math.round(box.bottom), btn: Math.round(btn.top) };
+  });
+  check(r.ok, `${label}: la frase del cuadro queda tapada ${JSON.stringify(r)}`);
+}
+
+async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, stopAfter = Infinity, onStep = null, checkReveal = null, keys = false, checkLook = null } = {}) {
+  let step = 0;
+  let answered = 0;
+  const seenTypes = new Set();
+  while (step < maxSteps) {
+    await page.waitForTimeout(110);
+    if (await page.locator('.result').count()) return step;
+    const look = page.locator('.look-first [data-action="go"]');
+    if (await look.count()) { await look.click(); continue; }
+    const interlude = page.locator('.interlude [data-action="continue"]');
+    if (await interlude.count()) {
+      if (shotsFor.interlude) { await shot(page, shotsFor.interlude); delete shotsFor.interlude; }
+      if (keys) {
+        // Teclado: el foco ya está en «Vamos» (anunciado con el título) y Enter sigue.
+        const focused = await page.evaluate(() => document.activeElement?.closest('.interlude [data-action="continue"]') != null
+          && document.activeElement.getAttribute('aria-describedby') === 'interlude-title');
+        check(focused, 'pantalla intermedia: el foco no está en «Vamos» (con el título como descripción)');
+        await page.keyboard.press('Enter');
+        await page.waitForTimeout(250);
+        check(!(await page.locator('.interlude').count()), 'pantalla intermedia: Enter no avanza');
+        continue;
+      }
+      await interlude.click();
+      continue;
+    }
+    const options = page.locator('.lesson-stage .option');
+    if (!(await options.count())) { await page.waitForTimeout(200); step++; continue; }
+    const prompt = (await page.locator('.q-prompt').innerText()).trim();
+    let target = null;
+    let type;
+    if (await page.locator('.option-art').count()) {
+      type = 'which';
+      const short = prompt.replace(/^¿Cuál es de /, '').replace(/\?$/, '');
+      const n = await options.count();
+      for (let i = 0; i < n; i++) {
+        const id = await options.nth(i).locator('.art').getAttribute('data-art');
+        const a = artist.get(art.get(id).artistId);
+        if ((a.short || a.name) === short) target = i;
+      }
+    } else {
+      const id = await page.locator('.q-art .art').getAttribute('data-art');
+      const a = artist.get(art.get(id).artistId);
+      type = prompt.includes('movimiento') ? 'movement' : 'who';
+      const label = type === 'movement' ? movement.get(a.movementId).name : a.name;
+      const n = await options.count();
+      for (let i = 0; i < n; i++) if ((await options.nth(i).innerText()).split('\n').pop().trim() === label) target = i;
+    }
+    const key = `q-${type}`;
+    if (shotsFor[key] && !seenTypes.has(type)) { seenTypes.add(type); await shot(page, shotsFor[key]); }
+    check(target != null, `no se encontró respuesta para: ${prompt}`);
+    const wrong = wrongAt.includes(step);
+    const pick = wrong ? ((target ?? 0) + 1) % (await options.count()) : (target ?? 0);
+    if (type === 'which' && keys) {
+      // Atajo de teclado: 1-4 responden directamente (sin pasar por el visor).
+      await page.keyboard.press(String(pick + 1));
+    } else if (type === 'which') {
+      // Pulsar una miniatura abre el visor con las 4; «Es este» responde con la que se ve. La primera
+      // de cada ronda se abre en otra y se llega a la buena con las flechas del visor.
+      await answerWhichInViewer(page, pick, { navigate: !seenTypes.has('which-viewer'), label: `paso ${step}` });
+      seenTypes.add('which-viewer');
+    } else await options.nth(pick).click();
+    await page.waitForSelector('.feedback.is-open');
+    await page.waitForTimeout(450);
+    if (checkReveal) await assertAnswersVisible(page, `${checkReveal} paso ${step}`);
+    if (checkLook) await assertLookVisible(page, `${checkLook} paso ${step}`);
+    if (onStep) await onStep({ step, wrong, type });
+    if (wrong && shotsFor.wrong) { await shot(page, shotsFor.wrong); delete shotsFor.wrong; }
+    if (!wrong && shotsFor.right) { await shot(page, shotsFor.right); delete shotsFor.right; }
+    if (shotsFor.combo && await page.locator('.combo.is-on').count()) { await shot(page, shotsFor.combo); delete shotsFor.combo; }
+    answered++;
+    if (answered >= stopAfter) return step;
+    await page.locator('.feedback [data-action="continue"]').click();
+    step++;
+  }
+  throw new Error('La ronda no terminó');
+}
+
+// ---------------------------------------------------------------- Visor a pantalla completa (oleada 8)
+// Textos que el visor no puede mostrar en una pregunta sin responder: título, año y autor de cada
+// cuadro (en «¿Cuál es de X?», el pintor X sí está en la pregunta).
+function forbiddenFor(ids, allowArtist = null) {
+  const out = [];
+  for (const id of ids) {
+    const w = art.get(id);
+    if (!w) continue;
+    out.push(w.title);
+    if (w.year && /\d{4}/.test(w.year)) out.push(w.year);
+    const a = artist.get(w.artistId);
+    if (a && a.id !== allowArtist) out.push(a.name, a.short || a.name);
+  }
+  return [...new Set(out.filter((t) => t && t.length >= 3))];
+}
+
+async function viewerLeaks(page, forbidden) {
+  return page.evaluate((words) => {
+    const dlg = document.querySelector('.viewer');
+    if (!dlg) return ['sin visor'];
+    const texts = [dlg.innerText];
+    for (const el of [dlg, ...dlg.querySelectorAll('*')]) {
+      for (const at of ['alt', 'aria-label', 'title', 'data-label', 'aria-roledescription']) if (el.getAttribute(at)) texts.push(el.getAttribute(at));
+    }
+    const all = texts.join(' | ');
+    return words.filter((w) => all.includes(w));
+  }, forbidden);
+}
+
+async function viewerCount(page) {
+  return (await page.locator('.viewer .viewer-count').innerText().catch(() => '')).trim();
+}
+
+async function waitCount(page, text) {
+  await page.waitForFunction((t) => document.querySelector('.viewer .viewer-count')?.textContent.trim() === t, text, { timeout: 4000 }).catch(() => {});
+  return viewerCount(page);
+}
+
+async function answerWhichInViewer(page, pick, { navigate = false, label = '' } = {}) {
+  const options = page.locator('.lesson-stage .option');
+  const n = await options.count();
+  const ids = [];
+  for (let i = 0; i < n; i++) ids.push(await options.nth(i).locator('.art').getAttribute('data-art'));
+  const short = (await page.locator('.q-prompt').innerText()).replace(/^¿Cuál es de /, '').replace(/\?$/, '').trim();
+  const allow = [...artist.values()].find((a) => (a.short || a.name) === short)?.id;
+  const start = navigate ? (pick + 1) % n : pick;
+  await options.nth(start).click();
+  await page.waitForSelector('.viewer[open]');
+  check(await waitCount(page, `${start + 1} / ${n}`) === `${start + 1} / ${n}`, `«¿Cuál?» ${label}: el visor no abre en la miniatura pulsada`);
+  const leaks = await viewerLeaks(page, forbiddenFor(ids, allow));
+  check(!leaks.length, `«¿Cuál?» ${label}: el visor revela ${leaks.join(', ')}`);
+  if (navigate) {
+    // Hacia la buena con las flechas del visor (anterior o siguiente).
+    let at = start;
+    while (at !== pick) {
+      const dir = pick > at ? 'next' : 'prev';
+      await page.click(`.viewer [data-v="${dir}"]`);
+      at += dir === 'next' ? 1 : -1;
+      check(await waitCount(page, `${at + 1} / ${n}`) === `${at + 1} / ${n}`, `«¿Cuál?» ${label}: las flechas del visor no pasan de cuadro`);
+    }
+  }
+  // «Es este» no responde mientras el cuadro se desliza (oleada 9): se espera a que llegue.
+  await page.waitForSelector('.viewer [data-v="pick"][aria-disabled="false"]', { timeout: 3000 });
+  await page.click('.viewer [data-v="pick"]');
+  await page.waitForSelector('.viewer', { state: 'detached' });
+}
+
+// Abre el visor desde `opener` y comprueba: diálogo con nombre que ocupa toda la ventana, imagen
+// GRANDE (img/<id>.jpg) cargada y entera (contain) con la miniatura del atlas debajo, cerrar ≥ 48 px,
+// foco dentro (también con Tab), sin revelar nada si es una pregunta (o con pie si no), paso de
+// cuadro si hay varios, auditoría de contraste y táctil, captura y cierre (aspa, Esc, atrás o
+// tocando fuera) con el foco de vuelta en el cuadro pulsado.
+async function viewerCheck(page, label, opener, { reveal = true, forbidden = [], group = 0, close = 'button', shotName = null, touch = false, keepDialog = null } = {}) {
+  await opener.scrollIntoViewIfNeeded();
+  await opener.evaluate((el) => el.setAttribute('data-e2e-opener', '1'));
+  const urlBefore = page.url();
+  if (touch) await opener.tap(); else await opener.click();
+  await page.waitForSelector('.viewer[open]');
+  await page.waitForFunction(() => {
+    const s = [...document.querySelectorAll('.viewer-slide')].find((x) => x.getAttribute('aria-hidden') === 'false');
+    const i = s && s.querySelector('.viewer-img');
+    return Boolean(s) && (!i || (i.complete && i.naturalWidth > 0 && s.classList.contains('is-big')));
+  }, null, { timeout: 6000 }).catch(() => {});
+  await page.waitForTimeout(250);
+  const info = await page.evaluate(() => {
+    const dlg = document.querySelector('.viewer');
+    const r = dlg.getBoundingClientRect();
+    const slide = [...dlg.querySelectorAll('.viewer-slide')].find((x) => x.getAttribute('aria-hidden') === 'false');
+    const img = slide.querySelector('.viewer-img');
+    const thumb = slide.querySelector('.viewer-thumb img');
+    const frame = slide.querySelector('.viewer-frame').getBoundingClientRect();
+    const stage = slide.querySelector('.viewer-stage').getBoundingClientRect();
+    const fs = slide.querySelector('.viewer-frame').style;
+    const ratio = Number(fs.getPropertyValue('--arw')) / Number(fs.getPropertyValue('--arh'));
+    const close = dlg.querySelector('[data-v="close"]').getBoundingClientRect();
+    return {
+      tag: dlg.tagName, modal: dlg.matches(':modal'), name: dlg.getAttribute('aria-label') || '',
+      full: Math.abs(r.width - innerWidth) < 1 && Math.abs(r.height - innerHeight) < 1 && r.top === 0 && r.left === 0,
+      src: img ? img.getAttribute('src') : null, loaded: img ? img.naturalWidth > 0 : false,
+      thumb: thumb ? thumb.getAttribute('src') : null,
+      fit: frame.left >= stage.left - 1 && frame.right <= stage.right + 1 && frame.top >= stage.top - 1 && frame.bottom <= stage.bottom + 1
+        && (Math.abs(frame.width - stage.width) < 2 || Math.abs(frame.height - stage.height) < 2)
+        && Math.abs(frame.width / frame.height - ratio) < 0.03,
+      inView: frame.top >= 0 && frame.bottom <= innerHeight && frame.left >= 0 && frame.right <= innerWidth,
+      big: stage.width >= 0.8 * innerWidth && stage.height >= 0.35 * innerHeight,
+      close: [close.width, close.height],
+      focusIn: dlg.contains(document.activeElement),
+      caption: slide.querySelector('.viewer-caption')?.innerText || '',
+      count: dlg.querySelector('.viewer-count')?.textContent.trim() || '',
+      zoom: getComputedStyle(dlg.querySelector('.viewer-track')).touchAction,
+    };
+  });
+  check(info.tag === 'DIALOG' && info.modal && info.name.trim().length > 0, `[visor ${label}] no es un diálogo modal con nombre ${JSON.stringify(info.name)}`);
+  check(info.full, `[visor ${label}] no ocupa toda la ventana`);
+  check(/^img\/[ab]\d+\.jpg$/.test(info.src || '') && info.loaded, `[visor ${label}] sin la imagen grande cargada (${info.src})`);
+  check(!info.thumb || /^img\/(s\/|[ab]\d+\.jpg)/.test(info.thumb), `[visor ${label}] miniatura rara (${info.thumb})`);
+  check(info.fit && info.inView && info.big, `[visor ${label}] el cuadro no se ve entero y grande ${JSON.stringify({ fit: info.fit, inView: info.inView, big: info.big })}`);
+  check(info.close[0] >= 48 && info.close[1] >= 48, `[visor ${label}] cerrar de ${info.close.map(Math.round).join('×')}`);
+  check(info.focusIn, `[visor ${label}] el foco no está en el visor`);
+  check(info.zoom === 'pan-x pan-y', `[visor ${label}] touch-action ${info.zoom}`);
+  if (reveal) {
+    check(info.caption.trim().length > 0, `[visor ${label}] sin pie (título · autor · año)`);
+  } else {
+    const leaks = await viewerLeaks(page, forbidden);
+    check(!leaks.length && !info.caption, `[visor ${label}] revela ${leaks.join(', ')}${info.caption ? ` · pie «${info.caption}»` : ''}`);
+  }
+  if (group > 1) {
+    const m = /^(\d+) \/ (\d+)$/.exec(info.count);
+    check(m && Number(m[2]) === group, `[visor ${label}] contador «${info.count}» (esperado de ${group})`);
+    if (m) {
+      const at = Number(m[1]);
+      const key = at < group ? 'ArrowRight' : 'ArrowLeft';
+      const want = `${at < group ? at + 1 : at - 1} / ${group}`;
+      await page.keyboard.press(key);
+      check(await waitCount(page, want) === want, `[visor ${label}] las flechas del teclado no pasan de cuadro (${await viewerCount(page)})`);
+      await page.keyboard.press(key === 'ArrowRight' ? 'ArrowLeft' : 'ArrowRight');
+      await waitCount(page, info.count);
+    }
+  }
+  for (let k = 0; k < 4; k++) await page.keyboard.press('Tab');
+  check(await page.evaluate(() => Boolean(document.activeElement?.closest('.viewer'))), `[visor ${label}] el foco sale del visor con Tab`);
+  await audit(page, `visor ${label}`);
+  if (shotName) await shot(page, shotName);
+  if (close === 'button') await page.click('.viewer [data-v="close"]');
+  else if (close === 'esc') await page.keyboard.press('Escape');
+  else if (close === 'back') await page.goBack();
+  else if (close === 'outside') {
+    const pt = await viewerBackground(page);
+    check(Boolean(pt), `[visor ${label}] no queda fondo que tocar alrededor del cuadro`);
+    if (pt) { if (touch) await page.touchscreen.tap(pt.x, pt.y); else await page.mouse.click(pt.x, pt.y); }
+  }
+  await page.waitForSelector('.viewer', { state: 'detached', timeout: 3000 }).catch(() => {});
+  await page.waitForTimeout(250);
+  check(await page.locator('.viewer').count() === 0, `[visor ${label}] no se cierra con ${close}`);
+  check(await page.evaluate(() => document.activeElement?.hasAttribute('data-e2e-opener') === true), `[visor ${label}] el foco no vuelve al cuadro (cierre: ${close})`);
+  check(page.url() === urlBefore, `[visor ${label}] cambia la dirección al cerrar (${page.url()})`);
+  check(await page.locator('.quit-sheet:not([hidden])').count() === 0, `[visor ${label}] cerrar abre «¿Salir de la ronda?»`);
+  if (keepDialog) check(await page.locator(`${keepDialog}[open]`).count() === 1, `[visor ${label}] cerrar el visor cierra también ${keepDialog}`);
+  await opener.evaluate((el) => el.removeAttribute('data-e2e-opener')).catch(() => {});
+}
+
+// Un punto del fondo del visor (ni el cuadro ni un botón), lo más cerca posible del cuadro: a los
+// lados, encima o debajo; si no, en la barra superior. Prefiere el hueco junto al cuadro (oleada 9).
+async function viewerBackground(page, { nearFrame = false } = {}) {
+  return page.evaluate((near) => {
+    const dlg = document.querySelector('.viewer');
+    const slide = [...dlg.querySelectorAll('.viewer-slide')].find((x) => x.getAttribute('aria-hidden') === 'false');
+    const f = slide.querySelector('.viewer-frame').getBoundingClientRect();
+    const st = slide.querySelector('.viewer-stage').getBoundingClientRect();
+    const sl = slide.getBoundingClientRect();
+    const ok = (x, y) => {
+      const el = document.elementFromPoint(x, y);
+      return el && dlg.contains(el) && !el.closest('.viewer-frame, button');
+    };
+    const cands = [
+      [(sl.left + f.left) / 2, f.top + f.height / 2], [(f.right + sl.right) / 2, f.top + f.height / 2],
+      [f.left + f.width / 2, (st.top + f.top) / 2], [f.left + f.width / 2, (f.bottom + st.bottom) / 2],
+      [Math.max(2, f.left - 3), f.top + f.height / 2], [Math.min(innerWidth - 2, f.right + 3), f.top + f.height / 2],
+    ];
+    if (!near) cands.push([innerWidth / 2 - 40, 20]);
+    for (const [x, y] of cands) if (x > 0 && y > 0 && x < innerWidth && y < innerHeight && ok(x, y)) return { x: Math.round(x), y: Math.round(y), beside: true };
+    return null;
+  }, nearFrame);
+}
+
+// Gestos táctiles reales (CDP Input.dispatchTouchEvent): uno o dos dedos.
+async function touchSwipe(page, cdp, { x = null, y = null, from = 0, to = 0, fromX = null, toX = null }) {
+  const steps = 14;
+  const at = (k) => (fromX != null ? { x: fromX + ((toX - fromX) * k) / steps, y } : { x, y: from + ((to - from) * k) / steps });
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [at(0)] });
+  for (let k = 1; k <= steps; k++) { await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [at(k)] }); await page.waitForTimeout(16); }
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(600);
+  return page.evaluate(() => window.scrollY);
+}
+async function touchPinch(page, cdp) {
+  const vp = page.viewportSize();
+  const cx = vp.width / 2;
+  const cy = vp.height / 2;
+  const two = (d) => [{ x: cx - d, y: cy, id: 1 }, { x: cx + d, y: cy, id: 2 }];
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: two(20) });
+  for (let d = 30; d <= Math.min(160, cx - 4); d += 10) { await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: two(d) }); await page.waitForTimeout(16); }
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(500);
+  return page.evaluate(() => window.visualViewport.scale);
+}
+async function touchTap(page, cdp, x, y) {
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+}
+
+async function assertPracticeVisible(page, label) {
+  const box = await page.locator('[data-action="practice"]').boundingBox();
+  const vh = page.viewportSize().height;
+  check(box && box.y >= 0 && box.y + box.height <= vh + 0.5, `${label}: «Practicar» fuera de pantalla (${box && Math.round(box.y)})`);
+}
+
+async function noHorizontalScroll(page, label) {
+  const r = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, w: window.innerWidth,
+    cut: [...document.querySelectorAll('.option, .stage, .card, .event, .panel, .stats > div, .q-prompt, .result-title')]
+      .filter((e) => e.getBoundingClientRect().right > window.innerWidth + 1).map((e) => e.className).slice(0, 3) }));
+  check(r.sw <= r.w && !r.cut.length, `${label}: desborde horizontal ${JSON.stringify(r)}`);
+}
+
+
+// ---------------------------------------------------------------- Auditorías (contraste y objetivos táctiles)
+// Contraste medido de TODOS los textos visibles: el texto y su fondo tal como se pintan (capas de
+// fondo de los antepasados, con la opacidad y el grayscale de cada grupo; con degradado, el peor de
+// sus colores). Umbral 4,5:1 para todo.
+const audits = { contrast: 0, targets: 0, screens: [] };
+async function contrastAudit(page, label) {
+  const fails = await page.evaluate(() => {
+    const toRgb = (c) => {
+      if (!c) return null;
+      let m = c.match(/^rgba?\(([^)]+)\)/);
+      if (m) {
+        const p = m[1].split(/[\s,/]+/).filter(Boolean).map(Number);
+        return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 };
+      }
+      m = c.match(/^color\(srgb ([^)]+)\)/);
+      if (m) {
+        const p = m[1].split(/[\s/]+/).filter(Boolean).map(Number);
+        return { r: p[0] * 255, g: p[1] * 255, b: p[2] * 255, a: p.length > 3 ? p[3] : 1 };
+      }
+      return null;
+    };
+    const over = (top, bottom) => {
+      const a = top.a + bottom.a * (1 - top.a);
+      if (!a) return { r: 0, g: 0, b: 0, a: 0 };
+      const mix = (k) => (top[k] * top.a + bottom[k] * bottom.a * (1 - top.a)) / a;
+      return { r: mix('r'), g: mix('g'), b: mix('b'), a };
+    };
+    const lum = (c) => {
+      const f = (v) => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; };
+      return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b);
+    };
+    const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+    const gradientColors = (img) => (img.match(/(rgba?\([^)]+\)|color\(srgb [^)]+\))/g) || []).map(toRgb).filter(Boolean);
+    const gray = (c, g) => {
+      const y = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
+      return { r: c.r + (y - c.r) * g, g: c.g + (y - c.g) * g, b: c.b + (y - c.b) * g, a: c.a };
+    };
+    const mixRgb = (x, y, t) => ({ r: x.r * t + y.r * (1 - t), g: x.g * t + y.g * (1 - t), b: x.b * t + y.b * (1 - t), a: 1 });
+    // Pinta la pila de antepasados de abajo arriba y devuelve, para cada candidato de fondo (los
+    // colores del degradado más cercano: se evalúa el peor), el fondo y el texto tal como se ven.
+    // La opacidad y el filtro grayscale de un antepasado afectan a su grupo entero (su fondo, el de
+    // sus hijos y el texto), compuesto sobre lo que tiene detrás; antes solo se aplicaban al texto.
+    const visibleColors = (el, fg) => {
+      const chain = [];
+      for (let n = el; n && n.nodeType === 1; n = n.parentElement) chain.unshift(n);
+      let candidates = null;
+      const layersOf = chain.map((n) => {
+        const cs = getComputedStyle(n);
+        let bgs = [];
+        const bg = toRgb(cs.backgroundColor);
+        if (bg && bg.a > 0) bgs = [bg];
+        if (cs.backgroundImage && cs.backgroundImage !== 'none') {
+          const cols = gradientColors(cs.backgroundImage).filter((c) => c.a > 0.5);
+          if (cols.length) { bgs = cols.map((c) => ({ ...c, a: 1 })); candidates = n; }
+        }
+        const g = /grayscale\(([\d.]+)(%?)\)/.exec(cs.filter || '');
+        return { n, bgs, op: Number(cs.opacity), gray: g ? Math.min(1, Number(g[1]) / (g[2] ? 100 : 1)) : 0 };
+      });
+      const variants = Math.max(1, ...layersOf.filter((l) => l.n === candidates).map((l) => l.bgs.length));
+      const results = [];
+      for (let v = 0; v < variants; v++) {
+        let base = { r: 255, g: 255, b: 255, a: 1 };
+        const groups = [];
+        for (const l of layersOf) {
+          if (l.op < 1 || l.gray) groups.push({ backdrop: base, op: l.op, gray: l.gray });
+          const layer = l.bgs.length ? l.bgs[l.n === candidates ? v : 0] : null;
+          if (layer) base = over(layer, base);
+        }
+        let text = over(fg, base);
+        let back = base;
+        for (const gr of groups.reverse()) {
+          if (gr.gray) { text = gray(text, gr.gray); back = gray(back, gr.gray); }
+          text = mixRgb(text, gr.backdrop, gr.op);
+          back = mixRgb(back, gr.backdrop, gr.op);
+        }
+        results.push({ text, back });
+      }
+      return results;
+    };
+    const out = [];
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: (t) => (t.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
+    });
+    const seen = new Set();
+    for (let t = walker.nextNode(); t; t = walker.nextNode()) {
+      const el = t.parentElement;
+      if (!el || seen.has(el)) continue;
+      seen.add(el);
+      if (el.closest('.sr-only, [hidden], template, script, style, noscript')) continue;
+      if (typeof el.checkVisibility === 'function' && !el.checkVisibility({ opacityProperty: true, visibilityProperty: true })) continue;
+      const r = el.getBoundingClientRect();
+      // Toda la página (no solo lo que cabe en la pantalla); fuera del ancho = no visible.
+      if (r.width < 2 || r.height < 2 || r.right < 0 || r.left > innerWidth) continue;
+      // Avisos que aún se están desvaneciendo (toast) no cuentan.
+      if (el.closest('.toast:not(.is-on)')) continue;
+      const cs = getComputedStyle(el);
+      let fg = toRgb(cs.color);
+      if (!fg) continue;
+      let op = 1;
+      for (let n = el; n && n.nodeType === 1; n = n.parentElement) op *= Number(getComputedStyle(n).opacity) || 0;
+      if (op < 0.05) continue;
+      const k = Math.min(...visibleColors(el, fg).map(({ text, back }) => ratio(text, back)));
+      if (k < 4.5) out.push(`${el.tagName.toLowerCase()}.${String(el.className).split(' ').slice(0, 2).join('.')} «${t.nodeValue.trim().slice(0, 24)}» ${k.toFixed(2)}:1`);
+    }
+    return out;
+  });
+  audits.contrast += 1;
+  audits.screens.push(label);
+  for (const f of fails) problems.push(`[contraste ${label}] ${f}`);
+}
+
+// Objetivos táctiles: todo elemento interactivo visible mide al menos 48×48.
+async function targetAudit(page, label) {
+  const small = await page.evaluate(() => [...document.querySelectorAll('a[href], button, input, select, textarea, summary, [role="button"], [role="switch"], [tabindex]:not([tabindex="-1"])')]
+    .filter((e) => !e.closest('[hidden], .sr-only') && !e.disabled && (typeof e.checkVisibility !== 'function' || e.checkVisibility({ visibilityProperty: true })))
+    .map((e) => { const r = e.getBoundingClientRect(); return { r, t: (e.getAttribute('aria-label') || e.textContent || e.className || e.tagName).trim().slice(0, 30) }; })
+    .filter(({ r }) => r.width > 0 && r.height > 0 && r.right > 0 && r.left < innerWidth && (r.width < 47.5 || r.height < 47.5))
+    .map(({ r, t }) => `${t} ${Math.round(r.width)}×${Math.round(r.height)}`));
+  audits.targets += 1;
+  for (const f of small) problems.push(`[táctil ${label}] ${f}`);
+}
+
+async function audit(page, label) {
+  // Se miden los colores finales: las animaciones de entrada (finitas) se dan por terminadas.
+  await page.waitForTimeout(150);
+  await page.evaluate(() => {
+    for (const a of document.getAnimations()) {
+      try { if (Number.isFinite(a.effect?.getComputedTiming().endTime)) a.finish(); } catch { /* nada */ }
+    }
+  });
+  await page.waitForTimeout(60);
+  await contrastAudit(page, label);
+  await targetAudit(page, label);
+}
+
+// «Conoce a»: la barra fija no tapa la pista ni las flechas/contador, y deja hueco debajo.
+async function assertLearnLayout(page, label, { strict = true } = {}) {
+  const r = await page.evaluate(() => {
+    const rect = (sel) => { const e = document.querySelector(sel); if (!e) return null; const b = e.getBoundingClientRect(); return { top: b.top, bottom: b.bottom, left: b.left, right: b.right, h: b.height }; };
+    const body = document.querySelector('.learn-body');
+    return {
+      vh: innerHeight, cta: rect('.learn-cta'), hint: rect('.learn-body .hint'), controls: rect('.carousel-controls'),
+      practice: rect('[data-action="practice"]'), bar: rect('.lesson-bar'),
+      pad: parseFloat(getComputedStyle(body).paddingBottom), controlsInBar: Boolean(document.querySelector('.learn-cta .carousel-controls')),
+    };
+  });
+  check(r.cta && r.cta.bottom <= r.vh + 0.5 && r.practice.bottom <= r.vh + 0.5, `${label}: barra de «Practicar» fuera de la pantalla`);
+  check(r.controlsInBar || (r.controls && r.controls.bottom <= r.cta.top + 0.5), `${label}: la barra tapa las flechas del carrusel ${JSON.stringify(r.controls)}`);
+  check(r.controls && r.controls.top >= 0 && r.controls.bottom <= r.vh + 0.5, `${label}: flechas/contador fuera de la vista`);
+  if (strict) check(r.hint && r.hint.bottom <= r.cta.top + 0.5 && r.hint.top >= r.bar.bottom - 0.5, `${label}: la barra tapa la pista «Fíjate en…» ${JSON.stringify({ hint: r.hint, cta: r.cta })}`);
+  check(r.pad >= r.cta.h - 0.5, `${label}: hueco inferior (${r.pad}) menor que la barra (${r.cta.h})`);
+  // Al final del desplazamiento, nada del contenido queda bajo la barra.
+  const end = await page.evaluate(() => {
+    window.scrollTo(0, document.documentElement.scrollHeight);
+    const cta = document.querySelector('.learn-cta').getBoundingClientRect();
+    const items = [...document.querySelectorAll('.learn-body .hint, .learn-body .slide figcaption')].map((e) => e.getBoundingClientRect().bottom);
+    const last = Math.max(...items);
+    window.scrollTo(0, 0);
+    return { last, ctaTop: cta.top };
+  });
+  check(end.last <= end.ctaTop + 0.5, `${label}: al final, el contenido queda bajo la barra ${JSON.stringify(end)}`);
+}
+
+// Estado sembrado (esquema v4): paradas dominadas hasta `upTo` (índice de parada, exclusivo).
+function seededState({ upTo = 0, mastered = true, xp = 900, extra = {} } = {}) {
+  const artists = {};
+  const salas = {};
+  const intros = {};
+  const medals = {};
+  index.steps.slice(0, upTo).forEach((s) => {
+    const rec = { plays: 1, best: mastered ? 0.9 : 0.5, mastered, last: '2026-11-20' };
+    if (s.type === 'sala') salas[s.id] = rec; else artists[s.id] = rec;
+    intros[s.movementId] = '2026-11-20';
+    if (mastered && s.type === 'artist') medals[`artist-${s.id}`] = '2026-11-20';
+  });
+  if (mastered) {
+    for (const m of index.visibleMovements) {
+      const steps = index.stepsOf(m.id);
+      if (steps.length && steps.every((s) => index.steps.indexOf(s) < upTo)) medals[`movement-${m.id}`] = '2026-11-20';
+    }
+  }
+  return {
+    version: 4, onboarded: true,
+    progress: {
+      xp, artists, salas, intros, reviews: {}, srs: {}, collection: {}, medals,
+      streak: { current: 0, best: 0, last: null, graceOn: null, days: [] },
+      stats: { answered: 0, correct: 0, newCorrect: 0, rounds: 0 }, daily: {}, weekly: {}, detail: {}, challenges: { played: 0 }, xpByDay: {}, ...extra,
+    },
+    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: 50 },
+    session: {},
+  };
+}
+async function seed(pg, state, hash = 'inicio') {
+  await pg.goto(base);
+  await pg.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), state);
+  await pg.goto(`${base}#${hash}`);
+  await pg.reload();
+}
+
+const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox'] });
+const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, locale: 'es-ES', permissions: ['clipboard-read', 'clipboard-write'], hasTouch: true };
+
+// ---------------------------------------------------------------- Arranque: peticiones y bytes hasta el primer pintado útil
+// «Útil»: la pantalla (bienvenida o inicio) está en el DOM, sus imágenes visibles han cargado y las
+// tipografías también. Presupuesto (falla si se supera). Antes de la oleada 6 (HEAD 4a3db26, misma
+// medida): bienvenida 30 peticiones / 424 KB, inicio 29 / 402 KB.
+const BOOT_BUDGET = { welcome: { requests: 24, kb: 400 }, home: { requests: 28, kb: 430 } };
+const boot = {};
+for (const kind of ['welcome', 'home']) {
+  const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  if (kind === 'home') await bctx.addInitScript(() => { try { if (!localStorage.getItem('mirada.state')) localStorage.setItem('mirada.state', JSON.stringify({ version: 4, onboarded: true })); } catch { /* nada */ } });
+  const bp = await bctx.newPage();
+  watch(bp, `arranque-${kind}`);
+  const got = [];
+  bp.on('response', (r) => got.push({ url: r.url(), len: Number(r.headers()['content-length'] || 0), t: Date.now() }));
+  await bp.goto(base);
+  await bp.waitForFunction((sel) => {
+    if (!document.querySelector(sel)) return false;
+    const imgs = [...document.querySelectorAll('#app img')].filter((i) => { const r = i.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight && i.loading !== 'lazy'; });
+    return imgs.every((i) => i.complete) && document.fonts.status === 'loaded';
+  }, kind === 'welcome' ? '.welcome-title' : '.path');
+  const t = Date.now();
+  const until = got.filter((x) => x.t <= t);
+  boot[kind] = { requests: until.length, kb: Math.round(until.reduce((a, x) => a + x.len, 0) / 1024) };
+  check(boot[kind].requests <= BOOT_BUDGET[kind].requests, `arranque ${kind}: ${boot[kind].requests} peticiones (presupuesto ${BOOT_BUDGET[kind].requests})`);
+  check(boot[kind].kb <= BOOT_BUDGET[kind].kb, `arranque ${kind}: ${boot[kind].kb} KB (presupuesto ${BOOT_BUDGET[kind].kb})`);
+  check(!until.some((x) => /\/js\/(audio|ui\/screens\/(flows|lesson|result|profile|collection|gallery))/.test(x.url)), `arranque ${kind}: se cargan módulos que no hacen falta para pintar`);
+  await bctx.close();
+}
+
+// ---------------------------------------------------------------- Recorrido principal 390×844
+const context = await browser.newContext(ctxOpts);
+const page = await context.newPage();
+watch(page, 'main');
+const early = [];
+page.on('request', (r) => early.push(r.url()));
+await page.goto(base);
+await page.waitForSelector('.welcome');
+// Rendimiento: ni motor de audio ni imágenes grandes antes de pintar la primera pantalla.
+check(!early.some((u) => u.includes('/js/audio/')), 'el audio se carga antes de pintar');
+check(early.filter((u) => /\/img\//.test(u)).every((u) => /\/img\/s\//.test(u)), 'imágenes grandes en la bienvenida');
+check(early.filter((u) => /\/img\//.test(u)).length <= 1, `la bienvenida pide ${early.filter((u) => /\/img\//.test(u)).length} hojas`);
+await shot(page, '01-bienvenida');
+await audit(page, '390 bienvenida');
+await page.click('[data-action="start"]');
+await page.waitForSelector('.path');
+await shot(page, '02-mapa');
+await audit(page, '390 mapa');
+check(await page.locator('.overall-bar').count() === 1, 'falta la barra de progreso global');
+// Cabecera: objetivos táctiles ≥ 48 px
+for (const box of await page.$$eval('.topbar a', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return { w: r.width, h: r.height, t: e.getAttribute('aria-label') }; }))) {
+  check(box.w >= 48 && box.h >= 48, `cabecera: ${box.t} mide ${Math.round(box.w)}×${Math.round(box.h)}`);
+}
+const ringLabel = await page.locator('.chip-goal').getAttribute('aria-label');
+check(/Meta de hoy: 0 de 50 XP/.test(ringLabel), `anillo de meta: ${ringLabel}`);
+const mapSrcs = await page.$$eval('.stage-thumb img, .card-thumb img', (els) => els.map((e) => e.getAttribute('src')));
+check(mapSrcs.length && mapSrcs.every((src) => src.startsWith('img/s/')), `miniaturas del mapa: ${mapSrcs.slice(0, 3)}`);
+// Miniatura del atlas bien recortada: la imagen cubre el marco y no se sale de la hoja.
+const crop = await page.$eval('.stage-thumb', (f) => {
+  const a = f.getBoundingClientRect(); const i = f.querySelector('img').getBoundingClientRect();
+  return { covers: i.left <= a.left + 0.5 && i.top <= a.top + 0.5 && i.right >= a.right - 0.5 && i.bottom >= a.bottom - 0.5, big: i.width > a.width * 1.5 };
+});
+check(crop.covers && crop.big, `recorte del atlas raro: ${JSON.stringify(crop)}`);
+// Repaso de movimiento solo con ≥3 pintores con etapa
+const expectedReviews = index.visibleMovements.filter((m) => hasMovementReview(index, m.id)).length;
+check(await page.locator('.stage-review').count() === expectedReviews, `repasos en el mapa: ${await page.locator('.stage-review').count()} vs ${expectedReviews}`);
+const locked = page.locator('.stage.is-locked').first();
+await locked.scrollIntoViewIfNeeded();
+await locked.click();
+await shot(page, '03-mapa-bloqueado');
+await page.evaluate(() => window.scrollTo(0, 0));
+
+// Primera etapa: intro del movimiento, conoce, práctica con un fallo y el botón atrás a mitad.
+await page.click('.card-continue');
+await page.waitForSelector('.intro');
+await shot(page, '04-intro');
+await audit(page, '390 intro');
+// Teclado: con el foco en el título, Enter pulsa el único botón principal («Entrar», «Practicar»).
+await page.keyboard.press('Enter');
+await page.waitForSelector('.learn');
+await shot(page, '05-conoce');
+await assertPracticeVisible(page, '390');
+await assertLearnLayout(page, '390 conoce');
+await audit(page, '390 conoce');
+// Visor: un cuadro del carrusel en grande (Esc lo cierra y el foco vuelve).
+await viewerCheck(page, '390 conoce (humo)', page.locator('.slide .art-zoom').first(), { group: await page.locator('.slide .art-zoom').count(), close: 'esc' });
+await page.locator('.learn h1').focus();
+await page.keyboard.press('Enter');
+await page.waitForSelector('.lesson .option');
+const fbTexts = [];
+await playRound(page, {
+  wrongAt: [1],
+  keys: true,
+  checkReveal: '390',
+  shotsFor: { 'q-who': '06-pregunta-quien', 'q-which': '07-pregunta-cual', 'q-movement': '08-pregunta-movimiento', wrong: '09-fallo', right: '10-acierto', interlude: '11-cuadros-nuevos', combo: '11b-combo' },
+  onStep: async ({ step }) => {
+    fbTexts.push(await page.locator('.feedback .fb-inner').innerText());
+    if (step === 1) await audit(page, '390 pregunta con fallo');
+    if (step === 2) {
+      // Botón atrás del navegador durante la ronda: pide confirmación y no sale.
+      await page.goBack();
+      await page.waitForTimeout(350);
+      check(await page.locator('.quit-sheet:not([hidden])').count() === 1, 'atrás no abre «¿Salir de la ronda?»');
+      check(await page.locator('.lesson').count() === 1, 'atrás sale de la ronda');
+      await shot(page, '12-atras-salir');
+      await page.click('[data-action="stay"]');
+    }
+  },
+});
+check(fbTexts.every((t) => t.split('\n').length >= 3), 'feedback sin explicación');
+check(fbTexts.every((t) => !(t.includes('Mira') && t.includes('Fíjate'))), 'feedback con «Mira…» y «Fíjate…» a la vez');
+check(fbTexts.every((t) => t.split('\n').filter((l) => /^(Mira|Fíjate)/.test(l)).length <= 1), 'feedback con más de una frase de pista');
+check(new Set(fbTexts).size === fbTexts.length, 'feedback repetido idéntico');
+await page.waitForSelector('.result');
+await shot(page, '13-fin-etapa');
+await audit(page, '390 resultado');
+await shot(page, '14-fin-etapa-completo', true);
+check(await page.locator('.learned').count() === 1, 'falta «Hoy has aprendido»');
+check(/Primer día/.test(await page.locator('.event-streak').innerText()), 'la racha no se ve el día 1');
+check(await page.locator('.event-goal').count() === 1, 'meta diaria no celebrada');
+check(await page.locator('.event-go').count() === await page.locator('button.event-link .event-go').count(), 'chevron en una tarjeta no pulsable');
+check(await page.locator('section.event .event-go').count() === 0, 'tarjeta fija con aspecto pulsable');
+await page.mouse.move(1, 1);
+const borders = await page.$$eval('.event:not(.event-seal)', (els) => [...new Set(els.map((e) => getComputedStyle(e).borderTopColor))]);
+check(borders.length <= 1, `bordes distintos en las tarjetas del resultado: ${borders}`);
+if (SMOKE) {
+  await page.goto(`${base}#perfil`);
+  await page.waitForSelector('.stats');
+  await audit(page, '390 perfil');
+  check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
+  check(await page.locator('button.medal-item').count() >= 1, 'las medallas del perfil no son pulsables');
+}
+// Del recorrido completo en adelante (no entra en el modo humo).
+if (!SMOKE) {
+// Retar a un amigo
+await page.click('[data-action="share"]');
+await page.waitForTimeout(300);
+challengeText = await page.evaluate(() => navigator.clipboard.readText());
+// «Siguiente etapa» lleva a esa etapa
+const nextCard = page.locator('button.event-link', { hasText: 'Siguiente etapa' });
+check(await nextCard.count() === 1, 'falta la tarjeta pulsable de siguiente etapa');
+const second = index.steps[1];
+await nextCard.click();
+await page.waitForSelector('.learn, .intro');
+check(page.url().endsWith(`#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`), `la tarjeta lleva a ${page.url()}`);
+if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
+await page.click('[data-action="practice"]');
+await playRound(page);
+// Volver atrás desde el resultado vuelve al camino (no se queda colgado).
+await page.goBack();
+await page.waitForSelector('.path');
+
+// Reto diario
+await page.click('.card-daily');
+await playRound(page, { wrongAt: [3, 7] });
+await shot(page, '15-reto-diario-fin', true);
+await page.click('[data-action="share"]');
+await page.waitForTimeout(300);
+dailyText = await page.evaluate(() => navigator.clipboard.readText());
+await page.click('[data-action="done"]');
+await page.waitForSelector('.path');
+await shot(page, '16-mapa-tras-jugar');
+
+// Colección y ficha
+await page.click('.nav-item[href="#coleccion"]');
+await page.waitForSelector('.coll-grid');
+await page.locator('.coll-item').first().click();
+await page.waitForSelector('dialog[open]');
+await shot(page, '17-ficha');
+await audit(page, '390 ficha');
+await page.keyboard.press('Escape');
+
+// Perfil: meta diaria ajustable, medallas con icono, reinicio con borde
+await page.click('.nav-item[href="#perfil"]');
+await page.waitForSelector('.stats');
+await shot(page, '18-perfil', true);
+await audit(page, '390 perfil');
+check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
+const range = await page.locator('[data-setting="volume"]').boundingBox();
+check(range.height >= 48, `deslizador de volumen de ${Math.round(range.height)} px`);
+await page.click('[data-action="goal"][data-goal="100"]');
+check((await page.locator('.chip-goal').getAttribute('aria-label')).includes('de 100 XP'), 'la cabecera no refleja la nueva meta');
+check(await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.dailyGoal) === 100, 'meta no persistida');
+check(await page.locator('.medal-item.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
+await page.goto(`${base}#coleccion`);
+await page.waitForSelector('.coll-grid');
+await page.waitForTimeout(500);
+await shot(page, '17b-coleccion');
+await audit(page, '390 coleccion');
+await page.goto(`${base}#perfil`);
+await page.waitForSelector('.stats');
+for (const sw of await page.$$eval('.switch', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return [r.width, r.height]; }))) {
+  check(sw[0] >= 48 && sw[1] >= 48, `interruptor de ${sw.map(Math.round).join('×')}`);
+}
+const resetBox = await page.locator('[data-action="ask-reset"]').boundingBox();
+check(resetBox.height >= 48, 'botón de reinicio < 48 px');
+await page.locator('[data-setting="reducedMotion"]').check();
+check(await page.evaluate(() => document.documentElement.classList.contains('reduce-motion')), 'reducir animaciones no aplica la clase');
+await page.locator('[data-setting="reducedMotion"]').uncheck();
+await page.goto(`${base}#medallas`);
+await page.waitForSelector('#medallas-panel');
+await page.waitForTimeout(400);
+check(await page.locator('.medal-item.is-got .medal-thumb img').count() >= 1, 'medalla sin miniatura del atlas');
+await shot(page, '19-medallas');
+
+// ---------------------------------------------------------------- Reto de etapa sin conocer al pintor
+const url = challengeText.split('\n').pop();
+const friend = await browser.newContext(ctxOpts);
+const fpage = await friend.newPage();
+watch(fpage, 'amigo');
+await fpage.goto(url);
+await fpage.waitForSelector('[data-action="accept"]');
+await shot(fpage, '20-reto-amigo');
+await audit(fpage, '390 reto amigo');
+await fpage.click('[data-action="accept"]');
+await fpage.waitForSelector('.look-first');
+check(/Fíjate|Mira/i.test(await fpage.locator('.look-first .hint').innerText()), 'la pantalla previa no enseña el rasgo');
+await shot(fpage, '21-reto-fijate');
+await playRound(fpage, { wrongAt: [0] });
+await shot(fpage, '22-reto-amigo-fin', true);
+
+// ---------------------------------------------------------------- Movimiento completo: sello y medalla que se estampa
+const mov = index.visibleMovements.find((m) => !index.isSala(m.id) && index.stageArtists(m.id).length >= 2);
+const lastOfMov = index.stepsOf(mov.id).at(-1);
+const sealCtx = await browser.newContext(ctxOpts);
+const spage = await sealCtx.newPage();
+watch(spage, 'sello');
+await seed(spage, seededState({ upTo: index.steps.indexOf(lastOfMov) }), `etapa-${lastOfMov.id}`);
+await spage.waitForSelector('.learn');
+await spage.click('[data-action="practice"]');
+await playRound(spage);
+await spage.waitForTimeout(1600);
+await shot(spage, '23-sello-movimiento');
+check(await spage.locator('.hero-medal .medal-lg').count() === 1, 'no se estampa la medalla');
+check(await spage.locator('.event-seal').count() === 1, 'no aparece el sello del movimiento');
+await spage.click('[data-action="done"]');
+await spage.waitForSelector('.path');
+check(await spage.locator('.movement.is-sealed').count() >= 1, 'el mapa no muestra el sello');
+await spage.locator('.movement.is-sealed').first().scrollIntoViewIfNeeded();
+await shot(spage, '24-mapa-sello');
+
+// ---------------------------------------------------------------- Sala (si el catálogo tiene alguna)
+const sala = index.steps.find((s) => s.type === 'sala');
+if (sala) {
+  await seed(spage, seededState({ upTo: index.steps.indexOf(sala) }), `sala-${sala.id}`);
+  await spage.waitForSelector('.intro, .learn');
+  if (await spage.locator('.intro').count()) await spage.click('.intro [data-action="enter"]');
+  await spage.waitForSelector('.learn');
+  await shot(spage, '25-sala-conoce');
+  await spage.click('[data-action="practice"]');
+  await playRound(spage, { wrongAt: [2] });
+  await shot(spage, '26-sala-fin', true);
+} else notes.push('El catálogo actual no tiene salas: se prueban en los tests con un catálogo sintético.');
+
+// ---------------------------------------------------------------- Camino jugado pero sin dominar: no hay «Camino completo»
+const halfCtx = await browser.newContext(ctxOpts);
+const hpage = await halfCtx.newPage();
+watch(hpage, 'por-dominar');
+{
+  const st = seededState({ upTo: index.steps.length, xp: 9000 });
+  const pend = [index.path[14], index.path[27]];
+  for (const a of pend) { st.progress.artists[a.id] = { plays: 1, best: 0.57, mastered: false, last: '2026-11-20' }; delete st.progress.medals[`artist-${a.id}`]; }
+  await seed(hpage, st);
+  await hpage.waitForSelector('.path');
+  check(await hpage.locator('[data-action="free"]').count() === 0, 'ronda libre sin tener todo dominado');
+  check(!/Camino completo/.test(await hpage.locator('#main').innerText()), '«Camino completo» con paradas por repasar');
+  const fin = hpage.locator('.finale');
+  check(/Te quedan 2 por dominar/.test(await fin.innerText()), `final sin cuántas quedan: ${await fin.innerText()}`);
+  check(await fin.locator(`[data-action="stage"][data-id="${pend[0].id}"]`).count() === 1, 'el final no lleva al primero por repasar');
+  check(/Por repasar · quedan 2/i.test(await hpage.locator('.card-continue').first().innerText()), 'la tarjeta no dice cuántas quedan');
+  await fin.scrollIntoViewIfNeeded();
+  await shot(hpage, '27a-por-dominar');
+  await fin.locator('[data-action="stage"]').click();
+  await hpage.waitForSelector('.learn, .intro');
+  check(hpage.url().endsWith(`#etapa-${pend[0].id}`), `«Repasar» lleva a ${hpage.url()}`);
+  await hpage.goto(`${base}#ronda-libre`);
+  await hpage.waitForSelector('#toast.is-on');
+  await hpage.waitForSelector('.path');
+  check(hpage.url().endsWith('#inicio'), 'la ronda libre se abre sin tener todo dominado');
+}
+
+// ---------------------------------------------------------------- Camino dominado: ronda libre, reto semanal, detalle del día y salas
+const doneCtx = await browser.newContext(ctxOpts);
+const dpage0 = await doneCtx.newPage();
+watch(dpage0, 'completo');
+const allWorks = index.path.flatMap((a) => index.worksOf(a.id));
+const doneExtra = {
+  collection: Object.fromEntries(allWorks.map((w) => [w.id, '2026-11-20'])),
+  srs: Object.fromEntries(allWorks.map((w, i) => [`art:${w.id}`, { box: 2 + (i % 3), due: '2026-12-30' }])),
+};
+const expectRecognized = allWorks.filter((w, i) => 2 + (i % 3) >= 3).length;
+await seed(dpage0, seededState({ upTo: index.steps.length, xp: 9800, extra: doneExtra }));
+await dpage0.waitForSelector('.path');
+await shot(dpage0, '27-camino-completo');
+await audit(dpage0, '390 camino completo');
+check(await dpage0.locator('[data-action="free"]').count() >= 1, 'camino completo sin ronda libre');
+await dpage0.locator('.finale').scrollIntoViewIfNeeded();
+check((await dpage0.locator('.finale-count').innerText()).includes(String(expectRecognized)), `contador de cuadros que reconoces: ${await dpage0.locator('.finale-count').innerText()} (esperado ${expectRecognized})`);
+await shot(dpage0, '28-final-camino');
+// Detalle del día: una pregunta, una vez al día, +XP pequeña, persiste.
+await dpage0.evaluate(() => window.scrollTo(0, 0));
+// Camino avanzado: las tarjetas del día van en el bloque «Hoy» y el detalle se abre desde su fila.
+check(await dpage0.locator('.today-block').count() === 1, 'camino avanzado sin bloque «Hoy»');
+const mapTop = await dpage0.evaluate(() => {
+  const nav = document.querySelector('.bottomnav');
+  const navTop = nav ? nav.getBoundingClientRect().top : innerHeight;
+  return { top: document.querySelector('.path').getBoundingClientRect().top, limit: Math.min(innerHeight, navTop) };
+});
+check(mapTop.top < mapTop.limit - 40, `el mapa no asoma en la primera pantalla (${Math.round(mapTop.top)} de ${Math.round(mapTop.limit)})`);
+await dpage0.locator('.today-detail summary').click();
+const detailCard = dpage0.locator('.card-detail');
+check(await detailCard.count() === 1, 'falta el detalle del día');
+await detailCard.scrollIntoViewIfNeeded();
+await dpage0.waitForTimeout(500);
+await shot(dpage0, '28b-detalle-del-dia');
+check(await detailCard.locator('.detail-option').count() === 4, 'el detalle no tiene 4 opciones');
+const cropImg = await detailCard.locator('.detail-crop img').evaluate((img) => ({ t: getComputedStyle(img).transform, src: img.getAttribute('src') }));
+check(cropImg.t !== 'none' && /^img\/[ab]\d+\.jpg$/.test(cropImg.src), `recorte del detalle raro: ${JSON.stringify(cropImg)}`);
+const xpBefore = await dpage0.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).progress.xp);
+await detailCard.locator('.detail-option').first().click();
+await dpage0.waitForSelector('.detail-result');
+await shot(dpage0, '28c-detalle-respondido');
+const afterDetail = await dpage0.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).progress);
+check(Object.keys(afterDetail.detail).length === 1, 'el detalle no se guarda');
+const detailOk = Object.values(afterDetail.detail)[0].correct;
+check(afterDetail.xp - xpBefore === (detailOk ? 5 : 0), `XP del detalle: ${afterDetail.xp - xpBefore}`);
+await dpage0.reload();
+await dpage0.waitForSelector('.path');
+check(await dpage0.locator('.card-detail .detail-option').count() === 0 && await dpage0.locator('.card-detail .detail-result').count() === 1, 'el detalle se puede responder dos veces');
+// Sala de un movimiento dominado: desde el mapa y desde Colección.
+const galleryRow = dpage0.locator('.stage-gallery').first();
+check(await dpage0.locator('.stage-gallery').count() === index.visibleMovements.length, 'faltan salas en el mapa');
+await galleryRow.scrollIntoViewIfNeeded();
+await galleryRow.click();
+await dpage0.waitForSelector('.gallery');
+check(await dpage0.locator('.gallery-item').count() >= 3, 'sala casi vacía');
+await dpage0.waitForTimeout(700);
+await shot(dpage0, '29a-sala');
+await audit(dpage0, '390 sala');
+await shot(dpage0, '29b-sala-completa', true);
+await dpage0.locator('.gallery-back').click();
+await dpage0.waitForSelector('.path');
+await dpage0.click('.nav-item[href="#coleccion"]');
+await dpage0.waitForSelector('.sala-link');
+check(await dpage0.locator('.sala-link').count() === index.visibleMovements.length, 'faltan salas en Colección');
+await shot(dpage0, '29c-coleccion-salas');
+await dpage0.locator('.sala-link').nth(2).click();
+await dpage0.waitForSelector('.gallery');
+await dpage0.locator('.lesson-bar [data-action="leave"]').click();
+await dpage0.waitForSelector('.sala-link');
+check(dpage0.url().endsWith('#coleccion'), `«Volver» de la sala abierta desde Colección lleva a ${dpage0.url()}`);
+await dpage0.goto(`${base}#galeria-nope`);
+await dpage0.waitForSelector('#toast.is-on');
+// Reto semanal: 15 preguntas, compartible y una vez por semana.
+await dpage0.goto(`${base}#inicio`);
+await dpage0.waitForSelector('.card-weekly');
+await dpage0.locator('.card-weekly').click();
+const wSteps = await playRound(dpage0, { wrongAt: [2, 9] });
+check(wSteps === 17, `el reto semanal tiene ${wSteps} pasos (15 + 2 repeticiones)`);
+check(await dpage0.locator('.grid-row .sq').count() === 15, 'el reto semanal no muestra 15 casillas');
+await shot(dpage0, '29d-reto-semanal-fin', true);
+await audit(dpage0, '390 reto semanal fin');
+await dpage0.click('[data-action="share"]');
+await dpage0.waitForTimeout(300);
+const weeklyText = await dpage0.evaluate(() => navigator.clipboard.readText());
+const weekNow = await dpage0.evaluate(() => {
+  const f = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit' });
+  return f.format(new Date());
+});
+check(weeklyText.includes(`#reto-${isoWeek(weekNow).compact}-13`) && weeklyText.includes('Reto semanal'), `texto del reto semanal: ${weeklyText}`);
+await dpage0.click('[data-action="done"]');
+await dpage0.waitForSelector('.card-weekly');
+check((await dpage0.locator('.card-weekly .card-status').innerText()).includes('13/15'), 'el inicio no muestra el resultado semanal');
+await dpage0.goto(`${base}#reto-semanal`);
+await dpage0.waitForSelector('.result-title');
+check(/Hecho esta semana/.test(await dpage0.locator('.result-title').innerText()), 'el reto semanal se puede repetir');
+// Un amigo abre el enlace del semanal.
+const wFriend = await browser.newContext(ctxOpts);
+const wf = await wFriend.newPage();
+watch(wf, 'amigo-semanal');
+await wf.goto(weeklyText.split('\n').pop());
+await wf.waitForSelector('[data-action="accept"]');
+check(/13 de 15/.test(await wf.locator('h1').innerText()), 'el enlace semanal no muestra la puntuación');
+await wf.click('[data-action="accept"]');
+check(await playRound(wf) === 15, 'el amigo no juega las 15');
+await wFriend.close();
+// Ronda libre.
+await dpage0.goto(`${base}#inicio`);
+await dpage0.waitForSelector('.card-continue[data-action="free"]');
+await dpage0.locator('.card-continue[data-action="free"]').click();
+await playRound(dpage0);
+await shot(dpage0, '29-ronda-libre-fin', true);
+const freeGap = await dpage0.evaluate(() => document.querySelector('.result-actions').getBoundingClientRect().top - document.querySelector('.level-line').getBoundingClientRect().bottom);
+check(freeGap < 120, `resultado de la ronda libre con hueco central de ${Math.round(freeGap)} px`);
+await dpage0.goto(`${base}#perfil`);
+await dpage0.waitForSelector('.stats');
+check((await dpage0.locator('.stats').innerText()).includes(String(expectRecognized)), 'el perfil no muestra los cuadros que reconoces');
+
+// ---------------------------------------------------------------- Ojo de… (todas las obras de un pintor en la caja más alta)
+const eyeCtx = await browser.newContext(ctxOpts);
+const epage = await eyeCtx.newPage();
+watch(epage, 'ojo');
+{
+  const who = index.path[2];
+  const works = index.worksOf(who.id).filter((w) => !w.spoiler && !w.attributed);
+  const srsEye = Object.fromEntries(works.map((w, i) => [`art:${w.id}`, i === 0 ? { box: 3, due: '2026-11-01' } : { box: i % 2 ? 4 : 5, due: '2027-01-30' }]));
+  await seed(epage, seededState({ upTo: 8, extra: { srs: srsEye } }));
+  await epage.waitForSelector('.card-review[data-action="quick"]');
+  await epage.locator('.card-review[data-action="quick"]').click();
+  await playRound(epage);
+  await epage.waitForTimeout(900);
+  const eyeCard = epage.locator('.event-medal', { hasText: `Ojo de ${who.short || who.name}` });
+  check(await eyeCard.count() === 1, `no se gana «Ojo de ${who.short || who.name}»`);
+  await shot(epage, '29e-ojo-de', true);
+  await eyeCard.click();
+  await epage.waitForSelector('#medallas-panel');
+  check(await epage.locator('.medal-item.is-got .medal-eye').count() === 1, 'la medalla «Ojo de…» no está en el perfil');
+}
+
+// ---------------------------------------------------------------- Ronda retomada tras recargar
+const resCtx = await browser.newContext(ctxOpts);
+const qpage = await resCtx.newPage();
+watch(qpage, 'retomar');
+const first = index.steps[0];
+await seed(qpage, seededState({ upTo: 1 }), `etapa-${first.id}`);
+await qpage.waitForSelector('.learn');
+await qpage.click('[data-action="practice"]');
+await playRound(qpage, { stopAfter: 2 });
+const before = await qpage.locator('.progress').getAttribute('aria-valuenow');
+await qpage.reload();
+await qpage.waitForSelector('.lesson .option, .lesson .interlude');
+check(before === await qpage.locator('.progress').getAttribute('aria-valuenow'), 'al recargar cambia el progreso');
+await qpage.evaluate(() => { location.hash = 'inicio'; });
+await qpage.waitForSelector('.path, .lesson');
+if (await qpage.locator('.lesson').count()) {
+  await qpage.click('[data-action="quit"]');
+  await qpage.click('[data-action="stay"]');
+}
+
+// ---------------------------------------------------------------- 360×640
+const small = await browser.newContext({ ...ctxOpts, viewport: { width: 360, height: 640 }, hasTouch: true });
+const mpage = await small.newPage();
+watch(mpage, '360');
+// Segunda etapa: tiene «¿Quién lo pintó?» con repaso; se falla a propósito para ver la roja y la verde.
+const second360 = index.steps[1];
+await seed(mpage, seededState({ upTo: 1 }));
+await mpage.waitForSelector('.path');
+await shot(mpage, '30-360-mapa');
+await audit(mpage, '360 mapa');
+await mpage.goto(`${base}#etapa-${second360.id}`);
+await mpage.waitForSelector('.learn');
+await mpage.waitForTimeout(400);
+await assertPracticeVisible(mpage, '360');
+await assertLearnLayout(mpage, '360 conoce');
+await shot(mpage, '30b-360-conoce');
+await audit(mpage, '360 conoce');
+await mpage.click('[data-action="practice"]');
+let shot360 = false;
+await playRound(mpage, {
+  wrongAt: [0, 1, 2, 3],
+  checkReveal: '360',
+  onStep: async ({ wrong, type }) => {
+    if (wrong && !shot360) {
+      shot360 = true;
+      const barBox = await mpage.locator('.lesson-bar .progress').boundingBox();
+      check(barBox && barBox.y >= 0 && barBox.y < 60, `barra de ronda fuera de la vista a 360×640 (${barBox && barBox.y})`);
+      await shot(mpage, `31-360-fallo-${type}`);
+    }
+  },
+});
+await noHorizontalScroll(mpage, '360 resultado');
+// Con menos de la mitad no se abre la siguiente: «Repetir» primero y una línea que lo explica.
+check(await mpage.locator('.result-gate').count() === 1, 'falta el aviso de la mitad de aciertos');
+check((await mpage.locator('.result-actions .btn-primary').innerText()).includes('Repetir'), '«Repetir» no es la acción principal');
+check(await mpage.locator('.learned').count() === 0, '«Hoy has aprendido» con menos de la mitad de aciertos');
+check(await mpage.locator('.result-cheer').count() === 1, 'falta la frase de ánimo con menos de la mitad');
+await audit(mpage, '360 resultado bajo');
+await shot(mpage, '31b-360-repetir', true);
+await mpage.click('[data-action="done"]');
+await mpage.waitForSelector('.path');
+const third = index.steps[2];
+check(await mpage.locator(`.stage[data-id="${third.id}"]`).getAttribute('data-status') === 'locked', 'la etapa siguiente se abre sin mérito');
+
+// ---------------------------------------------------------------- Zoom de texto 200 % (= 195 px de ancho)
+for (const mode of ['font', 'viewport']) {
+  const zoom = await browser.newContext(mode === 'font' ? ctxOpts : { ...ctxOpts, viewport: { width: 195, height: 422 } });
+  const zpage = await zoom.newPage();
+  watch(zpage, `zoom-${mode}`);
+  if (mode === 'font') await zpage.addInitScript(() => document.addEventListener('DOMContentLoaded', () => { document.documentElement.style.fontSize = '200%'; }));
+  await seed(zpage, seededState({ upTo: 9, extra: { collection: { [index.path[0].id === 'leonardo' ? 'a154' : catalog.artworks[0].id]: '2026-11-20' } } }));
+  await zpage.waitForSelector('.path');
+  await noHorizontalScroll(zpage, `zoom ${mode} inicio`);
+  await shot(zpage, `33-zoom200-${mode}-inicio`);
+  const target = index.steps.find((st, i) => i >= 9 && st.type === 'artist');
+  await zpage.goto(`${base}#etapa-${target.id}`);
+  await zpage.waitForSelector('.learn, .intro');
+  if (await zpage.locator('.intro').count()) await zpage.click('.intro [data-action="enter"]');
+  await zpage.waitForSelector('.learn');
+  await assertPracticeVisible(zpage, `zoom ${mode}`);
+  await assertLearnLayout(zpage, `zoom ${mode} conoce`, { strict: false });
+  await noHorizontalScroll(zpage, `zoom ${mode} conoce`);
+  await shot(zpage, `33b-zoom200-${mode}-conoce`);
+  await zpage.click('[data-action="practice"]');
+  await zpage.waitForSelector('.lesson .option');
+  await zpage.waitForTimeout(500);
+  await noHorizontalScroll(zpage, `zoom ${mode} pregunta`);
+  await shot(zpage, `34-zoom200-${mode}-pregunta`);
+  if (mode === 'font') {
+    await zpage.keyboard.press('Escape');
+    await zpage.waitForSelector('.quit-sheet:not([hidden])');
+    await zpage.waitForTimeout(600);
+    const sheet = await zpage.$eval('.quit-sheet', (sh) => {
+      const r = sh.getBoundingClientRect();
+      const h = sh.querySelector('h2').getBoundingClientRect();
+      const btns = [...sh.querySelectorAll('.btn')].map((b) => b.getBoundingClientRect());
+      return { overflowX: sh.scrollWidth > sh.clientWidth + 1, titleOut: h.right > r.right + 1, btnOut: btns.some((b) => b.right > r.right + 1 || b.bottom > window.innerHeight + 1) };
+    });
+    check(!sheet.overflowX && !sheet.titleOut && !sheet.btnOut, `hoja de salir recortada al 200 %: ${JSON.stringify(sheet)}`);
+    await zpage.click('[data-action="stay"]');
+  }
+  let zshot = false;
+  await playRound(zpage, {
+    wrongAt: [0, 1, 3],
+    checkReveal: `zoom ${mode}`,
+    checkLook: mode === 'viewport' ? 'zoom 195 px' : null,
+    onStep: async ({ wrong }) => { if (wrong && !zshot) { zshot = true; await shot(zpage, `34b-zoom200-${mode}-fallo`); } },
+  });
+  await zpage.waitForTimeout(800);
+  await noHorizontalScroll(zpage, `zoom ${mode} resultado`);
+  await shot(zpage, `35-zoom200-${mode}-resultado`, true);
+  await zpage.goto(`${base}#perfil`);
+  await zpage.waitForSelector('.stats');
+  await noHorizontalScroll(zpage, `zoom ${mode} perfil`);
+  await shot(zpage, `36-zoom200-${mode}-perfil`, true);
+  await zoom.close();
+}
+
+// ---------------------------------------------------------------- Enlaces que no valen
+// Aviso visible y en una región viva (role="status", aria-live) en todos los casos: abriendo el
+// enlace en una pestaña nueva, desde dentro de la app y si la página se recarga justo después.
+const badCtx = await browser.newContext(ctxOpts);
+const bpage = await badCtx.newPage();
+watch(bpage, 'enlaces');
+await seed(bpage, seededState({ upTo: 1 }));
+const toastOk = async (pg, label, text = 'Ese enlace no vale') => {
+  await pg.waitForSelector('#toast.is-on', { timeout: 4000 }).catch(() => {});
+  await pg.waitForFunction((t) => document.getElementById('toast').textContent.includes(t), text, { timeout: 4000 }).catch(() => {});
+  const t = await pg.evaluate(() => { const e = document.getElementById('toast'); const r = e.getBoundingClientRect(); return { on: e.classList.contains('is-on'), text: e.textContent, role: e.getAttribute('role'), live: e.getAttribute('aria-live'), hidden: e.hidden, op: getComputedStyle(e).opacity, h: r.height }; });
+  check(t.on && t.text.includes(text) && t.role === 'status' && t.live === 'polite' && !t.hidden && t.h > 0, `${label}: sin aviso visible/anunciado ${JSON.stringify(t)}`);
+};
+for (const bad of ['reto-zzz', 'reto-d20991231-3', 'reto-d90261124-9', 'etapa-nope', 'cosa-rara', 'galeria-nope', 'reto-w209901-3']) {
+  const fresh = await badCtx.newPage();
+  watch(fresh, `enlace ${bad}`);
+  await fresh.goto(`${base}#${bad}`);
+  await toastOk(fresh, `${bad} (pestaña nueva)`);
+  await fresh.waitForSelector('.path');
+  check(fresh.url().endsWith('#inicio'), `${bad}: no vuelve al inicio (${fresh.url()})`);
+  if (bad === 'reto-zzz') await shot(fresh, '37-enlace-no-vale');
+  await fresh.close();
+  await bpage.goto(`${base}#${bad}`);
+  await toastOk(bpage, `${bad} (desde la app)`);
+  await bpage.waitForSelector('.path');
+}
+// Si la página se recarga nada más cambiar el enlace roto por #inicio, el aviso se repite.
+await bpage.goto(`${base}#reto-zzz`);
+await bpage.reload();
+await toastOk(bpage, 'recarga tras enlace roto');
+// Puntuación imposible para la ronda
+await bpage.goto(`${base}#reto-d20261123-99`);
+await toastOk(bpage, 'reto con 99 aciertos');
+check(bpage.url().endsWith('#inicio'), 'reto con 99 aciertos aceptado');
+// Etapa cerrada por enlace: aviso distinto
+await bpage.goto(`${base}#etapa-${index.path.at(-1).id}`);
+await toastOk(bpage, 'etapa cerrada', 'Aún no');
+
+// ---------------------------------------------------------------- Repaso rápido (SRS vencido)
+const quickCtx = await browser.newContext(ctxOpts);
+const kq = await quickCtx.newPage();
+watch(kq, 'repaso-rapido');
+const dueWorks = index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).filter((w) => !w.spoiler).slice(0, 6);
+const srs = Object.fromEntries(dueWorks.map((w) => [`art:${w.id}`, { box: 1, due: '2026-11-01' }]));
+await seed(kq, seededState({ upTo: 4, extra: { srs } }));
+await kq.waitForSelector('.path');
+const quickCard = kq.locator('.card-review[data-action="quick"]');
+check(await quickCard.count() === 1, 'no aparece el repaso rápido con cuadros vencidos');
+await shot(kq, '38-repaso-rapido-inicio');
+await quickCard.click();
+await kq.waitForSelector('.lesson .option');
+const qSteps = await playRound(kq);
+check(qSteps === 3, `el repaso rápido tiene ${qSteps} preguntas`);
+await kq.waitForTimeout(900);
+check(/Primer día/.test(await kq.locator('.event-streak').innerText()), 'el repaso rápido no cuenta para la racha');
+check(await kq.locator('.event-goal').count() === 1, 'el repaso rápido no cuenta para la meta');
+check(await kq.locator('.result-actions [data-to="repaso"]').count() === 1, 'falta «Repasar más» con cuadros pendientes');
+await shot(kq, '39-repaso-rapido-fin', true);
+
+// ---------------------------------------------------------------- Oscuro
+const dark = await browser.newContext({ ...ctxOpts, colorScheme: 'dark' });
+const kpage = await dark.newPage();
+watch(kpage, 'oscuro');
+await kpage.goto(`${base}`);
+await kpage.waitForSelector('.welcome');
+await audit(kpage, 'oscuro bienvenida');
+await seed(kpage, seededState({ upTo: 4, extra: { collection: Object.fromEntries(index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).map((w) => [w.id, '2026-11-20'])) } }));
+await kpage.waitForSelector('.path');
+await shot(kpage, '34-oscuro-mapa');
+await audit(kpage, 'oscuro mapa');
+const darkStage = index.steps.find((s, i) => i >= 4 && s.type === 'artist').id;
+await kpage.goto(`${base}#etapa-${darkStage}`);
+await kpage.waitForSelector('.learn, .intro');
+if (await kpage.locator('.intro').count()) { await audit(kpage, 'oscuro intro'); await kpage.click('.intro [data-action="enter"]'); }
+await kpage.waitForSelector('.learn');
+await assertLearnLayout(kpage, 'oscuro conoce');
+await audit(kpage, 'oscuro conoce');
+await kpage.click('[data-action="practice"]');
+await playRound(kpage, {
+  wrongAt: [0, 2], shotsFor: { wrong: '35-oscuro-fallo' },
+  onStep: async ({ step, type }) => { if (step === 0) await audit(kpage, `oscuro pregunta ${type} con fallo`); if (step === 2) await audit(kpage, `oscuro pregunta ${type} con fallo 2`); },
+});
+await kpage.waitForTimeout(1500);
+await shot(kpage, '36-oscuro-fin');
+await audit(kpage, 'oscuro resultado');
+await kpage.goto(`${base}#perfil`);
+await kpage.waitForSelector('.stats');
+await shot(kpage, '37-oscuro-perfil', true);
+await audit(kpage, 'oscuro perfil');
+await kpage.goto(`${base}#coleccion`);
+await kpage.waitForSelector('.coll-grid');
+await audit(kpage, 'oscuro coleccion');
+await kpage.goto(`${base}#galeria-${index.visibleMovements[0].id}`);
+await kpage.waitForSelector('.gallery');
+await shot(kpage, '37b-oscuro-sala');
+await audit(kpage, 'oscuro sala');
+await kpage.goto(`${base}#inicio`);
+await kpage.waitForSelector('.card-detail');
+await audit(kpage, 'oscuro detalle');
+
+// ---------------------------------------------------------------- Reduced motion
+const rm = await browser.newContext({ ...ctxOpts, reducedMotion: 'reduce' });
+const rpage = await rm.newPage();
+watch(rpage, 'reduced');
+await seed(rpage, seededState({ upTo: 1 }), `etapa-${first.id}`);
+await rpage.waitForSelector('.learn');
+await rpage.click('[data-action="practice"]');
+await playRound(rpage);
+const xpShown = await rpage.locator('.countup').innerText();
+check(xpShown === await rpage.locator('.countup').getAttribute('data-to'), 'con movimiento reducido el XP no se muestra de golpe');
+await shot(rpage, '38-reduced-fin');
+
+// ---------------------------------------------------------------- Sin localStorage
+const nols = await browser.newContext(ctxOpts);
+await nols.addInitScript(() => {
+  Object.defineProperty(window, 'localStorage', { get() { throw new Error('bloqueado'); } });
+});
+const npage = await nols.newPage();
+watch(npage, 'sin-storage');
+await npage.goto(base);
+await npage.click('[data-action="start"]');
+await npage.waitForSelector('.path');
+await npage.click('.card-continue');
+await npage.click('.intro [data-action="enter"]');
+await npage.click('[data-action="practice"]');
+await playRound(npage);
+await npage.click('[data-action="done"]');
+await npage.waitForSelector('.path');
+check((await npage.locator('.chip-goal').getAttribute('aria-label')).includes('50 de 50'), 'sin storage: la meta no avanza en memoria');
+
+// ---------------------------------------------------------------- Escritorio 1280×800
+const desk = await browser.newContext({ ...ctxOpts, viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1, hasTouch: false });
+const wpage = await desk.newPage();
+watch(wpage, 'escritorio');
+await seed(wpage, seededState({ upTo: 6, extra: { collection: Object.fromEntries(index.path.slice(0, 6).map((a, i) => [index.learnWorks(a.id)[0].id, `2026-11-2${i}`])), streak: { current: 2, best: 2, last: '2026-11-23', graceOn: null, days: ['2026-11-23', '2026-11-24'] } } }));
+await wpage.waitForSelector('.path');
+await shot(wpage, '39-escritorio-mapa');
+await audit(wpage, '1280 mapa');
+const side = await wpage.locator('.home-side').boundingBox();
+const main = await wpage.locator('.home-main').boundingBox();
+check(side && main && side.x + side.width <= main.x, 'escritorio: el mapa no tiene panel lateral');
+check(await wpage.locator('.side-week').isVisible(), 'escritorio: la columna lateral sigue vacía');
+await wpage.goto(`${base}#etapa-${index.steps.find((s, i) => i >= 6 && s.type === 'artist').id}`);
+await wpage.waitForSelector('.learn, .intro');
+if (await wpage.locator('.intro').count()) await wpage.click('.intro [data-action="enter"]');
+await wpage.waitForSelector('.learn');
+await assertLearnLayout(wpage, '1280 conoce');
+await audit(wpage, '1280 conoce');
+await shot(wpage, '39b-escritorio-conoce');
+await wpage.click('[data-action="practice"]');
+let deskWho = false;
+await playRound(wpage, {
+  wrongAt: [1, 2],
+  onStep: async ({ type, step }) => {
+    const fb = await wpage.evaluate(() => { const r = document.querySelector('.feedback').getBoundingClientRect(); return { top: r.top, bottom: r.bottom, vh: innerHeight }; });
+    check(fb.top >= 0 && fb.bottom <= fb.vh - 4, `1280: hoja de feedback cortada ${JSON.stringify(fb)}`);
+    if (step === 1) { await shot(wpage, `40b-escritorio-fallo-${type}`); await audit(wpage, `1280 pregunta ${type} con fallo`); }
+    if (type === 'who' && !deskWho) {
+      deskWho = true;
+      const a = await wpage.locator('.q-art').boundingBox();
+      const o = await wpage.locator('.options').boundingBox();
+      check(a.x + a.width <= o.x + 1, 'escritorio: cuadro y opciones no van lado a lado');
+      await shot(wpage, '40-escritorio-pregunta');
+    }
+  },
+});
+await wpage.waitForTimeout(1200);
+await shot(wpage, '41-escritorio-fin');
+await wpage.goto(`${base}#coleccion`);
+await wpage.waitForSelector('.coll-grid');
+await wpage.waitForTimeout(500);
+await shot(wpage, '42-escritorio-coleccion');
+
+// ---------------------------------------------------------------- Tableta 768×1024 (claro y oscuro)
+for (const scheme of ['light', 'dark']) {
+  const tab = await browser.newContext({ ...ctxOpts, viewport: { width: 768, height: 1024 }, colorScheme: scheme });
+  const tpage = await tab.newPage();
+  watch(tpage, `768-${scheme}`);
+  await seed(tpage, seededState({ upTo: 6, extra: { collection: Object.fromEntries(index.path.slice(0, 6).map((a) => [index.learnWorks(a.id)[0].id, '2026-11-20'])) } }));
+  await tpage.waitForSelector('.path');
+  await shot(tpage, `43-768-${scheme}-mapa`);
+  await audit(tpage, `768 ${scheme} mapa`);
+  await noHorizontalScroll(tpage, `768 ${scheme} mapa`);
+  await tpage.goto(`${base}#etapa-${index.steps.find((s, i) => i >= 6 && s.type === 'artist').id}`);
+  await tpage.waitForSelector('.learn, .intro');
+  if (await tpage.locator('.intro').count()) await tpage.click('.intro [data-action="enter"]');
+  await tpage.waitForSelector('.learn');
+  await assertLearnLayout(tpage, `768 ${scheme} conoce`);
+  await audit(tpage, `768 ${scheme} conoce`);
+  await shot(tpage, `44-768-${scheme}-conoce`);
+  await tpage.click('[data-action="practice"]');
+  let tshot = false;
+  await playRound(tpage, {
+    wrongAt: [0, 1],
+    checkReveal: `768 ${scheme}`,
+    onStep: async ({ wrong, type }) => { if (wrong && !tshot) { tshot = true; await shot(tpage, `45-768-${scheme}-fallo-${type}`); await audit(tpage, `768 ${scheme} pregunta con fallo`); } },
+  });
+  await tab.close();
+}
+
+// ---------------------------------------------------------------- Oleada 7: pantallas cambiadas, claro y oscuro, 390 y 360
+// Medallas (todas las clases de sello, pendientes incluidas: así se habrían visto los números de
+// racha sin contraste), hoja de medalla, inicio avanzado con el bloque «Hoy», «Ojo de…» en Colección
+// y en la etapa, y el aviso del reto con pintores no vistos.
+{
+  const eyeWho = index.path[2];
+  const eyeWorks = index.worksOf(eyeWho.id).filter((w) => !w.spoiler && !w.attributed);
+  const allW = index.path.flatMap((a) => index.worksOf(a.id));
+  const srs7 = Object.fromEntries(allW.map((w, i) => [`art:${w.id}`, { box: 1 + (i % 3), due: i % 4 ? '2027-02-01' : '2026-11-01' }]));
+  eyeWorks.forEach((w, i) => { srs7[`art:${w.id}`] = { box: i < 2 ? 4 : 2, due: '2027-02-01' }; });
+  const medals7 = {};
+  for (const a of index.path) medals7[`artist-${a.id}`] = '2026-11-20';
+  medals7['streak-3'] = '2026-11-20';
+  medals7['new-1'] = '2026-11-20';
+  const st7 = seededState({ upTo: index.steps.length, xp: 9800, extra: { srs: srs7, collection: Object.fromEntries(allW.map((w) => [w.id, '2026-11-20'])) } });
+  st7.progress.medals = { ...st7.progress.medals, ...medals7 };
+  for (const m of index.visibleMovements) st7.progress.medals[`movement-${m.id}`] = '2026-11-20';
+  for (const scheme of ['light', 'dark']) {
+    for (const width of [390, 360]) {
+      const tag = `${width}-${scheme === 'dark' ? 'oscuro' : 'claro'}`;
+      const c7 = await browser.newContext({ ...ctxOpts, viewport: { width, height: width === 390 ? 844 : 640 }, colorScheme: scheme });
+      const p7 = await c7.newPage();
+      watch(p7, `o7-${tag}`);
+      // Inicio avanzado: bloque «Hoy», «Repaso de hoy · 3 cuadros» y el mapa asomando.
+      await seed(p7, st7);
+      await p7.waitForSelector('.today-block');
+      const quick = await p7.locator('.today-row.card-review').innerText();
+      check(/Repaso de hoy/.test(quick) && /\b3 cuadros\b/.test(quick), `[${tag}] repaso del inicio: ${quick.replace(/\s+/g, ' ')}`);
+      if (width === 390) {
+        const top = await p7.evaluate(() => ({ t: document.querySelector('.path').getBoundingClientRect().top, n: document.querySelector('.bottomnav').getBoundingClientRect().top }));
+        check(top.t < top.n - 40, `[${tag}] el mapa no asoma (${Math.round(top.t)} / ${Math.round(top.n)})`);
+      }
+      await shot(p7, `inicio-hoy-${tag}`);
+      await audit(p7, `o7 ${tag} inicio hoy`);
+      await p7.locator('.today-detail summary').click();
+      await p7.waitForTimeout(400);
+      await p7.locator('.today-detail .card-detail').scrollIntoViewIfNeeded();
+      await shot(p7, `inicio-detalle-${tag}`);
+      await audit(p7, `o7 ${tag} detalle abierto`);
+      // Medallas: sellos pendientes con número legible, «Ojo de X · n/m» y hoja de detalle.
+      await p7.goto(`${base}#medallas`);
+      await p7.waitForSelector('#medallas-panel');
+      await p7.waitForTimeout(500);
+      check(await p7.locator('.medal-item.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
+      const eyeText = `Ojo de ${eyeWho.short || eyeWho.name} · 2/${eyeWorks.length}`;
+      check(await p7.locator('.medal-item', { hasText: eyeText }).count() === 1, `[${tag}] falta «${eyeText}» en Medallas`);
+      await p7.locator('.medal-item.is-missing').first().scrollIntoViewIfNeeded();
+      await shot(p7, `medallas-${tag}`);
+      await audit(p7, `o7 ${tag} medallas`);
+      const opener = p7.locator('.medal-item.is-missing', { hasText: '7 días' });
+      await opener.click();
+      await p7.waitForSelector('.medal-dialog[open]');
+      await p7.waitForTimeout(400);
+      check(/7 días seguidos/.test(await p7.locator('.medal-dialog').innerText()), `[${tag}] la hoja de medalla no dice cómo se gana`);
+      await shot(p7, `medalla-hoja-${tag}`);
+      await audit(p7, `o7 ${tag} hoja de medalla`);
+      for (let k = 0; k < 3; k++) await p7.keyboard.press('Tab');
+      check(await p7.evaluate(() => Boolean(document.activeElement?.closest('.medal-dialog'))), `[${tag}] el foco sale de la hoja de medalla`);
+      await p7.keyboard.press('Escape');
+      await p7.waitForTimeout(200);
+      check(await p7.locator('.medal-dialog[open]').count() === 0, `[${tag}] Esc no cierra la hoja de medalla`);
+      check(await p7.evaluate(() => document.activeElement?.textContent.includes('7 días')), `[${tag}] el foco no vuelve a la medalla`);
+      // «Ojo de…» en Colección y en la etapa del pintor dominado.
+      await p7.goto(`${base}#coleccion`);
+      await p7.waitForSelector('.eye-line');
+      check((await p7.locator('.section-sub').innerText()).includes('vistos'), `[${tag}] Colección sin «N de M vistos»`);
+      await p7.locator('.eye-line', { hasText: eyeText }).scrollIntoViewIfNeeded();
+      await shot(p7, `coleccion-ojo-${tag}`);
+      await audit(p7, `o7 ${tag} coleccion`);
+      await p7.goto(`${base}#etapa-${eyeWho.id}`);
+      await p7.waitForSelector('.learn');
+      check((await p7.locator('.learn .eye-line').innerText()).includes(eyeText), `[${tag}] la etapa del pintor dominado no muestra «${eyeText}»`);
+      await assertLearnLayout(p7, `o7 ${tag} conoce`, { strict: width === 390 });
+      await shot(p7, `etapa-ojo-${tag}`);
+      await audit(p7, `o7 ${tag} etapa`);
+      await p7.goto(`${base}#perfil`);
+      await p7.waitForSelector('.stats');
+      check(/reconoces\s*\d+\s*cuadros?/i.test(await p7.locator('.stats').innerText()), `[${tag}] Perfil sin «Reconoces N cuadros»`);
+      await shot(p7, `perfil-${tag}`);
+      await c7.close();
+      // Reto semanal aceptado por un jugador nuevo: aviso breve, sin bloquear.
+      const n7 = await browser.newContext({ ...ctxOpts, viewport: { width, height: width === 390 ? 844 : 640 }, colorScheme: scheme });
+      const q7 = await n7.newPage();
+      watch(q7, `o7-nuevo-${tag}`);
+      const wk = isoWeek(dayKey(new Date())).compact;
+      await q7.goto(`${base}#reto-${wk}-9`);
+      await q7.waitForSelector('[data-action="accept"]');
+      check(/Salen pintores que aún no has visto/.test(await q7.locator('.welcome-note').innerText()), `[${tag}] el reto no avisa de pintores no vistos`);
+      await shot(q7, `reto-nuevo-${tag}`);
+      await audit(q7, `o7 ${tag} reto nuevo`);
+      if (width === 390 && scheme === 'light') {
+        await q7.click('[data-action="accept"]');
+        await playRound(q7, { wrongAt: [0, 1, 2, 3, 4] });
+        const stats = await q7.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).progress.stats);
+        check(stats.answered === 0, `el reto con pintores no vistos cuenta para la precisión: ${JSON.stringify(stats)}`);
+      }
+      await n7.close();
+    }
+  }
+}
+
+// ---------------------------------------------------------------- Oleada 8: visor a pantalla completa en cada pantalla y sin zoom de página
+// Con emulación táctil (hasTouch + isMobile) en móvil: se prueban toques de verdad (tap), el
+// pellizco y el doble toque. En escritorio, ratón y teclado.
+{
+  const allW = index.path.flatMap((a) => index.worksOf(a.id));
+  const st8 = seededState({ upTo: index.steps.length, xp: 9800, extra: {
+    collection: Object.fromEntries(allW.map((w) => [w.id, '2026-11-20'])),
+    srs: Object.fromEntries(allW.map((w, i) => [`art:${w.id}`, { box: 3 + (i % 2), due: '2027-02-01' }])),
+  } });
+  const roundStage = index.path.find((a, i) => i >= 8 && index.learnWorks(a.id).length >= 2) || index.path[1];
+  const portrait = (w) => w.h > w.w * 1.1;
+  const landscape = (w) => w.w > w.h * 1.15;
+  const configs = [
+    { tag: '390-claro', width: 390, height: 844, scheme: 'light', touch: true, full: true },
+    { tag: '390-oscuro', width: 390, height: 844, scheme: 'dark', touch: true },
+    { tag: '360-claro', width: 360, height: 640, scheme: 'light', touch: true },
+    { tag: '360-oscuro', width: 360, height: 640, scheme: 'dark', touch: true, round: true },
+    { tag: '1280-claro', width: 1280, height: 800, scheme: 'light', touch: false, round: true, desk: true },
+    { tag: '1280-oscuro', width: 1280, height: 800, scheme: 'dark', touch: false },
+    { tag: '195-claro', width: 195, height: 422, scheme: 'light', touch: true, round: true },
+  ];
+  for (const cfg of configs) {
+    const opts = cfg.touch
+      ? { ...ctxOpts, viewport: { width: cfg.width, height: cfg.height }, colorScheme: cfg.scheme, hasTouch: true, isMobile: true }
+      : { ...ctxOpts, viewport: { width: cfg.width, height: cfg.height }, colorScheme: cfg.scheme, hasTouch: false, deviceScaleFactor: 1 };
+    const c8 = await browser.newContext(opts);
+    const p8 = await c8.newPage();
+    watch(p8, `o8-${cfg.tag}`);
+    const L = (x) => `${cfg.tag} ${x}`;
+    const T = cfg.touch;
+
+    // Bienvenida: la pared de cuadros también se abre (solo en el recorrido completo de 390).
+    if (cfg.full) {
+      await p8.goto(base);
+      await p8.waitForSelector('.welcome');
+      await viewerCheck(p8, L('bienvenida'), p8.locator('.welcome .wall .art-zoom').nth(1), { group: 3, close: 'outside', touch: T });
+      // Sin zoom de página: viewport, touch-action y pellizco / doble toque reales (CDP).
+      const vp = await p8.evaluate(() => ({
+        meta: document.querySelector('meta[name="viewport"]').content,
+        body: getComputedStyle(document.body).touchAction,
+        btn: getComputedStyle(document.querySelector('button')).touchAction,
+      }));
+      check(/maximum-scale=1/.test(vp.meta) && /user-scalable=no/.test(vp.meta), `viewport permite zoom: ${vp.meta}`);
+      check(vp.body === 'pan-x pan-y' && vp.btn === 'pan-x pan-y', `touch-action: ${JSON.stringify(vp)}`);
+      // Control: la misma página sin estas reglas sí se amplía con el mismo gesto.
+      const ctrl = await c8.newPage();
+      await ctrl.setContent('<meta name="viewport" content="width=device-width, initial-scale=1"><div style="height:3000px;font-size:20px">x</div>');
+      const ctrlScale = await touchPinch(ctrl, await c8.newCDPSession(ctrl));
+      await ctrl.close();
+      const pinch = await touchPinch(p8, await c8.newCDPSession(p8));
+      check(pinch === 1, `el pellizco amplía la página (escala ${pinch})`);
+      check(ctrlScale > 1, `control del pellizco sin efecto (escala ${ctrlScale}): la prueba no discrimina`);
+      notes.push(`Pellizco con dos dedos (CDP): página de control ×${ctrlScale}, Mirada ×${pinch}.`);
+    }
+
+    await seed(p8, st8);
+    await p8.waitForSelector('.path');
+    if (cfg.full) {
+      // Doble toque y pellizco en el mapa: no amplían; el dedo sigue desplazando la página.
+      const cdp = await c8.newCDPSession(p8);
+      await touchTap(p8, cdp, 120, 300);
+      await p8.waitForTimeout(60);
+      await touchTap(p8, cdp, 120, 300);
+      await p8.waitForTimeout(500);
+      check(await p8.evaluate(() => window.visualViewport.scale) === 1, 'el doble toque amplía la página');
+      if (await p8.locator('.viewer').count()) await p8.keyboard.press('Escape');
+      await p8.goto(`${base}#inicio`);
+      await p8.waitForSelector('.path');
+      await p8.evaluate(() => window.scrollTo(0, 0));
+      check(await touchPinch(p8, cdp) === 1, 'el pellizco amplía el mapa');
+      const y = await touchSwipe(p8, cdp, { x: 190, from: 650, to: 250 });
+      check(y > 100, `con touch-action el dedo ya no desplaza la página (scrollY ${y})`);
+      await p8.evaluate(() => window.scrollTo(0, 0));
+    }
+
+    // Detalle del día: tras responder, el recorte abre el cuadro entero.
+    if (await p8.locator('.today-detail summary').count()) await p8.locator('.today-detail summary').click();
+    const det = p8.locator('.card-detail').first();
+    if (await det.count()) {
+      check(await det.locator('.detail-zoom').count() === 0, `[${cfg.tag}] el detalle sin responder se puede ampliar (desvelaría el cuadro)`);
+      await det.locator('.detail-option').first().click();
+      await p8.waitForSelector('.card-detail .detail-zoom');
+      await viewerCheck(p8, L('detalle del día'), p8.locator('.card-detail .detail-zoom'), { close: 'esc', touch: T, shotName: cfg.full ? 'visor-detalle-390-claro' : null });
+    } else notes.push(`[${cfg.tag}] sin detalle del día hoy`);
+
+    // «Conoce a»: el carrusel entero en el visor.
+    await p8.goto(`${base}#etapa-${roundStage.id}`);
+    await p8.waitForSelector('.learn');
+    await p8.waitForTimeout(400);
+    const nLearn = await p8.locator('.slide .art-zoom').count();
+    check(nLearn === index.learnWorks(roundStage.id).length, `[${cfg.tag}] cuadros pulsables en «Conoce a»: ${nLearn}`);
+    check(await p8.locator('.slide .zoom-badge').count() === nLearn, `[${cfg.tag}] «Conoce a» sin la marca de ampliar`);
+    if (cfg.full) {
+      // Deslizar con el dedo: el carrusel y el visor siguen pasando de cuadro.
+      const cdp = await c8.newCDPSession(p8);
+      const tb = await p8.locator('.carousel-track').boundingBox();
+      await touchSwipe(p8, cdp, { y: tb.y + tb.height / 2, fromX: tb.x + tb.width * 0.8, toX: tb.x + tb.width * 0.15 });
+      check((await p8.locator('.carousel-count').innerText()).trim().startsWith('2'), `deslizar el carrusel no pasa de cuadro (${await p8.locator('.carousel-count').innerText()})`);
+      await p8.locator('.slide .art-zoom').first().tap();
+      await p8.waitForSelector('.viewer[open]');
+      await p8.waitForTimeout(300);
+      await touchSwipe(p8, cdp, { y: 420, fromX: 330, toX: 50 });
+      check(await waitCount(p8, `2 / ${nLearn}`) === `2 / ${nLearn}`, `deslizar en el visor no pasa de cuadro (${await viewerCount(p8)})`);
+      check(await touchPinch(p8, cdp) === 1, 'el pellizco amplía el visor');
+      await p8.keyboard.press('Escape');
+      await p8.waitForSelector('.viewer', { state: 'detached' });
+    }
+    await viewerCheck(p8, L('conoce'), p8.locator('.slide .art-zoom').first(), { group: nLearn, close: cfg.desk ? 'esc' : 'back', touch: T, shotName: `visor-conoce-${cfg.tag}` });
+    check(await p8.locator('.learn').count() === 1, `[${cfg.tag}] cerrar el visor con atrás sale de «Conoce a»`);
+
+    if (cfg.full || cfg.round) {
+      // Ronda: imagen de la pregunta sin revelar nada, «¿Cuál es de X?» con el visor de las 4
+      // (atrás y tocar fuera no responden; «Es este» sí), feedback con pie y resultado.
+      await p8.click('[data-action="practice"]');
+      await p8.waitForSelector('.lesson .option');
+      const done = new Set();
+      for (let step = 0; step < 30; step++) {
+        await p8.waitForTimeout(150);
+        if (await p8.locator('.result').count()) break;
+        check(await p8.locator('.interlude').count() === 0, `[${cfg.tag}] la etapa aún tiene la pantalla intermedia`);
+        const prompt = (await p8.locator('.q-prompt').innerText()).trim();
+        const isWhich = await p8.locator('.option-art').count() > 0;
+        const type = isWhich ? 'which' : prompt.includes('movimiento') ? 'movement' : 'who';
+        let target = 0;
+        const ids = [];
+        const options = p8.locator('.lesson-stage .option');
+        const n = await options.count();
+        if (isWhich) {
+          const short = prompt.replace(/^¿Cuál es de /, '').replace(/\?$/, '');
+          for (let i = 0; i < n; i++) {
+            const id = await options.nth(i).locator('.art').getAttribute('data-art');
+            ids.push(id);
+            const a = artist.get(art.get(id).artistId);
+            if ((a.short || a.name) === short) target = i;
+          }
+          const allow = [...artist.values()].find((a) => (a.short || a.name) === short)?.id;
+          if (!done.has('which')) {
+            done.add('which');
+            const other = (target + 1) % n;
+            // Atrás: cierra sin responder ni salir de la ronda.
+            await viewerCheck(p8, L('cuál (atrás)'), options.nth(other), { reveal: false, forbidden: forbiddenFor(ids, allow), group: n, close: 'back', touch: T, shotName: `visor-cual-${cfg.tag}` });
+            check(await p8.locator('.feedback.is-open').count() === 0, `[${cfg.tag}] cerrar el visor con atrás responde`);
+            // Tocar fuera y el aspa tampoco responden.
+            await viewerCheck(p8, L('cuál (fuera)'), options.nth(target), { reveal: false, forbidden: forbiddenFor(ids, allow), group: n, close: cfg.desk ? 'button' : 'outside', touch: T });
+            check(await p8.locator('.feedback.is-open').count() === 0, `[${cfg.tag}] cerrar el visor responde`);
+            if (cfg.desk) {
+              // Teclado: flecha hasta la buena y Enter en «Es este» (el foco ya está ahí).
+              await options.nth(other).click();
+              await p8.waitForSelector('.viewer[open]');
+              check(await p8.evaluate(() => document.activeElement?.dataset.v === 'pick'), `[${cfg.tag}] el foco no empieza en «Es este»`);
+              let at = other;
+              while (at !== target) { await p8.keyboard.press(target > at ? 'ArrowRight' : 'ArrowLeft'); at += target > at ? 1 : -1; await waitCount(p8, `${at + 1} / ${n}`); }
+              await p8.waitForSelector('.viewer [data-v="pick"][aria-disabled="false"]', { timeout: 3000 });
+              await p8.keyboard.press('Enter');
+            } else await answerWhichInViewer(p8, target, { navigate: true, label: L('cuál') });
+            await p8.waitForSelector('.feedback.is-open');
+            check(await p8.locator('.option.is-correct.is-picked').count() === 1, `[${cfg.tag}] «Es este» no responde con el cuadro visto`);
+            await p8.waitForTimeout(450);
+            // Con la respuesta dada, el visor ya enseña título, autor y año.
+            await viewerCheck(p8, L('cuál respondida'), options.nth(target), { group: n, close: 'esc', touch: T, shotName: cfg.full ? 'visor-cual-respondida-390-claro' : null });
+            check(await p8.locator('.feedback.is-open').count() === 1, `[${cfg.tag}] el visor cierra la hoja de feedback`);
+          } else {
+            await answerWhichInViewer(p8, target, { label: L('cuál') });
+            await p8.waitForSelector('.feedback.is-open');
+          }
+        } else {
+          const id = await p8.locator('.q-art .art').getAttribute('data-art');
+          const a = artist.get(art.get(id).artistId);
+          const label = type === 'movement' ? movement.get(a.movementId).name : a.name;
+          for (let i = 0; i < n; i++) if ((await options.nth(i).innerText()).split('\n').pop().trim() === label) target = i;
+          if (!done.has(type)) {
+            done.add(type);
+            const forbidden = [...forbiddenFor([id]), movement.get(a.movementId).name];
+            await viewerCheck(p8, L(`pregunta ${type}`), p8.locator('.q-art .art-zoom'), { reveal: false, forbidden, close: 'button', touch: T, shotName: `visor-${type}-${cfg.tag}` });
+            check(await p8.locator('.feedback.is-open').count() === 0, `[${cfg.tag}] abrir la imagen responde`);
+            await options.nth(target).click();
+            await p8.waitForSelector('.feedback.is-open');
+            await p8.waitForTimeout(450);
+            await viewerCheck(p8, L(`feedback ${type}`), p8.locator('.q-art .art-zoom'), { close: 'outside', touch: T });
+          } else {
+            await options.nth(target).click();
+            await p8.waitForSelector('.feedback.is-open');
+          }
+        }
+        await p8.locator('.feedback [data-action="continue"]').click();
+      }
+      await p8.waitForSelector('.result');
+      await p8.waitForTimeout(900);
+      const learned = p8.locator('.learned .art-zoom');
+      check(await learned.count() === 1, `[${cfg.tag}] «Hoy has aprendido» sin cuadro pulsable`);
+      if (await learned.count()) await viewerCheck(p8, L('hoy has aprendido'), learned, { close: 'back', touch: T, shotName: cfg.full ? 'visor-resultado-390-claro' : null });
+      check(await p8.locator('.result').count() === 1, `[${cfg.tag}] cerrar el visor con atrás sale del resultado`);
+    }
+
+    // Intro de movimiento: la pared de 3 cuadros.
+    const mov = index.visibleMovements[1] || index.visibleMovements[0];
+    await p8.goto(`${base}#movimiento-${mov.id}`);
+    await p8.waitForSelector('.intro');
+    await viewerCheck(p8, L('intro movimiento'), p8.locator('.intro .wall .art-zoom').first(), { group: 3, close: 'button', touch: T });
+
+    // Sala (galería): cuadro vertical y apaisado.
+    const gMov = index.visibleMovements.find((m) => {
+      const ws = index.stageArtists(m.id).flatMap((a) => index.worksOf(a.id));
+      return ws.some(portrait) && ws.some(landscape);
+    }) || index.visibleMovements[0];
+    await p8.goto(`${base}#galeria-${gMov.id}`);
+    await p8.waitForSelector('.gallery');
+    const gIds = await p8.$$eval('.gallery .art-zoom', (els) => els.map((e) => e.dataset.zoom));
+    const vIdx = gIds.findIndex((id) => portrait(art.get(id) || {}));
+    const hIdx = gIds.findIndex((id) => landscape(art.get(id) || {}));
+    check(vIdx >= 0 && hIdx >= 0, `[${cfg.tag}] la sala no tiene cuadro vertical y apaisado`);
+    if (vIdx >= 0) await viewerCheck(p8, L('sala vertical'), p8.locator('.gallery .art-zoom').nth(vIdx), { group: gIds.length, close: 'esc', touch: T, shotName: `visor-vertical-${cfg.tag}` });
+    if (hIdx >= 0) await viewerCheck(p8, L('sala apaisado'), p8.locator('.gallery .art-zoom').nth(hIdx), { group: gIds.length, close: cfg.desk ? 'button' : 'outside', touch: T, shotName: `visor-apaisado-${cfg.tag}` });
+
+    // Colección: la ficha (diálogo) y, encima, el visor; cerrarlo deja la ficha abierta.
+    await p8.goto(`${base}#coleccion`);
+    await p8.waitForSelector('.coll-item');
+    await p8.locator('.coll-item').first().click();
+    await p8.waitForSelector('.card-dialog[open]');
+    await p8.waitForTimeout(350);
+    await viewerCheck(p8, L('ficha'), p8.locator('.card-dialog .art-zoom'), { close: 'esc', touch: T, keepDialog: '.card-dialog', shotName: cfg.full ? 'visor-ficha-390-claro' : null });
+    await p8.keyboard.press('Escape');
+
+    // Medallas: el sello de un pintor en su hoja.
+    await p8.goto(`${base}#medallas`);
+    await p8.waitForSelector('#medallas-panel');
+    await p8.locator('.medal-item.is-got .medal-art').first().click();
+    await p8.waitForSelector('.medal-dialog[open]');
+    await p8.waitForTimeout(350);
+    check(await p8.locator('.medal-dialog .medal-zoom').count() === 1, `[${cfg.tag}] el sello del pintor no se puede ver en grande`);
+    if (await p8.locator('.medal-dialog .medal-zoom').count()) {
+      await viewerCheck(p8, L('medalla'), p8.locator('.medal-dialog .medal-zoom'), { close: 'button', touch: T, keepDialog: '.medal-dialog' });
+    }
+    await c8.close();
+  }
+}
+
+// ---------------------------------------------------------------- Oleada 9: Leonardo, «¿Cuál?», visor (carrera, fondo, giro, lupa), recarga, Colección
+{
+  const leo = index.path[0];
+  const allW9 = index.path.flatMap((a) => index.worksOf(a.id));
+  const st9 = seededState({ upTo: index.steps.length, xp: 9800, extra: {
+    collection: Object.fromEntries(allW9.map((w) => [w.id, '2026-11-20'])),
+  } });
+  const portrait9 = (w) => w.h > w.w * 1.1;
+  const textPath = (process.argv[3] || new URL('../app/data/catalog.json', import.meta.url).pathname).toString().replace(/catalog\.json$/, 'catalog-text.json');
+  const lookText = JSON.parse(readFileSync(textPath, 'utf8')).look || {};
+  const landscape9 = (w) => w.w > w.h * 1.15;
+  const ctxFor = (cfg) => browser.newContext(cfg.touch
+    ? { ...ctxOpts, viewport: { width: cfg.width, height: cfg.height }, colorScheme: cfg.scheme, hasTouch: true, isMobile: true }
+    : { ...ctxOpts, viewport: { width: cfg.width, height: cfg.height }, colorScheme: cfg.scheme, hasTouch: false, isMobile: false, deviceScaleFactor: 1 });
+  const frameInfo = (pg) => pg.evaluate(() => {
+    const slide = [...document.querySelectorAll('.viewer-slide')].find((x) => x.getAttribute('aria-hidden') === 'false');
+    const r = slide.querySelector('.viewer-frame').getBoundingClientRect();
+    return { x: r.left, y: r.top, w: r.width, h: r.height, vw: innerWidth, vh: innerHeight, count: document.querySelector('.viewer-count')?.textContent.trim() || '' };
+  });
+  const waitBig = (pg) => pg.waitForFunction(() => {
+    const s = [...document.querySelectorAll('.viewer-slide')].find((x) => x.getAttribute('aria-hidden') === 'false');
+    return s && s.classList.contains('is-big');
+  }, null, { timeout: 6000 }).catch(() => {});
+  const lensInfo = (pg) => pg.evaluate(() => {
+    const l = document.querySelector('.viewer-lens');
+    if (!l || l.hidden) return null;
+    const r = l.getBoundingClientRect();
+    const slide = [...document.querySelectorAll('.viewer-slide')].find((x) => x.getAttribute('aria-hidden') === 'false');
+    const f = slide.querySelector('.viewer-frame').getBoundingClientRect();
+    const [bx, by] = getComputedStyle(l).backgroundPosition.split(' ').map(parseFloat);
+    const [bw] = getComputedStyle(l).backgroundSize.split(' ').map(parseFloat);
+    const z = bw / f.width;
+    // Punto del cuadro que se ve en el centro de la lente.
+    const u = (r.width / 2 - bx) / (f.width * z);
+    const v = (r.height / 2 - by) / (f.height * z);
+    return { x: r.left, y: r.top, w: r.width, h: r.height, u, v, z, inside: r.left >= 0 && r.top >= 0 && r.right <= innerWidth && r.bottom <= innerHeight, bg: getComputedStyle(l).backgroundImage };
+  });
+
+  // Lupa: activar, arrastrar (toque emulado o ratón), lente con la zona correcta y dentro de la
+  // pantalla, sin cambiar de cuadro ni cerrar; teclado; Esc la apaga y después cierra.
+  async function loupeCheck(pg, cdp, cfg, label, shotName = null) {
+    await waitBig(pg);
+    const btn = pg.locator('.viewer [data-v="loupe"]');
+    const bb = await btn.boundingBox();
+    check(bb && bb.width >= 48 && bb.height >= 48, `[lupa ${label}] botón de ${bb ? `${Math.round(bb.width)}×${Math.round(bb.height)}` : '—'}`);
+    check(await btn.getAttribute('aria-label') === 'Lupa' && await btn.getAttribute('aria-pressed') === 'false', `[lupa ${label}] sin nombre «Lupa» o aria-pressed`);
+    if (cfg.touch) await btn.tap(); else await btn.click();
+    check(await btn.getAttribute('aria-pressed') === 'true', `[lupa ${label}] no se activa`);
+    const f = await frameInfo(pg);
+    const pts = [[0.3, 0.4], [0.55, 0.5], [0.8, 0.25]];
+    const at = (k) => ({ x: f.x + f.w * pts[k][0], y: f.y + f.h * pts[k][1] });
+    if (cfg.touch) {
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [at(0)] });
+      for (let k = 1; k <= 12; k++) {
+        const a = at(0); const b = at(1);
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: a.x + ((b.x - a.x) * k) / 12, y: a.y + ((b.y - a.y) * k) / 12 }] });
+        await pg.waitForTimeout(16);
+      }
+    } else {
+      await pg.mouse.move(at(0).x, at(0).y);
+      await pg.mouse.down();
+      await pg.mouse.move(at(1).x, at(1).y, { steps: 10 });
+    }
+    await pg.waitForTimeout(150);
+    const li = await lensInfo(pg);
+    check(Boolean(li), `[lupa ${label}] no aparece la lente al arrastrar`);
+    if (li) {
+      check(Math.abs(li.u - pts[1][0]) < 0.03 && Math.abs(li.v - pts[1][1]) < 0.03, `[lupa ${label}] la lente no enseña la zona bajo el dedo (${li.u.toFixed(3)}, ${li.v.toFixed(3)})`);
+      check(li.inside, `[lupa ${label}] la lente se sale de la pantalla ${JSON.stringify(li)}`);
+      check(li.w >= (cfg.width >= 1000 ? 180 : 150) && li.w <= (cfg.width >= 1000 ? 240 : 175), `[lupa ${label}] lente de ${Math.round(li.w)} px`);
+      check(li.z >= 1.5 && li.z <= 2.51, `[lupa ${label}] aumento ×${li.z.toFixed(2)}`);
+      check(/img\/[ab]\d+\.jpg/.test(li.bg), `[lupa ${label}] la lente no usa la imagen grande (${li.bg})`);
+      if (cfg.touch) check(li.y + li.h <= at(1).y || li.y >= at(1).y, `[lupa ${label}] la lente tapa el dedo`);
+      if (shotName) await shot(pg, shotName);
+    }
+    if (cfg.touch) await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    else await pg.mouse.up();
+    await pg.waitForTimeout(250);
+    check(!(await lensInfo(pg)), `[lupa ${label}] la lente no desaparece al soltar`);
+    const f2 = await frameInfo(pg);
+    check(f2.count === f.count && Math.abs(f2.x - f.x) < 2, `[lupa ${label}] arrastrar cambia de cuadro (${f.count} → ${f2.count})`);
+    check(await pg.locator('.viewer[open]').count() === 1, `[lupa ${label}] arrastrar o tocar el cuadro cierra el visor`);
+    // Toque en el cuadro con la lupa: no cierra.
+    if (cfg.touch) await pg.touchscreen.tap(at(2).x, at(2).y); else await pg.mouse.click(at(2).x, at(2).y);
+    await pg.waitForTimeout(250);
+    check(await pg.locator('.viewer[open]').count() === 1, `[lupa ${label}] tocar el cuadro cierra el visor`);
+    // Teclado: las flechas mueven la lente (no cambian de cuadro).
+    await btn.focus();
+    await pg.keyboard.press('ArrowRight');
+    const k1 = await lensInfo(pg);
+    await pg.keyboard.press('ArrowRight');
+    await pg.keyboard.press('ArrowDown');
+    const k2 = await lensInfo(pg);
+    check(Boolean(k1 && k2) && k2.u > k1.u + 0.03 && k2.v > k1.v + 0.03, `[lupa ${label}] las flechas no mueven la lente ${JSON.stringify([k1 && [k1.u, k1.v], k2 && [k2.u, k2.v]])}`);
+    check((await frameInfo(pg)).count === f.count, `[lupa ${label}] las flechas cambian de cuadro con la lupa`);
+    // Esc: primero apaga la lupa; el visor sigue abierto.
+    await pg.keyboard.press('Escape');
+    await pg.waitForTimeout(150);
+    check(await btn.getAttribute('aria-pressed') === 'false' && !(await lensInfo(pg)), `[lupa ${label}] Esc no apaga la lupa`);
+    check(await pg.locator('.viewer[open]').count() === 1, `[lupa ${label}] Esc con la lupa cierra el visor`);
+    // Con el botón también se apaga; con la lupa apagada arrastrar vuelve a pasar de cuadro.
+    if (cfg.touch) await btn.tap(); else await btn.click();
+    if (cfg.touch) await btn.tap(); else await btn.click();
+    check(await btn.getAttribute('aria-pressed') === 'false', `[lupa ${label}] el botón no la apaga`);
+  }
+
+  const configs9 = [
+    { tag: '390-claro', width: 390, height: 844, scheme: 'light', touch: true, full: true },
+    { tag: '390-oscuro', width: 390, height: 844, scheme: 'dark', touch: true },
+    { tag: '360-claro', width: 360, height: 640, scheme: 'light', touch: true, mid: true },
+    { tag: '360-oscuro', width: 360, height: 640, scheme: 'dark', touch: true },
+    { tag: '1280-claro', width: 1280, height: 800, scheme: 'light', touch: false, desk: true },
+    { tag: '1280-oscuro', width: 1280, height: 800, scheme: 'dark', touch: false, desk: true },
+  ];
+  for (const cfg of configs9) {
+    const c9 = await ctxFor(cfg);
+    const p9 = await c9.newPage();
+    watch(p9, `o9-${cfg.tag}`);
+    const L = (x) => `[o9 ${cfg.tag}] ${x}`;
+    const cdp = cfg.touch ? await c9.newCDPSession(p9) : null;
+    const tap = async (loc) => { if (cfg.touch) await loc.tap(); else await loc.click(); };
+
+    // --- Leonardo entero (primera impresión) desde cero, con capturas en 390 claro.
+    if (cfg.full || cfg.mid) {
+      await seed(p9, seededState({ upTo: 0 }), `etapa-${leo.id}`);
+      await p9.waitForSelector('.learn, .intro, .look-first');
+      for (let k = 0; k < 4 && !(await p9.locator('.learn').count()); k++) {
+        const go = p9.locator('.intro [data-primary], .intro .btn-primary, .look-first [data-action="go"]').first();
+        if (await go.count()) await go.click();
+        await p9.waitForTimeout(400);
+      }
+      await p9.waitForSelector('.learn');
+      check(await p9.locator('.slide').count() === 2, L(`«Conoce a» de Leonardo enseña ${await p9.locator('.slide').count()} cuadros`));
+      if (cfg.full) await shot(p9, 'leonardo-0-conoce');
+      await p9.click('[data-action="practice"]');
+      await p9.waitForSelector('.lesson .option');
+      const seq = [];
+      for (let step = 0; step < 12; step++) {
+        await p9.waitForTimeout(200);
+        if (await p9.locator('.result').count()) break;
+        const isWhich = await p9.locator('.option-art').count() > 0;
+        const subj = isWhich ? null : await p9.locator('.q-art .art').getAttribute('data-art');
+        const options = p9.locator('.lesson-stage .option');
+        let target = 0;
+        const ids = [];
+        const n = await options.count();
+        if (isWhich) {
+          for (let i = 0; i < n; i++) {
+            const id = await options.nth(i).locator('.art').getAttribute('data-art');
+            ids.push(id);
+            if (art.get(id).artistId === leo.id) target = i;
+          }
+        } else {
+          for (let i = 0; i < n; i++) if ((await options.nth(i).innerText()).split('\n').pop().trim() === leo.name) target = i;
+        }
+        const tagText = await p9.locator('.q-tag').innerText().catch(() => '');
+        seq.push({ type: isWhich ? 'which' : 'who', id: isWhich ? ids[target] : subj, isNew: /nuevo/i.test(tagText) });
+        if (step === 0 && isWhich) {
+          // «¿Cuál?» a 390 / 360: sin hueco sobre la rejilla y miniaturas grandes y enteras.
+          const g = await p9.evaluate(() => {
+            const head = document.querySelector('.q-head').getBoundingClientRect();
+            const grid = document.querySelector('.options-grid').getBoundingClientRect();
+            const arts = [...document.querySelectorAll('.option-art .art')].map((a) => { const r = a.getBoundingClientRect(); return { w: r.width, h: r.height }; });
+            const cells = [...document.querySelectorAll('.option-art')].map((a) => a.getBoundingClientRect());
+            return { gap: grid.top - head.bottom, bottom: grid.bottom, vh: innerHeight, arts, cellH: cells[0].height, cellW: cells[0].width };
+          });
+          check(g.gap <= 24, L(`hueco de ${Math.round(g.gap)} px sobre la rejilla de «¿Cuál?»`));
+          check(g.bottom <= g.vh + 2, L(`la rejilla de «¿Cuál?» no cabe (${Math.round(g.bottom)} > ${g.vh})`));
+          check(g.cellH >= (cfg.width >= 390 ? 260 : 200), L(`casillas de «¿Cuál?» bajas (${Math.round(g.cellW)}×${Math.round(g.cellH)})`));
+          check(g.arts.every((a) => Math.max(a.w, a.h) >= Math.min(g.cellW, g.cellH) - 14), L(`miniaturas pequeñas ${JSON.stringify(g.arts.map((a) => [Math.round(a.w), Math.round(a.h)]))}`));
+          await shot(p9, `cual-${cfg.width}`);
+          // Recargar con el visor abierto en la primera pregunta: vuelve a la pregunta, no a «Conoce a».
+          const prompt0 = await p9.locator('.q-prompt').innerText();
+          const optIds0 = ids.join(',');
+          await tap(options.nth(0));
+          await p9.waitForSelector('.viewer[open]');
+          await p9.reload();
+          await p9.waitForSelector('.lesson .option, .learn', { timeout: 8000 });
+          check(await p9.locator('.learn').count() === 0 && await p9.locator('.lesson .option').count() > 0, L('recargar con el visor abierto en la primera pregunta vuelve a «Conoce a»'));
+          const optIds1 = [];
+          for (let i = 0; i < await options.count(); i++) optIds1.push(await options.nth(i).locator('.art').getAttribute('data-art'));
+          check(await p9.locator('.q-prompt').innerText() === prompt0 && optIds1.sort().join(',') === optIds0.split(',').sort().join(','), L('al recargar cambia la primera pregunta'));
+          // Carrera: «siguiente» y «Es este» en menos de 100 ms nunca responden con el cuadro anterior.
+          const ids1 = [];
+          for (let i = 0; i < await options.count(); i++) ids1.push(await options.nth(i).locator('.art').getAttribute('data-art'));
+          const t1 = ids1.findIndex((id) => art.get(id).artistId === leo.id);
+          // Se abre en la vecina de la buena y se pasa a la buena (siguiente o, si es la primera, anterior).
+          const dirV = t1 > 0 ? 'next' : 'prev';
+          const start = t1 > 0 ? t1 - 1 : 1;
+          await tap(options.nth(start));
+          await p9.waitForSelector('.viewer[open]');
+          await waitBig(p9);
+          if (cfg.touch) {
+            const nb = await p9.locator(`.viewer [data-v="${dirV}"]`).boundingBox();
+            const pb = await p9.locator('.viewer [data-v="pick"]').boundingBox();
+            await touchTap(p9, cdp, nb.x + nb.width / 2, nb.y + nb.height / 2);
+            await p9.waitForTimeout(40);
+            await touchTap(p9, cdp, pb.x + pb.width / 2, pb.y + pb.height / 2);
+          } else {
+            await p9.evaluate((d) => { document.querySelector(`.viewer [data-v="${d}"]`).click(); setTimeout(() => document.querySelector('.viewer [data-v="pick"]')?.click(), 40); }, dirV);
+          }
+          await p9.waitForTimeout(150);
+          const early = await p9.locator('.feedback.is-open').count();
+          if (early) check(await options.nth(t1).evaluate((b) => b.classList.contains('is-correct') && b.classList.contains('is-picked')), L('carrera: «Es este» responde con el cuadro anterior'));
+          else {
+            check(await p9.locator('.viewer[open]').count() === 1, L('carrera: el visor se cierra sin responder'));
+            check(await viewerCount(p9) === `${t1 + 1} / 4`, L(`carrera: el contador no se fija al pedir el cambio (${await viewerCount(p9)})`));
+            await p9.waitForSelector('.viewer [data-v="pick"][aria-disabled="false"]', { timeout: 3000 }).catch(() => {});
+            await tap(p9.locator('.viewer [data-v="pick"]'));
+            await p9.waitForSelector('.feedback.is-open');
+            check(await options.nth(t1).evaluate((b) => b.classList.contains('is-correct') && b.classList.contains('is-picked')), L('carrera: tras deslizar, «Es este» no responde con el cuadro visto'));
+          }
+          notes.push(`${L('carrera')}: ${early ? 'respondió al instante con el cuadro nuevo' : '«Es este» esperó al final del deslizamiento'}`);
+          await p9.waitForTimeout(450);
+          await assertAnswersVisible(p9, L('«¿Cuál?» con la hoja'));
+          await shot(p9, `cual-feedback-${cfg.width}`);
+        } else {
+          if (isWhich) await answerWhichInViewer(p9, target, { label: L(`leonardo ${step}`) });
+          else await options.nth(target).click();
+          await p9.waitForSelector('.feedback.is-open');
+          await p9.waitForTimeout(450);
+          if (isWhich) await assertAnswersVisible(p9, L(`leonardo ${step}`));
+          if (cfg.full) await shot(p9, `leonardo-${step + 1}-${isWhich ? 'cual' : 'quien'}`);
+        }
+        await p9.locator('.feedback [data-action="continue"]').click();
+      }
+      await p9.waitForSelector('.result');
+      if (cfg.full) await shot(p9, 'leonardo-6-resultado');
+      check(seq.length === 5, L(`Leonardo con ${seq.length} preguntas`));
+      check(new Set(seq.map((x) => x.id)).size === seq.length, L(`Leonardo repite cuadro: ${seq.map((x) => x.id)}`));
+      check(seq.filter((x) => !x.isNew).length === 1 && !seq[0].isNew, L(`Leonardo: recién vistas ${seq.filter((x) => !x.isNew).length}`));
+      check(seq.filter((x) => x.type === 'who').length === 1 && seq[0].type === 'which', L(`Leonardo: tipos ${seq.map((x) => x.type)}`));
+      notes.push(`${L('Leonardo')}: ${seq.map((x) => `${x.type === 'who' ? '¿Quién?' : '¿Cuál?'} ${x.id}${x.isNew ? '' : ' (vista)'}`).join(' → ')}`);
+    }
+
+    // --- Sala: vertical (fondo alrededor que cierra, deslizar no cierra, lupa) y apaisado (ancho, lupa).
+    await seed(p9, st9);
+    await p9.waitForSelector('.path');
+    const gMov = index.visibleMovements.find((m) => {
+      const ws = index.stageArtists(m.id).flatMap((a) => index.worksOf(a.id));
+      return ws.some(portrait9) && ws.some(landscape9);
+    }) || index.visibleMovements[0];
+    await p9.goto(`${base}#galeria-${gMov.id}`);
+    await p9.waitForSelector('.gallery');
+    const gIds = await p9.$$eval('.gallery .art-zoom', (els) => els.map((e) => e.dataset.zoom));
+    const vIdx = gIds.findIndex((id) => portrait9(art.get(id) || {}));
+    const hIdx = gIds.findIndex((id) => landscape9(art.get(id) || {}));
+    const wide = gIds.reduce((b, id, i) => ((art.get(id).w / art.get(id).h) > (art.get(gIds[b]).w / art.get(gIds[b]).h) ? i : b), 0);
+    // Vertical
+    await p9.locator('.gallery .art-zoom').nth(vIdx).scrollIntoViewIfNeeded();
+    await tap(p9.locator('.gallery .art-zoom').nth(vIdx));
+    await p9.waitForSelector('.viewer[open]');
+    await waitBig(p9);
+    const fv = await frameInfo(p9);
+    if (cfg.touch) {
+      // Deslizar sobre el fondo y el cuadro pasa de cuadro y no cierra.
+      await touchSwipe(p9, cdp, { y: fv.y + fv.h / 2, fromX: fv.vw * 0.85, toX: fv.vw * 0.15 });
+      check(await p9.locator('.viewer[open]').count() === 1, L('deslizar en el visor lo cierra'));
+      check(await viewerCount(p9) !== fv.count, L('deslizar en el visor no pasa de cuadro'));
+      await p9.locator('.viewer [data-v="prev"]').tap();
+      await waitCount(p9, fv.count);
+      await p9.waitForTimeout(500);
+    }
+    if (cfg.full || cfg.desk) await shot(p9, `visor-vertical-${cfg.tag}`);
+    await loupeCheck(p9, cdp, cfg, L('vertical'), cfg.full || cfg.mid || cfg.tag === '1280-claro' ? `lupa-vertical-${cfg.tag}` : null);
+    const bg = await viewerBackground(p9, { nearFrame: true });
+    check(Boolean(bg), L('vertical: no hay fondo junto al cuadro para cerrar tocando fuera'));
+    if (bg) {
+      if (cfg.touch) await p9.touchscreen.tap(bg.x, bg.y); else await p9.mouse.click(bg.x, bg.y);
+      await p9.waitForSelector('.viewer', { state: 'detached', timeout: 3000 }).catch(() => {});
+      check(await p9.locator('.viewer').count() === 0, L(`vertical: tocar el fondo junto al cuadro (${bg.x}, ${bg.y}) no cierra`));
+    }
+    // Apaisado: aprovecha el ancho.
+    await p9.locator('.gallery .art-zoom').nth(wide).scrollIntoViewIfNeeded();
+    await tap(p9.locator('.gallery .art-zoom').nth(wide));
+    await p9.waitForSelector('.viewer[open]');
+    await waitBig(p9);
+    const fh = await frameInfo(p9);
+    if (!cfg.desk) check(fh.w >= fh.vw - 16, L(`apaisado en vertical: ${Math.round(fh.w)} de ${fh.vw} px de ancho`));
+    notes.push(`${L('apaisado')}: ${Math.round(fh.w)}×${Math.round(fh.h)} en ${fh.vw}×${fh.vh}`);
+    if (cfg.full || cfg.mid || cfg.desk) await shot(p9, `visor-apaisado-${cfg.tag}`);
+    await loupeCheck(p9, cdp, cfg, L('apaisado'), cfg.full || cfg.mid || cfg.tag === '1280-claro' ? `lupa-apaisado-${cfg.tag}` : null);
+    // La lupa sigue activa al cambiar de cuadro y se apaga al cerrar.
+    await tap(p9.locator('.viewer [data-v="loupe"]'));
+    await tap(p9.locator(`.viewer [data-v="${(await viewerCount(p9)).startsWith('1 ') ? 'next' : 'prev'}"]`));
+    await p9.waitForTimeout(600);
+    check(await p9.locator('.viewer [data-v="loupe"]').getAttribute('aria-pressed') === 'true', L('la lupa se apaga al cambiar de cuadro'));
+    // Sala: al cerrar, el foco vuelve al cuadro donde te has quedado.
+    const lastPos = Number((await viewerCount(p9)).split(' ')[0]) - 1;
+    await tap(p9.locator('.viewer [data-v="close"]'));
+    await p9.waitForSelector('.viewer', { state: 'detached' });
+    const focusedZoom = await p9.evaluate(() => document.activeElement?.dataset?.zoom || '');
+    check(focusedZoom === gIds[lastPos], L(`sala: el foco no vuelve al cuadro donde te quedaste (${focusedZoom} / ${gIds[lastPos]})`));
+    await tap(p9.locator('.gallery .art-zoom').nth(0));
+    await p9.waitForSelector('.viewer[open]');
+    check(await p9.locator('.viewer [data-v="loupe"]').getAttribute('aria-pressed') === 'false', L('la lupa sigue activa al volver a abrir el visor'));
+    await p9.keyboard.press('Escape');
+    await p9.waitForSelector('.viewer', { state: 'detached' });
+
+    // --- Colección: ficha grande, un toque al visor, pasar de cuadro (deslizar, flechas, ←/→), límites y foco al cerrar.
+    await p9.goto(`${base}#coleccion`);
+    await p9.waitForSelector('.coll-item');
+    const collIds = await p9.$$eval('.coll-item', (els) => els.map((e) => e.dataset.id));
+    const N = collIds.length;
+    await tap(p9.locator('.coll-item').first());
+    await p9.waitForSelector('.card-dialog[open]');
+    await p9.waitForTimeout(400);
+    const dlgState = () => p9.evaluate(() => {
+      const d = document.querySelector('.card-dialog');
+      const a = d.querySelector('.dlg-art .art').getBoundingClientRect();
+      return { id: d.querySelector('.dlg-art .art').dataset.art, count: d.querySelector('.dlg-count')?.textContent.trim(), title: d.querySelector('.dlg-title').textContent, meta: d.querySelector('.dlg-meta').textContent, look: d.querySelector('.dlg-hint').textContent, prevDis: d.querySelector('[data-action="prev"]')?.disabled, nextDis: d.querySelector('[data-action="next"]')?.disabled, w: a.width, h: a.height, vw: innerWidth, vh: innerHeight };
+    });
+    let ds = await dlgState();
+    check(ds.count === `1 / ${N}` && ds.id === collIds[0], L(`ficha: contador ${ds.count} (esperado 1 / ${N})`));
+    check(ds.prevDis === true, L('ficha: «anterior» activo en el primer cuadro'));
+    check(Math.max(ds.w / ds.vw, ds.h / ds.vh) >= (cfg.desk ? 0.4 : 0.55) || ds.w >= Math.min(ds.vw * 0.85, 500), L(`ficha: cuadro pequeño (${Math.round(ds.w)}×${Math.round(ds.h)})`));
+    if (cfg.full || cfg.mid) await shot(p9, `ficha-${cfg.width}`);
+    await p9.keyboard.press('ArrowLeft');
+    check((await dlgState()).count === `1 / ${N}`, L('ficha: ← en el primero se sale del principio'));
+    if (cfg.touch) {
+      const ab = await p9.locator('.card-dialog .dlg-art .art').boundingBox();
+      await touchSwipe(p9, cdp, { y: ab.y + ab.height / 2, fromX: ab.x + ab.width * 0.85, toX: ab.x + ab.width * 0.1 });
+      await p9.waitForTimeout(200);
+      ds = await dlgState();
+      check(ds.count === `2 / ${N}` && ds.id === collIds[1], L(`ficha: deslizar no pasa al siguiente (${ds.count})`));
+      check(await p9.locator('.viewer').count() === 0, L('ficha: deslizar abre el visor'));
+    } else await p9.click('.card-dialog [data-action="next"]');
+    ds = await dlgState();
+    const w1 = art.get(collIds[1]);
+    check(ds.title === w1.title && ds.meta.includes(artist.get(w1.artistId).name), L(`ficha: título/autor sin actualizar (${ds.title})`));
+    check(ds.look === (lookText[w1.id] || artist.get(w1.artistId).hint || ''), L(`ficha: la frase no se actualiza (${ds.look})`));
+    await p9.click('.card-dialog [data-action="next"]');
+    check((await dlgState()).count === `3 / ${N}`, L('ficha: la flecha «siguiente» no pasa'));
+    await p9.keyboard.press('ArrowLeft');
+    check((await dlgState()).count === `2 / ${N}`, L('ficha: ← no vuelve'));
+    await p9.keyboard.press('ArrowRight');
+    await p9.keyboard.press('ArrowRight');
+    ds = await dlgState();
+    check(ds.count === `4 / ${N}` && ds.id === collIds[3], L(`ficha: → no pasa (${ds.count})`));
+    // Un toque en el cuadro: visor con toda la colección en el mismo orden; lo que se pasa se queda.
+    await tap(p9.locator('.card-dialog .dlg-art .art'));
+    await p9.waitForSelector('.viewer[open]');
+    check(await viewerCount(p9) === `4 / ${N}`, L(`ficha: el visor no sigue el orden de la colección (${await viewerCount(p9)})`));
+    await p9.keyboard.press('ArrowRight');
+    await waitCount(p9, `5 / ${N}`);
+    await p9.waitForTimeout(500);
+    await p9.keyboard.press('Escape');
+    await p9.waitForSelector('.viewer', { state: 'detached' });
+    check(await p9.locator('.card-dialog[open]').count() === 1, L('ficha: cerrar el visor cierra la ficha'));
+    ds = await dlgState();
+    check(ds.count === `5 / ${N}` && ds.id === collIds[4], L(`ficha: lo pasado en el visor no se queda en la ficha (${ds.count})`));
+    // Cerrar la ficha: la rejilla queda en ese cuadro, con el foco en él.
+    await p9.keyboard.press('Escape');
+    await p9.waitForTimeout(300);
+    const fc = await p9.evaluate(() => {
+      const a = document.activeElement;
+      const r = a?.getBoundingClientRect();
+      return { id: a?.dataset?.id, inView: r && r.top >= 0 && r.bottom <= innerHeight };
+    });
+    check(fc.id === collIds[4] && fc.inView, L(`ficha: al cerrar, el foco no está en el cuadro donde te quedaste ${JSON.stringify(fc)}`));
+    // Límite al final.
+    await p9.locator('.coll-item').last().scrollIntoViewIfNeeded();
+    await tap(p9.locator('.coll-item').last());
+    await p9.waitForSelector('.card-dialog[open]');
+    ds = await dlgState();
+    check(ds.count === `${N} / ${N}` && ds.nextDis === true, L(`ficha: último cuadro ${ds.count}, «siguiente» activo: ${!ds.nextDis}`));
+    await p9.keyboard.press('ArrowRight');
+    check((await dlgState()).count === `${N} / ${N}`, L('ficha: → en el último se sale del final'));
+    await audit(p9, L('ficha con flechas'));
+    if (cfg.full || cfg.mid) await shot(p9, `ficha-ultima-${cfg.width}`);
+    await p9.keyboard.press('Escape');
+    await c9.close();
+  }
+
+  // --- Móvil girado (844×390): el cuadro ocupa la pantalla y los controles flotan encima.
+  {
+    const c = await browser.newContext({ ...ctxOpts, viewport: { width: 844, height: 390 }, hasTouch: true, isMobile: true });
+    const pg = await c.newPage();
+    watch(pg, 'o9-giro');
+    await seed(pg, st9);
+    await pg.waitForSelector('.path');
+    await pg.goto(`${base}#coleccion`);
+    await pg.waitForSelector('.coll-item');
+    const wideId = (await pg.$$eval('.coll-item', (els) => els.map((e) => e.dataset.id))).find((id) => landscape9(art.get(id)));
+    const tallId = (await pg.$$eval('.coll-item', (els) => els.map((e) => e.dataset.id))).find((id) => portrait9(art.get(id)));
+    for (const [id, nm] of [[wideId, 'apaisado'], [tallId, 'vertical']]) {
+      await pg.locator(`.coll-item[data-id="${id}"]`).scrollIntoViewIfNeeded();
+      await pg.locator(`.coll-item[data-id="${id}"]`).tap();
+      await pg.waitForSelector('.card-dialog[open]');
+      await pg.locator('.card-dialog .dlg-art .art').tap();
+      await pg.waitForSelector('.viewer[open]');
+      await waitBig(pg);
+      const f = await frameInfo(pg);
+      check(f.h >= f.vh - 12 || f.w >= f.vw - 12, `[o9 giro ${nm}] el cuadro no ocupa la pantalla (${Math.round(f.w)}×${Math.round(f.h)} de ${f.vw}×${f.vh})`);
+      notes.push(`[o9 giro ${nm}] ${Math.round(f.w)}×${Math.round(f.h)} en ${f.vw}×${f.vh}`);
+      await audit(pg, `o9 giro ${nm}`);
+      await shot(pg, `visor-giro-${nm}`);
+      await pg.locator('.viewer [data-v="close"]').tap();
+      await pg.waitForSelector('.viewer', { state: 'detached' });
+      await pg.keyboard.press('Escape');
+    }
+    await c.close();
+  }
+}
+} // fin de lo que no entra en el modo humo
+
+await browser.close();
+console.log(JSON.stringify({ shots: shots.length, boot, budget: BOOT_BUDGET, audits: { contrastScreens: audits.contrast, targetScreens: audits.targets }, problems, notes, challengeText, dailyText }, null, 2));
+process.exitCode = problems.length ? 1 : 0;

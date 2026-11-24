@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mirada · prueba de audio</title>
+<style>
+  body { font: 16px/1.4 system-ui, sans-serif; background: #ece8e1; color: #2b2723; max-width: 640px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 20px; margin: 0 0 4px; } h2 { font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: #6b6259; margin: 28px 0 8px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  button { font: inherit; min-height: 44px; padding: 0 16px; border: 1px solid #b9b0a4; border-radius: 10px; background: #f8f5f0; color: inherit; cursor: pointer; }
+  button:hover { background: #fff; } button.on { background: #2b2723; color: #f8f5f0; border-color: #2b2723; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #8a6d3b; outline-offset: 2px; }
+  label { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+  pre { background: #f8f5f0; border: 1px solid #d6cec3; border-radius: 8px; padding: 12px; font-size: 12px; overflow: auto; }
+  table { border-collapse: collapse; font-size: 13px; width: 100%; } td, th { text-align: left; padding: 4px 8px; border-bottom: 1px solid #d6cec3; }
+</style>
+</head>
+<body>
+<h1>Mirada · prueba de audio</h1>
+<p>Pulsa una época para oírla (el primer clic desbloquea el audio).</p>
+
+<h2>Música</h2>
+<div class="row" id="eras"></div>
+<div class="row" style="margin-top:8px"><button id="stop">Parar música</button></div>
+
+<h2>Efectos</h2>
+<div class="row" id="sfx"></div>
+
+<h2>Ajustes</h2>
+<div class="row">
+  <label>Volumen <input id="vol" type="range" min="0" max="1" step="0.01" value="0.7"></label>
+  <label><input id="mus" type="checkbox" checked> Música</label>
+  <label><input id="fx" type="checkbox" checked> Efectos</label>
+</div>
+<pre id="state"></pre>
+
+<h2>Diagnóstico sin conexión</h2>
+<div class="row"><button id="diag">Medir picos y nivel (todas las épocas y efectos)</button></div>
+<table id="diagout"></table>
+
+<script type="module">
+import { audio, ERAS, SFX_NAMES } from '../app/js/audio/index.js';
+import { renderEraOffline, renderSfxOffline } from '../app/js/audio/player.js';
+
+const $ = (id) => document.getElementById(id);
+const show = () => { $('state').textContent = JSON.stringify(audio.getState(), null, 2); };
+const mark = () => document.querySelectorAll('#eras button').forEach((b) => b.classList.toggle('on', b.dataset.era === audio.getState().era && audio.getState().playing));
+
+for (const era of ERAS) {
+  const b = document.createElement('button');
+  b.textContent = era; b.dataset.era = era;
+  b.onclick = () => { audio.unlock(); audio.setEra(era); audio.startMusic(); setTimeout(() => { mark(); show(); }, 50); };
+  $('eras').append(b);
+}
+for (const name of SFX_NAMES) {
+  const b = document.createElement('button');
+  b.textContent = name;
+  b.onclick = () => { audio.unlock(); audio.sfx(name); };
+  $('sfx').append(b);
+}
+$('stop').onclick = () => { audio.stopMusic(); setTimeout(() => { mark(); show(); }, 50); };
+$('vol').oninput = (e) => { audio.setVolume(Number(e.target.value)); show(); };
+$('mus').onchange = (e) => { audio.setMusicEnabled(e.target.checked); setTimeout(() => { mark(); show(); }, 50); };
+$('fx').onchange = (e) => { audio.setSfxEnabled(e.target.checked); show(); };
+show();
+
+// Mide pico y RMS (dBFS) de un AudioBuffer.
+function measure(buf) {
+  let peak = 0, sum = 0, n = 0;
+  for (let c = 0; c < buf.numberOfChannels; c++) {
+    const d = buf.getChannelData(c);
+    for (let i = 0; i < d.length; i++) { const a = Math.abs(d[i]); if (a > peak) peak = a; sum += d[i] * d[i]; }
+    n += d.length;
+  }
+  const db = (x) => (x > 0 ? 20 * Math.log10(x) : -Infinity);
+  return { peak, peakDb: db(peak), rmsDb: db(Math.sqrt(sum / n)), seconds: buf.duration };
+}
+window.__audioDiag = async function (seconds = 20) {
+  const out = { eras: {}, sfx: {} };
+  for (const era of ERAS) out.eras[era] = measure(await renderEraOffline(era, seconds));
+  for (const name of SFX_NAMES) out.sfx[name] = measure(await renderSfxOffline(name));
+  return out;
+};
+$('diag').onclick = async () => {
+  $('diag').disabled = true;
+  const r = await window.__audioDiag(20);
+  const rows = [['', 'pico', 'pico dBFS', 'RMS dBFS']];
+  for (const [k, v] of Object.entries({ ...r.eras, ...r.sfx })) rows.push([k, v.peak.toFixed(3), v.peakDb.toFixed(1), v.rmsDb.toFixed(1)]);
+  $('diagout').innerHTML = rows.map((r, i) => `<tr>${r.map((c) => `<${i ? 'td' : 'th'}>${c}</${i ? 'td' : 'th'}>`).join('')}</tr>`).join('');
+  $('diag').disabled = false;
+};
+window.__ready = true;
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+# Bitácora de la noche — Mirada
+
+Registro de decisiones tomadas mientras María duerme (23–24 nov 2026).
+
+## Decisiones de partida
+
+- **Nombre provisional:** Mirada.
+- **Dónde se publica:** página privada (artifact). No se ha desplegado en Render: María dio
+  permiso, pero no puedo crear un repositorio nuevo en su GitHub desde aquí (la credencial de
+  la herramienta `gh` no es válida y no hay otra vía para crear repos). No se ha tocado ningún
+  repositorio existente.
+- **Imágenes:** la página privada no carga imágenes remotas y este entorno no puede descargar
+  de los museos (bloqueado por la política de red). Solución: dataset público en GitHub
+  `irinainina/image-data` (241 reproducciones de cuadros famosos con autor, título y año, usado
+  en un ejercicio de curso de RS School). Se incluyen solo artistas fallecidos antes de 1956 y
+  obras anteriores a 1930; títulos y años revisados y traducidos al español.
+  - Pendiente para un lanzamiento público: sustituir por imágenes de colecciones abiertas de
+    museos (Met, Art Institute of Chicago, Rijksmuseum…), que tienen licencia explícita CC0.
+- **Sin Velázquez/Goya al principio** quedó obsoleto: el dataset sí trae 8 Velázquez y 4 Murillo.
+- **Arquitectura:** vanilla JS en módulos ES, sin build ni dependencias; lógica pura en
+  `js/engine` con pruebas `node:test`; estado versionado; audio sintetizado.
+- **Modelos:** agentes ligeros (Sonnet) para catálogo, audio y evaluadores; modelo potente solo
+  para la arquitectura y la app principal.
+
+## Oleadas
+
+- Oleada 0 (23:11): prototipo de una página con 5 pintores (referencia de flujo).
+- Oleada 1 (23:20): en paralelo — catálogo, motor de audio y app V1.
+
+## Oleada 2 — integración y primera publicación (23/11, 22:49 UTC)
+- Catálogo + audio + app integrados. `node --test tests/` 44/44. Recorrido e2e en Chrome 390×844 con audio integrado: 25 capturas, 0 problemas de consola.
+- Publicado v1 como artifact privado: https://claude.ai/artifact/J1Vrn64uAxVn3agRDpbBFm (slug 89bd2448-d3b4-4d0e-afd2-77a562f41200, versión 1795474155-d208, 245 archivos).
+- La autoevaluación del agente APP NO cuenta como puerta de calidad (no hubo evaluador independiente). Rendimiento 7 por miniaturas de 1000 px.
+- Pendiente oleada 3: miniaturas, evaluador independiente, movimientos sin pintores con etapa (rococó, simbolismo), cuadro con inscripción que delata (Dama del armiño), guardar ronda en curso, intro de movimiento.
+
+## Evaluación independiente, ronda 1 (v1) — NO APRUEBA
+Material 3: 8 · UX: 7 · Accesibilidad: 8 · Rendimiento: 8 · Adaptativo: 8 · Pulido: 7 · Originalidad: 7 · Calidad técnica: 8. Informe: docs/eval/ronda1.md.
+Fallo grave (contenido): sesgo ruso del catálogo y salto de dificultad en las etapas 11-19. Otros: preguntas de movimiento que se delatan por descarte, práctica repetitiva (misma obra 2-3 veces), pistas genéricas, final de ronda poco celebratorio, tarjetas que parecen pulsables y no lo son, "Repaso" en movimientos de un pintor, ronda sin guardar, cabecera < 48 px, hoja de salir recortada al 200 %.
+Plan: oleada 3 (en curso) cubre miniaturas, salas, intro, ronda guardada, tramo ruso. Oleada 4: arreglos del evaluador + celebración. En paralelo, agente buscando más cuadros (Goya, El Greco, Botticelli…) en staging/.
+
+## Oleada 3 terminada (sin publicar aún)
+Miniaturas (198, 3,56 MB), 7 obras marcadas `spoiler`, salas para movimientos sin etapas, intro de movimiento, ronda en curso guardada (esquema v2), Realismo en dos tramos. Tests 55/55, e2e 41 capturas sin errores. Sin evaluador independiente todavía.
+Staging: 37 obras nuevas (b1-b37) de lorien-danger/knack-paintings (CC0 declarado, máx. 640 px). Sin cubrir: Murillo, Zurbarán, Ribera, Sorolla, Fragonard, Ingres, Botticelli.
+
+## Oleada 4 (en curso, dos agentes en paralelo)
+- 4A catálogo: incorporar las 37 obras, etapa propia con ≥3 obras, máx. 4 rusos con etapa (Aivazovski, Shishkin, Repin, Levitán), pistas visuales exclusivas y campo `look` por obra.
+- 4B app: todos los arreglos del evaluador + celebración, combo, meta diaria, más niveles, escritorio.
+Decisión: no publico la oleada 3 sola; se publica junto con la 4 (v2) y se pasa la ronda 2 del evaluador. La v1 publicada sigue funcionando.
+
+## v2 publicada (versión 1795478112-34ab, 482 archivos)
+Incluye oleadas 3 y 4: 235 obras, 32 etapas en 9 movimientos (máx. 4 rusos con etapa), pistas visuales por pintor y `look` por obra, curva de dificultad suave (salto máx. 0,10), celebración, combo, meta diaria, 15 niveles, ronda libre, escritorio. Tests 71/71, e2e 39 capturas sin errores.
+Incidencia: un artifact admite como máximo 512 archivos por versión. La tercera tanda falló y la página estuvo unos minutos con 81 miniaturas rotas. Arreglo: las imágenes de ≤700 px hacen de miniatura ellas mismas (37 archivos menos). Margen actual: 30 archivos. Si el catálogo crece, habrá que agrupar miniaturas en hojas o empaquetar el JS.
+Publicación delegada en un agente ligero con listas en docs/publish_batch*.json.
+Siguiente: evaluador independiente ronda 2.
+
+## Evaluación independiente, ronda 2 (v2) — NO APRUEBA
+Material 3: 8 · UX: 7 · Accesibilidad: 8 · Rendimiento: 8 · Adaptativo: 8 · Pulido: 8 · Originalidad: 8 · Calidad técnica: 7. Informe: docs/eval/ronda2.md.
+Fallo grave: trampa del planificador (se domina una etapa eligiendo siempre al pintor de la etapa; Leonardo 100 % de las rondas). Resueltos 19 de 25 problemas de la ronda 1. Contenido: 48 obras contrastadas, ningún autor ni título erróneo.
+Oleada 5 (en curso): anti-trampa con test, "Practicar" fijo, zoom 200 %, feedback corto, atlas de miniaturas (<320 archivos), primera pantalla más ligera, retos validados, desbloqueo con ≥50 %, repaso rápido.
+
+## v3 publicada (versión 1795481675-5643, 303 archivos)
+Oleada 5: planificador anti-trampa (peor caso 1,6 % frente al umbral del 5 %; test antibot), spoilers fuera de toda pregunta, "Practicar" fijo, zoom 200 % sin desbordes, feedback de una frase, retos validados, desbloqueo con ≥50 %, atlas de miniaturas (17 hojas), catálogo partido (73 KB + 16 KB de textos), repaso rápido de 3 preguntas, e2e en tests/e2e.sh. Tests 80/80, e2e 52 capturas sin errores.
+Aviso: una ronda puede descargar 2-4 hojas de ~200 KB la primera vez. El reto diario del 24/11 cambió respecto a v2.
+Siguiente: evaluador independiente ronda 3.
+
+## Evaluación independiente, ronda 3 (v3) — NO APRUEBA por un criterio
+Material 3: 8 · UX: 8 · Accesibilidad: 7 · Rendimiento: 8 · Adaptativo: 8 · Pulido: 8 · Originalidad: 8 · Calidad técnica: 8. Sin fallos graves. Informe: docs/eval/ronda3.md.
+Accesibilidad baja por 4 fallos medidos: barra "Practicar" tapa pista y flechas a 360×640; contraste 2,7:1 y 2,33:1 en dos elementos atenuados; deslizador de volumen de 44 px; opción fallada bajo la hoja a 195 px. Trampa: cerrada en la práctica (máx. 1,6 %), residuo del 8 % con un bot mixto y exploit del "movimiento anterior". Contenido: 55 obras revisadas sin errores; a125 (Madonna Litta) atribución discutida; look de b3 incorrecto.
+Oleada 6 (en curso): los 4 imprescindibles + mejoras 5-15 + sala de museo y metas tras el camino.
+
+## v4 publicada (versión 1795487707-63cb, 305 archivos)
+Oleada 6: los 4 arreglos de accesibilidad (con auditoría automática de contraste y áreas táctiles en 36 pantallas: 0 fallos), aviso de enlace inválido, camino completo solo con todo dominado, pregunta de movimiento sin respuesta fija, distractores de pintores aún no aprendidos, regla de dominio nueva (75 % y 2 de cada 3 del propio pintor), Madonna Litta "atribuida", atlas sin sangrado, arranque más ligero (bienvenida 22 peticiones / 363 KB, con presupuesto en e2e), sala de movimiento dominado, medallas "Ojo de X", contador "Reconoces", reto semanal, detalle del día. Tests 96 + e2e opcional (MIRADA_E2E=1), e2e 73 capturas sin problemas.
+Bots (peor caso): simples ≤4,3 %; por descarte 20,7 %.
+Decisión a revisar por María: la regla de dominio es exigente en pintores con 2-3 obras (Durero, David: 2 de 2).
+Siguiente: evaluador independiente ronda 4.
+
+## Evaluación independiente, ronda 4 (v4) — APRUEBA (margen mínimo)
+Los 8 criterios en 8, sin fallos graves. Informe: docs/eval/ronda4.md. Bots sin mirar ≤2 %; por descarte ≤22 %. 48 obras y 29 `look` contrastados sin errores.
+Pendiente que el evaluador pide antes de dar por cerrado: contraste de los numerales de rachas bloqueadas (1,2:1) y Enter en la pantalla intermedia. Mejoras: dominio duro con 2 obras propias, "Ojo de…" invisible, medallas de Perfil que parecen botones, recortes del día difíciles, reto semanal para jugador nuevo, contador de repaso que desanima, tarjeta "Hoy", cifras de reconocidas.
+Oleada 7 (en curso): esos arreglos. Después v5 y verificación.
+
+## v5 publicada (versión 1795496954-add4, 305 archivos)
+Oleada 7 (remate tras aprobar): contraste de sellos de racha, Enter/Espacio en pantallas de un botón, dominio más justo con 2 obras propias (alumno atento 58 % → 75 %; descarte 25 %, en el límite), "Ojo de X · n/m" visible (caja 4), medallas pulsables con hoja, detalle del día con `focus` en 36 obras y menos aumento, aviso en retos con pintores no vistos, bloque "Hoy", "Repaso de hoy · 3 cuadros", cifras unificadas, a60 recortado, humo e2e de 19 s. Tests 99 + humo; e2e completo 0 problemas (105 capturas).
+Siguiente: ronda 5 de confirmación (última permitida por la puerta).
+
+## Evaluación independiente, ronda 5 (v5) — APRUEBA
+Material 3: 8 · UX: 9 · Accesibilidad: 8 · Rendimiento: 8 · Adaptativo: 8 · Pulido: 8 · Originalidad: 8 · Calidad técnica: 8. Sin fallos graves ni imprescindibles. Informe: docs/eval/ronda5.md. No probó: red lenta, cambio de día, reduced-motion, localStorage bloqueado, 768×1024, salas/audio/ronda libre, lector de pantalla real, Safari/Firefox.
+Puerta de calidad cerrada en 5 iteraciones (R1-R3 no aprueban, R4 y R5 aprueban). Versión estable: v5.
+Mejoras menores abiertas: enunciado recortado bajo la barra con la hoja abierta e imagen alta; "Ojo de X · 3/7" en dos líneas; cabecera alta a 195 px; galería "3 obras" sin decir "reconocidas".
+
+## v6 publicada (versión 1795513464-845b, 306 archivos) — cambios pedidos por María (24/11, 09:38)
+Visor a pantalla completa en toda la app ("Es este" en "¿Cuál es de X?"), sin zoom de página, práctica con una sola pregunta de calentamiento con cuadro visto (6 pintores pasan a enseñar 2 cuadros). Tests 103 + humo; e2e completo 0 problemas (147 pantallas). Bots ≤4,6 %; descarte 25 %.
+Efecto a vigilar: dominar es más difícil en pintores con muchas obras (alumno atento: Leonardo 65→57 %, Rafael 75→59 %). En Leonardo se repite una obra no vista para llegar a 6 preguntas.
+Duda: dentro del iframe de claude.ai el zoom depende de la página exterior; hay que probarlo en su móvil.
+Publicada antes de la evaluación independiente porque María la estaba probando; evaluador ronda 6 en curso.
+Peticiones nuevas de María (10:40): pasar a 1.000 obras (pendiente de que cree el repositorio GitHub `mirada`), fichas con datos de la vida del pintor, recompensas tipo Dibulíos (cofres, colección, obras animadas con Gemini).
