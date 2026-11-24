@@ -1,33 +1,152 @@
-selección 1180, ya bajadas 1149, pendientes 31; este lote 31
-ok   w22330492   romero-de-torres 1024x1438 212KB  Mal de amores
-ok   w4247398    petrov-vodkin    1600x1408 381KB  Bañando al caballo rojo
-ok   w4089579    petrov-vodkin    1600x1455 467KB  La Virgen de la ternura ante los corazones malvados
-ok   w30067841   petrov-vodkin    1200x940 256KB  La muerte del comisario
-ok   w1170315    malevich         1196x1199 238KB  Cuadrado negro
-ok   w579455     malevich         1600x1600 428KB  Blanco sobre blanco
-ok   w1523466    malevich         1281x1600 260KB  Composición suprematista
-ok   w18112999   malevich         1593x1600 513KB  El afilador de cuchillos
-ok   w3877556    modigliani       1600x1008 279KB  Desnudo acostado
-ok   w4062416    modigliani       800x1600 426KB  Alice
-ok   w3879285    modigliani       1013x1600 300KB  Desnudo sentado en un diván
-ok   w3879280    modigliani       1034x1600 349KB  Mujer desnuda
-ok   w3806044    modigliani       1059x1600 309KB  Jacques y Berthe Lipchitz
-ok   w2921123    modigliani       989x1600 306KB  Desnudo sentado
-ok   w3793584    modigliani       980x1536 228KB  El pequeño campesino
-ok   w769461     modigliani       1001x1600 221KB  La Femme à l'Éventail
-ok   w3630728    modigliani       1028x1600 311KB  Autorretrato
-ok   w6461080    juan-gris        912x1600 467KB  La botella de anís
-ok   w3399451    juan-gris        1258x1600 475KB  Retrato de Pablo Picasso
-ok   w19922091   juan-gris        1043x1600 382KB  Violín y naipes sobre una mesa
-ok   w27658378   juan-gris        1600x1277 398KB  Guitarra y periódico
-ok   w60329141   juan-gris        1277x1600 468KB  El desayuno
-ok   w19922323   juan-gris        1600x1044 379KB  Bodegón con guitarra
-ok   w1555137    schiele          1600x1300 732KB  Retrato de Wally
-ok   w2438357    schiele          1600x1353 774KB  La Muerte y la doncella
-ok   w2445555    schiele          1283x1600 516KB  Ciudad muerta III
-ok   w28002609   schiele          1600x1511 848KB  La familia
-ok   w28797696   schiele          1579x1600 450KB  Los ermitaños
-ok   w19967004   schiele          1600x928 562KB  El abrazo
-ok   w19973869   schiele          1263x1600 438KB  El puerto de Trieste
-ok   w28797693   schiele          1600x1296 737KB  Autorretrato con alquequenjes
-lote: 31/31 bien; quedan 0
+selección 1233, ya bajadas 839, pendientes 394; este lote 150
+ok   w3399498    van-eyck         1245x1600 380KB  Retrato del cardenal Niccolò Albergati
+ok   w3553389    van-eyck         1066x1600 343KB  Retrato de un orfebre
+ok   w1150782    van-eyck         890x1600 283KB  Léal Souvenir
+ok   w3399452    van-eyck         1253x1600 539KB  Retrato de Margarita van Eyck
+ok   w3210257    botticelli       1537x1600 709KB  Madonna Bardi
+ok   w580853     botticelli       1000x1392 192KB  Virgen con el Niño y ángel
+ok   w27697231   berruguete       1042x1600 566KB  La muerte de san Pedro Mártir
+ok   w27697234   berruguete       992x1600 573KB  Aparición de la Virgen a una comunidad de dominicos
+ok   w27697236   berruguete       1001x1600 425KB  San Pedro Mártir en oración
+ok   w59489999   berruguete       918x1600 538KB  San Pablo
+ok   w430069     bosco            1370x1600 456KB  Ecce Homo
+ok   w2270768    bosco            1119x1600 665KB  Extracción de la piedra de la locura
+ok   w2733729    bosco            1278x1600 531KB  La coronación de espinas
+ok   w972196     leonardo         1135x1600 549KB  San Jerónimo
+ok   w3947309    durero           1187x1600 426KB  San Jerónimo
+ok   w1988321    durero           850x1217 204KB  Políptico de los Siete Dolores
+ok   w3685113    durero           1274x1600 584KB  Lamentation of Christ
+ok   w21151884   durero           1600x1549 393KB  Ala de una carraca europea
+ok   w602813     rafael           1175x1600 531KB  Virgen Solly
+ok   w552040     rafael           1600x1585 495KB  El sueño del caballero
+ok   w2529918    rafael           1363x1600 571KB  San Jorge
+ok   w598913     rafael           958x1600 271KB  Crucifixión Mond
+ok   w2629134    rafael           850x1207 162KB  La Virgen con el Niño
+ok   w2452858    rafael           1250x1600 325KB  Virgen del prado
+ok   w2035209    rafael           1086x1600 321KB  Madona del gran duque
+ok   w555821     rafael           1174x1600 288KB  Autorretrato
+ok   w2344396    rafael           1244x1600 419KB  Dama del unicornio
+ok   w254923     rafael           1600x1600 330KB  Virgen de la Casa de Alba
+ok   w2610709    rafael           965x1600 260KB  Madona de Foligno
+ok   w2275653    rafael           1337x1600 386KB  Autorretrato con un amigo
+ok   w2535563    rafael           1229x1600 298KB  Retrato de cardenal
+ok   w2631335    rafael           1193x1600 224KB  Virgen del pez
+ok   w2528106    rafael           1164x1600 299KB  Retrato de Bindo Altoviti
+ok   w2664637    rafael           1154x1600 498KB  El Pasmo de Sicilia
+ok   w2420918    rafael           1259x1600 429KB  Virgen de la rosa
+ok   w1103801    rafael           1041x1600 345KB  El éxtasis de Santa Cecilia
+ok   w2467141    rafael           1088x1600 329KB  La Sagrada Familia
+ok   w594470     rafael           946x1600 296KB  San Miguel
+ok   w23922      tiziano          1290x1600 378KB  Woman with a Mirror
+ok   w1633898    tiziano          1336x1600 404KB  La Schiavona
+ok   w2459887    tiziano          1169x1600 418KB  Tributo de la moneda
+ok   w3842778    tiziano          1600x1242 450KB  The Gypsy Madonna
+ok   w3686086    tiziano          1600x1273 537KB  Concierto campestre
+ok   w3877895    tiziano          1333x1600 353KB  Noli me tangere
+ok   w2466780    tiziano          1198x1600 465KB  Venus Anadiómena
+ok   w3743879    tiziano          1600x1600 713KB  Ofrenda a Venus
+ok   w1848811    tiziano          1426x1600 485KB  El hombre del guante
+ok   w24249      tiziano          1600x1299 549KB  Virgen con el Niño y santa Catalina
+ok   w3937673    tiziano          1208x1600 299KB  Portrait of Vincenzo Mosti
+ok   w5128805    tiziano          1363x1600 557KB  Retrato de Clarisa Strozzi
+ok   w3784247    tiziano          1222x1600 339KB  La bella
+ok   w3853901    tiziano          990x1600 456KB  Retrato de Isabel de Este
+ok   w19798137   tiziano          882x1600 365KB  El emperador Carlos V con un perro
+ok   w1652981    tiziano          1170x1600 478KB  Tarquinio y Lucrecia
+ok   w4161055    tiziano          1600x1474 458KB  Diana y Calisto
+ok   w698993     tiziano          1241x1600 512KB  Retrato de Jacopo Strada
+ok   w603703     tiziano          1600x1428 446KB  Venus y Adonis
+ok   w3925598    tiziano          1474x1600 516KB  Desollamiento de Marsias
+ok   w594406     bruegel          1600x1155 482KB  Caída de los ángeles rebeldes
+ok   w80869      bruegel          1600x1156 513KB  Dulle Griet
+ok   w689236     bruegel          1600x1155 657KB  El combate entre don carnaval y doña cuaresma
+ok   w686107     bruegel          1600x1164 646KB  La Procesión al Calvario
+ok   w15074981   veronese         1500x568 226KB  The Feast in the House of Simon the Pharisee
+ok   w1103170    veronese         1312x1600 536KB  Lucrecia
+ok   w3849979    veronese         1215x1600 387KB  Mars and Venus with Cupid and a Dog
+ok   w23008305   sofonisba        1600x1264 634KB  Partida de ajedrez
+ok   w21204021   sofonisba        1234x1600 613KB  Retrato de la familia Anguissola
+ok   w3630761    sofonisba        1220x1600 331KB  Autorretrato
+ok   w3929380    el-greco         1329x1600 587KB  Muchacho encendiendo una candela
+ok   w3078569    el-greco         1086x1304 461KB  Tránsito de la Virgen
+ok   w3208041    el-greco         1600x1368 578KB  La última cena
+ok   w15711253   el-greco         1600x1381 596KB  La adoración de los reyes
+ok   w3937561    el-greco         1600x1172 183KB  Retrato de Giulio Clovio
+ok   w9396559    el-greco         1367x1600 441KB  Los apóstoles Pedro y Pablo
+ok   w6116829    el-greco         928x1600 416KB  Sagrada Familia
+ok   w5966793    el-greco         1600x1239 534KB  La fábula
+ok   w11837891   el-greco         819x1600 293KB  La Asunción de María
+ok   w617629     el-greco         738x1600 270KB  La resurrección de Cristo
+ok   w5781032    el-greco         1600x861 226KB  Concierto de ángeles
+ok   w2293936    caravaggio       1211x1600 423KB  Baco enfermo
+ok   w2011510    caravaggio       1372x1600 542KB  Baco
+ok   w685916     caravaggio       1242x1600 388KB  Crucifixión de San Pedro
+ok   w2338417    caravaggio       1600x1457 431KB  El martirio de San Mateo
+ok   w597114     caravaggio       1060x1600 302KB  Dormíción de la Virgen
+ok   w2627056    caravaggio       1293x1600 311KB  David con la cabeza de Goliat
+ok   w2337873    caravaggio       1022x1600 306KB  La inspiración de San Mateo
+ok   w2419166    caravaggio       1600x1188 290KB  La incredulidad de santo Tomás
+ok   w2713203    caravaggio       935x1600 287KB  Madonna de Loreto
+ok   w698228     caravaggio       1101x1600 257KB  Madonna del Rosario
+ok   w510799     caravaggio       1600x1098 219KB  San Jerónimo escribiendo
+ok   w2429754    caravaggio       1600x1082 310KB  Cupido durmiendo
+ok   w2277635    caravaggio       1168x1600 250KB  La resurrección de Lázaro
+ok   w1132479    caravaggio       1180x1600 509KB  El entierro de Santa Lucía
+ok   w1134060    rubens           1099x1600 300KB  Susana y los viejos
+ok   w3399422    rubens           1032x1600 395KB  Retrato de la Marquesa Brígida Spinola-Doria
+ok   w3731232    rubens           1240x1600 242KB  Hercules and Omphale
+ok   w3825684    rubens           1328x1600 579KB  Lucha de san Jorge y el dragón
+ok   w56043195   rubens           1600x944 333KB  Transfiguración
+ok   w16038514   rubens           1142x1600 473KB  Retrato ecuestre del duque de Lerma
+ok   w3636299    rubens           1600x1171 496KB  The Battle of the Amazons
+ok   w2529962    rubens           1600x1135 382KB  Perseo liberando a Andrómeda
+ok   w2894005    rubens           1297x1600 335KB  Los cuatro filósofos
+ok   w1713690    rubens           1600x1295 422KB  Juno y Argos
+ok   w5961888    rubens           1600x1118 411KB  La Adoración de los Reyes Magos
+ok   w2067336    rubens           917x1419 154KB  Asunción de María
+ok   w3228387    rubens           1091x1600 346KB  Retrato de Susanna Lunden
+ok   w2843410    rubens           1271x1600 454KB  El desembarco de María de Médicis en el puerto de Marsella
+ok   w611583     rubens           1600x1088 305KB  Minerva protege a Pax de Marte
+ok   w3885854    rubens           1600x1185 352KB  El nacimiento de la Vía Láctea
+ok   w3930498    rubens           772x1600 266KB  El rapto de Ganímedes
+ok   w4009226    rubens           1600x939 315KB  A View of Het Steen in the Early Morning
+ok   w3699475    rubens           1319x1600 352KB  Last Supper
+ok   w3706769    rubens           1600x988 356KB  Diana y Calisto
+ok   w5971284    hals             1600x1083 218KB  Las regentes del asilo de ancianos de Haarlem
+ok   w8242264    hals             1600x840 341KB  Banquete de los arcabuceros de San Jorge de Haarlem
+ok   w12088934   hals             1223x1600 410KB  Juerguistas en el martes de Carnaval
+ok   w29016365   artemisia        1235x1600 371KB  Santa Catalina de Alejandría
+ok   w3680519    artemisia        1182x1600 510KB  Cleopatra
+ok   w3842443    artemisia        1083x1497 342KB  Virgen con el Niño
+ok   w23010133   artemisia        1477x1600 405KB  Autorretrato como tañedora de laúd
+ok   w55429769   artemisia        1539x1600 519KB  Autorretrato como Santa Catalina de Alejandría
+ok   w8202299    zurbaran         1600x1268 239KB  Aparición del apóstol San Pedro a San Pedro Nolasco
+ok   w3464088    zurbaran         1395x1600 416KB  San Serapio
+ok   w9094523    zurbaran         1600x1278 680KB  Visión de San Pedro Nolasco
+ok   w18925560   zurbaran         1378x1500 263KB  San Buenaventura en el concilio de Lyon
+ok   w28797727   zurbaran         1459x1600 271KB  San Buenaventura en oración
+ok   w5965525    zurbaran         1156x1600 467KB  La Virgen niña en oración
+ok   w16674796   zurbaran         1336x1600 571KB  San Francisco en éxtasis
+ok   w105296843  zurbaran         1076x1600 153KB  Cristo atado a la columna
+ok   w27750513   zurbaran         1231x1600 258KB  San Francisco en oración
+ok   w113679629  zurbaran         1209x1600 257KB  Virgen con el niño Jesús y San Juan niño
+ok   w389198     velazquez        1600x1270 320KB  Tres músicos
+ok   w2273943    velazquez        976x1600 297KB  Adoración de los Magos
+ok   w3075292    velazquez        1262x1600 406KB  San Pablo
+ok   w4274886    velazquez        1600x828 206KB  La mulata
+ok   w7917255    velazquez        1064x1600 231KB  La venerable madre Jerónima de la Fuente
+ok   w3292964    velazquez        1176x1600 466KB  María de Austria, reina de Hungría
+ok   w1133844    velazquez        1411x1600 803KB  Vista del jardín de la Villa Médicis, en Roma
+ok   w536094     velazquez        936x1200 145KB  Demócrito
+ok   w1115403    velazquez        1219x1600 469KB  Felipe IV
+ok   w1113763    velazquez        907x1600 133KB  Pablo de Valladolid
+ok   w390713     velazquez        1242x1600 423KB  El bufón don Diego de Acedo, el Primo
+ok   w729194     velazquez        1197x1600 481KB  El bufón el Primo
+ok   w1114361    velazquez        923x1600 473KB  El bufón llamado don Juan de Austria
+ok   w2264914    velazquez        1346x1600 430KB  La Infanta Margarita en azul
+ok   w3212193    velazquez        888x1600 240KB  La reina Mariana de Austria
+ok   w3204168    velazquez        1178x1508 265KB  La infanta María Teresa de España
+ok   w3225899    velazquez        1236x1600 268KB  El príncipe Felipe Próspero
+ok   w3960488    van-dyck         1041x1213 172KB  Drunken Silenus
+ok   w16155993   van-dyck         1600x1055 258KB  Entrada de Cristo en Jerusalén
+lote: 150/150 bien; quedan 244

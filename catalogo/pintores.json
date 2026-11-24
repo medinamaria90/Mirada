@@ -10,8 +10,10 @@
   "order": 1,
   "section": null,
   "qid": "Q7814",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "van-eyck",
@@ -24,8 +26,19 @@
   "order": 2,
   "section": null,
   "qid": "Q102272",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jan_van_Eyck",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "fra-angelico",
@@ -38,8 +51,10 @@
   "order": 2,
   "section": null,
   "qid": "Q5664",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "van-der-weyden",
@@ -52,8 +67,10 @@
   "order": 1,
   "section": null,
   "qid": "Q68631",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "piero",
@@ -66,8 +83,10 @@
   "order": 3,
   "section": null,
   "qid": "Q5822",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "bellini",
@@ -80,8 +99,10 @@
   "order": 4,
   "section": null,
   "qid": "Q17169",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "mantegna",
@@ -94,8 +115,10 @@
   "order": 5,
   "section": null,
   "qid": "Q5681",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "botticelli",
@@ -108,8 +131,19 @@
   "order": 6,
   "section": null,
   "qid": "Q5669",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Sandro_Botticelli",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "berruguete",
@@ -122,8 +156,19 @@
   "order": 7,
   "section": null,
   "qid": "Q561783",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Etapa castellana",
+    "desde": 1483,
+    "hasta": 1503,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Berruguete",
+    "nota": "La fuente da 3 etapas, pero solo hay obra de la castellana (1483-1503)."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "bosco",
@@ -136,8 +181,19 @@
   "order": 3,
   "section": null,
   "qid": "Q130531",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/El_Bosco",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "leonardo",
@@ -150,8 +206,19 @@
   "order": 8,
   "section": null,
   "qid": "Q762",
-  "works": 12,
-  "level1": 5
+  "works": 11,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primeras obras en Florencia",
+    "desde": null,
+    "hasta": 1482,
+    "fuente": "https://es.wikipedia.org/wiki/Leonardo_da_Vinci",
+    "nota": "Solo hay un «a fondo»: unas 16 pinturas. Las de los tres últimos tramos (Milán, Venecia y Florencia, Roma y Francia) caben en el nivel 1."
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "durero",
@@ -164,8 +231,18 @@
   "order": 4,
   "section": null,
   "qid": "Q5580",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Aprendizaje y 1.er viaje a Italia",
+    "desde": null,
+    "hasta": 1505,
+    "fuente": "https://es.wikipedia.org/wiki/Alberto_Durero"
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "cranach",
@@ -178,8 +255,10 @@
   "order": 5,
   "section": null,
   "qid": "Q191748",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "miguel-angel",
@@ -192,8 +271,10 @@
   "order": 9,
   "section": null,
   "qid": "Q5592",
-  "works": 8,
-  "level1": 4
+  "works": 7,
+  "category": "maestro",
+  "stages": [],
+  "level1": 7
  },
  {
   "id": "giorgione",
@@ -206,8 +287,10 @@
   "order": 10,
   "section": null,
   "qid": "Q8459",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "rafael",
@@ -220,8 +303,40 @@
   "order": 11,
   "section": null,
   "qid": "Q5597",
-  "works": 12,
-  "level1": 5
+  "works": 32,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primeros años en Umbría",
+    "desde": null,
+    "hasta": 1504,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio",
+    "nota": "Roma se parte en dos: Estancias y últimos años."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Periodo florentino",
+    "desde": 1504,
+    "hasta": 1508,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Las Estancias vaticanas",
+    "desde": 1509,
+    "hasta": 1513,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Últimos años en Roma",
+    "desde": 1514,
+    "hasta": 1520,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "tiziano",
@@ -234,8 +349,39 @@
   "order": 12,
   "section": null,
   "qid": "Q47551",
-  "works": 12,
-  "level1": 5
+  "works": 32,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primeros años",
+    "desde": null,
+    "hasta": 1516,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano"
+   },
+   {
+    "nivel": 3,
+    "nombre": "Madurez",
+    "desde": 1516,
+    "hasta": 1530,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Consolidación",
+    "desde": 1530,
+    "hasta": 1550,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Años finales",
+    "desde": 1550,
+    "hasta": 1576,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "correggio",
@@ -248,8 +394,10 @@
   "order": 13,
   "section": null,
   "qid": "Q8457",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "holbein",
@@ -262,8 +410,10 @@
   "order": 6,
   "section": null,
   "qid": "Q48319",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "juan-de-juanes",
@@ -276,7 +426,9 @@
   "order": 14,
   "section": null,
   "qid": "Q11287651",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -290,7 +442,9 @@
   "order": 7,
   "section": null,
   "qid": "Q703250",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -304,8 +458,10 @@
   "order": 15,
   "section": null,
   "qid": "Q9319",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "bruegel",
@@ -318,8 +474,20 @@
   "order": 8,
   "section": null,
   "qid": "Q43270",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primeras composiciones",
+    "desde": null,
+    "hasta": 1564,
+    "fuente": "https://es.wikipedia.org/wiki/Pieter_Brueghel_el_Viejo",
+    "verificar": true,
+    "corteInferido": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "veronese",
@@ -332,8 +500,19 @@
   "order": 16,
   "section": null,
   "qid": "Q9440",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Paolo_Veronese",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "sanchez-coello",
@@ -346,8 +525,26 @@
   "order": 9,
   "section": null,
   "qid": "Q503386",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
+ },
+ {
+  "id": "sofonisba",
+  "name": "Sofonisba Anguissola",
+  "short": "Sofonisba",
+  "born": 1531,
+  "died": 1625,
+  "country": "Italia",
+  "movementId": "manierismo-y-norte",
+  "order": 10,
+  "section": null,
+  "qid": "Q236038",
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "el-greco",
@@ -357,11 +554,36 @@
   "died": 1614,
   "country": "España",
   "movementId": "manierismo-y-norte",
-  "order": 10,
+  "order": 11,
   "section": null,
   "qid": "Q301",
-  "works": 15,
-  "level1": 6
+  "works": 26,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Creta, Venecia y Roma",
+    "desde": null,
+    "hasta": 1576,
+    "fuente": "https://es.wikipedia.org/wiki/El_Greco",
+    "nota": "Creta y Venecia no llegan a 5 obras: van con Roma. La llegada a Toledo se une a la madurez."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Llegada y madurez en Toledo",
+    "desde": 1577,
+    "hasta": 1596,
+    "fuente": "https://es.wikipedia.org/wiki/El_Greco"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Último periodo",
+    "desde": 1596,
+    "hasta": 1614,
+    "fuente": "https://es.wikipedia.org/wiki/El_Greco"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "ribalta",
@@ -374,7 +596,9 @@
   "order": 1,
   "section": null,
   "qid": "Q338800",
-  "works": 6,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -388,8 +612,33 @@
   "order": 2,
   "section": null,
   "qid": "Q42207",
-  "works": 12,
-  "level1": 5
+  "works": 26,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Roma",
+    "desde": 1592,
+    "hasta": 1600,
+    "fuente": "https://es.wikipedia.org/wiki/Caravaggio",
+    "nota": "De Milán (1571-1592) no hay obra conservada entre las candidatas."
+   },
+   {
+    "nivel": 3,
+    "nombre": "El pintor más famoso de Roma",
+    "desde": 1600,
+    "hasta": 1606,
+    "fuente": "https://es.wikipedia.org/wiki/Caravaggio"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Exilio",
+    "desde": 1606,
+    "hasta": 1610,
+    "fuente": "https://es.wikipedia.org/wiki/Caravaggio"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "rubens",
@@ -402,8 +651,40 @@
   "order": 3,
   "section": null,
   "qid": "Q5599",
-  "works": 12,
-  "level1": 5
+  "works": 32,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Italia",
+    "desde": 1600,
+    "hasta": 1608,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens",
+    "nota": "«Primeros años» no tiene obras entre las candidatas."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Amberes",
+    "desde": 1608,
+    "hasta": 1621,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
+   },
+   {
+    "nivel": 4,
+    "nombre": "María de Médici y misiones diplomáticas",
+    "desde": 1621,
+    "hasta": 1630,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Última década",
+    "desde": 1630,
+    "hasta": 1640,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "maino",
@@ -416,7 +697,9 @@
   "order": 4,
   "section": null,
   "qid": "Q2555566",
-  "works": 6,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -430,8 +713,19 @@
   "order": 5,
   "section": null,
   "qid": "Q167654",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Frans_Hals",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "ribera",
@@ -444,8 +738,19 @@
   "order": 6,
   "section": null,
   "qid": "Q297838",
-  "works": 15,
-  "level1": 6
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Hasta 1639",
+    "desde": null,
+    "hasta": 1639,
+    "fuente": "https://es.wikipedia.org/wiki/Jos%C3%A9_de_Ribera",
+    "nota": "Los años veinte solo tienen 3 candidatas, por eso el primer nivel llega hasta 1639."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "la-tour",
@@ -458,8 +763,10 @@
   "order": 8,
   "section": null,
   "qid": "Q203371",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "artemisia",
@@ -472,8 +779,19 @@
   "order": 7,
   "section": null,
   "qid": "Q212657",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Florencia",
+    "desde": 1613,
+    "hasta": 1620,
+    "fuente": "https://es.wikipedia.org/wiki/Artemisia_Gentileschi",
+    "nota": "La propuesta da 1621-1630 y «desde 1630»: el año 1630 cae en Roma y Venecia."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "poussin",
@@ -486,8 +804,10 @@
   "order": 9,
   "section": null,
   "qid": "Q41554",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "zurbaran",
@@ -500,8 +820,33 @@
   "order": 10,
   "section": null,
   "qid": "Q209615",
-  "works": 15,
-  "level1": 6
+  "works": 25,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primera etapa",
+    "desde": null,
+    "hasta": 1629,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n",
+    "nota": "Sube a gran maestro (decisión de María). La propuesta indica que 1641-1658 solo tiene 2 candidatas y lo une al final."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Década prodigiosa",
+    "desde": 1630,
+    "hasta": 1640,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Del 1641 hasta el final",
+    "desde": 1641,
+    "hasta": 1664,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "velazquez",
@@ -514,8 +859,39 @@
   "order": 12,
   "section": null,
   "qid": "Q297",
-  "works": 16,
-  "level1": 6
+  "works": 33,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Sevilla",
+    "desde": null,
+    "hasta": 1622,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+   },
+   {
+    "nivel": 3,
+    "nombre": "Corte joven y 1.er viaje a Italia",
+    "desde": 1623,
+    "hasta": 1631,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Madurez en Madrid",
+    "desde": 1631,
+    "hasta": 1648,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+   },
+   {
+    "nivel": 5,
+    "nombre": "2.º viaje a Italia y última década",
+    "desde": 1649,
+    "hasta": 1660,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+   }
+  ],
+  "level1": 9
  },
  {
   "id": "van-dyck",
@@ -528,8 +904,20 @@
   "order": 11,
   "section": null,
   "qid": "Q150679",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Amberes joven",
+    "desde": null,
+    "hasta": 1620,
+    "fuente": "https://es.wikipedia.org/wiki/Anton_van_Dyck",
+    "corteInferido": true,
+    "nota": "El corte de Amberes joven (1620) lo infiere el proceso: la propuesta solo da Italia (1621-1627). Las obras de 1628-1631 caen en Inglaterra (gana la siguiente etapa)."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "claudio-de-lorena",
@@ -542,8 +930,10 @@
   "order": 13,
   "section": null,
   "qid": "Q214074",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "alonso-cano",
@@ -556,7 +946,9 @@
   "order": 14,
   "section": null,
   "qid": "Q378783",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -570,8 +962,55 @@
   "order": 15,
   "section": null,
   "qid": "Q5598",
-  "works": 12,
-  "level1": 5
+  "works": 32,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Leiden",
+    "desde": 1625,
+    "hasta": 1631,
+    "fuente": "https://es.wikipedia.org/wiki/Rembrandt"
+   },
+   {
+    "nivel": 3,
+    "nombre": "Primer periodo en Ámsterdam",
+    "desde": 1632,
+    "hasta": 1636,
+    "fuente": "https://es.wikipedia.org/wiki/Rembrandt"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Segundo periodo en Ámsterdam",
+    "desde": 1636,
+    "hasta": 1650,
+    "fuente": "https://es.wikipedia.org/wiki/Rembrandt"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Periodo tardío",
+    "desde": 1650,
+    "hasta": 1669,
+    "fuente": "https://es.wikipedia.org/wiki/Rembrandt"
+   }
+  ],
+  "level1": 8
+ },
+ {
+  "id": "leyster",
+  "name": "Judith Leyster",
+  "short": "Leyster",
+  "born": 1609,
+  "died": 1660,
+  "country": "Países Bajos",
+  "movementId": "barroco",
+  "order": 16,
+  "section": null,
+  "qid": "Q232423",
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "pereda",
@@ -581,10 +1020,12 @@
   "died": 1678,
   "country": "España",
   "movementId": "barroco",
-  "order": 16,
+  "order": 17,
   "section": null,
   "qid": "Q604088",
-  "works": 6,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -595,10 +1036,12 @@
   "died": 1685,
   "country": "España",
   "movementId": "barroco",
-  "order": 17,
+  "order": 18,
   "section": null,
   "qid": "Q833224",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -609,11 +1052,43 @@
   "died": 1682,
   "country": "España",
   "movementId": "barroco",
-  "order": 18,
+  "order": 19,
   "section": null,
   "qid": "Q192062",
-  "works": 15,
-  "level1": 6
+  "works": 31,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primeros encargos y años de la peste",
+    "desde": null,
+    "hasta": 1655,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo",
+    "nota": "Formación y peste se unen (la fuente las enlaza). La división «frío, cálido y vaporoso» no está en el artículo de Wikipedia (decisión de María: por secciones de Wikipedia)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Pleno barroco y plenitud",
+    "desde": 1655,
+    "hasta": 1661,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Los grandes encargos",
+    "desde": 1662,
+    "hasta": 1672,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Últimos trabajos",
+    "desde": 1673,
+    "hasta": 1682,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "valdes-leal",
@@ -623,10 +1098,12 @@
   "died": 1690,
   "country": "España",
   "movementId": "barroco",
-  "order": 19,
+  "order": 20,
   "section": null,
   "qid": "Q518898",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -637,11 +1114,13 @@
   "died": 1679,
   "country": "Países Bajos",
   "movementId": "barroco",
-  "order": 20,
+  "order": 21,
   "section": null,
   "qid": "Q205863",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "vermeer",
@@ -651,11 +1130,24 @@
   "died": 1675,
   "country": "Países Bajos",
   "movementId": "barroco",
-  "order": 21,
+  "order": 22,
   "section": null,
   "qid": "Q41264",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primera etapa",
+    "desde": null,
+    "hasta": 1661,
+    "fuente": "https://es.wikipedia.org/wiki/Johannes_Vermeer",
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "La periodización solo está en el resumen de Wikipedia (verificar)."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "claudio-coello",
@@ -665,10 +1157,12 @@
   "died": 1693,
   "country": "España",
   "movementId": "barroco",
-  "order": 22,
+  "order": 23,
   "section": null,
   "qid": "Q332466",
-  "works": 6,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -682,8 +1176,19 @@
   "order": 1,
   "section": null,
   "qid": "Q183221",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Antoine_Watteau",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "tiepolo",
@@ -696,8 +1201,10 @@
   "order": 2,
   "section": null,
   "qid": "Q186202",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "canaletto",
@@ -710,8 +1217,10 @@
   "order": 3,
   "section": null,
   "qid": "Q182664",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "chardin",
@@ -724,8 +1233,10 @@
   "order": 4,
   "section": null,
   "qid": "Q207447",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "liotard",
@@ -738,8 +1249,10 @@
   "order": 5,
   "section": null,
   "qid": "Q123757",
-  "works": 5,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "boucher",
@@ -752,8 +1265,10 @@
   "order": 6,
   "section": null,
   "qid": "Q180932",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "melendez",
@@ -766,8 +1281,19 @@
   "order": 7,
   "section": null,
   "qid": "Q707478",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Luis_Egidio_Mel%C3%A9ndez",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "reynolds",
@@ -780,8 +1306,10 @@
   "order": 8,
   "section": null,
   "qid": "Q194402",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "greuze",
@@ -794,8 +1322,10 @@
   "order": 9,
   "section": null,
   "qid": "Q347139",
-  "works": 5,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "gainsborough",
@@ -808,8 +1338,10 @@
   "order": 10,
   "section": null,
   "qid": "Q192720",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "fragonard",
@@ -822,8 +1354,19 @@
   "order": 11,
   "section": null,
   "qid": "Q127171",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jean-Honor%C3%A9_Fragonard",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "goya",
@@ -836,8 +1379,47 @@
   "order": 1,
   "section": null,
   "qid": "Q5432",
-  "works": 16,
-  "level1": 6
+  "works": 38,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Formación y cartones",
+    "desde": 1763,
+    "hasta": 1792,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya",
+    "nota": "Zaragoza se une a los cartones; Restauración y Burdeos, a las pinturas negras (propuesta, apartado Goya). Los años se solapan en 1790-1792: gana la etapa anterior."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Década de los noventa",
+    "desde": 1790,
+    "hasta": 1799,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Albores del siglo XIX",
+    "desde": 1800,
+    "hasta": 1807,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Los desastres de la guerra",
+    "desde": 1808,
+    "hasta": 1814,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
+   },
+   {
+    "nivel": 6,
+    "nombre": "Restauración, Quinta del Sordo y Burdeos",
+    "desde": 1815,
+    "hasta": 1828,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "paret",
@@ -850,7 +1432,9 @@
   "order": 12,
   "section": null,
   "qid": "Q283412",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -864,8 +1448,21 @@
   "order": 13,
   "section": null,
   "qid": "Q83155",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primeras obras",
+    "desde": null,
+    "hasta": 1788,
+    "fuente": "https://es.wikipedia.org/wiki/Jacques-Louis_David",
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "La propuesta no da años de corte: se infieren de la Revolución (1789), el Directorio (1795) y la Restauración (1816). Contrastar."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "vigee-le-brun",
@@ -879,7 +1476,18 @@
   "section": null,
   "qid": "Q213163",
   "works": 8,
-  "level1": 4
+  "category": "invitado",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "provisional": true
+   }
+  ],
+  "level1": 3
  },
  {
   "id": "borovikovski",
@@ -893,6 +1501,8 @@
   "section": null,
   "qid": "Q262098",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -906,7 +1516,9 @@
   "order": 16,
   "section": null,
   "qid": "Q117543",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -920,8 +1532,19 @@
   "order": 2,
   "section": null,
   "qid": "Q104884",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Formación",
+    "desde": 1801,
+    "hasta": 1814,
+    "fuente": "https://es.wikipedia.org/wiki/Caspar_David_Friedrich",
+    "nota": "La fuente no titula la etapa 1824-1840."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "turner",
@@ -934,8 +1557,19 @@
   "order": 3,
   "section": null,
   "qid": "Q159758",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/J._M._W._Turner",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "constable",
@@ -948,8 +1582,10 @@
   "order": 4,
   "section": null,
   "qid": "Q159297",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "tropinin",
@@ -963,6 +1599,8 @@
   "section": null,
   "qid": "Q434561",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -976,8 +1614,19 @@
   "order": 17,
   "section": null,
   "qid": "Q23380",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jean-Auguste-Dominique_Ingres",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "venetsianov",
@@ -991,6 +1640,8 @@
   "section": null,
   "qid": "Q515879",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1004,8 +1655,10 @@
   "order": 6,
   "section": null,
   "qid": "Q184212",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "corot",
@@ -1018,8 +1671,10 @@
   "order": 2,
   "section": null,
   "qid": "Q148475",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "delaroche",
@@ -1032,8 +1687,10 @@
   "order": 7,
   "section": null,
   "qid": "Q322582",
-  "works": 5,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "delacroix",
@@ -1046,8 +1703,20 @@
   "order": 8,
   "section": null,
   "qid": "Q33477",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primeros años",
+    "desde": null,
+    "hasta": 1831,
+    "fuente": "https://es.wikipedia.org/wiki/Eug%C3%A8ne_Delacroix",
+    "corteInferido": true,
+    "nota": "El corte de 1831 lo infiere el proceso (el viaje a Marruecos es de 1832)."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "briullov",
@@ -1060,8 +1729,10 @@
   "order": 9,
   "section": null,
   "qid": "Q4768",
-  "works": 4,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "ivanov",
@@ -1075,6 +1746,8 @@
   "section": null,
   "qid": "Q76829",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1088,8 +1761,20 @@
   "order": 3,
   "section": null,
   "qid": "Q148458",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Juventud y París",
+    "desde": null,
+    "hasta": 1848,
+    "fuente": "https://es.wikipedia.org/wiki/Jean-Fran%C3%A7ois_Millet",
+    "corteInferido": true,
+    "nota": "La propuesta solo da 1849 (Barbizon); el corte de «Juventud y París» (1848) lo infiere el proceso."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "madrazo",
@@ -1102,8 +1787,19 @@
   "order": 11,
   "section": null,
   "qid": "Q1345186",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Federico_Madrazo",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "fedotov",
@@ -1117,6 +1813,8 @@
   "section": null,
   "qid": "Q248597",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1130,8 +1828,10 @@
   "order": 12,
   "section": null,
   "qid": "Q181568",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "courbet",
@@ -1144,8 +1844,36 @@
   "order": 5,
   "section": null,
   "qid": "Q34618",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "En sus inicios",
+    "desde": null,
+    "hasta": 1848,
+    "fuente": "https://es.wikipedia.org/wiki/Gustave_Courbet",
+    "corteInferido": true,
+    "nota": "El corte de 1848 lo infiere el proceso (la fuente dice «a partir de 1849»)."
+   }
+  ],
+  "level1": 7
+ },
+ {
+  "id": "bonheur",
+  "name": "Rosa Bonheur",
+  "short": "Bonheur",
+  "born": 1822,
+  "died": 1899,
+  "country": "Francia",
+  "movementId": "realismo",
+  "order": 6,
+  "section": null,
+  "qid": "Q241732",
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "bouguereau",
@@ -1155,11 +1883,13 @@
   "died": 1905,
   "country": "Francia",
   "movementId": "realismo",
-  "order": 6,
+  "order": 7,
   "section": null,
   "qid": "Q483992",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "moreau",
@@ -1172,8 +1902,10 @@
   "order": 1,
   "section": null,
   "qid": "Q203828",
-  "works": 6,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "rossetti",
@@ -1186,8 +1918,10 @@
   "order": 13,
   "section": null,
   "qid": "Q186748",
-  "works": 6,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "millais",
@@ -1200,8 +1934,10 @@
   "order": 14,
   "section": null,
   "qid": "Q159606",
-  "works": 6,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "pissarro",
@@ -1214,8 +1950,19 @@
   "order": 1,
   "section": null,
   "qid": "Q134741",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Camille_Pissarro",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "savrasov",
@@ -1225,10 +1972,12 @@
   "died": 1897,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 7,
+  "order": 8,
   "section": null,
   "qid": "Q353008",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1242,8 +1991,19 @@
   "order": 2,
   "section": null,
   "qid": "Q40599",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/%C3%89douard_Manet",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "shishkin",
@@ -1253,11 +2013,13 @@
   "died": 1898,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 8,
+  "order": 9,
   "section": null,
   "qid": "Q193064",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "martin-rico",
@@ -1267,10 +2029,12 @@
   "died": 1908,
   "country": "España",
   "movementId": "realismo",
-  "order": 9,
+  "order": 10,
   "section": null,
   "qid": "Q427999",
-  "works": 6,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1281,10 +2045,12 @@
   "died": 1901,
   "country": "España",
   "movementId": "realismo",
-  "order": 11,
+  "order": 12,
   "section": null,
   "qid": "Q2298247",
-  "works": 5,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1298,8 +2064,10 @@
   "order": 4,
   "section": null,
   "qid": "Q203643",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "degas",
@@ -1312,8 +2080,20 @@
   "order": 3,
   "section": null,
   "qid": "Q46373",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Edgar_Degas",
+    "provisional": true,
+    "verificar": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "perov",
@@ -1323,10 +2103,12 @@
   "died": 1882,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 10,
+  "order": 11,
   "section": null,
   "qid": "Q315237",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1337,11 +2119,22 @@
   "died": 1873,
   "country": "España",
   "movementId": "realismo",
-  "order": 13,
+  "order": 14,
   "section": null,
   "qid": "Q615701",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Eduardo_Rosales",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "homer",
@@ -1351,11 +2144,13 @@
   "died": 1910,
   "country": "Estados Unidos",
   "movementId": "realismo",
-  "order": 12,
+  "order": 13,
   "section": null,
   "qid": "Q344838",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "kramskoi",
@@ -1365,10 +2160,12 @@
   "died": 1887,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 14,
+  "order": 15,
   "section": null,
   "qid": "Q207758",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1379,11 +2176,24 @@
   "died": 1874,
   "country": "España",
   "movementId": "realismo",
-  "order": 15,
+  "order": 16,
   "section": null,
   "qid": "Q380052",
-  "works": 8,
-  "level1": 4
+  "works": 11,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Roma y Marruecos",
+    "desde": null,
+    "hasta": 1862,
+    "fuente": "https://es.wikipedia.org/wiki/Mariano_Fortuny",
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Sin años en la propuesta: el corte de 1862 (segundo viaje a Marruecos) es provisional."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "cezanne",
@@ -1396,8 +2206,19 @@
   "order": 1,
   "section": null,
   "qid": "Q35548",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Periodo oscuro e impresionista",
+    "desde": 1861,
+    "hasta": 1878,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne",
+    "nota": "El periodo oscuro solo tiene 4 candidatas, por eso se une al impresionista."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "sisley",
@@ -1410,8 +2231,19 @@
   "order": 5,
   "section": null,
   "qid": "Q175130",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Alfred_Sisley",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "makovski",
@@ -1421,10 +2253,12 @@
   "died": 1915,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 16,
+  "order": 17,
   "section": null,
   "qid": "Q460337",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1438,8 +2272,40 @@
   "order": 6,
   "section": null,
   "qid": "Q296",
-  "works": 12,
-  "level1": 5
+  "works": 32,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Formación y Salón",
+    "desde": null,
+    "hasta": 1870,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet",
+    "nota": "Formación y Salón van juntos (la fuente los separa sin años y son seguidos)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Exposiciones impresionistas",
+    "desde": 1871,
+    "hasta": 1882,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Giverny",
+    "desde": 1883,
+    "hasta": 1899,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Últimos años y nenúfares",
+    "desde": 1900,
+    "hasta": 1926,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "renoir",
@@ -1449,11 +2315,24 @@
   "died": 1919,
   "country": "Francia",
   "movementId": "impresionismo",
-  "order": 8,
+  "order": 9,
   "section": null,
   "qid": "Q39931",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Juventud",
+    "desde": null,
+    "hasta": 1870,
+    "fuente": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir",
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Sin años en la propuesta: el corte de 1870 es provisional; la propuesta añade un 4.º nivel si se verifica el resumen."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "morisot",
@@ -1463,11 +2342,21 @@
   "died": 1895,
   "country": "Francia",
   "movementId": "impresionismo",
-  "order": 7,
+  "order": 8,
   "section": null,
   "qid": "Q105320",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Comienzos",
+    "desde": 1864,
+    "hasta": 1874,
+    "fuente": "https://es.wikipedia.org/wiki/Berthe_Morisot"
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "raimundo-madrazo",
@@ -1477,11 +2366,29 @@
   "died": 1920,
   "country": "España",
   "movementId": "realismo",
-  "order": 18,
+  "order": 19,
   "section": null,
   "qid": "Q2506493",
-  "works": 5,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
+ },
+ {
+  "id": "bazille",
+  "name": "Frédéric Bazille",
+  "short": "Bazille",
+  "born": 1841,
+  "died": 1870,
+  "country": "Francia",
+  "movementId": "impresionismo",
+  "order": 7,
+  "section": null,
+  "qid": "Q207298",
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "kuindzhi",
@@ -1491,11 +2398,13 @@
   "died": 1910,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 17,
+  "order": 18,
   "section": null,
   "qid": "Q353628",
-  "works": 4,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "vereshchagin",
@@ -1505,10 +2414,12 @@
   "died": 1904,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 19,
+  "order": 20,
   "section": null,
   "qid": "Q127017",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1522,8 +2433,10 @@
   "order": 2,
   "section": null,
   "qid": "Q156386",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "cassatt",
@@ -1533,11 +2446,22 @@
   "died": 1926,
   "country": "Estados Unidos",
   "movementId": "impresionismo",
-  "order": 9,
+  "order": 10,
   "section": null,
   "qid": "Q173223",
   "works": 8,
-  "level1": 4
+  "category": "invitado",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": null,
+    "provisional": true
+   }
+  ],
+  "level1": 3
  },
  {
   "id": "repin",
@@ -1547,11 +2471,22 @@
   "died": 1930,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 21,
+  "order": 22,
   "section": null,
   "qid": "Q172911",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Ili%C3%A1_Repin",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "polenov",
@@ -1561,10 +2496,12 @@
   "died": 1927,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 20,
+  "order": 21,
   "section": null,
   "qid": "Q318393",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1575,10 +2512,12 @@
   "died": 1912,
   "country": "España",
   "movementId": "impresionismo",
-  "order": 10,
+  "order": 11,
   "section": null,
   "qid": "Q1403669",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1589,10 +2528,12 @@
   "died": 1921,
   "country": "España",
   "movementId": "realismo",
-  "order": 22,
+  "order": 23,
   "section": null,
   "qid": "Q553258",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1606,8 +2547,21 @@
   "order": 3,
   "section": null,
   "qid": "Q37693",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Francia y Bretaña",
+    "desde": null,
+    "hasta": 1890,
+    "fuente": "https://es.wikipedia.org/wiki/Paul_Gauguin",
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Años deducidos del resumen de la fuente (verificar)."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "caillebotte",
@@ -1617,11 +2571,13 @@
   "died": 1894,
   "country": "Francia",
   "movementId": "impresionismo",
-  "order": 11,
+  "order": 12,
   "section": null,
   "qid": "Q295144",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "surikov",
@@ -1631,11 +2587,13 @@
   "died": 1916,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 23,
+  "order": 24,
   "section": null,
   "qid": "Q110228",
-  "works": 4,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "vasnetsov",
@@ -1645,11 +2603,13 @@
   "died": 1926,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 24,
+  "order": 25,
   "section": null,
   "qid": "Q204138",
-  "works": 4,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "pinazo",
@@ -1659,10 +2619,12 @@
   "died": 1916,
   "country": "España",
   "movementId": "impresionismo",
-  "order": 12,
+  "order": 13,
   "section": null,
   "qid": "Q254379",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1676,8 +2638,10 @@
   "order": 2,
   "section": null,
   "qid": "Q212754",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "kroyer",
@@ -1687,11 +2651,13 @@
   "died": 1909,
   "country": "Dinamarca",
   "movementId": "impresionismo",
-  "order": 13,
+  "order": 14,
   "section": null,
   "qid": "Q365068",
-  "works": 6,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "van-gogh",
@@ -1704,8 +2670,50 @@
   "order": 4,
   "section": null,
   "qid": "Q5582",
-  "works": 12,
-  "level1": 5
+  "works": 38,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Países Bajos",
+    "desde": 1880,
+    "hasta": 1885,
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "nota": "Los años de la propuesta (1886-1888, 1888-1889, 1889-1890, 1890) se solapan: los cortes de mes (feb. 1888, mayo 1889, mayo 1890) son de la biografía del Museo Van Gogh; las obras fechadas solo por año se reparten a mano en ajustes.json (clave `etapa`)."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Amberes y París",
+    "desde": 1886,
+    "hasta": "1888-02",
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "corteInferido": true
+   },
+   {
+    "nivel": 4,
+    "nombre": "Arlés",
+    "desde": 1888,
+    "hasta": "1889-05",
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "corteInferido": true
+   },
+   {
+    "nivel": 5,
+    "nombre": "Saint-Rémy",
+    "desde": 1889,
+    "hasta": "1890-05",
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "corteInferido": true
+   },
+   {
+    "nivel": 6,
+    "nombre": "Auvers",
+    "desde": 1890,
+    "hasta": 1890,
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "sargent",
@@ -1715,11 +2723,13 @@
   "died": 1925,
   "country": "Estados Unidos",
   "movementId": "impresionismo",
-  "order": 14,
+  "order": 15,
   "section": null,
   "qid": "Q155626",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "vrubel",
@@ -1732,8 +2742,10 @@
   "order": 3,
   "section": null,
   "qid": "Q215100",
-  "works": 4,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "regoyos",
@@ -1743,10 +2755,12 @@
   "died": 1913,
   "country": "España",
   "movementId": "impresionismo",
-  "order": 15,
+  "order": 16,
   "section": null,
   "qid": "Q1837855",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1760,8 +2774,19 @@
   "order": 5,
   "section": null,
   "qid": "Q34013",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Georges_Pierre_Seurat",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "levitan",
@@ -1771,11 +2796,13 @@
   "died": 1900,
   "country": "Rusia",
   "movementId": "realismo",
-  "order": 25,
+  "order": 26,
   "section": null,
   "qid": "Q211356",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "zorn",
@@ -1785,11 +2812,13 @@
   "died": 1920,
   "country": "Suecia",
   "movementId": "impresionismo",
-  "order": 16,
+  "order": 17,
   "section": null,
   "qid": "Q206820",
-  "works": 6,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "rusinol",
@@ -1802,7 +2831,9 @@
   "order": 4,
   "section": null,
   "qid": "Q366930",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1816,8 +2847,21 @@
   "order": 5,
   "section": null,
   "qid": "Q34661",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Juventud y Secesión",
+    "desde": null,
+    "hasta": 1898,
+    "fuente": "https://es.wikipedia.org/wiki/Gustav_Klimt",
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Sin años en la propuesta: cortes provisionales (Secesión 1897, etapa dorada desde 1899, vejez desde 1911). La juventud solo tiene 4 candidatas."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "nesterov",
@@ -1831,6 +2875,8 @@
   "section": null,
   "qid": "Q318427",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -1844,8 +2890,10 @@
   "order": 6,
   "section": null,
   "qid": "Q151573",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "sorolla",
@@ -1855,11 +2903,36 @@
   "died": 1923,
   "country": "España",
   "movementId": "impresionismo",
-  "order": 17,
+  "order": 18,
   "section": null,
   "qid": "Q351746",
-  "works": 14,
-  "level1": 6
+  "works": 25,
+  "category": "gran-maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Formación y consolidación",
+    "desde": 1863,
+    "hasta": 1899,
+    "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla",
+    "nota": "Formación se une a la consolidación."
+   },
+   {
+    "nivel": 3,
+    "nombre": "Culminación",
+    "desde": 1900,
+    "hasta": 1910,
+    "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla"
+   },
+   {
+    "nivel": 4,
+    "nombre": "Etapa final",
+    "desde": 1911,
+    "hasta": 1920,
+    "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla"
+   }
+  ],
+  "level1": 8
  },
  {
   "id": "munch",
@@ -1872,8 +2945,21 @@
   "order": 7,
   "section": null,
   "qid": "Q41406",
-  "works": 10,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Inicios",
+    "desde": null,
+    "hasta": 1892,
+    "fuente": "https://es.wikipedia.org/wiki/Edvard_Munch",
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Sin años en la propuesta: cortes provisionales (Berlín 1892-1893, crisis desde 1909). La etapa final solo llega hasta 1929."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "lautrec",
@@ -1886,8 +2972,19 @@
   "order": 7,
   "section": null,
   "qid": "Q82445",
-  "works": 9,
-  "level1": 5
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Henri_de_Toulouse-Lautrec",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "hammershoi",
@@ -1900,8 +2997,10 @@
   "order": 8,
   "section": null,
   "qid": "Q380706",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "serov",
@@ -1911,11 +3010,13 @@
   "died": 1911,
   "country": "Rusia",
   "movementId": "impresionismo",
-  "order": 18,
+  "order": 19,
   "section": null,
   "qid": "Q217128",
-  "works": 4,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "casas",
@@ -1928,7 +3029,9 @@
   "order": 9,
   "section": null,
   "qid": "Q725681",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1942,8 +3045,21 @@
   "order": 10,
   "section": null,
   "qid": "Q61064",
-  "works": 6,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Metamorfosis",
+    "desde": null,
+    "hasta": 1910,
+    "fuente": "https://es.wikipedia.org/wiki/Vasili_Kandinski",
+    "verificar": true,
+    "corteInferido": true,
+    "nota": "Rusia y Bauhaus (1914-1929) se pueden separar en dos niveles."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "zuloaga",
@@ -1956,7 +3072,9 @@
   "order": 11,
   "section": null,
   "qid": "Q460198",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1970,7 +3088,9 @@
   "order": 12,
   "section": null,
   "qid": "Q1393742",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1984,7 +3104,9 @@
   "order": 8,
   "section": null,
   "qid": "Q1357729",
-  "works": 8,
+  "works": 4,
+  "category": "invitado",
+  "stages": [],
   "level1": 4
  },
  {
@@ -1998,8 +3120,19 @@
   "order": 13,
   "section": null,
   "qid": "Q1712402",
-  "works": 8,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Primera etapa",
+    "desde": 1900,
+    "hasta": 1908,
+    "fuente": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres",
+    "nota": "Justo 5 y 5 obras por etapa. Los años se solapan en 1908: gana la etapa anterior."
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "petrov-vodkin",
@@ -2013,6 +3146,8 @@
   "section": null,
   "qid": "Q364226",
   "works": 3,
+  "category": "invitado",
+  "stages": [],
   "level1": 3
  },
  {
@@ -2026,8 +3161,10 @@
   "order": 14,
   "section": null,
   "qid": "Q130777",
-  "works": 4,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "modigliani",
@@ -2040,8 +3177,10 @@
   "order": 16,
   "section": null,
   "qid": "Q120993",
-  "works": 9,
-  "level1": 5
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  },
  {
   "id": "juan-gris",
@@ -2054,8 +3193,19 @@
   "order": 17,
   "section": null,
   "qid": "Q151152",
-  "works": 6,
-  "level1": 4
+  "works": 12,
+  "category": "maestro",
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Juan_Gris",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "schiele",
@@ -2068,7 +3218,9 @@
   "order": 18,
   "section": null,
   "qid": "Q44032",
-  "works": 8,
-  "level1": 4
+  "works": 3,
+  "category": "invitado",
+  "stages": [],
+  "level1": 3
  }
 ]
