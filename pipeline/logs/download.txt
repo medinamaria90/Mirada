@@ -1,96 +1,85 @@
-selección 1233, ya bajadas 1139, pendientes 94; este lote 94
-ok   w3909928    monet            1411x1600 379KB  Meadows at Giverny
-ok   w19564337   monet            1600x1270 643KB  The Grand Canal
-ok   w19914267   monet            1600x1138 445KB  The Doge's Palace Seen from San Giorgio Maggiore
-ok   w50532779   monet            1026x1221 326KB  Weeping Willow
-ok   w141807203  monet            1600x1421 708KB  Iris
-ok   w3795194    monet            1600x1023 339KB  Waterloo Bridge. Effect of Fog
-ok   w3823474    renoir           1287x1600 599KB  La Promenade
-ok   w3177703    renoir           1166x1600 446KB  El matrimonio Sisley
-ok   w3089617    renoir           1102x1600 588KB  Retrato de Bazille
-ok   w15906838   morisot          1303x1600 451KB  Madre e hija en el balcón
-ok   w20188714   morisot          1335x1600 464KB  The Artist's Sister at a Window
-ok   w20188724   morisot          1600x1013 383KB  The Sisters
-ok   w110233557  morisot          1600x1288 369KB  In a Villa at the Seaside
-ok   w124413222  morisot          1294x1600 333KB  Portrait of Mme Boursier and Her Daughter
-ok   w3212360    bazille          1168x1600 362KB  El vestido rosa
-ok   w2786992    bazille          997x1600 340KB  Vista del pueblo
-ok   w325981     bazille          1600x1049 466KB  Retrato de una familia
-ok   w59136337   repin            1168x1600 309KB  La gran duquesa Sofía en el convento de Novodévichi
-ok   w105564577  repin            1600x994 369KB  Despedida de un recluta
-ok   w4337604    repin            956x1600 503KB  Autumn Bunch
-ok   w4528214    gauguin          1109x1600 437KB  Estudio de un desnudo
-ok   w7617093    gauguin          1307x1600 624KB  Naturaleza muerta con perfil de Laval
-ok   w2093283    gauguin          1600x1278 592KB  Van Gogh pintando girasoles
-ok   w4896868    gauguin          1268x1600 644KB  La bella Angèle
-ok   w9162690    gauguin          1600x1340 517KB  Autoportrait au Christ jaune
-ok   w154469     van-gogh         1600x1132 283KB  Los comedores de patatas
-ok   w26220165   van-gogh         1600x673 245KB  Jardín rectoral en Nuenen en primavera
-ok   w4987244    van-gogh         1600x1174 546KB  Bulb Fields
-ok   w4110564    van-gogh         1600x1112 503KB  View of the Sea at Scheveningen
-ok   w7617094    van-gogh         1600x1067 525KB  Still Life with Straw Hat
-ok   w5179827    van-gogh         1600x1103 386KB  Prado con vacas
-ok   w2278818    van-gogh         1326x1600 756KB  Agostina Segatori sentada en el Café du Tambourin
-ok   w7536969    van-gogh         1206x1600 393KB  Cráneo con cigarrillo en llamas
-ok   w4110565    van-gogh         1317x1600 726KB  View from Theo’s apartment
-ok   w262360     van-gogh         1600x1308 690KB  Campo de trigo con una alondra
-ok   w2269047    van-gogh         1181x1600 535KB  La italiana
-ok   w17511613   van-gogh         1600x1313 585KB  Un cangrejo de espaldas
-ok   w2200610    van-gogh         1600x1241 525KB  La Casa Amarilla
-ok   w4892867    van-gogh         1600x1263 691KB  La cosecha
-ok   w948894     van-gogh         1308x1600 558KB  La Mousmé
-ok   w500554     van-gogh         1264x1600 546KB  En la puerta de la eternidad
-ok   w5930190    van-gogh         1270x1600 944KB  Camino con Ciprés y Estrella
-ok   w1118295    van-gogh         1247x1600 500KB  Silla con pipa
-ok   w1132723    van-gogh         1269x1600 675KB  La ronda de los presos
-ok   w22329831   van-gogh         1256x1576 276KB  Autorretrato sin barba
-ok   w9391004    van-gogh         1600x1314 587KB  Trigal verde con ciprés
-ok   w634122     van-gogh         1600x767 451KB  Trigal con cuervos
-ok   w1171740    van-gogh         1600x1328 708KB  Casa blanca por la noche
-ok   w4233325    van-gogh         1600x786 506KB  Raíces de árbol
-ok   w5564475    van-gogh         1085x1600 508KB  Chica en blanco
-ok   w594477     van-gogh         1260x1600 448KB  Mujer campesina con un fondo de trigo
-ok   w3835761    seurat           1318x1600 961KB  Le Chahut
-ok   w3899880    seurat           1256x1009 198KB  Periferia
-ok   w3908058    seurat           1600x1318 612KB  El puente de Courbevoie
-ok   w3965263    seurat           1222x1600 389KB  The Forest at Pontaubert
-ok   w107534436  klimt            1600x1419 537KB  Auditorium of the old Burgtheater
-ok   w114573173  klimt            1216x972 281KB  Moving Water
-ok   w107598562  klimt            1600x1228 794KB  Schubert at the Piano I
-ok   w107645867  klimt            1380x1600 474KB  Portrait of the pianist Joseph Pembauer
-ok   w111602702  klimt            1137x1600 393KB  Allegory of Sculpture
-ok   w20014451   sorolla          1600x1073 352KB  Defensa del parque de artillería de Monteleón
-ok   w104023609  sorolla          1600x1040 253KB  ¡Otra Margarita!
-ok   w19266848   sorolla          1233x1600 567KB  Santa en oración
-ok   w18924047   sorolla          1600x1320 456KB  El baño del caballo
-ok   w19251987   sorolla          1600x1056 503KB  Instantánea
-ok   w5822817    sorolla          1600x1131 326KB  El Pescador
-ok   w59313447   sorolla          1600x1005 521KB  Saltando a la comba, La Granja
-ok   w58461806   sorolla          1213x1543 489KB  Jardín de la Casa Sorolla
-ok   w59314264   sorolla          653x1280 252KB  Retrato de Alfonso XIII con uniforme de húsares
-ok   w99719143   sorolla          1600x1336 825KB  Lavanderas de Galicia
-ok   w20872006   sorolla          1133x1600 168KB  Retrato de Jacques Seligmann
-ok   w18753113   munch            1328x1600 391KB  Noche en Saint-Cloud
-ok   w3793021    munch            1600x1264 590KB  El beso de la ventana
-ok   w18879691   munch            1163x1600 349KB  La Desesperación
-ok   w18890744   munch            1263x1600 567KB  Rue Lafayette
-ok   w27954929   lautrec          1375x1600 602KB  Portrait de Suzanne Valadon (Madame Suzanne Valadon, artiste
-ok   w6022118    lautrec          1281x1600 583KB  Monsieur Fourcade
-ok   w19905264   lautrec          1203x1600 453KB  The Englishman (William Tom Warrener, 1861–1934) at the Moul
-ok   w3797004    kandinsky        1600x1248 457KB  Impression lll
-ok   w2933825    kandinsky        1600x1461 534KB  Church at Murnau
-ok   w18705476   kandinsky        1600x1081 352KB  Arab City
-ok   w3606261    kandinsky        1428x1600 459KB  Improvisation 6
-ok   w3867419    kandinsky        1600x1168 300KB  Murnau View With Railway and Castle
-ok   w75387404   kandinsky        1460x1600 700KB  Couple on Horseback
-ok   w65660700   romero-de-torres 1349x1600 442KB  Bendición Sánchez
-ok   w65683863   romero-de-torres 1046x1600 402KB  Un patio andaluz
-ok   w27667738   romero-de-torres 1200x710 98KB  Lectura
-ok   w30250636   romero-de-torres 1000x1202 157KB  Amor sagrado, amor profano
-ok   w20189543   juan-gris        1042x1600 292KB  Harlequin with a Guitar
-ok   w20189849   juan-gris        1215x1600 535KB  Still Life with Checked Tablecloth
-ok   w20190963   juan-gris        1346x1600 470KB  Juan Legua
-ok   w18687778   juan-gris        1172x1600 519KB  Violon et guitare
-ok   w18687779   juan-gris        1330x1600 354KB  Broc et verre
-ok   w18687780   juan-gris        1031x1600 287KB  Portrait de Madame Josette Gris
-lote: 94/94 bien; quedan 0
+selección 1315, ya bajadas 1232, pendientes 83; este lote 83
+ok   w1569622    cimabue          894x1600 404KB  Maestà
+ok   w68496636   cimabue          1260x1600 589KB  Cristo burlado
+ok   w3276414    cimabue          911x1600 351KB  Maestà de Santa Maria dei Servi
+ok   w16556250   cimabue          1270x1600 854KB  La flagelación de Cristo
+ok   w68961087   cimabue          1253x1600 428KB  Diptych of Devotion
+ok   w15974342   cimabue          1274x1600 449KB  The Virgin and Child with Two Angels
+ok   w667202     duccio           1600x1514 549KB  Maestà de la catedral de Siena
+ok   w948745     duccio           979x1600 368KB  Madonna Rucellai
+ok   w644734     duccio           904x1600 364KB  Madonna Gualino
+ok   w6728394    duccio           1207x1600 638KB  La Virgen y el Niño
+ok   w3842715    duccio           1057x1600 528KB  Madonna di Crevole
+ok   w18684720   duccio           1600x1495 713KB  Cristo y la samaritana
+ok   w6728425    duccio           1045x1600 361KB  Madonna with Child and six Angels
+ok   w3873252    duccio           1600x890 426KB  The Nativity with the Prophets Isaiah and Ezekiel
+ok   w3873247    pietro-lorenzetti 1275x1300 393KB  Nativity of the Virgin
+ok   w3948917    pietro-lorenzetti 846x1600 252KB  Saint Margaret or Agatha
+ok   w3842761    pietro-lorenzetti 1295x1600 332KB  Madonna and Child Enthroned with Eight Angels
+ok   w3843026    pietro-lorenzetti 800x1222 190KB  Cortone Maesta
+ok   w3889218    pietro-lorenzetti 1600x973 274KB  Mary with child and saints
+ok   w3709298    pietro-lorenzetti 1600x833 111KB  Descent into Limbo
+ok   w3933563    pietro-lorenzetti 1600x832 131KB  La Resurrección
+ok   w3842573    pietro-lorenzetti 1295x700 212KB  Madonna and Child with St Francis and St John the Baptist
+ok   w979440     simone-martini   1600x1389 508KB  Anunciación entre los santos Ansano y Margarita
+ok   w3947520    simone-martini   823x1200 213KB  San Luis de Tolosa coronando a Roberto de Anjou, rey de Nápo
+ok   w3907529    simone-martini   1600x1128 455KB  Políptico de Santa Catalina
+ok   w20183716   simone-martini   1152x1600 516KB  La Virgen y el Niño
+ok   w21711295   simone-martini   1074x1600 625KB  San Pedro
+ok   w3225814    simone-martini   990x1600 471KB  The Carrying of the Cross
+ok   w19607289   simone-martini   1138x1600 620KB  Christ discovered in the temple
+ok   w20173074   simone-martini   1086x1600 837KB  The Angel of the Annunciation
+ok   w3910903    ambrogio-lorenzetti 1118x1600 450KB  Presentación del Niño en el Templo
+ok   w3618171    ambrogio-lorenzetti 1469x1600 656KB  Annunciation
+ok   w3842740    ambrogio-lorenzetti 801x1500 311KB  Madonna with child
+ok   w3843028    ambrogio-lorenzetti 1600x1237 401KB  Madonna and child with saints and angels
+ok   w18572975   ambrogio-lorenzetti 1111x1600 374KB  The Charity of St. Nicholas of Bari
+ok   w20382178   ambrogio-lorenzetti 1426x1600 515KB  St. John the Baptist
+ok   w125399429  ambrogio-lorenzetti 805x1600 258KB  Madonna del Latte
+ok   w55831798   ambrogio-lorenzetti 1303x1600 306KB  Painted crucifix
+ok   w18210019   utamaro          1093x1600 364KB  Tres Bellezas de Nuestros Días
+ok   w28941252   utamaro          1600x959 334KB  Fukagawa no Yuki
+ok   w30589460   utamaro          1103x1600 267KB  Kōmei Bijin Rokkasen
+ok   w30590576   utamaro          1068x1600 293KB  Sugatami Shichinin Keshō
+ok   w28747818   utamaro          1069x1600 392KB  Kasumi-ori Musume Hinagata
+ok   w30589413   utamaro          1422x1600 246KB  Fujin Sōgaku Jittai and Fujo Ninsō Juppin
+ok   w30591109   utamaro          1071x1600 274KB  Kasen Koi no Bu
+ok   w60404497   utamaro          1059x1600 388KB  Twelve Hours in the Pleasure Quarters of the Yoshiwara
+ok   w252485     hokusai          1600x1128 447KB  La gran ola de Kanagawa
+ok   w3565037    hokusai          1600x1080 480KB  Fuji rojo
+ok   w2717022    hokusai          1600x1116 434KB  El sueño de la esposa del pescador
+ok   w18173384   hokusai          1600x1054 329KB  Tormenta debajo de la cumbre
+ok   w17227585   hokusai          1600x1052 488KB  Kajikazawa en la provincia de Kai
+ok   w18173387   hokusai          1600x1068 551KB  Sundai en Edo
+ok   w18173402   hokusai          1600x1066 427KB  Una vista del monte Fuji tras el lago Suwa
+ok   w2963437    hokusai          1600x1182 566KB  Oceans of Wisdom
+ok   w18173386   hokusai          1600x1064 514KB  Bajo el puente Mannen en Fukagawa
+ok   w18173408   hokusai          1600x1079 531KB  El salón Sazai en el templo de los quinientos rakan
+ok   w17210582   hokusai          1600x1070 445KB  Vista del Fuji desde un campo en la provincia de Owari
+ok   w18173389   hokusai          1600x1073 540KB  Senju en la provincia de Musashi
+ok   w59915220   sharaku          802x1200 196KB  Ōtani Oniji III como Yakko Edobei
+ok   w62029258   sharaku          900x1402 209KB  Ichikawa Ebizo as Takemura Sadanoshin
+ok   w62030437   sharaku          1025x1600 341KB  Iwai Hanshirō IV as the wet nurse Shigenoi
+ok   w62030967   sharaku          1079x1600 218KB  Ichikawa Monnosuke II as Date no Yosaku
+ok   w62060190   sharaku          1081x1600 395KB  Bandō Hikosaburō III as Sagisaka Sanai in the Play "Koinyōbō
+ok   w62084368   sharaku          1093x1600 346KB  Osagawa Tsuneyo II, possibly in the rôle of Ippei's sister O
+ok   w7678417    kuniyoshi        1600x796 412KB  Takiyasha la bruja y el espectro del esqueleto
+ok   w96471562   kuniyoshi        1190x1497 367KB  Michiyuki Nekoyanagi Sakari no Tsukikage
+ok   w69729449   kuniyoshi        617x1600 196KB  Honchō suikoden gōyū 800 nin hitori
+ok   w70738658   kuniyoshi        561x1600 251KB  One of the 108 Heroes of the Popular Water Margin
+ok   w96675024   kuniyoshi        1089x1600 454KB  Caricatures of the One Hundred and Eight Heroes of the Popul
+ok   w97657866   kuniyoshi        1600x769 496KB  Pilgrims at the Rōben waterfall, Ōyama
+ok   w98168850   kuniyoshi        1600x763 494KB  Onoe Kikugorō ichidai banashi Bakeneko
+ok   w104525540  kuniyoshi        1089x1600 448KB  Famous Views of Edo Selected for the Twelve Months
+ok   w5826309    hiroshige        1056x1600 519KB  El puente Ōhashi en Atake bajo una lluvia repentina
+ok   w21127606   hiroshige        1089x1600 519KB  Jardín de ciruelos en Kameido
+ok   w18686018   hiroshige        1600x1083 471KB  Fuchu
+ok   w75089333   hiroshige        1600x1048 370KB  Nihonbashi
+ok   w75089352   hiroshige        1600x1048 418KB  Yoshiwara
+ok   w75089364   hiroshige        1600x1048 361KB  Kanbara
+ok   w75089376   hiroshige        1600x1030 457KB  Numazu
+ok   w75089388   hiroshige        1600x1040 386KB  Yui
+ok   w75089437   hiroshige        1600x1044 368KB  Mariko
+ok   w75089462   hiroshige        1600x1033 414KB  Fujieda
+ok   w2269788    van-gogh         1324x1600 839KB  Retrato del doctor Félix Rey
+lote: 83/83 bien; quedan 0
