@@ -42,3 +42,9 @@ ok   w4112530    vasnetsov        1600x900 279KB  El caballero en la encrucijada
 lote: 150/150 bien; quedan 230
 build: 1180 obras (950 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
 subidas 150 imágenes a la release
+ok   w118469029  hammershoi       1358x1600 428KB  Interior. La sala de música, Strandgade 30
+ok   w14632140   hammershoi       1276x1600 438KB  Interior con mujer al piano, Strandgade 30
+ok   w29044191   hammershoi       1600x1034 169KB  Cinco retratos
+lote: 150/150 bien; quedan 80
+build: 1180 obras (1100 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
+NO SE PUDIERON SUBIR LAS IMÁGENES A LA RELEASE
