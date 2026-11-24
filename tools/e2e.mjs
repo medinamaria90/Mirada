@@ -596,7 +596,11 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // tipografías también. Presupuesto (falla si se supera). Antes de la oleada 6 (HEAD 4a3db26, misma
 // medida): bienvenida 30 peticiones / 424 KB, inicio 29 / 402 KB. El tema de Ajustes (ui/theme.js, 2 KB) va en
 // la cadena de arranque: +1 petición en el inicio; los KB absorben el bloque oscuro duplicado de brand.css.
-const BOOT_BUDGET = { welcome: { requests: 24, kb: 400 }, home: { requests: 29, kb: 440 } };
+// Mapa v10 (inicio): +2 módulos (ui/screens/path-map.js, ui/path-character.js) y el paisaje SVG del tramo
+// de la parada actual y, si asoma, el del siguiente (≤ 30 KB cada uno; los demás se piden al acercarse):
+// 32 peticiones; los KB bajan (339 medidos) porque el mapa pinta menos miniaturas del atlas de golpe.
+// La bienvenida gana 7 KB por las variables del mapa en brand.css (claro + dos copias del oscuro).
+const BOOT_BUDGET = { welcome: { requests: 24, kb: 410 }, home: { requests: 32, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -663,9 +667,39 @@ check(crop.covers && crop.big, `recorte del atlas raro: ${JSON.stringify(crop)}`
 // Repaso de movimiento solo con ≥3 pintores con etapa
 const expectedReviews = index.visibleMovements.filter((m) => hasMovementReview(index, m.id)).length;
 check(await page.locator('.stage-review').count() === expectedReviews, `repasos en el mapa: ${await page.locator('.stage-review').count()} vs ${expectedReviews}`);
+// Mapa v10: de abajo arriba (el primer nodo del DOM, el primero del juego, es el más bajo en pantalla),
+// con «Tu museo» arriba, un cofre cerrado por época, el paisaje del tramo actual cargado (los demás
+// esperan a acercarse) y el personaje en el sendero bajo la parada actual.
+const mapV10 = await page.evaluate(() => {
+  const stages = [...document.querySelectorAll('.stage:not(.stage-gallery)')];
+  const eras = [...document.querySelectorAll('.path-era')];
+  const top = (e) => e.getBoundingClientRect().top + window.scrollY;
+  const land = (e) => e.querySelector('.path-land');
+  const cur = document.querySelector('.stage-spot.is-current');
+  const ch = document.querySelector('.path-character');
+  const c = cur && cur.getBoundingClientRect();
+  const h = ch && ch.getBoundingClientRect();
+  return {
+    bottomUp: stages.length > 1 && top(stages[0]) > top(stages[stages.length - 1]) && top(eras[0]) > top(eras[eras.length - 1]),
+    museumOnTop: top(document.querySelector('.path-museum')) < top(eras[eras.length - 1]),
+    chests: document.querySelectorAll('.path-chest').length, eras: eras.length,
+    loaded: eras.filter((e) => land(e).getAttribute('src')).map((e) => e.dataset.era),
+    currentLoaded: Boolean(cur) && land(cur.closest('.path-era')).complete && land(cur.closest('.path-era')).naturalWidth > 0,
+    character: Boolean(c && h) && Math.abs((h.left + h.width / 2) - c.left) < 2 && h.top > c.top && h.top < c.top + 70,
+    ringText: [...document.querySelectorAll('.stage-spot.is-current .stage-meta')].map((e) => e.textContent.trim()),
+  };
+});
+check(mapV10.bottomUp, 'el mapa no va de abajo arriba');
+check(mapV10.museumOnTop, '«Tu museo» no está arriba del todo');
+check(mapV10.chests === mapV10.eras && mapV10.eras === index.visibleMovements.length, `cofres por época: ${mapV10.chests} / ${mapV10.eras}`);
+check(mapV10.currentLoaded && mapV10.loaded.length <= 2, `paisajes cargados al abrir: ${mapV10.loaded.join(', ') || 'ninguno'}`);
+check(mapV10.character, 'el personaje no está bajo la parada actual');
+check(mapV10.ringText.join() === 'Empezar', `botón del nodo actual: ${mapV10.ringText.join()}`);
 const locked = page.locator('.stage.is-locked').first();
 await locked.scrollIntoViewIfNeeded();
 await locked.click();
+await page.waitForTimeout(300);
+check(await page.locator('.lock-note.is-visible').count() === 1, 'pulsar una parada cerrada no explica por qué');
 await shot(page, '03-mapa-bloqueado');
 await page.evaluate(() => window.scrollTo(0, 0));
 
@@ -722,7 +756,33 @@ check(await page.locator('section.event .event-go').count() === 0, 'tarjeta fija
 await page.mouse.move(1, 1);
 const borders = await page.$$eval('.event:not(.event-seal)', (els) => [...new Set(els.map((e) => getComputedStyle(e).borderTopColor))]);
 check(borders.length <= 1, `bordes distintos en las tarjetas del resultado: ${borders}`);
+// Vuelta a la portada con una parada nueva dominada: el personaje camina por el sendero hasta la
+// nueva parada actual (≈1 s, transform por fotogramas) y acaba justo bajo ella.
+async function characterWalkCheck(pg, label) {
+  await pg.waitForSelector('.stage-spot.is-current .path-character');
+  const walk = await pg.evaluate(() => {
+    const ch = document.querySelector('.path-character');
+    const anims = ch.getAnimations();
+    return { walking: ch.classList.contains('is-walking'), anims: anims.length, ms: anims[0] ? anims[0].effect.getTiming().duration : 0 };
+  });
+  check(walk.walking && walk.anims === 1 && walk.ms >= 600 && walk.ms <= 1500, `${label}: el personaje no camina ${JSON.stringify(walk)}`);
+  await pg.waitForTimeout(1300);
+  const landed = await pg.evaluate(() => {
+    const cur = document.querySelector('.stage-spot.is-current').getBoundingClientRect();
+    const h = document.querySelector('.path-character').getBoundingClientRect();
+    const t = getComputedStyle(document.querySelector('.path-character')).transform;
+    return { ok: Math.abs((h.left + h.width / 2) - cur.left) < 2 && h.top > cur.top && h.top < cur.top + 70 && (t === 'none' || t === 'matrix(1, 0, 0, 1, 0, 0)'), walking: document.querySelector('.path-character').classList.contains('is-walking') };
+  });
+  check(landed.ok && !landed.walking, `${label}: el personaje no llega a la parada nueva ${JSON.stringify(landed)}`);
+}
 if (SMOKE) {
+  // (En el recorrido completo el resultado sigue en pantalla para «Retar a un amigo»; el paseo del
+  // personaje se comprueba más abajo, en «Sin localStorage».)
+  await page.goto(`${base}#inicio`);
+  await characterWalkCheck(page, '390 vuelta al mapa');
+  check(await page.locator('.stage-spot.is-current .stage-meta').innerText() === 'Empezar', 'la parada nueva no dice «Empezar»');
+  await shot(page, '14c-mapa-parada-nueva');
+  await audit(page, '390 mapa parada nueva');
   await page.goto(`${base}#perfil`);
   await page.waitForSelector('.stats');
   await audit(page, '390 perfil');
@@ -1304,7 +1364,7 @@ await npage.click('.intro [data-action="enter"]');
 await npage.click('[data-action="practice"]');
 await playRound(npage);
 await npage.click('[data-action="done"]');
-await npage.waitForSelector('.path');
+await characterWalkCheck(npage, 'sin storage');
 check((await npage.locator('.chip-goal').getAttribute('aria-label')).includes('50 de 50'), 'sin storage: la meta no avanza en memoria');
 
 // ---------------------------------------------------------------- Escritorio 1280×800
