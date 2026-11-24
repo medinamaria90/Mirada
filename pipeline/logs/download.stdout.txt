@@ -1,152 +1,152 @@
-selección 1180, ya bajadas 350, pendientes 830; este lote 150
-ok   w1133881    velazquez        1328x1600 528KB  El príncipe Baltasar Carlos a caballo
-ok   w1090371    velazquez        902x1600 262KB  Felipe IV de castaño y plata
-ok   w1133875    velazquez        823x1600 254KB  El dios Marte
-ok   w3998985    van-dyck         1600x1340 577KB  Triple retrato de Carlos I
-ok   w3614563    van-dyck         1600x1572 503KB  Cupido y Psique
-ok   w3937482    van-dyck         1162x1600 358KB  Carlos I con el señor de Saint-Antoine
-ok   w3937485    van-dyck         1236x1600 377KB  Carlos I de Inglaterra
-ok   w609576     van-dyck         1397x1600 382KB  La coronación de espinas
-ok   w3948607    van-dyck         1600x931 297KB  Sansón y Dalila
-ok   w3630756    van-dyck         1562x1275 281KB  Autorretrato con un girasol
-ok   w3937593    van-dyck         979x1600 310KB  Lord John Stuart y su hermano lord Bernard Stuart
-ok   w16038543   van-dyck         1309x1600 373KB  La visión del Beato Hermann Joseph
-ok   w7731855    claudio-de-lorena 1600x1217 406KB  Puerto con el embarque de la Reina de Saba
-ok   w3909309    claudio-de-lorena 1600x1210 406KB  Puerto con el embarque de Santa Úrsula
-ok   w4803790    claudio-de-lorena 1600x1272 360KB  Paisaje con Ascanio asaeteando el ciervo de Silvia
-ok   w7734433    claudio-de-lorena 1503x1098 122KB  La huida a Egipto
-ok   w19904837   claudio-de-lorena 1600x1222 352KB  Amanecer
-ok   w6057322    claudio-de-lorena 1118x1600 373KB  Paisaje con Tobías y el Arcángel Rafael
-ok   w6057325    claudio-de-lorena 1083x1600 331KB  Paisaje con el embarque en Ostia de Santa Paula Romana
-ok   w19911726   claudio-de-lorena 1600x1093 311KB  Las troyanas quemando sus naves
-ok   w24066      claudio-de-lorena 1600x1205 463KB  La Fête villageoise
-ok   w106839951  alonso-cano      1223x1600 576KB  Santa Inés
-ok   w24260524   alonso-cano      1028x1600 170KB  San Francisco de Borja
-ok   w18613975   alonso-cano      1111x1600 425KB  El milagro del pozo
-ok   w27750181   alonso-cano      1091x1600 377KB  San Bernardo y la Virgen
-ok   w50908147   alonso-cano      1213x1600 500KB  Retrato del príncipe Baltasar Carlos
-ok   w56703035   alonso-cano      1271x1600 349KB  La Anunciación
-ok   w27701816   alonso-cano      1057x1600 437KB  La Virgen con el Niño
-ok   w125169827  alonso-cano      1211x1600 312KB  Cristo atado a la columna
-ok   w219831     rembrandt        1600x1302 363KB  La ronda de noche
-ok   w661378     rembrandt        1600x1205 267KB  Lección de anatomía del Dr. Nicolaes Tulp
-ok   w766782     rembrandt        1600x1167 365KB  La novia judía
-ok   w2246489    rembrandt        1288x1600 272KB  La tormenta en el mar de Galilea
-ok   w512755     rembrandt        1226x1600 312KB  El retorno del hijo pródigo
-ok   w2294441    rembrandt        1600x1441 546KB  Dánae
-ok   w1167932    rembrandt        1600x1274 410KB  Banquete de Belsasar
-ok   w2404992    rembrandt        1524x1600 374KB  Aristóteles contemplando el busto de Homero
-ok   w1170480    rembrandt        1600x1082 279KB  Los síndicos de los pañeros
-ok   w32496      rembrandt        1592x1600 407KB  Betsabé con la carta de David
-ok   w3630751    rembrandt        1341x1600 211KB  Autorretrato
-ok   w2872725    rembrandt        1328x1600 332KB  Autorretrato con dos círculos
-ok   w3964096    pereda           1600x1132 369KB  El sueño del caballero
-ok   w9048907    pereda           1600x1365 514KB  Naturaleza muerta
-ok   w27700857   pereda           1600x1248 371KB  El socorro de Génova por el II marqués de Santa Cruz
-ok   w28020439   pereda           1600x1232 425KB  Alegoría de la vanidad
-ok   w63111264   pereda           1463x770 173KB  Bodegón con frutas
-ok   w27701761   pereda           1249x1600 505KB  San Jerónimo
-ok   w24951450   carreno          736x1380 168KB  Carlos II, con armadura
-ok   w5967380    carreno          1075x1600 283KB  La monstrua desnuda
-ok   w5967989    carreno          939x1600 320KB  La reina viuda doña Mariana de Austria
-ok   w18811444   carreno          1074x1600 368KB  La fundación de la Orden Trinitaria
-ok   w27753204   carreno          1155x1600 436KB  El duque de Pastrana
-ok   w28796847   carreno          1198x1600 592KB  La Asunción de la Virgen
-ok   w28797833   carreno          1264x1600 406KB  Retrato de Doña Inés de Zúñiga y Velasco
-ok   w27752837   carreno          942x1600 303KB  Pedro Ivanowitz Potemkin, embajador de Rusia
-ok   w3918296    murillo          1073x1600 264KB  Virgen del Rosario con el Niño
-ok   w2456003    murillo          1091x1600 258KB  Inmaculada de Soult
-ok   w3757652    murillo          1334x1600 292KB  Mujeres en la ventana
-ok   w5792618    murillo          1600x840 217KB  El nacimiento de la Virgen
-ok   w16627776   murillo          1400x1028 144KB  Sagrada Familia del pajarito
-ok   w2450139    murillo          1119x1600 283KB  Niños comiendo uvas y melón
-ok   w5659824    murillo          1318x1600 374KB  Joven mendigo
-ok   w6025684    murillo          1308x1600 225KB  Muchacho con un perro
-ok   w11694421   murillo          1284x1600 355KB  El Buen Pastor
-ok   w12184056   murillo          1295x1600 410KB  Muchacha con flores
-ok   w3947097    murillo          1077x1600 235KB  San Francisco abrazando a Cristo en la Cruz
-ok   w6102310    murillo          1600x1138 377KB  Rebeca y Eliezer
-ok   w2880218    murillo          1600x1501 600KB  Virgen de la Servilleta
-ok   w11770877   murillo          1112x1600 503KB  La Inmaculada Concepción del Escorial
-ok   w9199638    murillo          1600x1221 307KB  Cuatro figuras en un escalón
-ok   w42189928   valdes-leal      1118x1133 147KB  Finis Gloriae Mundi
-ok   w28220571   valdes-leal      1500x1518 411KB  In Ictu Oculi
-ok   w71827790   valdes-leal      1325x1600 368KB  Cristo con la Cruz a cuestas
-ok   w114039620  valdes-leal      1329x1600 500KB  Visión de San Francisco en la Porciúncula
-ok   w19912239   valdes-leal      1424x1600 341KB  Piedad
-ok   w56703179   valdes-leal      1600x883 323KB  Cristo servido por los ángeles
-ok   w21741372   valdes-leal      1195x1250 186KB  Cabeza de mujer
-ok   w23934506   valdes-leal      720x1600 243KB  San Juan Evangelista
-ok   w764831     steen            1365x1600 343KB  La fiesta de San Nicolás
-ok   w17342250   steen            1600x1246 419KB  La familia feliz
-ok   w653607     steen            1160x1600 399KB  Joven comiendo ostras
-ok   w4028318    steen            1341x1600 384KB  Retrato doble de Adolf y Catharina Croeser
-ok   w3874439    steen            1600x1151 466KB  El mundo al revés
-ok   w17276053   steen            1600x1312 385KB  Como cantan los viejos, tocan los niños
-ok   w20177586   steen            1600x1130 421KB  La pareja bailando
-ok   w4385540    steen            900x1219 141KB  Borrachos
-ok   w185372     vermeer          1351x1600 481KB  La joven de la perla
-ok   w167605     vermeer          1427x1600 564KB  La lechera
-ok   w523974     vermeer          1600x1334 376KB  Vista de Delft
-ok   w588695     vermeer          1347x1600 364KB  El arte de la pintura
-ok   w544315     vermeer          1409x1600 406KB  El astrónomo
-ok   w586035     vermeer          1292x1600 531KB  La callejuela
-ok   w969367     vermeer          1415x1600 406KB  La tasadora de perlas
-ok   w2336984    vermeer          1390x1600 548KB  La lección de música
-ok   w63692      vermeer          1432x1600 335KB  La alcahueta
-ok   w467376     vermeer          1468x1600 559KB  Militar y muchacha riendo
-ok   w18684020   claudio-coello   1150x1600 432KB  Retrato de Teresa Francisca Mudarra y Herrera
-ok   w23936472   claudio-coello   1171x1600 377KB  Juan Francisco de la Cerda, VIII duque de Medinaceli
-ok   w27751801   claudio-coello   900x1208 210KB  El triunfo de san Agustín
-ok   w27753796   claudio-coello   1058x1600 363KB  Santo Domingo de Guzmán
-ok   w141690065  claudio-coello   1108x1600 476KB  Inmaculada Concepción
-ok   w115773742  claudio-coello   1260x1600 347KB  Mariana de Austria (1634-1696), reina de España
-ok   w531329     watteau          1600x1049 430KB  Peregrinación a la isla de Citera
-ok   w3387944    watteau          1345x1600 348KB  Gilles
-ok   w766011     watteau          1270x680 178KB  La muestra de Gersaint
-ok   w3204146    watteau          1169x1600 471KB  El indiferente
-ok   w5861788    watteau          1295x1600 408KB  Fiesta veneciana
-ok   w1713754    watteau          1600x1063 434KB  Ninfa y sátiro
-ok   w2885144    watteau          1278x1600 439KB  El desliz
-ok   w15973132   watteau          1600x1256 356KB  Actores de la Comédie-Française
-ok   w5916308    tiepolo          871x1600 203KB  Inmaculada Concepción
-ok   w18167078   tiepolo          1600x1118 509KB  El banquete de Cleopatra
-ok   w38197      tiepolo          1600x906 234KB  Escipión el Africano libera a Masiva
-ok   w25442922   tiepolo          1600x1176 509KB  El rapto de Europa
-ok   w5968478    tiepolo          1600x907 264KB  La visita de Enrique III a la villa Contarini
-ok   w17390181   tiepolo          1193x1600 471KB  El descendimiento
-ok   w3794586    tiepolo          1000x1245 105KB  El martirio de san Bartolomé
-ok   w18573906   tiepolo          1000x1243 194KB  Apolo y Dafne
-ok   w2943415    canaletto        1600x1238 384KB  El patio del cantero
-ok   w19660427   canaletto        1600x1092 474KB  El Gran Canal y la Iglesia de Santa María de la Salud
-ok   w5977784    canaletto        1600x1121 335KB  Llegada del embajador francés a Venecia
-ok   w11152607   canaletto        1600x1018 363KB  Puente viejo de Walton
-ok   w19660417   canaletto        1600x703 336KB  El Prato della Valle de Padua
-ok   w5884258    canaletto        1600x1103 431KB  Gran Canal, vista Este desde el Campo San Vio
-ok   w19660446   canaletto        1600x1178 392KB  Feria de San Roque
-ok   w19660561   canaletto        1600x1113 417KB  El regreso del Bucintoro al muelle el día de la Ascensión
-ok   w11945113   canaletto        1600x978 390KB  Una Regata en el Gran Canal
-ok   w3212142    chardin          1600x1248 453KB  La raya
-ok   w5640196    chardin          1600x1398 484KB  El niño de la peonza
-ok   w3220656    chardin          1051x1600 258KB  El buffet
-ok   w3230728    chardin          1600x1008 332KB  Alegoría de la música, las artes y las ciencias
-ok   w15973749   chardin          1600x1418 494KB  La lavandera
-ok   w111578201  chardin          1600x1298 516KB  La cestilla de fresas silvestres
-ok   w6025666    chardin          1288x1600 444KB  Muchacha con el juego de la pluma
-ok   w12859898   chardin          1277x1600 403KB  La guardiana atenta
-ok   w445627     liotard          989x1600 290KB  La bella chocolatera
-ok   w18686531   liotard          1600x1389 492KB  María Adelaida de Francia vestida a la turca
-ok   w20178523   liotard          1255x1600 318KB  Retrato de John, lord Mountstuart
-ok   w29645145   liotard          1600x1162 509KB  El señor Levett y la señorita Glavani con traje turco
-ok   w17319963   liotard          1226x1600 305KB  Retrato de madame Bouër
-ok   w3556817    boucher          1600x1229 455KB  Diana después del baño
-ok   w18783512   boucher          1600x1298 493KB  La odalisca morena
-ok   w18552705   boucher          1215x1600 399KB  Retrato de Madame de Pompadour
-ok   w3211033    boucher          1600x936 208KB  El nacimiento de Venus
-ok   w3227830    boucher          1600x1291 354KB  El Triunfo de Venus
-ok   w12841555   boucher          1248x1600 420KB  Madame de Pompadour
-ok   w3796075    boucher          1320x1600 260KB  La puesta del Sol
-ok   w3548343    boucher          1000x1336 213KB  Un otoño pastoril
-ok   w19911689   melendez         1600x1103 356KB  La merienda
-ok   w5731132    melendez         1600x1046 333KB  Bodegón: un trozo de salmón, un limón y tres vasijas
-lote: 150/150 bien; quedan 680
+selección 1180, ya bajadas 500, pendientes 680; este lote 150
+ok   w27765779   melendez         1600x1047 441KB  Bodegón con besugos, naranjas, ajo, condimentos y utensilios
+ok   w26699645   melendez         1600x1204 455KB  Bodegón con naranjas y nueces
+ok   w18688130   melendez         1189x1600 306KB  Bodegón con frutas y jarra
+ok   w27760630   melendez         1182x1600 425KB  Bodegón con servicio de chocolate y bollos
+ok   w59710195   melendez         1600x1193 517KB  Bodegón con sandías y manzanas en un paisaje
+ok   w18915242   melendez         1500x1123 225KB  Bodegón con higos
+ok   w7712851    reynolds         1289x1536 254KB  La edad de la inocencia
+ok   w5794826    reynolds         1267x1600 461KB  Cupido desatando el cinto de Venus
+ok   w24657567   reynolds         1600x1368 384KB  Las hermanas Waldgrave
+ok   w6106762    reynolds         1278x1600 363KB  Retrato de Lady Cockburn con sus tres hijos
+ok   w6470018    reynolds         1267x1600 431KB  Lady Caroline Howard
+ok   w5036652    reynolds         991x1600 253KB  Capitán George K. H. Coussmaker
+ok   w6470123    reynolds         978x1600 352KB  Lady Elizabeth Delmé y sus hijos
+ok   w119011999  reynolds         1215x1600 289KB  Autorretrato
+ok   w19904884   greuze           1600x1242 307KB  Huevos rotos
+ok   w4388208    greuze           1279x1600 307KB  El cántaro roto
+ok   w20184617   greuze           1284x1600 555KB  La lavandera
+ok   w3201415    greuze           1600x1235 283KB  El compromiso pueblerino
+ok   w4340198    greuze           1471x1169 241KB  La maldición paterna: el hijo ingrato
+ok   w604761     gainsborough     1100x1600 244KB  El joven azul
+ok   w1619527    gainsborough     1600x938 235KB  El Señor y la Señora Andrews
+ok   w3700536    gainsborough     1277x1600 318KB  La mujer de azul
+ok   w12738203   gainsborough     1225x1600 348KB  El señor y la señora Hallett
+ok   w5966011    gainsborough     1321x1600 282KB  La carreta del mercado
+ok   w4373352    gainsborough     1039x1600 288KB  Retrato de la señora Mary Graham
+ok   w6929863    gainsborough     1128x1600 336KB  La señora de Richard Brinsley Sheridan
+ok   w18937395   gainsborough     1395x1600 591KB  Conversación en un parque
+ok   w2629559    fragonard        1274x1600 512KB  El columpio
+ok   w2629423    fragonard        1273x1600 409KB  La lectora
+ok   w3228069    fragonard        1600x1251 312KB  El cerrojo
+ok   w3211034    fragonard        1600x987 235KB  El nacimiento de Venus
+ok   w12859945   fragonard        1252x1600 700KB  El columpio
+ok   w2886017    fragonard        1246x1000 175KB  El camisón arrebatado
+ok   w3828528    fragonard        1600x1299 389KB  Las bañistas
+ok   w5967115    fragonard        1600x1447 669KB  La lección de música
+ok   w28801539   fragonard        1251x1600 488KB  Muchacha con perro
+ok   w152867     goya             1600x812 160KB  La maja desnuda
+ok   w1091086    goya             1600x1221 357KB  El tres de mayo de 1808 en Madrid
+ok   w1150997    goya             871x1600 343KB  Saturno devorando a su hijo
+ok   w920030     goya             1600x1335 229KB  La familia de Carlos IV
+ok   w2735507    goya             1600x804 193KB  La maja vestida
+ok   w2983399    goya             1600x1238 434KB  El dos de mayo de 1808 en Madrid
+ok   w500936     goya             942x1600 478KB  Perro semihundido
+ok   w2528477    goya             1600x507 211KB  El aquelarre
+ok   w3035829    goya             1180x1600 185KB  Don Manuel Osorio Manrique de Zúñiga, niño
+ok   w1585399    goya             1058x1600 266KB  Doña Isabel de Porcel
+ok   w15728649   goya             1121x1600 362KB  Vuelo de brujas
+ok   w2537138    goya             1600x1108 344KB  El quitasol
+ok   w5177084    goya             1067x1600 155KB  La condesa de Chinchón
+ok   w2736720    goya             1173x1600 283KB  Goya atendido por el doctor Arrieta
+ok   w952796     goya             919x1600 275KB  El pelele
+ok   w3788057    goya             1600x731 248KB  La pradera de San Isidro
+ok   w18688145   paret            1600x1085 404KB  Vista de El Arenal de Bilbao
+ok   w27766413   paret            1075x1600 560KB  Jura de Fernando VII como príncipe de Asturias
+ok   w27766006   paret            1256x1600 495KB  Autorretrato en el estudio
+ok   w28798007   paret            1600x1361 426KB  La tienda
+ok   w140606091  paret            1600x1233 401KB  Circunspección de Diógenes
+ok   w26699636   paret            1200x860 129KB  Vista de El Arenal de Bilbao
+ok   w27760099   paret            1280x988 336KB  Baile en máscara
+ok   w27760349   paret            1600x1248 664KB  Carlos III comiendo ante su corte
+ok   w1752990    david            1600x1065 176KB  La muerte de Sócrates
+ok   w476458     david            1600x1241 336KB  Juramento de los Horacios
+ok   w636537     david            1243x1600 184KB  La muerte de Marat
+ok   w1231009    david            1600x995 387KB  La coronación de Napoleón
+ok   w1314013    david            1600x1203 429KB  La intervención de las sabinas
+ok   w1313605    david            976x1600 218KB  Retrato de Napoleón en su gabinete de trabajo
+ok   w835286     david            1347x1600 262KB  Marte desarmado por Venus y las Gracias
+ok   w2619037    david            1600x1140 332KB  Madame Récamier
+ok   w972295     david            1600x1181 401KB  Leónidas en las Termópilas
+ok   w3937621    vigee-le-brun    1250x1600 327KB  María Antonieta y sus hijos
+ok   w3937618    vigee-le-brun    1318x1600 462KB  María Antonieta con una rosa
+ok   w18719540   vigee-le-brun    1152x1600 265KB  Autorretrato con sombrero de paja
+ok   w19273424   vigee-le-brun    1184x1600 360KB  Madame Vigée-Lebrun con su hija
+ok   w18923677   vigee-le-brun    1026x1354 245KB  Retrato de la princesa María Cristina
+ok   w19361572   vigee-le-brun    1253x1600 555KB  Autorretrato pintando a María Antonieta
+ok   w19006513   vigee-le-brun    1600x1237 373KB  Paz que trae de vuelta la prosperidad
+ok   w41433015   vigee-le-brun    1070x1600 180KB  Retrato de la condesa Catalina Skavronskaya
+ok   w4373337    borovikovski     1281x1600 299KB  Retrato de María Lopujiná
+ok   w18689466   borovikovski     1078x1600 317KB  Retrato del príncipe Alexander Kurakin
+ok   w12110766   borovikovski     1467x1600 380KB  Las hermanas Anna y Varvara Gagarina
+ok   w6106800    vicente-lopez    1297x1600 357KB  El pintor Francisco de Goya
+ok   w11945404   vicente-lopez    1216x1600 474KB  Retrato del Marqués de Labrador
+ok   w22893258   vicente-lopez    1600x959 384KB  Cabeza de mujer
+ok   w27766415   vicente-lopez    1273x1600 483KB  María Pilar de la Cerda y Marín de Resende, duquesa de Nájer
+ok   w142013319  vicente-lopez    1252x1600 273KB  El presbítero Juan Gutiérrez de León
+ok   w27766876   vicente-lopez    1039x1600 274KB  El sueño de San José
+ok   w27766904   vicente-lopez    1290x1600 259KB  Ignacio Gutiérrez Solana, veedor de las Reales Caballerizas
+ok   w27766915   vicente-lopez    1130x1600 359KB  Pedro de Alcántara Álvarez de Toledo y Salm Salm, XIII duque
+ok   w311243     friedrich        1256x1600 448KB  El caminante sobre el mar de nubes
+ok   w334360     friedrich        1600x1025 275KB  Abadía en el robledal
+ok   w194137     friedrich        1600x1213 291KB  El mar de hielo
+ok   w1787143    friedrich        940x1200 247KB  Acantilados blancos en Rügen
+ok   w693746     friedrich        1600x1028 401KB  Monje a la orilla del mar
+ok   w1214313    friedrich        1600x1243 488KB  Las etapas de la vida
+ok   w232087     friedrich        1600x1282 411KB  Dos hombres contemplando la luna
+ok   w884782     friedrich        1535x1600 322KB  Cruz en las montañas
+ok   w1198515    friedrich        1600x1223 359KB  El árbol solitario
+ok   w2339059    turner           1600x1201 380KB  Lluvia, vapor y velocidad. El gran ferrocarril del Oeste
+ok   w257580     turner           1600x1188 321KB  El Temerario remolcado a dique seco
+ok   w219344     turner           1600x1202 304KB  El barco de esclavos
+ok   w3027255    turner           1600x1075 268KB  Dido construyendo Cartago
+ok   w1772871    turner           1600x1128 259KB  La Batalla de Trafalgar
+ok   w16038731   turner           1600x1198 574KB  Tormenta de nieve: vapor a la entrada de un puerto
+ok   w4003071    turner           1600x1000 252KB  Ulises burlando a Polifemo
+ok   w28538656   turner           1536x1122 242KB  Régulo
+ok   w28537062   turner           1600x1005 416KB  La Rama Dorada
+ok   w2366825    constable        1600x1103 465KB  La carreta de heno
+ok   w398973     constable        1600x1245 646KB  La catedral de Salisbury, vista desde el jardín del palacio 
+ok   w2272625    constable        1038x1200 313KB  El maizal
+ok   w398126     constable        1600x1280 547KB  La catedral de Salisbury vista a través de los campos
+ok   w18589150   constable        1600x866 310KB  Wivenhoe Park
+ok   w18685512   constable        1357x1600 712KB  El valle de Dedham
+ok   w3794919    constable        1600x1277 361KB  El molino de Flatford
+ok   w3634799    constable        1600x1310 436KB  Construcción de barcas cerca del molino de Flatford
+ok   w4242050    tropinin         1289x1600 421KB  La encajera
+ok   w116432553  tropinin         1279x1600 334KB  Autorretrato ante el Kremlin
+ok   w20076612   tropinin         1199x1600 299KB  Dama de Podolia
+ok   w1978815    ingres           1600x893 249KB  La gran odalisca
+ok   w2027662    ingres           1600x1593 354KB  El baño turco
+ok   w3080509    ingres           1072x1600 263KB  La bañista de Valpinçon
+ok   w1282840    ingres           973x1600 403KB  Napoleón en su trono imperial
+ok   w3137278    ingres           1221x1600 362KB  Madame Moitessier
+ok   w2985455    ingres           1139x1400 111KB  Monsieur Bertin
+ok   w5818528    ingres           1223x1600 300KB  Edipo y la esfinge
+ok   w3202169    ingres           1600x1191 439KB  La apoteosis de Homero
+ok   w24011      ingres           1111x1600 371KB  Mademoiselle Caroline Rivière
+ok   w18683081   venetsianov      1600x1171 495KB  En el campo arado. Primavera
+ok   w18683079   venetsianov      1600x1287 486KB  La era
+ok   w52692816   venetsianov      1214x1600 483KB  Campesina con acianos
+ok   w212616     gericault        1600x1093 438KB  La balsa de la Medusa
+ok   w429753     gericault        1600x1163 326KB  Derbi en Epsom
+ok   w2459266    gericault        1344x1600 331KB  El cleptómano
+ok   w3349704    gericault        1074x1600 339KB  Oficial de cazadores a la carga
+ok   w3006832    gericault        1318x1600 320KB  Coracero herido
+ok   w3210764    gericault        1324x1600 393KB  Mujer demente
+ok   w3222938    gericault        1600x1273 486KB  La fábrica de cal
+ok   w15951392   gericault        1600x1308 223KB  Caballo gris
+ok   w24283      corot            1600x1087 369KB  Puente de Narni
+ok   w5442918    corot            1115x1600 403KB  Mujer leyendo
+ok   w3221688    corot            1600x1199 529KB  Concierto campestre
+ok   w18177816   corot            1600x1131 347KB  El camino de Sèvres a París
+ok   w18177483   corot            1600x1183 360KB  Agar en el desierto
+ok   w15709546   corot            1600x893 272KB  El castillo de Sant'Angelo y el Tíber, Roma
+ok   w20184292   corot            1168x1600 540KB  Diana y Acteón
+ok   w18177756   corot            1000x1260 243KB  La catedral de Chartres
+ok   w1213453    delaroche        1600x1337 284KB  La ejecución de Lady Jane Grey
+ok   w1224572    delaroche        1219x1600 288KB  Bonaparte cruzando los Alpes
+ok   w16915832   delaroche        1398x1600 241KB  La joven mártir
+ok   w17190332   delaroche        1600x1276 418KB  Los hijos de Eduardo
+ok   w17174298   delaroche        1600x916 379KB  El asesinato del duque de Guisa
+lote: 150/150 bien; quedan 530

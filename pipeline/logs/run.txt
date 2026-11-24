@@ -24,3 +24,9 @@ ok   w5731132    melendez         1600x1046 333KB  Bodegón: un trozo de salmón
 lote: 150/150 bien; quedan 680
 build: 1180 obras (500 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
 subidas 150 imágenes a la release
+ok   w16915832   delaroche        1398x1600 241KB  La joven mártir
+ok   w17190332   delaroche        1600x1276 418KB  Los hijos de Eduardo
+ok   w17174298   delaroche        1600x916 379KB  El asesinato del duque de Guisa
+lote: 150/150 bien; quedan 530
+build: 1180 obras (650 con imagen, 1180 con ficha), 148 pintores, 38 españoles; por movimiento: renacimiento 16, manierismo-y-norte 10, barroco 22, rococo-neoclasicismo 17, romanticismo 14, realismo 25, impresionismo 18, postimpresionismo 8, simbolismo-modernismo 18
+subidas 150 imágenes a la release
