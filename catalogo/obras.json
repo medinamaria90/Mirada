@@ -108,7 +108,16 @@
    "branches": [
     "gotico"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -127,7 +136,16 @@
    "branches": [
     "gotico"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -165,7 +183,16 @@
    "branches": [
     "gotico"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -184,7 +211,16 @@
    "branches": [
     "gotico"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -203,7 +239,16 @@
    "branches": [
     "gotico"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -1736,7 +1781,16 @@
    "branches": [
     "ukiyo-e"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -1798,7 +1852,16 @@
    "branches": [
     "ukiyo-e"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -1817,7 +1880,16 @@
    "branches": [
     "ukiyo-e"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -2033,7 +2105,16 @@
    "branches": [
     "ukiyo-e"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
@@ -2052,7 +2133,16 @@
    "branches": [
     "ukiyo-e"
    ],
-   "stages": [],
+   "stages": [
+    {
+     "nivel": 2,
+     "nombre": "Más obras",
+     "desde": null,
+     "hasta": null,
+     "fuente": null,
+     "provisional": true
+    }
+   ],
    "level1": 4
   },
   {
