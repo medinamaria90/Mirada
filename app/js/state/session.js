@@ -6,7 +6,7 @@ export const SESSION_TTL = 12 * 60 * 60 * 1000;
 const ROUTE_RE = /^[a-z0-9-]{1,40}$/;
 const WEEK_RE = /^\d{4}-W\d{2}$/;
 const TYPES = new Set(['who', 'movement', 'which']);
-const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'daily', 'weekly', 'general', 'challenge']);
+const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'review5', 'daily', 'weekly', 'general', 'challenge']);
 
 // meta: { route, title, accent, kind, extra, friendScore, shareTopic, plan:{kind,seed,artistId,movementId,date} }
 // lesson: { round, answers, xpLive, freshIntroShown }

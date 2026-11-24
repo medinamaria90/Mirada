@@ -11,6 +11,7 @@ import { nextStep, pathProgress, isPathComplete, isPathMastered, stepsToMaster }
 import { recognizedCount, planDetail } from '../../engine/goals.js';
 import { readSession } from '../../state/session.js';
 import { dueKeys, QUICK_REVIEW } from '../../engine/srs.js';
+import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf, isoWeek } from '../../engine/dates.js';
 
@@ -70,7 +71,12 @@ export function renderHome(ctx, el) {
     dayCards.push({ cls: 'card-daily card-weekly', action: 'weekly', icon: icons.target(22), title: 'Reto semanal', sub: `Semana ${week.week} · 15 cuadros`, status: weekly ? `${weekly.score}/${weekly.total}` : 'Jugar' });
   }
   dayCards.push({ cls: 'card-daily', action: 'daily', icon: icons.calendar(22), title: 'Reto diario', sub: longDate(ctx.dailyDay()), status: daily ? `${daily.score}/${daily.total}` : 'Jugar' });
-  if (due > 0) {
+  const review5 = review5Works(p, index, today).length;
+  if (review5 >= REVIEW5_MIN) {
+    // Repaso de 5 (opcional): fallados, vencidos y antiguos de pintores dominados. Ocupa el sitio del
+    // repaso rápido, que repasaría casi lo mismo.
+    dayCards.push({ cls: 'card-review', action: 'review5', icon: icons.repeat(22), title: REVIEW5_NAME, sub: plural(review5, 'cuadro', 'cuadros'), status: 'Jugar' });
+  } else if (due > 0) {
     // Repaso rápido: 3 preguntas de lo que se te puede olvidar hoy (cuenta para racha y meta). Se dice
     // cuántos cuadros son hoy, no el total pendiente (que crece y desanima).
     dayCards.push({ cls: 'card-review', action: 'quick', icon: icons.repeat(22), title: 'Repaso de hoy', sub: plural(Math.min(due, QUICK_REVIEW), 'cuadro', 'cuadros'), status: 'Jugar' });
@@ -158,6 +164,10 @@ export function renderHome(ctx, el) {
     quick: () => {
       ctx.audio.sfx('tap');
       ctx.go('repaso-rapido');
+    },
+    review5: () => {
+      ctx.audio.sfx('tap');
+      ctx.go('repaso5');
     },
     collection: () => {
       ctx.audio.sfx('tap');

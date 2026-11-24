@@ -4,6 +4,9 @@
 //    del de dominio más antiguo; el cuadro lo elige el repaso espaciado (el que más tiempo lleva vencido).
 //  · Pintor dormido: dominado y sin salir en DORMANT_DAYS días; el mapa lo pinta apagado y pregunta
 //    «¿Lo recuerdas?». Nunca bloquea ni quita el dominado; al jugarlo vuelve a su estado.
+//  · «Repaso de 5»: ronda corta y opcional de cuadros ya vistos de pintores dominados: los fallados que
+//    vuelven (el más antiguo primero), los vencidos hoy en el repaso espaciado y, después, los que
+//    llevan más tiempo sin repasarse. Da XP y cuenta para meta y racha; no toca dominio ni anti-trampa.
 
 import { daysBetween } from './dates.js';
 import { noAuthorQuestion } from './catalog.js';
@@ -60,4 +63,42 @@ export function contrabandArtist(progress, index, artistId, today) {
 export function contrabandWork(progress, index, artistId, today) {
   const a = contrabandArtist(progress, index, artistId, today);
   return a ? worksBySrs(progress, index, a.id)[0].id : null;
+}
+
+// ---------------------------------------------------------------- Repaso de 5
+
+export const REVIEW5_NAME = 'Repaso de 5';
+export const REVIEW5_SIZE = 5;
+// Con menos cuadros elegibles no se ofrece.
+export const REVIEW5_MIN = 3;
+
+function eligible(progress, index) {
+  const srs = progress.srs || {};
+  const owned = progress.collection || {};
+  return index.path
+    .filter((a) => progress.artists?.[a.id]?.mastered)
+    .flatMap((a) => index.worksOf(a.id))
+    .filter((w) => !noAuthorQuestion(w) && (srs[artKey(w.id)] || owned[w.id]));
+}
+
+// Ids de los cuadros del repaso (hasta REVIEW5_SIZE), en orden de prioridad.
+export function review5Works(progress, index, today) {
+  const pool = eligible(progress, index);
+  const inPool = new Map(pool.map((w) => [w.id, w]));
+  const srs = progress.srs || {};
+  const out = [];
+  const add = (id) => { if (inPool.has(id) && !out.includes(id) && out.length < REVIEW5_SIZE) out.push(id); };
+  const fallados = (Array.isArray(progress.fallados) ? progress.fallados : []).slice()
+    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  fallados.forEach((f) => add(f.id));
+  // Sin fecha de repaso (raro: solo en la colección), al final.
+  const due = (w) => srs[artKey(w.id)]?.due || '9999-12-31';
+  const byAge = pool.slice().sort((a, b) => (due(a) < due(b) ? -1 : due(a) > due(b) ? 1 : (srs[artKey(a.id)]?.box || 0) - (srs[artKey(b.id)]?.box || 0)));
+  byAge.filter((w) => due(w) <= today).forEach((w) => add(w.id));
+  byAge.forEach((w) => add(w.id));
+  return out;
+}
+
+export function hasReview5(progress, index, today) {
+  return review5Works(progress, index, today).length >= REVIEW5_MIN;
 }

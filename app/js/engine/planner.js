@@ -4,6 +4,7 @@
 import { createRng } from './rng.js';
 import { makeQuestion, makeWhoQuestion, makeMovementQuestion, isSpoiler, noAuthorQuestion } from './questions.js';
 import { salaLearnWorks, SALA_LEARN } from './catalog.js';
+import { REVIEW5_SIZE } from './review.js';
 
 export { salaLearnWorks, SALA_LEARN };
 
@@ -418,6 +419,11 @@ export function planSrsReview(index, dueKeys, seed, max = SRS_MAX) {
     return tag(q, 'srs');
   });
   return { kind: 'srs', seed, questions: questions.filter(Boolean) };
+}
+
+// «Repaso de 5» (engine/review.js elige los cuadros): las mismas preguntas que el repaso espaciado.
+export function planReview5(index, workIds, seed) {
+  return { ...planSrsReview(index, workIds.map((id) => `art:${id}`), seed, REVIEW5_SIZE), kind: 'review5' };
 }
 
 // Ronda general de 10 preguntas sobre un conjunto de obras (reto diario y retos).

@@ -160,7 +160,7 @@ async function boot() {
   window.addEventListener('pointerup', unlockOnce, true);
   window.addEventListener('keydown', unlockOnce, true);
 
-  const FLOW_ROUTES = new Set(['stage', 'sala', 'review', 'srs', 'quick', 'daily', 'weekly', 'challenge', 'free']);
+  const FLOW_ROUTES = new Set(['stage', 'sala', 'review', 'srs', 'quick', 'review5', 'daily', 'weekly', 'challenge', 'free']);
   let firstRender = true;
   let renderToken = 0;
 
@@ -223,6 +223,7 @@ async function boot() {
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));
       case 'srs': return flow((m) => m.renderSrsReview(ctx, screen));
       case 'quick': return flow((m) => m.renderSrsReview(ctx, screen, { quick: true }));
+      case 'review5': return flow((m) => m.renderReview5(ctx, screen));
       case 'daily': return flow((m) => m.renderDaily(ctx, screen));
       case 'weekly': return flow((m) => m.renderWeekly(ctx, screen));
       case 'gallery': return lazy(token, screen, loadGallery, (m) => m.renderGallery(ctx, screen, route.movementId), true);

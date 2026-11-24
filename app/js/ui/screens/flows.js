@@ -8,12 +8,12 @@ import { runLesson } from './lesson.js';
 import { renderResult, copyText } from './result.js';
 import { playEra } from '../audio-bridge.js';
 import { randomSeed } from '../../engine/rng.js';
-import { planStage, planMovementReview, planSrsReview, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
+import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
 import { finishRound, artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { falladoQuestion } from '../../engine/fallados.js';
-import { contrabandWork } from '../../engine/review.js';
+import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
@@ -78,10 +78,12 @@ function play(ctx, el, opts) {
     onBackAfterDone: () => ctx.go('inicio', { replace: true }),
     onDone: (summary) => {
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
-      const moreReview = typeof more === 'function' && more();
+      // Después de cualquier ronda, el repaso de 5 si hay cuadros para él; si no, «Repasar más» tras el rápido.
+      const review5 = friendScore == null && hasReview5(ctx.store.get().progress, ctx.index, ctx.today());
+      const moreReview = !review5 && typeof more === 'function' && more();
       renderResult(ctx, el, {
         plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic,
-        more: moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
+        more: review5 ? { label: REVIEW5_NAME, to: 'repaso5' } : moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
       });
     },
   });
@@ -340,6 +342,16 @@ export function renderSrsReview(ctx, el, { quick = false } = {}) {
     plan, accent: defaultAccent(), title: quick ? 'Repaso rápido' : 'Repaso', kind: 'srs',
     more: quick ? () => dueKeys(ctx.store.get().progress.srs, ctx.today()).length > 0 : null,
   }));
+}
+
+// --- Repaso de 5: cuadros fallados, vencidos y antiguos de pintores dominados ------------------
+
+export function renderReview5(ctx, el) {
+  const ids = review5Works(ctx.store.get().progress, ctx.index, ctx.today());
+  const plan = planReview5(ctx.index, ids, randomSeed());
+  if (ids.length < REVIEW5_MIN || plan.questions.length < REVIEW5_MIN) return leave(ctx, 'Hoy no hay nada que repasar');
+  playEra('menu');
+  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW5_NAME, kind: 'review5' }));
 }
 
 // --- Reto diario ------------------------------------------------------------

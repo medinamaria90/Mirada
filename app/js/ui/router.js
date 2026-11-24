@@ -8,6 +8,7 @@ export const ROUTES = {
   daily: 'reto-diario',
   srs: 'repaso',
   quick: 'repaso-rapido',
+  review5: 'repaso5',
   collection: 'coleccion',
   profile: 'perfil',
   medals: 'medallas',
@@ -22,6 +23,7 @@ export function parseRoute(hash, opts = {}) {
   if (name === '' || name === ROUTES.home) return { name: 'home' };
   if (!/^[a-z0-9-]*$/.test(name)) return { name: 'invalid' };
   if (name === ROUTES.quick) return { name: 'quick' };
+  if (name === ROUTES.review5) return { name: 'review5' };
   if (name === ROUTES.welcome) return { name: 'welcome' };
   if (name === ROUTES.daily) return { name: 'daily' };
   if (name === ROUTES.srs) return { name: 'srs' };
