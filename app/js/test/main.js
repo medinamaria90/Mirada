@@ -1,18 +1,23 @@
 // Test de cultura pictórica (app/test/index.html): arranque y pantallas. La portada va escrita en
-// el HTML; aquí se cargan catálogo y banco, se juega el test adaptativo (test/motor.js) y se pinta
-// el resultado (test/resultado.js). Sin cuentas ni progreso: solo el último resultado en
-// localStorage, bajo su propia clave.
+// el HTML; aquí se cargan catálogo, preguntas fijas y ajustes, se arma la bolsa por tramos
+// (test/bolsa.js), cada partida sortea sus 40 (test/sorteo.js), se juega el test adaptativo
+// (test/motor.js) y se pinta el resultado (test/resultado.js). Sin cuentas ni progreso: en
+// localStorage solo el último resultado y las preguntas vistas en las últimas partidas.
 
-import { buildIndex } from '../engine/catalog.js';
+import { buildIndex, mergeCatalogText } from '../engine/catalog.js';
+import { createRng, randomSeed } from '../engine/rng.js';
 import { $, $$, onAction, announce } from '../ui/dom.js';
 import { installArtListeners } from '../ui/art.js';
 import { createTest, answer, advance, resume, finish, summary, isAnswered, perfectScore } from './motor.js';
 import { buildResult, shareText } from './resultado.js';
 import { validateBank, viewOf, prefixImages } from './preguntas.js';
+import { buildBolsa } from './bolsa.js';
+import { drawGame, startHistory, markSeen } from './sorteo.js';
 import { barHtml, questionHtml, feedbackHtml, pauseHtml, resultHtml, errorHtml } from './pantallas.js';
 import { revealAnswers, resetReveal } from './revelar.js';
 
 const LAST_KEY = 'mirada.test.last';
+const RECENT_KEY = 'mirada.test.recent';
 const IMG_PREFIX = '../';
 const FEEDBACK_FOCUS_MS = 340;
 const KEY_OPTIONS = ['1', '2', '3', '4'];
@@ -27,12 +32,17 @@ async function loadJson(path) {
   return res.json();
 }
 
-// Catálogo y banco se piden ya, en paralelo, mientras se lee la portada.
-const data = Promise.all([loadJson('../data/catalog.json'), loadJson('preguntas.json')]).then(([catalog, bank]) => {
+// Los textos (pistas de cada obra) y los ajustes de tramos son opcionales: sin ellos, pista del
+// pintor y tramos de la regla.
+const optional = (path) => loadJson(path).catch(() => null);
+
+// Catálogo, preguntas fijas y ajustes se piden ya, en paralelo, mientras se lee la portada.
+const data = Promise.all([loadJson('../data/catalog.json'), loadJson('preguntas.json'), optional('../data/catalog-text.json'), optional('tramos.json')]).then(([catalog, bank, text, adjustments]) => {
   const index = prefixImages(buildIndex(catalog), IMG_PREFIX);
+  mergeCatalogText(index, text);
   const problems = validateBank(bank, index);
   if (problems.length) throw new Error(problems[0]);
-  return { index, bank: bank.questions, maxScore: perfectScore(bank.questions) };
+  return { index, fixed: bank.questions, bolsa: buildBolsa(index, { fixed: bank.questions, adjustments }) };
 });
 data.catch(() => { /* se informa al pulsar «Empezar» */ });
 
@@ -58,6 +68,35 @@ function saveLast(result) {
   } catch {
     /* sin almacenamiento: no pasa nada */
   }
+}
+
+// Preguntas vistas en las últimas partidas (sorteo.js): lista de partidas, cada una con sus ids.
+function readHistory() {
+  try {
+    const v = JSON.parse(localStorage.getItem(RECENT_KEY));
+    return Array.isArray(v) ? v.filter((g) => Array.isArray(g) && g.every((id) => typeof id === 'string')) : [];
+  } catch {
+    return [];
+  }
+}
+
+let seen = [];
+function saveHistory(next) {
+  seen = next;
+  try {
+    localStorage.setItem(RECENT_KEY, JSON.stringify(seen));
+  } catch {
+    /* sin almacenamiento: la siguiente partida sortea sin historial */
+  }
+}
+
+// Las 40 de esta partida; si el sorteo fallara (catálogo raro), las fijas.
+function newGame() {
+  const before = readHistory();
+  const game = drawGame(ctx.bolsa, createRng(randomSeed()), before);
+  const bank = validateBank({ questions: game }, ctx.index).length ? ctx.fixed : game;
+  saveHistory(startHistory(before));
+  return bank;
 }
 
 function showLast() {
@@ -89,7 +128,9 @@ async function start() {
   } finally {
     btn.removeAttribute('aria-disabled');
   }
-  state = createTest(ctx.bank);
+  const bank = newGame();
+  ctx = { ...ctx, maxScore: perfectScore(bank) };
+  state = createTest(bank);
   home.hidden = true;
   root.hidden = false;
   document.documentElement.classList.add('is-playing');
@@ -101,6 +142,7 @@ async function start() {
 function renderQuestion() {
   const q = state.current;
   view = viewOf(ctx.index, q);
+  saveHistory(markSeen(seen, q.id));
   const stage = $('.lesson-stage', root);
   const bar = $('.test-bar', root);
   if (bar) bar.outerHTML = barHtml(state);
