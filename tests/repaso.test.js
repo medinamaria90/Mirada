@@ -103,3 +103,64 @@ test('pregunta extra de un fallado: al final, como reintento (no cuenta para aci
   const back = readSession({ session }, big, 2000);
   assert.ok(back && back.round.queue.at(-1).retry, 'la ronda con extra no se retoma');
 });
+
+// ---------------------------------------------------------------- 1. Cuadro de repaso en cada etapa
+const { contrabandWork, contrabandArtist, worksBySrs, isDormant, lastSeen } = await import('../app/js/engine/review.js');
+const { MIN_ROUND, subjectOf } = await import('../app/js/engine/planner.js');
+
+function masteredProgress(dates) {
+  const p = emptyProgress();
+  for (const [id, { on, seen }] of Object.entries(dates)) {
+    p.artists[id] = { plays: 1, best: 0.9, mastered: true, last: on };
+    p.medals[`artist-${id}`] = on;
+    if (seen) p.seen[id] = seen;
+  }
+  return p;
+}
+
+test('cuadro de repaso: pintor dominado hace más de 5 días que lleva más tiempo sin salir; si no, el de dominio más antiguo', () => {
+  const today = '2026-11-24';
+  const [a, b, c, d] = big.path;
+  // Dominados hace 12, 9 y 2 días; b salió en una pregunta hace 1 día: toca a (más tiempo sin salir).
+  let p = masteredProgress({ [a.id]: { on: '2026-11-12' }, [b.id]: { on: '2026-11-15', seen: '2026-11-23' }, [c.id]: { on: '2026-11-22' } });
+  assert.equal(contrabandArtist(p, big, d.id, today).id, a.id);
+  p.seen[a.id] = '2026-11-23';
+  p.seen[b.id] = '2026-11-20';
+  assert.equal(contrabandArtist(p, big, d.id, today).id, b.id);
+  // Ninguno dominado hace más de 5 días: el de dominio más antiguo.
+  p = masteredProgress({ [a.id]: { on: '2026-11-22' }, [b.id]: { on: '2026-11-21' } });
+  assert.equal(contrabandArtist(p, big, d.id, today).id, b.id);
+  // Solo pintores anteriores en el camino; en la primera etapa, nada.
+  assert.equal(contrabandWork(p, big, a.id, today), null);
+  assert.equal(contrabandWork(emptyProgress(), big, d.id, today), null);
+  // El cuadro lo elige el repaso espaciado: el que más tiempo lleva vencido.
+  const works = big.worksOf(b.id);
+  p.srs[`art:${works[2].id}`] = { box: 2, due: '2026-11-10' };
+  p.srs[`art:${works[0].id}`] = { box: 1, due: '2026-11-20' };
+  assert.equal(contrabandWork(p, big, d.id, today), works[2].id);
+  assert.deepEqual(worksBySrs(p, big, b.id).slice(0, 2).map((w) => w.id), [works[2].id, works[0].id]);
+});
+
+test('cuadro de repaso: va en una pregunta de repaso sin cambiar la ronda (tamaño, tipos, sin repetir cuadro)', () => {
+  for (const artist of big.path.slice(2)) {
+    const before = big.path.slice(0, big.pathIndex(artist.id));
+    for (let seed = 1; seed <= 12; seed++) {
+      const hint = big.worksOf(before[0].id)[seed % 6].id;
+      const base = planStage(big, artist.id, seed);
+      const plan = planStage(big, artist.id, seed, { review: [hint] });
+      const subjects = plan.questions.map(subjectOf);
+      assert.ok(subjects.includes(hint), `${artist.id}/${seed}: falta el cuadro de repaso`);
+      assert.equal(new Set(subjects).size, subjects.length, 'se repite un cuadro');
+      assert.ok(plan.questions.length >= MIN_ROUND);
+      assert.equal(plan.questions.length, base.questions.length);
+      assert.deepEqual(plan.questions.map((q) => q.type).sort(), base.questions.map((q) => q.type).sort());
+      // (La de movimiento puede llevar a veces una obra suya no preguntada: no cuenta aquí.)
+      const own = (qs) => qs.filter((q) => q.artistId === artist.id && q.type !== 'movement').map(subjectOf).sort();
+      assert.deepEqual(own(plan.questions), own(base.questions), 'cambian las preguntas del pintor de la etapa');
+      assert.ok(plan.questions.filter((q) => q.artistId === artist.id && !q.isNew && q.type !== 'movement').length <= 1, 'más de un cuadro recién visto');
+    }
+  }
+  // Una obra que no es de un pintor anterior se ignora.
+  const own = big.worksOf(big.path[3].id)[4].id;
+  assert.deepEqual(planStage(big, big.path[3].id, 7, { review: [own] }).questions, planStage(big, big.path[3].id, 7).questions);
+});

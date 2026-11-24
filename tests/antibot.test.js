@@ -14,7 +14,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { planStage, planSala, planMovementReview } from '../app/js/engine/planner.js';
-import { hasMovementReview, MASTERY, stageRule } from '../app/js/engine/progress.js';
+import { hasMovementReview, MASTERY, stageRule, emptyProgress } from '../app/js/engine/progress.js';
+import { worksBySrs } from '../app/js/engine/review.js';
 import { BOTS, eliminator, student, attentive, roundContext, masteryProbability, probAtLeast } from './lib/antibot.js';
 import { salaCatalog } from './helpers.js';
 
@@ -38,11 +39,12 @@ function worstFor(index, plans, ctxFor, bots = BOTS) {
   return out;
 }
 
-function stageReport(index, bots = BOTS) {
+// review(step): cuadros de repaso elegidos por antigüedad (engine/review.js) para planStage.
+function stageReport(index, bots = BOTS, { review = () => [], seeds = SEEDS } = {}) {
   return index.steps.map((step) => {
     const learned = index.path.slice(0, Math.max(0, index.pathIndex(step.id))).map((a) => a.id);
     const plans = [];
-    for (let s = 1; s <= SEEDS; s++) plans.push(step.type === 'sala' ? planSala(index, step.id, s) : planStage(index, step.id, s));
+    for (let s = 1; s <= seeds; s++) plans.push(step.type === 'sala' ? planSala(index, step.id, s) : planStage(index, step.id, s, { review: review(step) }));
     const rates = worstFor(index, plans, (plan) => roundContext(index, plan.questions, {
       stageArtist: step.type === 'artist' ? step.id : null, stageMovement: step.movementId, learned,
     }), bots);
@@ -83,6 +85,27 @@ test('anti-descarte: conocer a los anteriores sin estudiar al de la etapa no bas
   const report = stageReport(real, { eliminator });
   for (const { id, rates } of report) {
     assert.ok(rates.eliminator <= MAX_ELIMINATOR, `${id}: por descarte domina el ${(rates.eliminator * 100).toFixed(1)} %`);
+  }
+});
+
+// Cuadro de repaso de cada etapa (v12): una de las preguntas de repaso es de un pintor dominado hace
+// días (el más antiguo del camino o uno intermedio). La ronda no cambia de forma: los mismos umbrales.
+test('anti-bot y anti-descarte con el cuadro de repaso elegido por antigüedad (≤ 5 % y ≤ 25 %)', () => {
+  const p = emptyProgress();
+  const variants = {
+    'el más antiguo': (step) => (real.pathIndex(step.id) > 0 ? [worksBySrs(p, real, real.path[0].id)[0].id] : []),
+    'uno intermedio': (step) => {
+      const i = real.pathIndex(step.id);
+      return i > 0 ? [worksBySrs(p, real, real.path[Math.floor(i / 2)].id).at(-1).id] : [];
+    },
+  };
+  for (const [label, review] of Object.entries(variants)) {
+    for (const { id, rates } of stageReport(real, { ...BOTS, eliminator }, { review, seeds: 60 })) {
+      for (const [bot, rate] of Object.entries(rates)) {
+        const max = bot === 'eliminator' ? MAX_ELIMINATOR : MAX_SHARE;
+        assert.ok(rate <= max, `${label} · ${id}: «${bot}» domina el ${(rate * 100).toFixed(1)} %`);
+      }
+    }
   }
 });
 

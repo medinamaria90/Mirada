@@ -13,6 +13,7 @@ import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } 
 import { encodeChallenge } from '../../engine/challenge.js';
 import { finishRound, artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { falladoQuestion } from '../../engine/fallados.js';
+import { contrabandWork } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
@@ -262,7 +263,9 @@ export function renderStage(ctx, el, artistId) {
   if (artistStatus(ctx.store.get().progress, index, artistId) === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
   withIntro(ctx, el, movement.id, () => {
-    const plan = planStage(index, artistId, randomSeed());
+    // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
+    const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
+    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [] });
     playEra(movement.era);
     const years = artist.born && artist.died ? `${artist.born}–${artist.died}` : '';
     learnScreen(ctx, el, {

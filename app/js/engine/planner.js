@@ -50,7 +50,10 @@ export const FIRST_STAGE_WHO = 1; // «¿Quién lo pintó?» en la primera etapa
 // Probabilidad de que la de movimiento tenga como respuesta el movimiento de la etapa.
 export const MOVEMENT_CURRENT_SHARE = 0.34;
 
-export function planStage(index, artistId, seed) {
+// opts.review: obras de pintores anteriores que van, en ese orden, en las primeras preguntas de
+// repaso (el cuadro de repaso elegido por antigüedad: engine/review.js). Sin cambiar nada más: mismo
+// número de preguntas, mismos tipos y mismos distractores que cualquier otra ronda.
+export function planStage(index, artistId, seed, opts = {}) {
   const artist = index.artist(artistId);
   if (!artist) return null;
   const rng = createRng(`stage:${artistId}:${seed}`);
@@ -58,7 +61,7 @@ export function planStage(index, artistId, seed) {
   const learn = index.learnWorks(artistId).slice().sort((a, b) => b.fame - a.fame);
   const before = index.path.slice(0, Math.max(0, index.pathIndex(artistId)));
   const slots = before.length
-    ? stageSlots(index, artist, learn, before, rng)
+    ? stageSlots(index, artist, learn, before, rng, opts.review || [])
     : firstStageSlots(index, artist, learn, rng);
   const avoid = slots.map((s) => s.work.id).concat(slots.flatMap((s) => s.includeWorks || []));
   // Fase de cada pregunta: «practice» si el cuadro se enseña en «Conoce a» de su pintor y «fresh» si
@@ -120,7 +123,7 @@ function stageRoundSize(before) {
   return before.length < 2 ? STAGE_ROUND - 1 : STAGE_ROUND;
 }
 
-function stageSlots(index, artist, learn, before, rng) {
+function stageSlots(index, artist, learn, before, rng, reviewIds = []) {
   const { warm, fresh: ownFresh, reserve } = pickOwnWorks(index, artist.id, learn, rng);
   // Calentamiento (obra vista) primero; luego sus obras no vistas.
   const ownWorks = [...warm, ...ownFresh].map((w) => ({ w, phase: w.role === 'learn' ? 'practice' : 'fresh' }));
@@ -143,7 +146,15 @@ function stageSlots(index, artist, learn, before, rng) {
   const helpers = [...recent, ...older];
   const used = new Set([...index.worksOf(artist.id).map((w) => w.id)]);
   let cursor = 0;
+  const beforeIds = new Set(before.map((a) => a.id));
+  const hints = reviewIds.map((id) => index.artwork(id)).filter((w) => w && beforeIds.has(w.artistId) && !noAuthorQuestion(w));
   const pickWork = (prefer, filter = () => true) => {
+    const h = hints.findIndex((w) => !used.has(w.id) && filter(index.artist(w.artistId)));
+    if (h >= 0) {
+      const [w] = hints.splice(h, 1);
+      used.add(w.id);
+      return w;
+    }
     for (let tries = 0; tries < helpers.length; tries++) {
       const a = helpers[cursor++ % helpers.length];
       if (!filter(a)) continue;

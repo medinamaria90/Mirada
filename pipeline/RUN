@@ -1,5 +1,6 @@
-# 19:27 — fichas rehechas (museo/ciudad mejorados) y el resto de imágenes por lotes de 150
-fichas --force
-download 8 150
+# 20:10 — recuperar las 180 imágenes que no cupieron en la release (tope de 1000 recursos) y empaquetar para la app
+# download reparte las sueltas en catalogo-img / catalogo-img-2; pack hace el zip único app-img-1200.zip (+ .sha256) en catalogo-img
+download 2 150
 build
-validate --parcial
+pack 1200
+validate
