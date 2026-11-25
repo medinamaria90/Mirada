@@ -86,7 +86,7 @@ export async function renderCollection(ctx, el, { tab = 'works' } = {}) {
     ${collTabs('works')}
     ${salas}
     ${ownedCount === 0
-    ? `<div class="empty"><span class="empty-icon">${icons.frames(36)}</span><p>Cada cuadro que reconozcas se guardará aquí.</p>
+    ? `<div class="empty"><span class="empty-icon">${icons.frames(36)}</span><p>Cada cuadro que veas se guardará aquí.</p>
         <a class="btn btn-primary" href="#inicio">Ir al camino</a></div>`
     : `<div class="coll-controls">${controlsHtml(ctx, searchable)}</div><div class="coll-list">${listHtml(ctx, strips())}</div>`}
     <dialog class="card-dialog" aria-labelledby="dlg-title"></dialog>`);

@@ -59,7 +59,7 @@ export function museumHtml(ctx) {
 export function testHtml(last, { primary = true } = {}) {
   const result = last ? `<div class="pf-test-card">
       ${last.level ? `<p class="pf-test-level">${esc(last.level)}</p>` : ''}
-      <p class="pf-test-score"><strong>${last.correct}</strong> de ${last.asked}${last.percentile != null ? ` · Sabes más de pintura que el <strong>${last.percentile} %</strong> de la gente` : ''}</p>
+      <p class="pf-test-score"><strong>${last.correct}</strong> de ${last.asked}${last.percentile != null ? ` · Sabes más de pintura que el <strong>${last.percentile}&nbsp;%</strong> de la gente` : ''}</p>
       ${last.date ? `<p class="pf-test-date">Hecho el ${esc(longDate(last.date).toLowerCase())}</p>` : ''}
     </div>` : '';
   return `<section class="pf-sec pf-test-sec" aria-labelledby="pf-test-h">

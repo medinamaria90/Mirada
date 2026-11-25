@@ -97,39 +97,45 @@ export function museumWorks(progress, index, n = MUSEUM_SIZE) {
   return collectionWorks(progress, index).slice(0, n);
 }
 
-// Escenas duras (violencia, martirios, ejecuciones, guerra, decapitaciones…): no se eligen solas como
-// portada ni acaban en la tarjeta que se comparte. Una sola función para todo: palabras clave del título.
-// Si la usuaria elige una a mano, se respeta (coverWork con `chosen`).
-const HARSH_TITLE = /fusilamiento|tres de mayo|crucifi|martirio|m[aá]rtir|decapita|degollad|judit|holofernes|masacre|matanza|batalla|guerra|muerte|cad[aá]ver|anatom[ií]a|asesin|saturno|calvario|descendimiento|piedad|ejecuci|ahorcad|medusa|goliat|infierno|diablo|desastres|apocalipsis|juicio final|flagelaci|lapidaci|sard[aá]napalo|s[oó]crates|lady jane|comisario|sepulcro|suplicio|tortura|rapto|violaci/i;
+// Portada automática, portada de muestra y cuadro de la tarjeta que se comparte: SOLO de obras amables.
+// Lo manda una lista blanca curada a mano (app/data/gentle.json: paisajes, retratos serenos, bodegones, escenas
+// cotidianas; sin desnudos, muerte, pasión, violencia ni obras de varias tablas). Las palabras clave del título son
+// solo una red de seguridad (si la lista no cargase, o por si alguien añade una obra sin revisar). La portada que
+// elige la usuaria se respeta en pantalla, pero nunca viaja en la tarjeta si no está en la lista.
+const HARSH_TITLE = /fusilamiento|tres de mayo|dos de mayo|crucifi|martirio|m[aá]rtir|decapita|degollad|judit|holofernes|masacre|matanza|batalla|battle|guerra|muerte|muerto|cad[aá]ver|anatom[ií]a|asesin|saturno|calvario|descendimiento|piedad|lamentaci|ejecuci|ahorcad|medusa|goliat|infierno|diablo|desastres|apocalipsis|juicio final|flagelaci|lapidaci|sard[aá]napalo|s[oó]crates|lady jane|comisario|sepulcro|suplicio|tortura|rapto|violaci|cruz|ecce homo|desollamiento|desollando|desollad|espinas|garrotazos|duelo|herid|aquelarre|bruja|espectro|esqueleto|vampiro|desnud|maja|venus|cleopatra|lucrecia|tarquinio|cristo atado|santa [a-záéíóú]+|tr[ií]ptico|pol[ií]ptico/i;
 export const isHarsh = (work) => HARSH_TITLE.test(String(work?.title || ''));
+
+// Conjunto de ids de la lista blanca (null si no hay datos: entonces solo vale la red de seguridad).
+export const gentleSet = (data) => (Array.isArray(data?.works) ? new Set(data.works.map((w) => w.id)) : null);
+const isGentle = (work, gentle) => !isHarsh(work) && (!gentle || gentle.has(work.id));
 
 const FRIENDLY_TITLE = /venus|primavera|jard[ií]n|nen[uú]far|girasol|noche estrellada|perla|lechera|baile|desayuno|paseo|impresi[oó]n|amanecer|campo|paisaje|flores|rosas|dama|joven|ni[nñ]|ba[nñ]|merienda|domingo|lago|puente|puesta de sol|barcas|cuento|lectura/i;
 
-// Portada de muestra para quien aún no tiene cuadros: un cuadro famoso, apaisado y amable.
-export function sampleCover(index) {
+// Portada de muestra para quien aún no tiene cuadros: de la lista blanca, famoso, apaisado y amable.
+export function sampleCover(index, gentle = null) {
   const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 2 : 0) + (FRIENDLY_TITLE.test(w.title) ? 6 : 0);
-  const kind = index.artworks.filter((w) => !isHarsh(w));
-  return (kind.length ? kind : index.artworks).slice().sort((a, b) => score(b) - score(a) || a.id.localeCompare(b.id))[0] || null;
+  const pool = index.artworks.filter((w) => isGentle(w, gentle));
+  return (pool.length ? pool : index.artworks).slice().sort((a, b) => score(b) - score(a) || a.id.localeCompare(b.id))[0] || null;
 }
 
-// Portada: la elegida si está en la colección; si no, el cuadro más famoso (y apaisado, que luce más en
-// la franja) del pintor del que más cuadros tiene el jugador. null si aún no tiene ninguno.
-export function coverWork(progress, index, chosen = '') {
+// Portada: la elegida si está en la colección; si no, la obra amable de la colección con más fama (a igualdad, del
+// pintor con más cuadros, apaisada y de repaso más avanzado). Sin ninguna amable, la de muestra. null si no hay colección.
+export function coverWork(progress, index, chosen = '', gentle = null) {
   const owned = collectionIds(progress, index).map((id) => index.artwork(id));
   if (!owned.length) return null;
   if (chosen && progress.collection[chosen] && index.artwork(chosen)) return index.artwork(chosen);
   const count = new Map();
   for (const w of owned) count.set(w.artistId, (count.get(w.artistId) || 0) + 1);
   const box = (w) => progress.srs?.[artKey(w.id)]?.box || 0;
-  const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 1 : 0);
-  // Pintores por número de cuadros; el primero con algún cuadro amable pone la portada (el mejor, o el siguiente
-  // si el mejor es duro). Si todo lo que hay es duro, la portada de muestra.
-  const artists = [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map((e) => e[0]);
-  for (const artist of artists) {
-    const gentle = owned.filter((w) => w.artistId === artist && !isHarsh(w));
-    if (gentle.length) return gentle.sort((a, b) => score(b) - score(a) || box(b) - box(a) || a.id.localeCompare(b.id))[0];
-  }
-  return sampleCover(index);
+  const best = owned.filter((w) => isGentle(w, gentle)).sort((a, b) => (b.fame || 0) - (a.fame || 0)
+    || count.get(b.artistId) - count.get(a.artistId) || (b.w > b.h) - (a.w > a.h) || box(b) - box(a) || a.id.localeCompare(b.id))[0];
+  return best || sampleCover(index, gentle);
+}
+
+// Cuadro de la tarjeta que se comparte: la portada elegida solo si es de la lista blanca; si no, la automática.
+export function shareCover(progress, index, chosen = '', gentle = null) {
+  const ok = chosen && index.artwork(chosen) && isGentle(index.artwork(chosen), gentle) ? chosen : '';
+  return coverWork(progress, index, ok, gentle) || sampleCover(index, gentle);
 }
 
 // Avatar elegido (cuadro de la colección) o null: entonces va el logo o la inicial.

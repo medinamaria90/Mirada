@@ -1516,7 +1516,7 @@ await shot(dpage0, '27-camino-completo');
 await audit(dpage0, '390 camino completo');
 check(await dpage0.locator('[data-action="free"]').count() >= 1, 'camino completo sin ronda libre');
 await dpage0.locator('.finale').scrollIntoViewIfNeeded();
-check((await dpage0.locator('.finale-count').innerText()).includes(String(expectRecognized)), `contador de cuadros que reconoces: ${await dpage0.locator('.finale-count').innerText()} (esperado ${expectRecognized})`);
+check((await dpage0.locator('.finale-count').innerText()).includes(String(allWorks.length)), `contador de cuadros vistos: ${await dpage0.locator('.finale-count').innerText()} (esperado ${allWorks.length})`);
 await shot(dpage0, '28-final-camino');
 await dpage0.evaluate(() => window.scrollTo(0, 0));
 // Camino avanzado: sin franja «Hoy» ni lupa; el mapa asoma en la primera pantalla.

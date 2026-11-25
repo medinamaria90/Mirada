@@ -30,6 +30,8 @@ const ctxFor = (progress, settings = {}) => {
   return { index, today: () => TODAY, dailyDay: () => TODAY, store: { get: () => state } };
 };
 const FORBIDDEN = /\bayer\b|\bmañana\b/i;
+const gentleData = JSON.parse(readFileSync(new URL('../app/data/gentle.json', import.meta.url), 'utf8'));
+const GENTLE = P.gentleSet(gentleData);
 const read = (path) => readFileSync(new URL(path, import.meta.url), 'utf8');
 
 test('nombre: se limpia, se recorta a 24 caracteres, conserva los emojis compuestos y lo que no es texto queda vacío', () => {
@@ -167,7 +169,7 @@ test('logros: oro, plata y bronce; reparto por clases; inicial (primera letra); 
   assert.equal(P.parseLastTest(`{"correct":1,"asked":2,"level":"${lvl}","grid":"<img>"}`).grid, '');
   assert.match(shareText({ correct: 24, asked: 40, level: lvl, percentile: 78, grid: '🟩🟩🟨⬜⬜' }, 'https://x/test/'), /24 de 40[^\n]*\n[^\n]*78 % de la gente 🟩🟩🟨⬜⬜\nhttps:\/\/x\/test\//);
   assert.doesNotMatch(shareText({ correct: 1, asked: 40, level: '', percentile: null, grid: '' }, 'u'), /·|%/, 'sin nivel ni percentil no quedan huecos');
-  assert.deepEqual(cardLines({ correct: 24, asked: 40, level: lvl, percentile: 78 }), { level: lvl, score: '24 de 40', percentile: 'Sé más de pintura que el 78 % de la gente' }, 'la tarjeta habla en primera persona, como el texto que se comparte');
+  assert.deepEqual(cardLines({ correct: 24, asked: 40, level: lvl, percentile: 78 }), { level: lvl, score: '24 de 40', percentile: 'Sé más de pintura que el 78 % de la gente' }, 'la tarjeta habla en primera persona, como el texto que se comparte');
 });
 
 test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito, test cerca y reto semanal bloqueado con lo que falta', () => {
@@ -291,7 +293,7 @@ test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de port
   assert.match(museum, /Último en colgarse/);
   const t = testHtml({ correct: 24, asked: 40, level: TEST_LEVELS[2], percentile: 78, date: '2026-11-12', grid: '' });
   assert.match(t, /24<\/strong> de 40/);
-  assert.match(t, /78 %/);
+  assert.match(t, /78&nbsp;%/);
   assert.match(t, /Repetir el test/);
   assert.match(t, /Hecho el .*noviembre/);
   assert.match(t, /data-action="share-test"/);
@@ -370,29 +372,47 @@ test('el perfil no carga el audio con la música apagada', () => {
   assert.match(read('../app/js/ui/screens/profile.js'), /settings\.music\) \(/);
 });
 
-test('portada automática: ninguno de los pintores del catálogo real da una escena dura; la elegida a mano se respeta', () => {
+test('lista blanca: la portada automática de cada pintor y la tarjeta salen siempre de app/data/gentle.json', () => {
   const real = realIndex();
+  assert.ok(GENTLE.size >= 200, `la lista blanca tiene ${GENTLE.size} obras`);
+  assert.equal(GENTLE.size, gentleData.works.length, 'ids repetidos');
+  for (const w of gentleData.works) {
+    const art = real.artwork(w.id);
+    assert.ok(art, `${w.id} no está en el catálogo`);
+    assert.equal(art.title, w.title, `${w.id}: el título del catálogo cambió, revisa la obra`);
+    assert.ok(!P.isHarsh(art), `«${art.title}» está en la lista y la red de seguridad la tumba`);
+  }
   let checked = 0;
   for (const a of real.artists) {
     const works = real.worksOf(a.id);
     if (!works.length) continue;
     const progress = { ...emptyProgress(), collection: Object.fromEntries(works.map((w) => [w.id, '2026-11-20'])) };
-    const cover = P.coverWork(progress, real);
-    assert.ok(cover, a.id);
-    assert.ok(!P.isHarsh(cover), `${a.name}: «${cover.title}» es una escena dura`);
+    const cover = P.coverWork(progress, real, '', GENTLE);
+    assert.ok(cover && GENTLE.has(cover.id), `${a.name}: «${cover?.title}» no está en la lista blanca`);
+    const card = P.shareCover(progress, real, '', GENTLE);
+    assert.ok(GENTLE.has(card.id), `${a.name}: la tarjeta lleva «${card.title}»`);
+    // Aunque haya elegido a mano cualquier obra suya, la tarjeta no sale de la lista.
+    for (const w of works.slice(0, 40)) assert.ok(GENTLE.has(P.shareCover(progress, real, w.id, GENTLE).id), `${a.name}: elegida «${w.title}», la tarjeta se sale de la lista`);
     checked += 1;
   }
   assert.ok(checked >= 150, `solo se comprobaron ${checked} pintores`);
-  assert.ok(!P.isHarsh(P.sampleCover(real)));
-  // Si el mejor cuadro es duro, sale el siguiente (Artemisia: no Judit); y si todo es duro, la portada de muestra.
-  const harsh = real.artworks.find((w) => /judit decapitando/i.test(w.title));
-  assert.ok(harsh && P.isHarsh(harsh));
-  const only = { ...emptyProgress(), collection: { [harsh.id]: '2026-11-20' } };
-  assert.ok(!P.isHarsh(P.coverWork(only, real)), 'si todo lo que hay es duro, la portada de muestra');
-  assert.equal(P.coverWork(only, real, harsh.id).id, harsh.id, 'elegida a mano, se respeta');
-  for (const t of ['El tres de mayo de 1808', 'La masacre de los inocentes', 'La ejecución de Lady Jane Grey', 'La muerte de Sardanápalo', 'La balsa de la Medusa', 'La apoteosis de la guerra', 'Descendimiento', 'La muerte de Sócrates', 'Saturno devorando a un hijo', 'La crucifixión']) {
-    assert.ok(P.isHarsh({ title: t }), t);
+  assert.ok(GENTLE.has(P.sampleCover(real, GENTLE).id));
+  // Con todo el catálogo en la colección gana la obra amable más famosa; una colección solo de escenas duras da la de muestra.
+  const all = { ...emptyProgress(), collection: Object.fromEntries(real.artworks.map((w) => [w.id, '2026-11-20'])) };
+  const top = P.coverWork(all, real, '', GENTLE);
+  assert.ok(GENTLE.has(top.id));
+  assert.ok(real.artworks.filter((w) => GENTLE.has(w.id)).every((w) => (w.fame || 0) <= (top.fame || 0)), 'no es la de más fama');
+  for (const t of [/judit decapitando/i, /lamentaci[oó]n sobre cristo muerto/i, /elevaci[oó]n de la cruz/i, /ecce homo/i, /maja desnuda/i, /tres de mayo/i]) {
+    const w = real.artworks.find((x) => t.test(x.title));
+    assert.ok(w, String(t));
+    assert.ok(!GENTLE.has(w.id), `«${w.title}» no debe estar en la lista`);
+    const only = { ...emptyProgress(), collection: { [w.id]: '2026-11-20' } };
+    assert.ok(GENTLE.has(P.coverWork(only, real, '', GENTLE).id), `«${w.title}»: la portada automática no es de la lista`);
+    assert.equal(P.coverWork(only, real, w.id, GENTLE).id, w.id, 'elegida a mano, en pantalla se respeta');
+    assert.ok(GENTLE.has(P.shareCover(only, real, w.id, GENTLE).id), `«${w.title}» elegida a mano acaba en la tarjeta`);
   }
+  // Sin lista (no cargó), la red de seguridad por palabras sigue tumbando lo duro.
+  for (const t of ['El tres de mayo de 1808', 'Lamentación sobre Cristo muerto', 'La elevación de la cruz', 'Ecce Homo', 'Desollamiento de Marsias', 'La coronación de espinas', 'Duelo a garrotazos', 'The Battle of the Amazons', 'La maja desnuda', 'La balsa de la Medusa', 'Saturno devorando a un hijo']) assert.ok(P.isHarsh({ title: t }), t);
   assert.ok(!P.isHarsh({ title: 'La noche estrellada' }));
 });
 
@@ -446,4 +466,12 @@ test('la tarjeta: cuadrados vacíos con borde, fundido sin gris, esquinas claras
 test('ninguna rejilla del perfil fuerza un ancho mínimo mayor que su contenedor (al 200 % el rem se duplica)', () => {
   const css = read('../app/css/profile.css');
   for (const m of css.matchAll(/minmax\((\d+(?:\.\d+)?rem),/g)) assert.fail(`minmax(${m[1]}, …) sin min(): desborda con texto grande`);
+});
+
+test('«vistos» en toda la app: el final del camino y la Colección vacía no hablan de «reconoces»', () => {
+  assert.doesNotMatch(read('../app/js/ui/screens/home.js'), /que reconoces|recognizedCount/);
+  assert.match(read('../app/js/ui/screens/home.js'), /cuadros vistos/);
+  assert.doesNotMatch(read('../app/js/ui/screens/collection.js'), /reconozcas/);
+  assert.doesNotMatch(read('../app/js/ui/screens/profile-hero.js'), /pf-mini/, 'sin barra duplicada por requisito');
+  assert.match(read('../app/css/profile.css'), /\.pf-cover\.cap-bottom \.pf-cover-cap/, 'el pie baja si lo que hay que ver está arriba');
 });

@@ -3,7 +3,7 @@
 
 import { esc, $ } from '../dom.js';
 import { icons, logoMark } from '../icons.js';
-import { tinyFrame, tinySrc } from './profile-art.js';
+import { tinyFrame, tinySrc, gentleWorks } from './profile-art.js';
 import { rankFor } from '../../engine/ranks.js';
 import { graphemes } from '../../state/schema.js';
 import { rankProgress, coverWork, sampleCover, avatarWork, focusPosition, initialOf, collectionIds } from '../../engine/profile.js';
@@ -23,7 +23,9 @@ function avatar(name, work) {
 function cover(ctx, work) {
   if (!work) return `<div class="pf-cover is-empty" aria-hidden="true">${icons.frames(84)}</div>`;
   const artist = ctx.index.artist(work.artistId);
-  return `<div class="pf-cover" style="--focus:${focusPosition(work, 30)}">
+  // El pie va arriba, salvo si lo que hay que ver está arriba (punto de interés en la mitad de arriba): entonces abajo.
+  const focusY = Array.isArray(work.focus) ? work.focus[1] : 0.3;
+  return `<div class="pf-cover ${focusY < 0.5 ? 'cap-bottom' : ''}" style="--focus:${focusPosition(work, 30)}">
     ${tinyFrame(work, { alt: '', cls: 'pf-cover-art', label: work.title, eager: true, zoom: { group: 'portada' } })}
     <img class="pf-cover-full" alt="" data-src="${esc(work.img)}">
     <p class="pf-cover-cap">${esc(work.title)}${artist ? ` · ${esc(artist.name)}` : ''}</p>
@@ -33,7 +35,7 @@ function cover(ctx, work) {
 function rankBlock(rank, bar, pct) {
   const needs = bar.next
     ? `<p class="pf-rank-next">Para ser ${esc(bar.next)}</p>
-      <ul class="pf-needs">${bar.items.map((i) => `<li><span>${esc(i.text)}</span><span class="pf-mini" aria-hidden="true"><span style="width:${Math.round(i.fraction * 100)}%"></span></span></li>`).join('')}</ul>`
+      <ul class="pf-needs">${bar.items.map((i) => `<li>${esc(i.text)}</li>`).join('')}</ul>`
     : '<p class="pf-rank-next">El rango más alto</p>';
   return `<div class="pf-rank">
       <p class="pf-rank-name">${icons.gem(20)}<span>${esc(rank.name)}</span></p>
@@ -55,7 +57,7 @@ export function heroHtml(ctx) {
   return `<header class="pf-hero">
     <h1 class="sr-only" id="pf-title" tabindex="-1">Perfil</h1>
     ${hasPictures ? `<button type="button" class="pf-look" data-action="open-look" aria-label="Cambiar portada y avatar" aria-haspopup="dialog">${icons.frames(22)}</button>` : ''}
-    ${cover(ctx, coverWork(p, index, coverId) || sampleCover(index))}
+    ${cover(ctx, coverWork(p, index, coverId, gentleWorks()) || sampleCover(index, gentleWorks()))}
     <button type="button" class="pf-gear" data-action="open-settings" aria-label="Ajustes" aria-haspopup="dialog">${icons.gear(24)}</button>
     <div class="pf-id">
       ${avatar(name, avatarWork(p, index, avatarId))}

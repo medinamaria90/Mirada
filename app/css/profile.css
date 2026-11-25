@@ -58,6 +58,7 @@
   border-radius: 14px; font-size: .78rem; line-height: 1.35; width: fit-content; max-width: calc(100% - 128px);
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
 }
+.pf-cover.cap-bottom .pf-cover-cap { top: auto; bottom: .75rem; left: auto; right: 52px; max-width: min(60%, calc(100% - 140px)); margin-inline: 0; }
 .pf-gear, .pf-look {
   position: absolute; top: .6rem; z-index: 2; display: grid; place-items: center; width: 48px; height: 48px;
   border: 0; border-radius: 999px; cursor: pointer; color: var(--ink);
@@ -103,9 +104,7 @@
 .pf-bar > span { display: block; height: 100%; min-width: 12px; border-radius: inherit; background: var(--brand-text); transition: width .8s var(--ease); }
 .pf-rank-next { font-size: .95rem; font-weight: 600; color: var(--ink); }
 .pf-needs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr)); gap: .5rem 1.4rem; margin-top: .5rem; }
-.pf-needs li { display: grid; gap: .25rem; font-size: .9rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.pf-mini { display: block; height: 5px; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-2); overflow: hidden; }
-.pf-mini > span { display: block; height: 100%; border-radius: inherit; background: var(--brand-text); }
+.pf-needs li { font-size: .9rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 
 /* ---------- Tres cifras ---------- */
 .pf-figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(6rem, 100%), 1fr)); padding: .9rem 0; border-block: 1px solid var(--line); }

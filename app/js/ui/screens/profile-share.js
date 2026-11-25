@@ -25,7 +25,7 @@ export function cardLines(last) {
   return {
     level: last.level || '',
     score: `${last.correct} de ${last.asked}`,
-    percentile: last.percentile != null ? `Sé más de pintura que el ${last.percentile} % de la gente` : '',
+    percentile: last.percentile != null ? `Sé más de pintura que el ${last.percentile} % de la gente` : '',
   };
 }
 
