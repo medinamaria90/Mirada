@@ -8,16 +8,12 @@ import assert from 'node:assert/strict';
 globalThis.document = { documentElement: {} };
 globalThis.getComputedStyle = () => ({ getPropertyValue: () => '#000000' });
 const { graceSavedText } = await import('../app/js/ui/screens/result.js');
-const { graceLine } = await import('../app/js/ui/screens/profile.js');
 
-test('racha a salvo: textos del resultado y del perfil coherentes con los días de gracia', () => {
+test('racha a salvo: textos del resultado coherentes con los días de gracia', () => {
   assert.equal(graceSavedText(0), '');
   assert.equal(graceSavedText(1), 'Racha a salvo: te quedaba un día de gracia');
   assert.equal(graceSavedText(2), 'Racha a salvo: te quedaban dos días de gracia');
-  assert.equal(graceLine(2), 'Te quedan 2 días de gracia esta semana');
-  assert.equal(graceLine(1), 'Te queda 1 día de gracia esta semana');
-  assert.equal(graceLine(0), 'Sin días de gracia hasta el lunes');
-  for (const t of [graceSavedText(1), graceSavedText(2), graceLine(0), graceLine(1), graceLine(2)]) {
+  for (const t of [graceSavedText(1), graceSavedText(2)]) {
     assert.doesNotMatch(t, /ayer|mañana/i);
   }
 });

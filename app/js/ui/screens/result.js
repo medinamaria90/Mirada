@@ -4,7 +4,7 @@ import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotio
 import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
-import { levelFor, levelName, MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
+import { MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
 import { pendingWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle } from '../../engine/painters.js';
 import { deepRoute } from '../router.js';
@@ -14,6 +14,8 @@ import { weekOf, isoWeek } from '../../engine/dates.js';
 import { encodeChallenge, tokenForRound } from '../../engine/challenge.js';
 import { shareText, dailyGrid } from '../../engine/daily.js';
 import { medalBadge } from './medals.js';
+import { rankFor } from '../../engine/ranks.js';
+import { rankProgress } from '../../engine/profile.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
 
@@ -74,6 +76,13 @@ function stepRoute(index, step) {
   return step.type === 'sala' ? `sala-${step.id}` : `etapa-${step.id}`;
 }
 
+// Rango y avance al siguiente: el mismo que enseña el perfil (una sola escala visible).
+export function rankLine(p, index) {
+  const rank = rankFor(p, index);
+  const bar = rankProgress(rank);
+  return { name: rank.name, next: bar.next, pct: Math.round(bar.fraction * 100) };
+}
+
 // opts: { plan, outcome, title, accent, friendScore?, firstTry, shareTopic?, primary?, onDone?, more? }
 // more: { label, to } acción extra (p. ej. «Repasar más» tras el repaso rápido).
 export function renderResult(ctx, el, opts) {
@@ -81,14 +90,14 @@ export function renderResult(ctx, el, opts) {
   const { outcome, plan } = opts;
   const state = ctx.store.get();
   const p = state.progress;
-  const level = levelFor(p.xp);
-  const levelBefore = levelFor(Math.max(0, p.xp - outcome.xp));
+  // Una sola escala visible: los rangos (engine/ranks.js), los mismos que enseña el perfil.
+  const rank = rankLine(p, index);
   const firstTry = opts.firstTry;
   const token = tokenForRound(index, plan);
   const isDaily = plan.kind === 'daily' || plan.kind === 'weekly';
   const events = outcome.events;
   const medals = events.filter((e) => e.type === 'medal');
-  const levelUp = events.find((e) => e.type === 'levelup');
+  const rankUp = events.find((e) => e.type === 'rank');
   const streak = events.find((e) => e.type === 'streak');
   const unlock = events.find((e) => e.type === 'unlock');
   const reviewUnlock = events.find((e) => e.type === 'review-unlock');
@@ -148,10 +157,8 @@ export function renderResult(ctx, el, opts) {
   // Nivel «a fondo» superado: su propio momento (va el primero, grande y con destino). El rango y el resto, después.
   const deepDone = events.find((e) => e.type === 'deep-mastered');
   if (deepDone) blocks.unshift(deepCelebration(ctx, deepDone));
-  const rankUp = events.find((e) => e.type === 'rank');
-  if (rankUp) blocks.push(eventCard({ icon: icons.gem(22), kicker: 'Nuevo rango', title: rankUp.name, to: 'perfil', cls: 'event-rank' }));
-  if (levelUp) {
-    blocks.push(eventCard({ icon: icons.gem(22), kicker: 'Nuevo nivel', title: levelName(levelUp.level), to: 'perfil', cls: 'event-level' }));
+  if (rankUp) {
+    blocks.push(eventCard({ icon: icons.gem(22), kicker: 'Nuevo rango', title: rankUp.name, to: 'perfil', cls: 'event-level' }));
   }
   for (const m of otherMedals) {
     const info = medalInfo(m.id, index);
@@ -192,8 +199,9 @@ export function renderResult(ctx, el, opts) {
   const coverNote = missing ? `<p class="result-note">${missing === 1 ? 'Te falta 1 cuadro suyo por ver' : `Te faltan ${missing} cuadros suyos por ver`}: una ronda más</p>` : '';
   const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar a un amigo';
   const reduce = prefersReducedMotion();
-  const fromPct = level.index === levelBefore.index ? Math.round(levelBefore.progress * 100) : 0;
-  const toPct = Math.round(level.progress * 100);
+  const toPct = rank.pct;
+  // Sin subida de rango la barra no se anima desde un punto inventado (el avance depende de más que el XP).
+  const fromPct = rankUp ? 0 : toPct;
   // Con poco que contar (p. ej. Ronda libre), todo junto y centrado: sin hueco en medio.
   el.innerHTML = `<div class="result ${heroMedal ? 'has-medal' : ''} ${blocks.length <= 1 ? 'result-compact' : ''}" style="${accentStyle(opts.accent)}">
     <main class="result-body" id="main">
@@ -211,9 +219,9 @@ export function renderResult(ctx, el, opts) {
       </dl>
       ${blocks.join('')}
       <div class="level-line">
-        <span>${esc(level.name)}</span>
-        <span class="bar" role="progressbar" aria-label="Progreso de nivel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${toPct}"><span style="width:${reduce ? toPct : fromPct}%" data-to="${toPct}"></span></span>
-        <span>${esc(level.next.name)}</span>
+        <span>${esc(rank.name)}</span>
+        <span class="bar" role="progressbar" aria-label="${rank.next ? `Avance hacia ${esc(rank.next)}` : 'Rango más alto'}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${toPct}"><span style="width:${reduce ? toPct : fromPct}%" data-to="${toPct}"></span></span>
+        <span>${rank.next ? esc(rank.next) : ''}</span>
       </div>
       <div class="result-actions">
         ${ownNote}${coverNote}
@@ -346,7 +354,7 @@ function playSequence(ctx, events, heroMedal) {
   const queue = [['complete', 0]];
   let t = 0;
   if (heroMedal || events.some((e) => e.type === 'medal')) queue.push(['medal', (t = 700)]);
-  if (events.some((e) => e.type === 'levelup')) queue.push(['levelup', (t += 650)]);
+  if (events.some((e) => e.type === 'rank')) queue.push(['levelup', (t += 650)]);
   if (events.some((e) => e.type === 'goal')) queue.push(['streak', (t += 600)]);
   if (events.some((e) => e.type === 'unlock' || e.type === 'review-unlock')) queue.push(['unlock', (t += 550)]);
   queue.forEach(([name, at]) => setTimeout(() => ctx.audio.sfx(name), at));

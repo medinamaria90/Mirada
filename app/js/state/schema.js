@@ -4,7 +4,7 @@ import { emptyProgress, DEFAULT_GOAL } from '../engine/progress.js';
 import { addDays, isDayKey } from '../engine/dates.js';
 import { LEGACY_IDS } from './legacy-ids.js';
 
-export const SCHEMA_VERSION = 7;
+export const SCHEMA_VERSION = 8;
 
 // Tema de la interfaz (settings.theme): claro, oscuro o como el móvil (el sistema).
 export const THEMES = ['light', 'dark', 'system'];
@@ -14,12 +14,37 @@ export function normalizeTheme(value) {
   return THEMES.includes(value) ? value : DEFAULT_THEME;
 }
 
+// Nombre del perfil (settings.name): opcional, solo en este navegador. Texto corto sin saltos ni
+// caracteres de control; si no hay nombre, cadena vacía.
+export const NAME_MAX = 24;
+
+// Caracteres tal como los ve quien escribe (grafemas): un emoji compuesto o con tono de piel cuenta uno.
+// Sin Intl.Segmenter (navegadores muy viejos) se cuenta por puntos de código.
+export function graphemes(text) {
+  const str = String(text ?? '');
+  if (typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function') {
+    return [...new Intl.Segmenter('es', { granularity: 'grapheme' }).segment(str)].map((x) => x.segment);
+  }
+  return [...str];
+}
+
+export function normalizeName(value) {
+  if (typeof value !== 'string') return '';
+  const clean = value.replace(/[\p{Cc}\u200B\u200C\u200E\u200F\u2060\uFEFF\u202A-\u202E\u2066-\u2069]/gu, ' ').replace(/\s+/g, ' ').trim();
+  return graphemes(clean).slice(0, NAME_MAX).join('').trim();
+}
+
+// Portada y avatar del perfil (settings.cover / settings.avatar): id de un cuadro de la colección o ''.
+export function normalizeArtworkId(value) {
+  return typeof value === 'string' && /^w\d+$/.test(value) ? value : '';
+}
+
 export function defaultState() {
   return {
     version: SCHEMA_VERSION,
     onboarded: false,
     progress: emptyProgress(),
-    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME },
+    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '', cover: '', avatar: '' },
     // Ronda en curso para retomarla al volver ({} = ninguna). Ver state/session.js.
     session: {},
   };
@@ -99,6 +124,11 @@ export const MIGRATIONS = {
       },
     };
   },
+  // 7 → 8 (perfil nuevo): nombre opcional, portada y avatar elegidos, vacíos por defecto. Lo demás se conserva.
+  7: (old) => ({
+    ...old,
+    settings: { ...(isPlain(old.settings) ? old.settings : {}), name: '', cover: '', avatar: '' },
+  }),
 };
 
 export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, defaults = defaultState()) {
@@ -113,7 +143,14 @@ export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, d
     v += 1;
     data.version = v;
   }
-  return mergeDefaults(defaults, data);
+  const out = mergeDefaults(defaults, data);
+  // Lo que llegue sin pasar por la interfaz (estado importado o editado a mano) también se limpia.
+  if (isPlain(out.settings)) {
+    out.settings.name = normalizeName(out.settings.name);
+    out.settings.cover = normalizeArtworkId(out.settings.cover);
+    out.settings.avatar = normalizeArtworkId(out.settings.avatar);
+  }
+  return out;
 }
 
 // Completa con valores por defecto sin perder datos guardados; respeta tipos.

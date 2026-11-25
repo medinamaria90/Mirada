@@ -17,4 +17,17 @@ while (exec 3<>"/dev/tcp/127.0.0.1/$port") 2>/dev/null; do port=$((port + 1)); d
 server=$!
 trap 'kill "$server" 2>/dev/null || true' EXIT
 for _ in $(seq 50); do (exec 3<>"/dev/tcp/127.0.0.1/$port") 2>/dev/null && break; sleep 0.1; done
-node "$root/tools/e2e.mjs" "http://127.0.0.1:$port/" "$root/app/data/catalog.json" "$out" "$prefix"
+# El servidor local de pruebas rechaza de vez en cuando una conexión (ERR_CONNECTION_REFUSED) y el recorrido sale
+# con error aunque la app esté bien: si el fallo es solo ese, se repite una vez. Cualquier otro fallo se da tal cual.
+# Solo se imprime el informe del último intento (quien lo lee espera un único JSON).
+log="$(mktemp)"
+run() { node "$root/tools/e2e.mjs" "http://127.0.0.1:$port/" "$root/app/data/catalog.json" "$out" "$prefix" >"$log"; }
+status=0
+run || status=$?
+if [ "$status" -ne 0 ] && grep -q 'ERR_CONNECTION_REFUSED' "$log"; then
+  echo "reintento: el servidor local rechazó una conexión" >&2
+  status=0
+  run || status=$?
+fi
+cat "$log"
+exit "$status"

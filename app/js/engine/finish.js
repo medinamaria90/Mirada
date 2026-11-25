@@ -4,7 +4,7 @@
 import { recordAnswer, artKey, artistKey, updateFallados } from './srs.js';
 import { rankFor, RANKS } from './ranks.js';
 import { seenAfterRound, levelCovered, deepKey, LEVELS_MASTERY } from './levels.js';
-import { levelFor, xpForAnswer, unseenArtists, MASTERY, STAGE_MASTERY, XP, stageRoundMastered, movementStatus, isReviewUnlocked, hasEye, normalizeGoal, touchStreak, STREAK_MEDALS, isStepUnlocked } from './progress.js';
+import { xpForAnswer, unseenArtists, MASTERY, STAGE_MASTERY, XP, stageRoundMastered, movementStatus, isReviewUnlocked, hasEye, normalizeGoal, touchStreak, STREAK_MEDALS, isStepUnlocked } from './progress.js';
 
 function subjectArtwork(q) {
   return q.type === 'which' ? q.targetArtworkId : q.artworkId;
@@ -18,7 +18,6 @@ export function finishRound(progress, index, result, today, opts = {}) {
   p.salas = p.salas || {};
   p.deep = p.deep && typeof p.deep === 'object' ? p.deep : {};
   p.xpByDay = p.xpByDay && typeof p.xpByDay === 'object' ? p.xpByDay : {};
-  const levelBefore = levelFor(p.xp).index;
   const award = (id) => {
     if (!p.medals[id]) {
       p.medals[id] = today;
@@ -149,8 +148,6 @@ export function finishRound(progress, index, result, today, opts = {}) {
     p.rank = rank.index;
     events.push({ type: 'rank', index: rank.index, name: RANKS[rank.index].name });
   }
-  const levelAfter = levelFor(p.xp).index;
-  if (levelAfter > levelBefore) events.push({ type: 'levelup', level: levelAfter });
 
   return { progress: p, events, xp, score, total, accuracy, mastered: roundMastered, ownShort, coverShort };
 }

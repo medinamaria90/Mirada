@@ -6,7 +6,6 @@ import { page } from '../shell.js';
 import { artFrame } from '../art.js';
 import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent } from './path-map.js';
 import { isPathMastered, stepsToMaster, isPathComplete } from '../../engine/progress.js';
-import { recognizedCount } from '../../engine/goals.js';
 import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf } from '../../engine/dates.js';
@@ -24,13 +23,14 @@ export function renderHome(ctx, el) {
   const mastered = isPathMastered(p, index);
   const pending = complete && !mastered ? stepsToMaster(p, index) : [];
 
-  const recognized = recognizedCount(p, index);
+  // Los cuadros vistos: los mismos que cuentan Colección y el perfil (una sola palabra y una sola cifra).
+  const seen = Object.keys(p.collection || {}).filter((id) => index.artwork(id)).length;
   let finale = '';
   if (mastered) {
     finale = `<section class="finale" aria-label="Camino completo">
       <span class="finale-icon">${icons.laurel(30)}</span>
       <h2 class="finale-title">Camino completo</h2>
-      <p class="finale-count"><strong>${recognized}</strong> ${recognized === 1 ? 'cuadro que reconoces' : 'cuadros que reconoces'}</p>
+      <p class="finale-count"><strong>${seen}</strong> ${seen === 1 ? 'cuadro visto' : 'cuadros vistos'}</p>
       <div class="finale-actions">
         <button class="btn btn-primary btn-wide" data-action="free">${icons.shuffle(20)}<span>Ronda libre</span></button>
         <button class="btn btn-secondary btn-wide" data-action="weekly">${icons.target(20)}<span>Reto semanal</span></button>

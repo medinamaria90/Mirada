@@ -679,56 +679,10 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .dlg-meta { display: flex; flex-wrap: wrap; align-items: center; color: var(--ink-2); }
 .dlg-hint { font: 400 1.05rem/1.4 var(--font); padding: .7rem .9rem; background: var(--accent-soft); border-left: 3px solid var(--accent-ui); border-radius: var(--radius-sm); margin: .3rem 0 .6rem; }
 
-/* ---------- Perfil ---------- */
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: 0 0 1.2rem; }
-.stats > div { padding: .8rem .5rem; border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm); text-align: center; }
-.stats dt { font-size: .74rem; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
-.stats dd { margin: .2rem 0 0; font: 500 1.5rem/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
-.dd-unit { display: block; font: 600 .74rem/1.2 var(--font); color: var(--ink-2); margin-top: .15rem; }
-.panel { padding: 1rem; border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm); margin-bottom: 1rem; }
-.panel-title { display: flex; justify-content: space-between; align-items: baseline; font: 500 1.2rem/1.1 var(--font); margin-bottom: .8rem; }
-.panel-aside { font: 600 .85rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.medal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: .9rem .5rem; }
-.medal-grid > li { display: grid; }
-.medal-item {
-  display: grid; justify-items: center; align-content: start; gap: .35rem; width: 100%; min-height: 48px; padding: .35rem .2rem;
-  border: 0; border-radius: var(--radius-sm); background: none; color: inherit; font: inherit; text-align: center; cursor: pointer;
-  transition: background-color .18s var(--ease);
-}
-.medal-item:hover { background: var(--surface-2); }
-.medal-name { font-size: .78rem; line-height: 1.2; color: var(--ink); }
 /* Pendiente: sello plano y sin sombra; el número o el icono con contraste AA (sin opacidad general). */
 .is-missing .medal { background: var(--surface-2); color: var(--ink-2); box-shadow: inset 0 0 0 1.5px var(--line); }
 .is-missing .medal::after { border-color: color-mix(in srgb, var(--ink-2) 45%, transparent); }
 .is-missing .medal-art .medal-inner { filter: grayscale(1); opacity: .35; }
-.medal-item.is-missing .medal-name { color: var(--ink-2); }
-.medal-dlg { justify-items: center; text-align: center; padding-top: 1.6rem; }
-.medal-dlg .dlg-hint { justify-self: stretch; text-align: left; }
-.medal-dlg-prog { font: 600 .95rem/1.2 var(--font); color: var(--ink-2); margin-bottom: .4rem; font-variant-numeric: lining-nums tabular-nums; }
-.setting { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 56px; border-top: 1px solid var(--line); font-weight: 600; cursor: pointer; }
-.panel-title + .setting { border-top: 0; }
-.setting-range input { width: 55%; accent-color: var(--brand); min-height: 48px; margin: 0; }
-/* Tema: la etiqueta y, debajo, los tres botones a todo el ancho. */
-.setting-theme { flex-wrap: wrap; gap: .5rem; padding: .7rem 0 .9rem; cursor: default; }
-.setting-theme > span { flex-basis: 100%; }
-.setting-theme .segs { flex-basis: 100%; }
-.setting-theme .seg { min-height: 48px; padding-inline: .4rem; }
-/* El interruptor se ve de 52×32 pero su área táctil mide 56×48 (relleno transparente). */
-.switch {
-  appearance: none; -webkit-appearance: none; position: relative; box-sizing: content-box; width: 52px; height: 32px;
-  padding: 8px 2px; margin: 0 -2px 0 0; flex: none; border-radius: 999px; background: var(--line); background-clip: content-box;
-  cursor: pointer; transition: background-color .2s;
-}
-.switch::after {
-  content: ""; position: absolute; top: 12px; left: 6px; width: 24px; height: 24px; border-radius: 999px;
-  background: var(--surface); box-shadow: var(--shadow-card); transition: transform .22s var(--ease);
-}
-.switch:checked { background: var(--brand); }
-.switch:checked::after { transform: translateX(20px); }
-.switch:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
-.panel-danger { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
-.confirm { display: grid; gap: .4rem; text-align: center; }
-.confirm p { font-weight: 600; }
 
 /* ---------- Escritorio ---------- */
 @media (min-width: 720px) {
@@ -744,7 +698,6 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
   animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important;
 }
-.panel-foot { margin-top: .9rem; font-size: .88rem; color: var(--ink-2); text-align: center; }
 
 /* =================== Oleada 4 =================== */
 
@@ -852,23 +805,6 @@ html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: n
 .finale-title { font: 500 1.45rem/1.1 var(--font); }
 .finale-actions { display: grid; gap: .6rem; width: 100%; max-width: 360px; }
 
-/* Perfil: meta diaria y botón de reinicio */
-.goal-row { display: flex; align-items: center; gap: 1rem; }
-.segs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; flex: 1; min-width: 0; }
-.seg {
-  display: grid; justify-items: center; gap: 1px; min-height: 56px; padding: .4rem .25rem; border-radius: var(--radius-sm); cursor: pointer;
-  border: 0; box-shadow: var(--lift-sm); background: var(--surface); font: inherit; color: var(--ink);
-  transition: transform .12s var(--ease), box-shadow .12s var(--ease);
-}
-.seg:hover { box-shadow: 0 var(--relief-sm) 0 var(--line-2), inset 0 0 0 1.5px var(--line-2); }
-.seg:active { transform: translateY(var(--relief-sm)); box-shadow: var(--lift-down); }
-.seg.is-on { box-shadow: 0 var(--relief-sm) 0 var(--brand-shadow), inset 0 0 0 2px var(--brand); background: var(--brand-soft); }
-.seg-num { font-weight: 600; font-size: .92rem; font-variant-numeric: lining-nums tabular-nums; }
-.seg-name { font-size: .74rem; color: var(--ink-2); overflow-wrap: anywhere; }
-.btn-quiet { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); color: var(--ink-2); min-height: 48px; }
-.btn-quiet:hover { box-shadow: inset 0 0 0 1.5px var(--bad); color: var(--bad); }
-.btn-quiet:active { transform: scale(.97); box-shadow: inset 0 0 0 1.5px var(--line); }
-
 /* Reto sin haber visto al pintor */
 .wall-sm { height: 180px; }
 .wall-sm .wall-0 { height: 120px; }
@@ -909,7 +845,6 @@ html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: n
   .feedback { bottom: 1.5rem; border-radius: 22px; border: 1px solid var(--line); transform: translate(-50%, calc(100% + 2rem)); max-height: calc(100dvh - 7rem); padding-bottom: 1.1rem; }
   .lesson:has(.feedback.is-open) .lesson-stage { padding-bottom: 16rem; }
 }
-.confirm[hidden] { display: none; }
 @media (min-width: 1024px) {
   /* En la ronda, el feedback va en la columna de las opciones y no tapa el cuadro. */
   .lesson:has(.lesson-stage:not([data-type="which"])) .feedback {
@@ -953,22 +888,19 @@ html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: n
 
 /* Texto grande (zoom 200 %): nada se sale por la derecha */
 .result { overflow-x: clip; }
-.stats { grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.4rem), 1fr)); }
 .tally { grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.2rem), 1fr)); overflow: hidden; }
 .tally > div + div { border-left: 0; }
 .tally > div { box-shadow: -1px 0 0 var(--line), 0 -1px 0 var(--line); }
 .week { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .day-dot { width: min(26px, 100%); height: auto; aspect-ratio: 1; }
 .segs { grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.2rem), 1fr)); }
-.goal-row { flex-wrap: wrap; }
 .option > span:last-child, .stage-text, .event-text, .movement-titles, .learned-text, .fb-inner p,
-.welcome-line, .learn-title, .q-prompt, .result-title, .section-head h1, .panel-title, .setting > span, .slide figcaption {
+.welcome-line, .learn-title, .q-prompt, .result-title, .section-head h1, .slide figcaption {
   min-width: 0; overflow-wrap: anywhere;
 }
 .stage-name, .movement-name, .event-title { overflow-wrap: anywhere; }
-.panel-title { flex-wrap: wrap; gap: .25rem .6rem; }
 .coll-artist { flex-wrap: wrap; }
-.tally dd, .stats dd { overflow-wrap: anywhere; }
+.tally dd { overflow-wrap: anywhere; }
 @media (max-width: 300px), (max-width: 18.75em) {
   .content { padding-inline: .7rem; }
   .path-map { margin-inline: -.7rem; }
@@ -976,8 +908,6 @@ html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: n
   .topbar { padding-inline: .5rem; gap: .25rem; }
   .topbar-stats { gap: 0; }
   .chip-goal-text { display: none; }
-  .setting-range { flex-wrap: wrap; }
-  .setting-range input { width: 100%; }
   .key { display: none; }
   .option { padding-inline: .7rem; }
   .duel-side { min-width: 0; }

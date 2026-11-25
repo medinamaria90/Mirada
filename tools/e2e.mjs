@@ -951,10 +951,10 @@ if (SMOKE) {
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
   await page.goto(`${base}#perfil`);
-  await page.waitForSelector('.stats');
+  await page.waitForSelector('.pf-hero');
   await audit(page, '390 perfil');
-  check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
-  check(await page.locator('button.medal-item').count() >= 1, 'las medallas del perfil no son pulsables');
+  check(/cuadros?|Aquí vivirá tu museo/i.test(await page.locator('.pf-layout').innerText()), 'perfil sin la cifra de cuadros ni la bienvenida');
+  check(await page.locator('button.pf-medal').count() >= 1, 'las medallas del perfil no son pulsables');
   // Colección → «Pintores»: lista por épocas con buscador; la ficha se abre sobre la pantalla y solo enseña lo ya visto.
   // 16 pintores conocidos: con tantos sale el buscador (con menos no hay nada que buscar).
   const pintSeen = Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
@@ -1502,23 +1502,27 @@ await page.waitForSelector('.viewer', { state: 'detached' });
 
 // Perfil: meta diaria ajustable, medallas con icono, reinicio con borde
 await page.click('.nav-item[href="#perfil"]');
-await page.waitForSelector('.stats');
+await page.waitForSelector('.pf-hero');
 await shot(page, '18-perfil', true);
 await audit(page, '390 perfil');
-check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
+check(/cuadros?|Aquí vivirá tu museo/i.test(await page.locator('.pf-layout').innerText()), 'perfil sin la cifra de cuadros ni la bienvenida');
+await page.click('[data-action="open-settings"]');
+await page.waitForSelector('.settings-dialog[open]');
 const range = await page.locator('[data-setting="volume"]').boundingBox();
 check(range.height >= 48, `deslizador de volumen de ${Math.round(range.height)} px`);
 await page.click('[data-action="goal"][data-goal="100"]');
 check((await page.locator('.chip-goal').getAttribute('aria-label')).includes('de 100 XP'), 'la cabecera no refleja la nueva meta');
 check(await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.dailyGoal) === 100, 'meta no persistida');
-check(await page.locator('.medal-item.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
+check(await page.locator('.pf-medal.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
 await page.goto(`${base}#coleccion`);
 await page.waitForSelector('.coll-grid');
 await page.waitForTimeout(500);
 await shot(page, '17b-coleccion');
 await audit(page, '390 coleccion');
 await page.goto(`${base}#perfil`);
-await page.waitForSelector('.stats');
+await page.waitForSelector('.pf-hero');
+await page.click('[data-action="open-settings"]');
+await page.waitForSelector('.settings-dialog[open]');
 for (const sw of await page.$$eval('.switch', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return [r.width, r.height]; }))) {
   check(sw[0] >= 48 && sw[1] >= 48, `interruptor de ${sw.map(Math.round).join('×')}`);
 }
@@ -1544,16 +1548,104 @@ check(themeInfo.bg !== bgDark && themeInfo.meta.every((c) => c === themeInfo.bg)
 await shot(page, '18b-perfil-claro-forzado');
 await audit(page, '390 perfil claro forzado');
 await page.reload();
-await page.waitForSelector('.stats');
+await page.waitForSelector('.pf-hero');
 check(await page.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'light', 'el tema forzado no sobrevive a la recarga');
+await page.click('[data-action="open-settings"]');
+await page.waitForSelector('.settings-dialog[open]');
 await page.click('[data-action="theme"][data-value="system"]');
 const backToSystem = await page.evaluate(() => ({ attr: document.documentElement.getAttribute('data-theme'), bg: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() }));
 check(backToSystem.attr === null && backToSystem.bg === bgDark, `«Como el móvil» no vuelve al tema del sistema: ${JSON.stringify(backToSystem)}`);
 await page.emulateMedia({ colorScheme: 'light' });
+// Perfil nuevo: nombre editable (se guarda solo en el navegador), objetivos táctiles y enlaces.
+await page.keyboard.press('Escape');
+for (const sel of ['.pf-gear', '.pf-name-btn', '.pf-actions .btn']) {
+  const b = await page.locator(sel).first().boundingBox();
+  check(b && b.height >= 48 && b.width >= 48, `${sel} < 48 px`);
+}
+check((await page.locator('.pf-actions a').first().getAttribute('href')) === 'test/', '«Hacer el test» no lleva a test/');
+await page.click('[data-action="edit-name"]');
+await page.fill('.name-dialog .pf-input', 'María Medina Cañete con un nombre larguísimo');
+await page.click('.name-dialog button[type="submit"]');
+const savedName = await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.name);
+check(savedName.length <= 24 && savedName.startsWith('María'), `nombre guardado: «${savedName}»`);
+check((await page.locator('.pf-greeting').innerText()).includes('Hola, María'), 'el saludo no usa el nombre');
+check((await page.locator('.pf-initial').innerText()) === 'M', 'el avatar no muestra la inicial');
+await noHorizontalScroll(page, 'perfil con nombre largo');
+// Perfil: pestañas Portada/Avatar con teclado, texto al 200 % sin recortes y móvil apaisado.
+{
+  const collection = Object.fromEntries(index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).map((w) => [w.id, '2026-11-20']));
+  const st = seededState({ upTo: 3, extra: { collection } });
+  st.settings.name = 'Maximiliana Wolfgangette';
+  const pctx = await browser.newContext(ctxOpts);
+  const pp = await pctx.newPage();
+  await seed(pp, st, 'perfil');
+  await pp.waitForSelector('.pf-look');
+  await pp.click('.pf-look');
+  await pp.waitForSelector('.look-dialog[open]');
+  await pp.focus('#look-tab-cover');
+  const tab = () => pp.evaluate(() => ({ id: document.activeElement.id, sel: document.querySelector('[role="tab"][aria-selected="true"]')?.id, idx: [...document.querySelectorAll('[role="tab"]')].map((t) => t.tabIndex) }));
+  await pp.keyboard.press('ArrowRight');
+  let t = await tab();
+  check(t.id === 'look-tab-avatar' && t.sel === 'look-tab-avatar' && t.idx.join() === '-1,0', `→ no pasa a «Avatar»: ${JSON.stringify(t)}`);
+  await pp.keyboard.press('ArrowRight');
+  check((await tab()).id === 'look-tab-cover', '→ en la última pestaña no da la vuelta');
+  await pp.keyboard.press('End');
+  check((await tab()).id === 'look-tab-avatar', 'Fin no va a la última pestaña');
+  await pp.keyboard.press('Home');
+  check((await tab()).id === 'look-tab-cover', 'Inicio no va a la primera pestaña');
+  await pp.keyboard.press('ArrowLeft');
+  check((await tab()).id === 'look-tab-avatar', '← en la primera pestaña no da la vuelta');
+  await pp.keyboard.press('Escape');
+  await pp.waitForTimeout(450);
+  // Foco de la portada: el anillo existe de verdad (pseudoelemento por encima de la imagen), no el de main.css, que se recortaba.
+  const ring = await pp.evaluate(() => {
+    const a = document.querySelector('.pf-cover-art');
+    a.focus();
+    const after = getComputedStyle(a, '::after');
+    return { visible: a.matches(':focus-visible'), outline: getComputedStyle(a).outlineStyle, border: after.borderTopWidth, style: after.borderTopStyle, z: after.zIndex, pos: after.position };
+  });
+  check(ring.visible && ring.outline === 'none' && ring.border === '4px' && ring.style === 'solid' && ring.z === '3' && ring.pos === 'absolute', `foco de la portada sin anillo propio: ${JSON.stringify(ring)}`);
+  // Texto al 200 %: el nombre se ve entero (sin recorte ni puntos suspensivos) y sin desplazamiento horizontal.
+  await pp.addStyleTag({ content: 'html{font-size:200%}' });
+  await pp.waitForTimeout(300);
+  const clip = await pp.evaluate(() => {
+    const t = document.querySelector('.pf-name-text');
+    const cs = getComputedStyle(t);
+    return { w: t.scrollWidth - t.clientWidth, h: t.scrollHeight - t.clientHeight, ellipsis: cs.textOverflow === 'ellipsis', clamp: cs.webkitLineClamp !== 'none', boxW: Math.round(t.getBoundingClientRect().width), text: t.textContent };
+  });
+  check(clip.w <= 1 && clip.h <= 1 && !clip.ellipsis && !clip.clamp && clip.boxW >= 150, `al 200 % el nombre se recorta: ${JSON.stringify(clip)}`);
+  await noHorizontalScroll(pp, 'perfil al 200 %');
+  await pp.click('.pf-look');
+  await pp.waitForSelector('.look-dialog[open]');
+  const look200 = await pp.evaluate(() => ({ reset: document.querySelector('[data-action="look-reset"]').getBoundingClientRect().bottom, vh: innerHeight, inner: document.querySelector('.look-panel').scrollHeight - document.querySelector('.look-panel').clientHeight }));
+  check(look200.reset <= look200.vh + 1 && look200.inner <= 1, `hoja de portada al 200 %: botón fuera de vista o segundo scroll ${JSON.stringify(look200)}`);
+  await pp.keyboard.press('Escape');
+  await pctx.close();
+  // Móvil apaisado: la portada y el avatar no se comen la pantalla.
+  const lctx = await browser.newContext({ ...ctxOpts, viewport: { width: 844, height: 390 } });
+  const lp = await lctx.newPage();
+  await seed(lp, st, 'perfil');
+  await lp.waitForSelector('.pf-hero');
+  const land = await lp.evaluate(() => ({ cover: Math.round(document.querySelector('.pf-cover').getBoundingClientRect().height), avatar: Math.round(document.querySelector('.pf-avatar').getBoundingClientRect().width) }));
+  check(land.cover <= 120 && land.avatar <= 80, `perfil apaisado con portada de ${land.cover} px y avatar de ${land.avatar} px`);
+  await lp.click('.pf-look');
+  await lp.waitForSelector('.look-dialog[open]');
+  const landLook = await lp.evaluate(() => ({ reset: document.querySelector('[data-action="look-reset"]').getBoundingClientRect().bottom, vh: innerHeight, cols: getComputedStyle(document.querySelector('.look-grid')).gridTemplateColumns.split(' ').length }));
+  check(landLook.reset <= landLook.vh + 1 && landLook.cols >= 5, `hoja de portada apaisada: ${JSON.stringify(landLook)}`);
+  await lctx.close();
+  // Tableta: dos columnas desde 720 px.
+  const tctx = await browser.newContext({ ...ctxOpts, viewport: { width: 768, height: 1024 } });
+  const tp = await tctx.newPage();
+  await seed(tp, st, 'perfil');
+  await tp.waitForSelector('.pf-hero');
+  check(await tp.evaluate(() => getComputedStyle(document.querySelector('.pf-layout')).gridTemplateColumns.split(' ').length) === 2, 'perfil en tableta sin dos columnas');
+  await noHorizontalScroll(tp, 'perfil en tableta');
+  await tctx.close();
+}
 await page.goto(`${base}#medallas`);
-await page.waitForSelector('#medallas-panel');
+await page.waitForSelector('#logros');
 await page.waitForTimeout(400);
-check(await page.locator('.medal-item.is-got .medal-thumb img').count() >= 1, 'medalla sin miniatura del atlas');
+check(await page.locator('.pf-medal.is-got .medal-thumb img').count() >= 1, 'medalla sin miniatura del atlas');
 await shot(page, '19-medallas');
 
 // ---------------------------------------------------------------- Reto de etapa sin conocer al pintor
@@ -1647,7 +1739,7 @@ await shot(dpage0, '27-camino-completo');
 await audit(dpage0, '390 camino completo');
 check(await dpage0.locator('[data-action="free"]').count() >= 1, 'camino completo sin ronda libre');
 await dpage0.locator('.finale').scrollIntoViewIfNeeded();
-check((await dpage0.locator('.finale-count').innerText()).includes(String(expectRecognized)), `contador de cuadros que reconoces: ${await dpage0.locator('.finale-count').innerText()} (esperado ${expectRecognized})`);
+check((await dpage0.locator('.finale-count').innerText()).includes(String(allWorks.length)), `contador de cuadros vistos: ${await dpage0.locator('.finale-count').innerText()} (esperado ${allWorks.length})`);
 await shot(dpage0, '28-final-camino');
 await dpage0.evaluate(() => window.scrollTo(0, 0));
 // Camino avanzado: sin franja «Hoy» ni lupa; el mapa asoma en la primera pantalla.
@@ -1724,8 +1816,8 @@ await shot(dpage0, '29-ronda-libre-fin', true);
 const freeGap = await dpage0.evaluate(() => document.querySelector('.result-actions').getBoundingClientRect().top - document.querySelector('.level-line').getBoundingClientRect().bottom);
 check(freeGap < 120, `resultado de la ronda libre con hueco central de ${Math.round(freeGap)} px`);
 await dpage0.goto(`${base}#perfil`);
-await dpage0.waitForSelector('.stats');
-check((await dpage0.locator('.stats').innerText()).includes(String(expectRecognized)), 'el perfil no muestra los cuadros que reconoces');
+await dpage0.waitForSelector('.pf-hero');
+check((await dpage0.locator('.pf-figs').innerText()).includes(String(allWorks.length)), 'el perfil no muestra los cuadros vistos');
 
 // ---------------------------------------------------------------- Ojo de… (todas las obras de un pintor en la caja más alta)
 const eyeCtx = await browser.newContext(ctxOpts);
@@ -1744,8 +1836,8 @@ watch(epage, 'ojo');
   check(await eyeCard.count() === 1, `no se gana «Ojo de ${who.short || who.name}»`);
   await shot(epage, '29e-ojo-de', true);
   await eyeCard.click();
-  await epage.waitForSelector('#medallas-panel');
-  check(await epage.locator('.medal-item.is-got .medal-eye').count() === 1, 'la medalla «Ojo de…» no está en el perfil');
+  await epage.waitForSelector('#logros');
+  check(await epage.locator('.pf-medal.is-got .medal-eye').count() === 1, 'la medalla «Ojo de…» no está en el perfil');
 }
 
 // ---------------------------------------------------------------- Ronda retomada tras recargar
@@ -1860,7 +1952,7 @@ for (const mode of ['font', 'viewport']) {
   await noHorizontalScroll(zpage, `zoom ${mode} resultado`);
   await shot(zpage, `35-zoom200-${mode}-resultado`, true);
   await zpage.goto(`${base}#perfil`);
-  await zpage.waitForSelector('.stats');
+  await zpage.waitForSelector('.pf-hero');
   await noHorizontalScroll(zpage, `zoom ${mode} perfil`);
   await shot(zpage, `36-zoom200-${mode}-perfil`, true);
   await zoom.close();
@@ -1972,7 +2064,7 @@ await kpage.waitForTimeout(1500);
 await shot(kpage, '36-oscuro-fin');
 await audit(kpage, 'oscuro resultado');
 await kpage.goto(`${base}#perfil`);
-await kpage.waitForSelector('.stats');
+await kpage.waitForSelector('.pf-hero');
 await shot(kpage, '37-oscuro-perfil', true);
 await audit(kpage, 'oscuro perfil');
 await kpage.goto(`${base}#coleccion`);
@@ -2120,25 +2212,29 @@ for (const scheme of ['light', 'dark']) {
       await audit(p7, `o7 ${tag} inicio hoy`);
       // Medallas: sellos pendientes con número legible, «Ojo de X · n/m» y hoja de detalle.
       await p7.goto(`${base}#medallas`);
-      await p7.waitForSelector('#medallas-panel');
+      await p7.waitForSelector('#logros');
+      await p7.click('[data-action="open-medals"]');
+      await p7.waitForSelector('.medals-dialog[open]');
+      await p7.click('[data-action="medals-filter"][data-filter="missing"]');
       await p7.waitForTimeout(500);
-      check(await p7.locator('.medal-item.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
+      check(await p7.locator('.medals-dialog .pf-medal.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
       const eyeText = `Ojo de ${eyeWho.short || eyeWho.name} · 2/${eyeWorks.length}`;
-      check(await p7.locator('.medal-item', { hasText: eyeText }).count() === 1, `[${tag}] falta «${eyeText}» en Medallas`);
-      await p7.locator('.medal-item.is-missing').first().scrollIntoViewIfNeeded();
+      check(await p7.locator('.medals-dialog .pf-medal', { hasText: eyeText }).count() === 1, `[${tag}] falta «${eyeText}» en Medallas`);
+      await p7.locator('.medals-dialog .pf-medal.is-missing').first().scrollIntoViewIfNeeded();
       await shot(p7, `medallas-${tag}`);
       await audit(p7, `o7 ${tag} medallas`);
-      const opener = p7.locator('.medal-item.is-missing', { hasText: '7 días' });
+      const opener = p7.locator('.medals-dialog .pf-medal.is-missing', { hasText: '7 días' });
       await opener.click();
       await p7.waitForSelector('.medal-dialog[open]');
       await p7.waitForTimeout(400);
       check(/7 días seguidos/.test(await p7.locator('.medal-dialog').innerText()), `[${tag}] la hoja de medalla no dice cómo se gana`);
+      check(!/dominado/i.test(await p7.locator('.medal-dialog .dlg-meta').innerText()), `[${tag}] el logro pendiente se da por hecho en su subtítulo`);
       await shot(p7, `medalla-hoja-${tag}`);
       await audit(p7, `o7 ${tag} hoja de medalla`);
       for (let k = 0; k < 3; k++) await p7.keyboard.press('Tab');
       check(await p7.evaluate(() => Boolean(document.activeElement?.closest('.medal-dialog'))), `[${tag}] el foco sale de la hoja de medalla`);
       await p7.keyboard.press('Escape');
-      await p7.waitForTimeout(200);
+      await p7.waitForTimeout(450);
       check(await p7.locator('.medal-dialog[open]').count() === 0, `[${tag}] Esc no cierra la hoja de medalla`);
       check(await p7.evaluate(() => document.activeElement?.textContent.includes('7 días')), `[${tag}] el foco no vuelve a la medalla`);
       // «Ojo de…» ya no sale en las franjas de Colección (dos contadores contradictorios); queda en la etapa del pintor dominado.
@@ -2154,8 +2250,8 @@ for (const scheme of ['light', 'dark']) {
       await shot(p7, `etapa-ojo-${tag}`);
       await audit(p7, `o7 ${tag} etapa`);
       await p7.goto(`${base}#perfil`);
-      await p7.waitForSelector('.stats');
-      check(/reconoces\s*\d+\s*cuadros?/i.test(await p7.locator('.stats').innerText()), `[${tag}] Perfil sin «Reconoces N cuadros»`);
+      await p7.waitForSelector('.pf-hero');
+      check(/\d+\s*cuadros?|Aquí vivirá tu museo/i.test(await p7.locator('.pf-layout').innerText()), `[${tag}] Perfil sin la cifra de cuadros ni la bienvenida`);
       await shot(p7, `perfil-${tag}`);
       await c7.close();
       // Reto semanal aceptado por un jugador nuevo: aviso breve, sin bloquear.
@@ -2409,8 +2505,8 @@ for (const scheme of ['light', 'dark']) {
 
     // Medallas: el sello de un pintor en su hoja.
     await p8.goto(`${base}#medallas`);
-    await p8.waitForSelector('#medallas-panel');
-    await p8.locator('.medal-item.is-got .medal-art').first().click();
+    await p8.waitForSelector('#logros');
+    await p8.locator('.pf-medal.is-got .medal-art').first().click();
     await p8.waitForSelector('.medal-dialog[open]');
     await p8.waitForTimeout(350);
     check(await p8.locator('.medal-dialog .medal-zoom').count() === 1, `[${cfg.tag}] el sello del pintor no se puede ver en grande`);

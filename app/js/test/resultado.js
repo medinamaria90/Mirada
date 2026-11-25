@@ -35,12 +35,17 @@ export function percentileFor(score) {
   return Math.min(PERCENTILE_MAX, Math.max(PERCENTILE_MIN, Math.round(value)));
 }
 
-// Nivel con los nombres de la app: la puntuación se proyecta sobre la escala de XP del motor
-// (0 → Curioso … máximo honesto → Gran maestro) y decide levelFor.
+// Nivel del test: nombres propios («Mirada…») que no chocan con los rangos de la app (engine/ranks.js).
+// La puntuación se proyecta sobre la escala de XP del motor (0 → máximo honesto) y se reparte en
+// tantos niveles como nombres hay; manda la frase del percentil, el nombre es solo una etiqueta.
+export const TEST_LEVELS = ['Mirada de principiante', 'Mirada curiosa', 'Mirada atenta', 'Mirada entrenada', 'Mirada fina', 'Mirada experta'];
+
 export function levelForScore(score, maxScore) {
   const top = LEVELS[LEVELS.length - 1].min;
   const xp = maxScore > 0 ? Math.round((Math.max(0, score) / maxScore) * top) : 0;
-  return levelFor(Math.min(xp, top));
+  const step = levelFor(Math.min(xp, top)).index;
+  const index = Math.min(TEST_LEVELS.length - 1, Math.floor((step * TEST_LEVELS.length) / LEVELS.length));
+  return { index, name: TEST_LEVELS[index] };
 }
 
 // Una frase según el tramo más alto jugado.
@@ -82,10 +87,11 @@ export function buildResult(summary, maxScore) {
   };
 }
 
+// Texto para compartir (el mismo en el test y en el perfil). `level`, `percentile` y `grid` pueden faltar.
 export function shareText(result, url) {
   return [
-    `He acertado ${result.correct} de ${result.asked} en el test de Sfumato · ${result.level}`,
-    `Sé más de pintura que el ${result.percentile} % de la gente ${result.grid}`,
+    `He acertado ${result.correct} de ${result.asked} en el test de Sfumato${result.level ? ` · ${result.level}` : ''}`,
+    result.percentile != null ? `Sé más de pintura que el ${result.percentile} % de la gente${result.grid ? ` ${result.grid}` : ''}` : '',
     url,
   ].filter(Boolean).join('\n');
 }

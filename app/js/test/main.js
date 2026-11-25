@@ -6,6 +6,7 @@
 
 import { buildIndex, mergeCatalogText } from '../engine/catalog.js';
 import { createRng, randomSeed } from '../engine/rng.js';
+import { dayKey } from '../engine/dates.js';
 import { $, $$, onAction, announce } from '../ui/dom.js';
 import { installArtListeners } from '../ui/art.js';
 import { upgradeMarcos } from '../ui/marco.js';
@@ -69,7 +70,7 @@ function readLast() {
 
 function saveLast(result) {
   try {
-    localStorage.setItem(LAST_KEY, JSON.stringify({ correct: result.correct, asked: result.asked, level: result.level, percentile: result.percentile, score: result.score }));
+    localStorage.setItem(LAST_KEY, JSON.stringify({ correct: result.correct, asked: result.asked, level: result.level, percentile: result.percentile, score: result.score, grid: result.grid, date: dayKey(new Date()) }));
   } catch {
     /* sin almacenamiento: no pasa nada */
   }
