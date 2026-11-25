@@ -18,10 +18,20 @@ export function normalizeTheme(value) {
 // caracteres de control; si no hay nombre, cadena vacía.
 export const NAME_MAX = 24;
 
+// Caracteres tal como los ve quien escribe (grafemas): un emoji compuesto o con tono de piel cuenta uno.
+// Sin Intl.Segmenter (navegadores muy viejos) se cuenta por puntos de código.
+export function graphemes(text) {
+  const str = String(text ?? '');
+  if (typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function') {
+    return [...new Intl.Segmenter('es', { granularity: 'grapheme' }).segment(str)].map((x) => x.segment);
+  }
+  return [...str];
+}
+
 export function normalizeName(value) {
   if (typeof value !== 'string') return '';
   const clean = value.replace(/[\p{Cc}\u200B\u200C\u200E\u200F\u2060\uFEFF\u202A-\u202E\u2066-\u2069]/gu, ' ').replace(/\s+/g, ' ').trim();
-  return [...clean].slice(0, NAME_MAX).join('').trim();
+  return graphemes(clean).slice(0, NAME_MAX).join('').trim();
 }
 
 // Portada y avatar del perfil (settings.cover / settings.avatar): id de un cuadro de la colección o ''.

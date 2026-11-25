@@ -4,7 +4,7 @@
 import { onAction, focusHeading, $ } from '../dom.js';
 import { page } from '../shell.js';
 import { playEra } from '../audio-bridge.js';
-import { parseLastTest, coverWork, collectionIds } from '../../engine/profile.js';
+import { parseLastTest, coverWork, sampleCover, collectionIds } from '../../engine/profile.js';
 import { heroHtml, upgradeCover } from './profile-hero.js';
 import { figuresHtml, museumHtml, welcomeHtml, testHtml, practiceHtml } from './profile-parts.js';
 import { medalsHtml, wireMedals } from './profile-medals.js';
@@ -87,24 +87,26 @@ export async function renderProfile(ctx, el, opts = {}) {
   });
 }
 
-// «Compartir»: el código de la tarjeta se pide al pulsar; mientras se genera el botón espera y no admite otro toque.
+// «Compartir»: el código de la tarjeta se pide al pulsar. Mientras se genera, el botón espera (aria-disabled,
+// no disabled, para que no pierda el foco) y no admite otro toque; al terminar, el foco sigue en él.
 async function shareLast(ctx, button, last) {
-  if (!last || button.disabled) return;
+  if (!last || button.getAttribute('aria-busy') === 'true') return;
   ctx.audio.sfx('tap');
   const label = button.innerHTML;
-  button.disabled = true;
   button.setAttribute('aria-busy', 'true');
+  button.setAttribute('aria-disabled', 'true');
   button.innerHTML = '<span class="pf-spinner" aria-hidden="true"></span><span>Preparando…</span>';
   try {
     const { shareTest } = await import('./profile-share.js');
     const st = ctx.store.get();
-    await shareTest(ctx, last, coverWork(st.progress, ctx.index, st.settings.cover));
+    await shareTest(ctx, last, coverWork(st.progress, ctx.index, st.settings.cover) || sampleCover(ctx.index));
   } catch (err) {
     console.error(err);
     ctx.toast('No se ha podido compartir');
   } finally {
-    button.disabled = false;
     button.removeAttribute('aria-busy');
+    button.removeAttribute('aria-disabled');
     button.innerHTML = label;
+    button.focus({ preventScroll: true });
   }
 }

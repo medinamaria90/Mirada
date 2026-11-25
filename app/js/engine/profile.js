@@ -41,14 +41,16 @@ export function interleaveByKind(ids) {
 // Cifra para los números grandes: exacta hasta 9 999, y «31,2 mil» / «9,9 M» a partir de ahí (nunca se parte).
 export function compactNumber(n) {
   const v = Math.max(0, Math.round(Number(n) || 0));
-  const one = (x) => x.toFixed(1).replace('.', ',').replace(/,0$/, '');
+  // Siempre hacia abajo: 9 999 999 es «9,9 M», no «10 M» (un hito que aún no se ha alcanzado).
+  const one = (x) => (Math.floor(x * 10) / 10).toFixed(1).replace('.', ',').replace(/,0$/, '');
   if (v < 10000) return String(v);
   if (v < 1000000) return `${one(v / 1000)} mil`;
   return `${one(v / 1000000)} M`;
 }
 
-// Avance hacia el siguiente rango: media de lo cumplido en cada requisito (0..1) y, por requisito, lo que
-// falta en una frase y su avance. Rango máximo: barra llena y sin nada pendiente.
+// Avance hacia el siguiente rango: el del requisito menos cumplido (0..1), porque el rango no sube hasta
+// cumplirlos todos, y, por requisito, lo que falta en una frase y su avance. Rango máximo: barra llena y
+// sin nada pendiente.
 export const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const fmt = (n) => n.toLocaleString('es-ES');
 const NEED_TEXT = {
@@ -73,7 +75,7 @@ export function rankProgress(rank) {
   const want = { xp: next.xp, deep: next.deep, eras: next.eras, complete: next.complete, grand: next.grand?.count };
   const keys = Object.keys(want).filter((k) => want[k]);
   const ratio = (k) => Math.min(1, have[k] / want[k]);
-  const fraction = keys.reduce((sum, k) => sum + ratio(k), 0) / keys.length;
+  const fraction = Math.min(...keys.map(ratio));
   const items = rank.missing.map((m) => ({ key: m.key, text: NEED_TEXT[m.key](m.need - m.have, next.grand), fraction: ratio(m.key) }));
   return { fraction, next: next.name, parts: items.map((i) => i.text), items };
 }
@@ -95,10 +97,14 @@ export function museumWorks(progress, index, n = MUSEUM_SIZE) {
   return collectionWorks(progress, index).slice(0, n);
 }
 
-// Portada de muestra para quien aún no tiene cuadros: el más famoso con punto de interés (y apaisado).
+// Portada de muestra para quien aún no tiene cuadros: un cuadro famoso, apaisado y amable. Se descartan por
+// el título las escenas violentas, los martirios y la guerra; y se prefieren los temas serenos.
+const HARSH_TITLE = /fusilamiento|tres de mayo|crucifi|martirio|decapita|degollad|judit|holofernes|masacre|matanza|batalla|guerra|muerte|cad[aá]ver|anatom[ií]a|asesin|saturno|calvario|descendimiento|piedad|ejecuci|ahorcad|medusa|infierno|diablo|desastres|apocalipsis|juicio final/i;
+const FRIENDLY_TITLE = /venus|primavera|jard[ií]n|nen[uú]far|girasol|noche estrellada|perla|lechera|baile|desayuno|paseo|impresi[oó]n|amanecer|campo|paisaje|flores|rosas|dama|joven|ni[nñ]|ba[nñ]|merienda|domingo|lago|puente|puesta de sol|barcas|cuento|lectura/i;
 export function sampleCover(index) {
-  const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 2 : 0);
-  return index.artworks.slice().sort((a, b) => score(b) - score(a) || a.id.localeCompare(b.id))[0] || null;
+  const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 2 : 0) + (FRIENDLY_TITLE.test(w.title) ? 6 : 0);
+  const kind = index.artworks.filter((w) => !HARSH_TITLE.test(w.title));
+  return (kind.length ? kind : index.artworks).slice().sort((a, b) => score(b) - score(a) || a.id.localeCompare(b.id))[0] || null;
 }
 
 // Portada: la elegida si está en la colección; si no, el cuadro más famoso (y apaisado, que luce más en

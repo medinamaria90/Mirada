@@ -61,7 +61,6 @@ export function renderResult(ctx, el, opts) {
   const p = state.progress;
   // Una sola escala visible: los rangos (engine/ranks.js), los mismos que enseña el perfil.
   const rank = rankLine(p, index);
-  const rankBefore = rankLine({ ...p, xp: Math.max(0, p.xp - outcome.xp), rank: 0 }, index);
   const firstTry = opts.firstTry;
   const token = tokenForRound(index, plan);
   const isDaily = plan.kind === 'daily' || plan.kind === 'weekly';
@@ -157,7 +156,8 @@ export function renderResult(ctx, el, opts) {
   const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar a un amigo';
   const reduce = prefersReducedMotion();
   const toPct = rank.pct;
-  const fromPct = rankUp ? 0 : Math.min(toPct, rankBefore.pct);
+  // Sin subida de rango la barra no se anima desde un punto inventado (el avance depende de más que el XP).
+  const fromPct = rankUp ? 0 : toPct;
   // Con poco que contar (p. ej. Ronda libre), todo junto y centrado: sin hueco en medio.
   el.innerHTML = `<div class="result ${heroMedal ? 'has-medal' : ''} ${blocks.length <= 1 ? 'result-compact' : ''}" style="${accentStyle(opts.accent)}">
     <main class="result-body" id="main">

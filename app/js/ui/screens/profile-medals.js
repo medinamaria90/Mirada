@@ -9,18 +9,20 @@ import { medalBadge, medalZoom, allMedalIds, medalHow, eyeLabel } from './medals
 import { medalTier, interleaveByKind, TIERS, TIER_NAMES } from '../../engine/profile.js';
 import { bindSheet } from './profile-sheet.js';
 
-const FIRST_SHOWN = 8; // casillas de la muestra, antes de «Ver todos»
+const FIRST_SHOWN = 8; // casillas de la muestra en móvil, antes de «Ver todos»
+const DESKTOP_EXTRA = 4; // y las que se añaden en escritorio (CSS: .pf-extra), donde sobra sitio
 const GROUPS = [
   ['artist', 'Pintores'], ['movement', 'Movimientos'], ['streak', 'Rachas'], ['eye', 'Ojo de…'], ['other', 'Retos y metas'],
 ];
 const FILTERS = [['all', 'Todos'], ['got', 'Conseguidos'], ['missing', 'Pendientes']];
 const kindOf = (id) => { const k = id.split('-')[0]; return GROUPS.some(([g]) => g === k) ? k : 'other'; };
 
-// «Pintor dominado» en vez del nombre a secas: parece un logro, no una lista de pintores.
+// El logro conseguido es un hecho («Veronés dominado») y el pendiente, una meta («Domina a Veronés»).
 const medalName = (ctx, id, has) => {
   if (!has && id.startsWith('eye-') && eyeLabel(ctx, id.slice(4))?.text) return eyeLabel(ctx, id.slice(4)).text;
   const title = medalInfo(id, ctx.index).title;
-  return id.startsWith('artist-') ? `${title} dominado` : title;
+  if (!id.startsWith('artist-')) return title;
+  return has ? `${title} dominado` : `Domina a ${title}`;
 };
 
 // Conseguidas (oro primero, las más recientes antes, y de clases distintas por turnos) y, detrás, las
@@ -47,13 +49,17 @@ export const tierRing = (tier, badge) => `<span class="pf-ring tier-${tier}">${b
 function cell(ctx, id, has) {
   const tier = medalTier(id);
   const badge = medalBadge(ctx, id);
-  return `<li><button type="button" class="pf-medal tier-${tier} ${has ? 'is-got' : 'is-missing'}" data-action="medal" data-id="${esc(id)}" aria-haspopup="dialog">
-      ${has ? tierRing(tier, badge) : badge}<span class="pf-medal-name">${esc(medalName(ctx, id, has))}</span><span class="sr-only">${has ? `${TIER_NAMES[tier]}, conseguida` : 'pendiente'}</span></button></li>`;
+  const name = medalName(ctx, id, has);
+  return `<li><button type="button" class="pf-medal tier-${tier} ${has ? 'is-got' : 'is-missing'}" data-action="medal" data-id="${esc(id)}" aria-haspopup="dialog" aria-label="${esc(`${name}, ${has ? `${TIER_NAMES[tier]}, conseguida` : 'pendiente'}`)}">
+      ${has ? tierRing(tier, badge) : badge}<span class="pf-medal-name">${esc(name)}</span></button></li>`;
 }
 
 export function medalSample(ctx) {
   const { got, rest } = medalList(ctx);
-  return [...got.map((id) => cell(ctx, id, true)), ...rest.map((id) => cell(ctx, id, false))].slice(0, FIRST_SHOWN).join('');
+  return [...got.map((id) => cell(ctx, id, true)), ...rest.map((id) => cell(ctx, id, false))]
+    .slice(0, FIRST_SHOWN + DESKTOP_EXTRA)
+    .map((html, i) => (i < FIRST_SHOWN ? html : html.replace('<li>', '<li class="pf-extra">')))
+    .join('');
 }
 
 // Hoja «Logros»: por grupos, con el recuento de cada uno, según el filtro.

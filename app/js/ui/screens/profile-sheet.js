@@ -1,5 +1,6 @@
 // Hoja modal del perfil (<dialog>): se cierra con Esc, tocando fuera o con su botón, con una animación
-// corta de salida; el foco no sale de ella y, al cerrar, vuelve al botón que la abrió.
+// corta de salida; el foco entra en ella al abrir (con un solo control, Tab puede salir al navegador) y, al
+// cerrar, vuelve al botón que la abrió.
 
 import { prefersReducedMotion } from '../dom.js';
 

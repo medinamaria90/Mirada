@@ -6,7 +6,7 @@
 import { $, esc, announce } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
-import { collectionWorks, coverWork, avatarWork } from '../../engine/profile.js';
+import { collectionWorks } from '../../engine/profile.js';
 import { bindSheet } from './profile-sheet.js';
 import { refreshHero } from './profile-hero.js';
 
@@ -26,7 +26,7 @@ export function lookSheetHtml() {
         <ul class="look-grid"></ul>
         <button type="button" class="btn btn-secondary btn-wide look-more" data-action="look-more" hidden>Ver más</button>
       </div>
-      <button type="button" class="btn btn-secondary btn-wide" data-action="look-reset"></button>
+      <button type="button" class="btn btn-secondary btn-wide" data-action="look-reset" aria-pressed="false"></button>
     </div>
   </dialog>`;
 }
@@ -38,12 +38,11 @@ export function wireLook(ctx, el) {
   let works = [];
   let shown = 0;
 
-  // Cuadro que se ve ahora en cada sitio (el elegido o, en la portada, el automático).
+  // Cuadro elegido ahora para el sitio actual ('' si va el automático: entonces no se marca ninguno).
   const current = () => {
     const st = ctx.store.get();
-    return target === 'cover'
-      ? coverWork(st.progress, ctx.index, st.settings.cover)?.id
-      : avatarWork(st.progress, ctx.index, st.settings.avatar)?.id;
+    const id = st.settings[target];
+    return id && st.progress.collection?.[id] ? id : '';
   };
 
   const tile = (w) => `<li><button type="button" class="pf-pick" data-action="look-pick" data-id="${w.id}" aria-pressed="false" aria-label="${esc(w.title)}">${artFrame(w, { alt: '', cls: 'pf-tile', label: w.title, thumb: true })}</button></li>`;
@@ -59,7 +58,10 @@ export function wireLook(ctx, el) {
       b.tabIndex = on ? 0 : -1;
     });
     $('#look-panel', dialog).setAttribute('aria-labelledby', `look-tab-${target}`);
-    $('[data-action="look-reset"]', dialog).textContent = RESET[target];
+    const reset = $('[data-action="look-reset"]', dialog);
+    reset.textContent = RESET[target];
+    reset.setAttribute('aria-pressed', String(!now));
+    reset.classList.toggle('is-on', !now);
   }
 
   function more() {
@@ -76,6 +78,19 @@ export function wireLook(ctx, el) {
     mark();
     announce(`${TARGETS[target]} cambiado`);
   };
+
+  // Pestañas (patrón ARIA): ←/→ cambian de pestaña (con vuelta), Inicio y Fin van a la primera y a la última, y
+  // moverse ya la activa. Solo la pestaña activa está en el orden de Tab (mark() pone tabIndex).
+  const tabs = [...dialog.querySelectorAll('[role="tab"]')];
+  $('[role="tablist"]', dialog).addEventListener('keydown', (ev) => {
+    const at = tabs.findIndex((t) => t.dataset.target === target);
+    const go = { ArrowRight: (at + 1) % tabs.length, ArrowLeft: (at + tabs.length - 1) % tabs.length, Home: 0, End: tabs.length - 1 }[ev.key];
+    if (go === undefined) return;
+    ev.preventDefault();
+    target = tabs[go].dataset.target;
+    mark();
+    tabs[go].focus();
+  });
 
   return {
     'open-look': (b) => {

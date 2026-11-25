@@ -2,7 +2,7 @@
 // (settings.name). Se cambia en una hoja con un campo y «Guardar»; vacío, se quita.
 
 import { $, announce } from '../dom.js';
-import { NAME_MAX, normalizeName } from '../../state/schema.js';
+import { NAME_MAX, normalizeName, graphemes } from '../../state/schema.js';
 import { bindSheet } from './profile-sheet.js';
 import { refreshHero } from './profile-hero.js';
 
@@ -35,9 +35,9 @@ export function wireName(ctx, el) {
     announce(name ? `Nombre guardado: ${name}` : 'Nombre quitado');
   });
   const counter = $('.pf-counter', dialog);
-  // Máximo por caracteres (no por unidades de texto: un emoji cuenta uno).
+  // Máximo por caracteres como se ven (grafemas): un emoji compuesto o con tono de piel cuenta uno.
   const count = () => {
-    const chars = [...input.value];
+    const chars = graphemes(input.value);
     if (chars.length > NAME_MAX) input.value = chars.slice(0, NAME_MAX).join('');
     counter.textContent = `${Math.min(chars.length, NAME_MAX)}/${NAME_MAX}`;
   };

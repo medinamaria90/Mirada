@@ -1348,6 +1348,52 @@ check(savedName.length <= 24 && savedName.startsWith('María'), `nombre guardado
 check((await page.locator('.pf-greeting').innerText()).includes('Hola, María'), 'el saludo no usa el nombre');
 check((await page.locator('.pf-initial').innerText()) === 'M', 'el avatar no muestra la inicial');
 await noHorizontalScroll(page, 'perfil con nombre largo');
+// Perfil: pestañas Portada/Avatar con teclado, texto al 200 % sin recortes y móvil apaisado.
+{
+  const collection = Object.fromEntries(index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).map((w) => [w.id, '2026-11-20']));
+  const st = seededState({ upTo: 3, extra: { collection } });
+  st.settings.name = 'Maximiliana Wolfgangette';
+  const pctx = await browser.newContext(ctxOpts);
+  const pp = await pctx.newPage();
+  await seed(pp, st, 'perfil');
+  await pp.waitForSelector('.pf-look');
+  await pp.click('.pf-look');
+  await pp.waitForSelector('.look-dialog[open]');
+  await pp.focus('#look-tab-cover');
+  const tab = () => pp.evaluate(() => ({ id: document.activeElement.id, sel: document.querySelector('[role="tab"][aria-selected="true"]')?.id, idx: [...document.querySelectorAll('[role="tab"]')].map((t) => t.tabIndex) }));
+  await pp.keyboard.press('ArrowRight');
+  let t = await tab();
+  check(t.id === 'look-tab-avatar' && t.sel === 'look-tab-avatar' && t.idx.join() === '-1,0', `→ no pasa a «Avatar»: ${JSON.stringify(t)}`);
+  await pp.keyboard.press('ArrowRight');
+  check((await tab()).id === 'look-tab-cover', '→ en la última pestaña no da la vuelta');
+  await pp.keyboard.press('End');
+  check((await tab()).id === 'look-tab-avatar', 'Fin no va a la última pestaña');
+  await pp.keyboard.press('Home');
+  check((await tab()).id === 'look-tab-cover', 'Inicio no va a la primera pestaña');
+  await pp.keyboard.press('ArrowLeft');
+  check((await tab()).id === 'look-tab-avatar', '← en la primera pestaña no da la vuelta');
+  await pp.keyboard.press('Escape');
+  await pp.waitForTimeout(450);
+  // Texto al 200 %: el nombre se ve entero (sin recorte ni puntos suspensivos) y sin desplazamiento horizontal.
+  await pp.addStyleTag({ content: 'html{font-size:200%}' });
+  await pp.waitForTimeout(300);
+  const clip = await pp.evaluate(() => {
+    const t = document.querySelector('.pf-name-text');
+    const cs = getComputedStyle(t);
+    return { w: t.scrollWidth - t.clientWidth, h: t.scrollHeight - t.clientHeight, ellipsis: cs.textOverflow === 'ellipsis', clamp: cs.webkitLineClamp !== 'none', boxW: Math.round(t.getBoundingClientRect().width), text: t.textContent };
+  });
+  check(clip.w <= 1 && clip.h <= 1 && !clip.ellipsis && !clip.clamp && clip.boxW >= 150, `al 200 % el nombre se recorta: ${JSON.stringify(clip)}`);
+  await noHorizontalScroll(pp, 'perfil al 200 %');
+  await pctx.close();
+  // Móvil apaisado: la portada y el avatar no se comen la pantalla.
+  const lctx = await browser.newContext({ ...ctxOpts, viewport: { width: 844, height: 390 } });
+  const lp = await lctx.newPage();
+  await seed(lp, st, 'perfil');
+  await lp.waitForSelector('.pf-hero');
+  const land = await lp.evaluate(() => ({ cover: Math.round(document.querySelector('.pf-cover').getBoundingClientRect().height), avatar: Math.round(document.querySelector('.pf-avatar').getBoundingClientRect().width) }));
+  check(land.cover <= 120 && land.avatar <= 80, `perfil apaisado con portada de ${land.cover} px y avatar de ${land.avatar} px`);
+  await lctx.close();
+}
 await page.goto(`${base}#medallas`);
 await page.waitForSelector('#logros');
 await page.waitForTimeout(400);
@@ -1523,7 +1569,7 @@ const freeGap = await dpage0.evaluate(() => document.querySelector('.result-acti
 check(freeGap < 120, `resultado de la ronda libre con hueco central de ${Math.round(freeGap)} px`);
 await dpage0.goto(`${base}#perfil`);
 await dpage0.waitForSelector('.pf-hero');
-check((await dpage0.locator('.pf-figs').innerText()).includes(String(expectRecognized)), 'el perfil no muestra los cuadros que reconoces');
+check((await dpage0.locator('.pf-figs').innerText()).includes(String(allWorks.length)), 'el perfil no muestra los cuadros vistos');
 
 // ---------------------------------------------------------------- Ojo de… (todas las obras de un pintor en la caja más alta)
 const eyeCtx = await browser.newContext(ctxOpts);

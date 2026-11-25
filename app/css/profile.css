@@ -4,7 +4,7 @@
 
 .page-profile {
   --pf-gutter: 1.1rem;
-  --pf-avatar: 5.5rem;
+  --pf-avatar: min(5.5rem, 22vw);
   --pf-cover-h: 156px;
   --pf-gap: 1.9rem;
   --pf-tile-gap: .5rem;
@@ -37,6 +37,8 @@
   border-radius: 0; box-shadow: none; cursor: pointer; background: transparent;
 }
 .pf-cover-art .zoom-badge { right: .7rem; bottom: .7rem; }
+/* El anillo de foco queda dentro de la portada (fuera lo recortaría su overflow). */
+.pf-cover-art:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; box-shadow: inset 0 0 0 6px var(--bg); }
 /* La imagen entera entra por encima de la miniatura cuando llega; el clic pasa al cuadro de debajo. */
 .pf-cover-full {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none;
@@ -45,9 +47,10 @@
 .pf-cover-full.is-on { opacity: 1; }
 .pf-cover-art .zoom-badge, .pf-cover-cap { z-index: 1; }
 .pf-cover-cap {
-  position: absolute; left: 4.2rem; right: 4.2rem; top: .9rem; z-index: 1; pointer-events: none; margin-inline: auto;
-  padding: .2rem .7rem; border-radius: 999px; background: color-mix(in srgb, var(--surface) 86%, transparent); color: var(--ink);
-  font-size: .78rem; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: fit-content; max-width: calc(100% - 8.4rem);
+  position: absolute; left: 64px; right: 64px; top: .9rem; z-index: 1; pointer-events: none; margin-inline: auto;
+  padding: .2rem .7rem; background: color-mix(in srgb, var(--surface) 86%, transparent); color: var(--ink);
+  border-radius: 14px; font-size: .78rem; line-height: 1.35; width: fit-content; max-width: calc(100% - 128px);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
 }
 .pf-gear, .pf-look {
   position: absolute; top: .6rem; z-index: 2; display: grid; place-items: center; width: 48px; height: 48px;
@@ -62,7 +65,7 @@
 .pf-gear:active, .pf-look:active { transform: scale(.94); }
 
 .pf-id {
-  position: relative; z-index: 1; display: flex; align-items: flex-end; gap: .9rem;
+  position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: flex-end; gap: .4rem .9rem;
   padding-inline: var(--pf-gutter); margin-top: calc(var(--pf-avatar) / -2);
 }
 .pf-avatar {
@@ -74,7 +77,7 @@
 .pf-avatar.has-art { background: var(--surface-2); }
 .pf-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .pf-initial { font: 500 2.5rem/1 var(--font); }
-.pf-greeting { flex: 1; min-width: 0; margin: 0; padding-bottom: .15rem; font: 500 1.6rem/1.1 var(--font); letter-spacing: var(--track); }
+.pf-greeting { flex: 1 1 11rem; min-width: 0; margin: 0; padding-bottom: .15rem; font: 500 1.6rem/1.1 var(--font); letter-spacing: var(--track); }
 .pf-name-btn {
   display: inline-flex; align-items: center; gap: .45rem; max-width: 100%; min-height: 48px; padding: 0 .6rem 0 0;
   border: 0; border-radius: 999px; background: none; color: var(--ink); font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer;
@@ -83,7 +86,7 @@
 .pf-name-btn .icon { flex: none; color: var(--ink-2); }
 .pf-name-btn:active { transform: scale(.97); }
 .pf-name-btn.is-long { font-size: 1.25rem; }
-.pf-name-text { min-width: 0; overflow-wrap: break-word; word-break: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.pf-name-text { min-width: 0; overflow-wrap: break-word; word-break: normal; }
 .pf-name-btn.is-empty { padding: 0 1rem; background: var(--brand-soft); color: var(--brand-text); font-size: 1.15rem; }
 .pf-name-btn.is-empty .icon { color: var(--brand-text); }
 
@@ -150,6 +153,8 @@
 }
 .medal-dlg .pf-ring { --pf-ring: 6px; }
 .pf-more { margin-top: 1rem; }
+.pf-extra { display: none; }
+.btn.is-on { box-shadow: inset 0 0 0 2px var(--brand); background: var(--brand-soft); }
 .pf-medal-group + .pf-medal-group { margin-top: 1.4rem; }
 .pf-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; margin-bottom: .5rem; font: 500 1.1rem/1.2 var(--font); }
 .medals-body { gap: .8rem; }
@@ -266,36 +271,42 @@
   .setting-range input { width: 100%; }
 }
 
-/* ---------- Móvil apaisado (poca altura): portada baja y avatar pequeño ---------- */
-@media (max-height: 500px) and (orientation: landscape) {
-  .page-profile { --pf-cover-h: 96px; --pf-avatar: 64px; --pf-gap: 1.3rem; }
-  .pf-initial { font-size: 1.8rem; }
-  .pf-greeting { font-size: 1.3rem; }
-  .pf-cover-cap { display: none; }
-}
-
 /* ---------- Tablet y escritorio ---------- */
 @media (min-width: 720px) {
   .page-profile { --pf-gutter: 1.6rem; --pf-cover-h: 200px; --pf-avatar: 104px; --pf-tile-gap: .7rem; }
   .pf-greeting { font-size: 1.9rem; }
   .pf-initial { font-size: 3rem; }
   .sheet-dialog { margin: auto; border-radius: 22px; }
+  .pf-more { width: auto; min-width: 16rem; justify-self: start; }
 }
+/* Escritorio: la identidad y las cifras arriba, a todo el ancho; debajo, por filas y en el orden del DOM
+   (cifras, museo | logros, test | accesos), así Tab sigue lo que se ve. */
 @media (min-width: 1024px) {
   .page-profile .content { max-width: 1040px; }
-  .page-profile { --pf-cover-h: 188px; --pf-avatar: 96px; }
+  .page-profile { --pf-cover-h: 220px; --pf-avatar: 104px; }
   .pf-layout {
-    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); column-gap: 2.4rem; align-items: start; align-content: start;
-    grid-template-rows: auto auto auto 1fr auto;
-    grid-template-areas: "hero museum" "figs museum" "test museum" "practice museum" "medals medals";
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); column-gap: 2.4rem; align-items: start;
+    grid-template-areas: "hero hero" "figs figs" "museum medals" "test practice";
   }
-  .pf-layout.is-new { grid-template-areas: "hero welcome" "hero test" "hero practice" "hero ." "medals medals"; grid-template-rows: auto auto auto 1fr auto; }
+  .pf-layout.is-new { grid-template-areas: "hero hero" "welcome test" "medals medals" "practice practice"; }
   .pf-layout > .pf-hero { grid-area: hero; }
-  .pf-layout > .pf-figs-sec { grid-area: figs; }
-  .pf-layout > .pf-museum-sec { grid-area: museum; padding-top: 1rem; }
-  .pf-layout > .pf-welcome-sec { grid-area: welcome; padding-top: 1rem; }
+  .pf-layout > .pf-figs-sec { grid-area: figs; margin-top: 0; }
+  .pf-layout > .pf-museum-sec { grid-area: museum; }
+  .pf-layout > .pf-welcome-sec { grid-area: welcome; }
   .pf-layout > .pf-medals-sec { grid-area: medals; }
+  .pf-layout.is-new > .pf-medals-sec .pf-medals { grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); }
   .pf-layout > .pf-test-sec { grid-area: test; }
   .pf-layout > .pf-practice-sec { grid-area: practice; }
   .pf-hero .pf-cover { border-radius: 0 0 var(--radius) var(--radius); }
+  .pf-rank { max-width: 46rem; }
+  .pf-extra { display: grid; }
+}
+
+/* ---------- Móvil apaisado (poca altura): portada baja y avatar pequeño. Va al final para ganar a las
+   reglas de ancho: un móvil apaisado mide más de 720 px de ancho. ---------- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .page-profile { --pf-cover-h: 96px; --pf-avatar: 64px; --pf-gap: 1.3rem; }
+  .pf-initial { font-size: 1.8rem; }
+  .pf-greeting { font-size: 1.3rem; }
+  .pf-cover-cap { display: none; }
 }
