@@ -12,10 +12,10 @@ import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
-import { seenWorks, deepStatus } from '../../engine/levels.js';
-import { stageTitle } from '../../engine/painters.js';
+import { seenWorks } from '../../engine/levels.js';
+import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
@@ -82,12 +82,13 @@ function play(ctx, el, opts) {
     },
     onBackAfterDone: () => ctx.go(home, { replace: true }),
     onDone: (summary) => {
+      const before = ctx.store.get().progress;
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
       // Después de cualquier ronda, el repaso de 5 si hay cuadros para él; si no, «Repasar más» tras el rápido.
       const review5 = friendScore == null && hasReview5(ctx.store.get().progress, ctx.index, ctx.today());
       const moreReview = !review5 && typeof more === 'function' && more();
       renderResult(ctx, el, {
-        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic,
+        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before,
         more: review5 ? { label: REVIEW5_NAME, to: 'repaso5' } : moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
       });
     },
@@ -260,8 +261,10 @@ function gap(track) {
 }
 
 // Si es la primera vez en el movimiento, antes se muestra su intro.
+// Las ramas-movimiento (Gótico, Estampa japonesa) no tienen presentación propia: se entra directo.
 function withIntro(ctx, el, movementId, show) {
-  if (needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
+  const visible = ctx.index.visibleMovements.some((m) => m.id === movementId);
+  if (visible && needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
     return renderIntro(ctx, el, movementId, { mode: 'first', onEnter: show });
   }
   return show();
@@ -277,11 +280,13 @@ function withStory(ctx, el, artistId, level, show) {
 
 // --- Etapa de pintor -------------------------------------------------------
 
-export function renderStage(ctx, el, artistId) {
+// branchId: rama desde la que se entra (#etapa-<pintor>--<rama>); el resultado sigue en ella.
+export function renderStage(ctx, el, artistId, branchId = '') {
   const { index } = ctx;
   const artist = index.artist(artistId);
-  if (!artist || index.pathIndex(artistId) < 0) return leave(ctx);
-  if (artistStatus(ctx.store.get().progress, index, artistId) === 'locked') return leave(ctx, 'Aún no está abierta');
+  const status = artist ? playStatusFrom(ctx.store.get().progress, index, artistId, branchId) : null;
+  if (!status) return leave(ctx);
+  if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx);
   withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, () => {
@@ -303,7 +308,7 @@ export function renderStage(ctx, el, artistId) {
       caption: (w) => ({ alt: `${w.title}, de ${artist.name}`, sub: w.year || '' }),
       aside: artist.hint ? `<aside class="hint"><span class="hint-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : '',
       carouselLabel: `Obras de ${artist.short || artist.name}`,
-      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: { artistId }, shareTopic: artist.name, returnTo })),
+      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name })),
     });
   }));
 }

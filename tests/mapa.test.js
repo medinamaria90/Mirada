@@ -1,6 +1,6 @@
-// Mapa del camino (v10): de abajo arriba, nodo actual con «Empezar»/«Seguir», «Tu museo» arriba y
-// los paisajes SVG de app/img/mapa a juego con el trazado y con los colores de brand.css. Sin navegador:
-// el módulo construye HTML y se comprueba el texto.
+// Mapa del camino: de abajo arriba, hito de salida, nodo actual con «Empezar»/«Seguir», carteles al borde
+// del sendero, ramas como desvíos, «Tu museo» arriba y los paisajes SVG de app/img/mapa a juego con el
+// trazado y con los colores de brand.css. Sin navegador: el módulo construye HTML y se comprueba el texto.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
@@ -10,6 +10,7 @@ import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress, hasMovementReview, nextStep } from '../app/js/engine/progress.js';
 import { icons } from '../app/js/ui/icons.js';
 import { renderPathMap, pathLayout, eraLayout, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
+import { roadX, ROAD_HALF, branchSlots } from '../app/js/ui/screens/path-layout.js';
 import { bigIndex, salaCatalog } from './helpers.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -38,7 +39,7 @@ function masterFirst(index, n) {
   return p;
 }
 
-const spots = (html) => [...html.matchAll(/<li class="stage-spot[^"]*" data-step="([^"]+)" style="left:([\d.]+)%;top:([\d.]+)%"/g)].map((m) => ({ key: m[1], x: Number(m[2]), y: Number(m[3]) }));
+const spots = (html) => [...html.matchAll(/<li class="stage-spot[^"]*" data-step="([^"]+)" style="left:([\d.]+)%;top:([\d.]+)%[^"]*"/g)].map((m) => ({ key: m[1], x: Number(m[2]), y: Number(m[3]) }));
 const eras = (html) => [...html.matchAll(/<li class="path-era[^"]*" data-era="([^"]+)"/g)].map((m) => m[1]);
 
 test('mapa: el DOM va en orden cronológico y, dentro de cada tramo, las paradas suben (la primera es la más baja)', () => {
@@ -53,6 +54,7 @@ test('mapa: el DOM va en orden cronológico y, dentro de cada tramo, las paradas
   }
   // El museo cierra el camino (último en el DOM = arriba del todo) y el CSS invierte con column-reverse.
   assert.ok(html.trimEnd().endsWith('</li>') && html.lastIndexOf('path-museum') > html.lastIndexOf('path-era'));
+  assert.ok(html.trimStart().startsWith('<li class="path-start"') && html.includes('Empieza aquí'), 'sin hito de salida al principio');
   assert.ok(html.includes('Tu museo') && html.includes(`${real.visibleMovements.length} épocas`));
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
   assert.ok(/\.path-map \{[^}]*flex-direction: column-reverse/.test(css), 'el CSS no invierte el camino');
@@ -65,11 +67,14 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
     assert.ok(html.includes(`--era-tint:var(--map-tint-${m.id})`), `${m.id}: sin tinte de terreno`);
   }
   assert.ok(!/<img class="path-land"[^>]* src=/.test(html), 'un paisaje se pide antes de tiempo');
-  assert.equal((html.match(/<svg class="path-trail"/g) || []).length, real.visibleMovements.length + 1, 'un sendero por tramo y el del museo');
-  assert.ok(html.includes(`${real.movement(real.steps[0].movementId).period} · 2/${real.stepsOf(real.steps[0].movementId).length}`), 'la cartela no dice cuántas van');
-  assert.ok(html.includes('class="movement-head is-button" data-action="intro"'), 'la cartela abierta no lleva a la presentación');
+  assert.equal((html.match(/<svg class="path-trail"/g) || []).length, real.visibleMovements.length + 2, 'un sendero por tramo, el de la salida y el del museo');
+  assert.ok(html.includes(`${real.movement(real.steps[0].movementId).period.replace(/s\. /g, 's.\u00a0')} · 2/${real.stepsOf(real.steps[0].movementId).length}`), 'la cartela no dice cuántas van');
+  assert.ok(html.includes('finales s.\u00a0XVIII–mediados s.\u00a0XIX'), 'los siglos sin espacio duro');
+  assert.ok(html.includes('class="sign-plate" data-action="intro"'), 'el cartel abierto no lleva a la presentación');
   const locked = real.visibleMovements[2];
-  assert.ok(html.includes(`Termina ${real.visibleMovements[1].name} para abrirlo`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'una época cerrada no dice cómo se abre');
+  assert.ok(html.includes(`data-action="era-lock" data-id="${locked.id}"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el cartel cerrado no abre su hoja');
+  assert.ok(html.includes('Cerrada: se abre al terminar el Manierismo y el Renacimiento del Norte'), 'una época cerrada no dice cómo se abre (con su artículo)');
+  assert.ok(!html.includes('Termina ') && !html.includes('movement-head'), 'queda la cartela antigua');
 });
 
 test('mapa: sin personaje ni cofres (vuelven en la v2 con premios de verdad)', () => {
@@ -91,8 +96,8 @@ test('mapa: el nodo actual lleva «Empezar» (o «Seguir» a medias) y el anillo
   p.artists[real.steps[1].id] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
   html = renderPathMap(ctxWith(real, p));
   assert.ok(html.includes(`is-current" data-step="artist:${real.steps[2].id}"`) && html.includes('<span class="stage-meta">Empezar</span>'));
-  assert.ok(html.includes('Repite · 50%'), 'lo jugado a medias no invita a repetir con su mejor resultado');
-  assert.ok(html.includes('class="stage  is-mastered"') && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
+  assert.ok(html.includes('Repite · 50 %'), 'lo jugado a medias no invita a repetir con su mejor resultado (con espacio duro)');
+  assert.ok(/class="stage [^"]*is-mastered"/.test(html) && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
   // Camino jugado entero pero no dominado: el actual es el primero por repasar y dice «Seguir».
   const q = emptyProgress();
   real.steps.forEach((s) => { q.artists[s.id] = { plays: 1, best: 0.5, mastered: false, last: TODAY }; });
@@ -105,11 +110,11 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
   const html = renderPathMap(ctxWith(real));
   const reviews = real.visibleMovements.filter((m) => hasMovementReview(real, m.id));
   assert.equal((html.match(/class="stage stage-review is-/g) || []).length, reviews.length);
-  assert.ok(html.includes(`aria-label="Repaso de ${reviews[0].name}, bloqueado`));
+  assert.ok(html.includes(`aria-label="Repaso del ${reviews[0].name}, bloqueado`));
   for (const era of pathLayout(real).eras) assert.equal(era.points.length, real.stepsOf(era.id).length + (hasMovementReview(real, era.id) ? 1 : 0));
   const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
   assert.equal((all.match(/class="stage stage-gallery is-mastered"/g) || []).length, real.visibleMovements.length, 'sin salas con todo dominado');
-  assert.ok(all.includes('class="path-era movement movement-mastered is-sealed"') && all.includes(icons.laurel(18)));
+  assert.ok(all.includes('class="path-era movement movement-mastered is-sealed"') && all.includes(`<span class="sign-seal" aria-hidden="true">${icons.laurel(16)}</span>`));
   const sala = buildIndex(salaCatalog());
   const sh = renderPathMap(ctxWith(sala));
   assert.ok(sala.visibleMovements.some((m) => sala.isSala(m.id)));
@@ -138,10 +143,10 @@ test('paisajes: un SVG por época, ≤ 40 KB, con el trazado de la app y solo co
       assert.ok(css.includes(pal[`tint-${era.id}`]), `${era.id}: sin el tinte de su época`);
     }
   }
-  assert.equal(STEP, 112);
+  assert.equal(STEP, 124);
 });
 
-test('mapa: el repaso cerrado dice qué pintores faltan por dominar', () => {
+test('mapa: el repaso cerrado dice cuántos faltan; los nombres, en la nota y para el lector', () => {
   const real = bigIndex();
   const m = real.visibleMovements.find((x) => hasMovementReview(real, x.id));
   const artists = real.stepsOf(m.id).filter((s) => s.type === 'artist');
@@ -149,8 +154,185 @@ test('mapa: el repaso cerrado dice qué pintores faltan por dominar', () => {
   for (const s of artists.slice(0, -1)) progress.artists[s.id] = { plays: 1, best: 0.9, mastered: true, last: '2026-11-20' };
   const last = real.artist(artists[artists.length - 1].id);
   const html = renderPathMap(ctxWith(real, progress));
-  assert.ok(html.includes(`Falta dominar a ${last.short || last.name}`), 'el repaso no nombra al pintor que falta');
-  assert.ok(html.includes(`data-lock="Falta dominar a ${last.short || last.name}"`), 'la nota al pulsar no nombra al pintor');
+  const who = last.short || last.name;
+  assert.ok(html.includes('<span class="stage-name">Repaso · falta 1</span>'), 'el repaso cerrado no dice cuántos faltan');
+  assert.ok(html.includes(`data-lock="Domina a ${who} para abrirlo"`), 'la nota al pulsar no nombra al pintor');
+  assert.ok(html.includes(`bloqueado. Para abrirlo, domina a ${who}"`), 'el lector no oye a quién falta dominar');
   const none = renderPathMap(ctxWith(real, emptyProgress()));
-  assert.ok(/Faltan .+ y \d+ más|Faltan .+ y .+/.test(none), 'con todos pendientes debe resumir («Faltan X y n más»)');
+  assert.ok(new RegExp(`Repaso · faltan ${artists.length}</span>`).test(none));
+  assert.ok(/data-lock="Domina a [^",]+, [^",]+ y \d+ más para abrirlo"/.test(none), 'la nota resume («X, Y y n más»)');
+  assert.ok(!/<b>Repaso:<\/b>/.test(none) && !/ y [^"<]+ y \d+ más para/.test(none), 'queda el formato antiguo o una doble «y»');
+});
+
+// Ningún cartel pisa el sendero: su borde junto al camino queda fuera de la franja del sendero (con aire) en
+// toda su altura, y le queda sitio. Los rótulos de tramo van con el nombre de su primera parada.
+test('mapa: carteles de época al borde del sendero, nunca encima; tramos sobre el nombre de su primera parada', () => {
+  const layout = pathLayout(real);
+  const GAP = 8;
+  const clear = (segs, y1, y2, box) => {
+    const xs = Array.from({ length: 12 }, (_, i) => roadX(segs, y1 + ((y2 - y1) * i) / 11));
+    return box.side === 'left' ? box.edge <= Math.min(...xs) - ROAD_HALF - GAP : box.edge >= Math.max(...xs) + ROAD_HALF + GAP;
+  };
+  for (const era of layout.eras) assert.ok(clear(era.segs, era.sign.top, era.sign.y, era.sign) && era.sign.room >= 150, `${era.id}: el cartel pisa el sendero o no cabe`);
+  for (const b of [layout.start, layout.museum]) assert.ok(clear(b.segs, b.sign.top, b.sign.y, b.sign), 'la placa de salida o del museo pisa el sendero');
+  const html = renderPathMap(ctxWith(real, masterFirst(real, 1)));
+  assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, real.visibleMovements.length + 2);
+  // Florencia y Castilla: rótulo dentro del texto de Botticelli (oculto al lector) y un elemento propio, legible,
+  // justo antes de su parada en el DOM («Tramo …: 1 de 2 dominados»).
+  const first = real.artist(real.steps[0].id);
+  const kicker = `<span class="stage-kicker" aria-hidden="true">${first.section} <span class="stage-kicker-count">1/2</span></span>`;
+  assert.ok(html.includes(kicker), 'el rótulo del tramo no va con su primera parada');
+  const sr = html.indexOf(`<li class="sr-only">Tramo ${first.section}: 1 de 2 dominados</li>`);
+  assert.ok(sr >= 0 && sr < html.indexOf(`data-step="artist:${first.id}"`), 'el lector no oye el tramo antes de sus paradas');
+  assert.ok(!html.includes('stage-section') && !html.includes('class="lock-note"'), 'quedan rótulos sobre el sendero o párrafos vacíos');
+});
+
+test('mapa: ramas como desvíos en su época, cerradas el primer día; con más de dos, un solo cartel', () => {
+  const html = renderPathMap(ctxWith(real));
+  const layout = pathLayout(real);
+  for (const b of real.branches) {
+    const era = layout.eras.find((e) => e.id === b.opensAt);
+    const spot = era.branches.find((x) => x.id === b.id || x.members?.some((m) => m.id === b.id && !m.extra));
+    assert.ok(spot, `${b.id}: sin cartel en su época`);
+    assert.ok(spot.at < era.points.length - 1, `${b.id}: en la última parada (ahí va la sala)`);
+    assert.ok(spot.x < 60 || spot.x > MAP_W - 60, `${b.id}: no está en el margen`);
+  }
+  for (const era of layout.eras) {
+    assert.ok(era.branches.length <= 2, `${era.id}: más de dos carteles de rama`);
+    const group = era.branches.find((x) => x.group);
+    if (group) {
+      assert.ok(group.members.length >= 2 && group.members.every((m) => real.branch(m.id).kind !== 'rama'), `${era.id}: cartel de grupo con ${group.members.length}`);
+      assert.ok(html.includes(`data-action="branches" data-id="${era.id}"`) && html.includes(`>Ramas (${group.members.length})<`) && html.includes(`aria-label="Ramas de esta época: ${group.members.length}`));
+    }
+  }
+  const found = [...html.matchAll(/class="branch (is-\w+)[^"]*" data-action="branch(?:es)?"/g)];
+  assert.ok(found.length && found.every(([, cls]) => cls === 'is-locked'), 'una rama abierta el primer día');
+  assert.ok(html.includes('class="spur-edge is-locked"'));
+  // Escuelas: una señal en cada época en la que abren un tramo con pintores propios (sola o dentro del grupo).
+  const rusa = real.branch('escuela-rusa');
+  const rusaEras = [...new Set(rusa.artists.filter((id) => real.pathIndex(id) < 0).map((id) => rusa.tramos.find((t) => t.artists.includes(id)).opensAt))];
+  for (const id of rusaEras.filter((x) => x !== rusa.opensAt)) {
+    assert.ok(layout.eras.find((e) => e.id === id).branches.some((b) => (b.id === 'escuela-rusa' && b.extra) || b.members?.some((m) => m.id === 'escuela-rusa' && m.extra)), `Escuela rusa sin señal en ${id}`);
+  }
+  // Época con dos ramas (Manierismo): carteles propios; la de época se llama «Más del …» y dice cuánto falta.
+  assert.ok(html.includes('data-action="branch" data-id="descubre-manierismo-y-norte"') && html.includes('<span>faltan 2</span>'));
+  assert.ok(html.includes('Más del Manie­rismo'), 'la rama de época no se llama «Más del …» con guion blando');
+  const a = real.artist(real.steps.find((x) => x.movementId === 'manierismo-y-norte').id);
+  assert.ok(html.includes(`Más del Manierismo y el Norte`) || /Descubre el Manierismo y el Norte: rama cerrada, se abre al dominar a /.test(html), 'la rama cerrada no dice qué la abre');
+  assert.ok(a);
+  // Orden de lectura: el cartel de ramas va justo después de su parada.
+  const era = layout.eras[0];
+  // Gótico y Estampa japonesa (ramas temáticas), siempre con cartel propio.
+  for (const id of ['gotico', 'ukiyo-e']) assert.ok(layout.eras.some((e) => e.branches.some((b) => b.id === id && !b.group)), `${id} sin cartel propio`);
+  const g = era.branches.find((b) => b.group);
+  const host = real.steps.filter((x) => x.movementId === era.id)[g.at];
+  const iHost = html.indexOf(`data-step="${host.type}:${host.id}"`);
+  const iNext = html.indexOf('data-step=', iHost + 10);
+  const iBranch = html.indexOf(`data-id="${era.id}" data-members`);
+  assert.ok(iHost < iBranch && iBranch < iNext, 'la rama no va tras su parada en el orden de tabulación');
+  // Abierta (primer tramo dominado): el grupo dice cuántas hay abiertas.
+  const open = renderPathMap(ctxWith(real, masterFirst(real, 2)));
+  assert.ok(/class="branch is-open is-group" data-action="branches" data-id="renacimiento"/.test(open));
+  assert.ok(open.includes('<span class="branch-count">2 abier­tas</span>') && /class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
+});
+
+test('mapa: textos según el estado (hito, escuelas dominadas, parada actual)', () => {
+  const none = renderPathMap(ctxWith(real));
+  assert.ok(none.includes(`${real.visibleMovements.length} épocas por delante`));
+  const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
+  assert.ok(all.includes('Camino completo') && !all.includes('épocas por delante'));
+  assert.equal((none.match(/aria-current="step"/g) || []).length, 1, 'la parada actual sin aria-current');
+  assert.ok(none.includes(`data-id="${real.steps[0].id}" data-status="available" data-lock="" aria-current="step"`));
+  // Escuela con su tramo dominado: «n/n», no «n nuevos».
+  const p = masterFirst(real, real.steps.length);
+  const rusa = real.branch('escuela-rusa');
+  rusa.artists.filter((id) => real.pathIndex(id) < 0).forEach((id) => { p.artists[id] = { plays: 1, best: 1, mastered: true, last: TODAY }; });
+  const html = renderPathMap(ctxWith(real, p));
+  assert.ok(!/Escuela rusa: \d+ pintores nuevos/.test(html));
+});
+
+test('mapa: reparto de ramas por el tramo, nunca en la última parada', () => {
+  assert.deepEqual(branchSlots(6, 0), []);
+  for (const [n, k] of [[8, 3], [6, 3], [12, 1], [6, 2]]) {
+    const slots = branchSlots(n, k);
+    assert.equal(slots.length, k);
+    assert.ok(slots.every((i) => i >= 0 && i < n - 1), `${n}/${k}: fuera de rango`);
+    assert.ok(k > n - 2 || !slots.includes(0), `${n}/${k}: en la primera parada habiendo sitio`);
+  }
+});
+
+test('mapa: jerarquía de nodos (actual, siguiente cerrado y el resto cerrado más pequeño)', () => {
+  const html = renderPathMap(ctxWith(real, masterFirst(real, 2)));
+  assert.equal((html.match(/stage-spot is-(left|right) is-next/g) || []).length, 1, 'una sola parada «siguiente»');
+  assert.ok(html.includes(`is-next" data-step="artist:${real.steps[3].id}"`), 'la siguiente no es la de después de la actual');
+  assert.ok(!/is-locked"[^>]*>\s*<span class="stage-dot">[^<]*<span class="art/.test(html), 'un nodo cerrado enseña el cuadro');
+  // Cerrado y lejos: nombre corto; el lector oye por qué está cerrado.
+  const far = real.artist(real.steps[6].id);
+  assert.ok(html.includes(`aria-label="${far.name}, bloqueado. Se abre con la mitad de aciertos en `), 'el cerrado no explica su candado al lector');
+  if (far.short && far.short !== far.name) assert.ok(html.includes(`<span class="stage-name">${far.short}</span>`), 'el cerrado lejano no usa el nombre corto');
+  const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
+  const px = (re) => Number((css.match(re) || [])[1]);
+  const base = px(/\.stage \{\s*--dot: (\d+)px/);
+  assert.ok(px(/\.stage\.is-locked \{ --dot: (\d+)px/) < base, 'el cerrado no es más pequeño');
+  assert.ok(px(/\.stage-spot\.is-current \.stage \{ --dot: (\d+)px/) > base, 'el actual no es el mayor');
+  assert.ok(!/\.(stage-name|branch-name)[^{]*\{[^}]*overflow-wrap: anywhere/.test(css), 'nombres partidos por cualquier letra');
+  // Camino en línea por encima del 150 % y, por debajo, letra sin tope (crece con la del navegador) y trazado
+  // estirado en vertical con --k.
+  assert.ok(/\.path-map\.is-linear \.stages/.test(css) && /\.path-map \{ --map-fs: 1rem;/.test(css), 'sin camino en línea o con la letra del mapa limitada');
+  assert.ok(!/--map-fs-max/.test(css) && /aspect-ratio:\$\{MAP_W\}\/calc\(\$\{era\.h\} \* var\(--k, 1\)\)/.test(readFileSync(join(app, 'js', 'ui', 'screens', 'path-map.js'), 'utf8')));
+  // Letra mínima de 12 px en lo que hay que leer del mapa (0,75 × 16 px), y crece con la del navegador.
+  for (const sel of ['stage-kicker', 'branch-name', 'branch-count']) {
+    const m = css.match(new RegExp(`\\.${sel} \\{[^}]*font: \\d+ calc\\(([\\d.]+) \\* var\\(--map-fs\\)\\)`));
+    assert.ok(m && Number(m[1]) >= 0.75, `${sel} por debajo de 12 px`);
+  }
+});
+
+test('textos: «y» → «e» ante /i/ y artículos en las épocas', async () => {
+  const { joinNames } = await import('../app/js/ui/dom.js');
+  const { withArticle, afterEra, toEra } = await import('../app/js/ui/screens/path-signs.js');
+  assert.equal(joinNames(['David', 'Ingres']), 'David e Ingres');
+  assert.equal(joinNames(['Watteau', 'Fragonard', 'Meléndez', 'David', 'Ingres']), 'Watteau, Fragonard, Meléndez, David e Ingres');
+  assert.equal(joinNames(['Goya', 'Hilliard']), 'Goya e Hilliard');
+  assert.equal(joinNames(['Goya', 'Hierro']), 'Goya y Hierro', 'diptongo: «y»');
+  assert.equal(joinNames(['Botticelli', 'Berruguete']), 'Botticelli y Berruguete');
+  assert.equal(joinNames(['Botticelli']), 'Botticelli');
+  assert.equal(joinNames([]), '');
+  assert.equal(afterEra('terminar', 'Barroco'), 'al terminar el Barroco');
+  assert.equal(withArticle('Manierismo y Renacimiento del Norte'), 'el Manierismo y el Renacimiento del Norte');
+  assert.equal(withArticle('Simbolismo y vanguardias'), 'el Simbolismo y las vanguardias');
+  assert.equal(toEra('Realismo'), 'al Realismo');
+  // En el mapa: el repaso y la hoja de época usan la misma regla.
+  const p = masterFirst(real, real.steps.findIndex((x) => x.movementId === 'rococo-neoclasicismo') + 3);
+  const html = renderPathMap(ctxWith(real, p));
+  assert.ok(html.includes('Domina a David e Ingres para abrirlo'), 'el repaso dice «David y Ingres»');
+});
+
+test('mapa: «Tu museo» celebra el camino completo y lleva a la Colección', () => {
+  const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
+  assert.ok(all.includes('class="path-museum is-done"') && all.includes('data-action="collection"') && all.includes('Museo completo'));
+  const none = renderPathMap(ctxWith(real));
+  assert.ok(!none.includes('Museo completo') && none.includes('Tu museo'));
+  assert.equal(pathLayout(real).museum.sign.top >= 120, true, 'la placa del museo tapa el edificio');
+});
+
+test('mapa: pintado por partes (épocas lejanas como hueco) y mismo resultado al rellenarlas', () => {
+  const p = masterFirst(real, 2);
+  const lazy = renderPathMap(ctxWith(real, p), { lazy: true });
+  const full = renderPathMap(ctxWith(real, p));
+  const pending = (lazy.match(/class="path-era is-pending"/g) || []).length;
+  assert.ok(pending >= real.visibleMovements.length - 2, 'el primer pintado no deja las épocas lejanas para después');
+  assert.ok(lazy.includes('stage-spot is-left is-current') || lazy.includes('stage-spot is-right is-current'), 'la parada actual no está en el primer pintado');
+  assert.ok(lazy.length < full.length / 2, 'el primer pintado no es más ligero');
+});
+
+test('resultado de rama: avance y siguiente pintor abierto', async () => {
+  const { branchAfterRound } = await import('../app/js/engine/branches.js');
+  const p = masterFirst(real, 2);
+  const own = real.branch('gotico').artists.filter((id) => real.pathIndex(id) < 0);
+  p.artists[own[0]] = { plays: 1, best: 1, mastered: false, last: TODAY };
+  const r = branchAfterRound(p, real, own[0]);
+  assert.equal(r.branch.id, 'gotico');
+  assert.equal(r.next, own[1]);
+  assert.equal(r.total, own.length);
+  assert.equal(branchAfterRound(p, real, real.steps[0].id), null, 'un pintor del camino común no es de rama');
 });

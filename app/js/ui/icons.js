@@ -15,6 +15,8 @@ export const icons = {
   frames: (s) => svg('<rect x="3" y="4" width="8" height="10" rx="1"/><rect x="13" y="4" width="8" height="6" rx="1"/><rect x="13" y="12" width="8" height="8" rx="1"/><rect x="3" y="16" width="8" height="4" rx="1"/>', s),
   user: (s) => svg('<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.3-3.8 4.2-5.6 7.5-5.6s6.2 1.8 7.5 5.6"/>', s),
   close: (s) => svg('<path d="M6 6l12 12M18 6 6 18"/>', s),
+  // Desvío del mapa: un sendero que se bifurca.
+  fork: (s) => svg('<path d="M12 21v-7"/><path d="M12 14c0-4-5-5-5-9"/><path d="M12 14c0-4 5-5 5-9"/><path d="M4.5 7.5 7 5l2.5 2.5"/><path d="M14.5 7.5 17 5l2.5 2.5"/>', s),
   lock: (s) => svg('<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>', s),
   check: (s) => svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>', s),
   play: (s) => svg('<path d="M8 5.5v13l10-6.5z"/>', s),

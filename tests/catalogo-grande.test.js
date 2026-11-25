@@ -10,7 +10,8 @@ import { planStage } from '../app/js/engine/planner.js';
 import { emptyProgress, stageRule, stepStatus } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { seenWorks, pendingWorks, deepStatus, deepProgress } from '../app/js/engine/levels.js';
-import { branchStatus, branchProgress, movementReached } from '../app/js/engine/branches.js';
+import { branchStatus, branchProgress, movementReached, firstTramo, tramoOpen, tramoPending, playStatus, canPlay, branchAfterRound, branchOfRound } from '../app/js/engine/branches.js';
+import { playTargets } from '../app/js/engine/painters.js';
 import { RANKS, rankFor, rankStats } from '../app/js/engine/ranks.js';
 import { migrate, MIGRATIONS, SCHEMA_VERSION, defaultState } from '../app/js/state/schema.js';
 import { LEGACY_IDS } from '../app/js/state/legacy-ids.js';
@@ -99,29 +100,66 @@ test('ramas: cronológicas por dentro, con su tramo de apertura, y los «Descubr
   assert.deepEqual(discover.slice().sort(), offPath.slice().sort());
 });
 
-test('ramas: un tramo se abre al llegar a su época en el camino común; nunca sale un pintor de una época sin ver', () => {
+// Regla de apertura (ronda 2 del mapa): un tramo de rama se abre al dominar el primer tramo de su época en
+// el camino común; nunca el primer día ni con un pintor de una época sin ver.
+const masterSteps = (p, steps) => steps.forEach((s) => { p.artists[s.id] = { plays: 1, best: 1, mastered: true, last: TODAY }; });
+
+test('ramas: un tramo se abre al dominar el primer tramo de su época; nunca el primer día', () => {
   const p0 = emptyProgress();
-  const rusa = (p) => branchStatus(p, real, 'escuela-rusa');
-  assert.ok(rusa(p0).every((s) => s.status === 'locked'), 'sin avanzar, todo bloqueado (el primer tramo es del Rococó)');
+  for (const b of real.branches) assert.ok(branchStatus(p0, real, b.id).every((s) => s.onPath || s.status === 'locked'), `${b.id}: abierta el primer día`);
   assert.equal(movementReached(p0, real, 'renacimiento'), true);
-  assert.equal(movementReached(p0, real, 'barroco'), false);
-  // Al llegar al Rococó, se abre el primer pintor de la rama rusa; los siguientes, por orden.
+  assert.deepEqual(firstTramo(real, 'renacimiento').map((s) => s.id), ['botticelli', 'berruguete']);
+  assert.deepEqual(firstTramo(real, 'romanticismo').map((s) => s.id), ['goya'], 'sin tramos, la primera parada');
+  // Con Botticelli solo, aún no; con el tramo «Florencia y Castilla» dominado, se abre el Gótico.
   const p = emptyProgress();
+  masterSteps(p, real.steps.slice(0, 1));
+  assert.equal(tramoOpen(p, real, 'renacimiento'), false);
+  assert.deepEqual(tramoPending(p, real, 'renacimiento').map((s) => s.id), ['berruguete']);
+  masterSteps(p, real.steps.slice(0, 2));
+  assert.equal(branchStatus(p, real, 'gotico')[0].status, 'available');
+  // La rama rusa empieza en el Rococó: cerrada hasta dominar su primer tramo («Rococó»: Watteau y Fragonard).
+  const rusa = (q) => branchStatus(q, real, 'escuela-rusa');
   const firstRococo = real.steps.findIndex((s) => real.artist(s.id).movementId === 'rococo-neoclasicismo');
-  real.steps.slice(0, firstRococo).forEach((s) => { p.artists[s.id] = { plays: 1, best: 1, mastered: true, last: TODAY }; });
+  masterSteps(p, real.steps.slice(0, firstRococo));
   assert.equal(movementReached(p, real, 'rococo-neoclasicismo'), true);
+  assert.equal(rusa(p)[0].status, 'locked', 'llegar a la época no basta');
+  masterSteps(p, firstTramo(real, 'rococo-neoclasicismo'));
   const st = rusa(p);
   assert.equal(st[0].artistId, 'borovikovski');
   assert.equal(st[0].status, 'available');
-  assert.ok(st.slice(1).every((s) => s.status === 'locked'));
-  // Dominado el primero, el siguiente sigue cerrado hasta llegar a su época (Romanticismo).
+  assert.ok(st.slice(1).filter((s) => !s.onPath).every((s) => s.status === 'locked'));
+  // Dominado el primero, el siguiente sigue cerrado hasta el primer tramo del Romanticismo (Goya).
   p.artists.borovikovski = { plays: 1, best: 1, mastered: true, last: TODAY };
   assert.equal(rusa(p)[1].status, 'locked');
-  assert.deepEqual(branchProgress(p, real, 'escuela-rusa'), { total: 25, mastered: 1, open: true });
-  // Con el Romanticismo alcanzado, se abre el siguiente de la rama.
-  const firstRomantic = real.steps.findIndex((s) => real.artist(s.id).movementId === 'romanticismo');
-  real.steps.slice(0, firstRomantic).forEach((s) => { p.artists[s.id] = { plays: 1, best: 1, mastered: true, last: TODAY }; });
+  const own = branchStatus(p, real, 'escuela-rusa').filter((s) => !s.onPath).length;
+  assert.deepEqual(branchProgress(p, real, 'escuela-rusa'), { total: own, mastered: 1, open: true });
+  masterSteps(p, firstTramo(real, 'romanticismo'));
   assert.equal(rusa(p)[1].status, 'available');
+});
+
+test('ramas jugables: una sola regla para la ruta, la ficha y el mapa; rama → ronda → se abre el siguiente', () => {
+  const p = emptyProgress();
+  const gotico = real.branch('gotico').artists.filter((id) => real.pathIndex(id) < 0);
+  const [first, second] = gotico;
+  assert.equal(playStatus(p, real, first), 'locked');
+  assert.equal(playTargets(p, real, first).stage, null);
+  masterSteps(p, firstTramo(real, 'renacimiento'));
+  assert.equal(playStatus(p, real, first), 'available');
+  assert.equal(canPlay(p, real, first), true);
+  assert.equal(playTargets(p, real, first).stage, 'available', 'la ficha ofrece jugar al pintor de rama abierto');
+  assert.equal(canPlay(p, real, second), false);
+  assert.equal(playStatus(p, real, 'no-existe'), null);
+  // Una ronda del primero (perfecta): queda jugado y el siguiente de la rama se abre.
+  const { out } = playPerfect(p, first, 7);
+  const after = out.progress;
+  assert.ok(after.artists[first].plays === 1 && after.artists[first].best === 1);
+  assert.equal(playStatus(after, real, second), 'available', 'superar al pintor de la rama abre el siguiente');
+  assert.equal(branchStatus(after, real, 'gotico').find((r) => r.artistId === second).status, 'available');
+  // Con menos de la mitad de aciertos, el siguiente sigue cerrado.
+  const plan = planStage(real, first, 3, { seen: [] });
+  const answers = plan.questions.map((q, i) => ({ q, correct: i === 0, retry: false, combo: 1 }));
+  const low = finishRound(p, real, { kind: 'stage', artistId: first, answers, firstTry: answers.map((a) => a.correct) }, TODAY).progress;
+  assert.equal(playStatus(low, real, second), 'locked');
 });
 
 // Una ronda perfecta del pintor con lo que ya ha visto.
@@ -343,4 +381,31 @@ test('«¿De qué movimiento es?»: opciones en orden cronológico y la buena re
     assert.ok(m.every((c) => c / total >= 0.15), `${id}: ${m}`);
   }
   assert.ok(byPos.every((c) => c > 0), `posiciones de la buena ${byPos}`);
+});
+
+test('ramas: el resultado sigue en la rama de origen (pintores en dos ramas) y no se salta a nadie', () => {
+  const p = emptyProgress();
+  real.steps.forEach((x) => { p.artists[x.id] = { plays: 1, best: 1, mastered: true, last: TODAY }; });
+  const done = (id) => { p.artists[id] = { plays: 1, best: 1, mastered: true, last: TODAY }; };
+  // Giotto está en Gótico y en Descubre el Renacimiento.
+  ['cimabue', 'duccio', 'giotto'].forEach(done);
+  assert.ok(real.branchesOf('giotto').length === 2);
+  const gotico = branchAfterRound(p, real, 'giotto', 'gotico');
+  assert.equal(gotico.branch.id, 'gotico');
+  assert.equal(gotico.next, 'pietro-lorenzetti');
+  assert.equal(branchAfterRound(p, real, 'giotto', 'descubre-renacimiento').branch.id, 'descubre-renacimiento');
+  assert.equal(branchAfterRound(p, real, 'giotto').branch.id, 'gotico', 'sin rama indicada, la más concreta');
+  // Juan de Juanes desde Maestros españoles: sigue en la escuela, no salta a Descubre el Renacimiento.
+  done('juan-de-juanes');
+  const esp = branchAfterRound(p, real, 'juan-de-juanes', 'maestros-espanoles');
+  assert.equal(esp.branch.id, 'maestros-espanoles');
+  assert.ok(esp.next !== 'tintoretto');
+  // Y en Descubre el Renacimiento, Tintoretto sigue cerrado mientras falten los de antes (Fra Angelico…).
+  assert.equal(branchStatus(p, real, 'descubre-renacimiento').find((r) => r.artistId === 'tintoretto').status, 'locked');
+  // Borovikovski desde la Escuela rusa: nunca «se abre Vicente López».
+  done('borovikovski');
+  const rusa = branchAfterRound(p, real, 'borovikovski', 'escuela-rusa');
+  assert.equal(rusa.branch.id, 'escuela-rusa');
+  assert.notEqual(rusa.next, 'vicente-lopez');
+  assert.equal(branchOfRound(real, 'borovikovski', 'no-existe').id, 'escuela-rusa');
 });

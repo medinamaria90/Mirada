@@ -1,9 +1,8 @@
 // Pintores como lista y como ficha: épocas visibles, búsqueda, estado, obras ya vistas (sin spoilers),
 // líneas de vida y qué se puede jugar. Puro: no toca el DOM.
 
-import { artistStatus } from './progress.js';
 import { seenWorks, deepStatus } from './levels.js';
-import { movementsChrono } from './movements.js';
+import { playStatusFrom } from './branches.js';
 
 
 // Sin tildes ni mayúsculas, para buscar «el greco» o «durero».
@@ -65,18 +64,12 @@ export function factsOf(index, artist, seenCount) {
   return facts;
 }
 
-// Fuente de las fechas y el país del pintor (curados y comprobados con Wikidata): enlace a su ficha de Wikidata, o ''.
-export const wikidataUrl = (artist) => (artist.qid ? `https://www.wikidata.org/wiki/${artist.qid}` : '');
-
-// Lo que se puede jugar desde la ficha: su etapa del camino, si es una parada ya abierta; y, si ya está dominado, la primera etapa
-// «a fondo» abierta o en marcha (el botón principal es «Seguir: <etapa>» y no «Jugar otra vez»).
-// { stage: 'available' | 'started' | 'mastered' | null, next: { id, name } | null }
-export function playTargets(progress, index, artistId) {
-  const onPath = index.pathIndex(artistId) >= 0;
-  const status = onPath ? artistStatus(progress, index, artistId) : 'locked';
-  const stage = onPath && status !== 'locked' ? status : null;
-  const open = stage === 'mastered' ? stageList(progress, index, artistId).find((s) => s.status === 'available' || s.status === 'started') : null;
-  return { stage, next: open ? { id: open.id, name: open.name } : null };
+// Lo que se puede jugar desde la ficha: su etapa (del camino o de una rama), si ya está abierta. La regla es
+// la de la ruta (branches.js → playStatus). { stage: 'available' | 'started' | 'mastered' | null }
+// branchId: ficha abierta desde una rama (manda el estado en esa rama).
+export function playTargets(progress, index, artistId, branchId = '') {
+  const status = playStatusFrom(progress, index, artistId, branchId);
+  return { stage: status && status !== 'locked' ? status : null };
 }
 
 // Nombre de una etapa «a fondo»: el de los datos; si es genérico («Más obras»), con sus años («Hals (1610–1625)») o, sin años,

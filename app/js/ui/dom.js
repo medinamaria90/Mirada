@@ -107,3 +107,13 @@ export function prefersReducedMotion() {
 export function plural(n, one, many) {
   return `${n} ${n === 1 ? one : many}`;
 }
+
+// Lista de nombres en español: «A», «A y B», «A, B y C». Ante un nombre que empieza por el sonido /i/
+// («Ingres», «Hilliard»; no «Hierro», que es diptongo) la conjunción es «e»: «David e Ingres».
+const E_SOUND = /^[hH]?[iíIÍ](?![aeiouáéóúAEIOUÁÉÓÚ])/;
+export function joinNames(list) {
+  const items = list.filter(Boolean);
+  if (items.length <= 1) return items.join('');
+  const last = items[items.length - 1];
+  return `${items.slice(0, -1).join(', ')} ${E_SOUND.test(last) ? 'e' : 'y'} ${last}`;
+}

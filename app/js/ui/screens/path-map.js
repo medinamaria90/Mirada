@@ -1,168 +1,132 @@
-// Mapa del camino (portada): el sendero serpentea de abajo arriba por un paisaje de época; cada
-// parada es un nodo redondo con el cuadro dentro. Por época: un tramo con su paisaje (SVG aparte,
-// cargado al acercarse), el sendero (un <svg> ligero con un path), la cartela, los nodos y,
-// al final del todo, «Tu museo». El DOM va en orden cronológico (Renacimiento primero) y el CSS lo
-// invierte (column-reverse): así el tabulador y el lector de pantalla recorren el camino en el orden
-// del juego, y el primer nodo del DOM es el primero que se juega.
+// Mapa del camino (portada): el sendero serpentea de abajo arriba por un paisaje de época; cada parada es
+// un nodo redondo con el cuadro dentro. Abajo, el hito de salida; por época, un tramo con su paisaje (SVG
+// aparte, cargado al acercarse), el sendero, el cartel de la época al borde del camino, los rótulos de tramo,
+// los nodos y los desvíos de las ramas; arriba del todo, «Tu museo». El DOM va en orden cronológico
+// (salida primero) y el CSS lo invierte (column-reverse): el tabulador y el lector de pantalla recorren el
+// camino en el orden del juego. Trazado en path-layout.js; carteles y desvíos en path-signs.js.
 
-import { esc, accentStyle, announce, plural, $ } from '../dom.js';
+import { esc, accentStyle, announce, plural, joinNames, $ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import {
-  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep,
+  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered,
 } from '../../engine/progress.js';
 import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
 import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
+import { MAP_W, STEP, SIDE_X, pathLayout, eraLayout } from './path-layout.js';
+import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, branchGroupSpot, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
 
-// Trazado en coordenadas de diseño (ancho 390); en pantalla todo va en porcentajes y escala con la
-// columna. tools/mapa_svg.py pinta los paisajes con este mismo trazado (lo lee por tools/mapa-layout.mjs).
-export const MAP_W = 390;
-export const STEP = 112;            // distancia vertical entre paradas
-const PAD_BOTTOM = 96;              // entrada del tramo: la cartela de época
-const PAD_TOP = 28;                 // salida del tramo
-const MUSEUM_H = 200;        // bloque «Tu museo»
-const MUSEUM_Y = 150;               // donde acaba el sendero bajo el museo
-const XS = [120, 268, 130, 274, 118, 270, 126, 272];   // zigzag de los nodos
-const SIDE_X = { left: 48, right: MAP_W - 48 };        // sala de la época, en el margen estrecho
+export { MAP_W, STEP, pathLayout, eraLayout };
 const LANDSCAPE_MARGIN = '240px 0px';                  // se pide el paisaje al acercarse a este margen
-
-const f = (n) => String(Math.round(n * 100) / 100);
-const pct = (v, total) => `${f((v / total) * 100)}%`;
-
-function cubic(a, b) {
-  const ym = (a.y + b.y) / 2;
-  return `C${f(a.x)} ${f(ym)} ${f(b.x)} ${f(ym)} ${f(b.x)} ${f(b.y)}`;
-}
-
-// Sendero: tangentes verticales en cada nodo; entra por abajo (xIn) y sale por arriba en vertical.
-function trailD(start, points, end) {
-  let d = `M${f(start.x)} ${f(start.y)}`;
-  let prev = start;
-  for (const p of points) {
-    d += cubic(prev, p);
-    prev = p;
-  }
-  return `${d}L${f(end.x)} ${f(end.y)}`;
-}
-
-// Tramo de una época: alto, nodos (de abajo arriba), cartela
-// y sendero. phase: nodos acumulados antes (mantiene el zigzag entre épocas); xIn: x del último
-// nodo de la época anterior (el sendero entra por ahí).
-export function eraLayout(nodeCount, phase = 0, xIn = null) {
-  const h = PAD_BOTTOM + nodeCount * STEP + PAD_TOP;
-  const points = Array.from({ length: nodeCount }, (_, i) => ({ x: XS[(phase + i) % XS.length], y: h - PAD_BOTTOM - STEP / 2 - i * STEP }));
-  const start = { x: xIn ?? points[0].x, y: h };
-  const last = points[points.length - 1];
-  return { h, points, start, ribbon: { x: MAP_W / 2, y: h - PAD_BOTTOM / 2 }, trail: trailD(start, points, { x: last.x, y: 0 }) };
-}
-
-function museumLayout(xIn) {
-  const start = { x: xIn, y: MUSEUM_H };
-  const end = { x: MAP_W / 2, y: MUSEUM_Y };
-  return { h: MUSEUM_H, trail: `M${f(start.x)} ${f(start.y)}${cubic(start, end)}` };
-}
-
-// Trazado de todo el camino, época a época (y el museo al final).
-export function pathLayout(index) {
-  const eras = [];
-  let phase = 0;
-  let xIn = null;
-  for (const m of index.visibleMovements) {
-    const n = index.stepsOf(m.id).length + (hasMovementReview(index, m.id) ? 1 : 0);
-    if (!n) continue;
-    const era = eraLayout(n, phase, xIn);
-    eras.push({ id: m.id, ...era });
-    phase += n;
-    xIn = era.points[n - 1].x;
-  }
-  return { eras, museum: museumLayout(xIn ?? MAP_W / 2) };
-}
 
 // ---------- HTML ----------
 
-export function renderPathMap(ctx) {
+// Parada actual y la siguiente cerrada (algo más presente que el resto de lo cerrado).
+function mapKeys(ctx) {
+  const { index } = ctx;
+  const p = ctx.store.get().progress;
+  const current = nextStep(p, index);
+  const at = current ? index.steps.indexOf(current) : -1;
+  const after = at >= 0 ? index.steps.slice(at + 1).find((s) => stepStatus(p, index, s) === 'locked') : null;
+  return { current: current ? `${current.type}:${current.id}` : '', next: after ? `${after.type}:${after.id}` : '', era: current ? current.movementId : '' };
+}
+
+// lazy: solo se pintan del todo la época actual y sus vecinas; las demás quedan como hueco de su altura y
+// fillPendingEras las rellena después, una por tarea (el primer pintado no bloquea en móviles lentos).
+const NEAR_ERAS = 0;
+// Rama en la que centrar el mapa al volver (tras una ronda de rama).
+let focusBranch = '';
+export const setMapFocus = (branchId) => { focusBranch = branchId || ''; };
+export function renderPathMap(ctx, { lazy = false } = {}) {
   const { index } = ctx;
   const layout = pathLayout(index);
-  const current = nextStep(ctx.store.get().progress, index);
-  const currentKey = current ? `${current.type}:${current.id}` : '';
-  const html = layout.eras.map((era, i) => eraBlock(ctx, era, layout.eras[i - 1], currentKey)).join('');
-  return `${html}${museumBlock(index, layout.museum)}`;
+  const keys = mapKeys(ctx);
+  const here = Math.max(0, layout.eras.findIndex((e) => e.id === keys.era));
+  const focus = focusBranch ? layout.eras.findIndex((e) => e.branches.some((b) => b.id === focusBranch || b.members?.some((x) => x.id === focusBranch))) : -1;
+  const html = layout.eras.map((era, i) => (!lazy || Math.abs(i - here) <= NEAR_ERAS || i === focus
+    ? eraBlock(ctx, era, layout.eras[i - 1], keys)
+    : `<li class="path-era is-pending" data-era="${esc(era.id)}" style="--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))"></li>`)).join('');
+  const firstTint = layout.eras.length ? `var(--map-tint-${esc(layout.eras[0].id)})` : 'transparent';
+  const p = ctx.store.get().progress;
+  const done = isPathMastered(p, index);
+  const left = layout.eras.filter((e) => !p.medals[`movement-${e.id}`]).length;
+  return `${startBlock(layout.start, layout.eras, firstTint, done ? 0 : left)}${html}${museumBlock(layout.museum, index.visibleMovements.length, done)}`;
 }
 
-function trailSvg(h, d) {
-  return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" aria-hidden="true" focusable="false">
-      <path class="trail-edge" d="${d}"/><path class="trail-fill" d="${d}"/><path class="trail-steps" d="${d}"/></svg>`;
+// Rellena las épocas pendientes, la más cercana a la actual primero, una por tarea. Devuelve cómo pararlo.
+export function fillPendingEras(ctx, root, onFill = () => {}) {
+  const layout = pathLayout(ctx.index);
+  const keys = mapKeys(ctx);
+  const here = Math.max(0, layout.eras.findIndex((e) => e.id === keys.era));
+  const queue = layout.eras.map((era, i) => ({ era, i })).filter(({ era }) => root.querySelector(`.path-era.is-pending[data-era="${era.id}"]`))
+    .sort((x, y) => Math.abs(x.i - here) - Math.abs(y.i - here));
+  let timer = null;
+  const step = () => {
+    const next = queue.shift();
+    if (!next) return;
+    const li = root.querySelector(`.path-era.is-pending[data-era="${next.era.id}"]`);
+    if (li) {
+      li.insertAdjacentHTML('afterend', eraBlock(ctx, next.era, layout.eras[next.i - 1], keys));
+      li.remove();
+      onFill();
+    }
+    timer = setTimeout(step, 0);
+  };
+  timer = setTimeout(step, 0);
+  return () => clearTimeout(timer);
 }
 
-function eraBlock(ctx, era, prevEra, currentKey) {
+function eraBlock(ctx, era, prevEra, keys) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const movement = index.movement(era.id);
   const status = movementStatus(p, index, era.id);
   const sala = index.isSala(era.id);
   const sealed = Boolean(p.medals[`movement-${era.id}`]);
-  const prevName = prevEra ? index.movement(prevEra.id).name : '';
-  const nodes = [];
-  if (sala) {
-    nodes.push(salaNode(ctx, movement, currentKey));
-  } else {
-    nodes.push(...artistNodes(ctx, movement, currentKey));
-    if (hasMovementReview(index, era.id)) nodes.push(reviewNode(ctx, movement));
-  }
-  const spots = nodes.map((node, i) => {
+  const sectionAt = new Map(era.sections.map((s) => [s.at, sectionInfo(ctx, era.id, s)]));
+  const nodes = sala ? [salaNode(ctx, movement, keys)] : index.stageArtists(movement.id).map((a, i) => artistNode(ctx, a, keys, sectionAt.get(i)));
+  if (!sala && hasMovementReview(index, era.id)) nodes.push(reviewNode(ctx, movement, status === 'locked'));
+  const stOf = (id, extra) => (extra ? tramoState(p, index, index.branch(id), era.id) : branchState(p, index, index.branch(id)));
+  const branches = era.branches.map((b) => (b.group
+    ? { spot: b, group: b.members.filter((x) => index.branch(x.id)).map((x) => stOf(x.id, x.extra)) }
+    : { spot: b, branch: index.branch(b.id) })).filter((b) => b.group || b.branch)
+    .map((b) => (b.group ? { ...b, st: { open: b.group.some((x) => x.open) } } : { ...b, st: stOf(b.spot.id, b.spot.extra) }));
+  // Orden del DOM = orden de lectura y de tabulación: por cada parada, el rótulo de su tramo (para el lector),
+  // la parada y, si sale de ella, el desvío de su rama; la sala, al final.
+  const items = nodes.map((node, i) => {
     const pt = era.points[i];
     const side = pt.x < MAP_W / 2 ? 'left' : 'right';
-    const isCurrent = node.key === currentKey;
-    const section = node.section ? sectionLabel(node.section, pt, era.h) : '';
-    return `${section}<li class="stage-spot is-${side}${isCurrent ? ' is-current' : ''}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)}">
-      ${node.html}<p class="lock-note"></p>
-    </li>`;
+    // --room: parte del ancho que queda hacia donde cuelga el nombre (el rótulo nunca pasa del margen de 8 px).
+    const state = node.key === keys.current ? ' is-current' : node.key === keys.next ? ' is-next' : '';
+    const sec = sectionAt.get(i);
+    const head = sec ? `<li class="sr-only">Tramo ${esc(sec.name)}: ${sec.got} de ${sec.total} dominados</li>` : '';
+    const spur = branches.filter((b) => b.spot.at === i).map((b) => (b.group ? branchGroupSpot(b.spot, b.group, era.id, era.h) : branchSpot(b.spot, b.branch, b.st, index, era.h))).join('');
+    return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
   }).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';
-  return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/${era.h}">
+  const steps = nodes.filter((n) => n.type !== 'review');
+  const sign = eraSign({
+    movement, status, sealed, sign: era.sign, h: era.h,
+    done: steps.filter((n) => n.status === 'mastered').length, total: steps.length,
+    prevName: prevEra ? index.movement(prevEra.id).name : '',
+  });
+  const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
+  return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
-    ${trailSvg(era.h, era.trail)}
-    ${ribbon(movement, status, sealed, nodes, prevName, era)}
-    <ol class="stages">${spots}${gallery}</ol>
+    ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, open: b.st.open })))}
+    ${sign}
+    <ol class="stages">${items}${gallery}</ol>
   </li>`;
 }
 
-// Cartela de la época: nombre, siglos y «n/m»; abierta, lleva a la presentación del movimiento.
-function ribbon(movement, status, sealed, nodes, prevName, era) {
-  const steps = nodes.filter((n) => n.type !== 'review');
-  const done = steps.filter((n) => n.status === 'mastered').length;
-  const count = status === 'locked' ? '' : ` · ${done}/${steps.length}`;
-  const lockLine = status === 'locked' && prevName ? `<span class="movement-lockline">${icons.lock(13)}<span>Termina ${esc(prevName)} para abrirlo</span></span>` : '';
-  const seal = sealed ? `<span class="movement-seal" aria-hidden="true">${icons.laurel(18)}</span>` : '';
-  const inner = `${seal}<span class="movement-titles">
-      <span class="movement-name">${esc(movement.name)}</span>
-      <span class="movement-period">${esc(movement.period)}${count}</span>${lockLine}
-    </span>${sealed ? '<span class="sr-only">, completo</span>' : ''}`;
-  const pos = `style="left:${pct(era.ribbon.x, MAP_W)};top:${pct(era.ribbon.y, era.h)}"`;
-  return status === 'locked'
-    ? `<h2 class="movement-head" ${pos}>${inner}</h2>`
-    : `<h2 class="movement-head-wrap" ${pos}><button class="movement-head is-button" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}: ver presentación">${inner}<span class="movement-more" aria-hidden="true">${icons.next(16)}</span></button></h2>`;
-}
-
-function sectionLabel(section, pt, h) {
-  return `<li class="stage-section" style="left:50%;top:${pct(pt.y + STEP / 2, h)}"><span class="stage-section-name">${esc(section.name)}</span><span class="stage-section-count">${section.got}/${section.total}</span></li>`;
-}
-
-// Pintores de la época; si tienen tramos (section), el primero de cada tramo lleva su cartel.
-function artistNodes(ctx, movement, currentKey) {
-  const { index } = ctx;
+// Tramo de la época: nombre y dominados. Se ve como un rótulo pequeño sobre el nombre de su primera parada
+// (lado ancho, nunca sobre el sendero) y el lector lo oye antes de sus paradas.
+function sectionInfo(ctx, movementId, s) {
   const p = ctx.store.get().progress;
-  const artists = index.stageArtists(movement.id);
-  return artists.map((a, k) => {
-    const node = artistNode(ctx, a, currentKey);
-    if (a.section && a.section !== artists[k - 1]?.section) {
-      const group = artists.filter((x) => x.section === a.section);
-      node.section = { name: a.section, got: group.filter((x) => artistStatus(p, index, x.id) === 'mastered').length, total: group.length };
-    }
-    return node;
-  });
+  const group = ctx.index.stageArtists(movementId).filter((a) => a.section === s.name);
+  return { name: s.name, total: group.length, got: group.filter((a) => artistStatus(p, ctx.index, a.id) === 'mastered').length };
 }
 
 const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'por repasar', mastered: 'dominado' };
@@ -174,88 +138,92 @@ export const DORMANT_TEXT = '¿Lo recuerdas?';
 // dominarlos a todos, y María quería que se viera claro qué hacer.
 function metaFor(status, info, current) {
   if (current) return status === 'started' ? 'Seguir' : 'Empezar';
-  if (status === 'started') return `Repite · ${Math.round((info?.best || 0) * 100)}%`;
+  if (status === 'started') return `Repite · ${Math.round((info?.best || 0) * 100)}\u00a0%`;
   return '';
 }
 
-function dotFor(status, cover, label) {
-  if (status === 'locked') return icons.lock(18);
-  const thumb = cover ? artFrame(cover, { cls: 'stage-thumb', alt: '', label, thumb: true }) : '';
-  const badge = status === 'mastered' ? `<span class="stage-badge">${icons.check(14)}</span>` : '';
+// Cerrado: sin cuadro (no se adelanta nada) y un candado pequeño; el nodo es más pequeño y suave.
+function dotFor(status, cover, name) {
+  if (status === 'locked') return icons.lock(12);
+  const thumb = cover ? artFrame(cover, { cls: 'stage-thumb', alt: '', label: initials(name), thumb: true }) : '';
+  const badge = status === 'mastered' ? `<span class="stage-badge">${icons.check(13)}</span>` : '';
   return `${thumb}${badge}`;
 }
 
-function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot }) {
-  return `<button class="stage ${cls} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}" aria-label="${esc(label)}">
+function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, section, current = false }) {
+  const kicker = section ? `<span class="stage-kicker" aria-hidden="true">${esc(section.name)} <span class="stage-kicker-count">${section.got}/${section.total}</span></span>` : '';
+  return `<button class="stage ${cls}${section ? ' has-kicker' : ''} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}"${current ? ' aria-current="step"' : ''} aria-label="${esc(label)}">
       <span class="stage-dot">${dot}</span>
-      <span class="stage-text"><span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
+      <span class="stage-text">${kicker}<span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
     </button>`;
 }
 
-function artistNode(ctx, artist, currentKey) {
+
+function artistNode(ctx, artist, keys, section) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const status = artistStatus(p, index, artist.id);
   const key = `artist:${artist.id}`;
-  const isCurrent = key === currentKey;
   const prevStep = index.steps[index.stepIndex('artist', artist.id) - 1];
-  const prev = prevStep ? (prevStep.type === 'sala' ? index.movement(prevStep.id).name : index.artist(prevStep.id).short || index.artist(prevStep.id).name) : '';
   const dormant = status === 'mastered' && isDormant(p, artist.id, ctx.today ? ctx.today() : null);
+  const lock = prevStep ? `Se abre con la mitad de aciertos en ${stepName(index, prevStep)}` : '';
+  // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
+  const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
-    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status,
-    lock: prev ? `Se abre con la mitad de aciertos en ${prev}` : '',
-    label: `${artist.name}, ${STATE_LABEL[status]}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
-    name: artist.name, meta: dormant ? DORMANT_TEXT : metaFor(status, p.artists[artist.id], isCurrent),
-    dot: dotFor(status, coverOf(index, artist.id), initials(artist.name)),
+    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, section, current: key === keys.current,
+    label: `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
+    name: quiet ? artist.short || artist.name : artist.name, meta: dormant ? DORMANT_TEXT : metaFor(status, p.artists[artist.id], key === keys.current),
+    dot: dotFor(status, coverOf(index, artist.id), artist.name),
   });
   return { type: 'artist', key, status, html };
 }
 
-function salaNode(ctx, movement, currentKey) {
+function salaNode(ctx, movement, keys) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const status = salaStatus(p, index, movement.id);
   const key = `sala:${movement.id}`;
-  const isCurrent = key === currentKey;
-  const i = index.stepIndex('sala', movement.id);
-  const prev = index.steps[i - 1];
-  const prevName = prev ? (prev.type === 'sala' ? index.movement(prev.id).name : index.artist(prev.id).short || index.artist(prev.id).name) : '';
+  const prev = index.steps[index.stepIndex('sala', movement.id) - 1];
+  const lock = prev ? `Se abre con la mitad de aciertos en ${stepName(index, prev)}` : '';
   const html = nodeHtml({
-    cls: 'stage-sala', action: 'sala', id: movement.id, status,
-    lock: prev ? `Se abre con la mitad de aciertos en ${prevName}` : '',
-    label: `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}`,
-    name: 'Conoce el movimiento', meta: metaFor(status, p.salas?.[movement.id], isCurrent),
-    dot: dotFor(status, salaCover(index, movement.id), initials(movement.name)),
+    cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current,
+    label: `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
+    name: 'Conoce el movimiento', meta: metaFor(status, p.salas?.[movement.id], key === keys.current),
+    dot: dotFor(status, salaCover(index, movement.id), movement.name),
   });
   return { type: 'sala', key, status, html };
 }
 
-// Qué le falta al jugador para abrir el repaso: los pintores del tramo aún no dominados, por su
-// nombre («Falta dominar a Veronés», «Faltan Tiziano y 2 más»), para que el candado se explique solo.
+// Pintores de la época aún sin dominar: todos (para el lector) y en corto para la nota al tocar
+// («Leonardo y Veronés», «Botticelli, Rafael y 4 más»).
 const PENDING_NAMES_MAX = 2;
-function pendingLine(ctx, progress, movementId) {
-  const names = ctx.index.stepsOf(movementId)
+function pendingOf(ctx, progress, movementId) {
+  return ctx.index.stepsOf(movementId)
     .filter((s) => s.type === 'artist' && artistStatus(progress, ctx.index, s.id) !== 'mastered')
-    .map((s) => ctx.index.artist(s.id).short || ctx.index.artist(s.id).name);
-  if (!names.length) return '';
-  if (names.length === 1) return `Falta dominar a ${names[0]}`;
-  const shown = names.slice(0, PENDING_NAMES_MAX);
-  const rest = names.length - shown.length;
-  return `Faltan ${shown.join(' y ')}${rest ? ` y ${rest} más` : ''}`;
+    .map((s) => stepName(ctx.index, s));
+}
+export function pendingNames(names) {
+  if (names.length <= PENDING_NAMES_MAX) return joinNames(names);
+  return joinNames([...names.slice(0, PENDING_NAMES_MAX), `${names.length - PENDING_NAMES_MAX} más`]);
 }
 
-function reviewNode(ctx, movement) {
+// quiet: época aún cerrada; el repaso solo enseña su icono (lo lejano, en silencio).
+function reviewNode(ctx, movement, quiet = false) {
   const p = ctx.store.get().progress;
   const open = isReviewUnlocked(p, ctx.index, movement.id);
   const best = p.reviews[movement.id]?.best;
   const medal = (best || 0) >= 0.75;
   const status = medal ? 'mastered' : open ? 'available' : 'locked';
-  const pending = open ? '' : pendingLine(ctx, p, movement.id);
-  const meta = best ? `Mejor: ${Math.round(best * 100)}%` : pending;
+  const pending = open ? [] : pendingOf(ctx, p, movement.id);
+  const lock = pending.length ? `Domina a ${pendingNames(pending)} para abrirlo` : 'Se abre al dominar a todos sus pintores';
+  const name = pending.length && !quiet ? `Repaso · ${pending.length === 1 ? 'falta 1' : `faltan ${pending.length}`}` : 'Repaso';
+  const meta = best ? `Mejor: ${Math.round(best * 100)}\u00a0%` : '';
+  const icon = medal ? icons.medal(22) : icons.arch(open ? 24 : 18);
+  const label = `Repaso ${ofEra(movement.name)}${open ? '' : `, bloqueado. Para abrirlo, domina a ${joinNames(pending)}`}`;
   const html = `<button class="stage stage-review is-${status}" data-action="review" data-id="${esc(movement.id)}" data-status="${open ? 'open' : 'locked'}"
-        aria-label="Repaso de ${esc(movement.name)}${open ? '' : `, bloqueado. ${esc(pending)}`}" data-lock="${esc(pending || 'Se abre al dominar a todos sus pintores')}">
-        <span class="stage-dot">${medal ? icons.medal(22) : open ? icons.arch(24) : icons.lock(18)}</span>
-        <span class="stage-text"><span class="stage-name">Repaso</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
+        aria-label="${esc(label)}" data-lock="${esc(lock)}">
+        <span class="stage-dot">${icon}${open ? '' : `<span class="stage-lock">${icons.lock(10)}</span>`}</span>
+        <span class="stage-text"><span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
       </button>`;
   return { type: 'review', key: `review:${movement.id}`, status, html };
 }
@@ -265,37 +233,10 @@ function galleryNode(ctx, movement, last, h) {
   const n = galleryWorks(ctx.store.get().progress, ctx.index, movement.id).length;
   const side = last.x < MAP_W / 2 ? 'left' : 'right';
   return `<li class="stage-spot stage-spot-aside is-${side}" style="left:${pct(SIDE_X[side], MAP_W)};top:${pct(last.y, h)}">
-      <button class="stage stage-gallery is-mastered" data-action="gallery" data-id="${esc(movement.id)}" aria-label="Sala de ${esc(movement.name)}">
+      <button class="stage stage-gallery is-mastered" data-action="gallery" data-id="${esc(movement.id)}" aria-label="Sala ${esc(ofEra(movement.name))}">
         <span class="stage-dot">${icons.laurel(24)}</span>
         <span class="stage-text"><span class="stage-name">Sala</span>${n ? `<span class="stage-meta">${plural(n, 'obra', 'obras')}</span>` : ''}</span>
       </button></li>`;
-}
-
-// «Tu museo»: la meta, arriba del todo. Cúpula y columnas en el estilo limpio del paisaje.
-function museumBlock(index, museum) {
-  const n = index.visibleMovements.length;
-  const building = `<svg class="path-museum-art" viewBox="0 0 390 200" width="100%" height="100%" aria-hidden="true" focusable="false">
-      <path class="land-far" d="M-10 92V62C60 40 130 66 200 48C270 32 330 62 400 44V92Z"/>
-      <path class="land-front" d="M-10 92V78C90 62 150 86 240 70C310 58 350 82 400 70V92Z"/>
-      <ellipse class="land-shade" cx="197" cy="100" rx="60" ry="8"/>
-      <rect class="land-front" x="146" y="66" width="98" height="30"/>
-      <rect class="land-side" x="232" y="66" width="12" height="30"/>
-      <path class="land-top" d="M140 66H250L256 60H146Z"/>
-      ${[158, 180, 202, 224].map((x) => `<rect class="land-window" x="${x}" y="72" width="8" height="24" rx="1"/>`).join('')}
-      <path class="land-side" d="M171 66C171 38 219 38 219 66Z"/>
-      <path class="land-front" d="M171 66C171 38 209 38 207 66Z"/>
-      <rect class="land-front" x="192" y="34" width="6" height="9"/><path class="land-side" d="M191 34L195 26L199 34Z"/>
-      <rect class="land-front" x="128" y="62" width="6" height="34"/><rect class="land-side" x="126" y="60" width="10" height="3"/>
-      <rect class="land-front" x="256" y="62" width="6" height="34"/><rect class="land-side" x="254" y="60" width="10" height="3"/>
-      <path class="land-leaf-2" d="M108 98C100 82 100 60 108 48C116 60 116 82 108 98Z"/><path class="land-leaf" d="M108 98C100 82 100 60 108 48C110 60 110 82 108 98Z"/>
-      <path class="land-leaf-2" d="M284 98C276 84 276 64 284 52C292 64 292 84 284 98Z"/><path class="land-leaf" d="M284 98C276 84 276 64 284 52C286 64 286 84 284 98Z"/>
-    </svg>`;
-  return `<li class="path-museum" style="aspect-ratio:${MAP_W}/${museum.h}">
-    ${building}${trailSvg(museum.h, museum.trail)}
-    <p class="movement-head path-museum-head" style="left:50%;top:${pct(MUSEUM_Y + 18, museum.h)}">
-      <span class="movement-titles"><span class="movement-name">Tu museo</span><span class="movement-period">${n === 1 ? 'Una época' : `${n} épocas`}, todos los pintores</span></span>
-    </p>
-  </li>`;
 }
 
 export function salaCover(index, movementId) {
@@ -308,6 +249,12 @@ export function initials(name) {
 }
 
 // ---------- comportamiento (necesita DOM) ----------
+
+// La hoja del mapa (época cerrada, rama) se carga al primer toque: no cuenta en el arranque.
+const sheet = (ctx, fn, b) => {
+  ctx.audio.sfx('tap');
+  import('../map-sheet.js').then((m) => m[fn](ctx, b.dataset.id, b)).catch((err) => console.error(err));
+};
 
 // Acciones de las paradas, para onAction en la portada.
 export function pathActions(ctx) {
@@ -328,23 +275,47 @@ export function pathActions(ctx) {
       ctx.audio.sfx('tap');
       ctx.go(`galeria-${b.dataset.id}`);
     },
+    'era-lock': (b) => sheet(ctx, 'openEraSheet', b),
+    'goto-current': (_, ev) => {
+      ev.preventDefault();
+      const target = $('.stage-spot.is-current .stage') || $('.stage.is-available, .stage.is-started');
+      if (!target) return;
+      target.scrollIntoView({ block: 'center' });
+      target.focus({ preventScroll: true });
+    },
+    branch: (b) => sheet(ctx, 'openBranchSheet', b),
+    branches: (b) => sheet(ctx, 'openEraBranchesSheet', b),
   };
 }
 
+const NOTE_MS = 4500;   // da tiempo a leerla con la letra grande
 function showLockNote(button) {
-  const note = button.parentElement.querySelector('.lock-note');
-  if (!note) return;
+  let note = button.parentElement.querySelector('.lock-note');
+  if (!note) {
+    note = document.createElement('p');
+    note.className = 'lock-note';
+    note.setAttribute('aria-hidden', 'true');
+    button.after(note);
+  }
   note.textContent = button.dataset.lock || 'Aún bloqueado';
+  note.style.translate = '';
   note.classList.add('is-visible');
+  // Dentro de la pantalla: si asoma por un lado, se corre.
+  const r = note.getBoundingClientRect();
+  const shift = r.left < 8 ? 8 - r.left : r.right > window.innerWidth - 8 ? window.innerWidth - 8 - r.right : 0;
+  if (shift) note.style.translate = `${Math.round(shift)}px 0`;
   announce(note.textContent);
   clearTimeout(note._t);
-  note._t = setTimeout(() => note.classList.remove('is-visible'), 2600);
+  note._t = setTimeout(() => note.classList.remove('is-visible'), NOTE_MS);
 }
 
 // El paisaje de cada tramo se pide cuando el tramo se acerca a la pantalla (nunca los nueve de golpe).
+let landObserver = null;
 export function watchLandscapes(root) {
-  const imgs = Array.from(root.querySelectorAll('.path-land[data-src]'));
+  const imgs = Array.from(root.querySelectorAll('.path-land[data-src]:not([data-watched])'));
+  imgs.forEach((img) => { img.dataset.watched = '1'; });
   const load = (img) => {
+    if (!img.dataset.src) return;
     img.src = img.dataset.src;
     delete img.dataset.src;
   };
@@ -352,20 +323,66 @@ export function watchLandscapes(root) {
     imgs.forEach(load);
     return;
   }
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (!e.isIntersecting) continue;
-      load(e.target);
-      io.unobserve(e.target);
-    }
-  }, { rootMargin: LANDSCAPE_MARGIN });
-  imgs.forEach((img) => io.observe(img));
+  if (!landObserver) {
+    landObserver = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        load(e.target);
+        landObserver.unobserve(e.target);
+      }
+    }, { rootMargin: LANDSCAPE_MARGIN });
+  }
+  requestAnimationFrame(() => requestAnimationFrame(() => imgs.forEach((img) => landObserver.observe(img))));
+}
+
+// Modo del mapa: ilustrado hasta el 150 % de letra; por encima (o en una ventana de menos de 300 px, como un zoom
+// del 200 %), el camino en línea. Sigue a la letra y a la ventana mientras la pantalla está abierta. Devuelve cómo
+// dejar de vigilarlo.
+const LINEAR_SCALE = 1.5;
+const LINEAR_WIDTH = 340;   // a 320 px el mapa ilustrado no deja 8 px de margen a los rótulos
+const TALL_POWER = 1.8;
+export function watchMapMode(map) {
+  if (!map) return () => {};
+  const fit = () => {
+    const scale = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16;
+    const linear = scale > LINEAR_SCALE || window.innerWidth < LINEAR_WIDTH;
+    map.classList.toggle('is-linear', linear);
+    // Ilustrado con letra grande: el trazado se estira en vertical algo más que la letra (los rótulos, más altos y
+    // más largos, caben entre el sendero que sube y el que baja sin montarse).
+    const k = linear ? 1 : Math.max(1, scale) ** TALL_POWER;
+    map.classList.toggle('is-tall', k > 1);
+    map.style.setProperty('--k', String(Math.round(k * 1000) / 1000));
+  };
+  fit();
+  if (typeof ResizeObserver !== 'function') return () => {};
+  // Una sonda de 1rem: cambia de tamaño cuando cambia la letra (ajuste del navegador o del sistema).
+  const probe = document.createElement('span');
+  probe.className = 'map-probe';
+  probe.setAttribute('aria-hidden', 'true');
+  map.before(probe);
+  const ro = new ResizeObserver(fit);
+  ro.observe(probe);
+  ro.observe(document.documentElement);
+  return () => { ro.disconnect(); probe.remove(); };
 }
 
 // Al abrir la portada, la vista va a la parada actual si queda fuera de la primera pantalla.
 export function scrollToCurrent(el) {
-  const target = $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
-  if (target && target.getBoundingClientRect().top > window.innerHeight * 0.8) {
-    target.scrollIntoView({ block: 'center' });
-  }
+  const branchId = focusBranch;
+  focusBranch = '';
+  requestAnimationFrame(() => {
+    const branch = branchId && $(`.branch[data-id="${branchId}"], .branch[data-members~="${branchId}"]`, el);
+    if (branch) {
+      branch.scrollIntoView({ block: 'center' });
+      return;
+    }
+    if ($('.stage-spot', el)?.classList.contains('is-current')) {
+      window.scrollTo(0, document.documentElement.scrollHeight);
+      return;
+    }
+    const target = $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
+    if (target && target.getBoundingClientRect().top > window.innerHeight * 0.8) {
+      target.scrollIntoView({ block: 'center' });
+    }
+  });
 }

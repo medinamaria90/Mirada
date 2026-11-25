@@ -842,7 +842,8 @@ const crop = await page.$eval('.stage-thumb', (f) => {
   return { covers: i.left <= a.left + 0.5 && i.top <= a.top + 0.5 && i.right >= a.right - 0.5 && i.bottom >= a.bottom - 0.5, big: i.width > a.width * 1.5 };
 });
 check(crop.covers && crop.big, `recorte del atlas raro: ${JSON.stringify(crop)}`);
-// Repaso de movimiento solo con ≥3 pintores con etapa
+// Repaso de movimiento solo con ≥3 pintores con etapa (el mapa pinta las épocas lejanas por partes: se espera)
+await page.waitForSelector('.path-era.is-pending', { state: 'detached' });
 const expectedReviews = index.visibleMovements.filter((m) => hasMovementReview(index, m.id)).length;
 check(await page.locator('.stage-review').count() === expectedReviews, `repasos en el mapa: ${await page.locator('.stage-review').count()} vs ${expectedReviews}`);
 // Mapa v10: de abajo arriba (el primer nodo del DOM, el primero del juego, es el más bajo en pantalla),
@@ -950,6 +951,115 @@ if (SMOKE) {
   check(await page.locator('.stage-spot.is-current .stage-meta').innerText() === 'Empezar', 'la parada nueva no dice «Empezar»');
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
+  // Rama jugable: cerrada el primer día; con el primer tramo del Renacimiento dominado, el cartel del Gótico (rama
+  // temática: cartel propio) ofrece «Empezar» al primer pintor propio y una ronda (perfecta) abre el siguiente. La
+  // ronda sabe que viene del Gótico (#etapa-<pintor>--gotico) y su resultado sigue en él.
+  const goticoSign = '.branch[data-id="gotico"]';
+  check(await page.locator(`${goticoSign}.is-locked`).count() === 1, 'el Gótico está abierto el primer día');
+  const ownGotico = index.branch('gotico').artists.filter((id) => index.pathIndex(id) < 0);
+  const tramo1 = index.steps.filter((x) => x.movementId === index.steps[0].movementId).findIndex((x) => index.artist(x.id).section !== index.artist(index.steps[0].id).section);
+  const openGotico = async () => {
+    await page.click(goticoSign);
+    await page.waitForSelector('dialog.map-sheet[open] .ms-play');
+  };
+  await seed(page, seededState({ upTo: tramo1 }));
+  await page.waitForSelector(`${goticoSign}.is-open`);
+  await openGotico();
+  check(await page.locator(`dialog.map-sheet .ms-play[data-id="${ownGotico[0]}"]`).innerText() === 'Empezar', 'la hoja de la rama no ofrece «Empezar» al primer pintor');
+  check(await page.locator(`dialog.map-sheet .ms-play[data-id="${ownGotico[1]}"]`).count() === 0, 'la hoja ofrece jugar a un pintor aún cerrado');
+  await shot(page, '14e-rama-hoja');
+  await audit(page, '390 hoja de rama');
+  await page.click(`dialog.map-sheet .ms-play[data-id="${ownGotico[0]}"]`);
+  await page.waitForSelector('.learn, .intro');
+  if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
+  await page.waitForSelector('.learn');
+  check(page.url().endsWith(`#etapa-${ownGotico[0]}--gotico`), `la rama no lleva a la etapa con su rama: ${page.url()}`);
+  await page.click('[data-action="practice"]');
+  await playRound(page);
+  await page.waitForSelector('.result');
+  // Resultado de rama: su avance arriba (pulsable) y «Siguiente en la rama» como acción principal, en la misma rama.
+  check(/Rama · Gótico \d+\/\d+/i.test(await page.locator('.event-branch').innerText()), 'el resultado no enseña el avance de la rama');
+  check(await page.evaluate(() => document.querySelector('.result-body .event, .result-body section.learned, .result-body .day-done')?.classList.contains('event-branch')), 'la tarjeta de rama no va la primera');
+  check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}--gotico"]`).innerText() === 'Siguiente en la rama', 'la acción principal no es «Siguiente en la rama» del Gótico');
+  check(!(await page.locator('.day-done-next').count()), 'tras una ronda de rama sale «La próxima vez» del camino común');
+  await shot(page, '14f-rama-resultado', true);
+  await audit(page, '390 resultado de rama');
+  await page.click('[data-action="done"]');
+  await page.waitForSelector(goticoSign);
+  await page.waitForTimeout(400);
+  check(await page.evaluate((sel) => { const r = document.querySelector(sel).getBoundingClientRect(); return r.top > 0 && r.bottom < innerHeight; }, goticoSign), '«Volver al camino» no lleva a la rama');
+  await openGotico();
+  check(await page.locator(`dialog.map-sheet .ms-play[data-id="${ownGotico[1]}"]`).count() === 1, 'tras la ronda no se abre el siguiente pintor de la rama');
+  await page.keyboard.press('Escape');
+  // «Repetir» tras una ronda floja sigue en la rama (Duccio, del Gótico, todo fallado).
+  await openGotico();
+  await page.click(`dialog.map-sheet .ms-play[data-id="${ownGotico[1]}"]`);
+  await page.waitForSelector('.learn, .intro');
+  if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
+  await page.waitForSelector('.learn');
+  await page.click('[data-action="practice"]');
+  await playRound(page, { wrongAt: Array.from({ length: 30 }, (_, k) => k) });
+  await page.waitForSelector('.result');
+  check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}--gotico"]`).count() === 1, '«Repetir» tras una ronda de rama no sigue en la rama');
+  // Dentro de una rama manda su estado allí: con Duccio sin superar, Giotto está «Por abrir» en el Gótico aunque en
+  // Descubre el Renacimiento se pueda jugar. La URL directa no lo deja jugar y su ficha, abierta desde el Gótico, dice
+  // qué falta y no ofrece jugar.
+  await page.goto(`${base}#etapa-giotto--gotico`);
+  await page.waitForFunction(() => location.hash === '#inicio');
+  await page.waitForSelector(goticoSign);
+  check(await page.locator('.learn').count() === 0, 'Giotto «Por abrir» en el Gótico se puede jugar como Gótico');
+  await openGotico();
+  check(/por abrir/i.test(await page.locator('dialog.map-sheet [data-ms="artist"][data-id="giotto"]').innerText()), 'la hoja del Gótico no marca a Giotto «Por abrir»');
+  await page.click('dialog.map-sheet [data-ms="artist"][data-id="giotto"]');
+  await page.waitForSelector('.artist-sheet[open] .as-name');
+  check(await page.locator('.artist-sheet [data-as="play"]').count() === 0, 'la ficha de Giotto abierta desde el Gótico ofrece jugar');
+  check(/se abre al superar a duccio en gótico/i.test(await page.locator('.artist-sheet .as-lock').innerText()), 'la ficha de Giotto desde el Gótico no dice qué falta');
+  await audit(page, '390 ficha cerrada en la rama');
+  await page.keyboard.press('Escape');
+  // Un pintor del camino común abierto desde una rama sigue en ella: Berruguete desde Maestros españoles (avance de la
+  // rama, «Siguiente en la rama» y el mapa centrado en su cartel al volver).
+  const espSign = '.branch[data-id="maestros-espanoles"], .branch[data-members~="maestros-espanoles"]';
+  await page.waitForSelector(espSign);
+  await page.click(espSign);
+  await page.waitForSelector('dialog.map-sheet[open] .ms-row');
+  if (await page.locator('dialog.map-sheet[open] [data-ms="branch"][data-id="maestros-espanoles"]').count()) await page.click('dialog.map-sheet [data-ms="branch"][data-id="maestros-espanoles"]');
+  await page.waitForSelector('dialog.map-sheet[open] [data-ms="artist"][data-id="berruguete"]');
+  await page.click('dialog.map-sheet [data-ms="artist"][data-id="berruguete"]');
+  await page.waitForSelector('.artist-sheet[open] [data-as="play"]');
+  await page.click('.artist-sheet [data-as="play"]');
+  await page.waitForSelector('.learn, .intro');
+  if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
+  await page.waitForSelector('.learn');
+  check(page.url().endsWith('#etapa-berruguete--maestros-espanoles'), `Berruguete desde Maestros españoles no juega en la rama: ${page.url()}`);
+  await page.click('[data-action="practice"]');
+  await playRound(page);
+  await page.waitForSelector('.result');
+  check(/Rama · Maestros españoles \d+\/\d+/i.test(await page.locator('.event-branch').innerText().catch(() => '')), 'el resultado de Berruguete desde Maestros españoles no enseña el avance de la rama');
+  check(await page.locator('[data-primary][data-to="etapa-juan-de-juanes--maestros-espanoles"]').innerText().catch(() => '') === 'Siguiente en la rama', 'tras Berruguete desde Maestros españoles no sale «Siguiente en la rama»');
+  check(/\d %/.test(await page.locator('.result').innerText()), 'la precisión del resultado va sin espacio duro');
+  await page.click('[data-action="done"]');
+  await page.waitForSelector(espSign);
+  await page.waitForTimeout(400);
+  check(await page.evaluate((sel) => { const r = document.querySelector(sel).getBoundingClientRect(); return r.top > 0 && r.bottom < innerHeight; }, espSign), '«Volver al camino» tras Berruguete no centra Maestros españoles');
+  // La ficha abierta desde la hoja de una rama juega en esa rama (Giotto desde Descubre el Renacimiento).
+  await page.goto(`${base}#inicio`);
+  await page.waitForSelector('.branch[data-members~="descubre-renacimiento"]');
+  await page.click('.branch[data-members~="descubre-renacimiento"]');
+  await page.waitForSelector('dialog.map-sheet[open] [data-ms="branch"][data-id="descubre-renacimiento"]');
+  await page.click('dialog.map-sheet [data-ms="branch"][data-id="descubre-renacimiento"]');
+  // La hoja de la rama abierta desde el grupo lleva «Atrás» (vuelve a la del grupo, con el foco en la fila de origen).
+  await page.waitForSelector('dialog.map-sheet[open] [data-ms="back"]');
+  await page.click('dialog.map-sheet [data-ms="back"]');
+  await page.waitForSelector('dialog.map-sheet[open] [data-ms="branch"][data-id="descubre-renacimiento"]');
+  check(await page.evaluate(() => document.activeElement?.matches('[data-ms="branch"][data-id="descubre-renacimiento"]')), 'tras «Atrás» el foco no vuelve a la fila de origen');
+  await page.click('dialog.map-sheet [data-ms="branch"][data-id="descubre-renacimiento"]');
+  await page.waitForSelector('dialog.map-sheet[open] [data-ms="back"]');
+  await page.waitForSelector('dialog.map-sheet[open] [data-ms="artist"][data-id="giotto"]');
+  await page.click('dialog.map-sheet [data-ms="artist"][data-id="giotto"]');
+  await page.waitForSelector('.artist-sheet[open] [data-as="play"]');
+  await page.click('.artist-sheet [data-as="play"]');
+  await page.waitForSelector('.learn, .intro');
+  check(page.url().endsWith('#etapa-giotto--descubre-renacimiento'), `la ficha abierta desde una rama no juega en ella: ${page.url()}`);
   await page.goto(`${base}#perfil`);
   await page.waitForSelector('.pf-hero');
   await audit(page, '390 perfil');

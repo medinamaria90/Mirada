@@ -33,8 +33,14 @@ export function loadAudio() {
 }
 
 // Carga en reposo, después de pintar la primera pantalla.
+// Con la música y los efectos apagados no hace falta: se deja para cuando se enciendan (applyAudioSettings).
+let deferred = false;
+const wanted = () => !pending.settings || Boolean(pending.settings.music || pending.settings.sfx);
 export function loadAudioWhenIdle(delay = 2500) {
-  const start = () => { loadAudio(); };
+  const start = () => {
+    if (wanted()) loadAudio();
+    else deferred = true;
+  };
   setTimeout(() => {
     try {
       if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(start, { timeout: 3000 });
@@ -92,7 +98,10 @@ export const audio = {
 // Aplica las preferencias guardadas en el store al motor.
 export function applyAudioSettings(settings) {
   pending.settings = { ...settings };
-  if (!available) return;
+  if (!available) {
+    if (deferred && wanted()) loadAudio();
+    return;
+  }
   if (typeof engine.restore === 'function') {
     call('restore', { musicEnabled: settings.music, sfxEnabled: settings.sfx, volume: settings.volume });
   }

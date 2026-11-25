@@ -104,6 +104,22 @@
   /* Pintor dormido (dominado y sin salir en una semana): anillo apagado y cuadro sin saturación. */
   --map-dormant: #cbbfae;
   --map-dormant-saturate: .25;
+  /* Señalética del mapa: placas hueso sobre poste, nombres en placa translúcida y nodos cerrados suaves. */
+  --map-sign: #fbf8f2;
+  --map-sign-line: #e2d9cb;
+  --map-post: #b5a68f;
+  --map-locked: #ece6dc;
+  --map-sign-ink: #23201c;
+  --map-sign-ink-2: #5e574f;
+  --map-tag: #fbf8f2;
+  --map-label: color-mix(in srgb, var(--map-tag) 88%, transparent);
+  --map-label-soft: color-mix(in srgb, var(--map-tag) 72%, transparent);
+  --map-post-h: 24px;
+  --map-r: 8px;
+  --map-seam: 80px;
+  --map-line-x: 30px;
+  --map-indent: 16px;
+  --map-branch-w: 74px;
   /* Sombras y velos. */
   --shadow-frame: 0 1px 1px rgba(35, 32, 28, .10), 0 6px 16px -6px rgba(35, 32, 28, .26), 0 18px 40px -18px rgba(35, 32, 28, .30);
   --shadow-card: 0 1px 2px rgba(35, 32, 28, .05), 0 6px 18px -10px rgba(35, 32, 28, .16);
@@ -203,6 +219,13 @@
     --map-tint-simbolismo-modernismo: #25222a;
     --map-dormant: #5c5246;
     --map-dormant-saturate: .25;
+    --map-sign: #4a4239;
+    --map-sign-line: #5e5348;
+    --map-sign-ink: #f2ece2;
+    --map-sign-ink-2: #cdc3b5;
+    --map-tag: #2b2621;
+    --map-post: #6e604f;
+    --map-locked: #322c26;
     --scrim: rgba(0, 0, 0, .55);
   }
 }
@@ -273,6 +296,13 @@
   --map-tint-simbolismo-modernismo: #25222a;
   --map-dormant: #5c5246;
   --map-dormant-saturate: .25;
+  --map-sign: #4a4239;
+  --map-sign-line: #5e5348;
+  --map-sign-ink: #f2ece2;
+  --map-sign-ink-2: #cdc3b5;
+  --map-tag: #2b2621;
+  --map-post: #6e604f;
+  --map-locked: #322c26;
   --scrim: rgba(0, 0, 0, .55);
 }
 /* Forzado desde Ajustes: también los controles nativos y la barra de desplazamiento. */

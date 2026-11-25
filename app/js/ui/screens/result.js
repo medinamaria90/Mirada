@@ -18,6 +18,9 @@ import { rankFor } from '../../engine/ranks.js';
 import { rankProgress } from '../../engine/profile.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
+import { branchAfterRound, statusInBranch } from '../../engine/branches.js';
+import { setMapFocus } from './path-map.js';
+import { stageRoute } from '../router.js';
 
 export function headline(accuracy) {
   if (accuracy >= 1) return 'Impecable';
@@ -104,11 +107,11 @@ export function renderResult(ctx, el, opts) {
   const goal = events.find((e) => e.type === 'goal');
   const completed = events.find((e) => e.type === 'movement-complete');
   // El sello principal: el del pintor dominado o, si no, el del movimiento.
-  const heroMedal = medals.find((m) => m.id.startsWith('artist-')) || medals.find((m) => m.id.startsWith('movement-'));
+  // Con una ronda floja no se presume de «Pintor dominado» (el sello se ganó antes).
+  const heroMedal = outcome.accuracy < UNLOCK_MIN ? null : medals.find((m) => m.id.startsWith('artist-')) || medals.find((m) => m.id.startsWith('movement-'));
   const otherMedals = medals.filter((m) => m !== heroMedal
     && !(completed && m.id === `movement-${completed.movementId}`)
     && !(goal && m.id === 'goal-1')
-    // Una sola tarjeta de racha: si hay racha, la medalla de racha no se repite.
     && !(streak && m.id.startsWith('streak-')));
 
   // «Hoy has aprendido» solo cuando el pintor se acaba de conocer o dominar: no tiene sentido en uno ya dominado.
@@ -132,6 +135,11 @@ export function renderResult(ctx, el, opts) {
   // Cierre de etapa: lo aprendido hoy (obra + rasgo del pintor), solo con la mitad de aciertos o
   // más; con menos, una frase de ánimo y «Repetir» como acción principal. Informativo, no pulsable.
   const low = (plan.kind === 'stage' || plan.kind === 'sala') && outcome.accuracy < UNLOCK_MIN;
+  // Ronda de un pintor de rama (opts.branchId: la rama desde la que se entró): su avance va arriba y pulsable,
+  // sin «La próxima vez» del camino común; al volver, el mapa se centra en esa rama.
+  const inBranch = plan.kind === 'stage' && plan.artistId ? branchAfterRound(p, index, plan.artistId, opts.branchId) : null;
+  const branchNext = inBranch && !low && inBranch.next ? index.artist(inBranch.next) : null;
+  if (inBranch) setMapFocus(inBranch.branch.id);
   if (low) {
     blocks.push('<p class="result-cheer">Vuelve a mirar sus cuadros: a la segunda se ve más.</p>');
   } else if (plan.kind === 'stage' && !(plan.level >= 2) && !alreadyMastered && plan.artistId && index.artist(plan.artistId)) {
@@ -148,7 +156,7 @@ export function renderResult(ctx, el, opts) {
   if (goal) {
     blocks.push(eventCard({ icon: goalRing(goal.goal, goal.goal, 30), kicker: 'Meta del día', title: 'Cumplida', to: 'perfil', cls: 'event-goal' }));
     // El pintor de la etapa ya sale arriba en «Hoy has aprendido»: no se repite.
-    blocks.push(dayDone(ctx, p, plan.kind === 'stage' && !low ? plan.artistId : null, { showNext: !isDeepRound }));
+    blocks.push(dayDone(ctx, p, plan.kind === 'stage' && !low ? plan.artistId : null, { next: !inBranch }));
   }
   if (completed && index.movement(completed.movementId)) {
     const m = index.movement(completed.movementId);
@@ -171,6 +179,16 @@ export function renderResult(ctx, el, opts) {
     const name = m ? m.name : a ? a.name : isSala ? index.movement(unlock.step.id)?.name : '';
     if (name) blocks.push(eventCard({ icon: icons.play(20), kicker: m ? 'Se abre un movimiento' : 'Siguiente etapa', title: name, to: stepRoute(index, unlock.step) }));
   }
+  // Ronda de un pintor de rama: el avance de la rama y, si se ha abierto, el siguiente (acción principal).
+  if (inBranch) {
+    // «Se abre X» solo si lo abre esta ronda; si ya estaba abierto, «Siguiente: X».
+    const wasOpen = branchNext && opts.before && statusInBranch(opts.before, index, branchNext.id, inBranch.branch.id) !== 'locked';
+    const complete = inBranch.total && inBranch.mastered === inBranch.total;
+    const justDone = complete && opts.before && branchAfterRound(opts.before, index, plan.artistId, inBranch.branch.id)?.mastered !== inBranch.total;
+    const title = branchNext ? (wasOpen ? `Siguiente: ${branchNext.name}` : `Se abre ${branchNext.name}`) : complete ? (justDone ? 'Todos sus pintores' : 'Rama completa') : 'Sigue en la rama';
+    if (justDone) blocks.unshift(`<section class="event event-seal event-branch-done"><span class="event-icon">${icons.laurel(26)}</span><span class="event-text"><span class="event-kicker">Rama completa</span><span class="event-title">${esc(inBranch.branch.name)}</span></span></section>`);
+    blocks.splice(justDone ? 1 : 0, 0, eventCard({ icon: icons.fork(22), kicker: `Rama · ${inBranch.branch.name} ${inBranch.mastered}/${inBranch.total}`, title, to: 'inicio', cls: 'event-branch' }));
+  }
   if (reviewUnlock && !goal && index.movement(reviewUnlock.movementId)) {
     blocks.push(eventCard({ icon: icons.repeat(22), kicker: 'Repaso disponible', title: index.movement(reviewUnlock.movementId).name, to: `repaso-${reviewUnlock.movementId}` }));
   }
@@ -179,7 +197,7 @@ export function renderResult(ctx, el, opts) {
   const roundMastered = outcome.mastered ?? outcome.accuracy >= MASTERY;
   const isDeep = plan.kind === 'stage' && plan.level >= 2;
   const retry = (plan.kind === 'stage' || plan.kind === 'sala') && !roundMastered
-    ? (plan.kind === 'stage' ? (isDeep ? deepRoute(plan.artistId, plan.level) : `etapa-${plan.artistId}`) : `sala-${plan.movementId}`) : null;
+    ? (plan.kind === 'stage' ? stageRoute(plan.artistId, inBranch?.branch.id) : `sala-${plan.movementId}`) : null;
   // Con menos de la mitad de aciertos lo primero es repetir (y la parada siguiente, si estaba
   // cerrada, sigue cerrada).
   const step = plan.kind === 'stage' && !isDeep ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
@@ -215,7 +233,7 @@ export function renderResult(ctx, el, opts) {
       <dl class="tally">
         <div><dt>Aciertos</dt><dd>${outcome.score}/${outcome.total}</dd></div>
         <div><dt>Experiencia</dt><dd>+<span class="countup" data-to="${outcome.xp}">${reduce ? outcome.xp : 0}</span></dd></div>
-        <div><dt>Precisión</dt><dd>${Math.round(outcome.accuracy * 100)}%</dd></div>
+        <div><dt>Precisión</dt><dd>${Math.round(outcome.accuracy * 100)}\u00a0%</dd></div>
       </dl>
       ${blocks.join('')}
       <div class="level-line">
@@ -228,7 +246,8 @@ export function renderResult(ctx, el, opts) {
         ${blocked ? `${gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
         <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
-        <button class="btn ${deepDone && deepNext(ctx, deepDone) ? 'btn-secondary' : 'btn-primary'} btn-wide" data-action="done" data-primary>${esc(deepDone ? 'Volver al camino' : opts.primary || 'Seguir')}</button>
+        ${branchNext ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>
+        <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>`}
         ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
         ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
         ${blocked ? '' : extraRounds(ctx, plan).map((r) => `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(r.to)}">${icons[r.icon](20)}<span>${esc(r.label)}</span></button>`).join('')}
@@ -303,7 +322,7 @@ export async function copyText(el, text) {
 
 // Cierre del día: pintores y cuadros nuevos de hoy y la próxima parada. Informativo: sin botones
 // (las miniaturas se abren a pantalla completa, como cualquier cuadro).
-function dayDone(ctx, p, shownArtist = null, { showNext = true } = {}) {
+function dayDone(ctx, p, shownArtist = null, { next = true } = {}) {
   const { index } = ctx;
   const sum = daySummary(p, index, ctx.today());
   const names = sum.artists.filter((id) => id !== shownArtist).map((id) => index.artist(id).short || index.artist(id).name);
@@ -313,7 +332,7 @@ function dayDone(ctx, p, shownArtist = null, { showNext = true } = {}) {
     names.length ? `<p class="day-done-line">Has conocido a ${esc(listNames(names))}</p>` : '',
     sum.works.length ? `<p class="day-done-line">${sum.works.length === 1 ? '1 cuadro nuevo' : `${sum.works.length} cuadros nuevos`}</p>` : '',
     thumbs ? `<div class="day-done-thumbs">${thumbs}</div>` : '',
-    showNext && sum.next ? `<p class="day-done-next">La próxima vez: <strong>${esc(sum.next.name)}</strong></p>` : '',
+    sum.next && next ? `<p class="day-done-next">La próxima vez: <strong>${esc(sum.next.name)}</strong></p>` : '',
   ].join('');
   return `<section class="day-done" aria-labelledby="day-done-h"><h2 id="day-done-h" class="event-kicker">Hoy</h2>${lines}</section>`;
 }

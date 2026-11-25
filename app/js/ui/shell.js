@@ -57,7 +57,7 @@ export function bottomNav(active) {
     `<a class="nav-item" href="#${href}" ${active === id ? 'aria-current="page"' : ''}>${icon}<span>${label}</span></a>`;
   return `<nav class="bottomnav" aria-label="Secciones">
     ${item('home', 'inicio', 'Camino', icons.arch(22))}
-    ${item('collection', 'coleccion', 'Colección', icons.frames(22))}
+    ${item('collection', 'coleccion', 'Colec\u00adción', icons.frames(22))}
     ${item('profile', 'perfil', 'Perfil', icons.user(22))}
   </nav>`;
 }

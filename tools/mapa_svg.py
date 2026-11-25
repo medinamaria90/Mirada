@@ -9,6 +9,9 @@
 # bloque oscuro): el SVG lleva su propio <style> con las dos paletas y una media query prefers-color-scheme,
 # que Chrome y Firefox evalúan con el color-scheme del <img> (así sigue al tema elegido en Ajustes).
 #
+# Bajo los carteles no se pinta relleno: el lado del cartel de la época (abajo) y el margen de las paradas
+# con el desvío de una rama quedan libres (los da el trazado: signSide y branchAt).
+#
 # Uso (desde la raíz del repositorio): python -I tools/mapa_svg.py
 import json
 import os
@@ -65,16 +68,50 @@ def tinte(h, tint_class):
     return (-10_000, f'<rect x="0" y="0" width="{W}" height="{h}" class="{tint_class}"/>')
 
 
+# Huecos de la época que se está pintando (los fija build): lado del cartel, paradas con rama y cajas de los
+# rótulos de cada parada (nombre y tramo, lado ancho).
+LIBRE = {'cartel': None, 'ramas': set(), 'rotulos': []}
+
+# Piezas que se dejan de pintar si su base cae bajo un rótulo (o justo debajo: crecen hacia arriba).
+SOBRE_ROTULO = ['caja', 'casa', 'casa_larga', 'torre', 'cupula', 'arcada', 'muralla', 'fuente', 'obelisco', 'columna',
+                'cipres', 'arbol', 'naranjo', 'arbol_desnudo', 'abeto', 'palmera', 'podado', 'cono', 'montana', 'niebla',
+                'lago', 'molino', 'chimenea', 'almiar', 'campos', 'girasoles', 'quiosco', 'farola', 'eiffel', 'noria',
+                'sagrada', 'pedrera', 'secesion', 'cafe', 'ruina', 'castillo', 'escalinata']
+MARGEN_X = 14
+ALTO_PIEZA = 34
+
+
+def _libre(nombre):
+    pieza = getattr(M, nombre)
+
+    def envuelta(*a, **k):
+        x, y = a[0], a[1]
+        for r in LIBRE['rotulos']:
+            if r['x0'] - MARGEN_X <= x <= r['x1'] + MARGEN_X and r['y0'] <= y <= r['y1'] + ALTO_PIEZA:
+                return (y, '')
+        return pieza(*a, **k)
+    return envuelta
+
+
+for _n in SOBRE_ROTULO:
+    setattr(M, _n, _libre(_n))
+
+
 def margenes(p, h, arbol):
-    """Relleno común: algo pequeño en el margen estrecho de cada nodo y a los lados de la cartela (abajo)."""
+    """Relleno común (árboles, nunca farolas ni palos sueltos): algo pequeño en el margen estrecho de cada nodo y en las esquinas de abajo, salvo bajo
+    los carteles (el de la época y los de las ramas)."""
     out = []
     for i, q in enumerate(p):
+        if i in LIBRE['ramas']:
+            continue
         xm = mismo(q)
         out.append(arbol(xm, q[1] + 12 + (i % 2) * 6, i))
         if i + 1 < len(p):
             my = mid(q, p[i + 1])[1]
             out.append(arbol(xm + (14 if xm < 195 else -14), my + 10, i + 1))
-    out += [arbol(44, h - 42, 0), arbol(346, h - 38, 1), arbol(28, h - 20, 2), arbol(362, h - 16, 3)]
+    esquinas = [(44, h - 42, 0), (346, h - 38, 1), (28, h - 20, 2), (362, h - 16, 3)]
+    lado_cartel = LIBRE['cartel']
+    out += [arbol(x, y, i) for x, y, i in esquinas if not lado_cartel or (x < 195) != (lado_cartel == 'left')]
     return out
 
 
@@ -155,7 +192,7 @@ def deco_norte(p, h):
     for i in range(5, len(p)):
         x = lado(p[i])
         out += [M.casa(x - 10, p[i][1] + 16, 20, 20, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.arbol_desnudo(x + 24, p[i][1] + 14, 24), M.arbol(x - 34, p[i][1] + 18, 8)]
-    return out + margenes(p, h, lambda x, y, i: M.arbol(x, y, 7) if i % 2 else M.arbol_desnudo(x, y, 20))
+    return out + margenes(p, h, lambda x, y, i: M.arbol(x, y, 7 + (i % 2)))
 
 
 def deco_barroco(p, h):
@@ -188,7 +225,7 @@ def deco_barroco(p, h):
     for i in range(7, len(p)):
         x = lado(p[i])
         out += [M.casa_larga(x - 20, p[i][1] + 12, 40, 18, 12, win=(3, 1), arco=True), M.naranjo(x + 34, p[i][1] + 16), M.naranjo(x - 34, p[i][1] + 18)]
-    return out + margenes(p, h, lambda x, y, i: naranjos(x, y, i) if i % 3 else M.farola(x, y, 14))
+    return out + margenes(p, h, naranjos)
 
 
 def deco_rococo(p, h):
@@ -283,7 +320,7 @@ def deco_impresionismo(p, h):
     for i in range(5, len(p)):
         x = lado(p[i])
         out += [M.caja(x - 30, p[i][1] + 12, 60, 24, 16, win=(4, 1), cornisa=True), M.arbol(x + 40, p[i][1] + 14, 8), M.arbol(x - 40, p[i][1] + 16, 8)]
-    return out + margenes(p, h, lambda x, y, i: arboles(x, y, i) if i % 2 else M.farola(x, y, 14))
+    return out + margenes(p, h, arboles)
 
 
 def deco_postimpresionismo(p, h):
@@ -375,11 +412,14 @@ def style(light, dark, era):
 
 def build(era, light, dark):
     pts = [(q['x'], q['y']) for q in era['points']]
+    LIBRE['cartel'] = era.get('signSide')
+    LIBRE['ramas'] = set(era.get('branchAt', []))
+    LIBRE['rotulos'] = era.get('labels', [])
     pieces = [tinte(era['h'], CLASS['tint'])] + DECO[era['id']](pts, era['h'])
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))
     points = ' '.join(f'{M.f(x)},{M.f(y)}' for x, y in pts)
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {era["h"]}" width="{W}" height="{era["h"]}" data-points="{points}">'
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {era["h"]}" width="{W}" height="{era["h"]}" preserveAspectRatio="none" data-points="{points}">'
             f'{style(light, dark, era["id"])}{body}</svg>')
 
 

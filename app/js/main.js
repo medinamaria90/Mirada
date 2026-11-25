@@ -15,6 +15,20 @@ import { readSession } from './state/session.js';
 import { applyTheme } from './ui/theme.js';
 
 const root = document.getElementById('app');
+// Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
+// importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
+const HOME_MODULES = [
+  'engine/branches.js', 'engine/goals.js', 'engine/questions.js', 'engine/review.js', 'ui/icons.js',
+  'ui/screens/home.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js', 'ui/screens/path-signs.js', 'ui/shell.js',
+];
+function preloadModules(list) {
+  for (const path of list) {
+    const link = document.createElement('link');
+    link.rel = 'modulepreload';
+    link.href = `js/${path}`;
+    document.head.appendChild(link);
+  }
+}
 const loadWelcome = () => import('./ui/screens/welcome.js');
 const loadHome = () => import('./ui/screens/home.js');
 const loadFlows = () => import('./ui/screens/flows.js');
@@ -132,7 +146,10 @@ async function boot() {
   // La primera pantalla se pide ya, a la vez que el catálogo.
   const atHome = /^#?(inicio)?$/.test(location.hash || '');
   if (!store.get().onboarded) loadWelcome().catch(() => {});
-  else if (atHome) loadHome().catch(() => {});
+  else if (atHome) {
+    preloadModules(HOME_MODULES);
+    loadHome().catch(() => {});
+  }
 
   let catalog;
   try {
@@ -268,8 +285,7 @@ async function boot() {
     const flow = (fn) => lazy(token, screen, loadFlows, (m) => fn(m), true);
     switch (route.name) {
       case 'welcome': return welcome();
-      case 'stage': return flow((m) => m.renderStage(ctx, screen, route.artistId));
-      case 'deep': return flow((m) => m.renderDeep(ctx, screen, route.artistId, route.level));
+      case 'stage': return flow((m) => m.renderStage(ctx, screen, route.artistId, route.branchId));
       case 'sala': return flow((m) => m.renderSala(ctx, screen, route.movementId));
       case 'intro': return flow((m) => m.renderIntro(ctx, screen, route.movementId));
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));

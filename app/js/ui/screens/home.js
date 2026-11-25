@@ -1,11 +1,11 @@
 // Inicio: el mapa del camino (ui/screens/path-map.js) y, al terminarlo, el cierre.
 
-import { esc, onAction } from '../dom.js';
+import { esc, onAction, accentStyle } from '../dom.js';
 import { icons } from '../icons.js';
 import { page } from '../shell.js';
 import { artFrame } from '../art.js';
-import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent } from './path-map.js';
-import { isPathMastered, stepsToMaster, isPathComplete } from '../../engine/progress.js';
+import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode } from './path-map.js';
+import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } from '../../engine/progress.js';
 import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf } from '../../engine/dates.js';
@@ -53,21 +53,24 @@ export function renderHome(ctx, el) {
     <div class="home-grid">
       <aside class="home-side">${sideExtras(ctx)}</aside>
       <div class="home-main">
-        <ol class="path path-map" aria-label="Camino por movimientos, del Renacimiento arriba hacia tu museo">${renderPathMap(ctx)}</ol>
+        <a class="skip-link" href="#parada" data-action="goto-current">Ir a tu parada</a>
+        <ol class="path path-map" aria-label="Camino por movimientos, del Renacimiento arriba hacia tu museo">${renderPathMap(ctx, { lazy: true })}</ol>
         ${finale}
       </div>
     </div>`);
 
   playEra('menu');
   watchLandscapes(el);
-  addDeepBadges(ctx, el);
+  // Las épocas lejanas se pintan después, una por tarea; el modo del mapa sigue al tamaño de letra y ventana.
+  const stops = [fillPendingEras(ctx, el, () => watchLandscapes(el)), watchMapMode(el.querySelector('.path-map'))];
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
   if (!coachSeen()) {
     let stop = () => {};
     let left = false;
     import('../coach.js').then((m) => { if (!left) stop = m.maybeStartCoach(el); }).catch((err) => console.error(err));
-    ctx.setCleanup(() => { left = true; stop(); });
+    stops.push(() => { left = true; stop(); });
   }
+  ctx.setCleanup(() => stops.forEach((fn) => fn()));
 
   onAction(el, {
     ...pathActions(ctx),
@@ -114,12 +117,32 @@ function sideExtras(ctx) {
       </button>`
     : '';
   return `<div class="side-extras">
+      ${sideNow(ctx)}
       <section class="side-week" aria-label="${active} días con práctica esta semana">
         <span class="side-head"><span class="side-title">Esta semana</span><span class="side-count">${active}/7</span></span>
         <div class="week" aria-hidden="true">${cells}</div>
       </section>
       ${coll}
     </div>`;
+}
+
+// Escritorio: la época actual, su avance y la siguiente parada, con su botón (lo mismo que el nodo del mapa).
+function sideNow(ctx) {
+  const { index } = ctx;
+  const p = ctx.store.get().progress;
+  const cur = nextStep(p, index);
+  if (!cur) return '';
+  const m = index.movement(cur.movementId);
+  const steps = index.stepsOf(m.id);
+  const done = steps.filter((s) => stepStatus(p, index, s) === 'mastered').length;
+  const status = stepStatus(p, index, cur);
+  const name = cur.type === 'sala' ? 'Conoce el movimiento' : index.artist(cur.id).name;
+  return `<section class="side-now" style="${accentStyle(m.accent)}" aria-labelledby="side-now-h">
+      <span class="side-head"><span class="side-title" id="side-now-h">${esc(m.name)}</span><span class="side-count">${done}/${steps.length}</span></span>
+      <span class="side-bar" role="img" aria-label="${done} de ${steps.length} dominados"><span style="width:${Math.round((done / steps.length) * 100)}%"></span></span>
+      <p class="side-next">Siguiente: <strong>${esc(name)}</strong></p>
+      <button class="btn btn-primary btn-wide" data-action="${cur.type === 'sala' ? 'sala' : 'stage'}" data-id="${esc(cur.id)}" data-status="${status}">${status === 'started' ? 'Seguir' : 'Empezar'}</button>
+    </section>`;
 }
 
 export { scrollToCurrent };
