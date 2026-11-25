@@ -15,7 +15,7 @@ import { encodeChallenge } from '../../engine/challenge.js';
 import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks } from '../../engine/levels.js';
-import { playStatus } from '../../engine/branches.js';
+import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
@@ -277,7 +277,7 @@ function withStory(ctx, el, artistId, level, show) {
 export function renderStage(ctx, el, artistId, branchId = '') {
   const { index } = ctx;
   const artist = index.artist(artistId);
-  const status = artist ? playStatus(ctx.store.get().progress, index, artistId) : null;
+  const status = artist ? playStatusFrom(ctx.store.get().progress, index, artistId, branchId) : null;
   if (!status) return leave(ctx);
   if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);

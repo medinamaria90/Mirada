@@ -15,7 +15,7 @@ import { rankFor } from '../../engine/ranks.js';
 import { rankProgress } from '../../engine/profile.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
-import { branchAfterRound, playStatus } from '../../engine/branches.js';
+import { branchAfterRound, statusInBranch } from '../../engine/branches.js';
 import { setMapFocus } from './path-map.js';
 import { stageRoute } from '../router.js';
 
@@ -76,7 +76,8 @@ export function renderResult(ctx, el, opts) {
   const goal = events.find((e) => e.type === 'goal');
   const completed = events.find((e) => e.type === 'movement-complete');
   // El sello principal: el del pintor dominado o, si no, el del movimiento.
-  const heroMedal = medals.find((m) => m.id.startsWith('artist-')) || medals.find((m) => m.id.startsWith('movement-'));
+  // Con una ronda floja no se presume de «Pintor dominado» (el sello se ganó antes).
+  const heroMedal = outcome.accuracy < UNLOCK_MIN ? null : medals.find((m) => m.id.startsWith('artist-')) || medals.find((m) => m.id.startsWith('movement-'));
   const otherMedals = medals.filter((m) => m !== heroMedal
     && !(completed && m.id === `movement-${completed.movementId}`)
     && !(goal && m.id === 'goal-1')
@@ -143,10 +144,10 @@ export function renderResult(ctx, el, opts) {
   // Ronda de un pintor de rama: el avance de la rama y, si se ha abierto, el siguiente (acción principal).
   if (inBranch) {
     // «Se abre X» solo si lo abre esta ronda; si ya estaba abierto, «Siguiente: X».
-    const wasOpen = branchNext && opts.before && playStatus(opts.before, index, branchNext.id) !== 'locked';
+    const wasOpen = branchNext && opts.before && statusInBranch(opts.before, index, branchNext.id, inBranch.branch.id) !== 'locked';
     const complete = inBranch.total && inBranch.mastered === inBranch.total;
     const justDone = complete && opts.before && branchAfterRound(opts.before, index, plan.artistId, inBranch.branch.id)?.mastered !== inBranch.total;
-    const title = branchNext ? (wasOpen ? `Siguiente: ${branchNext.name}` : `Se abre ${branchNext.name}`) : complete ? 'Rama completa' : 'Sigue en la rama';
+    const title = branchNext ? (wasOpen ? `Siguiente: ${branchNext.name}` : `Se abre ${branchNext.name}`) : complete ? (justDone ? 'Todos sus pintores' : 'Rama completa') : 'Sigue en la rama';
     if (justDone) blocks.unshift(`<section class="event event-seal event-branch-done"><span class="event-icon">${icons.laurel(26)}</span><span class="event-text"><span class="event-kicker">Rama completa</span><span class="event-title">${esc(inBranch.branch.name)}</span></span></section>`);
     blocks.splice(justDone ? 1 : 0, 0, eventCard({ icon: icons.fork(22), kicker: `Rama · ${inBranch.branch.name} ${inBranch.mastered}/${inBranch.total}`, title, to: 'inicio', cls: 'event-branch' }));
   }
@@ -190,7 +191,7 @@ export function renderResult(ctx, el, opts) {
       <dl class="tally">
         <div><dt>Aciertos</dt><dd>${outcome.score}/${outcome.total}</dd></div>
         <div><dt>Experiencia</dt><dd>+<span class="countup" data-to="${outcome.xp}">${reduce ? outcome.xp : 0}</span></dd></div>
-        <div><dt>Precisión</dt><dd>${Math.round(outcome.accuracy * 100)}%</dd></div>
+        <div><dt>Precisión</dt><dd>${Math.round(outcome.accuracy * 100)}\u00a0%</dd></div>
       </dl>
       ${blocks.join('')}
       <div class="level-line">

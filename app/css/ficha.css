@@ -28,6 +28,8 @@
 .as-source { display: inline-flex; align-items: center; min-height: 48px; padding: 0 .6rem; color: var(--brand-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .as-look { display: flex; gap: .7rem; align-items: flex-start; padding: .8rem .9rem; border-radius: var(--radius-sm); background: var(--accent-soft); border-left: 3px solid var(--accent-ui); font: 400 1.02rem/1.4 var(--font); }
 .as-look-icon { flex: none; color: var(--accent-ui); margin-top: 2px; }
+.as-lock { display: flex; gap: .55rem; align-items: flex-start; margin: 0; padding: .7rem .9rem; border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink-2); font: 500 1rem/1.4 var(--font); }
+.as-lock svg { flex: none; margin-top: 2px; }
 .as-section { display: grid; gap: .6rem; }
 .as-h { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.1rem/1.1 var(--font); padding-bottom: .4rem; border-bottom: 1px solid var(--line); }
 .as-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }

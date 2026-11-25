@@ -76,6 +76,30 @@ export function branchProgress(progress, index, branchId) {
   };
 }
 
+// Estado de un pintor dentro de una rama concreta (si la rama no lo tiene, null). Desde una rama, la ruta, la
+// ficha y el resultado usan este y no el mejor de todas sus ramas.
+export function statusInBranch(progress, index, artistId, branchId) {
+  const row = index.branch(branchId) ? branchStatus(progress, index, branchId).find((r) => r.artistId === artistId) : null;
+  return row ? row.status : null;
+}
+
+// Qué falta para abrir a un pintor cerrado dentro de una rama: las paradas del primer tramo de su época sin
+// dominar o el propio de la rama, anterior a él, aún sin superar. { pending: [steps], before: artistId | null }
+export function branchLockReason(progress, index, artistId, branchId) {
+  const rows = branchStatus(progress, index, branchId);
+  const row = rows.find((r) => r.artistId === artistId);
+  if (!row || row.status !== 'locked') return null;
+  if (!row.reached) return { pending: tramoPending(progress, index, row.opensAt), before: null };
+  const before = rows.slice(0, rows.indexOf(row)).filter((r) => !r.onPath).find((r) => !passed(progress, index, r.artistId));
+  return { pending: [], before: before ? before.artistId : null };
+}
+
+// Estado jugable entrando desde una rama (si se indica y lo contiene) o, si no, el de playStatus.
+export function playStatusFrom(progress, index, artistId, branchId = '') {
+  const inBranch = branchId ? statusInBranch(progress, index, artistId, branchId) : null;
+  return inBranch || playStatus(progress, index, artistId);
+}
+
 const PLAY_ORDER = ['mastered', 'started', 'available'];
 
 // Estado jugable de un pintor: su parada del camino o, si no tiene, el mejor de sus ramas.
@@ -105,11 +129,14 @@ export function branchOfRound(index, artistId, branchId = '') {
 // Tras una ronda de un pintor de rama: su rama (la de origen), el avance (pintores propios dominados) y el
 // siguiente pintor propio ya abierto, si lo hay. null si el pintor está en el camino común o no es de ninguna rama.
 export function branchAfterRound(progress, index, artistId, branchId = '') {
-  if (index.pathIndex(artistId) >= 0) return null;
+  const onPath = index.pathIndex(artistId) >= 0;
+  // Uno del camino común solo es «de rama» si se entra desde una rama que lo tiene.
+  if (onPath && !(branchId && index.branch(branchId)?.artists.includes(artistId))) return null;
   const branch = branchOfRound(index, artistId, branchId);
   if (!branch) return null;
-  const rows = branchStatus(progress, index, branch.id).filter((r) => !r.onPath);
-  const at = rows.findIndex((r) => r.artistId === artistId);
-  const next = rows.slice(at + 1).find((r) => r.status === 'available' || r.status === 'started') || null;
+  const all = branchStatus(progress, index, branch.id);
+  const at = all.findIndex((r) => r.artistId === artistId);
+  const rows = all.filter((r) => !r.onPath);
+  const next = all.slice(at + 1).find((r) => !r.onPath && (r.status === 'available' || r.status === 'started')) || null;
   return { branch, mastered: rows.filter((r) => r.status === 'mastered').length, total: rows.length, next: next ? next.artistId : null };
 }

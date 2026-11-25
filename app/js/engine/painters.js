@@ -2,7 +2,7 @@
 // líneas de vida y qué se puede jugar. Puro: no toca el DOM.
 
 import { seenWorks, deepStatus } from './levels.js';
-import { playStatus } from './branches.js';
+import { playStatusFrom } from './branches.js';
 
 export const MAX_LIFE_LINES = 4;
 
@@ -66,8 +66,9 @@ export function lifeLines(artist, story, movementName = '') {
 
 // Lo que se puede jugar desde la ficha: su etapa (del camino o de una rama), si ya está abierta. La regla es
 // la de la ruta (branches.js → playStatus). { stage: 'available' | 'started' | 'mastered' | null }
-export function playTargets(progress, index, artistId) {
-  const status = playStatus(progress, index, artistId);
+// branchId: ficha abierta desde una rama (manda el estado en esa rama).
+export function playTargets(progress, index, artistId, branchId = '') {
+  const status = playStatusFrom(progress, index, artistId, branchId);
   return { stage: status && status !== 'locked' ? status : null };
 }
 

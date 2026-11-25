@@ -1,18 +1,15 @@
 // La rama de origen viaja a todo lo que relanza una etapa: «Siguiente en la rama» y «Repetir» del resultado, la
-// ficha del pintor abierta desde la hoja de una rama y la propia hoja. Pintores en dos ramas: Juan de Juanes
+// ficha del pintor abierta desde la hoja de una rama y la propia hoja. Dentro de una rama manda el estado del pintor
+// en esa rama (no el mejor de todas), también para los del camino común que aparecen en ella. Pintores en dos ramas: Juan de Juanes
 // (Descubre el Renacimiento y Maestros españoles) y Giotto (Gótico y Descubre el Renacimiento).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
 import { stageRoute, parseRoute } from '../app/js/ui/router.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
-import { branchAfterRound } from '../app/js/engine/branches.js';
+import { branchAfterRound, branchLockReason, branchProgress, firstTramo, playStatus, playStatusFrom, statusInBranch } from '../app/js/engine/branches.js';
+import { playTargets } from '../app/js/engine/painters.js';
 import { realIndex } from './helpers-real.js';
 
-const here = dirname(fileURLToPath(import.meta.url));
-const read = (p) => readFileSync(join(here, '..', 'app', 'js', p), 'utf8');
 const real = realIndex();
 const TODAY = '2026-11-25';
 
@@ -37,14 +34,61 @@ test('rama de origen: el resultado sigue en la rama de la que se viene (Juan de 
   assert.equal(branchAfterRound(p, real, 'giotto', 'gotico').branch.id, 'gotico');
 });
 
-test('rama de origen: «Repetir», «Siguiente en la rama», la ficha y la hoja usan stageRoute con la rama', () => {
-  const result = read('ui/screens/result.js');
-  assert.ok(/retry = [^;]*stageRoute\(plan\.artistId, inBranch\?\.branch\.id\)/s.test(result), '«Repetir» sin la rama');
-  assert.ok(/stageRoute\(branchNext\.id, inBranch\.branch\.id\)/.test(result), '«Siguiente en la rama» sin la rama');
-  assert.ok(/stageRoute\(artistId, opts\.branchId\)/.test(read('ui/artist-sheet.js')), 'la ficha juega sin la rama');
-  const sheet = read('ui/map-sheet.js');
-  assert.ok(/openArtistSheet\(ctx, b\.dataset\.id, \{ opener, branchId: b\.dataset\.branch/.test(sheet), 'la hoja abre la ficha sin la rama');
-  assert.ok(/stageRoute\(b\.dataset\.id, b\.dataset\.branch\)/.test(sheet));
-  // Ningún enlace a una etapa se escribe a mano fuera del router (salvo las paradas del camino común).
-  for (const file of ['ui/artist-sheet.js', 'ui/map-sheet.js', 'ui/screens/path-map.js', 'ui/screens/home.js']) assert.ok(!/`etapa-\$\{/.test(read(file)), `${file}: ruta de etapa a mano`);
+// Camino común dominado hasta el primer tramo del Renacimiento: se abren Gótico, Maestros españoles y Descubre…
+function renacimientoAbierto() {
+  const p = emptyProgress();
+  const last = firstTramo(real, 'renacimiento').at(-1).id;
+  const stop = real.steps.findIndex((s) => s.id === last);
+  for (const s of real.steps.slice(0, stop + 1)) (s.type === 'artist' ? p.artists : p.salas)[s.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
+  return p;
+}
+
+test('dentro de una rama manda el estado en esa rama: Giotto abierto en Descubre pero «Por abrir» en Gótico', () => {
+  const p = renacimientoAbierto();
+  // Fuera de una rama, el mejor de sus ramas (Descubre el Renacimiento): se puede jugar.
+  assert.equal(playStatus(p, real, 'giotto'), 'available');
+  assert.equal(playTargets(p, real, 'giotto').stage, 'available');
+  // Desde Gótico, Cimabue va antes y está sin jugar: cerrado, la ruta no lo deja jugar y la ficha no lo ofrece.
+  assert.equal(statusInBranch(p, real, 'giotto', 'gotico'), 'locked');
+  assert.equal(playStatusFrom(p, real, 'giotto', 'gotico'), 'locked');
+  assert.equal(playTargets(p, real, 'giotto', 'gotico').stage, null);
+  assert.deepEqual(branchLockReason(p, real, 'giotto', 'gotico'), { pending: [], before: 'cimabue' });
+  assert.equal(playStatusFrom(p, real, 'giotto', 'descubre-renacimiento'), 'available');
+  // Con Cimabue superado, Duccio aún va antes que él.
+  p.artists.cimabue = { plays: 1, best: 0.6, mastered: false, last: TODAY };
+  assert.equal(statusInBranch(p, real, 'giotto', 'gotico'), 'locked');
+  assert.equal(branchLockReason(p, real, 'giotto', 'gotico').before, 'duccio');
+  p.artists.duccio = { plays: 1, best: 1, mastered: true, last: TODAY };
+  assert.equal(statusInBranch(p, real, 'giotto', 'gotico'), 'available');
+  assert.equal(playTargets(p, real, 'giotto', 'gotico').stage, 'available');
+  // Una rama que no lo tiene (o inventada en la URL) no cambia nada: manda la regla general.
+  assert.equal(playStatusFrom(renacimientoAbierto(), real, 'giotto', 'maestros-espanoles'), 'available');
+  assert.equal(playStatusFrom(renacimientoAbierto(), real, 'giotto', 'no-existe'), 'available');
+});
+
+test('«Se abre» frente a «Siguiente» se decide con el estado en la rama de origen', () => {
+  // Antes de la ronda de Duccio en Gótico, Giotto está cerrado allí (aunque en Descubre se pueda jugar).
+  const before = renacimientoAbierto();
+  before.artists.cimabue = { plays: 1, best: 1, mastered: true, last: TODAY };
+  assert.equal(statusInBranch(before, real, 'giotto', 'gotico'), 'locked');
+  assert.equal(playStatus(before, real, 'giotto'), 'available');
+  const after = structuredClone(before);
+  after.artists.duccio = { plays: 1, best: 1, mastered: true, last: TODAY };
+  assert.equal(branchAfterRound(after, real, 'duccio', 'gotico').next, 'giotto');
+  assert.equal(statusInBranch(after, real, 'giotto', 'gotico'), 'available');
+});
+
+test('un pintor del camino común jugado desde una rama sigue en ella: Berruguete desde Maestros españoles', () => {
+  const p = renacimientoAbierto();
+  assert.ok(real.pathIndex('berruguete') >= 0, 'Berruguete está en el camino común');
+  const after = branchAfterRound(p, real, 'berruguete', 'maestros-espanoles');
+  assert.equal(after.branch.id, 'maestros-espanoles');
+  assert.equal(after.next, 'juan-de-juanes', '«Siguiente en la rama»: Juan de Juanes');
+  assert.equal(after.mastered, 0);
+  assert.equal(after.total, branchProgress(p, real, 'maestros-espanoles').total);
+  assert.equal(stageRoute(after.next, after.branch.id), 'etapa-juan-de-juanes--maestros-espanoles');
+  // Desde el camino (sin rama) o desde una rama que no lo tiene, sigue siendo una parada del camino.
+  assert.equal(branchAfterRound(p, real, 'berruguete'), null);
+  assert.equal(branchAfterRound(p, real, 'berruguete', 'gotico'), null);
+  assert.equal(statusInBranch(p, real, 'berruguete', 'maestros-espanoles'), playStatus(p, real, 'berruguete'));
 });

@@ -249,7 +249,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .sign-plate.is-locked, .branch.is-locked .branch-plate { background: color-mix(in srgb, var(--map-sign) 55%, var(--map-tag)); }
 .sign-more { position: absolute; right: calc(.4 * var(--map-fs)); top: 50%; display: grid; place-items: center; transform: translateY(-50%); color: var(--map-sign-ink-2); }
 .sign-seal {
-  position: absolute; top: -11px; right: -9px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;
+  position: absolute; top: -13px; right: 6px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;
   background: var(--gold); color: var(--on-gold); box-shadow: 0 0 0 2px var(--map-sign);
 }
 
@@ -293,7 +293,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .stage-name, .stage-kicker { max-width: 100%; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)) calc(.24 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-label); overflow-wrap: break-word; hyphens: auto; }
 .stage-kicker { font: 600 calc(.75 * var(--map-fs))/1.2 var(--font); letter-spacing: .01em; color: var(--accent-ui); white-space: nowrap; }
 /* El tramo y el botón, algo apartados del nodo: el sendero sale de él en diagonal por ese lado. */
-.stage-kicker, .stage-text > .stage-meta { margin-inline-start: var(--map-indent); }
+.stage-kicker, .stage-text > .stage-meta { margin-inline-start: var(--map-indent); max-width: calc(100% - var(--map-indent)); }
 .stage-spot.is-right .stage-kicker, .stage-spot.is-right .stage-text > .stage-meta { margin-inline: 0 var(--map-indent); }
 .stage-kicker-count { margin-left: calc(.2 * var(--map-fs)); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
 .stage-meta { font-size: calc(.76 * var(--map-fs)); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
@@ -377,8 +377,9 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
   background: var(--map-sign); box-shadow: 0 1.5px 0 var(--map-sign-line);
 }
 .branch-name { font: 600 calc(.75 * var(--map-fs))/1.15 var(--font); color: var(--map-sign-ink); text-wrap: balance; overflow-wrap: break-word; hyphens: manual; }
-/* El contador, bajo el hito (la placa queda baja y no roza la parada de arriba). */
-.branch-count { position: absolute; top: 100%; left: 50%; margin-top: 4px; transform: translateX(-50%); width: max-content; max-width: calc(21.5vw - 16px); text-align: center; justify-content: center; flex-wrap: wrap; padding: 1px 6px; border-radius: var(--map-r); background: var(--map-label); display: flex; align-items: center; gap: calc(.2 * var(--map-fs)); font: 600 calc(.75 * var(--map-fs))/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+/* El contador: panel complementario entre la placa y el hito, dentro del botón (el contorno de foco lo rodea y no
+   pisa el desvío, que llega al hito por abajo). Con la letra grande se parte (guiones blandos) sin salirse. */
+.branch-count { display: block; max-width: 100%; margin-top: -2px; padding: 1px 3px; border-radius: var(--map-r); background: var(--map-label); text-align: center; font: 600 calc(.75 * var(--map-fs))/1.1 var(--font); color: var(--ink-2); hyphens: manual; font-variant-numeric: lining-nums tabular-nums; }
 .branch-dot {
   display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; background: var(--map-tag); color: var(--accent-ui);
   box-shadow: 0 0 0 2px var(--accent-ui), 0 3px 0 2px var(--map-sign-line); transition: transform .15s var(--ease);
@@ -416,7 +417,10 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .path-map.is-linear .stage-kicker { white-space: normal; }
 .path-map.is-linear .branch, .path-map.is-linear .branch.is-locked { position: relative; transform: none; flex-direction: row-reverse; justify-content: flex-end; width: calc(100% - var(--map-line-x) + 20px); max-width: none; margin-left: calc(var(--map-line-x) - 20px); gap: 10px; }
 .path-map.is-linear .branch-plate { justify-items: start; text-align: left; }
-.path-map.is-linear .branch-count { position: static; transform: none; margin: 0; background: none; padding: 0; max-width: none; justify-content: flex-start; text-align: left; }
+.path-map.is-linear .branch, .path-map.is-linear .branch.is-locked { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; row-gap: 2px; justify-items: start; }
+.path-map.is-linear .branch-dot { grid-column: 1; grid-row: 1 / span 2; }
+.path-map.is-linear .branch-plate { grid-column: 2; grid-row: 1; align-self: end; }
+.path-map.is-linear .branch-count { grid-column: 2; grid-row: 2; align-self: start; margin: 0; padding: 0; background: none; text-align: left; }
 .path-map.is-linear .branch { min-height: 48px; align-items: center; }
 .path-map.is-linear .stage-kicker, .path-map.is-linear .stage-text > .stage-meta, .path-map.is-linear .stage-spot.is-right .stage-kicker, .path-map.is-linear .stage-spot.is-right .stage-text > .stage-meta { margin-inline: 0; }
 .path-map.is-linear .lock-note { position: static; transform: none; width: auto; max-width: none; margin: calc(.4 * var(--map-fs)) 0 0 calc(var(--map-line-x) + 30px); }

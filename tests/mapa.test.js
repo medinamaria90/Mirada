@@ -233,7 +233,7 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   // Abierta (primer tramo dominado): el grupo dice cuántas hay abiertas.
   const open = renderPathMap(ctxWith(real, masterFirst(real, 2)));
   assert.ok(/class="branch is-open is-group" data-action="branches" data-id="renacimiento"/.test(open));
-  assert.ok(open.includes('<span class="branch-count">2 abiertas</span>') && /class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
+  assert.ok(open.includes('<span class="branch-count">2 abier­tas</span>') && /class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
 });
 
 test('mapa: textos según el estado (hito, escuelas dominadas, parada actual)', () => {

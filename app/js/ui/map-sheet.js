@@ -21,7 +21,8 @@ const STATE_ICON = { mastered: 'check', started: 'play', available: 'play', lock
 let current = null;
 
 
-async function open(ctx, opener, accent, body) {
+// focus: selector del control que recibe el foco al abrir (tras «Atrás», la fila de la que se vino).
+async function open(ctx, opener, accent, body, focus = '') {
   if (current) current.close();
   await loadCss('css/mapa-hoja.css');
   const dlg = document.createElement('dialog');
@@ -56,7 +57,7 @@ async function open(ctx, opener, accent, body) {
     }
     if (b.dataset.ms === 'back') {
       close();
-      return openEraBranchesSheet(ctx, b.dataset.id, opener);
+      return openEraBranchesSheet(ctx, b.dataset.id, opener, b.dataset.from || '');
     }
     if (b.dataset.ms === 'artist') {
       close();
@@ -66,7 +67,7 @@ async function open(ctx, opener, accent, body) {
   });
   dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); close(); });
   try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }
-  dlg.querySelector('.ms-close').focus({ preventScroll: true });
+  (focus && dlg.querySelector(focus) || dlg.querySelector('.ms-close')).focus({ preventScroll: true });
   return handle;
 }
 
@@ -128,7 +129,7 @@ export function openBranchSheet(ctx, branchId, opener, fromEra = '') {
   const status = st.open
     ? `<p class="ms-progress"><span class="ms-bar"><span style="width:${st.total ? Math.round((st.mastered / st.total) * 100) : 0}%"></span></span><span>${st.mastered} de ${st.total} dominados</span></p>`
     : `<p class="ms-lock">${icons.lock(16)}<span>${esc(cap(branchWhy(index, st)))}.</span></p>`;
-  const back = fromEra ? `<button type="button" class="icon-btn ms-back" data-ms="back" data-id="${esc(fromEra)}" aria-label="Atrás: ramas de esta época">${icons.prev(22)}</button>` : '';
+  const back = fromEra ? `<button type="button" class="icon-btn ms-back" data-ms="back" data-id="${esc(fromEra)}" data-from="${esc(branchId)}" aria-label="Atrás: ramas de esta época">${icons.prev(22)}</button>` : '';
   const body = `${back}<header class="ms-head"><p class="ms-kicker">${esc(kind.kicker)}</p><h2 class="ms-title" id="ms-title">${esc(branch.name)}</h2></header>
     ${status}${about ? `<p class="ms-about">${esc(about)}</p>` : ''}${list}`;
   return open(ctx, opener, own?.accent || index.movement(branch.opensAt)?.accent, body);
@@ -137,7 +138,8 @@ export function openBranchSheet(ctx, branchId, opener, fromEra = '') {
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 
 // Todas las ramas de una época (cuando son más de dos van en un solo cartel): cada fila abre la hoja de su rama.
-export function openEraBranchesSheet(ctx, eraId, opener) {
+// focusBranch: al volver con «Atrás» desde una rama, el foco vuelve a su fila.
+export function openEraBranchesSheet(ctx, eraId, opener, focusBranch = '') {
   const { index } = ctx;
   const movement = index.movement(eraId);
   const era = pathLayout(index).eras.find((e) => e.id === eraId);
@@ -156,5 +158,6 @@ export function openEraBranchesSheet(ctx, eraId, opener) {
   }).join('');
   const body = `<header class="ms-head"><p class="ms-kicker">${esc(movement.name)}</p><h2 class="ms-title" id="ms-title">Ramas de esta época</h2></header>
     <ul class="ms-list">${rows}</ul>`;
-  return open(ctx, opener, movement.accent, body);
+  const focus = focusBranch && /^[a-z0-9-]+$/.test(focusBranch) ? `.ms-row[data-ms="branch"][data-id="${focusBranch}"]` : '';
+  return open(ctx, opener, movement.accent, body, focus);
 }

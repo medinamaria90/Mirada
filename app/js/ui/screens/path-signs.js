@@ -168,14 +168,14 @@ export function branchSpot(spot, branch, st, index, h) {
   const short = branchShort(branch, index);
   const n = st.pending.length;
   const allDone = spot.extra && st.total && st.mastered === st.total;
-  const fresh = allDone ? `${st.mastered}/${st.total}` : `${st.fresh} ${st.fresh === 1 ? 'nuevo' : 'nuevos'}`;
+  const fresh = allDone ? `${st.mastered}/${st.total}` : `${st.fresh} ${st.fresh === 1 ? 'nue­vo' : 'nue­vos'}`;
   const label = spot.extra
     ? `${branch.name}: ${allDone ? `${st.total} de ${st.total} dominados` : `${st.fresh === 1 ? 'un pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época`}${st.open ? '' : `, ${branchWhy(index, st)}`}`
-    : st.open ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} dominados` : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
+    : done ? `${branch.name}: rama completa, ${st.total} de ${st.total} dominados` : st.open ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} dominados` : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
   const line = !st.open ? `<span>${n === 1 ? 'falta 1' : `faltan ${n}`}</span>` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
       <button type="button" class="branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-        <span class="branch-plate"><span class="branch-name">${esc(short)}</span><span class="branch-count">${line}</span></span>
+        <span class="branch-plate"><span class="branch-name">${esc(short)}</span></span><span class="branch-count">${line}</span>
         <span class="branch-dot">${done ? icons.laurel(18) : st.open ? icons.fork(18) : icons.lock(12)}</span>
       </button></li>`;
 }
@@ -187,11 +187,12 @@ export function branchGroupSpot(spot, sts, eraId, h) {
   const open = sts.filter((st) => st.open).length;
   const done = sts.every((st) => st.total && st.mastered === st.total);
   const cls = done ? 'is-mastered' : open ? 'is-open' : 'is-locked';
-  const line = done ? `${n}/${n}` : open ? `${open} ${open === 1 ? 'abierta' : 'abiertas'}` : `<span>cerradas</span>`;
+  // Guion blando (­): con la letra grande, la palabra se parte en vez de salirse del cartel.
+  const line = done ? `${n}/${n}` : open ? `${open} ${open === 1 ? 'abier­ta' : 'abier­tas'}` : '<span>cerra­das</span>';
   const label = `Ramas de esta época: ${n}${done ? ', todas dominadas' : open ? `, ${open} ${open === 1 ? 'abierta' : 'abiertas'}` : ', cerradas'}`;
   return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
       <button type="button" class="branch ${cls} is-group" data-action="branches" data-id="${esc(eraId)}" data-members="${esc(spot.members.map((m) => m.id).join(' '))}" aria-haspopup="dialog" aria-label="${esc(label)}">
-        <span class="branch-plate"><span class="branch-name">Ramas (${n})</span><span class="branch-count">${line}</span></span>
+        <span class="branch-plate"><span class="branch-name">Ramas (${n})</span></span><span class="branch-count">${line}</span>
         <span class="branch-dot">${done ? icons.laurel(18) : open ? icons.fork(18) : icons.lock(12)}</span>
       </button></li>`;
 }

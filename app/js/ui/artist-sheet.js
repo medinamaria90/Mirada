@@ -2,7 +2,8 @@
 // cambiar de ruta, para no perder una ronda. Fechas, país, época, líneas de vida con fuente, «Fíjate
 // en…», etapas, SOLO las obras ya vistas (sin spoilers), progreso y botón para jugar.
 
-import { esc, accentStyle } from './dom.js';
+import { esc, accentStyle, joinNames } from './dom.js';
+import { branchLockReason } from '../engine/branches.js';
 import { stageRoute } from './router.js';
 import { icons } from './icons.js';
 import { artFrame } from './art.js';
@@ -46,14 +47,17 @@ function seenHtml(artist, works, total) {
     <ul class="as-grid">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, thumb: true, zoom: { group: `as-${artist.id}`, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}</ul></section>`;
 }
 
-function sheetHtml(ctx, artist, story, playable) {
+function sheetHtml(ctx, artist, story, playable, branchId = '') {
   const { index } = ctx;
   const progress = ctx.store.get().progress;
   const movement = index.movement(artist.movementId);
   const works = seenOf(progress, index, artist.id);
   const total = index.worksOf(artist.id).length;
   const lines = lifeLines(artist, story, movement ? movement.name : '');
-  const target = playable ? playTargets(progress, index, artist.id).stage : null;
+  const target = playable ? playTargets(progress, index, artist.id, branchId).stage : null;
+  const why = playable && branchId && !target ? branchLockReason(progress, index, artist.id, branchId) : null;
+  const whyText = !why ? '' : why.before ? `Se abre al superar a ${index.artist(why.before)?.short || index.artist(why.before)?.name}` : why.pending.length
+    ? `Se abre al dominar a ${joinNames(why.pending.map((s) => (s.type === 'sala' ? index.movement(s.id)?.name : index.artist(s.id)?.short || index.artist(s.id)?.name)))}` : '';
   const stages = artist.category === 'gran-maestro' ? stageList(progress, index, artist.id) : [];
   const hasStory = Boolean(levelStory(story, 1));
   const pct = total ? Math.round((works.length / total) * 100) : 0;
@@ -73,6 +77,7 @@ function sheetHtml(ctx, artist, story, playable) {
     ${artist.hint ? `<aside class="as-look"><span class="as-look-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : ''}
     ${stagesHtml(stages)}
     ${seenHtml(artist, works, total)}
+    ${whyText ? `<p class="as-lock">${icons.lock(16)}<span>${esc(`${whyText} en ${index.branch(branchId).name}.`)}</span></p>` : ''}
     ${hasStory || target ? `<div class="as-actions">
       ${hasStory ? `<button type="button" class="btn btn-secondary btn-wide" data-as="story">${icons.play(18)}<span>Ver su historia</span></button>` : ''}
       ${target ? `<button type="button" class="btn btn-primary btn-wide" data-as="play">${esc(PLAY_LABEL[target])}</button>` : ''}
@@ -96,7 +101,7 @@ export async function openArtistSheet(ctx, artistId, opts = {}) {
   dlg.className = 'artist-sheet';
   dlg.setAttribute('aria-labelledby', 'as-name');
   dlg.setAttribute('style', accentStyle(ctx.index.movement(artist.movementId)?.accent));
-  dlg.innerHTML = sheetHtml(ctx, artist, story, opts.playable !== false);
+  dlg.innerHTML = sheetHtml(ctx, artist, story, opts.playable !== false, opts.branchId || '');
   document.body.appendChild(dlg);
 
   const close = () => {
