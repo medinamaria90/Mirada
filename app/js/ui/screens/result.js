@@ -15,6 +15,7 @@ import { rankFor } from '../../engine/ranks.js';
 import { rankProgress } from '../../engine/profile.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
+import { branchAfterRound } from '../../engine/branches.js';
 
 export function headline(accuracy) {
   if (accuracy >= 1) return 'Impecable';
@@ -131,6 +132,12 @@ export function renderResult(ctx, el, opts) {
     const name = m ? m.name : a ? a.name : isSala ? index.movement(unlock.step.id)?.name : '';
     if (name) blocks.push(eventCard({ icon: icons.play(20), kicker: m ? 'Se abre un movimiento' : 'Siguiente etapa', title: name, to: stepRoute(index, unlock.step) }));
   }
+  // Ronda de un pintor de rama: el avance de la rama y, si se ha abierto, el siguiente (acción principal).
+  const inBranch = plan.kind === 'stage' && plan.artistId ? branchAfterRound(p, index, plan.artistId) : null;
+  const branchNext = inBranch && !low && inBranch.next ? index.artist(inBranch.next) : null;
+  if (inBranch) {
+    blocks.push(eventCard({ icon: icons.fork(22), kicker: `Rama · ${inBranch.branch.name} ${inBranch.mastered}/${inBranch.total}`, title: branchNext ? `Se abre ${branchNext.name}` : inBranch.mastered === inBranch.total ? 'Rama completa' : 'Sigue en la rama', cls: 'event-branch' }));
+  }
   if (reviewUnlock && !goal && index.movement(reviewUnlock.movementId)) {
     blocks.push(eventCard({ icon: icons.repeat(22), kicker: 'Repaso disponible', title: index.movement(reviewUnlock.movementId).name, to: `repaso-${reviewUnlock.movementId}` }));
   }
@@ -184,7 +191,8 @@ export function renderResult(ctx, el, opts) {
         ${blocked ? `${gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
         <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
-        <button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>
+        ${branchNext ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="etapa-${esc(branchNext.id)}" data-primary>Siguiente en la rama</button>
+        <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>`}
         ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
         ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
         ${blocked ? '' : extraRounds(ctx, plan).map((r) => `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(r.to)}">${icons[r.icon](20)}<span>${esc(r.label)}</span></button>`).join('')}

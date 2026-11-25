@@ -1,11 +1,11 @@
 // Hoja del mapa: se abre desde abajo al tocar el cartel de una época cerrada (qué falta y qué espera) o el
 // de una rama (sus pintores por épocas, con su estado; cada pintor abre su ficha). Se carga al primer toque.
 
-import { esc, accentStyle } from './dom.js';
+import { esc, accentStyle, joinNames } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { branchStatus, tramoPending } from '../engine/branches.js';
-import { branchState, branchWhy } from './screens/path-signs.js';
+import { branchState, branchWhy, afterEra } from './screens/path-signs.js';
 import { lifeSpan } from '../engine/painters.js';
 
 const KIND = {
@@ -18,10 +18,6 @@ const STATE_ICON = { mastered: 'check', started: 'play', available: 'play', lock
 
 let current = null;
 
-function names(list) {
-  if (list.length <= 1) return list.join('');
-  return `${list.slice(0, -1).join(', ')} y ${list[list.length - 1]}`;
-}
 
 async function open(ctx, opener, accent, body) {
   if (current) current.close();
@@ -72,9 +68,9 @@ export function openEraSheet(ctx, movementId, opener) {
   const prev = index.movement(order[order.indexOf(movementId) - 1]);
   const painters = index.stageArtists(movementId).map((a) => a.short || a.name);
   const body = `<header class="ms-head"><p class="ms-kicker">${esc(movement.period)}</p><h2 class="ms-title" id="ms-title">${esc(movement.name)}</h2></header>
-    <p class="ms-lock">${icons.lock(16)}<span>${prev ? `Se abre al terminar ${esc(prev.name)}.` : 'Aún cerrada.'}</span></p>
+    <p class="ms-lock">${icons.lock(16)}<span>${prev ? `Se abre ${esc(afterEra('terminar', prev.name))}.` : 'Aún cerrada.'}</span></p>
     ${movement.blurb ? `<p class="ms-about">${esc(movement.blurb)}</p>` : ''}
-    ${painters.length ? `<p class="ms-wait"><span class="ms-label">Te esperan</span>${esc(names(painters))}</p>` : ''}
+    ${painters.length ? `<p class="ms-wait"><span class="ms-label">Te esperan</span>${esc(joinNames(painters))}</p>` : ''}
     <button type="button" class="btn btn-primary btn-wide ms-ok" data-ms="close">Entendido</button>`;
   return open(ctx, opener, movement.accent, body);
 }
@@ -112,8 +108,9 @@ export function openBranchSheet(ctx, branchId, opener) {
   const list = eras.map((id) => {
     const group = rows.filter((r) => r.opensAt === id);
     const reached = group[0].reached;
-    const why = reached ? '' : branchWhy(index, { pending: tramoPending(progress, index, id) });
-    const head = single ? '' : `<h3 class="ms-group"><span>${esc(index.movement(id)?.name || '')}</span>${reached ? '' : `<span class="ms-group-lock">${icons.lock(12)}<span>${esc(why)}</span></span>`}</h3>`;
+    // El motivo del primer grupo ya va arriba (estado de la rama): no se repite.
+    const why = reached || (!st.open && id === branch.opensAt) ? '' : branchWhy(index, { pending: tramoPending(progress, index, id) });
+    const head = single ? '' : `<h3 class="ms-group"><span>${esc(index.movement(id)?.name || '')}</span>${!why ? '' : `<span class="ms-group-lock">${icons.lock(12)}<span>${esc(why)}</span></span>`}</h3>`;
     return `<section class="ms-section">${head}<ul class="ms-list">${group.map((r) => painterRow(ctx, r)).join('')}</ul></section>`;
   }).join('');
   const status = st.open

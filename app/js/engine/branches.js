@@ -93,3 +93,15 @@ export function canPlay(progress, index, artistId) {
   const s = playStatus(progress, index, artistId);
   return Boolean(s) && s !== 'locked';
 }
+
+// Tras una ronda de un pintor de rama: su rama, el avance (pintores propios dominados) y el siguiente pintor
+// propio ya abierto, si lo hay. null si el pintor está en el camino común o no es de ninguna rama.
+export function branchAfterRound(progress, index, artistId) {
+  if (index.pathIndex(artistId) >= 0) return null;
+  const branch = index.branchesOf(artistId)[0];
+  if (!branch) return null;
+  const rows = branchStatus(progress, index, branch.id).filter((r) => !r.onPath);
+  const at = rows.findIndex((r) => r.artistId === artistId);
+  const next = rows.slice(at + 1).find((r) => r.status === 'available' || r.status === 'started') || null;
+  return { branch, mastered: rows.filter((r) => r.status === 'mastered').length, total: rows.length, next: next ? next.artistId : null };
+}

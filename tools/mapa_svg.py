@@ -68,8 +68,33 @@ def tinte(h, tint_class):
     return (-10_000, f'<rect x="0" y="0" width="{W}" height="{h}" class="{tint_class}"/>')
 
 
-# Huecos de la época que se está pintando (los fija build): lado del cartel y paradas con rama.
-LIBRE = {'cartel': None, 'ramas': set()}
+# Huecos de la época que se está pintando (los fija build): lado del cartel, paradas con rama y cajas de los
+# rótulos de cada parada (nombre y tramo, lado ancho).
+LIBRE = {'cartel': None, 'ramas': set(), 'rotulos': []}
+
+# Piezas que se dejan de pintar si su base cae bajo un rótulo (o justo debajo: crecen hacia arriba).
+SOBRE_ROTULO = ['caja', 'casa', 'casa_larga', 'torre', 'cupula', 'arcada', 'muralla', 'fuente', 'obelisco', 'columna',
+                'cipres', 'arbol', 'naranjo', 'arbol_desnudo', 'abeto', 'palmera', 'podado', 'cono', 'montana', 'niebla',
+                'lago', 'molino', 'chimenea', 'almiar', 'campos', 'girasoles', 'quiosco', 'farola', 'eiffel', 'noria',
+                'sagrada', 'pedrera', 'secesion', 'cafe', 'ruina', 'castillo', 'escalinata']
+MARGEN_X = 14
+ALTO_PIEZA = 34
+
+
+def _libre(nombre):
+    pieza = getattr(M, nombre)
+
+    def envuelta(*a, **k):
+        x, y = a[0], a[1]
+        for r in LIBRE['rotulos']:
+            if r['x0'] - MARGEN_X <= x <= r['x1'] + MARGEN_X and r['y0'] <= y <= r['y1'] + ALTO_PIEZA:
+                return (y, '')
+        return pieza(*a, **k)
+    return envuelta
+
+
+for _n in SOBRE_ROTULO:
+    setattr(M, _n, _libre(_n))
 
 
 def margenes(p, h, arbol):
@@ -389,6 +414,7 @@ def build(era, light, dark):
     pts = [(q['x'], q['y']) for q in era['points']]
     LIBRE['cartel'] = era.get('signSide')
     LIBRE['ramas'] = set(era.get('branchAt', []))
+    LIBRE['rotulos'] = era.get('labels', [])
     pieces = [tinte(era['h'], CLASS['tint'])] + DECO[era['id']](pts, era['h'])
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))

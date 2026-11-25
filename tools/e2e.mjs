@@ -841,7 +841,8 @@ const crop = await page.$eval('.stage-thumb', (f) => {
   return { covers: i.left <= a.left + 0.5 && i.top <= a.top + 0.5 && i.right >= a.right - 0.5 && i.bottom >= a.bottom - 0.5, big: i.width > a.width * 1.5 };
 });
 check(crop.covers && crop.big, `recorte del atlas raro: ${JSON.stringify(crop)}`);
-// Repaso de movimiento solo con ≥3 pintores con etapa
+// Repaso de movimiento solo con ≥3 pintores con etapa (el mapa pinta las épocas lejanas por partes: se espera)
+await page.waitForSelector('.path-era.is-pending', { state: 'detached' });
 const expectedReviews = index.visibleMovements.filter((m) => hasMovementReview(index, m.id)).length;
 check(await page.locator('.stage-review').count() === expectedReviews, `repasos en el mapa: ${await page.locator('.stage-review').count()} vs ${expectedReviews}`);
 // Mapa v10: de abajo arriba (el primer nodo del DOM, el primero del juego, es el más bajo en pantalla),
@@ -970,6 +971,11 @@ if (SMOKE) {
   await page.click('[data-action="practice"]');
   await playRound(page);
   await page.waitForSelector('.result');
+  // Resultado de rama: su avance y «Siguiente en la rama» como acción principal.
+  check(/Rama · Gótico \d+\/\d+/i.test(await page.locator('.event-branch').innerText()), 'el resultado no enseña el avance de la rama');
+  check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}"]`).innerText() === 'Siguiente en la rama', 'la acción principal no es «Siguiente en la rama»');
+  await shot(page, '14f-rama-resultado', true);
+  await audit(page, '390 resultado de rama');
   await page.goto(`${base}#inicio`);
   await page.waitForSelector('.branch[data-id="gotico"]');
   await page.click('.branch[data-id="gotico"]');

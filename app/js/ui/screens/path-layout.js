@@ -11,21 +11,22 @@ const PAD_BOTTOM = 184;              // entrada del tramo: tramo recto del sende
 const RUN = 122;                     // el sendero entra recto (vertical) este alto: el cartel cabe a su lado
 const PAD_TOP = 28;                  // salida del tramo
 const XS = [128, 262, 136, 266, 126, 264, 134, 260];   // zigzag de los nodos
-export const SIDE_X = { left: 48, right: MAP_W - 48 }; // margen estrecho: sala de la época y ramas
+export const SIDE_X = { left: 52, right: MAP_W - 52 }; // margen estrecho: sala de la época y ramas
 export const ROAD_HALF = 15;         // medio ancho del sendero (borde incluido)
 const ROAD_GAP = 12;                 // aire entre el sendero y un cartel
 const EDGE = 10;                     // aire con el borde del mapa
 const SIGN_BOX = { top: 118, bottom: 14 };  // cartel de época: entre h-96 y h-14
+const BRANCH_LIFT = 14;               // el hito de la rama, algo por encima de su parada (aire con el nodo)
 const SPUR_DROP = 46;                // el desvío de una rama sale del sendero algo por debajo de su nodo
 // Salida (abajo del todo) y «Tu museo» (arriba): bloques propios con su dibujo.
 export const START_H = 190;
 export const START_PLAZA = { x: MAP_W / 2, y: 150 };
 export const START_OUT_X = 270;      // por donde sale el sendero hacia el primer tramo
 const START_ARCH_LEFT = 146;         // la placa de salida no tapa el arco
-export const MUSEUM_H = 200;
+export const MUSEUM_H = 280;
 export const MUSEUM_DOOR = { x: MAP_W / 2, y: 112 };
 
-const f = (n) => String(Math.round(n * 100) / 100);
+export const f = (n) => String(Math.round(n * 100) / 100);
 
 // Curva con tangentes verticales en los extremos (así el sendero entra y sale de cada nodo en vertical).
 const curve = (a, b) => ({ a, b, c1: { x: a.x, y: (a.y + b.y) / 2 }, c2: { x: b.x, y: (a.y + b.y) / 2 } });
@@ -102,7 +103,7 @@ export function branchSlots(n, k) {
 function branchSpot(era, i) {
   const p = era.points[i];
   const side = sideOf(p.x);
-  const end = { x: SIDE_X[side], y: p.y - 6 };
+  const end = { x: SIDE_X[side], y: p.y - BRANCH_LIFT };
   const from = { x: roadX(era.segs, p.y + SPUR_DROP), y: p.y + SPUR_DROP };
   const spur = `M${f(from.x)} ${f(from.y)}C${f((from.x + end.x) / 2)} ${f(from.y)} ${f(end.x)} ${f(from.y - 10)} ${f(end.x)} ${f(end.y)}`;
   return { at: i, side, x: end.x, y: end.y, spur };
@@ -110,17 +111,23 @@ function branchSpot(era, i) {
 
 const KIND_ORDER = { rama: 0, epoca: 1, escuela: 2 };
 
-// Ramas que se abren en cada época (una vez, donde empiezan), en orden: medieval/estampa, época, escuela.
+// Ramas de cada época: las que empiezan en ella (medieval/estampa, época, escuela) y, como señal aparte (extra),
+// las escuelas que abren en ella un tramo nuevo con pintores propios.
 export function branchesAt(index, movementId) {
-  return (index.branches || [])
-    .filter((b) => b.opensAt === movementId)
-    .sort((a, b) => (KIND_ORDER[a.kind] ?? 3) - (KIND_ORDER[b.kind] ?? 3));
+  const all = index.branches || [];
+  const own = (b, id) => b.artists.some((a) => index.pathIndex(a) < 0 && (b.tramos.find((t) => t.artists.includes(a))?.opensAt || b.opensAt) === id);
+  const starts = all.filter((b) => b.opensAt === movementId).sort((a, b) => (KIND_ORDER[a.kind] ?? 3) - (KIND_ORDER[b.kind] ?? 3));
+  const extras = all.filter((b) => b.kind === 'escuela' && b.opensAt !== movementId && own(b, movementId));
+  return [...starts.map((b) => ({ branch: b, extra: false })), ...extras.map((b) => ({ branch: b, extra: true }))];
 }
 
+// «Tu museo»: el sendero entra recto (su placa va al lado, bajo el edificio) y sube hasta la puerta.
+const MUSEUM_RUN = 124;
 function museumLayout(xIn) {
   const start = { x: xIn, y: MUSEUM_H };
-  const segs = [curve(start, MUSEUM_DOOR)];
-  const sign = { y: MUSEUM_H - 18, top: MUSEUM_H - 78, ...besideRoad(segs, MUSEUM_H - 78, MUSEUM_H - 18, other(sideOf(xIn))) };
+  const runTop = { x: xIn, y: MUSEUM_H - MUSEUM_RUN };
+  const segs = [line(start, runTop), curve(runTop, MUSEUM_DOOR)];
+  const sign = { y: MUSEUM_H - 14, top: MUSEUM_H - MUSEUM_RUN + 4, ...besideRoad(segs, MUSEUM_H - MUSEUM_RUN + 4, MUSEUM_H - 14, other(sideOf(xIn))) };
   return { h: MUSEUM_H, segs, sign, trail: segmentsD(segs) };
 }
 
@@ -147,7 +154,7 @@ export function pathLayout(index) {
     const branches = branchesAt(index, m.id);
     const slots = branchSlots(n, branches.length);
     const sections = artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? { at: i, name: a.section } : null)).filter(Boolean);
-    eras.push({ id: m.id, ...era, sections, branches: slots.map((at, k) => ({ id: branches[k].id, ...branchSpot(era, at) })) });
+    eras.push({ id: m.id, ...era, sections, branches: slots.map((at, k) => ({ id: branches[k].branch.id, extra: branches[k].extra, ...branchSpot(era, at) })) });
     phase += n;
     xIn = era.points[n - 1].x;
   }
