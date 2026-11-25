@@ -45,7 +45,7 @@ export function painterGroups(progress, index, query = '') {
       .sort((a, b) => (a.born || 0) - (b.born || 0) || a.order - b.order)
       .map((artist) => {
         const seen = seenOf(progress, index, artist.id);
-        return { artist, state: painterState(progress, index, artist.id), seen: seen.length, total: index.worksOf(artist.id).length, avatar: avatarWork(seen) };
+        return { artist, state: painterState(progress, index, artist.id), seen: seen.length, total: index.worksOf(artist.id).length, avatar: avatarWork(seen), cover: coverWork(seen) };
       });
     const known = all.filter((row) => row.state !== 'new');
     if (!known.length) continue;
@@ -55,14 +55,18 @@ export function painterGroups(progress, index, query = '') {
   return groups;
 }
 
-// Datos clave de la ficha (el relato es de la historia, no de la ficha): cuántos cuadros hay, cuántos se han visto y cuántas etapas
-// tiene, más la fuente (Wikidata por el `qid`). { facts: [{ label, value }], source }
+// Datos clave de la ficha (el relato es de la historia): cuántos cuadros hay, cuántos se han visto y cuántas etapas «a fondo» tiene
+// (las mismas que se listan). Son contadores de la app: no llevan fuente. [{ label, value }]
 export function factsOf(index, artist, seenCount) {
   const facts = [{ label: 'Cuadros', value: index.worksOf(artist.id).length }];
   if (seenCount > 0) facts.push({ label: 'Vistos', value: seenCount });
-  facts.push({ label: 'Etapas', value: index.deepLevels(artist.id).length + 1 });
-  return { facts, source: artist.qid ? `https://www.wikidata.org/wiki/${artist.qid}` : '' };
+  const deep = index.deepLevels(artist.id).length;
+  if (deep > 0) facts.push({ label: 'A fondo', value: deep });
+  return facts;
 }
+
+// Fuente de las fechas y el país del pintor (curados y comprobados con Wikidata): enlace a su ficha de Wikidata, o ''.
+export const wikidataUrl = (artist) => (artist.qid ? `https://www.wikidata.org/wiki/${artist.qid}` : '');
 
 // Lo que se puede jugar desde la ficha: su etapa del camino, si es una parada ya abierta; y, si ya está dominado, la primera etapa
 // «a fondo» abierta o en marcha (el botón principal es «Seguir: <etapa>» y no «Jugar otra vez»).
@@ -75,10 +79,13 @@ export function playTargets(progress, index, artistId) {
   return { stage, next: open ? { id: open.id, name: open.name } : null };
 }
 
-// Nombre de una etapa «a fondo»: el de los datos y, si es genérico («Más obras»), «<Pintor> a fondo · n».
+// Nombre de una etapa «a fondo»: el de los datos; si es genérico («Más obras»), con sus años («Hals (1610–1625)») o, sin años,
+// «<Pintor> a fondo · n».
 const GENERIC_STAGE = /^m[aá]s obras$/i;
 export function stageTitle(artist, stage) {
-  return GENERIC_STAGE.test(stage.name || '') ? `${artist.short || artist.name} a fondo · ${stage.id - 1}` : stage.name;
+  if (!GENERIC_STAGE.test(stage.name || '')) return stage.name;
+  const who = artist.short || artist.name;
+  return stage.from && stage.to ? `${who} (${stage.from}–${stage.to})` : `${who} a fondo · ${stage.id - 1}`;
 }
 
 // Etapas (niveles «a fondo») de un pintor con su estado y su nombre, para la ficha.
@@ -145,4 +152,12 @@ export function missingNote(progress, index, artistId, seenCount, total) {
   if (left <= 0) return null;
   const toStages = isMastered(progress, artistId) && index.deepLevels(artistId).length > 0;
   return { text: `${left === 1 ? 'Te falta 1' : `Te faltan ${left}`} · ${toStages ? 'se desbloquean en sus etapas' : 'se desbloquean al jugar sus rondas'}`, toStages };
+}
+
+// Obra con la que abre la historia de un pintor ya conocido: la más famosa de las que ha visto y que se deje enmarcar (ni muy
+// altas ni muy apaisadas), sin retratos de otras personas (el de Castiglione no es Rafael). Sin ninguna, la de la tarjeta.
+const OTHER_PORTRAIT = /^(retrato de|portrait of)/i;
+export function openingWork(seen, fallback) {
+  const ok = seen.filter((w) => ratioOf(w) >= 0.65 && ratioOf(w) <= 1.6 && !(OTHER_PORTRAIT.test(w.title) && !SELF_PORTRAIT.test(w.title)));
+  return ok.sort(byFame)[0] || fallback;
 }

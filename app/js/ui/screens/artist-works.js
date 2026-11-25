@@ -32,7 +32,7 @@ export function worksSpec(ctx, spec) {
 // Cada obra vista con su miniatura (abre el visor). Lo que falta se resume en una frase al final (pintor: lo que se
 // desbloquea y dónde; invitados: «y 22 por descubrir» y el autor bajo cada obra), nunca como una pared de casillas vacías.
 export function worksGridHtml(index, group, works, { byAuthor = false } = {}) {
-  const cell = (w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, tiny: true, defer: true, zoom: { group, label: `Ver en grande: ${w.title}`, badge: false } })}${byAuthor ? `<span class="aw-who">${esc(index.artist(w.artistId)?.short || index.artist(w.artistId)?.name || '')}</span>` : ''}</li>`;
+  const cell = (w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, small: true, defer: true, zoom: { group, label: `Ver en grande: ${w.title}`, badge: false } })}${byAuthor ? `<span class="aw-who">${esc(index.artist(w.artistId)?.short || index.artist(w.artistId)?.name || '')}</span>` : ''}</li>`;
   return `<ul class="ap-grid aw-grid">${works.map(cell).join('')}</ul>`;
 }
 

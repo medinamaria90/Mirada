@@ -8,7 +8,7 @@ import { dirname, join } from 'node:path';
 import { buildIndex, mergeCatalogFicha } from '../app/js/engine/catalog.js';
 import { emptyProgress, artistStatus } from '../app/js/engine/progress.js';
 import { pendingWorks } from '../app/js/engine/levels.js';
-import { painterGroups, painterState, seenOf, playTargets, stageList, fold, isMastered, factsOf } from '../app/js/engine/painters.js';
+import { painterGroups, painterState, seenOf, playTargets, stageList, fold, isMastered, factsOf, wikidataUrl } from '../app/js/engine/painters.js';
 import { periodStart } from '../app/js/engine/movements.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
 import { initials } from '../app/js/ui/artist-profile.js';
@@ -107,15 +107,18 @@ test('ficha: solo las obras ya vistas (colección o rondas), nunca las demás', 
   assert.deepEqual(ids, [works[0].id, works[1].id].sort());
 });
 
-test('ficha: datos clave (cuadros, vistos, etapas) y fuente Wikidata; el relato queda para la historia', () => {
+test('ficha: datos clave que coinciden con lo que se lista (cuadros, vistos, a fondo); la fuente va aparte', () => {
   const goya = real.artist('goya');
   const f = factsOf(real, goya, 4);
-  assert.deepEqual(f.facts.map((x) => x.label), ['Cuadros', 'Vistos', 'Etapas']);
-  assert.equal(f.facts[0].value, real.worksOf('goya').length);
-  assert.equal(f.facts[1].value, 4);
-  assert.equal(f.facts[2].value, real.deepLevels('goya').length + 1);
-  assert.match(f.source, /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
-  assert.deepEqual(factsOf(real, goya, 0).facts.map((x) => x.label), ['Cuadros', 'Etapas'], 'sin vistos no se enseña «Vistos»');
+  assert.deepEqual(f.map((x) => x.label), ['Cuadros', 'Vistos', 'A fondo']);
+  assert.equal(f[0].value, real.worksOf('goya').length);
+  assert.equal(f[1].value, 4);
+  assert.equal(f[2].value, real.deepLevels('goya').length, '«A fondo» = las etapas que se listan');
+  assert.deepEqual(factsOf(real, goya, 0).map((x) => x.label), ['Cuadros', 'A fondo'], 'sin vistos no se enseña «Vistos»');
+  const sinFondo = real.artists.find((a) => !real.deepLevels(a.id).length);
+  assert.ok(!factsOf(real, sinFondo, 1).some((x) => x.label === 'A fondo'));
+  assert.match(wikidataUrl(goya), /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
+  assert.equal(wikidataUrl({}), '');
   // La ficha no repite ninguna tarjeta de la historia.
   const story = readJson(join(app, 'data', 'historias', 'goya.json'));
   const text = JSON.stringify(f);

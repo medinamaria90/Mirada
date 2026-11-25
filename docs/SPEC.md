@@ -295,6 +295,13 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   lleva `srcset` (miniatura → JPG). Avatar: autorretrato sencillo (sin más gente: «con Isabel Brant» solo vale con `focus`) o retrato con `focus`, nunca
   muy apaisado; si no, monograma sobre el color del movimiento. La primera tarjeta de la historia enseña ese rostro cuando lo hay. La ficha da datos
   clave (cuadros, vistos, etapas, fuente Wikidata) y el botón principal es «Seguir: <etapa>» si hay etapas abiertas.
+- **Ronda 5 de Colección y ficha**: tres tamaños sueltos además del atlas (`tools/make_atlas.py`): `img/t` 240 px (avatares y buscador), `img/g` 320 px
+  (franjas, galerías, resultado: nítido en alta densidad; con 48 miniaturas, 132 KB en la primera pantalla y 722 KB en total) e `img/m` 800 px (la
+  portada lleva `srcset` 240/320/800/1200). Historia: cada obra se enseña a sangre con su punto de interés o, si es muy alta/apaisada o no lo tiene,
+  entera sobre un fondo desenfocado de ella misma (`frameFor`); abre con el rostro si lo hay o con su obra más famosa vista y enmarcable (`openingWork`,
+  no el retrato de otra persona). Monograma con la obra más famosa vista muy desenfocada (multiply, solo oscurece: el contraste no baja). Celebración
+  «a fondo»: sello que se estampa, obras de la etapa y un solo «Siguiente: <etapa>» (el resto, «Volver al camino»). Ficha: «A fondo» = las etapas
+  que se listan; la fuente de Wikidata va al pie, junto a fechas y país; botón «Jugar: <etapa>»; «Ver etapas» mueve el foco al título.
 - **Guía de bienvenida** (`ui/coach.js`): tres pasos sobre el nodo actual, la franja «Hoy» y Colección; una vez por navegador
   (`sfumato.coach` en localStorage), se salta con «Saltar» o Esc. La cabecera ya no lleva el chip de rango (irá en el perfil) y lleva el reto diario
   (`dailyChip`: calendario con punto si está pendiente, «4/5» si está hecho). Ya no hay franja «Hoy» ni lupa del día (su registro

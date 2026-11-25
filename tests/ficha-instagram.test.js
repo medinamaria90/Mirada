@@ -8,7 +8,8 @@ import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
 import { parseRoute } from '../app/js/ui/router.js';
-import { coverWork, previewCells, avatarCrop, avatarWork, seenOf, PREVIEW_CELLS, missingNote, stageTitle } from '../app/js/engine/painters.js';
+import { coverWork, previewCells, avatarCrop, avatarWork, seenOf, PREVIEW_CELLS, missingNote, stageTitle, openingWork } from '../app/js/engine/painters.js';
+import { frameFor } from '../app/js/engine/stories.js';
 import { periodStart, movementsChrono } from '../app/js/engine/movements.js';
 import { cardDuration, CARD_BASE_MS } from '../app/js/engine/stories.js';
 import { worksSpec } from '../app/js/ui/screens/artist-works.js';
@@ -69,6 +70,7 @@ test('etapas: un nombre con sentido; «Más obras» pasa a «<Pintor> a fondo ·
   assert.equal(stageTitle(a, { id: 2, name: 'Más obras' }), 'Hals a fondo · 1');
   assert.equal(stageTitle(a, { id: 3, name: 'Más obras' }), 'Hals a fondo · 2');
   assert.equal(stageTitle(real.artist('goya'), { id: 2, name: 'Formación y cartones' }), 'Formación y cartones');
+  assert.equal(stageTitle(a, { id: 2, name: 'Más obras', from: 1610, to: 1625 }), 'Hals (1610–1625)', 'con años, menos genérico');
 });
 
 test('movimientos: por su fecha de inicio, no por el orden del camino (la estampa japonesa en su sitio)', () => {
@@ -111,4 +113,24 @@ test('galería del pintor: todas las vistas por orden cronológico y el total; i
   assert.ok(g.title.startsWith('Invitados'));
   assert.ok(g.works.length >= 1 && g.total >= g.works.length);
   assert.equal(worksSpec(ctx, { kind: 'guests', movementId: 'gotico-sin-invitados' }), null);
+});
+
+test('historia: cómo se enseña cada obra (a sangre con punto de interés; muy altas o sin punto de interés, enteras sobre fondo desenfocado)', () => {
+  const W = (w, h, extra = {}) => ({ w, h, ...extra });
+  assert.equal(frameFor(W(902, 1600), [0.5, 0.3, 1.8]).mode, 'fit', 'Felipe IV (0,56): un recorte corta la cabeza');
+  assert.equal(frameFor(W(1377, 1600), [0.5, 0.3, 2.2]).mode, 'crop');
+  assert.equal(frameFor(W(1600, 833, { focus: [0.5, 0.52] })).mode, 'crop', 'La Última Cena: con el punto de interés de la obra');
+  assert.equal(frameFor(W(1600, 903)).mode, 'fit', 'El jardín de las delicias sin punto de interés: entero');
+  assert.deepEqual([frameFor(W(1600, 833, { focus: [0.5, 0.52] })).x, frameFor(W(1600, 833, { focus: [0.5, 0.52] })).zoom], [50, 1.5]);
+});
+
+test('historia: abre con la obra más famosa vista y enmarcable, no con el retrato de otra persona ni con una muy alta o apaisada', () => {
+  const W = (id, title, w, h, fame) => ({ id, title, w, h, fame, yearSort: 1500 });
+  const castiglione = W('c', 'Retrato de Baltasar Castiglione', 80, 100, 2);
+  const atenas = W('a', 'La escuela de Atenas', 129, 100, 3);
+  assert.equal(openingWork([castiglione, atenas], castiglione).id, 'a');
+  assert.equal(openingWork([castiglione], atenas).id, 'a', 'solo hay un retrato de otro: se queda la obra de la tarjeta');
+  assert.equal(openingWork([W('s', 'Autorretrato', 80, 100, 1), castiglione], null).id, 's', 'un autorretrato sí es suyo');
+  assert.equal(openingWork([W('f', 'Friso', 400, 100, 3), W('t', 'Alta', 56, 100, 3)], atenas).id, 'a', 'ni muy apaisadas ni muy altas');
+  assert.equal(openingWork([], atenas).id, 'a');
 });

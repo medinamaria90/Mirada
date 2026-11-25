@@ -977,7 +977,7 @@ if (SMOKE) {
   await page.waitForTimeout(400);
   check(page.url().endsWith(`#pintor-${firstRowArtist}`), `la ficha no es una pantalla con su ruta: ${page.url()}`);
   check((await page.locator('.ap-name').innerText()).length > 2, 'la ficha de pintor no tiene nombre');
-  check(await page.locator('.ap-bio p').count() >= 1, 'la ficha no tiene líneas de vida');
+  check(await page.locator('.ap-facts > div').count() >= 2 && await page.locator('.ap-foot a').count() === 1, 'la ficha no tiene datos clave ni la fuente de fechas y país al pie');
   // Estilo Instagram: avatar con anillo de historia (de marca si no se ha visto) y portada con su cuadro más famoso visto.
   check(await page.locator('button.ap-avatar .ap-ring.is-seen').count() === 1, 'el avatar no lleva el anillo de historia (gris, ya vista en este contexto)');
   check(await page.locator('.ap-cover img').count() === 1, 'la portada no enseña ningún cuadro visto');
@@ -1087,6 +1087,8 @@ if (SMOKE) {
   await playRound(page);
   await page.waitForSelector('.result-title');
   check(await page.locator('.deep-cele').count() === 1 && (await page.locator('.deep-cele').innerText()).includes(stageTitle(deepArtist, deepLevel)), 'el nivel a fondo superado no se celebra');
+  check(await page.locator('.result .btn-primary').count() === 1, `la celebración a fondo no tiene un solo «siguiente» principal (${await page.locator('.result .btn-primary').count()})`);
+  check(await page.locator('.deep-cele-works li').count() >= 1 && await page.locator('.day-done-next').count() === 0, 'la celebración a fondo no enseña las obras de la etapa o dice «La próxima vez»');
   await shot(page, '14k-resultado-a-fondo-superado', true);
   await audit(page, '390 resultado a fondo');
 
@@ -1095,16 +1097,24 @@ if (SMOKE) {
   const storyIndexJson = JSON.parse(readFileSync(new URL('../app/data/historias/index.json', import.meta.url), 'utf8'));
   const stageStoryArtist = index.path.find((a) => (storyIndexJson[a.id] || []).includes(2) && index.deepLevels(a.id).some((l) => l.id === 2));
   const stageStoryUpTo = index.pathIndex(stageStoryArtist.id) + 1;
-  for (const how of ['saltar', 'esc', 'hasta el final']) {
+  for (const how of ['saltar', 'esc', 'hasta el final', 'desde la ficha']) {
     const sc = await rawNewContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
     const spg = await sc.newPage();
     watch(spg, `historia-etapa-${how}`);
     await spg.goto(base);
     await spg.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: stageStoryUpTo, extra: { collection: Object.fromEntries(index.levelWorks(stageStoryArtist.id, 1).map((w) => [w.id, '2026-11-20'])) } }));
-    await spg.goto(`${base}#a-fondo-${stageStoryArtist.id}-2`);
-    await spg.reload();
+    if (how === 'desde la ficha') {
+      // El camino real: ficha → etapa, sin recargar.
+      await spg.goto(`${base}#pintor-${stageStoryArtist.id}-etapas`);
+      await spg.reload();
+      await spg.waitForSelector('button.ap-stage[data-level="2"]');
+      await spg.click('button.ap-stage[data-level="2"]');
+    } else {
+      await spg.goto(`${base}#a-fondo-${stageStoryArtist.id}-2`);
+      await spg.reload();
+    }
     await spg.waitForSelector('.story[open] .story-next');
-    if (how === 'saltar') await spg.click('[data-st="skip"]');
+    if (how === 'saltar' || how === 'desde la ficha') await spg.click('[data-st="skip"]');
     else if (how === 'esc') await spg.keyboard.press('Escape');
     else for (let k = 0; k < 6 && await spg.locator('.story[open]').count(); k++) await spg.click('.story-next');
     await spg.waitForSelector('.lesson');

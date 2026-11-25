@@ -41,20 +41,31 @@ export function extraRounds(ctx, plan) {
   return list;
 }
 
-// «Nivel superado»: sello, nombre de la etapa y a dónde ir (su ficha y la etapa siguiente si ya está abierta).
+// El «siguiente» de la celebración de un nivel «a fondo»: la etapa siguiente si ya está abierta, o null.
+function deepNext(ctx, ev) {
+  const { index } = ctx;
+  const next = index.deepLevels(ev.artistId).find((l) => l.id > ev.level);
+  return next && deepStatus(ctx.store.get().progress, index, ev.artistId, next.id) !== 'locked' ? next : null;
+}
+
+// «Nivel superado»: sello que se estampa, nombre de la etapa, las obras de la etapa a la vista y un solo «siguiente» (la etapa que
+// sigue, o su ficha si era la última).
 function deepCelebration(ctx, ev) {
   const { index } = ctx;
   const artist = index.artist(ev.artistId);
   const stage = index.deepLevels(ev.artistId).find((l) => l.id === ev.level);
-  const next = index.deepLevels(ev.artistId).find((l) => l.id > ev.level);
-  const nextOpen = next && deepStatus(ctx.store.get().progress, index, ev.artistId, next.id) !== 'locked';
-  const link = (to, label) => `<button type="button" class="deep-cele-link" data-action="go" data-to="${esc(to)}">${esc(label)}${icons.next(16)}</button>`;
+  const next = deepNext(ctx, ev);
+  const works = (stage ? stage.works : []).slice(0, 6);
+  const thumbs = works.length ? `<ul class="deep-cele-works">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'deep-cele-thumb', label: w.title, small: true, zoom: { group: 'deep-cele', badge: false, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}</ul>` : '';
+  const ficha = `<button type="button" class="deep-cele-link" data-action="go" data-to="pintor-${esc(ev.artistId)}">Ver su ficha${icons.next(16)}</button>`;
+  const main = next ? `<button type="button" class="btn btn-primary btn-wide" data-action="go" data-to="${esc(deepRoute(ev.artistId, next.id))}">${esc(`Siguiente: ${stageTitle(artist, next)}`)}</button>` : '';
   return `<section class="deep-cele" style="${accentStyle(index.movement(artist.movementId)?.accent)}" aria-label="Nivel a fondo superado">
-    <span class="deep-cele-seal" aria-hidden="true">${icons.medal(36)}</span>
+    <span class="deep-cele-seal" aria-hidden="true">${icons.check(40)}</span>
     <p class="event-kicker">Nivel a fondo superado</p>
     <p class="deep-cele-title">${esc(stage ? stageTitle(artist, stage) : 'Nivel superado')}</p>
     <p class="deep-cele-who">${esc(artist.name)}</p>
-    <div class="deep-cele-actions">${link(`pintor-${ev.artistId}`, 'Ver su ficha')}${nextOpen ? link(deepRoute(ev.artistId, next.id), `Siguiente: ${stageTitle(artist, next)}`) : ''}</div>
+    ${thumbs}
+    <div class="deep-cele-actions">${main}${ficha}</div>
   </section>`;
 }
 
@@ -92,6 +103,7 @@ export function renderResult(ctx, el, opts) {
   // «Hoy has aprendido» solo cuando el pintor se acaba de conocer o dominar: no tiene sentido en uno ya dominado.
   const alreadyMastered = Boolean(plan.artistId && p.artists?.[plan.artistId]?.mastered && !medals.some((m) => m.id === `artist-${plan.artistId}`));
 
+  const isDeepRound = plan.kind === 'stage' && plan.level >= 2;
   const blocks = [];
   if (opts.friendScore != null) {
     const mine = outcome.score;
@@ -125,7 +137,7 @@ export function renderResult(ctx, el, opts) {
   if (goal) {
     blocks.push(eventCard({ icon: goalRing(goal.goal, goal.goal, 30), kicker: 'Meta del día', title: 'Cumplida', to: 'perfil', cls: 'event-goal' }));
     // El pintor de la etapa ya sale arriba en «Hoy has aprendido»: no se repite.
-    blocks.push(dayDone(ctx, p, plan.kind === 'stage' && !low ? plan.artistId : null));
+    blocks.push(dayDone(ctx, p, plan.kind === 'stage' && !low ? plan.artistId : null, { showNext: !isDeepRound }));
   }
   if (completed && index.movement(completed.movementId)) {
     const m = index.movement(completed.movementId);
@@ -206,7 +218,7 @@ export function renderResult(ctx, el, opts) {
         ${blocked ? `${gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
         <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
-        <button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>
+        <button class="btn ${deepDone && deepNext(ctx, deepDone) ? 'btn-secondary' : 'btn-primary'} btn-wide" data-action="done" data-primary>${esc(deepDone ? 'Volver al camino' : opts.primary || 'Seguir')}</button>
         ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
         ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
         ${blocked ? '' : extraRounds(ctx, plan).map((r) => `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(r.to)}">${icons[r.icon](20)}<span>${esc(r.label)}</span></button>`).join('')}
@@ -281,7 +293,7 @@ export async function copyText(el, text) {
 
 // Cierre del día: pintores y cuadros nuevos de hoy y la próxima parada. Informativo: sin botones
 // (las miniaturas se abren a pantalla completa, como cualquier cuadro).
-function dayDone(ctx, p, shownArtist = null) {
+function dayDone(ctx, p, shownArtist = null, { showNext = true } = {}) {
   const { index } = ctx;
   const sum = daySummary(p, index, ctx.today());
   const names = sum.artists.filter((id) => id !== shownArtist).map((id) => index.artist(id).short || index.artist(id).name);
@@ -291,7 +303,7 @@ function dayDone(ctx, p, shownArtist = null) {
     names.length ? `<p class="day-done-line">Has conocido a ${esc(listNames(names))}</p>` : '',
     sum.works.length ? `<p class="day-done-line">${sum.works.length === 1 ? '1 cuadro nuevo' : `${sum.works.length} cuadros nuevos`}</p>` : '',
     thumbs ? `<div class="day-done-thumbs">${thumbs}</div>` : '',
-    sum.next ? `<p class="day-done-next">La próxima vez: <strong>${esc(sum.next.name)}</strong></p>` : '',
+    showNext && sum.next ? `<p class="day-done-next">La próxima vez: <strong>${esc(sum.next.name)}</strong></p>` : '',
   ].join('');
   return `<section class="day-done" aria-labelledby="day-done-h"><h2 id="day-done-h" class="event-kicker">Hoy</h2>${lines}</section>`;
 }

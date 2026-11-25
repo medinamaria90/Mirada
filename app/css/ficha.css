@@ -38,9 +38,10 @@ button.ap-avatar:active .ap-ring { transform: scale(.96); }
 .ap-mastery { display: flex; align-items: center; gap: .5rem; font: 600 .95rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .ap-mastery.is-done { color: var(--ink); }
 .ap-mastery-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 999px; background: var(--gold); color: var(--on-gold); }
-.ap-mastery-more { margin-left: 1.9rem; color: var(--ink-2); font-size: .9rem; }
+.ap-mastery-more { padding-left: 30px; color: var(--ink-2); font-size: .9rem; }
 .ap-actions { display: flex; flex-wrap: wrap; gap: .6rem; padding: 1.2rem 1.2rem 0; }
-.ap-actions .btn { flex: 1 1 8.5rem; min-width: 0; padding: .5rem 1rem; text-align: center; overflow-wrap: break-word; }
+.ap-actions .btn { flex: 1 1 9rem; min-width: 0; padding: .5rem 1rem; text-align: center; overflow-wrap: break-word; }
+.ap-actions .btn-secondary { flex: 0 0 auto; white-space: nowrap; }
 
 .ap-bio, .ap-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem; padding: 1.6rem 1.2rem 0; }
 .ap-bio { font: 400 1.08rem/1.55 var(--font); }
@@ -48,6 +49,7 @@ button.ap-avatar:active .ap-ring { transform: scale(.96); }
 .ap-facts div { display: grid; gap: .1rem; }
 .ap-facts dt { color: var(--ink-2); font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; }
 .ap-facts dd { margin: 0; font: 500 1.5rem/1.1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
+.ap-foot { padding: 1.4rem 1.2rem 0; }
 .ap-sources { display: flex; flex-wrap: wrap; align-items: center; gap: .1rem .5rem; color: var(--ink-2); font-size: .85rem; }
 .ap-source { display: inline-flex; align-items: center; min-height: 48px; padding: 0 .5rem; color: var(--brand-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .ap-h { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.15rem/1.1 var(--font); letter-spacing: var(--track); }
@@ -91,6 +93,8 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
 .aw-head .ap-back { position: static; flex: none; background: var(--surface); color: var(--ink); box-shadow: var(--lift-sm); }
 .aw-who { padding-inline: .5rem; }
 .aw .ap-missing { margin: 1rem .8rem 0; }
+.aw .ap-grid { margin-inline: .8rem; width: auto; }
+.ap-missing-link { margin-left: -.4rem; }
 .aw-more { margin: 1rem .8rem 0; color: var(--ink-2); font: 500 1rem/1.4 var(--font); }
 .aw-who { display: block; margin-top: 2px; color: var(--ink-2); font: 500 .74rem/1.15 var(--font); overflow-wrap: break-word; }
 .aw-empty { margin: 2rem 1.2rem; display: grid; gap: 1rem; justify-items: center; text-align: center; color: var(--ink-2); }

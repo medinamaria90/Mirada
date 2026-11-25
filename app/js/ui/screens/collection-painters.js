@@ -17,14 +17,14 @@ const RING_STROKE = 4;
 
 // Anillo de progreso proporcional a n/m (color de marca) alrededor del avatar (el mismo de la ficha y la historia). Dominado:
 // el anillo se queda y se añade una insignia dorada pequeña con el check.
-export function ringHtml(artist, avatar, state, seen, total) {
+export function ringHtml(artist, avatar, state, seen, total, cover) {
   const r = (RING - RING_STROKE) / 2;
   const c = 2 * Math.PI * r;
   const k = total ? Math.min(1, seen / total) : 0;
   return `<span class="pl-node" aria-hidden="true"><svg class="pl-ring-svg" width="${RING}" height="${RING}" viewBox="0 0 ${RING} ${RING}">
     <circle class="pl-ring-track" cx="${RING / 2}" cy="${RING / 2}" r="${r}"/>
     <circle class="pl-ring-fill" cx="${RING / 2}" cy="${RING / 2}" r="${r}" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${(c * (1 - k)).toFixed(2)}" transform="rotate(-90 ${RING / 2} ${RING / 2})"/>
-  </svg><span class="pl-av">${avatarHtml(artist, avatar, '', { defer: true })}</span>${state === 'mastered' ? `<span class="pl-badge">${icons.check(11)}</span>` : ''}</span>`;
+  </svg><span class="pl-av">${avatarHtml(artist, avatar, '', { defer: true, texture: cover })}</span>${state === 'mastered' ? `<span class="pl-badge">${icons.check(11)}</span>` : ''}</span>`;
 }
 
 // «Cuadros | Pintores»: dos rutas, así atrás y recargar vuelven a la misma pestaña.
@@ -33,11 +33,11 @@ export function collTabs(active) {
   return `<nav class="coll-tabs" aria-label="Colección">${tab('works', 'coleccion', 'Cuadros')}${tab('painters', 'coleccion-pintores', 'Pintores')}</nav>`;
 }
 
-function rowHtml({ artist, state, seen, total, avatar }) {
+function rowHtml({ artist, state, seen, total, avatar, cover }) {
   const sub = [lifeSpan(artist), artist.country].filter(Boolean).join(' · ');
   const mastered = state === 'mastered';
   return `<li><button type="button" class="pl-row is-${state}" data-artist="${esc(artist.id)}" aria-label="${esc(artist.name)}, ${STATE_TEXT[state]}, ${seen} de ${total} cuadros vistos: ver ficha">
-      ${ringHtml(artist, avatar, state, seen, total)}
+      ${ringHtml(artist, avatar, state, seen, total, cover)}
       <span class="pl-text"><span class="pl-name">${esc(artist.name)}</span><span class="pl-sub">${esc(sub)}</span>${mastered ? `<span class="pl-state">Dominado · ${seen}/${total}</span>` : ''}</span>
       ${mastered ? '' : `<span class="pl-count" aria-hidden="true">${seen}/${total}</span>`}
       <span class="pl-go" aria-hidden="true">${icons.next(18)}</span></button></li>`;

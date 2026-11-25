@@ -5,13 +5,13 @@
 
 import { esc } from './dom.js';
 import { icons } from './icons.js';
-import { artFrame, tinySrc } from './art.js';
+import { artFrame, tinySrc, smallSrc, mediumSrc } from './art.js';
 import { deepRoute } from './router.js';
 import { avatarHtml, initials } from './avatar.js';
 import { loadStory } from './story-data.js';
 import { levelStory, sourceLabel, storyKey } from '../engine/stories.js';
 import { storySeen } from '../state/stories-seen.js';
-import { factsOf, lifeSpan, seenOf, playTargets, stageList, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
+import { factsOf, wikidataUrl, lifeSpan, seenOf, playTargets, stageList, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
 
 const STAGE_LABEL = { mastered: 'Dominada', started: 'En marcha', available: 'Abierta', locked: 'Por abrir' };
 const STAGE_ICON = { mastered: 'check', started: 'play', available: 'play', locked: 'lock' };
@@ -21,10 +21,13 @@ const PLAY_LABEL = { available: 'Empezar su etapa', started: 'Seguir jugando', m
 export { initials };
 
 function factsHtml(index, artist, seenCount) {
-  const { facts, source } = factsOf(index, artist, seenCount);
-  const label = sourceLabel(source);
-  return `<dl class="ap-facts">${facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${f.value}</dd></div>`).join('')}</dl>
-    ${label ? `<p class="ap-sources"><span>Fuente</span><a class="ap-source" href="${esc(source)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a></p>` : ''}`;
+  return `<dl class="ap-facts">${factsOf(index, artist, seenCount).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${f.value}</dd></div>`).join('')}</dl>`;
+}
+
+// Fuente de las fechas y el país (los que enseña la cabecera), al pie: no van junto a los contadores de la app.
+function sourceFoot(artist) {
+  const url = wikidataUrl(artist);
+  return url ? `<p class="ap-sources ap-foot"><span>Fechas y país</span><a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Wikidata</a></p>` : '';
 }
 
 function stagesHtml(stages, playable) {
@@ -66,7 +69,7 @@ function galleryHtml(artist, seen, total, withLink, missing) {
   const more = withLink
     ? `<button type="button" class="ap-more" data-ap="gallery">${seen.length === 1 ? 'Ver su cuadro' : `Ver sus ${seen.length} cuadros`}${icons.next(16)}</button>` : '';
   return `<section class="ap-section ap-gallery" aria-labelledby="ap-gal-h"><h2 id="ap-gal-h" class="ap-h">Sus cuadros <span class="ap-count">${seen.length} de ${total}</span></h2>
-    <ul class="ap-grid">${previewCells(seen).map((w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, tiny: true, defer: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}`, badge: false } })}</li>`).join('')}</ul>
+    <ul class="ap-grid">${previewCells(seen).map((w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, small: true, defer: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}`, badge: false } })}</li>`).join('')}</ul>
     ${missing}${more}</section>`;
 }
 
@@ -83,13 +86,13 @@ function masteryHtml(progress, index, artistId, seen, total) {
 function heroHtml(artist, movement, seen, hasStory, storyNew, tag, leadControl) {
   const cover = coverWork(seen);
   const cx = avatarCrop(cover);
-  const ring = `<span class="ap-ring${hasStory ? (storyNew ? ' is-new' : ' is-seen') : ' is-none'}"><span class="ap-photo">${avatarHtml(artist, avatarWork(seen), 'av-lg')}</span></span>`;
+  const ring = `<span class="ap-ring${hasStory ? (storyNew ? ' is-new' : ' is-seen') : ' is-none'}"><span class="ap-photo">${avatarHtml(artist, avatarWork(seen), 'av-lg', { texture: cover })}</span></span>`;
   const avatarEl = hasStory
     ? `<button type="button" class="ap-avatar" data-ap="story" aria-label="Ver la historia de ${esc(artist.name)}">${ring}</button>`
     : `<span class="ap-avatar">${ring}</span>`;
   const meta = [lifeSpan(artist), artist.country].filter(Boolean).join(' · ');
   return `<header class="ap-hero">
-    <div class="ap-cover">${cover ? `<img src="${esc(cover.img)}" srcset="${esc(tinySrc(cover))} 240w, ${esc(cover.img)} 1200w" sizes="60vw" alt="" style="object-position:${cx.x}% ${cx.y}%" decoding="async" fetchpriority="high">` : ''}</div>
+    <div class="ap-cover">${cover ? `<img src="${esc(cover.img)}" srcset="${esc(tinySrc(cover))} 240w, ${esc(smallSrc(cover))} 320w, ${esc(mediumSrc(cover))} 800w, ${esc(cover.img)} 1200w" sizes="(min-width: 720px) 720px, 100vw" alt="" style="object-position:${cx.x}% ${cx.y}%" decoding="async" fetchpriority="high">` : ''}</div>
     ${leadControl}
     <div class="ap-id">${avatarEl}
       <div class="ap-who"><${tag} class="ap-name" id="ap-name">${esc(artist.name)}</${tag}>
@@ -114,7 +117,7 @@ export async function profileHtml(ctx, artistId, opts) {
   const target = play.stage;
   const actions = hasStory || target ? `<div class="ap-actions">
       ${target ? (play.next
-    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}">${esc(`Seguir: ${play.next.name}`)}</button>`
+    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}">${esc(`Jugar: ${play.next.name}`)}</button>`
     : `<button type="button" class="btn btn-primary" data-ap="play">${esc(PLAY_LABEL[target])}</button>`) : ''}
       ${hasStory ? `<button type="button" class="btn btn-secondary" data-ap="story">${icons.play(18)}<span>Ver su historia</span></button>` : ''}
     </div>` : '';
@@ -124,7 +127,8 @@ export async function profileHtml(ctx, artistId, opts) {
     <section class="ap-bio" aria-label="Datos">${factsHtml(index, artist, seen.length)}</section>
     ${lookHtml(artist)}
     ${known ? stagesHtml(stageList(progress, index, artistId), opts.playable) : ''}
-    ${galleryHtml(artist, seen, total, opts.navigate, missingHtml(progress, index, artistId, seen.length, total, 'ficha'))}`;
+    ${galleryHtml(artist, seen, total, opts.navigate, missingHtml(progress, index, artistId, seen.length, total, 'ficha'))}
+    ${sourceFoot(artist)}`;
 }
 
 // Acciones de la ficha. hooks: { beforeGo() } se llama antes de salir a otra ruta.
@@ -142,6 +146,12 @@ export function wireProfile(ctx, root, artistId, hooks = {}) {
     } else if (what === 'play') go(`etapa-${artistId}`);
     else if (what === 'deep') go(deepRoute(artistId, Number(b.dataset.level)));
     else if (what === 'gallery') go(`obras-${artistId}`);
-    else if (what === 'stages') root.querySelector('.ap-stages-section')?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    else if (what === 'stages') {
+      // «Ver etapas» baja a ellas y mueve el foco a su título (el lector de pantalla se entera).
+      const h = root.querySelector('#ap-stages-h');
+      h?.setAttribute('tabindex', '-1');
+      h?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      h?.focus({ preventScroll: true });
+    }
   });
 }

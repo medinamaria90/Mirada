@@ -11,8 +11,9 @@ import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { loadStory } from './story-data.js';
 import { avatarHtml } from './avatar.js';
-import { seenOf, avatarWork } from '../engine/painters.js';
-import { levelStory, cropOf, step, storyKey, sourceLabel, cardDuration } from '../engine/stories.js';
+import { seenOf, avatarWork, openingWork, coverWork } from '../engine/painters.js';
+import { tinySrc } from './art.js';
+import { levelStory, frameFor, step, storyKey, sourceLabel, cardDuration } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
 const HOLD_MS = 180; // mantener el dedo así de rato pausa la historia
@@ -21,11 +22,16 @@ const ZONE_BACK = 0.33; // el tercio izquierdo de la imagen vuelve; el resto ava
 
 let current = null;
 
+// La obra de la tarjeta, a sangre y centrada en su punto de interés o, si es muy alta o muy apaisada (o no tiene punto de interés),
+// entera sobre un fondo desenfocado de ella misma (nada de tiras diminutas sobre negro ni de torsos sin cabeza).
 function mediaHtml(index, card, override = null) {
   const w = override || index.artwork(card.artwork);
-  const c = cropOf(override ? null : card.focus);
-  const img = w ? `<img class="story-img" src="${esc(w.img)}" alt="${esc(`${w.title}, de ${index.artist(w.artistId)?.name || ''}`)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async" fetchpriority="high">` : '';
-  return `<div class="story-art${c.whole ? '' : ' is-crop'}" style="--x:${c.x}%;--y:${c.y}%;--z:${c.zoom}">${img}</div>`;
+  const f = frameFor(w, override ? null : card.focus);
+  const crop = f.mode === 'crop';
+  const alt = w ? `${w.title}, de ${index.artist(w.artistId)?.name || ''}` : '';
+  const img = w ? `<img class="story-img" src="${esc(w.img)}" alt="${esc(alt)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async" fetchpriority="high">` : '';
+  const backdrop = w && !crop ? `<img class="story-bg" src="${esc(tinySrc(w))}" alt="" aria-hidden="true">` : '';
+  return `<div class="story-art${crop ? ' is-crop' : ''}" style="--x:${f.x}%;--y:${f.y}%;--z:${f.zoom}">${backdrop}${img}</div>`;
 }
 
 function cardHtml(card, pos, count, forced) {
@@ -61,6 +67,8 @@ export async function playStory(ctx, artistId, level, opts = {}) {
   const useHistory = opts.history !== false;
   const mine = seenOf(ctx.store.get().progress, index, artistId);
   const face = avatarWork(mine);
+  // La primera tarjeta del nivel básico abre con su cara si la hay o, si no, con su obra más representativa de las vistas.
+  const opening = face ? face.work : (mine.length ? openingWork(mine, null) : null);
 
   return new Promise((resolve) => {
     const dlg = document.createElement('dialog');
@@ -71,7 +79,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       <div class="story-head">
         <div class="story-bars" aria-hidden="true">${lv.cards.map(() => '<span class="story-bar"><span></span></span>').join('')}</div>
         <div class="story-top">
-          <span class="story-who"><span class="story-avatar" aria-hidden="true">${avatarHtml(artist, face)}</span>
+          <span class="story-who"><span class="story-avatar" aria-hidden="true">${avatarHtml(artist, face, '', { texture: coverWork(mine) })}</span>
             <span class="story-who-text"><span class="story-name">${esc(artist?.short || artist?.name || '')}</span><span class="story-title">${esc(lv.stage || lv.title)}</span></span></span>
           ${auto ? `<button type="button" class="story-icon" data-st="pause" aria-pressed="false" aria-label="Pausar">${icons.pause(22)}</button>` : ''}
           <button type="button" class="story-skip" data-st="skip">Saltar</button>
@@ -100,7 +108,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     };
     const show = (manual) => {
       // En la primera tarjeta del nivel básico, si hay un retrato o autorretrato visto, se ve la cara.
-      media.innerHTML = mediaHtml(index, lv.cards[pos], level === 1 && pos === 0 && face ? face.work : null);
+      media.innerHTML = mediaHtml(index, lv.cards[pos], level === 1 && pos === 0 ? opening : null);
       bottom.innerHTML = cardHtml(lv.cards[pos], pos, lv.cards.length, Boolean(opts.force));
       dlg.querySelectorAll('.story-bar').forEach((b, i) => {
         b.classList.toggle('is-done', i < pos || (i === pos && !auto));
