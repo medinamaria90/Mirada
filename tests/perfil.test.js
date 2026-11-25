@@ -12,7 +12,7 @@ const { migrate, defaultState, normalizeName, normalizeArtworkId, graphemes, NAM
 const { rankFor, RANKS } = await import('../app/js/engine/ranks.js');
 const P = await import('../app/js/engine/profile.js');
 const { heroHtml } = await import('../app/js/ui/screens/profile-hero.js');
-const { figuresHtml, museumHtml, welcomeHtml, testHtml, practiceHtml } = await import('../app/js/ui/screens/profile-parts.js');
+const { welcomeHtml, testHtml, practiceHtml } = await import('../app/js/ui/screens/profile-parts.js');
 const { medalGroupsHtml } = await import('../app/js/ui/screens/profile-medals.js');
 const { settingsHtml } = await import('../app/js/ui/screens/profile-settings.js');
 const { nameSheetHtml } = await import('../app/js/ui/screens/profile-name.js');
@@ -100,46 +100,39 @@ test('una sola escala: los niveles del test no se llaman como ningún rango, y p
   assert.doesNotMatch(read('../app/js/engine/finish.js'), /levelup|levelFor/, 'queda código de la escala de niveles');
 });
 
-test('museo y cifra de cuadros cuentan lo mismo (la colección) y con la misma palabra que la Colección: «vistos»', () => {
+test('el perfil no repite lo que se ve en otro sitio: sin museo ni cifras de cuadros o pintores; solo los XP, junto al rango', () => {
   const p = emptyProgress();
   const ws = index.artworks.slice(0, 12);
   ws.forEach((w, i) => { p.collection[w.id] = `2026-11-${String(10 + i).padStart(2, '0')}`; });
-  p.collection.noexiste = '2026-11-30';
-  p.srs[`art:${ws[0].id}`] = { box: 3, due: TODAY };
-  const ctx = ctxFor(p);
-  assert.match(figuresHtml(ctx), /pf-fig-num">12<\/strong><span class="pf-fig-label">cuadros vistos</);
-  assert.doesNotMatch(figuresHtml(ctx), /reconoces/, 'una sola palabra: vistos');
-  assert.doesNotMatch(welcomeHtml(), /reconozc|reconoc/);
-  assert.equal(P.museumWorks(p, index).length, 9);
+  p.xp = 3400;
+  for (const a of index.path.slice(0, 3)) p.artists[a.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
+  const hero = heroHtml(ctxFor(p));
+  assert.match(hero, /pf-rank-xp">3400<span class="pf-rank-xp-unit"> XP/);
+  assert.doesNotMatch(hero, /cuadros? vistos?|pintores? dominados?/i);
+  assert.doesNotMatch(welcomeHtml(), /museo|reconozc|reconoc/i);
+  assert.match(welcomeHtml(), /Colecci/);
   assert.equal(P.collectionIds(p, index).length, 12);
   assert.equal(P.collectionWorks(p, index).length, 12);
-  assert.doesNotMatch(figuresHtml(ctx), /día|racha/i, 'la racha ya está en la cabecera');
-  const one = emptyProgress();
-  one.collection[ws[0].id] = '2026-11-20';
-  assert.equal((museumHtml(ctxFor(one)).match(/pf-tile-empty/g) || []).length, 2, 'con un cuadro, solo huecos para completar la fila');
-});
-
-test('portada de muestra del usuario nuevo: un cuadro amable del catálogo real, sin violencia ni martirios', () => {
-  const real = realIndex();
-  const w = P.sampleCover(real);
-  assert.ok(w);
-  assert.doesNotMatch(w.title, /fusilamiento|tres de mayo|crucifi|martirio|decapita|judit|holofernes|masacre|batalla|guerra|muerte|anatom/i, w.title);
-  for (const bad of real.artworks.filter((x) => /tres de mayo|fusilamientos/i.test(x.title))) assert.notEqual(w.id, bad.id);
+  assert.equal(P.collectionWorks(p, index)[0].id, ws[11].id, 'lo último primero');
+  for (const f of ['profile.js', 'profile-parts.js', 'profile-hero.js']) {
+    const src = read(`../app/js/ui/screens/${f}`);
+    assert.doesNotMatch(src, /museumHtml|museumWorks|Mi museo|figuresHtml|pf-museum|pf-figs/, `${f} aún habla del museo o de las cifras`);
+  }
+  const css = read('../app/css/profile.css');
+  assert.doesNotMatch(css, /pf-museum|pf-tile-empty|pf-cta|pf-figs|pf-fig-|"museum|"figs/, 'CSS muerto del museo o de las cifras');
+  assert.doesNotMatch(read('../app/js/engine/profile.js'), /museumWorks|MUSEUM_SIZE/);
 });
 
 test('portada y avatar elegibles entre toda la colección, con recorte hacia el foco; portada de muestra sin cuadros', () => {
   const p = emptyProgress();
-  assert.deepEqual(P.museumWorks(p, index), []);
+  assert.deepEqual(P.collectionWorks(p, index), []);
   assert.equal(P.coverWork(p, index), null);
   assert.ok(P.sampleCover(index), 'sin cuadros hay una portada de muestra');
   const ws = index.artworks.slice(0, 12);
   ws.forEach((w, i) => { p.collection[w.id] = `2026-11-${String(10 + i).padStart(2, '0')}`; });
-  const m = P.museumWorks(p, index);
-  assert.equal(m[0].id, ws[11].id);
-  assert.equal(m[8].id, ws[3].id);
   const auto = P.coverWork(p, index);
   assert.ok(auto && p.collection[auto.id]);
-  assert.equal(P.coverWork(p, index, ws[0].id).id, ws[0].id, 'se puede elegir uno que no es de los últimos');
+  assert.equal(P.coverWork(p, index, ws[0].id).id, ws[0].id, 'se puede elegir cualquiera de la colección');
   assert.equal(P.coverWork(p, index, 'w999999').id, auto.id, 'una elegida que ya no está vuelve a la automática');
   assert.equal(P.avatarWork(p, index, ''), null);
   assert.equal(P.avatarWork(p, index, ws[2].id).id, ws[2].id);
@@ -185,7 +178,7 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.doesNotMatch(hero, /pf-look/, 'sin cuadros no hay nada que elegir');
   assert.match(hero, /data-action="open-settings"[^>]*aria-label="Ajustes"/);
   const welcome = welcomeHtml();
-  assert.match(welcome, /Aquí vivirá tu museo/);
+  assert.match(welcome, /Tu perfil empieza aquí/);
   assert.match(welcome, /btn-primary[^>]*href="#inicio"/);
   const test = testHtml(null, { primary: false });
   assert.doesNotMatch(test, /btn-primary/, 'con «Ir al camino» como principal, el test no compite');
@@ -201,26 +194,17 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.doesNotMatch(practice, /data-action="weekly"/);
 });
 
-test('el orden del DOM es el visual: identidad, cifras, museo, logros, test, accesos; en escritorio, áreas de rejilla', () => {
+test('el orden del DOM es el visual: identidad, logros, test, accesos; en escritorio, las mismas filas con áreas de rejilla', () => {
   const src = read('../app/js/ui/screens/profile.js');
   const from = src.indexOf('pf-layout');
-  const order = ['heroHtml(ctx)', 'figuresHtml(ctx)', 'museumHtml(ctx)', 'medalsHtml(ctx)', '${test}', 'practiceHtml(ctx)'].map((k) => src.indexOf(k, from));
+  const order = ['heroHtml(ctx)', 'medalsHtml(ctx)', '${test}', 'practiceHtml(ctx)'].map((k) => src.indexOf(k, from));
   assert.ok(order.every((n) => n > 0) && order.every((n, i) => i === 0 || n > order[i - 1]), `orden: ${order}`);
   const css = read('../app/css/profile.css');
-  assert.match(css, /grid-template-areas/);
+  assert.match(css, /grid-template-areas: "hero hero" "medals medals" "test practice"/);
   assert.doesNotMatch(css, /display: contents/);
 });
 
 test('concordancia: 0, 1 y 2 en cifras, requisitos del rango y logros', () => {
-  const figs = (n) => {
-    const p = emptyProgress();
-    index.artworks.slice(0, n).forEach((w) => { p.collection[w.id] = '2026-11-20'; });
-    for (const a of index.path.slice(0, n)) p.artists[a.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
-    return figuresHtml(ctxFor(p));
-  };
-  assert.match(figs(0), />cuadros vistos<[\s\S]*>pintores dominados</);
-  assert.match(figs(1), />cuadro visto<[\s\S]*>pintor dominado</);
-  assert.match(figs(2), />cuadros vistos<[\s\S]*>pintores dominados</);
   const need = (key, n, next) => P.rankProgress({ next: { name: 'X', ...next }, stats: { xp: 0, deep: 0, eras: 0, complete: 0, grand: [] }, missing: [{ key, have: 0, need: n }] }).parts[0];
   assert.match(need('deep', 1, { deep: 1 }), /1 nivel «a fondo» más/);
   assert.match(need('deep', 2, { deep: 2 }), /2 niveles «a fondo» más/);
@@ -235,7 +219,7 @@ test('concordancia: 0, 1 y 2 en cifras, requisitos del rango y logros', () => {
   assert.equal(P.plural(2, 'cuadro', 'cuadros'), '2 cuadros');
 });
 
-test('cifras grandes: exactas hasta 9 999 y abreviadas hacia abajo («31,2 mil», «9,9 M») sin partirse; la exacta, para lectores de pantalla', () => {
+test('los XP junto al rango: exactos hasta 9 999 y abreviados hacia abajo («31,2 mil», «9,9 M») sin partirse; la exacta, para lectores de pantalla', () => {
   assert.equal(P.compactNumber(0), '0');
   assert.equal(P.compactNumber(9999), '9999');
   assert.equal(P.compactNumber(10000), '10 mil');
@@ -244,11 +228,9 @@ test('cifras grandes: exactas hasta 9 999 y abreviadas hacia abajo («31,2 mil»
   assert.equal(P.compactNumber(999999), '999,9 mil');
   assert.equal(P.compactNumber(9999999), '9,9 M', '9 999 999 no es «10 M»');
   assert.equal(P.compactNumber(9876543), '9,8 M');
-  const html = figuresHtml(ctxFor({ ...emptyProgress(), xp: 31290 }));
-  assert.match(html, /is-compact[^>]*><span aria-hidden="true">31,2 mil<\/span><span class="sr-only">31\.290<\/span>/);
-  const num = read('../app/css/profile.css').match(/\.pf-fig-num \{[^}]*\}/)[0];
-  assert.match(num, /white-space: nowrap/);
-  assert.doesNotMatch(num, /overflow-wrap/);
+  const html = heroHtml(ctxFor({ ...emptyProgress(), xp: 31290 }));
+  assert.match(html, /<span aria-hidden="true">31,2 mil<\/span><span class="sr-only">31\.290<\/span>/);
+  assert.match(read('../app/css/profile.css').match(/\.pf-rank-xp \{[^}]*\}/)[0], /white-space: nowrap/);
 });
 
 test('texto al 200 %: el saludo no se recorta (sin line-clamp ni overflow oculto), baja bajo el avatar si no cabe y el avatar no come el ancho', () => {
@@ -263,7 +245,7 @@ test('texto al 200 %: el saludo no se recorta (sin line-clamp ni overflow oculto
 test('el móvil apaisado gana a las reglas de ancho (va después de ellas) y el escritorio va por filas del DOM', () => {
   const css = read('../app/css/profile.css');
   assert.ok(css.indexOf('max-height: 500px') > css.indexOf('min-width: 1024px'), 'el bloque apaisado debe ir al final');
-  assert.match(css, /grid-template-areas: "hero hero" "figs figs" "museum medals" "test practice"/);
+  assert.match(css, /grid-template-areas: "hero hero" "medals medals" "test practice"/);
 });
 
 test('las pestañas Portada y Avatar siguen el patrón ARIA: flechas, Inicio y Fin, y solo la activa en el orden de Tab', () => {
@@ -286,11 +268,6 @@ test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de port
   const withAvatar = heroHtml(ctxFor(p, { name: 'María', avatar: index.artworks[1].id }));
   assert.match(withAvatar, /pf-avatar has-art/);
   assert.doesNotMatch(withAvatar, /pf-initial/);
-  const museum = museumHtml(ctxFor(p));
-  assert.equal((museum.match(/data-zoom-group="museo"/g) || []).length, 5);
-  assert.equal((museum.match(/pf-tile-empty/g) || []).length, 1);
-  assert.match(museum, /href="#coleccion">Ver todo/);
-  assert.match(museum, /Último en colgarse/);
   const t = testHtml({ correct: 24, asked: 40, level: TEST_LEVELS[2], percentile: 78, date: '2026-11-12', grid: '' });
   assert.match(t, /24<\/strong> de 40/);
   assert.match(t, /78&nbsp;%/);
@@ -334,7 +311,7 @@ test('hojas: ajustes con todo, nombre con contador y nota, portada y avatar en p
   assert.match(look, /role="tablist"/);
   assert.match(look, /role="tab"[^>]*data-target="avatar"/);
   const ctx = ctxFor(emptyProgress());
-  for (const h of [html, name, look, heroHtml(ctx), figuresHtml(ctx), welcomeHtml(), practiceHtml(ctx)]) assert.doesNotMatch(h, FORBIDDEN);
+  for (const h of [html, name, look, heroHtml(ctx), welcomeHtml(), practiceHtml(ctx)]) assert.doesNotMatch(h, FORBIDDEN);
 });
 
 test('el foco se queda: las hojas repintan solo lo que cambia, no la cabecera entera ni la rejilla', () => {
@@ -433,7 +410,7 @@ test('el foco de la portada gana a main.css y va por encima de la imagen; las ho
   assert.match(css, /\.pf-medals > li\.pf-extra \{ display: none; \}/, 'el extra pierde por especificidad frente a `.pf-medals > li`');
   assert.doesNotMatch(css.match(/\.look-panel \{[^}]*\}/)[0], /overflow|max-height/, 'un solo scroll: el de la hoja');
   assert.match(css, /\.look-body > \.btn \{ position: sticky; bottom: 0/);
-  assert.match(css, /\.pf-layout \{[^}]*\}[\s\S]*@media \(min-width: 720px\)[\s\S]*grid-template-areas: "hero hero" "figs figs"/);
+  assert.match(css, /\.pf-layout \{[^}]*\}[\s\S]*@media \(min-width: 720px\)[\s\S]*grid-template-areas: "hero hero" "medals medals" "test practice"/);
 });
 
 test('el repaso se ve siempre (bloqueado y con el motivo) y el logro pendiente no se da por hecho', () => {
@@ -444,8 +421,8 @@ test('el repaso se ve siempre (bloqueado y con el motivo) y el logro pendiente n
   assert.match(medals, /date \? info\.sub : KIND_NAMES\[kindOf\(id\)\]/);
 });
 
-test('miniaturas sueltas: Mi museo, portada y hoja usan img/t (no hojas enteras del atlas) y make_atlas las pinta', () => {
-  for (const f of ['profile-parts.js', 'profile-look.js', 'profile-hero.js']) {
+test('miniaturas sueltas: portada, avatar y hoja usan img/t (no hojas enteras del atlas) y make_atlas las pinta', () => {
+  for (const f of ['profile-look.js', 'profile-hero.js']) {
     const src = read(`../app/js/ui/screens/${f}`);
     assert.doesNotMatch(src, /thumb: true/, `${f} pide hojas del atlas`);
     assert.match(src, /tinyFrame|tinySrc/);

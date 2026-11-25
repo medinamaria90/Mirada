@@ -953,7 +953,7 @@ if (SMOKE) {
   await page.goto(`${base}#perfil`);
   await page.waitForSelector('.pf-hero');
   await audit(page, '390 perfil');
-  check(/cuadros?|Aquí vivirá tu museo/i.test(await page.locator('.pf-layout').innerText()), 'perfil sin la cifra de cuadros ni la bienvenida');
+  check((await page.locator('.pf-rank-name').innerText()).length > 0 && (await page.locator('.pf-layout').innerText()).includes('Logros'), 'perfil sin rango ni logros');
   check(await page.locator('button.pf-medal').count() >= 1, 'las medallas del perfil no son pulsables');
   // Colección → «Pintores»: lista por épocas con buscador; la ficha se abre sobre la pantalla y solo enseña lo ya visto.
   // 16 pintores conocidos: con tantos sale el buscador (con menos no hay nada que buscar).
@@ -1505,7 +1505,7 @@ await page.click('.nav-item[href="#perfil"]');
 await page.waitForSelector('.pf-hero');
 await shot(page, '18-perfil', true);
 await audit(page, '390 perfil');
-check(/cuadros?|Aquí vivirá tu museo/i.test(await page.locator('.pf-layout').innerText()), 'perfil sin la cifra de cuadros ni la bienvenida');
+check((await page.locator('.pf-rank-name').innerText()).length > 0 && (await page.locator('.pf-layout').innerText()).includes('Logros'), 'perfil sin rango ni logros');
 await page.click('[data-action="open-settings"]');
 await page.waitForSelector('.settings-dialog[open]');
 const range = await page.locator('[data-setting="volume"]').boundingBox();
@@ -1817,7 +1817,7 @@ const freeGap = await dpage0.evaluate(() => document.querySelector('.result-acti
 check(freeGap < 120, `resultado de la ronda libre con hueco central de ${Math.round(freeGap)} px`);
 await dpage0.goto(`${base}#perfil`);
 await dpage0.waitForSelector('.pf-hero');
-check((await dpage0.locator('.pf-figs').innerText()).includes(String(allWorks.length)), 'el perfil no muestra los cuadros vistos');
+check(!/cuadros? vistos?|Mi museo/i.test(await dpage0.locator('.pf-layout').innerText()), 'el perfil repite los cuadros vistos o el museo');
 
 // ---------------------------------------------------------------- Ojo de… (todas las obras de un pintor en la caja más alta)
 const eyeCtx = await browser.newContext(ctxOpts);
@@ -2251,7 +2251,8 @@ for (const scheme of ['light', 'dark']) {
       await audit(p7, `o7 ${tag} etapa`);
       await p7.goto(`${base}#perfil`);
       await p7.waitForSelector('.pf-hero');
-      check(/\d+\s*cuadros?|Aquí vivirá tu museo/i.test(await p7.locator('.pf-layout').innerText()), `[${tag}] Perfil sin la cifra de cuadros ni la bienvenida`);
+      check((await p7.locator('.pf-rank-name').innerText()).length > 0, `[${tag}] Perfil sin rango`);
+      check(!/cuadros? vistos?|pintores? dominados?|Mi museo/i.test(await p7.locator('.pf-layout').innerText()), `[${tag}] el perfil repite lo que ya está en la Colección`);
       await shot(p7, `perfil-${tag}`);
       await c7.close();
       // Reto semanal aceptado por un jugador nuevo: aviso breve, sin bloquear.

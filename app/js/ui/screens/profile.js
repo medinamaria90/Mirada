@@ -1,4 +1,4 @@
-// Perfil: quién eres (portada, nombre, rango), tus cifras, «Mi museo», logros, tu test de pintura,
+// Perfil: quién eres (portada, nombre, rango), tu rango, logros, tu test de pintura,
 // accesos a seguir practicando y, aparte, las hojas de ajustes, nombre y portada. Las piezas están en profile-*.js.
 
 import { onAction, focusHeading, $ } from '../dom.js';
@@ -7,7 +7,7 @@ import { playEra } from '../audio-bridge.js';
 import { parseLastTest, shareCover, collectionIds } from '../../engine/profile.js';
 import { loadGentle, gentleWorks } from './profile-art.js';
 import { heroHtml, upgradeCover } from './profile-hero.js';
-import { figuresHtml, museumHtml, welcomeHtml, testHtml, practiceHtml } from './profile-parts.js';
+import { welcomeHtml, testHtml, practiceHtml } from './profile-parts.js';
 import { medalsHtml, wireMedals } from './profile-medals.js';
 import { settingsHtml, wireSettings } from './profile-settings.js';
 import { nameSheetHtml, wireName } from './profile-name.js';
@@ -60,7 +60,7 @@ export async function renderProfile(ctx, el, opts = {}) {
   el.innerHTML = page(ctx, 'profile', `
     <div class="pf-layout ${hasPictures ? '' : 'is-new'}">
       ${heroHtml(ctx)}
-      ${hasPictures ? `${figuresHtml(ctx)}${museumHtml(ctx)}${medalsHtml(ctx)}${test}` : `${welcomeHtml()}${test}${medalsHtml(ctx)}`}
+      ${hasPictures ? `${medalsHtml(ctx)}${test}` : `${welcomeHtml()}${test}${medalsHtml(ctx)}`}
       ${practiceHtml(ctx)}
     </div>
     ${settingsHtml(ctx)}

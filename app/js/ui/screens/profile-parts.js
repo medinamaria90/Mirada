@@ -1,61 +1,26 @@
-// Piezas del perfil (HTML): tres cifras, «Mi museo», test y «Seguir practicando». La identidad está en
+// Piezas del perfil (HTML): bienvenida, test y «Seguir practicando». La identidad está en
 // profile-hero.js, los logros en profile-medals.js y los ajustes en profile-settings.js.
 
 import { esc, longDate } from '../dom.js';
 import { icons } from '../icons.js';
-import { tinyFrame } from './profile-art.js';
-import { museumWorks, collectionIds, compactNumber, plural, MUSEUM_SIZE } from '../../engine/profile.js';
-import { artistStatus, isPathMastered, pathProgress } from '../../engine/progress.js';
+import { plural } from '../../engine/profile.js';
+import { isPathMastered, pathProgress } from '../../engine/progress.js';
 import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 
 const SHARE = '<svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.2 10.8 7.6-3.6M8.2 13.2l7.6 3.6"/></svg>';
-const nf = (n) => n.toLocaleString('es-ES');
-
-// Tres cifras grandes, sin cajas: cuadros vistos (los de tu colección: los mismos que cuentan Colección e
-// inicio y los que cuelgan en «Mi museo»; una sola palabra, «vistos», en toda la app), pintores dominados y
-// XP. La racha ya está en la cabecera de la app.
-export function figuresHtml(ctx) {
-  const { index } = ctx;
-  const p = ctx.store.get().progress;
-  const pictures = collectionIds(p, index).length;
-  const painters = index.path.filter((a) => artistStatus(p, index, a.id) === 'mastered').length;
-  // Las cifras grandes no se parten: se abrevian («31,2 mil») y la exacta queda para lectores de pantalla.
-  const num = (n) => (compactNumber(n) === String(n) ? nf(n) : `<span aria-hidden="true">${compactNumber(n)}</span><span class="sr-only">${nf(n)}</span>`);
-  const fig = (icon, n, label, sub) => `<li class="pf-fig"><span class="pf-fig-icon" aria-hidden="true">${icon}</span><strong class="pf-fig-num${compactNumber(n) === String(n) ? '' : ' is-compact'}">${num(n)}</strong><span class="pf-fig-label">${label}</span>${sub ? `<span class="pf-fig-sub">${sub}</span>` : ''}</li>`;
-  return `<section class="pf-figs-sec" aria-labelledby="pf-figs-h"><h2 id="pf-figs-h" class="sr-only">Tus cifras</h2><ul class="pf-figs">
-    ${fig(icons.frames(22), pictures, pictures === 1 ? 'cuadro visto' : 'cuadros vistos', '')}
-    ${fig(icons.eye(22), painters, painters === 1 ? 'pintor dominado' : 'pintores dominados', '')}
-    ${fig(icons.gem(22), p.xp, 'XP', 'en total')}
-  </ul></section>`;
-}
 
 // Usuario nuevo: en vez de ceros, para qué sirve esto y por dónde empezar.
 export function welcomeHtml() {
   return `<section class="pf-sec pf-welcome-sec" aria-labelledby="pf-welcome-h">
-    <h2 id="pf-welcome-h">Aquí vivirá tu museo</h2>
-    <p class="pf-lead">Cada cuadro que veas jugando se colgará aquí, y entonces podrás elegir tu portada y tu avatar.</p>
+    <h2 id="pf-welcome-h">Tu perfil empieza aquí</h2>
+    <p class="pf-lead">Juega y cada cuadro que veas irá a tu Colección. Con ellos podrás elegir tu portada y tu avatar.</p>
     <a class="btn btn-primary btn-wide" href="#inicio">Ir al camino</a>
   </section>`;
 }
 
-// «Mi museo»: los últimos cuadros de la colección en 3×3; se abren en el visor y se pasan deslizando.
-// Solo se pinta con algún cuadro (sin ninguno, el perfil enseña la bienvenida).
-export function museumHtml(ctx) {
-  const works = museumWorks(ctx.store.get().progress, ctx.index);
-  const tiles = works.map((w) => `<li>${tinyFrame(w, { alt: '', cls: 'pf-tile', label: w.title, zoom: { group: 'museo' } })}</li>`);
-  // Huecos solo para completar la fila: con un cuadro, dos marcos vacíos; no ocho.
-  const slots = Math.min(MUSEUM_SIZE, Math.max(3, Math.ceil(works.length / 3) * 3));
-  while (tiles.length < slots) tiles.push('<li class="pf-tile pf-tile-empty" aria-hidden="true"></li>');
-  return `<section class="pf-sec pf-museum-sec" aria-labelledby="pf-museum-h">
-    <div class="pf-sec-head"><h2 id="pf-museum-h">Mi museo</h2><a class="pf-link" href="#coleccion">Ver todo</a></div>
-    <p class="pf-lead">Último en colgarse: ${esc(works[0]?.title || '')}</p>
-    <ul class="pf-museum">${tiles.join('')}</ul>
-  </section>`;
-}
-
 // «Tu test de pintura»: último resultado (si lo hay) y los botones. `primary`: el botón de hacer el test
-// es el principal de la pantalla (si no, lo es otro, como «Ir al camino» sin cuadros).
+// es el principal de la pantalla (si no, lo es otro, como «Ir al camino» sin cuadros vistos).
 export function testHtml(last, { primary = true } = {}) {
   const result = last ? `<div class="pf-test-card">
       ${last.level ? `<p class="pf-test-level">${esc(last.level)}</p>` : ''}
