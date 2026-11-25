@@ -21,9 +21,9 @@ const ZONE_BACK = 0.33; // el tercio izquierdo de la imagen vuelve; el resto ava
 
 let current = null;
 
-function mediaHtml(index, card) {
-  const w = index.artwork(card.artwork);
-  const c = cropOf(card.focus);
+function mediaHtml(index, card, override = null) {
+  const w = override || index.artwork(card.artwork);
+  const c = cropOf(override ? null : card.focus);
   const img = w ? `<img class="story-img" src="${esc(w.img)}" alt="${esc(`${w.title}, de ${index.artist(w.artistId)?.name || ''}`)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async" fetchpriority="high">` : '';
   return `<div class="story-art${c.whole ? '' : ' is-crop'}" style="--x:${c.x}%;--y:${c.y}%;--z:${c.zoom}">${img}</div>`;
 }
@@ -44,7 +44,8 @@ function cardHtml(card, pos, count, forced) {
 const fontScale = () => Math.max(1, (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16);
 
 // Muestra la historia del nivel y devuelve una promesa que se cumple al terminar o saltarla (true si se mostró).
-// opts: { force } vuelve a mostrarla aunque ya se haya visto.
+// opts: { force } vuelve a mostrarla aunque ya se haya visto; { history: false } cuando va seguida de una ronda: no entra en el
+// historial (su entrada de «atrás» llegaría de forma asíncrona cuando la ronda ya está montada y dispararía «¿Salir de la ronda?»).
 export async function playStory(ctx, artistId, level, opts = {}) {
   const key = storyKey(artistId, level);
   if (!opts.force && storySeen(key)) return false;
@@ -57,6 +58,9 @@ export async function playStory(ctx, artistId, level, opts = {}) {
   const artist = index.artist(artistId);
   const opener = document.activeElement;
   const auto = !prefersReducedMotion();
+  const useHistory = opts.history !== false;
+  const mine = seenOf(ctx.store.get().progress, index, artistId);
+  const face = avatarWork(mine);
 
   return new Promise((resolve) => {
     const dlg = document.createElement('dialog');
@@ -67,7 +71,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       <div class="story-head">
         <div class="story-bars" aria-hidden="true">${lv.cards.map(() => '<span class="story-bar"><span></span></span>').join('')}</div>
         <div class="story-top">
-          <span class="story-who"><span class="story-avatar" aria-hidden="true">${avatarHtml(artist, avatarWork(seenOf(ctx.store.get().progress, index, artistId)))}</span>
+          <span class="story-who"><span class="story-avatar" aria-hidden="true">${avatarHtml(artist, face)}</span>
             <span class="story-who-text"><span class="story-name">${esc(artist?.short || artist?.name || '')}</span><span class="story-title">${esc(lv.stage || lv.title)}</span></span></span>
           ${auto ? `<button type="button" class="story-icon" data-st="pause" aria-pressed="false" aria-label="Pausar">${icons.pause(22)}</button>` : ''}
           <button type="button" class="story-skip" data-st="skip">Saltar</button>
@@ -95,7 +99,8 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       }
     };
     const show = (manual) => {
-      media.innerHTML = mediaHtml(index, lv.cards[pos]);
+      // En la primera tarjeta del nivel básico, si hay un retrato o autorretrato visto, se ve la cara.
+      media.innerHTML = mediaHtml(index, lv.cards[pos], level === 1 && pos === 0 && face ? face.work : null);
       bottom.innerHTML = cardHtml(lv.cards[pos], pos, lv.cards.length, Boolean(opts.force));
       dlg.querySelectorAll('.story-bar').forEach((b, i) => {
         b.classList.toggle('is-done', i < pos || (i === pos && !auto));
@@ -105,6 +110,10 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const now = dlg.querySelector('.story-bar.is-now > span');
       if (now) { now.style.animation = 'none'; void now.offsetWidth; now.style.animation = ''; }
       // Solo se anuncia lo que el usuario pide (la primera tarjeta y cada cambio a mano), no lo que avanza solo.
+      const copy = bottom.querySelector('.story-copy');
+      const hint = () => copy.classList.toggle('has-more', copy.scrollHeight - copy.scrollTop - copy.clientHeight > 4);
+      copy.addEventListener('scroll', hint, { passive: true });
+      hint();
       if (manual) dlg.querySelector('[data-live]').textContent = lv.cards[pos].text;
       if (manual || pos === 0) dlg.querySelector('.story-next').focus({ preventScroll: true });
       const nextCard = lv.cards[pos + 1];
@@ -114,14 +123,18 @@ export async function playStory(ctx, artistId, level, opts = {}) {
 
     // Entra en el historial: atrás cierra la historia y deja en la ficha (o donde se estuviera).
     let pushed = false;
-    try { history.pushState({ sfStory: true }, ''); pushed = true; } catch { /* sin historial: Saltar y Esc siguen funcionando */ }
+    if (useHistory) {
+      try { history.pushState({ sfStory: true }, ''); pushed = true; } catch { /* sin historial: Saltar y Esc siguen funcionando */ }
+    }
     const onPop = () => finish(true);
+
 
     function finish(fromPop = false) {
       if (closed) return;
       closed = true;
       current = null;
       window.removeEventListener('popstate', onPop);
+      window.removeEventListener('hashchange', onPop);
       document.removeEventListener('keydown', onDocKey);
       if (dlg.open) dlg.close();
       dlg.remove();
@@ -188,7 +201,12 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       } else if (ev.key === 'Tab' && auto && !userPaused) {
         userPaused = true;
         setPaused(true);
-      } else if (ev.key === 'ArrowRight') { ev.preventDefault(); go(1); } else if (ev.key === 'ArrowLeft') { ev.preventDefault(); go(-1); }
+      } else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+        // Una flecha, una tarjeta: se corta aquí para que el manejador del documento no la cuente otra vez (show() cambia los botones).
+        ev.preventDefault();
+        ev.stopPropagation();
+        go(ev.key === 'ArrowRight' ? 1 : -1);
+      }
     }, true);
     dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); finish(); });
     // El foco no sale de la historia: Tab da la vuelta dentro de ella y, si se pierde (el cuerpo de la página), las teclas
@@ -204,7 +222,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
     });
     const onDocKey = (ev) => {
-      if (dlg.contains(ev.target)) return;
+      if (ev.defaultPrevented || dlg.contains(ev.target)) return;
       if (ev.key === 'ArrowRight') go(1);
       else if (ev.key === 'ArrowLeft') go(-1);
       else if (ev.key === ' ' && auto) { userPaused = !userPaused; setPaused(userPaused); }
@@ -214,7 +232,8 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       dlg.querySelector('.story-next')?.focus({ preventScroll: true });
     };
     document.addEventListener('keydown', onDocKey);
-    window.addEventListener('popstate', onPop);
+    // Sin entrada propia en el historial, cambiar de ruta (atrás del navegador) cierra la historia.
+    window.addEventListener(useHistory ? 'popstate' : 'hashchange', onPop);
     current = { close: () => finish(false) };
     try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }
     show(true);

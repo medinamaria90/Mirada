@@ -624,7 +624,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .copy-fallback { width: 100%; padding: .7rem; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--surface); resize: none; font-size: .9rem; }
 
 /* ---------- Colección ---------- */
-.section-head { margin: .4rem 0 1.3rem; }
+.section-head { margin: .2rem 0 .8rem; }
 .section-head h1 { font: 500 1.9rem/1 var(--font); letter-spacing: var(--track); }
 .section-sub { color: var(--ink-2); margin-top: .3rem; font-variant-numeric: lining-nums tabular-nums; }
 /* Pestañas de Colección: Cuadros | Pintores (enlaces a dos rutas). */
@@ -637,10 +637,10 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .coll-artist { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.2rem/1.1 var(--font); padding-bottom: .5rem; margin-bottom: .75rem; border-bottom: 1px solid var(--line); }
 .coll-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 /* Avatar de pintor (ui/avatar.js): autorretrato o retrato recortado por su punto de interés, o iniciales sobre el color de su movimiento. */
-.av { position: relative; display: block; width: 100%; height: 100%; border-radius: 999px; overflow: hidden; background: var(--accent); }
+.av { position: relative; display: block; width: 100%; height: 100%; border-radius: 999px; overflow: hidden; background: var(--accent); container-type: size; }
 .av-art { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; box-shadow: none; transform: scale(1.6); transform-origin: var(--x) var(--y); }
-.av-initials { display: grid; place-items: center; width: 100%; height: 100%; background: var(--accent); color: var(--on-accent); font: 600 .9rem/1 var(--font); letter-spacing: .02em; }
-.av-lg .av-initials { font-size: 1.7rem; }
+/* Monograma: iniciales con la tipografía de marca sobre el color de su movimiento y un borde fino claro. */
+.av-initials { display: grid; place-items: center; width: 100%; height: 100%; background: var(--accent); color: var(--on-accent); font: 500 38cqw/1 var(--font); letter-spacing: .04em; text-indent: .04em; box-shadow: inset 0 0 0 max(1.5px, 2.5cqw) color-mix(in srgb, var(--on-accent) 45%, transparent); }
 .coll-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 168px)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
 .coll-item { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 10px; transition: transform .18s var(--ease); }
 .coll-item:hover { transform: translateY(-2px); }

@@ -288,6 +288,13 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   del nivel «a fondo» como primer bloque del resultado, con destino y nombre de etapa con sentido (`stageTitle`). Datos: los años de nacimiento y
   muerte salen de `pipeline/painters.json` (revisados contra Wikidata, `resolve.py` respeta el rango preferido) y los títulos solo se traducen con fuente
   (`pipeline/titulos_es.json`; hoy solo «Medea furiosa», de la Wikipedia en español).
+- **Ronda 4 de Colección y ficha**: la historia que precede a una ronda «a fondo» o a «Conoce a» no entra en el historial (`playStory(..., { history: false })`):
+  su entrada de «atrás» llegaba de forma asíncrona cuando la ronda ya estaba montada y abría «¿Salir de la ronda?»; una flecha avanza exactamente una
+  tarjeta (el manejador del documento no la cuenta otra vez). Miniaturas sueltas `img/t/<id>.jpg` (240 px, ~10 KB; las pinta `tools/make_atlas.py`, mismo
+  cambio que `perfil-nuevo`) en franjas, galerías, ficha, avatares y buscador: con 48 miniaturas, 409 KB frente a 2.054 KB de hojas del atlas; la portada
+  lleva `srcset` (miniatura → JPG). Avatar: autorretrato sencillo (sin más gente: «con Isabel Brant» solo vale con `focus`) o retrato con `focus`, nunca
+  muy apaisado; si no, monograma sobre el color del movimiento. La primera tarjeta de la historia enseña ese rostro cuando lo hay. La ficha da datos
+  clave (cuadros, vistos, etapas, fuente Wikidata) y el botón principal es «Seguir: <etapa>» si hay etapas abiertas.
 - **Guía de bienvenida** (`ui/coach.js`): tres pasos sobre el nodo actual, la franja «Hoy» y Colección; una vez por navegador
   (`sfumato.coach` en localStorage), se salta con «Saltar» o Esc. La cabecera ya no lleva el chip de rango (irá en el perfil) y lleva el reto diario
   (`dailyChip`: calendario con punto si está pendiente, «4/5» si está hecho). Ya no hay franja «Hoy» ni lupa del día (su registro

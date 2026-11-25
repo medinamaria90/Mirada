@@ -50,7 +50,7 @@ function deepCelebration(ctx, ev) {
   const nextOpen = next && deepStatus(ctx.store.get().progress, index, ev.artistId, next.id) !== 'locked';
   const link = (to, label) => `<button type="button" class="deep-cele-link" data-action="go" data-to="${esc(to)}">${esc(label)}${icons.next(16)}</button>`;
   return `<section class="deep-cele" style="${accentStyle(index.movement(artist.movementId)?.accent)}" aria-label="Nivel a fondo superado">
-    <span class="deep-cele-seal" aria-hidden="true">${icons.laurel(34)}</span>
+    <span class="deep-cele-seal" aria-hidden="true">${icons.medal(36)}</span>
     <p class="event-kicker">Nivel a fondo superado</p>
     <p class="deep-cele-title">${esc(stage ? stageTitle(artist, stage) : 'Nivel superado')}</p>
     <p class="deep-cele-who">${esc(artist.name)}</p>
@@ -117,7 +117,7 @@ export function renderResult(ctx, el, opts) {
     const trait = mainTrait(a);
     if (w && trait) {
       blocks.push(`<section class="learned" aria-label="Hoy has aprendido">
-        ${artFrame(w, { cls: 'learned-art', alt: `${w.title}, de ${a.name}`, label: w.title, thumb: true, zoom: {} })}
+        ${artFrame(w, { cls: 'learned-art', alt: `${w.title}, de ${a.name}`, label: w.title, thumb: true, zoom: { badge: false } })}
         <div class="learned-text"><p class="event-kicker">Hoy has aprendido</p><p class="learned-name">${esc(a.name)}</p><p class="learned-trait">${esc(trait)}</p></div>
       </section>`);
     }
@@ -286,7 +286,7 @@ function dayDone(ctx, p, shownArtist = null) {
   const sum = daySummary(p, index, ctx.today());
   const names = sum.artists.filter((id) => id !== shownArtist).map((id) => index.artist(id).short || index.artist(id).name);
   const thumbs = sum.works.slice(0, CLOSURE_THUMBS).map((id) => index.artwork(id))
-    .map((w) => artFrame(w, { cls: 'day-done-thumb', alt: w.title, label: w.title, thumb: true, zoom: {} })).join('');
+    .map((w) => artFrame(w, { cls: 'day-done-thumb', alt: w.title, label: w.title, thumb: true, zoom: { badge: false } })).join('');
   const lines = [
     names.length ? `<p class="day-done-line">Has conocido a ${esc(listNames(names))}</p>` : '',
     sum.works.length ? `<p class="day-done-line">${sum.works.length === 1 ? '1 cuadro nuevo' : `${sum.works.length} cuadros nuevos`}</p>` : '',

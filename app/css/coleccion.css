@@ -13,15 +13,16 @@
 .coll-salas-label { flex: none; color: var(--ink-2); font: 600 .8rem/1 var(--font); letter-spacing: .06em; text-transform: uppercase; }
 .sala-chip { flex: none; display: inline-flex; align-items: center; gap: .4rem; min-height: 48px; padding: 0 .9rem; border: 0; border-radius: 999px; background: var(--accent-soft); color: var(--ink); font: 500 .95rem/1 var(--font); cursor: pointer; white-space: nowrap; }
 .sala-chip .icon { color: var(--accent-ui); }
-.coll-era { margin: 1.4rem 0 .6rem; font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.coll-era { margin: .9rem 0 .2rem; font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
 .coll-era::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: .5rem; border-radius: 999px; background: var(--accent); }
 .coll-strip { margin-bottom: 1.2rem; }
-.coll-strip-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0 .5rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); margin-bottom: .6rem; }
-.coll-strip-id { flex: 1 1 11rem; min-width: 0; display: grid; }
+.coll-strip-head { display: grid; border-bottom: 1px solid var(--line); margin-bottom: .6rem; }
 .coll-artist-name { min-width: 0; font: 500 1.2rem/1.1 var(--font); }
-.coll-name-btn { display: block; max-width: 100%; min-height: 48px; padding: .3rem 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; overflow-wrap: break-word; cursor: pointer; }
-.coll-count { margin-top: -.5rem; color: var(--ink-2); font: 600 .82rem/1.2 var(--font); font-variant-numeric: lining-nums tabular-nums; }
-.coll-all { flex: none; margin-left: auto; display: inline-flex; align-items: center; gap: .1rem; min-height: 48px; padding: 0 .3rem 0 .6rem; border: 0; border-radius: 999px; background: none; color: var(--brand-text); font: 600 .9rem/1 var(--font); cursor: pointer; white-space: nowrap; }
+.coll-name-btn { display: block; max-width: 100%; min-height: 48px; padding: .6rem 0 .2rem; border: 0; background: none; color: inherit; font: inherit; text-align: left; overflow-wrap: break-word; cursor: pointer; }
+.coll-guests-name { padding: .5rem 0 .2rem; }
+.coll-strip-sub { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 .5rem; }
+.coll-count { color: var(--ink-2); font: 600 .82rem/1.2 var(--font); font-variant-numeric: lining-nums tabular-nums; }
+.coll-all { display: inline-flex; align-items: center; gap: .1rem; min-height: 48px; margin-left: auto; padding: 0 .3rem 0 .6rem; border: 0; border-radius: 999px; background: none; color: var(--brand-text); font: 600 .9rem/1 var(--font); cursor: pointer; white-space: nowrap; }
 .coll-all:hover { background: var(--brand-soft); }
 .sg { position: relative; }
 .sg-input {

@@ -55,30 +55,24 @@ export function painterGroups(progress, index, query = '') {
   return groups;
 }
 
-// Primera frase de un texto (hasta el primer punto seguido de espacio o el final): la ficha resume y la historia cuenta.
-export function firstSentence(text) {
-  const m = /^.*?[.!?](?=\s|$)/.exec(String(text || '').trim());
-  return m ? m[0] : String(text || '').trim();
+// Datos clave de la ficha (el relato es de la historia, no de la ficha): cuántos cuadros hay, cuántos se han visto y cuántas etapas
+// tiene, más la fuente (Wikidata por el `qid`). { facts: [{ label, value }], source }
+export function factsOf(index, artist, seenCount) {
+  const facts = [{ label: 'Cuadros', value: index.worksOf(artist.id).length }];
+  if (seenCount > 0) facts.push({ label: 'Vistos', value: seenCount });
+  facts.push({ label: 'Etapas', value: index.deepLevels(artist.id).length + 1 });
+  return { facts, source: artist.qid ? `https://www.wikidata.org/wiki/${artist.qid}` : '' };
 }
 
-// Líneas de vida de la ficha: UNA frase resumen, la primera de su historia de nivel 1 (con fuente; la historia cuenta el
-// resto, así que no se repite palabra por palabra) y, sin historia o sin obras vistas, un dato seco del catálogo que no
-// nombra ningún cuadro. [{ text, source }]
-export function lifeLines(artist, story, movementName = '', { known = true } = {}) {
-  const card = known ? story?.levels?.find((l) => l.level === 1)?.cards?.[0] : null;
-  if (card) return [{ text: firstSentence(card.text), source: card.source || '' }];
-  const years = artist.born && artist.died ? ` (${artist.born}–${artist.died})` : '';
-  const where = artist.country ? `, ${artist.country}` : '';
-  const era = movementName ? ` · ${movementName}` : '';
-  return [{ text: `${artist.name}${years}${where}${era}.`, source: artist.qid ? `https://www.wikidata.org/wiki/${artist.qid}` : '' }];
-}
-
-// Lo que se puede jugar desde la ficha: su etapa del camino, si es una parada ya abierta.
-// { stage: 'available' | 'started' | 'mastered' | null }
+// Lo que se puede jugar desde la ficha: su etapa del camino, si es una parada ya abierta; y, si ya está dominado, la primera etapa
+// «a fondo» abierta o en marcha (el botón principal es «Seguir: <etapa>» y no «Jugar otra vez»).
+// { stage: 'available' | 'started' | 'mastered' | null, next: { id, name } | null }
 export function playTargets(progress, index, artistId) {
   const onPath = index.pathIndex(artistId) >= 0;
   const status = onPath ? artistStatus(progress, index, artistId) : 'locked';
-  return { stage: onPath && status !== 'locked' ? status : null };
+  const stage = onPath && status !== 'locked' ? status : null;
+  const open = stage === 'mastered' ? stageList(progress, index, artistId).find((s) => s.status === 'available' || s.status === 'started') : null;
+  return { stage, next: open ? { id: open.id, name: open.name } : null };
 }
 
 // Nombre de una etapa «a fondo»: el de los datos y, si es genérico («Más obras»), «<Pintor> a fondo · n».
@@ -95,9 +89,18 @@ export function stageList(progress, index, artistId) {
 
 export const lifeSpan = (a) => (a.born && a.died ? `${a.born}–${a.died}` : '');
 
-// Portada de la ficha: la obra más famosa de las ya vistas (nunca una no vista: sin spoilers). Null sin obras vistas.
+// Proporción (ancho/alto) de una obra.
+const ratioOf = (w) => (w.w && w.h ? w.w / w.h : 1);
+// Valen de avatar o de portada las obras que no son muy apaisadas (trípticos, frisos): recortadas dejan marcos y cortes.
+const ROUND_RATIO = [0.55, 1.3];
+const BANNER_FALLBACK_MAX = 1.7;
+
+// Portada de la ficha: la obra más famosa de las ya vistas (nunca una no vista: sin spoilers), con preferencia por las
+// que no son muy apaisadas (un tríptico con marcos blancos no hace de portada). Null sin obras vistas o si solo hay frisos.
 export function coverWork(seen) {
-  return seen.slice().sort(byFame)[0] || null;
+  const ok = (w) => ratioOf(w) >= ROUND_RATIO[0] && ratioOf(w) <= ROUND_RATIO[1];
+  const best = seen.filter(ok).sort(byFame)[0] || seen.filter((w) => ratioOf(w) <= BANNER_FALLBACK_MAX).sort(byFame)[0];
+  return best || null;
 }
 
 // Galería embebida en la ficha: las primeras `limit` obras vistas (sin casillas vacías; lo que falta se resume en texto).
@@ -114,15 +117,23 @@ export function avatarCrop(work) {
 
 const SELF_PORTRAIT = /autorretrato|self-?\s?portrait/i;
 const PORTRAIT = /retrato|portrait/i;
+// Autorretratos con más gente o con escenario («con Isabel Brant», «pintando a…», «ante el Kremlin»): el recorte por defecto
+// enseñaría otra persona o una falda; solo valen con un `focus` revisado.
+const WITH_SOMEONE = /\bcon\s+\p{Lu}/u; // «con Isabel Brant»
+const CROWDED_WORDS = /\bcon\s+(un|una|su|sus)\s+(amig|espos|hij|marid|model|disc|famil)|\b(pintando|ante|delante|como|en el estudio)\b/i;
+const crowded = (title) => WITH_SOMEONE.test(title) || CROWDED_WORDS.test(title);
 const byFame = (a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b.yearSort || 0);
 
-// Avatar del pintor, de obras ya vistas: un autorretrato (título con «Autorretrato» o «self-portrait»); si no, un retrato
-// con encuadre revisado (`focus`); si tampoco, ninguno (iniciales sobre el color de su movimiento). Nunca un recorte al
-// azar de un paisaje o un barco. { work, x, y } o null.
+// Avatar del pintor, de obras ya vistas, nunca muy apaisadas: un autorretrato sencillo (título con «Autorretrato» o
+// «self-portrait» y sin más gente) o con `focus`; si no, un retrato con `focus` revisado; si no, ninguno (monograma sobre el color
+// de su movimiento). Nunca un recorte al azar de un paisaje, un barco o una falda. { work, x, y } o null.
 export function avatarWork(seen) {
+  const fits = (w) => ratioOf(w) >= ROUND_RATIO[0] && ratioOf(w) <= ROUND_RATIO[1];
+  const focused = (w) => Array.isArray(w.focus);
   const pick = (list) => list.slice().sort(byFame)[0];
-  const self = pick(seen.filter((w) => SELF_PORTRAIT.test(w.title)));
-  const work = self || pick(seen.filter((w) => PORTRAIT.test(w.title) && Array.isArray(w.focus)));
+  const candidates = seen.filter(fits);
+  const self = pick(candidates.filter((w) => SELF_PORTRAIT.test(w.title) && (focused(w) || !crowded(w.title))));
+  const work = self || pick(candidates.filter((w) => PORTRAIT.test(w.title) && focused(w)));
   return work ? { work, ...avatarCrop(work) } : null;
 }
 

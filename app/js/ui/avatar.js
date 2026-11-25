@@ -12,7 +12,7 @@ export const initials = (name) => String(name || '').split(/\s+/).filter((w) => 
 export function avatarHtml(artist, avatar, cls = '', { defer = false } = {}) {
   const style = avatar ? ` style="--x:${avatar.x}%;--y:${avatar.y}%"` : '';
   const inner = avatar
-    ? artFrame(avatar.work, { alt: '', cls: 'av-art', label: '', thumb: true, defer })
+    ? artFrame(avatar.work, { alt: '', cls: 'av-art', label: '', tiny: true, defer })
     : `<span class="av-initials" aria-hidden="true">${esc(initials(artist.name))}</span>`;
   return `<span class="av ${cls}${avatar ? '' : ' is-initials'}"${style}>${inner}</span>`;
 }

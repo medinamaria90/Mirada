@@ -20,6 +20,10 @@ export function artSrc(artwork, thumb = false) {
   return (thumb && artwork.thumb && artwork.thumb.src) || artwork.img;
 }
 
+// Miniatura suelta de un cuadro (img/t/<id>.jpg, lado mayor 240 px, ~10 KB: la pinta tools/make_atlas.py): para las listas
+// que enseñan pocos cuadros dispersos, donde pedir una hoja entera del atlas (~200 KB) por cada uno pesa megas.
+export const tinySrc = (artwork) => `img/t/${artwork.id}.jpg`;
+
 // Recorte de la hoja del atlas: la miniatura se escala para cubrir el marco (como object-fit:
 // cover) con unidades de contenedor en CSS (.art-sheet). Se recorta 1 px por lado para que no
 // asome nada de la celda vecina.
@@ -30,7 +34,8 @@ function sheetVars(t) {
 // Marca pequeña de «se puede ver en grande» (esquina del cuadro). Decorativa.
 export const ZOOM_BADGE = '<span class="zoom-badge" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></span>';
 
-// opts: { alt, cls, eager, label, thumb, zoom, defer }
+// opts: { alt, cls, eager, label, thumb, tiny, zoom, defer }
+// tiny: miniatura suelta (tinySrc) en lugar de la hoja del atlas; el cuadro entero, recortado por CSS como cualquier imagen.
 // defer: la imagen se pide cuando se acerca a la pantalla (ui/lazy-img.js), no antes: en las listas largas con miniaturas
 //   dispersas, cada una trae una hoja entera del atlas y pedirlas todas de golpe pesa megas.
 // alt vacío: imagen decorativa (el texto va en el botón o la tarjeta que la contiene).
@@ -43,7 +48,7 @@ export function artFrame(artwork, opts = {}) {
   const h = Math.max(1, artwork.h || 3);
   const failed = broken.has(artwork.id);
   const label = opts.label ?? artwork.id;
-  const t = opts.thumb ? artwork.thumb : null;
+  const t = opts.thumb && !opts.tiny ? artwork.thumb : null;
   const sheet = t && Number.isFinite(t.x) && t.sw > 0 && t.sh > 0;
   const style = `--arw:${w};--arh:${h}${sheet ? `;${sheetVars(t)}` : ''}`;
   const size = sheet ? `width="${t.sw}" height="${t.sh}"` : `width="${w}" height="${h}"`;
@@ -54,7 +59,7 @@ export function artFrame(artwork, opts = {}) {
   return `<${tag} class="art ${sheet ? 'art-sheet ' : ''}${z ? 'art-zoom ' : ''}${opts.cls || ''} ${failed ? 'is-broken' : ''}" style="${style}" data-art="${esc(artwork.id)}" data-label="${esc(label)}"${zoomAttrs}>${
     failed
       ? ''
-      : `<img ${opts.defer ? 'data-src' : 'src'}="${esc(artSrc(artwork, opts.thumb))}" alt="${z ? '' : esc(opts.alt ?? '')}" ${size} loading="${opts.eager ? 'eager' : 'lazy'}" decoding="async"${opts.eager ? ' fetchpriority="high"' : ''}>`
+      : `<img ${opts.defer ? 'data-src' : 'src'}="${esc(opts.tiny ? tinySrc(artwork) : artSrc(artwork, opts.thumb))}" alt="${z ? '' : esc(opts.alt ?? '')}" ${size} loading="${opts.eager ? 'eager' : 'lazy'}" decoding="async"${opts.eager ? ' fetchpriority="high"' : ''}>`
   }${z && z.badge !== false ? ZOOM_BADGE : ''}</${tag}>`;
 }
 

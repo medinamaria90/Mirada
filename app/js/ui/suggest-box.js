@@ -22,7 +22,7 @@ function optionHtml(index, item, i) {
   const parts = splitByMarks(item.label, item.marks).map((p) => (p.hit ? `<strong>${esc(p.text)}</strong>` : esc(p.text))).join('');
   const sub = item.kind === 'artist' ? 'Pintor' : esc(index.artist(index.artwork(item.id)?.artistId)?.name || '');
   return `<li class="sg-option" role="option" id="sg-o-${i}" aria-selected="false" data-kind="${item.kind}" data-id="${esc(item.id)}">
-    <span class="sg-thumb">${work ? artFrame(work, { alt: '', cls: 'art-thumb', label: '', thumb: true }) : ''}</span>
+    <span class="sg-thumb">${work ? artFrame(work, { alt: '', cls: 'art-thumb', label: '', tiny: true }) : ''}</span>
     <span class="sg-text"><span class="sg-label">${parts}</span><span class="sg-sub">${sub}</span></span></li>`;
 }
 

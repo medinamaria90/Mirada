@@ -8,7 +8,7 @@ import { dirname, join } from 'node:path';
 import { buildIndex, mergeCatalogFicha } from '../app/js/engine/catalog.js';
 import { emptyProgress, artistStatus } from '../app/js/engine/progress.js';
 import { pendingWorks } from '../app/js/engine/levels.js';
-import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, isMastered, firstSentence } from '../app/js/engine/painters.js';
+import { painterGroups, painterState, seenOf, playTargets, stageList, fold, isMastered, factsOf } from '../app/js/engine/painters.js';
 import { periodStart } from '../app/js/engine/movements.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
 import { initials } from '../app/js/ui/artist-profile.js';
@@ -107,24 +107,19 @@ test('ficha: solo las obras ya vistas (colección o rondas), nunca las demás', 
   assert.deepEqual(ids, [works[0].id, works[1].id].sort());
 });
 
-test('ficha: una sola frase de vida (la primera de su historia, con fuente; la historia cuenta el resto); sin historia o sin vistas, un dato seco', () => {
-  const story = readJson(join(app, 'data', 'historias', 'goya.json'));
+test('ficha: datos clave (cuadros, vistos, etapas) y fuente Wikidata; el relato queda para la historia', () => {
   const goya = real.artist('goya');
-  const lines = lifeLines(goya, story, 'Romanticismo');
-  assert.equal(lines.length, 1);
-  assert.ok(/^https?:/.test(lines[0].source));
-  const card1 = story.levels[0].cards[0].text;
-  assert.ok(card1.startsWith(lines[0].text) && lines[0].text.length <= card1.length, 'resumen de la primera tarjeta');
-  assert.ok(!story.levels[0].cards.slice(1).some((c) => lines[0].text.includes(c.text)), 'no repite las otras tarjetas');
-  const giotto = real.artist('giotto');
-  const dry = lifeLines(giotto, null, 'Renacimiento');
-  assert.equal(dry.length, 1);
-  assert.ok(dry[0].text.includes('Giotto') && /wikidata\.org/.test(dry[0].source), JSON.stringify(dry));
-  const unseen = lifeLines(goya, story, 'Romanticismo', { known: false });
-  assert.ok(unseen[0].text.startsWith('Francisco') || unseen[0].text.includes('Goya'), 'sin vistas: dato seco');
-  assert.ok(!/maja|brujas/i.test(unseen[0].text), 'un pintor no visto no nombra cuadros');
-  assert.equal(firstSentence('Hola mundo. Y más cosas.'), 'Hola mundo.');
-  assert.equal(firstSentence('Sin punto final'), 'Sin punto final');
+  const f = factsOf(real, goya, 4);
+  assert.deepEqual(f.facts.map((x) => x.label), ['Cuadros', 'Vistos', 'Etapas']);
+  assert.equal(f.facts[0].value, real.worksOf('goya').length);
+  assert.equal(f.facts[1].value, 4);
+  assert.equal(f.facts[2].value, real.deepLevels('goya').length + 1);
+  assert.match(f.source, /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
+  assert.deepEqual(factsOf(real, goya, 0).facts.map((x) => x.label), ['Cuadros', 'Etapas'], 'sin vistos no se enseña «Vistos»');
+  // La ficha no repite ninguna tarjeta de la historia.
+  const story = readJson(join(app, 'data', 'historias', 'goya.json'));
+  const text = JSON.stringify(f);
+  for (const c of story.levels[0].cards) assert.ok(!text.includes(c.text.slice(0, 30)));
 });
 
 test('ficha: jugar solo si es parada abierta del camino; etapas solo con niveles «a fondo»', () => {
@@ -132,6 +127,15 @@ test('ficha: jugar solo si es parada abierta del camino; etapas solo con niveles
   assert.equal(playTargets(p, real, first.id).stage, 'available');
   assert.equal(playTargets(p, real, real.path[5].id).stage, null);
   assert.equal(playTargets(p, real, 'giotto').stage, null);
+  // Dominado con etapas «a fondo» abiertas: el botón principal es seguir la primera.
+  const withDeep = real.path.find((a) => real.deepLevels(a.id).length);
+  const q = emptyProgress();
+  for (const a of real.path.slice(0, real.pathIndex(withDeep.id) + 1)) q.artists[a.id] = { plays: 1, best: 1, mastered: true };
+  const t = playTargets(q, real, withDeep.id);
+  assert.equal(t.stage, 'mastered');
+  assert.equal(t.next.id, real.deepLevels(withDeep.id)[0].id);
+  q.deep[`${withDeep.id}:${t.next.id}`] = { plays: 1, best: 1, mastered: true };
+  assert.notEqual(playTargets(q, real, withDeep.id).next?.id, t.next.id, 'hecha la etapa, pasa a la siguiente (o a nada)');
   const goya = stageList(p, real, 'goya');
   assert.ok(goya.length >= 3 && goya.every((s) => s.status === 'locked'));
 });

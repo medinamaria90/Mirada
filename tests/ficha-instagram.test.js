@@ -27,20 +27,17 @@ test('rutas: ficha (con y sin etapas), galería del pintor y de los invitados; i
   assert.equal(parseRoute('#galeria-barroco').name, 'gallery', 'la galería de la sala no se confunde con la del pintor');
 });
 
-test('portada: la obra más famosa de las vistas, nunca una no vista; sin vistas, ninguna', () => {
+test('portada: la obra más famosa de las vistas, nunca una no vista; sin vistas, ninguna; nada de trípticos muy apaisados', () => {
   const p = emptyProgress();
   assert.equal(coverWork(seenOf(p, real, 'goya')), null);
-  const works = real.worksOf('goya').slice().sort((a, b) => (b.fame || 0) - (a.fame || 0));
-  const famous = works[0];
-  const humble = works.find((w) => (w.fame || 0) < (famous.fame || 0));
-  p.collection[humble.id] = DAY;
-  assert.equal(coverWork(seenOf(p, real, 'goya')).id, humble.id, 'solo hay una vista: la famosa sin ver no sale');
-  p.collection[famous.id] = DAY;
-  assert.equal(coverWork(seenOf(p, real, 'goya')).id, famous.id);
+  const W = (id, w, h, fame) => ({ id, w, h, fame, title: id, yearSort: 1600 });
+  assert.equal(coverWork([W('friso', 400, 100, 3), W('cuadro', 100, 120, 1)]).id, 'cuadro', 'el friso muy apaisado no hace de portada');
+  assert.equal(coverWork([W('friso', 400, 100, 3)]), null);
+  assert.equal(coverWork([W('apaisado', 150, 100, 3), W('cuadro', 100, 120, 1)]).id, 'cuadro', 'más apaisado que 1,3 pierde frente a uno normal');
 });
 
 test('avatar: autorretrato visto; si no, retrato con focus; si no, nada (iniciales). Nunca un paisaje o un barco', () => {
-  const W = (id, title, extra = {}) => ({ id, title, fame: 1, yearSort: 1600, ...extra });
+  const W = (id, title, extra = {}) => ({ id, title, fame: 1, yearSort: 1600, w: 100, h: 120, ...extra });
   assert.equal(avatarWork([]), null);
   assert.equal(avatarWork([W('a', 'Tormenta en el mar de Galilea', { focus: [0.5, 0.5] }), W('b', 'Vista de Delft')]), null, 'sin retratos, iniciales');
   assert.equal(avatarWork([W('a', 'Retrato de un hombre')]), null, 'un retrato sin encuadre revisado no vale');
@@ -48,6 +45,13 @@ test('avatar: autorretrato visto; si no, retrato con focus; si no, nada (inicial
   const self = avatarWork([W('a', 'Retrato de un hombre', { focus: [0.4, 0.3], fame: 3 }), W('b', 'Autorretrato')]);
   assert.equal(self.work.id, 'b', 'el autorretrato gana');
   assert.equal(avatarWork([W('c', 'Self-Portrait')]).work.id, 'c');
+  // Autorretratos con más gente: el recorte por defecto enseñaría una falda (Rubens e Isabel Brant); solo valen con `focus`.
+  assert.equal(avatarWork([W('r', 'Autorretrato con Isabel Brant')]), null);
+  assert.equal(avatarWork([W('r', 'Autorretrato con un amigo')]), null);
+  assert.equal(avatarWork([W('r', 'Autorretrato pintando a María Antonieta')]), null);
+  assert.equal(avatarWork([W('r', 'Autorretrato con Isabel Brant', { focus: [0.3, 0.3] })]).work.id, 'r');
+  assert.equal(avatarWork([W('o', 'Autorretrato con la oreja vendada')]).work.id, 'o', 'un autorretrato solo con complementos sí vale');
+  assert.equal(avatarWork([W('t', 'Autorretrato', { w: 300, h: 100 })]), null, 'un tríptico o friso no hace de avatar');
   assert.deepEqual([self.x, self.y], [50, 35]);
 });
 

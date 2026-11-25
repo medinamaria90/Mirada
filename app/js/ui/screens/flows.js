@@ -263,7 +263,7 @@ function withIntro(ctx, el, movementId, show) {
 // Historia al empezar un nivel (una vez, saltable): después se muestra lo que sigue. Sin historia, de seguido.
 function withStory(ctx, el, artistId, level, show) {
   import('../story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level))
+    .then((m) => m.playStory(ctx, artistId, level, { history: false }))
     .catch((err) => { console.error(err); })
     .then(() => { if (el.isConnected) show(); });
 }

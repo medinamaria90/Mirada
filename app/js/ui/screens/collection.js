@@ -25,9 +25,9 @@ function stripHtml(s) {
   const route = isGuests ? `obras-invitados-${s.movement.id}` : `obras-${s.id}`;
   const all = `<button type="button" class="coll-all" data-action="works" data-to="${esc(route)}">${s.count === 1 ? 'Ver su cuadro' : `Ver sus ${s.count} cuadros`}${icons.next(14)}</button>`;
   return `<section class="coll-strip" style="${accentStyle(s.movement.accent)}" aria-label="${esc(s.name)}">
-      <header class="coll-strip-head"><div class="coll-strip-id">${name}<span class="coll-count" aria-label="${s.count} de ${s.total} cuadros">${s.count} de ${s.total}</span></div>${all}</header>
+      <header class="coll-strip-head">${name}<div class="coll-strip-sub"><span class="coll-count" aria-label="${s.count} de ${s.total} cuadros">${s.count} de ${s.total}</span>${all}</div></header>
       <ul class="coll-grid">${s.shown.map((w) => `<li><button class="coll-item" data-action="open" data-id="${esc(w.id)}" data-strip="${esc(s.id)}" aria-label="${esc(w.title)}">
-        ${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, thumb: true, defer: true })}</button></li>`).join('')}</ul>
+        ${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, tiny: true, defer: true })}</button></li>`).join('')}</ul>
     </section>`;
 }
 

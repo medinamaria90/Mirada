@@ -1031,6 +1031,13 @@ if (SMOKE) {
   await sp.waitForTimeout(400);
   await shot(sp, '14g-historia');
   await audit(sp, '390 historia');
+  // Teclado: una flecha, exactamente una tarjeta (antes saltaba de dos en dos: el manejador del documento la contaba otra vez).
+  if (nCards >= 3) {
+    await sp.keyboard.press('ArrowRight');
+    check(await sp.locator('.story-bar.is-done').count() === 2, `→ no avanza exactamente una tarjeta (${await sp.locator('.story-bar.is-done').count()} barras)`);
+    await sp.keyboard.press('ArrowLeft');
+    check(await sp.locator('.story-bar.is-done').count() === 1, `← no retrocede exactamente una tarjeta (${await sp.locator('.story-bar.is-done').count()} barras)`);
+  }
   for (let k = 0; k < nCards - 1; k++) {
     await sp.click('.story-next');
     await sp.waitForTimeout(150);
@@ -1083,6 +1090,29 @@ if (SMOKE) {
   await shot(page, '14k-resultado-a-fondo-superado', true);
   await audit(page, '390 resultado a fondo');
 
+  // La historia de una etapa «a fondo» precede a la ronda: al cerrarla (Saltar, Esc o hasta el final) la ronda empieza limpia,
+  // sin «¿Salir de la ronda?» (su entrada de historial llegaba cuando la ronda ya estaba montada).
+  const storyIndexJson = JSON.parse(readFileSync(new URL('../app/data/historias/index.json', import.meta.url), 'utf8'));
+  const stageStoryArtist = index.path.find((a) => (storyIndexJson[a.id] || []).includes(2) && index.deepLevels(a.id).some((l) => l.id === 2));
+  const stageStoryUpTo = index.pathIndex(stageStoryArtist.id) + 1;
+  for (const how of ['saltar', 'esc', 'hasta el final']) {
+    const sc = await rawNewContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+    const spg = await sc.newPage();
+    watch(spg, `historia-etapa-${how}`);
+    await spg.goto(base);
+    await spg.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: stageStoryUpTo, extra: { collection: Object.fromEntries(index.levelWorks(stageStoryArtist.id, 1).map((w) => [w.id, '2026-11-20'])) } }));
+    await spg.goto(`${base}#a-fondo-${stageStoryArtist.id}-2`);
+    await spg.reload();
+    await spg.waitForSelector('.story[open] .story-next');
+    if (how === 'saltar') await spg.click('[data-st="skip"]');
+    else if (how === 'esc') await spg.keyboard.press('Escape');
+    else for (let k = 0; k < 6 && await spg.locator('.story[open]').count(); k++) await spg.click('.story-next');
+    await spg.waitForSelector('.lesson');
+    await spg.waitForTimeout(800);
+    check(await spg.locator('.quit-sheet:not([hidden])').count() === 0, `historia de etapa «a fondo» (${how}): sale «¿Salir de la ronda?» sobre la ronda recién empezada`);
+    check(spg.url().endsWith(`#a-fondo-${stageStoryArtist.id}-2`), `historia de etapa «a fondo» (${how}): la ruta cambia a ${spg.url()}`);
+    await sc.close();
+  }
   // Colección → «Cuadros»: franjas por pintor; el buscador con sugerencias solo con 15 pintores o más.
   const fewColl = Object.fromEntries(index.path.slice(0, 3).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
   await seed(page, seededState({ upTo: 3, extra: { collection: fewColl } }), 'coleccion');
@@ -1170,13 +1200,13 @@ if (SMOKE) {
   const ep = await eyeCtx2.newPage();
   watch(ep, 'primer-cuadro');
   await ep.goto(base);
-  await ep.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 4, extra: { collection: Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20'])) } }));
+  await ep.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: index.stepsOf(index.visibleMovements[0].id).length, extra: { collection: Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20'])) } }));
   await ep.goto(`${base}#coleccion`);
   await ep.reload();
   await ep.waitForSelector('.coll-item');
   await ep.waitForTimeout(500);
-  const eye = await ep.evaluate(() => { const i = document.querySelector('.coll-item').getBoundingClientRect(); const bar = document.querySelector('.coll-bar'); return { top: i.top, bottom: i.bottom, vh: innerHeight, oneBar: Boolean(bar && bar.querySelector('.sg-input') && bar.querySelector('.coll-select')), chips: document.querySelectorAll('.chip-filter').length }; });
-  check(eye.bottom <= eye.vh - 56 && eye.oneBar && eye.chips === 0, `el primer cuadro no se ve en la primera pantalla de 360×640: ${JSON.stringify(eye)}`);
+  const eye = await ep.evaluate(() => { const i = document.querySelector('.coll-item').getBoundingClientRect(); const bar = document.querySelector('.coll-bar'); return { top: i.top, bottom: i.bottom, vh: innerHeight, oneBar: Boolean(bar && bar.querySelector('.sg-input') && bar.querySelector('.coll-select')), chips: document.querySelectorAll('.chip-filter').length, salas: document.querySelectorAll('.coll-salas').length, subOneLine: (() => { const sub = document.querySelector('.coll-strip-sub'); return sub.getBoundingClientRect().height < 60; })() }; });
+  check(eye.bottom <= eye.vh - 64 && eye.oneBar && eye.chips === 0 && eye.salas === 1 && eye.subOneLine, `el primer cuadro no se ve en la primera pantalla de 360×640: ${JSON.stringify(eye)}`);
   await shot(ep, '14n-coleccion-360');
   await audit(ep, '360 colección con buscador');
   await eyeCtx2.close();
