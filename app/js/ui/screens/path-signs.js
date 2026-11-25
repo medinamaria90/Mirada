@@ -4,7 +4,7 @@
 import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { MAP_W, START_PLAZA } from './path-layout.js';
-import { branchStatus, movementReached } from '../../engine/branches.js';
+import { branchProgress, tramoPending } from '../../engine/branches.js';
 
 const f = (n) => String(Math.round(n * 100) / 100);
 export const pct = (v, total) => `${f((v / total) * 100)}%`;
@@ -31,7 +31,7 @@ export function eraSign({ movement, status, sealed, done, total, prevName, sign,
   const meta = `<span class="sign-meta">${locked ? icons.lock(12) : ''}<span>${esc(movement.period)}${count}</span></span>`;
   const seal = sealed ? `<span class="sign-seal" aria-hidden="true">${icons.laurel(16)}</span>` : '';
   const name = `<span class="sign-name">${esc(movement.name)}</span>`;
-  const why = prevName ? `Se abre al terminar ${prevName}` : 'Aún cerrada';
+  const why = prevName ? `se abre al terminar ${prevName}` : 'aún cerrada';
   const button = locked
     ? `<button type="button" class="sign-plate is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${meta}</button>`
     : `<button type="button" class="sign-plate" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${done} de ${total}${sealed ? ', completa' : ''}: ver presentación">${seal}${name}${meta}<span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button>`;
@@ -85,34 +85,47 @@ export function museumBlock(museum, n) {
   </li>`;
 }
 
-// Nombre corto para el cartel del desvío (el completo va en la hoja): «Descubre», «Estampa japonesa»…
-export function branchShort(branch) {
-  if (branch.kind === 'epoca') return 'Descubre';
+// Nombre corto para el cartel del desvío (el completo va en la hoja): «Más del Barroco», «Gótico»,
+// «Estampa japonesa»… Las palabras muy largas llevan un guion blando para partirse con sentido.
+const SOFT = '\u00ad';
+export function branchShort(branch, index) {
+  if (branch.kind === 'epoca') {
+    const era = String(index.movement(branch.movementId || branch.opensAt)?.name || '').split(/\s+/)[0];
+    return `Más del ${era.replace(/^Post(?=\p{Ll})/u, `Post${SOFT}`)}`;
+  }
   return String(branch.name).replace(/\s*\([^)]*\)\s*$/, '');
 }
 
-// Estado de una rama para el mapa: abierta (se ha llegado a su época), pintores dominados y total.
+// Estado de una rama para el mapa: abierta (dominado el primer tramo de su época), sus pintores propios
+// dominados y, cerrada, las paradas que faltan para abrirla (engine/branches.js).
 export function branchState(progress, index, branch) {
-  const list = branchStatus(progress, index, branch.id);
-  return {
-    open: movementReached(progress, index, branch.opensAt),
-    mastered: list.filter((s) => s.status === 'mastered').length,
-    total: list.length,
-  };
+  const { open, mastered, total } = branchProgress(progress, index, branch.id);
+  return { open, mastered, total, pending: open ? [] : tramoPending(progress, index, branch.opensAt) };
 }
 
 // Icono del desvío: un sendero que se bifurca (propio del mapa).
 const forkIcon = (s = 18) => `<svg class="icon" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-7"/><path d="M12 14c0-4-5-5-5-9"/><path d="M12 14c0-4 5-5 5-9"/><path d="M4.5 7.5 7 5l2.5 2.5"/><path d="M14.5 7.5 17 5l2.5 2.5"/></svg>`;
 
-export function branchSpot(spot, branch, st, movementName, h) {
+const stepName = (index, s) => (s.type === 'sala' ? index.movement(s.id)?.name : index.artist(s.id)?.short || index.artist(s.id)?.name) || '';
+export const listNames = (names) => (names.length <= 1 ? names.join('') : `${names.slice(0, -1).join(', ')} y ${names[names.length - 1]}`);
+
+// Qué abre una rama cerrada, en una frase: «se abre al dominar a Botticelli y Berruguete».
+export function branchWhy(index, st) {
+  return st.pending.length ? `se abre al dominar a ${listNames(st.pending.map((p) => stepName(index, p)))}` : 'aún cerrada';
+}
+
+export function branchSpot(spot, branch, st, index, h) {
   const done = st.total && st.mastered === st.total;
   const cls = done ? 'is-mastered' : st.open ? 'is-open' : 'is-locked';
+  const short = branchShort(branch, index);
   const label = st.open
-    ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} pintores dominados`
-    : `${branch.name}: rama cerrada. Se abre al llegar a ${movementName}`;
+    ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} dominados`
+    : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
+  const n = st.pending.length;
+  const line = st.open ? `${st.mastered}/${st.total}` : `${icons.lock(10)}<span>${n === 1 ? 'falta 1' : `faltan ${n}`}</span>`;
   return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
       <button type="button" class="branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" aria-label="${esc(label)}">
-        <span class="branch-plate"><span class="branch-name">${esc(branchShort(branch))}</span>${st.open ? `<span class="branch-count">${st.mastered}/${st.total}</span>` : ''}</span>
+        <span class="branch-plate"><span class="branch-name">${esc(short)}</span><span class="branch-count">${line}</span></span>
         <span class="branch-dot">${done ? icons.laurel(18) : st.open ? forkIcon(18) : icons.lock(12)}</span>
       </button></li>`;
 }

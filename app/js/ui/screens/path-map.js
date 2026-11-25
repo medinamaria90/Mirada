@@ -15,7 +15,7 @@ import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
 import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, pathLayout, eraLayout } from './path-layout.js';
-import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, branchState, pct } from './path-signs.js';
+import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, branchState, listNames, pct } from './path-signs.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout };
 const LANDSCAPE_MARGIN = '240px 0px';                  // se pide el paisaje al acercarse a este margen
@@ -43,20 +43,22 @@ function eraBlock(ctx, era, prevEra, keys) {
   const status = movementStatus(p, index, era.id);
   const sala = index.isSala(era.id);
   const sealed = Boolean(p.medals[`movement-${era.id}`]);
-  const nodes = sala ? [salaNode(ctx, movement, keys)] : index.stageArtists(movement.id).map((a) => artistNode(ctx, a, keys));
+  const sectionAt = new Map(era.sections.map((s) => [s.at, sectionInfo(ctx, era.id, s)]));
+  const nodes = sala ? [salaNode(ctx, movement, keys)] : index.stageArtists(movement.id).map((a, i) => artistNode(ctx, a, keys, sectionAt.get(i)));
   if (!sala && hasMovementReview(index, era.id)) nodes.push(reviewNode(ctx, movement));
-  const spots = nodes.map((node, i) => {
+  const branches = era.branches.map((b) => ({ spot: b, branch: index.branch(b.id) })).filter((b) => b.branch)
+    .map((b) => ({ ...b, st: branchState(p, index, b.branch) }));
+  // Orden del DOM = orden de lectura y de tabulación: por cada parada, el rótulo de su tramo (para el lector),
+  // la parada y, si sale de ella, el desvío de su rama; la sala, al final.
+  const items = nodes.map((node, i) => {
     const pt = era.points[i];
     const side = pt.x < MAP_W / 2 ? 'left' : 'right';
     const state = node.key === keys.current ? ' is-current' : node.key === keys.next ? ' is-next' : '';
-    return `<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)}">
-      ${node.html}<p class="lock-note"></p>
-    </li>`;
+    const sec = sectionAt.get(i);
+    const head = sec ? `<li class="sr-only">Tramo ${esc(sec.name)}: ${sec.got} de ${sec.total} dominados</li>` : '';
+    const spur = branches.filter((b) => b.spot.at === i).map((b) => branchSpot(b.spot, b.branch, b.st, index, era.h)).join('');
+    return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)}">${node.html}</li>${spur}`;
   }).join('');
-  const sections = era.sections.map((s) => sectionLabel(ctx, era.id, s, era.h)).join('');
-  const branches = era.branches.map((b) => ({ spot: b, branch: index.branch(b.id) })).filter((b) => b.branch)
-    .map((b) => ({ ...b, st: branchState(p, index, b.branch) }));
-  const branchHtml = branches.map((b) => branchSpot(b.spot, b.branch, b.st, index.movement(b.branch.opensAt)?.name || movement.name, era.h)).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';
   const steps = nodes.filter((n) => n.type !== 'review');
@@ -65,21 +67,21 @@ function eraBlock(ctx, era, prevEra, keys) {
     done: steps.filter((n) => n.status === 'mastered').length, total: steps.length,
     prevName: prevEra ? index.movement(prevEra.id).name : '',
   });
-  return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/${era.h}">
+  const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
+  return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/${era.h}">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
     ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, open: b.st.open })))}
     ${sign}
-    <ol class="stages">${sections}${spots}${branchHtml}${gallery}</ol>
+    <ol class="stages">${items}${gallery}</ol>
   </li>`;
 }
 
-// Rótulo de tramo: texto pequeño en versalitas al borde del sendero, nunca encima.
-function sectionLabel(ctx, movementId, s, h) {
+// Tramo de la época: nombre y dominados. Se ve como un rótulo pequeño sobre el nombre de su primera parada
+// (lado ancho, nunca sobre el sendero) y el lector lo oye antes de sus paradas.
+function sectionInfo(ctx, movementId, s) {
   const p = ctx.store.get().progress;
   const group = ctx.index.stageArtists(movementId).filter((a) => a.section === s.name);
-  const got = group.filter((a) => artistStatus(p, ctx.index, a.id) === 'mastered').length;
-  const across = s.side === 'left' ? `right:${pct(MAP_W - s.edge, MAP_W)}` : `left:${pct(s.edge, MAP_W)}`;
-  return `<li class="stage-section is-${s.side}" style="${across};top:${pct(s.y, h)};max-width:${pct(s.room, MAP_W)}"><span class="stage-section-name">${esc(s.name)}</span><span class="stage-section-count">${got}/${group.length}</span></li>`;
+  return { name: s.name, total: group.length, got: group.filter((a) => artistStatus(p, ctx.index, a.id) === 'mastered').length };
 }
 
 const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'por repasar', mastered: 'dominado' };
@@ -103,27 +105,30 @@ function dotFor(status, cover, label) {
   return `${thumb}${badge}`;
 }
 
-function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot }) {
-  return `<button class="stage ${cls} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}" aria-label="${esc(label)}">
+function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, section }) {
+  const kicker = section ? `<span class="stage-kicker" aria-hidden="true">${esc(section.name)} <span class="stage-kicker-count">${section.got}/${section.total}</span></span>` : '';
+  return `<button class="stage ${cls}${section ? ' has-kicker' : ''} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}" aria-label="${esc(label)}">
       <span class="stage-dot">${dot}</span>
-      <span class="stage-text"><span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
+      <span class="stage-text">${kicker}<span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
     </button>`;
 }
 
 const stepName = (index, step) => (step.type === 'sala' ? index.movement(step.id).name : index.artist(step.id).short || index.artist(step.id).name);
 
-function artistNode(ctx, artist, keys) {
+function artistNode(ctx, artist, keys, section) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const status = artistStatus(p, index, artist.id);
   const key = `artist:${artist.id}`;
   const prevStep = index.steps[index.stepIndex('artist', artist.id) - 1];
   const dormant = status === 'mastered' && isDormant(p, artist.id, ctx.today ? ctx.today() : null);
+  const lock = prevStep ? `Se abre con la mitad de aciertos en ${stepName(index, prevStep)}` : '';
+  // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
+  const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
-    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status,
-    lock: prevStep ? `Se abre con la mitad de aciertos en ${stepName(index, prevStep)}` : '',
-    label: `${artist.name}, ${STATE_LABEL[status]}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
-    name: artist.name, meta: dormant ? DORMANT_TEXT : metaFor(status, p.artists[artist.id], key === keys.current),
+    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, section,
+    label: `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
+    name: quiet ? artist.short || artist.name : artist.name, meta: dormant ? DORMANT_TEXT : metaFor(status, p.artists[artist.id], key === keys.current),
     dot: dotFor(status, coverOf(index, artist.id), initials(artist.name)),
   });
   return { type: 'artist', key, status, html };
@@ -135,23 +140,25 @@ function salaNode(ctx, movement, keys) {
   const status = salaStatus(p, index, movement.id);
   const key = `sala:${movement.id}`;
   const prev = index.steps[index.stepIndex('sala', movement.id) - 1];
+  const lock = prev ? `Se abre con la mitad de aciertos en ${stepName(index, prev)}` : '';
   const html = nodeHtml({
-    cls: 'stage-sala', action: 'sala', id: movement.id, status,
-    lock: prev ? `Se abre con la mitad de aciertos en ${stepName(index, prev)}` : '',
-    label: `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}`,
+    cls: 'stage-sala', action: 'sala', id: movement.id, status, lock,
+    label: `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
     name: 'Conoce el movimiento', meta: metaFor(status, p.salas?.[movement.id], key === keys.current),
     dot: dotFor(status, salaCover(index, movement.id), initials(movement.name)),
   });
   return { type: 'sala', key, status, html };
 }
 
-// Pintores de la época aún sin dominar, por su nombre y en corto: «Veronés», «Leonardo y Veronés»,
-// «Botticelli, Rafael y 4 más». Explica el candado del repaso sin un bloque de texto.
+// Pintores de la época aún sin dominar: todos (para el lector) y en corto para la nota al tocar
+// («Leonardo y Veronés», «Botticelli, Rafael y 4 más»).
 const PENDING_NAMES_MAX = 2;
-export function pendingNames(ctx, progress, movementId) {
-  const names = ctx.index.stepsOf(movementId)
+function pendingOf(ctx, progress, movementId) {
+  return ctx.index.stepsOf(movementId)
     .filter((s) => s.type === 'artist' && artistStatus(progress, ctx.index, s.id) !== 'mastered')
     .map((s) => stepName(ctx.index, s));
+}
+export function pendingNames(names) {
   if (names.length <= PENDING_NAMES_MAX) return names.join(' y ');
   return `${names.slice(0, PENDING_NAMES_MAX).join(', ')} y ${names.length - PENDING_NAMES_MAX} más`;
 }
@@ -162,14 +169,16 @@ function reviewNode(ctx, movement) {
   const best = p.reviews[movement.id]?.best;
   const medal = (best || 0) >= 0.75;
   const status = medal ? 'mastered' : open ? 'available' : 'locked';
-  const pending = open ? '' : pendingNames(ctx, p, movement.id);
-  const lock = pending ? `Domina a ${pending} para abrirlo` : 'Se abre al dominar a todos sus pintores';
+  const pending = open ? [] : pendingOf(ctx, p, movement.id);
+  const lock = pending.length ? `Domina a ${pendingNames(pending)} para abrirlo` : 'Se abre al dominar a todos sus pintores';
+  const name = pending.length ? `Repaso · ${pending.length === 1 ? 'falta 1' : `faltan ${pending.length}`}` : 'Repaso';
   const meta = best ? `Mejor: ${Math.round(best * 100)}%` : '';
   const icon = medal ? icons.medal(22) : icons.arch(open ? 24 : 18);
+  const label = `Repaso de ${movement.name}${open ? '' : `, bloqueado. Para abrirlo, domina a ${listNames(pending)}`}`;
   const html = `<button class="stage stage-review is-${status}" data-action="review" data-id="${esc(movement.id)}" data-status="${open ? 'open' : 'locked'}"
-        aria-label="Repaso de ${esc(movement.name)}${open ? '' : `, bloqueado. ${esc(lock)}`}" data-lock="${esc(lock)}">
+        aria-label="${esc(label)}" data-lock="${esc(lock)}">
         <span class="stage-dot">${icon}${open ? '' : `<span class="stage-lock">${icons.lock(10)}</span>`}</span>
-        <span class="stage-text"><span class="stage-name">${pending ? `<b>Repaso:</b> ${esc(pending)}` : 'Repaso'}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
+        <span class="stage-text"><span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
       </button>`;
   return { type: 'review', key: `review:${movement.id}`, status, html };
 }
@@ -227,8 +236,13 @@ export function pathActions(ctx) {
 }
 
 function showLockNote(button) {
-  const note = button.parentElement.querySelector('.lock-note');
-  if (!note) return;
+  let note = button.parentElement.querySelector('.lock-note');
+  if (!note) {
+    note = document.createElement('p');
+    note.className = 'lock-note';
+    note.setAttribute('aria-hidden', 'true');
+    button.after(note);
+  }
   note.textContent = button.dataset.lock || 'Aún bloqueado';
   note.classList.add('is-visible');
   announce(note.textContent);

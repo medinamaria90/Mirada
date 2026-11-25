@@ -1,8 +1,8 @@
 // Pintores como lista y como ficha: épocas visibles, búsqueda, estado, obras ya vistas (sin spoilers),
 // líneas de vida y qué se puede jugar. Puro: no toca el DOM.
 
-import { artistStatus } from './progress.js';
 import { seenWorks, deepStatus } from './levels.js';
+import { playStatus } from './branches.js';
 
 export const MAX_LIFE_LINES = 4;
 
@@ -64,12 +64,11 @@ export function lifeLines(artist, story, movementName = '') {
   return [{ text: `${artist.name}${years}${where}${era}.`, source: artist.qid ? `https://www.wikidata.org/wiki/${artist.qid}` : '' }];
 }
 
-// Lo que se puede jugar desde la ficha: su etapa del camino, si es una parada ya abierta.
-// { stage: 'available' | 'started' | 'mastered' | null }
+// Lo que se puede jugar desde la ficha: su etapa (del camino o de una rama), si ya está abierta. La regla es
+// la de la ruta (branches.js → playStatus). { stage: 'available' | 'started' | 'mastered' | null }
 export function playTargets(progress, index, artistId) {
-  const onPath = index.pathIndex(artistId) >= 0;
-  const status = onPath ? artistStatus(progress, index, artistId) : 'locked';
-  return { stage: onPath && status !== 'locked' ? status : null };
+  const status = playStatus(progress, index, artistId);
+  return { stage: status && status !== 'locked' ? status : null };
 }
 
 // Etapas (niveles «a fondo») de un pintor con su estado, para la ficha de los grandes maestros.

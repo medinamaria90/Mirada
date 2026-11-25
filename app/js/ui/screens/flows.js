@@ -12,9 +12,10 @@ import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks } from '../../engine/levels.js';
+import { playStatus } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
@@ -252,8 +253,10 @@ function gap(track) {
 }
 
 // Si es la primera vez en el movimiento, antes se muestra su intro.
+// Las ramas-movimiento (Gótico, Estampa japonesa) no tienen presentación propia: se entra directo.
 function withIntro(ctx, el, movementId, show) {
-  if (needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
+  const visible = ctx.index.visibleMovements.some((m) => m.id === movementId);
+  if (visible && needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
     return renderIntro(ctx, el, movementId, { mode: 'first', onEnter: show });
   }
   return show();
@@ -272,8 +275,9 @@ function withStory(ctx, el, artistId, level, show) {
 export function renderStage(ctx, el, artistId) {
   const { index } = ctx;
   const artist = index.artist(artistId);
-  if (!artist || index.pathIndex(artistId) < 0) return leave(ctx);
-  if (artistStatus(ctx.store.get().progress, index, artistId) === 'locked') return leave(ctx, 'Aún no está abierta');
+  const status = artist ? playStatus(ctx.store.get().progress, index, artistId) : null;
+  if (!status) return leave(ctx);
+  if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
   withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, () => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).

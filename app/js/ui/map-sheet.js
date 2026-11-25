@@ -4,7 +4,8 @@
 import { esc, accentStyle } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
-import { branchStatus, movementReached } from '../engine/branches.js';
+import { branchStatus, tramoPending } from '../engine/branches.js';
+import { branchState, branchWhy } from './screens/path-signs.js';
 import { lifeSpan } from '../engine/painters.js';
 
 const KIND = {
@@ -47,6 +48,10 @@ async function open(ctx, opener, accent, body) {
     if (!b) return;
     ctx.audio.sfx('tap');
     if (b.dataset.ms === 'close') return close();
+    if (b.dataset.ms === 'play') {
+      close();
+      return ctx.go(`etapa-${b.dataset.id}`);
+    }
     if (b.dataset.ms === 'artist') {
       close();
       import('./artist-sheet.js').then((m) => m.openArtistSheet(ctx, b.dataset.id, { opener })).catch((err) => console.error(err));
@@ -74,45 +79,49 @@ export function openEraSheet(ctx, movementId, opener) {
   return open(ctx, opener, movement.accent, body);
 }
 
+const PLAY = { available: 'Empezar', started: 'Seguir', mastered: 'Repetir' };
+
+// Fila de un pintor: toda la fila abre su ficha; si se puede jugar en la rama, un botón «Empezar» propio.
+// Los que ya tienen parada en el camino común se juegan allí («En el camino»).
 function painterRow(ctx, row) {
   const a = ctx.index.artist(row.artistId);
   if (!a) return '';
-  const inner = `<span class="ms-mark is-${row.status}" aria-hidden="true">${icons[STATE_ICON[row.status]](14)}</span>
-    <span class="ms-who"><span class="ms-name">${esc(a.name)}</span>${lifeSpan(a) ? `<span class="ms-years">${esc(lifeSpan(a))}</span>` : ''}</span>
-    <span class="ms-state">${STATE[row.status]}</span>`;
-  return row.reached
-    ? `<li><button type="button" class="ms-row" data-ms="artist" data-id="${esc(a.id)}" aria-label="${esc(a.name)}, ${STATE[row.status].toLowerCase()}: ver su ficha">${inner}</button></li>`
-    : `<li class="ms-row is-locked">${inner}</li>`;
+  const state = row.onPath ? 'En el camino' : STATE[row.status];
+  const inner = `<span class="ms-mark is-${row.onPath ? 'path' : row.status}" aria-hidden="true">${row.onPath ? icons.arch(14) : icons[STATE_ICON[row.status]](14)}</span>
+    <span class="ms-who"><span class="ms-name">${esc(a.name)}</span><span class="ms-years">${esc([lifeSpan(a), state].filter(Boolean).join(' · '))}</span></span>`;
+  const play = !row.onPath && row.status !== 'locked'
+    ? `<button type="button" class="btn ${row.status === 'mastered' ? 'btn-secondary' : 'btn-primary'} ms-play" data-ms="play" data-id="${esc(a.id)}" aria-label="${PLAY[row.status]}: ${esc(a.name)}">${PLAY[row.status]}</button>` : '';
+  if (!row.reached && !row.onPath) return `<li class="ms-item"><span class="ms-row is-locked">${inner}</span></li>`;
+  return `<li class="ms-item"><button type="button" class="ms-row" data-ms="artist" data-id="${esc(a.id)}" aria-label="${esc(a.name)}, ${state.toLowerCase()}: ver su ficha">${inner}</button>${play}</li>`;
 }
 
-// Rama: estado, de qué va y sus pintores por tramos de época (los de épocas aún no vistas, apagados).
+// Rama: estado, de qué va y sus pintores agrupados por la época en la que se abren (en el orden del camino,
+// un grupo por época); los de épocas aún cerradas, apagados y con lo que las abre.
 export function openBranchSheet(ctx, branchId, opener) {
   const { index } = ctx;
   const branch = index.branch(branchId);
   if (!branch) return null;
   const progress = ctx.store.get().progress;
   const rows = branchStatus(progress, index, branchId);
-  const openNow = movementReached(progress, index, branch.opensAt);
-  const mastered = rows.filter((r) => r.status === 'mastered').length;
+  const st = branchState(progress, index, branch);
   const kind = KIND[branch.kind] || KIND.rama;
   const own = index.movement(branch.movementId);
   const about = kind.about || own?.blurb || '';
-  const groups = [];
-  for (const row of rows) {
-    const last = groups[groups.length - 1];
-    if (last && last.opensAt === row.opensAt) last.rows.push(row);
-    else groups.push({ opensAt: row.opensAt, reached: row.reached, rows: [row] });
-  }
-  const single = groups.length === 1;
-  const list = groups.map((g) => {
-    const era = index.movement(g.opensAt);
-    const head = single ? '' : `<h3 class="ms-group">${esc(era?.name || '')}${g.reached ? '' : `<span class="ms-group-lock">${icons.lock(12)}<span>al llegar</span></span>`}</h3>`;
-    return `<section class="ms-section">${head}<ul class="ms-list">${g.rows.map((r) => painterRow(ctx, r)).join('')}</ul></section>`;
+  const eras = index.visibleMovements.map((m) => m.id).filter((id) => rows.some((r) => r.opensAt === id));
+  const single = eras.length === 1;
+  const list = eras.map((id) => {
+    const group = rows.filter((r) => r.opensAt === id);
+    const reached = group[0].reached;
+    const why = reached ? '' : branchWhy(index, { pending: tramoPending(progress, index, id) });
+    const head = single ? '' : `<h3 class="ms-group"><span>${esc(index.movement(id)?.name || '')}</span>${reached ? '' : `<span class="ms-group-lock">${icons.lock(12)}<span>${esc(why)}</span></span>`}</h3>`;
+    return `<section class="ms-section">${head}<ul class="ms-list">${group.map((r) => painterRow(ctx, r)).join('')}</ul></section>`;
   }).join('');
-  const status = openNow
-    ? `<p class="ms-progress"><span class="ms-bar"><span style="width:${rows.length ? Math.round((mastered / rows.length) * 100) : 0}%"></span></span><span>${mastered} de ${rows.length} dominados</span></p>`
-    : `<p class="ms-lock">${icons.lock(16)}<span>Se abre al llegar a ${esc(index.movement(branch.opensAt)?.name || '')}.</span></p>`;
+  const status = st.open
+    ? `<p class="ms-progress"><span class="ms-bar"><span style="width:${st.total ? Math.round((st.mastered / st.total) * 100) : 0}%"></span></span><span>${st.mastered} de ${st.total} dominados</span></p>`
+    : `<p class="ms-lock">${icons.lock(16)}<span>${esc(cap(branchWhy(index, st)))}.</span></p>`;
   const body = `<header class="ms-head"><p class="ms-kicker">${esc(kind.kicker)}</p><h2 class="ms-title" id="ms-title">${esc(branch.name)}</h2></header>
     ${status}${about ? `<p class="ms-about">${esc(about)}</p>` : ''}${list}`;
   return open(ctx, opener, own?.accent || index.movement(branch.opensAt)?.accent, body);
 }
+
+const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);

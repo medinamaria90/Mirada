@@ -6,18 +6,16 @@
 import { hasMovementReview } from '../../engine/progress.js';
 
 export const MAP_W = 390;
-export const STEP = 112;             // distancia vertical entre paradas
-const PAD_BOTTOM = 140;              // entrada del tramo: tramo recto del sendero y el cartel de la época al lado
-const RUN = 96;                      // el sendero entra recto (vertical) este alto: el cartel cabe a su lado
+export const STEP = 124;             // distancia vertical entre paradas
+const PAD_BOTTOM = 184;              // entrada del tramo: tramo recto del sendero y el cartel de la época al lado
+const RUN = 122;                     // el sendero entra recto (vertical) este alto: el cartel cabe a su lado
 const PAD_TOP = 28;                  // salida del tramo
-const XS = [120, 268, 130, 274, 118, 270, 126, 272];   // zigzag de los nodos
+const XS = [128, 262, 136, 266, 126, 264, 134, 260];   // zigzag de los nodos
 export const SIDE_X = { left: 48, right: MAP_W - 48 }; // margen estrecho: sala de la época y ramas
 export const ROAD_HALF = 15;         // medio ancho del sendero (borde incluido)
 const ROAD_GAP = 12;                 // aire entre el sendero y un cartel
 const EDGE = 10;                     // aire con el borde del mapa
-const SIGN_BOX = { top: 96, bottom: 14 };   // cartel de época: entre h-96 y h-14
-const SECTION_HALF = 11;             // medio alto del rótulo de tramo
-const SECTION_GAP = 6;                // el rótulo de tramo, más pegado al sendero
+const SIGN_BOX = { top: 118, bottom: 14 };  // cartel de época: entre h-96 y h-14
 const SPUR_DROP = 46;                // el desvío de una rama sale del sendero algo por debajo de su nodo
 // Salida (abajo del todo) y «Tu museo» (arriba): bloques propios con su dibujo.
 export const START_H = 190;
@@ -56,10 +54,10 @@ export function roadX(segs, y) {
 }
 
 // Hueco libre a un lado del sendero entre y1 y y2: { side, edge (borde del cartel junto al camino), room }.
-export function besideRoad(segs, y1, y2, prefer, gap = ROAD_GAP) {
+export function besideRoad(segs, y1, y2, prefer) {
   const xs = Array.from({ length: 9 }, (_, i) => roadX(segs, y1 + ((y2 - y1) * i) / 8));
-  const left = Math.min(...xs) - ROAD_HALF - gap;
-  const right = Math.max(...xs) + ROAD_HALF + gap;
+  const left = Math.min(...xs) - ROAD_HALF - ROAD_GAP;
+  const right = Math.max(...xs) + ROAD_HALF + ROAD_GAP;
   const rooms = { left: left - EDGE, right: MAP_W - EDGE - right };
   const side = rooms[prefer] >= rooms[prefer === 'left' ? 'right' : 'left'] * 0.6 ? prefer : (prefer === 'left' ? 'right' : 'left');
   return { side, edge: side === 'left' ? left : right, room: Math.max(0, Math.round(rooms[side])) };
@@ -84,27 +82,17 @@ export function eraLayout(nodeCount, phase = 0, xIn = null) {
   return { h, points, start, segs, sign, trail: segmentsD(segs) };
 }
 
-// Rótulo de tramo: entre la parada anterior (o la entrada) y la primera del tramo, al lado del sendero.
-// Va del lado de su parada salvo que ahí salga el desvío de una rama.
-function sectionSpot(era, i, hasBranch) {
-  const p = era.points[i];
-  const y = p.y + STEP / 2;
-  return { y, ...besideRoad(era.segs, y - SECTION_HALF, y + SECTION_HALF, hasBranch ? other(sideOf(p.x)) : sideOf(p.x), SECTION_GAP) };
-}
-
-// Paradas que llevan una rama a su lado: repartidas por el tramo, nunca la última (ahí va la sala). Su cartel
-// ocupa el margen por encima de la parada y su desvío, el de debajo; si la parada abre un tramo, su rótulo
-// pasa al otro lado, que debe estar libre (la parada anterior no lleva rama). starts: paradas que abren tramo.
-export function branchSlots(n, k, starts = new Set()) {
+// Paradas que llevan una rama a su lado: repartidas por el tramo, ni la primera ni la última (ahí va la sala)
+// si hay sitio. Su cartel ocupa el margen estrecho por encima de la parada y su desvío, el de debajo; el
+// rótulo de tramo va en el lado ancho, junto al nombre, así que no chocan.
+export function branchSlots(n, k) {
   if (!k || n < 2) return [];
-  const valid = (set) => [...set].every((i) => !starts.has(i) || !set.has(i - 1));
   const slots = new Set();
   for (let j = 0; j < k; j++) {
     const target = Math.round(((j + 1) * (n - 1)) / (k + 1));
     const order = Array.from({ length: n - 1 }, (_, i) => i)
-      .sort((x, y) => (Math.abs(x - target) + (starts.has(x) ? 1.5 : 0) + (x === 0 ? 2 : 0))
-        - (Math.abs(y - target) + (starts.has(y) ? 1.5 : 0) + (y === 0 ? 2 : 0)));
-    const pick = order.find((i) => !slots.has(i) && valid(new Set([...slots, i])));
+      .sort((x, y) => (Math.abs(x - target) + (x === 0 ? 2 : 0)) - (Math.abs(y - target) + (y === 0 ? 2 : 0)));
+    const pick = order.find((i) => !slots.has(i));
     if (pick !== undefined) slots.add(pick);
   }
   return [...slots].sort((x, y) => x - y);
@@ -145,7 +133,8 @@ function startLayout() {
   return { h: START_H, segs, sign, trail: segmentsD(segs) };
 }
 
-// Trazado de todo el camino: salida, época a época (con sus rótulos de tramo y ramas) y el museo al final.
+// Trazado de todo el camino: salida, época a época (con dónde empieza cada tramo y dónde salen las ramas) y
+// el museo al final.
 export function pathLayout(index) {
   const eras = [];
   let phase = 0;
@@ -156,9 +145,8 @@ export function pathLayout(index) {
     if (!n) continue;
     const era = eraLayout(n, phase, xIn);
     const branches = branchesAt(index, m.id);
-    const starts = new Set(artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? i : -1)).filter((i) => i >= 0));
-    const slots = branchSlots(n, branches.length, starts);
-    const sections = artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? { at: i, name: a.section, ...sectionSpot(era, i, slots.includes(i)) } : null)).filter(Boolean);
+    const slots = branchSlots(n, branches.length);
+    const sections = artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? { at: i, name: a.section } : null)).filter(Boolean);
     eras.push({ id: m.id, ...era, sections, branches: slots.map((at, k) => ({ id: branches[k].id, ...branchSpot(era, at) })) });
     phase += n;
     xIn = era.points[n - 1].x;

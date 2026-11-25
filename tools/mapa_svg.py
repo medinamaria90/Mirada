@@ -73,7 +73,7 @@ LIBRE = {'cartel': None, 'ramas': set()}
 
 
 def margenes(p, h, arbol):
-    """Relleno común: algo pequeño en el margen estrecho de cada nodo y en las esquinas de abajo, salvo bajo
+    """Relleno común (árboles, nunca farolas ni palos sueltos): algo pequeño en el margen estrecho de cada nodo y en las esquinas de abajo, salvo bajo
     los carteles (el de la época y los de las ramas)."""
     out = []
     for i, q in enumerate(p):
@@ -167,7 +167,7 @@ def deco_norte(p, h):
     for i in range(5, len(p)):
         x = lado(p[i])
         out += [M.casa(x - 10, p[i][1] + 16, 20, 20, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.arbol_desnudo(x + 24, p[i][1] + 14, 24), M.arbol(x - 34, p[i][1] + 18, 8)]
-    return out + margenes(p, h, lambda x, y, i: M.arbol(x, y, 7) if i % 2 else M.arbol_desnudo(x, y, 20))
+    return out + margenes(p, h, lambda x, y, i: M.arbol(x, y, 7 + (i % 2)))
 
 
 def deco_barroco(p, h):
@@ -200,7 +200,7 @@ def deco_barroco(p, h):
     for i in range(7, len(p)):
         x = lado(p[i])
         out += [M.casa_larga(x - 20, p[i][1] + 12, 40, 18, 12, win=(3, 1), arco=True), M.naranjo(x + 34, p[i][1] + 16), M.naranjo(x - 34, p[i][1] + 18)]
-    return out + margenes(p, h, lambda x, y, i: naranjos(x, y, i) if i % 3 else M.farola(x, y, 14))
+    return out + margenes(p, h, naranjos)
 
 
 def deco_rococo(p, h):
@@ -295,7 +295,7 @@ def deco_impresionismo(p, h):
     for i in range(5, len(p)):
         x = lado(p[i])
         out += [M.caja(x - 30, p[i][1] + 12, 60, 24, 16, win=(4, 1), cornisa=True), M.arbol(x + 40, p[i][1] + 14, 8), M.arbol(x - 40, p[i][1] + 16, 8)]
-    return out + margenes(p, h, lambda x, y, i: arboles(x, y, i) if i % 2 else M.farola(x, y, 14))
+    return out + margenes(p, h, arboles)
 
 
 def deco_postimpresionismo(p, h):

@@ -72,7 +72,7 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
   assert.ok(html.includes('class="sign-plate" data-action="intro"'), 'el cartel abierto no lleva a la presentación');
   const locked = real.visibleMovements[2];
   assert.ok(html.includes(`data-action="era-lock" data-id="${locked.id}"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el cartel cerrado no abre su hoja');
-  assert.ok(html.includes(`Cerrada: Se abre al terminar ${real.visibleMovements[1].name}`), 'una época cerrada no dice cómo se abre');
+  assert.ok(html.includes(`Cerrada: se abre al terminar ${real.visibleMovements[1].name}`), 'una época cerrada no dice cómo se abre');
   assert.ok(!html.includes('Termina ') && !html.includes('movement-head'), 'queda la cartela antigua');
 });
 
@@ -96,7 +96,7 @@ test('mapa: el nodo actual lleva «Empezar» (o «Seguir» a medias) y el anillo
   html = renderPathMap(ctxWith(real, p));
   assert.ok(html.includes(`is-current" data-step="artist:${real.steps[2].id}"`) && html.includes('<span class="stage-meta">Empezar</span>'));
   assert.ok(html.includes('Repite · 50%'), 'lo jugado a medias no invita a repetir con su mejor resultado');
-  assert.ok(html.includes('class="stage  is-mastered"') && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
+  assert.ok(/class="stage [^"]*is-mastered"/.test(html) && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
   // Camino jugado entero pero no dominado: el actual es el primero por repasar y dice «Seguir».
   const q = emptyProgress();
   real.steps.forEach((s) => { q.artists[s.id] = { plays: 1, best: 0.5, mastered: false, last: TODAY }; });
@@ -142,10 +142,10 @@ test('paisajes: un SVG por época, ≤ 40 KB, con el trazado de la app y solo co
       assert.ok(css.includes(pal[`tint-${era.id}`]), `${era.id}: sin el tinte de su época`);
     }
   }
-  assert.equal(STEP, 112);
+  assert.equal(STEP, 124);
 });
 
-test('mapa: el repaso cerrado dice qué pintores faltan por dominar', () => {
+test('mapa: el repaso cerrado dice cuántos faltan; los nombres, en la nota y para el lector', () => {
   const real = bigIndex();
   const m = real.visibleMovements.find((x) => hasMovementReview(real, x.id));
   const artists = real.stepsOf(m.id).filter((s) => s.type === 'artist');
@@ -154,31 +154,39 @@ test('mapa: el repaso cerrado dice qué pintores faltan por dominar', () => {
   const last = real.artist(artists[artists.length - 1].id);
   const html = renderPathMap(ctxWith(real, progress));
   const who = last.short || last.name;
-  assert.ok(html.includes(`<b>Repaso:</b> ${who}</span>`), 'el repaso no nombra al pintor que falta');
+  assert.ok(html.includes('<span class="stage-name">Repaso · falta 1</span>'), 'el repaso cerrado no dice cuántos faltan');
   assert.ok(html.includes(`data-lock="Domina a ${who} para abrirlo"`), 'la nota al pulsar no nombra al pintor');
+  assert.ok(html.includes(`bloqueado. Para abrirlo, domina a ${who}"`), 'el lector no oye a quién falta dominar');
   const none = renderPathMap(ctxWith(real, emptyProgress()));
-  assert.ok(/<b>Repaso:<\/b> [^<,]+, [^<,]+ y \d+ más<\/span>/.test(none), 'con todos pendientes resume en una línea («Repaso: X, Y y n más»)');
-  assert.ok((none.match(/<b>Repaso:<\/b> [^<]+/g) || []).every((t) => t.split(' y ').length === 2), 'doble «y» en el resumen');
+  assert.ok(new RegExp(`Repaso · faltan ${artists.length}</span>`).test(none));
+  assert.ok(/data-lock="Domina a [^",]+, [^",]+ y \d+ más para abrirlo"/.test(none), 'la nota resume («X, Y y n más»)');
+  assert.ok(!/<b>Repaso:<\/b>/.test(none) && !/ y [^"<]+ y \d+ más para/.test(none), 'queda el formato antiguo o una doble «y»');
 });
 
-// Ningún cartel ni rótulo pisa el sendero: su borde junto al camino queda fuera de la franja del sendero en
-// toda su altura, y les queda sitio.
-test('mapa: carteles de época y rótulos de tramo al borde del sendero, nunca encima', () => {
+// Ningún cartel pisa el sendero: su borde junto al camino queda fuera de la franja del sendero (con aire) en
+// toda su altura, y le queda sitio. Los rótulos de tramo van con el nombre de su primera parada.
+test('mapa: carteles de época al borde del sendero, nunca encima; tramos sobre el nombre de su primera parada', () => {
   const layout = pathLayout(real);
+  const GAP = 8;
   const clear = (segs, y1, y2, box) => {
     const xs = Array.from({ length: 12 }, (_, i) => roadX(segs, y1 + ((y2 - y1) * i) / 11));
-    return box.side === 'left' ? box.edge <= Math.min(...xs) - ROAD_HALF : box.edge >= Math.max(...xs) + ROAD_HALF;
+    return box.side === 'left' ? box.edge <= Math.min(...xs) - ROAD_HALF - GAP : box.edge >= Math.max(...xs) + ROAD_HALF + GAP;
   };
-  for (const era of layout.eras) {
-    assert.ok(clear(era.segs, era.sign.top, era.sign.y, era.sign) && era.sign.room >= 150, `${era.id}: el cartel pisa el sendero o no cabe`);
-    for (const s of era.sections) assert.ok(clear(era.segs, s.y - 11, s.y + 11, s) && s.room >= 100, `${era.id}: el rótulo «${s.name}» pisa el sendero`);
-  }
+  for (const era of layout.eras) assert.ok(clear(era.segs, era.sign.top, era.sign.y, era.sign) && era.sign.room >= 150, `${era.id}: el cartel pisa el sendero o no cabe`);
   for (const b of [layout.start, layout.museum]) assert.ok(clear(b.segs, b.sign.top, b.sign.y, b.sign), 'la placa de salida o del museo pisa el sendero');
-  const html = renderPathMap(ctxWith(real));
+  const html = renderPathMap(ctxWith(real, masterFirst(real, 1)));
   assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, real.visibleMovements.length + 2);
+  // Florencia y Castilla: rótulo dentro del texto de Botticelli (oculto al lector) y un elemento propio, legible,
+  // justo antes de su parada en el DOM («Tramo …: 1 de 2 dominados»).
+  const first = real.artist(real.steps[0].id);
+  const kicker = `<span class="stage-kicker" aria-hidden="true">${first.section} <span class="stage-kicker-count">1/2</span></span>`;
+  assert.ok(html.includes(kicker), 'el rótulo del tramo no va con su primera parada');
+  const sr = html.indexOf(`<li class="sr-only">Tramo ${first.section}: 1 de 2 dominados</li>`);
+  assert.ok(sr >= 0 && sr < html.indexOf(`data-step="artist:${first.id}"`), 'el lector no oye el tramo antes de sus paradas');
+  assert.ok(!html.includes('stage-section') && !html.includes('class="lock-note"'), 'quedan rótulos sobre el sendero o párrafos vacíos');
 });
 
-test('mapa: cada rama es un desvío en la época donde se abre, cerrada hasta llegar, con hoja al tocar', () => {
+test('mapa: cada rama es un desvío en su época, cerrada el primer día (dice qué la abre) y en su sitio del DOM', () => {
   const html = renderPathMap(ctxWith(real));
   const layout = pathLayout(real);
   for (const b of real.branches) {
@@ -189,28 +197,37 @@ test('mapa: cada rama es un desvío en la época donde se abre, cerrada hasta ll
     assert.ok(spot.at < era.points.length - 1, `${b.id}: en la última parada (ahí va la sala)`);
     assert.ok(spot.x < 60 || spot.x > MAP_W - 60, `${b.id}: no está en el margen`);
   }
-  // Al empezar solo están abiertas las del Renacimiento; las demás, cerradas y con su desvío punteado.
   const found = [...html.matchAll(/class="branch (is-\w+)" data-action="branch" data-id="([^"]+)"/g)];
   assert.equal(found.length, real.branches.length);
-  for (const [, cls, id] of found) assert.equal(cls === 'is-open', real.branch(id).opensAt === real.visibleMovements[0].id, `${id}: ${cls}`);
-  assert.ok(html.includes('class="spur-edge is-locked"') && html.includes('class="spur-fill"'));
-  assert.ok(/aria-label="[^"]+: rama cerrada\. Se abre al llegar a [^"]+"/.test(html));
-  // Un pintor de rama dominado cuenta en su cartel.
-  const g = real.branch('gotico');
-  assert.ok(g, 'el catálogo trae la rama del gótico');
-  const p = emptyProgress();
-  p.artists[g.artists[0]] = { plays: 1, best: 0.9, mastered: true, last: TODAY };
-  assert.ok(renderPathMap(ctxWith(real, p)).includes(`<span class="branch-count">1/${g.artists.length}</span>`));
+  assert.ok(found.every(([, cls]) => cls === 'is-locked'), 'una rama abierta el primer día');
+  assert.ok(html.includes('class="spur-edge is-locked"'));
+  const a = real.artist(real.steps[0].id).short || real.artist(real.steps[0].id).name;
+  const b = real.artist(real.steps[1].id).short || real.artist(real.steps[1].id).name;
+  assert.ok(html.includes(`Gótico: rama cerrada, se abre al dominar a ${a} y ${b}`), 'la rama cerrada no dice qué la abre');
+  assert.ok(html.includes('<span>faltan 2</span>'), 'la placa cerrada no dice cuánto falta');
+  assert.ok(html.includes('>Más del Renacimiento<') && html.includes('Más del Post­impresionismo'), 'la rama de época no se llama «Más del …»');
+  // Orden de lectura: la rama va justo después de su parada.
+  const era = layout.eras[0];
+  const g = era.branches.find((x) => x.id === 'gotico');
+  const host = real.steps.filter((x) => x.movementId === era.id)[g.at];
+  const iHost = html.indexOf(`data-step="${host.type}:${host.id}"`);
+  const iNext = html.indexOf('data-step=', iHost + 10);
+  const iBranch = html.indexOf('data-id="gotico"');
+  assert.ok(iHost < iBranch && iBranch < iNext, 'la rama no va tras su parada en el orden de tabulación');
+  // Abierta (primer tramo dominado): cuenta solo sus pintores propios.
+  const open = renderPathMap(ctxWith(real, masterFirst(real, 2)));
+  const own = real.branch('gotico').artists.filter((id) => real.pathIndex(id) < 0).length;
+  assert.ok(/class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
+  assert.ok(open.includes(`<span class="branch-count">0/${own}</span>`), 'cuenta pintores del camino común en la rama');
 });
 
-test('mapa: reparto de ramas sin chocar con los rótulos de tramo', () => {
+test('mapa: reparto de ramas por el tramo, nunca en la última parada', () => {
   assert.deepEqual(branchSlots(6, 0), []);
-  for (const [n, k, starts] of [[8, 3, [0, 2, 5]], [6, 3, [0, 2, 3]], [12, 1, [0, 4, 7]], [6, 2, [1, 3]]]) {
-    const st = new Set(starts);
-    const slots = branchSlots(n, k, st);
+  for (const [n, k] of [[8, 3], [6, 3], [12, 1], [6, 2]]) {
+    const slots = branchSlots(n, k);
     assert.equal(slots.length, k);
     assert.ok(slots.every((i) => i >= 0 && i < n - 1), `${n}/${k}: fuera de rango`);
-    assert.ok(slots.every((i) => !st.has(i) || !slots.includes(i - 1)), `${n}/${k}: ${slots} choca con un rótulo`);
+    assert.ok(k > n - 2 || !slots.includes(0), `${n}/${k}: en la primera parada habiendo sitio`);
   }
 });
 
@@ -219,9 +236,15 @@ test('mapa: jerarquía de nodos (actual, siguiente cerrado y el resto cerrado m�
   assert.equal((html.match(/stage-spot is-(left|right) is-next/g) || []).length, 1, 'una sola parada «siguiente»');
   assert.ok(html.includes(`is-next" data-step="artist:${real.steps[3].id}"`), 'la siguiente no es la de después de la actual');
   assert.ok(!/is-locked"[^>]*>\s*<span class="stage-dot">[^<]*<span class="art/.test(html), 'un nodo cerrado enseña el cuadro');
+  // Cerrado y lejos: nombre corto; el lector oye por qué está cerrado.
+  const far = real.artist(real.steps[6].id);
+  assert.ok(html.includes(`aria-label="${far.name}, bloqueado. Se abre con la mitad de aciertos en `), 'el cerrado no explica su candado al lector');
+  if (far.short && far.short !== far.name) assert.ok(html.includes(`<span class="stage-name">${far.short}</span>`), 'el cerrado lejano no usa el nombre corto');
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
   const px = (re) => Number((css.match(re) || [])[1]);
   const base = px(/\.stage \{\s*--dot: (\d+)px/);
   assert.ok(px(/\.stage\.is-locked \{ --dot: (\d+)px/) < base, 'el cerrado no es más pequeño');
   assert.ok(px(/\.stage-spot\.is-current \.stage \{ --dot: (\d+)px/) > base, 'el actual no es el mayor');
+  assert.ok(!/\.(stage-name|branch-name)[^{]*\{[^}]*overflow-wrap: anywhere/.test(css), 'nombres partidos por cualquier letra');
+  assert.ok(/@container mapa \(max-width: 20em\)/.test(css), 'sin camino en línea para letra grande');
 });
