@@ -153,13 +153,17 @@ export function pathLayout(index) {
     if (!n) continue;
     const era = eraLayout(n, phase, xIn);
     const branches = branchesAt(index, m.id);
-    // Con más de MAX_BRANCH_SIGNS ramas, un único cartel «Ramas de esta época (n)» que abre una hoja con todas.
-    const grouped = branches.length > MAX_BRANCH_SIGNS;
-    const slots = branchSlots(n, grouped ? 1 : branches.length);
+    // Las ramas temáticas (Gótico, Estampa japonesa) llevan siempre su cartel; si con las demás pasan de
+    // MAX_BRANCH_SIGNS carteles, las demás van juntas en uno solo («Ramas (n)»), que abre una hoja con todas.
+    const themed = branches.filter((b) => b.branch.kind === 'rama' && !b.extra);
+    const rest = branches.filter((b) => !themed.includes(b));
+    const grouped = branches.length > MAX_BRANCH_SIGNS && rest.length > 1;
+    const slots = branchSlots(n, themed.length + (grouped ? 1 : rest.length));
     const sections = artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? { at: i, name: a.section } : null)).filter(Boolean);
-    const spots = grouped
-      ? [{ id: `era-${m.id}`, group: true, members: branches.map((b) => ({ id: b.branch.id, extra: b.extra })), extra: false, ...branchSpot(era, slots[0]) }]
-      : slots.map((at, k) => ({ id: branches[k].branch.id, extra: branches[k].extra, ...branchSpot(era, at) }));
+    const signs = [...themed, ...(grouped ? [{ group: rest }] : rest)];
+    const spots = signs.map((b, k) => (b.group
+      ? { id: `era-${m.id}`, group: true, members: b.group.map((x) => ({ id: x.branch.id, extra: x.extra })), extra: false, ...branchSpot(era, slots[k]) }
+      : { id: b.branch.id, extra: b.extra, ...branchSpot(era, slots[k]) }));
     eras.push({ id: m.id, ...era, sections, branches: spots });
     phase += n;
     xIn = era.points[n - 1].x;

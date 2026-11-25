@@ -3,6 +3,7 @@
 // en…», etapas, SOLO las obras ya vistas (sin spoilers), progreso y botón para jugar.
 
 import { esc, accentStyle } from './dom.js';
+import { stageRoute } from './router.js';
 import { icons } from './icons.js';
 import { artFrame } from './art.js';
 import { loadCss } from './lazy-css.js';
@@ -83,7 +84,8 @@ export function closeArtistSheet() {
   if (current) current.close();
 }
 
-// opts: { opener, playable } (playable: dentro de una ronda no se ofrece jugar).
+// opts: { opener, playable, branchId } (playable: dentro de una ronda no se ofrece jugar; branchId: rama desde la
+// que se abre, para que «Jugar» siga en ella).
 export async function openArtistSheet(ctx, artistId, opts = {}) {
   const artist = ctx.index.artist(artistId);
   if (!artist) return null;
@@ -113,7 +115,7 @@ export async function openArtistSheet(ctx, artistId, opts = {}) {
     ctx.audio.sfx('tap');
     if (b.dataset.as === 'close') close();
     else if (b.dataset.as === 'story') import('./story-viewer.js').then((m) => m.playStory(ctx, artistId, 1, { force: true })).catch((err) => console.error(err));
-    else if (b.dataset.as === 'play') { close(); ctx.go(`etapa-${artistId}`); }
+    else if (b.dataset.as === 'play') { close(); ctx.go(stageRoute(artistId, opts.branchId)); }
   });
   dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); close(); });
   try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }

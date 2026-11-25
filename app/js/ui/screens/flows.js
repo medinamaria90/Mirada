@@ -81,12 +81,13 @@ function play(ctx, el, opts) {
     },
     onBackAfterDone: () => ctx.go('inicio', { replace: true }),
     onDone: (summary) => {
+      const before = ctx.store.get().progress;
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
       // Después de cualquier ronda, el repaso de 5 si hay cuadros para él; si no, «Repasar más» tras el rápido.
       const review5 = friendScore == null && hasReview5(ctx.store.get().progress, ctx.index, ctx.today());
       const moreReview = !review5 && typeof more === 'function' && more();
       renderResult(ctx, el, {
-        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId,
+        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before,
         more: review5 ? { label: REVIEW5_NAME, to: 'repaso5' } : moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
       });
     },

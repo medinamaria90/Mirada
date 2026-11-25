@@ -19,6 +19,9 @@ export const ROUTES = {
 
 // opts.today: día del reto diario (para rechazar retos de fechas futuras).
 // Un nombre que no es ninguna ruta devuelve { name: 'invalid' } (se avisa y se va al inicio).
+// Ruta de la etapa de un pintor; desde una rama lleva la rama («etapa-giotto--gotico») para seguir en ella.
+export const stageRoute = (artistId, branchId = '') => `etapa-${artistId}${branchId ? `--${branchId}` : ''}`;
+
 export function parseRoute(hash, opts = {}) {
   const name = String(hash || '').replace(/^#/, '');
   if (name === '' || name === ROUTES.home) return { name: 'home' };

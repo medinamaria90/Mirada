@@ -2,6 +2,7 @@
 // de una rama (sus pintores por épocas, con su estado; cada pintor abre su ficha). Se carga al primer toque.
 
 import { esc, accentStyle, joinNames } from './dom.js';
+import { stageRoute } from './router.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { branchStatus, tramoPending } from '../engine/branches.js';
@@ -47,15 +48,20 @@ async function open(ctx, opener, accent, body) {
     if (b.dataset.ms === 'close') return close();
     if (b.dataset.ms === 'play') {
       close();
-      return ctx.go(`etapa-${b.dataset.id}${b.dataset.branch ? `--${b.dataset.branch}` : ''}`);
+      return ctx.go(stageRoute(b.dataset.id, b.dataset.branch));
     }
     if (b.dataset.ms === 'branch') {
       close();
-      return openBranchSheet(ctx, b.dataset.id, opener);
+      return openBranchSheet(ctx, b.dataset.id, opener, b.dataset.era || '');
+    }
+    if (b.dataset.ms === 'back') {
+      close();
+      return openEraBranchesSheet(ctx, b.dataset.id, opener);
     }
     if (b.dataset.ms === 'artist') {
       close();
-      import('./artist-sheet.js').then((m) => m.openArtistSheet(ctx, b.dataset.id, { opener })).catch((err) => console.error(err));
+      // La ficha abierta desde una rama juega en esa rama.
+      import('./artist-sheet.js').then((m) => m.openArtistSheet(ctx, b.dataset.id, { opener, branchId: b.dataset.branch || '' })).catch((err) => console.error(err));
     }
   });
   dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); close(); });
@@ -93,12 +99,13 @@ function painterRow(ctx, row, branchId) {
   const play = !row.onPath && row.status !== 'locked'
     ? `<button type="button" class="btn ${row.status === 'mastered' ? 'btn-secondary' : 'btn-primary'} ms-play" data-ms="play" data-id="${esc(a.id)}" data-branch="${esc(branchId)}" aria-label="${PLAY[row.status]}: ${esc(a.name)}">${PLAY[row.status]}</button>` : '';
   if (!row.reached && !row.onPath) return `<li class="ms-item"><span class="ms-row is-locked">${inner}</span></li>`;
-  return `<li class="ms-item"><button type="button" class="ms-row" data-ms="artist" data-id="${esc(a.id)}" aria-label="${esc(a.name)}, ${state.toLowerCase()}: ver su ficha">${inner}</button>${play}</li>`;
+  return `<li class="ms-item"><button type="button" class="ms-row" data-ms="artist" data-id="${esc(a.id)}" data-branch="${esc(branchId)}" aria-label="${esc(a.name)}, ${state.toLowerCase()}: ver su ficha">${inner}</button>${play}</li>`;
 }
 
 // Rama: estado, de qué va y sus pintores agrupados por la época en la que se abren (en el orden del camino,
 // un grupo por época); los de épocas aún cerradas, apagados y con lo que las abre.
-export function openBranchSheet(ctx, branchId, opener) {
+// fromEra: se abrió desde «Ramas de esta época» de esa época; la hoja lleva «Atrás» para volver a ella.
+export function openBranchSheet(ctx, branchId, opener, fromEra = '') {
   const { index } = ctx;
   const branch = index.branch(branchId);
   if (!branch) return null;
@@ -121,7 +128,8 @@ export function openBranchSheet(ctx, branchId, opener) {
   const status = st.open
     ? `<p class="ms-progress"><span class="ms-bar"><span style="width:${st.total ? Math.round((st.mastered / st.total) * 100) : 0}%"></span></span><span>${st.mastered} de ${st.total} dominados</span></p>`
     : `<p class="ms-lock">${icons.lock(16)}<span>${esc(cap(branchWhy(index, st)))}.</span></p>`;
-  const body = `<header class="ms-head"><p class="ms-kicker">${esc(kind.kicker)}</p><h2 class="ms-title" id="ms-title">${esc(branch.name)}</h2></header>
+  const back = fromEra ? `<button type="button" class="icon-btn ms-back" data-ms="back" data-id="${esc(fromEra)}" aria-label="Atrás: ramas de esta época">${icons.prev(22)}</button>` : '';
+  const body = `${back}<header class="ms-head"><p class="ms-kicker">${esc(kind.kicker)}</p><h2 class="ms-title" id="ms-title">${esc(branch.name)}</h2></header>
     ${status}${about ? `<p class="ms-about">${esc(about)}</p>` : ''}${list}`;
   return open(ctx, opener, own?.accent || index.movement(branch.opensAt)?.accent, body);
 }
@@ -141,7 +149,7 @@ export function openEraBranchesSheet(ctx, eraId, opener) {
     const kind = (KIND[m.branch.kind] || KIND.rama).kicker;
     const line = !st.open ? branchWhy(index, st) : m.extra ? `${st.fresh === 1 ? '1 pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época` : `${st.mastered} de ${st.total} dominados`;
     const mark = st.total && st.mastered === st.total ? 'mastered' : st.open ? 'available' : 'locked';
-    return `<li class="ms-item"><button type="button" class="ms-row" data-ms="branch" data-id="${esc(m.branch.id)}" aria-label="${esc(`${m.branch.name}, ${line}`)}">
+    return `<li class="ms-item"><button type="button" class="ms-row" data-ms="branch" data-id="${esc(m.branch.id)}" data-era="${esc(eraId)}" aria-label="${esc(`${m.branch.name}, ${line}`)}">
       <span class="ms-mark is-${mark}" aria-hidden="true">${icons[mark === 'mastered' ? 'check' : mark === 'available' ? 'fork' : 'lock'](14)}</span>
       <span class="ms-who"><span class="ms-name">${esc(m.branch.name)}</span><span class="ms-years">${esc(kind)} · ${esc(line)}</span></span>
       <span class="ms-go" aria-hidden="true">${icons.next(18)}</span></button></li>`;

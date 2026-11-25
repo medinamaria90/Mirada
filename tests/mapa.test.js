@@ -96,7 +96,7 @@ test('mapa: el nodo actual lleva «Empezar» (o «Seguir» a medias) y el anillo
   p.artists[real.steps[1].id] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
   html = renderPathMap(ctxWith(real, p));
   assert.ok(html.includes(`is-current" data-step="artist:${real.steps[2].id}"`) && html.includes('<span class="stage-meta">Empezar</span>'));
-  assert.ok(html.includes('Repite · 50%'), 'lo jugado a medias no invita a repetir con su mejor resultado');
+  assert.ok(html.includes('Repite · 50 %'), 'lo jugado a medias no invita a repetir con su mejor resultado (con espacio duro)');
   assert.ok(/class="stage [^"]*is-mastered"/.test(html) && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
   // Camino jugado entero pero no dominado: el actual es el primero por repasar y dice «Seguir».
   const q = emptyProgress();
@@ -201,7 +201,7 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
     assert.ok(era.branches.length <= 2, `${era.id}: más de dos carteles de rama`);
     const group = era.branches.find((x) => x.group);
     if (group) {
-      assert.ok(group.members.length > 2 && era.branches.length === 1, `${era.id}: cartel de grupo con ${group.members.length}`);
+      assert.ok(group.members.length >= 2 && group.members.every((m) => real.branch(m.id).kind !== 'rama'), `${era.id}: cartel de grupo con ${group.members.length}`);
       assert.ok(html.includes(`data-action="branches" data-id="${era.id}"`) && html.includes(`>Ramas (${group.members.length})<`) && html.includes(`aria-label="Ramas de esta época: ${group.members.length}`));
     }
   }
@@ -222,7 +222,9 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   assert.ok(a);
   // Orden de lectura: el cartel de ramas va justo después de su parada.
   const era = layout.eras[0];
-  const g = era.branches[0];
+  // Gótico y Estampa japonesa (ramas temáticas), siempre con cartel propio.
+  for (const id of ['gotico', 'ukiyo-e']) assert.ok(layout.eras.some((e) => e.branches.some((b) => b.id === id && !b.group)), `${id} sin cartel propio`);
+  const g = era.branches.find((b) => b.group);
   const host = real.steps.filter((x) => x.movementId === era.id)[g.at];
   const iHost = html.indexOf(`data-step="${host.type}:${host.id}"`);
   const iNext = html.indexOf('data-step=', iHost + 10);
@@ -231,7 +233,7 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   // Abierta (primer tramo dominado): el grupo dice cuántas hay abiertas.
   const open = renderPathMap(ctxWith(real, masterFirst(real, 2)));
   assert.ok(/class="branch is-open is-group" data-action="branches" data-id="renacimiento"/.test(open));
-  assert.ok(open.includes('<span class="branch-count">3 abiertas</span>'));
+  assert.ok(open.includes('<span class="branch-count">2 abiertas</span>') && /class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
 });
 
 test('mapa: textos según el estado (hito, escuelas dominadas, parada actual)', () => {

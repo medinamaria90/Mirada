@@ -15,8 +15,9 @@ import { rankFor } from '../../engine/ranks.js';
 import { rankProgress } from '../../engine/profile.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
-import { branchAfterRound } from '../../engine/branches.js';
+import { branchAfterRound, playStatus } from '../../engine/branches.js';
 import { setMapFocus } from './path-map.js';
+import { stageRoute } from '../router.js';
 
 export function headline(accuracy) {
   if (accuracy >= 1) return 'Impecable';
@@ -141,7 +142,13 @@ export function renderResult(ctx, el, opts) {
   }
   // Ronda de un pintor de rama: el avance de la rama y, si se ha abierto, el siguiente (acción principal).
   if (inBranch) {
-    blocks.unshift(eventCard({ icon: icons.fork(22), kicker: `Rama · ${inBranch.branch.name} ${inBranch.mastered}/${inBranch.total}`, title: branchNext ? `Se abre ${branchNext.name}` : inBranch.mastered === inBranch.total ? 'Rama completa' : 'Sigue en la rama', to: 'inicio', cls: 'event-branch' }));
+    // «Se abre X» solo si lo abre esta ronda; si ya estaba abierto, «Siguiente: X».
+    const wasOpen = branchNext && opts.before && playStatus(opts.before, index, branchNext.id) !== 'locked';
+    const complete = inBranch.total && inBranch.mastered === inBranch.total;
+    const justDone = complete && opts.before && branchAfterRound(opts.before, index, plan.artistId, inBranch.branch.id)?.mastered !== inBranch.total;
+    const title = branchNext ? (wasOpen ? `Siguiente: ${branchNext.name}` : `Se abre ${branchNext.name}`) : complete ? 'Rama completa' : 'Sigue en la rama';
+    if (justDone) blocks.unshift(`<section class="event event-seal event-branch-done"><span class="event-icon">${icons.laurel(26)}</span><span class="event-text"><span class="event-kicker">Rama completa</span><span class="event-title">${esc(inBranch.branch.name)}</span></span></section>`);
+    blocks.splice(justDone ? 1 : 0, 0, eventCard({ icon: icons.fork(22), kicker: `Rama · ${inBranch.branch.name} ${inBranch.mastered}/${inBranch.total}`, title, to: 'inicio', cls: 'event-branch' }));
   }
   if (reviewUnlock && !goal && index.movement(reviewUnlock.movementId)) {
     blocks.push(eventCard({ icon: icons.repeat(22), kicker: 'Repaso disponible', title: index.movement(reviewUnlock.movementId).name, to: `repaso-${reviewUnlock.movementId}` }));
@@ -150,7 +157,7 @@ export function renderResult(ctx, el, opts) {
 
   const roundMastered = outcome.mastered ?? outcome.accuracy >= MASTERY;
   const retry = (plan.kind === 'stage' || plan.kind === 'sala') && !roundMastered
-    ? (plan.kind === 'stage' ? `etapa-${plan.artistId}` : `sala-${plan.movementId}`) : null;
+    ? (plan.kind === 'stage' ? stageRoute(plan.artistId, inBranch?.branch.id) : `sala-${plan.movementId}`) : null;
   // Con menos de la mitad de aciertos lo primero es repetir (y la parada siguiente, si estaba
   // cerrada, sigue cerrada).
   const step = plan.kind === 'stage' ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
@@ -196,7 +203,7 @@ export function renderResult(ctx, el, opts) {
         ${blocked ? `${gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
         <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
-        ${branchNext ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="etapa-${esc(branchNext.id)}--${esc(inBranch.branch.id)}" data-primary>Siguiente en la rama</button>
+        ${branchNext ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>`}
         ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
         ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}

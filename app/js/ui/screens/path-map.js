@@ -137,7 +137,7 @@ export const DORMANT_TEXT = '¿Lo recuerdas?';
 // dominarlos a todos, y María quería que se viera claro qué hacer.
 function metaFor(status, info, current) {
   if (current) return status === 'started' ? 'Seguir' : 'Empezar';
-  if (status === 'started') return `Repite · ${Math.round((info?.best || 0) * 100)}%`;
+  if (status === 'started') return `Repite · ${Math.round((info?.best || 0) * 100)}\u00a0%`;
   return '';
 }
 
@@ -216,7 +216,7 @@ function reviewNode(ctx, movement, quiet = false) {
   const pending = open ? [] : pendingOf(ctx, p, movement.id);
   const lock = pending.length ? `Domina a ${pendingNames(pending)} para abrirlo` : 'Se abre al dominar a todos sus pintores';
   const name = pending.length && !quiet ? `Repaso · ${pending.length === 1 ? 'falta 1' : `faltan ${pending.length}`}` : 'Repaso';
-  const meta = best ? `Mejor: ${Math.round(best * 100)}%` : '';
+  const meta = best ? `Mejor: ${Math.round(best * 100)}\u00a0%` : '';
   const icon = medal ? icons.medal(22) : icons.arch(open ? 24 : 18);
   const label = `Repaso ${ofEra(movement.name)}${open ? '' : `, bloqueado. Para abrirlo, domina a ${joinNames(pending)}`}`;
   const html = `<button class="stage stage-review is-${status}" data-action="review" data-id="${esc(movement.id)}" data-status="${open ? 'open' : 'locked'}"
@@ -287,6 +287,7 @@ export function pathActions(ctx) {
   };
 }
 
+const NOTE_MS = 4500;   // da tiempo a leerla con la letra grande
 function showLockNote(button) {
   let note = button.parentElement.querySelector('.lock-note');
   if (!note) {
@@ -304,7 +305,7 @@ function showLockNote(button) {
   if (shift) note.style.translate = `${Math.round(shift)}px 0`;
   announce(note.textContent);
   clearTimeout(note._t);
-  note._t = setTimeout(() => note.classList.remove('is-visible'), 2600);
+  note._t = setTimeout(() => note.classList.remove('is-visible'), NOTE_MS);
 }
 
 // El paisaje de cada tramo se pide cuando el tramo se acerca a la pantalla (nunca los nueve de golpe).
@@ -330,14 +331,14 @@ export function watchLandscapes(root) {
       }
     }, { rootMargin: LANDSCAPE_MARGIN });
   }
-  imgs.forEach((img) => landObserver.observe(img));
+  requestAnimationFrame(() => requestAnimationFrame(() => imgs.forEach((img) => landObserver.observe(img))));
 }
 
 // Modo del mapa: ilustrado hasta el 150 % de letra; por encima (o en una ventana de menos de 300 px, como un zoom
 // del 200 %), el camino en línea. Sigue a la letra y a la ventana mientras la pantalla está abierta. Devuelve cómo
 // dejar de vigilarlo.
 const LINEAR_SCALE = 1.5;
-const LINEAR_WIDTH = 300;
+const LINEAR_WIDTH = 340;   // a 320 px el mapa ilustrado no deja 8 px de margen a los rótulos
 const TALL_POWER = 1.8;
 export function watchMapMode(map) {
   if (!map) return () => {};
@@ -372,6 +373,10 @@ export function scrollToCurrent(el) {
     const branch = branchId && $(`.branch[data-id="${branchId}"], .branch[data-members~="${branchId}"]`, el);
     if (branch) {
       branch.scrollIntoView({ block: 'center' });
+      return;
+    }
+    if ($('.stage-spot', el)?.classList.contains('is-current')) {
+      window.scrollTo(0, document.documentElement.scrollHeight);
       return;
     }
     const target = $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
