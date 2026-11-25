@@ -54,10 +54,15 @@ function hasLightCorners(img) {
   return corners.every((d) => (d[0] + d[1] + d[2]) / 3 >= CORNER_LIGHT);
 }
 
-// Color con transparencia a partir de #rrggbb (el degradado a «transparent» ensucia: es negro transparente).
-function withAlpha(hex, a) {
-  const n = parseInt(hex.replace('#', ''), 16);
-  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+// Fundido del cuadro al color de fondo: franjas del color de fondo con opacidad creciente (un degradado a
+// «transparent» pasa por negro transparente y ensucia el cuadro).
+function fadeTo(g, color, y0, y1) {
+  g.fillStyle = color;
+  for (let y = y0; y < y1; y += 1) {
+    g.globalAlpha = ((y - y0) / (y1 - y0)) ** 1.4;
+    g.fillRect(0, y, CARD_W, 1);
+  }
+  g.globalAlpha = 1;
 }
 
 // Pinta `img` cubriendo el rectángulo (recortado a él), centrado en el punto de interés si lo hay.
@@ -130,11 +135,7 @@ async function drawCard(last, work, artist) {
   const art = work ? await loadImage(work.img) : null;
   if (art) {
     drawCover(g, art, 0, 0, CARD_W, ART_H, work.focus);
-    const fade = g.createLinearGradient(0, ART_H * 0.62, 0, ART_H);
-    fade.addColorStop(0, withAlpha(c.bg, 0));
-    fade.addColorStop(1, c.bg);
-    g.fillStyle = fade;
-    g.fillRect(0, 0, CARD_W, ART_H);
+    fadeTo(g, c.bg, Math.round(ART_H * 0.62), ART_H);
   } else {
     // Sin ningún cuadro (catálogo sin cargar): degradado de la casa.
     const bgArt = g.createLinearGradient(0, 0, CARD_W, ART_H);

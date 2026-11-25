@@ -438,7 +438,7 @@ test('miniaturas sueltas: Mi museo, portada y hoja usan img/t (no hojas enteras 
 test('la tarjeta: cuadrados vacíos con borde, fundido sin gris, esquinas claras recortadas y bloque centrado', () => {
   const card = read('../app/js/ui/screens/profile-share.js');
   assert.match(card, /g\.stroke\(\)/, 'los tramos no alcanzados se dibujan con borde visible');
-  assert.match(card, /withAlpha\(c\.bg, 0\)/);
+  assert.match(card, /fadeTo\(g, c\.bg/);
   assert.match(card, /hasLightCorners/);
   assert.match(card, /FOOTER_H - ART_H - blockH\) \/ 2/, 'el bloque se centra, no deja hueco');
 });
