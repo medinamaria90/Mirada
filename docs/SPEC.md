@@ -279,6 +279,15 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   `focus`, texto, fuente discreta), saltables, una vez por «pintor:nivel» (`state/stories-seen.js`, clave `sfumato.stories`) tras la
   presentación del movimiento y antes de «Conoce a»; la ficha del pintor tiene «Ver su historia». `playStory(ctx, artistId, level)`
   vale para los «a fondo». Sin historia no se muestra nada.
+- **Colección y ficha, ronda 3**: movimientos por su fecha de inicio (`engine/movements.js`, la estampa japonesa en su sitio); una sola regla de
+  «invitado» (`category === 'invitado'`) y cuentas coherentes (todas las obras del catálogo arriba); franja con el nombre (→ ficha) y una única
+  acción «Ver sus n cuadros», que salta de línea con letra grande; barra única de buscador + filtro por movimiento y salas en una fila, para que el
+  primer cuadro se vea en 360×640; galería sin pared de huecos («Te faltan 24 · se desbloquean en sus etapas», `missingNote`); avatar =
+  autorretrato visto, o retrato con `focus`, o iniciales (`avatarWork`, `ui/avatar.js`, el mismo en ficha, historia y lista de Pintores); «Dominado ·
+  7/12» con anillo n/m e insignia; historia con panel de texto desplazable, botones fijos, duración que crece con la letra y foco atrapado; celebración
+  del nivel «a fondo» como primer bloque del resultado, con destino y nombre de etapa con sentido (`stageTitle`). Datos: los años de nacimiento y
+  muerte salen de `pipeline/painters.json` (revisados contra Wikidata, `resolve.py` respeta el rango preferido) y los títulos solo se traducen con fuente
+  (`pipeline/titulos_es.json`; hoy solo «Medea furiosa», de la Wikipedia en español).
 - **Guía de bienvenida** (`ui/coach.js`): tres pasos sobre el nodo actual, la franja «Hoy» y Colección; una vez por navegador
   (`sfumato.coach` en localStorage), se salta con «Saltar» o Esc. La cabecera ya no lleva el chip de rango (irá en el perfil) y lleva el reto diario
   (`dailyChip`: calendario con punto si está pendiente, «4/5» si está hecho). Ya no hay franja «Hoy» ni lupa del día (su registro

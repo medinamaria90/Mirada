@@ -10,7 +10,8 @@ import { esc, accentStyle, prefersReducedMotion } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { loadStory } from './story-data.js';
-import { initials } from './artist-profile.js';
+import { avatarHtml } from './avatar.js';
+import { seenOf, avatarWork } from '../engine/painters.js';
 import { levelStory, cropOf, step, storyKey, sourceLabel, cardDuration } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
@@ -30,13 +31,17 @@ function mediaHtml(index, card) {
 function cardHtml(card, pos, count, forced) {
   const label = sourceLabel(card.source);
   const last = pos === count - 1;
-  return `<p class="story-text">${esc(card.text)}</p>
-    ${label ? `<a class="story-source" href="${esc(String(card.source).split('#')[0])}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : ''}
+  // El texto tiene su propio desplazamiento (con letra grande) y los botones quedan fijos abajo.
+  return `<div class="story-copy" tabindex="-1"><p class="story-text">${esc(card.text)}</p>
+      ${label ? `<a class="story-source" href="${esc(String(card.source).split('#')[0])}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : ''}</div>
     <div class="story-nav">
       <button type="button" class="icon-btn story-back" data-st="prev" aria-label="Tarjeta anterior"${pos === 0 ? ' hidden' : ''}>${icons.prev(22)}</button>
       <button type="button" class="btn btn-primary story-next" data-st="next">${last ? (forced ? 'Cerrar' : 'Listo') : 'Siguiente'}</button>
     </div>`;
 }
+
+// La duración crece con el tamaño de letra del sistema (con el texto al 200 % se tarda el doble en leer).
+const fontScale = () => Math.max(1, (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16);
 
 // Muestra la historia del nivel y devuelve una promesa que se cumple al terminar o saltarla (true si se mostró).
 // opts: { force } vuelve a mostrarla aunque ya se haya visto.
@@ -59,14 +64,16 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     dlg.setAttribute('aria-label', `Historia: ${lv.title || artist?.name || ''}`);
     dlg.setAttribute('style', accentStyle(index.movement(artist?.movementId)?.accent));
     dlg.innerHTML = `<div class="story-frame">
-      <div class="story-media"></div>
-      <div class="story-bars" aria-hidden="true">${lv.cards.map(() => '<span class="story-bar"><span></span></span>').join('')}</div>
-      <div class="story-top">
-        <span class="story-who"><span class="story-avatar" aria-hidden="true">${esc(initials(artist?.name))}</span>
-          <span class="story-who-text"><span class="story-name">${esc(artist?.short || artist?.name || '')}</span><span class="story-title">${esc(lv.stage || lv.title)}</span></span></span>
-        ${auto ? `<button type="button" class="story-icon" data-st="pause" aria-pressed="false" aria-label="Pausar">${icons.pause(22)}</button>` : ''}
-        <button type="button" class="story-skip" data-st="skip">Saltar</button>
+      <div class="story-head">
+        <div class="story-bars" aria-hidden="true">${lv.cards.map(() => '<span class="story-bar"><span></span></span>').join('')}</div>
+        <div class="story-top">
+          <span class="story-who"><span class="story-avatar" aria-hidden="true">${avatarHtml(artist, avatarWork(seenOf(ctx.store.get().progress, index, artistId)))}</span>
+            <span class="story-who-text"><span class="story-name">${esc(artist?.short || artist?.name || '')}</span><span class="story-title">${esc(lv.stage || lv.title)}</span></span></span>
+          ${auto ? `<button type="button" class="story-icon" data-st="pause" aria-pressed="false" aria-label="Pausar">${icons.pause(22)}</button>` : ''}
+          <button type="button" class="story-skip" data-st="skip">Saltar</button>
+        </div>
       </div>
+      <div class="story-media"></div>
       <p class="story-paused" aria-hidden="true">En pausa</p>
       <div class="story-bottom"></div>
       <p class="sr-only" data-live role="status" aria-live="polite"></p>
@@ -93,7 +100,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       dlg.querySelectorAll('.story-bar').forEach((b, i) => {
         b.classList.toggle('is-done', i < pos || (i === pos && !auto));
         b.classList.toggle('is-now', auto && i === pos);
-        b.style.setProperty('--dur', `${cardDuration(lv.cards[pos])}ms`);
+        b.style.setProperty('--dur', `${Math.round(cardDuration(lv.cards[pos]) * fontScale())}ms`);
       });
       const now = dlg.querySelector('.story-bar.is-now > span');
       if (now) { now.style.animation = 'none'; void now.offsetWidth; now.style.animation = ''; }
@@ -115,6 +122,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       closed = true;
       current = null;
       window.removeEventListener('popstate', onPop);
+      document.removeEventListener('keydown', onDocKey);
       if (dlg.open) dlg.close();
       dlg.remove();
       if (pushed && !fromPop) { try { history.back(); } catch { /* nada */ } }
@@ -183,6 +191,29 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       } else if (ev.key === 'ArrowRight') { ev.preventDefault(); go(1); } else if (ev.key === 'ArrowLeft') { ev.preventDefault(); go(-1); }
     }, true);
     dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); finish(); });
+    // El foco no sale de la historia: Tab da la vuelta dentro de ella y, si se pierde (el cuerpo de la página), las teclas
+    // siguen valiendo y devuelven el foco al botón de seguir.
+    const focusables = () => [...dlg.querySelectorAll('button:not([hidden]), a[href]')].filter((e) => !e.disabled && e.getClientRects().length);
+    dlg.addEventListener('keydown', (ev) => {
+      if (ev.key !== 'Tab') return;
+      const list = focusables();
+      if (!list.length) return;
+      const first = list[0];
+      const last = list[list.length - 1];
+      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+      else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+    });
+    const onDocKey = (ev) => {
+      if (dlg.contains(ev.target)) return;
+      if (ev.key === 'ArrowRight') go(1);
+      else if (ev.key === 'ArrowLeft') go(-1);
+      else if (ev.key === ' ' && auto) { userPaused = !userPaused; setPaused(userPaused); }
+      else if (ev.key === 'Escape') finish();
+      else return;
+      ev.preventDefault();
+      dlg.querySelector('.story-next')?.focus({ preventScroll: true });
+    };
+    document.addEventListener('keydown', onDocKey);
     window.addEventListener('popstate', onPop);
     current = { close: () => finish(false) };
     try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }

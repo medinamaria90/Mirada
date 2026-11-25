@@ -15,6 +15,7 @@ import { encodeChallenge } from '../../engine/challenge.js';
 import { artistStatus, salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
+import { stageTitle } from '../../engine/painters.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
@@ -312,7 +313,7 @@ export function renderDeep(ctx, el, artistId, level) {
     const progress = ctx.store.get().progress;
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)] });
     playEra(movement.era);
-    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `${artist.short || artist.name} · ${stage.name}`, kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stage.name}` }));
+    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}` }));
   });
 }
 

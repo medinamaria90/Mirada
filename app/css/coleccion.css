@@ -1,22 +1,28 @@
 /* Colección: franjas por pintor, buscador con sugerencias, chips y lista de «Pintores». Colores solo de brand.css. */
 
 /* ---------- Colección (Cuadros): franjas por pintor, orden, filtro y buscador con sugerencias ---------- */
-.coll-controls { display: grid; gap: .7rem; margin-bottom: 1.2rem; }
+.coll-bar { position: relative; display: flex; gap: .5rem; margin-bottom: .9rem; }
+.coll-bar .sg { position: static; flex: 1 1 auto; min-width: 0; }
+.coll-bar .sg-input { min-height: 48px; }
+.coll-filter { flex: 0 1 9rem; min-width: 0; }
+.coll-select {
+  box-sizing: border-box; width: 100%; min-height: 48px; padding: 0 .7rem; border: 0; border-radius: var(--radius-btn); background: var(--surface); color: var(--ink);
+  font: 500 .95rem/1 var(--font); box-shadow: var(--lift-sm); text-overflow: ellipsis;
+}
+.coll-salas { display: flex; align-items: center; gap: .4rem; margin-bottom: .6rem; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, black calc(100% - 32px), transparent); mask-image: linear-gradient(to right, black calc(100% - 32px), transparent); }
+.coll-salas-label { flex: none; color: var(--ink-2); font: 600 .8rem/1 var(--font); letter-spacing: .06em; text-transform: uppercase; }
+.sala-chip { flex: none; display: inline-flex; align-items: center; gap: .4rem; min-height: 48px; padding: 0 .9rem; border: 0; border-radius: 999px; background: var(--accent-soft); color: var(--ink); font: 500 .95rem/1 var(--font); cursor: pointer; white-space: nowrap; }
+.sala-chip .icon { color: var(--accent-ui); }
 .coll-era { margin: 1.4rem 0 .6rem; font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
 .coll-era::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: .5rem; border-radius: 999px; background: var(--accent); }
 .coll-strip { margin-bottom: 1.2rem; }
-.coll-strip-head { display: flex; align-items: center; gap: .5rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); margin-bottom: .6rem; }
-.coll-strip-id { flex: 1 1 auto; min-width: 0; display: grid; }
+.coll-strip-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0 .5rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); margin-bottom: .6rem; }
+.coll-strip-id { flex: 1 1 11rem; min-width: 0; display: grid; }
 .coll-artist-name { min-width: 0; font: 500 1.2rem/1.1 var(--font); }
-.coll-name-btn { display: flex; align-items: center; gap: .2rem; max-width: 100%; min-height: 48px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-.coll-name-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.coll-name-btn .icon { flex: none; color: var(--brand-text); }
+.coll-name-btn { display: block; max-width: 100%; min-height: 48px; padding: .3rem 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; overflow-wrap: break-word; cursor: pointer; }
 .coll-count { margin-top: -.5rem; color: var(--ink-2); font: 600 .82rem/1.2 var(--font); font-variant-numeric: lining-nums tabular-nums; }
-.coll-all { flex: none; display: inline-flex; align-items: center; gap: .1rem; min-height: 48px; padding: 0 .3rem 0 .6rem; border: 0; border-radius: 999px; background: none; color: var(--brand-text); font: 600 .9rem/1 var(--font); cursor: pointer; white-space: nowrap; }
+.coll-all { flex: none; margin-left: auto; display: inline-flex; align-items: center; gap: .1rem; min-height: 48px; padding: 0 .3rem 0 .6rem; border: 0; border-radius: 999px; background: none; color: var(--brand-text); font: 600 .9rem/1 var(--font); cursor: pointer; white-space: nowrap; }
 .coll-all:hover { background: var(--brand-soft); }
-.coll-chips { display: flex; gap: .4rem; overflow-x: auto; padding-bottom: .2rem; scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, black calc(100% - 32px), transparent); mask-image: linear-gradient(to right, black calc(100% - 32px), transparent); }
-.chip-filter { flex: none; min-height: 48px; padding: 0 1rem; border: 0; border-radius: 999px; background: var(--surface); color: var(--ink); font: 500 .95rem/1 var(--font); box-shadow: var(--lift-sm); cursor: pointer; }
-.chip-filter[aria-pressed="true"] { background: var(--brand-soft); box-shadow: 0 var(--relief-sm) 0 var(--brand-shadow), inset 0 0 0 2px var(--brand); }
 .sg { position: relative; }
 .sg-input {
   box-sizing: border-box; width: 100%; min-height: 52px; padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
@@ -48,17 +54,18 @@
 .pl-more { padding: .7rem .3rem 0; color: var(--ink-2); font-size: .9rem; }
 .pl-list { margin: 0; padding: 0; list-style: none; }
 .pl-row {
-  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto auto; align-items: center; gap: .7rem; width: 100%; min-height: 60px;
+  display: grid; grid-template-columns: 48px minmax(0, 1fr) auto auto; align-items: center; gap: .7rem; width: 100%; min-height: 60px;
   padding: .45rem .3rem; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink);
   font: inherit; text-align: left; cursor: pointer;
 }
 .pl-row:hover { background: var(--surface-2); }
-.pl-node { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; }
+.pl-node { position: relative; display: block; width: 48px; height: 48px; border-radius: 999px; }
 .pl-node svg.pl-ring-svg { position: absolute; inset: 0; }
 .pl-ring-track { fill: none; stroke: var(--line-2); stroke-width: 4; }
 .pl-ring-fill { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; }
-.pl-initials { font: 600 .9rem/1 var(--font); color: var(--ink-2); }
-.pl-node.is-mastered { background: var(--gold); color: var(--on-gold); }
+.pl-av { position: absolute; inset: 6px; display: block; }
+.pl-badge { position: absolute; right: -3px; bottom: -3px; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 999px; background: var(--gold); color: var(--on-gold); box-shadow: 0 0 0 2px var(--bg); }
+.pl-state { display: inline-flex; align-items: center; gap: .3rem; color: var(--gold-text); font: 600 .85rem/1.2 var(--font); font-variant-numeric: lining-nums tabular-nums; }
 .pl-text { display: grid; gap: 2px; min-width: 0; }
 .pl-name { font-weight: 500; overflow-wrap: break-word; }
 .pl-sub-guests { margin: .9rem .3rem .1rem; font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }

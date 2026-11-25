@@ -5,7 +5,8 @@ import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
 import { levelFor, levelName, MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
-import { pendingWorks } from '../../engine/levels.js';
+import { pendingWorks, deepStatus } from '../../engine/levels.js';
+import { stageTitle } from '../../engine/painters.js';
 import { deepRoute } from '../router.js';
 import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { mainTrait } from '../../engine/feedback.js';
@@ -40,6 +41,23 @@ export function extraRounds(ctx, plan) {
   return list;
 }
 
+// «Nivel superado»: sello, nombre de la etapa y a dónde ir (su ficha y la etapa siguiente si ya está abierta).
+function deepCelebration(ctx, ev) {
+  const { index } = ctx;
+  const artist = index.artist(ev.artistId);
+  const stage = index.deepLevels(ev.artistId).find((l) => l.id === ev.level);
+  const next = index.deepLevels(ev.artistId).find((l) => l.id > ev.level);
+  const nextOpen = next && deepStatus(ctx.store.get().progress, index, ev.artistId, next.id) !== 'locked';
+  const link = (to, label) => `<button type="button" class="deep-cele-link" data-action="go" data-to="${esc(to)}">${esc(label)}${icons.next(16)}</button>`;
+  return `<section class="deep-cele" style="${accentStyle(index.movement(artist.movementId)?.accent)}" aria-label="Nivel a fondo superado">
+    <span class="deep-cele-seal" aria-hidden="true">${icons.laurel(34)}</span>
+    <p class="event-kicker">Nivel a fondo superado</p>
+    <p class="deep-cele-title">${esc(stage ? stageTitle(artist, stage) : 'Nivel superado')}</p>
+    <p class="deep-cele-who">${esc(artist.name)}</p>
+    <div class="deep-cele-actions">${link(`pintor-${ev.artistId}`, 'Ver su ficha')}${nextOpen ? link(deepRoute(ev.artistId, next.id), `Siguiente: ${stageTitle(artist, next)}`) : ''}</div>
+  </section>`;
+}
+
 function stepRoute(index, step) {
   if (!step) return null;
   return step.type === 'sala' ? `sala-${step.id}` : `etapa-${step.id}`;
@@ -71,6 +89,9 @@ export function renderResult(ctx, el, opts) {
     && !(completed && m.id === `movement-${completed.movementId}`)
     && !(goal && m.id === 'goal-1'));
 
+  // «Hoy has aprendido» solo cuando el pintor se acaba de conocer o dominar: no tiene sentido en uno ya dominado.
+  const alreadyMastered = Boolean(plan.artistId && p.artists?.[plan.artistId]?.mastered && !medals.some((m) => m.id === `artist-${plan.artistId}`));
+
   const blocks = [];
   if (opts.friendScore != null) {
     const mine = outcome.score;
@@ -90,7 +111,7 @@ export function renderResult(ctx, el, opts) {
   const low = (plan.kind === 'stage' || plan.kind === 'sala') && outcome.accuracy < UNLOCK_MIN;
   if (low) {
     blocks.push('<p class="result-cheer">Vuelve a mirar sus cuadros: a la segunda se ve más.</p>');
-  } else if (plan.kind === 'stage' && plan.artistId && index.artist(plan.artistId)) {
+  } else if (plan.kind === 'stage' && !(plan.level >= 2) && !alreadyMastered && plan.artistId && index.artist(plan.artistId)) {
     const a = index.artist(plan.artistId);
     const w = coverOf(index, a.id);
     const trait = mainTrait(a);
@@ -110,13 +131,9 @@ export function renderResult(ctx, el, opts) {
     const m = index.movement(completed.movementId);
     blocks.push(`<section class="event event-seal" style="${accentStyle(m.accent)}">${medalBadge(ctx, `movement-${m.id}`, true)}<span class="event-text"><span class="event-kicker">Movimiento completo</span><span class="event-title">${esc(m.name)}</span></span></section>`);
   }
-  // Nivel «a fondo» superado y nuevo rango: se celebran con su propia tarjeta.
+  // Nivel «a fondo» superado: su propio momento (va el primero, grande y con destino). El rango y el resto, después.
   const deepDone = events.find((e) => e.type === 'deep-mastered');
-  if (deepDone) {
-    const stage = index.deepLevels(deepDone.artistId).find((l) => l.id === deepDone.level);
-    const who = index.artist(deepDone.artistId);
-    blocks.push(`<section class="event event-seal event-deep"><span class="event-icon">${icons.laurel(22)}</span><span class="event-text"><span class="event-kicker">${esc(who?.short || who?.name || '')} · a fondo</span><span class="event-title">${esc(stage?.name || 'Nivel superado')}</span></span></section>`);
-  }
+  if (deepDone) blocks.unshift(deepCelebration(ctx, deepDone));
   const rankUp = events.find((e) => e.type === 'rank');
   if (rankUp) blocks.push(eventCard({ icon: icons.gem(22), kicker: 'Nuevo rango', title: rankUp.name, to: 'perfil', cls: 'event-rank' }));
   if (levelUp) {

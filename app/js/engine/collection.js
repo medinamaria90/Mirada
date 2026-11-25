@@ -1,10 +1,13 @@
 // Colección agrupada por pintor: franjas con «n de m» y las 3 últimas obras desbloqueadas, por movimiento en
 // orden cronológico y los invitados juntos en una sola franja. Puro.
 
+import { movementsChrono } from './movements.js';
+
 export const STRIP_THUMBS = 3;
 export const SEARCH_MIN_PAINTERS = 15; // el buscador sale con tantos pintores con alguna obra desbloqueada
 
-const isGuest = (artist) => artist.category === 'invitado';
+// Una sola regla para «invitado» en toda la Colección (franjas, lista de pintores y cuentas).
+export const isGuest = (artist) => artist.category === 'invitado';
 
 // Obras desbloqueadas = las que se han visto: reconocidas (colección) o enseñadas en alguna ronda. Es la misma
 // definición que la ficha del pintor y la lista de pintores (engine/painters.js `seenOf`). { id: día | '' }
@@ -36,7 +39,7 @@ export function collectionStrips(progress, index, { movementId = null } = {}) {
   const owned = unlockedMap(progress, index);
   const own = [];
   const guests = [];
-  for (const m of index.movements) {
+  for (const m of movementsChrono(index)) {
     const artists = index.artistsOf(m.id).slice().sort((a, b) => (a.born || 0) - (b.born || 0) || a.order - b.order);
     const guestWorks = [];
     let guestTotal = 0;
@@ -49,7 +52,7 @@ export function collectionStrips(progress, index, { movementId = null } = {}) {
   }
   const keep = (s) => !movementId || s.movement.id === movementId;
   // Cronológico: cada movimiento con sus pintores y, al final de él, la franja de invitados.
-  return index.movements.flatMap((m) => [...own.filter((s) => s.movement.id === m.id), ...guests.filter((s) => s.movement.id === m.id)]).filter(keep);
+  return movementsChrono(index).flatMap((m) => [...own.filter((s) => s.movement.id === m.id), ...guests.filter((s) => s.movement.id === m.id)]).filter(keep);
 }
 
 // Pintores con alguna obra desbloqueada (cada invitado cuenta).
@@ -61,7 +64,7 @@ export function unlockedPainterCount(progress, index) {
 // Movimientos con obras desbloqueadas, en orden: los chips de filtro.
 export function unlockedMovements(progress, index) {
   const owned = unlockedMap(progress, index);
-  return index.movements.filter((m) => index.artistsOf(m.id).some((a) => index.worksOf(a.id).some((w) => w.id in owned)));
+  return movementsChrono(index).filter((m) => index.artistsOf(m.id).some((a) => index.worksOf(a.id).some((w) => w.id in owned)));
 }
 
 // Lo que puede sugerir el buscador: pintores y obras ya desbloqueados.

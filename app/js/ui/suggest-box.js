@@ -11,7 +11,7 @@ export function suggestBoxHtml(label = 'Buscar pintor o cuadro') {
   return `<div class="sg">
     <label class="sg-field"><span class="sr-only">${esc(label)}</span>
       <input class="sg-input" type="search" role="combobox" aria-expanded="false" aria-controls="sg-list" aria-autocomplete="list" aria-haspopup="listbox"
-        placeholder="${esc(label)}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
+        placeholder="Buscar" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
     <ul class="sg-list" id="sg-list" role="listbox" aria-label="Sugerencias" hidden></ul>
     <p class="sg-empty" role="status" hidden>No encuentro nada con ese nombre, de momento.</p>
   </div>`;

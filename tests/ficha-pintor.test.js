@@ -9,6 +9,7 @@ import { buildIndex, mergeCatalogFicha } from '../app/js/engine/catalog.js';
 import { emptyProgress, artistStatus } from '../app/js/engine/progress.js';
 import { pendingWorks } from '../app/js/engine/levels.js';
 import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, isMastered, firstSentence } from '../app/js/engine/painters.js';
+import { periodStart } from '../app/js/engine/movements.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
 import { initials } from '../app/js/ui/artist-profile.js';
 import { sourceLabel } from '../app/js/engine/stories.js';
@@ -45,8 +46,8 @@ test('pintores: igual en todos los movimientos (también en el Renacimiento) y o
   const groups = painterGroups(p, real);
   assert.ok(groups.length >= 9);
   assert.ok(groups.every((g) => g.known === g.total && g.hidden === 0));
-  const orders = groups.map((g) => g.movement.order);
-  assert.deepEqual(orders, [...orders].sort((a, b) => a - b));
+  const starts = groups.map((g) => periodStart(g.movement.period) ?? 9999);
+  assert.deepEqual(starts, [...starts].sort((a, b) => a - b), 'movimientos por su fecha de inicio');
   for (const g of groups) {
     const born = g.artists.map((r) => r.artist.born || 0);
     assert.deepEqual(born, [...born].sort((a, b) => a - b), g.movement.id);

@@ -8,7 +8,8 @@ import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
 import { parseRoute } from '../app/js/ui/router.js';
-import { coverAndAvatar, previewCells, avatarCrop, seenOf, PREVIEW_CELLS } from '../app/js/engine/painters.js';
+import { coverWork, previewCells, avatarCrop, avatarWork, seenOf, PREVIEW_CELLS, missingNote, stageTitle } from '../app/js/engine/painters.js';
+import { periodStart, movementsChrono } from '../app/js/engine/movements.js';
 import { cardDuration, CARD_BASE_MS } from '../app/js/engine/stories.js';
 import { worksSpec } from '../app/js/ui/screens/artist-works.js';
 
@@ -26,28 +27,55 @@ test('rutas: ficha (con y sin etapas), galería del pintor y de los invitados; i
   assert.equal(parseRoute('#galeria-barroco').name, 'gallery', 'la galería de la sala no se confunde con la del pintor');
 });
 
-test('portada y avatar: de obras vistas, la más famosa de portada y otra distinta de avatar; sin vistas, ninguna', () => {
+test('portada: la obra más famosa de las vistas, nunca una no vista; sin vistas, ninguna', () => {
   const p = emptyProgress();
-  assert.deepEqual(coverAndAvatar(seenOf(p, real, 'goya')), { cover: null, avatar: null });
+  assert.equal(coverWork(seenOf(p, real, 'goya')), null);
   const works = real.worksOf('goya').slice().sort((a, b) => (b.fame || 0) - (a.fame || 0));
   const famous = works[0];
   const humble = works.find((w) => (w.fame || 0) < (famous.fame || 0));
   p.collection[humble.id] = DAY;
-  let ca = coverAndAvatar(seenOf(p, real, 'goya'));
-  assert.equal(ca.cover.id, humble.id, 'solo hay una vista: la famosa sin ver no sale');
-  assert.equal(ca.avatar.id, humble.id, 'con una sola, el avatar es la misma');
+  assert.equal(coverWork(seenOf(p, real, 'goya')).id, humble.id, 'solo hay una vista: la famosa sin ver no sale');
   p.collection[famous.id] = DAY;
-  ca = coverAndAvatar(seenOf(p, real, 'goya'));
-  assert.equal(ca.cover.id, famous.id);
-  assert.equal(ca.avatar.id, humble.id, 'con dos, el avatar es otra distinta');
+  assert.equal(coverWork(seenOf(p, real, 'goya')).id, famous.id);
 });
 
-test('galería embebida: las 6 primeras casillas, con huecos hasta completar y sin pasar de las que tiene', () => {
-  const w = (n) => Array.from({ length: n }, (_, i) => ({ id: `w${i}` }));
-  assert.deepEqual(previewCells(w(8), 20), { shown: w(8).slice(0, PREVIEW_CELLS), gaps: 0 });
-  assert.deepEqual(previewCells(w(2), 20), { shown: w(2), gaps: 4 });
-  assert.deepEqual(previewCells(w(2), 3), { shown: w(2), gaps: 1 }, 'como mucho tantos huecos como obras tiene el pintor');
-  assert.deepEqual(previewCells([], 0), { shown: [], gaps: 0 });
+test('avatar: autorretrato visto; si no, retrato con focus; si no, nada (iniciales). Nunca un paisaje o un barco', () => {
+  const W = (id, title, extra = {}) => ({ id, title, fame: 1, yearSort: 1600, ...extra });
+  assert.equal(avatarWork([]), null);
+  assert.equal(avatarWork([W('a', 'Tormenta en el mar de Galilea', { focus: [0.5, 0.5] }), W('b', 'Vista de Delft')]), null, 'sin retratos, iniciales');
+  assert.equal(avatarWork([W('a', 'Retrato de un hombre')]), null, 'un retrato sin encuadre revisado no vale');
+  assert.equal(avatarWork([W('a', 'Retrato de un hombre', { focus: [0.4, 0.3] })]).work.id, 'a');
+  const self = avatarWork([W('a', 'Retrato de un hombre', { focus: [0.4, 0.3], fame: 3 }), W('b', 'Autorretrato')]);
+  assert.equal(self.work.id, 'b', 'el autorretrato gana');
+  assert.equal(avatarWork([W('c', 'Self-Portrait')]).work.id, 'c');
+  assert.deepEqual([self.x, self.y], [50, 35]);
+});
+
+test('lo que falta: una frase («Te faltan 24 · se desbloquean en sus etapas»), no casillas vacías', () => {
+  const p = emptyProgress();
+  assert.equal(missingNote(p, real, 'goya', 33, 33), null);
+  assert.equal(missingNote(p, real, 'goya', 9, 33).text, 'Te faltan 24 · se desbloquean al jugar sus rondas');
+  p.artists.goya = { mastered: true };
+  assert.deepEqual(missingNote(p, real, 'goya', 9, 33), { text: 'Te faltan 24 · se desbloquean en sus etapas', toStages: true });
+  assert.equal(missingNote(p, real, 'goya', 32, 33).text.startsWith('Te falta 1 '), true);
+});
+
+test('etapas: un nombre con sentido; «Más obras» pasa a «<Pintor> a fondo · n»', () => {
+  const a = real.artist('hals');
+  assert.equal(stageTitle(a, { id: 2, name: 'Más obras' }), 'Hals a fondo · 1');
+  assert.equal(stageTitle(a, { id: 3, name: 'Más obras' }), 'Hals a fondo · 2');
+  assert.equal(stageTitle(real.artist('goya'), { id: 2, name: 'Formación y cartones' }), 'Formación y cartones');
+});
+
+test('movimientos: por su fecha de inicio, no por el orden del camino (la estampa japonesa en su sitio)', () => {
+  assert.equal(periodStart('1860–1890'), 1860);
+  assert.equal(periodStart('s. XIII–XIV'), 1200);
+  assert.equal(periodStart('finales s. XVIII–mediados s. XIX'), 1770);
+  assert.equal(periodStart('mediados–finales s. XIX'), 1840);
+  assert.equal(periodStart(''), null);
+  const ids = movementsChrono(real).map((m) => m.id);
+  assert.ok(ids.indexOf('ukiyo-e') < ids.indexOf('impresionismo'), 'la estampa japonesa va antes del Impresionismo');
+  assert.ok(ids.indexOf('gotico') < ids.indexOf('renacimiento'));
 });
 
 test('avatar: detalle del cuadro según su focus, o la parte alta del centro', () => {
@@ -76,7 +104,7 @@ test('galería del pintor: todas las vistas por orden cronológico y el total; i
   const guest = real.artists.find((a) => a.category === 'invitado');
   p.collection[real.worksOf(guest.id)[0].id] = DAY;
   const g = worksSpec(ctx, { kind: 'guests', movementId: guest.movementId });
-  assert.equal(g.title, 'Invitados');
+  assert.ok(g.title.startsWith('Invitados'));
   assert.ok(g.works.length >= 1 && g.total >= g.works.length);
   assert.equal(worksSpec(ctx, { kind: 'guests', movementId: 'gotico-sin-invitados' }), null);
 });

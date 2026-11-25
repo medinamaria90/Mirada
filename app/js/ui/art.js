@@ -55,7 +55,7 @@ export function artFrame(artwork, opts = {}) {
     failed
       ? ''
       : `<img ${opts.defer ? 'data-src' : 'src'}="${esc(artSrc(artwork, opts.thumb))}" alt="${z ? '' : esc(opts.alt ?? '')}" ${size} loading="${opts.eager ? 'eager' : 'lazy'}" decoding="async"${opts.eager ? ' fetchpriority="high"' : ''}>`
-  }${z ? ZOOM_BADGE : ''}</${tag}>`;
+  }${z && z.badge !== false ? ZOOM_BADGE : ''}</${tag}>`;
 }
 
 // Delegación global de carga y error (los eventos load/error no burbujean: captura).

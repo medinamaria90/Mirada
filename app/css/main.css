@@ -636,6 +636,11 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .coll-tab[aria-current="page"] { background: var(--surface); color: var(--ink); box-shadow: var(--lift-sm); }
 .coll-artist { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.2rem/1.1 var(--font); padding-bottom: .5rem; margin-bottom: .75rem; border-bottom: 1px solid var(--line); }
 .coll-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+/* Avatar de pintor (ui/avatar.js): autorretrato o retrato recortado por su punto de interés, o iniciales sobre el color de su movimiento. */
+.av { position: relative; display: block; width: 100%; height: 100%; border-radius: 999px; overflow: hidden; background: var(--accent); }
+.av-art { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; box-shadow: none; transform: scale(1.6); transform-origin: var(--x) var(--y); }
+.av-initials { display: grid; place-items: center; width: 100%; height: 100%; background: var(--accent); color: var(--on-accent); font: 600 .9rem/1 var(--font); letter-spacing: .02em; }
+.av-lg .av-initials { font-size: 1.7rem; }
 .coll-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 168px)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
 .coll-item { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 10px; transition: transform .18s var(--ease); }
 .coll-item:hover { transform: translateY(-2px); }
@@ -800,6 +805,15 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 /* Informativas (no se pulsan): solo el filete, sin relieve. */
 section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
 .event-goal .event-icon { background: var(--ok-soft); }
+/* Celebración de un nivel «a fondo»: su propio momento, el primero del resultado. */
+.deep-cele { display: grid; justify-items: center; gap: .25rem; padding: 1.5rem 1rem 1rem; border-radius: var(--radius); text-align: center; background: linear-gradient(160deg, var(--accent-soft), var(--surface)); box-shadow: var(--lift), inset 0 0 0 2px var(--gold); animation: rise .45s var(--ease); }
+.deep-cele-seal { display: grid; place-items: center; width: 76px; height: 76px; margin-bottom: .4rem; border-radius: 999px; background: var(--gold); color: var(--on-gold); box-shadow: 0 var(--relief-node) 0 color-mix(in srgb, var(--gold) 65%, var(--ink)); }
+.deep-cele-title { font: 500 1.55rem/1.15 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
+.deep-cele-who { color: var(--ink-2); }
+.deep-cele-actions { display: grid; gap: .1rem; width: 100%; margin-top: .6rem; }
+.deep-cele-link { display: flex; align-items: center; justify-content: center; gap: .2rem; min-height: 48px; padding: 0 .6rem; border: 0; background: none; color: var(--brand-text); font: 600 1rem/1.2 var(--font); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .deep-cele { animation: none; } }
+html.reduce-motion .deep-cele { animation: none; }
 .event-seal { background: var(--accent-soft); box-shadow: inset 0 0 0 1.5px var(--accent-ui); }
 
 .learned {

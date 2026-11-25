@@ -3,6 +3,7 @@
 
 import { artistStatus } from './progress.js';
 import { seenWorks, deepStatus } from './levels.js';
+import { movementsChrono } from './movements.js';
 
 
 // Sin tildes ni mayúsculas, para buscar «el greco» o «durero».
@@ -39,10 +40,13 @@ export function painterState(progress, index, artistId) {
 export function painterGroups(progress, index, query = '') {
   const q = fold(query);
   const groups = [];
-  for (const movement of index.movements) {
+  for (const movement of movementsChrono(index)) {
     const all = index.artistsOf(movement.id).filter((a) => index.worksOf(a.id).length > 0)
       .sort((a, b) => (a.born || 0) - (b.born || 0) || a.order - b.order)
-      .map((artist) => ({ artist, state: painterState(progress, index, artist.id), seen: seenOf(progress, index, artist.id).length, total: index.worksOf(artist.id).length }));
+      .map((artist) => {
+        const seen = seenOf(progress, index, artist.id);
+        return { artist, state: painterState(progress, index, artist.id), seen: seen.length, total: index.worksOf(artist.id).length, avatar: avatarWork(seen) };
+      });
     const known = all.filter((row) => row.state !== 'new');
     if (!known.length) continue;
     const artists = known.filter((row) => !q || fold(row.artist.name).includes(q) || fold(row.artist.short).includes(q));
@@ -77,30 +81,57 @@ export function playTargets(progress, index, artistId) {
   return { stage: onPath && status !== 'locked' ? status : null };
 }
 
-// Etapas (niveles «a fondo») de un pintor con su estado, para la ficha de los grandes maestros.
+// Nombre de una etapa «a fondo»: el de los datos y, si es genérico («Más obras»), «<Pintor> a fondo · n».
+const GENERIC_STAGE = /^m[aá]s obras$/i;
+export function stageTitle(artist, stage) {
+  return GENERIC_STAGE.test(stage.name || '') ? `${artist.short || artist.name} a fondo · ${stage.id - 1}` : stage.name;
+}
+
+// Etapas (niveles «a fondo») de un pintor con su estado y su nombre, para la ficha.
 export function stageList(progress, index, artistId) {
-  return index.deepLevels(artistId).map((l) => ({ id: l.id, name: l.name, from: l.from, to: l.to, works: l.works.length, status: deepStatus(progress, index, artistId, l.id) }));
+  const artist = index.artist(artistId);
+  return index.deepLevels(artistId).map((l) => ({ id: l.id, name: stageTitle(artist, l), from: l.from, to: l.to, works: l.works.length, status: deepStatus(progress, index, artistId, l.id) }));
 }
 
 export const lifeSpan = (a) => (a.born && a.died ? `${a.born}–${a.died}` : '');
 
-// Portada y avatar de la ficha, ambos de obras ya vistas (sin spoilers): la portada es la más famosa; el avatar, otra
-// distinta si la hay (si no, la misma). { cover, avatar } (null sin obras vistas).
-export function coverAndAvatar(seen) {
-  const ranked = seen.slice().sort((a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b.yearSort || 0));
-  return { cover: ranked[0] || null, avatar: ranked[1] || ranked[0] || null };
+// Portada de la ficha: la obra más famosa de las ya vistas (nunca una no vista: sin spoilers). Null sin obras vistas.
+export function coverWork(seen) {
+  return seen.slice().sort(byFame)[0] || null;
 }
 
-// Galería embebida en la ficha: las primeras `limit` casillas, con las obras vistas y huecos hasta completar
-// (como mucho tantos huecos como obras tiene el pintor).
+// Galería embebida en la ficha: las primeras `limit` obras vistas (sin casillas vacías; lo que falta se resume en texto).
 export const PREVIEW_CELLS = 6;
-export function previewCells(seen, total, limit = PREVIEW_CELLS) {
-  const shown = seen.slice(0, limit);
-  return { shown, gaps: Math.max(0, Math.min(limit, total) - shown.length) };
+export function previewCells(seen, limit = PREVIEW_CELLS) {
+  return seen.slice(0, limit);
 }
 
 // Zona del cuadro que hace de avatar: el `focus` de la obra si lo tiene (centro 0-1) o la parte alta del centro.
 export function avatarCrop(work) {
   const f = Array.isArray(work?.focus) && work.focus.length >= 2 ? work.focus : null;
   return { x: Math.round((f ? f[0] : 0.5) * 100), y: Math.round((f ? f[1] : 0.35) * 100) };
+}
+
+const SELF_PORTRAIT = /autorretrato|self-?\s?portrait/i;
+const PORTRAIT = /retrato|portrait/i;
+const byFame = (a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b.yearSort || 0);
+
+// Avatar del pintor, de obras ya vistas: un autorretrato (título con «Autorretrato» o «self-portrait»); si no, un retrato
+// con encuadre revisado (`focus`); si tampoco, ninguno (iniciales sobre el color de su movimiento). Nunca un recorte al
+// azar de un paisaje o un barco. { work, x, y } o null.
+export function avatarWork(seen) {
+  const pick = (list) => list.slice().sort(byFame)[0];
+  const self = pick(seen.filter((w) => SELF_PORTRAIT.test(w.title)));
+  const work = self || pick(seen.filter((w) => PORTRAIT.test(w.title) && Array.isArray(w.focus)));
+  return work ? { work, ...avatarCrop(work) } : null;
+}
+
+// Lo que falta por ver de un pintor, en una frase (no una pared de casillas vacías): «Te faltan 24 · se desbloquean en sus
+// etapas» si es un pintor dominado con niveles «a fondo»; si no, «… al jugar sus rondas». null si no falta nada.
+// { text, toStages } (toStages: la frase se acompaña de un enlace a sus etapas).
+export function missingNote(progress, index, artistId, seenCount, total) {
+  const left = total - seenCount;
+  if (left <= 0) return null;
+  const toStages = isMastered(progress, artistId) && index.deepLevels(artistId).length > 0;
+  return { text: `${left === 1 ? 'Te falta 1' : `Te faltan ${left}`} · ${toStages ? 'se desbloquean en sus etapas' : 'se desbloquean al jugar sus rondas'}`, toStages };
 }
