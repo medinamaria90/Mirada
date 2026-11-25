@@ -4,7 +4,7 @@
 
 .page-profile {
   --pf-gutter: 1.1rem;
-  --pf-avatar: 88px;
+  --pf-avatar: 5.5rem;
   --pf-cover-h: 156px;
   --pf-gap: 1.9rem;
   --pf-tile-gap: .5rem;
@@ -13,17 +13,12 @@
 }
 .page-profile .content { padding: 0 0 1.5rem; }
 
-/* Una columna en móvil, con el orden: identidad, cifras, museo, logros, test, accesos (las dos columnas
-   «desaparecen» y mandan `order`); en escritorio, identidad a la izquierda y la pared a la derecha. */
+/* Una columna en móvil y tablet, en el orden del DOM (identidad, cifras, museo, logros, test, accesos); en
+   escritorio, identidad y test a la izquierda, museo a la derecha y los logros debajo, con áreas de rejilla. */
 .pf-layout { display: grid; gap: var(--pf-gap); }
-.pf-col { display: contents; }
-.pf-col > .pf-sec, .pf-col > .pf-figs-sec { padding-inline: var(--pf-gutter); min-width: 0; }
-.pf-col > .pf-hero { order: 1; min-width: 0; }
-.pf-col > .pf-figs-sec { order: 2; margin-top: calc(var(--pf-gap) * -.4); }
-.pf-col > .pf-museum-sec { order: 3; }
-.pf-col > .pf-medals-sec { order: 4; }
-.pf-col > .pf-test-sec { order: 5; }
-.pf-col > .pf-practice-sec { order: 6; }
+.pf-layout > .pf-sec, .pf-layout > .pf-figs-sec { padding-inline: var(--pf-gutter); min-width: 0; }
+.pf-layout > .pf-hero { min-width: 0; }
+.pf-layout > .pf-hero + .pf-figs-sec { margin-top: calc(var(--pf-gap) * -.4); }
 
 /* ---------- Identidad ---------- */
 .pf-hero { position: relative; }
@@ -50,9 +45,9 @@
 .pf-cover-full.is-on { opacity: 1; }
 .pf-cover-art .zoom-badge, .pf-cover-cap { z-index: 1; }
 .pf-cover-cap {
-  position: absolute; left: calc(var(--pf-gutter) + var(--pf-avatar) + 1rem); right: 3.4rem; bottom: .75rem; z-index: 1; pointer-events: none;
+  position: absolute; left: 4.2rem; right: 4.2rem; top: .9rem; z-index: 1; pointer-events: none; margin-inline: auto;
   padding: .2rem .7rem; border-radius: 999px; background: color-mix(in srgb, var(--surface) 86%, transparent); color: var(--ink);
-  font-size: .78rem; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: fit-content; max-width: calc(100% - var(--pf-gutter) - var(--pf-avatar) - 4.4rem);
+  font-size: .78rem; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: fit-content; max-width: calc(100% - 8.4rem);
 }
 .pf-gear, .pf-look {
   position: absolute; top: .6rem; z-index: 2; display: grid; place-items: center; width: 48px; height: 48px;
@@ -88,7 +83,7 @@
 .pf-name-btn .icon { flex: none; color: var(--ink-2); }
 .pf-name-btn:active { transform: scale(.97); }
 .pf-name-btn.is-long { font-size: 1.25rem; }
-.pf-name-text { min-width: 0; overflow-wrap: break-word; word-break: normal; }
+.pf-name-text { min-width: 0; overflow-wrap: break-word; word-break: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 .pf-name-btn.is-empty { padding: 0 1rem; background: var(--brand-soft); color: var(--brand-text); font-size: 1.15rem; }
 .pf-name-btn.is-empty .icon { color: var(--brand-text); }
 
@@ -108,7 +103,8 @@
 .pf-fig { display: grid; justify-items: center; align-content: start; gap: .1rem; padding: .2rem .4rem; text-align: center; min-width: 0; }
 .pf-fig + .pf-fig { border-left: 1px solid var(--line); }
 .pf-fig-icon { color: var(--brand-text); }
-.pf-fig-num { font: 500 2.1rem/1.1 var(--font); letter-spacing: var(--track); font-variant-numeric: lining-nums tabular-nums; overflow-wrap: anywhere; }
+.pf-fig-num { font: 500 clamp(1.5rem, 8vw, 2.1rem)/1.1 var(--font); letter-spacing: var(--track); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.pf-fig-num.is-compact { font-size: clamp(1.15rem, 5.4vw, 1.6rem); }
 .pf-fig-label { font-size: .9rem; color: var(--ink); font-weight: 600; }
 .pf-fig-sub { font-size: .78rem; line-height: 1.25; color: var(--ink-2); }
 
@@ -153,8 +149,20 @@
   background: linear-gradient(135deg, var(--tier-hi), var(--tier) 48%, var(--tier-lo));
 }
 .medal-dlg .pf-ring { --pf-ring: 6px; }
-.pf-tier { padding: 0 .55rem; border-radius: 999px; border: 1.5px solid var(--tier); background: var(--surface); color: var(--ink); font: 600 .68rem/1.5 var(--font); letter-spacing: .04em; text-transform: uppercase; }
 .pf-more { margin-top: 1rem; }
+.pf-medal-group + .pf-medal-group { margin-top: 1.4rem; }
+.pf-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; margin-bottom: .5rem; font: 500 1.1rem/1.2 var(--font); }
+.medals-body { gap: .8rem; }
+.medals-filters { flex: none; }
+.pf-spinner { width: 18px; height: 18px; border-radius: 999px; border: 2.5px solid currentColor; border-right-color: transparent; animation: pf-spin .7s linear infinite; }
+@keyframes pf-spin { to { transform: rotate(360deg); } }
+.pf-welcome-sec { display: grid; gap: .3rem; }
+.pf-welcome-sec h2 { font: 500 1.35rem/1.15 var(--font); letter-spacing: var(--track); }
+.pf-welcome-sec .btn { margin-top: .5rem; }
+.pf-go.is-locked { cursor: default; background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); color: var(--ink-2); }
+.pf-go.is-locked .pf-go-icon { background: var(--surface-2); color: var(--ink-2); }
+.pf-go-sub { display: block; margin-top: .1rem; font: 400 .85rem/1.25 var(--font); color: var(--ink-2); }
+.look-panel { display: grid; gap: .8rem; max-height: 46dvh; overflow-y: auto; }
 .medal-dlg { justify-items: center; text-align: center; padding-top: 1.6rem; }
 .medal-dlg .dlg-hint { justify-self: stretch; text-align: left; }
 .medal-dlg-prog { font: 600 .95rem/1.2 var(--font); color: var(--ink-2); margin-bottom: .4rem; font-variant-numeric: lining-nums tabular-nums; }
@@ -276,9 +284,18 @@
 @media (min-width: 1024px) {
   .page-profile .content { max-width: 1040px; }
   .page-profile { --pf-cover-h: 188px; --pf-avatar: 96px; }
-  .pf-layout { grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); column-gap: 2.4rem; align-items: start; }
-  .pf-col { display: grid; gap: var(--pf-gap); align-content: start; min-width: 0; }
-  .pf-col > * { order: 0; }
-  .pf-col > .pf-museum-sec { padding-top: 1rem; }
+  .pf-layout {
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); column-gap: 2.4rem; align-items: start; align-content: start;
+    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-areas: "hero museum" "figs museum" "test museum" "practice museum" "medals medals";
+  }
+  .pf-layout.is-new { grid-template-areas: "hero welcome" "hero test" "hero practice" "hero ." "medals medals"; grid-template-rows: auto auto auto 1fr auto; }
+  .pf-layout > .pf-hero { grid-area: hero; }
+  .pf-layout > .pf-figs-sec { grid-area: figs; }
+  .pf-layout > .pf-museum-sec { grid-area: museum; padding-top: 1rem; }
+  .pf-layout > .pf-welcome-sec { grid-area: welcome; padding-top: 1rem; }
+  .pf-layout > .pf-medals-sec { grid-area: medals; }
+  .pf-layout > .pf-test-sec { grid-area: test; }
+  .pf-layout > .pf-practice-sec { grid-area: practice; }
   .pf-hero .pf-cover { border-radius: 0 0 var(--radius) var(--radius); }
 }

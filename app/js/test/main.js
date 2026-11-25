@@ -70,7 +70,7 @@ function readLast() {
 
 function saveLast(result) {
   try {
-    localStorage.setItem(LAST_KEY, JSON.stringify({ correct: result.correct, asked: result.asked, level: result.level, percentile: result.percentile, score: result.score, date: dayKey(new Date()) }));
+    localStorage.setItem(LAST_KEY, JSON.stringify({ correct: result.correct, asked: result.asked, level: result.level, percentile: result.percentile, score: result.score, grid: result.grid, date: dayKey(new Date()) }));
   } catch {
     /* sin almacenamiento: no pasa nada */
   }

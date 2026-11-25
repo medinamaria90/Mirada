@@ -950,9 +950,9 @@ if (SMOKE) {
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
   await page.goto(`${base}#perfil`);
-  await page.waitForSelector('.pf-figs');
+  await page.waitForSelector('.pf-hero');
   await audit(page, '390 perfil');
-  check(/cuadros?/i.test(await page.locator('.pf-figs').innerText()), 'perfil sin la cifra de cuadros');
+  check(/cuadros?|Aquí vivirá tu museo/i.test(await page.locator('.pf-layout').innerText()), 'perfil sin la cifra de cuadros ni la bienvenida');
   check(await page.locator('button.pf-medal').count() >= 1, 'las medallas del perfil no son pulsables');
   // Colección → «Pintores»: lista por épocas con buscador; la ficha se abre sobre la pantalla y solo enseña lo ya visto.
   await seed(page, seededState({ upTo: 3 }), 'coleccion-pintores');
@@ -1279,10 +1279,10 @@ await page.keyboard.press('Escape');
 
 // Perfil: meta diaria ajustable, medallas con icono, reinicio con borde
 await page.click('.nav-item[href="#perfil"]');
-await page.waitForSelector('.pf-figs');
+await page.waitForSelector('.pf-hero');
 await shot(page, '18-perfil', true);
 await audit(page, '390 perfil');
-check(/cuadros?/i.test(await page.locator('.pf-figs').innerText()), 'perfil sin la cifra de cuadros');
+check(/cuadros?|Aquí vivirá tu museo/i.test(await page.locator('.pf-layout').innerText()), 'perfil sin la cifra de cuadros ni la bienvenida');
 await page.click('[data-action="open-settings"]');
 await page.waitForSelector('.settings-dialog[open]');
 const range = await page.locator('[data-setting="volume"]').boundingBox();
@@ -1297,7 +1297,7 @@ await page.waitForTimeout(500);
 await shot(page, '17b-coleccion');
 await audit(page, '390 coleccion');
 await page.goto(`${base}#perfil`);
-await page.waitForSelector('.pf-figs');
+await page.waitForSelector('.pf-hero');
 await page.click('[data-action="open-settings"]');
 await page.waitForSelector('.settings-dialog[open]');
 for (const sw of await page.$$eval('.switch', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return [r.width, r.height]; }))) {
@@ -1325,7 +1325,7 @@ check(themeInfo.bg !== bgDark && themeInfo.meta.every((c) => c === themeInfo.bg)
 await shot(page, '18b-perfil-claro-forzado');
 await audit(page, '390 perfil claro forzado');
 await page.reload();
-await page.waitForSelector('.pf-figs');
+await page.waitForSelector('.pf-hero');
 check(await page.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'light', 'el tema forzado no sobrevive a la recarga');
 await page.click('[data-action="open-settings"]');
 await page.waitForSelector('.settings-dialog[open]');
@@ -1522,7 +1522,7 @@ await shot(dpage0, '29-ronda-libre-fin', true);
 const freeGap = await dpage0.evaluate(() => document.querySelector('.result-actions').getBoundingClientRect().top - document.querySelector('.level-line').getBoundingClientRect().bottom);
 check(freeGap < 120, `resultado de la ronda libre con hueco central de ${Math.round(freeGap)} px`);
 await dpage0.goto(`${base}#perfil`);
-await dpage0.waitForSelector('.pf-figs');
+await dpage0.waitForSelector('.pf-hero');
 check((await dpage0.locator('.pf-figs').innerText()).includes(String(expectRecognized)), 'el perfil no muestra los cuadros que reconoces');
 
 // ---------------------------------------------------------------- Ojo de… (todas las obras de un pintor en la caja más alta)
@@ -1658,7 +1658,7 @@ for (const mode of ['font', 'viewport']) {
   await noHorizontalScroll(zpage, `zoom ${mode} resultado`);
   await shot(zpage, `35-zoom200-${mode}-resultado`, true);
   await zpage.goto(`${base}#perfil`);
-  await zpage.waitForSelector('.pf-figs');
+  await zpage.waitForSelector('.pf-hero');
   await noHorizontalScroll(zpage, `zoom ${mode} perfil`);
   await shot(zpage, `36-zoom200-${mode}-perfil`, true);
   await zoom.close();
@@ -1768,7 +1768,7 @@ await kpage.waitForTimeout(1500);
 await shot(kpage, '36-oscuro-fin');
 await audit(kpage, 'oscuro resultado');
 await kpage.goto(`${base}#perfil`);
-await kpage.waitForSelector('.pf-figs');
+await kpage.waitForSelector('.pf-hero');
 await shot(kpage, '37-oscuro-perfil', true);
 await audit(kpage, 'oscuro perfil');
 await kpage.goto(`${base}#coleccion`);
@@ -1917,15 +1917,17 @@ for (const scheme of ['light', 'dark']) {
       // Medallas: sellos pendientes con número legible, «Ojo de X · n/m» y hoja de detalle.
       await p7.goto(`${base}#medallas`);
       await p7.waitForSelector('#logros');
-      await p7.click('[data-action="more-medals"]');
+      await p7.click('[data-action="open-medals"]');
+      await p7.waitForSelector('.medals-dialog[open]');
+      await p7.click('[data-action="medals-filter"][data-filter="missing"]');
       await p7.waitForTimeout(500);
-      check(await p7.locator('.pf-medal.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
+      check(await p7.locator('.medals-dialog .pf-medal.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
       const eyeText = `Ojo de ${eyeWho.short || eyeWho.name} · 2/${eyeWorks.length}`;
-      check(await p7.locator('.pf-medal', { hasText: eyeText }).count() === 1, `[${tag}] falta «${eyeText}» en Medallas`);
-      await p7.locator('.pf-medal.is-missing').first().scrollIntoViewIfNeeded();
+      check(await p7.locator('.medals-dialog .pf-medal', { hasText: eyeText }).count() === 1, `[${tag}] falta «${eyeText}» en Medallas`);
+      await p7.locator('.medals-dialog .pf-medal.is-missing').first().scrollIntoViewIfNeeded();
       await shot(p7, `medallas-${tag}`);
       await audit(p7, `o7 ${tag} medallas`);
-      const opener = p7.locator('.pf-medal.is-missing', { hasText: '7 días' });
+      const opener = p7.locator('.medals-dialog .pf-medal.is-missing', { hasText: '7 días' });
       await opener.click();
       await p7.waitForSelector('.medal-dialog[open]');
       await p7.waitForTimeout(400);
@@ -1935,7 +1937,7 @@ for (const scheme of ['light', 'dark']) {
       for (let k = 0; k < 3; k++) await p7.keyboard.press('Tab');
       check(await p7.evaluate(() => Boolean(document.activeElement?.closest('.medal-dialog'))), `[${tag}] el foco sale de la hoja de medalla`);
       await p7.keyboard.press('Escape');
-      await p7.waitForTimeout(200);
+      await p7.waitForTimeout(450);
       check(await p7.locator('.medal-dialog[open]').count() === 0, `[${tag}] Esc no cierra la hoja de medalla`);
       check(await p7.evaluate(() => document.activeElement?.textContent.includes('7 días')), `[${tag}] el foco no vuelve a la medalla`);
       // «Ojo de…» en Colección y en la etapa del pintor dominado.
@@ -1952,8 +1954,8 @@ for (const scheme of ['light', 'dark']) {
       await shot(p7, `etapa-ojo-${tag}`);
       await audit(p7, `o7 ${tag} etapa`);
       await p7.goto(`${base}#perfil`);
-      await p7.waitForSelector('.pf-figs');
-      check(/\d+\s*cuadros?/i.test(await p7.locator('.pf-figs').innerText()), `[${tag}] Perfil sin la cifra de cuadros`);
+      await p7.waitForSelector('.pf-hero');
+      check(/\d+\s*cuadros?|Aquí vivirá tu museo/i.test(await p7.locator('.pf-layout').innerText()), `[${tag}] Perfil sin la cifra de cuadros ni la bienvenida`);
       await shot(p7, `perfil-${tag}`);
       await c7.close();
       // Reto semanal aceptado por un jugador nuevo: aviso breve, sin bloquear.

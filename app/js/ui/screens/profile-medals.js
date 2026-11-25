@@ -1,15 +1,27 @@
-// Logros del perfil: las medallas con su metal (oro, plata, bronce), los pendientes en gris discreto
-// y la hoja de cada una (qué es, cómo se gana y cuándo).
+// Logros del perfil: una muestra de ocho (de clases distintas) con su anillo de oro, plata o bronce y los
+// pendientes en gris; «Ver todos» abre una hoja con grupos y filtros; cada logro abre su hoja (qué es,
+// cómo se gana y cuándo).
 
 import { esc, longDate, $ } from '../dom.js';
+import { icons } from '../icons.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { medalBadge, medalZoom, allMedalIds, medalHow, eyeLabel } from './medals.js';
 import { medalTier, interleaveByKind, TIERS, TIER_NAMES } from '../../engine/profile.js';
 import { bindSheet } from './profile-sheet.js';
 
-const FIRST_SHOWN = 8; // casillas visibles antes de «Ver todos»
+const FIRST_SHOWN = 8; // casillas de la muestra, antes de «Ver todos»
+const GROUPS = [
+  ['artist', 'Pintores'], ['movement', 'Movimientos'], ['streak', 'Rachas'], ['eye', 'Ojo de…'], ['other', 'Retos y metas'],
+];
+const FILTERS = [['all', 'Todos'], ['got', 'Conseguidos'], ['missing', 'Pendientes']];
+const kindOf = (id) => { const k = id.split('-')[0]; return GROUPS.some(([g]) => g === k) ? k : 'other'; };
 
-const medalName = (ctx, id, has) => (!has && id.startsWith('eye-') && eyeLabel(ctx, id.slice(4))?.text) || medalInfo(id, ctx.index).title;
+// «Pintor dominado» en vez del nombre a secas: parece un logro, no una lista de pintores.
+const medalName = (ctx, id, has) => {
+  if (!has && id.startsWith('eye-') && eyeLabel(ctx, id.slice(4))?.text) return eyeLabel(ctx, id.slice(4)).text;
+  const title = medalInfo(id, ctx.index).title;
+  return id.startsWith('artist-') ? `${title} dominado` : title;
+};
 
 // Conseguidas (oro primero, las más recientes antes, y de clases distintas por turnos) y, detrás, las
 // pendientes: primero el «Ojo de…» con más avance, que es el más cercano.
@@ -28,38 +40,70 @@ export function medalList(ctx) {
   return { got: interleaveByKind(got), rest: [...nearest, ...interleaveByKind(pending.filter((id) => !nearest.includes(id)))], total: ids.length };
 }
 
-// Anillo metálico alrededor del sello (conseguidos): degradado del metal, no solo un color plano.
+// Anillo metálico alrededor del sello (conseguidos): degradado del metal, no solo un color plano. El
+// nombre del metal va en la hoja de cada logro y para lectores de pantalla, no repetido en cada casilla.
 export const tierRing = (tier, badge) => `<span class="pf-ring tier-${tier}">${badge}</span>`;
 
 function cell(ctx, id, has) {
   const tier = medalTier(id);
   const badge = medalBadge(ctx, id);
   return `<li><button type="button" class="pf-medal tier-${tier} ${has ? 'is-got' : 'is-missing'}" data-action="medal" data-id="${esc(id)}" aria-haspopup="dialog">
-      ${has ? tierRing(tier, badge) : badge}${has ? `<span class="pf-tier" aria-hidden="true">${TIER_NAMES[tier]}</span>` : ''}<span class="pf-medal-name">${esc(medalName(ctx, id, has))}</span><span class="sr-only">${has ? `${TIER_NAMES[tier]}, conseguida` : 'pendiente'}</span></button></li>`;
+      ${has ? tierRing(tier, badge) : badge}<span class="pf-medal-name">${esc(medalName(ctx, id, has))}</span><span class="sr-only">${has ? `${TIER_NAMES[tier]}, conseguida` : 'pendiente'}</span></button></li>`;
 }
 
-export function medalCells(ctx, all) {
+export function medalSample(ctx) {
   const { got, rest } = medalList(ctx);
-  const cells = [...got.map((id) => cell(ctx, id, true)), ...rest.map((id) => cell(ctx, id, false))];
-  return { html: (all ? cells : cells.slice(0, FIRST_SHOWN)).join(''), hidden: Math.max(0, cells.length - FIRST_SHOWN) };
+  return [...got.map((id) => cell(ctx, id, true)), ...rest.map((id) => cell(ctx, id, false))].slice(0, FIRST_SHOWN).join('');
+}
+
+// Hoja «Logros»: por grupos, con el recuento de cada uno, según el filtro.
+export function medalGroupsHtml(ctx, filter) {
+  const { got, rest } = medalList(ctx);
+  const all = [...got.map((id) => [id, true]), ...rest.map((id) => [id, false])];
+  return GROUPS.map(([kind, title]) => {
+    const inKind = all.filter(([id]) => kindOf(id) === kind);
+    const have = inKind.filter(([, has]) => has).length;
+    const shown = inKind.filter(([, has]) => filter === 'all' || (filter === 'got') === has);
+    if (!shown.length) return '';
+    return `<section class="pf-medal-group" aria-labelledby="mg-${kind}"><h3 id="mg-${kind}" class="pf-group-head">${title} <span class="pf-count">${have} de ${inKind.length}</span></h3>
+      <ul class="pf-medals">${shown.map(([id, has]) => cell(ctx, id, has)).join('')}</ul></section>`;
+  }).join('') || '<p class="pf-lead">Nada por aquí todavía</p>';
 }
 
 export function medalsHtml(ctx) {
   const { got, total } = medalList(ctx);
-  const { html, hidden } = medalCells(ctx, false);
   return `<section class="pf-sec pf-medals-sec" id="logros" aria-labelledby="pf-medals-h">
     <div class="pf-sec-head"><h2 id="pf-medals-h">Logros</h2><span class="pf-count">${got.length} de ${total}</span></div>
-    <ul class="pf-medals">${html}</ul>
-    ${hidden ? `<button type="button" class="btn btn-secondary btn-wide pf-more" data-action="more-medals" aria-expanded="false">Ver todos</button>` : ''}
+    <ul class="pf-medals">${medalSample(ctx)}</ul>
+    <button type="button" class="btn btn-secondary btn-wide pf-more" data-action="open-medals" aria-haspopup="dialog">Ver los ${total}</button>
   </section>
+  <dialog class="card-dialog sheet-dialog medals-dialog" aria-labelledby="medals-title">
+    <div class="dlg-body medals-body">
+      <div class="sheet-head"><h2 id="medals-title" class="dlg-title">Logros</h2>
+        <button type="button" class="icon-btn" data-action="close-sheet" aria-label="Cerrar">${icons.close(22)}</button></div>
+      <div class="segs medals-filters" role="group" aria-label="Filtrar logros">
+        ${FILTERS.map(([id, name]) => `<button type="button" class="seg" data-action="medals-filter" data-filter="${id}" aria-pressed="false"><span class="seg-num">${name}</span></button>`).join('')}
+      </div>
+      <div class="medals-groups"></div>
+    </div>
+  </dialog>
   <dialog class="card-dialog sheet-dialog medal-dialog" aria-labelledby="medal-dlg-title"></dialog>`;
 }
 
-// Hoja de una medalla y el botón «Ver todos». Devuelve los manejadores de acciones.
+// Hojas de los logros. Devuelve los manejadores de acciones.
 export function wireMedals(ctx, el) {
-  const dialog = $('.medal-dialog', el);
-  const sheet = bindSheet(dialog);
+  const medalDialog = $('.medal-dialog', el);
+  const medalSheet = bindSheet(medalDialog);
+  const listDialog = $('.medals-dialog', el);
+  const listSheet = bindSheet(listDialog);
+  const paintList = (filter) => {
+    $('.medals-groups', listDialog).innerHTML = medalGroupsHtml(ctx, filter);
+    listDialog.querySelectorAll('[data-action="medals-filter"]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+    listDialog.querySelectorAll('[data-action="medals-filter"]').forEach((b) => b.classList.toggle('is-on', b.dataset.filter === filter));
+  };
   return {
+    'open-medals': (b) => { ctx.audio.sfx('tap'); paintList('all'); listSheet.open(b, '[data-action="close-sheet"]'); },
+    'medals-filter': (b) => { ctx.audio.sfx('tap'); paintList(b.dataset.filter); },
     medal: (b) => {
       ctx.audio.sfx('tap');
       const id = b.dataset.id;
@@ -67,22 +111,16 @@ export function wireMedals(ctx, el) {
       const date = ctx.store.get().progress.medals[id];
       const eye = id.startsWith('eye-') ? eyeLabel(ctx, id.slice(4)) : null;
       const how = medalHow(id);
-      dialog.innerHTML = `<div class="dlg-body medal-dlg tier-${medalTier(id)} ${date ? 'is-got' : 'is-missing'}">
-        ${date ? tierRing(medalTier(id), medalZoom(ctx, id, medalBadge(ctx, id, false, 'lg'))) : medalZoom(ctx, id, medalBadge(ctx, id, false, 'lg'))}
-        <h2 id="medal-dlg-title" class="dlg-title">${esc(info.title)}</h2>
+      const seal = medalZoom(ctx, id, medalBadge(ctx, id, false, 'lg'));
+      medalDialog.innerHTML = `<div class="dlg-body medal-dlg tier-${medalTier(id)} ${date ? 'is-got' : 'is-missing'}">
+        ${date ? tierRing(medalTier(id), seal) : seal}
+        <h2 id="medal-dlg-title" class="dlg-title">${esc(medalName(ctx, id, Boolean(date)))}</h2>
         <p class="dlg-meta">${esc(info.sub)} · ${TIER_NAMES[medalTier(id)]}</p>
         ${date ? `<p class="dlg-hint">Conseguida el ${esc(longDate(date).toLowerCase())}</p>` : how ? `<p class="dlg-hint">${esc(how)}</p>` : ''}
-        ${!date && eye ? `<p class="medal-dlg-prog">${eye.top} de ${eye.total} cuadros</p>` : ''}
+        ${!date && eye ? `<p class="medal-dlg-prog">${eye.top} de ${eye.total} ${eye.total === 1 ? 'cuadro' : 'cuadros'}</p>` : ''}
         <button class="btn btn-secondary btn-wide" data-action="close-sheet">Cerrar</button>
       </div>`;
-      sheet.open(b, '[data-action="close-sheet"]');
-    },
-    'more-medals': (b) => {
-      ctx.audio.sfx('tap');
-      const open = b.getAttribute('aria-expanded') !== 'true';
-      $('.pf-medals', el).innerHTML = medalCells(ctx, open).html;
-      b.setAttribute('aria-expanded', String(open));
-      b.textContent = open ? 'Ver menos' : 'Ver todos';
+      medalSheet.open(b, '[data-action="close-sheet"]');
     },
   };
 }

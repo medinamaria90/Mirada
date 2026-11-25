@@ -146,7 +146,7 @@ test('fin de ronda: XP, colección, SRS, medallas y subida de nivel', () => {
 
   let p = { ...emptyProgress(), xp: LEVELS[1].min - 5 };
   const up = playStage(p, index, 'p11', () => true, '2026-11-23');
-  assert.ok(up.events.some((e) => e.type === 'levelup' && e.level === 1));
+  assert.ok(!up.events.some((e) => e.type === 'levelup'), 'la escala de niveles ya no se enseña: solo hay rangos');
 
   const review = planMovementReview(index, 'mov1', 3);
   const answers = review.questions.map((q) => ({ q, correct: true, retry: false, combo: 1 }));

@@ -249,11 +249,11 @@ test('index.html: SEO y vista previa (título, descripción, canonical, Open Gra
   assert.match(html, /<html lang="es">/);
   assert.match(html, /<title>¿Cuánta pintura reconoces\?/);
   assert.match(html, /<meta name="description" content="[^"]{50,}">/);
-  assert.match(html, /<link rel="canonical" href="https:\/\/mirada\.onrender\.com\/test\/">/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/sfumato-arte\.onrender\.com\/test\/">/);
   for (const p of ['og:title', 'og:description', 'og:image', 'og:url', 'og:type', 'twitter:card', 'twitter:image']) {
     assert.ok(html.includes(`"${p}"`), p);
   }
-  assert.match(html, /og:image" content="https:\/\/mirada\.onrender\.com\/test\/portada\.jpg"/);
+  assert.match(html, /og:image" content="https:\/\/sfumato-arte\.onrender\.com\/test\/portada\.jpg"/);
   assert.match(html, /<h1[^>]*>¿Cuánta pintura reconoces\?<\/h1>/, 'texto real en el HTML');
   assert.match(html, /Entre 8 y 40 preguntas/);
   // Sin recursos remotos: las URL absolutas solo en metadatos (canonical, OG), nunca en lo que se carga.

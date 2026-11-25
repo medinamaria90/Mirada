@@ -6,12 +6,11 @@ import { page } from '../shell.js';
 import { playEra } from '../audio-bridge.js';
 import { parseLastTest, coverWork, collectionIds } from '../../engine/profile.js';
 import { heroHtml, upgradeCover } from './profile-hero.js';
-import { figuresHtml, museumHtml, testHtml, practiceHtml } from './profile-parts.js';
+import { figuresHtml, museumHtml, welcomeHtml, testHtml, practiceHtml } from './profile-parts.js';
 import { medalsHtml, wireMedals } from './profile-medals.js';
 import { settingsHtml, wireSettings } from './profile-settings.js';
 import { nameSheetHtml, wireName } from './profile-name.js';
 import { lookSheetHtml, wireLook } from './profile-look.js';
-import { shareTest } from './profile-share.js';
 
 const TEST_KEY = 'mirada.test.last'; // lo escribe el test de cultura (js/test/main.js)
 const STYLES_WAIT_MS = 1500; // si los estilos tardan más, se pinta igual
@@ -56,18 +55,12 @@ export async function renderProfile(ctx, el, opts = {}) {
   if (!el.isConnected) return; // mientras tanto se fue a otra pantalla
   const last = readLastTest();
   const hasPictures = collectionIds(ctx.store.get().progress, ctx.index).length > 0;
+  const test = testHtml(last, { primary: hasPictures });
   el.innerHTML = page(ctx, 'profile', `
-    <div class="pf-layout">
-      <div class="pf-col pf-col-side">
-        ${heroHtml(ctx)}
-        ${figuresHtml(ctx)}
-        ${testHtml(last, { primary: hasPictures })}
-        ${practiceHtml(ctx)}
-      </div>
-      <div class="pf-col pf-col-main">
-        ${museumHtml(ctx)}
-        ${medalsHtml(ctx)}
-      </div>
+    <div class="pf-layout ${hasPictures ? '' : 'is-new'}">
+      ${heroHtml(ctx)}
+      ${hasPictures ? `${figuresHtml(ctx)}${museumHtml(ctx)}${medalsHtml(ctx)}${test}` : `${welcomeHtml()}${test}${medalsHtml(ctx)}`}
+      ${practiceHtml(ctx)}
     </div>
     ${settingsHtml(ctx)}
     ${nameSheetHtml()}
@@ -79,7 +72,8 @@ export async function renderProfile(ctx, el, opts = {}) {
     h.focus({ preventScroll: true });
     $('#logros', el).scrollIntoView({ block: 'start' });
   } else focusHeading(el);
-  if (ctx.store.get().settings.music) playEra('menu'); // sin música no se carga el audio
+  // Sin música no se carga el audio; con ella, cuando el navegador esté libre (componerla pesa).
+  if (ctx.store.get().settings.music) (typeof requestIdleCallback === 'function' ? requestIdleCallback : setTimeout)(() => playEra('menu'));
 
   const go = (route) => () => { ctx.audio.sfx('tap'); ctx.go(route); };
   onAction(el, {
@@ -89,10 +83,28 @@ export async function renderProfile(ctx, el, opts = {}) {
     ...wireLook(ctx, el),
     review5: go('repaso5'),
     weekly: go('reto-semanal'),
-    'share-test': () => {
-      ctx.audio.sfx('tap');
-      const st = ctx.store.get();
-      if (last) shareTest(ctx, last, coverWork(st.progress, ctx.index, st.settings.cover));
-    },
+    'share-test': (b) => shareLast(ctx, b, last),
   });
+}
+
+// «Compartir»: el código de la tarjeta se pide al pulsar; mientras se genera el botón espera y no admite otro toque.
+async function shareLast(ctx, button, last) {
+  if (!last || button.disabled) return;
+  ctx.audio.sfx('tap');
+  const label = button.innerHTML;
+  button.disabled = true;
+  button.setAttribute('aria-busy', 'true');
+  button.innerHTML = '<span class="pf-spinner" aria-hidden="true"></span><span>Preparando…</span>';
+  try {
+    const { shareTest } = await import('./profile-share.js');
+    const st = ctx.store.get();
+    await shareTest(ctx, last, coverWork(st.progress, ctx.index, st.settings.cover));
+  } catch (err) {
+    console.error(err);
+    ctx.toast('No se ha podido compartir');
+  } finally {
+    button.disabled = false;
+    button.removeAttribute('aria-busy');
+    button.innerHTML = label;
+  }
 }

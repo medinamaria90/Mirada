@@ -20,7 +20,7 @@ export const NAME_MAX = 24;
 
 export function normalizeName(value) {
   if (typeof value !== 'string') return '';
-  const clean = value.replace(/[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/g, ' ').trim();
+  const clean = value.replace(/[\p{Cc}\u200B\u200C\u200E\u200F\u2060\uFEFF\u202A-\u202E\u2066-\u2069]/gu, ' ').replace(/\s+/g, ' ').trim();
   return [...clean].slice(0, NAME_MAX).join('').trim();
 }
 

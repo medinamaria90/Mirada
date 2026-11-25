@@ -38,9 +38,18 @@ export function interleaveByKind(ids) {
   return out;
 }
 
+// Cifra para los números grandes: exacta hasta 9 999, y «31,2 mil» / «9,9 M» a partir de ahí (nunca se parte).
+export function compactNumber(n) {
+  const v = Math.max(0, Math.round(Number(n) || 0));
+  const one = (x) => x.toFixed(1).replace('.', ',').replace(/,0$/, '');
+  if (v < 10000) return String(v);
+  if (v < 1000000) return `${one(v / 1000)} mil`;
+  return `${one(v / 1000000)} M`;
+}
+
 // Avance hacia el siguiente rango: media de lo cumplido en cada requisito (0..1) y, por requisito, lo que
 // falta en una frase y su avance. Rango máximo: barra llena y sin nada pendiente.
-const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+export const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const fmt = (n) => n.toLocaleString('es-ES');
 const NEED_TEXT = {
   xp: (n) => `Ganar ${fmt(n)} XP más`,
@@ -74,11 +83,22 @@ export function collectionIds(progress, index) {
   return Object.keys(progress.collection || {}).filter((id) => index.artwork(id));
 }
 
-// Último cuadro de cada fecha primero; a igual fecha, el añadido más tarde (orden de inserción).
-export function museumWorks(progress, index, n = MUSEUM_SIZE) {
+// Toda la colección, el último de cada fecha primero; a igual fecha, el añadido más tarde (orden de inserción).
+export function collectionWorks(progress, index) {
   const rev = collectionIds(progress, index).map((id, i) => ({ id, date: String(progress.collection[id]), i }));
   rev.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.i - a.i));
-  return rev.slice(0, n).map((e) => index.artwork(e.id));
+  return rev.map((e) => index.artwork(e.id));
+}
+
+// «Mi museo»: los últimos n de la colección.
+export function museumWorks(progress, index, n = MUSEUM_SIZE) {
+  return collectionWorks(progress, index).slice(0, n);
+}
+
+// Portada de muestra para quien aún no tiene cuadros: el más famoso con punto de interés (y apaisado).
+export function sampleCover(index) {
+  const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 2 : 0);
+  return index.artworks.slice().sort((a, b) => score(b) - score(a) || a.id.localeCompare(b.id))[0] || null;
 }
 
 // Portada: la elegida si está en la colección; si no, el cuadro más famoso (y apaisado, que luce más en
@@ -113,8 +133,8 @@ export function focusPosition(work, fallbackY = 30) {
 
 // Inicial del avatar (primera letra del nombre, en mayúscula); '' sin nombre.
 export function initialOf(name) {
-  const first = [...String(name || '').trim()][0];
-  return first ? first.toLocaleUpperCase('es-ES') : '';
+  const letter = /\p{L}/u.exec(String(name || ''));
+  return letter ? letter[0].toLocaleUpperCase('es-ES') : '';
 }
 
 // Último resultado del test de cultura (localStorage['mirada.test.last']): null si no hay o no vale. El
@@ -125,12 +145,6 @@ export function parseLastTest(raw) {
   if (!v || !Number.isFinite(v.correct) || !Number.isFinite(v.asked) || v.asked <= 0 || typeof v.level !== 'string') return null;
   const pct = Number.isFinite(v.percentile) && v.percentile >= 1 && v.percentile <= 99 ? Math.round(v.percentile) : null;
   const date = typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) ? v.date : '';
-  return { correct: v.correct, asked: v.asked, level: TEST_LEVELS.includes(v.level) ? v.level : '', percentile: pct, date };
-}
-
-export function testShareText(last, url) {
-  const lines = [`He acertado ${last.correct} de ${last.asked} en el test de Sfumato${last.level ? ` · ${last.level}` : ''}`];
-  if (last.percentile != null) lines.push(`Sé más de pintura que el ${last.percentile} % de la gente`);
-  if (url) lines.push(url);
-  return lines.join('\n');
+  const grid = typeof v.grid === 'string' && /^[🟩🟨⬜]{1,8}$/u.test(v.grid) ? v.grid : '';
+  return { correct: v.correct, asked: v.asked, level: TEST_LEVELS.includes(v.level) ? v.level : '', percentile: pct, date, grid };
 }

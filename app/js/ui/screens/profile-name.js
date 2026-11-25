@@ -10,7 +10,7 @@ export function nameSheetHtml() {
   return `<dialog class="card-dialog sheet-dialog name-dialog" aria-labelledby="name-dlg-title">
     <form class="dlg-body name-form" novalidate>
       <h2 id="name-dlg-title" class="dlg-title">Tu nombre</h2>
-      <input class="pf-input" name="name" type="text" maxlength="${NAME_MAX}" autocomplete="off" autocapitalize="words" enterkeyhint="done" spellcheck="false" aria-labelledby="name-dlg-title" aria-describedby="name-note">
+      <input class="pf-input" name="name" type="text" autocomplete="off" autocapitalize="words" enterkeyhint="done" spellcheck="false" aria-labelledby="name-dlg-title" aria-describedby="name-note">
       <p class="pf-note" id="name-note"><span>Solo se guarda en este dispositivo</span><span class="pf-counter" aria-hidden="true">0/${NAME_MAX}</span></p>
       <div class="sheet-actions">
         <button type="button" class="btn btn-secondary" data-action="close-sheet">Cancelar</button>
@@ -32,11 +32,15 @@ export function wireName(ctx, el) {
     sheet.close();
     // Solo se repinta la identidad (el resto de la pantalla no cambia); el foco vuelve al nombre.
     refreshHero(ctx, el);
-    $('[data-action="edit-name"]', el).focus({ preventScroll: true });
     announce(name ? `Nombre guardado: ${name}` : 'Nombre quitado');
   });
   const counter = $('.pf-counter', dialog);
-  const count = () => { counter.textContent = `${[...input.value].length}/${NAME_MAX}`; };
+  // Máximo por caracteres (no por unidades de texto: un emoji cuenta uno).
+  const count = () => {
+    const chars = [...input.value];
+    if (chars.length > NAME_MAX) input.value = chars.slice(0, NAME_MAX).join('');
+    counter.textContent = `${Math.min(chars.length, NAME_MAX)}/${NAME_MAX}`;
+  };
   input.addEventListener('input', count);
   return {
     'edit-name': (b) => {

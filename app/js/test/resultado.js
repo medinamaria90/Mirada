@@ -87,10 +87,11 @@ export function buildResult(summary, maxScore) {
   };
 }
 
+// Texto para compartir (el mismo en el test y en el perfil). `level`, `percentile` y `grid` pueden faltar.
 export function shareText(result, url) {
   return [
-    `He acertado ${result.correct} de ${result.asked} en el test de Sfumato · ${result.level}`,
-    `Sé más de pintura que el ${result.percentile} % de la gente ${result.grid}`,
+    `He acertado ${result.correct} de ${result.asked} en el test de Sfumato${result.level ? ` · ${result.level}` : ''}`,
+    result.percentile != null ? `Sé más de pintura que el ${result.percentile} % de la gente${result.grid ? ` ${result.grid}` : ''}` : '',
     url,
   ].filter(Boolean).join('\n');
 }
