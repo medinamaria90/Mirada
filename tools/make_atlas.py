@@ -31,6 +31,8 @@ EXTRUDE = 3
 QUALITY = 72
 TINY = 240  # lado mayor de la miniatura suelta (img/t)
 TINY_QUALITY = 68
+# Más tamaños sueltos: img/g (galerías y franjas, nítidas a 2-3 px por px de CSS) e img/m (portada de la ficha).
+EXTRA_SIZES = (("g", 320, 72), ("m", 800, 74))
 BG = (221, 213, 199)
 MAX_PIXELS = 40_000_000  # tope de píxeles por imagen (Pillow avisa de bombas de descompresión)
 
@@ -58,6 +60,12 @@ def main():
     for f in os.listdir(out):
         if f.endswith(".jpg"):
             os.remove(f"{out}/{f}")
+    extra_dirs = {name: f"{app}/img/{name}" for name, _, _ in EXTRA_SIZES}
+    for d in extra_dirs.values():
+        os.makedirs(d, exist_ok=True)
+        for f in os.listdir(d):
+            if f.endswith(".jpg"):
+                os.remove(f"{d}/{f}")
     tiny_dir = f"{app}/img/t"
     os.makedirs(tiny_dir, exist_ok=True)
     for f in os.listdir(tiny_dir):
@@ -79,11 +87,14 @@ def main():
                 if im.size != packed_size(w["w"], w["h"]):
                     raise SystemExit(f"{w['id']}: la imagen mide {im.size} y el catálogo espera {packed_size(w['w'], w['h'])} "
                                      "(¿el catálogo y las imágenes son de versiones distintas?)")
-                im.draft("RGB", (THUMB * 2, THUMB * 2))
-                im = im.convert("RGB")
+                im = im.convert("RGB")  # a tamaño completo: de aquí salen también los tamaños sueltos (img/g, img/m)
                 tiny = im.copy()
                 tiny.thumbnail((TINY, TINY), Image.LANCZOS)
                 tiny.save(f"{tiny_dir}/{w['id']}.jpg", "JPEG", quality=TINY_QUALITY, progressive=True, optimize=True)
+                for name, side, quality in EXTRA_SIZES:
+                    big = im.copy()
+                    big.thumbnail((side, side), Image.LANCZOS)
+                    big.save(f"{extra_dirs[name]}/{w['id']}.jpg", "JPEG", quality=quality, progressive=True, optimize=True)
                 im = im.resize((tw, th), Image.LANCZOS)
                 canvas.paste(im, (x, y))
                 extrude(canvas, im, x, y)

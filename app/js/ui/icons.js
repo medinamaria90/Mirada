@@ -20,6 +20,7 @@ export const icons = {
   lock: (s) => svg('<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>', s),
   check: (s) => svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>', s),
   play: (s) => svg('<path d="M8 5.5v13l10-6.5z"/>', s),
+  pause: (s) => svg('<rect x="6" y="5" width="4.4" height="14" rx="1.2" fill="currentColor" stroke="none"/><rect x="13.6" y="5" width="4.4" height="14" rx="1.2" fill="currentColor" stroke="none"/>', s),
   loupe: (s) => svg('<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>', s),
   eye: (s) => svg('<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>', s),
   prev: (s) => svg('<path d="M15 5l-7 7 7 7"/>', s),

@@ -35,6 +35,8 @@ const loadFlows = () => import('./ui/screens/flows.js');
 const loadCollection = () => import('./ui/screens/collection.js');
 const loadProfile = () => import('./ui/screens/profile.js');
 const loadGallery = () => import('./ui/screens/gallery.js');
+const loadArtistPage = () => import('./ui/screens/artist-page.js');
+const loadArtistWorks = () => import('./ui/screens/artist-works.js');
 
 async function loadJson(path) {
   const res = await fetch(path, { cache: 'no-cache' });
@@ -101,16 +103,17 @@ function installZoom(getIndex) {
   });
 }
 
-// Cualquier nombre de pintor con data-artist="<id>" abre su ficha (módulo diferido). Dentro de una
-// ronda no se ofrece jugar desde la ficha: solo las pantallas con navegación inferior (.page) lo hacen.
+// Cualquier nombre de pintor con data-artist="<id>" abre su ficha: pantalla (#pintor-<id>) o, dentro de una ronda, diálogo.
 function installArtistLinks(getCtx) {
   document.addEventListener('click', (ev) => {
     const el = ev.target.closest('[data-artist]');
     const ctx = getCtx();
     if (!el || !ctx) return;
     ev.preventDefault();
+    // En una pantalla con navegación inferior (.page) la ficha es una pantalla; en una ronda, un diálogo.
+    if (el.closest('.page')) return ctx.go(`pintor-${el.dataset.artist}${el.dataset.focus === 'stages' ? '-etapas' : ''}`);
     import('./ui/artist-sheet.js')
-      .then((m) => m.openArtistSheet(ctx, el.dataset.artist, { opener: el, playable: Boolean(el.closest('.page')) }))
+      .then((m) => m.openArtistSheet(ctx, el.dataset.artist, { opener: el }))
       .catch((err) => console.error(err));
   });
 }
@@ -201,16 +204,38 @@ async function boot() {
   window.addEventListener('pointerup', unlockOnce, true);
   window.addEventListener('keydown', unlockOnce, true);
 
-  const FLOW_ROUTES = new Set(['stage', 'sala', 'review', 'srs', 'quick', 'review5', 'daily', 'weekly', 'challenge', 'free']);
+  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'quick', 'review5', 'daily', 'weekly', 'challenge', 'free']);
   let firstRender = true;
   let renderToken = 0;
+
+  // Atrás devuelve a la pantalla anterior donde estaba (con su desplazamiento). Cada entrada del historial lleva
+  // un número en history.state: si al llegar a una ruta su número es menor que el de la anterior, se ha vuelto atrás.
+  const scrollByRoute = new Map();
+  let lastIdx = -1;
+  let maxIdx = -1;
+  let restoreY = null;
+  function navigationKind() {
+    const st = history.state || {};
+    if (!Number.isInteger(st.idx)) {
+      maxIdx += 1;
+      try { history.replaceState({ ...st, idx: maxIdx }, ''); } catch { /* sin historial */ }
+      lastIdx = maxIdx;
+      return 'push';
+    }
+    maxIdx = Math.max(maxIdx, st.idx);
+    const kind = st.idx < lastIdx ? 'back' : 'forward';
+    lastIdx = st.idx;
+    return kind;
+  }
 
   // Pantalla de un módulo diferido: si mientras llega se ha cambiado de ruta, no se pinta.
   function lazy(token, screen, loader, fn, needsText = false) {
     Promise.all([loader(), needsText ? ensureText() : null])
       .then(([mod]) => {
-        if (token !== renderToken) return;
-        fn(mod);
+        if (token !== renderToken) return null;
+        return Promise.resolve(fn(mod)).then(() => {
+          if (token === renderToken && restoreY != null) window.scrollTo(0, restoreY);
+        });
       })
       .catch((err) => {
         if (token !== renderToken) return;
@@ -225,10 +250,12 @@ async function boot() {
       try { cleanup(); } catch (err) { console.error(err); }
       cleanup = null;
     }
+    if (currentRouteName) scrollByRoute.set(currentRouteName, window.scrollY);
     const token = ++renderToken;
     const route = parseRoute(location.hash, { today: ctx.dailyDay() });
     const routeName = String(location.hash || '').replace(/^#/, '') || 'inicio';
     if (routeName !== currentRouteName) { prevRoute = currentRouteName; currentRouteName = routeName; }
+    restoreY = navigationKind() === 'back' ? (scrollByRoute.get(routeName) ?? null) : null;
     const onboarded = store.get().onboarded;
     const screen = document.createElement('div');
     screen.className = 'screen';
@@ -259,6 +286,7 @@ async function boot() {
     switch (route.name) {
       case 'welcome': return welcome();
       case 'stage': return flow((m) => m.renderStage(ctx, screen, route.artistId, route.branchId));
+      case 'deep': return flow((m) => m.renderDeep(ctx, screen, route.artistId, route.level));
       case 'sala': return flow((m) => m.renderSala(ctx, screen, route.movementId));
       case 'intro': return flow((m) => m.renderIntro(ctx, screen, route.movementId));
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));
@@ -267,6 +295,8 @@ async function boot() {
       case 'review5': return flow((m) => m.renderReview5(ctx, screen));
       case 'daily': return flow((m) => m.renderDaily(ctx, screen));
       case 'weekly': return flow((m) => m.renderWeekly(ctx, screen));
+      case 'artist': return lazy(token, screen, loadArtistPage, (m) => m.renderArtistPage(ctx, screen, route.artistId, { focus: route.focus }), true);
+      case 'works': return lazy(token, screen, loadArtistWorks, (m) => m.renderArtistWorks(ctx, screen, route.spec), true);
       case 'gallery': return lazy(token, screen, loadGallery, (m) => m.renderGallery(ctx, screen, route.movementId), true);
       case 'challenge': return flow((m) => m.renderChallenge(ctx, screen, route.challenge));
       case 'free': return flow((m) => m.renderFree(ctx, screen));

@@ -5,6 +5,9 @@ import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
 import { MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
+import { pendingWorks, deepStatus } from '../../engine/levels.js';
+import { stageTitle } from '../../engine/painters.js';
+import { deepRoute, stageRoute } from '../router.js';
 import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { weekOf, isoWeek } from '../../engine/dates.js';
@@ -17,7 +20,6 @@ import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
 import { branchAfterRound, statusInBranch } from '../../engine/branches.js';
 import { setMapFocus } from './path-map.js';
-import { stageRoute } from '../router.js';
 
 export function headline(accuracy) {
   if (accuracy >= 1) return 'Impecable';
@@ -41,6 +43,34 @@ export function extraRounds(ctx, plan) {
   if (plan.kind !== 'review5' && review5Works(p, ctx.index, ctx.today()).length >= REVIEW5_MIN) list.push({ to: 'repaso5', label: REVIEW5_NAME, icon: 'repeat' });
   if (plan.kind !== 'weekly' && isPathMastered(p, ctx.index) && !p.weekly?.[isoWeek(ctx.dailyDay()).key]) list.push({ to: 'reto-semanal', label: 'Reto semanal', icon: 'target' });
   return list;
+}
+
+// El «siguiente» de la celebración de un nivel «a fondo»: la etapa siguiente si ya está abierta, o null.
+function deepNext(ctx, ev) {
+  const { index } = ctx;
+  const next = index.deepLevels(ev.artistId).find((l) => l.id > ev.level);
+  return next && deepStatus(ctx.store.get().progress, index, ev.artistId, next.id) !== 'locked' ? next : null;
+}
+
+// «Nivel superado»: sello que se estampa, nombre de la etapa, las obras de la etapa a la vista y un solo «siguiente» (la etapa que
+// sigue, o su ficha si era la última).
+function deepCelebration(ctx, ev) {
+  const { index } = ctx;
+  const artist = index.artist(ev.artistId);
+  const stage = index.deepLevels(ev.artistId).find((l) => l.id === ev.level);
+  const next = deepNext(ctx, ev);
+  const works = (stage ? stage.works : []).slice(0, 6);
+  const thumbs = works.length ? `<ul class="deep-cele-works" style="--cols:${Math.min(works.length, works.length === 6 ? 3 : 5)}">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'deep-cele-thumb', label: w.title, small: true, zoom: { group: 'deep-cele', badge: false, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}</ul>` : '';
+  const ficha = `<button type="button" class="deep-cele-link" data-action="go" data-to="pintor-${esc(ev.artistId)}">Ver su ficha${icons.next(16)}</button>`;
+  const main = next ? `<button type="button" class="btn btn-primary btn-wide" data-action="go" data-to="${esc(deepRoute(ev.artistId, next.id))}">${esc(`Siguiente: ${stageTitle(artist, next)}`)}</button>` : '';
+  return `<section class="deep-cele" style="${accentStyle(index.movement(artist.movementId)?.accent)}" aria-label="Nivel a fondo superado">
+    <span class="deep-cele-seal" aria-hidden="true">${icons.check(40)}</span>
+    <p class="event-kicker">Nivel a fondo superado</p>
+    <p class="deep-cele-title">${esc(stage ? stageTitle(artist, stage) : 'Nivel superado')}</p>
+    <p class="deep-cele-who">${esc(artist.name)}</p>
+    ${thumbs}
+    <div class="deep-cele-actions">${main}${ficha}</div>
+  </section>`;
 }
 
 function stepRoute(index, step) {
@@ -81,8 +111,13 @@ export function renderResult(ctx, el, opts) {
   const otherMedals = medals.filter((m) => m !== heroMedal
     && !(completed && m.id === `movement-${completed.movementId}`)
     && !(goal && m.id === 'goal-1')
+    // Una sola tarjeta de racha: si hay racha, la medalla de racha no se repite.
     && !(streak && m.id.startsWith('streak-')));
 
+  // «Hoy has aprendido» solo cuando el pintor se acaba de conocer o dominar: no tiene sentido en uno ya dominado.
+  const alreadyMastered = Boolean(plan.artistId && p.artists?.[plan.artistId]?.mastered && !medals.some((m) => m.id === `artist-${plan.artistId}`));
+
+  const isDeepRound = plan.kind === 'stage' && plan.level >= 2;
   const blocks = [];
   if (opts.friendScore != null) {
     const mine = outcome.score;
@@ -107,13 +142,13 @@ export function renderResult(ctx, el, opts) {
   if (inBranch) setMapFocus(inBranch.branch.id);
   if (low) {
     blocks.push('<p class="result-cheer">Vuelve a mirar sus cuadros: a la segunda se ve más.</p>');
-  } else if (plan.kind === 'stage' && plan.artistId && index.artist(plan.artistId)) {
+  } else if (plan.kind === 'stage' && !(plan.level >= 2) && !alreadyMastered && plan.artistId && index.artist(plan.artistId)) {
     const a = index.artist(plan.artistId);
     const w = coverOf(index, a.id);
     const trait = mainTrait(a);
     if (w && trait) {
       blocks.push(`<section class="learned" aria-label="Hoy has aprendido">
-        ${artFrame(w, { cls: 'learned-art', alt: `${w.title}, de ${a.name}`, label: w.title, thumb: true, zoom: {} })}
+        ${artFrame(w, { cls: 'learned-art', alt: `${w.title}, de ${a.name}`, label: w.title, thumb: true, zoom: { badge: false } })}
         <div class="learned-text"><p class="event-kicker">Hoy has aprendido</p><p class="learned-name">${esc(a.name)}</p><p class="learned-trait">${esc(trait)}</p></div>
       </section>`);
     }
@@ -121,12 +156,15 @@ export function renderResult(ctx, el, opts) {
   if (goal) {
     blocks.push(eventCard({ icon: goalRing(goal.goal, goal.goal, 30), kicker: 'Meta del día', title: 'Cumplida', to: 'perfil', cls: 'event-goal' }));
     // El pintor de la etapa ya sale arriba en «Hoy has aprendido»: no se repite.
-    blocks.push(dayDone(ctx, p, plan.kind === 'stage' && !low ? plan.artistId : null, { next: !inBranch }));
+    blocks.push(dayDone(ctx, p, plan.kind === 'stage' && !low ? plan.artistId : null, { showNext: !isDeepRound && !inBranch }));
   }
   if (completed && index.movement(completed.movementId)) {
     const m = index.movement(completed.movementId);
     blocks.push(`<section class="event event-seal" style="${accentStyle(m.accent)}">${medalBadge(ctx, `movement-${m.id}`, true)}<span class="event-text"><span class="event-kicker">Movimiento completo</span><span class="event-title">${esc(m.name)}</span></span></section>`);
   }
+  // Nivel «a fondo» superado: su propio momento (va el primero, grande y con destino). El rango y el resto, después.
+  const deepDone = events.find((e) => e.type === 'deep-mastered');
+  if (deepDone) blocks.unshift(deepCelebration(ctx, deepDone));
   if (rankUp) {
     blocks.push(eventCard({ icon: icons.gem(22), kicker: 'Nuevo rango', title: rankUp.name, to: 'perfil', cls: 'event-level' }));
   }
@@ -154,14 +192,15 @@ export function renderResult(ctx, el, opts) {
   if (reviewUnlock && !goal && index.movement(reviewUnlock.movementId)) {
     blocks.push(eventCard({ icon: icons.repeat(22), kicker: 'Repaso disponible', title: index.movement(reviewUnlock.movementId).name, to: `repaso-${reviewUnlock.movementId}` }));
   }
-  if (streak) blocks.push(weekStrip(ctx, streak.value, streak.grace));
+  if (streak) blocks.push(weekStrip(ctx, streak.value, streak.grace, medals.some((m) => m.id.startsWith('streak-'))));
 
   const roundMastered = outcome.mastered ?? outcome.accuracy >= MASTERY;
+  const isDeep = plan.kind === 'stage' && plan.level >= 2;
   const retry = (plan.kind === 'stage' || plan.kind === 'sala') && !roundMastered
-    ? (plan.kind === 'stage' ? stageRoute(plan.artistId, inBranch?.branch.id) : `sala-${plan.movementId}`) : null;
+    ? (plan.kind === 'stage' ? (isDeep ? deepRoute(plan.artistId, plan.level) : stageRoute(plan.artistId, inBranch?.branch.id)) : `sala-${plan.movementId}`) : null;
   // Con menos de la mitad de aciertos lo primero es repetir (y la parada siguiente, si estaba
   // cerrada, sigue cerrada).
-  const step = plan.kind === 'stage' ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
+  const step = plan.kind === 'stage' && !isDeep ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
   const nextOf = step ? index.steps[index.stepIndex(step.type, step.id) + 1] : null;
   const gated = Boolean(retry && nextOf && outcome.accuracy < UNLOCK_MIN && !isStepUnlocked(p, index, nextOf));
   // Cierre del día (meta cumplida): «Seguir» y, si la ronda se comparte, compartir; sin llamadas a
@@ -173,6 +212,9 @@ export function renderResult(ctx, el, opts) {
   // 75 % o más, pero sin acertar bastantes cuadros del propio pintor: aún no está dominado.
   const ownNote = outcome.ownShort && plan.artistId && index.artist(plan.artistId)
     ? `<p class="result-note">Para dominarlo, acierta más cuadros de ${esc(index.artist(plan.artistId).short || index.artist(plan.artistId).name)}</p>` : '';
+  // 75 % o más y bien repartido, pero faltan cuadros suyos por ver: una ronda más los enseña.
+  const missing = outcome.coverShort && plan.artistId ? pendingWorks(p, index, plan.artistId, plan.level || 1).length : 0;
+  const coverNote = missing ? `<p class="result-note">${missing === 1 ? 'Te falta 1 cuadro suyo por ver' : `Te faltan ${missing} cuadros suyos por ver`}: una ronda más</p>` : '';
   const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar a un amigo';
   const reduce = prefersReducedMotion();
   const toPct = rank.pct;
@@ -200,12 +242,12 @@ export function renderResult(ctx, el, opts) {
         <span>${rank.next ? esc(rank.next) : ''}</span>
       </div>
       <div class="result-actions">
-        ${ownNote}
+        ${ownNote}${coverNote}
         ${blocked ? `${gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
         <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
         ${branchNext ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>
-        <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>`}
+        <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `<button class="btn ${deepDone && deepNext(ctx, deepDone) ? 'btn-secondary' : 'btn-primary'} btn-wide" data-action="done" data-primary>${esc(deepDone ? 'Volver al camino' : opts.primary || 'Seguir')}</button>`}
         ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
         ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
         ${blocked ? '' : extraRounds(ctx, plan).map((r) => `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(r.to)}">${icons[r.icon](20)}<span>${esc(r.label)}</span></button>`).join('')}
@@ -280,17 +322,17 @@ export async function copyText(el, text) {
 
 // Cierre del día: pintores y cuadros nuevos de hoy y la próxima parada. Informativo: sin botones
 // (las miniaturas se abren a pantalla completa, como cualquier cuadro).
-function dayDone(ctx, p, shownArtist = null, { next = true } = {}) {
+function dayDone(ctx, p, shownArtist = null, { showNext = true } = {}) {
   const { index } = ctx;
   const sum = daySummary(p, index, ctx.today());
   const names = sum.artists.filter((id) => id !== shownArtist).map((id) => index.artist(id).short || index.artist(id).name);
   const thumbs = sum.works.slice(0, CLOSURE_THUMBS).map((id) => index.artwork(id))
-    .map((w) => artFrame(w, { cls: 'day-done-thumb', alt: w.title, label: w.title, thumb: true, zoom: {} })).join('');
+    .map((w) => artFrame(w, { cls: 'day-done-thumb', alt: w.title, label: w.title, thumb: true, zoom: { badge: false } })).join('');
   const lines = [
     names.length ? `<p class="day-done-line">Has conocido a ${esc(listNames(names))}</p>` : '',
     sum.works.length ? `<p class="day-done-line">${sum.works.length === 1 ? '1 cuadro nuevo' : `${sum.works.length} cuadros nuevos`}</p>` : '',
     thumbs ? `<div class="day-done-thumbs">${thumbs}</div>` : '',
-    sum.next && next ? `<p class="day-done-next">La próxima vez: <strong>${esc(sum.next.name)}</strong></p>` : '',
+    showNext && sum.next ? `<p class="day-done-next">La próxima vez: <strong>${esc(sum.next.name)}</strong></p>` : '',
   ].join('');
   return `<section class="day-done" aria-labelledby="day-done-h"><h2 id="day-done-h" class="event-kicker">Hoy</h2>${lines}</section>`;
 }
@@ -301,14 +343,14 @@ export function graceSavedText(n) {
   return n === 1 ? 'Racha a salvo: te quedaba un día de gracia' : 'Racha a salvo: te quedaban dos días de gracia';
 }
 
-function weekStrip(ctx, value, grace = 0) {
+function weekStrip(ctx, value, grace = 0, medal = false) {
   const p = ctx.store.get().progress;
   const days = new Set(p.streak.days);
   const today = ctx.today();
   const labels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
   const cells = weekOf(today).map((d, i) => `<span class="day ${days.has(d) ? 'is-on' : ''} ${d === today ? 'is-today' : ''}"><span class="day-dot"></span><span class="day-label">${labels[i]}</span></span>`).join('');
   const title = value === 1 ? 'Primer día' : `${value} días seguidos`;
-  const saved = graceSavedText(grace);
+  const saved = medal ? 'Nueva medalla de racha' : graceSavedText(grace);
   return `<section class="event event-streak"><span class="event-icon">${icons.flame(22)}</span><span class="event-text"><span class="event-kicker">Racha</span><span class="event-title">${title}</span>${saved ? `<span class="event-sub">${esc(saved)}</span>` : ''}</span></section>
     <div class="week" aria-hidden="true">${cells}</div>`;
 }

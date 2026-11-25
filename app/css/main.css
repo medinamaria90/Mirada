@@ -256,6 +256,10 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 /* Nodos: cada parada es un punto (0×0) del trazado; el botón cuelga de él hacia el lado ancho. */
 .stages { position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; list-style: none; }
 .stage-spot { position: absolute; width: 0; height: 0; }
+/* Sello de niveles «a fondo» encima del nodo de un pintor dominado (ui/deep-badges.js): zona táctil de 48 px. */
+.deep-badge { position: absolute; z-index: 1; top: -82px; left: -24px; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; background: none; cursor: pointer; }
+.deep-seal { display: grid; place-items: center; min-width: 28px; height: 28px; padding: 0 .35rem; border-radius: 999px; background: var(--gold); color: var(--on-gold); font: 600 .8rem/1 var(--font); font-variant-numeric: lining-nums tabular-nums; box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-sm) 0 3px var(--line-2); }
+.deep-badge:active .deep-seal { transform: translateY(2px); }
 .stage {
   --dot: 58px; --hit: max(var(--dot), 48px);
   position: absolute; top: calc(var(--hit) / -2); left: calc(var(--dot) / -2); display: flex; align-items: center; gap: calc(.75 * var(--map-fs)); min-height: var(--hit); width: max-content;
@@ -776,7 +780,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .copy-fallback { width: 100%; padding: .7rem; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--surface); resize: none; font-size: .9rem; }
 
 /* ---------- Colección ---------- */
-.section-head { margin: .4rem 0 1.3rem; }
+.section-head { margin: .2rem 0 .8rem; }
 .section-head h1 { font: 500 1.9rem/1 var(--font); letter-spacing: var(--track); }
 .section-sub { color: var(--ink-2); margin-top: .3rem; font-variant-numeric: lining-nums tabular-nums; }
 /* Pestañas de Colección: Cuadros | Pintores (enlaces a dos rutas). */
@@ -788,7 +792,18 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .coll-tab[aria-current="page"] { background: var(--surface); color: var(--ink); box-shadow: var(--lift-sm); }
 .coll-artist { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.2rem/1.1 var(--font); padding-bottom: .5rem; margin-bottom: .75rem; border-bottom: 1px solid var(--line); }
 .coll-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.coll-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; }
+/* Avatar de pintor (ui/avatar.js): autorretrato o retrato recortado por su punto de interés, o iniciales sobre el color de su movimiento. */
+.av { position: relative; display: block; width: 100%; height: 100%; border-radius: 999px; overflow: hidden; background: var(--accent); container-type: size; }
+.av-art { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; box-shadow: none; transform: scale(1.6); transform-origin: var(--x) var(--y); }
+/* Monograma: iniciales con la tipografía de marca sobre el color de su movimiento y un borde fino claro. */
+.av.is-initials::before { content: ""; position: absolute; inset: 0; background: var(--accent); filter: hue-rotate(var(--hr, 0deg)) brightness(var(--br, 1)); }
+.av[data-v="1"] { --hr: -26deg; --br: .9; }
+.av[data-v="2"] { --hr: 24deg; --br: .86; }
+.av[data-v="3"] { --hr: -12deg; --br: .8; }
+.av[data-v="4"] { --hr: 38deg; --br: .92; }
+.av-bg { position: absolute; inset: -8%; width: 116%; height: 116%; max-width: none; object-fit: cover; filter: blur(3px) saturate(.9); opacity: .38; mix-blend-mode: multiply; }
+.av-initials { position: relative; display: grid; place-items: center; width: 100%; height: 100%; background: none; color: var(--on-accent); font: 500 38cqw/1 var(--font); letter-spacing: .04em; text-indent: .04em; box-shadow: inset 0 0 0 max(1.5px, 2.5cqw) color-mix(in srgb, var(--on-accent) 45%, transparent); }
+.coll-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 168px)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
 .coll-item { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 10px; transition: transform .18s var(--ease); }
 .coll-item:hover { transform: translateY(-2px); }
 .art-thumb { aspect-ratio: 1; border-radius: 10px; }
@@ -818,8 +833,6 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .card-dialog:has(.dlg-art) { width: min(96vw, 560px); }
 .dlg-title { font: 500 1.4rem/1.15 var(--font); }
 .dlg-meta { display: flex; flex-wrap: wrap; align-items: center; color: var(--ink-2); }
-.dlg-museum { color: var(--ink-2); font-size: .92rem; }
-.dlg-museum:empty { display: none; }
 .dlg-hint { font: 400 1.05rem/1.4 var(--font); padding: .7rem .9rem; background: var(--accent-soft); border-left: 3px solid var(--accent-ui); border-radius: var(--radius-sm); margin: .3rem 0 .6rem; }
 
 /* Pendiente: sello plano y sin sombra; el número o el icono con contraste AA (sin opacidad general). */
@@ -907,6 +920,20 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 /* Informativas (no se pulsan): solo el filete, sin relieve. */
 section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
 .event-goal .event-icon { background: var(--ok-soft); }
+/* Celebración de un nivel «a fondo»: su propio momento, el primero del resultado. */
+.deep-cele { display: grid; justify-items: center; gap: .25rem; padding: 1.5rem 1rem 1rem; border-radius: var(--radius); text-align: center; background: linear-gradient(160deg, var(--accent-soft), var(--surface)); box-shadow: var(--lift), inset 0 0 0 2px var(--gold); animation: rise .45s var(--ease); }
+.deep-cele-seal { display: grid; place-items: center; width: 76px; height: 76px; margin-bottom: .4rem; border-radius: 999px; background: var(--gold); color: var(--on-gold); box-shadow: 0 var(--relief-node) 0 color-mix(in srgb, var(--gold) 65%, var(--ink)); }
+.deep-cele-seal { animation: stamp-seal .7s var(--ease) both; }
+@keyframes stamp-seal { 0% { transform: scale(2.2) rotate(-14deg); opacity: 0; } 55% { transform: scale(.9) rotate(3deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
+.deep-cele-works { display: grid; grid-template-columns: repeat(var(--cols, 5), 56px); justify-content: center; gap: .4rem; margin: .5rem 0 0; padding: 0; list-style: none; }
+.deep-cele-thumb { display: block; width: 56px; aspect-ratio: 1; border-radius: 10px; }
+.deep-cele-title { font: 500 1.55rem/1.15 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
+.deep-cele-who { color: var(--ink-2); }
+.deep-cele-actions .btn { padding: .7rem 1.2rem; line-height: 1.25; white-space: normal; }
+.deep-cele-actions { display: grid; gap: .1rem; width: 100%; margin-top: .6rem; }
+.deep-cele-link { display: flex; align-items: center; justify-content: center; gap: .2rem; min-height: 48px; padding: 0 .6rem; border: 0; background: none; color: var(--brand-text); font: 600 1rem/1.2 var(--font); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .deep-cele, .deep-cele-seal { animation: none; } }
+html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: none; }
 .event-seal { background: var(--accent-soft); box-shadow: inset 0 0 0 1.5px var(--accent-ui); }
 
 .learned {

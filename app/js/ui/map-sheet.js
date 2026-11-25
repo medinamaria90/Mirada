@@ -62,7 +62,7 @@ async function open(ctx, opener, accent, body, focus = '') {
     if (b.dataset.ms === 'artist') {
       close();
       // La ficha abierta desde una rama juega en esa rama.
-      import('./artist-sheet.js').then((m) => m.openArtistSheet(ctx, b.dataset.id, { opener, branchId: b.dataset.branch || '' })).catch((err) => console.error(err));
+      import('./artist-sheet.js').then((m) => m.openArtistSheet(ctx, b.dataset.id, { opener, playable: true, branchId: b.dataset.branch || '' })).catch((err) => console.error(err));
     }
   });
   dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); close(); });

@@ -65,8 +65,10 @@ def main():
         n = sum(1 for o in obras if o["artistId"] == p["id"])
         if not n:
             continue
-        row = dict(id=p["id"], name=p["nombre"], short=p["corto"], born=r.get("nacimiento") or p["nacimiento"],
-                   died=r.get("muerte") or p["muerte"], country=p["pais"], movementId=p["movimiento"], order=None,
+        # Años: los de painters.json (revisados y comprobados contra Wikidata por resolve.py, que casa con ±3/±2 años); los de Wikidata
+        # solo si faltan. Antes mandaban los de Wikidata y, con varias afirmaciones, salía la primera (Hals nacía en 1591, no c. 1582).
+        row = dict(id=p["id"], name=p["nombre"], short=p["corto"], born=p["nacimiento"] or r.get("nacimiento"),
+                   died=p["muerte"] or r.get("muerte"), country=p["pais"], movementId=p["movimiento"], order=None,
                    section=None, qid=p.get("qid") or r.get("qid"), works=n, category=p.get("categoria"), branches=[b for b in [p["movimiento"] if p["movimiento"] in RAMAS else None, p.get("rama")] if b],
                    stages=[{k: v for k, v in e.items() if k not in ("fase",)} for e in etapas_all.get(p["id"], [])
                            if any(o["artistId"] == p["id"] and o["level"] == e["nivel"] for o in obras)],

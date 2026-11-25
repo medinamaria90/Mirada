@@ -11,7 +11,11 @@ log = Log("resolve")
 
 
 def year(claims, p):
-    for c in claims.get(p, []):
+    """Año de la propiedad p, respetando el rango de Wikidata: primero la afirmación «preferida»; si no hay, las normales
+    (la primera); nunca las «deprecated». Sin esto salía la primera de la lista aunque Wikidata marque otra como preferida
+    (Frans Hals: 1591 en una afirmación normal y 1582 en la preferida)."""
+    orden = {"preferred": 0, "normal": 1}
+    for c in sorted((c for c in claims.get(p, []) if c.get("rank", "normal") in orden), key=lambda c: orden[c.get("rank", "normal")]):
         try:
             t = c["mainsnak"]["datavalue"]["value"]["time"]
             return int(t[:5]) if t[0] in "+-" else int(t[:4])

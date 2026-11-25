@@ -1,11 +1,9 @@
-// Datos del perfil que no necesitan DOM: avance al siguiente rango, portada y avatar, «Mi museo», metal
+// Datos del perfil que no necesitan DOM: avance al siguiente rango, portada y avatar, metal
 // de los logros, inicial del avatar y último resultado del test. Puro.
 
 import { artKey } from './srs.js';
 import { STREAK_MEDALS } from './progress.js';
 import { TEST_LEVELS } from '../test/resultado.js';
-
-export const MUSEUM_SIZE = 9;
 
 // Metal de cada logro (oro, plata o bronce) según lo difícil que es.
 export const TIERS = ['gold', 'silver', 'bronze'];
@@ -90,11 +88,6 @@ export function collectionWorks(progress, index) {
   const rev = collectionIds(progress, index).map((id, i) => ({ id, date: String(progress.collection[id]), i }));
   rev.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.i - a.i));
   return rev.map((e) => index.artwork(e.id));
-}
-
-// «Mi museo»: los últimos n de la colección.
-export function museumWorks(progress, index, n = MUSEUM_SIZE) {
-  return collectionWorks(progress, index).slice(0, n);
 }
 
 // Portada automática, portada de muestra y cuadro de la tarjeta que se comparte: SOLO de obras amables.

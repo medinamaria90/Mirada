@@ -11,7 +11,7 @@ export function suggestBoxHtml(label = 'Buscar pintor o cuadro') {
   return `<div class="sg">
     <label class="sg-field"><span class="sr-only">${esc(label)}</span>
       <input class="sg-input" type="search" role="combobox" aria-expanded="false" aria-controls="sg-list" aria-autocomplete="list" aria-haspopup="listbox"
-        placeholder="${esc(label)}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
+        placeholder="Buscar" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"></label>
     <ul class="sg-list" id="sg-list" role="listbox" aria-label="Sugerencias" hidden></ul>
     <p class="sg-empty" role="status" hidden>No encuentro nada con ese nombre, de momento.</p>
   </div>`;
@@ -22,7 +22,7 @@ function optionHtml(index, item, i) {
   const parts = splitByMarks(item.label, item.marks).map((p) => (p.hit ? `<strong>${esc(p.text)}</strong>` : esc(p.text))).join('');
   const sub = item.kind === 'artist' ? 'Pintor' : esc(index.artist(index.artwork(item.id)?.artistId)?.name || '');
   return `<li class="sg-option" role="option" id="sg-o-${i}" aria-selected="false" data-kind="${item.kind}" data-id="${esc(item.id)}">
-    <span class="sg-thumb">${work ? artFrame(work, { alt: '', cls: 'art-thumb', label: '', thumb: true }) : ''}</span>
+    <span class="sg-thumb">${work ? artFrame(work, { alt: '', cls: 'art-thumb', label: '', tiny: true }) : ''}</span>
     <span class="sg-text"><span class="sg-label">${parts}</span><span class="sg-sub">${sub}</span></span></li>`;
 }
 

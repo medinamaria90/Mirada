@@ -9,6 +9,7 @@ import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } f
 import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf } from '../../engine/dates.js';
+import { addDeepBadges } from '../deep-badges.js';
 import { coachSeen } from '../../state/store.js';
 
 export function renderHome(ctx, el) {
@@ -62,6 +63,7 @@ export function renderHome(ctx, el) {
   watchLandscapes(el);
   // Las épocas lejanas se pintan después, una por tarea; el modo del mapa sigue al tamaño de letra y ventana.
   const stops = [fillPendingEras(ctx, el, () => watchLandscapes(el)), watchMapMode(el.querySelector('.path-map'))];
+  addDeepBadges(ctx, el);
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
   if (!coachSeen()) {
     let stop = () => {};

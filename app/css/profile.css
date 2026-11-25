@@ -1,4 +1,4 @@
-/* Perfil: portada e identidad, tres cifras, «Mi museo», logros, test, accesos y hojas (ajustes, nombre,
+/* Perfil: portada e identidad, rango, logros, test, accesos y hojas (ajustes, nombre,
    portada y avatar, logro). Se carga solo al abrir el perfil (ui/screens/profile.js). Los colores vienen
    de brand.css. */
 
@@ -13,12 +13,11 @@
 }
 .page-profile .content { padding: 0 0 1.5rem; }
 
-/* Una columna en móvil y tablet, en el orden del DOM (identidad, cifras, museo, logros, test, accesos); en
-   escritorio, identidad y test a la izquierda, museo a la derecha y los logros debajo, con áreas de rejilla. */
+/* Una columna en móvil y tablet, en el orden del DOM (identidad, cifras, logros, test, accesos); en escritorio,
+   las mismas filas con áreas de rejilla (el test y los accesos, lado a lado). */
 .pf-layout { display: grid; gap: var(--pf-gap); }
-.pf-layout > .pf-sec, .pf-layout > .pf-figs-sec { padding-inline: var(--pf-gutter); min-width: 0; }
+.pf-layout > .pf-sec { padding-inline: var(--pf-gutter); min-width: 0; }
 .pf-layout > .pf-hero { min-width: 0; }
-.pf-layout > .pf-hero + .pf-figs-sec { margin-top: calc(var(--pf-gap) * -.4); }
 
 /* ---------- Identidad ---------- */
 .pf-hero { position: relative; }
@@ -98,23 +97,15 @@
 .pf-name-btn.is-empty .icon { color: var(--brand-text); }
 
 .pf-rank { padding: .9rem var(--pf-gutter) 0; }
-.pf-rank-name { display: flex; align-items: center; gap: .45rem; font: 500 1.3rem/1.1 var(--font); }
+.pf-rank-xp { margin-left: auto; font: 500 1.1rem/1 var(--font); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.pf-rank-xp-unit { font-size: .85rem; color: var(--ink-2); font-weight: 600; }
+.pf-rank-name { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .45rem; font: 500 1.3rem/1.1 var(--font); }
 .pf-rank-name .icon { color: var(--gold-text); flex: none; }
 .pf-bar { height: 12px; margin: .6rem 0 .7rem; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); overflow: hidden; }
 .pf-bar > span { display: block; height: 100%; min-width: 12px; border-radius: inherit; background: var(--brand-text); transition: width .8s var(--ease); }
 .pf-rank-next { font-size: .95rem; font-weight: 600; color: var(--ink); }
 .pf-needs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr)); gap: .5rem 1.4rem; margin-top: .5rem; }
 .pf-needs li { font-size: .9rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-
-/* ---------- Tres cifras ---------- */
-.pf-figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(6rem, 100%), 1fr)); padding: .9rem 0; border-block: 1px solid var(--line); }
-.pf-fig { display: grid; justify-items: center; align-content: start; gap: .1rem; padding: .2rem .4rem; text-align: center; min-width: 0; }
-.pf-fig + .pf-fig { border-left: 1px solid var(--line); }
-.pf-fig-icon { color: var(--brand-text); }
-.pf-fig-num { font: 500 clamp(1.5rem, 8vw, 2.1rem)/1.1 var(--font); letter-spacing: var(--track); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
-.pf-fig-num.is-compact { font-size: clamp(1.15rem, 5.4vw, 1.6rem); }
-.pf-fig-label { font-size: .9rem; color: var(--ink); font-weight: 600; }
-.pf-fig-sub { font-size: .78rem; line-height: 1.25; color: var(--ink-2); }
 
 /* ---------- Secciones ---------- */
 .pf-sec-head { flex-wrap: wrap; display: flex; align-items: center; justify-content: space-between; gap: .6rem; min-height: 48px; margin-bottom: .3rem; }
@@ -127,14 +118,7 @@
 }
 .pf-link:hover { background: var(--brand-soft); }
 
-/* ---------- Mi museo ---------- */
-.pf-museum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pf-tile-gap); }
-.pf-tile { display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 0; border-radius: var(--radius-sm); box-shadow: none; cursor: pointer; background: var(--surface-2); transition: transform .18s var(--ease); }
-.pf-tile:hover { transform: translateY(-2px); }
-.pf-tile .zoom-badge { display: none; }
-.pf-tile-empty { border: 2px dashed var(--line-2); background: transparent; cursor: default; }
-.pf-tile-empty:hover { transform: none; }
-.pf-cta { margin-top: .9rem; }
+.pf-tile { display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 0; border-radius: var(--radius-sm); box-shadow: none; background: var(--surface-2); }
 
 /* ---------- Logros ---------- */
 .pf-medals { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(6.5rem, 100%), 1fr)); gap: 1rem .4rem; }
@@ -298,16 +282,14 @@
   .pf-initial { font-size: 3rem; }
   .sheet-dialog { margin: auto; border-radius: 22px; }
   .pf-more { width: auto; min-width: 16rem; justify-self: start; }
-  /* Identidad y cifras arriba, a todo el ancho; debajo, por filas y en el orden del DOM (museo | logros,
-     test | accesos), así Tab sigue lo que se ve. */
+  /* Identidad, cifras y logros a todo el ancho; debajo, test | accesos. Por filas y en el orden del DOM, así
+     Tab sigue lo que se ve y no quedan huecos. */
   .pf-layout {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); column-gap: 2.4rem; align-items: start;
-    grid-template-areas: "hero hero" "figs figs" "museum medals" "test practice";
+    grid-template-areas: "hero hero" "medals medals" "test practice";
   }
   .pf-layout.is-new { grid-template-areas: "hero hero" "welcome test" "medals medals" "practice practice"; }
   .pf-layout > .pf-hero { grid-area: hero; }
-  .pf-layout > .pf-figs-sec { grid-area: figs; margin-top: 0; }
-  .pf-layout > .pf-museum-sec { grid-area: museum; }
   .pf-layout > .pf-welcome-sec { grid-area: welcome; }
   .pf-layout > .pf-medals-sec { grid-area: medals; }
   .pf-layout.is-new > .pf-medals-sec .pf-medals { grid-template-columns: repeat(auto-fill, minmax(min(8rem, 100%), 1fr)); }

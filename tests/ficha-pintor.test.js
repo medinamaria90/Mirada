@@ -8,9 +8,10 @@ import { dirname, join } from 'node:path';
 import { buildIndex, mergeCatalogFicha } from '../app/js/engine/catalog.js';
 import { emptyProgress, artistStatus } from '../app/js/engine/progress.js';
 import { pendingWorks } from '../app/js/engine/levels.js';
-import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, isMastered } from '../app/js/engine/painters.js';
+import { painterGroups, painterState, seenOf, playTargets, stageList, fold, isMastered, factsOf, wikidataUrl } from '../app/js/engine/painters.js';
+import { periodStart } from '../app/js/engine/movements.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
-import { initials } from '../app/js/ui/artist-sheet.js';
+import { initials } from '../app/js/ui/artist-profile.js';
 import { sourceLabel } from '../app/js/engine/stories.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -45,8 +46,8 @@ test('pintores: igual en todos los movimientos (también en el Renacimiento) y o
   const groups = painterGroups(p, real);
   assert.ok(groups.length >= 9);
   assert.ok(groups.every((g) => g.known === g.total && g.hidden === 0));
-  const orders = groups.map((g) => g.movement.order);
-  assert.deepEqual(orders, [...orders].sort((a, b) => a - b));
+  const starts = groups.map((g) => periodStart(g.movement.period) ?? 9999);
+  assert.deepEqual(starts, [...starts].sort((a, b) => a - b), 'movimientos por su fecha de inicio');
   for (const g of groups) {
     const born = g.artists.map((r) => r.artist.born || 0);
     assert.deepEqual(born, [...born].sort((a, b) => a - b), g.movement.id);
@@ -106,16 +107,22 @@ test('ficha: solo las obras ya vistas (colección o rondas), nunca las demás', 
   assert.deepEqual(ids, [works[0].id, works[1].id].sort());
 });
 
-test('ficha: líneas de vida de la historia de nivel 1 con su fuente; sin historia, un dato seco con Wikidata', () => {
-  const story = readJson(join(app, 'data', 'historias', 'goya.json'));
+test('ficha: datos clave que coinciden con lo que se lista (cuadros, vistos, a fondo); la fuente va aparte', () => {
   const goya = real.artist('goya');
-  const lines = lifeLines(goya, story, 'Romanticismo');
-  assert.ok(lines.length >= 1 && lines.length <= 4);
-  assert.ok(lines.every((l) => l.text && /^https?:/.test(l.source)));
-  const giotto = real.artist('giotto');
-  const dry = lifeLines(giotto, null, 'Renacimiento');
-  assert.equal(dry.length, 1);
-  assert.ok(dry[0].text.includes('Giotto') && /wikidata\.org/.test(dry[0].source), JSON.stringify(dry));
+  const f = factsOf(real, goya, 4);
+  assert.deepEqual(f.map((x) => x.label), ['Cuadros', 'Vistos', 'A fondo']);
+  assert.equal(f[0].value, real.worksOf('goya').length);
+  assert.equal(f[1].value, 4);
+  assert.equal(f[2].value, real.deepLevels('goya').length, '«A fondo» = las etapas que se listan');
+  assert.deepEqual(factsOf(real, goya, 0).map((x) => x.label), ['Cuadros', 'A fondo'], 'sin vistos no se enseña «Vistos»');
+  const sinFondo = real.artists.find((a) => !real.deepLevels(a.id).length);
+  assert.ok(!factsOf(real, sinFondo, 1).some((x) => x.label === 'A fondo'));
+  assert.match(wikidataUrl(goya), /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
+  assert.equal(wikidataUrl({}), '');
+  // La ficha no repite ninguna tarjeta de la historia.
+  const story = readJson(join(app, 'data', 'historias', 'goya.json'));
+  const text = JSON.stringify(f);
+  for (const c of story.levels[0].cards) assert.ok(!text.includes(c.text.slice(0, 30)));
 });
 
 test('ficha: jugar solo si es parada abierta del camino; etapas solo con niveles «a fondo»', () => {
@@ -123,6 +130,15 @@ test('ficha: jugar solo si es parada abierta del camino; etapas solo con niveles
   assert.equal(playTargets(p, real, first.id).stage, 'available');
   assert.equal(playTargets(p, real, real.path[5].id).stage, null);
   assert.equal(playTargets(p, real, 'giotto').stage, null);
+  // Dominado con etapas «a fondo» abiertas: el botón principal es seguir la primera.
+  const withDeep = real.path.find((a) => real.deepLevels(a.id).length);
+  const q = emptyProgress();
+  for (const a of real.path.slice(0, real.pathIndex(withDeep.id) + 1)) q.artists[a.id] = { plays: 1, best: 1, mastered: true };
+  const t = playTargets(q, real, withDeep.id);
+  assert.equal(t.stage, 'mastered');
+  assert.equal(t.next.id, real.deepLevels(withDeep.id)[0].id);
+  q.deep[`${withDeep.id}:${t.next.id}`] = { plays: 1, best: 1, mastered: true };
+  assert.notEqual(playTargets(q, real, withDeep.id).next?.id, t.next.id, 'hecha la etapa, pasa a la siguiente (o a nada)');
   const goya = stageList(p, real, 'goya');
   assert.ok(goya.length >= 3 && goya.every((s) => s.status === 'locked'));
 });

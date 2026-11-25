@@ -246,16 +246,25 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
 - **Estado v7** (`state/schema.js`): obras `a<N>` → `w<QID>` (`state/legacy-ids.js`, generado), lo sin equivalente se pierde;
   `deep: {}` y `rank: 0` nuevos; se descarta la ronda en curso.
 
-- **Ficha de pintor (parte B, paquete 1)**: `ui/artist-sheet.js` (diálogo sobre cualquier pantalla; no cambia de ruta, así no pierde
-  una ronda; jugar solo si se abre desde una pantalla con navegación inferior). Se abre con cualquier `data-artist="<id>"`
-  (`ui/artist-link.js`, delegación en `main.js`): feedback («Es de X», «El que has elegido es de…»), «Conoce a» y ficha de obra.
-  Muestra fechas, país, época, líneas de vida (tarjetas del nivel 1 de `app/data/historias/<id>.json`; sin historia, un dato seco
-  con enlace a Wikidata por el `qid` del catálogo), «Fíjate en…» (`hint`), etapas (grandes maestros), SOLO obras ya vistas y
-  progreso. Colección tiene dos rutas, `#coleccion` (Cuadros) y `#coleccion-pintores` (lista por épocas alcanzadas con buscador).
+- **Ficha de pintor (parte B)**, al estilo de un perfil de Instagram (`ui/artist-profile.js`): portada con su cuadro más famoso de los ya
+  vistos (sin spoilers), avatar con anillo de historia (degradado de marca si no se ha visto, gris si ya; tocarlo o «Ver su historia»
+  reproduce `playStory`), nombre, fechas, país y movimiento, líneas de vida con fuente (historia de nivel 1 de `app/data/historias/<id>.json`
+  o dato seco con Wikidata por el `qid`), «Cómo reconocerlo» (`traits`/`hint`), etapas jugables y las 6 primeras casillas de su galería con
+  «Ver sus n cuadros». Fuera de las rondas es una pantalla (`#pintor-<id>`, `#pintor-<id>-etapas`; `screens/artist-page.js`); dentro de una
+  ronda, un diálogo (`ui/artist-sheet.js`) para no perderla. Se abre con cualquier `data-artist="<id>"` (`ui/artist-link.js`, delegación en
+  `main.js`). **Galería del pintor** (`#obras-<id>`, `#obras-invitados-<movimiento>`; `screens/artist-works.js`): rejilla de 3 columnas con
+  todas sus obras desbloqueadas (abren el visor) y huecos discretos «n de m». Atrás devuelve a donde estabas, con su desplazamiento
+  (`main.js`: número en `history.state`). Colección tiene dos rutas, `#coleccion` (Cuadros) y `#coleccion-pintores`.
   **Historias servidas desde la app**: `tools/sync_historias.py` copia y valida `contenido/historias/` en `app/data/historias/`
-  (con `index.json` de pintores y niveles, para no pedir archivos inexistentes); `tests/ficha-pintor.test.js` falla si la copia se
-  desfasa: tras tocar una historia, ejecutar el script y subir ambas carpetas. Museo y ciudad (`catalog-ficha.json`, diferido,
-  `ui/ficha-data.js`) salen bajo el cuadro en el visor y en la ficha de obra solo con la obra revelada.
+  (con `index.json`); `tests/ficha-pintor.test.js` falla si la copia se desfasa. Museo y ciudad (`catalog-ficha.json`, diferido,
+  `ui/ficha-data.js`) salen bajo el cuadro en el visor solo con la obra revelada.
+- **Obras desbloqueadas** = vistas (colección o enseñadas en rondas, `engine/collection.js` `unlockedMap`): una sola definición para las franjas
+  de Colección, la ficha (galería completa: miniaturas que abren el visor y huecos discretos «n de m» sin imagen ni título) y la lista de
+  pintores. «Ver sus n cuadros» abre su galería.
+- **Niveles «a fondo»** (parte B, paquete 3): ruta `a-fondo-<pintor>-<nivel>` (`deepRoute`), historia de la etapa y ronda con
+  `planStage(..., { level })`; sello «+n» (o check) en el nodo del mapa de los pintores dominados (`ui/deep-badges.js`, añadido al DOM
+  desde `home.js`) que abre la ficha en «Etapas», jugables desde allí; el resultado celebra `deep-mastered` y `rank` y, con `coverShort`,
+  dice «Te faltan n cuadros suyos por ver: una ronda más».
 - **Colección «Pintores»**: por movimiento (cronológico), cada uno con «n de m pintores»; dentro solo los pintores con alguna obra vista
   (nunca se nombra a quien aún no se ha conocido) y al final «y k por descubrir» (no pulsable); un movimiento sin pintores conocidos no
   sale. El círculo de cada pintor es un anillo de progreso n/m (obras vistas de todas las suyas); el check dorado es «dominado» =
@@ -263,13 +272,36 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   definición del perfil (`artistStatus`); `tests/ficha-pintor.test.js` vigila la coherencia.
 - **Colección «Cuadros»** (`ui/screens/collection.js`, `engine/collection.js`): una franja por pintor con «n de m» y sus 3 últimas obras
   desbloqueadas; por movimiento cronológico (o «lo último primero»); invitados (categoría `invitado`) juntos en una franja
-  «Invitados» al final de su movimiento; tocar el nombre o «Ver todas» abre la ficha. Con 15 pintores o más con alguna obra
+  «Invitados» al final de su movimiento; el nombre lleva a la ficha, «Ver sus n cuadros» a la galería y una miniatura abre el visor; sin casilla de orden. Con 15 pintores o más con alguna obra
   desbloqueada sale el buscador con sugerencias (`engine/suggest.js`, `ui/suggest-box.js`: combobox/listbox, como mucho 6, pintores y
   luego títulos, sin tildes, principio de cualquier palabra, una errata) y chips por movimiento.
 - **Historias de inicio de nivel** (`ui/story-viewer.js`, `engine/stories.js`): tarjetas a pantalla completa (barras de progreso, detalle con
   `focus`, texto, fuente discreta), saltables, una vez por «pintor:nivel» (`state/stories-seen.js`, clave `sfumato.stories`) tras la
   presentación del movimiento y antes de «Conoce a»; la ficha del pintor tiene «Ver su historia». `playStory(ctx, artistId, level)`
   vale para los «a fondo». Sin historia no se muestra nada.
+- **Colección y ficha, ronda 3**: movimientos por su fecha de inicio (`engine/movements.js`, la estampa japonesa en su sitio); una sola regla de
+  «invitado» (`category === 'invitado'`) y cuentas coherentes (todas las obras del catálogo arriba); franja con el nombre (→ ficha) y una única
+  acción «Ver sus n cuadros», que salta de línea con letra grande; barra única de buscador + filtro por movimiento y salas en una fila, para que el
+  primer cuadro se vea en 360×640; galería sin pared de huecos («Te faltan 24 · se desbloquean en sus etapas», `missingNote`); avatar =
+  autorretrato visto, o retrato con `focus`, o iniciales (`avatarWork`, `ui/avatar.js`, el mismo en ficha, historia y lista de Pintores); «Dominado ·
+  7/12» con anillo n/m e insignia; historia con panel de texto desplazable, botones fijos, duración que crece con la letra y foco atrapado; celebración
+  del nivel «a fondo» como primer bloque del resultado, con destino y nombre de etapa con sentido (`stageTitle`). Datos: los años de nacimiento y
+  muerte salen de `pipeline/painters.json` (revisados contra Wikidata, `resolve.py` respeta el rango preferido) y los títulos solo se traducen con fuente
+  (`pipeline/titulos_es.json`; hoy solo «Medea furiosa», de la Wikipedia en español).
+- **Ronda 4 de Colección y ficha**: la historia que precede a una ronda «a fondo» o a «Conoce a» no entra en el historial (`playStory(..., { history: false })`):
+  su entrada de «atrás» llegaba de forma asíncrona cuando la ronda ya estaba montada y abría «¿Salir de la ronda?»; una flecha avanza exactamente una
+  tarjeta (el manejador del documento no la cuenta otra vez). Miniaturas sueltas `img/t/<id>.jpg` (240 px, ~10 KB; las pinta `tools/make_atlas.py`, mismo
+  cambio que `perfil-nuevo`) en franjas, galerías, ficha, avatares y buscador: con 48 miniaturas, 409 KB frente a 2.054 KB de hojas del atlas; la portada
+  lleva `srcset` (miniatura → JPG). Avatar: autorretrato sencillo (sin más gente: «con Isabel Brant» solo vale con `focus`) o retrato con `focus`, nunca
+  muy apaisado; si no, monograma sobre el color del movimiento. La primera tarjeta de la historia enseña ese rostro cuando lo hay. La ficha da datos
+  clave (cuadros, vistos, etapas, fuente Wikidata) y el botón principal es «Seguir: <etapa>» si hay etapas abiertas.
+- **Ronda 5 de Colección y ficha**: tres tamaños sueltos además del atlas (`tools/make_atlas.py`): `img/t` 240 px (avatares y buscador), `img/g` 320 px
+  (franjas, galerías, resultado: nítido en alta densidad; con 48 miniaturas, 132 KB en la primera pantalla y 722 KB en total) e `img/m` 800 px (la
+  portada lleva `srcset` 240/320/800/1200). Historia: cada obra se enseña a sangre con su punto de interés o, si es muy alta/apaisada o no lo tiene,
+  entera sobre un fondo desenfocado de ella misma (`frameFor`); abre con el rostro si lo hay o con su obra más famosa vista y enmarcable (`openingWork`,
+  no el retrato de otra persona). Monograma con la obra más famosa vista muy desenfocada (multiply, solo oscurece: el contraste no baja). Celebración
+  «a fondo»: sello que se estampa, obras de la etapa y un solo «Siguiente: <etapa>» (el resto, «Volver al camino»). Ficha: «A fondo» = las etapas
+  que se listan; la fuente de Wikidata va al pie, junto a fechas y país; botón «Jugar: <etapa>»; «Ver etapas» mueve el foco al título.
 - **Guía de bienvenida** (`ui/coach.js`): tres pasos sobre el nodo actual, la franja «Hoy» y Colección; una vez por navegador
   (`sfumato.coach` en localStorage), se salta con «Saltar» o Esc. La cabecera ya no lleva el chip de rango (irá en el perfil) y lleva el reto diario
   (`dailyChip`: calendario con punto si está pendiente, «4/5» si está hecho). Ya no hay franja «Hoy» ni lupa del día (su registro

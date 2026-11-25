@@ -120,6 +120,7 @@ function pickPlan(p) {
   if (Number.isFinite(p.seed)) out.seed = p.seed;
   for (const k of ['artistId', 'movementId', 'date']) if (typeof p[k] === 'string' && ROUTE_RE.test(p[k])) out[k] = p[k];
   if (typeof p.week === 'string' && WEEK_RE.test(p.week)) out.week = p.week;
+  if (Number.isInteger(p.level) && p.level >= 2 && p.level <= 9) out.level = p.level;
   return out;
 }
 
@@ -127,6 +128,7 @@ function pickExtra(e) {
   const out = {};
   for (const k of ['artistId', 'movementId', 'date']) if (typeof e[k] === 'string' && ROUTE_RE.test(e[k])) out[k] = e[k];
   if (typeof e.week === 'string' && WEEK_RE.test(e.week)) out.week = e.week;
+  if (Number.isInteger(e.level) && e.level >= 2 && e.level <= 9) out.level = e.level;
   if (e.unseen === true) out.unseen = true;
   return out;
 }

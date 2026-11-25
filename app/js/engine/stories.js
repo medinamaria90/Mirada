@@ -6,6 +6,11 @@ export const MAX_TEXT = 180;
 export const ZOOM_MIN = 1;
 export const ZOOM_MAX = 3;
 
+// Cuánto dura una tarjeta si avanza sola (como las historias de Instagram): lo que se tarda en leerla.
+export const CARD_BASE_MS = 3500;
+export const CARD_MS_PER_CHAR = 28;
+export const cardDuration = (card) => CARD_BASE_MS + CARD_MS_PER_CHAR * String(card?.text || '').length;
+
 export const storyKey = (artistId, level) => `${artistId}:${level}`;
 
 const validCard = (c) => c && typeof c.text === 'string' && c.text.length > 0 && c.text.length <= MAX_TEXT && typeof c.artwork === 'string';
@@ -24,6 +29,18 @@ export function cropOf(focus) {
   if (!Array.isArray(focus) || focus.length < 2) return { whole: true, x: 50, y: 50, zoom: 1 };
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, Number.isFinite(v) ? v : lo));
   return { whole: false, x: Math.round(clamp(focus[0], 0, 1) * 100), y: Math.round(clamp(focus[1], 0, 1) * 100), zoom: clamp(focus[2] ?? 1.5, ZOOM_MIN, ZOOM_MAX) };
+}
+
+// Cómo se enseña una obra en una tarjeta: 'crop' (a sangre, centrada en su punto de interés) o 'fit' (entera sobre un fondo
+// desenfocado de la propia obra). Las muy altas (un retrato de cuerpo entero) se enseñan enteras: un recorte corta la cabeza; las muy
+// apaisadas solo se recortan si hay punto de interés (el de la tarjeta o el de la obra); si no, enteras. { mode, x, y, zoom }
+export const TALL_RATIO = 0.65;
+export const WIDE_RATIO = 1.6;
+export function frameFor(work, focus) {
+  const ratio = work && work.w && work.h ? work.w / work.h : 1;
+  if (ratio < TALL_RATIO) return { mode: 'fit', ...cropOf(null) };
+  const c = cropOf(focus || work?.focus);
+  return c.whole ? { mode: 'fit', ...c } : { mode: 'crop', ...c };
 }
 
 // Posición siguiente al pasar de tarjeta: { pos } o { end: true } al pasar de la última; atrás se queda en la primera.

@@ -1,29 +1,45 @@
-/* Historias de inicio de nivel (ui/story-viewer.js): pantalla completa y de noche, como el visor. */
+/* Historias de inicio de nivel (ui/story-viewer.js): columna 9:16 centrada, de noche como el visor. Con letra grande el texto
+   se desplaza dentro de su panel y los botones quedan fijos abajo. */
 .story {
-  box-sizing: border-box; width: 100%; max-width: var(--col); height: 100dvh; max-height: none; margin: 0 auto; padding: 0; border: 0;
-  background: var(--viewer-bg); color: var(--viewer-ink);
+  box-sizing: border-box; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0;
+  background: var(--viewer-bg); color: var(--viewer-ink); overflow: hidden;
 }
-.story[open] { display: grid; grid-template-rows: auto auto minmax(0, 1fr); animation: rise .25s var(--ease); }
+.story[open] { display: grid; justify-items: center; animation: rise .25s var(--ease); }
 .story::backdrop { background: var(--viewer-bg); }
-.story-bars { display: flex; gap: 4px; padding: calc(env(safe-area-inset-top, 0px) + .7rem) .8rem 0; }
+.story-frame { position: relative; display: flex; flex-direction: column; width: min(100%, calc(100dvh * 9 / 16)); height: 100dvh; overflow: hidden; background: var(--viewer-bg); }
+.story-head { flex: none; padding: calc(env(safe-area-inset-top, 0px) + .7rem) .8rem .2rem; background: var(--viewer-bg); }
+.story-bars { display: flex; gap: 4px; }
 .story-bar { flex: 1; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--viewer-ink) 30%, transparent); overflow: hidden; }
-.story-bar > span { display: block; width: 0; height: 100%; background: var(--viewer-ink); transition: width .25s var(--ease); }
+.story-bar > span { display: block; width: 0; height: 100%; background: var(--viewer-ink); }
 .story-bar.is-done > span { width: 100%; }
-.story-top { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .2rem .8rem 0 1rem; }
-.story-title { font: 500 1rem/1.2 var(--font); color: var(--viewer-ink-2); overflow-wrap: anywhere; }
-.story-skip { min-height: 48px; min-width: 48px; padding: 0 .8rem; border: 0; background: none; color: var(--viewer-ink); font: 600 1rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
-.story-body { display: grid; grid-template-rows: minmax(0, 1fr) auto auto; min-height: 0; }
-.story-art { position: relative; min-height: 0; margin: .4rem .8rem 0; overflow: hidden; border-radius: var(--radius-sm); background: var(--viewer-frame); cursor: pointer; }
+.story-bar.is-now > span { animation: story-fill var(--dur, 6s) linear forwards; }
+.story.is-paused .story-bar.is-now > span { animation-play-state: paused; }
+@keyframes story-fill { from { width: 0; } to { width: 100%; } }
+.story-top { display: flex; flex-wrap: nowrap; align-items: center; gap: .3rem; padding: .5rem 0 .1rem; }
+.story-who { flex: 1 1 0; min-width: 0; overflow: hidden; display: flex; align-items: center; gap: .6rem; }
+.story-avatar { flex: none; width: 40px; height: 40px; min-width: 40px; }
+.story-who-text { display: grid; min-width: 0; line-height: 1.15; }
+.story-name { font: 600 .95rem/1.15 var(--font); overflow-wrap: anywhere; }
+.story-title { font-size: .82rem; color: var(--viewer-ink-2); overflow-wrap: anywhere; }
+.story-icon, .story-skip { flex: none; display: grid; place-items: center; min-height: 48px; min-width: 48px; border: 0; background: none; color: var(--viewer-ink); cursor: pointer; }
+.story-skip { padding: 0 .6rem; font: 600 1rem/1 var(--font); text-decoration: underline; text-underline-offset: 4px; }
+.story-media { position: relative; flex: 1 1 auto; min-height: 5rem; background: var(--viewer-frame); cursor: pointer; }
+.story-art { position: absolute; inset: 0; overflow: hidden; }
 .story-img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: contain; }
+.story-bg { position: absolute; inset: -6%; width: 112%; height: 112%; max-width: none; object-fit: cover; filter: blur(22px) brightness(.55) saturate(1.1); }
 .story-art.is-crop .story-img { object-fit: cover; object-position: var(--x) var(--y); transform: scale(var(--z)); transform-origin: var(--x) var(--y); }
-.story-card { display: grid; gap: .1rem; padding: .9rem 1.1rem .2rem; }
+.story-paused { position: absolute; z-index: 1; left: 50%; top: 42%; translate: -50% -50%; margin: 0; padding: .35rem .9rem; border-radius: 999px; background: color-mix(in srgb, var(--viewer-bg) 70%, transparent); color: var(--viewer-ink); font: 600 .9rem/1 var(--font); opacity: 0; transition: opacity .15s var(--ease); pointer-events: none; }
+.story.is-paused .story-paused { opacity: 1; }
+.story-bottom { flex: 0 1 auto; display: flex; flex-direction: column; min-height: 0; max-height: 56%; background: var(--viewer-bg); }
+.story-copy { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: grid; align-content: start; gap: .1rem; padding: .9rem 1.1rem .2rem; }
+.story-copy.has-more { -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 36px), transparent); mask-image: linear-gradient(to bottom, black calc(100% - 36px), transparent); }
 .story-text { font: 400 1.15rem/1.45 var(--font); color: var(--viewer-ink); }
 .story-source { justify-self: start; display: inline-flex; align-items: center; min-height: 48px; padding: 0 .2rem; color: var(--viewer-ink-3); font-size: .85rem; text-decoration: underline; text-underline-offset: 3px; }
-.story-nav { display: flex; align-items: center; gap: .6rem; padding: .2rem 1rem calc(env(safe-area-inset-bottom, 0px) + .9rem); }
+.story-nav { flex: none; display: flex; align-items: center; gap: .6rem; padding: .3rem 1rem calc(env(safe-area-inset-bottom, 0px) + .8rem); }
 .story-back { color: var(--viewer-ink); }
 .story-back:hover { background: color-mix(in srgb, var(--viewer-ink) 14%, transparent); }
-.story-nav .story-next { flex: 1; }
-@media (prefers-reduced-motion: reduce) { .story[open] { animation: none; } .story-bar > span { transition: none; } }
-html.reduce-motion .story[open] { animation: none; }
-html.reduce-motion .story-bar > span { transition: none; }
 .story-back[hidden] { display: none; }
+.story-nav .story-next { flex: 1; }
+@media (prefers-reduced-motion: reduce) { .story[open] { animation: none; } .story-bar.is-now > span { animation: none; width: 100%; } .story-paused { transition: none; } }
+html.reduce-motion .story[open] { animation: none; }
+html.reduce-motion .story-bar.is-now > span { animation: none; width: 100%; }

@@ -14,7 +14,8 @@ import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } 
 import { encodeChallenge } from '../../engine/challenge.js';
 import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
-import { seenWorks } from '../../engine/levels.js';
+import { seenWorks, deepStatus } from '../../engine/levels.js';
+import { stageTitle } from '../../engine/painters.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
@@ -47,7 +48,7 @@ function complete(ctx, result) {
 }
 
 function planMeta(plan) {
-  return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week };
+  return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week, level: plan.level };
 }
 
 // Rondas que no llevan al final un cuadro fallado antes: los retos con un amigo y el semanal (iguales
@@ -63,7 +64,8 @@ function falladoExtras(ctx, kind, plan) {
 
 // Ejecuta una ronda y la guarda tras cada respuesta para poder retomarla (state/session.js).
 function play(ctx, el, opts) {
-  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, more = null } = opts;
+  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, more = null, returnTo = null } = opts;
+  const home = returnTo || 'inicio';
   const meta = { route: opts.route || currentRoute(), title, accent, kind, extra, friendScore, shareTopic, plan: planMeta(plan) };
   const questions = resume ? resume.round.queue.map((it) => it.q) : plan.questions;
   return runLesson(ctx, el, {
@@ -77,9 +79,9 @@ function play(ctx, el, opts) {
     onSave: (snapshot) => ctx.store.update((s) => withSession(s, makeSession(meta, snapshot, Date.now()))),
     onQuit: () => {
       ctx.store.update(clearSession);
-      ctx.go('inicio', { replace: true });
+      ctx.go(home, { replace: true });
     },
-    onBackAfterDone: () => ctx.go('inicio', { replace: true }),
+    onBackAfterDone: () => ctx.go(home, { replace: true }),
     onDone: (summary) => {
       const before = ctx.store.get().progress;
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
@@ -92,6 +94,12 @@ function play(ctx, el, opts) {
       });
     },
   });
+}
+
+// Si la ronda se lanzó desde la ficha de un pintor (o su galería), atrás y «Salir» vuelven a ella y no al camino.
+function cameFrom(ctx) {
+  const prev = ctx.prevRoute();
+  return /^(pintor|obras)-[a-z0-9-]+$/.test(prev) ? prev : null;
 }
 
 // --- Ronda retomada -----------------------------------------------------------
@@ -266,7 +274,7 @@ function withIntro(ctx, el, movementId, show) {
 // Historia al empezar un nivel (una vez, saltable): después se muestra lo que sigue. Sin historia, de seguido.
 function withStory(ctx, el, artistId, level, show) {
   import('../story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level))
+    .then((m) => m.playStory(ctx, artistId, level, { history: false }))
     .catch((err) => { console.error(err); })
     .then(() => { if (el.isConnected) show(); });
 }
@@ -281,6 +289,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   if (!status) return leave(ctx);
   if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
+  const returnTo = cameFrom(ctx);
   withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, () => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
@@ -300,9 +309,27 @@ export function renderStage(ctx, el, artistId, branchId = '') {
       caption: (w) => ({ alt: `${w.title}, de ${artist.name}`, sub: w.year || '' }),
       aside: artist.hint ? `<aside class="hint"><span class="hint-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : '',
       carouselLabel: `Obras de ${artist.short || artist.name}`,
-      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name })),
+      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo })),
     });
   }));
+}
+
+// --- Nivel «a fondo» de un pintor: la historia de su etapa y la ronda (no toca la parada del camino) ---
+
+export function renderDeep(ctx, el, artistId, level) {
+  const { index } = ctx;
+  const artist = index.artist(artistId);
+  const stage = index.deepLevels(artistId).find((l) => l.id === level);
+  if (!artist || !stage) return leave(ctx);
+  if (deepStatus(ctx.store.get().progress, index, artistId, level) === 'locked') return leave(ctx, 'Aún no está abierto');
+  const movement = index.movement(artist.movementId);
+  const returnTo = cameFrom(ctx);
+  withStory(ctx, el, artistId, level, () => {
+    const progress = ctx.store.get().progress;
+    const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)] });
+    playEra(movement.era);
+    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
+  });
 }
 
 // --- Sala de movimiento (sin pintores con etapa) ---------------------------------

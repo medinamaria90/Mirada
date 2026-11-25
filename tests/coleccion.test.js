@@ -8,6 +8,7 @@ import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
 import { collectionStrips, unlockedPainterCount, unlockedMovements, suggestPool, STRIP_THUMBS, SEARCH_MIN_PAINTERS } from '../app/js/engine/collection.js';
+import { seenOf } from '../app/js/engine/painters.js';
 import { suggest, foldText, withinOne, matchToken, splitByMarks, SUGGEST_MAX } from '../app/js/engine/suggest.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -31,16 +32,13 @@ test('colección: una franja por pintor con «n de m» y solo las 3 últimas a l
   assert.deepEqual(s.shown, s.works.slice(0, STRIP_THUMBS));
 });
 
-test('colección: por movimiento en orden cronológico y, con «recientes», por lo último desbloqueado', () => {
+test('colección: siempre por movimiento en orden cronológico, y se puede filtrar por movimiento', () => {
   const p = emptyProgress();
   const early = real.path[0];
   const late = real.path[real.path.length - 1];
-  unlock(p, early.id, 2, '2026-11-24');
-  unlock(p, late.id, 2, '2026-11-01');
-  assert.deepEqual(collectionStrips(p, real).map((s) => s.id), [early.id, late.id]);
-  assert.deepEqual(collectionStrips(p, real, { recent: true }).map((s) => s.id), [early.id, late.id]);
   unlock(p, late.id, 2, '2026-11-25');
-  assert.deepEqual(collectionStrips(p, real, { recent: true }).map((s) => s.id), [late.id, early.id]);
+  unlock(p, early.id, 2, '2026-11-01');
+  assert.deepEqual(collectionStrips(p, real).map((s) => s.id), [early.id, late.id], 'lo último desbloqueado no cambia el orden');
   const mov = collectionStrips(p, real, { movementId: late.movementId });
   assert.ok(mov.length && mov.every((s) => s.movement.id === late.movementId));
 });
@@ -112,4 +110,16 @@ test('sugerencias: el conjunto sale solo de lo desbloqueado', () => {
   assert.equal(pl.works.length, 2);
   assert.deepEqual(suggest(pl, 'velaz'), [], 'Velázquez no está desbloqueado');
   assert.equal(suggest(pl, 'goy')[0].id, 'goya');
+});
+
+test('colección: «desbloqueada» es lo visto (colección o rondas), igual que la ficha y la lista de pintores', () => {
+  const p = emptyProgress();
+  const works = real.worksOf(first.id);
+  p.collection[works[0].id] = '2026-11-20';
+  p.artists[first.id] = { works: [works[1].id, works[2].id] };
+  const [s] = collectionStrips(p, real);
+  assert.equal(s.count, 3);
+  assert.equal(s.count, seenOf(p, real, first.id).length, 'la franja y la ficha cuentan lo mismo');
+  assert.equal(s.works.length, 3);
+  assert.equal(unlockedPainterCount(p, real), 1);
 });

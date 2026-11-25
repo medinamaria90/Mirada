@@ -1,0 +1,88 @@
+/* Colección: franjas por pintor, buscador con sugerencias, chips y lista de «Pintores». Colores solo de brand.css. */
+
+/* ---------- Colección (Cuadros): franjas por pintor, orden, filtro y buscador con sugerencias ---------- */
+.coll-bar { position: relative; display: flex; gap: .5rem; margin-bottom: .9rem; }
+.coll-bar .sg { position: static; flex: 1 1 auto; min-width: 0; }
+.coll-bar .sg-input { min-height: 48px; }
+.coll-filter { flex: 0 1 9rem; min-width: 0; }
+.coll-select {
+  box-sizing: border-box; width: 100%; min-height: 48px; padding: 0 .7rem; border: 0; border-radius: var(--radius-btn); background: var(--surface); color: var(--ink);
+  font: 500 .95rem/1 var(--font); box-shadow: var(--lift-sm); text-overflow: ellipsis;
+}
+.coll-salas { display: flex; align-items: center; gap: .4rem; margin-bottom: .6rem; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, black calc(100% - 32px), transparent); mask-image: linear-gradient(to right, black calc(100% - 32px), transparent); }
+.coll-salas-label { flex: none; color: var(--ink-2); font: 600 .8rem/1 var(--font); letter-spacing: .06em; text-transform: uppercase; }
+.sala-chip { flex: none; display: inline-flex; align-items: center; gap: .4rem; min-height: 48px; padding: 0 .9rem; border: 0; border-radius: 999px; background: color-mix(in srgb, var(--accent) 24%, var(--surface)); color: var(--ink); font: 500 .95rem/1 var(--font); cursor: pointer; white-space: nowrap; }
+.sala-chip .icon { color: var(--accent-ui); }
+/* La época pesa más que cada pintor: banda con el color de su movimiento. */
+.coll-era { margin: 1.3rem 0 .3rem; padding: .35rem .7rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--accent) 24%, var(--surface)); font: 600 .95rem/1.2 var(--font); letter-spacing: .02em; color: var(--ink); }
+.coll-era::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: .5rem; border-radius: 999px; background: var(--accent); }
+.coll-strip { margin-bottom: 1.2rem; }
+.coll-strip-head { display: grid; border-bottom: 1px solid var(--line); margin-bottom: .6rem; }
+.coll-artist-name { min-width: 0; font: 500 1.2rem/1.1 var(--font); }
+.coll-name-btn { display: inline-flex; align-items: center; gap: .25rem; max-width: 100%; min-height: 48px; padding: .6rem 0 .2rem; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.coll-name-btn > span { min-width: 0; overflow-wrap: break-word; }
+.coll-name-btn .icon { flex: none; margin-top: .15rem; color: var(--brand-text); }
+.coll-name-btn:hover > span { text-decoration: underline; text-decoration-color: var(--brand-text); text-underline-offset: 4px; }
+.coll-guests-name { padding: .8rem 0 .2rem; color: var(--ink-2); font: 600 .85rem/1.1 var(--font); letter-spacing: .08em; text-transform: uppercase; }
+.coll-strip-sub { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 .5rem; }
+.coll-count { color: var(--ink-2); font: 600 .82rem/1.2 var(--font); font-variant-numeric: lining-nums tabular-nums; }
+.coll-all { display: inline-flex; align-items: center; gap: .1rem; min-height: 48px; margin-left: auto; padding: 0 .3rem 0 .6rem; border: 0; border-radius: 999px; background: none; color: var(--brand-text); font: 600 .9rem/1 var(--font); cursor: pointer; white-space: nowrap; }
+.coll-all:hover { background: var(--brand-soft); }
+.sg { position: relative; }
+.sg-input {
+  box-sizing: border-box; width: 100%; min-height: 52px; padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
+  background: var(--surface); color: var(--ink); font: 400 1.05rem/1 var(--font); box-shadow: var(--lift-down);
+}
+.sg-input::placeholder { color: var(--ink-2); }
+.sg-list { position: absolute; z-index: 3; left: 0; right: 0; top: calc(100% + 6px); margin: 0; padding: .3rem; list-style: none; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-pop), var(--lift); }
+.sg-list[hidden], .sg-empty[hidden] { display: none; }
+.sg-option { display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: .7rem; min-height: 56px; padding: .3rem .5rem; border-radius: var(--radius-sm); cursor: pointer; }
+.sg-option[aria-selected="true"], .sg-option:hover { background: var(--brand-soft); }
+.sg-thumb { display: block; width: 44px; height: 44px; border-radius: 8px; overflow: hidden; }
+.sg-thumb .art { width: 100%; height: 100%; }
+.sg-text { display: grid; min-width: 0; }
+.sg-label { overflow-wrap: anywhere; }
+.sg-label strong { font-weight: 600; color: var(--brand-text); }
+.sg-sub { font-size: .82rem; color: var(--ink-2); overflow-wrap: anywhere; }
+.sg-empty { margin: .6rem .2rem 0; color: var(--ink-2); }
+
+/* ---------- Colección: pestañas y lista de pintores ---------- */
+.pl-search { display: block; margin-bottom: 1rem; }
+.pl-input {
+  box-sizing: border-box; width: 100%; min-height: 52px; padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
+  background: var(--surface); color: var(--ink); font: 400 1.05rem/1 var(--font); box-shadow: var(--lift-down);
+}
+.pl-input::placeholder { color: var(--ink-2); }
+.pl-group { margin-bottom: 1.4rem; }
+.pl-era { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .2rem .5rem; font: 500 1.1rem/1.1 var(--font); padding-bottom: .45rem; border-bottom: 2px solid var(--accent); margin-bottom: .3rem; }
+.pl-era-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pl-more { padding: .7rem .3rem 0; color: var(--ink-2); font-size: .9rem; }
+.pl-list { margin: 0; padding: 0; list-style: none; }
+.pl-row {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr) auto auto; align-items: center; gap: .7rem; width: 100%; min-height: 60px;
+  padding: .45rem .3rem; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink);
+  font: inherit; text-align: left; cursor: pointer;
+}
+.pl-row:hover { background: var(--surface-2); }
+.pl-node { position: relative; display: block; width: 48px; height: 48px; border-radius: 999px; }
+.pl-node svg.pl-ring-svg { position: absolute; inset: 0; }
+.pl-ring-track { fill: none; stroke: var(--line-2); stroke-width: 4; }
+.pl-ring-fill { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; }
+.pl-av { position: absolute; inset: 6px; display: block; }
+.pl-badge { position: absolute; right: -3px; bottom: -3px; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 999px; background: var(--gold); color: var(--on-gold); box-shadow: 0 0 0 2px var(--bg); }
+.pl-state { display: inline-flex; align-items: center; gap: .3rem; color: var(--gold-text); font: 600 .85rem/1.2 var(--font); font-variant-numeric: lining-nums tabular-nums; }
+.pl-text { display: grid; gap: 2px; min-width: 0; }
+.pl-name { font-weight: 500; overflow-wrap: break-word; }
+.pl-sub-guests { margin: .9rem .3rem .1rem; font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.pl-sub { font-size: .85rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pl-count { font: 600 .85rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pl-go { color: var(--ink-2); }
+.pl-empty { display: grid; justify-items: center; gap: 1rem; padding: 2rem 0; text-align: center; color: var(--ink-2); }
+
+/* Aspa de borrar del buscador con la tinta de la paleta (la nativa sale azul). */
+.sg-input::-webkit-search-cancel-button {
+  -webkit-appearance: none; appearance: none; width: 20px; height: 20px; margin-right: 2px; cursor: pointer; background: var(--ink-2);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.pl-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--ink-2); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E") center / contain no-repeat; }

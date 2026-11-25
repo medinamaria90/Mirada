@@ -1,112 +1,108 @@
-/* Ficha de pintor (ui/artist-sheet.js) y lista de «Pintores» en Colección (ui/screens/collection-painters.js).
-   Todo color sale de las variables de brand.css; el acento lo pone la época del pintor. */
+/* Ficha de pintor (ui/artist-profile.js, pantalla y diálogo) y galería del pintor (screens/artist-works.js), al estilo de un
+   perfil de Instagram. Todo color sale de brand.css; el acento lo pone el movimiento del pintor. */
 
-/* ---------- Ficha ---------- */
-.artist-sheet {
-  box-sizing: border-box; width: min(96vw, 520px); max-height: 92dvh; padding: 0; border: 0; border-radius: var(--radius);
-  background: var(--bg); color: var(--ink); box-shadow: var(--shadow-pop); overflow: hidden;
+.ap { position: relative; color: var(--ink); }
+.ap-page { padding: 0 0 calc(var(--safe-b) + 5.5rem); margin: 0; }
+.page-artist .content.ap-page, .page-works .content.aw { padding-top: 0; }
+/* Una sola anchura de contenido en Colección, galería y ficha (como .page-collection .content en main.css). */
+.page-artist .content.ap-page, .page-works .content.aw { max-width: 720px; margin-inline: auto; }
+
+/* Portada con su cuadro más famoso de los ya vistos (sin spoilers) que se funde con el fondo. */
+.ap-hero { position: relative; }
+.ap-cover { position: relative; height: clamp(150px, 30vw, 210px); max-height: 210px; overflow: hidden; background: linear-gradient(160deg, var(--accent), color-mix(in srgb, var(--accent) 40%, var(--bg))); }
+.ap-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.ap-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, color-mix(in srgb, var(--viewer-bg) 55%, transparent) 0, transparent 38%, transparent 55%, var(--bg) 100%); }
+.ap-back, .ap-close {
+  position: absolute; z-index: 2; top: calc(env(safe-area-inset-top, 0px) + .6rem); display: grid; place-items: center; width: 48px; height: 48px;
+  border: 0; border-radius: 999px; background: color-mix(in srgb, var(--viewer-bg) 72%, transparent); color: var(--viewer-ink); box-shadow: 0 0 0 1px color-mix(in srgb, var(--viewer-ink) 24%, transparent); cursor: pointer;
 }
+.ap-back { left: .6rem; }
+.ap-close { right: .6rem; }
+.ap-id { position: relative; display: flex; flex-wrap: wrap; align-items: flex-end; gap: .6rem 1rem; margin-top: -48px; padding: 0 1.2rem; }
+
+/* Avatar con el anillo de historia: degradado de marca si no se ha visto, gris si ya se vio. */
+.ap-avatar { flex: none; padding: 0; border: 0; background: none; border-radius: 999px; line-height: 0; }
+button.ap-avatar { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+button.ap-avatar:active .ap-ring { transform: scale(.96); }
+.ap-ring { display: block; width: 104px; height: 104px; padding: 3px; border-radius: 999px; background: var(--line-2); transition: transform .15s var(--ease); }
+.ap-ring.is-new { padding: 5px; background: linear-gradient(135deg, var(--brand), var(--gold) 55%, var(--accent)); }
+.ap-ring.is-none { background: var(--bg); padding: 0; }
+.ap-photo { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 999px; background: var(--surface-2); box-shadow: 0 0 0 3px var(--bg); }
+.ap-ring.is-none .ap-photo { box-shadow: 0 0 0 4px var(--bg); }
+.ap-who { flex: 1 1 11rem; min-width: 0; padding-bottom: .3rem; }
+.ap-name { font: 500 1.65rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; hyphens: manual; }
+.ap-meta { margin-top: .25rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.ap-era { display: inline-block; margin-top: .45rem; padding: .22rem .75rem; border-radius: 999px; background: color-mix(in srgb, var(--accent) 24%, var(--surface)); font: 600 .82rem/1.2 var(--font); }
+
+.ap-progress { padding: 1rem 1.2rem 0; display: grid; gap: .2rem; }
+.ap-mastery { display: flex; align-items: center; gap: .5rem; font: 600 .95rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.ap-mastery.is-done { color: var(--ink); }
+.ap-mastery-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 999px; background: var(--gold); color: var(--on-gold); }
+.ap-mastery-more { padding-left: 30px; color: var(--ink-2); font-size: .9rem; }
+.ap-actions { display: flex; flex-wrap: wrap; gap: .6rem; padding: 1.2rem 1.2rem 0; }
+.ap-actions .btn { flex: 1 1 9rem; min-width: 0; padding: .5rem 1rem; text-align: center; overflow-wrap: break-word; }
+.ap-actions .btn-secondary { flex: 0 0 auto; white-space: nowrap; }
+@media (min-width: 720px) { .ap-actions .btn-primary { flex: 0 1 auto; min-width: 12rem; } }
+
+.ap-bio, .ap-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem; padding: 1.6rem 1.2rem 0; }
+.ap-bio { font: 400 1.08rem/1.55 var(--font); }
+.ap-facts { display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; margin: 0; }
+.ap-facts div { display: grid; gap: .1rem; }
+.ap-facts dt { color: var(--ink-2); font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; }
+.ap-facts dd { margin: 0; font: 500 1.5rem/1.1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
+.ap-foot { padding: 1.4rem 1.2rem 0; }
+.ap-sources { display: flex; flex-wrap: wrap; align-items: center; gap: .1rem .5rem; color: var(--ink-2); font-size: .85rem; }
+.ap-source { display: inline-flex; align-items: center; min-height: 48px; padding: 0 .5rem; color: var(--brand-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.ap-h { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.15rem/1.1 var(--font); letter-spacing: var(--track); }
+.ap-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.ap-hint { font: 400 1.05rem/1.5 var(--font); }
+.ap-traits { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; font: 400 1.05rem/1.4 var(--font); }
+.ap-traits li { position: relative; padding-left: 1.2rem; }
+.ap-traits li::before { content: ""; position: absolute; left: 0; top: .55em; width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
+
+.ap-stages { display: grid; gap: .2rem; margin: 0; padding: 0; list-style: none; }
+.ap-stage { display: grid; grid-template-columns: auto minmax(0, max-content) auto 1fr; align-items: center; gap: .7rem; min-height: 48px; padding: .3rem 0; }
+button.ap-stage { width: 100%; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+button.ap-stage:hover { background: var(--surface-2); }
+.ap-stage-go { justify-self: end; color: var(--ink-2); }
+.ap-stage-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); }
+.ap-stage.is-mastered .ap-stage-mark { background: var(--gold); color: var(--on-gold); }
+.ap-stage.is-started .ap-stage-mark, .ap-stage.is-available .ap-stage-mark { background: var(--brand); color: var(--on-brand); }
+.ap-stage-name { overflow-wrap: anywhere; }
+.ap-stage-state { font: 600 .8rem/1 var(--font); color: var(--ink-2); }
+
+/* Rejilla de 3 columnas: cuadros vistos y huecos discretos para los que faltan (sin imagen ni título). */
+.ap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 3px; max-width: 720px; margin-inline: auto; width: 100%; margin: 0; padding: 0; list-style: none; }
+.ap-grid .art { width: 100%; border-radius: 0; box-shadow: none; }
+.ap-gap { aspect-ratio: 1; border: 2px dashed var(--line-2); border-radius: 4px; }
+.ap-missing { display: flex; flex-wrap: wrap; align-items: center; gap: 0 .6rem; margin: .4rem 0 0; color: var(--ink-2); font: 500 .95rem/1.4 var(--font); }
+.ap-missing-link { display: inline-flex; align-items: center; gap: .1rem; min-height: 48px; padding: 0 .4rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.ap-more { display: inline-flex; align-items: center; justify-content: center; gap: .3rem; min-height: 48px; margin-top: .3rem; border: 0; background: none; color: var(--brand-text); font: 600 1rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+
+/* Diálogo (dentro de una ronda). */
+.artist-sheet { box-sizing: border-box; width: min(100vw, 520px); height: min(100dvh, 880px); max-width: none; max-height: none; margin: auto; padding: 0; border: 0; border-radius: 0; background: var(--bg); color: var(--ink); overflow: hidden; }
 .artist-sheet::backdrop { background: var(--scrim); }
-.artist-sheet[open] { animation: rise .3s var(--ease); display: grid; }
-.as-body { position: relative; display: grid; gap: 1.1rem; padding: 1.4rem 1.2rem 1.2rem; max-height: 92dvh; overflow-y: auto; overscroll-behavior: contain; }
-.as-close { position: absolute; top: .5rem; right: .5rem; z-index: 1; }
-.as-head { display: grid; justify-items: center; gap: .3rem; text-align: center; padding-top: .3rem; }
-.as-seal {
-  display: grid; place-items: center; width: 72px; height: 72px; border-radius: 999px; margin-bottom: .3rem;
-  background: var(--accent); color: var(--on-accent); font: 600 1.5rem/1 var(--font); letter-spacing: .02em;
-  box-shadow: 0 var(--relief-node) 0 color-mix(in srgb, var(--accent) 70%, var(--ink));
-}
-.as-name { font: 500 1.6rem/1.15 var(--font); letter-spacing: var(--track); overflow-wrap: anywhere; }
-.as-meta { color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.as-era { display: inline-block; padding: .25rem .8rem; border-radius: 999px; background: var(--accent-soft); color: var(--ink); font: 600 .85rem/1.2 var(--font); }
-.as-progress { display: grid; gap: .35rem; justify-items: center; }
-.as-bar { display: block; width: min(240px, 70%); height: 8px; border-radius: 8px; background: var(--line); overflow: hidden; }
-.as-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--accent-ui); }
-.as-progress-text { font: 600 .85rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.as-life { display: grid; gap: .6rem; font: 400 1.05rem/1.45 var(--font); }
-.as-sources { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .6rem; color: var(--ink-2); font-size: .85rem; }
-.as-source { display: inline-flex; align-items: center; min-height: 48px; padding: 0 .6rem; color: var(--brand-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
-.as-look { display: flex; gap: .7rem; align-items: flex-start; padding: .8rem .9rem; border-radius: var(--radius-sm); background: var(--accent-soft); border-left: 3px solid var(--accent-ui); font: 400 1.02rem/1.4 var(--font); }
-.as-look-icon { flex: none; color: var(--accent-ui); margin-top: 2px; }
-.as-lock { display: flex; gap: .55rem; align-items: flex-start; margin: 0; padding: .7rem .9rem; border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink-2); font: 500 1rem/1.4 var(--font); }
-.as-lock svg { flex: none; margin-top: 2px; }
-.as-section { display: grid; gap: .6rem; }
-.as-h { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.1rem/1.1 var(--font); padding-bottom: .4rem; border-bottom: 1px solid var(--line); }
-.as-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.as-stages { display: grid; gap: .4rem; margin: 0; padding: 0; list-style: none; }
-.as-stage { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .6rem; padding: .55rem .2rem; }
-.as-stage-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); }
-.as-stage.is-mastered .as-stage-mark { background: var(--gold); color: var(--on-gold); }
-.as-stage.is-started .as-stage-mark, .as-stage.is-available .as-stage-mark { background: var(--brand); color: var(--on-brand); }
-.as-stage-name { overflow-wrap: anywhere; }
-.as-stage-state { font: 600 .8rem/1 var(--font); color: var(--ink-2); }
-.as-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: 0; padding: 0; list-style: none; }
-.as-actions { display: grid; gap: .6rem; position: sticky; bottom: -1.2rem; padding: .6rem 0 .2rem; background: linear-gradient(to top, var(--bg) 70%, transparent); }
-@media (min-width: 720px) { .artist-sheet { width: 560px; } }
-@media (prefers-reduced-motion: reduce) { .artist-sheet[open] { animation: none; } }
+.artist-sheet[open] { display: block; animation: rise .3s var(--ease); }
+.ap-in-dialog { height: 100%; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 2rem; }
+@media (min-width: 720px) { .artist-sheet { height: min(92dvh, 880px); border-radius: var(--radius); box-shadow: var(--shadow-pop); } }
+@media (prefers-reduced-motion: reduce) { .artist-sheet[open] { animation: none; } .ap-ring { transition: none; } }
+.ap-lock { display: flex; gap: .55rem; align-items: flex-start; margin: 0; padding: .7rem .9rem; border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink-2); font: 500 1rem/1.4 var(--font); }
+.ap-lock svg { flex: none; margin-top: 2px; }
 html.reduce-motion .artist-sheet[open] { animation: none; }
 
-/* ---------- Colección (Cuadros): franjas por pintor, orden, filtro y buscador con sugerencias ---------- */
-.coll-controls { display: grid; gap: .7rem; margin-bottom: 1.2rem; }
-.coll-era { margin: 1.4rem 0 .6rem; font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
-.coll-era::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: .5rem; border-radius: 999px; background: var(--accent); }
-.coll-strip { margin-bottom: 1.2rem; }
-.coll-strip-head { display: flex; align-items: center; gap: .5rem; padding-bottom: .3rem; border-bottom: 1px solid var(--line); margin-bottom: .6rem; }
-.coll-artist-name { flex: 1; min-width: 0; font: 500 1.2rem/1.1 var(--font); }
-.coll-name-btn { display: inline-flex; align-items: center; gap: .3rem; min-height: 48px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; overflow-wrap: anywhere; }
-.coll-name-btn .icon { flex: none; color: var(--brand-text); }
-.coll-all { min-height: 48px; padding: 0 .4rem; border: 0; background: none; color: var(--brand-text); font: 600 .9rem/1 var(--font); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; white-space: nowrap; }
-.coll-recent { display: inline-flex; align-items: center; gap: .6rem; justify-self: start; min-height: 48px; padding: 0 .3rem; border: 0; background: none; color: var(--ink); font: 500 1rem/1 var(--font); cursor: pointer; }
-.coll-recent-box { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 8px; color: transparent; box-shadow: inset 0 0 0 2px var(--line-2); }
-.coll-recent[aria-pressed="true"] .coll-recent-box { background: var(--brand); color: var(--on-brand); box-shadow: none; }
-.coll-chips { display: flex; gap: .4rem; overflow-x: auto; padding-bottom: .2rem; scrollbar-width: none; }
-.chip-filter { flex: none; min-height: 48px; padding: 0 1rem; border: 0; border-radius: 999px; background: var(--surface); color: var(--ink); font: 500 .95rem/1 var(--font); box-shadow: var(--lift-sm); cursor: pointer; }
-.chip-filter[aria-pressed="true"] { background: var(--brand-soft); box-shadow: 0 var(--relief-sm) 0 var(--brand-shadow), inset 0 0 0 2px var(--brand); }
-.sg { position: relative; }
-.sg-input {
-  box-sizing: border-box; width: 100%; min-height: 52px; padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
-  background: var(--surface); color: var(--ink); font: 400 1.05rem/1 var(--font); box-shadow: var(--lift-down);
-}
-.sg-input::placeholder { color: var(--ink-2); }
-.sg-list { position: absolute; z-index: 3; left: 0; right: 0; top: calc(100% + 6px); margin: 0; padding: .3rem; list-style: none; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-pop), var(--lift); }
-.sg-list[hidden], .sg-empty[hidden] { display: none; }
-.sg-option { display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: .7rem; min-height: 56px; padding: .3rem .5rem; border-radius: var(--radius-sm); cursor: pointer; }
-.sg-option[aria-selected="true"], .sg-option:hover { background: var(--brand-soft); }
-.sg-thumb { display: block; width: 44px; height: 44px; border-radius: 8px; overflow: hidden; }
-.sg-thumb .art { width: 100%; height: 100%; }
-.sg-text { display: grid; min-width: 0; }
-.sg-label { overflow-wrap: anywhere; }
-.sg-label strong { font-weight: 600; color: var(--brand-text); }
-.sg-sub { font-size: .82rem; color: var(--ink-2); overflow-wrap: anywhere; }
-.sg-empty { margin: .6rem .2rem 0; color: var(--ink-2); }
-
-/* ---------- Colección: pestañas y lista de pintores ---------- */
-.pl-search { display: block; margin-bottom: 1rem; }
-.pl-input {
-  box-sizing: border-box; width: 100%; min-height: 52px; padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
-  background: var(--surface); color: var(--ink); font: 400 1.05rem/1 var(--font); box-shadow: var(--lift-down);
-}
-.pl-input::placeholder { color: var(--ink-2); }
-.pl-group { margin-bottom: 1.4rem; }
-.pl-era { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.1rem/1.1 var(--font); padding-bottom: .45rem; border-bottom: 2px solid var(--accent); margin-bottom: .3rem; }
-.pl-era-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.pl-more { padding: .7rem .3rem 0; color: var(--ink-2); font-size: .9rem; }
-.pl-list { margin: 0; padding: 0; list-style: none; }
-.pl-row {
-  display: grid; grid-template-columns: 44px 1fr auto auto; align-items: center; gap: .7rem; width: 100%; min-height: 60px;
-  padding: .45rem .3rem; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink);
-  font: inherit; text-align: left; cursor: pointer;
-}
-.pl-row:hover { background: var(--surface-2); }
-.pl-node { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; }
-.pl-node svg { position: absolute; inset: 0; }
-.pl-ring-track { fill: none; stroke: var(--line-2); stroke-width: 4; }
-.pl-ring-fill { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; }
-.pl-initials { font: 600 .9rem/1 var(--font); color: var(--ink-2); }
-.pl-node.is-mastered { background: var(--gold); color: var(--on-gold); }
-.pl-text { display: grid; gap: 2px; min-width: 0; }
-.pl-name { font-weight: 500; overflow-wrap: anywhere; }
-.pl-sub { font-size: .85rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.pl-count { font: 600 .85rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.pl-go { color: var(--ink-2); }
-.pl-empty { padding: 2rem 0; text-align: center; color: var(--ink-2); }
+/* Galería del pintor. */
+.aw { padding: 0 0 calc(var(--safe-b) + 5.5rem); }
+.aw-head { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .7rem; padding: calc(env(safe-area-inset-top, 0px) + .6rem) .8rem .8rem; }
+.aw-head .ap-back { position: static; flex: none; background: var(--surface); color: var(--ink); box-shadow: var(--lift-sm); }
+.aw-titles { flex: 1 1 8rem; min-width: 0; }
+.aw-title { font: 500 1.4rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
+.aw-sub { color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+/* «Su ficha» va en su propia fila, bajo el título: con letra grande no le quita ancho. */
+.aw-ficha { flex: 0 0 100%; display: inline-flex; align-items: center; justify-content: flex-start; gap: .2rem; min-height: 48px; margin-left: 58px; padding: 0 .3rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.aw-who { padding-inline: .5rem; }
+.aw .ap-missing { margin: 1rem .8rem 0; }
+.aw .ap-grid { margin-inline: .8rem; width: auto; }
+.ap-missing-link { margin-left: -.4rem; }
+.aw-more { margin: 1rem .8rem 0; color: var(--ink-2); font: 500 1rem/1.4 var(--font); }
+.aw-who { display: block; margin-top: 2px; color: var(--ink-2); font: 500 .74rem/1.15 var(--font); overflow-wrap: break-word; }
+.aw-empty { margin: 2rem 1.2rem; display: grid; gap: 1rem; justify-items: center; text-align: center; color: var(--ink-2); }
