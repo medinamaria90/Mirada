@@ -150,8 +150,14 @@ export function avatarWork(seen) {
 export function missingNote(progress, index, artistId, seenCount, total) {
   const left = total - seenCount;
   if (left <= 0) return null;
+  const one = left === 1;
   const toStages = isMastered(progress, artistId) && index.deepLevels(artistId).length > 0;
-  return { text: `${left === 1 ? 'Te falta 1' : `Te faltan ${left}`} · ${toStages ? 'se desbloquean en sus etapas' : 'se desbloquean al jugar sus rondas'}`, toStages };
+  const guest = index.artist(artistId)?.category === 'invitado';
+  // Un invitado no tiene rondas propias: sus cuadros salen en las de su movimiento.
+  const how = toStages ? `${one ? 'se desbloquea' : 'se desbloquean'} en sus etapas`
+    : guest ? `${one ? 'sale' : 'salen'} en las rondas de su movimiento`
+      : `${one ? 'se desbloquea' : 'se desbloquean'} al jugar sus rondas`;
+  return { text: `${one ? 'Te falta 1' : `Te faltan ${left}`} · ${how}`, toStages };
 }
 
 // Obra con la que abre la historia de un pintor ya conocido: la más famosa de las que ha visto y que se deje enmarcar (ni muy
@@ -160,4 +166,25 @@ const OTHER_PORTRAIT = /^(retrato de|portrait of)/i;
 export function openingWork(seen, fallback) {
   const ok = seen.filter((w) => ratioOf(w) >= 0.65 && ratioOf(w) <= 1.6 && !(OTHER_PORTRAIT.test(w.title) && !SELF_PORTRAIT.test(w.title)));
   return ok.sort(byFame)[0] || fallback;
+}
+
+// Monograma de un pintor: inicial del nombre de pila y del apellido principal, sin partículas ni segundos nombres
+// («Bartolomé Esteban Murillo» → BM, «Vincent van Gogh» → VG, «Caspar David Friedrich» → CF); un solo nombre, su inicial.
+const PARTICLES = new Set(['de', 'del', 'la', 'las', 'los', 'el', 'da', 'das', 'di', 'do', 'du', 'van', 'von', 'der', 'den', 'ten', 'y', 'e', 'le', 'san', 'santa']);
+const SUFFIX = /\s+(el\s+(viejo|joven)|the\s+(elder|younger))\s*$/i;
+export function monogramOf(name) {
+  const words = String(name || '').replace(SUFFIX, '').split(/\s+/).filter(Boolean);
+  const main = words.filter((w) => !PARTICLES.has(w.toLowerCase()) && /^\p{L}/u.test(w));
+  // «El Greco»: dos palabras y una es partícula, pero forma parte del nombre.
+  const pick = main.length === 1 && words.length === 2 ? words : main.length ? main : words;
+  const letter = (w) => [...w][0].toUpperCase();
+  if (!pick.length) return '·';
+  return pick.length === 1 ? letter(pick[0]) : letter(pick[0]) + letter(pick[pick.length - 1]);
+}
+
+// Variante de color (0-4) de un monograma, según el id del pintor: dentro de un mismo movimiento no son discos iguales.
+export function monogramVariant(id) {
+  let h = 0;
+  for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return h % 5;
 }

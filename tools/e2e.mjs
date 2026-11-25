@@ -1069,7 +1069,7 @@ if (SMOKE) {
   await page.waitForSelector('button.ap-stage');
   const l1 = index.levelWorks(deepArtist.id, 1).length;
   const allW = index.worksOf(deepArtist.id).length;
-  check((await page.locator('.ap-mastery.is-done').innerText()).replace(/\s+/g, ' ').includes(`Dominado · ${l1} de ${allW} cuadros`), `la ficha no explica «Dominado · n de m»: ${await page.locator('.ap-progress').innerText()}`);
+  check((await page.locator('.ap-mastery.is-done').innerText()).trim() === 'Dominado' && (await page.locator('.ap-facts').innerText()).replace(/\s+/g, ' ').includes(`Cuadros ${allW}`) && (await page.locator('.ap-facts').innerText()).replace(/\s+/g, ' ').includes(`Vistos ${l1}`), `la ficha no dice «Dominado» con sus contadores aparte: ${await page.locator('.ap-progress').innerText()}`);
   check((await page.locator('.ap-mastery-more').innerText()).includes(`Te quedan ${allW - l1} en los niveles a fondo`), 'la ficha no explica lo que queda en los niveles a fondo');
   check(page.url().endsWith('#pintor-' + deepArtist.id + '-etapas'), `el sello no lleva a las etapas: ${page.url()}`);
   await shot(page, '14i-ficha-etapas');
@@ -1240,6 +1240,11 @@ if (SMOKE) {
       const head = await bp.evaluate(() => [...document.querySelectorAll('.coll-strip-head')].slice(0, 6).map((h) => { const n = h.querySelector('.coll-name-btn, .coll-guests-name'); const a = h.querySelector('.coll-all'); return { w: n.getBoundingClientRect().width, clipped: n.scrollWidth > n.clientWidth + 1, ownLine: a.getBoundingClientRect().top >= n.getBoundingClientRect().bottom - 2 }; }));
       check(head.every((h) => h.w >= 140 && !h.clipped && h.ownLine), `texto al 200 %: cabecera de franja ${JSON.stringify(head)}`);
     }
+    if (r.startsWith('obras-')) {
+      // El título de la galería no se parte letra a letra: ancho útil y sin recortes; «Su ficha» en su fila.
+      const g = await bp.evaluate(() => { const t = document.querySelector('.aw-title'); const f = document.querySelector('.aw-ficha'); const b = t.getBoundingClientRect(); return { w: b.width, h: b.height, fs: parseFloat(getComputedStyle(t).fontSize), clipped: t.scrollWidth > t.clientWidth + 1, ficha: f ? f.getBoundingClientRect().top >= b.bottom - 2 : true }; });
+      check(g.w >= 150 && g.h < g.fs * 1.4 * 4 && !g.clipped && g.ficha, `texto al 200 %: título de la galería ${JSON.stringify(g)}`);
+    }
   }
   // La historia con letra grande: el texto se desplaza en su panel, «Siguiente» queda a la vista, el foco no sale y dura más.
   await bp.goto(`${base}#pintor-${index.path[0].id}`);
@@ -1249,6 +1254,8 @@ if (SMOKE) {
   await bp.waitForSelector('.story[open] .story-next');
   await bp.waitForTimeout(300);
   const st200 = await bp.evaluate(() => { const n = document.querySelector('.story-next').getBoundingClientRect(); const bar = document.querySelector('.story-bar.is-now'); return { nextBottom: n.bottom, vh: innerHeight, dur: bar ? parseFloat(bar.style.getPropertyValue('--dur')) : 0, headOverlap: document.querySelector('.story-head').getBoundingClientRect().bottom > document.querySelector('.story-media').getBoundingClientRect().top + 1 }; });
+  const stHead = await bp.evaluate(() => { const who = document.querySelector('.story-who-text, .story-who'); const w = who.getBoundingClientRect(); return [...document.querySelectorAll('.story-head button')].map((b) => { const r = b.getBoundingClientRect(); return r.width > 0 && r.left < w.right - 1 && r.right > w.left + 1 && r.top < w.bottom - 1 && r.bottom > w.top + 1; }); });
+  check(!stHead.some(Boolean), `historia al 200 %: pausa o «Saltar» pisan el subtítulo ${JSON.stringify(stHead)}`);
   check(st200.nextBottom <= st200.vh && !st200.headOverlap, `historia al 200 %: ${JSON.stringify(st200)}`);
   check(st200.dur > 2 * 3500, `historia al 200 %: la duración no crece con la letra (${st200.dur} ms)`);
   for (let k = 0; k < 6; k++) {

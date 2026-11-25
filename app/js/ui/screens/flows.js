@@ -63,7 +63,8 @@ function falladoExtras(ctx, kind, plan) {
 
 // Ejecuta una ronda y la guarda tras cada respuesta para poder retomarla (state/session.js).
 function play(ctx, el, opts) {
-  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, more = null } = opts;
+  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, more = null, returnTo = null } = opts;
+  const home = returnTo || 'inicio';
   const meta = { route: opts.route || currentRoute(), title, accent, kind, extra, friendScore, shareTopic, plan: planMeta(plan) };
   const questions = resume ? resume.round.queue.map((it) => it.q) : plan.questions;
   return runLesson(ctx, el, {
@@ -77,9 +78,9 @@ function play(ctx, el, opts) {
     onSave: (snapshot) => ctx.store.update((s) => withSession(s, makeSession(meta, snapshot, Date.now()))),
     onQuit: () => {
       ctx.store.update(clearSession);
-      ctx.go('inicio', { replace: true });
+      ctx.go(home, { replace: true });
     },
-    onBackAfterDone: () => ctx.go('inicio', { replace: true }),
+    onBackAfterDone: () => ctx.go(home, { replace: true }),
     onDone: (summary) => {
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
       // Después de cualquier ronda, el repaso de 5 si hay cuadros para él; si no, «Repasar más» tras el rápido.
@@ -91,6 +92,12 @@ function play(ctx, el, opts) {
       });
     },
   });
+}
+
+// Si la ronda se lanzó desde la ficha de un pintor (o su galería), atrás y «Salir» vuelven a ella y no al camino.
+function cameFrom(ctx) {
+  const prev = ctx.prevRoute();
+  return /^(pintor|obras)-[a-z0-9-]+$/.test(prev) ? prev : null;
 }
 
 // --- Ronda retomada -----------------------------------------------------------
@@ -276,6 +283,7 @@ export function renderStage(ctx, el, artistId) {
   if (!artist || index.pathIndex(artistId) < 0) return leave(ctx);
   if (artistStatus(ctx.store.get().progress, index, artistId) === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
+  const returnTo = cameFrom(ctx);
   withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, () => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
@@ -295,7 +303,7 @@ export function renderStage(ctx, el, artistId) {
       caption: (w) => ({ alt: `${w.title}, de ${artist.name}`, sub: w.year || '' }),
       aside: artist.hint ? `<aside class="hint"><span class="hint-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : '',
       carouselLabel: `Obras de ${artist.short || artist.name}`,
-      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: { artistId }, shareTopic: artist.name })),
+      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: { artistId }, shareTopic: artist.name, returnTo })),
     });
   }));
 }
@@ -309,11 +317,12 @@ export function renderDeep(ctx, el, artistId, level) {
   if (!artist || !stage) return leave(ctx);
   if (deepStatus(ctx.store.get().progress, index, artistId, level) === 'locked') return leave(ctx, 'Aún no está abierto');
   const movement = index.movement(artist.movementId);
+  const returnTo = cameFrom(ctx);
   withStory(ctx, el, artistId, level, () => {
     const progress = ctx.store.get().progress;
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)] });
     playEra(movement.era);
-    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}` }));
+    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
   });
 }
 

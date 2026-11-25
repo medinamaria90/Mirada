@@ -4,8 +4,9 @@
 
 import { esc } from './dom.js';
 import { artFrame, tinySrc } from './art.js';
+import { monogramOf, monogramVariant } from '../engine/painters.js';
 
-export const initials = (name) => String(name || '').split(/\s+/).filter((w) => /^\p{Lu}/u.test(w)).slice(0, 2).map((w) => w[0]).join('') || '·';
+export const initials = monogramOf;
 
 // avatar: { work, x, y } | null. El tamaño lo pone el contenedor. Sin avatar, el monograma lleva de textura, muy desenfocada y
 // oscurecida, la obra más famosa ya vista (`texture`): así no es una columna de discos iguales y el contraste del texto no baja
@@ -17,5 +18,6 @@ export function avatarHtml(artist, avatar, cls = '', { defer = false, texture = 
   const inner = avatar
     ? artFrame(avatar.work, { alt: '', cls: 'av-art', label: '', tiny: true, defer })
     : `${texture ? `<img class="av-bg" ${key}="${esc(tinySrc(texture))}" alt="" aria-hidden="true">` : ''}<span class="av-initials" aria-hidden="true">${esc(initials(artist.name))}</span>`;
-  return `<span class="av ${cls}${avatar ? '' : ' is-initials'}"${style}>${inner}</span>`;
+  const variant = avatar ? '' : ` data-v="${monogramVariant(artist.id)}"`;
+  return `<span class="av ${cls}${avatar ? '' : ' is-initials'}"${style}${variant}>${inner}</span>`;
 }

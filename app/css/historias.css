@@ -16,11 +16,11 @@
 .story.is-paused .story-bar.is-now > span { animation-play-state: paused; }
 @keyframes story-fill { from { width: 0; } to { width: 100%; } }
 .story-top { display: flex; flex-wrap: nowrap; align-items: center; gap: .3rem; padding: .5rem 0 .1rem; }
-.story-who { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: .6rem; }
+.story-who { flex: 1 1 0; min-width: 0; overflow: hidden; display: flex; align-items: center; gap: .6rem; }
 .story-avatar { flex: none; width: 40px; height: 40px; min-width: 40px; }
 .story-who-text { display: grid; min-width: 0; line-height: 1.15; }
-.story-name { font: 600 .95rem/1.15 var(--font); overflow-wrap: break-word; }
-.story-title { font-size: .82rem; color: var(--viewer-ink-2); overflow-wrap: break-word; }
+.story-name { font: 600 .95rem/1.15 var(--font); overflow-wrap: anywhere; }
+.story-title { font-size: .82rem; color: var(--viewer-ink-2); overflow-wrap: anywhere; }
 .story-icon, .story-skip { flex: none; display: grid; place-items: center; min-height: 48px; min-width: 48px; border: 0; background: none; color: var(--viewer-ink); cursor: pointer; }
 .story-skip { padding: 0 .6rem; font: 600 1rem/1 var(--font); text-decoration: underline; text-underline-offset: 4px; }
 .story-media { position: relative; flex: 1 1 auto; min-height: 5rem; background: var(--viewer-frame); cursor: pointer; }

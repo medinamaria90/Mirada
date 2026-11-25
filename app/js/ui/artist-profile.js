@@ -73,14 +73,13 @@ function galleryHtml(artist, seen, total, withLink, missing) {
     ${missing}${more}</section>`;
 }
 
-// «✓ Dominado · 9 de 33 cuadros» (dominado = lo que dice el motor) y, si quedan obras en los niveles «a fondo», cuántas.
+// «✓ Dominado» (lo que dice el motor) y, si quedan obras en los niveles «a fondo», cuántas. Los números de cuadros van en los contadores de
+// debajo: no se repiten aquí. Sin dominar, nada.
 function masteryHtml(progress, index, artistId, seen, total) {
-  const done = isMastered(progress, artistId);
+  if (!isMastered(progress, artistId)) return '';
   const deep = index.deepLevels(artistId).length > 0;
   const left = total - seen;
-  const count = `${seen} de ${total} cuadros`;
-  if (!done) return `<p class="ap-mastery">${count}</p>`;
-  return `<p class="ap-mastery is-done"><span class="ap-mastery-mark" aria-hidden="true">${icons.check(14)}</span><span>Dominado · ${count}</span></p>${deep && left > 0 ? `<p class="ap-mastery-more">Te quedan ${left} en los niveles a fondo</p>` : ''}`;
+  return `<p class="ap-mastery is-done"><span class="ap-mastery-mark" aria-hidden="true">${icons.check(14)}</span><span>Dominado</span></p>${deep && left > 0 ? `<p class="ap-mastery-more">Te quedan ${left} en los niveles a fondo</p>` : ''}`;
 }
 
 function heroHtml(artist, movement, seen, hasStory, storyNew, tag, leadControl) {
@@ -122,7 +121,7 @@ export async function profileHtml(ctx, artistId, opts) {
       ${hasStory ? `<button type="button" class="btn btn-secondary" data-ap="story">${icons.play(18)}<span>Ver su historia</span></button>` : ''}
     </div>` : '';
   return `${heroHtml(artist, movement, seen, hasStory, !storySeen(storyKey(artistId, 1)), opts.tag || 'h2', opts.leadControl || '')}
-    ${known ? `<div class="ap-progress">${masteryHtml(progress, index, artistId, seen.length, total)}</div>` : ''}
+    ${known && isMastered(progress, artistId) ? `<div class="ap-progress">${masteryHtml(progress, index, artistId, seen.length, total)}</div>` : ''}
     ${actions}
     <section class="ap-bio" aria-label="Datos">${factsHtml(index, artist, seen.length)}</section>
     ${lookHtml(artist)}

@@ -62,20 +62,24 @@ export function groupsHtml(ctx, query) {
   }).join('');
 }
 
+// Lo buscado se conserva al ir a una ficha y volver (como el filtro de Cuadros).
+let lastQuery = '';
+
 export async function renderPainters(ctx, el) {
   await loadCss('css/coleccion.css');
   const known = painterGroups(ctx.store.get().progress, ctx.index).reduce((n, g) => n + g.known, 0);
   // El buscador sale con tantos pintores conocidos como en «Cuadros»; antes no hay nada que buscar.
   const searchable = known >= SEARCH_MIN_PAINTERS;
+  if (!searchable) lastQuery = '';
   el.innerHTML = page(ctx, 'collection', `
     <header class="section-head"><h1>Colección</h1><p class="section-sub">${known} ${known === 1 ? 'pintor' : 'pintores'}</p></header>
     ${collTabs('painters')}
     ${searchable ? `<label class="pl-search"><span class="sr-only">Buscar pintor</span>
-      <input class="pl-input" type="search" placeholder="Buscar pintor" autocomplete="off" enterkeyhint="search"></label>` : ''}
-    <div class="pl-results" aria-live="polite">${groupsHtml(ctx, '')}</div>`);
+      <input class="pl-input" type="search" placeholder="Buscar pintor" autocomplete="off" enterkeyhint="search" value="${esc(lastQuery)}"></label>` : ''}
+    <div class="pl-results" aria-live="polite">${groupsHtml(ctx, lastQuery)}</div>`);
   focusHeading(el);
   playEra('menu');
   observeDeferred(el);
   const results = el.querySelector('.pl-results');
-  el.querySelector('.pl-input')?.addEventListener('input', (ev) => { results.innerHTML = groupsHtml(ctx, ev.target.value); observeDeferred(results); });
+  el.querySelector('.pl-input')?.addEventListener('input', (ev) => { lastQuery = ev.target.value; results.innerHTML = groupsHtml(ctx, ev.target.value); observeDeferred(results); });
 }

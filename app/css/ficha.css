@@ -32,7 +32,7 @@ button.ap-avatar:active .ap-ring { transform: scale(.96); }
 .ap-who { flex: 1 1 11rem; min-width: 0; padding-bottom: .3rem; }
 .ap-name { font: 500 1.65rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; hyphens: manual; }
 .ap-meta { margin-top: .25rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.ap-era { display: inline-block; margin-top: .45rem; padding: .22rem .75rem; border-radius: 999px; background: var(--accent-soft); font: 600 .82rem/1.2 var(--font); }
+.ap-era { display: inline-block; margin-top: .45rem; padding: .22rem .75rem; border-radius: 999px; background: color-mix(in srgb, var(--accent) 24%, var(--surface)); font: 600 .82rem/1.2 var(--font); }
 
 .ap-progress { padding: 1rem 1.2rem 0; display: grid; gap: .2rem; }
 .ap-mastery { display: flex; align-items: center; gap: .5rem; font: 600 .95rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
@@ -42,6 +42,7 @@ button.ap-avatar:active .ap-ring { transform: scale(.96); }
 .ap-actions { display: flex; flex-wrap: wrap; gap: .6rem; padding: 1.2rem 1.2rem 0; }
 .ap-actions .btn { flex: 1 1 9rem; min-width: 0; padding: .5rem 1rem; text-align: center; overflow-wrap: break-word; }
 .ap-actions .btn-secondary { flex: 0 0 auto; white-space: nowrap; }
+@media (min-width: 720px) { .ap-actions .btn-primary { flex: 0 1 auto; min-width: 12rem; } }
 
 .ap-bio, .ap-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem; padding: 1.6rem 1.2rem 0; }
 .ap-bio { font: 400 1.08rem/1.55 var(--font); }
@@ -89,8 +90,13 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
 
 /* Galería del pintor. */
 .aw { padding: 0 0 calc(var(--safe-b) + 5.5rem); }
-.aw-head { display: flex; align-items: center; gap: .7rem; padding: calc(env(safe-area-inset-top, 0px) + .6rem) .8rem 1rem; }
+.aw-head { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .7rem; padding: calc(env(safe-area-inset-top, 0px) + .6rem) .8rem .8rem; }
 .aw-head .ap-back { position: static; flex: none; background: var(--surface); color: var(--ink); box-shadow: var(--lift-sm); }
+.aw-titles { flex: 1 1 8rem; min-width: 0; }
+.aw-title { font: 500 1.4rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
+.aw-sub { color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+/* «Su ficha» va en su propia fila, bajo el título: con letra grande no le quita ancho. */
+.aw-ficha { flex: 0 0 100%; display: inline-flex; align-items: center; justify-content: flex-start; gap: .2rem; min-height: 48px; margin-left: 58px; padding: 0 .3rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 .aw-who { padding-inline: .5rem; }
 .aw .ap-missing { margin: 1rem .8rem 0; }
 .aw .ap-grid { margin-inline: .8rem; width: auto; }
@@ -98,7 +104,3 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
 .aw-more { margin: 1rem .8rem 0; color: var(--ink-2); font: 500 1rem/1.4 var(--font); }
 .aw-who { display: block; margin-top: 2px; color: var(--ink-2); font: 500 .74rem/1.15 var(--font); overflow-wrap: break-word; }
 .aw-empty { margin: 2rem 1.2rem; display: grid; gap: 1rem; justify-items: center; text-align: center; color: var(--ink-2); }
-.aw-titles { flex: 1; min-width: 0; }
-.aw-title { font: 500 1.4rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: anywhere; }
-.aw-sub { color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.aw-ficha { display: inline-flex; align-items: center; gap: .2rem; min-height: 48px; padding: 0 .3rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; white-space: nowrap; }

@@ -27,6 +27,11 @@ export async function renderArtistPage(ctx, el, artistId, { focus = '' } = {}) {
   el.querySelector('.ap-back').addEventListener('click', () => { ctx.audio.sfx('tap'); goBack(ctx); });
   wireProfile(ctx, el, artistId);
   const target = focus === 'stages' ? el.querySelector('.ap-stages-section') : null;
-  if (target) target.scrollIntoView({ block: 'start', behavior: 'auto' });
-  else focusHeading(el);
+  if (target) {
+    // Por «Ver etapas»: la vista y el foco van al título «Etapas».
+    const h = target.querySelector('h2');
+    h?.setAttribute('tabindex', '-1');
+    target.scrollIntoView({ block: 'start', behavior: 'auto' });
+    h?.focus({ preventScroll: true });
+  } else focusHeading(el);
 }

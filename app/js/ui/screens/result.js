@@ -56,7 +56,7 @@ function deepCelebration(ctx, ev) {
   const stage = index.deepLevels(ev.artistId).find((l) => l.id === ev.level);
   const next = deepNext(ctx, ev);
   const works = (stage ? stage.works : []).slice(0, 6);
-  const thumbs = works.length ? `<ul class="deep-cele-works">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'deep-cele-thumb', label: w.title, small: true, zoom: { group: 'deep-cele', badge: false, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}</ul>` : '';
+  const thumbs = works.length ? `<ul class="deep-cele-works" style="--cols:${Math.min(works.length, works.length === 6 ? 3 : 5)}">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'deep-cele-thumb', label: w.title, small: true, zoom: { group: 'deep-cele', badge: false, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}</ul>` : '';
   const ficha = `<button type="button" class="deep-cele-link" data-action="go" data-to="pintor-${esc(ev.artistId)}">Ver su ficha${icons.next(16)}</button>`;
   const main = next ? `<button type="button" class="btn btn-primary btn-wide" data-action="go" data-to="${esc(deepRoute(ev.artistId, next.id))}">${esc(`Siguiente: ${stageTitle(artist, next)}`)}</button>` : '';
   return `<section class="deep-cele" style="${accentStyle(index.movement(artist.movementId)?.accent)}" aria-label="Nivel a fondo superado">
@@ -98,7 +98,9 @@ export function renderResult(ctx, el, opts) {
   const heroMedal = medals.find((m) => m.id.startsWith('artist-')) || medals.find((m) => m.id.startsWith('movement-'));
   const otherMedals = medals.filter((m) => m !== heroMedal
     && !(completed && m.id === `movement-${completed.movementId}`)
-    && !(goal && m.id === 'goal-1'));
+    && !(goal && m.id === 'goal-1')
+    // Una sola tarjeta de racha: si hay racha, la medalla de racha no se repite.
+    && !(streak && m.id.startsWith('streak-')));
 
   // «Hoy has aprendido» solo cuando el pintor se acaba de conocer o dominar: no tiene sentido en uno ya dominado.
   const alreadyMastered = Boolean(plan.artistId && p.artists?.[plan.artistId]?.mastered && !medals.some((m) => m.id === `artist-${plan.artistId}`));
@@ -165,7 +167,7 @@ export function renderResult(ctx, el, opts) {
   if (reviewUnlock && !goal && index.movement(reviewUnlock.movementId)) {
     blocks.push(eventCard({ icon: icons.repeat(22), kicker: 'Repaso disponible', title: index.movement(reviewUnlock.movementId).name, to: `repaso-${reviewUnlock.movementId}` }));
   }
-  if (streak) blocks.push(weekStrip(ctx, streak.value, streak.grace));
+  if (streak) blocks.push(weekStrip(ctx, streak.value, streak.grace, medals.some((m) => m.id.startsWith('streak-'))));
 
   const roundMastered = outcome.mastered ?? outcome.accuracy >= MASTERY;
   const isDeep = plan.kind === 'stage' && plan.level >= 2;
@@ -314,14 +316,14 @@ export function graceSavedText(n) {
   return n === 1 ? 'Racha a salvo: te quedaba un día de gracia' : 'Racha a salvo: te quedaban dos días de gracia';
 }
 
-function weekStrip(ctx, value, grace = 0) {
+function weekStrip(ctx, value, grace = 0, medal = false) {
   const p = ctx.store.get().progress;
   const days = new Set(p.streak.days);
   const today = ctx.today();
   const labels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
   const cells = weekOf(today).map((d, i) => `<span class="day ${days.has(d) ? 'is-on' : ''} ${d === today ? 'is-today' : ''}"><span class="day-dot"></span><span class="day-label">${labels[i]}</span></span>`).join('');
   const title = value === 1 ? 'Primer día' : `${value} días seguidos`;
-  const saved = graceSavedText(grace);
+  const saved = medal ? 'Nueva medalla de racha' : graceSavedText(grace);
   return `<section class="event event-streak"><span class="event-icon">${icons.flame(22)}</span><span class="event-text"><span class="event-kicker">Racha</span><span class="event-title">${title}</span>${saved ? `<span class="event-sub">${esc(saved)}</span>` : ''}</span></section>
     <div class="week" aria-hidden="true">${cells}</div>`;
 }
