@@ -419,7 +419,7 @@ def build(era, light, dark):
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))
     points = ' '.join(f'{M.f(x)},{M.f(y)}' for x, y in pts)
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {era["h"]}" width="{W}" height="{era["h"]}" data-points="{points}">'
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {era["h"]}" width="{W}" height="{era["h"]}" preserveAspectRatio="none" data-points="{points}">'
             f'{style(light, dark, era["id"])}{body}</svg>')
 
 

@@ -43,13 +43,13 @@ const passed = (progress, index, id) => (index.pathIndex(id) >= 0
   : Boolean(progress.artists?.[id] && (progress.artists[id].mastered || ((progress.artists[id].plays || 0) > 0 && (Number(progress.artists[id].best) || 0) >= 0.5))));
 
 // Estado de cada pintor de la rama, en orden: 'locked' | 'available' | 'started' | 'mastered'.
-// El de camino común (onPath) refleja su parada; en los demás, su tramo ha de estar abierto y el anterior
-// (que no sea del camino), superado.
+// El de camino común (onPath) refleja su parada; en los demás, su tramo ha de estar abierto y todos los
+// propios anteriores de esta rama, superados (no se salta a nadie aunque se haya jugado desde otra rama).
 export function branchStatus(progress, index, branchId) {
   const branch = index.branch(branchId);
   if (!branch) return [];
   const tramoOf = new Map(branch.tramos.flatMap((t) => t.artists.map((id) => [id, t.opensAt])));
-  let previous = null;
+  let clear = true;
   return branch.artists.map((id) => {
     const opensAt = tramoOf.get(id) || branch.opensAt;
     const reached = tramoOpen(progress, index, opensAt);
@@ -58,8 +58,8 @@ export function branchStatus(progress, index, branchId) {
     if (onPath) status = stepStatus(progress, index, { type: 'artist', id });
     else {
       const s = artistState(progress, id);
-      status = s === 'idle' ? (reached && (!previous || passed(progress, index, previous)) ? 'available' : 'locked') : s;
-      previous = id;
+      status = s === 'idle' ? (reached && clear ? 'available' : 'locked') : s;
+      clear = clear && passed(progress, index, id);
     }
     return { artistId: id, status, opensAt, reached, onPath };
   });
@@ -94,11 +94,19 @@ export function canPlay(progress, index, artistId) {
   return Boolean(s) && s !== 'locked';
 }
 
-// Tras una ronda de un pintor de rama: su rama, el avance (pintores propios dominados) y el siguiente pintor
-// propio ya abierto, si lo hay. null si el pintor está en el camino común o no es de ninguna rama.
-export function branchAfterRound(progress, index, artistId) {
+// Rama desde la que se juega a un pintor: la indicada (si lo contiene) o, si no, la más concreta que lo tenga
+// (medieval/estampa, luego escuela y por último «Descubre…», que reúne a casi todos los compartidos).
+const SPECIFIC = { rama: 0, escuela: 1, epoca: 2 };
+export function branchOfRound(index, artistId, branchId = '') {
+  const own = index.branchesOf(artistId);
+  return own.find((b) => b.id === branchId) || own.slice().sort((a, b) => (SPECIFIC[a.kind] ?? 3) - (SPECIFIC[b.kind] ?? 3))[0] || null;
+}
+
+// Tras una ronda de un pintor de rama: su rama (la de origen), el avance (pintores propios dominados) y el
+// siguiente pintor propio ya abierto, si lo hay. null si el pintor está en el camino común o no es de ninguna rama.
+export function branchAfterRound(progress, index, artistId, branchId = '') {
   if (index.pathIndex(artistId) >= 0) return null;
-  const branch = index.branchesOf(artistId)[0];
+  const branch = branchOfRound(index, artistId, branchId);
   if (!branch) return null;
   const rows = branchStatus(progress, index, branch.id).filter((r) => !r.onPath);
   const at = rows.findIndex((r) => r.artistId === artistId);

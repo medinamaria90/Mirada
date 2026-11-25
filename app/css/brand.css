@@ -119,8 +119,7 @@
   --map-seam: 80px;
   --map-line-x: 30px;
   --map-indent: 16px;
-  --map-fs-max: 17.6px;
-  --map-min-text: 12px;
+  --map-branch-w: 74px;
   /* Sombras y velos. */
   --shadow-frame: 0 1px 1px rgba(35, 32, 28, .10), 0 6px 16px -6px rgba(35, 32, 28, .26), 0 18px 40px -18px rgba(35, 32, 28, .30);
   --shadow-card: 0 1px 2px rgba(35, 32, 28, .05), 0 6px 18px -10px rgba(35, 32, 28, .16);

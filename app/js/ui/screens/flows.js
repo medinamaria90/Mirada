@@ -86,7 +86,7 @@ function play(ctx, el, opts) {
       const review5 = friendScore == null && hasReview5(ctx.store.get().progress, ctx.index, ctx.today());
       const moreReview = !review5 && typeof more === 'function' && more();
       renderResult(ctx, el, {
-        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic,
+        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId,
         more: review5 ? { label: REVIEW5_NAME, to: 'repaso5' } : moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
       });
     },
@@ -272,7 +272,8 @@ function withStory(ctx, el, artistId, level, show) {
 
 // --- Etapa de pintor -------------------------------------------------------
 
-export function renderStage(ctx, el, artistId) {
+// branchId: rama desde la que se entra (#etapa-<pintor>--<rama>); el resultado sigue en ella.
+export function renderStage(ctx, el, artistId, branchId = '') {
   const { index } = ctx;
   const artist = index.artist(artistId);
   const status = artist ? playStatus(ctx.store.get().progress, index, artistId) : null;
@@ -298,7 +299,7 @@ export function renderStage(ctx, el, artistId) {
       caption: (w) => ({ alt: `${w.title}, de ${artist.name}`, sub: w.year || '' }),
       aside: artist.hint ? `<aside class="hint"><span class="hint-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : '',
       carouselLabel: `Obras de ${artist.short || artist.name}`,
-      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: { artistId }, shareTopic: artist.name })),
+      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name })),
     });
   }));
 }

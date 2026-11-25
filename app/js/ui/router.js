@@ -34,8 +34,8 @@ export function parseRoute(hash, opts = {}) {
   if (name === ROUTES.medals) return { name: 'medals' };
   if (name === ROUTES.free) return { name: 'free' };
   if (name === ROUTES.weekly) return { name: 'weekly' };
-  let m = /^etapa-([a-z0-9-]+)$/.exec(name);
-  if (m) return { name: 'stage', artistId: m[1] };
+  let m = /^etapa-([a-z0-9]+(?:-[a-z0-9]+)*)(?:--([a-z0-9]+(?:-[a-z0-9]+)*))?$/.exec(name);
+  if (m) return { name: 'stage', artistId: m[1], branchId: m[2] || '' };
   m = /^repaso-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'review', movementId: m[1] };
   m = /^sala-([a-z0-9-]+)$/.exec(name);

@@ -5,7 +5,8 @@ import { esc, accentStyle, joinNames } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { branchStatus, tramoPending } from '../engine/branches.js';
-import { branchState, branchWhy, afterEra } from './screens/path-signs.js';
+import { branchState, tramoState, branchWhy, afterEra, period } from './screens/path-signs.js';
+import { pathLayout } from './screens/path-layout.js';
 import { lifeSpan } from '../engine/painters.js';
 
 const KIND = {
@@ -46,7 +47,11 @@ async function open(ctx, opener, accent, body) {
     if (b.dataset.ms === 'close') return close();
     if (b.dataset.ms === 'play') {
       close();
-      return ctx.go(`etapa-${b.dataset.id}`);
+      return ctx.go(`etapa-${b.dataset.id}${b.dataset.branch ? `--${b.dataset.branch}` : ''}`);
+    }
+    if (b.dataset.ms === 'branch') {
+      close();
+      return openBranchSheet(ctx, b.dataset.id, opener);
     }
     if (b.dataset.ms === 'artist') {
       close();
@@ -67,7 +72,7 @@ export function openEraSheet(ctx, movementId, opener) {
   const order = index.visibleMovements.map((m) => m.id);
   const prev = index.movement(order[order.indexOf(movementId) - 1]);
   const painters = index.stageArtists(movementId).map((a) => a.short || a.name);
-  const body = `<header class="ms-head"><p class="ms-kicker">${esc(movement.period)}</p><h2 class="ms-title" id="ms-title">${esc(movement.name)}</h2></header>
+  const body = `<header class="ms-head"><p class="ms-kicker">${esc(period(movement.period))}</p><h2 class="ms-title" id="ms-title">${esc(movement.name)}</h2></header>
     <p class="ms-lock">${icons.lock(16)}<span>${prev ? `Se abre ${esc(afterEra('terminar', prev.name))}.` : 'Aún cerrada.'}</span></p>
     ${movement.blurb ? `<p class="ms-about">${esc(movement.blurb)}</p>` : ''}
     ${painters.length ? `<p class="ms-wait"><span class="ms-label">Te esperan</span>${esc(joinNames(painters))}</p>` : ''}
@@ -79,14 +84,14 @@ const PLAY = { available: 'Empezar', started: 'Seguir', mastered: 'Repetir' };
 
 // Fila de un pintor: toda la fila abre su ficha; si se puede jugar en la rama, un botón «Empezar» propio.
 // Los que ya tienen parada en el camino común se juegan allí («En el camino»).
-function painterRow(ctx, row) {
+function painterRow(ctx, row, branchId) {
   const a = ctx.index.artist(row.artistId);
   if (!a) return '';
   const state = row.onPath ? 'En el camino' : STATE[row.status];
   const inner = `<span class="ms-mark is-${row.onPath ? 'path' : row.status}" aria-hidden="true">${row.onPath ? icons.arch(14) : icons[STATE_ICON[row.status]](14)}</span>
     <span class="ms-who"><span class="ms-name">${esc(a.name)}</span><span class="ms-years">${esc([lifeSpan(a), state].filter(Boolean).join(' · '))}</span></span>`;
   const play = !row.onPath && row.status !== 'locked'
-    ? `<button type="button" class="btn ${row.status === 'mastered' ? 'btn-secondary' : 'btn-primary'} ms-play" data-ms="play" data-id="${esc(a.id)}" aria-label="${PLAY[row.status]}: ${esc(a.name)}">${PLAY[row.status]}</button>` : '';
+    ? `<button type="button" class="btn ${row.status === 'mastered' ? 'btn-secondary' : 'btn-primary'} ms-play" data-ms="play" data-id="${esc(a.id)}" data-branch="${esc(branchId)}" aria-label="${PLAY[row.status]}: ${esc(a.name)}">${PLAY[row.status]}</button>` : '';
   if (!row.reached && !row.onPath) return `<li class="ms-item"><span class="ms-row is-locked">${inner}</span></li>`;
   return `<li class="ms-item"><button type="button" class="ms-row" data-ms="artist" data-id="${esc(a.id)}" aria-label="${esc(a.name)}, ${state.toLowerCase()}: ver su ficha">${inner}</button>${play}</li>`;
 }
@@ -111,7 +116,7 @@ export function openBranchSheet(ctx, branchId, opener) {
     // El motivo del primer grupo ya va arriba (estado de la rama): no se repite.
     const why = reached || (!st.open && id === branch.opensAt) ? '' : branchWhy(index, { pending: tramoPending(progress, index, id) });
     const head = single ? '' : `<h3 class="ms-group"><span>${esc(index.movement(id)?.name || '')}</span>${!why ? '' : `<span class="ms-group-lock">${icons.lock(12)}<span>${esc(why)}</span></span>`}</h3>`;
-    return `<section class="ms-section">${head}<ul class="ms-list">${group.map((r) => painterRow(ctx, r)).join('')}</ul></section>`;
+    return `<section class="ms-section">${head}<ul class="ms-list">${group.map((r) => painterRow(ctx, r, branchId)).join('')}</ul></section>`;
   }).join('');
   const status = st.open
     ? `<p class="ms-progress"><span class="ms-bar"><span style="width:${st.total ? Math.round((st.mastered / st.total) * 100) : 0}%"></span></span><span>${st.mastered} de ${st.total} dominados</span></p>`
@@ -122,3 +127,26 @@ export function openBranchSheet(ctx, branchId, opener) {
 }
 
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+
+// Todas las ramas de una época (cuando son más de dos van en un solo cartel): cada fila abre la hoja de su rama.
+export function openEraBranchesSheet(ctx, eraId, opener) {
+  const { index } = ctx;
+  const movement = index.movement(eraId);
+  const era = pathLayout(index).eras.find((e) => e.id === eraId);
+  const group = era?.branches.find((b) => b.group);
+  if (!movement || !group) return null;
+  const progress = ctx.store.get().progress;
+  const rows = group.members.map((m) => ({ ...m, branch: index.branch(m.id) })).filter((m) => m.branch).map((m) => {
+    const st = m.extra ? tramoState(progress, index, m.branch, eraId) : branchState(progress, index, m.branch);
+    const kind = (KIND[m.branch.kind] || KIND.rama).kicker;
+    const line = !st.open ? branchWhy(index, st) : m.extra ? `${st.fresh === 1 ? '1 pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época` : `${st.mastered} de ${st.total} dominados`;
+    const mark = st.total && st.mastered === st.total ? 'mastered' : st.open ? 'available' : 'locked';
+    return `<li class="ms-item"><button type="button" class="ms-row" data-ms="branch" data-id="${esc(m.branch.id)}" aria-label="${esc(`${m.branch.name}, ${line}`)}">
+      <span class="ms-mark is-${mark}" aria-hidden="true">${icons[mark === 'mastered' ? 'check' : mark === 'available' ? 'fork' : 'lock'](14)}</span>
+      <span class="ms-who"><span class="ms-name">${esc(m.branch.name)}</span><span class="ms-years">${esc(kind)} · ${esc(line)}</span></span>
+      <span class="ms-go" aria-hidden="true">${icons.next(18)}</span></button></li>`;
+  }).join('');
+  const body = `<header class="ms-head"><p class="ms-kicker">${esc(movement.name)}</p><h2 class="ms-title" id="ms-title">Ramas de esta época</h2></header>
+    <ul class="ms-list">${rows}</ul>`;
+  return open(ctx, opener, movement.accent, body);
+}

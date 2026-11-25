@@ -7,15 +7,15 @@ import { hasMovementReview } from '../../engine/progress.js';
 
 export const MAP_W = 390;
 export const STEP = 124;             // distancia vertical entre paradas
-const PAD_BOTTOM = 184;              // entrada del tramo: tramo recto del sendero y el cartel de la época al lado
-const RUN = 122;                     // el sendero entra recto (vertical) este alto: el cartel cabe a su lado
+const PAD_BOTTOM = 196;              // entrada del tramo: tramo recto del sendero y el cartel de la época al lado
+const RUN = 134;                     // el sendero entra recto (vertical) este alto: el cartel cabe a su lado
 const PAD_TOP = 28;                  // salida del tramo
 const XS = [128, 262, 136, 266, 126, 264, 134, 260];   // zigzag de los nodos
-export const SIDE_X = { left: 52, right: MAP_W - 52 }; // margen estrecho: sala de la época y ramas
+export const SIDE_X = { left: 42, right: MAP_W - 42 }; // margen estrecho: sala de la época y ramas (lejos del nodo)
 export const ROAD_HALF = 15;         // medio ancho del sendero (borde incluido)
 const ROAD_GAP = 12;                 // aire entre el sendero y un cartel
 const EDGE = 10;                     // aire con el borde del mapa
-const SIGN_BOX = { top: 118, bottom: 14 };  // cartel de época: entre h-96 y h-14
+const SIGN_BOX = { top: 130, bottom: 14 };  // cartel de época: entre h-96 y h-14
 const BRANCH_LIFT = 14;               // el hito de la rama, algo por encima de su parada (aire con el nodo)
 const SPUR_DROP = 46;                // el desvío de una rama sale del sendero algo por debajo de su nodo
 // Salida (abajo del todo) y «Tu museo» (arriba): bloques propios con su dibujo.
@@ -110,6 +110,7 @@ function branchSpot(era, i) {
 }
 
 const KIND_ORDER = { rama: 0, epoca: 1, escuela: 2 };
+export const MAX_BRANCH_SIGNS = 2;
 
 // Ramas de cada época: las que empiezan en ella (medieval/estampa, época, escuela) y, como señal aparte (extra),
 // las escuelas que abren en ella un tramo nuevo con pintores propios.
@@ -152,9 +153,14 @@ export function pathLayout(index) {
     if (!n) continue;
     const era = eraLayout(n, phase, xIn);
     const branches = branchesAt(index, m.id);
-    const slots = branchSlots(n, branches.length);
+    // Con más de MAX_BRANCH_SIGNS ramas, un único cartel «Ramas de esta época (n)» que abre una hoja con todas.
+    const grouped = branches.length > MAX_BRANCH_SIGNS;
+    const slots = branchSlots(n, grouped ? 1 : branches.length);
     const sections = artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? { at: i, name: a.section } : null)).filter(Boolean);
-    eras.push({ id: m.id, ...era, sections, branches: slots.map((at, k) => ({ id: branches[k].branch.id, extra: branches[k].extra, ...branchSpot(era, at) })) });
+    const spots = grouped
+      ? [{ id: `era-${m.id}`, group: true, members: branches.map((b) => ({ id: b.branch.id, extra: b.extra })), extra: false, ...branchSpot(era, slots[0]) }]
+      : slots.map((at, k) => ({ id: branches[k].branch.id, extra: branches[k].extra, ...branchSpot(era, at) }));
+    eras.push({ id: m.id, ...era, sections, branches: spots });
     phase += n;
     xIn = era.points[n - 1].x;
   }

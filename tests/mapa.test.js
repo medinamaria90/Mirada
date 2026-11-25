@@ -68,7 +68,8 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
   }
   assert.ok(!/<img class="path-land"[^>]* src=/.test(html), 'un paisaje se pide antes de tiempo');
   assert.equal((html.match(/<svg class="path-trail"/g) || []).length, real.visibleMovements.length + 2, 'un sendero por tramo, el de la salida y el del museo');
-  assert.ok(html.includes(`${real.movement(real.steps[0].movementId).period} · 2/${real.stepsOf(real.steps[0].movementId).length}`), 'la cartela no dice cuántas van');
+  assert.ok(html.includes(`${real.movement(real.steps[0].movementId).period.replace(/s\. /g, 's.\u00a0')} · 2/${real.stepsOf(real.steps[0].movementId).length}`), 'la cartela no dice cuántas van');
+  assert.ok(html.includes('finales s.\u00a0XVIII–mediados s.\u00a0XIX'), 'los siglos sin espacio duro');
   assert.ok(html.includes('class="sign-plate" data-action="intro"'), 'el cartel abierto no lleva a la presentación');
   const locked = real.visibleMovements[2];
   assert.ok(html.includes(`data-action="era-lock" data-id="${locked.id}"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el cartel cerrado no abre su hoja');
@@ -109,7 +110,7 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
   const html = renderPathMap(ctxWith(real));
   const reviews = real.visibleMovements.filter((m) => hasMovementReview(real, m.id));
   assert.equal((html.match(/class="stage stage-review is-/g) || []).length, reviews.length);
-  assert.ok(html.includes(`aria-label="Repaso de ${reviews[0].name}, bloqueado`));
+  assert.ok(html.includes(`aria-label="Repaso del ${reviews[0].name}, bloqueado`));
   for (const era of pathLayout(real).eras) assert.equal(era.points.length, real.stepsOf(era.id).length + (hasMovementReview(real, era.id) ? 1 : 0));
   const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
   assert.equal((all.match(/class="stage stage-gallery is-mastered"/g) || []).length, real.visibleMovements.length, 'sin salas con todo dominado');
@@ -186,44 +187,66 @@ test('mapa: carteles de época al borde del sendero, nunca encima; tramos sobre 
   assert.ok(!html.includes('stage-section') && !html.includes('class="lock-note"'), 'quedan rótulos sobre el sendero o párrafos vacíos');
 });
 
-test('mapa: cada rama es un desvío en su época, cerrada el primer día (dice qué la abre) y en su sitio del DOM', () => {
+test('mapa: ramas como desvíos en su época, cerradas el primer día; con más de dos, un solo cartel', () => {
   const html = renderPathMap(ctxWith(real));
   const layout = pathLayout(real);
   for (const b of real.branches) {
-    assert.equal(html.split(`class="branch is-locked" data-action="branch" data-id="${b.id}"`).length - 1, 1, `${b.id}: su cartel principal no sale una vez`);
-    const era = layout.eras.find((e) => e.branches.some((x) => x.id === b.id));
-    assert.equal(era?.id, b.opensAt, `${b.id}: fuera de su época`);
-    const spot = era.branches.find((x) => x.id === b.id);
+    const era = layout.eras.find((e) => e.id === b.opensAt);
+    const spot = era.branches.find((x) => x.id === b.id || x.members?.some((m) => m.id === b.id && !m.extra));
+    assert.ok(spot, `${b.id}: sin cartel en su época`);
     assert.ok(spot.at < era.points.length - 1, `${b.id}: en la última parada (ahí va la sala)`);
     assert.ok(spot.x < 60 || spot.x > MAP_W - 60, `${b.id}: no está en el margen`);
   }
-  const found = [...html.matchAll(/class="branch (is-\w+)( is-extra)?" data-action="branch" data-id="([^"]+)"/g)];
-  assert.equal(found.filter((m) => !m[2]).length, real.branches.length);
-  assert.ok(found.every(([, cls]) => cls === 'is-locked'), 'una rama abierta el primer día');
-  // Escuelas: una señal en cada época en la que abren un tramo con pintores propios («Escuela rusa · 14 nuevos»).
+  for (const era of layout.eras) {
+    assert.ok(era.branches.length <= 2, `${era.id}: más de dos carteles de rama`);
+    const group = era.branches.find((x) => x.group);
+    if (group) {
+      assert.ok(group.members.length > 2 && era.branches.length === 1, `${era.id}: cartel de grupo con ${group.members.length}`);
+      assert.ok(html.includes(`data-action="branches" data-id="${era.id}"`) && html.includes(`>Ramas (${group.members.length})<`) && html.includes(`aria-label="Ramas de esta época: ${group.members.length}`));
+    }
+  }
+  const found = [...html.matchAll(/class="branch (is-\w+)[^"]*" data-action="branch(?:es)?"/g)];
+  assert.ok(found.length && found.every(([, cls]) => cls === 'is-locked'), 'una rama abierta el primer día');
+  assert.ok(html.includes('class="spur-edge is-locked"'));
+  // Escuelas: una señal en cada época en la que abren un tramo con pintores propios (sola o dentro del grupo).
   const rusa = real.branch('escuela-rusa');
   const rusaEras = [...new Set(rusa.artists.filter((id) => real.pathIndex(id) < 0).map((id) => rusa.tramos.find((t) => t.artists.includes(id)).opensAt))];
-  for (const id of rusaEras.filter((x) => x !== rusa.opensAt)) assert.ok(layout.eras.find((e) => e.id === id).branches.some((b) => b.id === 'escuela-rusa' && b.extra), `Escuela rusa sin señal en ${id}`);
-  assert.ok(/Escuela rusa: \d+ pintores nuevos en esta época/.test(html));
-  assert.ok(html.includes('class="spur-edge is-locked"'));
-  const a = real.artist(real.steps[0].id).short || real.artist(real.steps[0].id).name;
-  const b = real.artist(real.steps[1].id).short || real.artist(real.steps[1].id).name;
-  assert.ok(html.includes(`Gótico: rama cerrada, se abre al dominar a ${a} y ${b}`), 'la rama cerrada no dice qué la abre');
-  assert.ok(html.includes('<span>faltan 2</span>'), 'la placa cerrada no dice cuánto falta');
-  assert.ok(html.includes('>Más del Renacimiento<') && html.includes('Más del Post­impresionismo'), 'la rama de época no se llama «Más del …»');
-  // Orden de lectura: la rama va justo después de su parada.
+  for (const id of rusaEras.filter((x) => x !== rusa.opensAt)) {
+    assert.ok(layout.eras.find((e) => e.id === id).branches.some((b) => (b.id === 'escuela-rusa' && b.extra) || b.members?.some((m) => m.id === 'escuela-rusa' && m.extra)), `Escuela rusa sin señal en ${id}`);
+  }
+  // Época con dos ramas (Manierismo): carteles propios; la de época se llama «Más del …» y dice cuánto falta.
+  assert.ok(html.includes('data-action="branch" data-id="descubre-manierismo-y-norte"') && html.includes('<span>faltan 2</span>'));
+  assert.ok(html.includes('Más del Manie­rismo'), 'la rama de época no se llama «Más del …» con guion blando');
+  const a = real.artist(real.steps.find((x) => x.movementId === 'manierismo-y-norte').id);
+  assert.ok(html.includes(`Más del Manierismo y el Norte`) || /Descubre el Manierismo y el Norte: rama cerrada, se abre al dominar a /.test(html), 'la rama cerrada no dice qué la abre');
+  assert.ok(a);
+  // Orden de lectura: el cartel de ramas va justo después de su parada.
   const era = layout.eras[0];
-  const g = era.branches.find((x) => x.id === 'gotico');
+  const g = era.branches[0];
   const host = real.steps.filter((x) => x.movementId === era.id)[g.at];
   const iHost = html.indexOf(`data-step="${host.type}:${host.id}"`);
   const iNext = html.indexOf('data-step=', iHost + 10);
-  const iBranch = html.indexOf('data-id="gotico"');
+  const iBranch = html.indexOf(`data-id="${era.id}" data-members`);
   assert.ok(iHost < iBranch && iBranch < iNext, 'la rama no va tras su parada en el orden de tabulación');
-  // Abierta (primer tramo dominado): cuenta solo sus pintores propios.
+  // Abierta (primer tramo dominado): el grupo dice cuántas hay abiertas.
   const open = renderPathMap(ctxWith(real, masterFirst(real, 2)));
-  const own = real.branch('gotico').artists.filter((id) => real.pathIndex(id) < 0).length;
-  assert.ok(/class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
-  assert.ok(open.includes(`<span class="branch-count">0/${own}</span>`), 'cuenta pintores del camino común en la rama');
+  assert.ok(/class="branch is-open is-group" data-action="branches" data-id="renacimiento"/.test(open));
+  assert.ok(open.includes('<span class="branch-count">3 abiertas</span>'));
+});
+
+test('mapa: textos según el estado (hito, escuelas dominadas, parada actual)', () => {
+  const none = renderPathMap(ctxWith(real));
+  assert.ok(none.includes(`${real.visibleMovements.length} épocas por delante`));
+  const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
+  assert.ok(all.includes('Camino completo') && !all.includes('épocas por delante'));
+  assert.equal((none.match(/aria-current="step"/g) || []).length, 1, 'la parada actual sin aria-current');
+  assert.ok(none.includes(`data-id="${real.steps[0].id}" data-status="available" data-lock="" aria-current="step"`));
+  // Escuela con su tramo dominado: «n/n», no «n nuevos».
+  const p = masterFirst(real, real.steps.length);
+  const rusa = real.branch('escuela-rusa');
+  rusa.artists.filter((id) => real.pathIndex(id) < 0).forEach((id) => { p.artists[id] = { plays: 1, best: 1, mastered: true, last: TODAY }; });
+  const html = renderPathMap(ctxWith(real, p));
+  assert.ok(!/Escuela rusa: \d+ pintores nuevos/.test(html));
 });
 
 test('mapa: reparto de ramas por el tramo, nunca en la última parada', () => {
@@ -251,12 +274,13 @@ test('mapa: jerarquía de nodos (actual, siguiente cerrado y el resto cerrado m�
   assert.ok(px(/\.stage\.is-locked \{ --dot: (\d+)px/) < base, 'el cerrado no es más pequeño');
   assert.ok(px(/\.stage-spot\.is-current \.stage \{ --dot: (\d+)px/) > base, 'el actual no es el mayor');
   assert.ok(!/\.(stage-name|branch-name)[^{]*\{[^}]*overflow-wrap: anywhere/.test(css), 'nombres partidos por cualquier letra');
-  assert.ok(/\.path-map\.is-linear \.stages/.test(css) && /--map-fs: min\(1rem, var\(--map-fs-max\)\)/.test(css), 'sin camino en línea ni letra limitada en el mapa ilustrado');
-  // Letra mínima de 12 px en lo que hay que leer del mapa (0,75 × 16 px; el nombre de rama, como mucho 12 px en
-  // el mapa ilustrado para caber en su placa).
-  assert.ok(/--map-min-text: 12px/.test(readFileSync(join(app, 'css', 'brand.css'), 'utf8')));
+  // Camino en línea por encima del 150 % y, por debajo, letra sin tope (crece con la del navegador) y trazado
+  // estirado en vertical con --k.
+  assert.ok(/\.path-map\.is-linear \.stages/.test(css) && /\.path-map \{ --map-fs: 1rem;/.test(css), 'sin camino en línea o con la letra del mapa limitada');
+  assert.ok(!/--map-fs-max/.test(css) && /aspect-ratio:\$\{MAP_W\}\/calc\(\$\{era\.h\} \* var\(--k, 1\)\)/.test(readFileSync(join(app, 'js', 'ui', 'screens', 'path-map.js'), 'utf8')));
+  // Letra mínima de 12 px en lo que hay que leer del mapa (0,75 × 16 px), y crece con la del navegador.
   for (const sel of ['stage-kicker', 'branch-name', 'branch-count']) {
-    const m = css.match(new RegExp(`\\.${sel} \\{[^}]*font: \\d+ (?:min\\()?calc\\(([\\d.]+) \\* var\\(--map-fs\\)\\)`));
+    const m = css.match(new RegExp(`\\.${sel} \\{[^}]*font: \\d+ calc\\(([\\d.]+) \\* var\\(--map-fs\\)\\)`));
     assert.ok(m && Number(m[1]) >= 0.75, `${sel} por debajo de 12 px`);
   }
 });

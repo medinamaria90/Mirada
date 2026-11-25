@@ -10,7 +10,7 @@ import { planStage } from '../app/js/engine/planner.js';
 import { emptyProgress, stageRule, stepStatus } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { seenWorks, pendingWorks, deepStatus, deepProgress } from '../app/js/engine/levels.js';
-import { branchStatus, branchProgress, movementReached, firstTramo, tramoOpen, tramoPending, playStatus, canPlay } from '../app/js/engine/branches.js';
+import { branchStatus, branchProgress, movementReached, firstTramo, tramoOpen, tramoPending, playStatus, canPlay, branchAfterRound, branchOfRound } from '../app/js/engine/branches.js';
 import { playTargets } from '../app/js/engine/painters.js';
 import { RANKS, rankFor, rankStats } from '../app/js/engine/ranks.js';
 import { migrate, MIGRATIONS, SCHEMA_VERSION, defaultState } from '../app/js/state/schema.js';
@@ -381,4 +381,31 @@ test('«¿De qué movimiento es?»: opciones en orden cronológico y la buena re
     assert.ok(m.every((c) => c / total >= 0.15), `${id}: ${m}`);
   }
   assert.ok(byPos.every((c) => c > 0), `posiciones de la buena ${byPos}`);
+});
+
+test('ramas: el resultado sigue en la rama de origen (pintores en dos ramas) y no se salta a nadie', () => {
+  const p = emptyProgress();
+  real.steps.forEach((x) => { p.artists[x.id] = { plays: 1, best: 1, mastered: true, last: TODAY }; });
+  const done = (id) => { p.artists[id] = { plays: 1, best: 1, mastered: true, last: TODAY }; };
+  // Giotto está en Gótico y en Descubre el Renacimiento.
+  ['cimabue', 'duccio', 'giotto'].forEach(done);
+  assert.ok(real.branchesOf('giotto').length === 2);
+  const gotico = branchAfterRound(p, real, 'giotto', 'gotico');
+  assert.equal(gotico.branch.id, 'gotico');
+  assert.equal(gotico.next, 'pietro-lorenzetti');
+  assert.equal(branchAfterRound(p, real, 'giotto', 'descubre-renacimiento').branch.id, 'descubre-renacimiento');
+  assert.equal(branchAfterRound(p, real, 'giotto').branch.id, 'gotico', 'sin rama indicada, la más concreta');
+  // Juan de Juanes desde Maestros españoles: sigue en la escuela, no salta a Descubre el Renacimiento.
+  done('juan-de-juanes');
+  const esp = branchAfterRound(p, real, 'juan-de-juanes', 'maestros-espanoles');
+  assert.equal(esp.branch.id, 'maestros-espanoles');
+  assert.ok(esp.next !== 'tintoretto');
+  // Y en Descubre el Renacimiento, Tintoretto sigue cerrado mientras falten los de antes (Fra Angelico…).
+  assert.equal(branchStatus(p, real, 'descubre-renacimiento').find((r) => r.artistId === 'tintoretto').status, 'locked');
+  // Borovikovski desde la Escuela rusa: nunca «se abre Vicente López».
+  done('borovikovski');
+  const rusa = branchAfterRound(p, real, 'borovikovski', 'escuela-rusa');
+  assert.equal(rusa.branch.id, 'escuela-rusa');
+  assert.notEqual(rusa.next, 'vicente-lopez');
+  assert.equal(branchOfRound(real, 'borovikovski', 'no-existe').id, 'escuela-rusa');
 });

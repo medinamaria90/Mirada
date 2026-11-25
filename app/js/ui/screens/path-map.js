@@ -15,7 +15,7 @@ import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
 import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, pathLayout, eraLayout } from './path-layout.js';
-import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, branchState, tramoState, stepName, pct } from './path-signs.js';
+import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, branchGroupSpot, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout };
 const LANDSCAPE_MARGIN = '240px 0px';                  // se pide el paisaje al acercarse a este margen
@@ -34,18 +34,24 @@ function mapKeys(ctx) {
 
 // lazy: solo se pintan del todo la época actual y sus vecinas; las demás quedan como hueco de su altura y
 // fillPendingEras las rellena después, una por tarea (el primer pintado no bloquea en móviles lentos).
-const NEAR_ERAS = 1;
+const NEAR_ERAS = 0;
+// Rama en la que centrar el mapa al volver (tras una ronda de rama).
+let focusBranch = '';
+export const setMapFocus = (branchId) => { focusBranch = branchId || ''; };
 export function renderPathMap(ctx, { lazy = false } = {}) {
   const { index } = ctx;
   const layout = pathLayout(index);
   const keys = mapKeys(ctx);
   const here = Math.max(0, layout.eras.findIndex((e) => e.id === keys.era));
-  const html = layout.eras.map((era, i) => (!lazy || Math.abs(i - here) <= NEAR_ERAS
+  const focus = focusBranch ? layout.eras.findIndex((e) => e.branches.some((b) => b.id === focusBranch || b.members?.some((x) => x.id === focusBranch))) : -1;
+  const html = layout.eras.map((era, i) => (!lazy || Math.abs(i - here) <= NEAR_ERAS || i === focus
     ? eraBlock(ctx, era, layout.eras[i - 1], keys)
-    : `<li class="path-era is-pending" data-era="${esc(era.id)}" style="--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/${era.h}"></li>`)).join('');
+    : `<li class="path-era is-pending" data-era="${esc(era.id)}" style="--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))"></li>`)).join('');
   const firstTint = layout.eras.length ? `var(--map-tint-${esc(layout.eras[0].id)})` : 'transparent';
-  const done = isPathMastered(ctx.store.get().progress, index);
-  return `${startBlock(layout.start, layout.eras, firstTint)}${html}${museumBlock(layout.museum, index.visibleMovements.length, done)}`;
+  const p = ctx.store.get().progress;
+  const done = isPathMastered(p, index);
+  const left = layout.eras.filter((e) => !p.medals[`movement-${e.id}`]).length;
+  return `${startBlock(layout.start, layout.eras, firstTint, done ? 0 : left)}${html}${museumBlock(layout.museum, index.visibleMovements.length, done)}`;
 }
 
 // Rellena las épocas pendientes, la más cercana a la actual primero, una por tarea. Devuelve cómo pararlo.
@@ -81,8 +87,11 @@ function eraBlock(ctx, era, prevEra, keys) {
   const sectionAt = new Map(era.sections.map((s) => [s.at, sectionInfo(ctx, era.id, s)]));
   const nodes = sala ? [salaNode(ctx, movement, keys)] : index.stageArtists(movement.id).map((a, i) => artistNode(ctx, a, keys, sectionAt.get(i)));
   if (!sala && hasMovementReview(index, era.id)) nodes.push(reviewNode(ctx, movement, status === 'locked'));
-  const branches = era.branches.map((b) => ({ spot: b, branch: index.branch(b.id) })).filter((b) => b.branch)
-    .map((b) => ({ ...b, st: b.spot.extra ? tramoState(p, index, b.branch, era.id) : branchState(p, index, b.branch) }));
+  const stOf = (id, extra) => (extra ? tramoState(p, index, index.branch(id), era.id) : branchState(p, index, index.branch(id)));
+  const branches = era.branches.map((b) => (b.group
+    ? { spot: b, group: b.members.filter((x) => index.branch(x.id)).map((x) => stOf(x.id, x.extra)) }
+    : { spot: b, branch: index.branch(b.id) })).filter((b) => b.group || b.branch)
+    .map((b) => (b.group ? { ...b, st: { open: b.group.some((x) => x.open) } } : { ...b, st: stOf(b.spot.id, b.spot.extra) }));
   // Orden del DOM = orden de lectura y de tabulación: por cada parada, el rótulo de su tramo (para el lector),
   // la parada y, si sale de ella, el desvío de su rama; la sala, al final.
   const items = nodes.map((node, i) => {
@@ -91,7 +100,7 @@ function eraBlock(ctx, era, prevEra, keys) {
     const state = node.key === keys.current ? ' is-current' : node.key === keys.next ? ' is-next' : '';
     const sec = sectionAt.get(i);
     const head = sec ? `<li class="sr-only">Tramo ${esc(sec.name)}: ${sec.got} de ${sec.total} dominados</li>` : '';
-    const spur = branches.filter((b) => b.spot.at === i).map((b) => branchSpot(b.spot, b.branch, b.st, index, era.h)).join('');
+    const spur = branches.filter((b) => b.spot.at === i).map((b) => (b.group ? branchGroupSpot(b.spot, b.group, era.id, era.h) : branchSpot(b.spot, b.branch, b.st, index, era.h))).join('');
     return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)}">${node.html}</li>${spur}`;
   }).join('');
   const last = era.points[era.points.length - 1];
@@ -103,7 +112,7 @@ function eraBlock(ctx, era, prevEra, keys) {
     prevName: prevEra ? index.movement(prevEra.id).name : '',
   });
   const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
-  return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/${era.h}">
+  return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
     ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, open: b.st.open })))}
     ${sign}
@@ -140,9 +149,9 @@ function dotFor(status, cover, name) {
   return `${thumb}${badge}`;
 }
 
-function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, section }) {
+function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, section, current = false }) {
   const kicker = section ? `<span class="stage-kicker" aria-hidden="true">${esc(section.name)} <span class="stage-kicker-count">${section.got}/${section.total}</span></span>` : '';
-  return `<button class="stage ${cls}${section ? ' has-kicker' : ''} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}" aria-label="${esc(label)}">
+  return `<button class="stage ${cls}${section ? ' has-kicker' : ''} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}"${current ? ' aria-current="step"' : ''} aria-label="${esc(label)}">
       <span class="stage-dot">${dot}</span>
       <span class="stage-text">${kicker}<span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
     </button>`;
@@ -160,7 +169,7 @@ function artistNode(ctx, artist, keys, section) {
   // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
   const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
-    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, section,
+    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, section, current: key === keys.current,
     label: `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
     name: quiet ? artist.short || artist.name : artist.name, meta: dormant ? DORMANT_TEXT : metaFor(status, p.artists[artist.id], key === keys.current),
     dot: dotFor(status, coverOf(index, artist.id), artist.name),
@@ -176,7 +185,7 @@ function salaNode(ctx, movement, keys) {
   const prev = index.steps[index.stepIndex('sala', movement.id) - 1];
   const lock = prev ? `Se abre con la mitad de aciertos en ${stepName(index, prev)}` : '';
   const html = nodeHtml({
-    cls: 'stage-sala', action: 'sala', id: movement.id, status, lock,
+    cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current,
     label: `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
     name: 'Conoce el movimiento', meta: metaFor(status, p.salas?.[movement.id], key === keys.current),
     dot: dotFor(status, salaCover(index, movement.id), movement.name),
@@ -209,7 +218,7 @@ function reviewNode(ctx, movement, quiet = false) {
   const name = pending.length && !quiet ? `Repaso · ${pending.length === 1 ? 'falta 1' : `faltan ${pending.length}`}` : 'Repaso';
   const meta = best ? `Mejor: ${Math.round(best * 100)}%` : '';
   const icon = medal ? icons.medal(22) : icons.arch(open ? 24 : 18);
-  const label = `Repaso de ${movement.name}${open ? '' : `, bloqueado. Para abrirlo, domina a ${joinNames(pending)}`}`;
+  const label = `Repaso ${ofEra(movement.name)}${open ? '' : `, bloqueado. Para abrirlo, domina a ${joinNames(pending)}`}`;
   const html = `<button class="stage stage-review is-${status}" data-action="review" data-id="${esc(movement.id)}" data-status="${open ? 'open' : 'locked'}"
         aria-label="${esc(label)}" data-lock="${esc(lock)}">
         <span class="stage-dot">${icon}${open ? '' : `<span class="stage-lock">${icons.lock(10)}</span>`}</span>
@@ -223,7 +232,7 @@ function galleryNode(ctx, movement, last, h) {
   const n = galleryWorks(ctx.store.get().progress, ctx.index, movement.id).length;
   const side = last.x < MAP_W / 2 ? 'left' : 'right';
   return `<li class="stage-spot stage-spot-aside is-${side}" style="left:${pct(SIDE_X[side], MAP_W)};top:${pct(last.y, h)}">
-      <button class="stage stage-gallery is-mastered" data-action="gallery" data-id="${esc(movement.id)}" aria-label="Sala de ${esc(movement.name)}">
+      <button class="stage stage-gallery is-mastered" data-action="gallery" data-id="${esc(movement.id)}" aria-label="Sala ${esc(ofEra(movement.name))}">
         <span class="stage-dot">${icons.laurel(24)}</span>
         <span class="stage-text"><span class="stage-name">Sala</span>${n ? `<span class="stage-meta">${plural(n, 'obra', 'obras')}</span>` : ''}</span>
       </button></li>`;
@@ -274,6 +283,7 @@ export function pathActions(ctx) {
       target.focus({ preventScroll: true });
     },
     branch: (b) => sheet(ctx, 'openBranchSheet', b),
+    branches: (b) => sheet(ctx, 'openEraBranchesSheet', b),
   };
 }
 
@@ -286,7 +296,12 @@ function showLockNote(button) {
     button.after(note);
   }
   note.textContent = button.dataset.lock || 'Aún bloqueado';
+  note.style.translate = '';
   note.classList.add('is-visible');
+  // Dentro de la pantalla: si asoma por un lado, se corre.
+  const r = note.getBoundingClientRect();
+  const shift = r.left < 8 ? 8 - r.left : r.right > window.innerWidth - 8 ? window.innerWidth - 8 - r.right : 0;
+  if (shift) note.style.translate = `${Math.round(shift)}px 0`;
   announce(note.textContent);
   clearTimeout(note._t);
   note._t = setTimeout(() => note.classList.remove('is-visible'), 2600);
@@ -323,11 +338,18 @@ export function watchLandscapes(root) {
 // dejar de vigilarlo.
 const LINEAR_SCALE = 1.5;
 const LINEAR_WIDTH = 300;
+const TALL_POWER = 1.8;
 export function watchMapMode(map) {
   if (!map) return () => {};
   const fit = () => {
     const scale = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16;
-    map.classList.toggle('is-linear', scale > LINEAR_SCALE || window.innerWidth < LINEAR_WIDTH);
+    const linear = scale > LINEAR_SCALE || window.innerWidth < LINEAR_WIDTH;
+    map.classList.toggle('is-linear', linear);
+    // Ilustrado con letra grande: el trazado se estira en vertical algo más que la letra (los rótulos, más altos y
+    // más largos, caben entre el sendero que sube y el que baja sin montarse).
+    const k = linear ? 1 : Math.max(1, scale) ** TALL_POWER;
+    map.classList.toggle('is-tall', k > 1);
+    map.style.setProperty('--k', String(Math.round(k * 1000) / 1000));
   };
   fit();
   if (typeof ResizeObserver !== 'function') return () => {};
@@ -344,7 +366,14 @@ export function watchMapMode(map) {
 
 // Al abrir la portada, la vista va a la parada actual si queda fuera de la primera pantalla.
 export function scrollToCurrent(el) {
+  const branchId = focusBranch;
+  focusBranch = '';
   requestAnimationFrame(() => {
+    const branch = branchId && $(`.branch[data-id="${branchId}"], .branch[data-members~="${branchId}"]`, el);
+    if (branch) {
+      branch.scrollIntoView({ block: 'center' });
+      return;
+    }
     const target = $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
     if (target && target.getBoundingClientRect().top > window.innerHeight * 0.8) {
       target.scrollIntoView({ block: 'center' });

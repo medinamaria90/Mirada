@@ -19,6 +19,30 @@ export function withArticle(name) {
     return `${/as$/.test(part) ? 'las' : /os$/.test(part) ? 'los' : 'el'} ${part}`;
   }).join(' y ');
 }
+// «del Renacimiento», «de las vanguardias» (Repaso del…, Sala del…).
+export const ofEra = (name) => `de ${withArticle(name)}`.replace(/^de el /, 'del ');
+// Siglos con espacio duro: «s. XIX» no se parte en dos líneas.
+export const period = (text) => String(text || '').replace(/s\. /g, 's.\u00a0');
+// Guion blando en las palabras largas de los carteles estrechos (se parten por una sílaba, no por una letra):
+// antes de la consonante que abre la sílaba más cercana a la mitad («Rena-cimiento», «Impre-sionismo»).
+const VOWEL = /[aeiouáéíóú]/i;
+const KEEP = /^(pr|br|tr|dr|cr|gr|fr|pl|bl|cl|gl|fl|ch|ll|rr)$/i;
+export function softHyphen(word, min = 10) {
+  if (word.length < min) return word;
+  const cuts = [];
+  for (let i = 2; i < word.length - 3; i++) {
+    if (!VOWEL.test(word[i]) && VOWEL.test(word[i + 1])) {
+      const pair = word.slice(i - 1, i + 1);
+      const at = !VOWEL.test(word[i - 1]) && KEEP.test(pair) ? i - 1 : i;
+      if (VOWEL.test(word[at - 1]) || !VOWEL.test(word[at])) cuts.push(at);
+    }
+  }
+  if (!cuts.length) return word;
+  const best = cuts.sort((a, b) => Math.abs(a - word.length / 2) - Math.abs(b - word.length / 2))[0];
+  return `${word.slice(0, best)}\u00ad${word.slice(best)}`;
+}
+const hyphenate = (text) => text.split(' ').map((w) => softHyphen(w)).join(' ');
+
 // «al terminar el Barroco», «al llegar al Realismo».
 export const afterEra = (verb, name) => `al ${verb} ${withArticle(name)}`;
 export const toEra = (name) => withArticle(name).replace(/^el /, 'al ').replace(/^(las|los) /, 'a $1 ');
@@ -27,7 +51,7 @@ export const toEra = (name) => withArticle(name).replace(/^el /, 'al ').replace(
 const spurSvg = (b) => `<path class="spur-edge${b.open ? '' : ' is-locked'}" d="${b.spur}"/><path class="spur-fill${b.open ? '' : ' is-locked'}" d="${b.spur}"/>`;
 
 export function trailSvg(h, d, spurs = []) {
-  return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" aria-hidden="true" focusable="false">
+  return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       ${spurs.map(spurSvg).join('')}<path class="trail-edge" d="${d}"/><path class="trail-fill" d="${d}"/><path class="trail-steps" d="${d}"/></svg>`;
 }
 
@@ -43,7 +67,7 @@ export function eraSign({ movement, status, sealed, done, total, prevName, sign,
   const locked = status === 'locked';
   const count = locked ? '' : ` · ${done}/${total}`;
   // El candado va dentro del mismo texto: si los siglos no caben en una línea, no se queda solo.
-  const meta = `<span class="sign-meta"><span>${locked ? `${icons.lock(12)} ` : ''}${esc(movement.period)}${count}</span></span>`;
+  const meta = `<span class="sign-meta"><span>${locked ? `${icons.lock(12)} ` : ''}${esc(period(movement.period))}${count}</span></span>`;
   const seal = sealed ? `<span class="sign-seal" aria-hidden="true">${icons.laurel(16)}</span>` : '';
   const name = `<span class="sign-name">${esc(movement.name)}</span>`;
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
@@ -67,19 +91,20 @@ const START_ARCH = `<rect class="land-front" x="160" y="80" width="12" height="5
       <path class="land-front" d="M164 66L197 50L230 66Z"/><path class="land-side" d="M197 50L236 64L230 66Z"/>
       <rect class="land-window" x="180" y="73" width="32" height="5" rx="1"/>`;
 
-export function startBlock(start, eras, tint) {
-  const art = (cls, body) => `<svg class="${cls}" viewBox="0 0 ${MAP_W} ${start.h}" width="100%" height="100%" aria-hidden="true" focusable="false">${body}</svg>`;
-  const n = eras.length;
-  return `<li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/${start.h}">
+// left: épocas por terminar (con todo hecho, «Camino completo»).
+export function startBlock(start, eras, tint, left = eras.length) {
+  const art = (cls, body) => `<svg class="${cls}" viewBox="0 0 ${MAP_W} ${start.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${body}</svg>`;
+  const line = !left ? 'Camino completo' : left === 1 ? 'Una época por delante' : `${left} épocas por delante`;
+  return `<li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
     ${art('path-start-art', START_GROUND)}${trailSvg(start.h, start.trail)}${art('path-start-art is-front', START_ARCH)}
-    <div ${signBox(start.sign, start.h)}><p class="sign-plate is-static"><span class="sign-name">Empieza aquí</span><span class="sign-meta"><span>${n === 1 ? 'Una época' : `${n} épocas`} por delante</span></span></p></div>
+    <div ${signBox(start.sign, start.h)}><p class="sign-plate is-static"><span class="sign-name">Empieza aquí</span><span class="sign-meta"><span>${line}</span></span></p></div>
   </li>`;
 }
 
 // «Tu museo»: la meta, arriba del todo. Cúpula y columnas en el estilo limpio del paisaje; la placa va debajo
 // del edificio (no lo tapa). Con todo dominado, la placa lo celebra (sello de oro) y lleva a la Colección.
 export function museumBlock(museum, n, done = false) {
-  const building = `<svg class="path-museum-art" viewBox="0 0 390 ${museum.h}" width="100%" height="100%" aria-hidden="true" focusable="false">
+  const building = `<svg class="path-museum-art" viewBox="0 0 390 ${museum.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path class="land-far" d="M-10 92V62C60 40 130 66 200 48C270 32 330 62 400 44V92Z"/>
       <path class="land-front" d="M-10 92V78C90 62 150 86 240 70C310 58 350 82 400 70V92Z"/>
       <ellipse class="land-shade" cx="197" cy="100" rx="60" ry="8"/>
@@ -99,7 +124,7 @@ export function museumBlock(museum, n, done = false) {
   const plate = done
     ? `<button type="button" class="sign-plate is-done path-museum-head" data-action="collection" aria-label="Museo completo: ${epochs} dominadas. Ver tu colección"><span class="sign-seal" aria-hidden="true">${icons.laurel(16)}</span><span class="sign-name">Museo completo</span><span class="sign-meta"><span>${epochs} dominadas · Ver tu colección</span></span><span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button>`
     : `<p class="sign-plate is-static path-museum-head"><span class="sign-name">Tu museo</span><span class="sign-meta"><span>${epochs}, todos los pintores</span></span></p>`;
-  return `<li class="path-museum${done ? ' is-done' : ''}" style="aspect-ratio:${MAP_W}/${museum.h}">
+  return `<li class="path-museum${done ? ' is-done' : ''}" style="aspect-ratio:${MAP_W}/calc(${museum.h} * var(--k, 1))">
     ${building}${trailSvg(museum.h, museum.trail)}
     <div ${signBox(museum.sign, museum.h)}>${plate}</div>
   </li>`;
@@ -111,9 +136,9 @@ const SOFT = '\u00ad';
 export function branchShort(branch, index) {
   if (branch.kind === 'epoca') {
     const era = String(index.movement(branch.movementId || branch.opensAt)?.name || '').split(/\s+/)[0];
-    return `Más del ${era.replace(/^Post(?=\p{Ll})/u, `Post${SOFT}`)}`;
+    return hyphenate(`Más del ${era.replace(/^Post(?=\p{Ll})/u, `Post${SOFT}`)}`);
   }
-  return String(branch.name).replace(/\s*\([^)]*\)\s*$/, '');
+  return hyphenate(String(branch.name).replace(/\s*\([^)]*\)\s*$/, ''));
 }
 
 // Estado de una rama para el mapa: abierta (dominado el primer tramo de su época), sus pintores propios
@@ -142,14 +167,31 @@ export function branchSpot(spot, branch, st, index, h) {
   const cls = `${done ? 'is-mastered' : st.open ? 'is-open' : 'is-locked'}${spot.extra ? ' is-extra' : ''}`;
   const short = branchShort(branch, index);
   const n = st.pending.length;
-  const fresh = `${st.fresh} ${st.fresh === 1 ? 'nuevo' : 'nuevos'}`;
+  const allDone = spot.extra && st.total && st.mastered === st.total;
+  const fresh = allDone ? `${st.mastered}/${st.total}` : `${st.fresh} ${st.fresh === 1 ? 'nuevo' : 'nuevos'}`;
   const label = spot.extra
-    ? `${branch.name}: ${st.fresh === 1 ? 'un pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época${st.open ? '' : `, ${branchWhy(index, st)}`}`
+    ? `${branch.name}: ${allDone ? `${st.total} de ${st.total} dominados` : `${st.fresh === 1 ? 'un pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época`}${st.open ? '' : `, ${branchWhy(index, st)}`}`
     : st.open ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} dominados` : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
   const line = !st.open ? `${icons.lock(11)}<span>${n === 1 ? 'falta 1' : `faltan ${n}`}</span>` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
       <button type="button" class="branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
         <span class="branch-plate"><span class="branch-name">${esc(short)}</span><span class="branch-count">${line}</span></span>
         <span class="branch-dot">${done ? icons.laurel(18) : st.open ? icons.fork(18) : icons.lock(12)}</span>
+      </button></li>`;
+}
+
+// Cartel único de las ramas de la época cuando hay más de dos: «Ramas (n)» en la placa estrecha (el nombre accesible
+// y la hoja dicen «Ramas de esta época»); abre una hoja con todas.
+export function branchGroupSpot(spot, sts, eraId, h) {
+  const n = sts.length;
+  const open = sts.filter((st) => st.open).length;
+  const done = sts.every((st) => st.total && st.mastered === st.total);
+  const cls = done ? 'is-mastered' : open ? 'is-open' : 'is-locked';
+  const line = done ? `${n}/${n}` : open ? `${open} ${open === 1 ? 'abierta' : 'abiertas'}` : `${icons.lock(11)}<span>cerradas</span>`;
+  const label = `Ramas de esta época: ${n}${done ? ', todas dominadas' : open ? `, ${open} ${open === 1 ? 'abierta' : 'abiertas'}` : ', cerradas'}`;
+  return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
+      <button type="button" class="branch ${cls} is-group" data-action="branches" data-id="${esc(eraId)}" data-members="${esc(spot.members.map((m) => m.id).join(' '))}" aria-haspopup="dialog" aria-label="${esc(label)}">
+        <span class="branch-plate"><span class="branch-name">Ramas (${n})</span><span class="branch-count">${line}</span></span>
+        <span class="branch-dot">${done ? icons.laurel(18) : open ? icons.fork(18) : icons.lock(12)}</span>
       </button></li>`;
 }

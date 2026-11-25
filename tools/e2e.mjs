@@ -950,15 +950,22 @@ if (SMOKE) {
   check(await page.locator('.stage-spot.is-current .stage-meta').innerText() === 'Empezar', 'la parada nueva no dice «Empezar»');
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
-  // Rama jugable: cerrada el primer día; con el primer tramo del Renacimiento dominado, su hoja ofrece
-  // «Empezar» al primer pintor propio; una ronda (perfecta) abre el siguiente.
-  check(await page.locator('.branch.is-locked[data-id="gotico"]').count() === 1, 'el Gótico está abierto el primer día');
+  // Rama jugable: cerrada el primer día; con el primer tramo del Renacimiento dominado, el cartel de ramas de la
+  // época abre la lista, la del Gótico ofrece «Empezar» al primer pintor propio y una ronda (perfecta) abre el
+  // siguiente. La ronda sabe que viene del Gótico (#etapa-<pintor>--gotico) y su resultado sigue en él.
+  const goticoSign = '.branch[data-members~="gotico"]';
+  check(await page.locator(`${goticoSign}.is-locked`).count() === 1, 'el Gótico está abierto el primer día');
   const ownGotico = index.branch('gotico').artists.filter((id) => index.pathIndex(id) < 0);
   const tramo1 = index.steps.filter((x) => x.movementId === index.steps[0].movementId).findIndex((x) => index.artist(x.id).section !== index.artist(index.steps[0].id).section);
+  const openGotico = async () => {
+    await page.click(goticoSign);
+    await page.waitForSelector('dialog.map-sheet[open] [data-ms="branch"][data-id="gotico"]');
+    await page.click('dialog.map-sheet [data-ms="branch"][data-id="gotico"]');
+    await page.waitForSelector('dialog.map-sheet[open] .ms-play');
+  };
   await seed(page, seededState({ upTo: tramo1 }));
-  await page.waitForSelector('.branch.is-open[data-id="gotico"]');
-  await page.click('.branch[data-id="gotico"]');
-  await page.waitForSelector('dialog.map-sheet[open] .ms-play');
+  await page.waitForSelector(`${goticoSign}.is-open`);
+  await openGotico();
   check(await page.locator(`dialog.map-sheet .ms-play[data-id="${ownGotico[0]}"]`).innerText() === 'Empezar', 'la hoja de la rama no ofrece «Empezar» al primer pintor');
   check(await page.locator(`dialog.map-sheet .ms-play[data-id="${ownGotico[1]}"]`).count() === 0, 'la hoja ofrece jugar a un pintor aún cerrado');
   await shot(page, '14e-rama-hoja');
@@ -967,19 +974,22 @@ if (SMOKE) {
   await page.waitForSelector('.learn, .intro');
   if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
   await page.waitForSelector('.learn');
-  check(page.url().endsWith(`#etapa-${ownGotico[0]}`), `la rama no lleva a la etapa: ${page.url()}`);
+  check(page.url().endsWith(`#etapa-${ownGotico[0]}--gotico`), `la rama no lleva a la etapa con su rama: ${page.url()}`);
   await page.click('[data-action="practice"]');
   await playRound(page);
   await page.waitForSelector('.result');
-  // Resultado de rama: su avance y «Siguiente en la rama» como acción principal.
+  // Resultado de rama: su avance arriba (pulsable) y «Siguiente en la rama» como acción principal, en la misma rama.
   check(/Rama · Gótico \d+\/\d+/i.test(await page.locator('.event-branch').innerText()), 'el resultado no enseña el avance de la rama');
-  check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}"]`).innerText() === 'Siguiente en la rama', 'la acción principal no es «Siguiente en la rama»');
+  check(await page.evaluate(() => document.querySelector('.result-body .event, .result-body section.learned, .result-body .day-done')?.classList.contains('event-branch')), 'la tarjeta de rama no va la primera');
+  check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}--gotico"]`).innerText() === 'Siguiente en la rama', 'la acción principal no es «Siguiente en la rama» del Gótico');
+  check(!(await page.locator('.day-done-next').count()), 'tras una ronda de rama sale «La próxima vez» del camino común');
   await shot(page, '14f-rama-resultado', true);
   await audit(page, '390 resultado de rama');
-  await page.goto(`${base}#inicio`);
-  await page.waitForSelector('.branch[data-id="gotico"]');
-  await page.click('.branch[data-id="gotico"]');
-  await page.waitForSelector('dialog.map-sheet[open]');
+  await page.click('[data-action="done"]');
+  await page.waitForSelector(goticoSign);
+  await page.waitForTimeout(400);
+  check(await page.evaluate((sel) => { const r = document.querySelector(sel).getBoundingClientRect(); return r.top > 0 && r.bottom < innerHeight; }, goticoSign), '«Volver al camino» no lleva a la rama');
+  await openGotico();
   check(await page.locator(`dialog.map-sheet .ms-play[data-id="${ownGotico[1]}"]`).count() === 1, 'tras la ronda no se abre el siguiente pintor de la rama');
   await page.keyboard.press('Escape');
   await page.goto(`${base}#perfil`);

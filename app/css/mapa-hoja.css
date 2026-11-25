@@ -54,3 +54,5 @@ button.ms-row:hover { background: var(--surface-2); }
 @media (min-width: 900px) {
   .map-sheet { inset: 0; margin: auto; max-height: 80dvh; border-radius: var(--radius); }
 }
+.ms-row:has(.ms-go) { grid-template-columns: auto minmax(0, 1fr) auto; }
+.ms-go { display: grid; place-items: center; color: var(--ink-2); }
