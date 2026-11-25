@@ -32,16 +32,13 @@ test('colección: una franja por pintor con «n de m» y solo las 3 últimas a l
   assert.deepEqual(s.shown, s.works.slice(0, STRIP_THUMBS));
 });
 
-test('colección: por movimiento en orden cronológico y, con «recientes», por lo último desbloqueado', () => {
+test('colección: siempre por movimiento en orden cronológico, y se puede filtrar por movimiento', () => {
   const p = emptyProgress();
   const early = real.path[0];
   const late = real.path[real.path.length - 1];
-  unlock(p, early.id, 2, '2026-11-24');
-  unlock(p, late.id, 2, '2026-11-01');
-  assert.deepEqual(collectionStrips(p, real).map((s) => s.id), [early.id, late.id]);
-  assert.deepEqual(collectionStrips(p, real, { recent: true }).map((s) => s.id), [early.id, late.id]);
   unlock(p, late.id, 2, '2026-11-25');
-  assert.deepEqual(collectionStrips(p, real, { recent: true }).map((s) => s.id), [late.id, early.id]);
+  unlock(p, early.id, 2, '2026-11-01');
+  assert.deepEqual(collectionStrips(p, real).map((s) => s.id), [early.id, late.id], 'lo último desbloqueado no cambia el orden');
   const mov = collectionStrips(p, real, { movementId: late.movementId });
   assert.ok(mov.length && mov.every((s) => s.movement.id === late.movementId));
 });

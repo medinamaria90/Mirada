@@ -8,7 +8,7 @@ import { dirname, join } from 'node:path';
 import { buildIndex, mergeCatalogFicha } from '../app/js/engine/catalog.js';
 import { emptyProgress, artistStatus } from '../app/js/engine/progress.js';
 import { pendingWorks } from '../app/js/engine/levels.js';
-import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, isMastered } from '../app/js/engine/painters.js';
+import { painterGroups, painterState, seenOf, lifeLines, playTargets, stageList, fold, isMastered, firstSentence } from '../app/js/engine/painters.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
 import { initials } from '../app/js/ui/artist-profile.js';
 import { sourceLabel } from '../app/js/engine/stories.js';
@@ -106,16 +106,24 @@ test('ficha: solo las obras ya vistas (colección o rondas), nunca las demás', 
   assert.deepEqual(ids, [works[0].id, works[1].id].sort());
 });
 
-test('ficha: líneas de vida de la historia de nivel 1 con su fuente; sin historia, un dato seco con Wikidata', () => {
+test('ficha: una sola frase de vida (la primera de su historia, con fuente; la historia cuenta el resto); sin historia o sin vistas, un dato seco', () => {
   const story = readJson(join(app, 'data', 'historias', 'goya.json'));
   const goya = real.artist('goya');
   const lines = lifeLines(goya, story, 'Romanticismo');
-  assert.ok(lines.length >= 1 && lines.length <= 4);
-  assert.ok(lines.every((l) => l.text && /^https?:/.test(l.source)));
+  assert.equal(lines.length, 1);
+  assert.ok(/^https?:/.test(lines[0].source));
+  const card1 = story.levels[0].cards[0].text;
+  assert.ok(card1.startsWith(lines[0].text) && lines[0].text.length <= card1.length, 'resumen de la primera tarjeta');
+  assert.ok(!story.levels[0].cards.slice(1).some((c) => lines[0].text.includes(c.text)), 'no repite las otras tarjetas');
   const giotto = real.artist('giotto');
   const dry = lifeLines(giotto, null, 'Renacimiento');
   assert.equal(dry.length, 1);
   assert.ok(dry[0].text.includes('Giotto') && /wikidata\.org/.test(dry[0].source), JSON.stringify(dry));
+  const unseen = lifeLines(goya, story, 'Romanticismo', { known: false });
+  assert.ok(unseen[0].text.startsWith('Francisco') || unseen[0].text.includes('Goya'), 'sin vistas: dato seco');
+  assert.ok(!/maja|brujas/i.test(unseen[0].text), 'un pintor no visto no nombra cuadros');
+  assert.equal(firstSentence('Hola mundo. Y más cosas.'), 'Hola mundo.');
+  assert.equal(firstSentence('Sin punto final'), 'Sin punto final');
 });
 
 test('ficha: jugar solo si es parada abierta del camino; etapas solo con niveles «a fondo»', () => {

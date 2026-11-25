@@ -1,5 +1,5 @@
 // Colección agrupada por pintor: franjas con «n de m» y las 3 últimas obras desbloqueadas, por movimiento en
-// orden cronológico (o lo más reciente primero) y los invitados juntos en una sola franja. Puro.
+// orden cronológico y los invitados juntos en una sola franja. Puro.
 
 export const STRIP_THUMBS = 3;
 export const SEARCH_MIN_PAINTERS = 15; // el buscador sale con tantos pintores con alguna obra desbloqueada
@@ -26,15 +26,13 @@ function unlockedOf(index, owned, artistId) {
     .map(({ w }) => w);
 }
 
-const latest = (owned, works) => works.reduce((m, w) => (owned[w.id] > m ? owned[w.id] : m), '');
-
 function strip(kind, id, name, movement, works, total, artist = null) {
-  return { kind, id, name, artist, movement, works, shown: works.slice(0, STRIP_THUMBS), count: works.length, total, latest: '' };
+  return { kind, id, name, artist, movement, works, shown: works.slice(0, STRIP_THUMBS), count: works.length, total };
 }
 
 // Franjas: [{ kind: 'artist' | 'guests', id, name, artist, movement, works (todas las desbloqueadas, recientes primero),
-// shown (las 3 que se ven), count, total, latest }]
-export function collectionStrips(progress, index, { recent = false, movementId = null } = {}) {
+// shown (las 3 que se ven), count, total }]
+export function collectionStrips(progress, index, { movementId = null } = {}) {
   const owned = unlockedMap(progress, index);
   const own = [];
   const guests = [];
@@ -49,12 +47,7 @@ export function collectionStrips(progress, index, { recent = false, movementId =
     }
     if (guestWorks.length) guests.push(strip('guests', `invitados-${m.id}`, 'Invitados', m, guestWorks.sort(byDayDesc(owned)), guestTotal));
   }
-  for (const s of [...own, ...guests]) s.latest = latest(owned, s.works);
   const keep = (s) => !movementId || s.movement.id === movementId;
-  if (recent) {
-    const byRecent = (a, b) => (a.latest < b.latest ? 1 : a.latest > b.latest ? -1 : 0);
-    return [...own.filter(keep).sort(byRecent), ...guests.filter(keep).sort(byRecent)];
-  }
   // Cronológico: cada movimiento con sus pintores y, al final de él, la franja de invitados.
   return index.movements.flatMap((m) => [...own.filter((s) => s.movement.id === m.id), ...guests.filter((s) => s.movement.id === m.id)]).filter(keep);
 }

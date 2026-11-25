@@ -8,7 +8,7 @@ import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
 import { parseRoute } from '../app/js/ui/router.js';
-import { coverWork, previewCells, avatarCrop, seenOf, PREVIEW_CELLS } from '../app/js/engine/painters.js';
+import { coverAndAvatar, previewCells, avatarCrop, seenOf, PREVIEW_CELLS } from '../app/js/engine/painters.js';
 import { cardDuration, CARD_BASE_MS } from '../app/js/engine/stories.js';
 import { worksSpec } from '../app/js/ui/screens/artist-works.js';
 
@@ -26,16 +26,20 @@ test('rutas: ficha (con y sin etapas), galería del pintor y de los invitados; i
   assert.equal(parseRoute('#galeria-barroco').name, 'gallery', 'la galería de la sala no se confunde con la del pintor');
 });
 
-test('portada: la obra más famosa de las vistas, nunca una no vista; sin vistas, ninguna', () => {
+test('portada y avatar: de obras vistas, la más famosa de portada y otra distinta de avatar; sin vistas, ninguna', () => {
   const p = emptyProgress();
-  assert.equal(coverWork(seenOf(p, real, 'goya')), null);
-  const works = real.worksOf('goya');
-  const famous = works.slice().sort((a, b) => (b.fame || 0) - (a.fame || 0))[0];
+  assert.deepEqual(coverAndAvatar(seenOf(p, real, 'goya')), { cover: null, avatar: null });
+  const works = real.worksOf('goya').slice().sort((a, b) => (b.fame || 0) - (a.fame || 0));
+  const famous = works[0];
   const humble = works.find((w) => (w.fame || 0) < (famous.fame || 0));
   p.collection[humble.id] = DAY;
-  assert.equal(coverWork(seenOf(p, real, 'goya')).id, humble.id, 'solo hay una vista: la famosa sin ver no sale');
+  let ca = coverAndAvatar(seenOf(p, real, 'goya'));
+  assert.equal(ca.cover.id, humble.id, 'solo hay una vista: la famosa sin ver no sale');
+  assert.equal(ca.avatar.id, humble.id, 'con una sola, el avatar es la misma');
   p.collection[famous.id] = DAY;
-  assert.equal(coverWork(seenOf(p, real, 'goya')).id, famous.id);
+  ca = coverAndAvatar(seenOf(p, real, 'goya'));
+  assert.equal(ca.cover.id, famous.id);
+  assert.equal(ca.avatar.id, humble.id, 'con dos, el avatar es otra distinta');
 });
 
 test('galería embebida: las 6 primeras casillas, con huecos hasta completar y sin pasar de las que tiene', () => {

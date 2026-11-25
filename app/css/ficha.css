@@ -9,14 +9,14 @@
 .ap-hero { position: relative; }
 .ap-cover { position: relative; height: 210px; overflow: hidden; background: linear-gradient(160deg, var(--accent), color-mix(in srgb, var(--accent) 40%, var(--bg))); }
 .ap-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-.ap-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, var(--bg) 100%); }
+.ap-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, color-mix(in srgb, var(--viewer-bg) 55%, transparent) 0, transparent 38%, transparent 55%, var(--bg) 100%); }
 .ap-back, .ap-close {
   position: absolute; z-index: 2; top: calc(env(safe-area-inset-top, 0px) + .6rem); display: grid; place-items: center; width: 48px; height: 48px;
-  border: 0; border-radius: 999px; background: var(--scrim); color: var(--viewer-ink); cursor: pointer;
+  border: 0; border-radius: 999px; background: color-mix(in srgb, var(--viewer-bg) 72%, transparent); color: var(--viewer-ink); box-shadow: 0 0 0 1px color-mix(in srgb, var(--viewer-ink) 24%, transparent); cursor: pointer;
 }
 .ap-back { left: .6rem; }
 .ap-close { right: .6rem; }
-.ap-id { position: relative; display: flex; align-items: flex-end; gap: 1rem; margin-top: -48px; padding: 0 1.2rem; }
+.ap-id { position: relative; display: flex; flex-wrap: wrap; align-items: flex-end; gap: .6rem 1rem; margin-top: -48px; padding: 0 1.2rem; }
 
 /* Avatar con el anillo de historia: degradado de marca si no se ha visto, gris si ya se vio. */
 .ap-avatar { flex: none; padding: 0; border: 0; background: none; border-radius: 999px; line-height: 0; }
@@ -29,11 +29,16 @@ button.ap-avatar:active .ap-ring { transform: scale(.96); }
 .ap-ring.is-none .ap-photo { box-shadow: 0 0 0 4px var(--bg); }
 .ap-photo-img { width: 100%; height: 100%; object-fit: cover; object-position: var(--x) var(--y); transform: scale(2.2); transform-origin: var(--x) var(--y); }
 .ap-initials { font: 600 1.7rem/1 var(--font); color: var(--accent-ui); }
-.ap-who { min-width: 0; padding-bottom: .3rem; }
-.ap-name { font: 500 1.65rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: anywhere; }
+.ap-who { flex: 1 1 11rem; min-width: 0; padding-bottom: .3rem; }
+.ap-name { font: 500 1.65rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; hyphens: manual; }
 .ap-meta { margin-top: .25rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .ap-era { display: inline-block; margin-top: .45rem; padding: .22rem .75rem; border-radius: 999px; background: var(--accent-soft); font: 600 .82rem/1.2 var(--font); }
 
+.ap-progress { padding: 1rem 1.2rem 0; display: grid; gap: .2rem; }
+.ap-mastery { display: flex; align-items: center; gap: .5rem; font: 600 .95rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.ap-mastery.is-done { color: var(--ink); }
+.ap-mastery-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 999px; background: var(--gold); color: var(--on-gold); }
+.ap-mastery-more { margin-left: 1.9rem; color: var(--ink-2); font-size: .9rem; }
 .ap-actions { display: flex; flex-wrap: wrap; gap: .6rem; padding: 1.2rem 1.2rem 0; }
 .ap-actions .btn { flex: 1 1 8.5rem; padding: 0 1rem; white-space: nowrap; }
 
@@ -60,7 +65,7 @@ button.ap-stage:hover { background: var(--surface-2); }
 .ap-stage-state { font: 600 .8rem/1 var(--font); color: var(--ink-2); }
 
 /* Rejilla de 3 columnas: cuadros vistos y huecos discretos para los que faltan (sin imagen ni título). */
-.ap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin: 0; padding: 0; list-style: none; }
+.ap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 3px; margin: 0; padding: 0; list-style: none; }
 .ap-grid .art { width: 100%; border-radius: 0; box-shadow: none; }
 .ap-gap { aspect-ratio: 1; border: 2px dashed var(--line-2); border-radius: 4px; }
 .ap-more { display: inline-flex; align-items: center; justify-content: center; gap: .3rem; min-height: 48px; margin-top: .3rem; border: 0; background: none; color: var(--brand-text); font: 600 1rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
@@ -78,6 +83,9 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
 .aw { padding: 0 0 calc(var(--safe-b) + 5.5rem); }
 .aw-head { display: flex; align-items: center; gap: .7rem; padding: calc(env(safe-area-inset-top, 0px) + .6rem) .8rem 1rem; }
 .aw-head .ap-back { position: static; flex: none; background: var(--surface); color: var(--ink); box-shadow: var(--lift-sm); }
+.aw-more { margin: 1rem .8rem 0; color: var(--ink-2); font: 500 1rem/1.4 var(--font); }
+.aw-who { display: block; margin-top: 2px; color: var(--ink-2); font: 500 .74rem/1.15 var(--font); overflow-wrap: break-word; }
+.aw-empty { margin: 2rem 1.2rem; display: grid; gap: 1rem; justify-items: center; text-align: center; color: var(--ink-2); }
 .aw-titles { flex: 1; min-width: 0; }
 .aw-title { font: 500 1.4rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: anywhere; }
 .aw-sub { color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }

@@ -10,11 +10,12 @@ import { deepRoute } from './router.js';
 import { loadStory } from './story-data.js';
 import { levelStory, sourceLabel, storyKey } from '../engine/stories.js';
 import { storySeen } from '../state/stories-seen.js';
-import { lifeLines, lifeSpan, seenOf, playTargets, stageList, coverWork, previewCells, avatarCrop } from '../engine/painters.js';
+import { lifeLines, lifeSpan, seenOf, playTargets, stageList, coverAndAvatar, previewCells, avatarCrop, isMastered } from '../engine/painters.js';
 
 const STAGE_LABEL = { mastered: 'Dominada', started: 'En marcha', available: 'Abierta', locked: 'Por abrir' };
 const STAGE_ICON = { mastered: 'check', started: 'play', available: 'play', locked: 'lock' };
-const PLAY_LABEL = { available: 'Empezar', started: 'Seguir', mastered: 'Jugar otra vez' };
+// «Seguir» a secas se lee como «Follow» en una ficha de perfil: es seguir jugando.
+const PLAY_LABEL = { available: 'Empezar su etapa', started: 'Seguir jugando', mastered: 'Jugar otra vez' };
 
 export const initials = (name) => String(name || '').split(/\s+/).filter((w) => /^\p{Lu}/u.test(w)).slice(0, 2).map((w) => w[0]).join('') || '·';
 
@@ -59,25 +60,36 @@ function galleryHtml(artist, seen, total, withLink) {
   const more = withLink
     ? `<button type="button" class="ap-more" data-ap="gallery">${seen.length === 1 ? 'Ver su cuadro' : `Ver sus ${seen.length} cuadros`}${icons.next(16)}</button>` : '';
   return `<section class="ap-section ap-gallery" aria-labelledby="ap-gal-h"><h2 id="ap-gal-h" class="ap-h">Sus cuadros <span class="ap-count">${seen.length} de ${total}</span></h2>
-    <ul class="ap-grid">${shown.map((w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, thumb: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}${'<li class="ap-gap" aria-hidden="true"></li>'.repeat(gaps)}</ul>
+    <ul class="ap-grid">${shown.map((w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, thumb: true, defer: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}` } })}</li>`).join('')}${'<li class="ap-gap" aria-hidden="true"></li>'.repeat(gaps)}</ul>
     ${more}</section>`;
 }
 
+// «✓ Dominado · 9 de 33 cuadros» (dominado = lo que dice el motor) y, si quedan obras en los niveles «a fondo», cuántas.
+function masteryHtml(progress, index, artistId, seen, total) {
+  const done = isMastered(progress, artistId);
+  const deep = index.deepLevels(artistId).length > 0;
+  const left = total - seen;
+  const count = `${seen} de ${total} cuadros`;
+  if (!done) return `<p class="ap-mastery">${count}</p>`;
+  return `<p class="ap-mastery is-done"><span class="ap-mastery-mark" aria-hidden="true">${icons.check(14)}</span><span>Dominado · ${count}</span></p>${deep && left > 0 ? `<p class="ap-mastery-more">Te quedan ${left} en los niveles a fondo</p>` : ''}`;
+}
+
 function heroHtml(artist, movement, seen, hasStory, storyNew, tag, leadControl) {
-  const cover = coverWork(seen);
-  const { x, y } = avatarCrop(cover);
-  const photo = cover
-    ? `<img class="ap-photo-img" src="${esc(cover.img)}" alt="" style="--x:${x}%;--y:${y}%" decoding="async">`
+  const { cover, avatar } = coverAndAvatar(seen);
+  const cx = avatarCrop(cover);
+  const ax = avatarCrop(avatar);
+  const photo = avatar
+    ? `<img class="ap-photo-img" src="${esc(avatar.img)}" alt="" style="--x:${ax.x}%;--y:${ax.y}%" decoding="async">`
     : `<span class="ap-initials" aria-hidden="true">${esc(initials(artist.name))}</span>`;
   const ring = `<span class="ap-ring${hasStory ? (storyNew ? ' is-new' : ' is-seen') : ' is-none'}"><span class="ap-photo">${photo}</span></span>`;
-  const avatar = hasStory
+  const avatarEl = hasStory
     ? `<button type="button" class="ap-avatar" data-ap="story" aria-label="Ver la historia de ${esc(artist.name)}">${ring}</button>`
     : `<span class="ap-avatar">${ring}</span>`;
   const meta = [lifeSpan(artist), artist.country].filter(Boolean).join(' · ');
   return `<header class="ap-hero">
-    <div class="ap-cover">${cover ? `<img src="${esc(cover.img)}" alt="" decoding="async" fetchpriority="high">` : ''}</div>
+    <div class="ap-cover">${cover ? `<img src="${esc(cover.img)}" alt="" style="object-position:${cx.x}% ${cx.y}%" decoding="async" fetchpriority="high">` : ''}</div>
     ${leadControl}
-    <div class="ap-id">${avatar}
+    <div class="ap-id">${avatarEl}
       <div class="ap-who"><${tag} class="ap-name" id="ap-name">${esc(artist.name)}</${tag}>
         <p class="ap-meta">${esc(meta)}</p>${movement ? `<p class="ap-era">${esc(movement.name)}</p>` : ''}</div>
     </div>
@@ -93,18 +105,21 @@ export async function profileHtml(ctx, artistId, opts) {
   const movement = index.movement(artist.movementId);
   const seen = seenOf(progress, index, artistId);
   const total = index.worksOf(artistId).length;
-  const lines = lifeLines(artist, story, movement ? movement.name : '');
-  const hasStory = Boolean(levelStory(story, 1));
+  // Sin nada visto ni dominado (p. ej. un enlace directo): nada que nombre cuadros aún no vistos.
+  const known = seen.length > 0 || isMastered(progress, artistId);
+  const lines = lifeLines(artist, story, movement ? movement.name : '', { known });
+  const hasStory = known && Boolean(levelStory(story, 1));
   const target = opts.playable ? playTargets(progress, index, artistId).stage : null;
   const actions = hasStory || target ? `<div class="ap-actions">
       ${target ? `<button type="button" class="btn btn-primary" data-ap="play">${esc(PLAY_LABEL[target])}</button>` : ''}
       ${hasStory ? `<button type="button" class="btn btn-secondary" data-ap="story">${icons.play(18)}<span>Ver su historia</span></button>` : ''}
     </div>` : '';
   return `${heroHtml(artist, movement, seen, hasStory, !storySeen(storyKey(artistId, 1)), opts.tag || 'h2', opts.leadControl || '')}
+    ${known ? `<div class="ap-progress">${masteryHtml(progress, index, artistId, seen.length, total)}</div>` : ''}
     ${actions}
     <section class="ap-bio">${lines.map((l) => `<p>${esc(l.text)}</p>`).join('')}${sourcesHtml(lines)}</section>
     ${lookHtml(artist)}
-    ${stagesHtml(stageList(progress, index, artistId), opts.playable)}
+    ${known ? stagesHtml(stageList(progress, index, artistId), opts.playable) : ''}
     ${galleryHtml(artist, seen, total, opts.navigate)}`;
 }
 

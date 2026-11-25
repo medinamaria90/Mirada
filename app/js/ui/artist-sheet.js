@@ -4,6 +4,7 @@
 
 import { accentStyle } from './dom.js';
 import { icons } from './icons.js';
+import { observeDeferred } from './lazy-img.js';
 import { loadCss } from './lazy-css.js';
 import { profileHtml, wireProfile } from './artist-profile.js';
 
@@ -38,6 +39,7 @@ export async function openArtistSheet(ctx, artistId, opts = {}) {
   } };
   current = handle;
   wireProfile(ctx, dlg, artistId);
+  observeDeferred(dlg);
   dlg.addEventListener('click', (ev) => {
     if (ev.target === dlg || ev.target.closest('[data-as="close"]')) handle.close();
   });

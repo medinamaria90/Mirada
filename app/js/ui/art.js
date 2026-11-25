@@ -30,7 +30,9 @@ function sheetVars(t) {
 // Marca pequeña de «se puede ver en grande» (esquina del cuadro). Decorativa.
 export const ZOOM_BADGE = '<span class="zoom-badge" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></span>';
 
-// opts: { alt, cls, eager, label, thumb, zoom }
+// opts: { alt, cls, eager, label, thumb, zoom, defer }
+// defer: la imagen se pide cuando se acerca a la pantalla (ui/lazy-img.js), no antes: en las listas largas con miniaturas
+//   dispersas, cada una trae una hoja entera del atlas y pedirlas todas de golpe pesa megas.
 // alt vacío: imagen decorativa (el texto va en el botón o la tarjeta que la contiene).
 // zoom: el cuadro es un botón que lo abre en el visor a pantalla completa (ui/viewer.js):
 //   { group?, label? } usa la delegación global (data-zoom; con pie de título · autor · año);
@@ -52,7 +54,7 @@ export function artFrame(artwork, opts = {}) {
   return `<${tag} class="art ${sheet ? 'art-sheet ' : ''}${z ? 'art-zoom ' : ''}${opts.cls || ''} ${failed ? 'is-broken' : ''}" style="${style}" data-art="${esc(artwork.id)}" data-label="${esc(label)}"${zoomAttrs}>${
     failed
       ? ''
-      : `<img src="${esc(artSrc(artwork, opts.thumb))}" alt="${z ? '' : esc(opts.alt ?? '')}" ${size} loading="${opts.eager ? 'eager' : 'lazy'}" decoding="async"${opts.eager ? ' fetchpriority="high"' : ''}>`
+      : `<img ${opts.defer ? 'data-src' : 'src'}="${esc(artSrc(artwork, opts.thumb))}" alt="${z ? '' : esc(opts.alt ?? '')}" ${size} loading="${opts.eager ? 'eager' : 'lazy'}" decoding="async"${opts.eager ? ' fetchpriority="high"' : ''}>`
   }${z ? ZOOM_BADGE : ''}</${tag}>`;
 }
 

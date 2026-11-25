@@ -4,7 +4,6 @@
 import { artistStatus } from './progress.js';
 import { seenWorks, deepStatus } from './levels.js';
 
-export const MAX_LIFE_LINES = 4;
 
 // Sin tildes ni mayúsculas, para buscar «el greco» o «durero».
 export const fold = (text) => String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
@@ -52,12 +51,18 @@ export function painterGroups(progress, index, query = '') {
   return groups;
 }
 
-// Líneas de vida: las tarjetas del nivel básico de su historia (con fuente) y, si no hay, un dato seco
-// del catálogo. [{ text, source }]
-export function lifeLines(artist, story, movementName = '') {
-  const cards = story?.levels?.find((l) => l.level === 1)?.cards || [];
-  const lines = cards.slice(0, MAX_LIFE_LINES).map((c) => ({ text: c.text, source: c.source || '' }));
-  if (lines.length) return lines;
+// Primera frase de un texto (hasta el primer punto seguido de espacio o el final): la ficha resume y la historia cuenta.
+export function firstSentence(text) {
+  const m = /^.*?[.!?](?=\s|$)/.exec(String(text || '').trim());
+  return m ? m[0] : String(text || '').trim();
+}
+
+// Líneas de vida de la ficha: UNA frase resumen, la primera de su historia de nivel 1 (con fuente; la historia cuenta el
+// resto, así que no se repite palabra por palabra) y, sin historia o sin obras vistas, un dato seco del catálogo que no
+// nombra ningún cuadro. [{ text, source }]
+export function lifeLines(artist, story, movementName = '', { known = true } = {}) {
+  const card = known ? story?.levels?.find((l) => l.level === 1)?.cards?.[0] : null;
+  if (card) return [{ text: firstSentence(card.text), source: card.source || '' }];
   const years = artist.born && artist.died ? ` (${artist.born}–${artist.died})` : '';
   const where = artist.country ? `, ${artist.country}` : '';
   const era = movementName ? ` · ${movementName}` : '';
@@ -79,9 +84,11 @@ export function stageList(progress, index, artistId) {
 
 export const lifeSpan = (a) => (a.born && a.died ? `${a.born}–${a.died}` : '');
 
-// Portada de la ficha: la obra más famosa de las ya vistas (nunca una que no se haya visto: sin spoilers).
-export function coverWork(seen) {
-  return seen.slice().sort((a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b.yearSort || 0))[0] || null;
+// Portada y avatar de la ficha, ambos de obras ya vistas (sin spoilers): la portada es la más famosa; el avatar, otra
+// distinta si la hay (si no, la misma). { cover, avatar } (null sin obras vistas).
+export function coverAndAvatar(seen) {
+  const ranked = seen.slice().sort((a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b.yearSort || 0));
+  return { cover: ranked[0] || null, avatar: ranked[1] || ranked[0] || null };
 }
 
 // Galería embebida en la ficha: las primeras `limit` casillas, con las obras vistas y huecos hasta completar

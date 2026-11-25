@@ -9,37 +9,35 @@ import { artFrame } from '../art.js';
 import { playEra } from '../audio-bridge.js';
 import { openGalleries, galleryWorks } from '../../engine/goals.js';
 import { collectionStrips, unlockedMap, unlockedPainterCount, unlockedMovements, suggestPool, SEARCH_MIN_PAINTERS } from '../../engine/collection.js';
-import { eyeLabel } from './medals.js';
 import { renderPainters, collTabs } from './collection-painters.js';
 import { loadCss } from '../lazy-css.js';
+import { observeDeferred } from '../lazy-img.js';
 import { suggestBoxHtml, mountSuggestBox } from '../suggest-box.js';
 
 // Filtro por movimiento elegido: se queda mientras se navega por la app.
 const view = { movementId: null };
 
-function stripHtml(ctx, s) {
-  const count = `<span class="coll-count" aria-label="${s.count} de ${s.total} cuadros">${s.count} de ${s.total}</span>`;
+function stripHtml(s) {
   const isGuests = s.kind === 'guests';
   const name = isGuests
-    ? `<h2 class="coll-artist-name">${esc(s.name)}</h2>`
-    : `<h2 class="coll-artist-name"><button type="button" class="coll-name-btn" data-artist="${esc(s.id)}">${esc(s.name)}${icons.next(16)}</button></h2>`;
+    ? `<h2 class="coll-artist-name coll-guests-name">${esc(s.name)}</h2>`
+    : `<h2 class="coll-artist-name"><button type="button" class="coll-name-btn" data-artist="${esc(s.id)}"><span>${esc(s.name)}</span>${icons.next(16)}</button></h2>`;
   const route = isGuests ? `obras-invitados-${s.movement.id}` : `obras-${s.id}`;
-  const all = `<button type="button" class="coll-all" data-action="works" data-to="${esc(route)}">${s.count === 1 ? 'Ver su cuadro' : `Ver sus ${s.count} cuadros`}</button>`;
-  const eye = isGuests ? '' : eyeLine(ctx, s.id);
+  const all = `<button type="button" class="coll-all" data-action="works" data-to="${esc(route)}">${s.count === 1 ? 'Ver su cuadro' : `Ver sus ${s.count} cuadros`}${icons.next(14)}</button>`;
   return `<section class="coll-strip" style="${accentStyle(s.movement.accent)}" aria-label="${esc(s.name)}">
-      <header class="coll-strip-head">${name}${count}${all}</header>${eye}
+      <header class="coll-strip-head"><div class="coll-strip-id">${name}<span class="coll-count" aria-label="${s.count} de ${s.total} cuadros">${s.count} de ${s.total}</span></div>${all}</header>
       <ul class="coll-grid">${s.shown.map((w) => `<li><button class="coll-item" data-action="open" data-id="${esc(w.id)}" data-strip="${esc(s.id)}" aria-label="${esc(w.title)}">
-        ${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, thumb: true })}</button></li>`).join('')}</ul>
+        ${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, thumb: true, defer: true })}</button></li>`).join('')}</ul>
     </section>`;
 }
 
 // Franjas con un encabezado pequeño por movimiento (en el orden cronológico); en «recientes», sin encabezados.
-function listHtml(ctx, strips) {
+function listHtml(strips) {
   let last = null;
   return strips.map((s) => {
     const head = s.movement.id !== last ? `<h3 class="coll-era" style="${accentStyle(s.movement.accent)}">${esc(s.movement.name)}</h3>` : '';
     last = s.movement.id;
-    return head + stripHtml(ctx, s);
+    return head + stripHtml(s);
   }).join('');
 }
 
@@ -85,12 +83,14 @@ export async function renderCollection(ctx, el, { tab = 'works' } = {}) {
     ${ownedCount === 0
     ? `<div class="empty"><span class="empty-icon">${icons.frames(36)}</span><p>Cada cuadro que reconozcas se guardará aquí.</p>
         <a class="btn btn-primary" href="#inicio">Ir al camino</a></div>`
-    : `${searchable ? `<div class="coll-controls">${controlsHtml(ctx, searchable)}</div>` : ''}<div class="coll-list">${listHtml(ctx, strips())}</div>`}`);
+    : `${searchable ? `<div class="coll-controls">${controlsHtml(ctx, searchable)}</div>` : ''}<div class="coll-list">${listHtml(strips())}</div>`}`);
   focusHeading(el);
   playEra('menu');
+  observeDeferred(el);
 
   const redraw = () => {
-    el.querySelector('.coll-list').innerHTML = listHtml(ctx, strips());
+    el.querySelector('.coll-list').innerHTML = listHtml(strips());
+    observeDeferred(el);
     el.querySelectorAll('[data-action="era"]').forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.id || null) === view.movementId)));
   };
 
@@ -125,10 +125,4 @@ export async function renderCollection(ctx, el, { tab = 'works' } = {}) {
       ctx.go(`galeria-${b.dataset.id}`);
     },
   });
-}
-
-// «Ojo de X · 3/7» bajo el nombre de un pintor dominado (meta larga visible).
-export function eyeLine(ctx, artistId) {
-  const e = eyeLabel(ctx, artistId);
-  return e ? `<p class="eye-line">${icons.eye(16)}<span>${esc(e.text)}</span></p>` : '';
 }

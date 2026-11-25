@@ -1,11 +1,16 @@
-// Historia al empezar un nivel, como las de Instagram: barras de progreso, el detalle grande de un cuadro,
-// 2-3 líneas y la fuente discreta. Saltable en cualquier momento, sin examen. Una vez por nivel (se vuelve a
-// ver desde la ficha del pintor). Pintores sin historia: no se muestra nada.
+// Historia al empezar un nivel, como las de Instagram: una columna 9:16 con el cuadro a sangre, barras de progreso,
+// quién cuenta la historia, 2-3 líneas y la fuente discreta. Saltable en cualquier momento, sin examen. Una vez por
+// nivel (se vuelve a ver desde la ficha del pintor). Pintores sin historia: no se muestra nada.
+//
+// Avanza sola al llenarse la barra (salvo con movimiento reducido), con un botón visible de pausa; Espacio pausa o
+// reanuda esté donde esté el foco, mantener el dedo pausa y usar el teclado (Tab) también. Atrás cierra la historia
+// y deja en la pantalla de debajo (entra en el historial, como el visor).
 
 import { esc, accentStyle, prefersReducedMotion } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { loadStory } from './story-data.js';
+import { initials } from './artist-profile.js';
 import { levelStory, cropOf, step, storyKey, sourceLabel, cardDuration } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
@@ -15,19 +20,21 @@ const ZONE_BACK = 0.33; // el tercio izquierdo de la imagen vuelve; el resto ava
 
 let current = null;
 
-function cardHtml(index, card, pos, count) {
+function mediaHtml(index, card) {
   const w = index.artwork(card.artwork);
   const c = cropOf(card.focus);
+  const img = w ? `<img class="story-img" src="${esc(w.img)}" alt="${esc(`${w.title}, de ${index.artist(w.artistId)?.name || ''}`)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async" fetchpriority="high">` : '';
+  return `<div class="story-art${c.whole ? '' : ' is-crop'}" style="--x:${c.x}%;--y:${c.y}%;--z:${c.zoom}">${img}</div>`;
+}
+
+function cardHtml(card, pos, count, forced) {
   const label = sourceLabel(card.source);
-  const art = w ? `<img class="story-img" src="${esc(w.img)}" alt="${esc(`${w.title}, de ${index.artist(w.artistId)?.name || ''}`)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async" fetchpriority="high">` : '';
-  return `<div class="story-art${c.whole ? '' : ' is-crop'}" style="--x:${c.x}%;--y:${c.y}%;--z:${c.zoom}">${art}</div>
-    <div class="story-card" aria-live="polite">
-      <p class="story-text">${esc(card.text)}</p>
-      ${label ? `<a class="story-source" href="${esc(String(card.source).split('#')[0])}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : ''}
-    </div>
+  const last = pos === count - 1;
+  return `<p class="story-text">${esc(card.text)}</p>
+    ${label ? `<a class="story-source" href="${esc(String(card.source).split('#')[0])}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : ''}
     <div class="story-nav">
       <button type="button" class="icon-btn story-back" data-st="prev" aria-label="Tarjeta anterior"${pos === 0 ? ' hidden' : ''}>${icons.prev(22)}</button>
-      <button type="button" class="btn btn-primary story-next" data-st="next">${pos === count - 1 ? 'Seguir' : 'Siguiente'}</button>
+      <button type="button" class="btn btn-primary story-next" data-st="next">${last ? (forced ? 'Cerrar' : 'Listo') : 'Siguiente'}</button>
     </div>`;
 }
 
@@ -44,81 +51,113 @@ export async function playStory(ctx, artistId, level, opts = {}) {
   markStorySeen(key);
   const artist = index.artist(artistId);
   const opener = document.activeElement;
+  const auto = !prefersReducedMotion();
 
   return new Promise((resolve) => {
     const dlg = document.createElement('dialog');
     dlg.className = 'story';
     dlg.setAttribute('aria-label', `Historia: ${lv.title || artist?.name || ''}`);
     dlg.setAttribute('style', accentStyle(index.movement(artist?.movementId)?.accent));
-    dlg.innerHTML = `<div class="story-bars" aria-hidden="true">${lv.cards.map(() => '<span class="story-bar"><span></span></span>').join('')}</div>
-      <div class="story-top"><p class="story-title">${esc(lv.stage || lv.title)}</p>
-        <button type="button" class="story-skip" data-st="skip">Saltar</button></div>
-      <div class="story-body"></div>`;
+    dlg.innerHTML = `<div class="story-frame">
+      <div class="story-media"></div>
+      <div class="story-bars" aria-hidden="true">${lv.cards.map(() => '<span class="story-bar"><span></span></span>').join('')}</div>
+      <div class="story-top">
+        <span class="story-who"><span class="story-avatar" aria-hidden="true">${esc(initials(artist?.name))}</span>
+          <span class="story-who-text"><span class="story-name">${esc(artist?.short || artist?.name || '')}</span><span class="story-title">${esc(lv.stage || lv.title)}</span></span></span>
+        ${auto ? `<button type="button" class="story-icon" data-st="pause" aria-pressed="false" aria-label="Pausar">${icons.pause(22)}</button>` : ''}
+        <button type="button" class="story-skip" data-st="skip">Saltar</button>
+      </div>
+      <p class="story-paused" aria-hidden="true">En pausa</p>
+      <div class="story-bottom"></div>
+      <p class="sr-only" data-live role="status" aria-live="polite"></p>
+    </div>`;
     document.body.appendChild(dlg);
-    const body = dlg.querySelector('.story-body');
+    const media = dlg.querySelector('.story-media');
+    const bottom = dlg.querySelector('.story-bottom');
+    const pauseBtn = dlg.querySelector('[data-st="pause"]');
     let pos = 0;
     let closed = false;
+    let userPaused = false;
 
-    const show = () => {
-      body.innerHTML = cardHtml(index, lv.cards[pos], pos, lv.cards.length);
-      const auto = !prefersReducedMotion();
+    const setPaused = (on) => {
+      dlg.classList.toggle('is-paused', on);
+      if (pauseBtn) {
+        pauseBtn.setAttribute('aria-pressed', String(on));
+        pauseBtn.setAttribute('aria-label', on ? 'Reanudar' : 'Pausar');
+        pauseBtn.innerHTML = on ? icons.play(22) : icons.pause(22);
+      }
+    };
+    const show = (manual) => {
+      media.innerHTML = mediaHtml(index, lv.cards[pos]);
+      bottom.innerHTML = cardHtml(lv.cards[pos], pos, lv.cards.length, Boolean(opts.force));
       dlg.querySelectorAll('.story-bar').forEach((b, i) => {
         b.classList.toggle('is-done', i < pos || (i === pos && !auto));
         b.classList.toggle('is-now', auto && i === pos);
         b.style.setProperty('--dur', `${cardDuration(lv.cards[pos])}ms`);
       });
-      // Reinicia la animación de la barra activa.
       const now = dlg.querySelector('.story-bar.is-now > span');
       if (now) { now.style.animation = 'none'; void now.offsetWidth; now.style.animation = ''; }
-      dlg.querySelector('.story-next').focus({ preventScroll: true });
+      // Solo se anuncia lo que el usuario pide (la primera tarjeta y cada cambio a mano), no lo que avanza solo.
+      if (manual) dlg.querySelector('[data-live]').textContent = lv.cards[pos].text;
+      if (manual || pos === 0) dlg.querySelector('.story-next').focus({ preventScroll: true });
       const nextCard = lv.cards[pos + 1];
       const nextWork = nextCard && index.artwork(nextCard.artwork);
       if (nextWork) new Image().src = nextWork.img;
     };
-    const finish = () => {
+
+    // Entra en el historial: atrás cierra la historia y deja en la ficha (o donde se estuviera).
+    let pushed = false;
+    try { history.pushState({ sfStory: true }, ''); pushed = true; } catch { /* sin historial: Saltar y Esc siguen funcionando */ }
+    const onPop = () => finish(true);
+
+    function finish(fromPop = false) {
       if (closed) return;
       closed = true;
       current = null;
-      window.removeEventListener('hashchange', finish);
+      window.removeEventListener('popstate', onPop);
       if (dlg.open) dlg.close();
       dlg.remove();
+      if (pushed && !fromPop) { try { history.back(); } catch { /* nada */ } }
       if (opener && opener.isConnected) opener.focus({ preventScroll: true });
       resolve(true);
-    };
-    const go = (delta) => {
+    }
+    const go = (delta, manual = true) => {
       const r = step(pos, lv.cards.length, delta);
       if (r.end) return finish();
       if (r.pos === pos) return;
       pos = r.pos;
-      ctx.audio.sfx('tap');
-      show();
+      if (manual) ctx.audio.sfx('tap');
+      show(manual);
     };
 
     dlg.addEventListener('click', (ev) => {
       const b = ev.target.closest('[data-st]');
       if (b) {
-        if (b.dataset.st === 'skip') { ctx.audio.sfx('tap'); finish(); } else go(b.dataset.st === 'next' ? 1 : -1);
+        const what = b.dataset.st;
+        if (what === 'skip') { ctx.audio.sfx('tap'); finish(); }
+        else if (what === 'pause') { userPaused = !userPaused; setPaused(userPaused); }
+        else go(what === 'next' ? 1 : -1);
         return;
       }
       // Tocar la imagen: el tercio izquierdo vuelve, el resto avanza (como en Instagram).
-      const art = ev.target.closest('.story-art');
+      const art = ev.target.closest('.story-media');
       if (art) {
         const r = art.getBoundingClientRect();
         go(ev.clientX - r.left < r.width * ZONE_BACK ? -1 : 1);
       }
     });
-    // La barra activa llena y pasa a la siguiente tarjeta; mantener pulsado (o Espacio) pausa.
-    dlg.addEventListener('animationend', (ev) => { if (ev.target.parentElement?.classList.contains('is-now')) go(1); });
+    // La barra activa llena y pasa a la siguiente tarjeta (sin anunciarla: no la ha pedido).
+    dlg.addEventListener('animationend', (ev) => { if (ev.target.parentElement?.classList.contains('is-now')) go(1, false); });
+    // Mantener el dedo sobre el cuadro o el texto pausa; al soltar sigue.
     let holdTimer = null;
-    const pause = (on) => dlg.classList.toggle('is-paused', on);
     let from = null;
+    const release = () => { clearTimeout(holdTimer); if (!userPaused && dlg.classList.contains('is-paused')) setPaused(false); };
     dlg.addEventListener('pointerdown', (ev) => {
       from = { x: ev.clientX, y: ev.clientY };
       delete dlg.dataset.swiped;
       delete dlg.dataset.held;
-      if (ev.target.closest('.story-art, .story-card')) holdTimer = setTimeout(() => { pause(true); dlg.dataset.held = '1'; }, HOLD_MS);
+      if (ev.target.closest('.story-media, .story-bottom') && !ev.target.closest('button, a')) holdTimer = setTimeout(() => { setPaused(true); dlg.dataset.held = '1'; }, HOLD_MS);
     });
-    const release = () => { clearTimeout(holdTimer); if (dlg.classList.contains('is-paused') && dlg.dataset.paused !== '1') pause(false); };
     dlg.addEventListener('pointercancel', release);
     dlg.addEventListener('pointerup', (ev) => {
       release();
@@ -128,22 +167,25 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       from = null;
       if (Math.abs(dx) > SWIPE_MIN && Math.abs(dx) > Math.abs(dy) * 1.3) { dlg.dataset.swiped = '1'; go(dx < 0 ? 1 : -1); }
     });
-    // Un arrastre no cuenta además como toque en la imagen.
+    // Un arrastre o una pulsación larga no cuentan además como toque.
     dlg.addEventListener('click', (ev) => {
       if (dlg.dataset.swiped || dlg.dataset.held) { ev.stopImmediatePropagation(); delete dlg.dataset.swiped; delete dlg.dataset.held; }
     }, true);
+    // Espacio pausa o reanuda esté donde esté el foco (en un botón no lo activa); Tab (teclado) deja de avanzar sola.
     dlg.addEventListener('keydown', (ev) => {
-      if (ev.key === 'ArrowRight') { ev.preventDefault(); go(1); } else if (ev.key === 'ArrowLeft') { ev.preventDefault(); go(-1); }
-      else if (ev.key === ' ' && !ev.target.closest('button, a')) {
+      if (ev.key === ' ') {
         ev.preventDefault();
-        dlg.dataset.paused = dlg.dataset.paused === '1' ? '0' : '1';
-        pause(dlg.dataset.paused === '1');
-      }
-    });
+        ev.stopPropagation();
+        if (auto) { userPaused = !userPaused; setPaused(userPaused); }
+      } else if (ev.key === 'Tab' && auto && !userPaused) {
+        userPaused = true;
+        setPaused(true);
+      } else if (ev.key === 'ArrowRight') { ev.preventDefault(); go(1); } else if (ev.key === 'ArrowLeft') { ev.preventDefault(); go(-1); }
+    }, true);
     dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); finish(); });
-    window.addEventListener('hashchange', finish);
-    current = { close: finish };
+    window.addEventListener('popstate', onPop);
+    current = { close: () => finish(false) };
     try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }
-    show();
+    show(true);
   });
 }

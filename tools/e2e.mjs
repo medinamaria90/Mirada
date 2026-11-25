@@ -955,7 +955,9 @@ if (SMOKE) {
   check(/reconoces/i.test(await page.locator('.stats').innerText()), 'perfil sin «cuadros que reconoces»');
   check(await page.locator('button.medal-item').count() >= 1, 'las medallas del perfil no son pulsables');
   // Colección → «Pintores»: lista por épocas con buscador; la ficha se abre sobre la pantalla y solo enseña lo ya visto.
-  const pintSeen = Object.fromEntries(index.path.slice(0, 3).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
+  // 16 pintores conocidos: con tantos sale el buscador (con menos no hay nada que buscar).
+  const pintSeen = Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
+  pintSeen[index.worksOf(index.path[0].id)[1].id] = '2026-11-21';
   await seed(page, seededState({ upTo: 3, extra: { collection: pintSeen } }), 'coleccion-pintores');
   await page.waitForSelector('.pl-row');
   check(await page.locator('.coll-tab[aria-current="page"]').innerText() === 'Pintores', 'la pestaña «Pintores» no está marcada');
@@ -965,9 +967,11 @@ if (SMOKE) {
   check(await page.locator('.pl-row').count() === 0 && await page.locator('.pl-empty').count() === 1, 'la búsqueda sin resultados no lo dice');
   await page.fill('.pl-input', '');
   check(await page.locator('.pl-row').count() === rows, 'al vaciar la búsqueda no vuelve la lista');
+  const firstRowArtist = index.path[0].id;
+  const storyRow = page.locator(`.pl-row[data-artist="${firstRowArtist}"]`);
+  await storyRow.scrollIntoViewIfNeeded();
   const listY = await page.evaluate(() => window.scrollY);
-  const firstRowArtist = await page.locator('.pl-row').first().getAttribute('data-artist');
-  await page.locator('.pl-row').first().click();
+  await storyRow.click();
   await page.waitForSelector('.ap-name');
   await page.waitForTimeout(400);
   check(page.url().endsWith(`#pintor-${firstRowArtist}`), `la ficha no es una pantalla con su ruta: ${page.url()}`);
@@ -987,8 +991,17 @@ if (SMOKE) {
   await page.waitForTimeout(300);
   check(await page.locator('.story-bar.is-now').count() === 1, 'la historia no avanza sola (barra de progreso)');
   await shot(page, '14m-ficha-historia');
-  await page.keyboard.press('Escape');
+  // Pausa visible; Espacio pausa o reanuda esté donde esté el foco (no avanza); atrás cierra la historia y deja en la ficha.
+  check(await page.locator('.story [data-st="pause"]').getAttribute('aria-pressed') === 'false', 'la historia no tiene botón visible de pausa');
+  await page.keyboard.press('Space');
+  check(await page.locator('.story.is-paused').count() === 1 && await page.locator('.story-bar.is-now').count() === 1, 'Espacio no pausa la historia (o avanza en vez de pausar)');
+  check(await page.locator('.story [data-st="pause"]').getAttribute('aria-label') === 'Reanudar', 'la pausa no cambia a «Reanudar»');
+  await page.keyboard.press('Space');
+  check(await page.locator('.story.is-paused').count() === 0, 'Espacio no reanuda');
+  const storyUrl = page.url();
+  await page.goBack();
   await page.waitForSelector('.story', { state: 'detached' });
+  check(page.url() === storyUrl && await page.locator('.ap-name').count() === 1, `atrás con la historia abierta no deja en la ficha: ${page.url()}`);
   check(await page.locator('.ap-ring.is-seen').count() === 1, 'el anillo de la historia vista no es gris');
   await page.goBack();
   await page.waitForSelector('.pl-row');
@@ -999,8 +1012,8 @@ if (SMOKE) {
   const sp = await storyCtx.newPage();
   watch(sp, 'historia');
   await sp.goto(base);
-  await sp.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 0 }));
   const storyArtist = index.path[0];
+  await sp.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 0, extra: { collection: { [index.worksOf(storyArtist.id)[0].id]: '2026-11-20' } } }));
   // Sin ver la historia, el anillo del avatar es de marca; al verla, gris.
   await sp.goto(`${base}#pintor-${storyArtist.id}`);
   await sp.reload();
@@ -1021,7 +1034,7 @@ if (SMOKE) {
     await sp.click('.story-next');
     await sp.waitForTimeout(150);
   }
-  check(await sp.locator('.story-bar.is-done').count() === nCards && /Seguir/.test(await sp.locator('.story-next').innerText()), 'al llegar a la última tarjeta no dice «Seguir»');
+  check(await sp.locator('.story-bar.is-done').count() === nCards && /Listo/.test(await sp.locator('.story-next').innerText()), 'al llegar a la última tarjeta no dice «Listo»');
   await sp.click('.story-next');
   await sp.waitForSelector('.learn');
   check(await sp.locator('.story').count() === 0, 'la historia no se cierra al terminar');
@@ -1046,6 +1059,10 @@ if (SMOKE) {
   await shot(page, '14h-mapa-sello-a-fondo');
   await page.locator('.stage-spot[data-step="artist:' + deepArtist.id + '"] .deep-badge').click();
   await page.waitForSelector('button.ap-stage');
+  const l1 = index.levelWorks(deepArtist.id, 1).length;
+  const allW = index.worksOf(deepArtist.id).length;
+  check((await page.locator('.ap-mastery.is-done').innerText()).replace(/\s+/g, ' ').includes(`Dominado · ${l1} de ${allW} cuadros`), `la ficha no explica «Dominado · n de m»: ${await page.locator('.ap-progress').innerText()}`);
+  check((await page.locator('.ap-mastery-more').innerText()).includes(`Te quedan ${allW - l1} en los niveles a fondo`), 'la ficha no explica lo que queda en los niveles a fondo');
   check(page.url().endsWith('#pintor-' + deepArtist.id + '-etapas'), `el sello no lleva a las etapas: ${page.url()}`);
   await shot(page, '14i-ficha-etapas');
   await audit(page, '390 ficha con etapas');
@@ -1135,6 +1152,34 @@ if (SMOKE) {
   await page.waitForSelector('.ap-name');
   await page.goBack();
   await page.waitForSelector('.coll-strip');
+  // Pintor sin ver (enlace directo): ficha sin cuadros nombrados ni historia; invitados con autor y huecos resumidos; texto al 200 %.
+  await seed(page, seededState({ upTo: 0 }), 'pintor-goya');
+  await page.waitForSelector('.ap-name');
+  const unseenBio = await page.locator('.ap-bio').innerText();
+  check(!/maja|brujas/i.test(unseenBio) && await page.locator('.ap-gallery').count() === 0 && await page.locator('button.ap-avatar').count() === 0, `la ficha de un pintor sin ver revela cuadros o historia: ${unseenBio.slice(0, 80)}`);
+  await page.goto(`${base}#obras-goya`);
+  await page.waitForSelector('.aw-empty');
+  check(await page.locator('.ap-gap').count() === 0, 'la galería de un pintor sin ver pinta huecos');
+  const guestArtist = index.artists.find((a) => a.category === 'invitado' && index.worksOf(a.id).length >= 2);
+  await seed(page, seededState({ upTo: 3, extra: { collection: { [index.worksOf(guestArtist.id)[0].id]: '2026-11-20' } } }), `obras-invitados-${guestArtist.movementId}`);
+  await page.waitForSelector('.aw-grid');
+  check(await page.locator('.aw-who').count() === 1 && /^y \d+ por descubrir$/.test((await page.locator('.aw-more').innerText()).trim()) && await page.locator('.ap-gap').count() === 0, 'la galería de invitados no pone el autor ni resume los huecos');
+  const bigText = await rawNewContext({ viewport: { width: 360, height: 640 } });
+  const bp = await bigText.newPage();
+  watch(bp, 'texto-200');
+  await bp.addInitScript(() => document.addEventListener('DOMContentLoaded', () => { document.documentElement.style.fontSize = '200%'; }));
+  const bigSeen = Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
+  await bp.goto(base);
+  await bp.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 3, extra: { collection: bigSeen } }));
+  for (const r of ['coleccion', 'coleccion-pintores', `pintor-${index.path[0].id}`, `obras-${index.path[0].id}`]) {
+    await bp.goto(`${base}#${r}`);
+    await bp.reload();
+    await bp.waitForSelector('.coll-strip, .pl-row, .ap-name, .aw-grid');
+    await bp.waitForTimeout(300);
+    const over = await bp.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+    check(over <= 0, `texto al 200 % en 360 px: #${r} desborda ${over} px`);
+  }
+  await bigText.close();
   // Guía de bienvenida: la primera vez, tres pasos que se saltan con Esc y no vuelven.
   const coachCtx = await rawNewContext({ viewport: { width: 390, height: 844 } });
   const cp = await coachCtx.newPage();

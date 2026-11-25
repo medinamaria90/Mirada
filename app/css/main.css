@@ -636,7 +636,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .coll-tab[aria-current="page"] { background: var(--surface); color: var(--ink); box-shadow: var(--lift-sm); }
 .coll-artist { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.2rem/1.1 var(--font); padding-bottom: .5rem; margin-bottom: .75rem; border-bottom: 1px solid var(--line); }
 .coll-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.coll-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; }
+.coll-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 168px)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
 .coll-item { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 10px; transition: transform .18s var(--ease); }
 .coll-item:hover { transform: translateY(-2px); }
 .art-thumb { aspect-ratio: 1; border-radius: 10px; }
