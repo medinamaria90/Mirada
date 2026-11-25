@@ -97,11 +97,12 @@ function eraBlock(ctx, era, prevEra, keys) {
   const items = nodes.map((node, i) => {
     const pt = era.points[i];
     const side = pt.x < MAP_W / 2 ? 'left' : 'right';
+    // --room: parte del ancho que queda hacia donde cuelga el nombre (el rótulo nunca pasa del margen de 8 px).
     const state = node.key === keys.current ? ' is-current' : node.key === keys.next ? ' is-next' : '';
     const sec = sectionAt.get(i);
     const head = sec ? `<li class="sr-only">Tramo ${esc(sec.name)}: ${sec.got} de ${sec.total} dominados</li>` : '';
     const spur = branches.filter((b) => b.spot.at === i).map((b) => (b.group ? branchGroupSpot(b.spot, b.group, era.id, era.h) : branchSpot(b.spot, b.branch, b.st, index, era.h))).join('');
-    return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)}">${node.html}</li>${spur}`;
+    return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
   }).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';

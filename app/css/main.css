@@ -270,8 +270,8 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .path-map.is-tall .stage.has-kicker { gap: calc(var(--map-fs) * 1.25 + 22px); }
 .path-map.is-tall .stage.is-started, .path-map.is-tall .stage-spot.is-current .stage { gap: calc(var(--map-fs) * .75 + 10px); }
 /* …y el texto, como mucho hasta el borde de la pantalla (el rótulo pasa a dos líneas si no cabe). */
-.path-map.is-tall .stage-text { max-width: calc(64vw - 40px - 1.25em - 22px); }
-.path-map.is-tall .stage-kicker { white-space: normal; text-wrap: balance; }
+.path-map.is-tall .stage-text { max-width: min(calc(64vw - 40px - 1.25em - 22px), calc(var(--room, 1) * 100cqi - var(--dot) / 2 - .75 * var(--map-fs) - 10px)); }
+.path-map.is-tall .stage-kicker { white-space: normal; text-wrap: balance; padding-inline: calc(.3 * var(--map-fs)); }
 .path-map.is-tall .stage-spot.is-current .stage.has-kicker, .path-map.is-tall .stage.has-kicker.is-started { gap: calc(var(--map-fs) * 1.25 + 28px); }
 .stage-spot.is-current .stage.has-kicker .stage-kicker, .stage.has-kicker.is-started .stage-kicker { padding-block: calc(.1 * var(--map-fs)) calc(.14 * var(--map-fs)); }
 .stage-spot.is-current .stage.has-kicker .stage-text, .stage.has-kicker.is-started .stage-text { translate: 0 -9px; }
@@ -368,7 +368,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 /* Rama: desvío al margen con su cartel (placa hueso) sobre un hito redondo. */
 .branch-spot { position: absolute; z-index: 2; width: 0; height: 0; }
 .branch {
-  position: absolute; left: 0; top: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; width: max-content; min-width: min(56px, calc(21.5vw - 16px)); max-width: min(var(--map-branch-w), calc(21.5vw - 16px));
+  position: absolute; left: 0; top: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; width: max-content; min-width: min(56px, calc(21.5vw - 16px)); max-width: min(var(--map-branch-w), calc(21.5vw - 16px));
   padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: center; cursor: pointer;
   transform: translate(-50%, calc(-100% + 20px));
 }
@@ -378,8 +378,9 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 }
 .branch-name { font: 600 calc(.75 * var(--map-fs))/1.15 var(--font); color: var(--map-sign-ink); text-wrap: balance; overflow-wrap: break-word; hyphens: manual; }
 /* El contador: panel complementario entre la placa y el hito, dentro del botón (el contorno de foco lo rodea y no
-   pisa el desvío, que llega al hito por abajo). Con la letra grande se parte (guiones blandos) sin salirse. */
-.branch-count { display: block; max-width: 100%; margin-top: -2px; padding: 1px 3px; border-radius: var(--map-r); background: var(--map-label); text-align: center; font: 600 calc(.75 * var(--map-fs))/1.1 var(--font); color: var(--ink-2); hyphens: manual; font-variant-numeric: lining-nums tabular-nums; }
+   pisa el desvío, que llega al hito por abajo). Cuelga sobre el borde de arriba del hito (sin tapar su icono) para que
+   el cartel no suba. Con la letra grande se parte (guiones blandos) sin salirse. */
+.branch-count { position: relative; z-index: 1; display: block; max-width: 100%; margin: -1px 0 -9px; padding: 0 3px; border-radius: var(--map-r); background: var(--map-label); text-align: center; font: 600 calc(.75 * var(--map-fs))/1.05 var(--font); color: var(--ink-2); hyphens: manual; font-variant-numeric: lining-nums tabular-nums; }
 .branch-dot {
   display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; background: var(--map-tag); color: var(--accent-ui);
   box-shadow: 0 0 0 2px var(--accent-ui), 0 3px 0 2px var(--map-sign-line); transition: transform .15s var(--ease);

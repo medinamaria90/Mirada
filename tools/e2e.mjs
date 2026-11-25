@@ -1020,6 +1020,7 @@ if (SMOKE) {
   const espSign = '.branch[data-id="maestros-espanoles"], .branch[data-members~="maestros-espanoles"]';
   await page.waitForSelector(espSign);
   await page.click(espSign);
+  await page.waitForSelector('dialog.map-sheet[open] .ms-row');
   if (await page.locator('dialog.map-sheet[open] [data-ms="branch"][data-id="maestros-espanoles"]').count()) await page.click('dialog.map-sheet [data-ms="branch"][data-id="maestros-espanoles"]');
   await page.waitForSelector('dialog.map-sheet[open] [data-ms="artist"][data-id="berruguete"]');
   await page.click('dialog.map-sheet [data-ms="artist"][data-id="berruguete"]');

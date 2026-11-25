@@ -39,7 +39,7 @@ function masterFirst(index, n) {
   return p;
 }
 
-const spots = (html) => [...html.matchAll(/<li class="stage-spot[^"]*" data-step="([^"]+)" style="left:([\d.]+)%;top:([\d.]+)%"/g)].map((m) => ({ key: m[1], x: Number(m[2]), y: Number(m[3]) }));
+const spots = (html) => [...html.matchAll(/<li class="stage-spot[^"]*" data-step="([^"]+)" style="left:([\d.]+)%;top:([\d.]+)%[^"]*"/g)].map((m) => ({ key: m[1], x: Number(m[2]), y: Number(m[3]) }));
 const eras = (html) => [...html.matchAll(/<li class="path-era[^"]*" data-era="([^"]+)"/g)].map((m) => m[1]);
 
 test('mapa: el DOM va en orden cronológico y, dentro de cada tramo, las paradas suben (la primera es la más baja)', () => {
