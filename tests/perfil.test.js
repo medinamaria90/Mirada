@@ -442,3 +442,8 @@ test('la tarjeta: cuadrados vacíos con borde, fundido sin gris, esquinas claras
   assert.match(card, /hasLightCorners/);
   assert.match(card, /FOOTER_H - ART_H - blockH\) \/ 2/, 'el bloque se centra, no deja hueco');
 });
+
+test('ninguna rejilla del perfil fuerza un ancho mínimo mayor que su contenedor (al 200 % el rem se duplica)', () => {
+  const css = read('../app/css/profile.css');
+  for (const m of css.matchAll(/minmax\((\d+(?:\.\d+)?rem),/g)) assert.fail(`minmax(${m[1]}, …) sin min(): desborda con texto grande`);
+});
