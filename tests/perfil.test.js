@@ -369,3 +369,76 @@ test('compartir: el código de la tarjeta se pide al pulsar, con botón en esper
 test('el perfil no carga el audio con la música apagada', () => {
   assert.match(read('../app/js/ui/screens/profile.js'), /settings\.music\) \(/);
 });
+
+test('portada automática: ninguno de los pintores del catálogo real da una escena dura; la elegida a mano se respeta', () => {
+  const real = realIndex();
+  let checked = 0;
+  for (const a of real.artists) {
+    const works = real.worksOf(a.id);
+    if (!works.length) continue;
+    const progress = { ...emptyProgress(), collection: Object.fromEntries(works.map((w) => [w.id, '2026-11-20'])) };
+    const cover = P.coverWork(progress, real);
+    assert.ok(cover, a.id);
+    assert.ok(!P.isHarsh(cover), `${a.name}: «${cover.title}» es una escena dura`);
+    checked += 1;
+  }
+  assert.ok(checked >= 150, `solo se comprobaron ${checked} pintores`);
+  assert.ok(!P.isHarsh(P.sampleCover(real)));
+  // Si el mejor cuadro es duro, sale el siguiente (Artemisia: no Judit); y si todo es duro, la portada de muestra.
+  const harsh = real.artworks.find((w) => /judit decapitando/i.test(w.title));
+  assert.ok(harsh && P.isHarsh(harsh));
+  const only = { ...emptyProgress(), collection: { [harsh.id]: '2026-11-20' } };
+  assert.ok(!P.isHarsh(P.coverWork(only, real)), 'si todo lo que hay es duro, la portada de muestra');
+  assert.equal(P.coverWork(only, real, harsh.id).id, harsh.id, 'elegida a mano, se respeta');
+  for (const t of ['El tres de mayo de 1808', 'La masacre de los inocentes', 'La ejecución de Lady Jane Grey', 'La muerte de Sardanápalo', 'La balsa de la Medusa', 'La apoteosis de la guerra', 'Descendimiento', 'La muerte de Sócrates', 'Saturno devorando a un hijo', 'La crucifixión']) {
+    assert.ok(P.isHarsh({ title: t }), t);
+  }
+  assert.ok(!P.isHarsh({ title: 'La noche estrellada' }));
+});
+
+test('último test: rechaza aciertos mayores que preguntas o negativos', () => {
+  const lvl = TEST_LEVELS[0];
+  assert.equal(P.parseLastTest(`{"correct":20,"asked":12,"level":"${lvl}"}`), null);
+  assert.equal(P.parseLastTest(`{"correct":-1,"asked":12,"level":"${lvl}"}`), null);
+  assert.equal(P.parseLastTest(`{"correct":1.5,"asked":12,"level":"${lvl}"}`), null);
+  assert.ok(P.parseLastTest(`{"correct":12,"asked":12,"level":"${lvl}"}`));
+});
+
+test('el foco de la portada gana a main.css y va por encima de la imagen; las hojas y los logros extra se comportan como dicen', () => {
+  const css = read('../app/css/profile.css');
+  assert.match(css, /\.pf-cover \.pf-cover-art:focus-visible \{ outline: none; \}/);
+  const ring = css.match(/\.pf-cover \.pf-cover-art:focus-visible::after \{[^}]*\}/)[0];
+  assert.match(ring, /z-index: 3/);
+  assert.match(ring, /border: 4px solid var\(--ink\)/);
+  assert.match(css, /\.pf-medals > li\.pf-extra \{ display: none; \}/, 'el extra pierde por especificidad frente a `.pf-medals > li`');
+  assert.doesNotMatch(css.match(/\.look-panel \{[^}]*\}/)[0], /overflow|max-height/, 'un solo scroll: el de la hoja');
+  assert.match(css, /\.look-body > \.btn \{ position: sticky; bottom: 0/);
+  assert.match(css, /\.pf-layout \{[^}]*\}[\s\S]*@media \(min-width: 720px\)[\s\S]*grid-template-areas: "hero hero" "figs figs"/);
+});
+
+test('el repaso se ve siempre (bloqueado y con el motivo) y el logro pendiente no se da por hecho', () => {
+  const practice = practiceHtml(ctxFor(emptyProgress()));
+  assert.match(practice, /is-locked[\s\S]*Repaso de 5[\s\S]*Vuelve cuando tengas 3 cuadros que repasar/);
+  assert.doesNotMatch(practice, /data-action="review5"/);
+  const medals = read('../app/js/ui/screens/profile-medals.js');
+  assert.match(medals, /date \? info\.sub : KIND_NAMES\[kindOf\(id\)\]/);
+});
+
+test('miniaturas sueltas: Mi museo, portada y hoja usan img/t (no hojas enteras del atlas) y make_atlas las pinta', () => {
+  for (const f of ['profile-parts.js', 'profile-look.js', 'profile-hero.js']) {
+    const src = read(`../app/js/ui/screens/${f}`);
+    assert.doesNotMatch(src, /thumb: true/, `${f} pide hojas del atlas`);
+    assert.match(src, /tinyFrame|tinySrc/);
+  }
+  assert.match(read('../app/js/ui/screens/profile-art.js'), /img\/t\/\$\{work\.id\}\.jpg/);
+  assert.match(read('../tools/make_atlas.py'), /img\/t/);
+  assert.match(read('../.gitignore'), /app\/img\/t\//);
+});
+
+test('la tarjeta: cuadrados vacíos con borde, fundido sin gris, esquinas claras recortadas y bloque centrado', () => {
+  const card = read('../app/js/ui/screens/profile-share.js');
+  assert.match(card, /g\.stroke\(\)/, 'los tramos no alcanzados se dibujan con borde visible');
+  assert.match(card, /withAlpha\(c\.bg, 0\)/);
+  assert.match(card, /hasLightCorners/);
+  assert.match(card, /FOOTER_H - ART_H - blockH\) \/ 2/, 'el bloque se centra, no deja hueco');
+});

@@ -30,19 +30,25 @@
 .pf-cover.is-empty .icon { opacity: .35; stroke-width: 1.2; }
 .pf-cover::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to bottom, transparent 45%, color-mix(in srgb, var(--bg) 92%, transparent) 100%);
+  background: linear-gradient(to bottom, transparent 30%, color-mix(in srgb, var(--bg) 70%, transparent) 68%, var(--bg) 100%);
 }
 .pf-cover-art {
   position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border: 0; padding: 0;
   border-radius: 0; box-shadow: none; cursor: pointer; background: transparent;
 }
 .pf-cover-art .zoom-badge { right: .7rem; bottom: .7rem; }
-/* El anillo de foco queda dentro de la portada (fuera lo recortaría su overflow). */
-.pf-cover-art:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; box-shadow: inset 0 0 0 6px var(--bg); }
+/* Foco de la portada: anillo doble por dentro y POR ENCIMA de la imagen y del velo (z-index). Lleva más
+   especificidad que `button.art:focus-visible` de main.css, que lo sacaba fuera y lo recortaba el overflow. */
+.pf-cover .pf-cover-art:focus-visible { outline: none; }
+.pf-cover .pf-cover-art:focus-visible::after {
+  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  border: 4px solid var(--ink); box-shadow: inset 0 0 0 4px var(--bg);
+}
+.pf-cover-art img, .pf-cover-full { object-position: var(--focus, 50% 30%); }
 /* La imagen entera entra por encima de la miniatura cuando llega; el clic pasa al cuadro de debajo. */
 .pf-cover-full {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none;
-  transition: opacity .4s var(--ease); z-index: 0;
+  transition: opacity .4s var(--ease); z-index: 0; object-position: var(--focus, 50% 30%);
 }
 .pf-cover-full.is-on { opacity: 1; }
 .pf-cover-art .zoom-badge, .pf-cover-cap { z-index: 1; }
@@ -96,7 +102,7 @@
 .pf-bar { height: 12px; margin: .6rem 0 .7rem; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2); overflow: hidden; }
 .pf-bar > span { display: block; height: 100%; min-width: 12px; border-radius: inherit; background: var(--brand-text); transition: width .8s var(--ease); }
 .pf-rank-next { font-size: .95rem; font-weight: 600; color: var(--ink); }
-.pf-needs { display: grid; gap: .5rem; margin-top: .5rem; }
+.pf-needs { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .5rem 1.4rem; margin-top: .5rem; }
 .pf-needs li { display: grid; gap: .25rem; font-size: .9rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .pf-mini { display: block; height: 5px; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-2); overflow: hidden; }
 .pf-mini > span { display: block; height: 100%; border-radius: inherit; background: var(--brand-text); }
@@ -153,8 +159,9 @@
 }
 .medal-dlg .pf-ring { --pf-ring: 6px; }
 .pf-more { margin-top: 1rem; }
-.pf-extra { display: none; }
-.btn.is-on { box-shadow: inset 0 0 0 2px var(--brand); background: var(--brand-soft); }
+.pf-medals > li.pf-extra { display: none; }
+.look-body > .btn.is-on { box-shadow: inset 0 0 0 2px var(--ink-2), 0 -10px 12px -8px var(--surface); }
+.look-body > .btn.is-on::before { content: "✓"; margin-right: .5rem; }
 .pf-medal-group + .pf-medal-group { margin-top: 1.4rem; }
 .pf-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; margin-bottom: .5rem; font: 500 1.1rem/1.2 var(--font); }
 .medals-body { gap: .8rem; }
@@ -167,7 +174,8 @@
 .pf-go.is-locked { cursor: default; background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); color: var(--ink-2); }
 .pf-go.is-locked .pf-go-icon { background: var(--surface-2); color: var(--ink-2); }
 .pf-go-sub { display: block; margin-top: .1rem; font: 400 .85rem/1.25 var(--font); color: var(--ink-2); }
-.look-panel { display: grid; gap: .8rem; max-height: 46dvh; overflow-y: auto; }
+.look-panel { display: grid; gap: .8rem; }
+.look-body > .btn { position: sticky; bottom: 0; z-index: 1; box-shadow: 0 -10px 12px -8px var(--surface), inset 0 0 0 1.5px var(--line); margin-top: .2rem; }
 .medal-dlg { justify-items: center; text-align: center; padding-top: 1.6rem; }
 .medal-dlg .dlg-hint { justify-self: stretch; text-align: left; }
 .medal-dlg-prog { font: 600 .95rem/1.2 var(--font); color: var(--ink-2); margin-bottom: .4rem; font-variant-numeric: lining-nums tabular-nums; }
@@ -218,8 +226,13 @@
 .pf-note { display: flex; justify-content: space-between; gap: .6rem; font-size: .85rem; color: var(--ink-2); }
 .pf-counter { font-variant-numeric: lining-nums tabular-nums; }
 .look-body { gap: .8rem; }
-.look-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); flex: none; }
-.look-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pf-tile-gap); }
+.look-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); flex: none; gap: 0; border-bottom: 1px solid var(--line-2); }
+.look-tabs .seg { min-height: 48px; border-radius: 0; box-shadow: none; background: none; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+.look-tabs .seg:hover { background: var(--surface-2); box-shadow: none; }
+.look-tabs .seg:active { transform: none; }
+.look-tabs .seg.is-on { background: none; box-shadow: none; border-bottom-color: var(--brand-text); }
+.look-tabs .seg.is-on .seg-num { color: var(--brand-text); }
+.look-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: var(--pf-tile-gap); padding: 6px; }
 .pf-pick { display: block; width: 100%; padding: 0; border: 0; border-radius: var(--radius-sm); background: none; cursor: pointer; box-shadow: 0 0 0 0 var(--brand-text); transition: box-shadow .15s var(--ease); }
 .pf-pick[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--brand-text); }
 
@@ -228,7 +241,12 @@
 .setting-goal { flex-direction: column; align-items: stretch; gap: .6rem; padding: .8rem 0; cursor: default; }
 .goal-aside { margin-left: .4rem; font: 600 .85rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .goal-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
-.setting-range input { width: 55%; accent-color: var(--brand); min-height: 48px; margin: 0; }
+.setting-range input { width: 55%; accent-color: var(--brand); min-height: 48px; margin: 0; appearance: none; -webkit-appearance: none; background: transparent; cursor: pointer; }
+.setting-range input::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: var(--line-2); }
+.setting-range input::-moz-range-track { height: 6px; border-radius: 999px; background: var(--line-2); }
+.setting-range input::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -10px; border-radius: 999px; border: 0; background: var(--brand); box-shadow: var(--shadow-card); }
+.setting-range input::-moz-range-thumb { width: 26px; height: 26px; border-radius: 999px; border: 0; background: var(--brand); box-shadow: var(--shadow-card); }
+.setting-range input:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
 /* Tema: la etiqueta y, debajo, los tres botones a todo el ancho. */
 .setting-theme { flex-wrap: wrap; gap: .5rem; padding: .7rem 0 .9rem; cursor: default; }
 .setting-theme > span, .setting-theme .segs { flex-basis: 100%; }
@@ -271,19 +289,18 @@
   .setting-range input { width: 100%; }
 }
 
-/* ---------- Tablet y escritorio ---------- */
+/* ---------- Tablet y escritorio: dos columnas desde 720 px ---------- */
 @media (min-width: 720px) {
+  /* La columna de la app (560 px hasta 1024) se queda corta para dos columnas: el perfil la ensancha. */
+  #app:has(.page-profile) { max-width: min(100%, 980px); }
+  .page-profile .content { max-width: 980px; margin-inline: auto; }
   .page-profile { --pf-gutter: 1.6rem; --pf-cover-h: 200px; --pf-avatar: 104px; --pf-tile-gap: .7rem; }
   .pf-greeting { font-size: 1.9rem; }
   .pf-initial { font-size: 3rem; }
   .sheet-dialog { margin: auto; border-radius: 22px; }
   .pf-more { width: auto; min-width: 16rem; justify-self: start; }
-}
-/* Escritorio: la identidad y las cifras arriba, a todo el ancho; debajo, por filas y en el orden del DOM
-   (cifras, museo | logros, test | accesos), así Tab sigue lo que se ve. */
-@media (min-width: 1024px) {
-  .page-profile .content { max-width: 1040px; }
-  .page-profile { --pf-cover-h: 220px; --pf-avatar: 104px; }
+  /* Identidad y cifras arriba, a todo el ancho; debajo, por filas y en el orden del DOM (museo | logros,
+     test | accesos), así Tab sigue lo que se ve. */
   .pf-layout {
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); column-gap: 2.4rem; align-items: start;
     grid-template-areas: "hero hero" "figs figs" "museum medals" "test practice";
@@ -298,8 +315,10 @@
   .pf-layout > .pf-test-sec { grid-area: test; }
   .pf-layout > .pf-practice-sec { grid-area: practice; }
   .pf-hero .pf-cover { border-radius: 0 0 var(--radius) var(--radius); }
-  .pf-rank { max-width: 46rem; }
-  .pf-extra { display: grid; }
+}
+@media (min-width: 1024px) {
+  .page-profile { --pf-cover-h: 220px; }
+  .pf-medals > li.pf-extra { display: grid; }
 }
 
 /* ---------- Móvil apaisado (poca altura): portada baja y avatar pequeño. Va al final para ganar a las

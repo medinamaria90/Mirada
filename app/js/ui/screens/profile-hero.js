@@ -3,8 +3,9 @@
 
 import { esc, $ } from '../dom.js';
 import { icons, logoMark } from '../icons.js';
-import { artFrame } from '../art.js';
+import { tinyFrame, tinySrc } from './profile-art.js';
 import { rankFor } from '../../engine/ranks.js';
+import { graphemes } from '../../state/schema.js';
 import { rankProgress, coverWork, sampleCover, avatarWork, focusPosition, initialOf, collectionIds } from '../../engine/profile.js';
 
 const IDLE_TIMEOUT_MS = 800;
@@ -12,7 +13,7 @@ const PENCIL = '<svg class="icon" width="18" height="18" viewBox="0 0 24 24" fil
 
 function avatar(name, work) {
   if (work) {
-    return `<span class="pf-avatar has-art" aria-hidden="true"><img src="${esc(work.img)}" alt="" width="88" height="88" decoding="async" style="object-position:${focusPosition(work, 25)}"></span>`;
+    return `<span class="pf-avatar has-art" aria-hidden="true"><img src="${esc(tinySrc(work))}" alt="" width="88" height="88" decoding="async" style="object-position:${focusPosition(work, 25)}"></span>`;
   }
   const initial = initialOf(name);
   return `<span class="pf-avatar ${initial ? 'has-initial' : ''}" aria-hidden="true">${initial ? `<span class="pf-initial">${esc(initial)}</span>` : logoMark(46)}</span>`;
@@ -22,9 +23,9 @@ function avatar(name, work) {
 function cover(ctx, work) {
   if (!work) return `<div class="pf-cover is-empty" aria-hidden="true">${icons.frames(84)}</div>`;
   const artist = ctx.index.artist(work.artistId);
-  return `<div class="pf-cover">
-    ${artFrame(work, { alt: '', cls: 'pf-cover-art', label: work.title, thumb: true, eager: true, zoom: { group: 'portada' } })}
-    <img class="pf-cover-full" alt="" data-src="${esc(work.img)}" style="object-position:${focusPosition(work, 30)}">
+  return `<div class="pf-cover" style="--focus:${focusPosition(work, 30)}">
+    ${tinyFrame(work, { alt: '', cls: 'pf-cover-art', label: work.title, eager: true, zoom: { group: 'portada' } })}
+    <img class="pf-cover-full" alt="" data-src="${esc(work.img)}">
     <p class="pf-cover-cap">${esc(work.title)}${artist ? ` · ${esc(artist.name)}` : ''}</p>
   </div>`;
 }
@@ -58,7 +59,7 @@ export function heroHtml(ctx) {
     <button type="button" class="pf-gear" data-action="open-settings" aria-label="Ajustes" aria-haspopup="dialog">${icons.gear(24)}</button>
     <div class="pf-id">
       ${avatar(name, avatarWork(p, index, avatarId))}
-      <div class="pf-greeting"><button type="button" class="pf-name-btn ${name ? '' : 'is-empty'} ${[...name].length > 14 ? 'is-long' : ''}" data-action="edit-name" aria-haspopup="dialog" aria-label="${name ? `Hola, ${esc(name)}. Cambiar nombre` : 'Ponte un nombre'}"><span class="pf-name-text">${greeting}</span>${PENCIL}</button></div>
+      <div class="pf-greeting"><button type="button" class="pf-name-btn ${name ? '' : 'is-empty'} ${graphemes(name).length > 14 ? 'is-long' : ''}" data-action="edit-name" aria-haspopup="dialog" aria-label="${name ? `Hola, ${esc(name)}. Cambiar nombre` : 'Ponte un nombre'}"><span class="pf-name-text">${greeting}</span>${PENCIL}</button></div>
     </div>
     ${rankBlock(rank, bar, pct)}
   </header>`;

@@ -11,6 +11,10 @@ atlas de la oleada 5: cada obra tiene una celda de CELL×CELL px; la miniatura (
 proporciones del cuadro) va centrada con un margen «extruido» (se repiten sus píxeles de borde EXTRUDE px) para
 que al recortar con CSS no asome la celda vecina.
 
+Además pinta una miniatura suelta por obra (<app>/img/t/<id>.jpg, lado mayor TINY px, unos 10 KB) para las
+pantallas que enseñan pocos cuadros sueltos (el perfil): con las hojas del atlas, nueve cuadros recientes podían
+costar 2 MB de hojas enteras.
+
 Las imágenes de origen se tratan como no confiables: solo se abren con Pillow como JPEG y se vuelven a
 codificar sin metadatos. Se comprueba que cada imagen mide lo que espera el catálogo.
 """
@@ -25,6 +29,8 @@ from atlas_layout import THUMB, packed_size  # noqa: E402
 
 EXTRUDE = 3
 QUALITY = 72
+TINY = 240  # lado mayor de la miniatura suelta (img/t)
+TINY_QUALITY = 68
 BG = (221, 213, 199)
 MAX_PIXELS = 40_000_000  # tope de píxeles por imagen (Pillow avisa de bombas de descompresión)
 
@@ -52,6 +58,11 @@ def main():
     for f in os.listdir(out):
         if f.endswith(".jpg"):
             os.remove(f"{out}/{f}")
+    tiny_dir = f"{app}/img/t"
+    os.makedirs(tiny_dir, exist_ok=True)
+    for f in os.listdir(tiny_dir):
+        if f.endswith(".jpg"):
+            os.remove(f"{tiny_dir}/{f}")
     by_sheet = {}
     for w in cat["artworks"]:
         by_sheet.setdefault(w["thumb"][0], []).append(w)
@@ -69,7 +80,11 @@ def main():
                     raise SystemExit(f"{w['id']}: la imagen mide {im.size} y el catálogo espera {packed_size(w['w'], w['h'])} "
                                      "(¿el catálogo y las imágenes son de versiones distintas?)")
                 im.draft("RGB", (THUMB * 2, THUMB * 2))
-                im = im.convert("RGB").resize((tw, th), Image.LANCZOS)
+                im = im.convert("RGB")
+                tiny = im.copy()
+                tiny.thumbnail((TINY, TINY), Image.LANCZOS)
+                tiny.save(f"{tiny_dir}/{w['id']}.jpg", "JPEG", quality=TINY_QUALITY, progressive=True, optimize=True)
+                im = im.resize((tw, th), Image.LANCZOS)
                 canvas.paste(im, (x, y))
                 extrude(canvas, im, x, y)
         path = f"{app}/{src}"

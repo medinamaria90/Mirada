@@ -10,3 +10,4 @@ catalogo/img/
 # generan (tools/make_atlas.py); no entran en el repo
 app/img/w*.jpg
 app/img/s/
+app/img/t/

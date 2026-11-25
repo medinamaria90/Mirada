@@ -3,7 +3,7 @@
 
 import { esc, longDate } from '../dom.js';
 import { icons } from '../icons.js';
-import { artFrame } from '../art.js';
+import { tinyFrame } from './profile-art.js';
 import { museumWorks, collectionIds, compactNumber, plural, MUSEUM_SIZE } from '../../engine/profile.js';
 import { artistStatus, isPathMastered, pathProgress } from '../../engine/progress.js';
 import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
@@ -43,7 +43,7 @@ export function welcomeHtml() {
 // Solo se pinta con algún cuadro (sin ninguno, el perfil enseña la bienvenida).
 export function museumHtml(ctx) {
   const works = museumWorks(ctx.store.get().progress, ctx.index);
-  const tiles = works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'pf-tile', label: w.title, thumb: true, zoom: { group: 'museo' } })}</li>`);
+  const tiles = works.map((w) => `<li>${tinyFrame(w, { alt: '', cls: 'pf-tile', label: w.title, zoom: { group: 'museo' } })}</li>`);
   // Huecos solo para completar la fila: con un cuadro, dos marcos vacíos; no ocho.
   const slots = Math.min(MUSEUM_SIZE, Math.max(3, Math.ceil(works.length / 3) * 3));
   while (tiles.length < slots) tiles.push('<li class="pf-tile pf-tile-empty" aria-hidden="true"></li>');
@@ -84,8 +84,11 @@ export function practiceHtml(ctx) {
       ${it.done ? `<span class="pf-go-done"><span class="sr-only">Hecho: </span>${icons.check(16)}${esc(it.done)}</span>` : ''}
       <span class="pf-go-next" aria-hidden="true">${icons.next(20)}</span></button></li>`);
   const items = [];
+  // El repaso se ve siempre: sin cuadros que repasar, bloqueado y con el motivo.
   if (review5Works(p, index, ctx.today()).length >= REVIEW5_MIN) {
     items.push({ action: 'review5', icon: icons.repeat(24), name: REVIEW5_NAME, done: '' });
+  } else {
+    items.push({ locked: true, name: REVIEW5_NAME, sub: `Vuelve cuando tengas ${REVIEW5_MIN} cuadros que repasar` });
   }
   if (isPathMastered(p, index)) {
     const week = p.weekly?.[isoWeek(ctx.dailyDay()).key];

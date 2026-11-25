@@ -5,7 +5,7 @@
 
 import { $, esc, announce } from '../dom.js';
 import { icons } from '../icons.js';
-import { artFrame } from '../art.js';
+import { tinyFrame } from './profile-art.js';
 import { collectionWorks } from '../../engine/profile.js';
 import { bindSheet } from './profile-sheet.js';
 import { refreshHero } from './profile-hero.js';
@@ -45,7 +45,7 @@ export function wireLook(ctx, el) {
     return id && st.progress.collection?.[id] ? id : '';
   };
 
-  const tile = (w) => `<li><button type="button" class="pf-pick" data-action="look-pick" data-id="${w.id}" aria-pressed="false" aria-label="${esc(w.title)}">${artFrame(w, { alt: '', cls: 'pf-tile', label: w.title, thumb: true })}</button></li>`;
+  const tile = (w) => `<li><button type="button" class="pf-pick" data-action="look-pick" data-id="${w.id}" aria-pressed="false" aria-label="${esc(w.title)}">${tinyFrame(w, { alt: '', cls: 'pf-tile', label: w.title })}</button></li>`;
 
   // Solo se cambia lo marcado: pestaña activa, cuadro elegido y texto del botón de volver a lo automático.
   function mark() {

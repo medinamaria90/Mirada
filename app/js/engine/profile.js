@@ -97,13 +97,18 @@ export function museumWorks(progress, index, n = MUSEUM_SIZE) {
   return collectionWorks(progress, index).slice(0, n);
 }
 
-// Portada de muestra para quien aún no tiene cuadros: un cuadro famoso, apaisado y amable. Se descartan por
-// el título las escenas violentas, los martirios y la guerra; y se prefieren los temas serenos.
-const HARSH_TITLE = /fusilamiento|tres de mayo|crucifi|martirio|decapita|degollad|judit|holofernes|masacre|matanza|batalla|guerra|muerte|cad[aá]ver|anatom[ií]a|asesin|saturno|calvario|descendimiento|piedad|ejecuci|ahorcad|medusa|infierno|diablo|desastres|apocalipsis|juicio final/i;
+// Escenas duras (violencia, martirios, ejecuciones, guerra, decapitaciones…): no se eligen solas como
+// portada ni acaban en la tarjeta que se comparte. Una sola función para todo: palabras clave del título.
+// Si la usuaria elige una a mano, se respeta (coverWork con `chosen`).
+const HARSH_TITLE = /fusilamiento|tres de mayo|crucifi|martirio|m[aá]rtir|decapita|degollad|judit|holofernes|masacre|matanza|batalla|guerra|muerte|cad[aá]ver|anatom[ií]a|asesin|saturno|calvario|descendimiento|piedad|ejecuci|ahorcad|medusa|goliat|infierno|diablo|desastres|apocalipsis|juicio final|flagelaci|lapidaci|sard[aá]napalo|s[oó]crates|lady jane|comisario|sepulcro|suplicio|tortura|rapto|violaci/i;
+export const isHarsh = (work) => HARSH_TITLE.test(String(work?.title || ''));
+
 const FRIENDLY_TITLE = /venus|primavera|jard[ií]n|nen[uú]far|girasol|noche estrellada|perla|lechera|baile|desayuno|paseo|impresi[oó]n|amanecer|campo|paisaje|flores|rosas|dama|joven|ni[nñ]|ba[nñ]|merienda|domingo|lago|puente|puesta de sol|barcas|cuento|lectura/i;
+
+// Portada de muestra para quien aún no tiene cuadros: un cuadro famoso, apaisado y amable.
 export function sampleCover(index) {
   const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 2 : 0) + (FRIENDLY_TITLE.test(w.title) ? 6 : 0);
-  const kind = index.artworks.filter((w) => !HARSH_TITLE.test(w.title));
+  const kind = index.artworks.filter((w) => !isHarsh(w));
   return (kind.length ? kind : index.artworks).slice().sort((a, b) => score(b) - score(a) || a.id.localeCompare(b.id))[0] || null;
 }
 
@@ -117,9 +122,14 @@ export function coverWork(progress, index, chosen = '') {
   for (const w of owned) count.set(w.artistId, (count.get(w.artistId) || 0) + 1);
   const box = (w) => progress.srs?.[artKey(w.id)]?.box || 0;
   const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 1 : 0);
-  const best = [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0][0];
-  return owned.filter((w) => w.artistId === best)
-    .sort((a, b) => score(b) - score(a) || box(b) - box(a) || a.id.localeCompare(b.id))[0];
+  // Pintores por número de cuadros; el primero con algún cuadro amable pone la portada (el mejor, o el siguiente
+  // si el mejor es duro). Si todo lo que hay es duro, la portada de muestra.
+  const artists = [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map((e) => e[0]);
+  for (const artist of artists) {
+    const gentle = owned.filter((w) => w.artistId === artist && !isHarsh(w));
+    if (gentle.length) return gentle.sort((a, b) => score(b) - score(a) || box(b) - box(a) || a.id.localeCompare(b.id))[0];
+  }
+  return sampleCover(index);
 }
 
 // Avatar elegido (cuadro de la colección) o null: entonces va el logo o la inicial.
@@ -148,7 +158,7 @@ export function initialOf(name) {
 export function parseLastTest(raw) {
   let v = null;
   try { v = JSON.parse(raw); } catch { return null; }
-  if (!v || !Number.isFinite(v.correct) || !Number.isFinite(v.asked) || v.asked <= 0 || typeof v.level !== 'string') return null;
+  if (!v || !Number.isInteger(v.correct) || !Number.isInteger(v.asked) || v.asked <= 0 || v.correct < 0 || v.correct > v.asked || typeof v.level !== 'string') return null;
   const pct = Number.isFinite(v.percentile) && v.percentile >= 1 && v.percentile <= 99 ? Math.round(v.percentile) : null;
   const date = typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) ? v.date : '';
   const grid = typeof v.grid === 'string' && /^[🟩🟨⬜]{1,8}$/u.test(v.grid) ? v.grid : '';

@@ -14,6 +14,9 @@ const PAD = 72;
 const JPEG_QUALITY = 0.88;
 const FILE_NAME = 'sfumato-test.jpg';
 const ART_ZOOM = 1.05; // un poco de más: así no asoma el filo del marco del cuadro
+const ARCH_ZOOM = 1.35; // y más si el cuadro tiene esquinas claras (arcos): se recortan
+const CORNER_LIGHT = 232; // brillo medio de una esquina por encima del cual se considera «papel»
+const FOOTER_H = 170; // sitio del pie (lema y dirección) bajo el resultado
 const CELL = 64;
 const CELL_GAP = 16;
 
@@ -40,11 +43,29 @@ function loadImage(src) {
 
 const logoImage = (size, color) => loadImage(`data:image/svg+xml;utf8,${encodeURIComponent(logoMark(size).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ').replace(/currentColor/g, color))}`);
 
+// ¿Tiene las esquinas claras? (cuadros con arco o tondos sobre papel blanco): se muestrea una miniatura.
+function hasLightCorners(img) {
+  const c = document.createElement('canvas');
+  c.width = 16;
+  c.height = 16;
+  const g = c.getContext('2d', { willReadFrequently: true });
+  g.drawImage(img, 0, 0, 16, 16);
+  const corners = [[0, 0], [15, 0]].map(([x, y]) => g.getImageData(x, y, 1, 1).data);
+  return corners.every((d) => (d[0] + d[1] + d[2]) / 3 >= CORNER_LIGHT);
+}
+
+// Color con transparencia a partir de #rrggbb (el degradado a «transparent» ensucia: es negro transparente).
+function withAlpha(hex, a) {
+  const n = parseInt(hex.replace('#', ''), 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+}
+
 // Pinta `img` cubriendo el rectángulo (recortado a él), centrado en el punto de interés si lo hay.
 function drawCover(g, img, x, y, w, h, focus) {
-  const k = Math.max(w / img.width, h / img.height) * ART_ZOOM;
+  const arch = hasLightCorners(img);
+  const k = Math.max(w / img.width, h / img.height) * (arch ? ARCH_ZOOM : ART_ZOOM);
   const fx = Array.isArray(focus) ? focus[0] : 0.5;
-  const fy = Array.isArray(focus) ? focus[1] : 0.3;
+  const fy = Math.max(Array.isArray(focus) ? focus[1] : 0.3, arch ? 0.45 : 0); // con arco, sin el borde de arriba
   const dw = img.width * k;
   const dh = img.height * k;
   const dx = x - Math.min(Math.max(fx * dw - w / 2, 0), dw - w);
@@ -79,10 +100,16 @@ function fit(g, text, maxWidth) {
 // La cuadrícula del test (🟩 🟨 ⬜) como cuadrados de los colores de la casa.
 function drawGrid(g, grid, x, y, c) {
   [...grid].forEach((ch, i) => {
-    g.fillStyle = ch === GRID_OK ? c.ok : ch === GRID_HALF ? c.gold : c.line;
     g.beginPath();
     g.roundRect(x + i * (CELL + CELL_GAP), y, CELL, CELL, 14);
-    g.fill();
+    if (ch === GRID_OK || ch === GRID_HALF) {
+      g.fillStyle = ch === GRID_OK ? c.ok : c.gold;
+      g.fill();
+    } else { // tramo no alcanzado: hueco con borde (visible en claro y en oscuro)
+      g.lineWidth = 4;
+      g.strokeStyle = c.ink2;
+      g.stroke();
+    }
   });
 }
 
@@ -94,7 +121,7 @@ async function drawCard(last, work, artist) {
   const g = canvas.getContext('2d');
   const c = {
     bg: cssVar('--bg'), ink: cssVar('--ink'), ink2: cssVar('--ink-2'), brand: cssVar('--brand'), brandText: cssVar('--brand-text'),
-    soft: cssVar('--brand-soft'), surface2: cssVar('--surface-2'), ok: cssVar('--ok'), gold: cssVar('--gold'), line: cssVar('--line-2'),
+    soft: cssVar('--brand-soft'), surface2: cssVar('--surface-2'), ok: cssVar('--ok'), gold: cssVar('--gold'),
   };
   const lines = cardLines(last);
   try { await document.fonts.load('500 64px Outfit'); } catch { /* sin la letra de marca vale la del sistema */ }
@@ -104,7 +131,7 @@ async function drawCard(last, work, artist) {
   if (art) {
     drawCover(g, art, 0, 0, CARD_W, ART_H, work.focus);
     const fade = g.createLinearGradient(0, ART_H * 0.62, 0, ART_H);
-    fade.addColorStop(0, 'transparent');
+    fade.addColorStop(0, withAlpha(c.bg, 0));
     fade.addColorStop(1, c.bg);
     g.fillStyle = fade;
     g.fillRect(0, 0, CARD_W, ART_H);
@@ -136,22 +163,32 @@ async function drawCard(last, work, artist) {
     g.font = '400 34px Outfit, system-ui, sans-serif';
     g.fillText(fit(g, `${work.title}${artist ? ` · ${artist.name}` : ''}`, CARD_W - PAD * 2), PAD, ART_H - 28);
   }
-  // Resultado, todo sobre el fondo liso.
-  let y = ART_H + 18;
+  // Resultado sobre el fondo liso, centrado en el espacio que queda entre el cuadro y el pie (así no hay hueco
+  // cuando falta el nivel, el percentil o la cuadrícula).
+  g.font = '400 44px Outfit, system-ui, sans-serif';
+  const pctLines = lines.percentile ? wrap(g, lines.percentile, CARD_W - PAD * 2) : [];
+  const LEVEL_H = 76;
+  const SCORE_H = 170;
+  const PCT_H = 58;
+  const GRID_H = CELL + 34;
+  const blockH = (lines.level ? LEVEL_H : 0) + SCORE_H + pctLines.length * PCT_H + (last.grid ? GRID_H : 0);
+  let y = ART_H + Math.max(8, (CARD_H - FOOTER_H - ART_H - blockH) / 2);
   if (lines.level) {
     g.fillStyle = c.ink;
     g.font = '500 58px Outfit, system-ui, sans-serif';
     y += 58;
     g.fillText(lines.level, PAD, y);
+    y += LEVEL_H - 58;
   }
   g.fillStyle = c.brandText;
   g.font = '600 168px Outfit, system-ui, sans-serif';
-  y += 162;
+  y += 140;
   g.fillText(lines.score, PAD, y);
+  y += SCORE_H - 140;
   g.fillStyle = c.ink;
   g.font = '400 44px Outfit, system-ui, sans-serif';
-  for (const l of wrap(g, lines.percentile, CARD_W - PAD * 2)) { y += 58; g.fillText(l, PAD, y); }
-  if (last.grid) drawGrid(g, last.grid, PAD, y + 34, c);
+  for (const l of pctLines) { y += 44; g.fillText(l, PAD, y); y += PCT_H - 44; }
+  if (last.grid) drawGrid(g, last.grid, PAD, y + 12, c);
   g.fillStyle = c.ink2;
   g.font = '400 38px Outfit, system-ui, sans-serif';
   g.fillText('Aprende a reconocer pintura clásica jugando', PAD, CARD_H - 104);

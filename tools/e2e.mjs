@@ -1374,6 +1374,14 @@ await noHorizontalScroll(page, 'perfil con nombre largo');
   check((await tab()).id === 'look-tab-avatar', '← en la primera pestaña no da la vuelta');
   await pp.keyboard.press('Escape');
   await pp.waitForTimeout(450);
+  // Foco de la portada: el anillo existe de verdad (pseudoelemento por encima de la imagen), no el de main.css, que se recortaba.
+  const ring = await pp.evaluate(() => {
+    const a = document.querySelector('.pf-cover-art');
+    a.focus();
+    const after = getComputedStyle(a, '::after');
+    return { visible: a.matches(':focus-visible'), outline: getComputedStyle(a).outlineStyle, border: after.borderTopWidth, style: after.borderTopStyle, z: after.zIndex, pos: after.position };
+  });
+  check(ring.visible && ring.outline === 'none' && ring.border === '4px' && ring.style === 'solid' && ring.z === '3' && ring.pos === 'absolute', `foco de la portada sin anillo propio: ${JSON.stringify(ring)}`);
   // Texto al 200 %: el nombre se ve entero (sin recorte ni puntos suspensivos) y sin desplazamiento horizontal.
   await pp.addStyleTag({ content: 'html{font-size:200%}' });
   await pp.waitForTimeout(300);
@@ -1384,6 +1392,11 @@ await noHorizontalScroll(page, 'perfil con nombre largo');
   });
   check(clip.w <= 1 && clip.h <= 1 && !clip.ellipsis && !clip.clamp && clip.boxW >= 150, `al 200 % el nombre se recorta: ${JSON.stringify(clip)}`);
   await noHorizontalScroll(pp, 'perfil al 200 %');
+  await pp.click('.pf-look');
+  await pp.waitForSelector('.look-dialog[open]');
+  const look200 = await pp.evaluate(() => ({ reset: document.querySelector('[data-action="look-reset"]').getBoundingClientRect().bottom, vh: innerHeight, inner: document.querySelector('.look-panel').scrollHeight - document.querySelector('.look-panel').clientHeight }));
+  check(look200.reset <= look200.vh + 1 && look200.inner <= 1, `hoja de portada al 200 %: botón fuera de vista o segundo scroll ${JSON.stringify(look200)}`);
+  await pp.keyboard.press('Escape');
   await pctx.close();
   // Móvil apaisado: la portada y el avatar no se comen la pantalla.
   const lctx = await browser.newContext({ ...ctxOpts, viewport: { width: 844, height: 390 } });
@@ -1392,7 +1405,19 @@ await noHorizontalScroll(page, 'perfil con nombre largo');
   await lp.waitForSelector('.pf-hero');
   const land = await lp.evaluate(() => ({ cover: Math.round(document.querySelector('.pf-cover').getBoundingClientRect().height), avatar: Math.round(document.querySelector('.pf-avatar').getBoundingClientRect().width) }));
   check(land.cover <= 120 && land.avatar <= 80, `perfil apaisado con portada de ${land.cover} px y avatar de ${land.avatar} px`);
+  await lp.click('.pf-look');
+  await lp.waitForSelector('.look-dialog[open]');
+  const landLook = await lp.evaluate(() => ({ reset: document.querySelector('[data-action="look-reset"]').getBoundingClientRect().bottom, vh: innerHeight, cols: getComputedStyle(document.querySelector('.look-grid')).gridTemplateColumns.split(' ').length }));
+  check(landLook.reset <= landLook.vh + 1 && landLook.cols >= 5, `hoja de portada apaisada: ${JSON.stringify(landLook)}`);
   await lctx.close();
+  // Tableta: dos columnas desde 720 px.
+  const tctx = await browser.newContext({ ...ctxOpts, viewport: { width: 768, height: 1024 } });
+  const tp = await tctx.newPage();
+  await seed(tp, st, 'perfil');
+  await tp.waitForSelector('.pf-hero');
+  check(await tp.evaluate(() => getComputedStyle(document.querySelector('.pf-layout')).gridTemplateColumns.split(' ').length) === 2, 'perfil en tableta sin dos columnas');
+  await noHorizontalScroll(tp, 'perfil en tableta');
+  await tctx.close();
 }
 await page.goto(`${base}#medallas`);
 await page.waitForSelector('#logros');
@@ -1978,6 +2003,7 @@ for (const scheme of ['light', 'dark']) {
       await p7.waitForSelector('.medal-dialog[open]');
       await p7.waitForTimeout(400);
       check(/7 días seguidos/.test(await p7.locator('.medal-dialog').innerText()), `[${tag}] la hoja de medalla no dice cómo se gana`);
+      check(!/dominado/i.test(await p7.locator('.medal-dialog .dlg-meta').innerText()), `[${tag}] el logro pendiente se da por hecho en su subtítulo`);
       await shot(p7, `medalla-hoja-${tag}`);
       await audit(p7, `o7 ${tag} hoja de medalla`);
       for (let k = 0; k < 3; k++) await p7.keyboard.press('Tab');

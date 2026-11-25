@@ -15,6 +15,8 @@ const GROUPS = [
   ['artist', 'Pintores'], ['movement', 'Movimientos'], ['streak', 'Rachas'], ['eye', 'Ojo de…'], ['other', 'Retos y metas'],
 ];
 const FILTERS = [['all', 'Todos'], ['got', 'Conseguidos'], ['missing', 'Pendientes']];
+// Subtítulo de un logro que aún no se tiene: dice de qué clase es, sin dar por hecho nada.
+const KIND_NAMES = { artist: 'Pintor', movement: 'Movimiento', streak: 'Racha', eye: 'Ojo de…', other: 'Meta' };
 const kindOf = (id) => { const k = id.split('-')[0]; return GROUPS.some(([g]) => g === k) ? k : 'other'; };
 
 // El logro conseguido es un hecho («Veronés dominado») y el pendiente, una meta («Domina a Veronés»).
@@ -121,7 +123,7 @@ export function wireMedals(ctx, el) {
       medalDialog.innerHTML = `<div class="dlg-body medal-dlg tier-${medalTier(id)} ${date ? 'is-got' : 'is-missing'}">
         ${date ? tierRing(medalTier(id), seal) : seal}
         <h2 id="medal-dlg-title" class="dlg-title">${esc(medalName(ctx, id, Boolean(date)))}</h2>
-        <p class="dlg-meta">${esc(info.sub)} · ${TIER_NAMES[medalTier(id)]}</p>
+        <p class="dlg-meta">${esc(date ? info.sub : KIND_NAMES[kindOf(id)])} · ${TIER_NAMES[medalTier(id)]}</p>
         ${date ? `<p class="dlg-hint">Conseguida el ${esc(longDate(date).toLowerCase())}</p>` : how ? `<p class="dlg-hint">${esc(how)}</p>` : ''}
         ${!date && eye ? `<p class="medal-dlg-prog">${eye.top} de ${eye.total} ${eye.total === 1 ? 'cuadro' : 'cuadros'}</p>` : ''}
         <button class="btn btn-secondary btn-wide" data-action="close-sheet">Cerrar</button>
