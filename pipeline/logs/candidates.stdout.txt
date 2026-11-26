@@ -1,11 +1,15 @@
-ya     cimabue            24 candidatas
-ya     duccio             62 candidatas
-ya     pietro-lorenzetti  42 candidatas
-ya     simone-martini     41 candidatas
-ya     ambrogio-lorenzetti 42 candidatas
-ya     utamaro            270 candidatas
-ya     hokusai            327 candidatas
-ya     sharaku            151 candidatas
-ya     kuniyoshi          341 candidatas
-ya     hiroshige          364 candidatas
-fin 2026-11-24 20:32:01
+ok     uccello            Q192488      31 candidatas; de las 80 primeras, 26 con imagen >=1200px
+ok     masaccio           Q5811        25 candidatas; de las 80 primeras, 25 con imagen >=1200px
+ok     filippo-lippi      Q205148      82 candidatas; de las 80 primeras, 64 con imagen >=1200px
+ok     memling            Q106851     175 candidatas; de las 80 primeras, 73 con imagen >=1200px
+ok     bermejo            Q551241      37 candidatas; de las 80 primeras, 32 con imagen >=1200px
+ok     perugino           Q5827       160 candidatas; de las 80 primeras, 74 con imagen >=1200px
+SIN QID grunewald
+ok     pontormo           Q207929      65 candidatas; de las 80 primeras, 53 con imagen >=1200px
+ok     parmigianino       Q9348        63 candidatas; de las 80 primeras, 56 con imagen >=1200px
+ok     bronzino           Q7803       115 candidatas; de las 80 primeras, 66 con imagen >=1200px
+ok     arcimboldo         Q7751        34 candidatas; de las 80 primeras, 34 con imagen >=1200px
+ok     sanchez-cotan      Q919806      24 candidatas; de las 80 primeras, 9 con imagen >=1200px
+ok     hogarth            Q171344     182 candidatas; de las 80 primeras, 60 con imagen >=1200px
+ok     matisse            Q5589       476 candidatas; de las 80 primeras, 47 con imagen >=1200px
+fin 2026-11-26 21:53:57
