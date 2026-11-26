@@ -13,3 +13,10 @@ ok     matisse            Q5589       476 candidatas; de las 80 primeras, 47 con
 fin 2026-11-26 21:53:57
 61M	.git
 3.3M	catalogo
+== seleccionar masaccio uccello filippo-lippi memling bermejo perugino grunewald pontormo parmigianino bronzino arcimboldo sanchez-cotan hogarth matisse piero van-der-weyden holbein gericault 21:54:00
+matisse            maest   476    39   12/12  n1=7 L2:5  | sin datos de imagen:328, posterior a 1929:66, sin imagen apta:30, palabra:10, sin fecha (pintor muerto ≥1930):3
+TOTAL 160 obras de 175 pintores
+por país: Italia 88, Francia 24, Flandes 20, Alemania 12, España 8, Reino Unido 8
+títulos por fuente: {'traducir': 184, 'traducido': 146, 'revisar-idioma': 1, 'manual': 22, 'wikidata-es': 1093}
+61M	.git
+3.4M	catalogo
