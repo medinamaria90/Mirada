@@ -21,9 +21,21 @@ export const PLAYLISTS = {
   impressionism: { main: 'base', alt: ['satie', 'tonos'] },
   postimpressionism: { main: 'base', alt: ['musette', 'rasgueo'] },
   modern: { main: 'base', alt: ['celesta', 'lidio'] },
-  'maestros-espanoles': { main: 'renaissance/base', alt: [] }, // provisional hasta tener música española que suene bien
-  'escuela-rusa': { main: 'korobeiniki', alt: ['cisnes'] },
-  'ukiyo-e': { main: 'sakura', alt: [] },
+  // Ramas: música propia, variación del tema de la portada con el color de cada sitio. Los clásicos que
+  // sonaban antes (Korobéiniki, El lago de los cisnes, Sakura) quedan fuera de lista.
+  'descubre-renacimiento': { main: 'gallarda', alt: [] },
+  'descubre-manierismo-y-norte': { main: 'tiento', alt: [] },
+  'descubre-barroco': { main: 'aria', alt: [] },
+  'descubre-rococo-neoclasicismo': { main: 'serenata', alt: [] },
+  'descubre-romanticismo': { main: 'barcarola', alt: [] },
+  'descubre-realismo': { main: 'vals', alt: [] },
+  'descubre-impresionismo': { main: 'acuarela', alt: [] },
+  'descubre-postimpresionismo': { main: 'tresillo', alt: [] },
+  'descubre-simbolismo-modernismo': { main: 'cristal', alt: [] },
+  'maestros-espanoles': { main: 'seguidilla', alt: ['folia'] },
+  'escuela-rusa': { main: 'balalaica', alt: ['neva'] },
+  'pintura-britanica': { main: 'campina', alt: ['colina'] },
+  'ukiyo-e': { main: 'koto', alt: ['lluvia'] },
 };
 
 /** Máximo de secundarios por sitio. */

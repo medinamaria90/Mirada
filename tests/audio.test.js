@@ -384,7 +384,8 @@ test('listas: de noche, al entrar suena el secundario del día y se alternan con
   const second = nextPiece('renaissance', { last: main, mainRuns: 1, altsPlayed: 1, date: NIGHT });
   assert.ok(alt.includes(second) && second !== first, 'el segundo secundario de la noche es el otro');
   // sin secundarios, siempre el principal
-  assert.equal(nextPiece('ukiyo-e', { date: NIGHT }), playlistOf('ukiyo-e').main);
+  const solo = [...CONTRACT_ERAS, ...BRANCHES].find((l) => playlistOf(l).alt.length === 0);
+  assert.equal(nextPiece(solo, { date: NIGHT }), playlistOf(solo).main);
 });
 
 test('listas: el secundario cambia cada día', () => {

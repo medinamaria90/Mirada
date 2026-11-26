@@ -4,6 +4,12 @@ const LIST_NAMES = {
   romantic: 'Romanticismo', realism: 'Realismo', impressionism: 'Impresionismo', postimpressionism: 'Postimpresionismo',
   modern: 'Simbolismo y vanguardias', 'maestros-espanoles': 'Maestros españoles', 'escuela-rusa': 'Escuela rusa',
   'ukiyo-e': 'Estampa japonesa (ukiyo-e)',
+  'pintura-britanica': 'Pintura británica', 'descubre-renacimiento': 'Descubre el Renacimiento',
+  'descubre-manierismo-y-norte': 'Descubre el Manierismo y el Norte', 'descubre-barroco': 'Descubre el Barroco',
+  'descubre-rococo-neoclasicismo': 'Descubre el Rococó y el Neoclasicismo',
+  'descubre-romanticismo': 'Descubre el Romanticismo', 'descubre-realismo': 'Descubre el Realismo',
+  'descubre-impresionismo': 'Descubre el Impresionismo', 'descubre-postimpresionismo': 'Descubre el Postimpresionismo',
+  'descubre-simbolismo-modernismo': 'Descubre el Simbolismo y las vanguardias',
 };
 
 /** «Renacimiento» para `renaissance`; si la lista no se conoce, su propia clave. */

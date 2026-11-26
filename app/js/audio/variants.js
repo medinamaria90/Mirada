@@ -19,7 +19,8 @@ import { REALISM } from './variants/realism.js';
 import { IMPRESSIONISM } from './variants/impressionism.js';
 import { POSTIMPRESSIONISM } from './variants/postimpressionism.js';
 import { MODERN } from './variants/modern.js';
-import { CLASSICS, BRANCH_CLASSICS } from './classics.js';
+import { CLASSICS } from './classics.js';
+import { BRANCH_PIECES } from './branches.js';
 import { THEME } from './variants/tema.js';
 
 export const DEFAULT_VARIANT = 'base';
@@ -58,11 +59,11 @@ export function variantsOf(era) {
     ...(EXTRA[era] || []), ...(CLASSICS[era] || []), ...(THEME[era] || [])];
 }
 
-/** Ramas temáticas con piezas propias (claves de lista que no son épocas). */
-export const BRANCHES = Object.keys(BRANCH_CLASSICS);
+/** Ramas del catálogo con piezas propias (claves de lista que no son épocas). */
+export const BRANCHES = Object.keys(BRANCH_PIECES);
 
 /** Piezas de una lista: las variantes de una era o las piezas propias de una rama. */
-export const piecesOf = (list) => (SCORES[list] ? variantsOf(list) : BRANCH_CLASSICS[list] || []);
+export const piecesOf = (list) => (SCORES[list] ? variantsOf(list) : BRANCH_PIECES[list] || []);
 
 /** Clave de pieza a partir de era y variante. */
 export const pieceKey = (era, variant = DEFAULT_VARIANT) =>

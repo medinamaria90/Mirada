@@ -4,6 +4,7 @@
 import { midiToFreq, clamp } from './theory.js';
 import { pluckBuffer } from './ks.js';
 import { WINDS } from './sustained.js';
+import { castanets } from './percussion.js';
 
 // ---------------------------------------------------------------- utilidades
 const waves = new WeakMap(); // ctx -> { nombre: PeriodicWave }
@@ -53,6 +54,8 @@ export const KS = {
   // arpa: cuerda de tripa pulsada en el centro (pocos armónicos), larga y sin cuerpo de caja
   harp: { t60: 3.2, blend: 0.5, bright: 0.18, pick: 0.45, seconds: 2.6, rel: 1.2, peak: 0.8, octave: 0, damp: 0.45, cut: 3000, body: 0.3, attack: 0.006 },
   pizz: { t60: 0.55, blend: 0.5, bright: 0.28, pick: 0.32, seconds: 0.6, rel: 0.12, peak: 0.9, octave: 0, damp: 0.5, cut: 3200, body: 0.55, attack: 0.003 },
+  balalaika: { t60: 0.9, blend: 0.5, bright: 0.3, pick: 0.16, seconds: 0.9, rel: 0.12, peak: 0.8, octave: 0, damp: 0.55, cut: 3400, body: 0.4, attack: 0.003 },
+  koto: { t60: 2.2, blend: 0.5, bright: 0.3, pick: 0.12, seconds: 2, rel: 0.7, peak: 0.85, octave: 0, damp: 0.5, cut: 3600, body: 0.25, attack: 0.003 },
 };
 
 function plucked(kind) {
@@ -248,6 +251,8 @@ export const INSTRUMENTS = {
   guitar: plucked('guitar'),
   harp: plucked('harp'),
   pizz: plucked('pizz'),
+  balalaika: plucked('balalaika'),
+  koto: plucked('koto'),
   piano: pianoLike('piano'),
   felt: pianoLike('felt'),
   fortepiano: pianoLike('fortepiano'),
@@ -260,6 +265,7 @@ export const INSTRUMENTS = {
   cello: bowed({ attack: 0.12, release: 0.5, cut: 5, peak: 0.28, detune: 5 }),
   pad: bowed({ attack: 0.5, release: 0.8, cut: 3, peak: 0.16, detune: 7 }),
   soft,
+  castanets,
   ...WINDS,
 };
 
@@ -267,7 +273,8 @@ export const INSTRUMENTS = {
 export const WET = { lute: 1, harpsichord: 0.8, harpsiLite: 0.8, guitar: 0.9, harp: 1, pizz: 0.6, piano: 1, felt: 1,
   fortepiano: 0.7, musicbox: 1, celesta: 1, glock: 0.9, vibraphone: 1, bell: 1, cello: 1, pad: 1, chime: 1, soft: 0.5,
   recorder: 0.9, flute: 0.9, clarinet: 0.8, accordion: 0.6, viola: 1, strings: 1,
-  organ: 1, fiddle: 0.9, gamba: 0.9 };
+  organ: 1, fiddle: 0.9, gamba: 0.9,
+  balalaika: 0.8, koto: 1, castanets: 0.5, shakuhachi: 1 };
 
 /** Control de polifonía: limita las notas simultáneas; descarta las menos importantes. */
 export class Budget {

@@ -94,5 +94,7 @@ export const WINDS = {
   fiddle: sustained('fiddle', { amps: [1, 0.75, 0.6, 0.45, 0.35, 0.25, 0.18, 0.12, 0.08], attack: 0.09, release: 0.18, cut: 4.5, peak: 0.19, detune: 5, vib: { rate: 4.6, depth: 6, delay: 0.35 } }),
   // Viola da gamba: arco que se hincha al empezar, timbre de caña suave y sin vibrato.
   gamba: sustained('gamba', { amps: [1, 0.7, 0.5, 0.38, 0.28, 0.2, 0.14, 0.1], attack: 0.12, release: 0.3, cut: 4, peak: 0.24, detune: 3 }),
+  // Shakuhachi (aproximado): soplo casi puro, ataque lento y vibrato ancho y tardío.
+  shakuhachi: sustained('shakuhachi', { amps: [1, 0.22, 0.07, 0.03], attack: 0.14, release: 0.18, cut: 4, peak: 0.34, vib: { rate: 4.2, depth: 14, delay: 0.4 } }),
   strings: sustained('strings', { amps: [1, 0.5, 0.35, 0.25, 0.16, 0.1, 0.07], attack: 0.28, release: 0.7, cut: 4, peak: 0.18, detune: 11 }),
 };
