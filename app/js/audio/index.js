@@ -13,6 +13,7 @@ import { nextPiece, hasList, playlistOf } from './rotation.js';
 import { pieceInfo, allPieces } from './piece-info.js';
 import { PLAYLISTS } from './playlists.js';
 import { listOrder, followingList } from './list-names.js';
+import { isGameNight } from '../state/game-clock.js';
 
 export { ERAS, SFX_NAMES };
 
@@ -77,7 +78,7 @@ function pickPiece(list, last = null) {
   if (last === null || visit.list !== list) visit = { list, mainRuns: 0, altsPlayed: 0 };
   const main = playlistOf(list)?.main;
   if (last !== null) visit.mainRuns = last === main ? visit.mainRuns + 1 : 0;
-  const key = nextPiece(list, { last, mainRuns: visit.mainRuns, altsPlayed: visit.altsPlayed, date: new Date() });
+  const key = nextPiece(list, { last, mainRuns: visit.mainRuns, altsPlayed: visit.altsPlayed, date: new Date(), night: isGameNight() });
   if (!key) return;
   if (key !== main) { visit.altsPlayed += 1; visit.mainRuns = 0; }
   chosen[list] = key;

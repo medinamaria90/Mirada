@@ -10,7 +10,7 @@ export function nameSheetHtml() {
   return `<dialog class="card-dialog sheet-dialog name-dialog" aria-labelledby="name-dlg-title">
     <form class="dlg-body name-form" novalidate>
       <h2 id="name-dlg-title" class="dlg-title">Tu nombre</h2>
-      <input class="pf-input" name="name" type="text" autocomplete="off" autocapitalize="words" enterkeyhint="done" spellcheck="false" aria-labelledby="name-dlg-title" aria-describedby="name-note">
+      <input class="pf-input" name="nickname" type="text" inputmode="text" autocomplete="nickname" autocapitalize="words" autocorrect="off" data-lpignore="true" data-1p-ignore data-form-type="other" enterkeyhint="done" spellcheck="false" aria-labelledby="name-dlg-title" aria-describedby="name-note">
       <p class="pf-note" id="name-note"><span>Solo se guarda en este dispositivo</span><span class="pf-counter" aria-hidden="true">0/${NAME_MAX}</span></p>
       <div class="sheet-actions">
         <button type="button" class="btn btn-secondary" data-action="close-sheet">Cancelar</button>

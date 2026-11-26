@@ -1,4 +1,4 @@
-// Mapa vivo: luz según la hora (engine/daylight.js), sendero recorrido de otro color, puerta de salida con luces
+// Mapa vivo: luz según el reloj del juego (engine/daylight.js, state/game-clock.js), sendero recorrido de otro color, puerta de salida con luces
 // y árboles que se mecen, paisajes preparados para animarse (clases k-*, data-sway, data-lamp, data-flow) y un
 // CSS que solo anima transform y opacity, y solo con el mapa vivo (.is-alive). Sin navegador.
 import { test } from 'node:test';
@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { daylight, sunTimes, SUN_TIMES, TWILIGHT_MIN } from '../app/js/engine/daylight.js';
+import { gameLight, gameHour, isNight, minuteAtHour, resumeMinute, GAME_DAY_MIN, GAME_PHASES_MIN, SESSION_GAP_MS } from '../app/js/engine/daylight.js';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
 import { renderPathMap, pathLayout } from '../app/js/ui/screens/path-map.js';
@@ -17,41 +17,42 @@ const app = join(here, '..', 'app');
 const real = buildIndex(JSON.parse(readFileSync(join(app, 'data', 'catalog.json'), 'utf8')));
 globalThis.document = globalThis.document || { documentElement: {} };
 globalThis.getComputedStyle = globalThis.getComputedStyle || (() => ({ getPropertyValue: () => '#000000' }));
-const at = (day, hm) => new Date(`${day}T${hm}:00`);
-const hm = (min) => `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(Math.round(min % 60)).padStart(2, '0')}`;
 
-test('luz: de día 0, de noche 1, y el cambio dura unos 30 minutos centrado en la puesta y la salida del sol', () => {
-  const day = '2026-11-26';
-  assert.deepEqual(daylight(at(day, '12:00')), { night: 0, dusk: 0 });
-  assert.deepEqual(daylight(at(day, '23:30')), { night: 1, dusk: 0 });
-  assert.equal(daylight(at(day, '03:00')).night, 1);
-  const { rise, set } = sunTimes(at(day, '12:00'));
-  const half = TWILIGHT_MIN / 2;
-  assert.equal(daylight(at(day, hm(set - half - 1))).night, 0, 'anochece antes de tiempo');
-  assert.equal(daylight(at(day, hm(set + half + 1))).night, 1, 'el anochecer dura de más');
-  const mid = daylight(at(day, hm(set)));
-  assert.ok(mid.night > 0.3 && mid.night < 0.7 && mid.dusk > 0.9, `a la puesta del sol, media luz y arrebol: ${JSON.stringify(mid)}`);
-  assert.ok(daylight(at(day, hm(rise))).dusk > 0.9, 'sin arrebol al amanecer');
-  // Al anochecer la noche solo crece (sin saltos ni vueltas atrás).
+test('reloj del juego: un día cada 24 minutos, con día largo, noche más corta y transiciones suaves', () => {
+  assert.equal(GAME_DAY_MIN, 24);
+  assert.equal(Object.values(GAME_PHASES_MIN).reduce((a, b) => a + b, 0), GAME_DAY_MIN, 'las fases no suman un día');
+  assert.ok(GAME_PHASES_MIN.day > GAME_PHASES_MIN.night && GAME_PHASES_MIN.night > GAME_PHASES_MIN.dusk, 'reparto día/noche raro');
+  const { dawn, day, dusk } = GAME_PHASES_MIN;
+  assert.deepEqual(gameLight(dawn + day / 2), { night: 0, dusk: 0 }, 'a mediodía no es de día');
+  assert.deepEqual(gameLight(GAME_DAY_MIN - 1), { night: 1, dusk: 0 }, 'en plena noche no es de noche');
+  const sunset = dawn + day + dusk / 2;
+  const mid = gameLight(sunset);
+  assert.ok(mid.night > 0.3 && mid.night < 0.7 && mid.dusk > 0.9, `en mitad del atardecer, media luz y arrebol: ${JSON.stringify(mid)}`);
+  assert.ok(gameLight(dawn / 2).dusk > 0.9, 'sin arrebol al amanecer');
   let prev = 0;
-  for (let m = set - half; m <= set + half; m += 3) {
-    const n = daylight(at(day, hm(m))).night;
-    assert.ok(n >= prev, `la noche retrocede a las ${hm(m)}`);
+  for (let m = dawn + day; m <= dawn + day + dusk; m += 0.1) {
+    const n = gameLight(m).night;
+    assert.ok(n >= prev && n - prev < 0.12, `la noche salta o retrocede en el minuto ${m.toFixed(1)}`);
     prev = n;
   }
+  assert.deepEqual(gameLight(GAME_DAY_MIN + 3), gameLight(3), 'el día no da la vuelta');
+  assert.ok(isNight(GAME_DAY_MIN - 1) && !isNight(dawn + day / 2));
 });
 
-test('luz: horas del sol por mes, en verano días más largos, y sin saltos al cambiar de mes o de año', () => {
-  assert.equal(SUN_TIMES.length, 12);
-  const june = sunTimes(at('2026-06-21', '12:00'));
-  const dec = sunTimes(at('2026-12-21', '12:00'));
-  assert.ok(june.set - june.rise > dec.set - dec.rise + 5 * 60, 'el día de junio no es mucho más largo que el de diciembre');
-  for (const [a, b] of [['2026-01-31', '2026-02-01'], ['2025-12-31', '2026-01-01'], ['2026-03-14', '2026-03-15']]) {
-    const x = sunTimes(at(a, '12:00'));
-    const y = sunTimes(at(b, '12:00'));
-    assert.ok(Math.abs(x.rise - y.rise) <= 3 && Math.abs(x.set - y.set) <= 3, `salto entre ${a} y ${b}`);
-  }
-  assert.deepEqual(sunTimes(at('2026-07-15', '00:00')), { rise: SUN_TIMES[6][0], set: SUN_TIMES[6][1] });
+test('reloj del juego: una sesión nueva arranca en la hora del móvil; si se vuelve enseguida, sigue donde iba', () => {
+  const night = new Date(2026, 10, 26, 23, 10);
+  const morning = new Date(2026, 10, 26, 10, 0);
+  assert.ok(isNight(resumeMinute(null, night)), 'entrando de noche, no es de noche');
+  assert.ok(!isNight(resumeMinute(null, morning)) && Math.abs(gameHour(resumeMinute(null, morning)) - 10) < 0.01, 'entrando por la mañana, no es de mañana');
+  for (const h of [0, 5.5, 6.5, 7, 12, 18.5, 19, 21, 23.9]) assert.ok(Math.abs(((gameHour(minuteAtHour(h)) - h + 36) % 24) - 12) < 1e-9, `hora ${h} de ida y vuelta`);
+  const saved = { min: 3.2, at: morning.getTime() - (SESSION_GAP_MS - 60 * 1000) };
+  assert.equal(resumeMinute(saved, morning), 3.2, 'volviendo enseguida no sigue donde iba');
+  assert.equal(resumeMinute({ ...saved, at: morning.getTime() - SESSION_GAP_MS - 1 }, morning), minuteAtHour(10), 'tras un rato largo fuera no vuelve a la hora real');
+  assert.equal(resumeMinute({ min: 'x' }, morning), minuteAtHour(10), 'lo guardado roto no se ignora');
+  const clock = readFileSync(join(app, 'js', 'state', 'game-clock.js'), 'utf8');
+  assert.ok(clock.includes("'sfumato.clock'") && /document\.hidden/.test(clock) && /catch \(err\)/.test(clock), 'el reloj no se guarda o corre con la app oculta');
+  const life = readFileSync(join(app, 'js', 'ui', 'map-life.js'), 'utf8');
+  assert.ok(/clock = clockMinute/.test(life) && !/new Date\(\)/.test(life), 'el mapa vivo sigue la hora del móvil');
 });
 
 test('mapa: el sendero recorrido va de otro color hasta la parada actual (entero en lo ya pasado, nada en lo que viene)', () => {

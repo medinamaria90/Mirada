@@ -27,7 +27,7 @@
   --map-z-critter: 1;
 }
 
-.map-critter { position: absolute; left: 0; top: 0; z-index: var(--map-z-critter); pointer-events: none; opacity: 0; will-change: transform, opacity; }
+.map-critter { position: absolute; left: 0; top: 0; z-index: var(--map-z-critter); transform-origin: 0 0; pointer-events: none; opacity: 0; will-change: transform, opacity; }
 .map-critter.is-under { z-index: var(--map-z-under); }
 .map-critter svg { display: block; width: 100%; height: auto; overflow: visible; }
 

@@ -14,12 +14,13 @@ import { esc, onAction, focusHeading, clearAnnounce } from './ui/dom.js';
 import { toast, replayToast, routeChanged } from './ui/toast.js';
 import { readSession } from './state/session.js';
 import { applyTheme } from './ui/theme.js';
+import { shouldAutoReload } from './ui/load-recovery.js';
 
 const root = document.getElementById('app');
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
-  'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/level-ring.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'ui/deep-badges.js',
+  'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/level-ring.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'state/game-clock.js', 'ui/deep-badges.js',
   'ui/icons.js', 'ui/map-actor.js', 'ui/map-critters.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-scene.js', 'ui/map-sky.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-scroll.js', 'ui/screens/path-art.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js',
   'ui/screens/path-nodes.js', 'ui/screens/path-signs.js', 'ui/shell.js',
 ];
@@ -56,9 +57,9 @@ async function loadCatalog() {
   return data;
 }
 
-function showError(message) {
+function showError(message, title = 'No se ha podido abrir la colección') {
   root.innerHTML = `<div class="screen"><div class="welcome"><main class="welcome-body" id="main">
-    <h1 class="welcome-title welcome-title-sm">No se ha podido abrir la colección</h1>
+    <h1 class="welcome-title welcome-title-sm">${esc(title)}</h1>
     <p class="welcome-line">${esc(message)}</p>
     <button class="btn btn-primary btn-wide" data-action="retry">Reintentar</button>
   </main></div></div>`;
@@ -247,7 +248,9 @@ async function boot() {
       .catch((err) => {
         if (token !== renderToken) return;
         console.error(err);
-        showError('Comprueba la conexión y vuelve a intentarlo.');
+        // Módulos de dos versiones mezclados (o un corte de red): la primera vez se recarga sola.
+        if (shouldAutoReload(safeStorage(() => window.sessionStorage), location.hash, Date.now())) return location.reload();
+        showError('Comprueba la conexión y vuelve a intentarlo.', 'No se ha podido abrir');
       });
     return screen;
   }
