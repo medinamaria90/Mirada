@@ -11,9 +11,9 @@ test('afinar música: todas las piezas tienen nombre, y los clásicos autor', ()
     assert.ok(info?.title, key);
     assert.ok(allPieces(info.key).includes(key), key);
   }
-  assert.deepEqual(pieceInfo('renaissance/vacas', 'maestros-espanoles'),
-    { id: 'renaissance/vacas', title: 'Guárdame las vacas', author: 'Narváez', key: 'maestros-espanoles', role: 'principal' });
-  assert.equal(pieceInfo('renaissance/vacas', 'renaissance').role, 'principal');
+  assert.deepEqual(pieceInfo('renaissance/vacas', 'renaissance'),
+    { id: 'renaissance/vacas', title: 'Guárdame las vacas', author: 'Narváez', key: 'renaissance', role: 'fuera de lista' });
+  assert.equal(pieceInfo('renaissance', 'renaissance').role, 'principal');
   assert.equal(pieceInfo('menu', 'menu').author, '');
 });
 
@@ -22,4 +22,13 @@ test('portada: la original abre cada visita (de día)', () => {
   assert.equal(pieceInfo('menu/paseo', 'menu').role, 'secundaria');
   assert.equal(pieceInfo('renaissance/villancico', 'renaissance').role, 'fuera de lista');
   assert.ok(allPieces('renaissance').includes('renaissance/villancico'), '«Siguiente» recorre también las de fuera');
+});
+
+test('afinar música: nombres humanos de las listas, de cada época y rama de la música', async () => {
+  const { listName } = await import('../app/js/audio/list-names.js');
+  const { PLAYLISTS } = await import('../app/js/audio/playlists.js');
+  assert.equal(listName('menu'), 'Portada');
+  assert.equal(listName('renaissance'), 'Renacimiento');
+  assert.equal(listName('maestros-espanoles'), 'Maestros españoles');
+  for (const list of Object.keys(PLAYLISTS)) assert.notEqual(listName(list), list, list);
 });

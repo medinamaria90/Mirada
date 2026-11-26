@@ -337,8 +337,8 @@ test('listas: cada sitio tiene un principal y como mucho dos secundarios que exi
     assert.ok(hasList(list));
   }
   assert.equal(playlistOf('menu').main, 'menu', 'portada: la original es la principal');
-  assert.equal(playlistOf('renaissance').main, 'renaissance/vacas');
-  assert.equal(playlistOf('maestros-espanoles').main, 'renaissance/vacas');
+  assert.equal(playlistOf('renaissance').main, 'renaissance', 'Renacimiento: «Pavana del alba», la favorita de María');
+  assert.ok(![playlistOf('renaissance').main, ...playlistOf('renaissance').alt].includes('renaissance/vacas'), '«Guárdame las vacas» fuera de la lista');
   assert.ok(playlistOf('baroque').alt.every((k) => variantsOf('baroque').find((v) => pieceKey('baroque', v.id) === k).source),
     'Barroco: los secundarios son clásicos (las compuestas no le gustaron)');
   assert.equal(playlistOf('nada'), null);

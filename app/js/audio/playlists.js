@@ -10,7 +10,7 @@
 // están aquí siguen en el catálogo: el modo secreto («Siguiente») las recorre todas para escucharlas.
 export const PLAYLISTS = {
   menu: { main: 'base', alt: ['paseo'] }, // «Umbral» fuera: no le gusta a María (26/11)
-  renaissance: { main: 'vacas', alt: ['greensleeves', 'saltarello'] },
+  renaissance: { main: 'base', alt: ['greensleeves', 'saltarello'] }, // «Pavana del alba»; «Guárdame las vacas» fuera: suena mal (María, 26/11)
   baroque: { main: 'base', alt: ['minueto', 'canon'] },
   rococo: { main: 'base', alt: ['mozart', 'gavota'] },
   neoclassic: { main: 'base', alt: [] },
@@ -19,7 +19,7 @@ export const PLAYLISTS = {
   impressionism: { main: 'base', alt: ['satie', 'tonos'] },
   postimpressionism: { main: 'base', alt: ['musette', 'rasgueo'] },
   modern: { main: 'base', alt: ['celesta', 'lidio'] },
-  'maestros-espanoles': { main: 'renaissance/vacas', alt: [] },
+  'maestros-espanoles': { main: 'renaissance/base', alt: [] }, // provisional hasta tener música española que suene bien
   'escuela-rusa': { main: 'korobeiniki', alt: ['cisnes'] },
   'ukiyo-e': { main: 'sakura', alt: [] },
 };

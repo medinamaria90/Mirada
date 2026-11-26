@@ -24,7 +24,12 @@ export const isNight = (date) => date.getHours() >= NIGHT_FROM_HOUR || date.getH
 /** Número de día local (cambia a medianoche en la hora del móvil). */
 export const dayIndex = (date) => Math.floor((date.getTime() - date.getTimezoneOffset() * MIN_PER_HOUR * 1000) / DAY_MS);
 
-const resolve = (list, id) => (String(id).includes('/') ? id : pieceKey(list, id));
+// «época/base» es la original de otra lista (su clave es la propia época).
+const resolve = (list, id) => {
+  const [era, own] = String(id).split('/');
+  if (own === undefined) return pieceKey(list, id);
+  return own === 'base' ? era : id;
+};
 
 /** { main, alt: [...] } en claves de pieza, solo con piezas que existen; null si la lista no tiene. */
 export function playlistOf(list) {
