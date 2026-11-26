@@ -25,3 +25,7 @@
 .dj-sheet .dj-code[hidden], .dj-sheet .dj-switch[hidden] { display: none; }
 .dj-wrong { color: var(--bad); font-size: .9rem; }
 .dj-wrong[hidden] { display: none; }
+.su-section { --su-gap: .5rem; display: grid; gap: var(--su-gap); padding-top: .75rem; }
+.su-section[hidden] { display: none; }
+.su-title { font: 600 .95rem/1.2 var(--font); color: var(--ink); margin: 0; }
+.su-options { display: grid; }

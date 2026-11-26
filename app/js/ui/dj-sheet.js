@@ -1,9 +1,9 @@
-// Puerta del modo «afinar música»: cinco toques seguidos (en menos de 3 s) en el título de Ajustes
-// abren esta hoja; con el código (1612, elegido por María) se enciende, y aquí mismo se apaga.
+// Puerta del modo superusuario: cinco toques seguidos (en menos de 3 s) en el título de Ajustes
+// abren esta hoja; con el código (1612, elegido por María) se activa la sección «Superusuario» de Ajustes.
 
 import { icons } from './icons.js';
 import { bindSheet } from './screens/profile-sheet.js';
-import { isDjOn, setDj } from './dj-mode.js';
+import { isSuperOn, setSuper } from './su-mode.js';
 import { loadCss } from './lazy-css.js';
 
 const TAPS = 5;
@@ -12,26 +12,15 @@ const CODE = '1612';
 
 const sheetHtml = () => `<dialog class="card-dialog sheet-dialog dj-sheet" aria-labelledby="dj-title">
     <div class="dlg-body">
-      <div class="sheet-head"><h2 id="dj-title" class="dlg-title">Afinar música</h2>
+      <div class="sheet-head"><h2 id="dj-title" class="dlg-title">Código</h2>
         <button type="button" class="icon-btn" data-action="close-sheet" aria-label="Cerrar">${icons.close(22)}</button></div>
       <form class="dj-code" method="dialog">
         <input class="pf-input" name="code" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="Código">
         <p class="dj-wrong" role="alert" hidden>Ese no es</p>
         <button type="submit" class="btn btn-primary btn-wide">Entrar</button>
       </form>
-      <label class="setting dj-switch" hidden>
-        <span>Afinar música</span>
-        <input type="checkbox" role="switch" class="switch" checked>
-      </label>
     </div>
   </dialog>`;
-
-function showState(dialog) {
-  const on = isDjOn();
-  dialog.querySelector('.dj-code').hidden = on;
-  dialog.querySelector('.dj-switch').hidden = !on;
-  dialog.querySelector('.switch').checked = on;
-}
 
 function openSheet(opener) {
   loadCss('css/dj.css');
@@ -46,18 +35,13 @@ function openSheet(opener) {
     const ok = input.value.trim() === CODE;
     wrong.hidden = ok;
     if (!ok) { input.select(); return; }
-    setDj(true);
-    showState(dialog);
+    setSuper(true);
+    sheet.close();
   });
-  dialog.querySelector('.switch').addEventListener('change', (ev) => {
-    setDj(ev.target.checked);
-    if (!ev.target.checked) { input.value = ''; showState(dialog); input.focus(); }
-  });
-  showState(dialog);
-  sheet.open(opener, isDjOn() ? '.switch' : '.pf-input');
+  sheet.open(opener, '.pf-input');
 }
 
-/** Cuenta los toques en `target`; al quinto seguido abre la hoja. */
+/** Cuenta los toques en `target`; al quinto seguido pide el código (si ya eres superusuario, no hace nada). */
 export function bindDjTaps(target) {
   let taps = [];
   target.addEventListener('click', () => {
@@ -65,6 +49,6 @@ export function bindDjTaps(target) {
     taps = [...taps.filter((t) => now - t < TAP_WINDOW_MS), now];
     if (taps.length < TAPS) return;
     taps = [];
-    openSheet(target);
+    if (!isSuperOn()) openSheet(target);
   });
 }
