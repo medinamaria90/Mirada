@@ -1,188 +1,30 @@
-inicio Thu Nov 26 21:49:49 UTC 2026
-== resolve  21:49:49
-ok    malevich           Q130777    Kazimir Malévich / Kazimir Malevich (1879-1935) sl=85
-ok    modigliani         Q120993    Amedeo Modigliani / Amedeo Modigliani (1884-1920) sl=88
-ok    juan-gris          Q151152    Juan Gris / Juan Gris (1887-1927) sl=63
-ok    schiele            Q44032     Egon Schiele / Egon Schiele (1890-1918) sl=74
-total 176 resueltos 174
-60M	.git
-3.3M	catalogo
-== candidates masaccio uccello filippo-lippi memling bermejo perugino grunewald pontormo parmigianino bronzino arcimboldo sanchez-cotan hogarth matisse 21:51:44
-ok     hogarth            Q171344     182 candidatas; de las 80 primeras, 60 con imagen >=1200px
-ok     matisse            Q5589       476 candidatas; de las 80 primeras, 47 con imagen >=1200px
-fin 2026-11-26 21:53:57
-61M	.git
-3.3M	catalogo
-== seleccionar masaccio uccello filippo-lippi memling bermejo perugino grunewald pontormo parmigianino bronzino arcimboldo sanchez-cotan hogarth matisse piero van-der-weyden holbein gericault 21:54:00
-matisse            maest   476    39   12/12  n1=7 L2:5  | sin datos de imagen:328, posterior a 1929:66, sin imagen apta:30, palabra:10, sin fecha (pintor muerto ≥1930):3
-TOTAL 160 obras de 175 pintores
-por país: Italia 88, Francia 24, Flandes 20, Alemania 12, España 8, Reino Unido 8
-títulos por fuente: {'traducir': 184, 'traducido': 146, 'revisar-idioma': 1, 'manual': 22, 'wikidata-es': 1093}
-61M	.git
-3.4M	catalogo
-== fichas  21:54:01
-ok lote 3: 40 fichas (1777 en total)
-ok lote 4: 7 fichas (1784 en total)
-fin: 1784 fichas; con museo 1727, con ciudad 1708, con técnica 1698, con medidas 1689, en España 370
-61M	.git
-3.4M	catalogo
-== reconciliar  21:54:42
-reconciliar: 1657 imágenes en releases, 1657 en img_meta, quitadas 0 que no estaban subidas
-61M	.git
-3.4M	catalogo
-== download 2 150 21:54:48
-ok   w6728519    matisse          1284x1600 299KB  Madras Rouge
-ok   w7447987    matisse          1344x1600 530KB  Self-Portrait in a Striped T-shirt
-ok   w7727514    matisse          1600x1337 448KB  The Conversation
-lote: 127/127 bien; quedan 0
-subidas 127 imágenes a la release catalogo-img-2
-build: 1446 obras (1446 con imagen, 1446 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 21, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 7, ukiyo-e 5
-download rc=3
+inicio Thu Nov 26 23:08:59 UTC 2026
+== candidates giotto 23:08:59
+ya     giotto             55 candidatas
+fin 2026-11-26 23:08:59
 62M	.git
 3.6M	catalogo
-== build  21:57:14
-build: 1446 obras (1446 con imagen, 1446 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 21, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 7, ukiyo-e 5
+== seleccionar giotto 23:09:01
+giotto             gran-    55    23   18/26  n1=8 L2:3 L3:3 L4:4  | sin imagen apta:18, varios autores:5, proporción ≠ medidas:3, palabra:2, sin título:2, excluida:1, autoría no preferente:1  <-- corto
+TOTAL 18 obras de 175 pintores
+por país: Italia 18
+títulos por fuente: {'traducir': 135, 'traducido': 202, 'manual': 23, 'revisar-idioma': 1, 'wikidata-es': 1100}
 62M	.git
 3.6M	catalogo
-== validate --parcial 21:57:15
-validate: 1446 obras (1446 con imagen), 175 pintores, imágenes 0.0 MB; 3 errores, 373 avisos
-ERROR duccio: 2 obras de nivel 1 (rama: entre 4 y 6)
-ERROR simone-martini: 2 obras de nivel 1 (rama: entre 4 y 6)
-ERROR fra-angelico: 2 obras de nivel 1 (invitado: entre 3 y 5)
-aviso duccio: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso simone-martini: nivel 2 «Más obras» con 3 obras (< 5: faltan candidatas)
-aviso berruguete: nivel 2 «Etapa castellana» con 3 obras (< 5: faltan candidatas)
-aviso leonardo: nivel 2 «Primeras obras en Florencia» con 3 obras (< 5: faltan candidatas)
-aviso durero: nivel 2 «Aprendizaje y 1.er viaje a Italia» con 4 obras (< 5: faltan candidatas)
-aviso utamaro: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso sharaku: nivel 2 «Más obras» con 2 obras (< 5: faltan candidatas)
-aviso kuniyoshi: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso fortuny: nivel 2 «Roma y Marruecos» con 4 obras (< 5: faltan candidatas)
-aviso w15974342 (cimabue): título pendiente de traducir: The Virgin and Child with Two Angels
-aviso w3842715 (duccio): título pendiente de traducir: Madonna di Crevole
-aviso w6728425 (duccio): título pendiente de traducir: Madonna with Child and six Angels
-aviso w3873252 (duccio): título pendiente de traducir: The Nativity with the Prophets Isaiah and Ezekiel
-aviso w3873247 (pietro-lorenzetti): título pendiente de traducir: Nativity of the Virgin
-aviso w3948917 (pietro-lorenzetti): título pendiente de traducir: Saint Margaret or Agatha
-aviso w3842761 (pietro-lorenzetti): título pendiente de traducir: Madonna and Child Enthroned with Eight Angels
-aviso w3843026 (pietro-lorenzetti): título pendiente de traducir: Cortone Maesta
-aviso w3225814 (simone-martini): título pendiente de traducir: The Carrying of the Cross
-aviso w20173074 (simone-martini): título pendiente de traducir: The Angel of the Annunciation
-aviso w3618171 (ambrogio-lorenzetti): título pendiente de traducir: Annunciation
-aviso w3842740 (ambrogio-lorenzetti): título pendiente de traducir: Madonna with child
-aviso w3843028 (ambrogio-lorenzetti): título pendiente de traducir: Madonna and child with saints and angels
-aviso w18572975 (ambrogio-lorenzetti): título pendiente de traducir: The Charity of St. Nicholas of Bari
-aviso w3649296 (uccello): título pendiente de traducir: The Hunt in the Forest
-aviso w3637223 (uccello): título pendiente de traducir: Painting of Jacopone da Todi
-aviso w3637223 (uccello): ficha sin technique
-aviso w3982380 (uccello): título pendiente de traducir: La Thébaïde
-aviso w15965547 (uccello): título pendiente de traducir: Crucifixion of Christ
-aviso w15965547 (uccello): ficha sin museum
-aviso w16599926 (uccello): título pendiente de traducir: St George slaying the dragon
-aviso w16596981 (uccello): título pendiente de traducir: Portrait of a Young Man
-aviso w16596981 (uccello): ficha sin technique
-aviso w3711791 (masaccio): título pendiente de traducir: The Distribution of Alms and Death of Ananias
-aviso w3949530 (masaccio): título pendiente de traducir: A Bearded Carmelite Saint
-aviso w3605535 (masaccio): título pendiente de traducir: The Adoration of the Magi
-aviso w3948700 (masaccio): título pendiente de traducir: Saint Andrew
-aviso w3948700 (masaccio): ficha sin technique
-aviso w3949351 (masaccio): título pendiente de traducir: Saints Jerome and John the Baptist
-aviso w3949351 (masaccio): ficha sin technique
-aviso w3698230 (masaccio): título pendiente de traducir: The Crucifixion of Saint Peter
-aviso w3947289 (masaccio): título pendiente de traducir: Saint Jerome
-aviso w3948660 (masaccio): título pendiente de traducir: Saint Augustine
-aviso w3899272 (masaccio): título pendiente de traducir: Repentance of Saint Peter
-aviso w3899272 (masaccio): ficha sin technique
-aviso w3899272 (masaccio): ficha sin dimensions
-aviso w291189 (filippo-lippi): título pendiente de traducir: Adoration in the Forest
-aviso w1056007 (filippo-lippi): título pendiente de traducir: Annunciation
-aviso w3889196 (filippo-lippi): título pendiente de traducir: Barbadori Altarpiece and Predella
-aviso w3889196 (filippo-lippi): ficha sin dimensions
-aviso w1056043 (filippo-lippi): título pendiente de traducir: Annunciation with Two Kneeling Donors
-aviso w3618193 (filippo-lippi): título pendiente de traducir: Martelli Annunciation
-aviso w3958339 (filippo-lippi): título pendiente de traducir: Seven Saints
-aviso w2247307 (piero): ficha sin technique
-aviso w3947293 (piero): título pendiente de traducir: Saint Jerome and a Donor
-aviso w3731175 (piero): título pendiente de traducir: Hercules
-aviso w3948659 (piero): título pendiente de traducir: Saint Augustin
-aviso w3842514 (piero): título pendiente de traducir: Virgin and Child Enthroned with Four Angels
-aviso w2551625 (botticelli): ficha sin dimensions
-aviso w945250 (perugino): título pendiente de traducir: Portrait of Francesco delle Opere
-aviso w368788 (perugino): título pendiente de traducir: Pietà
+== fichas  23:09:03
+selección 1461, con ficha 1451, este lote 10
+ok lote 1: 10 fichas (1794 en total)
+fin: 1794 fichas; con museo 1737, con ciudad 1718, con técnica 1704, con medidas 1697, en España 370
 62M	.git
 3.6M	catalogo
-== pack 1200 21:57:16
-pack 1200px: 1446 imágenes, 329.6 MB de JPEG (media 222 KB), zip 329.7 MB, sha256 516472eb2625d04c…
-obras del catálogo 1446; sin imagen 0; con fallo 0
-paquete app-img-1200 subido a catalogo-img (315M)
+== reconciliar  23:09:08
+reconciliar: 1784 imágenes en releases, 1784 en img_meta, quitadas 0 que no estaban subidas
 62M	.git
 3.6M	catalogo
-== validate  21:59:58
-validate: 1446 obras (1446 con imagen), 175 pintores, imágenes 0.0 MB; 3 errores, 373 avisos
-ERROR duccio: 2 obras de nivel 1 (rama: entre 4 y 6)
-ERROR simone-martini: 2 obras de nivel 1 (rama: entre 4 y 6)
-ERROR fra-angelico: 2 obras de nivel 1 (invitado: entre 3 y 5)
-aviso duccio: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso simone-martini: nivel 2 «Más obras» con 3 obras (< 5: faltan candidatas)
-aviso berruguete: nivel 2 «Etapa castellana» con 3 obras (< 5: faltan candidatas)
-aviso leonardo: nivel 2 «Primeras obras en Florencia» con 3 obras (< 5: faltan candidatas)
-aviso durero: nivel 2 «Aprendizaje y 1.er viaje a Italia» con 4 obras (< 5: faltan candidatas)
-aviso utamaro: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso sharaku: nivel 2 «Más obras» con 2 obras (< 5: faltan candidatas)
-aviso kuniyoshi: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso fortuny: nivel 2 «Roma y Marruecos» con 4 obras (< 5: faltan candidatas)
-aviso w15974342 (cimabue): título pendiente de traducir: The Virgin and Child with Two Angels
-aviso w3842715 (duccio): título pendiente de traducir: Madonna di Crevole
-aviso w6728425 (duccio): título pendiente de traducir: Madonna with Child and six Angels
-aviso w3873252 (duccio): título pendiente de traducir: The Nativity with the Prophets Isaiah and Ezekiel
-aviso w3873247 (pietro-lorenzetti): título pendiente de traducir: Nativity of the Virgin
-aviso w3948917 (pietro-lorenzetti): título pendiente de traducir: Saint Margaret or Agatha
-aviso w3842761 (pietro-lorenzetti): título pendiente de traducir: Madonna and Child Enthroned with Eight Angels
-aviso w3843026 (pietro-lorenzetti): título pendiente de traducir: Cortone Maesta
-aviso w3225814 (simone-martini): título pendiente de traducir: The Carrying of the Cross
-aviso w20173074 (simone-martini): título pendiente de traducir: The Angel of the Annunciation
-aviso w3618171 (ambrogio-lorenzetti): título pendiente de traducir: Annunciation
-aviso w3842740 (ambrogio-lorenzetti): título pendiente de traducir: Madonna with child
-aviso w3843028 (ambrogio-lorenzetti): título pendiente de traducir: Madonna and child with saints and angels
-aviso w18572975 (ambrogio-lorenzetti): título pendiente de traducir: The Charity of St. Nicholas of Bari
-aviso w3649296 (uccello): título pendiente de traducir: The Hunt in the Forest
-aviso w3637223 (uccello): título pendiente de traducir: Painting of Jacopone da Todi
-aviso w3637223 (uccello): ficha sin technique
-aviso w3982380 (uccello): título pendiente de traducir: La Thébaïde
-aviso w15965547 (uccello): título pendiente de traducir: Crucifixion of Christ
-aviso w15965547 (uccello): ficha sin museum
-aviso w16599926 (uccello): título pendiente de traducir: St George slaying the dragon
-aviso w16596981 (uccello): título pendiente de traducir: Portrait of a Young Man
-aviso w16596981 (uccello): ficha sin technique
-aviso w3711791 (masaccio): título pendiente de traducir: The Distribution of Alms and Death of Ananias
-aviso w3949530 (masaccio): título pendiente de traducir: A Bearded Carmelite Saint
-aviso w3605535 (masaccio): título pendiente de traducir: The Adoration of the Magi
-aviso w3948700 (masaccio): título pendiente de traducir: Saint Andrew
-aviso w3948700 (masaccio): ficha sin technique
-aviso w3949351 (masaccio): título pendiente de traducir: Saints Jerome and John the Baptist
-aviso w3949351 (masaccio): ficha sin technique
-aviso w3698230 (masaccio): título pendiente de traducir: The Crucifixion of Saint Peter
-aviso w3947289 (masaccio): título pendiente de traducir: Saint Jerome
-aviso w3948660 (masaccio): título pendiente de traducir: Saint Augustine
-aviso w3899272 (masaccio): título pendiente de traducir: Repentance of Saint Peter
-aviso w3899272 (masaccio): ficha sin technique
-aviso w3899272 (masaccio): ficha sin dimensions
-aviso w291189 (filippo-lippi): título pendiente de traducir: Adoration in the Forest
-aviso w1056007 (filippo-lippi): título pendiente de traducir: Annunciation
-aviso w3889196 (filippo-lippi): título pendiente de traducir: Barbadori Altarpiece and Predella
-aviso w3889196 (filippo-lippi): ficha sin dimensions
-aviso w1056043 (filippo-lippi): título pendiente de traducir: Annunciation with Two Kneeling Donors
-aviso w3618193 (filippo-lippi): título pendiente de traducir: Martelli Annunciation
-aviso w3958339 (filippo-lippi): título pendiente de traducir: Seven Saints
-aviso w2247307 (piero): ficha sin technique
-aviso w3947293 (piero): título pendiente de traducir: Saint Jerome and a Donor
-aviso w3731175 (piero): título pendiente de traducir: Hercules
-aviso w3948659 (piero): título pendiente de traducir: Saint Augustin
-aviso w3842514 (piero): título pendiente de traducir: Virgin and Child Enthroned with Four Angels
-aviso w2551625 (botticelli): ficha sin dimensions
-aviso w945250 (perugino): título pendiente de traducir: Portrait of Francesco delle Opere
-aviso w368788 (perugino): título pendiente de traducir: Pietà
-62M	.git
-3.6M	catalogo
-fin Thu Nov 26 21:59:59 UTC 2026
-estado del job: success Thu Nov 26 22:00:01 UTC 2026
+== download 1 150 23:09:13
+ok   w141270724  giotto           1600x1013 513KB  Ascensión de san Juan Evangelista
+ok   w27016037   giotto           1545x1600 635KB  Presentación de Jesucristo en el Templo
+ok   w118495235  giotto           650x1279 200KB  Tríptico Stefaneschi: Cristo en el trono
+lote: 10/10 bien; quedan 0
+subidas 10 imágenes a la release catalogo-img-2
+build: 1461 obras (1461 con imagen, 1461 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 20, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 6, ukiyo-e 5
