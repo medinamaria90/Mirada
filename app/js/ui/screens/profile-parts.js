@@ -1,13 +1,15 @@
-// Piezas del perfil (HTML): bienvenida, test y «Seguir practicando». La identidad está en
-// profile-hero.js, los logros en profile-medals.js y los ajustes en profile-settings.js.
+// Piezas del perfil (HTML): bienvenida y «Practicar» (repaso, test de pintura y reto semanal). La identidad está
+// en profile-hero.js, el rango en profile-rank.js, las cifras en profile-stats.js, los logros en profile-medals.js
+// y los ajustes en profile-settings.js.
 
-import { esc, longDate } from '../dom.js';
+import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { plural } from '../../engine/profile.js';
 import { isPathMastered, pathProgress } from '../../engine/progress.js';
 import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 
+const QUESTION = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6"/><path d="M12 17h.01"/></svg>';
 const SHARE = '<svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.2 10.8 7.6-3.6M8.2 13.2l7.6 3.6"/></svg>';
 
 // Usuario nuevo: en vez de ceros, para qué sirve esto y por dónde empezar.
@@ -19,30 +21,17 @@ export function welcomeHtml() {
   </section>`;
 }
 
-// «Tu test de pintura»: último resultado (si lo hay) y los botones. `primary`: el botón de hacer el test
-// es el principal de la pantalla (si no, lo es otro, como «Ir al camino» sin cuadros vistos).
-export function testHtml(last, { primary = true } = {}) {
-  const result = last ? `<div class="pf-test-card">
-      ${last.level ? `<p class="pf-test-level">${esc(last.level)}</p>` : ''}
-      <p class="pf-test-score"><strong>${last.correct}</strong> de ${last.asked}${last.percentile != null ? ` · Sabes más de pintura que el <strong>${last.percentile}&nbsp;%</strong> de la gente` : ''}</p>
-      ${last.date ? `<p class="pf-test-date">Hecho el ${esc(longDate(last.date).toLowerCase())}</p>` : ''}
-    </div>` : '';
-  return `<section class="pf-sec pf-test-sec" aria-labelledby="pf-test-h">
-    <div class="pf-sec-head"><h2 id="pf-test-h">Tu test de pintura</h2></div>
-    ${result}
-    <div class="pf-actions">
-      <a class="btn ${last || !primary ? 'btn-secondary' : 'btn-primary'}" href="test/">${last ? 'Repetir el test' : 'Hacer el test'}</a>
-      ${last ? `<button type="button" class="btn btn-primary" data-action="share-test">${SHARE}<span>Compartir</span></button>` : ''}
-    </div>
-  </section>`;
-}
-
-// «Seguir practicando»: el repaso de 5 (si hay) y el reto semanal; sin el camino dominado, el reto se ve
+// «Practicar»: el repaso de 5 (bloqueado y con el motivo si no hay qué repasar), el test de pintura (con el
+// último resultado y «Compartir» al lado, si lo hay) y el reto semanal; sin el camino dominado, el reto se ve
 // bloqueado y dice lo que falta (una fila que no se pulsa y lo parece: candado y sin flecha).
-export function practiceHtml(ctx) {
+export function practiceHtml(ctx, last = null) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
-  const row = (it) => (it.locked
+  const testRow = () => `<li class="pf-go-pair"><a class="pf-go" href="test/">
+      <span class="pf-go-icon" aria-hidden="true">${QUESTION}</span><span class="pf-go-name">Test de pintura<span class="pf-go-sub">${last ? esc(`${last.level ? `${last.level} · ` : ''}${last.correct} de ${last.asked}`) : 'Mide lo que sabes'}</span></span>
+      <span class="pf-go-next" aria-hidden="true">${icons.next(20)}</span></a>
+      ${last ? `<button type="button" class="icon-btn pf-share" data-action="share-test" aria-label="Compartir el resultado del test">${SHARE}</button>` : ''}</li>`;
+  const row = (it) => (it.test ? testRow() : it.locked
     ? `<li><div class="pf-go is-locked"><span class="pf-go-icon" aria-hidden="true">${icons.lock(22)}</span><span class="pf-go-name">${esc(it.name)}<span class="pf-go-sub">${esc(it.sub)}</span></span></div></li>`
     : `<li><button type="button" class="pf-go" data-action="${it.action}">
       <span class="pf-go-icon" aria-hidden="true">${it.icon}</span><span class="pf-go-name">${esc(it.name)}</span>
@@ -55,6 +44,7 @@ export function practiceHtml(ctx) {
   } else {
     items.push({ locked: true, name: REVIEW5_NAME, sub: `Vuelve cuando tengas ${REVIEW5_MIN} cuadros que repasar` });
   }
+  items.push({ test: true });
   if (isPathMastered(p, index)) {
     const week = p.weekly?.[isoWeek(ctx.dailyDay()).key];
     items.push({ action: 'weekly', icon: icons.target(24), name: 'Reto semanal', done: week ? `${week.score}/${week.total}` : '' });
@@ -66,7 +56,7 @@ export function practiceHtml(ctx) {
     items.push({ locked: true, name: 'Reto semanal', sub });
   }
   return `<section class="pf-sec pf-practice-sec" aria-labelledby="pf-practice-h">
-    <div class="pf-sec-head"><h2 id="pf-practice-h">Seguir practicando</h2></div>
+    <div class="pf-sec-head"><h2 id="pf-practice-h">Practicar</h2></div>
     <ul class="pf-practice">${items.map(row).join('')}</ul>
   </section>`;
 }

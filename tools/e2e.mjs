@@ -1667,6 +1667,8 @@ await page.waitForSelector('.coll-grid');
 await page.waitForTimeout(500);
 await shot(page, '17b-coleccion');
 await audit(page, '390 coleccion');
+// «Empezar de cero» vive en la sección «Superusuario» de Ajustes: se entra en el modo para medirlo.
+await page.evaluate(() => localStorage.setItem('sfumato.su', '1'));
 await page.goto(`${base}#perfil`);
 await page.waitForSelector('.pf-hero');
 await page.click('[data-action="open-settings"]');
@@ -1706,11 +1708,11 @@ check(backToSystem.attr === null && backToSystem.bg === bgDark, `«Como el móvi
 await page.emulateMedia({ colorScheme: 'light' });
 // Perfil nuevo: nombre editable (se guarda solo en el navegador), objetivos táctiles y enlaces.
 await page.keyboard.press('Escape');
-for (const sel of ['.pf-gear', '.pf-name-btn', '.pf-actions .btn']) {
+for (const sel of ['.pf-gear', '.pf-name-btn', '.pf-practice a[href="test/"]', '.pf-rank-head', '.pf-stat', '.pf-medals-sec .pf-link']) {
   const b = await page.locator(sel).first().boundingBox();
   check(b && b.height >= 48 && b.width >= 48, `${sel} < 48 px`);
 }
-check((await page.locator('.pf-actions a').first().getAttribute('href')) === 'test/', '«Hacer el test» no lleva a test/');
+check(await page.locator('.pf-practice a.pf-go[href="test/"]').count() === 1, '«Test de pintura» no lleva a test/');
 await page.click('[data-action="edit-name"]');
 await page.fill('.name-dialog .pf-input', 'María Medina Cañete con un nombre larguísimo');
 await page.click('.name-dialog button[type="submit"]');
@@ -1790,8 +1792,8 @@ await noHorizontalScroll(page, 'perfil con nombre largo');
   await noHorizontalScroll(tp, 'perfil en tableta');
   await tctx.close();
 }
-await page.goto(`${base}#medallas`);
-await page.waitForSelector('#logros');
+await page.goto(`${base}#logros`);
+await page.waitForSelector('.pf-logros');
 await page.waitForTimeout(400);
 check(await page.locator('.pf-medal.is-got .medal-thumb img').count() >= 1, 'medalla sin miniatura del atlas');
 await shot(page, '19-medallas');
@@ -1963,7 +1965,7 @@ await shot(dpage0, '29-ronda-libre-fin', true);
 check(await dpage0.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 1), 'el resultado de la ronda libre se desplaza');
 await dpage0.goto(`${base}#perfil`);
 await dpage0.waitForSelector('.pf-hero');
-check(!/cuadros? vistos?|Mi museo/i.test(await dpage0.locator('.pf-layout').innerText()), 'el perfil repite los cuadros vistos o el museo');
+check(await dpage0.locator('.pf-stats .pf-stat').count() === 4 && !/Mi museo/i.test(await dpage0.locator('.pf-layout').innerText()), 'el perfil sin sus cuatro cifras (o con el museo)');
 
 // ---------------------------------------------------------------- Ojo de… (todas las obras de un pintor en la caja más alta)
 const eyeCtx = await browser.newContext(ctxOpts);
@@ -1983,7 +1985,7 @@ watch(epage, 'ojo');
   check(await eyeCard.count() === 1, `no se gana «Ojo de ${who.short || who.name}»`);
   await shot(epage, '29e-ojo-de', true);
   await eyeCard.click();
-  await epage.waitForSelector('#logros');
+  await epage.waitForSelector('.pf-logros');
   check(await epage.locator('.pf-medal.is-got .medal-eye').count() === 1, 'la medalla «Ojo de…» no está en el perfil');
 }
 
@@ -2353,20 +2355,18 @@ for (const scheme of ['light', 'dark']) {
       }
       await shot(p7, `inicio-hoy-${tag}`);
       await audit(p7, `o7 ${tag} inicio hoy`);
-      // Medallas: sellos pendientes con número legible, «Ojo de X · n/m» y hoja de detalle.
-      await p7.goto(`${base}#medallas`);
-      await p7.waitForSelector('#logros');
-      await p7.click('[data-action="open-medals"]');
-      await p7.waitForSelector('.medals-dialog[open]');
+      // Logros (#logros): sellos pendientes con número legible, «Ojo de X» pendiente y hoja de detalle.
+      await p7.goto(`${base}#logros`);
+      await p7.waitForSelector('.pf-logros');
       await p7.click('[data-action="medals-filter"][data-filter="missing"]');
       await p7.waitForTimeout(500);
-      check(await p7.locator('.medals-dialog .pf-medal.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
-      const eyeText = `Ojo de ${eyeWho.short || eyeWho.name} · 2/${eyeWorks.length}`;
-      check(await p7.locator('.medals-dialog .pf-medal', { hasText: eyeText }).count() === 1, `[${tag}] falta «${eyeText}» en Medallas`);
-      await p7.locator('.medals-dialog .pf-medal.is-missing').first().scrollIntoViewIfNeeded();
+      check(await p7.locator('.pf-medal-groups .pf-medal.is-missing .medal-num').count() >= 1, `[${tag}] no hay rachas pendientes a la vista`);
+      const eyeText = `Ojo de ${eyeWho.short || eyeWho.name}`;
+      check(await p7.locator(`.pf-medal-groups .pf-medal[aria-label^="${eyeText}, pendiente"]`).count() === 1, `[${tag}] falta «${eyeText}» en Logros`);
+      await p7.locator('.pf-medal-groups .pf-medal.is-missing').first().scrollIntoViewIfNeeded();
       await shot(p7, `medallas-${tag}`);
       await audit(p7, `o7 ${tag} medallas`);
-      const opener = p7.locator('.medals-dialog .pf-medal.is-missing', { hasText: '7 días' });
+      const opener = p7.locator('.pf-medal-groups .pf-medal.is-missing', { hasText: '7 días' });
       await opener.click();
       await p7.waitForSelector('.medal-dialog[open]');
       await p7.waitForTimeout(400);
@@ -2646,8 +2646,8 @@ for (const scheme of ['light', 'dark']) {
     await viewerCheck(p8, L('colección'), p8.locator('.coll-item').first(), { close: 'esc', touch: T, shotName: cfg.full ? 'visor-ficha-390-claro' : null });
 
     // Medallas: el sello de un pintor en su hoja.
-    await p8.goto(`${base}#medallas`);
-    await p8.waitForSelector('#logros');
+    await p8.goto(`${base}#logros`);
+    await p8.waitForSelector('.pf-logros');
     await p8.locator('.pf-medal.is-got .medal-art').first().click();
     await p8.waitForSelector('.medal-dialog[open]');
     await p8.waitForTimeout(350);
