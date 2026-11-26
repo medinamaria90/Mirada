@@ -162,7 +162,7 @@ async function drawCard(last, work, artist) {
   if (work) {
     g.fillStyle = c.ink;
     g.font = '400 34px Outfit, system-ui, sans-serif';
-    g.fillText(fit(g, `${work.title}${artist ? ` · ${artist.name}` : ''}`, CARD_W - PAD * 2), PAD, ART_H - 28);
+    g.fillText(fit(g, `${work.title}${artist ? ` · ${work.by || artist.name}` : ''}`, CARD_W - PAD * 2), PAD, ART_H - 28);
   }
   // Resultado sobre el fondo liso, centrado en el espacio que queda entre el cuadro y el pie (así no hay hueco
   // cuando falta el nivel, el percentil o la cuadrícula).

@@ -179,6 +179,7 @@ test('historias: como mucho 3 tarjetas, texto de hasta 180 caracteres y fuente',
   }
 });
 
-test('catálogo: cada pintor lleva su QID de Wikidata (fuente de la ficha sin historia)', () => {
-  assert.ok(real.artists.every((a) => /^Q\d+$/.test(a.qid || '')));
+test('catálogo: cada pintor lleva su QID de Wikidata (fuente de la ficha sin historia); una parada conjunta, el de cada miembro', () => {
+  const qid = (q) => /^Q\d+$/.test(q || '');
+  assert.ok(real.artists.every((a) => qid(a.qid) || (a.members?.length >= 2 && a.members.every((m) => qid(m.qid)))));
 });

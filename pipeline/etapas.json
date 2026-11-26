@@ -1274,12 +1274,27 @@
   "giotto": [
    {
     "nivel": 2,
-    "nombre": "Más obras",
+    "nombre": "Formación y Asís",
     "desde": null,
-    "hasta": null,
-    "fuente": null,
-    "fase": 2,
-    "provisional": true
+    "hasta": 1300,
+    "fuente": "https://es.wikipedia.org/wiki/Giotto",
+    "fase": 1
+   },
+   {
+    "nivel": 3,
+    "nombre": "Padua y la capilla Scrovegni",
+    "desde": 1301,
+    "hasta": 1310,
+    "fuente": "https://es.wikipedia.org/wiki/Capilla_de_los_Scrovegni",
+    "fase": 1
+   },
+   {
+    "nivel": 4,
+    "nombre": "Florencia y el campanile",
+    "desde": 1311,
+    "hasta": 1337,
+    "fuente": "https://es.wikipedia.org/wiki/Giotto",
+    "fase": 1
    }
   ],
   "fra-angelico": [

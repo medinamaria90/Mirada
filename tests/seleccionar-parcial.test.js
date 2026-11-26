@@ -10,20 +10,25 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PAINTER = 'piero';
-const CANDIDATES = join(root, 'pipeline', 'out', 'candidates', `${PAINTER}.json`);
+
+// Copia del proceso en una carpeta temporal con las candidatas de `painter` (sin red).
+function sandbox(painter) {
+  const dir = mkdtempSync(join(tmpdir(), 'mirada-sel-'));
+  cpSync(join(root, 'pipeline'), join(dir, 'pipeline'), {
+    recursive: true,
+    filter: (src) => !src.includes(`${join('pipeline', 'out')}`) && !src.includes('__pycache__'),
+  });
+  mkdirSync(join(dir, 'pipeline', 'out', 'candidates'), { recursive: true });
+  cpSync(join(root, 'pipeline', 'out', 'painters_resolved.json'), join(dir, 'pipeline', 'out', 'painters_resolved.json'));
+  cpSync(join(root, 'pipeline', 'out', 'candidates', `${painter}.json`), join(dir, 'pipeline', 'out', 'candidates', `${painter}.json`));
+  mkdirSync(join(dir, 'catalogo'));
+  cpSync(join(root, 'catalogo', 'seleccion.json'), join(dir, 'catalogo', 'seleccion.json'));
+  return dir;
+}
 
 test('seleccionar con un pintor no toca a los demás', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'mirada-sel-'));
+  const dir = sandbox(PAINTER);
   try {
-    cpSync(join(root, 'pipeline'), join(dir, 'pipeline'), {
-      recursive: true,
-      filter: (src) => !src.includes(`${join('pipeline', 'out')}`) && !src.includes('__pycache__'),
-    });
-    mkdirSync(join(dir, 'pipeline', 'out', 'candidates'), { recursive: true });
-    cpSync(join(root, 'pipeline', 'out', 'painters_resolved.json'), join(dir, 'pipeline', 'out', 'painters_resolved.json'));
-    cpSync(CANDIDATES, join(dir, 'pipeline', 'out', 'candidates', `${PAINTER}.json`));
-    mkdirSync(join(dir, 'catalogo'));
-    cpSync(join(root, 'catalogo', 'seleccion.json'), join(dir, 'catalogo', 'seleccion.json'));
     const before = JSON.parse(readFileSync(join(dir, 'catalogo', 'seleccion.json'), 'utf8'));
 
     execFileSync('python3', [join(dir, 'pipeline', 'seleccionar.py'), PAINTER], { env: { ...process.env, PYTHONUTF8: '1' } });
@@ -33,6 +38,20 @@ test('seleccionar con un pintor no toca a los demás', () => {
     assert.deepEqual(others(after), others(before));
     assert.ok(after.some((s) => s.pintorId === PAINTER), 'el pintor pedido sigue en la selección');
     assert.throws(() => execFileSync('python3', [join(dir, 'pipeline', 'seleccionar.py'), 'nadie'], { stdio: 'pipe' }));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('una obra fijada a una etapa (ajustes.json) va a su «a fondo», no al básico, aunque sea forzada', () => {
+  const dir = sandbox('giotto');
+  try {
+    execFileSync('python3', [join(dir, 'pipeline', 'seleccionar.py'), 'giotto'], { env: { ...process.env, PYTHONUTF8: '1' } });
+    const sel = JSON.parse(readFileSync(join(dir, 'catalogo', 'seleccion.json'), 'utf8')).filter((s) => s.pintorId === 'giotto');
+    const level = (qid) => sel.find((s) => s.qid === qid)?.level;
+    // Frescos de la capilla Scrovegni: Huida a Egipto (forzada y fijada), Visitación y la Virgen de la Anunciación.
+    for (const qid of ['Q549172', 'Q734197', 'Q61989282']) assert.equal(level(qid), 3, qid);
+    assert.equal(sel.filter((s) => s.level === 1).length, 8, 'el básico de un gran maestro sigue con 8 obras');
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

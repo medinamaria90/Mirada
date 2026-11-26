@@ -409,8 +409,10 @@ export function openViewer(opts) {
 
 function slideHtml(index, w, i, n, reveal, eager) {
   const a = index.artist(w.artistId);
-  const caption = reveal ? [a?.name, w.year].filter(Boolean).join(' · ') : '';
-  const alt = reveal ? `${w.title}${a ? `, de ${a.name}` : ''}` : '';
+  // Autor de la obra: el del pintor o, en una parada conjunta (los Lorenzetti), el suyo propio (`by`).
+  const who = w.by || a?.name;
+  const caption = reveal ? [who, w.year].filter(Boolean).join(' · ') : '';
+  const alt = reveal ? `${w.title}${who ? `, de ${who}` : ''}` : '';
   const slideLabel = n > 1 ? `${i + 1} de ${n}` : (reveal ? w.title : 'Cuadro');
   const broken = isBroken(w.id);
   // Miniatura del atlas debajo (ya está en caché) y la imagen grande encima cuando carga.

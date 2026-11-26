@@ -1,11 +1,13 @@
-# 26/11 — pintores que faltan (docs/eval/pintores-que-faltan.md): 14 nuevos y Piero, Van der Weyden, Holbein y Géricault pasan a maestros.
-# seleccionar solo con esos pintores: el resto de seleccion.json (con sus exclusiones y niveles a mano) no se toca.
-resolve
-candidates masaccio uccello filippo-lippi memling bermejo perugino grunewald pontormo parmigianino bronzino arcimboldo sanchez-cotan hogarth matisse
-seleccionar masaccio uccello filippo-lippi memling bermejo perugino grunewald pontormo parmigianino bronzino arcimboldo sanchez-cotan hogarth matisse piero van-der-weyden holbein gericault
+# 27/11 — Gótico: Giotto pasa a gran maestro de la rama, con tres «a fondo» (Formación y Asís, Padua y la capilla
+# Scrovegni, Florencia y el campanile). Van Eyck sale de la rama Gótico. Solo se vuelve a elegir a Giotto.
+# Tras el pase, en local: mover contenido/historias/pendientes/giotto.json a contenido/historias/giotto.json (historias
+# de sus tres niveles, con las obras que fija pipeline/ajustes.json), regenerar catálogo, historias y paisajes, y poner al
+# día las pruebas que daban a Giotto como invitado en dos ramas (tests/rama-origen.test.js, tests/catalogo-grande.test.js).
+candidates giotto
+seleccionar giotto
 fichas
 reconciliar
-download 2 150
+download 1 150
 build
 validate --parcial
 pack 1200

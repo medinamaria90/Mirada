@@ -191,7 +191,8 @@
    "height": 2408,
    "mime": "image/jpeg",
    "license": "CC BY-SA 4.0"
-  }
+  },
+  "etapa": 3
  },
  "Q1165042": {
   "level": 1
@@ -222,5 +223,27 @@
  "Q1118295": {
   "etapa": 4,
   "nota": "Silla con pipa: pintada en Arlés (dic. 1888); Wikidata la fecha en 1889"
+ },
+ "Q734197": {
+  "etapa": 3
+ },
+ "Q61989282": {
+  "etapa": 3,
+  "titulo": "La Virgen de la Anunciación"
+ },
+ "Q3276180": {
+  "etapa": 2
+ },
+ "Q3276171": {
+  "etapa": 2
+ },
+ "Q19911414": {
+  "etapa": 4
+ },
+ "Q141270724": {
+  "etapa": 4
+ },
+ "Q27016037": {
+  "etapa": 4
  }
 }

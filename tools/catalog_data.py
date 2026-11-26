@@ -364,22 +364,22 @@ artist("duccio", "Duccio di Buoninsegna", "Duccio", "gotico", 1255, 1319, "Itali
        "Fíjate en el ribete dorado que serpentea por el manto azul y en los ángeles que sostienen el trono.",
        ["manto azul con borde de oro ondulante", "ángeles arrodillados junto al trono", "escenas pequeñas y delicadas"],
        ["cimabue", "simone-martini"])
-artist("pietro-lorenzetti", "Pietro Lorenzetti", "Pietro Lorenzetti", "gotico", 1280, 1348, "Italia", 3,
-       "Fíjate en el marco: sus columnas entran en la escena y la tabla parece una habitación con bóvedas.",
-       ["marcos que se funden con la casa pintada", "interiores con bóvedas y profundidad", "figuras graves y pesadas, como de Giotto"],
-       ["ambrogio-lorenzetti", "giotto"])
+# Los hermanos Lorenzetti: una sola parada (decisión de María, 27/11). El proceso los trata por separado (cada obra con su
+# autor en Wikidata) y tools/catalog_from_pipeline.py los une aquí; cada obra conserva su autor real en `by`.
+JOINT = {"lorenzetti": dict(name="Los hermanos Lorenzetti", short="Los Lorenzetti",
+                            members=["pietro-lorenzetti", "ambrogio-lorenzetti"])}
+artist("lorenzetti", "Los hermanos Lorenzetti", "Los Lorenzetti", "gotico", 1280, 1348, "Italia", 3,
+       "Fíjate en la profundidad: marcos que entran en la escena, bóvedas y suelos que se estrechan al fondo.",
+       ["marcos que se funden con la casa pintada", "interiores con bóvedas y suelos en perspectiva", "escenas de la vida de cada día"],
+       ["giotto", "simone-martini"])
 artist("simone-martini", "Simone Martini", "Simone Martini", "gotico", 1284, 1344, "Italia", 4,
        "Fíjate en las líneas curvas que fluyen y en las figuras finas, casi sin peso, sobre el fondo de oro.",
        ["líneas curvas y elegantes", "figuras ligeras sobre oro", "gestos delicados, como de sorpresa"],
        ["duccio"])
-artist("ambrogio-lorenzetti", "Ambrogio Lorenzetti", "Ambrogio Lorenzetti", "gotico", 1290, 1348, "Italia", 5,
-       "Fíjate en la profundidad: suelos que se estrechan al fondo y ciudades llenas de gente en su día a día.",
-       ["suelos y edificios en perspectiva", "escenas de la vida de cada día", "ciudades y campos con mucha gente"],
-       ["pietro-lorenzetti"])
-artist("giotto", "Giotto", "Giotto", "renacimiento", 1267, 1337, "Italia", 8,
+artist("giotto", "Giotto", "Giotto", "gotico", 1267, 1337, "Italia", 8,
        "Fíjate en el peso: figuras macizas que pisan el suelo, con pliegues de luz y sombra, no de oro.",
        ["figuras sólidas, como esculpidas", "pliegues modelados con luz y sombra", "gestos de dolor y emoción humana"],
-       ["cimabue"])
+       ["cimabue", "lorenzetti"])
 artist("fra-angelico", "Fra Angelico", "Fra Angelico", "renacimiento", 1395, 1455, "Italia", 9,
        "Fíjate en los colores limpios y claros, como de acuarela, y en los pórticos de columnas en perspectiva.",
        ["colores limpios, claros y luminosos", "pórticos y arcos en perspectiva", "ángeles de alas de colores y mucho oro"],
@@ -1422,9 +1422,8 @@ TRAIT_TAGS = {
     # Pintores jugables que no tenían pista: alineados con [pista, rasgo 1, 2, 3].
     "cimabue": [["oro", "arquitectura"], ["oro"], ["arquitectura"], ["oro"]],
     "duccio": [["azul", "oro"], ["azul", "oro"], [], ["diminutas"]],
-    "pietro-lorenzetti": [["arquitectura", "interior"], ["arquitectura"], ["interior"], ["estatua"]],
+    "lorenzetti": [["arquitectura", "interior"], ["arquitectura"], ["arquitectura", "interior"], ["multitud"]],
     "simone-martini": [["ondulante", "oro"], ["ondulante"], ["oro"], ["expresion"]],
-    "ambrogio-lorenzetti": [["arquitectura", "multitud"], ["arquitectura"], [], ["multitud", "paisaje"]],
     "giotto": [["estatua"], ["estatua"], [], ["expresion"]],
     "fra-angelico": [["claro", "arquitectura"], ["claro"], ["arquitectura"], ["oro"]],
     "juan-de-juanes": [["dulzura", "nitido"], ["dulzura"], ["nitido"], ["retrato"]],

@@ -33,11 +33,10 @@
   "qid": "Q7814",
   "nacimiento": 1267,
   "muerte": 1337,
-  "movimiento": "renacimiento",
+  "movimiento": "gotico",
   "pais": "Italia",
   "objetivo": 8,
-  "categoria": "invitado",
-  "rama": "gotico"
+  "categoria": "gran-maestro"
  },
  {
   "id": "pietro-lorenzetti",
@@ -89,8 +88,7 @@
   "movimiento": "manierismo-y-norte",
   "pais": "Países Bajos",
   "objetivo": 8,
-  "categoria": "maestro",
-  "rama": "gotico"
+  "categoria": "maestro"
  },
  {
   "id": "fra-angelico",

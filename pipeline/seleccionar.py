@@ -280,9 +280,14 @@ def main():
             etapas = [dict(nivel=2, nombre="Más obras", desde=None, hasta=None, fuente=None, fase=1, provisional=True)]
         # Nivel 1 (básico): las icónicas forzadas (extra.json) y las fijadas a mano (ajustes.json level=1) siempre entran,
         # aunque pasen del cupo; el resto, las más famosas. Una icónica de una etapa tardía sigue en el nivel 1 y no cuenta para su etapa.
-        prio = [o for o in pool if o["q"] in forced or adj.get(o["q"], {}).get("level") == 1]
+        # Las fijadas a una etapa (ajustes.json etapa, sin level=1) no entran en el básico: van a su etapa, también si son forzadas
+        # (así una obra clave con imagen pequeña, como un fresco de los Scrovegni, puede abrir su «a fondo»).
+        def a_su_etapa(o):
+            a = adj.get(o["q"], {})
+            return bool(a.get("etapa")) and a.get("level") != 1
+        prio = [o for o in pool if (o["q"] in forced or adj.get(o["q"], {}).get("level") == 1) and not a_su_etapa(o)]
         n1 = max(cupo_basico(p), len(prio))
-        nivel1 = prio + [o for o in pool if o not in prio][:n1 - len(prio)]
+        nivel1 = prio + [o for o in pool if o not in prio and not a_su_etapa(o)][:n1 - len(prio)]
         chosen = [(1, None, o) for o in nivel1]
         usadas = {o["q"] for o in nivel1}
         porNivel = {}

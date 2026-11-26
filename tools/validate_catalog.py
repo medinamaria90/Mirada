@@ -134,14 +134,16 @@ def main():
         stage = a["category"] in STAGE_CATEGORIES
         check(a["guest"] == (not stage), f"{a['id']}: guest no casa con la categoría")
         fame3 = any(w["fame"] == 3 for w in ws)
-        # Camino común: grandes maestros, maestros e invitados con alguna obra icónica; nunca las ramas.
-        check(a["onPath"] == (stage or (a["category"] == "invitado" and fame3)), f"{a['id']}: onPath no sigue la regla")
+        in_branch = bool(mov.get(a["movementId"], {}).get("branch"))
+        # Camino común: grandes maestros, maestros e invitados con alguna obra icónica; nunca las ramas (un gran maestro de
+        # rama, como Giotto en el Gótico, tiene niveles pero no es parada del camino).
+        check(a["onPath"] == ((stage and not in_branch) or (a["category"] == "invitado" and fame3)), f"{a['id']}: onPath no sigue la regla")
         l1 = [w for w in ws if w["level"] == 1 and not w.get("spoiler") and not w.get("attributed")]
         if stage:
             check(len(l1) >= MIN_PATH_LEVEL1, f"{a['id']}: {len(l1)} obras de nivel 1 sin spoiler (mín. {MIN_PATH_LEVEL1})")
             roles = Counter(w["role"] for w in ws if w["level"] == 1)
             check(roles["learn"] >= 3 and roles["new"] >= 3, f"{a['id']}: roles de nivel 1 {dict(roles)}")
-            check(a["movementId"] in mov and not mov[a["movementId"]].get("branch"), f"{a['id']}: etapa en una rama")
+            check(not in_branch or a["category"] == "gran-maestro", f"{a['id']}: en una rama solo un gran maestro tiene etapa")
         else:
             check(len(ws) >= 3, f"{a['id']}: menos de 3 obras")
         check(all(w["role"] == "new" for w in ws if w["level"] > 1), f"{a['id']}: obra «a fondo» con role learn")
@@ -160,7 +162,7 @@ def main():
             check(stage and isinstance(a["section"], str) and a["section"].strip(), f"{a['id']}: section solo en pintores con etapa")
     for mid, os_ in orders.items():
         check(len(os_) == len(set(os_)), f"order repetido en movimiento {mid}")
-    path = sorted((a for a in cat["artists"] if a["category"] in STAGE_CATEGORIES), key=lambda a: (mov[a["movementId"]]["order"], a["order"]))
+    path = sorted((a for a in cat["artists"] if a["category"] in STAGE_CATEGORIES and a["onPath"]), key=lambda a: (mov[a["movementId"]]["order"], a["order"]))
     ids = [a["id"] for a in path]
     check(ids[:1] == ["botticelli"] and ids[FIRST_TRAMO:FIRST_TRAMO + 2] == ["rafael", "leonardo"],
           f"el camino abre con Botticelli; Rafael y Leonardo justo después del primer tramo ({FIRST_TRAMO} paradas)")
