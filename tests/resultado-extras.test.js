@@ -97,3 +97,13 @@ test('resultado: si entre los cuadros del repaso hay fallados, el botón lo dice
   p.fallados = [{ id: w.id, date: '2026-11-20', hits: 0 }];
   assert.equal(practiceAction(ctxWith(p), { kind: 'stage' }).label, REVIEW5_MISSED);
 });
+
+test('momento de dominar a un maestro: se queda hasta cerrarlo (X, «Seguir», Esc o fuera), sin cierre automático', () => {
+  const src = readFileSync(join(here, '..', 'app', 'js', 'ui', 'match-moment.js'), 'utf8');
+  assert.doesNotMatch(src, /setTimeout\(close/, 'sin temporizador que la cierre sola');
+  assert.match(src, /class="match-close"[^>]*aria-label="Cerrar"/);
+  assert.match(src, />Seguir<\/button>/);
+  assert.match(src, /showModal\(\)/);
+  assert.match(src, /'cancel'/, 'Esc la cierra');
+  assert.match(src, /!ev\.target\.closest\('\.match-card'\)/, 'un toque fuera de la tarjeta la cierra');
+});
