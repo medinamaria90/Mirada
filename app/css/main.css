@@ -718,6 +718,20 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .hint p { font: 400 1.05rem/1.4 var(--font); }
 .learn-sala .art-slide { --h: clamp(140px, calc(100svh - 540px), 330px); }
 .hint-sala p { font: 400 1.08rem/1.4 var(--font); }
+/* «Conoce a» de un pintor: su nombre grande (sin aspecto de enlace), la pista como frase suelta y los cuadros casi a todo el ancho. */
+.learn-painter { --learn-gutter: 1.5rem; --learn-face: 3.25rem; --learn-slide: 92%; }
+.learn-painter .learn-body { padding-top: 1rem; }
+.learn-painter .learn-body > .learn-title, .learn-painter .learn-body > .learn-meta { margin-inline: var(--learn-gutter); }
+.learn-painter .learn-title { margin-top: 0; font-size: clamp(2.3rem, 11vw, 2.9rem); line-height: 1; }
+.learn-who { display: inline-flex; align-items: center; gap: .8rem; min-height: 48px; max-width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.learn-who > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.learn-face { flex: none; width: var(--learn-face); height: var(--learn-face); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--line); }
+.learn-painter .learn-meta { margin-top: .5rem; font-size: .95rem; }
+.learn-look { margin: 1.1rem var(--learn-gutter) 0; max-width: 34ch; font: italic 400 1.06rem/1.5 var(--font); color: var(--ink-2); text-wrap: pretty; }
+.learn-painter .carousel { margin-top: .6rem; }
+.learn-painter .carousel-track { grid-auto-columns: var(--learn-slide); column-gap: .75rem; padding-inline: calc((100% - var(--learn-slide)) / 2); scroll-padding: 0 calc((100% - var(--learn-slide)) / 2); }
+.learn-painter .art-slide { --h: clamp(170px, calc(100svh - 490px), 560px); }
+.learn-painter .eye-line { margin-inline: var(--learn-gutter); }
 .traits { display: grid; gap: .15rem; margin-top: .55rem; }
 .traits li { display: flex; align-items: baseline; gap: .5rem; font-size: .92rem; color: var(--ink-2); }
 .traits li::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 999px; background: var(--accent-ui); transform: translateY(-2px); }

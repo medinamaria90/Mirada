@@ -1,7 +1,7 @@
 // Flujos de juego: etapa de pintor, sala de movimiento, intro de movimiento, repasos,
 // reto diario, reto de un amigo y ronda retomada.
 
-import { artistLink } from '../artist-link.js';
+import { stageRoute } from '../router.js';
 import { esc, onAction, accentStyle, defaultAccent, focusHeading, announce, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
@@ -12,10 +12,11 @@ import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist, nextStepIn } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
-import { stageTitle } from '../../engine/painters.js';
+import { stageTitle, avatarWork, seenOf } from '../../engine/painters.js';
+import { avatarHtml } from '../avatar.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
@@ -163,8 +164,17 @@ export function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = nul
     </main>
   </div>`;
   focusHeading(el);
-  import('./era-cards.js').then((m) => m.mountEraCards(ctx, $('.intro', el), movementId)).catch((err) => console.error(err));
+  // «Empezar a jugar» al final de las tarjetas: la primera vez, lo mismo que «Entrar»; desde el mapa, la siguiente
+  // parada jugable de la época (sin parada pendiente, no hay botón).
+  const step = mode === 'first' ? null : nextStepIn(ctx.store.get().progress, index, movementId);
+  const play = mode === 'first' ? { action: 'enter' } : step && { action: 'play', to: step.type === 'sala' ? `sala-${step.id}` : stageRoute(step.id) };
+  import('./era-cards.js').then((m) => m.mountEraCards(ctx, $('.intro', el), movementId, play)).catch((err) => console.error(err));
   const off = onAction(el, {
+    play: (b) => {
+      ctx.audio.sfx('tap');
+      off();
+      ctx.go(b.dataset.to);
+    },
     enter: () => {
       ctx.audio.sfx('tap');
       off();
@@ -180,7 +190,13 @@ export function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = nul
 
 // --- Pantalla «Conoce…» compartida (pintor y sala) -------------------------------
 
-function learnScreen(ctx, el, { cls = '', titleArtistId = '', accent, barTitle, kicker, title, meta, badge = '', works, caption, aside, carouselLabel, onPractice }) {
+// Nombre del pintor como título: grande y sin aspecto de enlace; tocarlo (o su retrato, si lo hay) abre su ficha.
+function painterTitle(ctx, artist) {
+  const face = avatarWork(seenOf(ctx.store.get().progress, ctx.index, artist.id));
+  return `<button type="button" class="learn-who" data-artist="${esc(artist.id)}" aria-label="${esc(artist.name)}: ver ficha del pintor">${face ? avatarHtml(artist, face, 'learn-face') : ''}<span>${esc(artist.name)}</span></button>`;
+}
+
+function learnScreen(ctx, el, { cls = '', titleHtml = '', accent, barTitle, kicker = '', title, meta, badge = '', works, caption, aside, carouselLabel, onPractice }) {
   const slides = works.map((w, i) => `<figure class="slide" role="group" aria-roledescription="diapositiva" aria-label="${i + 1} de ${works.length}">
       ${artFrame(w, { alt: caption(w).alt, eager: i === 0, cls: 'art-slide', label: w.title, zoom: { group: 'learn' } })}
       <figcaption><span class="slide-title">${esc(w.title)}</span><span class="slide-year">${esc(caption(w).sub)}</span>${w.look ? `<span class="slide-look">${esc(w.look)}</span>` : ''}</figcaption>
@@ -194,8 +210,8 @@ function learnScreen(ctx, el, { cls = '', titleArtistId = '', accent, barTitle, 
       <p class="lesson-bar-title">${esc(barTitle)}</p>
     </div>
     <main class="learn-body" id="main">
-      <p class="kicker">${esc(kicker)}</p>
-      <h1 class="learn-title">${titleArtistId ? artistLink(titleArtistId, title, 'learn-artist') : esc(title)}</h1>
+      ${kicker ? `<p class="kicker">${esc(kicker)}</p>` : ''}
+      <h1 class="learn-title">${titleHtml || esc(title)}</h1>
       <p class="learn-meta">${esc(meta)}</p>
       ${badge}
       ${aside}
@@ -302,14 +318,14 @@ export function renderStage(ctx, el, artistId, branchId = '') {
     learnScreen(ctx, el, {
       accent: movement.accent,
       barTitle: movement.name,
-      kicker: 'Conoce a',
+      cls: 'learn-painter',
       title: artist.name,
-      titleArtistId: artist.id,
+      titleHtml: painterTitle(ctx, artist),
       meta: [artist.country, years].filter(Boolean).join(' · '),
       badge: (() => { const e = eyeLabel(ctx, artistId); return e ? `<p class="eye-line">${icons.eye(16)}<span>${esc(e.text)}</span></p>` : ''; })(),
       works: plan.learn,
       caption: (w) => ({ alt: `${w.title}, de ${artist.name}`, sub: w.year || '' }),
-      aside: artist.hint ? `<aside class="hint"><span class="hint-icon">${icons.eye(20)}</span><p>${esc(artist.hint)}</p></aside>` : '',
+      aside: artist.hint ? `<p class="learn-look">${esc(artist.hint)}</p>` : '',
       carouselLabel: `Obras de ${artist.short || artist.name}`,
       onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo })),
     });
