@@ -7,7 +7,7 @@ import { goalRing } from '../shell.js';
 import { MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
 import { pendingWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, tierOf, isMasterTier } from '../../engine/painters.js';
-import { deepRoute, stageRoute } from '../router.js';
+import { deepRoute, stageRoute, branchRoute } from '../router.js';
 import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { weekOf, isoWeek } from '../../engine/dates.js';
@@ -187,7 +187,7 @@ export function renderResult(ctx, el, opts) {
     const justDone = complete && opts.before && branchAfterRound(opts.before, index, plan.artistId, inBranch.branch.id)?.mastered !== inBranch.total;
     const title = branchNext ? (wasOpen ? `Siguiente: ${branchNext.name}` : `Se abre ${branchNext.name}`) : complete ? (justDone ? 'Todos sus pintores' : 'Rama completa') : 'Sigue en la rama';
     if (justDone) blocks.unshift(`<section class="event event-seal event-branch-done"><span class="event-icon">${icons.laurel(26)}</span><span class="event-text"><span class="event-kicker">Rama completa</span><span class="event-title">${esc(inBranch.branch.name)}</span></span></section>`);
-    blocks.splice(justDone ? 1 : 0, 0, eventCard({ icon: icons.fork(22), kicker: `Rama · ${inBranch.branch.name} ${inBranch.mastered}/${inBranch.total}`, title, to: 'inicio', cls: 'event-branch' }));
+    blocks.splice(justDone ? 1 : 0, 0, eventCard({ icon: icons.fork(22), kicker: `Rama · ${inBranch.branch.name} ${inBranch.mastered}/${inBranch.total}`, title, to: branchRoute(inBranch.branch.id), cls: 'event-branch' }));
   }
   if (reviewUnlock && !goal && index.movement(reviewUnlock.movementId)) {
     blocks.push(eventCard({ icon: icons.repeat(22), kicker: 'Repaso disponible', title: index.movement(reviewUnlock.movementId).name, to: `repaso-${reviewUnlock.movementId}` }));
