@@ -10,6 +10,8 @@ export const STEP = 124;             // distancia vertical entre paradas
 const PAD_BOTTOM = 196;              // entrada del tramo: tramo recto del sendero y el cartel de la época al lado
 const RUN = 134;                     // el sendero entra recto (vertical) este alto: el cartel cabe a su lado
 const PAD_TOP = 28;                  // salida del tramo
+// El primer tramo arranca justo tras la puerta de salida: entrada más corta (sin un largo trecho vacío).
+const FIRST_ENTRY = { pad: 124, run: 72 };
 const XS = [128, 262, 136, 266, 126, 264, 134, 260];   // zigzag de los nodos
 export const SIDE_X = { left: 42, right: MAP_W - 42 }; // margen estrecho: sala de la época y ramas (lejos del nodo)
 export const ROAD_HALF = 15;         // medio ancho del sendero (borde incluido)
@@ -19,10 +21,10 @@ const SIGN_BOX = { top: 130, bottom: 14 };  // cartel de época: entre h-96 y h-
 const BRANCH_LIFT = 14;               // el hito de la rama, algo por encima de su parada (aire con el nodo)
 const SPUR_DROP = 46;                // el desvío de una rama sale del sendero algo por debajo de su nodo
 // Salida (abajo del todo) y «Tu museo» (arriba): bloques propios con su dibujo.
-export const START_H = 190;
-export const START_PLAZA = { x: MAP_W / 2, y: 150 };
+export const START_H = 150;
+export const START_PLAZA = { x: MAP_W / 2, y: 118 };
 export const START_OUT_X = 270;      // por donde sale el sendero hacia el primer tramo
-const START_ARCH_LEFT = 146;         // la placa de salida no tapa el arco
+const START_ARCH_LEFT = 140;         // la placa de salida no tapa la puerta de la muralla
 export const MUSEUM_H = 280;
 export const MUSEUM_DOOR = { x: MAP_W / 2, y: 112 };
 
@@ -40,6 +42,11 @@ const at = (s, t) => ({ x: bez(s.a.x, s.c1.x, s.c2.x, s.b.x, t), y: bez(s.a.y, s
 export function segmentsD(segs) {
   if (!segs.length) return '';
   return segs.reduce((d, s) => `${d}C${f(s.c1.x)} ${f(s.c1.y)} ${f(s.c2.x)} ${f(s.c2.y)} ${f(s.b.x)} ${f(s.b.y)}`, `M${f(segs[0].a.x)} ${f(segs[0].a.y)}`);
+}
+
+// Sendero recorrido de un tramo hasta su parada i (incluida la entrada); i = null, el tramo entero.
+export function walkedD(era, i = null) {
+  return i === null ? era.trail : segmentsD(era.segs.slice(0, i + 2));
 }
 
 // x del sendero a la altura y (los tramos siempre suben: y decrece a lo largo de cada segmento).
@@ -69,11 +76,12 @@ const other = (side) => (side === 'left' ? 'right' : 'left');
 
 // Tramo de una época con n paradas. phase: paradas anteriores (mantiene el zigzag entre épocas); xIn: x por la
 // que llega el sendero (la última parada de la época anterior o la salida).
-export function eraLayout(nodeCount, phase = 0, xIn = null) {
-  const h = PAD_BOTTOM + nodeCount * STEP + PAD_TOP;
-  const points = Array.from({ length: nodeCount }, (_, i) => ({ x: XS[(phase + i) % XS.length], y: h - PAD_BOTTOM - STEP / 2 - i * STEP }));
+// entry: alto de la entrada y de su tramo recto (el primer tramo, más corto).
+export function eraLayout(nodeCount, phase = 0, xIn = null, entry = { pad: PAD_BOTTOM, run: RUN }) {
+  const h = entry.pad + nodeCount * STEP + PAD_TOP;
+  const points = Array.from({ length: nodeCount }, (_, i) => ({ x: XS[(phase + i) % XS.length], y: h - entry.pad - STEP / 2 - i * STEP }));
   const start = { x: xIn ?? points[0].x, y: h };
-  const runTop = { x: start.x, y: h - RUN };
+  const runTop = { x: start.x, y: h - entry.run };
   const last = points[points.length - 1];
   const segs = [line(start, runTop), curve(runTop, points[0])];
   points.slice(1).forEach((p, i) => segs.push(curve(points[i], p)));
@@ -151,7 +159,7 @@ export function pathLayout(index) {
     const artists = index.isSala(m.id) ? [] : index.stageArtists(m.id);
     const n = index.stepsOf(m.id).length + (hasMovementReview(index, m.id) ? 1 : 0);
     if (!n) continue;
-    const era = eraLayout(n, phase, xIn);
+    const era = eraLayout(n, phase, xIn, eras.length ? undefined : FIRST_ENTRY);
     const branches = branchesAt(index, m.id);
     // Las ramas temáticas (Gótico, Estampa japonesa) llevan siempre su cartel; si con las demás pasan de
     // MAX_BRANCH_SIGNS carteles, las demás van juntas en uno solo («Ramas (n)»), que abre una hoja con todas.

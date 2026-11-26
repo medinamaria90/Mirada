@@ -12,6 +12,11 @@
 # Bajo los carteles no se pinta relleno: el lado del cartel de la época (abajo) y el margen de las paradas
 # con el desvío de una rama quedan libres (los da el trazado: signSide y branchAt).
 #
+# Mapa vivo: la app mete el SVG en la página (ui/map-land.js) y lo anima con CSS. Por eso las clases dicen qué
+# variable pintan (k-<variable>), los árboles van en <g data-sway="x"> (se mecen con el viento), las ventanas y
+# farolas llevan data-lamp (se encienden de noche) y los brillos del agua, data-flow (fluyen). Además del paisaje
+# de cada época, un esparcido de detalles pequeños (flores, matas, rocas, ovejas, patos…) en los huecos libres.
+#
 # Uso (desde la raíz del repositorio): python -I tools/mapa_svg.py
 import json
 import os
@@ -25,7 +30,7 @@ sys.path.insert(0, os.path.join(ROOT, 'marca', 'tools'))
 import mapa as M  # noqa: E402
 
 OUT = os.path.join(ROOT, 'app', 'img', 'mapa')
-MAX_KB = 40
+MAX_KB = 64   # en la página va comprimido (~10 KB el mayor)
 W = M.W
 
 # Colores de las piezas (constantes de marca/tools/mapa.py) → variable de brand.css.
@@ -35,8 +40,10 @@ TOKENS = {
     M.VERDE: 'leaf', M.VERDE2: 'leaf-2', M.AGUA: 'water', M.AGUA2: 'water-2', M.SOMBRA: 'shade',
     '#E8C9A0': 'fruit', '#E6D9B8': 'hay', '#D9C9A3': 'hay-2', '#E6DCB8': 'field', '#DACDA6': 'field-2',
     '#EADFB4': 'crop', '#DCCF9E': 'crop-2', '#E3C76B': 'gold', '#EBD38A': 'gold-2', '#E7C98A': 'awning',
+    '#E9BFB5': 'bloom',
 }
-CLASS = {name: f'c{i}' for i, name in enumerate(dict.fromkeys(TOKENS.values()))}
+BLOOM = '#E9BFB5'
+CLASS = {name: f'k-{name}' for name in dict.fromkeys(TOKENS.values())}
 CLASS['tint'] = 'tint'
 
 
@@ -71,6 +78,8 @@ def tinte(h, tint_class):
 # Huecos de la época que se está pintando (los fija build): lado del cartel, paradas con rama y cajas de los
 # rótulos de cada parada (nombre y tramo, lado ancho).
 LIBRE = {'cartel': None, 'ramas': set(), 'rotulos': []}
+# Lo ya pintado en la época (base de cada pieza y ríos), para que el esparcido no se le monte encima.
+OCUPADO = {'piezas': [], 'rios': []}
 
 # Piezas que se dejan de pintar si su base cae bajo un rótulo (o justo debajo: crecen hacia arriba).
 SOBRE_ROTULO = ['caja', 'casa', 'casa_larga', 'torre', 'cupula', 'arcada', 'muralla', 'fuente', 'obelisco', 'columna',
@@ -89,12 +98,71 @@ def _libre(nombre):
         for r in LIBRE['rotulos']:
             if r['x0'] - MARGEN_X <= x <= r['x1'] + MARGEN_X and r['y0'] <= y <= r['y1'] + ALTO_PIEZA:
                 return (y, '')
-        return pieza(*a, **k)
+        res = pieza(*a, **k)
+        if res[1]:
+            OCUPADO['piezas'].append((x, y))
+        return res
     return envuelta
 
 
 for _n in SOBRE_ROTULO:
     setattr(M, _n, _libre(_n))
+
+# ---- mapa vivo: árboles que se mecen, luces y agua -------------------------------------------------------------
+ARBOLES = ['arbol', 'naranjo', 'cipres', 'abeto', 'palmera', 'cono', 'arbol_desnudo']
+_dentro = {'n': 0}
+
+
+def _mece(nombre):
+    pieza = getattr(M, nombre)
+
+    def envuelta(*a, **k):
+        if _dentro['n']:
+            return pieza(*a, **k)      # el naranjo pinta un árbol: un solo grupo
+        _dentro['n'] += 1
+        try:
+            y, svg = pieza(*a, **k)
+        finally:
+            _dentro['n'] -= 1
+        return (y, f'<g data-sway="{M.f(a[0])}">{svg}</g>' if svg else svg)
+    return envuelta
+
+
+for _n in ARBOLES:
+    setattr(M, _n, _mece(_n))
+
+_ventanas = M.ventanas
+M.ventanas = lambda *a, **k: _ventanas(*a, **k).replace(f'fill="{M.LINO}"', f'data-lamp="" fill="{M.LINO}"')
+_farola = M.farola
+
+
+def _farola_viva(*a, **k):
+    y, svg = _farola(*a, **k)
+    i = svg.rfind('<rect')
+    return (y, svg[:i] + '<rect data-lamp=""' + svg[i + 5:] if svg else svg)
+
+
+M.farola = _farola_viva
+_rio = M.rio
+
+
+def _rio_vivo(y, *a, **k):
+    orden, svg = _rio(y, *a, **k)
+    OCUPADO['rios'].append(y)
+    return (orden, svg.replace('<rect', '<rect data-flow=""'))
+
+
+M.rio = _rio_vivo
+_lago = M.lago
+
+
+def _lago_vivo(*a, **k):
+    orden, svg = _lago(*a, **k)
+    i = svg.rfind('<ellipse')
+    return (orden, svg[:i] + '<ellipse data-flow=""' + svg[i + 8:] if svg else svg)
+
+
+M.lago = _lago_vivo
 
 
 def margenes(p, h, arbol):
@@ -410,12 +478,129 @@ def style(light, dark, era):
     return f'<style>{rules(light)}@media(prefers-color-scheme:dark){{{rules(dark)}}}</style>'
 
 
+# ---- esparcido: detalles pequeños en los huecos (flores, matas, rocas, animales) -------------------------------
+
+def flores(x, y, colores):
+    puntos = ((-3.6, -.8), (0, -2), (3.4, -.4), (-1, .9))
+    return (y, M.E(x + .8, y + .4, 6.5, 2.2, M.VERDE2) + ''.join(M.C(x + dx, y + dy, 1.35, colores[i % len(colores)]) for i, (dx, dy) in enumerate(puntos)))
+
+
+def mata(x, y, r=3.6, fruto=None):
+    bayas = ''.join(M.C(x + dx, y - r + dy, 1, fruto) for dx, dy in ((-1.6, -.6), (1.8, -1.4), (.4, .8))) if fruto else ''
+    return (y, M.C(x + r * .5, y - r * .8, r * .8, M.VERDE2) + M.C(x - r * .3, y - r, r, M.VERDE) + bayas)
+
+
+def hierba(x, y):
+    d = f'M{M.f(x - 3)} {M.f(y)}L{M.f(x - 2)} {M.f(y - 4)}L{M.f(x - .8)} {M.f(y)}L{M.f(x)} {M.f(y - 5.4)}L{M.f(x + 1)} {M.f(y)}L{M.f(x + 2.4)} {M.f(y - 3.8)}L{M.f(x + 3)} {M.f(y)}Z'
+    return (y, M.P(d, M.VERDE2))
+
+
+def roca(x, y, w=7):
+    return (y, M.sombra(x + 1, y + .5, w * .8, w * .22) + M.poly([(x - w / 2, y), (x - w * .3, y - w * .5), (x + w * .2, y - w * .62), (x + w / 2, y)], M.T3)
+            + M.poly([(x - w * .3, y - w * .5), (x + w * .2, y - w * .62), (x + w * .1, y - w * .3), (x - w * .22, y - w * .28)], M.TOP))
+
+
+def oveja(x, y, girada=False):
+    s = -1 if girada else 1
+    return (y, M.sombra(x, y + .6, 5, 1.4) + M.R(x - 2.6, y - 2.4, 1.1, 2.4, M.T3) + M.R(x + 1.6, y - 2.4, 1.1, 2.4, M.T3)
+            + M.E(x, y - 4, 4.4, 2.8, M.TOP) + M.E(x + s * 4.4, y - 4.8, 1.6, 1.3, M.T3))
+
+
+def rebano(x, y):
+    return (y, ''.join(oveja(x + dx, y + dy, g)[1] for dx, dy, g in ((0, 0, False), (9, 3, True), (4, -5, False))))
+
+
+def pato(x, y):
+    return (y, M.E(x, y, 2.6, 1.2, M.AGUA2) + M.E(x, y - 1, 2.2, 1.3, M.TOP) + M.C(x + 2, y - 2.6, 1, M.TOP) + M.poly([(x + 2.8, y - 2.8), (x + 4.2, y - 2.5), (x + 2.8, y - 2.2)], '#E8C9A0'))
+
+
+def hilera(x, y, color, n=4):
+    """Hilera de flores (tulipanes, lavanda): matas pequeñas en fila, en falsa 3D."""
+    return (y, ''.join(M.E(x + i * 4.4 + i * .8, y - i * 1.4, 1.8, 2.4, color) + M.R(x + i * 5.2 - .4, y - i * 1.4, .8, 2.4, M.VERDE2) for i in range(n)))
+
+
+FLORES = [BLOOM, '#E8C9A0', '#EBD38A', M.TOP]
+TULIPANES = [BLOOM, '#E3C76B']
+# Por época: (peso, pieza(x, y, i)) — lo que se esparce por los huecos.
+ESPARCIDO = {
+    'renacimiento': [(4, lambda x, y, i: flores(x, y, FLORES)), (3, lambda x, y, i: mata(x, y)), (2, lambda x, y, i: M.cipres(x, y, 14 + i % 3 * 3, 4)),
+                     (1, lambda x, y, i: rebano(x, y)), (2, lambda x, y, i: hierba(x, y))],
+    'manierismo-y-norte': [(3, lambda x, y, i: hilera(x, y, TULIPANES[i % 2])), (2, lambda x, y, i: mata(x, y)), (1, lambda x, y, i: rebano(x, y)),
+                           (2, lambda x, y, i: hierba(x, y)), (1, lambda x, y, i: roca(x, y))],
+    'barroco': [(3, lambda x, y, i: flores(x, y, FLORES)), (2, lambda x, y, i: mata(x, y, 3.8, '#E8C9A0')), (2, lambda x, y, i: hierba(x, y)), (1, lambda x, y, i: M.naranjo(x, y, 5))],
+    'rococo-neoclasicismo': [(3, lambda x, y, i: mata(x, y, 3.6, BLOOM)), (3, lambda x, y, i: flores(x, y, [BLOOM, M.TOP])), (1, lambda x, y, i: M.cono(x, y, 14)),
+                             (2, lambda x, y, i: hierba(x, y))],
+    'romanticismo': [(3, lambda x, y, i: roca(x, y, 6 + i % 3 * 2)), (2, lambda x, y, i: M.abeto(x, y, 14 + i % 2 * 4)), (2, lambda x, y, i: hierba(x, y)),
+                     (1, lambda x, y, i: flores(x, y, [M.TOP, '#EBD38A']))],
+    'realismo': [(2, lambda x, y, i: rebano(x, y)), (2, lambda x, y, i: hierba(x, y)), (2, lambda x, y, i: flores(x, y, ['#EBD38A', M.TOP])),
+                 (1, lambda x, y, i: M.almiar(x, y, 9)), (1, lambda x, y, i: roca(x, y))],
+    'impresionismo': [(4, lambda x, y, i: flores(x, y, [BLOOM, '#E8C9A0', M.TOP])), (2, lambda x, y, i: mata(x, y)), (2, lambda x, y, i: hierba(x, y))],
+    'postimpresionismo': [(3, lambda x, y, i: hilera(x, y, M.PIZARRA2, 5)), (2, lambda x, y, i: flores(x, y, ['#E3C76B', '#EBD38A'])), (2, lambda x, y, i: M.cipres(x, y, 14, 4)),
+                          (1, lambda x, y, i: hierba(x, y))],
+    'simbolismo-modernismo': [(3, lambda x, y, i: flores(x, y, FLORES)), (2, lambda x, y, i: mata(x, y, 3.6, BLOOM)), (1, lambda x, y, i: M.palmera(x, y, 14)),
+                              (2, lambda x, y, i: hierba(x, y))],
+}
+ESPARCE = {'paso_y': 17, 'paso_x': 19, 'jitter': 6, 'densidad': .2, 'aire': 15}
+AIRE = {'camino': 30, 'nodo': 44, 'pieza_x': 28, 'pieza_arriba': 52, 'pieza_abajo': 12, 'rio': 26, 'rotulo': 8, 'borde': 8}
+
+
+def libre(era, x, y):
+    """¿Cabe un detalle pequeño en (x, y)? Lejos del sendero, nodos, rótulos, carteles, ramas, ríos y piezas."""
+    road = era['road']
+    for yy in (y - 8, y, y + 6):
+        k = min(len(road) - 1, max(0, round(yy / era['roadStep'])))
+        if abs(x - road[k]) < AIRE['camino']:
+            return False
+    if not AIRE['borde'] <= x <= W - AIRE['borde'] or y < 14 or y > era['h'] - 6:
+        return False
+    if any((x - q['x']) ** 2 + (y - q['y']) ** 2 < AIRE['nodo'] ** 2 for q in era['points']):
+        return False
+    if any(r['x0'] - AIRE['rotulo'] <= x <= r['x1'] + AIRE['rotulo'] and r['y0'] - AIRE['rotulo'] <= y <= r['y1'] + AIRE['rotulo'] for r in era['labels']):
+        return False
+    sg = era['sign']
+    if sg['top'] - 10 <= y <= sg['y'] + 4 and ((x <= sg['edge'] + 6) if sg['side'] == 'left' else (x >= sg['edge'] - 6)):
+        return False
+    for b in era['branches']:
+        rx = min(b['x'], 195) - 30, max(b['x'], 195) + 30
+        if b['y'] - 50 <= y <= b['y'] + 76 and (abs(x - b['x']) < 48 or rx[0] <= x <= rx[1] and y > b['y'] + 20):
+            return False
+    if any(abs(y - r) < AIRE['rio'] for r in OCUPADO['rios']):
+        return False
+    return not any(abs(x - px - 10) < AIRE['pieza_x'] and py - AIRE['pieza_arriba'] <= y <= py + AIRE['pieza_abajo'] for px, py in OCUPADO['piezas'])
+
+
+def esparcir(era):
+    import random
+    rnd = random.Random(era['id'])
+    tipos = ESPARCIDO.get(era['id'], ESPARCIDO['renacimiento'])
+    bolsa = [f for peso, f in tipos for _ in range(peso)]
+    out, hechos = [], []
+    for j, y0 in enumerate(range(18, era['h'] - 4, ESPARCE['paso_y'])):
+        for x0 in range(10 + (j % 2) * ESPARCE['paso_x'] // 2, W - 8, ESPARCE['paso_x']):
+            x, y = x0 + rnd.uniform(-1, 1) * ESPARCE['jitter'], y0 + rnd.uniform(-1, 1) * ESPARCE['jitter']
+            if rnd.random() > ESPARCE['densidad'] or not libre(era, x, y):
+                continue
+            if any((x - a) ** 2 + (y - b) ** 2 < ESPARCE['aire'] ** 2 for a, b in hechos):
+                continue
+            hechos.append((x, y))
+            out.append(bolsa[rnd.randrange(len(bolsa))](x, y, len(hechos)))
+    # Patos en los ríos, lejos del sendero.
+    for r in OCUPADO['rios']:
+        for x in (rnd.uniform(40, 120), rnd.uniform(270, 350)):
+            k = min(len(era['road']) - 1, round(r / era['roadStep']))
+            if abs(x - era['road'][k]) > AIRE['camino'] + 20:
+                out.append(pato(x, r + rnd.uniform(-3, 4)))
+    return out
+
+
 def build(era, light, dark):
     pts = [(q['x'], q['y']) for q in era['points']]
     LIBRE['cartel'] = era.get('signSide')
     LIBRE['ramas'] = set(era.get('branchAt', []))
     LIBRE['rotulos'] = era.get('labels', [])
+    OCUPADO['piezas'], OCUPADO['rios'] = [], []
     pieces = [tinte(era['h'], CLASS['tint'])] + DECO[era['id']](pts, era['h'])
+    pieces += esparcir(era)
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))
     points = ' '.join(f'{M.f(x)},{M.f(y)}' for x, y in pts)

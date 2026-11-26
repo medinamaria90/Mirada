@@ -14,11 +14,11 @@ import {
 import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
 import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
-import { MAP_W, STEP, SIDE_X, pathLayout, eraLayout } from './path-layout.js';
+import { MAP_W, STEP, SIDE_X, pathLayout, eraLayout, walkedD } from './path-layout.js';
 import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, branchGroupSpot, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout };
-const LANDSCAPE_MARGIN = '240px 0px';                  // se pide el paisaje al acercarse a este margen
+export { watchLandscapes } from '../map-land.js';
 
 // ---------- HTML ----------
 
@@ -115,10 +115,21 @@ function eraBlock(ctx, era, prevEra, keys) {
   const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
-    ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, open: b.st.open })))}
+    ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, open: b.st.open })), walked(index, era, nodes, keys))}
     ${sign}
     <ol class="stages">${items}${gallery}</ol>
   </li>`;
+}
+
+// Sendero ya recorrido del tramo (como en Duolingo): entero en las épocas pasadas, hasta la parada actual en la
+// suya y nada en las que vienen.
+function walked(index, era, nodes, keys) {
+  if (!keys.current) return walkedD(era);
+  const order = (id) => index.visibleMovements.findIndex((m) => m.id === id);
+  const diff = order(era.id) - order(keys.era);
+  if (diff) return diff < 0 ? walkedD(era) : '';
+  const at = nodes.findIndex((n) => n.key === keys.current);
+  return at < 0 ? '' : walkedD(era, at);
 }
 
 // Tramo de la época: nombre y dominados. Se ve como un rótulo pequeño sobre el nombre de su primera parada
@@ -308,32 +319,6 @@ function showLockNote(button) {
   announce(note.textContent);
   clearTimeout(note._t);
   note._t = setTimeout(() => note.classList.remove('is-visible'), NOTE_MS);
-}
-
-// El paisaje de cada tramo se pide cuando el tramo se acerca a la pantalla (nunca los nueve de golpe).
-let landObserver = null;
-export function watchLandscapes(root) {
-  const imgs = Array.from(root.querySelectorAll('.path-land[data-src]:not([data-watched])'));
-  imgs.forEach((img) => { img.dataset.watched = '1'; });
-  const load = (img) => {
-    if (!img.dataset.src) return;
-    img.src = img.dataset.src;
-    delete img.dataset.src;
-  };
-  if (typeof IntersectionObserver !== 'function') {
-    imgs.forEach(load);
-    return;
-  }
-  if (!landObserver) {
-    landObserver = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        load(e.target);
-        landObserver.unobserve(e.target);
-      }
-    }, { rootMargin: LANDSCAPE_MARGIN });
-  }
-  requestAnimationFrame(() => requestAnimationFrame(() => imgs.forEach((img) => landObserver.observe(img))));
 }
 
 // Modo del mapa: ilustrado hasta el 150 % de letra; por encima (o en una ventana de menos de 300 px, como un zoom

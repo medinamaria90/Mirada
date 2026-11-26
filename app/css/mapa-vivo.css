@@ -1,0 +1,125 @@
+/* Mapa vivo (ui/map-land.js y ui/map-life.js): el paisaje en la página con los colores del tema, la luz del día
+   (noche y arrebol mezclados encima del paisaje, por debajo de carteles y nodos), las luces de las casas, el viento
+   en los árboles, el agua que fluye, el carruaje y el sendero ya recorrido. Solo se anima con .is-alive (pestaña
+   visible y movimiento permitido): transform y opacity, nada más. */
+
+.path-map {
+  --day-night: 0;
+  --day-dusk: 0;
+  --map-light-fade: 6s;
+  --map-gust: 3.6s;
+  --map-gust-spread: .7s;
+  --map-sway: 2.6deg;
+  --map-flow: 7s;
+  --map-jet: 2.4s;
+  --map-flicker: 29s;
+  --map-flicker-step: -7s;
+  --map-lamp-halo: 2.4;
+  --map-cart-w: 7.2%;
+  --map-z-light: 1;
+  --map-z-lamps: 2;
+}
+
+/* Paisaje en línea: cada clase pinta su variable (tools/mapa_svg.py las nombra igual). */
+.path-land .tint { fill: var(--era-tint); }
+.path-land .k-stone-far { fill: var(--map-stone-far); } .path-land .s-k-stone-far { stroke: var(--map-stone-far); }
+.path-land .k-stone-front { fill: var(--map-stone-front); } .path-land .s-k-stone-front { stroke: var(--map-stone-front); }
+.path-land .k-stone-side { fill: var(--map-stone-side); } .path-land .s-k-stone-side { stroke: var(--map-stone-side); }
+.path-land .k-stone-top { fill: var(--map-stone-top); } .path-land .s-k-stone-top { stroke: var(--map-stone-top); }
+.path-land .k-window { fill: var(--map-window); } .path-land .s-k-window { stroke: var(--map-window); }
+.path-land .k-tile { fill: var(--map-tile); } .path-land .s-k-tile { stroke: var(--map-tile); }
+.path-land .k-tile-2 { fill: var(--map-tile-2); } .path-land .s-k-tile-2 { stroke: var(--map-tile-2); }
+.path-land .k-slate { fill: var(--map-slate); } .path-land .s-k-slate { stroke: var(--map-slate); }
+.path-land .k-slate-2 { fill: var(--map-slate-2); } .path-land .s-k-slate-2 { stroke: var(--map-slate-2); }
+.path-land .k-leaf { fill: var(--map-leaf); } .path-land .s-k-leaf { stroke: var(--map-leaf); }
+.path-land .k-leaf-2 { fill: var(--map-leaf-2); } .path-land .s-k-leaf-2 { stroke: var(--map-leaf-2); }
+.path-land .k-water { fill: var(--map-water); } .path-land .s-k-water { stroke: var(--map-water); }
+.path-land .k-water-2 { fill: var(--map-water-2); } .path-land .s-k-water-2 { stroke: var(--map-water-2); }
+.path-land .k-shade { fill: var(--map-shade); } .path-land .s-k-shade { stroke: var(--map-shade); }
+.path-land .k-fruit { fill: var(--map-fruit); } .path-land .s-k-fruit { stroke: var(--map-fruit); }
+.path-land .k-hay { fill: var(--map-hay); } .path-land .s-k-hay { stroke: var(--map-hay); }
+.path-land .k-hay-2 { fill: var(--map-hay-2); } .path-land .s-k-hay-2 { stroke: var(--map-hay-2); }
+.path-land .k-field { fill: var(--map-field); } .path-land .s-k-field { stroke: var(--map-field); }
+.path-land .k-field-2 { fill: var(--map-field-2); } .path-land .s-k-field-2 { stroke: var(--map-field-2); }
+.path-land .k-crop { fill: var(--map-crop); } .path-land .s-k-crop { stroke: var(--map-crop); }
+.path-land .k-crop-2 { fill: var(--map-crop-2); } .path-land .s-k-crop-2 { stroke: var(--map-crop-2); }
+.path-land .k-gold { fill: var(--map-gold); } .path-land .s-k-gold { stroke: var(--map-gold); }
+.path-land .k-gold-2 { fill: var(--map-gold-2); } .path-land .s-k-gold-2 { stroke: var(--map-gold-2); }
+.path-land .k-awning { fill: var(--map-awning); } .path-land .s-k-awning { stroke: var(--map-awning); }
+.path-land .k-bloom { fill: var(--map-bloom); } .path-land .s-k-bloom { stroke: var(--map-bloom); }
+
+/* Luz del día: un solo velo sobre todo el mapa (sin rayas entre tramos) que multiplica: azul de noche, cálido al
+   amanecer y al atardecer. Queda encima del paisaje, el sendero y el carruaje (capa 1) y debajo de luces, nodos y
+   carteles (capas 2 y 3). */
+.path-map::after {
+  content: ""; position: absolute; inset: 0; z-index: var(--map-z-light); pointer-events: none;
+  background: color-mix(in oklab, var(--map-dusk) calc(var(--day-dusk) * 100%), var(--map-night));
+  mix-blend-mode: multiply;
+  opacity: max(calc(var(--day-night) * var(--map-night-max)), calc(var(--day-dusk) * var(--map-dusk-max)));
+  transition: opacity var(--map-light-fade) linear, background-color var(--map-light-fade) linear;
+}
+.path-start-art.is-front { z-index: var(--map-z-light); }
+
+/* Luces: copias de las ventanas por encima del velo; se encienden en tres tandas al anochecer. */
+.path-lamps { position: absolute; inset: 0; z-index: var(--map-z-lamps); display: block; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.path-lamps .lamp {
+  --lamp-at: .5;
+  fill: var(--map-lamp); stroke: var(--map-lamp); stroke-width: var(--map-lamp-halo); stroke-opacity: .3; paint-order: stroke;
+  opacity: clamp(0, calc((var(--day-night) - var(--lamp-at)) * 5), 1);
+  transition: opacity var(--map-light-fade) linear;
+}
+.path-lamps .lamp-0 { --lamp-at: .35; }
+.path-lamps .lamp-1 { --lamp-at: .55; }
+.path-lamps .lamp-2 { --lamp-at: .75; }
+.path-map.is-alive .lamp-flicker { animation: map-flicker var(--map-flicker) steps(1, end) infinite; }
+.path-map.is-alive .lamp-flicker.is-1 { animation-delay: var(--map-flicker-step); }
+.path-map.is-alive .lamp-flicker.is-2 { animation-delay: calc(2 * var(--map-flicker-step)); }
+.path-map.is-alive .lamp-flicker.is-3 { animation-delay: calc(3 * var(--map-flicker-step)); }
+@keyframes map-flicker { 0%, 70% { opacity: 1; } 71%, 76% { opacity: 0; } 77% { opacity: 1; } 79% { opacity: .3; } 80%, 100% { opacity: 1; } }
+
+/* Viento: la racha cruza de izquierda a derecha y dobla los árboles desde el pie. */
+[data-sway] { transform-box: fill-box; transform-origin: 50% 100%; }
+.path-map.is-alive.is-gust [data-sway] { animation: map-sway var(--map-gust) ease-in-out both; animation-delay: calc(var(--sway, 0) * var(--map-gust-spread)); }
+@keyframes map-sway {
+  0%, 100% { transform: none; }
+  22% { transform: skewX(calc(-1 * var(--map-sway))); }
+  48% { transform: skewX(calc(.45 * var(--map-sway))); }
+  70% { transform: skewX(calc(-.35 * var(--map-sway))); }
+  86% { transform: skewX(calc(.12 * var(--map-sway))); }
+}
+
+/* Agua: los brillos del río bajan con la corriente y se funden; el surtidor de la fuente late. */
+[data-flow], [data-jet] { transform-box: fill-box; transform-origin: 50% 100%; }
+.path-map.is-alive [data-flow] { animation: map-flow var(--map-flow) linear infinite; }
+.path-map.is-alive [data-flow]:nth-of-type(2n) { animation-delay: calc(var(--map-flow) / -3); }
+.path-map.is-alive [data-flow]:nth-of-type(3n) { animation-delay: calc(var(--map-flow) / -1.6); }
+.path-map.is-alive [data-jet] { animation: map-jet var(--map-jet) ease-in-out infinite alternate; }
+@keyframes map-flow { 0% { transform: translateX(-7px); opacity: 0; } 25%, 70% { opacity: 1; } 100% { transform: translateX(8px); opacity: 0; } }
+@keyframes map-jet { from { transform: scaleY(.7); opacity: .7; } to { transform: scaleY(1.15); opacity: 1; } }
+
+/* Carruaje (map-life.js lo mueve por el sendero con la Web Animations API). */
+.map-cart { position: absolute; left: 0; top: 0; z-index: var(--map-z-light); width: var(--map-cart-w); pointer-events: none; opacity: 0; will-change: transform, opacity; }
+.map-cart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.map-cart .cart-shade { fill: var(--map-shade); }
+.map-cart .cart-wheel { fill: var(--map-post); }
+.map-cart .cart-body { fill: var(--map-tile-2); }
+.map-cart .cart-roof { fill: var(--map-tile); }
+.map-cart .cart-shaft { fill: none; stroke: var(--map-post); stroke-width: .9; stroke-linecap: round; }
+.map-cart .cart-horse { fill: var(--map-post); }
+
+/* Sendero recorrido: de otro color hasta la parada actual. */
+.trail-edge.is-done { stroke: var(--map-trail-done-edge); }
+.trail-fill.is-done { stroke: var(--map-trail-done); }
+.trail-steps.is-done { stroke: var(--map-trail-done-step); }
+
+/* Piezas de los dibujos propios (puerta de salida, museo). */
+.land-tile { fill: var(--map-tile); }
+.land-tile-2 { fill: var(--map-tile-2); }
+.land-water { fill: var(--map-water); }
+.land-water-2 { fill: var(--map-water-2); }
+.land-bloom { fill: var(--map-bloom); }
+.land-gold { fill: var(--map-gold-2); }
+
+/* Camino en línea (letra grande): sin paisaje, sin velo ni luces. */
+.path-map.is-linear::after,
+.path-map.is-linear .path-lamps, .path-map.is-linear .map-cart { display: none; }

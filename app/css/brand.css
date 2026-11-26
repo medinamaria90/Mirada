@@ -92,6 +92,17 @@
   --map-crop-2: #d9c884;
   --map-fruit: #e9b97c;
   --map-awning: #e7c98a;
+  /* Mapa vivo: flores, sendero ya recorrido, luz del día (noche y arrebol, mezclados encima del paisaje) y
+     farolillos de las casas. */
+  --map-bloom: #e9bfb5;
+  --map-trail-done-edge: #d8c08e;
+  --map-trail-done: #efdfb4;
+  --map-trail-done-step: #fbf4e2;
+  --map-night: #3c4d90;
+  --map-night-max: .46;
+  --map-dusk: #f0ad78;
+  --map-dusk-max: .32;
+  --map-lamp: #ffd88a;
   --map-tint-renacimiento: #e6e8d0;
   --map-tint-manierismo-y-norte: #dfe5d8;
   --map-tint-barroco: #eee3cc;
@@ -208,6 +219,15 @@
     --map-crop-2: #4a4528;
     --map-fruit: #8c6a44;
     --map-awning: #7a6236;
+    --map-bloom: #7e5a52;
+    --map-trail-done-edge: #4a3d28;
+    --map-trail-done: #66553a;
+    --map-trail-done-step: #8c7750;
+    --map-night: #8fa2e8;
+    --map-night-max: .55;
+    --map-dusk: #c8865a;
+    --map-dusk-max: .28;
+    --map-lamp: #f2c46c;
     --map-tint-renacimiento: #23251b;
     --map-tint-manierismo-y-norte: #1f2521;
     --map-tint-barroco: #272319;
@@ -285,6 +305,15 @@
   --map-crop-2: #4a4528;
   --map-fruit: #8c6a44;
   --map-awning: #7a6236;
+  --map-bloom: #7e5a52;
+  --map-trail-done-edge: #4a3d28;
+  --map-trail-done: #66553a;
+  --map-trail-done-step: #8c7750;
+  --map-night: #8fa2e8;
+  --map-night-max: .55;
+  --map-dusk: #c8865a;
+  --map-dusk-max: .28;
+  --map-lamp: #f2c46c;
   --map-tint-renacimiento: #23251b;
   --map-tint-manierismo-y-norte: #1f2521;
   --map-tint-barroco: #272319;

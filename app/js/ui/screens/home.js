@@ -5,6 +5,8 @@ import { icons } from '../icons.js';
 import { page } from '../shell.js';
 import { artFrame } from '../art.js';
 import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode } from './path-map.js';
+import { liveArt } from '../map-land.js';
+import { startMapLife } from '../map-life.js';
 import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } from '../../engine/progress.js';
 import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
@@ -61,8 +63,12 @@ export function renderHome(ctx, el) {
 
   playEra('menu');
   watchLandscapes(el);
-  // Las épocas lejanas se pintan después, una por tarea; el modo del mapa sigue al tamaño de letra y ventana.
-  const stops = [fillPendingEras(ctx, el, () => watchLandscapes(el)), watchMapMode(el.querySelector('.path-map'))];
+  liveArt(el);
+  // Las épocas lejanas se pintan después, una por tarea; el modo del mapa sigue al tamaño de letra y ventana, y
+  // el mapa vive: luz según la hora, viento, agua y carruaje (map-life.js).
+  const map = el.querySelector('.path-map');
+  const life = startMapLife(map);
+  const stops = [fillPendingEras(ctx, el, () => { watchLandscapes(el); life.refresh(); }), watchMapMode(map), life.stop];
   addDeepBadges(ctx, el);
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
   if (!coachSeen()) {

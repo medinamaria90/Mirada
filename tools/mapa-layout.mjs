@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { hasMovementReview } from '../app/js/engine/progress.js';
-import { pathLayout, MAP_W, STEP } from '../app/js/ui/screens/path-layout.js';
+import { pathLayout, roadX, MAP_W, STEP } from '../app/js/ui/screens/path-layout.js';
 
 const index = buildIndex(JSON.parse(readFileSync(process.argv[2], 'utf8')));
 const layout = pathLayout(index);
@@ -28,5 +28,12 @@ function labels(era) {
     return { x0: Math.round(x0), x1: Math.round(x1), y0: Math.round(p.y - HALF_H - (kicker ? KICKER_H : 0)), y1: Math.round(p.y + HALF_H) };
   });
 }
-const eras = layout.eras.map((e) => ({ id: e.id, h: e.h, points: e.points, start: e.start, signSide: e.sign.side, branchAt: e.branches.map((b) => b.at), labels: labels(e) }));
+// x del sendero cada ROAD_STEP de alto (el esparcido de detalles no cae sobre él) y la caja del cartel de la época.
+const ROAD_STEP = 8;
+const road = (e) => Array.from({ length: Math.floor(e.h / ROAD_STEP) + 1 }, (_, i) => Math.round(roadX(e.segs, i * ROAD_STEP)));
+const eras = layout.eras.map((e) => ({
+  id: e.id, h: e.h, points: e.points, start: e.start, signSide: e.sign.side, branchAt: e.branches.map((b) => b.at), labels: labels(e),
+  road: road(e), roadStep: ROAD_STEP, sign: { side: e.sign.side, edge: Math.round(e.sign.edge), top: e.sign.top, y: e.sign.y },
+  branches: e.branches.map((b) => ({ x: b.x, y: b.y })),
+}));
 process.stdout.write(JSON.stringify({ width: MAP_W, step: STEP, eras }));
