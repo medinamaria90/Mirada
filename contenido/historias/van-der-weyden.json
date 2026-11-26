@@ -1,0 +1,26 @@
+{
+ "artistId": "van-der-weyden",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Rogier van der Weyden",
+   "cards": [
+    {
+     "text": "Nació como Rogier de le Pasture y en Bruselas, donde fue pintor oficial de la ciudad, tradujo su nombre al flamenco. Fue el pintor más imitado de su tiempo.",
+     "artwork": "w568847",
+     "source": "https://es.wikipedia.org/wiki/Rogier_van_der_Weyden"
+    },
+    {
+     "text": "Sus retratos fijaron un modelo durante décadas: fondo liso, ojos bajos, manos quietas. Esta dama no mira al espectador; parece guardar un secreto.",
+     "artwork": "w2439462",
+     "source": "https://es.wikipedia.org/wiki/Rogier_van_der_Weyden"
+    },
+    {
+     "text": "Fíjate en la Virgen desmayada: su cuerpo repite la curva del de Cristo. Arriba, en las esquinas, hay ballestas diminutas: lo encargó el gremio de ballesteros de Lovaina.",
+     "artwork": "w568847",
+     "source": "https://es.wikipedia.org/wiki/Rogier_van_der_Weyden"
+    }
+   ]
+  }
+ ]
+}

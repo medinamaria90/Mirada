@@ -1,0 +1,26 @@
+{
+ "artistId": "piero",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Piero della Francesca",
+   "cards": [
+    {
+     "text": "Piero della Francesca era también matemático: escribió tratados de perspectiva y geometría. Pintaba como quien construye, con cada figura en su sitio exacto.",
+     "artwork": "w1212920",
+     "source": "https://es.wikipedia.org/wiki/Piero_della_Francesca"
+    },
+    {
+     "text": "En La flagelación, Cristo queda al fondo, pequeño, y delante charlan tres hombres ajenos a la escena. Quiénes son sigue siendo uno de los grandes enigmas de la pintura.",
+     "artwork": "w1212920",
+     "source": "https://es.wikipedia.org/wiki/Piero_della_Francesca"
+    },
+    {
+     "text": "Fíjate en el huevo de avestruz que cuelga de la concha, sobre la Virgen. Abajo a la derecha, de rodillas y con armadura, reza el duque que lo encargó.",
+     "artwork": "w1796098",
+     "source": "https://es.wikipedia.org/wiki/Piero_della_Francesca"
+    }
+   ]
+  }
+ ]
+}

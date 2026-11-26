@@ -1,0 +1,26 @@
+{
+ "artistId": "gericault",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Géricault",
+   "cards": [
+    {
+     "text": "Géricault adoraba los caballos, y las caídas acabaron con su salud: murió con 32 años. Le dio tiempo a pintar uno de los cuadros más sobrecogedores del Louvre.",
+     "artwork": "w212616",
+     "source": "https://es.wikipedia.org/wiki/Th%C3%A9odore_G%C3%A9ricault"
+    },
+    {
+     "text": "Para La balsa de la Medusa habló con supervivientes del naufragio, mandó hacer una maqueta y dibujó cadáveres en un hospital. Con ella arrancó el romanticismo francés.",
+     "artwork": "w212616",
+     "source": "https://es.wikipedia.org/wiki/Th%C3%A9odore_G%C3%A9ricault"
+    },
+    {
+     "text": "Fíjate en los caballos, con las cuatro patas estiradas en el aire. Parece galope puro, pero es imposible: décadas después la fotografía demostró que no corren así.",
+     "artwork": "w429753",
+     "source": "https://es.wikipedia.org/wiki/Th%C3%A9odore_G%C3%A9ricault"
+    }
+   ]
+  }
+ ]
+}

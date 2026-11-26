@@ -1,0 +1,26 @@
+{
+ "artistId": "rousseau",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Henri Rousseau",
+   "cards": [
+    {
+     "text": "Henri Rousseau, «el Aduanero», cobraba impuestos a las puertas de París y pintaba en sus ratos libres. Pintó selvas sin salir de Francia: las estudiaba en el Jardín de Plantas.",
+     "artwork": "w960447",
+     "source": "https://es.wikipedia.org/wiki/Henri_Rousseau"
+    },
+    {
+     "text": "Los críticos se reían de él; los jóvenes de vanguardia, no. En 1908 Picasso le dio un banquete en su taller, y su mirada ingenua inspiró luego a los surrealistas.",
+     "artwork": "w548141",
+     "source": "https://es.wikipedia.org/wiki/Henri_Rousseau"
+    },
+    {
+     "text": "Fíjate en el león que olfatea a la gitana dormida bajo la luna, sin tocarla. Rousseau ofreció el cuadro a su ciudad, Laval, y el alcalde no lo quiso.",
+     "artwork": "w1219263",
+     "source": "https://es.wikipedia.org/wiki/Henri_Rousseau"
+    }
+   ]
+  }
+ ]
+}
