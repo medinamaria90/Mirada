@@ -859,8 +859,9 @@ const mapV10 = await page.evaluate(() => {
     bottomUp: stages.length > 1 && top(stages[0]) > top(stages[stages.length - 1]) && top(eras[0]) > top(eras[eras.length - 1]),
     museumOnTop: top(document.querySelector('.path-museum')) < top(eras[eras.length - 1]),
     eras: eras.length, extras: document.querySelectorAll('.path-chest, .path-character').length,
-    loaded: eras.filter((e) => land(e).getAttribute('src')).map((e) => e.dataset.era),
-    currentLoaded: Boolean(cur) && land(cur.closest('.path-era')).complete && land(cur.closest('.path-era')).naturalWidth > 0,
+    // El paisaje se mete en la página como SVG (map-land.js); si falla, queda como imagen.
+    loaded: eras.filter((e) => land(e).tagName === 'svg' || land(e).getAttribute('src')).map((e) => e.dataset.era),
+    currentLoaded: Boolean(cur) && (land(cur.closest('.path-era')).tagName === 'svg' || (land(cur.closest('.path-era')).complete && land(cur.closest('.path-era')).naturalWidth > 0)),
     ringText: [...document.querySelectorAll('.stage-spot.is-current .stage-meta')].map((e) => e.textContent.trim()),
   };
 });
