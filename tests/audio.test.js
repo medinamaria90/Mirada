@@ -11,7 +11,8 @@ import { INSTRUMENTS, WET, KS } from '../app/js/audio/instruments.js';
 import { STYLES } from '../app/js/audio/styles.js';
 import { variantsOf, piecesOf, pieceKey, splitKey, getPiece, allPieceKeys, BRANCHES, DEFAULT_VARIANT } from '../app/js/audio/variants.js';
 import { audio, getState, restore } from '../app/js/audio/index.js';
-import { rotationPool, pickNext, pushRecent, cleanRecent, hasList, firstPiece, RECENT_MAX } from '../app/js/audio/rotation.js';
+import { playlistOf, nextPiece, hasList, isNight, dayIndex, MAIN_RUNS_BEFORE_ALT, NIGHT_FROM_HOUR, NIGHT_TO_HOUR } from '../app/js/audio/rotation.js';
+import { MAX_ALT } from '../app/js/audio/playlists.js';
 
 const CONTRACT_ERAS = ['menu', 'renaissance', 'baroque', 'rococo', 'neoclassic', 'romantic',
   'realism', 'impressionism', 'postimpressionism', 'modern'];
@@ -270,7 +271,7 @@ test('la API pública no lanza sin AudioContext y devuelve un estado coherente',
   });
   assert.equal(audio.unlock(), false);
   const s = getState();
-  assert.deepEqual(Object.keys(s).sort(), ['era', 'musicEnabled', 'piece', 'playing', 'recent', 'sfxEnabled', 'shuffle', 'unlocked', 'variants', 'volume']);
+  assert.deepEqual(Object.keys(s).sort(), ['era', 'musicEnabled', 'piece', 'playing', 'sfxEnabled', 'shuffle', 'unlocked', 'variants', 'volume']);
   assert.equal(s.unlocked, false);
   assert.equal(s.playing, false);
   assert.ok(s.volume >= 0 && s.volume <= 1);
@@ -298,8 +299,8 @@ test('variantes: se eligen por era, se guardan y se sanean; listVariants no expo
 
 test('restore y getState: las preferencias se recuerdan y se sanean', () => {
   restore({ musicEnabled: false, sfxEnabled: false, volume: 0.25, era: 'romantic', variants: { romantic: 'balada', realism: 'nada', x: 'y' } });
-  const { recent, piece, shuffle, ...prefs } = getState(); // rotación: se prueba aparte
-  assert.ok(recent && typeof piece === 'string' && typeof shuffle === 'boolean');
+  const { piece, shuffle, ...prefs } = getState(); // listas: se prueban aparte
+  assert.ok(typeof piece === 'string' && typeof shuffle === 'boolean');
   assert.deepEqual(prefs, { unlocked: false, era: 'romantic', musicEnabled: false, sfxEnabled: false, volume: 0.25, playing: false, variants: { romantic: 'balada' } });
   restore({ volume: 7 });
   assert.equal(getState().volume, 1);
@@ -323,81 +324,76 @@ test('clásicos: obra y autor anotados, arreglo propio, y al menos uno en las é
   assert.match(getPiece('renaissance/vacas').title, /Guárdame las vacas/);
 });
 
-test('rotación: la lista de cada época tiene todas sus piezas, con pesos', () => {
-  for (const era of CONTRACT_ERAS) {
-    const pool = rotationPool(era);
-    assert.deepEqual(pool.map((p) => p.key), variantsOf(era).map((v) => pieceKey(era, v.id)));
-    assert.ok(pool.every((p) => p.weight > 0 && getPiece(p.key)));
-  }
-  // «Guárdame las vacas» pesa más que el resto del Renacimiento; las compuestas del Barroco, menos
-  const ren = rotationPool('renaissance');
-  const vacas = ren.find((p) => p.key === 'renaissance/vacas').weight;
-  assert.ok(ren.every((p) => p.key === 'renaissance/vacas' || p.weight < vacas));
-  const bar = rotationPool('baroque');
-  const weightOf = (key) => bar.find((p) => p.key === key).weight;
-  assert.ok(weightOf('baroque/zarabanda') < weightOf('baroque/minueto'));
-  assert.ok(weightOf('baroque') < weightOf('baroque/canon'));
-  assert.deepEqual(rotationPool('nada'), []);
-  assert.equal(pickNext('nada', []), null);
-});
+// Fechas locales de prueba: mediodía y medianoche de dos días seguidos.
+const NOON = new Date(2026, 10, 26, 12, 0);
+const NOON_NEXT = new Date(2026, 10, 27, 12, 0);
+const NIGHT = new Date(2026, 10, 26, 23, 30);
 
-test('rotación: la primera vez en el Renacimiento suena «Guárdame las vacas»', () => {
-  assert.equal(firstPiece('renaissance'), 'renaissance/vacas');
-  for (let seed = 1; seed < 20; seed++) assert.equal(pickNext('renaissance', [], mulberry32(seed)), 'renaissance/vacas');
-  // y sale más a menudo que cualquier otra después
-  const rng = mulberry32(3);
-  const counts = {};
-  let recent = ['renaissance/vacas'];
-  for (let i = 0; i < 3000; i++) {
-    const k = pickNext('renaissance', recent, rng);
-    counts[k] = (counts[k] || 0) + 1;
-    recent = pushRecent(recent, k);
-  }
-  const others = Object.entries(counts).filter(([k]) => k !== 'renaissance/vacas').map(([, n]) => n);
-  assert.ok(others.every((n) => counts['renaissance/vacas'] > n), JSON.stringify(counts));
-});
-
-test('rotación: encadena sin repetir la última y recorre toda la lista', () => {
-  // ramas del catálogo con música propia: española, rusa y estampa japonesa
-  assert.deepEqual([...BRANCHES].sort(), ['escuela-rusa', 'ukiyo-e']);
-  assert.ok(rotationPool('maestros-espanoles').some((p) => p.key === 'renaissance/vacas'));
-  assert.ok(rotationPool('escuela-rusa').length >= 2 && rotationPool('ukiyo-e').length >= 1);
+test('listas: cada sitio tiene un principal y como mucho dos secundarios que existen', () => {
   for (const list of [...CONTRACT_ERAS, 'maestros-espanoles', ...BRANCHES]) {
-    assert.ok(hasList(list), list);
-    const pool = rotationPool(list).map((p) => p.key);
-    const rng = mulberry32(list.length * 31);
-    let recent = [];
-    const seen = new Set();
-    let prev = null;
-    for (let i = 0; i < 400; i++) {
-      const k = pickNext(list, recent, rng);
-      assert.ok(pool.includes(k), `${list}: ${k} no es de la lista`);
-      if (pool.length > 1) assert.notEqual(k, prev, `${list}: repite ${k}`);
-      seen.add(k);
-      prev = k;
-      recent = pushRecent(recent, k);
-      assert.ok(recent.length <= RECENT_MAX && recent[0] === k);
-    }
-    assert.deepEqual([...seen].sort(), [...pool].sort(), `${list}: no salieron todas`);
+    const pl = playlistOf(list);
+    assert.ok(pl && getPiece(pl.main), `${list} sin principal`);
+    assert.ok(pl.alt.length <= MAX_ALT && pl.alt.every((k) => getPiece(k) && k !== pl.main), list);
+    assert.ok(hasList(list));
   }
+  assert.equal(playlistOf('menu').main, 'menu', 'portada: la original es la principal');
+  assert.equal(playlistOf('renaissance').main, 'renaissance/vacas');
+  assert.equal(playlistOf('maestros-espanoles').main, 'renaissance/vacas');
+  assert.ok(playlistOf('baroque').alt.every((k) => variantsOf('baroque').find((v) => pieceKey('baroque', v.id) === k).source),
+    'Barroco: los secundarios son clásicos (las compuestas no le gustaron)');
+  assert.equal(playlistOf('nada'), null);
   assert.equal(hasList('nada'), false);
+  assert.equal(nextPiece('nada'), null);
 });
 
-test('rotación: el historial guardado se sanea', () => {
-  assert.deepEqual(cleanRecent({
-    renaissance: ['renaissance/vacas', 'renaissance/vacas', 'baroque/canon', 'renaissance'],
-    nada: ['menu'], baroque: 'x', menu: [42, 'menu/umbral'],
-  }), { renaissance: ['renaissance/vacas', 'renaissance'] }); // la portada se olvida: su original abre cada visita
-  assert.deepEqual(cleanRecent(null), {});
-  restore({ recent: { renaissance: ['renaissance/greensleeves', 'inventada'] }, shuffle: true });
-  assert.deepEqual(getState().recent.renaissance, ['renaissance/greensleeves']);
-  assert.equal(getState().shuffle, true);
+test('listas: de día, al entrar suena el principal y tras dos vueltas entra un secundario', () => {
+  for (const list of [...CONTRACT_ERAS, ...BRANCHES]) {
+    const { main, alt } = playlistOf(list);
+    assert.equal(nextPiece(list, { date: NOON }), main, `${list}: al entrar`);
+    assert.equal(nextPiece(list, { last: main, mainRuns: 1, date: NOON }), main, `${list}: una vuelta`);
+    const after2 = nextPiece(list, { last: main, mainRuns: MAIN_RUNS_BEFORE_ALT, date: NOON });
+    if (alt.length) {
+      assert.ok(alt.includes(after2), `${list}: tras dos vueltas, secundario`);
+      assert.equal(nextPiece(list, { last: after2, date: NOON }), main, `${list}: y vuelve el principal`);
+    } else assert.equal(after2, main);
+  }
+});
+
+test('listas: de noche, al entrar suena el secundario del día y se alternan con el principal', () => {
+  assert.ok(isNight(NIGHT) && !isNight(NOON));
+  assert.ok(isNight(new Date(2026, 10, 26, NIGHT_FROM_HOUR, 0)) && !isNight(new Date(2026, 10, 26, NIGHT_TO_HOUR, 0)));
+  const { main, alt } = playlistOf('renaissance');
+  const first = nextPiece('renaissance', { date: NIGHT });
+  assert.ok(alt.includes(first));
+  assert.equal(nextPiece('renaissance', { last: first, date: NIGHT }), main);
+  const second = nextPiece('renaissance', { last: main, mainRuns: 1, altsPlayed: 1, date: NIGHT });
+  assert.ok(alt.includes(second) && second !== first, 'el segundo secundario de la noche es el otro');
+  // sin secundarios, siempre el principal
+  assert.equal(nextPiece('ukiyo-e', { date: NIGHT }), playlistOf('ukiyo-e').main);
+});
+
+test('listas: el secundario cambia cada día', () => {
+  assert.equal(dayIndex(NOON_NEXT) - dayIndex(NOON), 1);
+  assert.equal(dayIndex(NIGHT), dayIndex(NOON));
+  for (const list of CONTRACT_ERAS.filter((l) => playlistOf(l).alt.length === 2)) {
+    const { main } = playlistOf(list);
+    const today = nextPiece(list, { last: main, mainRuns: 2, date: NOON });
+    const tomorrow = nextPiece(list, { last: main, mainRuns: 2, date: NOON_NEXT });
+    assert.notEqual(today, tomorrow, list);
+  }
+});
+
+test('listas: el motor acepta ramas y la página de escucha puede apagarlas', () => {
   audio.setShuffle(false);
   assert.equal(getState().shuffle, false);
   audio.setShuffle(true);
+  assert.equal(getState().shuffle, true);
   const off = audio.onPiece(() => {});
   assert.equal(typeof off, 'function');
   off();
+  audio.setEra('escuela-rusa');
+  assert.equal(getState().era, 'escuela-rusa');
+  audio.setEra('menu');
 });
 
 test('secuenciador con onEnd: la pieza suena una vez y avisa al terminar, sin repetir', () => {

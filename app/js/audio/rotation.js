@@ -1,88 +1,58 @@
-// Rotación de piezas por lista (función pura, sin Web Audio). Una lista tiene clave: una época
-// (original + variantes compuestas + clásicos) o una rama temática (piezas propias de la rama y
-// prestadas de otras listas, BORROWED). Al empezar una lista o al terminar una pieza se elige otra al azar con pesos,
-// sin repetir las últimas, para que la música cambie sin que suene siempre la misma.
-import { variantsOf, piecesOf, pieceKey, getPiece, BRANCHES } from './variants.js';
+// Qué pieza suena en cada sitio (función pura, sin Web Audio). Cada lista (época o rama) tiene un
+// tema principal y como mucho dos secundarios (playlists.js):
+//  - al entrar suena el principal; de noche, el secundario del día;
+//  - al acabar el principal dos veces seguidas (un rato largo en el mismo sitio), entra un secundario;
+//    de noche basta una vez; tras un secundario vuelve el principal;
+//  - el secundario «del día» cambia cada día (variación suave) y, si suenan varios en la misma visita,
+//    se van alternando.
+// El modo secreto recorre todas las piezas de la lista, estén o no en ella (piece-info.js, allPieces).
+import { pieceKey, getPiece } from './variants.js';
+import { PLAYLISTS, MAX_ALT } from './playlists.js';
 
-/** Cuántas piezas recientes se recuerdan por lista (las que no pueden volver a sonar enseguida). */
-export const RECENT_MAX = 2;
-/** Piezas favoritas de María: suenan las primeras la primera vez y salen más a menudo. */
-const FAVORITES = { menu: 'menu', renaissance: 'renaissance/vacas' };
-/** Listas cuya favorita abre cada visita (no solo la primera): el tema original de la portada. */
-const OPENS_EACH_VISIT = new Set(['menu']);
-const FAVORITE_WEIGHT = 3;
-/** Las piezas compuestas del Barroco no le convencieron («no me encanta»): salen menos. */
-const DISLIKED_ERAS = new Set(['baroque']);
-const DISLIKED_WEIGHT = 0.4;
-const DEFAULT_WEIGHT = 1;
-/**
- * Piezas que una rama toma de otras listas (claves de pieza); se suman a las suyas propias
- * (BRANCH_CLASSICS). La española se irá llenando con Sanz, Soler, Albéniz, Granados y Falla.
- */
-const BORROWED = { 'maestros-espanoles': ['renaissance/vacas'] };
-const BRANCH_KEYS = [...new Set([...Object.keys(BORROWED), ...BRANCHES])];
+/** Veces seguidas que acaba el principal antes de dar paso a un secundario (de día). */
+export const MAIN_RUNS_BEFORE_ALT = 2;
+/** Noche a efectos de música: de NIGHT_FROM a NIGHT_TO (hora local, como el mapa vivo). */
+// TODO: usar la salida y la puesta del sol de engine/daylight.js cuando esté en el repo.
+export const NIGHT_FROM_HOUR = 21;
+export const NIGHT_TO_HOUR = 7;
+const DAY_MS = 864e5;
+const MIN_PER_HOUR = 60;
+
+/** ¿Es de noche a esa hora local? */
+export const isNight = (date) => date.getHours() >= NIGHT_FROM_HOUR || date.getHours() < NIGHT_TO_HOUR;
+
+/** Número de día local (cambia a medianoche en la hora del móvil). */
+export const dayIndex = (date) => Math.floor((date.getTime() - date.getTimezoneOffset() * MIN_PER_HOUR * 1000) / DAY_MS);
+
+const resolve = (list, id) => (String(id).includes('/') ? id : pieceKey(list, id));
+
+/** { main, alt: [...] } en claves de pieza, solo con piezas que existen; null si la lista no tiene. */
+export function playlistOf(list) {
+  const cfg = Object.hasOwn(PLAYLISTS, list) ? PLAYLISTS[list] : null;
+  if (!cfg) return null;
+  const main = resolve(list, cfg.main);
+  if (!getPiece(main)) return null;
+  const alt = (cfg.alt || []).map((id) => resolve(list, id)).filter((k) => k !== main && getPiece(k)).slice(0, MAX_ALT);
+  return { main, alt };
+}
 
 /** ¿Hay lista con esa clave (época o rama)? */
-export const hasList = (key) => variantsOf(key).length > 0 || BRANCH_KEYS.includes(key);
-
-/** Lista con sus pesos: [{ key, weight }] (clave de pieza). Vacía si no existe. */
-export function rotationPool(list) {
-  const weightOf = (key, composed) => {
-    if (FAVORITES[list] === key) return FAVORITE_WEIGHT;
-    return DISLIKED_ERAS.has(list) && composed ? DISLIKED_WEIGHT : DEFAULT_WEIGHT;
-  };
-  if (BRANCH_KEYS.includes(list)) {
-    const own = piecesOf(list).map((v) => pieceKey(list, v.id));
-    return [...(BORROWED[list] || []), ...own].filter((key) => getPiece(key)).map((key) => ({ key, weight: weightOf(key, false) }));
-  }
-  return variantsOf(list).map(({ id, source }) => {
-    const key = pieceKey(list, id);
-    return { key, weight: weightOf(key, !source) };
-  });
-}
-
-/** Pieza que suena la primera vez en una lista (la favorita si la hay), o null. */
-export const firstPiece = (list) => FAVORITES[list] ?? null;
+export const hasList = (list) => playlistOf(list) !== null;
 
 /**
- * Siguiente pieza de la lista. `recent` = claves que acaban de sonar (la más reciente primero).
- * Excluye las últimas (sin dejar menos de dos candidatas) y nunca repite la inmediatamente anterior
- * si hay otra; sortea por peso. Devuelve null si la lista no existe.
+ * Siguiente pieza de la lista.
+ * @param s.last      pieza que acaba de terminar (null al entrar en el sitio)
+ * @param s.mainRuns  veces seguidas que ha terminado el principal en esta visita (contando `last`)
+ * @param s.altsPlayed secundarios que ya han sonado en esta visita (para alternarlos)
+ * @param s.date      hora local
  */
-export function pickNext(list, recent = [], rng = Math.random) {
-  const pool = rotationPool(list);
-  if (!pool.length) return null;
-  const seen = Array.isArray(recent) ? recent.filter((k) => typeof k === 'string') : [];
-  const first = firstPiece(list);
-  if (!seen.length && first && pool.some((p) => p.key === first)) return first;
-  const avoid = new Set(seen.slice(0, Math.max(0, Math.min(RECENT_MAX, pool.length - 2))));
-  if (pool.length > 1 && seen.length) avoid.add(seen[0]);
-  const options = pool.filter((p) => !avoid.has(p.key));
-  const total = options.reduce((s, p) => s + p.weight, 0);
-  let r = rng() * total;
-  for (const p of options) {
-    r -= p.weight;
-    if (r < 0) return p.key;
-  }
-  return options[options.length - 1].key;
-}
-
-/** Historial actualizado tras sonar `key` (la más reciente primero, sin duplicados). */
-export const pushRecent = (recent, key) =>
-  [key, ...(Array.isArray(recent) ? recent : []).filter((x) => x !== key)].slice(0, RECENT_MAX);
-
-/**
- * Historial guardado y saneado: solo listas que existen y piezas que pertenecen a ellas. Las de
- * OPENS_EACH_VISIT se olvidan, para que su favorita vuelva a sonar la primera en cada visita.
- */
-export function cleanRecent(saved) {
-  const out = {};
-  if (!saved || typeof saved !== 'object') return out;
-  for (const [list, keys] of Object.entries(saved)) {
-    if (!hasList(list) || !Array.isArray(keys) || OPENS_EACH_VISIT.has(list)) continue;
-    const known = new Set(rotationPool(list).map((p) => p.key));
-    const clean = keys.filter((k, i) => known.has(k) && keys.indexOf(k) === i).slice(0, RECENT_MAX);
-    if (clean.length) out[list] = clean;
-  }
-  return out;
+export function nextPiece(list, { last = null, mainRuns = 0, altsPlayed = 0, date = new Date() } = {}) {
+  const pl = playlistOf(list);
+  if (!pl) return null;
+  if (!pl.alt.length) return pl.main;
+  const night = isNight(date);
+  const alt = pl.alt[(dayIndex(date) + altsPlayed) % pl.alt.length];
+  if (last === null) return night ? alt : pl.main;
+  if (last !== pl.main) return pl.main;
+  return mainRuns >= (night ? 1 : MAIN_RUNS_BEFORE_ALT) ? alt : pl.main;
 }

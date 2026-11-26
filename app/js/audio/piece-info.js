@@ -1,7 +1,7 @@
 // Nombre legible de una pieza para el modo «afinar música»: título, autor (solo los clásicos), la
 // clave de la lista en la que suena (época o rama) y su papel en ella. Función pura, sin Web Audio.
 import { piecesOf, pieceKey, splitKey } from './variants.js';
-import { rotationPool, firstPiece } from './rotation.js';
+import { playlistOf } from './rotation.js';
 
 /** Apellido o nombre corto del autor de cada clásico (la fuente completa va en `source`). */
 const AUTHORS = {
@@ -15,18 +15,20 @@ const AUTHORS = {
 const authorFromSource = (source) => source.split(',').pop().replace(/\(.*\)/, '').trim();
 
 /**
- * Todas las piezas que puede sonar en una lista, estén o no en su rotación (María las recorre con
- * «Siguiente» para decidir): las de la rotación primero y luego el resto de la época o rama.
+ * Todas las piezas que pueden sonar en una lista, estén o no en ella (María las recorre con
+ * «Siguiente» para decidir): principal y secundarios primero y luego el resto de la época o rama.
  */
 export function allPieces(list) {
-  const pool = rotationPool(list).map((p) => p.key);
-  return [...new Set([...pool, ...piecesOf(list).map((v) => pieceKey(list, v.id))])];
+  const pl = playlistOf(list);
+  const inList = pl ? [pl.main, ...pl.alt] : [];
+  return [...new Set([...inList, ...piecesOf(list).map((v) => pieceKey(list, v.id))])];
 }
 
-/** Papel de una pieza en su lista: la que abre, otra de la rotación o una que hoy no suena sola. */
+/** Papel de una pieza en su lista (playlists.js): el tema principal, un secundario o fuera de lista. */
 export function pieceRole(id, list) {
-  if (firstPiece(list) === id) return 'principal';
-  return rotationPool(list).some((p) => p.key === id) ? 'secundaria' : 'fuera de lista';
+  const pl = playlistOf(list);
+  if (pl?.main === id) return 'principal';
+  return pl?.alt.includes(id) ? 'secundaria' : 'fuera de lista';
 }
 
 /** { id, title, author, key, role } de una clave de pieza que suena en la lista `list`; null si no existe. */
