@@ -4,7 +4,7 @@ import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotio
 import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
-import { MASTERY, UNLOCK_MIN, isStepUnlocked } from '../../engine/progress.js';
+import { MASTERY, UNLOCK_MIN, isStepUnlocked, gateSteps } from '../../engine/progress.js';
 import { pendingWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, tierOf, isMasterTier } from '../../engine/painters.js';
 import { deepRoute, stageRoute, branchRoute } from '../router.js';
@@ -193,7 +193,8 @@ export function renderResult(ctx, el, opts) {
   // Con menos de la mitad de aciertos lo primero es repetir (y la parada siguiente, si estaba
   // cerrada, sigue cerrada).
   const step = plan.kind === 'stage' && !isDeep ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
-  const nextOf = step ? index.steps[index.stepIndex(step.type, step.id) + 1] : null;
+  // La siguiente parada normal: las extra (pintores nuevos en tramos ya superados) no cuentan.
+  const nextOf = step ? gateSteps(p, index.steps.slice(index.stepIndex(step.type, step.id) + 1))[0] || null : null;
   const gated = Boolean(retry && nextOf && outcome.accuracy < UNLOCK_MIN && !isStepUnlocked(p, index, nextOf));
   // Cierre del día (meta cumplida): «Seguir» y, si la ronda se comparte, compartir; sin llamadas a
   // seguir jugando (repetir, más repaso, siguiente etapa: va en «La próxima vez»). Compartir se queda:
@@ -209,6 +210,12 @@ export function renderResult(ctx, el, opts) {
   const coverNote = missing ? `<p class="result-note">${missing === 1 ? 'Te falta 1 cuadro suyo por ver' : `Te faltan ${missing} cuadros suyos por ver`}: una ronda más</p>` : '';
   // Una sola acción para seguir practicando (sin duplicados); con la ronda floja, «Repetir» ya es la principal.
   const practice = blocked ? null : practiceAction(ctx, plan, { retry, more: opts.more, closing, duel: opts.friendScore != null });
+  // La acción principal, siempre a mano en la barra de abajo: «Repetir» si la ronda no salió, el siguiente de la rama o «Seguir».
+  const mainButton = blocked
+    ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>`
+    : branchNext
+      ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>`
+      : `<button class="btn ${deepDone && deepNext(ctx, deepDone) ? 'btn-secondary' : 'btn-primary'} btn-wide" data-action="done" data-primary>${esc(deepDone ? 'Volver al camino' : opts.primary || 'Seguir')}</button>`;
   const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar a un amigo';
   const reduce = prefersReducedMotion();
   const toPct = rank.pct;
@@ -237,16 +244,14 @@ export function renderResult(ctx, el, opts) {
       </div>
       <div class="result-actions">
         ${ownNote}${coverNote}
-        ${blocked ? `${gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
-        <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
-        <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
-        ${branchNext ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>
-        <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `<button class="btn ${deepDone && deepNext(ctx, deepDone) ? 'btn-secondary' : 'btn-primary'} btn-wide" data-action="done" data-primary>${esc(deepDone ? 'Volver al camino' : opts.primary || 'Seguir')}</button>`}
-        ${practice ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(practice.to)}">${icons[practice.icon](20)}<span>${esc(practice.label)}</span></button>` : ''}`}
+        ${blocked && gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
+        ${blocked || branchNext ? '<button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>' : ''}
+        ${practice ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(practice.to)}">${icons[practice.icon](20)}<span>${esc(practice.label)}</span></button>` : ''}
         ${token ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
         <p class="copy-status" role="status"></p>
         <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="4"></textarea>
       </div>
+      <div class="result-dock">${mainButton}</div>
     </main>
   </div>`;
 

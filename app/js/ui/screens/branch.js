@@ -11,6 +11,7 @@ import { stageRoute } from '../router.js';
 import { playEra } from '../audio-bridge.js';
 import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
+import { isExtraStep } from '../../engine/progress.js';
 import { MAP_W, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { trailSvg, stepName, pct } from './path-signs.js';
 import { STATE_LABEL, metaFor, dotFor, nodeHtml } from './path-nodes.js';
@@ -58,7 +59,8 @@ function mapHtml(ctx, branch) {
   const layout = branchLayout(index, branch);
   const at = rows.findIndex((r) => !r.onPath && (r.status === 'available' || r.status === 'started'));
   const sectionAt = new Map(layout.sections.map((s) => {
-    const group = rows.filter((r) => r.opensAt === s.movementId);
+    // Las paradas extra (engine/roster.js) no cuentan en el tramo.
+    const group = rows.filter((r) => r.opensAt === s.movementId && !isExtraStep(ctx.store.get().progress, { type: 'artist', id: r.artistId }));
     return [s.at, { name: s.name, total: group.length, got: group.filter((r) => r.status === 'mastered').length }];
   }));
   const items = rows.map((row, i) => {
