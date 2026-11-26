@@ -1052,7 +1052,7 @@ if (SMOKE) {
   await page.goBack();
   await page.waitForSelector(goticoSign);
   check(page.url().endsWith('#inicio'), `doble toque: atrás no vuelve al mapa (${page.url()})`);
-  // El botón de la salida abre «Cómo se juega» y «Vamos» lo cierra.
+  // La caseta de «Información» de la salida abre «Cómo se juega» y «Vamos» lo cierra.
   await page.click('[data-action="start"]');
   await page.waitForSelector('dialog.map-sheet[open] .ms-how');
   await audit(page, '390 cómo se juega');

@@ -4,10 +4,10 @@
 import { esc, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { MAP_W, f } from './path-layout.js';
-import { startArt, museumArt } from './path-art.js';
+import { startArt, museumArt, KIOSK } from './path-art.js';
 import { branchProgress, branchStatus, tramoOpen, tramoPending } from '../../engine/branches.js';
 
-const START_HELP_IN = 70;   // el botón de ayuda, a la izquierda de la puerta
+const KIOSK_SIGN = 8;      // el botón de la caseta abarca también su letrero
 export const pct = (v, total) => `${f((v / total) * 100)}%`;
 
 // Nombre corto de una parada (pintor o sala), para frases como «se abre al dominar a Botticelli y Berruguete».
@@ -62,14 +62,14 @@ export function eraSign({ movement, status, sealed, done, total, prevName, sign,
   return `<h2 ${signBox(sign, h)}>${button}</h2>`;
 }
 
-// Salida: la puerta de la muralla. El cartel es el de la primera época (justo encima); aquí solo queda, discreto,
-// «Cómo se juega» (un botón redondo junto a la puerta).
+// Salida: la puerta de la muralla. El cartel es el de la primera época (justo encima); junto a la puerta, la caseta de
+// «Información» (dibujada en el paisaje, path-art.js) abre «Cómo se juega»: un botón transparente la cubre.
 export function startBlock(start, tint) {
   const art = (cls, body) => `<svg class="${cls}" viewBox="0 0 ${MAP_W} ${start.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${body}</svg>`;
   // path-foot: el suelo sigue bajo la barra de abajo (sin franja oscura al llegar al final del mapa).
   return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true"></li><li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
     ${art('path-start-art', startArt().back)}${trailSvg(start.h, start.trail, [], start.trail)}${art('path-start-art is-front', startArt().front)}
-    <button type="button" class="start-help" data-action="start" style="left:${pct(start.sign.edge - START_HELP_IN, MAP_W)};top:${pct(start.sign.top, start.h)}" aria-haspopup="dialog" aria-label="Cómo se juega">${icons.info(20)}</button>
+    <button type="button" class="start-kiosk" data-action="start" style="left:${pct(KIOSK.x + KIOSK.w / 2, MAP_W)};top:${pct(KIOSK.y - KIOSK.h / 2 - KIOSK_SIGN, start.h)}" aria-haspopup="dialog" aria-label="Información: cómo se juega"><span class="start-kiosk-text">Información</span></button>
   </li>`;
 }
 
