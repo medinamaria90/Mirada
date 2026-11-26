@@ -4,6 +4,7 @@
 
 import { audio } from './audio-bridge.js';
 import { loadCss } from './lazy-css.js';
+import { listName } from '../audio/list-names.js';
 
 export const DJ_KEY = 'sfumato.dj';
 const ON = '1';
@@ -49,7 +50,7 @@ function render() {
   if (!info) return;
   pill.classList.toggle('is-silent', !playing);
   pill.querySelector('.dj-title').textContent = pieceLine(info);
-  pill.querySelector('.dj-key').textContent = `${info.key} · ${info.role}`;
+  pill.querySelector('.dj-key').textContent = `${listName(info.key)} · ${info.role}`;
   const note = pill.querySelector('.dj-note');
   note.hidden = Boolean(playing);
   note.textContent = musicOff() ? NOTE_OFF : NOTE_SILENT;
@@ -62,7 +63,13 @@ export function wakeMusic() {
   audio.startMusic();
 }
 
+const FOLD_MS = 5000; // sin tocar, la pastilla vuelve a plegarse
+let foldTimer = null;
+
 function setOpen(open) {
+  clearTimeout(foldTimer);
+  if (open) foldTimer = setTimeout(() => setOpen(false), FOLD_MS);
+  pill.classList.toggle('is-open', open);
   pill.querySelector('.dj-now').setAttribute('aria-expanded', String(open));
   pill.querySelector('.dj-actions').hidden = !open;
 }
@@ -82,7 +89,7 @@ function mountPill() {
   pill.addEventListener('click', (ev) => {
     const btn = ev.target.closest('button');
     if (!btn) return;
-    if (btn.dataset.dj === 'next') audio.nextPiece();
+    if (btn.dataset.dj === 'next') { audio.nextPiece(); setOpen(true); }
     else {
       if (btn.classList.contains('dj-now') && !audio.nowPlaying()) wakeMusic();
       setOpen(btn.dataset.dj !== 'close' && pill.querySelector('.dj-actions').hidden);
@@ -98,7 +105,7 @@ function mountPill() {
     queued = true;
     requestAnimationFrame(() => { queued = false; render(); });
   });
-  observer.observe(app, { childList: true });
+  observer.observe(app, { childList: true, subtree: true });
   window.addEventListener('hashchange', render);
   Promise.all([import('../audio/piece-info.js'), import('../audio/rotation.js')])
     .then(([info, rot]) => { preview = { pieceInfo: info.pieceInfo, ...rot }; render(); })
@@ -112,6 +119,7 @@ function unmountPill() {
   observer?.disconnect();
   observer = null;
   window.removeEventListener('hashchange', render);
+  clearTimeout(foldTimer);
   pill?.remove();
   pill = null;
 }

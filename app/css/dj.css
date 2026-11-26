@@ -3,9 +3,10 @@
 .dj-pill {
   --dj-z: 7; /* sobre la barra superior (5) y la de navegación (6) */
   --dj-gap: 6px;
+  --dj-edge: 12px;
   --dj-max: min(calc(100vw - 32px), 420px);
-  position: fixed; top: calc(var(--topbar-h) + var(--dj-gap)); left: 50%; transform: translateX(-50%); z-index: var(--dj-z);
-  display: grid; justify-items: center; gap: 4px; max-width: var(--dj-max);
+  position: fixed; top: calc(var(--topbar-h) + var(--dj-gap)); right: var(--dj-edge); z-index: var(--dj-z);
+  display: grid; justify-items: end; gap: 4px; max-width: var(--dj-max);
   padding: 4px; border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--surface) 92%, transparent); box-shadow: var(--shadow-card);
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -17,6 +18,8 @@
 }
 .dj-now:hover { background: var(--surface-2); }
 .dj-now:focus-visible, .dj-btn:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+.dj-pill:not(.is-open) .dj-key, .dj-pill:not(.is-open) .dj-note { display: none; }
+.dj-pill.is-silent:not(.is-open) .dj-title { color: var(--ink-2); }
 .dj-title, .dj-key, .dj-note { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dj-key { font-size: .72rem; color: var(--ink-2); }
 .dj-note { font-size: .72rem; color: var(--ink-2); }
