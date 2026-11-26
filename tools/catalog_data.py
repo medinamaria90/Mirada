@@ -349,6 +349,266 @@ artist("juan-gris", "Juan Gris", "Juan Gris", "simbolismo-modernismo", 1887, 192
        ["objetos partidos en planos geométricos", "guitarras, botellas y periódicos sobre una mesa", "colores planos, limpios y bien delimitados"],
        ["cezanne"])
 
+# Pistas y rasgos de los pintores jugables que no los tenían (gótico, invitados de sala y estampa
+# japonesa). Gótico y ukiyo-e, a partir de sus historias y fuentes; el resto, con conocimiento propio
+# por decisión de María (uso personal).
+artist("cimabue", "Cimabue", "Cimabue", "gotico", 1240, 1302, "Italia", 1,
+       "Fíjate en los pliegues trazados con finas líneas de oro y en el trono gigante visto en profundidad.",
+       ["pliegues marcados con líneas de oro", "tronos altos con arcos y profetas", "Vírgenes enormes sobre fondo dorado"],
+       ["duccio", "giotto"])
+artist("duccio", "Duccio di Buoninsegna", "Duccio", "gotico", 1255, 1319, "Italia", 2,
+       "Fíjate en el ribete dorado que serpentea por el manto azul y en los ángeles que sostienen el trono.",
+       ["manto azul con borde de oro ondulante", "ángeles arrodillados junto al trono", "escenas pequeñas y delicadas"],
+       ["cimabue", "simone-martini"])
+artist("pietro-lorenzetti", "Pietro Lorenzetti", "Pietro Lorenzetti", "gotico", 1280, 1348, "Italia", 3,
+       "Fíjate en el marco: sus columnas entran en la escena y la tabla parece una habitación con bóvedas.",
+       ["marcos que se funden con la casa pintada", "interiores con bóvedas y profundidad", "figuras graves y pesadas, como de Giotto"],
+       ["ambrogio-lorenzetti", "giotto"])
+artist("simone-martini", "Simone Martini", "Simone Martini", "gotico", 1284, 1344, "Italia", 4,
+       "Fíjate en las líneas curvas que fluyen y en las figuras finas, casi sin peso, sobre el fondo de oro.",
+       ["líneas curvas y elegantes", "figuras ligeras sobre oro", "gestos delicados, como de sorpresa"],
+       ["duccio"])
+artist("ambrogio-lorenzetti", "Ambrogio Lorenzetti", "Ambrogio Lorenzetti", "gotico", 1290, 1348, "Italia", 5,
+       "Fíjate en la profundidad: suelos que se estrechan al fondo y ciudades llenas de gente en su día a día.",
+       ["suelos y edificios en perspectiva", "escenas de la vida de cada día", "ciudades y campos con mucha gente"],
+       ["pietro-lorenzetti"])
+artist("giotto", "Giotto", "Giotto", "renacimiento", 1267, 1337, "Italia", 8,
+       "Fíjate en el peso: figuras macizas que pisan el suelo, con pliegues de luz y sombra, no de oro.",
+       ["figuras sólidas, como esculpidas", "pliegues modelados con luz y sombra", "gestos de dolor y emoción humana"],
+       ["cimabue"])
+artist("fra-angelico", "Fra Angelico", "Fra Angelico", "renacimiento", 1395, 1455, "Italia", 9,
+       "Fíjate en los colores limpios y claros, como de acuarela, y en los pórticos de columnas en perspectiva.",
+       ["colores limpios, claros y luminosos", "pórticos y arcos en perspectiva", "ángeles de alas de colores y mucho oro"],
+       ["giotto", "botticelli"])
+artist("juan-de-juanes", "Juan de Juanes", "Juan de Juanes", "renacimiento", 1507, 1579, "España", 15,
+       "Fíjate en los Cristos y Vírgenes de belleza dulce, a lo Rafael, con dibujo nítido y acabado esmaltado.",
+       ["belleza serena a lo Rafael", "dibujo nítido y acabado pulido", "Cristos de rostro idealizado"],
+       ["rafael", "morales"])
+artist("tintoretto", "Tintoretto", "Tintoretto", "renacimiento", 1518, 1594, "Italia", 16,
+       "Fíjate en la luz violenta que rompe la penumbra y en las figuras en escorzo que vuelan en diagonal.",
+       ["luz como relámpagos en la penumbra", "figuras en escorzo y en diagonal", "escenas con mucha gente en movimiento"],
+       [])
+artist("cranach", "Lucas Cranach el Viejo", "Cranach", "manierismo-y-norte", 1472, 1553, "Alemania", 7,
+       "Fíjate en los desnudos esbeltos y pálidos sobre fondo negro, con sombreros y collares por todo adorno.",
+       ["cuerpos pálidos y esbeltos", "fondos negros o bosques oscuros", "sombreros, velos finos y collares"],
+       ["durero", "holbein"])
+artist("morales", "Luis de Morales", "Morales", "manierismo-y-norte", 1510, 1586, "España", 9,
+       "Fíjate en el modelado suavísimo, sin bordes, de Vírgenes y Cristos dolientes, con velos transparentes.",
+       ["esfumado suave, a lo Leonardo", "velos finos y transparentes", "rostros de dolor tierno sobre fondo oscuro"],
+       ["leonardo", "juan-de-juanes"])
+artist("sanchez-coello", "Alonso Sánchez Coello", "Sánchez Coello", "manierismo-y-norte", 1531, 1588, "España", 10,
+       "Fíjate en la formalidad: reyes e infantas serios y quietos, con cada joya y cada bordado al detalle.",
+       ["retratos de la familia real", "poses serias y rígidas", "joyas y telas minuciosas"],
+       ["sofonisba", "tiziano"])
+artist("sofonisba", "Sofonisba Anguissola", "Sofonisba", "manierismo-y-norte", 1532, 1625, "Italia", 11,
+       "Fíjate en los retratos íntimos y cercanos, a menudo de su familia, con miradas vivas y trajes oscuros.",
+       ["retratos cercanos y naturales", "miradas vivas al espectador", "trajes oscuros con cuellos blancos"],
+       ["sanchez-coello"])
+artist("ribalta", "Francisco Ribalta", "Ribalta", "barroco", 1565, 1628, "España", 12,
+       "Fíjate en las figuras macizas y monumentales que salen de la oscuridad con una luz realista.",
+       ["fondos oscuros, tenebristas", "figuras monumentales y macizas", "composición sencilla y luz natural"],
+       ["ribera", "zurbaran", "caravaggio"])
+artist("maino", "Juan Bautista Maíno", "Maíno", "barroco", 1581, 1649, "España", 13,
+       "Fíjate en la luz de Caravaggio con colores claros y vivos: figuras de volumen firme y telas brillantes.",
+       ["luz dirigida con colores vivos", "figuras de volumen firme", "telas de colores brillantes"],
+       ["caravaggio", "zurbaran"])
+artist("la-tour", "Georges de La Tour", "La Tour", "barroco", 1593, 1652, "Francia", 14,
+       "Fíjate en la llama de una vela que ilumina caras quietas en plena oscuridad, con formas lisas y simples.",
+       ["una vela como única luz", "rostros quietos y silenciosos", "formas lisas y geométricas"],
+       ["caravaggio", "zurbaran"])
+artist("alonso-cano", "Alonso Cano", "Alonso Cano", "barroco", 1601, 1667, "España", 17,
+       "Fíjate en la belleza serena e idealizada de las figuras y en los tonos claros de aire veneciano.",
+       ["figuras bellas e idealizadas", "tonos claros de raíz veneciana", "volúmenes de escultor"],
+       ["murillo", "zurbaran"])
+artist("leyster", "Judith Leyster", "Leyster", "barroco", 1609, 1660, "Países Bajos", 18,
+       "Fíjate en los músicos y bebedores que ríen, pintados con pincelada rápida sobre un fondo liso.",
+       ["gente alegre que ríe o toca música", "pincelada suelta a lo Hals", "fondos lisos y neutros"],
+       ["hals", "steen"])
+artist("pereda", "Antonio de Pereda", "Pereda", "barroco", 1611, 1678, "España", 19,
+       "Fíjate en las mesas llenas de calaveras, relojes, joyas y monedas: todo dice que la vida se acaba.",
+       ["calaveras, relojes y velas apagadas", "joyas, monedas y armas al detalle", "fondo oscuro y luz sobre los objetos"],
+       ["valdes-leal", "zurbaran"])
+artist("carreno", "Juan Carreño de Miranda", "Carreño", "barroco", 1614, 1685, "España", 20,
+       "Fíjate en el retrato de corte a lo Velázquez: el rey pálido, de pie, en un salón con espejos.",
+       ["retratos de Carlos II y su corte", "pincelada suelta, aprendida de Velázquez", "salones con espejos y cortinajes rojos"],
+       ["velazquez", "claudio-coello"])
+artist("valdes-leal", "Juan de Valdés Leal", "Valdés Leal", "barroco", 1622, 1690, "España", 21,
+       "Fíjate en el dramatismo: pincelada rápida, figuras agitadas y la muerte presente en calaveras.",
+       ["calaveras y escenas de muerte", "pincelada nerviosa y rápida", "figuras en movimiento agitado"],
+       ["murillo", "pereda"])
+artist("steen", "Jan Steen", "Steen", "barroco", 1626, 1679, "Países Bajos", 22,
+       "Fíjate en las casas alborotadas: niños, borrachos, animales y cacharros por el suelo, todo en desorden.",
+       ["casas llenas de gente y desorden", "caras pícaras y risueñas", "cacharros y objetos por el suelo"],
+       ["leyster", "vermeer"])
+artist("claudio-coello", "Claudio Coello", "Claudio Coello", "barroco", 1642, 1693, "España", 23,
+       "Fíjate en las grandes escenas de corte e iglesia: arquitecturas en perspectiva, cortinajes y gentío.",
+       ["arquitecturas en perspectiva que engañan", "cortinajes y ángeles en movimiento", "multitudes de cortesanos y clérigos"],
+       ["carreno", "murillo"])
+artist("tiepolo", "Giambattista Tiepolo", "Tiepolo", "rococo-neoclasicismo", 1696, 1770, "Italia", 6,
+       "Fíjate en los cielos claros y enormes llenos de figuras que vuelan entre nubes, vistas desde abajo.",
+       ["cielos luminosos y abiertos", "figuras que vuelan en escorzo", "colores pastel muy claros"],
+       ["veronese", "boucher"])
+artist("canaletto", "Canaletto", "Canaletto", "rococo-neoclasicismo", 1697, 1768, "Italia", 7,
+       "Fíjate en Venecia con exactitud de foto: canales, palacios y góndolas bajo un cielo azul y luz clara.",
+       ["vistas exactas de canales y palacios", "cielos azules y luz limpia", "góndolas y gente diminuta"],
+       ["martin-rico"])
+artist("chardin", "Jean-Siméon Chardin", "Chardin", "rococo-neoclasicismo", 1699, 1779, "Francia", 8,
+       "Fíjate en las cosas sencillas de casa: jarras, frutas y niños quietos, con pincelada granulosa y suave.",
+       ["objetos humildes de cocina", "escenas tranquilas de casa", "pincelada granulosa, como polvo de luz"],
+       ["melendez", "vermeer"])
+artist("reynolds", "Joshua Reynolds", "Reynolds", "rococo-neoclasicismo", 1723, 1792, "Reino Unido", 11,
+       "Fíjate en los retratos de pose noble, a lo maestro antiguo, con fondos de paisaje y cielos oscuros.",
+       ["poses de estatua clásica", "fondos de paisaje y cielos de tormenta", "tonos cálidos y dorados"],
+       ["gainsborough", "van-dyck"])
+artist("paret", "Luis Paret y Alcázar", "Paret", "rococo-neoclasicismo", 1746, 1799, "España", 14,
+       "Fíjate en las escenas pequeñas y finas, llenas de figuritas elegantes de colores vivos, como joyas.",
+       ["escenas diminutas y minuciosas", "figuritas elegantes con trajes de colores", "puertos y fiestas de España"],
+       ["watteau", "fragonard"])
+artist("vigee-le-brun", "Élisabeth Vigée Le Brun", "Vigée Le Brun", "rococo-neoclasicismo", 1755, 1842, "Francia", 15,
+       "Fíjate en los retratos de mujeres sonrientes y naturales, de piel luminosa, con telas ligeras y cintas.",
+       ["mujeres de sonrisa amable", "piel fresca y luminosa", "vestidos ligeros, muselinas y cintas"],
+       ["gainsborough", "boucher"])
+artist("vicente-lopez", "Vicente López Portaña", "Vicente López", "rococo-neoclasicismo", 1772, 1850, "España", 17,
+       "Fíjate en el detalle minucioso del retrato: cada encaje, condecoración y bordado pintado con nitidez.",
+       ["retratos oficiales de la corte", "encajes y bordados minuciosos", "caras precisas, sin idealizar"],
+       ["goya", "madrazo"])
+artist("rossetti", "Dante Gabriel Rossetti", "Rossetti", "romanticismo", 1828, 1882, "Reino Unido", 13,
+       "Fíjate en las mujeres de cuello largo, labios rojos y melena abundante, entre telas verdes y flores.",
+       ["mujeres de melena y labios rojos", "primer plano de medio cuerpo", "verdes intensos y flores simbólicas"],
+       ["millais", "waterhouse"])
+artist("millais", "John Everett Millais", "Millais", "romanticismo", 1829, 1896, "Reino Unido", 14,
+       "Fíjate en el detalle de botánico: cada hoja y cada flor pintadas del natural, con colores vivos.",
+       ["plantas y flores minuciosas", "colores claros, vivos y brillantes", "escenas literarias y emotivas"],
+       ["rossetti", "waterhouse"])
+artist("corot", "Jean-Baptiste Camille Corot", "Corot", "realismo", 1796, 1875, "Francia", 7,
+       "Fíjate en los paisajes de grises plateados y verdes lechosos, con árboles vaporosos y un toque rojo.",
+       ["tonos plateados y verdes suaves", "árboles de follaje vaporoso", "una pequeña mancha roja o amarilla"],
+       ["millet", "pissarro"])
+artist("bonheur", "Rosa Bonheur", "Bonheur", "realismo", 1822, 1899, "Francia", 9,
+       "Fíjate en los animales como protagonistas, caballos y bueyes, con una anatomía exacta de naturalista.",
+       ["animales como protagonistas", "caballos y bueyes en movimiento", "pelajes y músculos exactos"],
+       ["courbet", "millet"])
+artist("martin-rico", "Martín Rico", "Martín Rico", "realismo", 1833, 1908, "España", 13,
+       "Fíjate en la luz clara de Venecia: canales, fachadas blancas y cielos limpios, con dibujo preciso.",
+       ["canales de Venecia y fachadas al sol", "cielos limpios y luz blanca", "dibujo preciso y toques de color"],
+       ["fortuny", "canaletto"])
+artist("gisbert", "Antonio Gisbert", "Gisbert", "realismo", 1834, 1901, "España", 15,
+       "Fíjate en la historia de España a gran escala: figuras a tamaño natural, en fila y con gesto grave.",
+       ["episodios de la historia de España", "lienzos enormes con muchas figuras", "escenas graves al aire libre"],
+       ["rosales", "pradilla"])
+artist("homer", "Winslow Homer", "Homer", "realismo", 1836, 1910, "Estados Unidos", 16,
+       "Fíjate en el mar del norte: olas que rompen contra las rocas y barcas escoradas que luchan con el agua.",
+       ["olas contra las rocas", "barcas y marineros", "acuarelas frescas y seguras"],
+       ["sargent", "aivazovski"])
+artist("raimundo-madrazo", "Raimundo de Madrazo", "Raimundo de Madrazo", "realismo", 1841, 1920, "España", 19,
+       "Fíjate en las damas elegantes de salón, con sedas brillantes y una pincelada ágil y luminosa.",
+       ["damas elegantes de su época", "sedas y rasos que brillan", "pincelada ágil y fresca"],
+       ["madrazo", "fortuny"])
+artist("pradilla", "Francisco Pradilla", "Pradilla", "realismo", 1848, 1921, "España", 23,
+       "Fíjate en la historia de España como un teatro: reinas y cortejos en paisajes de niebla, muy detallados.",
+       ["escenas de la historia de España", "paisajes grises y brumosos", "detalle minucioso de trajes"],
+       ["gisbert", "rosales"])
+artist("bazille", "Frédéric Bazille", "Bazille", "impresionismo", 1841, 1870, "Francia", 10,
+       "Fíjate en las figuras grandes y sólidas al aire libre, bajo la luz fuerte y clara del sur de Francia.",
+       ["figuras grandes al aire libre", "luz fuerte y clara", "contornos más firmes que los de Monet"],
+       ["monet", "renoir"])
+artist("cassatt", "Mary Cassatt", "Cassatt", "impresionismo", 1844, 1926, "Estados Unidos", 11,
+       "Fíjate en madres con sus hijos en escenas íntimas, de color claro y encuadres a la japonesa.",
+       ["madres e hijos abrazados", "escenas íntimas de casa", "encuadres cortados y colores claros"],
+       ["morisot", "degas"])
+artist("beruete", "Aureliano de Beruete", "Beruete", "impresionismo", 1845, 1912, "España", 12,
+       "Fíjate en las vistas de Madrid y de Castilla: cielos amplios, pincelada suelta y la sierra al fondo.",
+       ["vistas de Madrid y Castilla", "cielos amplios y luminosos", "pincelada suelta impresionista"],
+       ["sorolla", "pissarro"])
+artist("caillebotte", "Gustave Caillebotte", "Caillebotte", "impresionismo", 1848, 1894, "Francia", 13,
+       "Fíjate en el París moderno con perspectivas audaces: bulevares, puentes y suelos que se van al fondo.",
+       ["calles y bulevares de París", "perspectivas muy marcadas", "encuadres desde arriba o cortados"],
+       ["degas", "monet"])
+artist("pinazo", "Ignacio Pinazo", "Pinazo", "impresionismo", 1849, 1916, "España", 14,
+       "Fíjate en las manchas sueltas y rápidas: escenas de familia y de playa con luz mediterránea.",
+       ["manchas de color rápidas", "niños y escenas de familia", "luz y playas mediterráneas"],
+       ["sorolla"])
+artist("kroyer", "Peder Severin Krøyer", "Krøyer", "impresionismo", 1851, 1909, "Dinamarca", 15,
+       "Fíjate en la luz del atardecer nórdico en la playa: azules suaves, con mar y cielo casi del mismo color.",
+       ["playas de Skagen al atardecer", "azules suaves y luminosos", "grupos de amigos a la mesa o paseando"],
+       ["sorolla", "zorn"])
+artist("sargent", "John Singer Sargent", "Sargent", "impresionismo", 1856, 1925, "Estados Unidos", 16,
+       "Fíjate en la pincelada veloz y segura, a lo Velázquez: retratos elegantes con blancos y sedas que brillan.",
+       ["pinceladas largas y seguras", "sedas y blancos luminosos", "poses elegantes y naturales"],
+       ["velazquez", "zorn"])
+artist("regoyos", "Darío de Regoyos", "Regoyos", "impresionismo", 1857, 1913, "España", 17,
+       "Fíjate en los paisajes del norte de España hechos con toques de puntos y comas, en colores claros.",
+       ["paisajes del norte de España", "toques de color en puntos y comas", "trenes, procesiones y vida de pueblo"],
+       ["signac", "pissarro"])
+artist("zorn", "Anders Zorn", "Zorn", "impresionismo", 1860, 1920, "Suecia", 18,
+       "Fíjate en las pinceladas largas y rápidas y en el agua llena de reflejos junto a cuerpos al sol.",
+       ["pinceladas largas y veloces", "agua llena de reflejos", "bañistas y escenas de Suecia"],
+       ["sargent", "sorolla"])
+artist("utamaro", "Kitagawa Utamaro", "Utamaro", "ukiyo-e", 1753, 1806, "Japón", 1,
+       "Fíjate en una sola mujer elegante vista muy de cerca, de cabeza y medio cuerpo, que llena la estampa.",
+       ["mujeres hermosas como tema", "retratos de busto o medio cuerpo", "líneas finas y colores suaves"],
+       ["sharaku"])
+artist("hokusai", "Katsushika Hokusai", "Hokusai", "ukiyo-e", 1760, 1849, "Japón", 2,
+       "Fíjate en el azul de Prusia intenso y en la naturaleza poderosa: olas, montes y gente pequeña.",
+       ["azul de Prusia intenso", "olas y montañas con profundidad", "personas pequeñas ante la naturaleza"],
+       ["hiroshige"])
+artist("sharaku", "Tōshūsai Sharaku", "Sharaku", "ukiyo-e", 1760, 1801, "Japón", 3,
+       "Fíjate en las caras de actor exageradas, casi caricaturas, sobre un fondo liso gris plateado.",
+       ["actores de kabuki de busto", "gestos exagerados, de caricatura", "fondo liso y brillante de mica"],
+       ["utamaro"])
+artist("hiroshige", "Utagawa Hiroshige", "Hiroshige", "ukiyo-e", 1797, 1858, "Japón", 4,
+       "Fíjate en el tiempo que hace: viajeros diminutos bajo la lluvia o la nieve en un camino de estampa.",
+       ["lluvia, nieve y estaciones", "caminos y viajeros", "degradados de color en el cielo"],
+       ["hokusai"])
+artist("kuniyoshi", "Utagawa Kuniyoshi", "Kuniyoshi", "ukiyo-e", 1797, 1861, "Japón", 5,
+       "Fíjate en los guerreros en plena hazaña y en los monstruos enormes, como su esqueleto gigante.",
+       ["guerreros y héroes en combate", "fantasmas y criaturas gigantes", "composiciones llenas de movimiento"],
+       ["hokusai"])
+artist("signac", "Paul Signac", "Signac", "postimpresionismo", 1863, 1935, "Francia", 7,
+       "Fíjate en los puertos y las velas hechos con toques cuadrados de color puro, como un mosaico de luz.",
+       ["toques de color en forma de teselas", "puertos, barcos y mar", "colores puros y vibrantes"],
+       ["seurat", "regoyos"])
+artist("mir", "Joaquim Mir", "Mir", "postimpresionismo", 1873, 1940, "España", 8,
+       "Fíjate en la explosión de color: paisajes casi abstractos con manchas encendidas de luz mediterránea.",
+       ["colores encendidos e irreales", "paisajes que rozan la abstracción", "grutas, rocas y calas de Mallorca"],
+       ["sorolla", "rusinol"])
+artist("moreau", "Gustave Moreau", "Moreau", "simbolismo-modernismo", 1826, 1898, "Francia", 6,
+       "Fíjate en los mitos cubiertos de joyas y arabescos finísimos, como bordados de oro sobre fondos oscuros.",
+       ["figuras mitológicas enjoyadas", "arabescos y detalles como bordados", "fondos oscuros de piedra preciosa"],
+       ["klimt", "waterhouse"])
+artist("waterhouse", "John William Waterhouse", "Waterhouse", "simbolismo-modernismo", 1849, 1917, "Reino Unido", 7,
+       "Fíjate en las damas de leyenda en barcas, estanques y bosques, de melena larga y gesto melancólico.",
+       ["heroínas de leyenda y mito", "agua, juncos y flores", "rostros pálidos y melancólicos"],
+       ["millais", "rossetti"])
+artist("rusinol", "Santiago Rusiñol", "Rusiñol", "simbolismo-modernismo", 1861, 1931, "España", 9,
+       "Fíjate en los jardines vacíos con cipreses, escalinatas y fuentes, en la luz suave del atardecer.",
+       ["jardines sin gente", "cipreses, arcos y escalinatas", "luz tenue y melancólica"],
+       ["casas", "mir"])
+artist("hammershoi", "Vilhelm Hammershøi", "Hammershøi", "simbolismo-modernismo", 1864, 1916, "Dinamarca", 11,
+       "Fíjate en las habitaciones casi vacías, grises y en silencio, con luz de ventana y una mujer de espaldas.",
+       ["habitaciones vacías y grises", "luz suave de ventana", "una mujer de espaldas"],
+       ["vermeer"])
+artist("casas", "Ramon Casas", "Casas", "simbolismo-modernismo", 1866, 1932, "España", 12,
+       "Fíjate en el dibujo seguro y en la gente moderna de Barcelona, con grises y negros elegantes.",
+       ["dibujo firme y seguro", "gente de la Barcelona moderna", "grises y negros elegantes"],
+       ["rusinol", "sargent"])
+artist("zuloaga", "Ignacio Zuloaga", "Zuloaga", "simbolismo-modernismo", 1870, 1945, "España", 13,
+       "Fíjate en la España dura: toreros, campesinos y pueblos de Castilla, en tonos terrosos y cielos de tormenta.",
+       ["tipos populares y toreros", "colores terrosos y negros", "cielos oscuros sobre Castilla"],
+       ["goya", "velazquez"])
+artist("nonell", "Isidre Nonell", "Nonell", "simbolismo-modernismo", 1872, 1911, "España", 14,
+       "Fíjate en las figuras encogidas de gitanas y mendigos, hechas con trazos gruesos y tonos sombríos.",
+       ["gitanas y marginados encogidos", "trazos gruesos y cortos", "tonos azulados y sombríos"],
+       ["casas"])
+artist("modigliani", "Amedeo Modigliani", "Modigliani", "simbolismo-modernismo", 1884, 1920, "Italia", 17,
+       "Fíjate en los cuellos larguísimos, las caras ovaladas y los ojos almendrados, a veces sin pupila.",
+       ["cuellos largos y caras ovaladas", "ojos almendrados sin pupila", "colores cálidos y planos"],
+       ["el-greco"])
+artist("schiele", "Egon Schiele", "Schiele", "simbolismo-modernismo", 1890, 1918, "Austria", 18,
+       "Fíjate en los cuerpos angulosos y torcidos, de contorno nervioso y piel con manchas de color.",
+       ["contornos nerviosos y quebrados", "cuerpos angulosos y huesudos", "fondos vacíos"],
+       ["klimt"])
+
 # Únicos pintores rusos con etapa propia (decisión del coordinador, oleada 4): el resto de rusos
 # son invitados aunque tengan ≥3 obras (sirven de distractores y de obras no vistas).
 STAGE_RUSSIANS = {"aivazovski", "shishkin", "repin", "levitan"}
@@ -1075,6 +1335,71 @@ TRAIT_TAGS = {
     "sorolla": [["claro", "mar", "suelta"], ["mar", "agua", "claro"], ["claro"], ["suelta"]],
     "romero-de-torres": [["oscuro", "mirada", "nitido"], ["mirada", "retrato"], ["paisaje", "arquitectura"], ["oscuro", "nitido"]],
     "juan-gris": [["plano", "nitido"], ["plano"], [], ["plano", "nitido"]],
+    # Pintores jugables que no tenían pista: alineados con [pista, rasgo 1, 2, 3].
+    "cimabue": [["oro", "arquitectura"], ["oro"], ["arquitectura"], ["oro"]],
+    "duccio": [["azul", "oro"], ["azul", "oro"], [], ["diminutas"]],
+    "pietro-lorenzetti": [["arquitectura", "interior"], ["arquitectura"], ["interior"], ["estatua"]],
+    "simone-martini": [["ondulante", "oro"], ["ondulante"], ["oro"], ["expresion"]],
+    "ambrogio-lorenzetti": [["arquitectura", "multitud"], ["arquitectura"], [], ["multitud", "paisaje"]],
+    "giotto": [["estatua"], ["estatua"], [], ["expresion"]],
+    "fra-angelico": [["claro", "arquitectura"], ["claro"], ["arquitectura"], ["oro"]],
+    "juan-de-juanes": [["dulzura", "nitido"], ["dulzura"], ["nitido"], ["retrato"]],
+    "tintoretto": [["oscuro", "dinamico"], ["oscuro", "foco"], ["dinamico"], ["multitud"]],
+    "cranach": [["desnudo", "oscuro"], ["desnudo"], ["oscuro"], []],
+    "morales": [["difuminado"], ["difuminado"], [], ["oscuro", "expresion"]],
+    "sanchez-coello": [["retrato", "nitido"], ["retrato"], [], ["nitido"]],
+    "sofonisba": [["retrato", "mirada"], ["retrato"], ["mirada"], ["negro"]],
+    "ribalta": [["oscuro", "estatua"], ["oscuro"], ["estatua"], ["foco"]],
+    "maino": [["foco", "claro"], ["foco"], ["estatua"], ["sedas"]],
+    "la-tour": [["noche", "foco", "oscuro"], ["foco", "noche"], [], ["nitido"]],
+    "alonso-cano": [["dulzura", "claro"], ["dulzura"], ["claro"], ["estatua"]],
+    "leyster": [["expresion", "suelta"], ["expresion"], ["suelta"], []],
+    "pereda": [["oscuro", "nitido"], [], ["nitido"], ["oscuro", "foco"]],
+    "carreno": [["retrato", "interior"], ["retrato"], ["suelta"], ["rojo", "interior"]],
+    "valdes-leal": [["suelta", "oscuro"], ["oscuro"], ["suelta"], ["dinamico"]],
+    "steen": [["interior", "multitud"], ["interior", "multitud"], ["expresion"], []],
+    "claudio-coello": [["arquitectura", "multitud"], ["arquitectura"], ["dinamico"], ["multitud"]],
+    "tiepolo": [["cielo", "claro"], ["cielo", "claro"], ["dinamico"], ["claro"]],
+    "canaletto": [["arquitectura", "agua", "claro"], ["arquitectura", "agua"], ["azul", "cielo", "claro"], ["barcos", "diminutas"]],
+    "chardin": [["interior"], [], ["interior"], ["suelta"]],
+    "reynolds": [["retrato", "paisaje"], ["retrato"], ["paisaje", "cielo"], ["oro"]],
+    "paret": [["diminutas", "nitido"], ["diminutas"], ["sedas"], ["barcos", "agua"]],
+    "vigee-le-brun": [["retrato", "dulzura"], ["dulzura"], ["claro"], ["sedas"]],
+    "vicente-lopez": [["retrato", "nitido"], ["retrato"], ["nitido"], ["nitido"]],
+    "rossetti": [["retrato", "rojo", "verde"], ["rojo", "retrato"], ["retrato"], ["verde"]],
+    "millais": [["nitido", "verde"], ["nitido"], ["claro"], ["expresion"]],
+    "corot": [["gris", "arboles", "difuminado"], ["gris", "verde"], ["arboles", "difuminado"], ["rojo"]],
+    "bonheur": [["paisaje", "nitido"], ["paisaje"], ["dinamico"], ["nitido"]],
+    "martin-rico": [["agua", "claro", "arquitectura"], ["agua", "arquitectura"], ["claro", "cielo"], ["nitido"]],
+    "gisbert": [["multitud"], [], ["multitud"], ["paisaje"]],
+    "homer": [["mar"], ["mar"], ["barcos", "mar"], ["suelta"]],
+    "raimundo-madrazo": [["sedas", "retrato"], ["retrato"], ["sedas"], ["suelta"]],
+    "pradilla": [["paisaje", "nitido"], [], ["paisaje", "gris"], ["nitido"]],
+    "bazille": [["claro", "paisaje"], ["paisaje"], ["claro"], ["nitido"]],
+    "cassatt": [["dulzura", "claro"], ["dulzura"], ["interior"], ["cortado", "claro"]],
+    "beruete": [["paisaje", "cielo", "suelta"], ["paisaje"], ["cielo", "claro"], ["suelta"]],
+    "caillebotte": [["arquitectura", "dinamico"], ["arquitectura"], ["dinamico"], ["cortado"]],
+    "pinazo": [["suelta"], ["suelta"], [], ["mar", "claro"]],
+    "kroyer": [["mar", "azul"], ["mar"], ["azul", "claro"], ["multitud"]],
+    "sargent": [["suelta", "retrato", "sedas"], ["suelta"], ["sedas"], ["retrato"]],
+    "regoyos": [["paisaje", "puntos"], ["paisaje"], ["puntos"], []],
+    "zorn": [["suelta", "agua"], ["suelta"], ["agua"], ["desnudo"]],
+    "utamaro": [["retrato", "plano"], ["retrato"], ["retrato"], ["plano"]],
+    "hokusai": [["azul", "paisaje"], ["azul"], ["mar", "paisaje"], ["diminutas"]],
+    "sharaku": [["expresion", "retrato"], ["retrato"], ["expresion"], ["plano"]],
+    "hiroshige": [["diminutas", "paisaje"], ["nieve"], ["paisaje", "diminutas"], ["cielo"]],
+    "kuniyoshi": [["monstruos", "dinamico"], ["dinamico"], ["monstruos"], ["dinamico"]],
+    "signac": [["puntos", "mar"], ["puntos"], ["barcos", "mar"], ["claro"]],
+    "mir": [["grueso", "paisaje"], [], ["paisaje"], ["mar"]],
+    "moreau": [["oro", "oscuro", "mosaico"], ["oro"], ["mosaico"], ["oscuro"]],
+    "waterhouse": [["agua", "paisaje"], [], ["agua"], ["expresion"]],
+    "rusinol": [["arboles", "arquitectura"], ["arboles"], ["arquitectura"], ["difuminado"]],
+    "hammershoi": [["interior", "gris", "ventana"], ["interior", "gris"], ["ventana"], ["espaldas"]],
+    "casas": [["nitido", "gris"], ["nitido"], ["retrato"], ["gris", "negro"]],
+    "zuloaga": [["oscuro", "negro"], ["retrato"], ["negro", "oscuro"], ["cielo", "paisaje"]],
+    "nonell": [["grueso", "oscuro"], ["oscuro"], ["grueso"], ["azul", "oscuro"]],
+    "modigliani": [["alargado", "retrato"], ["alargado"], ["retrato"], ["plano"]],
+    "schiele": [["lineas", "expresion"], ["lineas"], ["desnudo", "expresion"], []],
 }
 
 # Etiquetas visibles en cada cuadro, escritas mirando las imágenes (hojas de contacto a 420 px y
