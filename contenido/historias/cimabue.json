@@ -6,14 +6,34 @@
    "title": "Quién fue Cimabue",
    "cards": [
     {
-     "text": "Dante le dedicó un verso cruel: Cimabue creía dominar la pintura «y ahora Giotto tiene la fama». Este Cristo burlado suyo apareció en 2019 colgado en una cocina francesa.",
-     "artwork": "w68496636",
+     "text": "Pintó una Maestà (una Virgen en su trono) de casi cuatro metros. Sus figuras ganan volumen y el trono, profundidad: con Cimabue la pintura empieza a despertar.",
+     "artwork": "w1569622",
+     "source": "https://www.uffizi.it/en/artworks/virgin-and-child-enthroned-and-prophets-santa-trinita-maesta"
+    },
+    {
+     "text": "Hoy cuelga en el gran museo de Florencia (los Uffizi) junto a las Maestà de Duccio y de Giotto, que vinieron después: tres tronos seguidos donde se ve avanzar la pintura.",
+     "artwork": "w1569622",
+     "focus": [
+      0.5,
+      0.3,
+      1.6
+     ],
+     "source": "https://www.uffizi.it/en/artworks/virgin-and-child-enthroned-and-prophets-santa-trinita-maesta"
+    },
+    {
+     "text": "El poeta Dante escribió que Cimabue se creía el mejor pintor, hasta que llegó su alumno Giotto y lo eclipsó. Lo que quería decir: la fama dura poco.",
+     "artwork": "w1569622",
+     "focus": [
+      0.5,
+      0.25,
+      2.2
+     ],
      "source": "https://www.britannica.com/biography/Cimabue"
     },
     {
-     "text": "Con Cimabue la pintura empieza a despertar: sus figuras ganan volumen y su trono, profundidad. Según Vasari, descubrió a Giotto, que daría el gran salto.",
-     "artwork": "w1569622",
-     "source": "https://www.uffizi.it/en/artworks/virgin-and-child-enthroned-and-prophets-santa-trinita-maesta"
+     "text": "En 2019 apareció este Cristo burlado colgado en la cocina de una casa francesa. Era una tablita perdida de Cimabue, pintada hace más de 700 años.",
+     "artwork": "w68496636",
+     "source": "https://www.britannica.com/biography/Cimabue"
     },
     {
      "text": "Fíjate en el trono, visto en profundidad, con cuatro profetas bajo sus arcos. Y en los pliegues: Cimabue los marca con finas líneas de oro, no con luz y sombra.",
