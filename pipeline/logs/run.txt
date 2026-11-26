@@ -102,3 +102,9 @@ aviso w3636299 (rubens): título pendiente de traducir: The Battle of the Amazon
 aviso w4009226 (rubens): título pendiente de traducir: A View of Het Steen in the Early Morning
 64M	.git
 3.7M	catalogo
+== pack 1200 23:09:33
+pack 1200px: 1461 imágenes, 333.4 MB de JPEG (media 222 KB), zip 333.6 MB, sha256 0a5e7e0c6b527e23…
+obras del catálogo 1461; sin imagen 0; con fallo 0
+paquete app-img-1200 subido a catalogo-img (319M)
+64M	.git
+3.7M	catalogo
