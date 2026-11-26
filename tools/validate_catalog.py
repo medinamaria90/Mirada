@@ -68,7 +68,7 @@ def main():
     ficha = json.load(open(f"{app}/data/catalog-ficha.json", encoding="utf-8"))
     check(cat.get("version") == 2, "catalog.json: version debe ser 2")
     check(text.get("version") == 3, "catalog-text: version debe ser 3")
-    for k in ("look", "looks", "kind", "tags"):
+    for k in ("look", "looks", "kind", "tags", "curio"):
         check(not any(k in w for w in cat["artworks"]), f"catalog.json no debe llevar {k} (va en catalog-text.json)")
     for k in ("traits", "traitTags"):
         check(not any(k in a for a in cat["artists"]), f"catalog.json no debe llevar {k} de pintor")
@@ -196,7 +196,7 @@ def main():
                   f"{w['id']}: focus debe ser [x, y] entre 0 y 1")
     # --- Textos y ficha ---
     known = set(wids)
-    for k in ("look", "looks", "kind", "tags"):
+    for k in ("look", "looks", "kind", "tags", "curio"):
         check(set(text.get(k, {})) <= known, f"catalog-text: {k} de obras inexistentes")
     work_by_id = {w["id"]: w for w in cat["artworks"]}
     for wid, look in text.get("look", {}).items():
@@ -212,7 +212,11 @@ def main():
         check(aid in by_id and len(tt) == 1 + len(text.get("traits", {}).get(aid, [])), f"{aid}: traitTags no alineado con [hint, *traits]")
         check(all(t in labels for g in tt for t in g.split()), f"{aid}: traitTags fuera del vocabulario")
     check(set(ficha.get("ficha", {})) == known, "catalog-ficha: no cubre exactamente las obras")
+    for wid, c in text.get("curio", {}).items():
+        check(isinstance(c.get("text"), str) and 0 < len(c["text"]) <= 240, f"{wid}: curio vacío o de más de 240 letras")
     for wid, f in ficha.get("ficha", {}).items():
+        if "about" in f:
+            check(f["about"].get("text") and all(isinstance(t, str) and t for t in f["about"]["text"]), f"{wid}: about sin párrafos")
         check(f.get("source", {}).get("wikidata", "").startswith("Q"), f"{wid}: ficha sin fuente de Wikidata")
 
     # --- Atlas: las coordenadas son función del catálogo ---

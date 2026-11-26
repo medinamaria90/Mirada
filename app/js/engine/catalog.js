@@ -19,6 +19,10 @@ export function resolveThumb(thumb, atlas) {
 // fuente), `kind` y `tags` de obra; `traits`, `traitTags` y `why` («por qué importa», con fuente) de pintor; `tagLabels` y `negableTags`
 // del vocabulario visual. Se añaden a los objetos del índice; lo que no encaja se ignora.
 const MAX_TEXT = 140;
+// Dato curioso de una obra (hoja de feedback) y explicación larga (página de la obra).
+const MAX_CURIO = 240;
+const MAX_ABOUT_PARAS = 8;
+const MAX_ABOUT_PARA = 1200;
 const MAX_TAGS = 12;
 const MAX_NEGABLE = 60;
 const MAX_LOOKS = 2;
@@ -54,6 +58,10 @@ export function mergeCatalogText(index, text) {
     const w = index.artwork(id);
     const list = tagList(tags);
     if (w && list) { w.tags = list; n++; }
+  }
+  for (const [id, curio] of Object.entries(text.curio || {})) {
+    const w = index.artwork(id);
+    if (w && curio && typeof curio.text === 'string' && curio.text.length <= MAX_CURIO) { w.curio = { text: curio.text, source: typeof curio.source === 'string' ? curio.source : '' }; n++; }
   }
   for (const [id, traits] of Object.entries(text.traits || {})) {
     const a = index.artist(id);
@@ -96,6 +104,9 @@ export function mergeCatalogFicha(index, data) {
     if (f.source && typeof f.source === 'object') {
       w.source = Object.fromEntries(['wikidata', 'file', 'license'].filter((k) => typeof f.source[k] === 'string').map((k) => [k, f.source[k]]));
     }
+    const paras = f.about && Array.isArray(f.about.text)
+      ? f.about.text.filter((t) => typeof t === 'string' && t.length <= MAX_ABOUT_PARA).slice(0, MAX_ABOUT_PARAS) : [];
+    if (paras.length) w.about = { text: paras, source: typeof f.about.source === 'string' ? f.about.source : '' };
     n++;
   }
   return n;

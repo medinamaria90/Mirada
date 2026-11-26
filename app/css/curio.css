@@ -1,0 +1,41 @@
+/* Dato curioso en la hoja de feedback de la ronda (ui/fb-curio.js). Plegado: dos líneas que abren el apetito; abierto,
+   el texto entero y «Ver más» (la página de la obra). Todo color sale de brand.css. */
+
+.fb-curio { display: grid; gap: 0; margin-top: .3rem; }
+.fb-curio-btn {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: .65rem; width: 100%; min-height: 48px;
+  padding: .6rem .6rem .6rem .55rem; border: 0; border-radius: var(--radius-sm); text-align: left; cursor: pointer;
+  background: color-mix(in srgb, var(--surface) 72%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 7%, transparent);
+  color: var(--ink); font: 400 .95rem/1.42 var(--font); -webkit-tap-highlight-color: transparent;
+  transition: background-color .2s var(--ease);
+}
+.fb-curio-btn:hover { background: var(--surface); }
+.fb-curio-btn:active { transform: scale(.99); }
+.fb-curio-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; background: var(--gold); color: var(--on-gold); }
+.fb-curio-text { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; padding-top: .1rem; text-wrap: pretty; }
+.fb-curio.is-open .fb-curio-text { display: block; -webkit-line-clamp: unset; line-clamp: none; animation: float-up .3s var(--ease) both; }
+.fb-curio-chev { display: grid; place-items: center; height: 28px; color: var(--ink-2); transform: rotate(90deg); transition: transform .2s var(--ease); }
+.fb-curio.is-open .fb-curio-chev { transform: rotate(-90deg); }
+.fb-curio-more {
+  justify-self: end; display: inline-flex; align-items: center; gap: .1rem; min-height: 48px; padding: 0 .3rem 0 .6rem; border: 0;
+  background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px;
+  animation: float-up .3s var(--ease) both;
+}
+.fb-curio-more[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-curio.is-open .fb-curio-text, .fb-curio-more { animation: none; }
+  .fb-curio-chev, .fb-curio-btn { transition: none; }
+}
+html.reduce-motion .fb-curio.is-open .fb-curio-text, html.reduce-motion .fb-curio-more { animation: none; }
+
+/* Pantallas muy bajas: el dato va al final, después de la frase del cuadro y del título. */
+@media (max-height: 520px) {
+  .fb-text .fb-curio { order: 4; }
+  .fb-curio-btn { font-size: .88rem; line-height: 1.3; padding-block: .4rem; }
+  .fb-curio-text { -webkit-line-clamp: 1; line-clamp: 1; }
+}
+
+/* Con el dato abierto la hoja puede crecer algo más (la respuesta marcada se recoloca encima: lesson.js revealAnswers). */
+.feedback:has(.fb-curio.is-open) { max-height: 60dvh; }
+@media (max-height: 520px) { .feedback:has(.fb-curio.is-open) { max-height: 46dvh; } }

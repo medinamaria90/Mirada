@@ -1,6 +1,7 @@
 // Ronda de preguntas: barra de progreso, respuesta, feedback inmediato y reintentos al final.
 
 import { artistLink } from '../artist-link.js';
+import { curioHtml, toggleCurio, loadCurioCss } from '../fb-curio.js';
 import { esc, onAction, accentStyle, announce, focusHeading, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame, onArtworkError, isBroken, preload } from '../art.js';
@@ -33,6 +34,7 @@ export function runLesson(ctx, el, config) {
   let freshIntroShown = resume ? resume.freshIntroShown : !(config.interlude && round.queue.some((it) => it.q.phase === 'fresh'));
   let substitutions = 0;
   const traitMemo = new Map();
+  let curioOpen = false; // el dato curioso, abierto una vez, sale abierto el resto de la ronda
 
   function save() {
     if (!config.onSave) return;
@@ -62,6 +64,7 @@ export function runLesson(ctx, el, config) {
     </div>
   </div>`;
 
+  loadCurioCss();
   const stage = $('.lesson-stage', el);
   const feedback = $('.feedback', el);
   const bar = $('.progress', el);
@@ -257,7 +260,7 @@ export function runLesson(ctx, el, config) {
       <div class="fb-text">
         <div class="fb-head"><span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>
         ${title}${gained ? `<span class="fb-xp">+${gained} XP</span>` : ''}</div>
-        ${who}${lines}${caption}
+        ${who}${lines}${caption}${curioHtml(subject, curioOpen)}
       </div>
       <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>
     </div>`;
@@ -323,6 +326,15 @@ export function runLesson(ctx, el, config) {
     continue: () => {
       ctx.audio.sfx('tap');
       render();
+    },
+    curio: (b) => {
+      ctx.audio.sfx('tap');
+      curioOpen = toggleCurio(b);
+      requestAnimationFrame(revealAnswers);
+    },
+    work: (b) => {
+      ctx.audio.sfx('tap');
+      import('../artwork-sheet.js').then((m) => m.openArtworkSheet(ctx, b.dataset.work, { opener: b })).catch((err) => console.error(err));
     },
     quit: () => openQuit(true),
     stay: () => openQuit(false),

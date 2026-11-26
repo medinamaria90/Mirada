@@ -113,6 +113,33 @@ def familias_del_catalogo(movements, artists):
     return dict(cutoff=data["corteAntiguo"], list=[{k: v for k, v in f.items()} for f in data["familias"]])
 
 
+def contenido_opcional(name):
+    """contenido/<name> si existe (lo escriben otros a su ritmo); si no, vacío."""
+    path = os.path.join(ROOT, "contenido", name)
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+CURIO_MAX = 240
+
+
+def texto_con_fuente(v):
+    """«texto» o {text, source} → {text, source} (o None si no vale)."""
+    text, source = (v, "") if isinstance(v, str) else (v.get("text"), v.get("source", "")) if isinstance(v, dict) else (None, "")
+    if not isinstance(text, str) or not text.strip() or len(text) > CURIO_MAX:
+        return None
+    return dict(text=text.strip(), source=source if isinstance(source, str) else "")
+
+
+def parrafos_con_fuente(v):
+    """[párrafos] o {text: [párrafos], source} → {text: [...], source} (o None si no vale)."""
+    paras, source = (v, "") if isinstance(v, list) else (v.get("text"), v.get("source", "")) if isinstance(v, dict) else (None, "")
+    paras = [p.strip() for p in paras or [] if isinstance(p, str) and p.strip()] if isinstance(paras, list) else []
+    return dict(text=paras, source=source if isinstance(source, str) else "") if paras else None
+
+
 def main(app):
     obras = load("obras.json")
     pintores = {p["id"]: p for p in load("pintores.json")}
@@ -267,7 +294,11 @@ def main(app):
     # «Por qué importa» de cada pintor (contenido/importancia.json, con fuente): lo primero de su ficha.
     with open(os.path.join(ROOT, "contenido", "importancia.json"), encoding="utf-8") as f:
         why = {pid: dict(text=v["text"], source=v["source"]) for pid, v in json.load(f).items() if pid in pintores}
-    text = dict(version=3, look={}, looks={}, kind={}, tags={}, traits=text_traits, traitTags=text_trait_tags, why=why,
+    # Dato curioso de cada obra (contenido/curiosidades.json, ≤ 220 letras): se lee en la hoja de feedback de la ronda.
+    # Explicación larga (contenido/explicaciones.json, párrafos): solo en la página de la obra, así que va en la ficha.
+    curio = {wid: v for wid, v in ((k, texto_con_fuente(v)) for k, v in contenido_opcional("curiosidades.json").items()) if v}
+    about = {wid: v for wid, v in ((k, parrafos_con_fuente(v)) for k, v in contenido_opcional("explicaciones.json").items()) if v}
+    text = dict(version=3, look={}, looks={}, kind={}, tags={}, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
         o = w["_old"]
@@ -291,6 +322,8 @@ def main(app):
                 text["looks"][w["id"]] = looks
         if o in D.KIND:
             text["kind"][w["id"]] = D.KIND[o]
+        if w["id"] in curio:
+            text["curio"][w["id"]] = curio[w["id"]]
         if o in D.TAGS:
             text["tags"][w["id"]] = " ".join(D.TAGS[o])
         # Ficha de museo (se pide aparte: pesa más que el resto del catálogo).
@@ -299,6 +332,8 @@ def main(app):
             museum=w.get("museum"), city=w.get("city"), country=w.get("country"), technique=w.get("technique") or None,
             dimensions=w.get("dimensions") or None,
             source=dict(wikidata=src.get("wikidata"), file=src.get("file"), license=src.get("license"))).items() if v}
+        if w["id"] in about:
+            ficha[w["id"]]["about"] = about[w["id"]]
         artworks.append(item)
 
     families = familias_del_catalogo(movements, artists)
