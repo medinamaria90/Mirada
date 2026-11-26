@@ -139,14 +139,14 @@ export async function profileHtml(ctx, artistId, opts) {
   const whyText = !why ? '' : why.before ? `Se abre al superar a ${nameOf({ type: 'artist', id: why.before })}` : why.pending.length ? `Se abre al dominar a ${joinNames(why.pending.map(nameOf))}` : '';
   const lock = whyText ? `<p class="ap-lock">${icons.lock(16)}<span>${esc(`${whyText} en ${index.branch(branchId).name}.`)}</span></p>` : '';
   const target = play.stage;
-  // Historias destacadas: un círculo por nivel con historia (el mismo aro del mapa).
-  const levels = known ? rowLevels(index, story, levelStates(progress, index, artistId)) : [];
+  // Fila de niveles: un círculo por nivel (el mismo aro del mapa); con un solo nivel, solo si tiene historia.
+  const levels = known ? rowLevels(index, artistId, story, levelStates(progress, index, artistId)) : [];
   const ring = known ? levelRing(progress, index, artistId) : null;
-  // Un único botón: «Jugar · <nivel>» (el siguiente: su historia y las preguntas) o, con todo hecho, «Repasar».
+  // Un único botón: «Empezar · <nivel>» (el siguiente, como su círculo: su historia y las preguntas) o, con todo hecho, «Repasar».
   const actions = !target ? '' : `<div class="ap-actions">${play.next
-    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}">Jugar <small>· ${esc(play.next.name)}</small></button>`
-    : `<button type="button" class="btn btn-primary" data-ap="play" data-branch="${esc(branchId)}">${target === 'mastered' ? 'Repasar' : `Jugar <small>· ${esc(FIRST_LEVEL_SHORT)}</small>`}</button>`}</div>`;
-  const storyInfo = { has: hasStory, isNew: !storySeen(storyKey(artistId, 1)), ring, playable: Boolean(opts.playable), row: levels.length ? rowHtml(levels, opts.playable ? '' : 'is-watch') : '' };
+    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}">Empezar <small>· ${esc(play.next.name)}</small></button>`
+    : `<button type="button" class="btn btn-primary" data-ap="play" data-branch="${esc(branchId)}">${target === 'mastered' ? 'Repasar' : `Empezar <small>· ${esc(FIRST_LEVEL_SHORT)}</small>`}</button>`}</div>`;
+  const storyInfo = { has: hasStory, isNew: !storySeen(storyKey(artistId, 1)), ring, playable: Boolean(opts.playable), row: levels.length > 1 || levels.some((l) => l.story) ? rowHtml(levels, opts.playable ? '' : 'is-watch') : '' };
   return `${heroHtml(artist, movement, seen, storyInfo, opts.tag || 'h2', opts.leadControl || '')}
     ${lock}${actions}
     ${galleryHtml(artist, seen, total, opts.navigate, missingHtml(progress, index, artistId, seen.length, total, 'ficha'))}

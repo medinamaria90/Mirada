@@ -6,7 +6,7 @@
    "title": "Quién fue Goya",
    "cards": [
     {
-     "text": "Goya empezó pintando cartones para tapices: escenas alegres de majos y paseos, como esta. Venía de Fuendetodos, un pueblo de Zaragoza, y llegó a primer pintor del rey.",
+     "text": "Goya empezó pintando cartones (dibujos a tamaño real) para tapices: majos y paseos, como esta. Venía de Fuendetodos, un pueblo de Zaragoza, y llegó a primer pintor del rey.",
      "artwork": "w2537138",
      "focus": [
       0.5,
@@ -17,6 +17,11 @@
     },
     {
      "text": "Goya pintó lo que nadie se atrevía: la guerra sin héroes, la locura y una maja desnuda sin excusa de diosa. Por eso muchos lo ven como el primer pintor moderno.",
+     "artwork": "w152867",
+     "source": "https://es.wikipedia.org/wiki/Francisco_de_Goya#Las_majas"
+    },
+    {
+     "text": "Por esa maja desnuda, la Inquisición (el tribunal de la Iglesia) llamó a Goya para que explicara el cuadro. Y aún hoy no sabemos quién posó.",
      "artwork": "w152867",
      "source": "https://es.wikipedia.org/wiki/Francisco_de_Goya#Las_majas"
     },
