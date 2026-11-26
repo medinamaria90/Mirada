@@ -117,3 +117,70 @@ obras del catálogo 1446; sin imagen 0; con fallo 0
 paquete app-img-1200 subido a catalogo-img (315M)
 62M	.git
 3.6M	catalogo
+== validate  21:59:58
+validate: 1446 obras (1446 con imagen), 175 pintores, imágenes 0.0 MB; 3 errores, 373 avisos
+ERROR duccio: 2 obras de nivel 1 (rama: entre 4 y 6)
+ERROR simone-martini: 2 obras de nivel 1 (rama: entre 4 y 6)
+ERROR fra-angelico: 2 obras de nivel 1 (invitado: entre 3 y 5)
+aviso duccio: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso simone-martini: nivel 2 «Más obras» con 3 obras (< 5: faltan candidatas)
+aviso berruguete: nivel 2 «Etapa castellana» con 3 obras (< 5: faltan candidatas)
+aviso leonardo: nivel 2 «Primeras obras en Florencia» con 3 obras (< 5: faltan candidatas)
+aviso durero: nivel 2 «Aprendizaje y 1.er viaje a Italia» con 4 obras (< 5: faltan candidatas)
+aviso utamaro: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso sharaku: nivel 2 «Más obras» con 2 obras (< 5: faltan candidatas)
+aviso kuniyoshi: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso fortuny: nivel 2 «Roma y Marruecos» con 4 obras (< 5: faltan candidatas)
+aviso w15974342 (cimabue): título pendiente de traducir: The Virgin and Child with Two Angels
+aviso w3842715 (duccio): título pendiente de traducir: Madonna di Crevole
+aviso w6728425 (duccio): título pendiente de traducir: Madonna with Child and six Angels
+aviso w3873252 (duccio): título pendiente de traducir: The Nativity with the Prophets Isaiah and Ezekiel
+aviso w3873247 (pietro-lorenzetti): título pendiente de traducir: Nativity of the Virgin
+aviso w3948917 (pietro-lorenzetti): título pendiente de traducir: Saint Margaret or Agatha
+aviso w3842761 (pietro-lorenzetti): título pendiente de traducir: Madonna and Child Enthroned with Eight Angels
+aviso w3843026 (pietro-lorenzetti): título pendiente de traducir: Cortone Maesta
+aviso w3225814 (simone-martini): título pendiente de traducir: The Carrying of the Cross
+aviso w20173074 (simone-martini): título pendiente de traducir: The Angel of the Annunciation
+aviso w3618171 (ambrogio-lorenzetti): título pendiente de traducir: Annunciation
+aviso w3842740 (ambrogio-lorenzetti): título pendiente de traducir: Madonna with child
+aviso w3843028 (ambrogio-lorenzetti): título pendiente de traducir: Madonna and child with saints and angels
+aviso w18572975 (ambrogio-lorenzetti): título pendiente de traducir: The Charity of St. Nicholas of Bari
+aviso w3649296 (uccello): título pendiente de traducir: The Hunt in the Forest
+aviso w3637223 (uccello): título pendiente de traducir: Painting of Jacopone da Todi
+aviso w3637223 (uccello): ficha sin technique
+aviso w3982380 (uccello): título pendiente de traducir: La Thébaïde
+aviso w15965547 (uccello): título pendiente de traducir: Crucifixion of Christ
+aviso w15965547 (uccello): ficha sin museum
+aviso w16599926 (uccello): título pendiente de traducir: St George slaying the dragon
+aviso w16596981 (uccello): título pendiente de traducir: Portrait of a Young Man
+aviso w16596981 (uccello): ficha sin technique
+aviso w3711791 (masaccio): título pendiente de traducir: The Distribution of Alms and Death of Ananias
+aviso w3949530 (masaccio): título pendiente de traducir: A Bearded Carmelite Saint
+aviso w3605535 (masaccio): título pendiente de traducir: The Adoration of the Magi
+aviso w3948700 (masaccio): título pendiente de traducir: Saint Andrew
+aviso w3948700 (masaccio): ficha sin technique
+aviso w3949351 (masaccio): título pendiente de traducir: Saints Jerome and John the Baptist
+aviso w3949351 (masaccio): ficha sin technique
+aviso w3698230 (masaccio): título pendiente de traducir: The Crucifixion of Saint Peter
+aviso w3947289 (masaccio): título pendiente de traducir: Saint Jerome
+aviso w3948660 (masaccio): título pendiente de traducir: Saint Augustine
+aviso w3899272 (masaccio): título pendiente de traducir: Repentance of Saint Peter
+aviso w3899272 (masaccio): ficha sin technique
+aviso w3899272 (masaccio): ficha sin dimensions
+aviso w291189 (filippo-lippi): título pendiente de traducir: Adoration in the Forest
+aviso w1056007 (filippo-lippi): título pendiente de traducir: Annunciation
+aviso w3889196 (filippo-lippi): título pendiente de traducir: Barbadori Altarpiece and Predella
+aviso w3889196 (filippo-lippi): ficha sin dimensions
+aviso w1056043 (filippo-lippi): título pendiente de traducir: Annunciation with Two Kneeling Donors
+aviso w3618193 (filippo-lippi): título pendiente de traducir: Martelli Annunciation
+aviso w3958339 (filippo-lippi): título pendiente de traducir: Seven Saints
+aviso w2247307 (piero): ficha sin technique
+aviso w3947293 (piero): título pendiente de traducir: Saint Jerome and a Donor
+aviso w3731175 (piero): título pendiente de traducir: Hercules
+aviso w3948659 (piero): título pendiente de traducir: Saint Augustin
+aviso w3842514 (piero): título pendiente de traducir: Virgin and Child Enthroned with Four Angels
+aviso w2551625 (botticelli): ficha sin dimensions
+aviso w945250 (perugino): título pendiente de traducir: Portrait of Francesco delle Opere
+aviso w368788 (perugino): título pendiente de traducir: Pietà
+62M	.git
+3.6M	catalogo
