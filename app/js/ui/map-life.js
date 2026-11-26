@@ -1,4 +1,4 @@
-// Mapa vivo: la luz sigue a la hora del móvil (variables --day-night y --day-dusk en el mapa, que tiñen los colores
+// Mapa vivo: la luz sigue al reloj del juego (state/game-clock.js: un día cada pocos minutos de juego; variables --day-night y --day-dusk en el mapa, que tiñen los colores
 // del paisaje en mapa-vivo.css) y, si se permite el movimiento, de vez en cuando pasa algo en el tramo que se ve:
 // una racha de viento mece los árboles, un carruaje recorre el sendero, alguien cruza un puente, una barca navega,
 // unos pájaros se posan, una mariposa revolotea, pasa la sombra de una nube y, de noche, cae una estrella fugaz
@@ -6,14 +6,15 @@
 // transform y opacity (CSS o Web Animations API): ningún bucle por fotograma. Se para con la pestaña oculta o al
 // salir de la portada; con «Reducir animaciones» (o el ajuste del sistema), todo quieto, pero con la luz del día.
 
-import { daylight } from '../engine/daylight.js';
+import { gameLight } from '../engine/daylight.js';
+import { clockMinute } from '../state/game-clock.js';
 import { prefersReducedMotion } from './dom.js';
 import { cartRide, crossBridge, driftLake, rowAcross, sailRiver, swim } from './map-critters.js';
 import { sceneOf, visibleParts } from './map-scene.js';
 import { birdVisit, butterfly, cloudShadow, shootingStar } from './map-sky.js';
 import { between, pick } from './map-actor.js';
 
-const DAYLIGHT_TICK_MS = 60 * 1000;         // la luz se recalcula cada minuto (en media hora cambia poco a poco)
+const DAYLIGHT_TICK_MS = 4 * 1000;          // la luz se recalcula a menudo: el atardecer del juego dura un par de minutos
 const GUST_MS = 3600;                        // lo que dura una racha (y su animación en mapa-vivo.css)
 const GUST_GAP_MS = [16000, 40000];          // entre racha y racha, al azar
 const SCENE_GAP_MS = [9000, 26000];          // entre escena y escena (carruaje, puente, barca, pájaros…)
@@ -44,15 +45,16 @@ function sceneChoices(scene, { night, dusk }) {
   return list.filter(([,, ok]) => ok).flatMap(([w, fn]) => Array(w).fill(fn));
 }
 
-export function applyDaylight(map, date = new Date()) {
-  const { night, dusk } = daylight(date);
-  map.style.setProperty('--day-night', String(night));
-  map.style.setProperty('--day-dusk', String(dusk));
+export function applyDaylight(map, minute = clockMinute()) {
+  const { night, dusk } = gameLight(minute);
+  // Solo si cambia (de día y de noche, casi siempre igual): así no se recalculan los estilos del mapa en balde.
+  if (map.style.getPropertyValue('--day-night') !== String(night)) map.style.setProperty('--day-night', String(night));
+  if (map.style.getPropertyValue('--day-dusk') !== String(dusk)) map.style.setProperty('--day-dusk', String(dusk));
   return { night, dusk };
 }
 
-// Arranca la vida del mapa; devuelve cómo pararla. now: reloj (las pruebas lo cambian).
-export function startMapLife(map, { now = () => new Date() } = {}) {
+// Arranca la vida del mapa; devuelve cómo pararla. clock: minuto del día de juego (las pruebas lo cambian).
+export function startMapLife(map, { clock = clockMinute } = {}) {
   if (!map) return { refresh: () => {}, stop: () => {} };
   const timers = new Set();
   const visible = new Set();
@@ -62,7 +64,7 @@ export function startMapLife(map, { now = () => new Date() } = {}) {
   };
   const alive = () => !document.hidden && !prefersReducedMotion() && !map.classList.contains('is-linear');
   const refresh = () => {
-    applyDaylight(map, now());
+    applyDaylight(map, clock());
     map.classList.toggle('is-alive', alive());
   };
   const gust = () => {
@@ -82,7 +84,7 @@ export function startMapLife(map, { now = () => new Date() } = {}) {
   };
   const scene = () => {
     if (alive() && playing < MAX_SCENES) {
-      const light = daylight(now());
+      const light = gameLight(clock());
       // Se prueba en los tramos a la vista, al azar, hasta que algo encaja.
       for (const li of shown().sort(() => Math.random() - 0.5)) {
         const sc = sceneOf(li);
@@ -94,7 +96,7 @@ export function startMapLife(map, { now = () => new Date() } = {}) {
   };
   const meteor = () => {
     const li = pick(shown());
-    if (alive() && li && daylight(now()).night >= DEEP_NIGHT) {
+    if (alive() && li && gameLight(clock()).night >= DEEP_NIGHT) {
       const sc = sceneOf(li);
       if (sc) shootingStar(sc);
     }

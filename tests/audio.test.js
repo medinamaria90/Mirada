@@ -1,6 +1,7 @@
 // Pruebas de la lógica pura del motor de audio (sin Web Audio real).
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { ERAS, SCORES } from '../app/js/audio/scores.js';
 import { compilePiece, validatePiece, parseBar, parseChordCell, varyLoop, barFactors, makeTimeMap } from '../app/js/audio/compose.js';
 import { noteToMidi, parseChord, voicing, bassMidi, mulberry32 } from '../app/js/audio/theory.js';
@@ -389,6 +390,14 @@ test('listas: de noche, al entrar suena el secundario del día y se alternan con
   // sin secundarios, siempre el principal
   const solo = [...CONTRACT_ERAS, ...BRANCHES].find((l) => playlistOf(l).alt.length === 0);
   assert.equal(nextPiece(solo, { date: NIGHT }), playlistOf(solo).main);
+});
+
+test('listas: la noche de la música la da el reloj del juego (como el mapa), no la hora del móvil', () => {
+  const { main, alt } = playlistOf('renaissance');
+  assert.ok(alt.includes(nextPiece('renaissance', { date: NOON, night: true })), 'de noche en el juego, a mediodía real, no suena el secundario');
+  assert.equal(nextPiece('renaissance', { date: NIGHT, night: false }), main, 'de día en el juego, de noche real, no suena el principal');
+  const index = readFileSync(new URL('../app/js/audio/index.js', import.meta.url), 'utf8');
+  assert.ok(/night: isGameNight\(\)/.test(index), 'la música no usa el reloj del juego');
 });
 
 test('listas: el secundario cambia cada día', () => {

@@ -11,8 +11,7 @@ import { PLAYLISTS, MAX_ALT } from './playlists.js';
 
 /** Veces seguidas que acaba el principal antes de dar paso a un secundario (de día). */
 export const MAIN_RUNS_BEFORE_ALT = 2;
-/** Noche a efectos de música: de NIGHT_FROM a NIGHT_TO (hora local, como el mapa vivo). */
-// TODO: usar la salida y la puesta del sol de engine/daylight.js cuando esté en el repo.
+/** Noche a efectos de música por hora local (si quien llama no da `night`; la app da la del reloj del juego). */
 export const NIGHT_FROM_HOUR = 21;
 export const NIGHT_TO_HOUR = 7;
 const DAY_MS = 864e5;
@@ -50,12 +49,12 @@ export const hasList = (list) => playlistOf(list) !== null;
  * @param s.mainRuns  veces seguidas que ha terminado el principal en esta visita (contando `last`)
  * @param s.altsPlayed secundarios que ya han sonado en esta visita (para alternarlos)
  * @param s.date      hora local
+ * @param s.night     ¿es de noche? (el reloj del juego, como el mapa vivo); por defecto, según `date`
  */
-export function nextPiece(list, { last = null, mainRuns = 0, altsPlayed = 0, date = new Date() } = {}) {
+export function nextPiece(list, { last = null, mainRuns = 0, altsPlayed = 0, date = new Date(), night = isNight(date) } = {}) {
   const pl = playlistOf(list);
   if (!pl) return null;
   if (!pl.alt.length) return pl.main;
-  const night = isNight(date);
   const alt = pl.alt[(dayIndex(date) + altsPlayed) % pl.alt.length];
   if (last === null) return night ? alt : pl.main;
   if (last !== pl.main) return pl.main;
