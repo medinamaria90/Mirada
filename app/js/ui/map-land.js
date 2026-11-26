@@ -1,8 +1,10 @@
 // Paisajes del mapa: cada tramo pide su SVG (app/img/mapa, tools/mapa_svg.py) cuando se acerca a la pantalla y lo
 // mete en la página, para que el CSS lo pinte con las variables del tema (clases k-*) y lo anime (mapa-vivo.css):
 // árboles que se mecen (data-sway), agua que fluye (data-flow) y ventanas que se encienden de noche (data-lamp,
-// copiadas a una capa de luces por encima del velo de la noche). Si algo falla, el paisaje se ve como imagen.
+// copiadas a una capa de luces por encima del velo de la noche) y estrellas de noche (map-sky.js). Si algo falla,
+// el paisaje se ve como imagen.
 
+import { addStars } from './map-sky.js';
 import { MAP_W } from './screens/path-layout.js';
 
 const LANDSCAPE_MARGIN = '240px 0px';   // se pide el paisaje al acercarse a este margen
@@ -65,6 +67,7 @@ async function inlineLandscape(img) {
     if (!img.isConnected) return;
     img.replaceWith(svg);
     addLamps(svg, svg.parentNode.querySelector('.stages'));
+    addStars(svg);
   } catch (err) {
     // Sin red o con un archivo raro: el paisaje quieto, como imagen (con su propio tema).
     console.warn(err);

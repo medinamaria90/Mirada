@@ -16,6 +16,9 @@
 # variable pintan (k-<variable>), los árboles van en <g data-sway="x"> (se mecen con el viento), las ventanas y
 # farolas llevan data-lamp (se encienden de noche) y los brillos del agua, data-flow (fluyen). Además del paisaje
 # de cada época, un esparcido de detalles pequeños (flores, matas, rocas, ovejas, patos…) en los huecos libres.
+# Para la vida de paso (ui/map-scene.js): ríos (data-river), lagos (data-lake) y puentes (data-bridge) con su
+# medida, aspas de molino que giran (data-spin), humo que sube (data-puff) y, en el SVG raíz, los huecos libres
+# (data-free: estrellas de noche, mariposas de día) y los brillos del agua (data-glints).
 #
 # Las pantallas de rama tienen su tramo propio (rama-<id>.svg): el paisaje de su época o el suyo (tools/mapa_ramas.py).
 #
@@ -149,23 +152,57 @@ M.farola = _farola_viva
 _rio = M.rio
 
 
-def _rio_vivo(y, *a, **k):
-    orden, svg = _rio(y, *a, **k)
+def _rio_vivo(y, h=26, x0=0, x1=W, onda=10):
+    orden, svg = _rio(y, h, x0, x1, onda)
     OCUPADO['rios'].append(y)
-    return (orden, svg.replace('<rect', '<rect data-flow=""'))
+    # data-river: «x0 x1 y alto onda», para que la app sepa por dónde navegar (barcas, nadadores, reflejos).
+    return (orden, f'<g data-river="{M.f(x0)} {M.f(x1)} {M.f(y)} {M.f(h)} {M.f(onda)}">{svg.replace("<rect", "<rect data-flow=\"\"")}</g>')
 
 
 M.rio = _rio_vivo
 _lago = M.lago
 
 
-def _lago_vivo(*a, **k):
-    orden, svg = _lago(*a, **k)
+def _lago_vivo(cx, y, rx, ry):
+    orden, svg = _lago(cx, y, rx, ry)
+    if not svg:
+        return (orden, svg)
     i = svg.rfind('<ellipse')
-    return (orden, svg[:i] + '<ellipse data-flow=""' + svg[i + 8:] if svg else svg)
+    return (orden, f'<g data-lake="{M.f(cx)} {M.f(y)} {M.f(rx)} {M.f(ry)}">{svg[:i]}<ellipse data-flow=""{svg[i + 8:]}</g>')
 
 
 M.lago = _lago_vivo
+_puente = M.puente
+
+
+def _puente_vivo(cx, y, w=52, arcos=2):
+    orden, svg = _puente(cx, y, w, arcos)
+    return (orden, f'<g data-bridge="{M.f(cx)} {M.f(y)} {M.f(w)}">{svg}</g>')
+
+
+M.puente = _puente_vivo
+ASPAS = re.compile(r'(?:<path d="M[^"]*" fill="none" stroke="#[0-9A-Fa-f]{6}" stroke-width="2\.5"[^>]*/>){4}')
+_molino = M.molino
+
+
+def _molino_vivo(*a, **k):
+    orden, svg = _molino(*a, **k)
+    return (orden, ASPAS.sub(lambda m: f'<g data-spin="">{m.group(0)}</g>', svg, count=1))   # las aspas giran
+
+
+M.molino = _molino_vivo
+_chimenea = M.chimenea
+BOCANADAS = 3
+
+
+def _chimenea_viva(*a, **k):
+    orden, svg = _chimenea(*a, **k)
+    for i in range(BOCANADAS):                      # el humo va delante: las tres primeras bolas suben y se deshacen
+        svg = svg.replace('<circle cx=', f'<circle data-puff="{i}" cx=', 1)
+    return (orden, svg)
+
+
+M.chimenea = _chimenea_viva
 
 
 def margenes(p, h, arbol):
@@ -603,6 +640,38 @@ def esparcir(era):
     return out
 
 
+# Huecos del paisaje (lejos del sendero, nodos, rótulos y piezas) donde la app pone estrellas de noche y mariposas
+# de día; y brillos del agua (reflejos de estrellas en los ríos), lejos del sendero.
+HUECOS = {'paso_y': 46, 'paso_x': 52, 'jitter': 12}
+BRILLOS = {'paso_x': 34, 'jitter': 10, 'aire_camino': 40}
+
+
+def huecos(era):
+    import random
+    rnd = random.Random(f'huecos-{era["id"]}')
+    out = []
+    for j, y0 in enumerate(range(30, era['h'] - 10, HUECOS['paso_y'])):
+        for x0 in range(18 + (j % 2) * HUECOS['paso_x'] // 2, W - 12, HUECOS['paso_x']):
+            x, y = x0 + rnd.uniform(-1, 1) * HUECOS['jitter'], y0 + rnd.uniform(-1, 1) * HUECOS['jitter']
+            if libre(era, x, y):
+                out.append((x, y))
+    return out
+
+
+def brillos(era):
+    import random
+    rnd = random.Random(f'brillos-{era["id"]}')
+    out = []
+    road = era['road']
+    for r in OCUPADO['rios']:
+        k = min(len(road) - 1, max(0, round(r / era['roadStep'])))
+        for x0 in range(16, W - 16, BRILLOS['paso_x']):
+            x = x0 + rnd.uniform(-1, 1) * BRILLOS['jitter']
+            if abs(x - road[k]) > BRILLOS['aire_camino']:
+                out.append((x, r + rnd.uniform(-3, 3)))
+    return out
+
+
 def build(era, light, dark):
     pts = [(q['x'], q['y']) for q in era['points']]
     LIBRE['cartel'] = era.get('signSide')
@@ -615,7 +684,10 @@ def build(era, light, dark):
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))
     points = ' '.join(f'{M.f(x)},{M.f(y)}' for x, y in pts)
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {era["h"]}" width="{W}" height="{era["h"]}" preserveAspectRatio="none" data-points="{points}">'
+    free = ' '.join(f'{M.f(x)},{M.f(y)}' for x, y in huecos(era))
+    glints = ' '.join(f'{M.f(x)},{M.f(y)}' for x, y in brillos(era))
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {era["h"]}" width="{W}" height="{era["h"]}" preserveAspectRatio="none" data-points="{points}" '
+            f'data-free="{free}" data-glints="{glints}">'
             f'{style(light, dark, deco)}{body}</svg>')
 
 

@@ -1,0 +1,108 @@
+/* Vida de paso del mapa (ui/map-critters.js, ui/map-sky.js): paseantes, barcas, pájaros, mariposas, la sombra de
+   una nube, estrellas y estrella fugaz; y lo que se mueve solo en el paisaje (aspas de molino, humo). Las figuras las
+   mueve la Web Animations API; aquí, su dibujo y sus gestos pequeños (aletear, remar, mecerse), solo con el mapa
+   vivo (.is-alive) y solo con transform y opacity. Colores del paisaje con la luz del día (--lit-*, mapa-vivo.css). */
+
+.path-map {
+  --map-walker-w: 4.4%;
+  --map-boat-w: 3.6%;
+  --map-swimmer-w: 3.4%;
+  --map-bird-w: 2.6%;
+  --map-butterfly-w: 2.2%;
+  --map-cloud-w: 72%;
+  --map-meteor-w: 17%;
+  --map-meteor-h: 1.5px;
+  --map-step: .55s;
+  --map-rock: 4.5s;
+  --map-rock-tilt: 3deg;
+  --map-flap: .2s;
+  --map-flutter: .16s;
+  --map-swim: 1.1s;
+  --map-spin: 14s;
+  --map-puff: 6s;
+  --map-twinkle: 5.5s;
+  --map-twinkle-step: -1.4s;
+  --map-stars-fade: 6s;
+  --map-z-under: 0;
+  --map-z-critter: 1;
+}
+
+.map-critter { position: absolute; left: 0; top: 0; z-index: var(--map-z-critter); pointer-events: none; opacity: 0; will-change: transform, opacity; }
+.map-critter.is-under { z-index: var(--map-z-under); }
+.map-critter svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* Paseantes: dos figuras vistas desde arriba, cada una con su paso. */
+.map-walkers { width: var(--map-walker-w); }
+.map-walkers .walker-shade { fill: var(--map-shade); }
+.map-walkers .walker-body { fill: var(--lit-tile-2); }
+.map-walkers .walker-body.is-b { fill: var(--lit-slate-2); }
+.map-walkers .walker-head { fill: var(--lit-post); }
+.path-map.is-alive .map-walkers .walker { animation: map-step var(--map-step) ease-in-out infinite alternate; }
+.path-map.is-alive .map-walkers .walker.is-b { animation-delay: calc(var(--map-step) / -2); }
+@keyframes map-step { from { transform: translateX(-.35px); } to { transform: translateX(.35px); } }
+
+/* Barcas: velero y barquita de remos, de lado, que se mecen en el agua. */
+.map-boat, .map-rowboat { width: var(--map-boat-w); }
+.map-boat .boat-rock, .map-rowboat .boat-rock { transform-box: fill-box; transform-origin: 50% 100%; }
+.path-map.is-alive .map-boat .boat-rock, .path-map.is-alive .map-rowboat .boat-rock { animation: map-rock var(--map-rock) ease-in-out infinite alternate; }
+@keyframes map-rock { from { transform: rotate(calc(-1 * var(--map-rock-tilt))); } to { transform: rotate(var(--map-rock-tilt)); } }
+.map-critter .boat-hull { fill: var(--lit-stone-side); }
+.map-critter .boat-sail { fill: var(--lit-window); }
+.map-critter .boat-wake { fill: var(--lit-water-2); }
+.map-critter .boat-oar { fill: none; stroke: var(--lit-post); stroke-width: .7; stroke-linecap: round; }
+.map-critter .rower-body { fill: var(--lit-tile); }
+.map-critter .rower-head { fill: var(--lit-fruit); }
+
+/* Quien nada: brazos que se turnan y una estela. */
+.map-swimmer { width: var(--map-swimmer-w); }
+.map-swimmer .swim-head, .map-swimmer .swim-arm { fill: var(--lit-fruit); }
+.map-swimmer .swim-wake { fill: none; stroke: var(--lit-water-2); stroke-width: .7; stroke-linecap: round; }
+.path-map.is-alive .map-swimmer .swim-arm { animation: map-swim var(--map-swim) steps(1, end) infinite; }
+.path-map.is-alive .map-swimmer .swim-arm.is-b { animation-delay: calc(var(--map-swim) / -2); }
+@keyframes map-swim { 0% { opacity: 1; } 50% { opacity: .15; } }
+
+/* Pájaros: volando aletean; posados, quietos (map-sky.js cambia de dibujo al llegar y al salir). */
+.map-bird { width: var(--map-bird-w); }
+.map-bird .bird-wing, .map-bird .bird-body { fill: var(--lit-post); stroke: var(--lit-post); stroke-width: .5; stroke-linejoin: round; stroke-linecap: round; }
+.map-bird .bird-sit { opacity: 0; }
+.map-bird .bird-wing { transform-box: fill-box; transform-origin: 50% 60%; }
+.path-map.is-alive .map-bird .bird-wing { animation: map-flap var(--map-flap) ease-in-out infinite alternate; }
+@keyframes map-flap { from { transform: scaleY(1); } to { transform: scaleY(-.55); } }
+
+/* Mariposas. */
+.map-butterfly { width: var(--map-butterfly-w); }
+.map-butterfly .fly-wing { fill: var(--lit-bloom); }
+.map-butterfly.is-gold .fly-wing { fill: var(--lit-gold); }
+.map-butterfly .fly-wings { transform-box: fill-box; transform-origin: 50% 50%; }
+.path-map.is-alive .map-butterfly .fly-wings { animation: map-flutter var(--map-flutter) ease-in-out infinite alternate; }
+@keyframes map-flutter { from { transform: scaleX(1); } to { transform: scaleX(.25); } }
+
+/* Sombra de una nube que pasa. */
+.map-cloud { width: var(--map-cloud-w); aspect-ratio: 2 / 1; border-radius: 50%; background: radial-gradient(closest-side, var(--map-cloud), transparent); }
+
+/* Estrella fugaz: raya de luz con la cabeza delante. */
+.map-meteor { width: var(--map-meteor-w); height: var(--map-meteor-h); border-radius: var(--map-meteor-h); background: linear-gradient(to right, transparent, var(--map-star)); }
+
+/* Estrellas: aparecen al hacerse de noche y titilan despacio, cada tanda a su tiempo. */
+.path-stars { position: absolute; inset: 0; z-index: var(--map-z-under); display: block; width: 100%; height: 100%; pointer-events: none; overflow: visible;
+  opacity: clamp(0, calc((var(--day-night) - .6) * 2.5), 1); transition: opacity var(--map-stars-fade) linear; }
+.path-stars .star { fill: var(--map-star); }
+.path-stars .star.is-glint { opacity: .55; }
+.path-map.is-alive .path-stars .star { animation: map-twinkle var(--map-twinkle) ease-in-out infinite; }
+.path-map.is-alive .path-stars .tw-1 { animation-delay: var(--map-twinkle-step); }
+.path-map.is-alive .path-stars .tw-2 { animation-delay: calc(2 * var(--map-twinkle-step)); animation-duration: calc(var(--map-twinkle) * 1.3); }
+.path-map.is-alive .path-stars .tw-3 { animation-delay: calc(3 * var(--map-twinkle-step)); animation-duration: calc(var(--map-twinkle) * .8); }
+@keyframes map-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+/* Molinos que giran y humo que sube de las chimeneas. */
+[data-spin] { transform-box: fill-box; transform-origin: 50% 50%; }
+.path-map.is-alive [data-spin] { animation: map-spin var(--map-spin) linear infinite; }
+@keyframes map-spin { to { transform: rotate(1turn); } }
+[data-puff] { transform-box: fill-box; transform-origin: 50% 50%; }
+.path-map.is-alive [data-puff] { animation: map-puff var(--map-puff) ease-out infinite; }
+.path-map.is-alive [data-puff="1"] { animation-delay: calc(var(--map-puff) / -3); }
+.path-map.is-alive [data-puff="2"] { animation-delay: calc(var(--map-puff) / -1.5); }
+@keyframes map-puff { 0% { transform: translate(-3px, 5px) scale(.6); opacity: 0; } 25% { opacity: 1; } 100% { transform: translate(4px, -6px) scale(1.3); opacity: 0; } }
+
+/* Camino en línea (letra grande): sin estrellas ni figuras. */
+.path-map.is-linear .path-stars, .path-map.is-linear .map-critter { display: none; }

@@ -103,6 +103,8 @@
   --map-dusk: #f2a46c;
   --map-dusk-max: .3;
   --map-lamp: #ffd88a;
+  --map-star: #fff3d6;
+  --map-cloud: rgba(60, 70, 90, .07);
   --map-tint-renacimiento: #e6e8d0;
   --map-tint-manierismo-y-norte: #dfe5d8;
   --map-tint-barroco: #eee3cc;
@@ -255,6 +257,8 @@
     --map-dusk: #c27a46;
     --map-dusk-max: .22;
     --map-lamp: #f2c46c;
+    --map-star: #f6e7c4;
+    --map-cloud: rgba(0, 0, 0, .14);
     --map-tint-renacimiento: #23251b;
     --map-tint-manierismo-y-norte: #1f2521;
     --map-tint-barroco: #272319;
@@ -347,6 +351,8 @@
   --map-dusk: #c27a46;
   --map-dusk-max: .22;
   --map-lamp: #f2c46c;
+  --map-star: #f6e7c4;
+  --map-cloud: rgba(0, 0, 0, .14);
   --map-tint-renacimiento: #23251b;
   --map-tint-manierismo-y-norte: #1f2521;
   --map-tint-barroco: #272319;
