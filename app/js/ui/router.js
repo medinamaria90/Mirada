@@ -29,6 +29,13 @@ export const stageRoute = (artistId, branchId = '') => `etapa-${artistId}${branc
 // Pantalla de una rama (su propio paisaje y sus pintores): rama-<id>.
 export const branchRoute = (branchId) => `rama-${branchId}`;
 
+// A dónde vuelven atrás, «Salir» y la X de una ronda: a la rama si se juega desde ella (la ruta de la etapa la lleva,
+// aunque la pantalla anterior sea otra etapa de la misma rama); si no, a la ficha del pintor o su galería.
+export function stageReturnTo(branchId, prev) {
+  if (branchId) return branchRoute(branchId);
+  return /^(pintor|obras|rama)-[a-z0-9-]+$/.test(prev) ? prev : null;
+}
+
 export function parseRoute(hash, opts = {}) {
   const name = String(hash || '').replace(/^#/, '');
   if (name === '' || name === ROUTES.home) return { name: 'home' };

@@ -19,7 +19,7 @@ import { rankProgress } from '../../engine/profile.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
 import { branchAfterRound, statusInBranch } from '../../engine/branches.js';
-import { setMapFocus } from './path-map.js';
+import { setMapFocus, setBranchFocus } from './path-map.js';
 
 export { extraRounds } from './result-actions.js';
 
@@ -245,7 +245,7 @@ export function renderResult(ctx, el, opts) {
       <div class="result-actions">
         ${ownNote}${coverNote}
         ${blocked && gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
-        ${blocked || branchNext ? '<button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>' : ''}
+        ${blocked || branchNext ? `<button class="btn btn-secondary btn-wide" data-action="done">${opts.branchId ? 'Volver a la rama' : 'Volver al camino'}</button>` : ''}
         ${practice ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(practice.to)}">${icons[practice.icon](20)}<span>${esc(practice.label)}</span></button>` : ''}
         ${token ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
         <p class="copy-status" role="status"></p>
@@ -272,6 +272,11 @@ export function renderResult(ctx, el, opts) {
     done: () => {
       ctx.audio.sfx('tap');
       if (opts.onDone) return opts.onDone();
+      // Ronda jugada desde la pantalla de una rama: de vuelta a ella, en la parada jugada.
+      if (opts.branchId && plan.kind === 'stage' && !isDeep && plan.artistId) {
+        setBranchFocus(`artist:${plan.artistId}`);
+        return ctx.go(branchRoute(opts.branchId), { replace: true });
+      }
       // De vuelta al mapa, en la parada recién jugada (la rama ya se marcó arriba).
       if (!inBranch && plan.kind === 'stage' && plan.artistId) setMapFocus('', `artist:${plan.artistId}`);
       else if (plan.kind === 'sala') setMapFocus('', `sala:${plan.movementId}`);
