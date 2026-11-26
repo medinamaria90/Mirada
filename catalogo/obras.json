@@ -5955,8 +5955,8 @@
   {
    "id": "w3649296",
    "artistId": "uccello",
-   "title": "The Hunt in the Forest",
-   "titleSource": "traducir",
+   "title": "La caza en el bosque",
+   "titleSource": "traducido",
    "year": "c. 1470",
    "yearSort": 1470,
    "yearQuality": "circa",
@@ -5993,7 +5993,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -6088,8 +6088,8 @@
   {
    "id": "w3637223",
    "artistId": "uccello",
-   "title": "Painting of Jacopone da Todi",
-   "titleSource": "traducir",
+   "title": "Jacopone da Todi",
+   "titleSource": "traducido",
    "year": "1436",
    "yearSort": 1436,
    "yearQuality": "exact",
@@ -6123,14 +6123,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3982380",
    "artistId": "uccello",
-   "title": "La Thébaïde",
-   "titleSource": "traducir",
+   "title": "La Tebaida",
+   "titleSource": "traducido",
    "year": "1460",
    "yearSort": 1460,
    "yearQuality": "exact",
@@ -6162,14 +6162,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w15965547",
    "artistId": "uccello",
-   "title": "Crucifixion of Christ",
-   "titleSource": "traducir",
+   "title": "Crucifixión",
+   "titleSource": "traducido",
    "year": "c. 1423",
    "yearSort": 1423,
    "yearQuality": "circa",
@@ -6206,14 +6206,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w16599926",
    "artistId": "uccello",
-   "title": "St George slaying the dragon",
-   "titleSource": "traducir",
+   "title": "San Jorge matando al dragón",
+   "titleSource": "traducido",
    "year": "1423",
    "yearSort": 1423,
    "yearQuality": "exact",
@@ -6256,14 +6256,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w16596981",
    "artistId": "uccello",
-   "title": "Portrait of a Young Man",
-   "titleSource": "traducir",
+   "title": "Retrato de un joven",
+   "titleSource": "traducido",
    "year": "c. 1430",
    "yearSort": 1430,
    "yearQuality": "circa",
@@ -6295,7 +6295,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -6926,8 +6926,8 @@
   {
    "id": "w3711791",
    "artistId": "masaccio",
-   "title": "The Distribution of Alms and Death of Ananias",
-   "titleSource": "traducir",
+   "title": "La distribución de los bienes y la muerte de Ananías",
+   "titleSource": "traducido",
    "year": "1425",
    "yearSort": 1425,
    "yearQuality": "exact",
@@ -6959,7 +6959,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -7012,8 +7012,8 @@
   {
    "id": "w3949530",
    "artistId": "masaccio",
-   "title": "A Bearded Carmelite Saint",
-   "titleSource": "traducir",
+   "title": "Santo carmelita con barba",
+   "titleSource": "traducido",
    "year": "1426",
    "yearSort": 1426,
    "yearQuality": "exact",
@@ -7045,14 +7045,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3605535",
    "artistId": "masaccio",
-   "title": "The Adoration of the Magi",
-   "titleSource": "traducir",
+   "title": "La adoración de los Magos",
+   "titleSource": "traducido",
    "year": "1426",
    "yearSort": 1426,
    "yearQuality": "exact",
@@ -7088,14 +7088,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3948700",
    "artistId": "masaccio",
-   "title": "Saint Andrew",
-   "titleSource": "traducir",
+   "title": "San Andrés",
+   "titleSource": "traducido",
    "year": "1426",
    "yearSort": 1426,
    "yearQuality": "exact",
@@ -7129,14 +7129,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3949351",
    "artistId": "masaccio",
-   "title": "Saints Jerome and John the Baptist",
-   "titleSource": "traducir",
+   "title": "San Jerónimo y san Juan Bautista",
+   "titleSource": "traducido",
    "year": "c. 1428",
    "yearSort": 1428,
    "yearQuality": "circa",
@@ -7171,14 +7171,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3698230",
    "artistId": "masaccio",
-   "title": "The Crucifixion of Saint Peter",
-   "titleSource": "traducir",
+   "title": "La crucifixión de san Pedro",
+   "titleSource": "traducido",
    "year": "1426",
    "yearSort": 1426,
    "yearQuality": "exact",
@@ -7212,14 +7212,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3947289",
    "artistId": "masaccio",
-   "title": "Saint Jerome",
-   "titleSource": "traducir",
+   "title": "San Jerónimo",
+   "titleSource": "traducido",
    "year": "1426",
    "yearSort": 1426,
    "yearQuality": "exact",
@@ -7253,14 +7253,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3948660",
    "artistId": "masaccio",
-   "title": "Saint Augustine",
-   "titleSource": "traducir",
+   "title": "San Agustín",
+   "titleSource": "traducido",
    "year": "1426",
    "yearSort": 1426,
    "yearQuality": "exact",
@@ -7294,14 +7294,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3899272",
    "artistId": "masaccio",
-   "title": "Repentance of Saint Peter",
-   "titleSource": "traducir",
+   "title": "El arrepentimiento de san Pedro",
+   "titleSource": "traducido",
    "year": "c. 1425",
    "yearSort": 1425,
    "yearQuality": "circa",
@@ -7336,7 +7336,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -7389,8 +7389,8 @@
   {
    "id": "w291189",
    "artistId": "filippo-lippi",
-   "title": "Adoration in the Forest",
-   "titleSource": "traducir",
+   "title": "Adoración en el bosque",
+   "titleSource": "traducido",
    "year": "1459",
    "yearSort": 1459,
    "yearQuality": "exact",
@@ -7429,14 +7429,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w1056007",
    "artistId": "filippo-lippi",
-   "title": "Annunciation",
-   "titleSource": "traducir",
+   "title": "Anunciación",
+   "titleSource": "traducido",
    "year": "c. 1450",
    "yearSort": 1450,
    "yearQuality": "circa",
@@ -7472,14 +7472,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3889196",
    "artistId": "filippo-lippi",
-   "title": "Barbadori Altarpiece and Predella",
-   "titleSource": "traducir",
+   "title": "Retablo Barbadori",
+   "titleSource": "traducido",
    "year": "1437",
    "yearSort": 1437,
    "yearQuality": "exact",
@@ -7520,14 +7520,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w1056043",
    "artistId": "filippo-lippi",
-   "title": "Annunciation with Two Kneeling Donors",
-   "titleSource": "traducir",
+   "title": "Anunciación con dos donantes arrodillados",
+   "titleSource": "traducido",
    "year": "c. 1445",
    "yearSort": 1445,
    "yearQuality": "circa",
@@ -7564,7 +7564,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -7614,8 +7614,8 @@
   {
    "id": "w3618193",
    "artistId": "filippo-lippi",
-   "title": "Martelli Annunciation",
-   "titleSource": "traducir",
+   "title": "Anunciación Martelli",
+   "titleSource": "traducido",
    "year": "c. 1445",
    "yearSort": 1445,
    "yearQuality": "circa",
@@ -7652,14 +7652,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3958339",
    "artistId": "filippo-lippi",
-   "title": "Seven Saints",
-   "titleSource": "traducir",
+   "title": "Siete santos",
+   "titleSource": "traducido",
    "year": "c. 1449",
    "yearSort": 1449,
    "yearQuality": "circa",
@@ -7691,7 +7691,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -8054,8 +8054,8 @@
   {
    "id": "w3947293",
    "artistId": "piero",
-   "title": "Saint Jerome and a Donor",
-   "titleSource": "traducir",
+   "title": "San Jerónimo y un donante",
+   "titleSource": "traducido",
    "year": "1440",
    "yearSort": 1440,
    "yearQuality": "exact",
@@ -8090,14 +8090,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3731175",
    "artistId": "piero",
-   "title": "Hercules",
-   "titleSource": "traducir",
+   "title": "Hércules",
+   "titleSource": "traducido",
    "year": "1465",
    "yearSort": 1465,
    "yearQuality": "exact",
@@ -8131,14 +8131,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3948659",
    "artistId": "piero",
-   "title": "Saint Augustin",
-   "titleSource": "traducir",
+   "title": "San Agustín",
+   "titleSource": "traducido",
    "year": "1454",
    "yearSort": 1454,
    "yearQuality": "exact",
@@ -8180,8 +8180,8 @@
   {
    "id": "w3842514",
    "artistId": "piero",
-   "title": "Virgin and Child Enthroned with Four Angels",
-   "titleSource": "traducir",
+   "title": "Virgen con el Niño entronizada y cuatro ángeles",
+   "titleSource": "traducido",
    "year": "1475",
    "yearSort": 1475,
    "yearQuality": "exact",
@@ -8224,7 +8224,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -9677,8 +9677,8 @@
   {
    "id": "w945250",
    "artistId": "perugino",
-   "title": "Portrait of Francesco delle Opere",
-   "titleSource": "traducir",
+   "title": "Retrato de Francesco delle Opere",
+   "titleSource": "traducido",
    "year": "1494",
    "yearSort": 1494,
    "yearQuality": "exact",
@@ -9713,14 +9713,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w368788",
    "artistId": "perugino",
-   "title": "Pietà",
-   "titleSource": "traducir",
+   "title": "Piedad",
+   "titleSource": "traducido",
    "year": "1483",
    "yearSort": 1483,
    "yearQuality": "exact",
@@ -9759,14 +9759,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3221619",
    "artistId": "perugino",
-   "title": "Combat of Love and Chastity",
-   "titleSource": "traducir",
+   "title": "Combate entre el Amor y la Castidad",
+   "titleSource": "traducido",
    "year": "1503",
    "yearSort": 1503,
    "yearQuality": "exact",
@@ -9809,14 +9809,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3207678",
    "artistId": "perugino",
-   "title": "Lamentation over the Dead Christ",
-   "titleSource": "traducir",
+   "title": "Lamentación sobre Cristo muerto",
+   "titleSource": "traducido",
    "year": "c. 1495",
    "yearSort": 1495,
    "yearQuality": "circa",
@@ -9855,14 +9855,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3213774",
    "artistId": "perugino",
-   "title": "Madonna and Child with Two Angels, Saint Rose and Saint Catherine",
-   "titleSource": "traducir",
+   "title": "Virgen con el Niño, dos ángeles, santa Rosa y santa Catalina",
+   "titleSource": "traducido",
    "year": "c. 1492–1500",
    "yearSort": 1492,
    "yearQuality": "circa",
@@ -9905,7 +9905,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -15605,8 +15605,8 @@
   {
    "id": "w3664358",
    "artistId": "pontormo",
-   "title": "Supper at Emmaus",
-   "titleSource": "traducir",
+   "title": "La cena de Emaús",
+   "titleSource": "traducido",
    "year": "1525",
    "yearSort": 1525,
    "yearQuality": "exact",
@@ -15641,7 +15641,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -15738,8 +15738,8 @@
   {
    "id": "w1706136",
    "artistId": "pontormo",
-   "title": "Joseph with Jacob in Egypt",
-   "titleSource": "traducir",
+   "title": "José con Jacob en Egipto",
+   "titleSource": "traducido",
    "year": "c. 1518",
    "yearSort": 1518,
    "yearQuality": "circa",
@@ -15773,14 +15773,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3944486",
    "artistId": "pontormo",
-   "title": "The Virgin and Child with St Joseph and St John the Baptist",
-   "titleSource": "traducir",
+   "title": "La Virgen con el Niño, san José y san Juan Bautista",
+   "titleSource": "traducido",
    "year": "1522",
    "yearSort": 1522,
    "yearQuality": "exact",
@@ -15818,14 +15818,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w3937764",
    "artistId": "pontormo",
-   "title": "Portrait of an Engraver of Semi-Precious Stones",
-   "titleSource": "traducir",
+   "title": "Retrato de un tallador de piedras preciosas",
+   "titleSource": "traducido",
    "year": "1517",
    "yearSort": 1517,
    "yearQuality": "exact",
@@ -15860,7 +15860,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -17317,8 +17317,8 @@
   {
    "id": "w3937472",
    "artistId": "bronzino",
-   "title": "Portrait of Bia de' Medici",
-   "titleSource": "traducir",
+   "title": "Retrato de Bia de Médici",
+   "titleSource": "traducido",
    "year": "c. 1543",
    "yearSort": 1543,
    "yearQuality": "circa",
@@ -17352,7 +17352,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -17402,8 +17402,8 @@
   {
    "id": "w3944462",
    "artistId": "bronzino",
-   "title": "Panciatichi Holy Family",
-   "titleSource": "traducir",
+   "title": "Sagrada Familia Panciatichi",
+   "titleSource": "traducido",
    "year": "s. XVI",
    "yearSort": 1538,
    "yearQuality": "century",
@@ -17440,7 +17440,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -18594,8 +18594,8 @@
   {
    "id": "w18601924",
    "artistId": "arcimboldo",
-   "title": "The Cook",
-   "titleSource": "traducir",
+   "title": "El cocinero",
+   "titleSource": "traducido",
    "year": "c. 1570",
    "yearSort": 1570,
    "yearQuality": "circa",
@@ -18629,7 +18629,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -34552,8 +34552,8 @@
   {
    "id": "w5234041",
    "artistId": "hogarth",
-   "title": "David Garrick as Richard III",
-   "titleSource": "traducir",
+   "title": "David Garrick como Ricardo III",
+   "titleSource": "traducido",
    "year": "c. 1745",
    "yearSort": 1745,
    "yearQuality": "circa",
@@ -34589,7 +34589,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -34689,8 +34689,8 @@
   {
    "id": "w6772906",
    "artistId": "hogarth",
-   "title": "Marriage A-la-Mode: 6. The Lady's Death",
-   "titleSource": "traducir",
+   "title": "Casamiento a la moda VI: la muerte de la condesa",
+   "titleSource": "traducido",
    "year": "1743",
    "yearSort": 1743,
    "yearQuality": "exact",
@@ -34730,7 +34730,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -43196,8 +43196,8 @@
   {
    "id": "w18599152",
    "artistId": "gericault",
-   "title": "The Severed Heads",
-   "titleSource": "traducir",
+   "title": "Las cabezas cortadas",
+   "titleSource": "traducido",
    "year": "c. 1818",
    "yearSort": 1818,
    "yearQuality": "circa",
@@ -43248,8 +43248,8 @@
   {
    "id": "w29902189",
    "artistId": "gericault",
-   "title": "Head of a lion",
-   "titleSource": "traducir",
+   "title": "Cabeza de león",
+   "titleSource": "traducido",
    "year": "c. 1819",
    "yearSort": 1819,
    "yearQuality": "circa",
@@ -43283,14 +43283,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w106701973",
    "artistId": "gericault",
-   "title": "Cheval Cabré au Tapis de Selle Rouge",
-   "titleSource": "traducir",
+   "title": "Caballo encabritado con mantilla roja",
+   "titleSource": "traducido",
    "year": "1812",
    "yearSort": 1812,
    "yearQuality": "exact",
@@ -43325,14 +43325,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w26708040",
    "artistId": "gericault",
-   "title": "A Horse frightened by Lightning",
-   "titleSource": "traducir",
+   "title": "Caballo asustado por un rayo",
+   "titleSource": "traducido",
    "year": "c. 1820",
    "yearSort": 1820,
    "yearQuality": "circa",
@@ -43364,7 +43364,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -65479,8 +65479,8 @@
   {
    "id": "w3745698",
    "artistId": "matisse",
-   "title": "The Open Window",
-   "titleSource": "traducir",
+   "title": "La ventana abierta",
+   "titleSource": "traducido",
    "year": "1905",
    "yearSort": 1905,
    "yearQuality": "exact",
@@ -65516,7 +65516,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -65610,8 +65610,8 @@
   {
    "id": "w3791123",
    "artistId": "matisse",
-   "title": "Goldfish",
-   "titleSource": "traducir",
+   "title": "Peces rojos",
+   "titleSource": "traducido",
    "year": "1912",
    "yearSort": 1912,
    "yearQuality": "exact",
@@ -65645,7 +65645,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
@@ -65694,8 +65694,8 @@
   {
    "id": "w2049345",
    "artistId": "matisse",
-   "title": "Game of Bowls",
-   "titleSource": "traducir",
+   "title": "El juego de bolos",
+   "titleSource": "traducido",
    "year": "1908",
    "yearSort": 1908,
    "yearQuality": "exact",
@@ -65732,14 +65732,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w6728519",
    "artistId": "matisse",
-   "title": "Madras Rouge",
-   "titleSource": "traducir",
+   "title": "Madrás rojo",
+   "titleSource": "traducido",
    "year": "1907",
    "yearSort": 1907,
    "yearQuality": "exact",
@@ -65777,14 +65777,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w7447987",
    "artistId": "matisse",
-   "title": "Self-Portrait in a Striped T-shirt",
-   "titleSource": "traducir",
+   "title": "Autorretrato con camiseta de rayas",
+   "titleSource": "traducido",
    "year": "1906",
    "yearSort": 1906,
    "yearQuality": "exact",
@@ -65819,14 +65819,14 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
    "id": "w7727514",
    "artistId": "matisse",
-   "title": "The Conversation",
-   "titleSource": "traducir",
+   "title": "La conversación",
+   "titleSource": "traducido",
    "year": "c. 1900–1908",
    "yearSort": 1900,
    "yearQuality": "circa",
@@ -65867,7 +65867,7 @@
     "ficha": "wikidata",
     "fetched": "2026-11-26"
    },
-   "confidence": "medium",
+   "confidence": "high",
    "warnings": []
   },
   {
