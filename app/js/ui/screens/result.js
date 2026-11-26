@@ -210,6 +210,12 @@ export function renderResult(ctx, el, opts) {
   const coverNote = missing ? `<p class="result-note">${missing === 1 ? 'Te falta 1 cuadro suyo por ver' : `Te faltan ${missing} cuadros suyos por ver`}: una ronda más</p>` : '';
   // Una sola acción para seguir practicando (sin duplicados); con la ronda floja, «Repetir» ya es la principal.
   const practice = blocked ? null : practiceAction(ctx, plan, { retry, more: opts.more, closing, duel: opts.friendScore != null });
+  // La acción principal, siempre a mano en la barra de abajo: «Repetir» si la ronda no salió, el siguiente de la rama o «Seguir».
+  const mainButton = blocked
+    ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>`
+    : branchNext
+      ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>`
+      : `<button class="btn ${deepDone && deepNext(ctx, deepDone) ? 'btn-secondary' : 'btn-primary'} btn-wide" data-action="done" data-primary>${esc(deepDone ? 'Volver al camino' : opts.primary || 'Seguir')}</button>`;
   const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar a un amigo';
   const reduce = prefersReducedMotion();
   const toPct = rank.pct;
@@ -238,16 +244,14 @@ export function renderResult(ctx, el, opts) {
       </div>
       <div class="result-actions">
         ${ownNote}${coverNote}
-        ${blocked ? `${gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
-        <button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>
-        <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
-        ${branchNext ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>
-        <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `<button class="btn ${deepDone && deepNext(ctx, deepDone) ? 'btn-secondary' : 'btn-primary'} btn-wide" data-action="done" data-primary>${esc(deepDone ? 'Volver al camino' : opts.primary || 'Seguir')}</button>`}
-        ${practice ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(practice.to)}">${icons[practice.icon](20)}<span>${esc(practice.label)}</span></button>` : ''}`}
+        ${blocked && gated ? `<p class="result-note result-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></p>` : ''}
+        ${blocked || branchNext ? '<button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>' : ''}
+        ${practice ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(practice.to)}">${icons[practice.icon](20)}<span>${esc(practice.label)}</span></button>` : ''}
         ${token ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
         <p class="copy-status" role="status"></p>
         <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="4"></textarea>
       </div>
+      <div class="result-dock">${mainButton}</div>
     </main>
   </div>`;
 
