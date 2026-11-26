@@ -97,10 +97,11 @@ function play(ctx, el, opts) {
   });
 }
 
-// Si la ronda se lanzó desde la ficha de un pintor (o su galería), atrás y «Salir» vuelven a ella y no al camino.
+// Si la ronda se lanzó desde la ficha de un pintor (o su galería) o desde la pantalla de una rama, atrás y «Salir»
+// vuelven a ella y no al camino.
 function cameFrom(ctx) {
   const prev = ctx.prevRoute();
-  return /^(pintor|obras)-[a-z0-9-]+$/.test(prev) ? prev : null;
+  return /^(pintor|obras|rama)-[a-z0-9-]+$/.test(prev) ? prev : null;
 }
 
 // --- Ronda retomada -----------------------------------------------------------
@@ -290,9 +291,10 @@ function withIntro(ctx, el, movementId, show) {
 
 // Historia al empezar un nivel (una vez, saltable): después se muestra lo que sigue, con los cuadros que ha enseñado (la
 // ronda no abre con ellos). Sin historia, de seguido.
+// La historia sale siempre al entrar en un pintor (decisión de María, 26/11): se salta con un toque.
 function withStory(ctx, el, artistId, level, show) {
   import('../story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { history: false }))
+    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true }))
     .catch((err) => { console.error(err); return []; })
     .then((shown) => { if (el.isConnected) show(Array.isArray(shown) ? shown : []); });
 }
