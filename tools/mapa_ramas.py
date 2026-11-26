@@ -165,6 +165,14 @@ def pagoda(x, y):
 
 
 @_libre
+def farol(x, y):
+    """Farol de piedra japonés (tōrō): se enciende de noche."""
+    return (y, M.sombra(x + 1, y + 1, 5, 1.5) + M.R(x - 1.2, y - 7, 2.4, 7, M.T3) + M.R(x - 3.5, y - 12, 7, 5, M.T2)
+            + M.R(x - 2, y - 11, 4, 3, M.LINO).replace('<rect', '<rect data-lamp=""', 1)
+            + M.poly([(x - 5.5, y - 12), (x, y - 16), (x + 5.5, y - 12)], M.T3))
+
+
+@_libre
 def torii(x, y, w=26, h=24):
     return (y, M.R(x - w / 2 + 3, y - h, 3, h, M.TEJA2) + M.R(x + w / 2 - 6, y - h, 3, h, M.TEJA2) + M.R(x - w / 2 + 1, y - h + 5, w - 2, 2.4, M.TEJA2)
             + M.P(f'M{M.f(x - w / 2 - 3)} {M.f(y - h)}Q{M.f(x)} {M.f(y - h + 2)} {M.f(x + w / 2 + 3)} {M.f(y - h)}L{M.f(x + w / 2 + 4)} {M.f(y - h - 3.4)}Q{M.f(x)} {M.f(y - h - 1.6)} {M.f(x - w / 2 - 4)} {M.f(y - h - 3.4)}Z', M.TEJA2))
@@ -247,8 +255,8 @@ def deco_japon(p, h):
     vinetas = [
         lambda x, y, i: [fuji(x, y + 20, 130, 54), pino(x + 40, y + 30, 28)],
         lambda x, y, i: [puente_curvo(x, y + 26), cerezo(x - 40, y + 20), pino(x + 38, y + 18, 26)],
-        lambda x, y, i: [pagoda(x - 6, y + 28), cerezo(x + 30, y + 26, 7), cerezo(x - 38, y + 22, 7)],
-        lambda x, y, i: [torii(x, y + 24), pino(x - 36, y + 26, 30), pino(x + 34, y + 20, 24)],
+        lambda x, y, i: [pagoda(x - 6, y + 28), farol(x + 16, y + 32), cerezo(x + 30, y + 26, 7), cerezo(x - 38, y + 22, 7)],
+        lambda x, y, i: [torii(x, y + 24), farol(x - 18, y + 30), farol(x + 18, y + 30), pino(x - 36, y + 26, 30), pino(x + 34, y + 20, 24)],
     ]
     relleno = lambda x, y, i: pino(x, y, 22) if i % 2 else cerezo(x, y, 6)
     return _por_parada(p, h, vinetas, relleno)

@@ -542,7 +542,7 @@ ESPARCIDO = {
     'romanticismo': [(3, lambda x, y, i: roca(x, y, 6 + i % 3 * 2)), (2, lambda x, y, i: M.abeto(x, y, 14 + i % 2 * 4)), (2, lambda x, y, i: hierba(x, y)),
                      (1, lambda x, y, i: flores(x, y, [M.TOP, '#EBD38A']))],
     'realismo': [(2, lambda x, y, i: rebano(x, y)), (2, lambda x, y, i: hierba(x, y)), (2, lambda x, y, i: flores(x, y, ['#EBD38A', M.TOP])),
-                 (1, lambda x, y, i: M.almiar(x, y, 9)), (1, lambda x, y, i: roca(x, y))],
+                 (1, lambda x, y, i: M.almiar(x, y, 9)), (1, lambda x, y, i: roca(x, y)), (1, lambda x, y, i: M.arbol(x, y, 6))],
     'impresionismo': [(4, lambda x, y, i: flores(x, y, [BLOOM, '#E8C9A0', M.TOP])), (2, lambda x, y, i: mata(x, y)), (2, lambda x, y, i: hierba(x, y))],
     'postimpresionismo': [(3, lambda x, y, i: hilera(x, y, M.PIZARRA2, 5)), (2, lambda x, y, i: flores(x, y, ['#E3C76B', '#EBD38A'])), (2, lambda x, y, i: M.cipres(x, y, 14, 4)),
                           (1, lambda x, y, i: hierba(x, y))],

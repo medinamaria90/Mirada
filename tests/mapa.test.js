@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress, hasMovementReview, nextStep } from '../app/js/engine/progress.js';
+import { firstTramo } from '../app/js/engine/branches.js';
 import { icons } from '../app/js/ui/icons.js';
 import { renderPathMap, pathLayout, eraLayout, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
 import { roadX, ROAD_HALF, branchSlots, branchLayout, branchLand } from '../app/js/ui/screens/path-layout.js';
@@ -25,6 +26,9 @@ globalThis.getComputedStyle = () => ({ getPropertyValue: () => '#000000' });
 function ctxWith(index, progress = emptyProgress()) {
   return { index, store: { get: () => ({ progress }) } };
 }
+
+// Paradas del primer tramo del camino (dominarlas abre las ramas de la primera época).
+const tramo1Of = (index) => firstTramo(index, index.steps[0].movementId).length;
 
 function masterFirst(index, n) {
   const p = emptyProgress();
@@ -184,9 +188,10 @@ test('mapa: carteles de época al borde del sendero, nunca encima; tramos sobre 
   // Florencia y Castilla: rótulo dentro del texto de Botticelli (oculto al lector) y un elemento propio, legible,
   // justo antes de su parada en el DOM («Tramo …: 1 de 2 dominados»).
   const first = real.artist(real.steps[0].id);
-  const kicker = `<span class="stage-kicker" aria-hidden="true">${first.section} <span class="stage-kicker-count">1/2</span></span>`;
+  const n = real.stageArtists(first.movementId).filter((a) => a.section === first.section).length;
+  const kicker = `<span class="stage-kicker" aria-hidden="true">${first.section} <span class="stage-kicker-count">1/${n}</span></span>`;
   assert.ok(html.includes(kicker), 'el rótulo del tramo no va con su primera parada');
-  const sr = html.indexOf(`<li class="sr-only">Tramo ${first.section}: 1 de 2 dominados</li>`);
+  const sr = html.indexOf(`<li class="sr-only">Tramo ${first.section}: 1 de ${n} dominados</li>`);
   assert.ok(sr >= 0 && sr < html.indexOf(`data-step="artist:${first.id}"`), 'el lector no oye el tramo antes de sus paradas');
   assert.ok(!html.includes('stage-section') && !html.includes('class="lock-note"'), 'quedan rótulos sobre el sendero o párrafos vacíos');
 });
@@ -236,7 +241,7 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   const iBranch = html.indexOf(`data-id="${era.id}" data-members`);
   assert.ok(iHost < iBranch && iBranch < iNext, 'la rama no va tras su parada en el orden de tabulación');
   // Abierta (primer tramo dominado): el grupo dice cuántas hay abiertas.
-  const open = renderPathMap(ctxWith(real, masterFirst(real, 2)));
+  const open = renderPathMap(ctxWith(real, masterFirst(real, tramo1Of(real))));
   assert.ok(/class="branch is-open is-group" data-action="branches" data-id="renacimiento"/.test(open));
   assert.ok(open.includes('<span class="branch-count">2 abiertas</span>') && /class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
 });
@@ -330,7 +335,7 @@ test('mapa: pintado por partes (épocas lejanas como hueco) y mismo resultado al
 
 test('resultado de rama: avance y siguiente pintor abierto', async () => {
   const { branchAfterRound } = await import('../app/js/engine/branches.js');
-  const p = masterFirst(real, 2);
+  const p = masterFirst(real, tramo1Of(real));
   const own = real.branch('gotico').artists.filter((id) => real.pathIndex(id) < 0);
   p.artists[own[0]] = { plays: 1, best: 1, mastered: false, last: TODAY };
   const r = branchAfterRound(p, real, own[0]);
@@ -352,7 +357,9 @@ test('pantalla de rama: ruta propia, sus pintores como paradas, cada época rotu
   }
   assert.equal(branchLand(real.branch('descubre-barroco')), 'barroco');
   assert.equal(branchLand(real.branch('escuela-rusa')), 'escuela-rusa');
-  assert.equal(branchMusic(real, real.branch('escuela-rusa')), 'escuela-rusa');
-  assert.equal(branchMusic(real, real.branch('pintura-britanica')), real.movement(real.branch('pintura-britanica').opensAt).era, 'sin lista propia, la de su época');
-  assert.equal(branchMusic(real, real.branch('descubre-barroco')), 'baroque');
+  const { PLAYLISTS } = await import('../app/js/audio/playlists.js');
+  for (const b of real.branches) {
+    const want = PLAYLISTS[b.id] ? b.id : real.movement(b.movementId || b.opensAt).era;
+    assert.equal(branchMusic(real, b), want, `${b.id}: su lista o, sin lista propia, la de su época`);
+  }
 });
