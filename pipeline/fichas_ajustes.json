@@ -4,5 +4,11 @@
   "city": "Valencia",
   "country": "España",
   "fuente": "Wikidata no da colección; la obra pertenece a la Fundación Bancaja (Valencia)"
+ },
+ "Q2445726": {
+  "museum": "Tate Britain",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "fuente": "Wikidata mantiene la National Gallery (la tuvo hasta pasarla a la Tate); hoy está en la Tate Britain (tate.org.uk, N01543)"
  }
 }

@@ -207,7 +207,7 @@
  "Q734834": {
   "museum": "Museos Reales de Bellas Artes de Bélgica",
   "museumQid": "Q377500",
-  "city": "Región de Bruselas-Capital",
+  "city": "Bruselas",
   "country": "Bélgica",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -835,7 +835,7 @@
  "Q17066005": {
   "museum": "Museos Reales de Bellas Artes de Bélgica",
   "museumQid": "Q377500",
-  "city": "Región de Bruselas-Capital",
+  "city": "Bruselas",
   "country": "Bélgica",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -2048,7 +2048,7 @@
  "Q1217288": {
   "museum": "Museo Nacional de Arte Antiguo",
   "museumQid": "Q212459",
-  "city": "Estrela",
+  "city": "Lisboa",
   "country": "Portugal",
   "inSpain": false,
   "technique": "Óleo",
@@ -2643,7 +2643,7 @@
  "Q1170194": {
   "museum": "Galería Nacional de Praga",
   "museumQid": "Q1419555",
-  "city": null,
+  "city": "Praga",
   "country": "República Checa",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -3847,7 +3847,7 @@
  "Q794077": {
   "museum": "Galería Borghese",
   "museumQid": "Q841506",
-  "city": "Roma Capitale",
+  "city": "Roma",
   "country": "Italia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -4656,7 +4656,7 @@
  "Q125359587": {
   "museum": "Museo de Bellas Artes de Valencia",
   "museumQid": "Q1748404",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "",
@@ -4674,7 +4674,7 @@
  "Q65047099": {
   "museum": "Museo de Bellas Artes de Valencia",
   "museumQid": "Q1748404",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "",
@@ -6141,7 +6141,7 @@
  "Q6106760": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -6269,7 +6269,7 @@
  "Q9026835": {
   "museum": "Museo de Bellas Artes de Budapest",
   "museumQid": "Q840886",
-  "city": "Zugló",
+  "city": "Budapest",
   "country": "Hungría",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -6372,7 +6372,7 @@
  "Q35485695": {
   "museum": "Museo de Bellas Artes de Valencia",
   "museumQid": "Q1748404",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -6731,7 +6731,7 @@
  "Q2610936": {
   "museum": "Galería Borghese",
   "museumQid": "Q841506",
-  "city": "Roma Capitale",
+  "city": "Roma",
   "country": "Italia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -7323,7 +7323,7 @@
  "Q650635": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -7487,7 +7487,7 @@
  "Q2311238": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -7839,7 +7839,7 @@
  "Q11787907": {
   "museum": "Museo de Bellas Artes de Budapest",
   "museumQid": "Q840886",
-  "city": "Zugló",
+  "city": "Budapest",
   "country": "Hungría",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -8942,7 +8942,7 @@
  "Q2361683": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -9939,7 +9939,7 @@
  "Q24260524": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -10008,7 +10008,7 @@
  "Q50908147": {
   "museum": "Museo de Bellas Artes de Budapest",
   "museumQid": "Q840886",
-  "city": "Zugló",
+  "city": "Budapest",
   "country": "Hungría",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -10106,7 +10106,7 @@
  "Q219831": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -10160,7 +10160,7 @@
  "Q766782": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -10329,7 +10329,7 @@
  "Q1170480": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -10534,7 +10534,7 @@
  "Q63111264": {
   "museum": "Museo Nacional de Arte Antiguo",
   "museumQid": "Q212459",
-  "city": "Estrela",
+  "city": "Lisboa",
   "country": "Portugal",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -11054,7 +11054,7 @@
  "Q3947097": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11102,7 +11102,7 @@
  "Q2880218": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11175,7 +11175,7 @@
  "Q42189928": {
   "museum": "Hospital de la Santa Caridad",
   "museumQid": "Q858907",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11196,7 +11196,7 @@
  "Q28220571": {
   "museum": "Hospital de la Santa Caridad",
   "museumQid": "Q858907",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -11360,7 +11360,7 @@
  "Q764831": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -11383,7 +11383,7 @@
  "Q17342250": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -11442,7 +11442,7 @@
  "Q4028318": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -11583,7 +11583,7 @@
  "Q167605": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -11672,10 +11672,10 @@
   "fetched": "2026-11-24"
  },
  "Q544315": {
-  "museum": "Museo del Führer",
-  "museumQid": "Q475667",
-  "city": "Linz",
-  "country": "Imperio aleman (1871-1949)",
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
   "materials": [
@@ -11706,7 +11706,7 @@
  "Q586035": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -12227,7 +12227,7 @@
  "Q18167078": {
   "museum": "Galería Nacional de Victoria",
   "museumQid": "Q1464509",
-  "city": "Ciudad de Melbourne",
+  "city": "Melbourne",
   "country": "Australia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -12313,7 +12313,7 @@
  "Q17390181": {
   "museum": "Museo Nacional de Arte Antiguo",
   "museumQid": "Q212459",
-  "city": "Estrela",
+  "city": "Lisboa",
   "country": "Portugal",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -12963,7 +12963,7 @@
  "Q17319963": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Pastel sobre pergamino",
@@ -14065,11 +14065,11 @@
   "fetched": "2026-11-24"
  },
  "Q12859945": {
-  "museum": "Museo del Führer",
-  "museumQid": "Q475667",
-  "city": "Linz",
-  "country": "Imperio aleman (1871-1949)",
-  "inSpain": false,
+  "museum": "Museo Nacional Thyssen-Bornemisza",
+  "museumQid": "Q176251",
+  "city": "Madrid",
+  "country": "España",
+  "inSpain": true,
   "technique": "Óleo sobre lienzo",
   "materials": [
    "lienzo",
@@ -14887,7 +14887,7 @@
  "Q636537": {
   "museum": "Museos Reales de Bellas Artes de Bélgica",
   "museumQid": "Q377500",
-  "city": "Región de Bruselas-Capital",
+  "city": "Bruselas",
   "country": "Bélgica",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15015,7 +15015,7 @@
  "Q835286": {
   "museum": "Museos Reales de Bellas Artes de Bélgica",
   "museumQid": "Q377500",
-  "city": "Región de Bruselas-Capital",
+  "city": "Bruselas",
   "country": "Bélgica",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15304,7 +15304,7 @@
  "Q4373337": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15325,7 +15325,7 @@
  "Q18689466": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -15348,7 +15348,7 @@
  "Q12110766": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16243,7 +16243,7 @@
  "Q4242050": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16269,7 +16269,7 @@
  "Q116432553": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16591,7 +16591,7 @@
  "Q18683081": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -16633,7 +16633,7 @@
  "Q52692816": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -17511,7 +17511,7 @@
  "Q4127254": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -17553,7 +17553,7 @@
  "Q118746671": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -17576,7 +17576,7 @@
  "Q4536026": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -17633,7 +17633,7 @@
  "Q18683074": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -18038,7 +18038,7 @@
  "Q18688348": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -18059,7 +18059,7 @@
  "Q18688347": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -18080,7 +18080,7 @@
  "Q4066483": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -18154,7 +18154,7 @@
  "Q4518724": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -18201,7 +18201,7 @@
  "Q4387907": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -18222,7 +18222,7 @@
  "Q7234368": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -18248,7 +18248,7 @@
  "Q4110560": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19550,7 +19550,7 @@
  "Q1993685": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19576,7 +19576,7 @@
  "Q4414026": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19597,7 +19597,7 @@
  "Q18543540": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19893,7 +19893,7 @@
  "Q2666439": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19919,7 +19919,7 @@
  "Q4396378": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19961,7 +19961,7 @@
  "Q16346518": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -19982,7 +19982,7 @@
  "Q9339735": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -20178,7 +20178,7 @@
  "Q104774383": {
   "museum": "Instituto de Arte Clark",
   "museumQid": "Q1465805",
-  "city": "Massachusetts",
+  "city": "Williamstown",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -20742,7 +20742,7 @@
  "Q3794660": {
   "museum": "Museo de Bellas Artes de Pau",
   "museumQid": "Q3330217",
-  "city": "Pirineos Atlánticos",
+  "city": "Pau",
   "country": "Francia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -20770,7 +20770,7 @@
  "Q4025363": {
   "museum": "Kitakyushu Municipal Museum of Art",
   "museumQid": "Q3297769",
-  "city": "Tobata-ku",
+  "city": "Kitakyushu",
   "country": "Japón",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -20830,7 +20830,7 @@
  "Q16518912": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -20851,7 +20851,7 @@
  "Q18689412": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -20874,7 +20874,7 @@
  "Q4340473": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -21283,7 +21283,7 @@
  "Q1217003": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -21306,7 +21306,7 @@
  "Q2354080": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -21338,7 +21338,7 @@
  "Q4400244": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23030,7 +23030,7 @@
  "Q104774332": {
   "museum": "Instituto de Arte Clark",
   "museumQid": "Q1465805",
-  "city": "Massachusetts",
+  "city": "Williamstown",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -23051,7 +23051,7 @@
  "Q104774335": {
   "museum": "Instituto de Arte Clark",
   "museumQid": "Q1465805",
-  "city": "Massachusetts",
+  "city": "Williamstown",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -23122,7 +23122,7 @@
  "Q4085405": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -23140,7 +23140,7 @@
  "Q3272319": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -23160,7 +23160,7 @@
  "Q4068125": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23183,7 +23183,7 @@
  "Q4424346": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -23208,7 +23208,7 @@
  "Q4089068": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23344,7 +23344,7 @@
  "Q3319184": {
   "museum": "Galería Nacional de Praga",
   "museumQid": "Q1419555",
-  "city": null,
+  "city": "Praga",
   "country": "República Checa",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23708,7 +23708,7 @@
  "Q4195595": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23733,7 +23733,7 @@
  "Q11791202": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23754,7 +23754,7 @@
  "Q2354033": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23847,7 +23847,7 @@
   "museum": "Conservatorio de Moscú",
   "museumQid": "Q215539",
   "city": "Moscú",
-  "country": "Rusia Soviética",
+  "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
   "materials": [
@@ -23878,7 +23878,7 @@
  "Q4304117": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -23922,7 +23922,7 @@
  "Q4187532": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -24447,7 +24447,7 @@
  "Q2504917": {
   "museum": "Museos Reales de Bellas Artes de Bélgica",
   "museumQid": "Q377500",
-  "city": "Región de Bruselas-Capital",
+  "city": "Bruselas",
   "country": "Bélgica",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24779,7 +24779,7 @@
  "Q4478998": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24802,7 +24802,7 @@
  "Q4095553": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24869,7 +24869,7 @@
  "Q4089077": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24916,7 +24916,7 @@
  "Q4063783": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24937,7 +24937,7 @@
  "Q4195524": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -24963,7 +24963,7 @@
  "Q107308907": {
   "museum": "Instituto Valenciano de Arte Moderno",
   "museumQid": "Q1600831",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -25115,7 +25115,7 @@
  "Q110401565": {
   "museum": "Instituto Valenciano de Arte Moderno",
   "museumQid": "Q1600831",
-  "city": "Sevilla",
+  "city": "Valencia",
   "country": "España",
   "inSpain": true,
   "technique": "",
@@ -25369,7 +25369,7 @@
  "Q18085208": {
   "museum": "Skagens Museum",
   "museumQid": "Q3555520",
-  "city": "Frederikshavn",
+  "city": "Skagen",
   "country": "Dinamarca",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25429,7 +25429,7 @@
  "Q18386242": {
   "museum": "Skagens Museum",
   "museumQid": "Q3555520",
-  "city": "Frederikshavn",
+  "city": "Skagen",
   "country": "Dinamarca",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25454,7 +25454,7 @@
  "Q17826909": {
   "museum": "Skagens Museum",
   "museumQid": "Q3555520",
-  "city": "Frederikshavn",
+  "city": "Skagen",
   "country": "Dinamarca",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25479,7 +25479,7 @@
  "Q12334558": {
   "museum": "Skagens Museum",
   "museumQid": "Q3555520",
-  "city": "Frederikshavn",
+  "city": "Skagen",
   "country": "Dinamarca",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25511,7 +25511,7 @@
  "Q18713070": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -25783,7 +25783,7 @@
  "Q1432536": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26093,7 +26093,7 @@
  "Q4157667": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26114,7 +26114,7 @@
  "Q4503153": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26135,7 +26135,7 @@
  "Q4343804": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26572,7 +26572,7 @@
  "Q4110204": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26593,7 +26593,7 @@
  "Q4458429": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26614,7 +26614,7 @@
  "Q4113083": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -26632,7 +26632,7 @@
  "Q4282465": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26653,7 +26653,7 @@
  "Q4193277": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -26705,7 +26705,7 @@
  "Q16679343": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -26723,7 +26723,7 @@
  "Q4337609": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -26741,7 +26741,7 @@
  "Q4085401": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "",
@@ -27227,7 +27227,7 @@
  "Q3829156": {
   "museum": "Galería Nacional de Arte Moderno",
   "museumQid": "Q1492387",
-  "city": "Roma Capitale",
+  "city": "Roma",
   "country": "Italia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -27248,7 +27248,7 @@
  "Q5967091": {
   "museum": "Galería Nacional de Praga",
   "museumQid": "Q1419555",
-  "city": null,
+  "city": "Praga",
   "country": "República Checa",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -27366,7 +27366,7 @@
  "Q4110588": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -27387,7 +27387,7 @@
  "Q11788444": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -27408,7 +27408,7 @@
  "Q105956031": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo",
@@ -27952,7 +27952,7 @@
  "Q18891156": {
   "museum": "Museo Nacional de Arte, Arquitectura y Diseño",
   "museumQid": "Q1132918",
-  "city": "Q585",
+  "city": "Oslo",
   "country": "Noruega",
   "inSpain": false,
   "technique": "Temple sobre cartón y lápiz de cera",
@@ -28003,7 +28003,7 @@
  "Q3208135": {
   "museum": "Museo Nacional de Arte, Arquitectura y Diseño",
   "museumQid": "Q1132918",
-  "city": "Q585",
+  "city": "Oslo",
   "country": "Noruega",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -28596,7 +28596,7 @@
  "Q29044191": {
   "museum": "Thiel Gallery",
   "museumQid": "Q252259",
-  "city": "municipio de Estocolmo",
+  "city": "Estocolmo",
   "country": "Suecia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -28622,7 +28622,7 @@
  "Q4156438": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -28691,7 +28691,7 @@
  "Q55822130": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -28918,7 +28918,7 @@
  "Q2990634": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -29754,7 +29754,7 @@
  "Q4247398": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -29826,7 +29826,7 @@
  "Q1170315": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -31156,7 +31156,7 @@
  "Q2344396": {
   "museum": "Galería Borghese",
   "museumQid": "Q841506",
-  "city": "Roma Capitale",
+  "city": "Roma",
   "country": "Italia",
   "inSpain": false,
   "technique": "Óleo sobre transferido a lienzo y tabla",
@@ -32039,7 +32039,7 @@
  "Q594406": {
   "museum": "Museos Reales de Bellas Artes de Bélgica",
   "museumQid": "Q377500",
-  "city": "Región de Bruselas-Capital",
+  "city": "Bruselas",
   "country": "Bélgica",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -32383,7 +32383,7 @@
  "Q15711253": {
   "museum": "Museo Benaki",
   "museumQid": "Q816669",
-  "city": "Municipio de Atenas",
+  "city": "Atenas",
   "country": "Grecia",
   "inSpain": false,
   "technique": "Temple y pan de oro sobre tabla",
@@ -32554,7 +32554,7 @@
  "Q5781032": {
   "museum": "National Gallery of Athens",
   "museumQid": "Q1167467",
-  "city": "Municipio de Atenas",
+  "city": "Atenas",
   "country": "Grecia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -32580,7 +32580,7 @@
  "Q2293936": {
   "museum": "Galería Borghese",
   "museumQid": "Q841506",
-  "city": "Roma Capitale",
+  "city": "Roma",
   "country": "Italia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -32708,7 +32708,7 @@
  "Q2627056": {
   "museum": "Galería Borghese",
   "museumQid": "Q841506",
-  "city": "Roma Capitale",
+  "city": "Roma",
   "country": "Italia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -32937,7 +32937,7 @@
  "Q1134060": {
   "museum": "Galería Borghese",
   "museumQid": "Q841506",
-  "city": "Roma Capitale",
+  "city": "Roma",
   "country": "Italia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -34612,7 +34612,7 @@
  "Q3630753": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -34827,7 +34827,7 @@
  "Q4211284": {
   "museum": "Rijksmuseum",
   "museumQid": "Q190804",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre tabla",
@@ -35213,7 +35213,7 @@
  "Q105525573": {
   "museum": "Iglesia de San Vicente",
   "museumQid": "Q5911386",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo",
@@ -35237,7 +35237,7 @@
  "Q5289575": {
   "museum": "Museo de Bellas Artes de Sevilla",
   "museumQid": "Q2163496",
-  "city": "Valencia",
+  "city": "Sevilla",
   "country": "España",
   "inSpain": true,
   "technique": "Óleo sobre lienzo",
@@ -35412,7 +35412,7 @@
  "Q9248340": {
   "museum": "Museo de Bellas Artes de Budapest",
   "museumQid": "Q840886",
-  "city": "Zugló",
+  "city": "Budapest",
   "country": "Hungría",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -36105,7 +36105,7 @@
  "Q8049268": {
   "museum": "Museo Meadows",
   "museumQid": "Q3303786",
-  "city": "Texas",
+  "city": "Dallas",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "",
@@ -36215,7 +36215,7 @@
  "Q15880867": {
   "museum": "Galería Nacional de Irlanda",
   "museumQid": "Q2018379",
-  "city": "Dublin City",
+  "city": "Dublín",
   "country": "Irlanda",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -36320,7 +36320,7 @@
  "Q11793036": {
   "museum": "Museo de Bellas Artes de Budapest",
   "museumQid": "Q840886",
-  "city": "Zugló",
+  "city": "Budapest",
   "country": "Hungría",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -38737,7 +38737,7 @@
  "Q59136337": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -38781,7 +38781,7 @@
  "Q4337604": {
   "museum": "Galería Tretiakov",
   "museumQid": "Q183334",
-  "city": "Rusia",
+  "city": "Moscú",
   "country": "Rusia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -38867,7 +38867,7 @@
  "Q2093283": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre arpillera",
@@ -38953,7 +38953,7 @@
  "Q154469": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39038,7 +39038,7 @@
  "Q4110564": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo y papel",
@@ -39117,7 +39117,7 @@
  "Q2278818": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39149,7 +39149,7 @@
  "Q7536969": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39175,7 +39175,7 @@
  "Q4110565": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39199,7 +39199,7 @@
  "Q262360": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39251,7 +39251,7 @@
  "Q17511613": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39274,7 +39274,7 @@
  "Q2200610": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39302,7 +39302,7 @@
  "Q4892867": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39476,7 +39476,7 @@
  "Q9391004": {
   "museum": "Galería Nacional de Praga",
   "museumQid": "Q1419555",
-  "city": null,
+  "city": "Praga",
   "country": "República Checa",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39500,7 +39500,7 @@
  "Q634122": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -39555,7 +39555,7 @@
  "Q4233325": {
   "museum": "Museo van Gogh",
   "museumQid": "Q224124",
-  "city": "Amsterdam",
+  "city": "Ámsterdam",
   "country": "Países Bajos",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -40107,7 +40107,7 @@
  "Q18753113": {
   "museum": "Museo Nacional de Arte, Arquitectura y Diseño",
   "museumQid": "Q1132918",
-  "city": "Q585",
+  "city": "Oslo",
   "country": "Noruega",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -40128,7 +40128,7 @@
  "Q3793021": {
   "museum": "Museo Nacional de Arte, Arquitectura y Diseño",
   "museumQid": "Q1132918",
-  "city": "Q585",
+  "city": "Oslo",
   "country": "Noruega",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -40153,7 +40153,7 @@
  "Q18879691": {
   "museum": "Thiel Gallery",
   "museumQid": "Q252259",
-  "city": "municipio de Estocolmo",
+  "city": "Estocolmo",
   "country": "Suecia",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -40179,7 +40179,7 @@
  "Q18890744": {
   "museum": "Museo Nacional de Arte, Arquitectura y Diseño",
   "museumQid": "Q1132918",
-  "city": "Q585",
+  "city": "Oslo",
   "country": "Noruega",
   "inSpain": false,
   "technique": "Óleo sobre lienzo",
@@ -42759,7 +42759,7 @@
  "Q16599926": {
   "museum": "Galería Nacional de Victoria",
   "museumQid": "Q1464509",
-  "city": "Ciudad de Melbourne",
+  "city": "Melbourne",
   "country": "Australia",
   "inSpain": false,
   "technique": "Temple y pan de oro sobre tabla",
@@ -43450,7 +43450,7 @@
  "Q3948659": {
   "museum": "Museo Nacional de Arte Antiguo",
   "museumQid": "Q212459",
-  "city": "Estrela",
+  "city": "Lisboa",
   "country": "Portugal",
   "inSpain": false,
   "technique": "Temple sobre tabla",
@@ -43473,7 +43473,7 @@
  "Q3842514": {
   "museum": "Instituto de Arte Clark",
   "museumQid": "Q1465805",
-  "city": "Massachusetts",
+  "city": "Williamstown",
   "country": "Estados Unidos",
   "inSpain": false,
   "technique": "Óleo y temple sobre tabla y lienzo",
