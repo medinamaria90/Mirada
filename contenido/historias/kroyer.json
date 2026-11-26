@@ -1,0 +1,26 @@
+{
+ "artistId": "kroyer",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Krøyer",
+   "cards": [
+    {
+     "text": "Peder Severin Krøyer nació en Noruega en 1851 y creció en Copenhague. Encontró su sitio en Skagen, un pueblo de pescadores al norte de Dinamarca.",
+     "artwork": "w18386245",
+     "source": "https://es.wikipedia.org/wiki/Peder_Severin_Kr%C3%B8yer"
+    },
+    {
+     "text": "Allí se reunían pintores de toda Escandinavia. Krøyer se obsesionó con la «hora azul», cuando el cielo y el mar se funden en el mismo color.",
+     "artwork": "w18085208",
+     "source": "https://es.wikipedia.org/wiki/Peder_Severin_Kr%C3%B8yer"
+    },
+    {
+     "text": "Fíjate en las dos mujeres que pasean por la orilla en la hora azul: son su esposa, Marie, y la pintora Anna Ancher.",
+     "artwork": "w18085208",
+     "source": "https://es.wikipedia.org/wiki/Peder_Severin_Kr%C3%B8yer"
+    }
+   ]
+  }
+ ]
+}

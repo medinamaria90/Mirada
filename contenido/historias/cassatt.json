@@ -1,0 +1,26 @@
+{
+ "artistId": "cassatt",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Mary Cassatt",
+   "cards": [
+    {
+     "text": "Mary Cassatt nació en 1844 cerca de Pittsburgh, en Estados Unidos, y se instaló en París contra la opinión de su padre. Murió en Francia en 1926.",
+     "artwork": "w3172226",
+     "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
+    },
+    {
+     "text": "Degas vio su obra y la invitó a exponer con los impresionistas. Ella, a cambio, convenció a coleccionistas americanos para comprarles cuadros.",
+     "artwork": "w15130000",
+     "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
+    },
+    {
+     "text": "Fíjate en el espejo detrás de la mujer del palco: refleja las luces y las barandillas del teatro. Ella brilla en primer plano, con su collar de perlas.",
+     "artwork": "w15130000",
+     "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
+    }
+   ]
+  }
+ ]
+}

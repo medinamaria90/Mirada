@@ -1,0 +1,26 @@
+{
+ "artistId": "sargent",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Sargent",
+   "cards": [
+    {
+     "text": "John Singer Sargent nació en Florencia en 1856, de padres estadounidenses. Creció viajando por Europa y fue el retratista más buscado de su tiempo.",
+     "artwork": "w644106",
+     "source": "https://es.wikipedia.org/wiki/John_Singer_Sargent"
+    },
+    {
+     "text": "Madame X escandalizó el Salón de 1884: un tirante caído del hombro. Lo repintó en su sitio, pero el escándalo le hizo dejar París por Londres.",
+     "artwork": "w2664039",
+     "source": "https://es.wikipedia.org/wiki/Retrato_de_Madame_X"
+    },
+    {
+     "text": "Fíjate en las cuatro hermanas Boit, repartidas por una sala en penumbra, junto a dos jarrones japoneses enormes. Más que un retrato, un misterio.",
+     "artwork": "w644106",
+     "source": "https://es.wikipedia.org/wiki/Las_hijas_de_Edward_Darley_Boit"
+    }
+   ]
+  }
+ ]
+}
