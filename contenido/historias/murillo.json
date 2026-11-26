@@ -6,12 +6,12 @@
    "title": "Quién fue Murillo",
    "cards": [
     {
-     "text": "Murillo (Sevilla, 1617-1682) es la figura central de la escuela sevillana. Fue el pintor español más apreciado fuera de España en su época. Pintó sobre todo temas religiosos.",
+     "text": "Murillo pintó a la Sagrada Familia como una familia sevillana cualquiera: José juega con el Niño, que enseña un pajarito al perro, y María deja la costura para mirarlos.",
      "artwork": "w16627776",
      "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
     },
     {
-     "text": "Pintó cerca de veinte Inmaculadas, y por eso se le llama el pintor de las Inmaculadas. No inventó el tema, pero lo renovó en una Sevilla de devoción muy arraigada.",
+     "text": "Fue el pintor de las Inmaculadas: unas veinte vírgenes jóvenes entre nubes y ángeles. Esta se la llevó el mariscal Soult en la guerra de la Independencia y volvió al Prado en 1941.",
      "artwork": "w2456003",
      "focus": [
       0.5,
@@ -21,7 +21,7 @@
      "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#La_Inmaculada_Concepci%C3%B3n"
     },
     {
-     "text": "Fíjate en sus niños. Pintó unos 25 cuadros de género, casi siempre con niños humildes y harapientos. Aun así transmiten optimismo: busca el momento feliz del juego o la merienda.",
+     "text": "Fíjate en estos niños de la calle: harapientos, descalzos y felices con su melón. Murillo los pinta sin pena ni sermón. Gustaron tanto que casi todos acabaron fuera de España.",
      "artwork": "w2450139",
      "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#La_pintura_de_g%C3%A9nero"
     }

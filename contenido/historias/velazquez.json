@@ -6,12 +6,12 @@
    "title": "Quién fue Velázquez",
    "cards": [
     {
-     "text": "Velázquez nació en Sevilla en 1599. A los 24 años se fue a Madrid y fue nombrado pintor del rey Felipe IV. Retratar a la familia real fue su trabajo el resto de su vida.",
+     "text": "Con 24 años, un sevillano llegó a la corte y retrató al rey. A Felipe IV le gustó tanto que decidió que nadie más le pintaría. Fueron casi cuarenta años juntos.",
      "artwork": "w1090371",
      "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
     },
     {
-     "text": "Su gran aportación: pinceladas atrevidas que de cerca parecen sueltas y de lejos cobran sentido. Manet lo llamó «pintor de pintores». Aquí, la rueca de Las hilanderas.",
+     "text": "De cerca, sus cuadros son manchas; de lejos, todo cobra vida. Mira la rueca de Las hilanderas: gira tan rápido que no se ven los radios. Manet lo llamó «pintor de pintores».",
      "artwork": "w984058",
      "focus": [
       0.28,
@@ -21,7 +21,7 @@
      "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#%C3%9Altima_d%C3%A9cada%3A_su_cumbre_pict%C3%B3rica"
     },
     {
-     "text": "Fíjate en cabezas y manos: son siempre lo más trabajado. El resto del cuadro, a veces, queda solo esbozado con pinceladas amplias.",
+     "text": "Fíjate en la cara de Juan de Pareja, su ayudante, a quien dio la libertad: parece que va a hablar. En Roma dijeron que todo lo demás era pintura y esto, verdad.",
      "artwork": "w4717953",
      "focus": [
       0.5,
