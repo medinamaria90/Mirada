@@ -1,16 +1,17 @@
 // Tarjetas de una época (data/epocas/<movimiento>.json): en la presentación de la época se desliza a la derecha
 // para ver la época en ocho tarjetas (cuándo y dónde, por qué surge… y una curiosidad). Cada tarjeta, un cuadro de la
-// época (se abre en grande) y su fuente. Sin tarjetas, la presentación queda como estaba.
+// época (se abre en grande). Su fuente queda en los datos y se ve en «Fuentes y créditos». Sin tarjetas, la presentación
+// queda como estaba.
 
 import { esc, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
 import { loadCss } from '../lazy-css.js';
-import { sourceLabel } from '../../engine/stories.js';
 
 const cache = new Map();
 
-function loadCards(movementId) {
+// Tarjetas de una época ([] si no tiene); también las usa «Fuentes y créditos» para listar sus fuentes.
+export function loadCards(movementId) {
   if (!cache.has(movementId)) {
     const pending = fetch(new URL(`../../../data/epocas/${movementId}.json`, import.meta.url))
       .then((res) => (res.ok ? res.json() : null))
@@ -28,13 +29,11 @@ function loadCards(movementId) {
 function cardHtml(index, card, n, total) {
   const w = index.artwork(card.artwork);
   const who = w ? index.artist(w.artistId) : null;
-  const label = sourceLabel(card.source);
   return `<section class="era-slide era-card" role="group" aria-roledescription="tarjeta" aria-label="${n} de ${total}: ${esc(card.kicker)}">
     ${w ? `<div class="era-card-art">${artFrame(w, { alt: '', cls: 'era-art', label: w.title, zoom: { group: 'era-cards', label: `Ver en grande: ${w.title}` } })}</div>
       <p class="era-card-work">${esc(w.title)}${who ? ` · ${esc(who.short || who.name)}` : ''}</p>` : ''}
     <p class="era-chip">${esc(card.kicker)}</p>
     <p class="era-text">${esc(card.text)}</p>
-    ${label ? `<a class="era-source" href="${esc(card.source)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : ''}
   </section>`;
 }
 

@@ -76,14 +76,12 @@ test('historias: la marca de vistas se guarda por pintor y nivel (y vale en la s
   delete globalThis.window;
 });
 
-test('historias: pie de la obra con su título y «· autorretrato» si lo es; fuentes juntas y sin repetir', async () => {
-  const { captionOf, storySources } = await import('../app/js/engine/stories.js');
+test('historias: pie de la obra con su título y «· autorretrato» si lo es', async () => {
+  const { captionOf } = await import('../app/js/engine/stories.js');
   assert.equal(captionOf(real.artwork('w546977')), 'Retrato de Baltasar Castiglione', 'el retrato de otro lleva su título');
   assert.equal(captionOf({ title: 'Autorretrato con gorra' }), 'Autorretrato con gorra');
   assert.equal(captionOf({ title: 'Self-portrait' }), 'Self-portrait · autorretrato');
   assert.equal(captionOf(null), '');
-  const src = storySources([{ source: 'https://es.wikipedia.org/wiki/Rafael' }, { source: 'https://es.wikipedia.org/wiki/Rafael#Retratos' }, { source: 'https://www.museodelprado.es/x' }]);
-  assert.deepEqual(src.map((x) => x.label), ['Wikipedia', 'museodelprado.es']);
 });
 
 test('historias: el avatar es un autorretrato o nada (nunca el retrato de otro)', async () => {

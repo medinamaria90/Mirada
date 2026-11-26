@@ -15,7 +15,7 @@ import { loadStory } from './story-data.js';
 import { avatarHtml } from './avatar.js';
 import { mediaHtml, copyHtml } from './story-card.js';
 import { seenOf, avatarWork, openingWork, coverWork } from '../engine/painters.js';
-import { levelStory, step, storyKey, cardDuration, storySources, lookLine } from '../engine/stories.js';
+import { levelStory, step, storyKey, cardDuration, lookLine } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
 const HOLD_MS = 180; // mantener el dedo así de rato pausa la historia
@@ -65,7 +65,6 @@ export async function playStory(ctx, artistId, level, opts = {}) {
   // La primera tarjeta del nivel básico abre con su autorretrato visto o con su obra más representativa de las vistas.
   const ownFace = avatarWork(mine, { selfOnly: true });
   const opening = ownFace ? ownFace.work : (mine.length ? openingWork(mine, null) : null);
-  const sources = storySources(lv.cards);
   const look = lookLine(lv.cards, opts.look);
   const more = opts.onMore || (() => ctx.go(`pintor-${artistId}`));
 
@@ -115,7 +114,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const work = override || index.artwork(card.artwork);
       if (work) shownIds.push(work.id);
       media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name);
-      bottom.innerHTML = copyHtml(card, work, { last, sources, look, play: opts.onPlay !== false });
+      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false });
       dlg.classList.toggle('is-last', last);
       dlg.querySelector('.story-back').hidden = pos === 0;
       dlg.querySelector('.story-next').hidden = last;
@@ -175,13 +174,6 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       if (manual) ctx.audio.sfx('tap');
       show(manual);
     };
-    const toggleSources = (btn) => {
-      const panel = dlg.querySelector('.story-sources');
-      const open = panel.hidden;
-      panel.hidden = !open;
-      btn.setAttribute('aria-expanded', String(open));
-      if (open && auto) { userPaused = true; setPaused(true); }
-    };
 
     dlg.addEventListener('click', (ev) => {
       const b = ev.target.closest('[data-st]');
@@ -190,13 +182,12 @@ export async function playStory(ctx, artistId, level, opts = {}) {
         if (what !== 'pause') ctx.audio.sfx('tap');
         if (what === 'close') finish();
         else if (what === 'pause') togglePause();
-        else if (what === 'info') toggleSources(b);
         else if (what === 'play') finish(STORY_END.PLAY, typeof opts.onPlay === 'function' ? opts.onPlay : null);
         else if (what === 'more') finish(STORY_END.MORE, more);
         else go(what === 'next' ? 1 : -1);
         return;
       }
-      if (ev.target.closest('a, button, .story-sources, .story-actions')) return;
+      if (ev.target.closest('a, button, .story-actions')) return;
       // Tocar la historia: el tercio izquierdo vuelve, el resto avanza (como en Instagram); en la última no se cierra sola.
       const r = dlg.querySelector('.story-frame').getBoundingClientRect();
       const back = ev.clientX - r.left < r.width * ZONE_BACK;
@@ -206,16 +197,16 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     dlg.addEventListener('animationend', (ev) => {
       if (ev.target.parentElement?.classList.contains('is-now') && pos < lv.cards.length - 1) go(1, false);
     });
-    // Mantener el dedo pausa y aparta la interfaz (el cuadro, limpio); al soltar sigue. Arrastrar a un lado pasa de tarjeta y hacia abajo la cierra.
+    // Mantener el dedo pausa (para leer con calma: el texto sigue a la vista); al soltar sigue. Arrastrar a un lado pasa de tarjeta y hacia abajo la cierra.
     let holdTimer = null;
     let from = null;
-    const release = () => { clearTimeout(holdTimer); dlg.classList.remove('is-held'); if (!userPaused && dlg.classList.contains('is-paused')) setPaused(false); };
+    const release = () => { clearTimeout(holdTimer); if (!userPaused && dlg.classList.contains('is-paused')) setPaused(false); };
     dlg.addEventListener('pointerdown', (ev) => {
       const copy = ev.target.closest('.story-copy');
       from = { x: ev.clientX, y: ev.clientY, scrolls: Boolean(copy && copy.scrollHeight > copy.clientHeight) };
       delete dlg.dataset.swiped;
       delete dlg.dataset.held;
-      if (!ev.target.closest('button, a, .story-sources')) holdTimer = setTimeout(() => { setPaused(true); dlg.classList.add('is-held'); dlg.dataset.held = '1'; }, HOLD_MS);
+      if (!ev.target.closest('button, a')) holdTimer = setTimeout(() => { setPaused(true); dlg.dataset.held = '1'; }, HOLD_MS);
     });
     // En el móvil, un dedo que se mueve un poco o una pulsación larga (menú de la imagen) cancelan el puntero aunque el dedo siga
     // apoyado: la pausa dura entonces hasta que se levanta.

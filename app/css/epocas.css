@@ -33,7 +33,6 @@
   color: var(--accent-ui); font: 600 .8rem/1.2 var(--font); letter-spacing: .06em; text-transform: uppercase;
 }
 .era-text { margin: 0; color: var(--ink); font: 400 clamp(1.15rem, 4.8vw, 1.3rem)/1.45 var(--font); text-wrap: pretty; }
-.era-source { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); font: 500 .9rem/1 var(--font); text-underline-offset: 3px; }
 
 .era-dots { display: flex; justify-content: center; gap: .1rem; }
 .era-dot { display: grid; place-items: center; width: var(--era-dot-hit); height: var(--era-dot-hit); padding: 0; border: 0; background: none; cursor: pointer; }

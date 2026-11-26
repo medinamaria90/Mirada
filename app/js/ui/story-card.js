@@ -1,5 +1,5 @@
 // Piezas de la historia (ui/story-viewer.js): el cuadro a sangre con su barrido lento, el texto sobre el degradado con el pie
-// de la obra y, en la última tarjeta, las fuentes tras la «i» y las dos acciones (Jugar, Ver más).
+// de la obra y, en la última tarjeta, las dos acciones (Jugar, Ver más).
 
 import { esc } from './dom.js';
 import { icons } from './icons.js';
@@ -21,16 +21,11 @@ export function mediaHtml(work, focus, pos, artistName) {
     <div class="story-pan" data-pan="${pos % PAN_KINDS}">${backdrop}${img}</div></div>`;
 }
 
-// Texto de la tarjeta y su pie. En la última, además, la pista «Fíjate en…» (look, si la hay), fuentes y acciones (play: false
+// Texto de la tarjeta y su pie. En la última, además, la pista «Fíjate en…» (look, si la hay) y las acciones (play: false
 // si no hay nada que jugar).
-export function copyHtml(card, work, { last, sources, look = '', play }) {
+export function copyHtml(card, work, { last, look = '', play }) {
   const caption = captionOf(work);
-  const foot = !last ? '' : `<div class="story-sources" id="story-sources" hidden>
-      <p class="story-sources-title">Fuentes</p>
-      <ul>${sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.label)}</a></li>`).join('')}</ul>
-    </div>
-    <div class="story-actions">
-      ${sources.length ? `<button type="button" class="story-info" data-st="info" aria-expanded="false" aria-controls="story-sources" aria-label="Fuentes">${icons.info(20)}</button>` : ''}
+  const foot = !last ? '' : `<div class="story-actions">
       <button type="button" class="btn story-more" data-st="more">Ver más</button>
       ${play ? '<button type="button" class="btn btn-primary story-play" data-st="play">Jugar</button>' : ''}
     </div>`;

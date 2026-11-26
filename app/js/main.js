@@ -40,6 +40,7 @@ const loadGallery = () => import('./ui/screens/gallery.js');
 const loadBranch = () => import('./ui/screens/branch.js');
 const loadArtistPage = () => import('./ui/screens/artist-page.js');
 const loadArtistWorks = () => import('./ui/screens/artist-works.js');
+const loadCredits = () => import('./ui/screens/credits.js');
 
 async function loadJson(path) {
   const res = await fetch(path, { cache: 'no-cache' });
@@ -307,6 +308,7 @@ async function boot() {
       case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen, { tab: route.tab }), true);
       case 'profile': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen));
       case 'medals': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen, { focus: 'medals' }));
+      case 'credits': return lazy(token, screen, loadCredits, (m) => m.renderCredits(ctx, screen), true);
       default:
         return lazy(token, screen, loadHome, (m) => {
           m.renderHome(ctx, screen);

@@ -1,5 +1,5 @@
 // Ajustes del perfil, en una hoja aparte (botón ⚙ de la portada): meta del día, tema, música,
-// sonidos, volumen, reducir animaciones y «Empezar de cero» con su confirmación.
+// sonidos, volumen, reducir animaciones, «Empezar de cero» con su confirmación y, al final, el enlace a «Fuentes y créditos».
 
 import { $, announce } from '../dom.js';
 import { icons } from '../icons.js';
@@ -48,6 +48,7 @@ export function settingsHtml(ctx) {
           </div>
         </div>
       </div>
+      <button type="button" class="settings-credits" data-action="credits">Fuentes y créditos</button>
     </div>
   </dialog>`;
 }
@@ -96,6 +97,11 @@ export function wireSettings(ctx, el) {
     theme: (b) => {
       ctx.audio.sfx('tap');
       markThemePicker(dialog, chooseTheme(ctx.store, b.dataset.value));
+    },
+    credits: () => {
+      ctx.audio.sfx('tap');
+      sheet.close();
+      ctx.go('fuentes');
     },
     'ask-reset': (b) => {
       ctx.audio.sfx('tap');

@@ -1,7 +1,7 @@
 // Ficha de pintor: lo primero, por qué importa. Portada grande (su cuadro más famoso de los ya vistos), avatar con anillo de
 // historia (o con el aro de niveles: ui/deep-badges.js), nombre, sello de categoría, sus historias destacadas (ui/level-row.js)
 // y la frase «por qué importa»; después jugar, la tira de sus cuadros
-// vistos, cómo reconocerlo, etapas, quién fue (plegable) y, al pie, datos y fuentes. Solo obras ya vistas (sin spoilers). El
+// vistos, cómo reconocerlo, etapas, quién fue (plegable) y, al pie, sus datos. Solo obras ya vistas (sin spoilers). El
 // contenido es común a la pantalla (`#pintor-<id>`) y al diálogo que se abre dentro de una ronda (ui/artist-sheet.js).
 
 import { esc, joinNames } from './dom.js';
@@ -15,10 +15,10 @@ import { levelStates, levelRing, FIRST_LEVEL_SHORT } from '../engine/level-ring.
 import { branchLockReason } from '../engine/branches.js';
 import { avatarHtml, initials } from './avatar.js';
 import { loadStory } from './story-data.js';
-import { levelStory, sourceLabel, storyKey } from '../engine/stories.js';
+import { levelStory, storyKey } from '../engine/stories.js';
 import { storySeen } from '../state/stories-seen.js';
 import { sealHtml } from './seal.js';
-import { factsOf, wikidataUrl, lifeSpan, seenOf, playTargets, stageList, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
+import { factsOf, lifeSpan, seenOf, playTargets, stageList, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
 
 const STAGE_LABEL = { mastered: 'Dominada', started: 'En marcha', available: 'Abierta', locked: 'Por abrir' };
 const STAGE_ICON = { mastered: 'check', started: 'play', available: 'play', locked: 'lock' };
@@ -29,17 +29,6 @@ export { initials };
 
 function factsHtml(index, artist, seenCount) {
   return `<dl class="ap-facts">${factsOf(index, artist, seenCount).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${f.value}</dd></div>`).join('')}</dl>`;
-}
-
-// Fuentes de «por qué importa» y de las fechas y el país (los que enseña la cabecera), al pie.
-function sourceFoot(artist) {
-  const link = (url, label) => `<a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`;
-  const url = wikidataUrl(artist);
-  const parts = [
-    artist.why?.source ? `<span>Por qué importa</span>${link(artist.why.source, sourceLabel(artist.why.source))}` : '',
-    url ? `<span>Fechas y país</span>${link(url, 'Wikidata')}` : '',
-  ].filter(Boolean);
-  return parts.length ? `<p class="ap-sources ap-foot">${parts.join('')}</p>` : '';
 }
 
 const whyHtml = (artist) => (artist.why ? `<p class="ap-why">${esc(artist.why.text)}</p>` : '');
@@ -61,10 +50,8 @@ function stagesHtml(stages, playable) {
 function bioHtml(lv) {
   const cards = lv ? lv.cards.filter((c) => c.text) : [];
   if (!cards.length) return '';
-  const sources = [...new Map(cards.filter((c) => c.source).map((c) => [String(c.source).split('#')[0], sourceLabel(c.source)])).entries()];
   return `<details class="ap-section ap-life"><summary class="ap-h ap-life-sum"><h2 class="ap-life-h">Quién fue</h2><span class="ap-life-chev" aria-hidden="true">${icons.next(18)}</span></summary>
-    <div class="ap-life-body">${cards.map((c) => `<p class="ap-life-text">${esc(c.text)}</p>`).join('')}
-    ${sources.length ? `<p class="ap-sources">${sources.map(([url, label]) => `<a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`).join('')}</p>` : ''}</div></details>`;
+    <div class="ap-life-body">${cards.map((c) => `<p class="ap-life-text">${esc(c.text)}</p>`).join('')}</div></details>`;
 }
 
 function lookHtml(artist) {
@@ -166,8 +153,7 @@ export async function profileHtml(ctx, artistId, opts) {
     ${lookHtml(artist)}
     ${known ? stagesHtml(stageList(progress, index, artistId), opts.playable) : ''}
     ${known ? bioHtml(levelStory(story, 1)) : ''}
-    <section class="ap-bio" aria-label="Datos">${factsHtml(index, artist, seen.length)}</section>
-    ${sourceFoot(artist)}`;
+    <section class="ap-bio" aria-label="Datos">${factsHtml(index, artist, seen.length)}</section>`;
 }
 
 // Acciones de la ficha. hooks: { beforeGo() } se llama antes de salir a otra ruta.

@@ -58,6 +58,8 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
 - Datos de arte: se pueden escribir de memoria; solo se busca lo dudoso (fechas, lugares, anécdotas
   de las que no se esté seguro), y lo que siga dudoso se deja fuera. Cada texto lleva una fuente de
   referencia (Wikipedia del pintor o de la época, el museo de la obra). Decisión de María, 26/11.
+  La fuente se guarda en los datos y se muestra solo en la página «Fuentes y créditos» (Perfil →
+  Ajustes), nunca en las tarjetas, las historias ni la ficha (decisión de María, 26/11).
 - Solo pintores muertos antes de 1956 (dominio público en Europa) y obras anteriores a 1930; lo
   comprueba `tools/validate_catalog.py`.
 - Los autores españoles van sobrerrepresentados, mezclados en su época (no en un bloque aparte).

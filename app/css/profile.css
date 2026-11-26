@@ -265,6 +265,8 @@
 .confirm { display: grid; gap: .4rem; text-align: center; }
 .confirm[hidden] { display: none; }
 .confirm p { font-weight: 600; }
+.settings-credits { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: .4rem; border: 0; background: none; color: var(--ink-2); font: 500 .9rem/1.2 var(--font); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.settings-credits:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; border-radius: var(--radius-sm); }
 
 @media (max-width: 300px), (max-width: 18.75em) {
   .page-profile { --pf-gutter: .7rem; }

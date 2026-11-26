@@ -72,12 +72,6 @@ export function captionOf(work) {
   return isSelfPortrait(work) && !/autorretrato/i.test(work.title) ? `${work.title} · autorretrato` : work.title;
 }
 
-// Fuentes de una historia, juntas y sin repetir (sin el ancla de la sección): [{ url, label }].
-export function storySources(cards) {
-  const urls = [...new Set((cards || []).map((c) => String(c.source || '').split('#')[0]).filter(Boolean))];
-  return urls.map((url) => ({ url, label: sourceLabel(url) })).filter((s) => s.label);
-}
-
 // «es.wikipedia.org» → «Wikipedia»; el resto, el nombre del sitio.
 export function sourceLabel(url) {
   try {
