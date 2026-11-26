@@ -3,12 +3,17 @@
 // con `o` = desplazamiento en tiempos desde el inicio de la parte.
 import { bassMidi, pcMidi, voicing, stepIn } from './theory.js';
 import { DANCE_STYLES } from './styles-dance.js';
+import { BRANCH_STYLES } from './styles-ramas.js';
+
+const VIHUELA_BASS_LO = 41; // fa grave: la romanesca baja Sib–Fa y sube a Sol y Re sin saltar de octava
+const VIHUELA_INNER_LO = 53; // díada interior entre fa3 y fa4, por debajo de la melodía
 
 const roll = (notes, o, dur, vel, voice, gap = 0.04) =>
   notes.map((midi, i) => ({ o: o + i * gap, dur, midi, vel, voice }));
 
 export const STYLES = {
   ...DANCE_STYLES,
+  ...BRANCH_STYLES,
   // Laúd: bajo + acorde rasgueado en los tiempos fuertes (danza lenta).
   lute({ chord: c, len }) {
     const out = [];
@@ -19,6 +24,17 @@ export const STYLES = {
       out.push({ o: k, dur: span, midi: low, vel: k === 0 ? 0.78 : 0.6, voice: 'bass' });
       out.push(...roll(voicing(c, 55, 3), k + 0.05, span, k === 0 ? 0.42 : 0.34, 'acc', 0.045));
     }
+    return out;
+  },
+
+  // Vihuela: bajo grave que se deja sonar y una díada interior (tercera y la nota de arriba) en el 1;
+  // en compases de cuatro, otra díada más suave en el 3. Nada de rasgueo: la melodía va sola arriba.
+  vihuela({ chord: c, len }) {
+    const third = pcMidi((c.root + c.intervals[1]) % 12, VIHUELA_INNER_LO);
+    const upper = pcMidi((c.root + c.intervals[2]) % 12, third + 1);
+    const out = [{ o: 0, dur: len, midi: bassMidi(c, VIHUELA_BASS_LO), vel: 0.72, voice: 'bass' }];
+    out.push(...roll([third, upper], 0.03, len, 0.34, 'acc', 0.035));
+    if (len >= 4) out.push(...roll([third, upper], 2, len - 2, 0.24, 'acc', 0.03));
     return out;
   },
 

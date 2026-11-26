@@ -179,8 +179,8 @@ test('variación del bucle: determinista con semilla y sin salirse de rango', ()
     assert.ok(a.length >= c.events.length);
     for (const e of a) assert.ok(e.midi >= 24 && e.midi <= 108 && e.dur > 0 && e.vel > 0 && e.vel <= 1, key);
   }
-  // dinámica por sección: en las piezas que la definen, B suena algo más que A (de media)
-  for (const key of ALL_KEYS.filter((k) => getPiece(k).dyn)) {
+  // dinámica por sección: en las piezas de forma A–B que la definen, B suena algo más que A (de media)
+  for (const key of ALL_KEYS.filter((k) => getPiece(k).dyn && getPiece(k).sections.B)) {
     const c = compilePiece(key);
     const v = varyLoop(c, 0, mulberry32(9)).filter((e) => e.voice === 'mel');
     const mean = (sec) => { const xs = v.filter((e) => e.sec === sec); return xs.reduce((s, e) => s + e.vel, 0) / xs.length; };
@@ -322,6 +322,18 @@ test('clásicos: obra y autor anotados, arreglo propio, y al menos uno en las é
     }
   }
   assert.match(getPiece('renaissance/vacas').title, /Guárdame las vacas/);
+});
+
+test('vihuela: bajo y díada en el 1, sin rasgueo; «Guárdame las vacas» va sobre el bajo de la romanesca', () => {
+  const three = STYLES.vihuela({ chord: parseChord('D'), len: 3 });
+  assert.deepEqual(three.filter((e) => e.voice === 'bass').map((e) => [e.o, e.midi]), [[0, 50]]);
+  assert.deepEqual(three.filter((e) => e.voice === 'acc').map((e) => e.midi), [54, 57], 'fa# y la por debajo de la melodía');
+  assert.equal(STYLES.vihuela({ chord: parseChord('Gm'), len: 4 }).filter((e) => e.voice === 'acc').length, 4);
+  const c = compilePiece('renaissance/vacas');
+  const bass = c.events.filter((e) => e.voice === 'bass').slice(0, 9).map((e) => e.midi % 12);
+  assert.deepEqual(bass, [10, 5, 7, 2, 10, 5, 7, 2, 7], 'Sib–Fa–Sol–Re | Sib–Fa–Sol–Re–Sol');
+  assert.equal(c.bars, 32);
+  assert.ok(c.events.some((e) => e.voice === 'cnt'), 'una diferencia lleva la glosa en la voz grave');
 });
 
 // Fechas locales de prueba: mediodía y medianoche de dos días seguidos.

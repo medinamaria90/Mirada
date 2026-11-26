@@ -3,33 +3,50 @@ import { scalePcs } from '../theory.js';
 import { FORM4 } from '../scores.js';
 import { ARRANGEMENT } from './arrangement.js';
 
+/** Bajo de la romanesca en sol menor: III–VII–i–V | III–VII–i–V–i, un acorde por compás. */
+const ROMANESCA = ['Bb', 'F', 'Gm', 'D', 'Bb', 'F', 'Gm:2|D:1', 'Gm'];
+
 export const RENAISSANCE_CLASSICS = [
   {
+    // Forma de Narváez: el canto sobre la romanesca (Sib–Fa–Solm–Re | Sib–Fa–Solm–Re–Solm, un acorde
+    // por compás de 3/4) y diferencias: glosa en corcheas arriba, glosa en la voz grave bajo el canto
+    // en notas largas, y vuelta al canto adornado con cadencia en sol, que enlaza con el principio.
     id: 'vacas',
     name: 'Guárdame las vacas',
-    label: 'Laúd solo, 3/4, romanesca con diferencias en corcheas',
+    label: 'Vihuela sola, 3/4, romanesca con diferencias en corcheas',
     character: 'noble, español, cantable',
     source: '«Cuatro diferencias sobre Guárdame las vacas», Luis de Narváez (1538)',
     arrangement: ARRANGEMENT,
     piece: {
       title: 'Guárdame las vacas', key: 'Sol menor', tonic: 7, mode: 'minor',
-      scale: scalePcs(7, 'minor', [6]), bpm: 84, beatsPerBar: 3, form: FORM4, style: 'lute',
-      voices: { mel: 'lute', acc: 'lute', bass: 'lute' }, vg: { mel: 1, acc: 0.75, bass: 0.9 },
-      reverb: 0.36, level: 0.82, rubato: { amp: 0.012, ritard: 0.06 }, orn: { kind: 'mordent', prob: 0.1 },
-      dyn: { A: 1, open: 1, close: 0.96, B: 1.06 },
+      scale: scalePcs(7, 'minor', [6]), bpm: 84, beatsPerBar: 3,
+      form: [['tema'], ['glosa'], ['bajos'], ['final']], style: 'vihuela',
+      voices: { mel: 'guitar', acc: 'guitar', bass: 'guitar', cnt: 'guitar' },
+      vg: { mel: 1, acc: 0.6, bass: 0.85, cnt: 0.8 },
+      reverb: 0.3, level: 0.88, rubato: { amp: 0.012, ritard: 0.08 }, orn: { kind: 'mordent', prob: 0.06 },
+      dyn: { tema: 0.96, glosa: 1.04, bajos: 1, final: 1 },
       sections: {
-        A: {
-          chords: ['Bb', 'F', 'Gm', 'D', 'Bb', 'F'],
-          mel: ['D5/1.5 Eb5/.5 D5/1', 'C5/2 A4/1', 'Bb4/1.5 A4/.5 G4/1', 'A4/2 F#4/1', 'D5/1 F5/1 D5/1',
-            'C5/1.5 Bb4/.5 A4/1'],
+        tema: {
+          chords: ROMANESCA,
+          mel: ['D5/2 C5/.5 D5/.5', 'C5/2 A4/1', 'Bb4/1.5 A4/.5 G4/1', 'A4/2 F#4/1', 'D5/2 F5/1',
+            'C5/2 D5/.5 C5/.5', 'Bb4/1 C5/.5 Bb4/.5 A4/1', 'G4/3'],
         },
-        open: { chords: ['Gm:2|D:1', 'D'], mel: ['Bb4/1 A4/1 F#4/1', 'A4/2 D5/1'] },
-        close: { chords: ['Gm:2|D:1', 'Gm'], mel: ['Bb4/1 A4/1 F#4/1', 'G4/3'] },
-        B: {
-          chords: ['Bb', 'F', 'Gm', 'D', 'Bb', 'F', 'Gm:2|D:1', 'Gm'],
-          mel: ['*.5 D5 Eb5 F5 Eb5 D5 C5', '*.5 C5 D5 C5 Bb4 A4 G4', '*.5 Bb4 C5 Bb4 A4 G4 F#4',
-            'A4/1 D5/.5 C5/.5 A4/1', '*.5 F5 G5 F5 Eb5 D5 C5', '*.5 A4 Bb4 C5 D5 C5 Bb4',
-            '*.5 G4 A4 Bb4 C5 D5 F#5', 'G5/1.5 F#5/.5 G5/1'],
+        glosa: {
+          chords: ROMANESCA,
+          mel: ['*.5 D5 C5 D5 Eb5 F5 D5', '*.5 C5 Bb4 A4 Bb4 C5 A4', '*.5 Bb4 A4 G4 A4 Bb4 G4',
+            'A4/.5 F#4/.5 D4/.5 F#4/.5 A4/1', '*.5 D5 F5 Bb5 A5 G5 F5', '*.5 C5 D5 C5 Bb4 A4 C5',
+            '*.5 Bb4 A4 G4 Bb4 A4 F#4', 'G4/2 r/1'],
+        },
+        bajos: {
+          chords: ROMANESCA,
+          mel: ['D5/3', 'C5/3', 'Bb4/3', 'A4/3', 'D5/3', 'C5/3', 'Bb4/2 A4/1', 'G4/3'],
+          cnt: ['r/1 *.5 F3 G3 A3 Bb3', 'r/1 *.5 C4 A3 F3 A3', 'r/1 *.5 Bb3 C4 D4 Bb3', 'r/1 *.5 A3 F#3 D3 F#3',
+            'r/1 *.5 D4 C4 Bb3 A3', 'r/1 *.5 A3 Bb3 C4 A3', 'r/1 *.5 D4 Bb3 A3 F#3', 'G3/3'],
+        },
+        final: {
+          chords: ROMANESCA,
+          mel: ['D5/2 Eb5/.5 D5/.5', 'C5/2 Bb4/.5 A4/.5', 'Bb4/1.5 A4/.5 G4/1', 'A4/2 F#4/1',
+            'D5/.5 Eb5/.5 F5/1 D5/1', 'C5/1 A4/.5 Bb4/.5 C5/1', 'Bb4/1 A4/.5 G4/.5 F#4/1', 'G4/3'],
         },
       },
     },
