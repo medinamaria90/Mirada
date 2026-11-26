@@ -10,7 +10,7 @@ import { SFX_NAMES, playSfx } from './sfx.js';
 import { createGraph, createMusicPlayer } from './player.js';
 import { piecesOf, pieceKey, getPiece, DEFAULT_VARIANT } from './variants.js';
 import { pickNext, pushRecent, cleanRecent, hasList, rotationPool } from './rotation.js';
-import { pieceInfo } from './piece-info.js';
+import { pieceInfo, allPieces } from './piece-info.js';
 
 export { ERAS, SFX_NAMES };
 
@@ -71,6 +71,10 @@ function pickPiece(list) {
   if (!key) return;
   state.recent[list] = pushRecent(state.recent[list], key);
   chosen[list] = key;
+  emitPiece(list, key);
+}
+
+function emitPiece(list, key) {
   for (const fn of listeners) { try { fn({ list, piece: key }); } catch { /* un oyente roto no para la música */ } }
 }
 
@@ -155,11 +159,20 @@ function onPiece(fn) {
   return () => listeners.delete(fn);
 }
 
-/** Pieza que toca ahora en la lista actual: { id, title, author, key } (modo «afinar música»). */
+/** Pieza que toca ahora en la lista actual: { id, title, author, key, role } (modo «afinar música»). */
 const nowPlaying = () => pieceInfo(currentKey(state.era), state.era);
 
-/** Salta a otra pieza de la lista que suena, con el mismo relevo que al terminar una. */
-function next() { if (current) advance(current); }
+/** Modo «afinar música»: pasa a la pieza siguiente de la lista, recorriéndolas todas (también las que no rotan). */
+function next() {
+  if (!current || !ctx) return;
+  const keys = allPieces(state.era);
+  const key = keys[(keys.indexOf(currentKey(state.era)) + 1) % keys.length];
+  if (!key) return;
+  chosen[state.era] = key;
+  emitPiece(state.era, key);
+  current.fadeOutAndDispose(CROSSFADE);
+  current = launchPlayer(state.era, CROSSFADE);
+}
 
 /** Variantes disponibles de una era, sin la partitura: [{ id, name, label, character }]. */
 const listVariants = (era) => piecesOf(era).map(({ id, name, label, character, source }) => ({ id, name, label, character, ...(source ? { source } : {}) }));
