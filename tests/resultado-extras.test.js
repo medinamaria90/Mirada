@@ -44,3 +44,56 @@ test('reto diario: 5 preguntas y 5 casillas al compartir', () => {
   assert.equal(plan.questions.length, 5);
   assert.equal(dailyGrid(plan.questions.map(() => true)), '🟩🟩🟩🟩🟩');
 });
+
+// ---------------------------------------------------------------- Acciones del resultado sin duplicados
+const { renderResult } = await import('../app/js/ui/screens/result.js');
+const { practiceAction } = await import('../app/js/ui/screens/result-actions.js');
+const { REVIEW5_NAME, REVIEW5_MISSED } = await import('../app/js/engine/review.js');
+
+// Pintores dominados con cuadros ya vistos: hay material para repasar lo aprendido.
+function withReview() {
+  const p = emptyProgress();
+  for (const a of real.path.slice(0, 3)) {
+    p.artists[a.id] = { plays: 1, best: 1, mastered: true, last: '2026-11-20' };
+    for (const w of real.worksOf(a.id)) p.collection[w.id] = '2026-11-20';
+  }
+  return p;
+}
+
+function resultActions(progress, plan, outcome, opts = {}) {
+  const el = { innerHTML: '', querySelector: () => null, addEventListener() {}, removeEventListener() {} };
+  globalThis.window = { scrollTo() {}, matchMedia: () => ({ matches: true }) };
+  globalThis.document = { documentElement: { classList: { contains: () => true } }, getElementById: () => null };
+  globalThis.getComputedStyle = () => ({ getPropertyValue: () => '' });
+  const ctx = { ...ctxWith(progress), store: { get: () => ({ progress, settings: { dailyGoal: 50 } }) }, audio: { sfx() {} } };
+  renderResult(ctx, el, { plan, outcome, title: 'Ronda', accent: '', firstTry: [true, true, true], ...opts });
+  return el.innerHTML.match(/<div class="result-actions">[^]*?<\/div>\s*<\/main>/)?.[0] || '';
+}
+
+test('resultado: tras dominar a un pintor, un solo botón para repasar (no dos iguales) y con nombre que se entiende', () => {
+  const p = withReview();
+  const veronese = real.artist('veronese');
+  const outcome = { xp: 60, score: 8, total: 8, accuracy: 1, mastered: true, events: [] };
+  const actions = resultActions(p, { kind: 'stage', artistId: veronese.id, seed: 3 }, outcome);
+  assert.equal((actions.match(/data-to="repaso5"/g) || []).length, 1, actions);
+  assert.ok(actions.includes(`<span>${REVIEW5_NAME}</span>`));
+  assert.doesNotMatch(actions, /Repaso de 5/);
+  assert.equal((actions.match(/data-primary/g) || []).length, 1, 'un solo botón principal');
+});
+
+test('resultado: una sola acción para practicar, por prioridad (repetir, la del flujo, otra ronda)', () => {
+  const p = withReview();
+  const ctx = ctxWith(p);
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { retry: 'etapa-x', more: { to: 'repaso', label: 'Repasar más' } }).label, 'Repetir');
+  assert.equal(practiceAction(ctx, { kind: 'srs' }, { more: { to: 'repaso', label: 'Repasar más' } }).to, 'repaso');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }).to, 'repaso5');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { closing: true }), null, 'al cerrar el día, sin llamadas a seguir jugando');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { duel: true }), null);
+});
+
+test('resultado: si entre los cuadros del repaso hay fallados, el botón lo dice', () => {
+  const p = withReview();
+  const w = real.worksOf(real.path[0].id)[0];
+  p.fallados = [{ id: w.id, date: '2026-11-20', hits: 0 }];
+  assert.equal(practiceAction(ctxWith(p), { kind: 'stage' }).label, REVIEW5_MISSED);
+});

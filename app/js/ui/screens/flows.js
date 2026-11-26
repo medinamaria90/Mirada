@@ -18,7 +18,7 @@ import { stageTitle, avatarWork, seenOf } from '../../engine/painters.js';
 import { avatarHtml } from '../avatar.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
-import { contrabandWork, review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
+import { contrabandWork, review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
@@ -85,12 +85,11 @@ function play(ctx, el, opts) {
     onDone: (summary) => {
       const before = ctx.store.get().progress;
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
-      // Después de cualquier ronda, el repaso de 5 si hay cuadros para él; si no, «Repasar más» tras el rápido.
-      const review5 = friendScore == null && hasReview5(ctx.store.get().progress, ctx.index, ctx.today());
-      const moreReview = !review5 && typeof more === 'function' && more();
+      // «Repasar más» tras el repaso rápido; las otras rondas (repasar lo aprendido, reto semanal) las ofrece el resultado.
+      const moreReview = friendScore == null && typeof more === 'function' && more();
       renderResult(ctx, el, {
         plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before,
-        more: review5 ? { label: REVIEW5_NAME, to: 'repaso5' } : moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
+        more: moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
       });
     },
   });

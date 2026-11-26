@@ -230,7 +230,7 @@ test('repaso de 5: fallados, después vencidos y después los más antiguos, sol
   assert.equal(plan.questions.length, 5);
   assert.deepEqual(plan.questions.map(subjectOf).sort(), ids.slice().sort());
   assert.deepEqual(parseRoute('#repaso5'), { name: 'review5' });
-  assert.equal(REVIEW5_NAME, 'Repaso de 5');
+  assert.equal(REVIEW5_NAME, 'Repasar lo aprendido');
   // Da XP y cuenta para meta y racha, sin tocar el dominio de nadie.
   const answers = plan.questions.map((q) => ({ q, correct: true, retry: false, combo: 1 }));
   const out = finishRound(p, big, { kind: 'review5', answers, firstTry: answers.map(() => true) }, today, { goal: 50 });
@@ -286,12 +286,13 @@ test('cierre del día: bloque «Hoy» con pintores y cuadros nuevos, «La próxi
   assert.doesNotMatch(html, /Siguiente etapa/, 'sin llamada a la siguiente etapa: va en «La próxima vez»');
 });
 
-test('resultado sin meta cumplida: sin bloque «Hoy» y con «Repaso de 5» cuando hay cuadros para él', () => {
+test('resultado sin meta cumplida: sin bloque «Hoy» y con una sola acción para practicar', () => {
   const p = masteredProgress({ [big.path[0].id]: { on: '2026-11-20' } });
   const outcome = { xp: 30, score: 2, total: 3, accuracy: 0.67, mastered: false, events: [{ type: 'streak', value: 4, grace: 1 }] };
-  const html = renderResultHtml(p, outcome, { kind: 'review5', seed: 3 }, { more: { label: 'Repaso de 5', to: 'repaso5' } });
+  const html = renderResultHtml(p, outcome, { kind: 'srs', seed: 3 }, { more: { label: 'Repasar más', to: 'repaso' } });
   assert.doesNotMatch(html, /day-done/);
-  assert.match(html, /data-to="repaso5"[^>]*>[^]*?<span>Repaso de 5<\/span>/);
+  assert.match(html, /data-to="repaso"[^>]*>[^]*?<span>Repasar más<\/span>/);
+  assert.doesNotMatch(html, /data-to="repaso5"/, 'una sola acción secundaria para practicar');
   assert.ok(html.includes('Racha a salvo: te quedaba un día de gracia'));
 });
 

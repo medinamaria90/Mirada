@@ -4,13 +4,13 @@ import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotio
 import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
-import { MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
+import { MASTERY, UNLOCK_MIN, isStepUnlocked } from '../../engine/progress.js';
 import { pendingWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, tierOf, isMasterTier } from '../../engine/painters.js';
 import { deepRoute, stageRoute, branchRoute } from '../router.js';
-import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
+import { practiceAction } from './result-actions.js';
 import { mainTrait } from '../../engine/feedback.js';
-import { weekOf, isoWeek } from '../../engine/dates.js';
+import { weekOf } from '../../engine/dates.js';
 import { encodeChallenge, tokenForRound } from '../../engine/challenge.js';
 import { shareText, dailyGrid } from '../../engine/daily.js';
 import { medalBadge } from './medals.js';
@@ -20,6 +20,8 @@ import { medalInfo } from '../../engine/medal-info.js';
 import { daySummary, listNames, CLOSURE_THUMBS } from '../../engine/closure.js';
 import { branchAfterRound, statusInBranch } from '../../engine/branches.js';
 import { setMapFocus } from './path-map.js';
+
+export { extraRounds } from './result-actions.js';
 
 export function headline(accuracy) {
   if (accuracy >= 1) return 'Impecable';
@@ -33,16 +35,6 @@ function eventCard({ icon, kicker, title, to = null, cls = '' }) {
   const body = `<span class="event-icon">${icon}</span><span class="event-text"><span class="event-kicker">${esc(kicker)}</span><span class="event-title">${esc(title)}</span></span>`;
   if (!to) return `<section class="event ${cls}">${body}</section>`;
   return `<button class="event event-link ${cls}" data-action="go" data-to="${esc(to)}">${body}<span class="event-go" aria-hidden="true">${icons.next(20)}</span></button>`;
-}
-
-// Otras rondas a mano, ya que la franja «Hoy» no existe: el Repaso de 5 (si hay material) y el reto
-// semanal (con el camino dominado y sin hacer esta semana). No se ofrece la que se acaba de jugar.
-export function extraRounds(ctx, plan) {
-  const p = ctx.store.get().progress;
-  const list = [];
-  if (plan.kind !== 'review5' && review5Works(p, ctx.index, ctx.today()).length >= REVIEW5_MIN) list.push({ to: 'repaso5', label: REVIEW5_NAME, icon: 'repeat' });
-  if (plan.kind !== 'weekly' && isPathMastered(p, ctx.index) && !p.weekly?.[isoWeek(ctx.dailyDay()).key]) list.push({ to: 'reto-semanal', label: 'Reto semanal', icon: 'target' });
-  return list;
 }
 
 // El «siguiente» de la celebración de un nivel «a fondo»: la etapa siguiente si ya está abierta, o null.
@@ -86,7 +78,7 @@ export function rankLine(p, index) {
 }
 
 // opts: { plan, outcome, title, accent, friendScore?, firstTry, shareTopic?, primary?, onDone?, more? }
-// more: { label, to } acción extra (p. ej. «Repasar más» tras el repaso rápido).
+// more: { label, to } acción extra (p. ej. «Repasar más» tras el repaso rápido); va como la acción de practicar.
 export function renderResult(ctx, el, opts) {
   const { index } = ctx;
   const { outcome, plan } = opts;
@@ -215,6 +207,8 @@ export function renderResult(ctx, el, opts) {
   // 75 % o más y bien repartido, pero faltan cuadros suyos por ver: una ronda más los enseña.
   const missing = outcome.coverShort && plan.artistId ? pendingWorks(p, index, plan.artistId, plan.level || 1).length : 0;
   const coverNote = missing ? `<p class="result-note">${missing === 1 ? 'Te falta 1 cuadro suyo por ver' : `Te faltan ${missing} cuadros suyos por ver`}: una ronda más</p>` : '';
+  // Una sola acción para seguir practicando (sin duplicados); con la ronda floja, «Repetir» ya es la principal.
+  const practice = blocked ? null : practiceAction(ctx, plan, { retry, more: opts.more, closing, duel: opts.friendScore != null });
   const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar a un amigo';
   const reduce = prefersReducedMotion();
   const toPct = rank.pct;
@@ -248,9 +242,7 @@ export function renderResult(ctx, el, opts) {
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `
         ${branchNext ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>
         <button class="btn btn-secondary btn-wide" data-action="done">Volver al camino</button>` : `<button class="btn ${deepDone && deepNext(ctx, deepDone) ? 'btn-secondary' : 'btn-primary'} btn-wide" data-action="done" data-primary>${esc(deepDone ? 'Volver al camino' : opts.primary || 'Seguir')}</button>`}
-        ${retry && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(retry)}">${icons.repeat(20)}<span>Repetir</span></button>` : ''}`}
-        ${opts.more && !closing ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(opts.more.to)}">${icons.repeat(20)}<span>${esc(opts.more.label)}</span></button>` : ''}
-        ${blocked ? '' : extraRounds(ctx, plan).map((r) => `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(r.to)}">${icons[r.icon](20)}<span>${esc(r.label)}</span></button>`).join('')}
+        ${practice ? `<button class="btn btn-secondary btn-wide" data-action="go" data-to="${esc(practice.to)}">${icons[practice.icon](20)}<span>${esc(practice.label)}</span></button>` : ''}`}
         ${token ? `<button class="btn btn-secondary btn-wide" data-action="share">${icons[isDaily ? 'copy' : 'duel'](20)}<span>${shareLabel}</span></button>` : ''}
         <p class="copy-status" role="status"></p>
         <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="4"></textarea>
@@ -274,8 +266,11 @@ export function renderResult(ctx, el, opts) {
   onAction(el, {
     done: () => {
       ctx.audio.sfx('tap');
-      if (opts.onDone) opts.onDone();
-      else ctx.go('inicio', { replace: true });
+      if (opts.onDone) return opts.onDone();
+      // De vuelta al mapa, en la parada recién jugada (la rama ya se marcó arriba).
+      if (!inBranch && plan.kind === 'stage' && plan.artistId) setMapFocus('', `artist:${plan.artistId}`);
+      else if (plan.kind === 'sala') setMapFocus('', `sala:${plan.movementId}`);
+      return ctx.go('inicio', { replace: true });
     },
     go: (b) => {
       ctx.audio.sfx('tap');

@@ -4,7 +4,7 @@
 //    del de dominio más antiguo; el cuadro lo elige el repaso espaciado (el que más tiempo lleva vencido).
 //  · Pintor dormido: dominado y sin salir en DORMANT_DAYS días; el mapa lo pinta apagado y pregunta
 //    «¿Lo recuerdas?». Nunca bloquea ni quita el dominado; al jugarlo vuelve a su estado.
-//  · «Repaso de 5»: ronda corta y opcional de cuadros ya vistos de pintores dominados: los fallados que
+//  · «Repasar lo aprendido» (antes «Repaso de 5»): ronda corta y opcional de cuadros ya vistos de pintores dominados: los fallados que
 //    vuelven (el más antiguo primero), los vencidos hoy en el repaso espaciado y, después, los que
 //    llevan más tiempo sin repasarse. Da XP y cuenta para meta y racha; no toca dominio ni anti-trampa.
 
@@ -67,7 +67,9 @@ export function contrabandWork(progress, index, artistId, today) {
 
 // ---------------------------------------------------------------- Repaso de 5
 
-export const REVIEW5_NAME = 'Repaso de 5';
+// Nombre de la ronda (título y perfil) y, si entre sus cuadros hay fallados, el del botón que la ofrece.
+export const REVIEW5_NAME = 'Repasar lo aprendido';
+export const REVIEW5_MISSED = 'Repasar los que fallaste';
 export const REVIEW5_SIZE = 5;
 // Con menos cuadros elegibles no se ofrece.
 export const REVIEW5_MIN = 3;
@@ -97,6 +99,12 @@ export function review5Works(progress, index, today) {
   byAge.filter((w) => due(w) <= today).forEach((w) => add(w.id));
   byAge.forEach((w) => add(w.id));
   return out;
+}
+
+// Rótulo del botón: dice lo que trae la ronda (ids: los de review5Works).
+export function review5Label(progress, ids) {
+  const missed = new Set((Array.isArray(progress.fallados) ? progress.fallados : []).map((f) => f.id));
+  return ids.some((id) => missed.has(id)) ? REVIEW5_MISSED : REVIEW5_NAME;
 }
 
 export function hasReview5(progress, index, today) {

@@ -415,7 +415,7 @@ test('el foco de la portada gana a main.css y va por encima de la imagen; las ho
 
 test('el repaso se ve siempre (bloqueado y con el motivo) y el logro pendiente no se da por hecho', () => {
   const practice = practiceHtml(ctxFor(emptyProgress()));
-  assert.match(practice, /is-locked[\s\S]*Repaso de 5[\s\S]*Vuelve cuando tengas 3 cuadros que repasar/);
+  assert.match(practice, /is-locked[\s\S]*Repasar lo aprendido[\s\S]*Vuelve cuando tengas 3 cuadros que repasar/);
   assert.doesNotMatch(practice, /data-action="review5"/);
   const medals = read('../app/js/ui/screens/profile-medals.js');
   assert.match(medals, /date \? info\.sub : KIND_NAMES\[kindOf\(id\)\]/);
