@@ -1,85 +1,129 @@
-selección 1315, ya bajadas 1232, pendientes 83; este lote 83
-ok   w1569622    cimabue          894x1600 404KB  Maestà
-ok   w68496636   cimabue          1260x1600 589KB  Cristo burlado
-ok   w3276414    cimabue          911x1600 351KB  Maestà de Santa Maria dei Servi
-ok   w16556250   cimabue          1270x1600 854KB  La flagelación de Cristo
-ok   w68961087   cimabue          1253x1600 428KB  Diptych of Devotion
-ok   w15974342   cimabue          1274x1600 449KB  The Virgin and Child with Two Angels
-ok   w667202     duccio           1600x1514 549KB  Maestà de la catedral de Siena
-ok   w948745     duccio           979x1600 368KB  Madonna Rucellai
-ok   w644734     duccio           904x1600 364KB  Madonna Gualino
-ok   w6728394    duccio           1207x1600 638KB  La Virgen y el Niño
-ok   w3842715    duccio           1057x1600 528KB  Madonna di Crevole
-ok   w18684720   duccio           1600x1495 713KB  Cristo y la samaritana
-ok   w6728425    duccio           1045x1600 361KB  Madonna with Child and six Angels
-ok   w3873252    duccio           1600x890 426KB  The Nativity with the Prophets Isaiah and Ezekiel
-ok   w3873247    pietro-lorenzetti 1275x1300 393KB  Nativity of the Virgin
-ok   w3948917    pietro-lorenzetti 846x1600 252KB  Saint Margaret or Agatha
-ok   w3842761    pietro-lorenzetti 1295x1600 332KB  Madonna and Child Enthroned with Eight Angels
-ok   w3843026    pietro-lorenzetti 800x1222 190KB  Cortone Maesta
-ok   w3889218    pietro-lorenzetti 1600x973 274KB  Mary with child and saints
-ok   w3709298    pietro-lorenzetti 1600x833 111KB  Descent into Limbo
-ok   w3933563    pietro-lorenzetti 1600x832 131KB  La Resurrección
-ok   w3842573    pietro-lorenzetti 1295x700 212KB  Madonna and Child with St Francis and St John the Baptist
-ok   w979440     simone-martini   1600x1389 508KB  Anunciación entre los santos Ansano y Margarita
-ok   w3947520    simone-martini   823x1200 213KB  San Luis de Tolosa coronando a Roberto de Anjou, rey de Nápo
-ok   w3907529    simone-martini   1600x1128 455KB  Políptico de Santa Catalina
-ok   w20183716   simone-martini   1152x1600 516KB  La Virgen y el Niño
-ok   w21711295   simone-martini   1074x1600 625KB  San Pedro
-ok   w3225814    simone-martini   990x1600 471KB  The Carrying of the Cross
-ok   w19607289   simone-martini   1138x1600 620KB  Christ discovered in the temple
-ok   w20173074   simone-martini   1086x1600 837KB  The Angel of the Annunciation
-ok   w3910903    ambrogio-lorenzetti 1118x1600 450KB  Presentación del Niño en el Templo
-ok   w3618171    ambrogio-lorenzetti 1469x1600 656KB  Annunciation
-ok   w3842740    ambrogio-lorenzetti 801x1500 311KB  Madonna with child
-ok   w3843028    ambrogio-lorenzetti 1600x1237 401KB  Madonna and child with saints and angels
-ok   w18572975   ambrogio-lorenzetti 1111x1600 374KB  The Charity of St. Nicholas of Bari
-ok   w20382178   ambrogio-lorenzetti 1426x1600 515KB  St. John the Baptist
-ok   w125399429  ambrogio-lorenzetti 805x1600 258KB  Madonna del Latte
-ok   w55831798   ambrogio-lorenzetti 1303x1600 306KB  Painted crucifix
-ok   w18210019   utamaro          1093x1600 364KB  Tres Bellezas de Nuestros Días
-ok   w28941252   utamaro          1600x959 334KB  Fukagawa no Yuki
-ok   w30589460   utamaro          1103x1600 267KB  Kōmei Bijin Rokkasen
-ok   w30590576   utamaro          1068x1600 293KB  Sugatami Shichinin Keshō
-ok   w28747818   utamaro          1069x1600 392KB  Kasumi-ori Musume Hinagata
-ok   w30589413   utamaro          1422x1600 246KB  Fujin Sōgaku Jittai and Fujo Ninsō Juppin
-ok   w30591109   utamaro          1071x1600 274KB  Kasen Koi no Bu
-ok   w60404497   utamaro          1059x1600 388KB  Twelve Hours in the Pleasure Quarters of the Yoshiwara
-ok   w252485     hokusai          1600x1128 447KB  La gran ola de Kanagawa
-ok   w3565037    hokusai          1600x1080 480KB  Fuji rojo
-ok   w2717022    hokusai          1600x1116 434KB  El sueño de la esposa del pescador
-ok   w18173384   hokusai          1600x1054 329KB  Tormenta debajo de la cumbre
-ok   w17227585   hokusai          1600x1052 488KB  Kajikazawa en la provincia de Kai
-ok   w18173387   hokusai          1600x1068 551KB  Sundai en Edo
-ok   w18173402   hokusai          1600x1066 427KB  Una vista del monte Fuji tras el lago Suwa
-ok   w2963437    hokusai          1600x1182 566KB  Oceans of Wisdom
-ok   w18173386   hokusai          1600x1064 514KB  Bajo el puente Mannen en Fukagawa
-ok   w18173408   hokusai          1600x1079 531KB  El salón Sazai en el templo de los quinientos rakan
-ok   w17210582   hokusai          1600x1070 445KB  Vista del Fuji desde un campo en la provincia de Owari
-ok   w18173389   hokusai          1600x1073 540KB  Senju en la provincia de Musashi
-ok   w59915220   sharaku          802x1200 196KB  Ōtani Oniji III como Yakko Edobei
-ok   w62029258   sharaku          900x1402 209KB  Ichikawa Ebizo as Takemura Sadanoshin
-ok   w62030437   sharaku          1025x1600 341KB  Iwai Hanshirō IV as the wet nurse Shigenoi
-ok   w62030967   sharaku          1079x1600 218KB  Ichikawa Monnosuke II as Date no Yosaku
-ok   w62060190   sharaku          1081x1600 395KB  Bandō Hikosaburō III as Sagisaka Sanai in the Play "Koinyōbō
-ok   w62084368   sharaku          1093x1600 346KB  Osagawa Tsuneyo II, possibly in the rôle of Ippei's sister O
-ok   w7678417    kuniyoshi        1600x796 412KB  Takiyasha la bruja y el espectro del esqueleto
-ok   w96471562   kuniyoshi        1190x1497 367KB  Michiyuki Nekoyanagi Sakari no Tsukikage
-ok   w69729449   kuniyoshi        617x1600 196KB  Honchō suikoden gōyū 800 nin hitori
-ok   w70738658   kuniyoshi        561x1600 251KB  One of the 108 Heroes of the Popular Water Margin
-ok   w96675024   kuniyoshi        1089x1600 454KB  Caricatures of the One Hundred and Eight Heroes of the Popul
-ok   w97657866   kuniyoshi        1600x769 496KB  Pilgrims at the Rōben waterfall, Ōyama
-ok   w98168850   kuniyoshi        1600x763 494KB  Onoe Kikugorō ichidai banashi Bakeneko
-ok   w104525540  kuniyoshi        1089x1600 448KB  Famous Views of Edo Selected for the Twelve Months
-ok   w5826309    hiroshige        1056x1600 519KB  El puente Ōhashi en Atake bajo una lluvia repentina
-ok   w21127606   hiroshige        1089x1600 519KB  Jardín de ciruelos en Kameido
-ok   w18686018   hiroshige        1600x1083 471KB  Fuchu
-ok   w75089333   hiroshige        1600x1048 370KB  Nihonbashi
-ok   w75089352   hiroshige        1600x1048 418KB  Yoshiwara
-ok   w75089364   hiroshige        1600x1048 361KB  Kanbara
-ok   w75089376   hiroshige        1600x1030 457KB  Numazu
-ok   w75089388   hiroshige        1600x1040 386KB  Yui
-ok   w75089437   hiroshige        1600x1044 368KB  Mariko
-ok   w75089462   hiroshige        1600x1033 414KB  Fujieda
-ok   w2269788    van-gogh         1324x1600 839KB  Retrato del doctor Félix Rey
-lote: 83/83 bien; quedan 0
+selección 1446, ya bajadas 1319, pendientes 127; este lote 127
+ok   w3649296    uccello          1600x625 268KB  The Hunt in the Forest
+ok   w3698199    uccello          1600x1048 397KB  La Crucifixión con la Virgen, los santos Juanes y san Franci
+ok   w780466     uccello          1600x1207 601KB  San Jorge y el dragón
+ok   w3637223    uccello          510x1600 145KB  Painting of Jacopone da Todi
+ok   w3982380    uccello          1600x1156 405KB  La Thébaïde
+ok   w15965547   uccello          879x1600 325KB  Crucifixion of Christ
+ok   w16599926   uccello          1005x1600 401KB  St George slaying the dragon
+ok   w16596981   uccello          1600x1591 266KB  Portrait of a Young Man
+ok   w3276176    van-der-weyden   1105x1600 374KB  Madonna Medici
+ok   w1395192    van-der-weyden   1600x1064 409KB  Cristo en la Cruz con María y San Juan
+ok   w5189814    van-der-weyden   1600x1581 516KB  Calvario
+ok   w3399428    van-der-weyden   1110x1600 267KB  Francesco d'Este
+ok   w1054459    masaccio         1255x1600 632KB  Crucifixión
+ok   w3947827    masaccio         1096x1600 301KB  San Pedro cura a los enfermos con su sombra
+ok   w3711791    masaccio         880x1200 200KB  The Distribution of Alms and Death of Ananias
+ok   w369582     masaccio         888x1600 303KB  Virgen y el Niño
+ok   w3949530    masaccio         460x1357 159KB  A Bearded Carmelite Saint
+ok   w3605535    masaccio         1600x561 246KB  The Adoration of the Magi
+ok   w3948700    masaccio         942x1600 349KB  Saint Andrew
+ok   w3949351    masaccio         759x1600 254KB  Saints Jerome and John the Baptist
+ok   w3698230    masaccio         1600x1148 422KB  The Crucifixion of Saint Peter
+ok   w3947289    masaccio         460x1357 232KB  Saint Jerome
+ok   w3948660    masaccio         460x1357 198KB  Saint Augustine
+ok   w3899272    masaccio         754x1259 198KB  Repentance of Saint Peter
+ok   w1055111    filippo-lippi    1091x1600 435KB  Virgen con el Niño y dos ángeles
+ok   w291189     filippo-lippi    1450x1600 433KB  Adoration in the Forest
+ok   w1056007    filippo-lippi    1600x709 213KB  Annunciation
+ok   w3889196    filippo-lippi    1600x1358 585KB  Barbadori Altarpiece and Predella
+ok   w1056043    filippo-lippi    1491x1600 489KB  Annunciation with Two Kneeling Donors
+ok   w3797764    filippo-lippi    1600x1206 567KB  Coronación de la Virgen
+ok   w3618193    filippo-lippi    1600x1507 466KB  Martelli Annunciation
+ok   w3958339    filippo-lippi    1600x716 197KB  Seven Saints
+ok   w3947293    piero            1365x1600 599KB  Saint Jerome and a Donor
+ok   w3731175    piero            1347x1600 331KB  Hercules
+ok   w3948659    piero            662x1600 291KB  Saint Augustin
+ok   w3842514    piero            1123x1600 341KB  Virgin and Child Enthroned with Four Angels
+ok   w701035     memling          1600x1065 562KB  El Juicio Final
+ok   w9392232    memling          1154x1600 465KB  Anunciación
+ok   w2711706    memling          1304x837 189KB  Díptico de la Virgen con Maarten van Nieuwenhove
+ok   w369913     memling          1600x692 313KB  Advenimiento y triunfo de Cristo
+ok   w2446983    memling          1600x991 542KB  Escenas de la Pasión de Cristo
+ok   w9169712    memling          691x1600 255KB  Betsabé en el baño
+ok   w2628587    memling          1489x1600 828KB  Arqueta de Santa Úrsula
+ok   w3937623    memling          1182x1600 199KB  Retrato de María Portinari
+ok   w4884666    bermejo          1224x1600 629KB  Resurrección y descenso de Jesús al Limbo
+ok   w29018377   bermejo          1600x1485 820KB  La Piedad del canónigo Desplá
+ok   w3947695    bermejo          726x1600 414KB  San Miguel derrota al demonio
+ok   w28797583   bermejo          869x1600 425KB  La flagelación de Santa Engracia
+ok   w3224308    perugino         1232x1600 311KB  Los desposorios de la Virgen
+ok   w673112     perugino         1153x1600 446KB  Apolo y Marsias
+ok   w945250     perugino         1332x1600 391KB  Portrait of Francesco delle Opere
+ok   w368788     perugino         1600x1553 380KB  Pietà
+ok   w3221619    perugino         1600x1292 504KB  Combat of Love and Chastity
+ok   w3207678    perugino         1387x1600 274KB  Lamentation over the Dead Christ
+ok   w3213774    perugino         1600x1567 542KB  Madonna and Child with Two Angels, Saint Rose and Saint Cath
+ok   w11129389   perugino         1571x1600 458KB  La visión de San Bernardo
+ok   w3607621    pontormo         1215x1600 288KB  Retrato de alabardero
+ok   w3664358    pontormo         1180x1600 459KB  Supper at Emmaus
+ok   w3937502    pontormo         1187x1600 277KB  Retrato de Cosme el Viejo
+ok   w1109475    pontormo         1206x1600 269KB  Visitación de Carmignano
+ok   w1706136    pontormo         1600x1428 288KB  Joseph with Jacob in Egypt
+ok   w3944486    pontormo         1147x1476 259KB  The Virgin and Child with St Joseph and St John the Baptist
+ok   w3937764    pontormo         1219x1600 425KB  Portrait of an Engraver of Semi-Precious Stones
+ok   w3705703    pontormo         998x1600 420KB  El Descendimiento de la cruz
+ok   w6106746    holbein          1162x1600 418KB  Retrato de Ana de Cléveris
+ok   w3630726    holbein          1171x1600 579KB  Autorretrato
+ok   w9144767    holbein          1600x1318 558KB  Una alegoría del Antiguo y Nuevo Testamento
+ok   w867403     parmigianino     1020x1600 235KB  Virgen del cuello largo
+ok   w699319     parmigianino     1600x1598 261KB  Autorretrato en un espejo convexo
+ok   w867678     parmigianino     1017x1600 372KB  Antea
+ok   w3275305    parmigianino     681x1600 180KB  Visión de San Jerónimo
+ok   w3937595    parmigianino     1321x1600 359KB  Retrato de Lorenzo Cybo
+ok   w3937542    parmigianino     1000x1376 180KB  Retrato de Galeazzo Sanvitale
+ok   w892604     parmigianino     765x1600 252KB  Cupido tallando su arco
+ok   w3851963    parmigianino     1600x1173 387KB  Matrimonio místico de Santa Catalina
+ok   w282277     parmigianino     1196x1600 560KB  Circuncisión de Jesús
+ok   w3839035    parmigianino     1195x1600 253KB  Lucrecia
+ok   w3937503    parmigianino     1476x1600 629KB  Costanza Rangoni, condesa Gozzadini
+ok   w3937655    parmigianino     1147x1600 559KB  Retrato de Pier Maria Rossi di San Secondo
+ok   w1328065    bronzino         1318x1600 450KB  Leonor de Toledo con su hijo
+ok   w1430990    bronzino         1268x1600 377KB  Alegoría del triunfo de Venus
+ok   w1990128    bronzino         1279x1600 247KB  Lucrezia Panciatichi
+ok   w1131476    bronzino         1071x1600 256KB  Descendimiento de Cristo
+ok   w3937473    bronzino         1312x1600 278KB  Bartolomeo Panciatichi
+ok   w3625842    bronzino         1311x1600 412KB  Retrato de Cosme I de Médici
+ok   w7232310    bronzino         1336x1600 222KB  Retrato de Ugolino Martelli
+ok   w18683039   bronzino         1320x1600 487KB  Retrato de un joven como san Sebastián
+ok   w3937472    bronzino         1223x1600 387KB  Portrait of Bia de' Medici
+ok   w3937730    bronzino         1261x1600 237KB  Retrato de un joven
+ok   w3944462    bronzino         1238x1600 341KB  Panciatichi Holy Family
+ok   w3784272    bronzino         1240x1600 346KB  Retrato de Juan de Médici niño
+ok   w16333797   arcimboldo       1291x1600 505KB  Retrato de Rodolfo II en traje de Vertumno
+ok   w17021187   arcimboldo       1158x1600 309KB  El bibliotecario
+ok   w18601924   arcimboldo       1025x1300 190KB  The Cook
+ok   w1194663    arcimboldo       1269x1600 306KB  El jurista
+ok   w18578019   arcimboldo       1221x1600 536KB  El jardinero
+ok   w18572283   arcimboldo       1297x1600 663KB  Primavera
+ok   w18572291   arcimboldo       1308x1600 602KB  Invierno
+ok   w18572318   arcimboldo       1308x1600 582KB  Verano
+ok   w5731138    sanchez-cotan    1600x1238 453KB  Bodegón de caza, hortalizas y frutas
+ok   w90563978   sanchez-cotan    1600x1293 271KB  Bodegón con membrillo, repollo, melón y pepino
+ok   w20274935   sanchez-cotan    1600x1221 352KB  Bodegón con caza. verdura y fruta
+ok   w126956583  sanchez-cotan    1600x1086 221KB  Bodegón con verduras y frutas
+ok   w3451328    hogarth          1512x1346 349KB  Retrato de los niños Graham
+ok   w4164272    hogarth          1320x1600 501KB  La vendedora de camarones
+ok   w5712840    hogarth          1177x1536 222KB  Autorretrato
+ok   w5722643    hogarth          1536x1267 346KB  Los servidores del pintor
+ok   w5234041    hogarth          1600x1215 282KB  David Garrick as Richard III
+ok   w3944145    hogarth          1600x1219 327KB  Casamiento a la moda II
+ok   w5967685    hogarth          1600x1332 373KB  La orgía
+ok   w6772906    hogarth          1600x1216 286KB  Marriage A-la-Mode: 6. The Lady's Death
+ok   w18599152   gericault        1600x1293 462KB  The Severed Heads
+ok   w29902189   gericault        1600x1303 500KB  Head of a lion
+ok   w106701973  gericault        1054x1280 132KB  Cheval Cabré au Tapis de Selle Rouge
+ok   w26708040   gericault        1600x1260 399KB  A Horse frightened by Lightning
+ok   w1437492    matisse          1176x1600 502KB  Mujer con sombrero
+ok   w2538580    matisse          1600x1162 478KB  La alegría de vivir
+ok   w2902188    matisse          1284x1600 497KB  La raya verde
+ok   w3745698    matisse          1335x1600 524KB  The Open Window
+ok   w1999166    matisse          1600x1070 241KB  La música
+ok   w882584     matisse          1600x1038 468KB  Desnudo azul
+ok   w3791123    matisse          796x1200 232KB  Goldfish
+ok   w4869004    matisse          1600x1320 262KB  Bañistas con tortuga
+ok   w2049345    matisse          1291x1000 230KB  Game of Bowls
+ok   w6728519    matisse          1284x1600 299KB  Madras Rouge
+ok   w7447987    matisse          1344x1600 530KB  Self-Portrait in a Striped T-shirt
+ok   w7727514    matisse          1600x1337 448KB  The Conversation
+lote: 127/127 bien; quedan 0
