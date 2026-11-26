@@ -11,8 +11,18 @@
      "source": "https://es.wikipedia.org/wiki/El_Greco"
     },
     {
-     "text": "Pintaba como nadie en su época, y por eso lo olvidaron dos siglos. Los pintores del siglo XX lo redescubrieron como uno de los suyos. Aquí, abajo, Toledo; arriba, el cielo.",
+     "text": "Pintaba como nadie en su época, y por eso lo olvidaron dos siglos. Los pintores del siglo XX lo redescubrieron como uno de los suyos. Aquí, Toledo bajo un cielo de tormenta.",
+     "artwork": "w883994",
+     "source": "https://es.wikipedia.org/wiki/El_Greco#Madurez"
+    },
+    {
+     "text": "En El entierro del conde de Orgaz, el niño de la izquierda es su hijo, Jorge Manuel. En el pañuelo del niño, el pintor escribió el año en que nació.",
      "artwork": "w94802",
+     "focus": [
+      0.2,
+      0.8,
+      2.2
+     ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#Madurez"
     },
     {

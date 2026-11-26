@@ -26,8 +26,8 @@ const catalog = json('data/catalog.json');
 const TODAY = '2026-11-24';
 const askable = (w) => !w.spoiler && !w.attributed;
 
-test('cifras: 1.446 obras, 174 pintores (los Lorenzetti, una sola parada), 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
-  assert.equal(real.artworks.length, 1446);
+test('cifras: 1.461 obras, 174 pintores (los Lorenzetti, una sola parada), 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
+  assert.equal(real.artworks.length, 1461);
   assert.equal(real.artists.length, 174);
   assert.equal(real.movements.length, 11);
   assert.deepEqual(real.movements.filter((m) => m.branch).map((m) => [m.id, m.opensAt]), [['gotico', 'renacimiento'], ['ukiyo-e', 'impresionismo']]);
@@ -39,7 +39,10 @@ test('cifras: 1.446 obras, 174 pintores (los Lorenzetti, una sola parada), 11 mo
 test('camino común: onPath = grandes maestros + maestros + invitados con alguna obra de fama 3; las ramas, nunca', () => {
   for (const a of real.artists) {
     const fame3 = real.worksOf(a.id).some((w) => w.fame === 3);
-    const expected = a.category === 'gran-maestro' || a.category === 'maestro' || (a.category === 'invitado' && fame3);
+    // Un gran maestro de una rama (Giotto en Gótico) tiene niveles pero no es parada del camino.
+    const inBranch = Boolean(real.movement(a.movementId).branch);
+    const stage = a.category === 'gran-maestro' || a.category === 'maestro';
+    const expected = (stage && !inBranch) || (a.category === 'invitado' && fame3);
     assert.equal(a.onPath, expected, a.id);
     if (a.category === 'rama') assert.equal(a.onPath, false, a.id);
   }
@@ -345,7 +348,7 @@ test('ficha de museo: se pide aparte y se une a las obras', async () => {
   const { mergeCatalogFicha } = await import('../app/js/engine/catalog.js');
   const idx = buildIndex(catalog);
   const n = mergeCatalogFicha(idx, json('data/catalog-ficha.json'));
-  assert.equal(n, 1446);
+  assert.equal(n, 1461);
   const g = idx.artwork(W('a154'));
   assert.ok(g.museum && g.city, 'La Gioconda lleva museo y ciudad');
   assert.ok(g.source.wikidata.startsWith('Q'));
@@ -387,16 +390,18 @@ test('ramas: el resultado sigue en la rama de origen (pintores en dos ramas) y n
   const p = emptyProgress();
   real.steps.forEach((x) => { p.artists[x.id] = { plays: 1, best: 1, mastered: true, last: TODAY }; });
   const done = (id) => { p.artists[id] = { plays: 1, best: 1, mastered: true, last: TODAY }; };
-  // Giotto está en Gótico y en Descubre el Renacimiento.
+  // Giotto, gran maestro de Gótico, solo está en esa rama.
   ['cimabue', 'duccio', 'giotto'].forEach(done);
-  assert.ok(real.branchesOf('giotto').length === 2);
+  assert.deepEqual(real.branchesOf('giotto').map((b) => b.id), ['gotico']);
   const gotico = branchAfterRound(p, real, 'giotto', 'gotico');
   assert.equal(gotico.branch.id, 'gotico');
   assert.equal(gotico.next, 'lorenzetti');
-  assert.equal(branchAfterRound(p, real, 'giotto', 'descubre-renacimiento').branch.id, 'descubre-renacimiento');
-  assert.equal(branchAfterRound(p, real, 'giotto').branch.id, 'gotico', 'sin rama indicada, la más concreta');
-  // Juan de Juanes desde Maestros españoles: sigue en la escuela, no salta a Descubre el Renacimiento.
+  assert.equal(branchAfterRound(p, real, 'giotto').branch.id, 'gotico');
+  // Juan de Juanes, en Descubre el Renacimiento y en Maestros españoles: sin rama indicada, la más concreta.
+  assert.equal(real.branchesOf('juan-de-juanes').length, 2);
+  // Desde Maestros españoles sigue en la escuela, no salta a Descubre el Renacimiento.
   done('juan-de-juanes');
+  assert.equal(branchAfterRound(p, real, 'juan-de-juanes').branch.id, 'maestros-espanoles');
   const esp = branchAfterRound(p, real, 'juan-de-juanes', 'maestros-espanoles');
   assert.equal(esp.branch.id, 'maestros-espanoles');
   assert.ok(esp.next !== 'tintoretto');
