@@ -1,6 +1,6 @@
 """Copia las historias de contenido/historias/ a app/data/historias/ (lo que sirve la app) y escribe su índice.
 
-Valida cada una (formato de contenido/historias/README.md): como mucho 3 tarjetas, texto de hasta 180 caracteres, fuente,
+Valida cada una (formato de contenido/historias/README.md): como mucho 5 tarjetas, texto de hasta 180 caracteres, fuente,
 título corto en cada etapa y, si hay catálogo en app/data/catalog.json, que el pintor y las obras existan. Uso: python3 -I tools/sync_historias.py
 El índice (`index.json`) dice qué niveles tiene cada pintor: así la app no pide archivos que no existen.
 """
@@ -12,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "contenido", "historias")
 DST = os.path.join(ROOT, "app", "data", "historias")
 MAX_TEXT = 180
-MAX_CARDS = 3
+MAX_CARDS = 5
 SHORT_MAX = 12  # título corto de nivel (`stage`): cabe bajo su círculo en la fila de historias
 
 
