@@ -1016,6 +1016,36 @@ if (SMOKE) {
   check(/se abre al superar a duccio en gótico/i.test(await page.locator('.artist-sheet .as-lock').innerText()), 'la ficha de Giotto desde el Gótico no dice qué falta');
   await audit(page, '390 ficha cerrada en la rama');
   await page.keyboard.press('Escape');
+  // Doble toque (muy habitual en el móvil): una sola hoja, y se cierra. Antes se abrían dos y la de debajo quedaba
+  // pillada sin forma de cerrarla. Lo mismo con la ficha de un pintor desde la hoja.
+  const openDialogs = () => page.evaluate(() => [...document.querySelectorAll('dialog[open]')].map((d) => d.className));
+  await page.locator(goticoSign).dispatchEvent('click');
+  await page.locator(goticoSign).dispatchEvent('click');
+  await page.waitForSelector('dialog.map-sheet[open] .ms-row');
+  await page.waitForTimeout(400);
+  check((await openDialogs()).length === 1, `doble toque en un cartel: ${JSON.stringify(await openDialogs())}`);
+  await page.locator('dialog.map-sheet [data-ms="artist"][data-id="giotto"]').dispatchEvent('click');
+  await page.waitForSelector('.artist-sheet[open] .as-name');
+  await page.waitForTimeout(400);
+  check((await openDialogs()).length === 1, `ficha desde la hoja: ${JSON.stringify(await openDialogs())}`);
+  await page.click('.artist-sheet [data-as="close"]');
+  await page.waitForTimeout(300);
+  check((await openDialogs()).length === 0, `tras cerrar la ficha quedan hojas: ${JSON.stringify(await openDialogs())}`);
+  // «Atrás» del móvil con una hoja abierta: se cierra con la pantalla.
+  await page.click(goticoSign);
+  await page.waitForSelector('dialog.map-sheet[open]');
+  await page.goto(`${base}#perfil`);
+  await page.waitForTimeout(300);
+  check((await openDialogs()).length === 0, 'la hoja sigue abierta al cambiar de pantalla');
+  await page.goto(`${base}#inicio`);
+  await page.waitForSelector(goticoSign);
+  // «Empieza aquí» abre «Cómo se juega» y «Vamos» lo cierra.
+  await page.click('[data-action="start"]');
+  await page.waitForSelector('dialog.map-sheet[open] .ms-how');
+  await audit(page, '390 cómo se juega');
+  await page.click('dialog.map-sheet .ms-ok');
+  await page.waitForTimeout(300);
+  check((await openDialogs()).length === 0, '«Vamos» no cierra «Cómo se juega»');
   // Un pintor del camino común abierto desde una rama sigue en ella: Berruguete desde Maestros españoles (avance de la
   // rama, «Siguiente en la rama» y el mapa centrado en su cartel al volver).
   const espSign = '.branch[data-id="maestros-espanoles"], .branch[data-members~="maestros-espanoles"]';

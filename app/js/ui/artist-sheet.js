@@ -7,11 +7,12 @@ import { icons } from './icons.js';
 import { observeDeferred } from './lazy-img.js';
 import { loadCss } from './lazy-css.js';
 import { profileHtml, wireProfile } from './artist-profile.js';
+import { modalSlot, mountSheet } from './modal-slot.js';
 
-let current = null;
+const slot = modalSlot();
 
 export function closeArtistSheet() {
-  if (current) current.close();
+  slot.close();
 }
 
 // opts: { opener, playable, branchId } (dentro de una ronda no se ofrece jugar; desde la hoja de una rama del mapa sí,
@@ -19,11 +20,12 @@ export function closeArtistSheet() {
 export async function openArtistSheet(ctx, artistId, opts = {}) {
   const artist = ctx.index.artist(artistId);
   if (!artist) return null;
-  closeArtistSheet();
+  const turn = slot.begin();
   const opener = opts.opener || document.activeElement;
   await loadCss('css/ficha.css');
   const close = `<button type="button" class="ap-close" data-as="close" aria-label="Cerrar">${icons.close(22)}</button>`;
   const html = await profileHtml(ctx, artistId, { playable: opts.playable === true, branchId: opts.branchId || '', navigate: false, tag: 'h2', leadControl: close });
+  if (slot.stale(turn)) return null; // otro toque ha pedido otra hoja mientras cargaba esta
   const dlg = document.createElement('dialog');
   dlg.className = 'artist-sheet';
   dlg.setAttribute('aria-labelledby', 'ap-name');
@@ -31,21 +33,10 @@ export async function openArtistSheet(ctx, artistId, opts = {}) {
   dlg.innerHTML = `<div class="ap ap-in-dialog">${html}</div>`;
   document.body.appendChild(dlg);
 
-  const handle = { close: () => {
-    if (current !== handle) return;
-    current = null;
-    if (dlg.open) dlg.close();
-    dlg.remove();
-    if (opener && opener.isConnected) opener.focus({ preventScroll: true });
-  } };
-  current = handle;
+  const handle = {};
+  mountSheet(dlg, { slot, handle, opener, closeSelector: '[data-as="close"]' });
   wireProfile(ctx, dlg, artistId, { beforeGo: () => handle.close() });
   observeDeferred(dlg);
-  dlg.addEventListener('click', (ev) => {
-    if (ev.target === dlg || ev.target.closest('[data-as="close"]')) handle.close();
-  });
-  dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); handle.close(); });
-  try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }
   dlg.querySelector('.ap-close').focus({ preventScroll: true });
   return handle;
 }

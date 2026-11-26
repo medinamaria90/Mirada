@@ -9,6 +9,7 @@ import { branchStatus, tramoPending } from '../engine/branches.js';
 import { branchState, tramoState, branchWhy, afterEra, period } from './screens/path-signs.js';
 import { pathLayout } from './screens/path-layout.js';
 import { lifeSpan } from '../engine/painters.js';
+import { modalSlot, mountSheet } from './modal-slot.js';
 
 const KIND = {
   epoca: { kicker: 'Rama de la época', about: 'Pintores menos conocidos de la época, para afinar la mirada.' },
@@ -18,13 +19,14 @@ const KIND = {
 const STATE = { mastered: 'Dominado', started: 'En marcha', available: 'Abierto', locked: 'Por abrir' };
 const STATE_ICON = { mastered: 'check', started: 'play', available: 'play', locked: 'lock' };
 
-let current = null;
+const slot = modalSlot();
 
 
 // focus: selector del control que recibe el foco al abrir (tras «Atrás», la fila de la que se vino).
 async function open(ctx, opener, accent, body, focus = '') {
-  if (current) current.close();
+  const turn = slot.begin();
   await loadCss('css/mapa-hoja.css');
+  if (slot.stale(turn)) return null; // otro toque ha pedido otra hoja mientras cargaba esta
   const dlg = document.createElement('dialog');
   dlg.className = 'map-sheet';
   dlg.setAttribute('aria-labelledby', 'ms-title');
@@ -32,21 +34,12 @@ async function open(ctx, opener, accent, body, focus = '') {
   dlg.innerHTML = `<div class="ms-body"><span class="ms-grip" aria-hidden="true"></span>
     <button type="button" class="icon-btn ms-close" data-ms="close" aria-label="Cerrar">${icons.close(22)}</button>${body}</div>`;
   document.body.appendChild(dlg);
-  const close = () => {
-    if (current !== handle) return;
-    current = null;
-    if (dlg.open) dlg.close();
-    dlg.remove();
-    if (opener && opener.isConnected) opener.focus({ preventScroll: true });
-  };
-  const handle = { close, dlg };
-  current = handle;
+  const handle = { dlg };
+  const close = mountSheet(dlg, { slot, handle, opener, closeSelector: '[data-ms="close"]' });
   dlg.addEventListener('click', (ev) => {
-    if (ev.target === dlg) return close();
     const b = ev.target.closest('[data-ms]');
-    if (!b) return;
+    if (!b || b.dataset.ms === 'close') return;
     ctx.audio.sfx('tap');
-    if (b.dataset.ms === 'close') return close();
     if (b.dataset.ms === 'play') {
       close();
       return ctx.go(stageRoute(b.dataset.id, b.dataset.branch));
@@ -65,10 +58,21 @@ async function open(ctx, opener, accent, body, focus = '') {
       import('./artist-sheet.js').then((m) => m.openArtistSheet(ctx, b.dataset.id, { opener, playable: true, branchId: b.dataset.branch || '' })).catch((err) => console.error(err));
     }
   });
-  dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); close(); });
-  try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }
   (focus && dlg.querySelector(focus) || dlg.querySelector('.ms-close')).focus({ preventScroll: true });
   return handle;
+}
+
+// «Empieza aquí»: cómo se juega, en tres líneas. Es el único sitio donde la app se explica.
+const HOW = [
+  ['arch', 'Cada parada es un pintor: miras sus cuadros y aprendes a reconocerlo.'],
+  ['eye', 'Después, preguntas rápidas: ¿quién lo pintó? Aciertas y la parada se ilumina.'],
+  ['fork', 'Al dominar una época se abre la siguiente, y ramas con más pintores.'],
+];
+export function openIntroSheet(ctx, _id, opener) {
+  const body = `<header class="ms-head"><p class="ms-kicker">El camino</p><h2 class="ms-title" id="ms-title">Cómo se juega</h2></header>
+    <ul class="ms-how">${HOW.map(([icon, text]) => `<li><span class="ms-mark is-available" aria-hidden="true">${icons[icon](14)}</span><span>${esc(text)}</span></li>`).join('')}</ul>
+    <button type="button" class="btn btn-primary btn-wide ms-ok" data-ms="close">Vamos</button>`;
+  return open(ctx, opener, ctx.index.visibleMovements[0]?.accent, body);
 }
 
 // Época cerrada: cuándo se abre, de qué va y quién espera.
