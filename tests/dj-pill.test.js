@@ -59,6 +59,16 @@ test('afinar música: la barra se ve en el mapa tras entrar con el código', {
     await page.uncheck('[data-su=dj]');
     assert.equal(await page.locator('.dj-bar').count(), 0, 'apagada, la barra desaparece');
     assert.equal(await page.locator('.su-section').isVisible(), true, 'la sección sigue disponible');
+    const keyBefore = await page.evaluate(() => localStorage.getItem('mirada.state'));
+    await page.check('[data-su=trial]');
+    await page.waitForSelector('.trial-bar');
+    assert.match(await page.innerText('.trial-bar'), /Modo prueba/);
+    assert.equal(await page.locator('.stage.is-locked, [data-status="locked"]').count(), 0, 'en prueba no queda nada cerrado en el mapa');
+    await page.click('.trial-back');
+    assert.equal(await page.locator('.trial-bar').count(), 0);
+    assert.equal(await page.evaluate(() => localStorage.getItem('mirada.state')), keyBefore, 'la partida real no cambia');
+    await page.goto(`${base}#perfil`); await page.waitForTimeout(SETTLE_MS);
+    await page.click('[data-action="open-settings"]');
     await page.click('[data-su-exit]');
     assert.equal(await page.locator('.su-section').isVisible(), false, 'salir oculta la sección');
     await page.reload(); await page.waitForTimeout(SETTLE_MS);

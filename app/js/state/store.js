@@ -34,6 +34,8 @@ export function safeStorage(getStorage) {
 export function createStore({ storage = null, key = STORAGE_KEY } = {}) {
   let state = load();
   const listeners = new Set();
+  // Modo prueba: mientras hay copia guardada, el estado vive solo en memoria y nada llega al almacenamiento.
+  let saved = null;
 
   function load() {
     if (!storage) return defaultState();
@@ -46,7 +48,7 @@ export function createStore({ storage = null, key = STORAGE_KEY } = {}) {
   }
 
   function persist() {
-    if (!storage) return false;
+    if (!storage || saved) return false;
     try {
       storage.setItem(key, JSON.stringify(state));
       return true;
@@ -81,6 +83,23 @@ export function createStore({ storage = null, key = STORAGE_KEY } = {}) {
       emit();
       return state;
     },
+    /** Entra en modo prueba: guarda una copia exacta y trabaja sobre `transform(copia)`, sin tocar el almacenamiento. */
+    enterTrial(transform) {
+      if (saved) return state;
+      saved = structuredClone(state);
+      state = transform(structuredClone(state));
+      emit();
+      return state;
+    },
+    /** Sale del modo prueba: vuelve exactamente a la copia (el almacenamiento nunca cambió). */
+    exitTrial() {
+      if (!saved) return state;
+      state = saved;
+      saved = null;
+      emit();
+      return state;
+    },
+    inTrial: () => Boolean(saved),
     subscribe(fn) {
       listeners.add(fn);
       return () => listeners.delete(fn);

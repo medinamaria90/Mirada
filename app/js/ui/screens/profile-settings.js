@@ -79,7 +79,7 @@ export function wireSettings(ctx, el) {
   const confirm = $('.confirm', dialog);
   el.addEventListener('change', (ev) => onSettingChange(ctx, ev));
   bindDjTaps($('#settings-title', dialog));
-  wireSuper(dialog);
+  wireSuper(dialog, ctx, () => sheet.close());
   return {
     'open-settings': (b) => { ctx.audio.sfx('tap'); sheet.open(b, '[data-action="close-sheet"]'); },
     goal: (b) => {

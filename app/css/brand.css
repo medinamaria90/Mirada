@@ -183,7 +183,9 @@
   --topbar-h: 65px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
-  --dj-h: 0px; /* alto de la barra del modo secreto (0 si no está) */
+  --dj-bar-h: 0px; /* barra de música del superusuario (0 si no está) */
+  --trial-h: 0px; /* franja del modo prueba (0 si no está) */
+  --dj-h: calc(var(--dj-bar-h) + var(--trial-h)); /* alto total de las barras de superusuario */
   --screen-h: calc(100dvh - var(--dj-h)); /* pantalla completa descontando esa barra */
   color-scheme: light dark;
 }
@@ -383,4 +385,5 @@
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
 
-:root.has-dj { --dj-h: 44px; }
+:root.has-dj { --dj-bar-h: 44px; }
+:root.has-trial { --trial-h: 44px; }
