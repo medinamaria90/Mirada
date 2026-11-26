@@ -1,0 +1,26 @@
+{
+ "artistId": "polenov",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Polénov",
+   "cards": [
+    {
+     "text": "Vasili Polénov nació en San Petersburgo en 1844 y murió en 1927 en su casa junto al río Oká, que hoy es museo. Fue maestro de Levitán y Korovin.",
+     "artwork": "w4304117",
+     "source": "https://es.wikipedia.org/wiki/Vasili_Pol%C3%A9nov"
+    },
+    {
+     "text": "Para pintar a Cristo y la mujer adúltera viajó a Palestina y Egipto. Quería un Jesús de carne y hueso, en paisajes y con luz de verdad.",
+     "artwork": "w26781788",
+     "source": "https://es.wikipedia.org/wiki/Vasili_Pol%C3%A9nov"
+    },
+    {
+     "text": "Fíjate en el Patio moscovita: un día de sol, niños jugando en la hierba, un caballo enganchado y la iglesia al fondo. Un Moscú tranquilo, de pueblo.",
+     "artwork": "w4304117",
+     "source": "https://es.wikipedia.org/wiki/Vasili_Pol%C3%A9nov"
+    }
+   ]
+  }
+ ]
+}
