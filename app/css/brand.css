@@ -103,6 +103,8 @@
   --map-dusk: #f2a46c;
   --map-dusk-max: .3;
   --map-lamp: #ffd88a;
+  --map-star: #fff3d6;
+  --map-cloud: rgba(60, 70, 90, .07);
   --map-tint-renacimiento: #e6e8d0;
   --map-tint-manierismo-y-norte: #dfe5d8;
   --map-tint-barroco: #eee3cc;
@@ -181,7 +183,9 @@
   --topbar-h: 65px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
-  --dj-h: 0px; /* alto de la barra del modo secreto (0 si no está) */
+  --dj-bar-h: 0px; /* barra de música del superusuario (0 si no está) */
+  --trial-h: 0px; /* franja del modo prueba (0 si no está) */
+  --dj-h: calc(var(--dj-bar-h) + var(--trial-h)); /* alto total de las barras de superusuario */
   --screen-h: calc(100dvh - var(--dj-h)); /* pantalla completa descontando esa barra */
   color-scheme: light dark;
 }
@@ -255,6 +259,8 @@
     --map-dusk: #c27a46;
     --map-dusk-max: .22;
     --map-lamp: #f2c46c;
+    --map-star: #f6e7c4;
+    --map-cloud: rgba(0, 0, 0, .14);
     --map-tint-renacimiento: #23251b;
     --map-tint-manierismo-y-norte: #1f2521;
     --map-tint-barroco: #272319;
@@ -347,6 +353,8 @@
   --map-dusk: #c27a46;
   --map-dusk-max: .22;
   --map-lamp: #f2c46c;
+  --map-star: #f6e7c4;
+  --map-cloud: rgba(0, 0, 0, .14);
   --map-tint-renacimiento: #23251b;
   --map-tint-manierismo-y-norte: #1f2521;
   --map-tint-barroco: #272319;
@@ -377,4 +385,5 @@
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
 
-:root.has-dj { --dj-h: 44px; }
+:root.has-dj { --dj-bar-h: 44px; }
+:root.has-trial { --trial-h: 44px; }

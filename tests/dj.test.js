@@ -46,3 +46,20 @@ test('afinar música: orden lógico de listas y el salto pasa a la siguiente (da
   assert.equal(followingList(order, order.at(-1)), 'menu');
   assert.equal(followingList(listOrder(['x', 'menu', 'baroque']), 'menu'), 'baroque');
 });
+
+test('superusuario: se recuerda, sale y migra de la barra ya encendida; el registro de opciones es válido', async () => {
+  const store = new Map();
+  globalThis.localStorage = { getItem: (k) => (store.has(k) ? store.get(k) : null), setItem: (k, v) => store.set(k, String(v)), removeItem: (k) => store.delete(k) };
+  const { isSuperOn, setSuper, SU_KEY } = await import('../app/js/ui/su-mode.js');
+  const { SU_OPTIONS } = await import('../app/js/ui/su-options.js');
+  assert.equal(isSuperOn(), false);
+  store.set('sfumato.dj', '1');
+  assert.equal(isSuperOn(), true, 'quien ya tenía la barra entra sin código');
+  setSuper(false);
+  assert.equal(isSuperOn(), false, 'salir se impone a la migración');
+  setSuper(true);
+  assert.equal(store.get(SU_KEY), '1');
+  assert.equal(new Set(SU_OPTIONS.map((o) => o.id)).size, SU_OPTIONS.length);
+  for (const o of SU_OPTIONS) assert.ok(o.label && typeof o.get === 'function' && typeof o.set === 'function', o.id);
+  delete globalThis.localStorage;
+});

@@ -2,12 +2,12 @@
    hoja secreta que lo enciende (ui/dj-sheet.js). Discreta: no compite con los cuadros. */
 .dj-bar {
   --dj-z: 7; /* sobre la barra superior (5) */
-  position: sticky; top: 0; z-index: var(--dj-z); box-sizing: border-box; height: var(--dj-h);
+  position: sticky; top: var(--trial-h); z-index: var(--dj-z); box-sizing: border-box; height: var(--dj-bar-h);
   display: flex; align-items: center; gap: 2px; padding: 0 4px;
   background: var(--surface-2); border-bottom: 1px solid var(--line);
 }
 .dj-bar[hidden] { display: none; }
-.has-dj .topbar { top: var(--dj-h); }
+.has-dj .topbar, .has-trial .topbar { top: var(--dj-h); }
 .dj-now {
   flex: 1 1 0; min-width: 0; display: grid; justify-items: start; gap: 0; height: 100%; padding: 0 6px;
   border: 0; background: none; color: var(--ink); font: 500 .8rem/1.2 var(--font); text-align: left; cursor: pointer;
@@ -25,3 +25,20 @@
 .dj-sheet .dj-code[hidden], .dj-sheet .dj-switch[hidden] { display: none; }
 .dj-wrong { color: var(--bad); font-size: .9rem; }
 .dj-wrong[hidden] { display: none; }
+.su-section { --su-gap: .5rem; display: grid; gap: var(--su-gap); padding-top: .75rem; }
+.su-section[hidden] { display: none; }
+.su-title { font: 600 .95rem/1.2 var(--font); color: var(--ink); margin: 0; }
+.su-options { display: grid; }
+/* Modo prueba: franja discreta sobre todo, con la salida a la partida real. */
+.trial-bar {
+  --trial-z: 8; /* sobre la barra de música (7) */
+  position: sticky; top: 0; z-index: var(--trial-z); box-sizing: border-box; height: var(--trial-h);
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: 0 .75rem;
+  background: var(--brand-soft); color: var(--ink); border-bottom: 1px solid var(--line); font: 500 .8rem/1.2 var(--font);
+}
+.trial-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.trial-back {
+  flex: none; height: 100%; margin-right: -8px; padding: 0 .6rem; border: 0; background: none; cursor: pointer;
+  color: var(--brand-text); font: 600 .8rem/1 var(--font);
+}
+.trial-back:focus-visible { outline: 2.5px solid var(--ink); outline-offset: -2px; }

@@ -20,8 +20,16 @@ CITY_ALIASES = {"Q23306": "Londres", "Q84": "Londres", "Q90": "París", "Q60": "
                 "Q23436": "Edimburgo", "Q2379199": "Edimburgo", "Q2044": "Florencia", "Q220": "Roma", "Q641": "Venecia", "Q64": "Berlín",
                 "Q1726": "Múnich", "Q1748": "Copenhague", "Q1754": "Estocolmo", "Q656": "San Petersburgo", "Q649": "Moscú",
                 "Q1741": "Viena", "Q727": "Ámsterdam", "Q239": "Bruselas", "Q12892": "Amberes", "Q1492": "Barcelona",
-                "Q8717": "Valencia", "Q8818": "Sevilla", "Q8692": "Bilbao", "Q1297": "Chicago", "Q100": "Boston",
-                "Q61": "Washington", "Q1345": "Filadelfia", "Q65": "Los Ángeles", "Q490": "Milán", "Q2634": "Nápoles"}
+                "Q8717": "Sevilla", "Q8818": "Valencia", "Q8692": "Bilbao", "Q1297": "Chicago", "Q100": "Boston",
+                "Q61": "Washington", "Q1345": "Filadelfia", "Q65": "Los Ángeles", "Q490": "Milán", "Q2634": "Nápoles",
+                "Q9899": "Ámsterdam", "Q3940419": "Roma", "Q4169280": "Dublín", "Q1919098": "Melbourne", "Q1224979": "Atenas",
+                "Q240": "Bruselas", "Q228445": "Budapest", "Q423043": "Lisboa", "Q506250": "Estocolmo", "Q585": "Oslo",
+                "Q858143": "Kitakyushu", "Q502168": "Skagen"}
+# Colecciones que ya no existen y Wikidata da sin fecha de fin (el «Museo del Führer» de Linz, expolio nazi).
+GONE_COLLECTIONS = {"Q475667"}
+# Museos cuya ciudad o país no sale bien subiendo por P131 en Wikidata (apunta al país o al estado, o falta).
+MUSEUM_PLACE = {"Q183334": ("Moscú", None), "Q1465805": ("Williamstown", None), "Q3303786": ("Dallas", None),
+                "Q3330217": ("Pau", None), "Q1419555": ("Praga", None), "Q215539": ("Moscú", "Rusia")}
 PAINT_WORDS = {"técnica mixta", "mixed media", "grisalla", "aguada", "temple", "óleo", "fresco", "acuarela", "pastel",
                "gouache", "pan de oro", "tinta", "carboncillo", "encáustica", "acrílico", "temple al huevo"}
 
@@ -273,9 +281,11 @@ def resolve_museo(mq, museos, lugares):
         return resolve_museo(m["parent"], museos, lugares)
     start = m.get("adm") or museos.get(m.get("parent") or "", {}).get("adm") or m.get("loc")
     city, country = lugares.city(start) if start else (None, None)
+    fix_city, fix_country = MUSEUM_PLACE.get(mq, (None, None))
+    city, country = fix_city or city, fix_country or m.get("country") or country
     if city == m["name"]:
         city = None
-    return m["name"], city, m.get("country") or country
+    return m["name"], city, country
 
 
 def main():
@@ -310,7 +320,7 @@ def main():
             # Dónde está hoy: entre colección (P195 sin fecha de fin) y ubicación (P276) gana la que sea museo
             # propiamente (o parte de uno), luego la que aparezca en ambas, luego la de ingreso más reciente;
             # así el Prado gana al Palacio Real en Las meninas y la National Gallery a la Cook collection.
-            cands = list(it["colls"]) + [c for c in it["locs"] if c not in it["colls"]]
+            cands = [c for c in list(it["colls"]) + [c for c in it["locs"] if c not in it["colls"]] if c not in GONE_COLLECTIONS]
 
             def rank(c):
                 m = museos.get(c, {})

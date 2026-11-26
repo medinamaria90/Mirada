@@ -9,6 +9,7 @@ import { applyAudioSettings, playEra } from '../audio-bridge.js';
 import { themePicker, chooseTheme, markThemePicker } from '../theme.js';
 import { bindSheet } from './profile-sheet.js';
 import { bindDjTaps } from '../dj-sheet.js';
+import { superHtml, wireSuper } from '../su-section.js';
 
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
 const RING = 56;
@@ -48,6 +49,7 @@ export function settingsHtml(ctx) {
           </div>
         </div>
       </div>
+      ${superHtml()}
       <button type="button" class="settings-credits" data-action="credits">Fuentes y créditos</button>
     </div>
   </dialog>`;
@@ -77,6 +79,7 @@ export function wireSettings(ctx, el) {
   const confirm = $('.confirm', dialog);
   el.addEventListener('change', (ev) => onSettingChange(ctx, ev));
   bindDjTaps($('#settings-title', dialog));
+  wireSuper(dialog, ctx, () => sheet.close());
   return {
     'open-settings': (b) => { ctx.audio.sfx('tap'); sheet.open(b, '[data-action="close-sheet"]'); },
     goal: (b) => {

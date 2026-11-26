@@ -37,6 +37,9 @@ test('afinar música: la barra se ve en el mapa tras entrar con el código', {
     for (let i = 0; i < TAPS; i += 1) await page.click('#settings-title');
     await page.fill('.dj-sheet input[name=code]', CODE);
     await page.click('.dj-sheet button[type=submit]');
+    await page.waitForSelector('.su-section:not([hidden])');
+    assert.equal(await page.locator('.dj-bar').count(), 0, 'la barra no se enciende sola al entrar');
+    await page.check('[data-su=dj]');
     await page.keyboard.press('Escape'); await page.keyboard.press('Escape');
     await page.goto(`${base}#inicio`); await page.waitForTimeout(SETTLE_MS);
     await page.mouse.click(3, 300); // un toque: el navegador deja arrancar el audio
@@ -51,6 +54,26 @@ test('afinar música: la barra se ve en el mapa tras entrar con el código', {
     assert.equal(pill.visibleOnTop, true, 'nada debe taparla');
     assert.ok(pill.text.trim().length > 0);
     assert.ok(!/menu|renaissance/.test(pill.text), 'nombres humanos, no claves');
+    await page.goto(`${base}#perfil`); await page.waitForTimeout(SETTLE_MS);
+    await page.click('[data-action="open-settings"]');
+    await page.uncheck('[data-su=dj]');
+    assert.equal(await page.locator('.dj-bar').count(), 0, 'apagada, la barra desaparece');
+    assert.equal(await page.locator('.su-section').isVisible(), true, 'la sección sigue disponible');
+    const keyBefore = await page.evaluate(() => localStorage.getItem('mirada.state'));
+    await page.check('[data-su=trial]');
+    await page.waitForSelector('.trial-bar');
+    assert.match(await page.innerText('.trial-bar'), /Modo prueba/);
+    assert.equal(await page.locator('.stage.is-locked, [data-status="locked"]').count(), 0, 'en prueba no queda nada cerrado en el mapa');
+    await page.click('.trial-back');
+    assert.equal(await page.locator('.trial-bar').count(), 0);
+    assert.equal(await page.evaluate(() => localStorage.getItem('mirada.state')), keyBefore, 'la partida real no cambia');
+    await page.goto(`${base}#perfil`); await page.waitForTimeout(SETTLE_MS);
+    await page.click('[data-action="open-settings"]');
+    await page.click('[data-su-exit]');
+    assert.equal(await page.locator('.su-section').isVisible(), false, 'salir oculta la sección');
+    await page.reload(); await page.waitForTimeout(SETTLE_MS);
+    await page.click('[data-action="open-settings"]');
+    assert.equal(await page.locator('.su-section').isVisible(), false, 'la salida se recuerda');
   } finally {
     await browser.close();
     server.kill();
