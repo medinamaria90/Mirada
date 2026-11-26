@@ -9298,5 +9298,94 @@
   "parent": null,
   "country": "Suecia",
   "isMuseum": false
+ },
+ "Q617": {
+  "name": "Padua",
+  "types": [
+   "Q133442",
+   "Q747074",
+   "Q1187811",
+   "Q1549591"
+  ],
+  "adm": "Q16226",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q84090": {
+  "name": "Archibasílica de San Juan de Letrán",
+  "types": [
+   "Q124936",
+   "Q317557",
+   "Q1492823",
+   "Q2713379",
+   "Q56242215"
+  ],
+  "adm": "Q220",
+  "loc": null,
+  "parent": "Q468405",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q1133664": {
+  "name": "Peruzzi Chapel",
+  "types": [
+   "Q108325"
+  ],
+  "adm": "Q2044",
+  "loc": "Q51177",
+  "parent": "Q51177",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1459878": {
+  "name": "Museo de arte de Carolina del Norte",
+  "types": [
+   "Q33506",
+   "Q163740",
+   "Q207694",
+   "Q133309046"
+  ],
+  "adm": "Q41087",
+  "loc": "Q1454",
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q3388251": {
+  "name": "Pieve di San Lorenzo",
+  "types": [
+   "Q111474217"
+  ],
+  "adm": "Q82619",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q51177": {
+  "name": "basílica de la Santa Cruz",
+  "types": [
+   "Q16970",
+   "Q33506",
+   "Q120560"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": "Q3747266",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q468405": {
+  "name": "Letrán",
+  "types": [
+   "Q1497364"
+  ],
+  "adm": "Q1419959",
+  "loc": null,
+  "parent": "Q18448486",
+  "country": "Italia",
+  "isMuseum": true
  }
 }

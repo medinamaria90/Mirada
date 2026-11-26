@@ -45853,5 +45853,241 @@
   "movement": "fovismo",
   "source": "wikidata",
   "fetched": "2026-11-26"
+ },
+ "Q3842479": {
+  "museum": "Galería Nacional de Arte",
+  "museumQid": "Q214867",
+  "city": "Washington",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "85,5 × 62 cm",
+  "heightCm": 85.5,
+  "widthCm": 62.0,
+  "inception": "1325",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3276168": {
+  "museum": "Pieve di San Lorenzo",
+  "museumQid": "Q3388251",
+  "city": "Borgo San Lorenzo",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "81,5 × 41 cm",
+  "heightCm": 81.5,
+  "widthCm": 41.0,
+  "inception": "1290",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3395777": {
+  "museum": "Museo de arte de Carolina del Norte",
+  "museumQid": "Q1459878",
+  "city": "Raleigh",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "105,7 × 250,2 cm",
+  "heightCm": 105.7,
+  "widthCm": 250.2,
+  "inception": "1318",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Virgen María",
+   "mujer",
+   "varón"
+  ],
+  "genre": "pintura religiosa",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3642142": {
+  "museum": "Letrán",
+  "museumQid": "Q84090",
+  "city": "Roma",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "110 × 110 cm",
+  "heightCm": 110.0,
+  "widthCm": 110.0,
+  "inception": "1300",
+  "depicts": [
+   "Bonifacio VIII"
+  ],
+  "genre": "retrato",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q734197": {
+  "museum": "capilla de los Scrovegni",
+  "museumQid": "Q963954",
+  "city": "Padua",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "150 × 140 cm",
+  "heightCm": 150.0,
+  "widthCm": 140.0,
+  "inception": "1306",
+  "depicts": [
+   "Isabel",
+   "Tabardo",
+   "Virgen María",
+   "Visitación",
+   "columna",
+   "mujer",
+   "mármol",
+   "nimbo",
+   "paño",
+   "pórtico"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q61989282": {
+  "museum": "capilla de los Scrovegni",
+  "museumQid": "Q963954",
+  "city": "Padua",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "150 × 195 cm",
+  "heightCm": 150.0,
+  "widthCm": 195.0,
+  "inception": "1306",
+  "depicts": [
+   "Anunciación",
+   "Virgen María"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q19911414": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "45,1 × 43,8 cm",
+  "heightCm": 45.1,
+  "widthCm": 43.8,
+  "inception": "1320",
+  "depicts": [
+   "Adoración de los Reyes Magos",
+   "Jesús de Nazaret",
+   "Niño Jesús",
+   "animal",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q141270724": {
+  "museum": "Peruzzi Chapel",
+  "museumQid": "Q1133664",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1320",
+  "depicts": [
+   "Juan el Evangelista"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q27016037": {
+  "museum": "museo Isabella Stewart Gardner",
+  "museumQid": "Q49135",
+  "city": "Boston",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "44 × 43 cm",
+  "heightCm": 44.0,
+  "widthCm": 43.0,
+  "inception": "1320",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q118495235": {
+  "museum": "Museos Vaticanos",
+  "museumQid": "Q774940",
+  "city": "Ciudad del Vaticano",
+  "country": "Ciudad del Vaticano",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1330",
+  "depicts": [],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
  }
 }
