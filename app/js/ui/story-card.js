@@ -22,11 +22,11 @@ export function mediaHtml(work, focus, pos, artistName) {
 }
 
 // Texto de la tarjeta y su pie. En la última, además, la pista «Fíjate en…» (look, si la hay) y las acciones (play: false
-// si no hay nada que jugar).
-export function copyHtml(card, work, { last, look = '', play }) {
+// si no hay nada que jugar; more: false sin «Ver más»).
+export function copyHtml(card, work, { last, look = '', play, more = true }) {
   const caption = captionOf(work);
-  const foot = !last ? '' : `<div class="story-actions">
-      <button type="button" class="btn story-more" data-st="more">Ver más</button>
+  const foot = !last || (!play && !more) ? '' : `<div class="story-actions">
+      ${more ? '<button type="button" class="btn story-more" data-st="more">Ver más</button>' : ''}
       ${play ? '<button type="button" class="btn btn-primary story-play" data-st="play">Jugar</button>' : ''}
     </div>`;
   return `<div class="story-copy" tabindex="-1"><p class="story-text">${esc(card.text)}</p>
