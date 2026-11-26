@@ -1,0 +1,26 @@
+{
+ "artistId": "fra-angelico",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Fra Angelico",
+   "cards": [
+    {
+     "text": "Fra Angelico nació en la Toscana hacia 1395 como Guido di Pietro. Fue fraile dominico en Fiesole, y para su convento pintó esta Anunciación, hoy en el Prado.",
+     "artwork": "w2378567",
+     "source": "https://en.wikipedia.org/wiki/Annunciation_(Fra_Angelico,_Madrid)"
+    },
+    {
+     "text": "En 1611 el convento vendió la tabla para pagar un campanario nuevo y la compró el duque de Lerma. Llegó al Prado en 1861 desde las Descalzas Reales de Madrid.",
+     "artwork": "w2378567",
+     "source": "https://www.fascinatingspain.com/articulo/artworks/the-annunciation-by-fra-angelico/20200220111658071146.html"
+    },
+    {
+     "text": "Fíjate en la izquierda: un ángel expulsa del paraíso a Adán y Eva. El pecado junto a la Anunciación que lo redime, bajo un pórtico en perspectiva.",
+     "artwork": "w2378567",
+     "source": "https://en.wikipedia.org/wiki/Annunciation_(Fra_Angelico,_Madrid)"
+    }
+   ]
+  }
+ ]
+}

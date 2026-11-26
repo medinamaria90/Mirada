@@ -1,0 +1,26 @@
+{
+ "artistId": "duccio",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Duccio",
+   "cards": [
+    {
+     "text": "Duccio nació en Siena y murió hacia 1319. Fundó la escuela sienesa. En 1311 su gran Maestà fue llevada en procesión, con música, desde su taller a la catedral.",
+     "artwork": "w644734",
+     "source": "https://www.britannica.com/biography/Duccio"
+    },
+    {
+     "text": "En 1285 una cofradía de Florencia le encargó esta Madonna Rucellai: es la tabla más grande del siglo XIII que se conoce, y su contrato, el más antiguo de su tipo en Italia.",
+     "artwork": "w948745",
+     "source": "https://www.uffizi.it/en/artworks/virgin-and-child-enthroned-surrounded-by-angels-known-as-the-rucellai-madonna"
+    },
+    {
+     "text": "Fíjate en los seis ángeles arrodillados que sostienen el trono como si flotara, y en el borde dorado que serpentea por el manto azul de la Virgen.",
+     "artwork": "w948745",
+     "source": "https://smarthistory.org/duccio-the-rucellai-madonna"
+    }
+   ]
+  }
+ ]
+}

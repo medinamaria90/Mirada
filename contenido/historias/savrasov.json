@@ -1,0 +1,26 @@
+{
+ "artistId": "savrasov",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Savrásov",
+   "cards": [
+    {
+     "text": "Alexéi Savrásov (1830-1897) fue un paisajista ruso. En 1870 ayudó a fundar los Ambulantes, pintores que llevaban sus exposiciones por las ciudades de Rusia. Murió en Moscú.",
+     "artwork": "w4414026",
+     "source": "https://www.britannica.com/biography/Aleksey-Kondratyevich-Savrasov"
+    },
+    {
+     "text": "Han llegado las grajillas se vio en la primera exposición de los Ambulantes, en 1871, y marcó el paisaje ruso del siglo XIX. Ese verano lo compró el coleccionista Tretiakov.",
+     "artwork": "w1993685",
+     "source": "https://en.wikipedia.org/wiki/The_Rooks_Have_Returned"
+    },
+    {
+     "text": "Fíjate en las grajillas posadas en las ramas desnudas de los abedules. Tomó los apuntes en el pueblo de Molvítino y acabó el cuadro en Moscú.",
+     "artwork": "w1993685",
+     "source": "https://en.wikipedia.org/wiki/The_Rooks_Have_Returned"
+    }
+   ]
+  }
+ ]
+}
