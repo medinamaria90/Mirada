@@ -329,6 +329,14 @@ export function nextStep(progress, index) {
     || null;
 }
 
+// Siguiente parada jugable de un movimiento (la primera abierta, si no la primera empezada); null si no queda.
+export function nextStepIn(progress, index, movementId) {
+  const steps = index.stepsOf(movementId);
+  return steps.find((s) => stepStatus(progress, index, s) === 'available')
+    || steps.find((s) => stepStatus(progress, index, s) === 'started')
+    || null;
+}
+
 // La intro de un movimiento se muestra la primera vez que se entra en él.
 export function needsIntro(progress, index, movementId) {
   if (progress.intros?.[movementId]) return false;
