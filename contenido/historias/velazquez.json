@@ -8,11 +8,6 @@
     {
      "text": "Velázquez nació en Sevilla en 1599. A los 24 años se fue a Madrid y fue nombrado pintor del rey Felipe IV. Retratar a la familia real fue su trabajo el resto de su vida.",
      "artwork": "w1090371",
-     "focus": [
-      0.5,
-      0.3,
-      1.8
-     ],
      "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
     },
     {
@@ -50,11 +45,6 @@
     {
      "text": "Aquí manda la luz: fuerte y dirigida, hace brillar las texturas. En El aguador, el gran jarro de barro capta la luz en sus estrías y por él resbalan gotas transparentes.",
      "artwork": "w2627810",
-     "focus": [
-      0.35,
-      0.6,
-      2.2
-     ],
      "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Sus_comienzos_como_pintor"
     },
     {
@@ -127,9 +117,9 @@
      "text": "En Roma, en 1650, lo eligen miembro de la Academia de San Lucas. Ese año expone en el Panteón el retrato de su esclavo y ayudante, Juan de Pareja.",
      "artwork": "w4717953",
      "focus": [
-      0.5,
-      0.3,
-      2.2
+      0.44,
+      0.05,
+      1.8
      ],
      "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Segundo_viaje_a_Italia"
     },

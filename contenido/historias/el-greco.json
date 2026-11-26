@@ -8,31 +8,16 @@
     {
      "text": "Doménikos Theotokópoulos nació en Creta en 1541. Se formó en Venecia y Roma, y en 1577 se instaló en Toledo, donde vivió y pintó hasta su muerte, en 1614.",
      "artwork": "w94802",
-     "focus": [
-      0.5,
-      0.3,
-      1.4
-     ],
      "source": "https://es.wikipedia.org/wiki/El_Greco"
     },
     {
      "text": "En El entierro del conde de Orgaz (1586), abajo hay un funeral con toledanos de su tiempo; arriba, el alma sube al cielo entre ángeles y santos. Sigue en su iglesia, Santo Tomé.",
      "artwork": "w94802",
-     "focus": [
-      0.5,
-      0.15,
-      1.8
-     ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#Madurez"
     },
     {
      "text": "Fíjate en sus figuras: alargadas, retorcidas, con luz propia. En sus cuadros nunca brilla el sol, y casi no hay paisaje ni espacio de fondo. Aquí, san Juan.",
      "artwork": "w1220013",
-     "focus": [
-      0.4,
-      0.4,
-      1.5
-     ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#Estilo_y_t%C3%A9cnica_pict%C3%B3rica"
     }
    ]
@@ -72,11 +57,6 @@
     {
      "text": "En La Trinidad (1577) aún se nota Italia: figuras como esculturas, a lo Miguel Ángel. En sus 37 años en Toledo su estilo cambia mucho, hasta hacerse muy dramático.",
      "artwork": "w6553555",
-     "focus": [
-      0.5,
-      0.45,
-      1.5
-     ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#Estilo_y_t%C3%A9cnica_pict%C3%B3rica"
     },
     {
@@ -84,8 +64,8 @@
      "artwork": "w94802",
      "focus": [
       0.5,
-      0.65,
-      1.8
+      0.82,
+      2.0
      ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#Madurez"
     }
@@ -99,21 +79,11 @@
     {
      "text": "Desde 1596 no para de recibir encargos. La visión del Apocalipsis, de sus últimos años, es su estilo más extremo: un san Juan gigante de manto azul luminoso.",
      "artwork": "w1220013",
-     "focus": [
-      0.4,
-      0.4,
-      1.5
-     ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#La_visi%C3%B3n_del_Apocalipsis"
     },
     {
      "text": "En 1612 pinta para su propia capilla funeraria La adoración de los pastores. Los pastores, muy alargados, muestran estupor y asombro.",
      "artwork": "w1114913",
-     "focus": [
-      0.75,
-      0.55,
-      1.8
-     ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#%C3%9Altimo_periodo"
     },
     {
@@ -121,8 +91,8 @@
      "artwork": "w949323",
      "focus": [
       0.5,
-      0.35,
-      2.2
+      0,
+      1.8
      ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#Estilo_y_t%C3%A9cnica_pict%C3%B3rica"
     }

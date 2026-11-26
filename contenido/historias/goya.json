@@ -123,8 +123,8 @@
      "artwork": "w1091086",
      "focus": [
       0.45,
-      0.5,
-      2
+      0.63,
+      1.6
      ],
      "source": "https://es.wikipedia.org/wiki/Francisco_de_Goya#El_dos_y_El_tres_de_mayo_de_1808_en_Madrid"
     },
@@ -132,9 +132,9 @@
      "text": "Mientras, graba Los desastres de la guerra: una denuncia de los horrores que sufre la gente de cualquier condición, gane quien gane.",
      "artwork": "w1091086",
      "focus": [
-      0.28,
+      0.37,
       0.8,
-      2
+      1.5
      ],
      "source": "https://es.wikipedia.org/wiki/Francisco_de_Goya#Los_desastres_de_la_guerra_%281808-1814%29"
     }
@@ -149,20 +149,15 @@
      "text": "En 1819 compra la Quinta del Sordo, junto al Manzanares, y pinta en sus paredes catorce «pinturas negras». Duelo a garrotazos va sobre un paisaje campestre anterior.",
      "artwork": "w1747282",
      "focus": [
+      0.18,
       0.5,
-      0.5,
-      1.4
+      1.0
      ],
      "source": "https://es.wikipedia.org/wiki/Francisco_de_Goya#El_Trienio_Liberal_y_las_Pinturas_negras_%281820-1824%29"
     },
     {
      "text": "Las pinturas negras no tienen título: Goya no las nombró. Escenas oscuras, figuras descentradas, ojos muy abiertos. Muchos las ven como su obra cumbre por su modernidad.",
      "artwork": "w1150997",
-     "focus": [
-      0.5,
-      0.4,
-      2
-     ],
      "source": "https://es.wikipedia.org/wiki/Francisco_de_Goya#El_Trienio_Liberal_y_las_Pinturas_negras_%281820-1824%29"
     },
     {
