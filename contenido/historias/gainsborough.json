@@ -1,0 +1,26 @@
+{
+ "artistId": "gainsborough",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Gainsborough",
+   "cards": [
+    {
+     "text": "Thomas Gainsborough nació en Sudbury (Suffolk) en 1727 y murió en Londres en 1788. Vivía del retrato, aunque lo que más le gustaba pintar era el paisaje.",
+     "artwork": "w604761",
+     "source": "https://es.wikipedia.org/wiki/Thomas_Gainsborough"
+    },
+    {
+     "text": "Fue el gran rival de Reynolds y uno de los fundadores de la Royal Academy. El joven azul es su homenaje a los trajes que pintaba Van Dyck.",
+     "artwork": "w604761",
+     "source": "https://es.wikipedia.org/wiki/Thomas_Gainsborough"
+    },
+    {
+     "text": "Fíjate en el regazo de la señora Andrews: es un hueco sin terminar. Quizá iba a pintar ahí un faisán de la cacería o un libro.",
+     "artwork": "w1619527",
+     "source": "https://es.wikipedia.org/wiki/El_se%C3%B1or_y_la_se%C3%B1ora_Andrews"
+    }
+   ]
+  }
+ ]
+}

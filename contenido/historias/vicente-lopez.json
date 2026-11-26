@@ -1,0 +1,26 @@
+{
+ "artistId": "vicente-lopez",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Vicente López",
+   "cards": [
+    {
+     "text": "Vicente López Portaña nació en Valencia en 1772 y murió en Madrid en 1850. Fue primer pintor de cámara de Fernando VII.",
+     "artwork": "w11945404",
+     "source": "https://es.wikipedia.org/wiki/Vicente_L%C3%B3pez_Porta%C3%B1a"
+    },
+    {
+     "text": "Fue el retratista más solicitado de la corte tras Goya, con un detalle minucioso en telas, joyas y condecoraciones.",
+     "artwork": "w11945404",
+     "source": "https://es.wikipedia.org/wiki/Vicente_L%C3%B3pez_Porta%C3%B1a"
+    },
+    {
+     "text": "Fíjate en Goya, con la paleta y los pinceles: lo retrató en 1826, a los 80 años, en una visita a Madrid desde Burdeos. Está en el Prado.",
+     "artwork": "w6106800",
+     "source": "https://es.wikipedia.org/wiki/Vicente_L%C3%B3pez_Porta%C3%B1a"
+    }
+   ]
+  }
+ ]
+}

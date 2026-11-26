@@ -1,0 +1,26 @@
+{
+ "artistId": "vigee-le-brun",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Vigée Le Brun",
+   "cards": [
+    {
+     "text": "Élisabeth Vigée Le Brun nació en París en 1755 y murió allí en 1842. Fue la retratista favorita de la reina María Antonieta.",
+     "artwork": "w3937621",
+     "source": "https://es.wikipedia.org/wiki/%C3%89lisabeth_Vig%C3%A9e_Le_Brun"
+    },
+    {
+     "text": "Al estallar la Revolución huyó de Francia y triunfó como retratista en Italia, Viena y San Petersburgo. Contó su vida en unas memorias.",
+     "artwork": "w3937621",
+     "source": "https://es.wikipedia.org/wiki/%C3%89lisabeth_Vig%C3%A9e_Le_Brun"
+    },
+    {
+     "text": "Fíjate en la rosa y el vestido de seda: este retrato sustituyó a otro, con la reina en un sencillo vestido blanco, que se vio como un escándalo.",
+     "artwork": "w3937618",
+     "source": "https://es.wikipedia.org/wiki/%C3%89lisabeth_Vig%C3%A9e_Le_Brun"
+    }
+   ]
+  }
+ ]
+}

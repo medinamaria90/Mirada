@@ -1,0 +1,26 @@
+{
+ "artistId": "delaroche",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Delaroche",
+   "cards": [
+    {
+     "text": "Paul Delaroche nació en París en 1797 y murió allí en 1856. Fue un pintor de historia muy popular, de escenas teatrales y detalladas.",
+     "artwork": "w1224572",
+     "source": "https://es.wikipedia.org/wiki/Paul_Delaroche"
+    },
+    {
+     "text": "La ejecución de Lady Jane Grey se dio por destruida en una inundación de la Tate en 1928. Apareció enrollada en 1973 y hoy está en la National Gallery.",
+     "artwork": "w1213453",
+     "source": "https://es.wikipedia.org/wiki/La_ejecuci%C3%B3n_de_Lady_Jane_Grey"
+    },
+    {
+     "text": "Fíjate en Jane, de blanco y con los ojos vendados: busca a tientas el tajo mientras un hombre la guía con la mano.",
+     "artwork": "w1213453",
+     "source": "https://es.wikipedia.org/wiki/La_ejecuci%C3%B3n_de_Lady_Jane_Grey"
+    }
+   ]
+  }
+ ]
+}
