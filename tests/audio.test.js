@@ -12,7 +12,7 @@ import { STYLES } from '../app/js/audio/styles.js';
 import { variantsOf, piecesOf, pieceKey, splitKey, getPiece, allPieceKeys, BRANCHES, DEFAULT_VARIANT } from '../app/js/audio/variants.js';
 import { audio, getState, restore } from '../app/js/audio/index.js';
 import { playlistOf, nextPiece, hasList, isNight, dayIndex, MAIN_RUNS_BEFORE_ALT, NIGHT_FROM_HOUR, NIGHT_TO_HOUR } from '../app/js/audio/rotation.js';
-import { MAX_ALT } from '../app/js/audio/playlists.js';
+import { MAX_ALT, PLAYLISTS } from '../app/js/audio/playlists.js';
 
 const CONTRACT_ERAS = ['menu', 'gothic', 'renaissance', 'northern', 'baroque', 'rococo', 'neoclassic', 'romantic',
   'realism', 'impressionism', 'postimpressionism', 'modern'];
@@ -356,6 +356,9 @@ test('listas: cada sitio tiene un principal y como mucho dos secundarios que exi
   assert.ok(![playlistOf('renaissance').main, ...playlistOf('renaissance').alt].includes('renaissance/vacas'), '«Guárdame las vacas» fuera de la lista');
   assert.ok(playlistOf('baroque').alt.every((k) => variantsOf('baroque').find((v) => pieceKey('baroque', v.id) === k).source),
     'Barroco: los secundarios son clásicos (las compuestas no le gustaron)');
+  for (const [list, cfg] of Object.entries(PLAYLISTS)) {
+    assert.equal(playlistOf(list).alt.length, Math.min(cfg.alt.length, MAX_ALT), `${list}: algún secundario no existe (mal escrito)`);
+  }
   assert.equal(playlistOf('nada'), null);
   assert.equal(hasList('nada'), false);
   assert.equal(nextPiece('nada'), null);

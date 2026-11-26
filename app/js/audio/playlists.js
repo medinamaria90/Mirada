@@ -22,16 +22,18 @@ export const PLAYLISTS = {
   postimpressionism: { main: 'base', alt: ['musette', 'rasgueo'] },
   modern: { main: 'base', alt: ['celesta', 'lidio'] },
   // Ramas: música propia, variación del tema de la portada con el color de cada sitio. Los clásicos que
-  // sonaban antes (Korobéiniki, El lago de los cisnes, Sakura) quedan fuera de lista.
-  'descubre-renacimiento': { main: 'gallarda', alt: [] },
-  'descubre-manierismo-y-norte': { main: 'tiento', alt: [] },
-  'descubre-barroco': { main: 'aria', alt: [] },
-  'descubre-rococo-neoclasicismo': { main: 'serenata', alt: [] },
-  'descubre-romanticismo': { main: 'barcarola', alt: [] },
-  'descubre-realismo': { main: 'vals', alt: [] },
-  'descubre-impresionismo': { main: 'acuarela', alt: [] },
-  'descubre-postimpresionismo': { main: 'tresillo', alt: [] },
-  'descubre-simbolismo-modernismo': { main: 'cristal', alt: [] },
+  // sonaban antes (Korobéiniki, El lago de los cisnes, Sakura, Narváez) quedan fuera de lista. En las
+  // «Descubre…», el secundario es el tema de su época (`baroque/base` = su original). El
+  // Gótico no tiene lista propia: usa la de su época (`gothic`, ver branchMusic en screens/branch.js).
+  'descubre-renacimiento': { main: 'gallarda', alt: ['renaissance/base'] },
+  'descubre-manierismo-y-norte': { main: 'tiento', alt: ['northern/base'] },
+  'descubre-barroco': { main: 'aria', alt: ['baroque/base'] },
+  'descubre-rococo-neoclasicismo': { main: 'serenata', alt: ['rococo/base'] },
+  'descubre-romanticismo': { main: 'barcarola', alt: ['romantic/base'] },
+  'descubre-realismo': { main: 'vals', alt: ['realism/base'] },
+  'descubre-impresionismo': { main: 'acuarela', alt: ['impressionism/base'] },
+  'descubre-postimpresionismo': { main: 'tresillo', alt: ['postimpressionism/base'] },
+  'descubre-simbolismo-modernismo': { main: 'cristal', alt: ['modern/base'] },
   'maestros-espanoles': { main: 'seguidilla', alt: ['folia'] },
   'escuela-rusa': { main: 'balalaica', alt: ['neva'] },
   'pintura-britanica': { main: 'campina', alt: ['colina'] },
