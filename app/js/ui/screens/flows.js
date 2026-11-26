@@ -29,7 +29,7 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'
 
 // Enlace que no lleva a ningún sitio (o a algo aún cerrado): aviso breve y al inicio.
 function leave(ctx, message = 'Ese enlace no vale') {
-  ctx.toast(message);
+  ctx.toast(message, { carry: true });
   ctx.go('inicio', { replace: true });
 }
 

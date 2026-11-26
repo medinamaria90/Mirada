@@ -17,6 +17,8 @@ import { factsOf, wikidataUrl, lifeSpan, seenOf, playTargets, stageList, coverWo
 const STAGE_LABEL = { mastered: 'Dominada', started: 'En marcha', available: 'Abierta', locked: 'Por abrir' };
 const STAGE_ICON = { mastered: 'check', started: 'play', available: 'play', locked: 'lock' };
 // «Seguir» a secas se lee como «Follow» en una ficha de perfil: es seguir jugando.
+// Corto para que quepa en una línea; el nombre de la etapa va en la etiqueta accesible.
+const DEEP_LABEL = 'Jugar a fondo';
 const PLAY_LABEL = { available: 'Empezar su etapa', started: 'Seguir jugando', mastered: 'Jugar otra vez' };
 
 export { initials };
@@ -134,7 +136,7 @@ export async function profileHtml(ctx, artistId, opts) {
   const target = play.stage;
   const actions = hasStory || target ? `<div class="ap-actions">
       ${target ? (play.next
-    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}">${esc(`Jugar: ${play.next.name}`)}</button>`
+    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}" aria-label="${esc(`${DEEP_LABEL}: ${play.next.name}`)}">${DEEP_LABEL}</button>`
     : `<button type="button" class="btn btn-primary" data-ap="play" data-branch="${esc(branchId)}">${esc(PLAY_LABEL[target])}</button>`) : ''}
       ${hasStory ? `<button type="button" class="btn btn-secondary" data-ap="story">${icons.play(18)}<span>Ver su historia</span></button>` : ''}
     </div>` : '';

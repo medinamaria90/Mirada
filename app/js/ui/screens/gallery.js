@@ -28,11 +28,11 @@ export function renderGallery(ctx, el, movementId) {
   const { index } = ctx;
   const movement = index.movement(movementId);
   if (!movement || !index.visibleMovements.includes(movement)) {
-    ctx.toast('Ese enlace no vale');
+    ctx.toast('Ese enlace no vale', { carry: true });
     return ctx.go('inicio', { replace: true });
   }
   if (!isGalleryOpen(ctx.store.get().progress, index, movementId)) {
-    ctx.toast('Se abre al dominar el movimiento');
+    ctx.toast('Se abre al dominar el movimiento', { carry: true });
     return ctx.go('inicio', { replace: true });
   }
   const works = galleryList(ctx, movementId);

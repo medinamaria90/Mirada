@@ -10,7 +10,7 @@ import { parseRoute, go } from './ui/router.js';
 import { audio, loadAudioWhenIdle, applyAudioSettings, bindBackgroundPause } from './ui/audio-bridge.js';
 import { installArtListeners } from './ui/art.js';
 import { esc, onAction, focusHeading, clearAnnounce } from './ui/dom.js';
-import { toast, replayToast } from './ui/toast.js';
+import { toast, replayToast, routeChanged } from './ui/toast.js';
 import { readSession } from './state/session.js';
 import { applyTheme } from './ui/theme.js';
 
@@ -254,7 +254,7 @@ async function boot() {
     const token = ++renderToken;
     const route = parseRoute(location.hash, { today: ctx.dailyDay() });
     const routeName = String(location.hash || '').replace(/^#/, '') || 'inicio';
-    if (routeName !== currentRouteName) { prevRoute = currentRouteName; currentRouteName = routeName; }
+    if (routeName !== currentRouteName) { prevRoute = currentRouteName; currentRouteName = routeName; routeChanged(); }
     restoreY = navigationKind() === 'back' ? (scrollByRoute.get(routeName) ?? null) : null;
     const onboarded = store.get().onboarded;
     const screen = document.createElement('div');
@@ -265,7 +265,7 @@ async function boot() {
     clearAnnounce();
 
     if (route.name === 'invalid') {
-      toast('Ese enlace no vale');
+      toast('Ese enlace no vale', { carry: true });
       return go('inicio', { replace: true });
     }
     const welcome = () => lazy(token, screen, loadWelcome, (m) => m.renderWelcome(ctx, screen));
