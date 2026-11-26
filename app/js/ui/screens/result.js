@@ -6,7 +6,7 @@ import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
 import { MASTERY, UNLOCK_MIN, isStepUnlocked, isPathMastered } from '../../engine/progress.js';
 import { pendingWorks, deepStatus } from '../../engine/levels.js';
-import { stageTitle } from '../../engine/painters.js';
+import { stageTitle, tierOf, isMasterTier } from '../../engine/painters.js';
 import { deepRoute, stageRoute } from '../router.js';
 import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { mainTrait } from '../../engine/feedback.js';
@@ -264,7 +264,12 @@ export function renderResult(ctx, el, opts) {
   const levelBar = $('.level-line .bar > span', el);
   if (!reduce && levelBar) setTimeout(() => { levelBar.style.width = `${toPct}%`; }, 450);
   playSequence(ctx, events, Boolean(heroMedal));
-  announce(`${headline(outcome.accuracy)}. ${outcome.score} de ${outcome.total}.${goal ? ' Meta del día cumplida.' : ''}`);
+  // Primera vez que domina a un gran maestro o un maestro: su momento, encima y breve (ui/match-moment.js).
+  const master = heroMedal?.id.startsWith('artist-') ? index.artist(heroMedal.id.slice('artist-'.length)) : null;
+  const moment = master && isMasterTier(master) ? master : null;
+  if (moment) import('../match-moment.js').then((m) => m.showMatchMoment(ctx, moment.id)).catch((err) => console.error(err));
+  const momentText = moment ? ` ${tierOf(moment).label}: ${moment.name}.${moment.why ? ` ${moment.why.text}` : ''}` : '';
+  announce(`${headline(outcome.accuracy)}. ${outcome.score} de ${outcome.total}.${goal ? ' Meta del día cumplida.' : ''}${momentText}`);
 
   onAction(el, {
     done: () => {
