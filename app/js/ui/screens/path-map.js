@@ -7,7 +7,10 @@
 
 import { esc, accentStyle, announce, plural, joinNames, $ } from '../dom.js';
 import { icons } from '../icons.js';
-import { artFrame, coverOf } from '../art.js';
+import { coverOf } from '../art.js';
+import { branchRoute } from '../router.js';
+import { zoomInto } from '../map-zoom.js';
+import { STATE_LABEL, DORMANT_TEXT, metaFor, dotFor, nodeHtml } from './path-nodes.js';
 import {
   artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered,
 } from '../../engine/progress.js';
@@ -17,7 +20,7 @@ import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, pathLayout, eraLayout, walkedD } from './path-layout.js';
 import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, branchGroupSpot, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
 
-export { MAP_W, STEP, pathLayout, eraLayout };
+export { MAP_W, STEP, pathLayout, eraLayout, DORMANT_TEXT };
 export { watchLandscapes } from '../map-land.js';
 
 // ---------- HTML ----------
@@ -35,15 +38,19 @@ function mapKeys(ctx) {
 // lazy: solo se pintan del todo la época actual y sus vecinas; las demás quedan como hueco de su altura y
 // fillPendingEras las rellena después, una por tarea (el primer pintado no bloquea en móviles lentos).
 const NEAR_ERAS = 0;
-// Rama en la que centrar el mapa al volver (tras una ronda de rama).
+// Rama en la que centrar el mapa al volver (de su pantalla o tras una ronda de rama) o, si se da, una parada
+// («artist:<id>», desde un pintor «En el camino» de una rama).
 let focusBranch = '';
-export const setMapFocus = (branchId) => { focusBranch = branchId || ''; };
+let focusStep = '';
+export const setMapFocus = (branchId, step = '') => { focusBranch = branchId || ''; focusStep = step; };
 export function renderPathMap(ctx, { lazy = false } = {}) {
   const { index } = ctx;
   const layout = pathLayout(index);
   const keys = mapKeys(ctx);
   const here = Math.max(0, layout.eras.findIndex((e) => e.id === keys.era));
-  const focus = focusBranch ? layout.eras.findIndex((e) => e.branches.some((b) => b.id === focusBranch || b.members?.some((x) => x.id === focusBranch))) : -1;
+  const stepEra = focusStep.startsWith('artist:') ? index.movementOf(focusStep.slice(7))?.id : '';
+  const focus = stepEra ? layout.eras.findIndex((e) => e.id === stepEra)
+    : focusBranch ? layout.eras.findIndex((e) => e.branches.some((b) => b.id === focusBranch || b.members?.some((x) => x.id === focusBranch))) : -1;
   const html = layout.eras.map((era, i) => (!lazy || Math.abs(i - here) <= NEAR_ERAS || i === focus
     ? eraBlock(ctx, era, layout.eras[i - 1], keys)
     : `<li class="path-era is-pending" data-era="${esc(era.id)}" style="--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))"></li>`)).join('');
@@ -113,7 +120,7 @@ function eraBlock(ctx, era, prevEra, keys) {
   const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
-    ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, open: b.st.open })), walked(index, era, nodes, keys))}
+    ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, tail: b.spot.tail, open: b.st.open })), walked(index, era, nodes, keys))}
     ${sign}
     <ol class="stages">${items}${gallery}</ol>
   </li>`;
@@ -137,36 +144,6 @@ function sectionInfo(ctx, movementId, s) {
   const group = ctx.index.stageArtists(movementId).filter((a) => a.section === s.name);
   return { name: s.name, total: group.length, got: group.filter((a) => artistStatus(p, ctx.index, a.id) === 'mastered').length };
 }
-
-const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'por repasar', mastered: 'dominado' };
-// Pintor dormido (engine/review.js): dominado y sin salir en una semana.
-export const DORMANT_TEXT = '¿Lo recuerdas?';
-
-// Texto bajo el nombre solo cuando dice algo: «Empezar»/«Seguir» en el nodo actual y «Repite · n %»
-// (pintado como botón) en lo jugado que aún no está dominado: el repaso de la época solo se abre al
-// dominarlos a todos, y María quería que se viera claro qué hacer.
-function metaFor(status, info, current) {
-  if (current) return status === 'started' ? 'Seguir' : 'Empezar';
-  if (status === 'started') return `Repite · ${Math.round((info?.best || 0) * 100)}\u00a0%`;
-  return '';
-}
-
-// Cerrado: sin cuadro (no se adelanta nada) y un candado pequeño; el nodo es más pequeño y suave.
-function dotFor(status, cover, name) {
-  if (status === 'locked') return icons.lock(12);
-  const thumb = cover ? artFrame(cover, { cls: 'stage-thumb', alt: '', label: initials(name), thumb: true }) : '';
-  const badge = status === 'mastered' ? `<span class="stage-badge">${icons.check(13)}</span>` : '';
-  return `${thumb}${badge}`;
-}
-
-function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, section, current = false }) {
-  const kicker = section ? `<span class="stage-kicker" aria-hidden="true">${esc(section.name)} <span class="stage-kicker-count">${section.got}/${section.total}</span></span>` : '';
-  return `<button class="stage ${cls}${section ? ' has-kicker' : ''} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}"${current ? ' aria-current="step"' : ''} aria-label="${esc(label)}">
-      <span class="stage-dot">${dot}</span>
-      <span class="stage-text">${kicker}<span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
-    </button>`;
-}
-
 
 function artistNode(ctx, artist, keys, section) {
   const { index } = ctx;
@@ -253,10 +230,6 @@ export function salaCover(index, movementId) {
   return works.slice().sort((a, b) => (b.fame || 0) - (a.fame || 0))[0] || null;
 }
 
-export function initials(name) {
-  return String(name).split(/\s+/).filter((w) => /^[A-ZÁÉÍÓÚÑ]/.test(w)).slice(0, 2).map((w) => w[0]).join('');
-}
-
 // ---------- comportamiento (necesita DOM) ----------
 
 // La hoja del mapa (época cerrada, rama) se carga al primer toque: no cuenta en el arranque.
@@ -294,13 +267,18 @@ export function pathActions(ctx) {
       target.scrollIntoView({ block: 'center' });
       target.focus({ preventScroll: true });
     },
-    branch: (b) => sheet(ctx, 'openBranchSheet', b),
+    // Rama abierta: se entra en su pantalla con un acercamiento; cerrada, una nota con lo que falta.
+    branch: (b) => {
+      ctx.audio.sfx('tap');
+      if (b.dataset.status === 'locked') return showLockNote(b);
+      return zoomInto(b, () => ctx.go(branchRoute(b.dataset.id)));
+    },
     branches: (b) => sheet(ctx, 'openEraBranchesSheet', b),
   };
 }
 
 const NOTE_MS = 4500;   // da tiempo a leerla con la letra grande
-function showLockNote(button) {
+export function showLockNote(button) {
   let note = button.parentElement.querySelector('.lock-note');
   if (!note) {
     note = document.createElement('p');
@@ -354,8 +332,16 @@ export function watchMapMode(map) {
 // Al abrir la portada, la vista va a la parada actual si queda fuera de la primera pantalla.
 export function scrollToCurrent(el) {
   const branchId = focusBranch;
+  const step = focusStep;
   focusBranch = '';
+  focusStep = '';
   requestAnimationFrame(() => {
+    const stop = step && $(`.stage-spot[data-step="${step}"] .stage`, el);
+    if (stop) {
+      stop.scrollIntoView({ block: 'center' });
+      stop.focus({ preventScroll: true });
+      return;
+    }
     const branch = branchId && $(`.branch[data-id="${branchId}"], .branch[data-members~="${branchId}"]`, el);
     if (branch) {
       branch.scrollIntoView({ block: 'center' });

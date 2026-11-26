@@ -1,0 +1,25 @@
+/* Pantalla de una rama (ui/screens/branch.js): barra con «Camino», el nombre y el avance; debajo, su tramo de mapa
+   (mismas piezas que el camino común: paisaje, sendero, nodos). Entra con un acercamiento desde abajo, donde llega
+   el desvío. Se pide al abrir la primera rama. */
+.branch-bar { gap: .25rem; padding-left: .35rem; }
+.branch-back {
+  display: inline-flex; align-items: center; gap: .15rem; min-height: 48px; padding: 0 .7rem 0 .45rem; border: 0; border-radius: 999px;
+  background: none; color: var(--ink); font: 600 .95rem/1 var(--font); cursor: pointer;
+}
+.branch-back:active { background: var(--surface-2); }
+.branch-back:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+.branch-title { flex: 1 1 auto; min-width: 0; margin: 0; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; font: 600 1.05rem/1.2 var(--font); letter-spacing: var(--track); }
+.branch-tally {
+  flex: none; min-width: 48px; padding: .3rem .65rem; border-radius: 999px; background: var(--surface); box-shadow: 0 2px 0 var(--line), inset 0 0 0 1px var(--line);
+  text-align: center; font: 600 .9rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums;
+}
+.path-branch { margin-top: 0; }
+/* Pintor del camino común dentro de la rama: su parada es la de allí (se ve igual, con «En el camino» discreto). */
+.stage.is-onpath .stage-meta { padding: calc(.12 * var(--map-fs)) calc(.5 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-label-soft); color: var(--ink-2); font: 500 calc(.75 * var(--map-fs))/1.2 var(--font); }
+.stage.is-onpath .stage-dot { opacity: .92; }
+
+/* Acercamiento: la rama aparece creciendo desde el desvío (abajo). */
+@keyframes branch-in { from { opacity: 0; transform: scale(calc(1 / var(--zoom-scale))); } to { opacity: 1; transform: none; } }
+.page-branch .path-branch { transform-origin: 50% 100%; animation: branch-in var(--dur-zoom) var(--ease) both; }
+@media (prefers-reduced-motion: reduce) { .page-branch .path-branch { animation: none; } }
+.reduce-motion .page-branch .path-branch { animation: none; }

@@ -19,8 +19,8 @@ const root = document.getElementById('app');
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
   'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'ui/deep-badges.js',
-  'ui/icons.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/screens/home.js', 'ui/screens/path-art.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js',
-  'ui/screens/path-signs.js', 'ui/shell.js',
+  'ui/icons.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/path-art.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js',
+  'ui/screens/path-nodes.js', 'ui/screens/path-signs.js', 'ui/shell.js',
 ];
 function preloadModules(list) {
   for (const path of list) {
@@ -36,6 +36,7 @@ const loadFlows = () => import('./ui/screens/flows.js');
 const loadCollection = () => import('./ui/screens/collection.js');
 const loadProfile = () => import('./ui/screens/profile.js');
 const loadGallery = () => import('./ui/screens/gallery.js');
+const loadBranch = () => import('./ui/screens/branch.js');
 const loadArtistPage = () => import('./ui/screens/artist-page.js');
 const loadArtistWorks = () => import('./ui/screens/artist-works.js');
 
@@ -298,6 +299,7 @@ async function boot() {
       case 'weekly': return flow((m) => m.renderWeekly(ctx, screen));
       case 'artist': return lazy(token, screen, loadArtistPage, (m) => m.renderArtistPage(ctx, screen, route.artistId, { focus: route.focus }), true);
       case 'works': return lazy(token, screen, loadArtistWorks, (m) => m.renderArtistWorks(ctx, screen, route.spec), true);
+      case 'branch': return lazy(token, screen, loadBranch, (m) => m.renderBranch(ctx, screen, route.branchId));
       case 'gallery': return lazy(token, screen, loadGallery, (m) => m.renderGallery(ctx, screen, route.movementId), true);
       case 'challenge': return flow((m) => m.renderChallenge(ctx, screen, route.challenge));
       case 'free': return flow((m) => m.renderFree(ctx, screen));

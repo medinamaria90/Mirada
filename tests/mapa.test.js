@@ -10,7 +10,8 @@ import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress, hasMovementReview, nextStep } from '../app/js/engine/progress.js';
 import { icons } from '../app/js/ui/icons.js';
 import { renderPathMap, pathLayout, eraLayout, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
-import { roadX, ROAD_HALF, branchSlots } from '../app/js/ui/screens/path-layout.js';
+import { roadX, ROAD_HALF, branchSlots, branchLayout, branchLand } from '../app/js/ui/screens/path-layout.js';
+import { parseRoute } from '../app/js/ui/router.js';
 import { bigIndex, salaCatalog } from './helpers.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -126,14 +127,16 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
 test('paisajes: un SVG por época, ≤ 64 KB, con el trazado de la app y solo colores de brand.css', () => {
   const dir = join(app, 'img', 'mapa');
   const files = readdirSync(dir).filter((f) => f.endsWith('.svg'));
-  assert.deepEqual(files.sort(), real.visibleMovements.map((m) => `${m.id}.svg`).sort());
+  assert.deepEqual(files.sort(), [...real.visibleMovements.map((m) => `${m.id}.svg`), ...real.branches.map((b) => `rama-${b.id}.svg`)].sort());
   const brand = readFileSync(join(app, 'css', 'brand.css'), 'utf8');
   const vars = (sel) => Object.fromEntries([...brand.slice(brand.indexOf(sel)).split('}')[0].matchAll(/--map-([a-z0-9-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2]]));
   const light = vars(':root {');
   const dark = vars(':root[data-theme="dark"] {');
-  for (const era of pathLayout(real).eras) {
+  // Épocas y pantallas de rama (rama-<id>, con el paisaje y el tinte de su época o el suyo; las largas, por alto).
+  const tramos = [...pathLayout(real).eras.map((e) => ({ ...e, tint: e.id })), ...real.branches.map((b) => ({ ...branchLayout(real, b), id: `rama-${b.id}`, tint: branchLand(b) }))];
+  for (const era of tramos) {
     const svg = readFileSync(join(dir, `${era.id}.svg`), 'utf8');
-    assert.ok(statSync(join(dir, `${era.id}.svg`)).size <= 64 * 1024, `${era.id}.svg pasa de 64 KB`);
+    assert.ok(statSync(join(dir, `${era.id}.svg`)).size <= Math.max(64, 64 * era.h / 1000) * 1024, `${era.id}.svg pesa demasiado`);
     assert.ok(svg.includes(`viewBox="0 0 ${MAP_W} ${era.h}"`), `${era.id}: alto distinto del trazado (${era.h})`);
     assert.equal(svg.match(/data-points="([^"]*)"/)[1], era.points.map((p) => `${p.x},${p.y}`).join(' '), `${era.id}: nodos distintos del trazado`);
     assert.ok(!/\b(fill|stroke)="(#|rgb)/.test(svg), `${era.id}: colores sueltos en las piezas`);
@@ -141,7 +144,7 @@ test('paisajes: un SVG por época, ≤ 64 KB, con el trazado de la app y solo co
     for (const [pal, css] of [[light, lightCss], [dark, darkCss]]) {
       const colors = new Set(css.match(/(#[0-9a-f]{6}|rgba?\([^)]*\))/gi));
       assert.ok(colors.size > 10 && [...colors].every((c) => Object.values(pal).includes(c)), `${era.id}: color que no está en brand.css`);
-      assert.ok(css.includes(pal[`tint-${era.id}`]), `${era.id}: sin el tinte de su época`);
+      assert.ok(css.includes(pal[`tint-${era.tint}`]), `${era.id}: sin el tinte de su época`);
     }
   }
   assert.equal(STEP, 124);
@@ -208,7 +211,8 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   }
   const found = [...html.matchAll(/class="branch (is-\w+)[^"]*" data-action="branch(?:es)?"/g)];
   assert.ok(found.length && found.every(([, cls]) => cls === 'is-locked'), 'una rama abierta el primer día');
-  assert.ok(html.includes('class="spur-edge is-locked"'));
+  assert.ok(html.includes('class="spur-edge is-locked"') && html.includes('class="spur-tail"'), 'sin desvío o sin su cola hacia el borde');
+  assert.ok(/data-action="branch" data-id="gotico" data-status="locked" data-lock="Se abre al dominar a [^"]+"/.test(html), 'la rama cerrada no dice qué falta al tocarla');
   // Escuelas: una señal en cada época en la que abren un tramo con pintores propios (sola o dentro del grupo).
   const rusa = real.branch('escuela-rusa');
   const rusaEras = [...new Set(rusa.artists.filter((id) => real.pathIndex(id) < 0).map((id) => rusa.tramos.find((t) => t.artists.includes(id)).opensAt))];
@@ -334,4 +338,21 @@ test('resultado de rama: avance y siguiente pintor abierto', async () => {
   assert.equal(r.next, own[1]);
   assert.equal(r.total, own.length);
   assert.equal(branchAfterRound(p, real, real.steps[0].id), null, 'un pintor del camino común no es de rama');
+});
+
+test('pantalla de rama: ruta propia, sus pintores como paradas, cada época rotulada una vez y su música', async () => {
+  const { branchMusic } = await import('../app/js/ui/screens/branch.js');
+  assert.deepEqual(parseRoute('#rama-maestros-espanoles'), { name: 'branch', branchId: 'maestros-espanoles' });
+  for (const b of real.branches) {
+    const l = branchLayout(real, b);
+    assert.equal(l.points.length, b.artists.length, `${b.id}: una parada por pintor`);
+    const eras = l.sections.map((x) => x.movementId);
+    assert.equal(new Set(eras).size, eras.length, `${b.id}: una época rotulada dos veces`);
+    assert.ok(!l.sections.some((x) => x.name.includes(' y ')), `${b.id}: rótulo de tramo largo`);
+  }
+  assert.equal(branchLand(real.branch('descubre-barroco')), 'barroco');
+  assert.equal(branchLand(real.branch('escuela-rusa')), 'escuela-rusa');
+  assert.equal(branchMusic(real, real.branch('escuela-rusa')), 'escuela-rusa');
+  assert.equal(branchMusic(real, real.branch('pintura-britanica')), real.movement(real.branch('pintura-britanica').opensAt).era, 'sin lista propia, la de su época');
+  assert.equal(branchMusic(real, real.branch('descubre-barroco')), 'baroque');
 });

@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { hasMovementReview } from '../app/js/engine/progress.js';
-import { pathLayout, roadX, MAP_W, STEP } from '../app/js/ui/screens/path-layout.js';
+import { pathLayout, branchLayout, branchLand, roadX, MAP_W, STEP } from '../app/js/ui/screens/path-layout.js';
 
 const index = buildIndex(JSON.parse(readFileSync(process.argv[2], 'utf8')));
 const layout = pathLayout(index);
@@ -15,10 +15,12 @@ const KICKER_PX = 6.8;    // y del rótulo de tramo (600, 12 px)
 const GAP = 38;           // del centro del nodo al principio del rótulo
 const HALF_H = 36;        // medio alto del rótulo (nombre y botón)
 const KICKER_H = 22;
-function labels(era) {
-  const artists = index.isSala(era.id) ? [] : index.stageArtists(era.id);
-  const names = artists.map((a) => a.name);
+function eraNames(era) {
+  const names = (index.isSala(era.id) ? [] : index.stageArtists(era.id)).map((a) => a.name);
   if (hasMovementReview(index, era.id)) names.push('Repaso · faltan 10');
+  return names;
+}
+function labels(era, names) {
   return era.points.map((p, i) => {
     const kicker = era.sections.find((s) => s.at === i);
     const w = Math.max((names[i] || '').length * NAME_PX, kicker ? kicker.name.length * KICKER_PX + 30 : 0) + 18;
@@ -32,8 +34,17 @@ function labels(era) {
 const ROAD_STEP = 8;
 const road = (e) => Array.from({ length: Math.floor(e.h / ROAD_STEP) + 1 }, (_, i) => Math.round(roadX(e.segs, i * ROAD_STEP)));
 const eras = layout.eras.map((e) => ({
-  id: e.id, h: e.h, points: e.points, start: e.start, signSide: e.sign.side, branchAt: e.branches.map((b) => b.at), labels: labels(e),
+  id: e.id, h: e.h, points: e.points, start: e.start, signSide: e.sign.side, branchAt: e.branches.map((b) => b.at), labels: labels(e, eraNames(e)),
   road: road(e), roadStep: ROAD_STEP, sign: { side: e.sign.side, edge: Math.round(e.sign.edge), top: e.sign.top, y: e.sign.y },
   branches: e.branches.map((b) => ({ x: b.x, y: b.y })),
 }));
-process.stdout.write(JSON.stringify({ width: MAP_W, step: STEP, eras }));
+// Pantallas de rama (rama-<id>.svg): su tramo, con el paisaje de su época o el suyo (deco) y sin carteles.
+const NO_SIGN = { side: 'left', edge: -MAP_W, top: -MAP_W, y: -MAP_W };
+const branches = (index.branches || []).map((b) => {
+  const e = branchLayout(index, b);
+  return {
+    id: `rama-${b.id}`, deco: branchLand(b), h: e.h, points: e.points, start: e.start, signSide: null, branchAt: [],
+    labels: labels(e, b.artists.map((id) => index.artist(id)?.name || '')), road: road(e), roadStep: ROAD_STEP, sign: NO_SIGN, branches: [],
+  };
+});
+process.stdout.write(JSON.stringify({ width: MAP_W, step: STEP, eras, branches }));

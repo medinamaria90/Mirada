@@ -30,7 +30,8 @@ export const afterEra = (verb, name) => `al ${verb} ${withArticle(name)}`;
 export const toEra = (name) => withArticle(name).replace(/^el /, 'al ').replace(/^(las|los) /, 'a $1 ');
 
 // Desvío (sendero estrecho de una rama): dos trazos como el camino, más finos.
-const spurSvg = (b) => `<path class="spur-edge${b.open ? '' : ' is-locked'}" d="${b.spur}"/><path class="spur-fill${b.open ? '' : ' is-locked'}" d="${b.spur}"/>`;
+// Más allá del cartel, el desvío se pierde en el paisaje: unas piedras que se apagan hacia el borde.
+const spurSvg = (b) => `${b.tail ? `<path class="spur-tail" d="${b.tail}"/>` : ''}<path class="spur-edge${b.open ? '' : ' is-locked'}" d="${b.spur}"/><path class="spur-fill${b.open ? '' : ' is-locked'}" d="${b.spur}"/>`;
 
 // done: el tramo ya recorrido (de otro color, encima del pendiente).
 export function trailSvg(h, d, spurs = [], done = '') {
@@ -110,13 +111,16 @@ export function tramoState(progress, index, branch, movementId) {
   return { open, fresh: rows.length, mastered: rows.filter((r) => r.status === 'mastered').length, total: rows.length, pending: open ? [] : tramoPending(progress, index, movementId) };
 }
 
+const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+
 // Qué abre una rama cerrada, en una frase: «se abre al dominar a Botticelli y Berruguete».
 export function branchWhy(index, st) {
   return st.pending.length ? `se abre al dominar a ${joinNames(st.pending.map((p) => stepName(index, p)))}` : 'aún cerrada';
 }
 
-// Desvío de una rama: su placa y su hito (el candado va en el hito; bajo él, solo «faltan n»). extra: señal de una escuela en una época posterior («Escuela rusa ·
-// 14 nuevos»), que abre la misma hoja.
+// Desvío de una rama: su placa y su hito (el candado va en el hito; bajo él, solo «faltan n»). Abierta, entra en la
+// pantalla de la rama; cerrada, una nota dice qué falta. extra: señal de una escuela en una época posterior
+// («Escuela rusa · 14 nuevos»), que entra en la misma rama.
 export function branchSpot(spot, branch, st, index, h) {
   const done = st.total && st.mastered === st.total;
   const cls = `${done ? 'is-mastered' : st.open ? 'is-open' : 'is-locked'}${spot.extra ? ' is-extra' : ''}`;
@@ -129,7 +133,7 @@ export function branchSpot(spot, branch, st, index, h) {
     : done ? `${branch.name}: rama completa, ${st.total} de ${st.total} dominados` : st.open ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} dominados` : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
   const line = !st.open ? `<span>${n === 1 ? 'falta 1' : `faltan ${n}`}</span>` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
-      <button type="button" class="branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
+      <button type="button" class="branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}" aria-label="${esc(label)}">
         <span class="branch-plate"><span class="branch-name">${esc(short)}</span></span><span class="branch-count">${line}</span>
         <span class="branch-dot">${done ? icons.laurel(18) : st.open ? icons.fork(18) : icons.lock(12)}</span>
       </button></li>`;

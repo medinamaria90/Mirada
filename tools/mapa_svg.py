@@ -17,7 +17,9 @@
 # farolas llevan data-lamp (se encienden de noche) y los brillos del agua, data-flow (fluyen). Además del paisaje
 # de cada época, un esparcido de detalles pequeños (flores, matas, rocas, ovejas, patos…) en los huecos libres.
 #
-# Uso (desde la raíz del repositorio): python -I tools/mapa_svg.py
+# Las pantallas de rama tienen su tramo propio (rama-<id>.svg): el paisaje de su época o el suyo (tools/mapa_ramas.py).
+#
+# Uso (desde la raíz del repositorio): python -I tools/mapa_svg.py [ramas]
 import json
 import os
 import re
@@ -31,6 +33,7 @@ import mapa as M  # noqa: E402
 
 OUT = os.path.join(ROOT, 'app', 'img', 'mapa')
 MAX_KB = 64   # en la página va comprimido (~10 KB el mayor)
+MAX_KB_KPX = 64   # las ramas largas (hasta ~5000 px de alto): este tope por cada 1000 px, si pasa de MAX_KB
 W = M.W
 
 # Colores de las piezas (constantes de marca/tools/mapa.py) → variable de brand.css.
@@ -448,6 +451,12 @@ DECO = {
     'simbolismo-modernismo': deco_modernismo,
 }
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mapa_ramas  # noqa: E402  (paisajes de las pantallas de rama)
+
+_deco_ramas, _esparcido_ramas = mapa_ramas.registrar(sys.modules[__name__])
+DECO.update(_deco_ramas)
+
 COLOR_ATTR = re.compile(r'\b(fill|stroke)="(#[0-9A-Fa-f]{6}|rgba?\([^)]*\))"')
 
 
@@ -540,6 +549,7 @@ ESPARCIDO = {
     'simbolismo-modernismo': [(3, lambda x, y, i: flores(x, y, FLORES)), (2, lambda x, y, i: mata(x, y, 3.6, BLOOM)), (1, lambda x, y, i: M.palmera(x, y, 14)),
                               (2, lambda x, y, i: hierba(x, y))],
 }
+ESPARCIDO.update(_esparcido_ramas)
 ESPARCE = {'paso_y': 17, 'paso_x': 19, 'jitter': 6, 'densidad': .2, 'aire': 15}
 AIRE = {'camino': 30, 'nodo': 44, 'pieza_x': 28, 'pieza_arriba': 52, 'pieza_abajo': 12, 'rio': 26, 'rotulo': 8, 'borde': 8}
 
@@ -572,7 +582,7 @@ def libre(era, x, y):
 def esparcir(era):
     import random
     rnd = random.Random(era['id'])
-    tipos = ESPARCIDO.get(era['id'], ESPARCIDO['renacimiento'])
+    tipos = ESPARCIDO.get(era.get('deco', era['id']), ESPARCIDO['renacimiento'])
     bolsa = [f for peso, f in tipos for _ in range(peso)]
     out, hechos = [], []
     for j, y0 in enumerate(range(18, era['h'] - 4, ESPARCE['paso_y'])):
@@ -599,13 +609,14 @@ def build(era, light, dark):
     LIBRE['ramas'] = set(era.get('branchAt', []))
     LIBRE['rotulos'] = era.get('labels', [])
     OCUPADO['piezas'], OCUPADO['rios'] = [], []
-    pieces = [tinte(era['h'], CLASS['tint'])] + DECO[era['id']](pts, era['h'])
+    deco = era.get('deco', era['id'])
+    pieces = [tinte(era['h'], CLASS['tint'])] + DECO[deco](pts, era['h'])
     pieces += esparcir(era)
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))
     points = ' '.join(f'{M.f(x)},{M.f(y)}' for x, y in pts)
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {era["h"]}" width="{W}" height="{era["h"]}" preserveAspectRatio="none" data-points="{points}">'
-            f'{style(light, dark, era["id"])}{body}</svg>')
+            f'{style(light, dark, deco)}{body}</svg>')
 
 
 def main():
@@ -616,14 +627,17 @@ def main():
                                        capture_output=True, text=True, check=True, cwd=ROOT).stdout)
     light, dark = brand_palette()
     os.makedirs(OUT, exist_ok=True)
-    for era in layout['eras']:
+    # «ramas»: solo los paisajes de las pantallas de rama (rama-<id>.svg); sin argumento, también los de época.
+    tramos = layout['branches'] if sys.argv[1:] == ['ramas'] else layout['eras'] + layout['branches']
+    for era in tramos:
         svg = build(era, light, dark)
         path = os.path.join(OUT, f'{era["id"]}.svg')
         with open(path, 'w', encoding='utf-8', newline='\n') as fh:
             fh.write(svg)
         kb = len(svg.encode('utf-8')) / 1024
-        if kb > MAX_KB:
-            raise SystemExit(f'{path}: {kb:.1f} KB, por encima de {MAX_KB} KB')
+        tope = max(MAX_KB, MAX_KB_KPX * era['h'] / 1000)
+        if kb > tope:
+            raise SystemExit(f'{path}: {kb:.1f} KB, por encima de {tope:.0f} KB')
         print(f'{era["id"]:24s} {era["h"]:4d} px  {kb:5.1f} KB')
 
 

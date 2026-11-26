@@ -19,6 +19,8 @@ const ROAD_GAP = 12;                 // aire entre el sendero y un cartel
 const EDGE = 10;                     // aire con el borde del mapa
 const SIGN_BOX = { top: 130, bottom: 14 };  // cartel de época: entre h-96 y h-14
 const BRANCH_LIFT = 14;               // el hito de la rama, algo por encima de su parada (aire con el nodo)
+const TAIL_OUT = 6;                  // tras el cartel, el desvío sigue hasta salir del mapa…
+const TAIL_DROP = 26;                // …bajando un poco
 const SPUR_DROP = 46;                // el desvío de una rama sale del sendero algo por debajo de su nodo
 // Salida (abajo del todo) y «Tu museo» (arriba): bloques propios con su dibujo.
 export const START_H = 150;
@@ -114,7 +116,9 @@ function branchSpot(era, i) {
   const end = { x: SIDE_X[side], y: p.y - BRANCH_LIFT };
   const from = { x: roadX(era.segs, p.y + SPUR_DROP), y: p.y + SPUR_DROP };
   const spur = `M${f(from.x)} ${f(from.y)}C${f((from.x + end.x) / 2)} ${f(from.y)} ${f(end.x)} ${f(from.y - 10)} ${f(end.x)} ${f(end.y)}`;
-  return { at: i, side, x: end.x, y: end.y, spur };
+  const out = side === 'left' ? -TAIL_OUT : MAP_W + TAIL_OUT;
+  const tail = `M${f(end.x)} ${f(end.y)}C${f(end.x)} ${f(end.y + TAIL_DROP)} ${f((end.x + out) / 2)} ${f(end.y + TAIL_DROP)} ${f(out)} ${f(end.y + TAIL_DROP / 2)}`;
+  return { at: i, side, x: end.x, y: end.y, spur, tail };
 }
 
 const KIND_ORDER = { rama: 0, epoca: 1, escuela: 2 };
@@ -128,6 +132,24 @@ export function branchesAt(index, movementId) {
   const starts = all.filter((b) => b.opensAt === movementId).sort((a, b) => (KIND_ORDER[a.kind] ?? 3) - (KIND_ORDER[b.kind] ?? 3));
   const extras = all.filter((b) => b.kind === 'escuela' && b.opensAt !== movementId && own(b, movementId));
   return [...starts.map((b) => ({ branch: b, extra: false })), ...extras.map((b) => ({ branch: b, extra: true }))];
+}
+
+// Pantalla de una rama: su propio tramo con sus pintores como paradas (mismo trazado que una época). Entra por
+// abajo (desde el desvío, con el cartel de la rama al lado) y sale por arriba, perdiéndose en el paisaje. Rótulos
+// de tramo (escuelas y «Descubre…»): la época en la que se abre cada grupo de pintores, si hay más de uno. Las
+// temáticas (Gótico, Estampa japonesa) no llevan: una época ajena dentro de ellas confunde.
+// Paisaje de una rama: las de época, el de su época; las temáticas (escuelas, gótico, estampa), el suyo.
+export const branchLand = (branch) => (branch.kind === 'epoca' ? branch.movementId : branch.id);
+export function branchLayout(index, branch) {
+  const n = branch.artists.length;
+  const opens = new Map(branch.tramos.flatMap((t) => t.artists.map((id) => [id, t.opensAt])));
+  const eraOf = (id) => opens.get(id) || branch.opensAt;
+  const era = eraLayout(n, 0, MAP_W / 2, FIRST_ENTRY);
+  const groups = new Set(branch.artists.map(eraOf)).size;
+  // Cada época, una vez: en su primer pintor (el orden es cronológico y alguna época vuelve a salir más arriba).
+  const sections = groups < 2 || branch.kind === 'rama' ? [] : branch.artists.map((id, i) => (branch.artists.findIndex((x) => eraOf(x) === eraOf(id)) === i
+    ? { at: i, movementId: eraOf(id), name: String(index.movement(eraOf(id))?.name || '').split(' y ')[0] } : null)).filter(Boolean);
+  return { id: branch.id, ...era, sections };
 }
 
 // «Tu museo»: el sendero entra recto (su placa va al lado, bajo el edificio) y sube hasta la puerta.

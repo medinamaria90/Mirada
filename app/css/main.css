@@ -215,6 +215,8 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .spur-fill { stroke: var(--map-trail); stroke-width: 10; }
 .spur-edge.is-locked { stroke-width: 6; stroke-dasharray: 0 10; }
 .spur-fill.is-locked { display: none; }
+/* Tras el cartel, el desvío se pierde en el paisaje: piedras que se apagan hacia el borde. */
+.spur-tail { fill: none; stroke: var(--map-trail-edge); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 0 11; opacity: .7; }
 .land-far { fill: var(--map-stone-far); }
 .land-front { fill: var(--map-stone-front); }
 .land-side { fill: var(--map-stone-side); }
@@ -376,7 +378,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
   font-size: calc(.8 * var(--map-fs)); line-height: 1.25; color: var(--ink); text-align: center; opacity: 0; pointer-events: none;
   transition: opacity .25s;
 }
-.stage-spot.is-right .lock-note { left: auto; right: 44px; }
+.stage-spot.is-right .lock-note, .branch-spot.is-right .lock-note { left: auto; right: 44px; }
 .lock-note.is-visible { opacity: 1; }
 
 /* Rama: el desvío acaba en el margen, en su cartel (placa hueso) sobre un hito redondo. La placa nace del borde del

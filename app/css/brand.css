@@ -112,6 +112,12 @@
   --map-tint-impresionismo: #e5e4ee;
   --map-tint-postimpresionismo: #f0e7c9;
   --map-tint-simbolismo-modernismo: #e7e1ea;
+  /* Ramas temáticas (pantalla de rama): gótico, secano español, nieve rusa, campiña inglesa y papel japonés. */
+  --map-tint-gotico: #e3e3d9;
+  --map-tint-maestros-espanoles: #efe3c6;
+  --map-tint-escuela-rusa: #e5eaea;
+  --map-tint-pintura-britanica: #dde6d0;
+  --map-tint-ukiyo-e: #efe7df;
   /* Pintor dormido (dominado y sin salir en una semana): anillo apagado y cuadro sin saturación. */
   --map-dormant: #cbbfae;
   --map-dormant-saturate: .25;
@@ -131,6 +137,8 @@
   --map-line-x: 30px;
   --map-indent: 16px;
   --deep-ring-out: 13px;
+  --dur-zoom: 420ms;
+  --zoom-scale: 1.6;
   --deep-ring-w: 3.2;
   /* Sombras y velos. */
   --shadow-frame: 0 1px 1px rgba(35, 32, 28, .10), 0 6px 16px -6px rgba(35, 32, 28, .26), 0 18px 40px -18px rgba(35, 32, 28, .30);
@@ -238,6 +246,11 @@
     --map-tint-impresionismo: #242229;
     --map-tint-postimpresionismo: #28251c;
     --map-tint-simbolismo-modernismo: #25222a;
+    --map-tint-gotico: #222420;
+    --map-tint-maestros-espanoles: #2a2519;
+    --map-tint-escuela-rusa: #1f2427;
+    --map-tint-pintura-britanica: #1e251d;
+    --map-tint-ukiyo-e: #28221f;
     --map-dormant: #5c5246;
     --map-dormant-saturate: .25;
     --map-sign: #4a4239;
@@ -324,6 +337,11 @@
   --map-tint-impresionismo: #242229;
   --map-tint-postimpresionismo: #28251c;
   --map-tint-simbolismo-modernismo: #25222a;
+  --map-tint-gotico: #222420;
+  --map-tint-maestros-espanoles: #2a2519;
+  --map-tint-escuela-rusa: #1f2427;
+  --map-tint-pintura-britanica: #1e251d;
+  --map-tint-ukiyo-e: #28221f;
   --map-dormant: #5c5246;
   --map-dormant-saturate: .25;
   --map-sign: #4a4239;
