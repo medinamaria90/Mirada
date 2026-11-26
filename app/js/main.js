@@ -14,6 +14,7 @@ import { esc, onAction, focusHeading, clearAnnounce } from './ui/dom.js';
 import { toast, replayToast, routeChanged } from './ui/toast.js';
 import { readSession } from './state/session.js';
 import { applyTheme } from './ui/theme.js';
+import { shouldAutoReload } from './ui/load-recovery.js';
 
 const root = document.getElementById('app');
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
@@ -56,9 +57,9 @@ async function loadCatalog() {
   return data;
 }
 
-function showError(message) {
+function showError(message, title = 'No se ha podido abrir la colección') {
   root.innerHTML = `<div class="screen"><div class="welcome"><main class="welcome-body" id="main">
-    <h1 class="welcome-title welcome-title-sm">No se ha podido abrir la colección</h1>
+    <h1 class="welcome-title welcome-title-sm">${esc(title)}</h1>
     <p class="welcome-line">${esc(message)}</p>
     <button class="btn btn-primary btn-wide" data-action="retry">Reintentar</button>
   </main></div></div>`;
@@ -247,7 +248,9 @@ async function boot() {
       .catch((err) => {
         if (token !== renderToken) return;
         console.error(err);
-        showError('Comprueba la conexión y vuelve a intentarlo.');
+        // Módulos de dos versiones mezclados (o un corte de red): la primera vez se recarga sola.
+        if (shouldAutoReload(safeStorage(() => window.sessionStorage), location.hash, Date.now())) return location.reload();
+        showError('Comprueba la conexión y vuelve a intentarlo.', 'No se ha podido abrir');
       });
     return screen;
   }
