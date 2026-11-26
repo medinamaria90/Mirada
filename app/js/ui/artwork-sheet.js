@@ -1,5 +1,5 @@
 // Página de una obra, abierta desde «Ver más» del dato curioso en la hoja de feedback: el cuadro grande (abre el visor
-// con la lupa), título, año y pintor (su ficha), el dato curioso, la explicación larga si la hay y la ficha de museo.
+// con la lupa), título, año y pintor (su ficha), el dato curioso, la explicación larga si la hay y la ficha de museo (las fuentes, en «Fuentes y créditos»).
 // Va en un diálogo a pantalla completa, sin cambiar de ruta, para no perder la ronda; el «atrás» del móvil lo cierra
 // (entrada de historial propia, marcada también como guarda de la ronda para que la ronda no lo tome por salir).
 
@@ -11,25 +11,13 @@ import { loadCss } from './lazy-css.js';
 import { ensureFicha, museumLine } from './ficha-data.js';
 import { modalSlot } from './modal-slot.js';
 import { avatarWork, lifeSpan, seenOf } from '../engine/painters.js';
-import { sourceLabel } from '../engine/stories.js';
 
 const slot = modalSlot();
 const HISTORY_STATE = { miradaGuard: true, miradaWork: true };
 
-const sourceLink = (url, label) => `<a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`;
-
 function factsHtml(work) {
   const facts = [['Museo', museumLine(work)], ['Técnica', work.technique], ['Medidas', work.dimensions]].filter(([, v]) => v);
   return facts.length ? `<dl class="ws-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>` : '';
-}
-
-function sourcesHtml(work) {
-  const parts = [
-    work.curio?.source ? `<span>Dato curioso</span>${sourceLink(work.curio.source, sourceLabel(work.curio.source))}` : '',
-    work.about?.source ? `<span>La obra</span>${sourceLink(work.about.source, sourceLabel(work.about.source))}` : '',
-    work.source?.wikidata ? `<span>Ficha</span>${sourceLink(`https://www.wikidata.org/wiki/${work.source.wikidata}`, 'Wikidata')}` : '',
-  ].filter(Boolean);
-  return parts.length ? `<p class="ap-sources ws-foot">${parts.join('')}</p>` : '';
 }
 
 function pageHtml(ctx, work) {
@@ -52,7 +40,7 @@ function pageHtml(ctx, work) {
       ${work.year ? `<p class="ws-year">${esc(work.year)}</p>` : ''}
       ${painter}
     </header>
-    ${curio}${about}${factsHtml(work)}${sourcesHtml(work)}`;
+    ${curio}${about}${factsHtml(work)}`;
 }
 
 export async function openArtworkSheet(ctx, workId, opts = {}) {

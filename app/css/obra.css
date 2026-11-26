@@ -34,8 +34,7 @@
 .ws-about p { margin: 0; font: 400 1.06rem/1.62 var(--font); text-wrap: pretty; }
 .ws-about h3 + p::first-letter { float: left; margin: .08em .12em 0 0; color: var(--accent-ui); font: 500 3.2em/.82 var(--font); }
 
-.ws-facts { display: grid; gap: 0; margin: 0; padding: 1.6rem 1.2rem 0; }
+.ws-facts { display: grid; gap: 0; margin: 0; padding: 1.6rem 1.2rem 2rem; }
 .ws-facts div { display: grid; gap: .2rem; padding: .85rem 0; border-top: 1px solid var(--line); }
 .ws-facts dt { color: var(--ink-2); font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; }
 .ws-facts dd { margin: 0; font: 500 1.08rem/1.38 var(--font); overflow-wrap: break-word; }
-.ws-foot { padding: .6rem 1.2rem 0; }

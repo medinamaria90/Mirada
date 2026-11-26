@@ -13,7 +13,7 @@ import { branchRoute } from '../router.js';
 import { zoomInto } from '../map-zoom.js';
 import { STATE_LABEL, DORMANT_TEXT, metaFor, dotFor, nodeHtml } from './path-nodes.js';
 import {
-  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered,
+  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered, isExtraStep,
 } from '../../engine/progress.js';
 import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
 import { isDormant } from '../../engine/review.js';
@@ -139,10 +139,10 @@ function walked(index, era, nodes, keys) {
 }
 
 // Tramo de la época: nombre y dominados. Se ve como un rótulo pequeño sobre el nombre de su primera parada
-// (lado ancho, nunca sobre el sendero) y el lector lo oye antes de sus paradas.
+// (lado ancho, nunca sobre el sendero) y el lector lo oye antes de sus paradas. Las paradas extra (engine/roster.js) no cuentan.
 function sectionInfo(ctx, movementId, s) {
   const p = ctx.store.get().progress;
-  const group = ctx.index.stageArtists(movementId).filter((a) => a.section === s.name);
+  const group = ctx.index.stageArtists(movementId).filter((a) => a.section === s.name && !isExtraStep(p, { type: 'artist', id: a.id }));
   return { name: s.name, total: group.length, got: group.filter((a) => artistStatus(p, ctx.index, a.id) === 'mastered').length };
 }
 
