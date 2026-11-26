@@ -243,6 +243,25 @@ function stepRecord(progress, step) {
   return step.type === 'sala' ? progress.salas?.[step.id] : progress.artists?.[step.id];
 }
 
+// Parada extra: pintor añadido por una actualización en un tramo que ya tenía superado (engine/roster.js). Se juega
+// cuando se quiera y no cuenta como pendiente para abrir nada (ni la parada siguiente, ni ramas, ni repaso, ni época).
+export function isExtraStep(progress, step) {
+  const extra = progress?.roster?.extra;
+  return Boolean(step) && step.type === 'artist' && Array.isArray(extra) && extra.includes(step.id);
+}
+
+// Paradas que cuentan para abrir y completar (sin las extra).
+export function gateSteps(progress, steps) {
+  return steps.filter((s) => !isExtraStep(progress, s));
+}
+
+// Parada anterior que la abre: la previa del camino saltando las extra (null si es la primera).
+export function gateBefore(progress, index, step) {
+  const i = step ? index.stepIndex(step.type, step.id) : -1;
+  for (let j = i - 1; j >= 0; j -= 1) if (!isExtraStep(progress, index.steps[j])) return index.steps[j];
+  return null;
+}
+
 function stepPlayed(progress, step) {
   return (stepRecord(progress, step)?.plays || 0) > 0;
 }
@@ -256,8 +275,9 @@ export function stepPassed(progress, step) {
 export function isStepUnlocked(progress, index, step) {
   const i = step ? index.stepIndex(step.type, step.id) : -1;
   if (i < 0) return false;
-  if (i === 0) return true;
-  return stepPassed(progress, index.steps[i - 1]);
+  if (isExtraStep(progress, step)) return true;
+  const gate = gateBefore(progress, index, step);
+  return !gate || stepPassed(progress, gate);
 }
 
 export function stepStatus(progress, index, step) {
@@ -276,7 +296,7 @@ export function salaStatus(progress, index, movementId) {
 }
 
 export function movementStatus(progress, index, movementId) {
-  const steps = index.stepsOf(movementId);
+  const steps = gateSteps(progress, index.stepsOf(movementId));
   if (!steps.length) return 'locked';
   const states = steps.map((s) => stepStatus(progress, index, s));
   if (states.every((s) => s === 'mastered')) return 'mastered';
@@ -297,7 +317,7 @@ export function isReviewUnlocked(progress, index, movementId) {
 
 // Progreso global del camino: paradas dominadas y jugadas.
 export function pathProgress(progress, index) {
-  const states = index.steps.map((s) => stepStatus(progress, index, s));
+  const states = gateSteps(progress, index.steps).map((s) => stepStatus(progress, index, s));
   return {
     total: states.length,
     mastered: states.filter((s) => s === 'mastered').length,
@@ -323,10 +343,12 @@ export function stepsToMaster(progress, index) {
 }
 
 // Siguiente parada del camino (pintor o sala).
+// Las extra, solo cuando no queda otra.
 export function nextStep(progress, index) {
-  return index.steps.find((s) => stepStatus(progress, index, s) === 'available')
-    || index.steps.find((s) => stepStatus(progress, index, s) === 'started')
-    || null;
+  const main = gateSteps(progress, index.steps);
+  const extra = index.steps.filter((s) => isExtraStep(progress, s));
+  const find = (list, st) => list.find((s) => stepStatus(progress, index, s) === st);
+  return find(main, 'available') || find(main, 'started') || find(extra, 'available') || find(extra, 'started') || null;
 }
 
 // La intro de un movimiento se muestra la primera vez que se entra en él.

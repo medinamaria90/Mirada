@@ -6,6 +6,7 @@
 import { buildIndex, mergeCatalogText } from './engine/catalog.js';
 import { dayKey, madridDayKey } from './engine/dates.js';
 import { createStore, safeStorage, STORAGE_KEY } from './state/store.js';
+import { reconcileRoster, markRosterSeen } from './engine/roster.js';
 import { parseRoute, go } from './ui/router.js';
 import { audio, loadAudioWhenIdle, applyAudioSettings, bindBackgroundPause } from './ui/audio-bridge.js';
 import { installArtListeners } from './ui/art.js';
@@ -165,6 +166,9 @@ async function boot() {
   applyAudioSettings(store.get().settings);
 
   const index = buildIndex(catalog);
+  // Pintores que trae una actualización: paradas extra o con «Nuevo» (engine/roster.js).
+  const withRoster = (s) => { const progress = reconcileRoster(s.progress, index); return progress === s.progress ? s : { ...s, progress }; };
+  store.update(withRoster);
   installZoom(() => index);
   installArtistLinks(() => ctx);
   // Textos de las pistas por obra (`look`) y rasgos: se piden tras pintar; sin ellos todo funciona.
@@ -286,6 +290,8 @@ async function boot() {
       if (isBoot && route.name === 'home') return go(session.route, { replace: true });
     }
     const flow = (fn) => lazy(token, screen, loadFlows, (m) => fn(m), true);
+    // Abrir la ficha de un pintor nuevo le quita la etiqueta «Nuevo».
+    if (route.name === 'artist') store.update((s) => { const progress = markRosterSeen(s.progress, route.artistId); return progress === s.progress ? s : { ...s, progress }; });
     switch (route.name) {
       case 'welcome': return welcome();
       case 'stage': return flow((m) => m.renderStage(ctx, screen, route.artistId, route.branchId));
