@@ -1,0 +1,26 @@
+{
+ "artistId": "valdes-leal",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Valdés Leal",
+   "cards": [
+    {
+     "text": "Juan de Valdés Leal nació en Sevilla en 1622 y murió allí en 1690. Fue el gran rival de Murillo en la Sevilla del Barroco.",
+     "artwork": "w42189928",
+     "source": "https://es.wikipedia.org/wiki/Juan_de_Vald%C3%A9s_Leal"
+    },
+    {
+     "text": "Para el Hospital de la Caridad de Sevilla, Miguel de Mañara le encargó dos cuadros sobre la muerte: In Ictu Oculi y Finis Gloriae Mundi. Siguen allí.",
+     "artwork": "w28220571",
+     "source": "https://es.wikipedia.org/wiki/Juan_de_Vald%C3%A9s_Leal"
+    },
+    {
+     "text": "Fíjate en el esqueleto de In Ictu Oculi: con una mano apaga una vela; a sus pies hay coronas, libros y un globo terráqueo. La vida se va en un abrir de ojos.",
+     "artwork": "w28220571",
+     "source": "https://es.wikipedia.org/wiki/In_ictu_oculi"
+    }
+   ]
+  }
+ ]
+}

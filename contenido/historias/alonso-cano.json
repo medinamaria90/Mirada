@@ -1,0 +1,26 @@
+{
+ "artistId": "alonso-cano",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Alonso Cano",
+   "cards": [
+    {
+     "text": "Alonso Cano nació en Granada en 1601 y murió allí en 1667. Se formó en Sevilla con Pacheco, el maestro de Velázquez, y fue amigo de este toda la vida.",
+     "artwork": "w106839951",
+     "source": "https://es.wikipedia.org/wiki/Alonso_Cano"
+    },
+    {
+     "text": "Fue pintor, escultor y arquitecto, y por eso lo llamaron «el Miguel Ángel español». Diseñó la fachada de la catedral de Granada.",
+     "artwork": "w106839951",
+     "source": "https://es.wikipedia.org/wiki/Alonso_Cano"
+    },
+    {
+     "text": "Fíjate en el pozo: según la leyenda, cuando el hijo de san Isidro cayó dentro, el agua subió hasta el brocal y devolvió sano al niño.",
+     "artwork": "w18613975",
+     "source": "https://es.wikipedia.org/wiki/Alonso_Cano"
+    }
+   ]
+  }
+ ]
+}
