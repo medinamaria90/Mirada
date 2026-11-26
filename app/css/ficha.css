@@ -37,11 +37,6 @@ button.ap-avatar:active .ap-ring { transform: scale(.96); }
 /* «Por qué importa»: lo primero que se lee, grande y con aire; un filete del color de su movimiento. */
 .ap-why { margin: 1.3rem 1.2rem 0; padding-left: 1rem; border-left: 3px solid var(--accent-ui); font: 400 1.32rem/1.42 var(--font); letter-spacing: -.005em; text-wrap: pretty; }
 
-.ap-progress { padding: 1rem 1.2rem 0; display: grid; gap: .2rem; }
-.ap-mastery { display: flex; align-items: center; gap: .5rem; font: 600 .95rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.ap-mastery.is-done { color: var(--ink); }
-.ap-mastery-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 999px; background: var(--gold); color: var(--on-gold); }
-.ap-mastery-more { padding-left: 30px; color: var(--ink-2); font-size: .9rem; }
 .ap-actions { display: flex; flex-wrap: wrap; gap: .6rem; padding: 1.2rem 1.2rem 0; }
 .ap-actions .btn { flex: 1 1 9rem; min-width: 0; padding: .5rem 1rem; text-align: center; overflow-wrap: break-word; }
 .ap-actions .btn-secondary { flex: 0 0 auto; white-space: nowrap; }

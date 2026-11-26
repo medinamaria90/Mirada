@@ -1,5 +1,6 @@
 // Ficha de pintor: lo primero, por qué importa. Portada grande (su cuadro más famoso de los ya vistos), avatar con anillo de
-// historia, nombre, sello de categoría y la frase «por qué importa»; después jugar y su historia, la tira de sus cuadros
+// historia (o con el aro de niveles: ui/deep-badges.js), nombre, sello de categoría, sus historias destacadas (ui/level-row.js)
+// y la frase «por qué importa»; después jugar, la tira de sus cuadros
 // vistos, cómo reconocerlo, etapas, quién fue (plegable) y, al pie, datos y fuentes. Solo obras ya vistas (sin spoilers). El
 // contenido es común a la pantalla (`#pintor-<id>`) y al diálogo que se abre dentro de una ronda (ui/artist-sheet.js).
 
@@ -7,6 +8,10 @@ import { esc, joinNames } from './dom.js';
 import { icons } from './icons.js';
 import { artFrame, tinySrc, smallSrc, mediumSrc } from './art.js';
 import { deepRoute, stageRoute } from './router.js';
+import { loadCss } from './lazy-css.js';
+import { ringSvg } from './deep-badges.js';
+import { rowLevels, rowHtml, wireRow, watchStory, levelRoute } from './level-row.js';
+import { levelStates, levelRing, FIRST_LEVEL_SHORT } from '../engine/level-ring.js';
 import { branchLockReason } from '../engine/branches.js';
 import { avatarHtml, initials } from './avatar.js';
 import { loadStory } from './story-data.js';
@@ -17,12 +22,8 @@ import { factsOf, wikidataUrl, lifeSpan, seenOf, playTargets, stageList, coverWo
 
 const STAGE_LABEL = { mastered: 'Dominada', started: 'En marcha', available: 'Abierta', locked: 'Por abrir' };
 const STAGE_ICON = { mastered: 'check', started: 'play', available: 'play', locked: 'lock' };
-// «Seguir» a secas se lee como «Follow» en una ficha de perfil: es seguir jugando.
-// Corto para que quepa en una línea; el nombre de la etapa va en la etiqueta accesible.
-const DEEP_LABEL = 'Jugar a fondo';
 // La tira de cuadros enseña unos cuantos; el resto, en su galería.
 const STRIP_CELLS = 12;
-const PLAY_LABEL = { available: 'Empezar su etapa', started: 'Seguir jugando', mastered: 'Jugar otra vez' };
 
 export { initials };
 
@@ -96,31 +97,36 @@ function galleryHtml(artist, seen, total, withLink, missing) {
     ${missing}${more}</section>`;
 }
 
-// «✓ Dominado» (lo que dice el motor) y, si quedan obras en los niveles «a fondo», cuántas. Los números de cuadros van en los contadores de
-// debajo: no se repiten aquí. Sin dominar, nada.
-function masteryHtml(progress, index, artistId, seen, total) {
-  if (!isMastered(progress, artistId)) return '';
-  const deep = index.deepLevels(artistId).length > 0;
-  const left = total - seen;
-  return `<p class="ap-mastery is-done"><span class="ap-mastery-mark" aria-hidden="true">${icons.check(14)}</span><span>Dominado</span></p>${deep && left > 0 ? `<p class="ap-mastery-more">Te quedan ${left} en los niveles a fondo</p>` : ''}`;
-}
-
-function heroHtml(artist, movement, seen, hasStory, storyNew, tag, leadControl) {
-  const cover = coverWork(seen);
-  const cx = avatarCrop(cover);
-  const ring = `<span class="ap-ring${hasStory ? (storyNew ? ' is-new' : ' is-seen') : ' is-none'}"><span class="ap-photo">${avatarHtml(artist, avatarWork(seen), 'av-lg', { texture: cover })}</span></span>`;
-  const avatarEl = hasStory
+// Avatar: con aro de niveles (pintor dominado con niveles), tocarlo juega el siguiente nivel o, con todo hecho, vuelve a ver
+// «Quién fue»; si no, el anillo de su historia (degradado si no se ha visto).
+function avatarEl(artist, seen, cover, story) {
+  // Sin autorretrato visto, un detalle de su cuadro más famoso de los vistos (no unas iniciales).
+  const face = avatarWork(seen) || (cover ? { work: cover, ...avatarCrop(cover) } : null);
+  const photo = `<span class="ap-photo">${avatarHtml(artist, face, 'av-lg', { texture: cover })}</span>`;
+  if (story.ring) {
+    const next = story.playable && story.ring.levels.find((l) => l.state === 'next');
+    const label = next ? `Jugar ${next.short}, de ${artist.name}` : `Ver la historia de ${artist.name}`;
+    return `<button type="button" class="ap-avatar" data-ap="${next ? 'deep' : 'story'}"${next ? ` data-level="${next.level}"` : ''} aria-label="${esc(label)}"><span class="ap-ring has-levels">${ringSvg(story.ring.levels)}${photo}</span></button>`;
+  }
+  const ring = `<span class="ap-ring${story.has ? (story.isNew ? ' is-new' : ' is-seen') : ' is-none'}">${photo}</span>`;
+  return story.has
     ? `<button type="button" class="ap-avatar" data-ap="story" aria-label="Ver la historia de ${esc(artist.name)}">${ring}</button>`
     : `<span class="ap-avatar">${ring}</span>`;
+}
+
+function heroHtml(artist, movement, seen, story, tag, leadControl) {
+  const cover = coverWork(seen);
+  const cx = avatarCrop(cover);
   const meta = [lifeSpan(artist), artist.country].filter(Boolean).join(' · ');
   return `<header class="ap-hero">
     <div class="ap-cover">${cover ? `<img src="${esc(cover.img)}" srcset="${esc(tinySrc(cover))} 240w, ${esc(smallSrc(cover))} 320w, ${esc(mediumSrc(cover))} 800w, ${esc(cover.img)} 1200w" sizes="(min-width: 720px) 720px, 100vw" alt="" style="object-position:${cx.x}% ${cx.y}%" decoding="async" fetchpriority="high">` : ''}</div>
     ${leadControl}
-    <div class="ap-id">${avatarEl}
+    <div class="ap-id">${avatarEl(artist, seen, cover, story)}
       <div class="ap-who"><${tag} class="ap-name" id="ap-name">${esc(artist.name)}</${tag}>
         <p class="ap-meta">${esc(meta)}</p></div>
     </div>
     <div class="ap-tags">${sealHtml(artist)}${movement ? `<span class="ap-era">${esc(movement.name)}</span>` : ''}</div>
+    ${story.row ? `${story.row}<div class="hl-more" hidden></div>` : ''}
     ${whyHtml(artist)}
   </header>`;
 }
@@ -131,7 +137,7 @@ export async function profileHtml(ctx, artistId, opts) {
   const { index } = ctx;
   const artist = index.artist(artistId);
   const progress = ctx.store.get().progress;
-  const story = await loadStory(artistId);
+  const [story] = await Promise.all([loadStory(artistId), loadCss('css/niveles.css')]);
   const movement = index.movement(artist.movementId);
   const seen = seenOf(progress, index, artistId);
   const total = index.worksOf(artistId).length;
@@ -146,14 +152,15 @@ export async function profileHtml(ctx, artistId, opts) {
   const whyText = !why ? '' : why.before ? `Se abre al superar a ${nameOf({ type: 'artist', id: why.before })}` : why.pending.length ? `Se abre al dominar a ${joinNames(why.pending.map(nameOf))}` : '';
   const lock = whyText ? `<p class="ap-lock">${icons.lock(16)}<span>${esc(`${whyText} en ${index.branch(branchId).name}.`)}</span></p>` : '';
   const target = play.stage;
-  const actions = hasStory || target ? `<div class="ap-actions">
-      ${target ? (play.next
-    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}" aria-label="${esc(`${DEEP_LABEL}: ${play.next.name}`)}">${DEEP_LABEL}</button>`
-    : `<button type="button" class="btn btn-primary" data-ap="play" data-branch="${esc(branchId)}">${esc(PLAY_LABEL[target])}</button>`) : ''}
-      ${hasStory ? `<button type="button" class="btn btn-secondary" data-ap="story">${icons.play(18)}<span>Ver su historia</span></button>` : ''}
-    </div>` : '';
-  return `${heroHtml(artist, movement, seen, hasStory, !storySeen(storyKey(artistId, 1)), opts.tag || 'h2', opts.leadControl || '')}
-    ${known && isMastered(progress, artistId) ? `<div class="ap-progress">${masteryHtml(progress, index, artistId, seen.length, total)}</div>` : ''}
+  // Historias destacadas: un círculo por nivel con historia (el mismo aro del mapa).
+  const levels = known ? rowLevels(index, story, levelStates(progress, index, artistId)) : [];
+  const ring = known ? levelRing(progress, index, artistId) : null;
+  // Un único botón: «Jugar · <nivel>» (el siguiente: su historia y las preguntas) o, con todo hecho, «Repasar».
+  const actions = !target ? '' : `<div class="ap-actions">${play.next
+    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}">Jugar <small>· ${esc(play.next.name)}</small></button>`
+    : `<button type="button" class="btn btn-primary" data-ap="play" data-branch="${esc(branchId)}">${target === 'mastered' ? 'Repasar' : `Jugar <small>· ${esc(FIRST_LEVEL_SHORT)}</small>`}</button>`}</div>`;
+  const storyInfo = { has: hasStory, isNew: !storySeen(storyKey(artistId, 1)), ring, playable: Boolean(opts.playable), row: levels.length ? rowHtml(levels, opts.playable ? '' : 'is-watch') : '' };
+  return `${heroHtml(artist, movement, seen, storyInfo, opts.tag || 'h2', opts.leadControl || '')}
     ${lock}${actions}
     ${galleryHtml(artist, seen, total, opts.navigate, missingHtml(progress, index, artistId, seen.length, total, 'ficha'))}
     ${lookHtml(artist)}
@@ -165,11 +172,24 @@ export async function profileHtml(ctx, artistId, opts) {
 
 // Acciones de la ficha. hooks: { beforeGo() } se llama antes de salir a otra ruta.
 export function wireProfile(ctx, root, artistId, hooks = {}) {
+  const go = (route) => { if (hooks.beforeGo) hooks.beforeGo(); ctx.go(route); };
+  // Historias destacadas: el siguiente nivel se juega como el botón principal (el nivel 1, con su regla de rama); en la ficha
+  // dentro de una ronda (.is-watch) los círculos solo ponen su historia.
+  const row = root.querySelector('.hl-row');
+  if (row) {
+    const watch = row.classList.contains('is-watch');
+    wireRow(ctx, root, artistId, root.querySelector('.hl-more'), watch ? { play: (level) => watchStory(ctx, artistId, level) } : {
+      play: (level) => {
+        const main = level === 1 && root.querySelector('[data-ap="play"]');
+        return main ? main.click() : go(levelRoute(artistId, level));
+      },
+      replay: (level) => go(levelRoute(artistId, level)),
+    });
+  }
   root.addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-ap]');
     if (!b) return;
     ctx.audio.sfx('tap');
-    const go = (route) => { if (hooks.beforeGo) hooks.beforeGo(); ctx.go(route); };
     const what = b.dataset.ap;
     if (what === 'story') {
       // «Jugar» de la última tarjeta hace lo mismo que el botón de jugar de la ficha; «Ver más» deja en la ficha.
