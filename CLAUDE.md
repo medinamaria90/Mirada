@@ -52,7 +52,9 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
   María y anotado aquí.
 - **Valor supremo de los textos: que sean didácticos y enganchen.** Que quien lo lea piense «qué
   interesante el arte, quiero saber más de esta gente». Por encima de la exhaustividad: frases vivas,
-  anécdotas, el porqué de cada pintor y cada época; nada de tono de enciclopedia.
+  anécdotas, el porqué de cada pintor y cada época; nada de tono de enciclopedia. Modelo validado por María:
+  las tarjetas del Renacimiento (`contenido/epocas/renacimiento.json`): visión global en pocas líneas y
+  curiosidad por saber más. Todo texto nuevo debe estar a su altura.
 - Datos de arte: se pueden escribir de memoria; solo se busca lo dudoso (fechas, lugares, anécdotas
   de las que no se esté seguro), y lo que siga dudoso se deja fuera. Cada texto lleva una fuente de
   referencia (Wikipedia del pintor o de la época, el museo de la obra). Decisión de María, 26/11.
