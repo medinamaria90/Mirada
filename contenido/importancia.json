@@ -1,0 +1,302 @@
+{
+ "botticelli": {
+  "text": "El pintor de La primavera y El nacimiento de Venus: línea fina y velos que mueve el viento, en la Florencia de los Médici.",
+  "source": "https://es.wikipedia.org/wiki/Sandro_Botticelli"
+ },
+ "berruguete": {
+  "text": "El primer pintor del Renacimiento en Castilla: trajo de Italia la perspectiva y la unió al detalle flamenco.",
+  "source": "https://es.wikipedia.org/wiki/Pedro_Berruguete"
+ },
+ "rafael": {
+  "text": "Con Leonardo y Miguel Ángel forma el gran trío del Renacimiento: belleza serena que parece hecha sin ningún esfuerzo.",
+  "source": "https://es.wikipedia.org/wiki/Rafael_Sanzio"
+ },
+ "leonardo": {
+  "text": "Llevó el esfumado más lejos que nadie: caras sin bordes duros, como vistas entre humo. Y fue también ingeniero y anatomista.",
+  "source": "https://es.wikipedia.org/wiki/Leonardo_da_Vinci#Pintura"
+ },
+ "miguel-angel": {
+  "text": "Escultor, pintor, arquitecto y poeta: lo llamaban «el Divino». Pintó la bóveda de la Sixtina en cuatro años de trabajo solitario.",
+  "source": "https://es.wikipedia.org/wiki/Miguel_%C3%81ngel"
+ },
+ "tiziano": {
+  "text": "Lo llamaron «el sol entre las estrellas»: el gran color de Venecia y el pintor que retrató a Carlos V y a Felipe II.",
+  "source": "https://es.wikipedia.org/wiki/Tiziano"
+ },
+ "veronese": {
+  "text": "Convirtió las escenas sagradas en grandes fiestas venecianas, y ni la Inquisición le hizo quitar un solo personaje.",
+  "source": "https://es.wikipedia.org/wiki/Cena_en_casa_de_Lev%C3%AD"
+ },
+ "van-eyck": {
+  "text": "No inventó el óleo, pero lo llevó a una precisión de miniaturista: en un espejo de 5,5 cm pintó a cuatro personas.",
+  "source": "https://es.wikipedia.org/wiki/Retrato_de_Giovanni_Arnolfini_y_su_esposa"
+ },
+ "bosco": {
+  "text": "Nadie ha inventado tantos seres imposibles. Felipe II lo coleccionó, y por eso El jardín de las delicias está en el Prado.",
+  "source": "https://es.wikipedia.org/wiki/El_Bosco"
+ },
+ "durero": {
+  "text": "El artista más influyente del Renacimiento alemán: famoso en media Europa antes de los treinta, defendió que el pintor no es un artesano.",
+  "source": "https://es.wikipedia.org/wiki/Alberto_Durero"
+ },
+ "bruegel": {
+  "text": "Pintó la vida del campo a lo grande: paisajes inmensos vistos desde lo alto, con la gente diminuta, de fiesta o en la nieve.",
+  "source": "https://es.wikipedia.org/wiki/Pieter_Brueghel_el_Viejo"
+ },
+ "el-greco": {
+  "text": "Un cretense formado en Venecia y Roma que encontró en Toledo su sitio: figuras alargadas y retorcidas, con luz propia.",
+  "source": "https://es.wikipedia.org/wiki/El_Greco"
+ },
+ "caravaggio": {
+  "text": "Pintó santos con modelos de la calle y una luz que corta la oscuridad. Escandalizó, y con él arrancó el barroco.",
+  "source": "https://www.britannica.com/biography/Caravaggio/The-Contarelli-Chapel-and-other-church-commissions"
+ },
+ "artemisia": {
+  "text": "Primera mujer admitida en la Academia del Dibujo de Florencia: pintó heroínas con la fuerza y la luz dura de Caravaggio.",
+  "source": "https://es.wikipedia.org/wiki/Artemisia_Gentileschi"
+ },
+ "ribera": {
+  "text": "Un valenciano que triunfó en Nápoles, «lo Spagnoletto»: su realismo crudo llegó a España e influyó en Velázquez y Murillo.",
+  "source": "https://es.wikipedia.org/wiki/Jos%C3%A9_de_Ribera"
+ },
+ "zurbaran": {
+  "text": "El pintor del silencio del Siglo de Oro: hábitos blancos y objetos humildes mirados con una atención casi táctil.",
+  "source": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n"
+ },
+ "rubens": {
+  "text": "Pintor y diplomático, llenó el barroco de fuerza, movimiento y color. Lo ennoblecieron Felipe IV y Carlos I de Inglaterra.",
+  "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
+ },
+ "van-dyck": {
+  "text": "Alumno de Rubens y pintor de Carlos I: marcó para siempre el retrato inglés, donde la realeza está en la pose y las telas.",
+  "source": "https://es.wikipedia.org/wiki/Sir_Anthony_van_Dyck"
+ },
+ "velazquez": {
+  "text": "Pinceladas que de cerca parecen sueltas y de lejos cobran vida. El sevillano pintor del rey al que Manet llamó «pintor de pintores».",
+  "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+ },
+ "hals": {
+  "text": "Su pincelada rápida, casi a brochazos, se adelantó dos siglos al impresionismo. Sus retratados ríen, y se nota.",
+  "source": "https://es.wikipedia.org/wiki/Frans_Hals"
+ },
+ "rembrandt": {
+  "text": "El gran maestro del barroco holandés: una luz dorada que nace de la sombra y autorretratos de una sinceridad que conmueve.",
+  "source": "https://es.wikipedia.org/wiki/Rembrandt"
+ },
+ "vermeer": {
+  "text": "Apenas 31 cuadros seguros, y en ellos una luz y una calma que lo hacen único: la vida quieta de una casa de Delft.",
+  "source": "https://es.wikipedia.org/wiki/Johannes_Vermeer"
+ },
+ "murillo": {
+  "text": "En su época fue el pintor español más apreciado fuera de España: Inmaculadas luminosas y niños humildes, siempre felices.",
+  "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
+ },
+ "watteau": {
+  "text": "Inventó un género propio, la «fiesta galante»: parejas elegantes en parques de ensueño, con un punto de melancolía.",
+  "source": "https://es.wikipedia.org/wiki/Jean-Antoine_Watteau"
+ },
+ "fragonard": {
+  "text": "Uno de los grandes del rococó francés: amor, juego y sedas que brillan, pintados con una pincelada rápida y espumosa.",
+  "source": "https://es.wikipedia.org/wiki/Jean-Honore_Fragonard"
+ },
+ "melendez": {
+  "text": "Hizo de un limón, un trozo de salmón y unas vasijas de barro un retrato de la cocina española del XVIII, hoy en el Prado.",
+  "source": "https://es.wikipedia.org/wiki/Luis_Egidio_Mel%C3%A9ndez"
+ },
+ "david": {
+  "text": "Su Juramento de los Horacios fue el manifiesto del neoclasicismo. Pintó la Revolución francesa y, después, a Napoleón.",
+  "source": "https://es.wikipedia.org/wiki/Juramento_de_los_Horacios"
+ },
+ "ingres": {
+  "text": "El gran defensor de la línea y el dibujo: a su odalisca le sobran tres vértebras, porque prefería la belleza a la anatomía.",
+  "source": "https://es.wikipedia.org/wiki/La_gran_odalisca"
+ },
+ "goya": {
+  "text": "Del rococó al prerromanticismo en una sola vida: tras su enfermedad pintó libre, «de capricho e invención». Un aragonés único.",
+  "source": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
+ },
+ "friedrich": {
+  "text": "Pintó el paisaje como un sentimiento: figuras de espaldas ante la naturaleza, para que nos pongamos en su lugar.",
+  "source": "https://es.wikipedia.org/wiki/El_caminante_sobre_el_mar_de_nubes"
+ },
+ "turner": {
+  "text": "«El pintor de la luz» elevó el paisaje a la altura de la pintura de historia, hasta disolverlo en vapor y color.",
+  "source": "https://es.wikipedia.org/wiki/J._M._W._Turner"
+ },
+ "delacroix": {
+  "text": "La figura central del romanticismo francés: el color y la emoción por encima del dibujo. Suya es La Libertad guiando al pueblo.",
+  "source": "https://es.wikipedia.org/wiki/Ferdinand_Victor-Eugene_Delacroix"
+ },
+ "madrazo": {
+  "text": "El gran retratista del Madrid de Isabel II, alumno de Ingres en París y dos veces director del Museo del Prado.",
+  "source": "https://es.wikipedia.org/wiki/Federico_Madrazo_y_Kunz"
+ },
+ "millet": {
+  "text": "Hijo de campesinos, pintó sin adornos a quienes trabajan la tierra: Las espigadoras y El Ángelus nacieron en Barbizon.",
+  "source": "https://es.wikipedia.org/wiki/Jean-Francois_Millet"
+ },
+ "courbet": {
+  "text": "Se llamó a sí mismo «pintor realista»: pintó un entierro de pueblo a tamaño de cuadro de historia y montó su propio pabellón.",
+  "source": "https://es.wikipedia.org/wiki/Entierro_en_Ornans"
+ },
+ "rosales": {
+  "text": "Madrileño muerto a los 36 años, con Isabel la Católica dictando su testamento ganó la medalla de oro en París.",
+  "source": "https://es.wikipedia.org/wiki/Do%C3%B1a_Isabel_la_Cat%C3%B3lica_dictando_su_testamento"
+ },
+ "fortuny": {
+  "text": "El pintor de Reus que conquistó a los coleccionistas con su detalle preciosista: La vicaría se revendió por 70.000 francos.",
+  "source": "https://es.wikipedia.org/wiki/La_vicar%C3%ADa"
+ },
+ "repin": {
+  "text": "Con sus sirgadores del Volga mostró la dureza real del trabajo; con sus cosacos, la risa. El realismo ruso en estado puro.",
+  "source": "https://es.wikipedia.org/wiki/Los_sirgadores_del_Volga"
+ },
+ "manet": {
+  "text": "El puente hacia el impresionismo: escandalizó con Olympia y aprendió de Velázquez en el Prado, que lo marcó para siempre.",
+  "source": "https://es.wikipedia.org/wiki/%C3%89douard_Manet"
+ },
+ "monet": {
+  "text": "El impresionismo se llama así por un cuadro suyo. Pintaba al aire libre para atrapar cómo cambia la luz a cada instante.",
+  "source": "https://es.wikipedia.org/wiki/Claude_Monet"
+ },
+ "degas": {
+  "text": "Fundador del impresionismo que prefería llamarlo realismo: bailarinas y encuadres cortados, como de foto o de estampa japonesa.",
+  "source": "https://es.wikipedia.org/wiki/Edgar_Degas"
+ },
+ "renoir": {
+  "text": "La alegría de vivir hecha pintura: el impresionismo más sensual, de paleta vibrante. Empezó pintando porcelana.",
+  "source": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir"
+ },
+ "pissarro": {
+  "text": "El único, con Morisot, que expuso en las ocho muestras impresionistas: el pintor del campo y de la gente que lo trabaja.",
+  "source": "https://es.wikipedia.org/wiki/Camille_Pissarro"
+ },
+ "morisot": {
+  "text": "La única mujer en la primera exposición impresionista, en 1874: pincelada fluida y un manejo del blanco que la hizo única.",
+  "source": "https://es.wikipedia.org/wiki/Berthe_Morisot"
+ },
+ "sisley": {
+  "text": "El más fiel al impresionismo: casi solo paisajes, con ríos y brumas aún más vaporosos que los de Monet y Renoir.",
+  "source": "https://es.wikipedia.org/wiki/Impresionismo"
+ },
+ "sorolla": {
+  "text": "El valenciano de la luz del Mediterráneo: pintaba al aire libre, con color vibrante, y dejó más de 2.200 obras.",
+  "source": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla"
+ },
+ "cezanne": {
+  "text": "Lo llaman el padre de la pintura moderna: su manera de simplificar las formas inspiró a Picasso, Braque y Juan Gris.",
+  "source": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne"
+ },
+ "seurat": {
+  "text": "Fundó el neoimpresionismo: puntitos de color puro que el ojo mezcla de lejos. Con él nació la palabra «puntillismo».",
+  "source": "https://es.wikipedia.org/wiki/Puntillismo"
+ },
+ "van-gogh": {
+  "text": "Solo pintó diez años, y en ellos su paleta pasó de los tonos de barro al estallido de color de La noche estrellada.",
+  "source": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"
+ },
+ "gauguin": {
+  "text": "Rompió con el impresionismo: color puro en zonas planas y Tahití como paraíso. Picasso y Matisse aprendieron de él.",
+  "source": "https://es.wikipedia.org/wiki/Paul_Gauguin"
+ },
+ "lautrec": {
+  "text": "El cronista de la noche de Montmartre: su primer cartel para el Moulin Rouge hizo famosos a la vez al local y a él.",
+  "source": "https://es.wikipedia.org/wiki/Moulin_Rouge"
+ },
+ "klimt": {
+  "text": "Encabezó la Secesión vienesa y, tras ver los mosaicos de Rávena, pintó con oro de verdad: El beso es su período dorado.",
+  "source": "https://es.wikipedia.org/wiki/El_beso_(Gustav_Klimt)"
+ },
+ "munch": {
+  "text": "Convirtió la vida, el amor y la muerte en pintura: su Friso de la vida es, decía, «una poesía» de lo que sentimos.",
+  "source": "https://es.wikipedia.org/wiki/Amor_y_Dolor_(Vampiro)"
+ },
+ "romero-de-torres": {
+  "text": "El pintor de Córdoba y de sus mujeres morenas: tan suyo que la ciudad le abrió un museo un año después de su muerte.",
+  "source": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres"
+ },
+ "kandinsky": {
+  "text": "Dejó el Derecho a los 30 años por la pintura y llegó a cuadros sin objetos, solo color y línea. Enseñó en la Bauhaus.",
+  "source": "https://es.wikipedia.org/wiki/Vasili_Kandinski"
+ },
+ "juan-gris": {
+  "text": "Un madrileño en el París de Picasso: aportó al cubismo el papier collé, con recortes de periódico pegados en el lienzo.",
+  "source": "https://es.wikipedia.org/wiki/Juan_Gris"
+ },
+ "cimabue": {
+  "text": "Dante lo nombra en la Divina Comedia: era la gran fama de la pintura florentina, hasta que llegó Giotto y la eclipsó.",
+  "source": "https://www.britannica.com/biography/Cimabue"
+ },
+ "duccio": {
+  "text": "Fundó la escuela de Siena: su gran Maestà fue llevada en procesión, con música, desde su taller hasta la catedral.",
+  "source": "https://www.britannica.com/biography/Duccio"
+ },
+ "pietro-lorenzetti": {
+  "text": "Con su hermano Ambrogio acercó la pintura de Siena a la realidad, tras las huellas de Giotto: sus marcos parecen casas.",
+  "source": "https://www.encyclopedia.com/history/encyclopedias-almanacs-transcripts-and-maps/pietro-and-ambrogio-lorenzetti"
+ },
+ "simone-martini": {
+  "text": "El gran pintor de Siena después de Duccio: líneas elegantes y figuras sin peso sobre el oro. Petrarca le dedicó dos sonetos.",
+  "source": "https://www.britannica.com/biography/Simone-Martini"
+ },
+ "ambrogio-lorenzetti": {
+  "text": "Pintó la vida de una ciudad entera en el Buen y el Mal Gobierno de Siena: escenas de cada día en un muro público.",
+  "source": "https://en.wikipedia.org/wiki/The_Allegory_of_Good_and_Bad_Government"
+ },
+ "giotto": {
+  "text": "Dio peso a las figuras y un dramatismo nuevo a sus historias: con él los pliegues se modelan con luz y sombra, no con oro.",
+  "source": "https://en.wikipedia.org/wiki/Giotto"
+ },
+ "fra-angelico": {
+  "text": "Fraile dominico y pintor: en su Anunciación del Prado junta el paraíso perdido y la promesa, bajo un pórtico en perspectiva.",
+  "source": "https://en.wikipedia.org/wiki/Annunciation_(Fra_Angelico,_Madrid)"
+ },
+ "bellini": {
+  "text": "El gran pintor de la Venecia de su tiempo y maestro de Giorgione y Tiziano: estudió la luz como los flamencos.",
+  "source": "https://nga.gov/collection/highlights/bellini-titian-the-feast-of-the-gods.html"
+ },
+ "correggio": {
+  "text": "Pintó los amores de Júpiter con una sensualidad suavísima: en su Ío, el dios es solo una nube que la abraza.",
+  "source": "https://en.wikipedia.org/wiki/Jupiter_and_Io"
+ },
+ "juan-de-juanes": {
+  "text": "El Prado lo cuenta entre los grandes del Renacimiento español: un valenciano que pintaba con la serenidad de Rafael.",
+  "source": "https://www.museodelprado.es/en/the-collection/artist/juan-de-juanes/54316d5a-3170-46bf-9469-aae30c9fbedd"
+ },
+ "corot": {
+  "text": "Dejó las telas por el paisaje y abrió el camino a los impresionistas: Monet, Pissarro y Morisot aprendieron de él.",
+  "source": "https://www.britannica.com/biography/Camille-Corot"
+ },
+ "fedotov": {
+  "text": "Oficial de la Guardia que pintaba a la vez: retrató con humor afilado la Rusia de su tiempo. Lo comparan con Hogarth.",
+  "source": "https://en.wikipedia.org/wiki/Major%27s_marriage_proposal"
+ },
+ "bonheur": {
+  "text": "Famosa por la exactitud de sus animales: dicen que pidió permiso a la policía para pintar caballos vestida con pantalones.",
+  "source": "https://en.wikipedia.org/wiki/The_Horse_Fair"
+ },
+ "savrasov": {
+  "text": "Sus grajillas en los abedules marcaron el paisaje ruso del siglo XIX. Fundó los Ambulantes, que llevaban el arte por Rusia.",
+  "source": "https://en.wikipedia.org/wiki/The_Rooks_Have_Returned"
+ },
+ "shishkin": {
+  "text": "Uno de los paisajistas más queridos de Rusia: sus bosques de pinos y sus campos de centeno son su sello.",
+  "source": "https://www.britannica.com/biography/Ivan-Ivanovich-Shishkin"
+ },
+ "martin-rico": {
+  "text": "Para el Prado, el paisajista más importante del círculo de Fortuny: su luz de Venecia le dio gran fama en su tiempo.",
+  "source": "https://www.museodelprado.es/en/the-collection/artist/martin-rico-y-ortega/3c1e0479-1d45-44ee-b640-dbc4e3d69a14"
+ },
+ "perov": {
+  "text": "Fundador de los Ambulantes y clave del realismo ruso: pintó niños arrastrando agua en invierno y el único Dostoyevski del natural.",
+  "source": "https://en.wikipedia.org/wiki/Vasily_Perov"
+ },
+ "gisbert": {
+  "text": "Pintor de historia alcoyano y director del Prado: su Fusilamiento de Torrijos, de seis metros de ancho, sigue en el museo.",
+  "source": "https://www.museodelprado.es/en/the-collection/art-work/the-execution-of-torrijos-and-his-companions-on-the-beach-at-malaga/cc128630-425b-4752-a805-008d26556bbb"
+ },
+ "homer": {
+  "text": "Empezó dibujando la guerra de Secesión para una revista y acabó frente al mar de Maine, donde pintó sus grandes marinas.",
+  "source": "https://www.metmuseum.org/toah/hd/homr/hd_homr.htm"
+ }
+}
