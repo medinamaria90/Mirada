@@ -6,7 +6,7 @@
 [hidden] { display: none !important; }
 
 /* ---------- Portada ---------- */
-.test-home { max-width: var(--col); margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column; padding: .5rem 1.2rem calc(1.4rem + var(--safe-b)); }
+.test-home { max-width: var(--col); margin: 0 auto; min-height: var(--screen-h); display: flex; flex-direction: column; padding: .5rem 1.2rem calc(1.4rem + var(--safe-b)); }
 .test-head { display: flex; align-items: center; min-height: 56px; }
 .test-intro { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: .9rem; padding-block: 1.5rem 2rem; }
 .test-title { font: 500 2.4rem/1.05 var(--font); letter-spacing: var(--track); max-width: 14ch; margin-bottom: .3rem; }

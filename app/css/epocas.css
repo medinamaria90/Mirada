@@ -1,5 +1,5 @@
 /* Tarjetas de la época en su presentación (ui/screens/era-cards.js): un carrusel a pantalla completa con puntos. */
-:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, 38dvh, 340px); --era-dot-hit: 28px; }
+:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, calc(var(--screen-h) * .38), 340px); --era-dot-hit: 28px; }
 
 .has-era-cards { align-items: stretch; padding-left: 0; padding-right: 0; }
 .has-era-cards .welcome-body { max-width: 440px; align-content: center; gap: .9rem; }
@@ -33,7 +33,6 @@
   color: var(--accent-ui); font: 600 .8rem/1.2 var(--font); letter-spacing: .06em; text-transform: uppercase;
 }
 .era-text { margin: 0; color: var(--ink); font: 400 clamp(1.15rem, 4.8vw, 1.3rem)/1.45 var(--font); text-wrap: pretty; }
-.era-play { margin-top: .3rem; }
 .era-source { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); font: 500 .9rem/1 var(--font); text-underline-offset: 3px; }
 
 .era-dots { display: flex; justify-content: center; gap: .1rem; }

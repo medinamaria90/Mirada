@@ -2,13 +2,12 @@
    hoja secreta que lo enciende (ui/dj-sheet.js). Discreta: no compite con los cuadros. */
 .dj-bar {
   --dj-z: 7; /* sobre la barra superior (5) */
-  --dj-h: 44px;
   position: sticky; top: 0; z-index: var(--dj-z); box-sizing: border-box; height: var(--dj-h);
   display: flex; align-items: center; gap: 2px; padding: 0 4px;
   background: var(--surface-2); border-bottom: 1px solid var(--line);
 }
 .dj-bar[hidden] { display: none; }
-.has-dj .topbar { top: var(--dj-h, 44px); }
+.has-dj .topbar { top: var(--dj-h); }
 .dj-now {
   flex: 1 1 0; min-width: 0; display: grid; justify-items: start; gap: 0; height: 100%; padding: 0 6px;
   border: 0; background: none; color: var(--ink); font: 500 .8rem/1.2 var(--font); text-align: left; cursor: pointer;

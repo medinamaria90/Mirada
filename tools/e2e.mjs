@@ -537,6 +537,27 @@ async function viewerZoomCheck(page, cdp, label, opener) {
 }
 const ZOOM_TAG_HIDE_MS = 1100;
 
+// Pasa la historia del pintor tarjeta a tarjeta hasta «Jugar» (cerrarla con la X devolvería al mapa).
+async function skipStory(page) {
+  const MAX_CARDS = 20;
+  for (let k = 0; k < MAX_CARDS && !(await page.locator('.story[open] .story-play').count()); k++) await page.click('.story[open] .story-next');
+  await page.click('.story[open] .story-play');
+}
+
+// Hasta «Conoce a»: pasa la presentación del movimiento (Entrar) y la historia del pintor, que sale siempre (se salta).
+async function toLearn(page) {
+  const STEP_MS = 15000;
+  const PASSES = 4;
+  for (let k = 0; k < PASSES; k++) {
+    await page.waitForSelector('.learn, .intro [data-action="enter"], .story[open] .story-next', { timeout: STEP_MS });
+    if (await page.locator('.learn').count()) return;
+    if (await page.locator('.story[open]').count()) await skipStory(page);
+    else await page.click('.intro [data-action="enter"]');
+    await page.waitForTimeout(250);
+  }
+  await page.waitForSelector('.learn', { timeout: STEP_MS });
+}
+
 async function assertPracticeVisible(page, label) {
   const box = await page.locator('[data-action="practice"]').boundingBox();
   const vh = page.viewportSize().height;
@@ -884,7 +905,7 @@ await shot(page, '04-intro');
 await audit(page, '390 intro');
 // Teclado: con el foco en el título, Enter pulsa el único botón principal («Entrar», «Practicar»).
 await page.keyboard.press('Enter');
-await page.waitForSelector('.learn');
+await toLearn(page);
 await shot(page, '05-conoce');
 await assertPracticeVisible(page, '390');
 await assertLearnLayout(page, '390 conoce');
@@ -988,8 +1009,7 @@ if (SMOKE) {
   await shot(page, '14e-rama-pantalla');
   await audit(page, '390 pantalla de rama');
   await page.click(branchNode(ownGotico[0]));
-  await page.waitForSelector('.learn, .intro');
-  if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
+  await toLearn(page);
   await page.waitForSelector('.learn');
   check(page.url().endsWith(`#etapa-${ownGotico[0]}--gotico`), `la rama no lleva a la etapa con su rama: ${page.url()}`);
   await page.click('[data-action="practice"]');
@@ -1021,8 +1041,7 @@ if (SMOKE) {
   // «Repetir» tras una ronda floja sigue en la rama (Duccio, del Gótico, todo fallado).
   await openGotico();
   await page.click(branchNode(ownGotico[1]));
-  await page.waitForSelector('.learn, .intro');
-  if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
+  await toLearn(page);
   await page.waitForSelector('.learn');
   await page.click('[data-action="practice"]');
   await playRound(page, { wrongAt: Array.from({ length: 30 }, (_, k) => k) });
@@ -1595,9 +1614,9 @@ check(/^Hoy\b/i.test(dayDone) && dayDone.includes(`La próxima vez: ${secondName
 check(await page.locator('button.event-link', { hasText: 'Siguiente etapa' }).count() === 0, 'el cierre del día lleva la tarjeta de siguiente etapa');
 check(!/Repetir|Repaso de 5|Repasar más/.test(await page.locator('.result-actions').innerText()), 'el cierre del día lleva llamadas a seguir jugando');
 await page.goto(`${base}#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`);
-await page.waitForSelector('.learn, .intro');
+await page.waitForSelector('.learn, .intro, .story[open]');
 check(page.url().endsWith(`#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`), `la tarjeta lleva a ${page.url()}`);
-if (await page.locator('.intro').count()) await page.click('.intro [data-action="enter"]');
+await toLearn(page);
 await page.click('[data-action="practice"]');
 await playRound(page);
 // Volver atrás desde el resultado vuelve al camino (no se queda colgado).
@@ -1813,8 +1832,7 @@ await shot(spage, '24-mapa-sello');
 const sala = index.steps.find((s) => s.type === 'sala');
 if (sala) {
   await seed(spage, seededState({ upTo: index.steps.indexOf(sala) }), `sala-${sala.id}`);
-  await spage.waitForSelector('.intro, .learn');
-  if (await spage.locator('.intro').count()) await spage.click('.intro [data-action="enter"]');
+  await toLearn(spage);
   await spage.waitForSelector('.learn');
   await shot(spage, '25-sala-conoce');
   await spage.click('[data-action="practice"]');
@@ -2041,8 +2059,7 @@ for (const mode of ['font', 'viewport']) {
   await shot(zpage, `33-zoom200-${mode}-inicio`);
   const target = index.steps.find((st, i) => i >= 9 && st.type === 'artist');
   await zpage.goto(`${base}#etapa-${target.id}`);
-  await zpage.waitForSelector('.learn, .intro');
-  if (await zpage.locator('.intro').count()) await zpage.click('.intro [data-action="enter"]');
+  await toLearn(zpage);
   await zpage.waitForSelector('.learn');
   await assertPracticeVisible(zpage, `zoom ${mode}`);
   await assertLearnLayout(zpage, `zoom ${mode} conoce`, { strict: false });
@@ -2175,9 +2192,9 @@ await shot(kpage, '34-oscuro-mapa');
 await audit(kpage, 'oscuro mapa');
 const darkStage = index.steps.find((s, i) => i >= darkUp && s.type === 'artist').id;
 await kpage.goto(`${base}#etapa-${darkStage}`);
-await kpage.waitForSelector('.learn, .intro');
-if (await kpage.locator('.intro').count()) { await audit(kpage, 'oscuro intro'); await kpage.click('.intro [data-action="enter"]'); }
-await kpage.waitForSelector('.learn');
+await kpage.waitForSelector('.learn, .intro, .story[open]');
+if (await kpage.locator('.intro').count()) await audit(kpage, 'oscuro intro');
+await toLearn(kpage);
 await assertLearnLayout(kpage, 'oscuro conoce');
 await audit(kpage, 'oscuro conoce');
 await kpage.click('[data-action="practice"]');
@@ -2246,8 +2263,7 @@ const main = await wpage.locator('.home-main').boundingBox();
 check(side && main && side.x + side.width <= main.x, 'escritorio: el mapa no tiene panel lateral');
 check(await wpage.locator('.side-week').isVisible(), 'escritorio: la columna lateral sigue vacía');
 await wpage.goto(`${base}#etapa-${index.steps.find((s, i) => i >= 6 && s.type === 'artist').id}`);
-await wpage.waitForSelector('.learn, .intro');
-if (await wpage.locator('.intro').count()) await wpage.click('.intro [data-action="enter"]');
+await toLearn(wpage);
 await wpage.waitForSelector('.learn');
 await assertLearnLayout(wpage, '1280 conoce');
 await audit(wpage, '1280 conoce');
@@ -2287,8 +2303,7 @@ for (const scheme of ['light', 'dark']) {
   await audit(tpage, `768 ${scheme} mapa`);
   await noHorizontalScroll(tpage, `768 ${scheme} mapa`);
   await tpage.goto(`${base}#etapa-${index.steps.find((s, i) => i >= 6 && s.type === 'artist').id}`);
-  await tpage.waitForSelector('.learn, .intro');
-  if (await tpage.locator('.intro').count()) await tpage.click('.intro [data-action="enter"]');
+  await toLearn(tpage);
   await tpage.waitForSelector('.learn');
   await assertLearnLayout(tpage, `768 ${scheme} conoce`);
   await audit(tpage, `768 ${scheme} conoce`);
@@ -2768,10 +2783,11 @@ for (const scheme of ['light', 'dark']) {
     // --- Leonardo entero (primera impresión) desde cero, con capturas en 390 claro.
     if (cfg.full || cfg.mid) {
       await seed(p9, seededState({ upTo: 0 }), `etapa-${leo.id}`);
-      await p9.waitForSelector('.learn, .intro, .look-first');
+      await p9.waitForSelector('.learn, .intro, .look-first, .story[open]');
       for (let k = 0; k < 4 && !(await p9.locator('.learn').count()); k++) {
         const go = p9.locator('.intro [data-primary], .intro .btn-primary, .look-first [data-action="go"]').first();
-        if (await go.count()) await go.click();
+        if (await p9.locator('.story[open]').count()) await skipStory(p9);
+        else if (await go.count()) await go.click();
         await p9.waitForTimeout(400);
       }
       await p9.waitForSelector('.learn');

@@ -166,6 +166,8 @@
   --topbar-h: 65px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
+  --dj-h: 0px; /* alto de la barra del modo secreto (0 si no está) */
+  --screen-h: calc(100dvh - var(--dj-h)); /* pantalla completa descontando esa barra */
   color-scheme: light dark;
 }
 
@@ -357,3 +359,5 @@
 /* Forzado desde Ajustes: también los controles nativos y la barra de desplazamiento. */
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
+
+:root.has-dj { --dj-h: 44px; }
