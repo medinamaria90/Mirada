@@ -95,7 +95,8 @@ const START_ARCH = `<rect class="land-front" x="160" y="80" width="12" height="5
 export function startBlock(start, eras, tint, left = eras.length) {
   const art = (cls, body) => `<svg class="${cls}" viewBox="0 0 ${MAP_W} ${start.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${body}</svg>`;
   const line = !left ? 'Camino completo' : left === 1 ? 'Una época por delante' : `${left} épocas por delante`;
-  return `<li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
+  // path-foot: el suelo sigue bajo la barra de abajo (sin franja oscura al llegar al final del mapa).
+  return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true"></li><li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
     ${art('path-start-art', START_GROUND)}${trailSvg(start.h, start.trail)}${art('path-start-art is-front', START_ARCH)}
     <div ${signBox(start.sign, start.h)}><button type="button" class="sign-plate is-start" data-action="start" aria-haspopup="dialog" aria-label="Empieza aquí, ${esc(line.toLowerCase())}: cómo se juega"><span class="sign-name">Empieza aquí</span><span class="sign-meta"><span>${line}</span></span><span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button></div>
   </li>`;

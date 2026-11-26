@@ -181,6 +181,9 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .path-map { --map-fs: 1rem; position: relative; display: flex; flex-direction: column-reverse; margin: 1.2rem -1.1rem 0; padding: 0; list-style: none; overflow: hidden; container-type: inline-size; }
 .path-map.is-linear { --map-fs: 1rem; }
 .map-probe { position: absolute; width: 1rem; height: 1px; visibility: hidden; pointer-events: none; }
+/* Suelo bajo el inicio: ocupa el hueco de la barra de abajo para que el mapa llegue hasta el borde. */
+.path-foot { height: calc(84px + var(--safe-b)); background: var(--era-tint); }
+.page-home:has(.path-foot) { padding-bottom: 0; }
 .path-era, .path-museum, .path-start { position: relative; width: 100%; min-width: 0; background: var(--era-tint); }
 .path-era, .path-museum { margin-bottom: -1px; }
 /* Cada época se pinta solo cerca de la pantalla (56 nodos y 9 paisajes no hacen falta a la vez). */
@@ -984,6 +987,8 @@ html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: n
   .home-side { grid-column: 1; grid-row: 1; justify-self: end; width: min(100%, 320px); position: sticky; top: calc(var(--topbar-h) + 1rem); align-self: start; }
   .home-main { grid-column: 2; grid-row: 1; min-width: 0; width: 100%; }
   .path-map { max-width: 480px; margin: 1.2rem auto 2.5rem; border-radius: var(--radius); }
+  .path-foot { display: none; }
+  .page-home:has(.path-foot) { padding-bottom: calc(84px + var(--safe-b)); }
   .home-main { padding-bottom: calc(96px + var(--safe-b)); }
   /* Ronda: cuadro a la izquierda, pregunta y opciones a la derecha */
   .lesson-stage:not([data-type="which"]) {
