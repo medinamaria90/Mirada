@@ -107,3 +107,14 @@ test('momento de dominar a un maestro: se queda hasta cerrarlo (X, «Seguir», E
   assert.match(src, /'cancel'/, 'Esc la cierra');
   assert.match(src, /!ev\.target\.closest\('\.match-card'\)/, 'un toque fuera de la tarjeta la cierra');
 });
+
+test('resultado flojo: la «siguiente» que se abre con la mitad de aciertos se salta las paradas extra', () => {
+  const [a, b, c] = real.path;
+  const p = emptyProgress();
+  p.artists[a.id] = { plays: 1, best: 1, mastered: true, last: '2026-11-20' };
+  p.artists[b.id] = { plays: 1, best: 0.3, mastered: false, last: DAY };
+  p.roster = { seed: 'done', known: [], extra: [c.id], fresh: [], told: [] };
+  const outcome = { xp: 10, score: 1, total: 6, accuracy: 1 / 6, mastered: false, events: [] };
+  const actions = resultActions(p, { kind: 'stage', artistId: b.id, seed: 3 }, outcome);
+  assert.match(actions, /Con la mitad de aciertos se abre la siguiente/, 'la parada extra (siempre abierta) no cuenta como «la siguiente»');
+});

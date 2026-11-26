@@ -4,7 +4,7 @@ import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotio
 import { icons } from '../icons.js';
 import { artFrame, coverOf } from '../art.js';
 import { goalRing } from '../shell.js';
-import { MASTERY, UNLOCK_MIN, isStepUnlocked } from '../../engine/progress.js';
+import { MASTERY, UNLOCK_MIN, isStepUnlocked, gateSteps } from '../../engine/progress.js';
 import { pendingWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, tierOf, isMasterTier } from '../../engine/painters.js';
 import { deepRoute, stageRoute, branchRoute } from '../router.js';
@@ -193,7 +193,8 @@ export function renderResult(ctx, el, opts) {
   // Con menos de la mitad de aciertos lo primero es repetir (y la parada siguiente, si estaba
   // cerrada, sigue cerrada).
   const step = plan.kind === 'stage' && !isDeep ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
-  const nextOf = step ? index.steps[index.stepIndex(step.type, step.id) + 1] : null;
+  // La siguiente parada normal: las extra (pintores nuevos en tramos ya superados) no cuentan.
+  const nextOf = step ? gateSteps(p, index.steps.slice(index.stepIndex(step.type, step.id) + 1))[0] || null : null;
   const gated = Boolean(retry && nextOf && outcome.accuracy < UNLOCK_MIN && !isStepUnlocked(p, index, nextOf));
   // Cierre del día (meta cumplida): «Seguir» y, si la ronda se comparte, compartir; sin llamadas a
   // seguir jugando (repetir, más repaso, siguiente etapa: va en «La próxima vez»). Compartir se queda:
