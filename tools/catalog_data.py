@@ -9,7 +9,7 @@ y las imágenes se han mirado una a una (hojas de contacto); lo dudoso va en "me
 MOVEMENTS = [
     ("renacimiento", "Renacimiento", "s. XV–XVI", 1, "renaissance",
      "Equilibrio, perspectiva y belleza ideal en Italia.", "#8a6d3b"),
-    ("manierismo-y-norte", "Manierismo y Renacimiento del Norte", "s. XV–XVII", 2, "renaissance",
+    ("manierismo-y-norte", "Manierismo y Renacimiento del Norte", "s. XV–XVII", 2, "northern",
      "Detalle flamenco, mundos fantásticos y figuras alargadas.", "#52695a"),
     ("barroco", "Barroco", "s. XVII", 3, "baroque",
      "Luz dramática, movimiento y emoción.", "#6b2f3a"),
@@ -188,7 +188,9 @@ artist("briullov", "Karl Briulov", "Briulov", "romanticismo", 1799, 1852, "Rusia
        "Fíjate en el drama romántico con acabado de academia: cuerpos como esculturas y luces de teatro.",
        ["escenas dramáticas", "acabado académico", "luces de teatro"], ["delacroix", "ivanov"])
 artist("gericault", "Théodore Géricault", "Géricault", "romanticismo", 1791, 1824, "Francia", 7,
-       "Fíjate en los cuerpos en tensión, con luz dramática y tonos terrosos.")
+       "Fíjate en los cuerpos en tensión y los caballos nerviosos, bajo una luz de tormenta y tonos terrosos.",
+       ["caballos briosos en movimiento", "cuerpos al límite: náufragos, heridos, locos", "luz de tormenta y tonos oscuros"],
+       ["delacroix", "david"])
 artist("constable", "John Constable", "Constable", "romanticismo", 1776, 1837, "Reino Unido", 8,
        "Fíjate en los cielos con nubes vivas y el campo inglés pintado al natural.")
 artist("delaroche", "Paul Delaroche", "Delaroche", "romanticismo", 1797, 1856, "Francia", 9,
@@ -333,7 +335,9 @@ artist("vrubel", "Mijaíl Vrúbel", "Vrúbel", "simbolismo-modernismo", 1856, 19
 artist("nesterov", "Mijaíl Nésterov", "Nésterov", "simbolismo-modernismo", 1862, 1942, "Rusia", 4,
        "Fíjate en los paisajes místicos con figuras espirituales.")
 artist("matisse", "Henri Matisse", "Matisse", "simbolismo-modernismo", 1869, 1954, "Francia", 5,
-       "Fíjate en los colores puros y planos, con formas simplificadas.")
+       "Fíjate en el color puro, plano y a veces inventado: caras verdes, árboles rojos y contornos simples.",
+       ["colores puros e inventados", "formas simples con contorno", "fondos planos y decorativos"],
+       ["gauguin", "kandinsky"])
 artist("petrov-vodkin", "Kuzmá Petrov-Vodkin", "Petrov-Vodkin", "simbolismo-modernismo", 1878, 1939, "Rusia", 6,
        "Fíjate en los colores primarios rotundos y las formas simplificadas.")
 artist("kandinsky", "Vasili Kandinsky", "Kandinsky", "simbolismo-modernismo", 1866, 1944, "Rusia", 7,
@@ -608,6 +612,86 @@ artist("schiele", "Egon Schiele", "Schiele", "simbolismo-modernismo", 1890, 1918
        "Fíjate en los cuerpos angulosos y torcidos, de contorno nervioso y piel con manchas de color.",
        ["contornos nerviosos y quebrados", "cuerpos angulosos y huesudos", "fondos vacíos"],
        ["klimt"])
+
+# Pintores que faltaban (docs/eval/pintores-que-faltan.md, 26/11): pistas y rasgos de los nuevos y de los
+# invitados del camino que no los tenían (Mantegna, Giorgione, Bouguereau, Whistler). Con conocimiento propio
+# por decisión de María, como el bloque anterior.
+artist("masaccio", "Masaccio", "Masaccio", "renacimiento", 1401, 1428, "Italia", 17,
+       "Fíjate en las figuras macizas que pisan firme y echan sombra, con una sola luz que llega de un lado.",
+       ["figuras pesadas, como de piedra", "luz de un solo lado con sombras de verdad", "caras serias y gestos sobrios"],
+       ["giotto", "piero"])
+artist("piero", "Piero della Francesca", "Piero", "renacimiento", 1415, 1492, "Italia", 18,
+       "Fíjate en la luz clara y quieta: figuras como columnas, caras impasibles y espacios medidos.",
+       ["luz clara y blanca, sin sombras duras", "figuras quietas, como estatuas", "arquitecturas en perspectiva perfecta"],
+       ["masaccio", "berruguete"])
+artist("uccello", "Paolo Uccello", "Uccello", "renacimiento", 1397, 1475, "Italia", 19,
+       "Fíjate en la perspectiva hecha juego: lanzas, suelos y caballos como juguetes geométricos.",
+       ["perspectiva marcada como un tablero", "caballos y lanzas de juguete", "escenas de cuento, a veces de noche"],
+       ["piero", "masaccio"])
+artist("filippo-lippi", "Filippo Lippi", "Filippo Lippi", "renacimiento", 1406, 1469, "Italia", 20,
+       "Fíjate en las Vírgenes de cara dulce y cercana, con velos transparentes y ángeles traviesos.",
+       ["Vírgenes jóvenes y cercanas", "velos finos y transparentes", "ángeles con aire de niño"],
+       ["botticelli", "fra-angelico"])
+artist("perugino", "Perugino", "Perugino", "renacimiento", 1448, 1523, "Italia", 21,
+       "Fíjate en la calma: figuras dulces de cabeza ladeada y un paisaje abierto con arbolitos finos.",
+       ["cabezas ladeadas y gesto dulce", "paisajes abiertos y luminosos", "plazas y templos en perspectiva"],
+       ["rafael", "botticelli"])
+artist("bermejo", "Bartolomé Bermejo", "Bermejo", "renacimiento", 1440, 1501, "España", 22,
+       "Fíjate en el óleo minucioso a la flamenca: oros, joyas y armaduras que brillan, y cielos de tormenta.",
+       ["detalle flamenco con oro y joyas", "paisajes con cielos de tormenta", "santos y diablos de gesto intenso"],
+       ["van-eyck", "berruguete"])
+artist("mantegna", "Andrea Mantegna", "Mantegna", "renacimiento", 1431, 1506, "Italia", 23,
+       "Fíjate en las figuras duras como piedra, en escorzos atrevidos, con ruinas romanas al fondo.",
+       ["figuras como esculpidas en piedra", "escorzos y vistas desde abajo", "ruinas y arquitectura romana"],
+       ["bellini", "piero"])
+artist("giorgione", "Giorgione", "Giorgione", "renacimiento", 1478, 1510, "Italia", 24,
+       "Fíjate en el paisaje que envuelve a figuras quietas y pensativas, con una luz suave y dorada.",
+       ["el paisaje como protagonista", "figuras quietas y misteriosas", "luz suave y dorada"],
+       ["tiziano", "bellini"])
+artist("van-der-weyden", "Rogier van der Weyden", "Van der Weyden", "manierismo-y-norte", 1399, 1464, "Flandes", 11,
+       "Fíjate en el llanto: lágrimas transparentes y cuerpos que se doblan de dolor, como tallados en madera.",
+       ["lágrimas y gestos de dolor", "figuras como relieves de madera", "telas de pliegues duros y angulosos"],
+       ["van-eyck", "memling"])
+artist("memling", "Hans Memling", "Memling", "manierismo-y-norte", 1430, 1494, "Flandes", 12,
+       "Fíjate en la calma ordenada: caras serenas, colores limpios y un paisaje flamenco al fondo.",
+       ["caras serenas y suaves", "colores limpios y luminosos", "paisajes tras la ventana o el trono"],
+       ["van-der-weyden", "van-eyck"])
+artist("holbein", "Hans Holbein el Joven", "Holbein", "manierismo-y-norte", 1497, 1543, "Alemania", 13,
+       "Fíjate en el retrato exacto y frío: cara impasible, pieles y terciopelos, y un fondo liso de color.",
+       ["retratos de precisión casi fotográfica", "fondos lisos de azul o verde", "pieles, terciopelos y joyas al detalle"],
+       ["durero", "cranach"])
+artist("parmigianino", "Parmigianino", "Parmigianino", "manierismo-y-norte", 1503, 1540, "Italia", 14,
+       "Fíjate en la elegancia estirada: cuellos y dedos larguísimos, piel de porcelana y poses rebuscadas.",
+       ["cuellos y manos muy alargados", "piel pálida y pulida como porcelana", "poses retorcidas y refinadas"],
+       ["bronzino", "correggio"])
+artist("bronzino", "Agnolo Bronzino", "Bronzino", "manierismo-y-norte", 1503, 1572, "Italia", 15,
+       "Fíjate en los retratos fríos como esmalte: caras sin emoción, sedas que brillan y dedos largos.",
+       ["caras serias y distantes", "superficie lisa como esmalte", "sedas y brocados brillantes"],
+       ["parmigianino", "pontormo"])
+artist("pontormo", "Pontormo", "Pontormo", "manierismo-y-norte", 1494, 1557, "Italia", 16,
+       "Fíjate en los colores ácidos (rosas, verdes, naranjas) y en cuerpos que flotan sin suelo firme.",
+       ["rosas, verdes y naranjas ácidos", "figuras que parecen flotar", "caras de ojos grandes e inquietos"],
+       ["bronzino", "el-greco"])
+artist("arcimboldo", "Giuseppe Arcimboldo", "Arcimboldo", "manierismo-y-norte", 1526, 1593, "Italia", 17,
+       "Fíjate en la cara: está hecha de frutas, verduras, flores, libros o animales.",
+       ["caras hechas de objetos", "frutas, flores y animales amontonados", "fondo oscuro y liso"],
+       ["bosco"])
+artist("sanchez-cotan", "Juan Sánchez Cotán", "Sánchez Cotán", "barroco", 1560, 1627, "España", 25,
+       "Fíjate en unas pocas hortalizas en un hueco de piedra, sobre negro y ordenadas como una geometría.",
+       ["frutas y verduras sobre fondo negro", "un marco de piedra como ventana", "orden quieto y casi geométrico"],
+       ["melendez", "zurbaran"])
+artist("hogarth", "William Hogarth", "Hogarth", "rococo-neoclasicismo", 1697, 1764, "Reino Unido", 20,
+       "Fíjate en las escenas con mucha gente que cuentan un vicio, como una viñeta satírica llena de detalles.",
+       ["historias morales por capítulos", "interiores llenos de gente", "gestos exagerados, con humor"],
+       ["steen", "gainsborough"])
+artist("bouguereau", "William-Adolphe Bouguereau", "Bouguereau", "realismo", 1825, 1905, "Francia", 30,
+       "Fíjate en la piel de porcelana sin una pincelada a la vista: ninfas, niñas y ángeles de belleza dulce.",
+       ["piel lisa como porcelana", "desnudos y ninfas idealizados", "caras dulces y perfectas"],
+       ["ingres", "waterhouse"])
+artist("whistler", "James McNeill Whistler", "Whistler", "impresionismo", 1834, 1903, "Estados Unidos", 20,
+       "Fíjate en la armonía de muy pocos tonos, como una música: grises, negros o azules de noche.",
+       ["paleta de pocos tonos", "nocturnos azules y brumosos", "figuras de cuerpo entero en gris y negro"],
+       ["manet", "sargent"])
 
 # Únicos pintores rusos con etapa propia (decisión del coordinador, oleada 4): el resto de rusos
 # son invitados aunque tengan ≥3 obras (sirven de distractores y de obras no vistas).
@@ -1299,12 +1383,12 @@ TRAIT_TAGS = {
     "claudio-de-lorena": [["mar", "barcos", "oro"]], "boucher": [["rosa", "azul", "desnudo"]],
     "greuze": [["interior", "expresion"]], "liotard": [["nitido"]], "gainsborough": [["suelta", "retrato"]],
     "borovikovski": [["retrato"]], "ingres": [["nitido"]],
-    "gericault": [["oscuro", "dinamico"]], "constable": [["cielo", "paisaje"]], "delaroche": [["nitido"]],
+    "constable": [["cielo", "paisaje"]], "delaroche": [["nitido"]],
     "ivanov": [["multitud"]], "tropinin": [["retrato"]], "courbet": [[]],
     "savrasov": [["nieve"]], "kramskoi": [["retrato", "mirada"]],
     "fedotov": [["interior"]], "vereshchagin": [[]], "venetsianov": [["claro", "paisaje"]], "serov": [["claro"]],
     "rousseau": [["plano"]], "vrubel": [["bloques"]],
-    "nesterov": [["paisaje"]], "matisse": [["plano"]], "petrov-vodkin": [["plano", "rojo"]],
+    "nesterov": [["paisaje"]], "petrov-vodkin": [["plano", "rojo"]],
     "kandinsky": [["plano"]], "malevich": [["plano"]],
     # Invitados con tres rasgos (se enseñan en las salas): alineados con [pista, rasgo 1, 2, 3].
     "briullov": [["nitido"], ["dinamico"], ["nitido"], []],
@@ -1400,6 +1484,28 @@ TRAIT_TAGS = {
     "nonell": [["grueso", "oscuro"], ["oscuro"], ["grueso"], ["azul", "oscuro"]],
     "modigliani": [["alargado", "retrato"], ["alargado"], ["retrato"], ["plano"]],
     "schiele": [["lineas", "expresion"], ["lineas"], ["desnudo", "expresion"], []],
+    # Pintores que faltaban (26/11): alineados con [pista, rasgo 1, 2, 3].
+    "gericault": [["dinamico", "oscuro"], ["dinamico"], ["expresion"], ["oscuro"]],
+    "matisse": [["plano"], ["plano"], ["plano"], ["mosaico"]],
+    "masaccio": [["estatua"], ["estatua"], [], ["expresion"]],
+    "piero": [["claro", "estatua", "arquitectura"], ["claro"], ["estatua"], ["arquitectura"]],
+    "uccello": [["nitido"], ["nitido"], [], ["noche"]],
+    "filippo-lippi": [["dulzura"], ["dulzura"], [], []],
+    "perugino": [["dulzura", "paisaje"], ["dulzura"], ["paisaje", "claro"], ["arquitectura"]],
+    "bermejo": [["oro", "nitido"], ["oro", "nitido"], ["cielo", "paisaje"], ["expresion", "monstruos"]],
+    "mantegna": [["estatua", "arquitectura"], ["estatua"], ["dinamico"], ["arquitectura"]],
+    "giorgione": [["paisaje", "difuminado"], ["paisaje"], [], ["difuminado", "oro"]],
+    "van-der-weyden": [["expresion"], ["expresion"], ["estatua"], ["nitido"]],
+    "memling": [["dulzura", "nitido"], ["dulzura"], ["claro"], ["paisaje"]],
+    "holbein": [["retrato", "nitido"], ["retrato", "nitido"], ["azul", "verde"], ["sedas"]],
+    "parmigianino": [["alargado"], ["alargado"], ["nitido"], []],
+    "bronzino": [["retrato", "nitido", "sedas"], ["retrato"], ["nitido"], ["sedas"]],
+    "pontormo": [["rosa", "verde"], ["rosa", "verde"], [], ["expresion"]],
+    "arcimboldo": [["monstruos", "retrato"], ["monstruos"], [], ["oscuro"]],
+    "sanchez-cotan": [["oscuro", "nitido"], ["oscuro"], [], ["nitido"]],
+    "hogarth": [["multitud", "interior"], [], ["interior", "multitud"], ["expresion"]],
+    "bouguereau": [["nitido", "dulzura"], ["nitido"], ["desnudo"], ["dulzura"]],
+    "whistler": [["gris", "difuminado"], ["gris"], ["noche", "azul", "difuminado"], ["retrato", "negro"]],
 }
 
 # Etiquetas visibles en cada cuadro, escritas mirando las imágenes (hojas de contacto a 420 px y

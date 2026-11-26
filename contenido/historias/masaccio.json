@@ -1,0 +1,26 @@
+{
+ "artistId": "masaccio",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Masaccio",
+   "cards": [
+    {
+     "text": "Lo llamaban Masaccio, algo así como «Tomasón», por despistado: según Vasari, no se ocupaba ni de su ropa ni de cobrar. Murió con 26 años.",
+     "artwork": "w369582",
+     "source": "https://es.wikipedia.org/wiki/Masaccio"
+    },
+    {
+     "text": "En la capilla Brancacci de Florencia pintó gente que pisa el suelo y echa sombra. Generaciones de pintores, Miguel Ángel incluido, fueron allí a aprender.",
+     "artwork": "w3711791",
+     "source": "https://es.wikipedia.org/wiki/Masaccio"
+    },
+    {
+     "text": "Fíjate en la Magdalena de rojo, de espaldas al pie de la cruz y con los brazos abiertos: no le vemos la cara y aun así sentimos su dolor.",
+     "artwork": "w1054459",
+     "source": "https://es.wikipedia.org/wiki/Masaccio"
+    }
+   ]
+  }
+ ]
+}
