@@ -185,3 +185,4 @@ aviso w368788 (perugino): título pendiente de traducir: Pietà
 62M	.git
 3.6M	catalogo
 fin Thu Nov 26 21:59:59 UTC 2026
+estado del job: success Thu Nov 26 22:00:01 UTC 2026
