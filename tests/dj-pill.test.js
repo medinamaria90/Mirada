@@ -11,7 +11,7 @@ const enabled = process.env.MIRADA_E2E === '1';
 const PORT = 8947;
 const SETTLE_MS = 2500;
 const TAPS = 5;
-const CODE = '1538';
+const CODE = '1612';
 const STATE = { version: 4, onboarded: true,
   progress: { xp: 300, artists: {}, salas: {}, intros: { renacimiento: '2026-11-20' }, reviews: {}, srs: {}, collection: {}, medals: {},
     streak: { current: 2, best: 2, last: '2026-11-25', graceOn: null, days: [] },

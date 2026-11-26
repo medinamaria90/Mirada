@@ -1,5 +1,5 @@
 // Puerta del modo «afinar música»: cinco toques seguidos (en menos de 3 s) en el título de Ajustes
-// abren esta hoja; con el código (1538, el año de «Guárdame las vacas») se enciende, y aquí mismo se apaga.
+// abren esta hoja; con el código (1612, elegido por María) se enciende, y aquí mismo se apaga.
 
 import { icons } from './icons.js';
 import { bindSheet } from './screens/profile-sheet.js';
@@ -8,7 +8,7 @@ import { loadCss } from './lazy-css.js';
 
 const TAPS = 5;
 const TAP_WINDOW_MS = 3000;
-const CODE = '1538';
+const CODE = '1612';
 
 const sheetHtml = () => `<dialog class="card-dialog sheet-dialog dj-sheet" aria-labelledby="dj-title">
     <div class="dlg-body">
