@@ -5,6 +5,7 @@ import { icons } from '../icons.js';
 import { bottomNav } from '../shell.js';
 import { observeDeferred } from '../lazy-img.js';
 import { loadCss } from '../lazy-css.js';
+import { loadSealCss } from '../seal.js';
 import { profileHtml, wireProfile } from '../artist-profile.js';
 import { playEra } from '../audio-bridge.js';
 
@@ -19,7 +20,7 @@ export const backButton = () => `<button type="button" class="ap-back" data-ap-n
 export async function renderArtistPage(ctx, el, artistId, { focus = '' } = {}) {
   const artist = ctx.index.artist(artistId);
   if (!artist) return ctx.go('coleccion', { replace: true });
-  await loadCss('css/ficha.css');
+  await Promise.all([loadCss('css/ficha.css'), loadSealCss()]);
   const html = await profileHtml(ctx, artistId, { playable: true, navigate: true, tag: 'h1', leadControl: backButton() });
   el.innerHTML = `<div class="page page-artist"><main class="content ap ap-page" id="main" style="${accentStyle(ctx.index.movement(artist.movementId)?.accent)}">${html}</main>${bottomNav('collection')}</div>`;
   playEra('menu');

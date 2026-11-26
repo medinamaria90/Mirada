@@ -7,9 +7,9 @@
 /* Una sola anchura de contenido en Colección, galería y ficha (como .page-collection .content en main.css). */
 .page-artist .content.ap-page, .page-works .content.aw { max-width: 720px; margin-inline: auto; }
 
-/* Portada con su cuadro más famoso de los ya vistos (sin spoilers) que se funde con el fondo. */
+/* Portada a sangre con su cuadro más famoso de los ya vistos (sin spoilers) que se funde con el fondo. */
 .ap-hero { position: relative; }
-.ap-cover { position: relative; height: clamp(150px, 30vw, 210px); max-height: 210px; overflow: hidden; background: linear-gradient(160deg, var(--accent), color-mix(in srgb, var(--accent) 40%, var(--bg))); }
+.ap-cover { position: relative; height: clamp(230px, 66vw, 340px); overflow: hidden; background: linear-gradient(160deg, var(--accent), color-mix(in srgb, var(--accent) 40%, var(--bg))); }
 .ap-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 .ap-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, color-mix(in srgb, var(--viewer-bg) 55%, transparent) 0, transparent 38%, transparent 55%, var(--bg) 100%); }
 .ap-back, .ap-close {
@@ -30,9 +30,12 @@ button.ap-avatar:active .ap-ring { transform: scale(.96); }
 .ap-photo { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 999px; background: var(--surface-2); box-shadow: 0 0 0 3px var(--bg); }
 .ap-ring.is-none .ap-photo { box-shadow: 0 0 0 4px var(--bg); }
 .ap-who { flex: 1 1 11rem; min-width: 0; padding-bottom: .3rem; }
-.ap-name { font: 500 1.65rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; hyphens: manual; }
+.ap-name { font: 500 1.9rem/1.08 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; hyphens: manual; }
 .ap-meta { margin-top: .25rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.ap-era { display: inline-block; margin-top: .45rem; padding: .22rem .75rem; border-radius: 999px; background: color-mix(in srgb, var(--accent) 24%, var(--surface)); font: 600 .82rem/1.2 var(--font); }
+.ap-tags { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .9rem 1.2rem 0; }
+.ap-era { display: inline-flex; align-items: center; min-height: 30px; padding: 0 .8rem; border-radius: 999px; background: color-mix(in srgb, var(--accent) 22%, var(--surface)); font: 600 .82rem/1.2 var(--font); }
+/* «Por qué importa»: lo primero que se lee, grande y con aire; un filete del color de su movimiento. */
+.ap-why { margin: 1.3rem 1.2rem 0; padding-left: 1rem; border-left: 3px solid var(--accent-ui); font: 400 1.32rem/1.42 var(--font); letter-spacing: -.005em; text-wrap: pretty; }
 
 .ap-progress { padding: 1rem 1.2rem 0; display: grid; gap: .2rem; }
 .ap-mastery { display: flex; align-items: center; gap: .5rem; font: 600 .95rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
@@ -71,7 +74,17 @@ button.ap-stage:hover { background: var(--surface-2); }
 .ap-stage-name { overflow-wrap: anywhere; }
 .ap-stage-state { font: 600 .8rem/1 var(--font); color: var(--ink-2); }
 
-/* Rejilla de 3 columnas: cuadros vistos y huecos discretos para los que faltan (sin imagen ni título). */
+/* Tira deslizable de sus cuadros vistos: a sangre por la derecha, con la siguiente asomando para invitar a deslizar. */
+.ap-gallery { padding-right: 0; }
+.ap-gallery > :not(.ap-strip) { margin-right: 1.2rem; }
+.ap-strip { display: flex; gap: .55rem; margin: 0 0 0 -1.2rem; padding: .2rem 1.2rem .5rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 1.2rem; scrollbar-width: none; list-style: none; }
+.ap-strip::-webkit-scrollbar { display: none; }
+.ap-strip { --strip-h: clamp(150px, 44vw, 200px); align-items: flex-end; }
+.ap-strip > li { flex: none; scroll-snap-align: start; }
+/* Cada cuadro con su forma, a la misma altura (uno muy apaisado se queda más bajo antes que desbordar). */
+.ap-strip .art { width: min(calc(var(--strip-h) * var(--arw) / var(--arh)), 76vw); border-radius: var(--radius-sm); }
+
+/* Rejilla de 3 columnas (galería del pintor): cuadros vistos y huecos discretos para los que faltan (sin imagen ni título). */
 .ap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 3px; max-width: 720px; margin-inline: auto; width: 100%; margin: 0; padding: 0; list-style: none; }
 .ap-grid .art { width: 100%; border-radius: 0; box-shadow: none; }
 .ap-gap { aspect-ratio: 1; border: 2px dashed var(--line-2); border-radius: 4px; }
@@ -107,5 +120,12 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
 .aw-who { display: block; margin-top: 2px; color: var(--ink-2); font: 500 .74rem/1.15 var(--font); overflow-wrap: break-word; }
 .aw-empty { margin: 2rem 1.2rem; display: grid; gap: 1rem; justify-items: center; text-align: center; color: var(--ink-2); }
 
-/* «Quién fue»: la biografía corta, en párrafos con aire. */
+/* «Quién fue»: la biografía corta, plegada; se abre tocando el título. */
+.ap-life-sum { min-height: 48px; cursor: pointer; list-style: none; align-items: center; }
+.ap-life-sum::-webkit-details-marker { display: none; }
+.ap-life-h { font: inherit; }
+.ap-life-chev { display: grid; color: var(--ink-2); transition: transform .2s var(--ease); }
+.ap-life[open] .ap-life-chev { transform: rotate(90deg); }
+.ap-life-body { display: grid; gap: .7rem; }
+@media (prefers-reduced-motion: reduce) { .ap-life-chev { transition: none; } }
 .ap-life-text { margin: 0; color: var(--ink); font: 400 1.05rem/1.55 var(--font); text-wrap: pretty; }

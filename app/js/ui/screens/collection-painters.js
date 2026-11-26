@@ -10,6 +10,7 @@ import { painterGroups, lifeSpan } from '../../engine/painters.js';
 import { SEARCH_MIN_PAINTERS } from '../../engine/collection.js';
 import { avatarHtml } from '../avatar.js';
 import { observeDeferred } from '../lazy-img.js';
+import { sealHtml, loadSealCss } from '../seal.js';
 
 const STATE_TEXT = { mastered: 'dominado', started: 'en marcha' };
 const RING = 48;
@@ -38,7 +39,7 @@ function rowHtml({ artist, state, seen, total, avatar, cover }) {
   const mastered = state === 'mastered';
   return `<li><button type="button" class="pl-row is-${state}" data-artist="${esc(artist.id)}" aria-label="${esc(artist.name)}, ${STATE_TEXT[state]}, ${seen} de ${total} cuadros vistos: ver ficha">
       ${ringHtml(artist, avatar, state, seen, total, cover)}
-      <span class="pl-text"><span class="pl-name">${esc(artist.name)}</span><span class="pl-sub">${esc(sub)}</span>${mastered ? `<span class="pl-state">Dominado · ${seen}/${total}</span>` : ''}</span>
+      <span class="pl-text"><span class="pl-name">${esc(artist.name)}</span><span class="pl-sub">${esc(sub)}</span><span class="pl-seal">${sealHtml(artist, 'sm')}</span>${mastered ? `<span class="pl-state">Dominado · ${seen}/${total}</span>` : ''}</span>
       ${mastered ? '' : `<span class="pl-count" aria-hidden="true">${seen}/${total}</span>`}
       <span class="pl-go" aria-hidden="true">${icons.next(18)}</span></button></li>`;
 }
@@ -66,7 +67,7 @@ export function groupsHtml(ctx, query) {
 let lastQuery = '';
 
 export async function renderPainters(ctx, el) {
-  await loadCss('css/coleccion.css');
+  await Promise.all([loadCss('css/coleccion.css'), loadSealCss()]);
   const known = painterGroups(ctx.store.get().progress, ctx.index).reduce((n, g) => n + g.known, 0);
   // El buscador sale con tantos pintores conocidos como en «Cuadros»; antes no hay nada que buscar.
   const searchable = known >= SEARCH_MIN_PAINTERS;

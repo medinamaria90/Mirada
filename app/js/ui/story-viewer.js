@@ -10,6 +10,7 @@
 import { esc, accentStyle, prefersReducedMotion } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
+import { sealHtml, loadSealCss } from './seal.js';
 import { loadStory } from './story-data.js';
 import { avatarHtml } from './avatar.js';
 import { mediaHtml, copyHtml } from './story-card.js';
@@ -35,7 +36,7 @@ const fontScale = () => Math.max(1, (parseFloat(getComputedStyle(document.docume
 export async function playStory(ctx, artistId, level, opts = {}) {
   const key = storyKey(artistId, level);
   if (!opts.force && storySeen(key)) return [];
-  const [story] = await Promise.all([loadStory(artistId), loadCss('css/historias.css')]);
+  const [story] = await Promise.all([loadStory(artistId), loadCss('css/historias.css'), loadSealCss()]);
   const lv = levelStory(story, level);
   if (!lv) return [];
   const { index } = ctx;
@@ -66,7 +67,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
         <div class="story-bars" aria-hidden="true">${lv.cards.map(() => '<span class="story-bar"><span></span></span>').join('')}</div>
         <div class="story-top">
           <span class="story-who"><span class="story-avatar" aria-hidden="true">${avatarHtml(artist, face, '', { texture: coverWork(mine) })}</span>
-            <span class="story-who-text"><span class="story-name">${esc(artist?.short || name)}</span><span class="story-title">${esc(lv.stage || lv.title)}</span></span></span>
+            <span class="story-who-text"><span class="story-name-line"><span class="story-name">${esc(artist?.short || name)}</span>${sealHtml(artist, 'sm')}</span><span class="story-title">${esc(lv.stage || lv.title)}</span></span></span>
           ${auto ? `<button type="button" class="story-icon" data-st="pause" aria-pressed="false" aria-label="Pausar">${icons.pause(20)}</button>` : ''}
           <button type="button" class="story-icon story-close" data-st="close" aria-label="Cerrar">${icons.close(24)}</button>
         </div>

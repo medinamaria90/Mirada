@@ -1,7 +1,7 @@
-// Ficha de pintor al estilo de un perfil de Instagram: portada (su cuadro más famoso de los ya vistos), avatar con
-// anillo de historia, nombre, fechas, país y movimiento, su historia, cómo reconocerlo, etapas y las primeras
-// obras de su galería. Solo obras ya vistas (sin spoilers). El contenido es común a la pantalla (`#pintor-<id>`) y
-// al diálogo que se abre dentro de una ronda (ui/artist-sheet.js).
+// Ficha de pintor: lo primero, por qué importa. Portada grande (su cuadro más famoso de los ya vistos), avatar con anillo de
+// historia, nombre, sello de categoría y la frase «por qué importa»; después jugar y su historia, la tira de sus cuadros
+// vistos, cómo reconocerlo, etapas, quién fue (plegable) y, al pie, datos y fuentes. Solo obras ya vistas (sin spoilers). El
+// contenido es común a la pantalla (`#pintor-<id>`) y al diálogo que se abre dentro de una ronda (ui/artist-sheet.js).
 
 import { esc, joinNames } from './dom.js';
 import { icons } from './icons.js';
@@ -12,6 +12,7 @@ import { avatarHtml, initials } from './avatar.js';
 import { loadStory } from './story-data.js';
 import { levelStory, sourceLabel, storyKey } from '../engine/stories.js';
 import { storySeen } from '../state/stories-seen.js';
+import { sealHtml } from './seal.js';
 import { factsOf, wikidataUrl, lifeSpan, seenOf, playTargets, stageList, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
 
 const STAGE_LABEL = { mastered: 'Dominada', started: 'En marcha', available: 'Abierta', locked: 'Por abrir' };
@@ -19,6 +20,8 @@ const STAGE_ICON = { mastered: 'check', started: 'play', available: 'play', lock
 // «Seguir» a secas se lee como «Follow» en una ficha de perfil: es seguir jugando.
 // Corto para que quepa en una línea; el nombre de la etapa va en la etiqueta accesible.
 const DEEP_LABEL = 'Jugar a fondo';
+// La tira de cuadros enseña unos cuantos; el resto, en su galería.
+const STRIP_CELLS = 12;
 const PLAY_LABEL = { available: 'Empezar su etapa', started: 'Seguir jugando', mastered: 'Jugar otra vez' };
 
 export { initials };
@@ -27,11 +30,18 @@ function factsHtml(index, artist, seenCount) {
   return `<dl class="ap-facts">${factsOf(index, artist, seenCount).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${f.value}</dd></div>`).join('')}</dl>`;
 }
 
-// Fuente de las fechas y el país (los que enseña la cabecera), al pie: no van junto a los contadores de la app.
+// Fuentes de «por qué importa» y de las fechas y el país (los que enseña la cabecera), al pie.
 function sourceFoot(artist) {
+  const link = (url, label) => `<a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`;
   const url = wikidataUrl(artist);
-  return url ? `<p class="ap-sources ap-foot"><span>Fechas y país</span><a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Wikidata</a></p>` : '';
+  const parts = [
+    artist.why?.source ? `<span>Por qué importa</span>${link(artist.why.source, sourceLabel(artist.why.source))}` : '',
+    url ? `<span>Fechas y país</span>${link(url, 'Wikidata')}` : '',
+  ].filter(Boolean);
+  return parts.length ? `<p class="ap-sources ap-foot">${parts.join('')}</p>` : '';
 }
+
+const whyHtml = (artist) => (artist.why ? `<p class="ap-why">${esc(artist.why.text)}</p>` : '');
 
 function stagesHtml(stages, playable) {
   if (!stages.length) return '';
@@ -46,14 +56,14 @@ function stagesHtml(stages, playable) {
     <ul class="ap-stages">${stages.map(item).join('')}</ul></section>`;
 }
 
-// «Quién fue»: la biografía corta, los textos de su historia de nivel 1, a la vista (sin tener que abrir la historia).
+// «Quién fue»: la biografía corta (los textos de su historia de nivel 1), plegada al final: lo primero es por qué importa.
 function bioHtml(lv) {
   const cards = lv ? lv.cards.filter((c) => c.text) : [];
   if (!cards.length) return '';
   const sources = [...new Map(cards.filter((c) => c.source).map((c) => [String(c.source).split('#')[0], sourceLabel(c.source)])).entries()];
-  return `<section class="ap-section ap-life" aria-labelledby="ap-life-h"><h2 id="ap-life-h" class="ap-h">Quién fue</h2>
-    ${cards.map((c) => `<p class="ap-life-text">${esc(c.text)}</p>`).join('')}
-    ${sources.length ? `<p class="ap-sources">${sources.map(([url, label]) => `<a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`).join('')}</p>` : ''}</section>`;
+  return `<details class="ap-section ap-life"><summary class="ap-h ap-life-sum"><h2 class="ap-life-h">Quién fue</h2><span class="ap-life-chev" aria-hidden="true">${icons.next(18)}</span></summary>
+    <div class="ap-life-body">${cards.map((c) => `<p class="ap-life-text">${esc(c.text)}</p>`).join('')}
+    ${sources.length ? `<p class="ap-sources">${sources.map(([url, label]) => `<a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`).join('')}</p>` : ''}</div></details>`;
 }
 
 function lookHtml(artist) {
@@ -75,14 +85,14 @@ export function missingHtml(progress, index, artistId, seenCount, total, where) 
   return `<p class="ap-missing"><span>${esc(note.text)}</span>${link}</p>`;
 }
 
-// Galería embebida: las primeras 6 obras vistas; lo que falta, un bloque discreto (no una pared de casillas vacías) y,
-// con navegación, «Ver sus N cuadros».
+// Tira deslizable con sus cuadros vistos (se abren a pantalla completa); lo que falta, un bloque discreto y, con navegación,
+// «Ver sus N cuadros».
 function galleryHtml(artist, seen, total, withLink, missing) {
   if (!seen.length) return '';
   const more = withLink
     ? `<button type="button" class="ap-more" data-ap="gallery">${seen.length === 1 ? 'Ver su cuadro' : `Ver sus ${seen.length} cuadros`}${icons.next(16)}</button>` : '';
   return `<section class="ap-section ap-gallery" aria-labelledby="ap-gal-h"><h2 id="ap-gal-h" class="ap-h">Sus cuadros <span class="ap-count">${seen.length} de ${total}</span></h2>
-    <ul class="ap-grid">${previewCells(seen).map((w) => `<li>${artFrame(w, { alt: '', cls: 'art-thumb', label: w.title, small: true, defer: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}`, badge: false } })}</li>`).join('')}</ul>
+    <ul class="ap-strip">${previewCells(seen, STRIP_CELLS).map((w) => `<li>${artFrame(w, { alt: '', cls: 'ap-strip-art', label: w.title, small: true, defer: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}`, badge: false } })}</li>`).join('')}</ul>
     ${missing}${more}</section>`;
 }
 
@@ -108,8 +118,10 @@ function heroHtml(artist, movement, seen, hasStory, storyNew, tag, leadControl) 
     ${leadControl}
     <div class="ap-id">${avatarEl}
       <div class="ap-who"><${tag} class="ap-name" id="ap-name">${esc(artist.name)}</${tag}>
-        <p class="ap-meta">${esc(meta)}</p>${movement ? `<p class="ap-era">${esc(movement.name)}</p>` : ''}</div>
+        <p class="ap-meta">${esc(meta)}</p></div>
     </div>
+    <div class="ap-tags">${sealHtml(artist)}${movement ? `<span class="ap-era">${esc(movement.name)}</span>` : ''}</div>
+    ${whyHtml(artist)}
   </header>`;
 }
 
@@ -143,11 +155,11 @@ export async function profileHtml(ctx, artistId, opts) {
   return `${heroHtml(artist, movement, seen, hasStory, !storySeen(storyKey(artistId, 1)), opts.tag || 'h2', opts.leadControl || '')}
     ${known && isMastered(progress, artistId) ? `<div class="ap-progress">${masteryHtml(progress, index, artistId, seen.length, total)}</div>` : ''}
     ${lock}${actions}
-    ${known ? bioHtml(levelStory(story, 1)) : ''}
-    <section class="ap-bio" aria-label="Datos">${factsHtml(index, artist, seen.length)}</section>
+    ${galleryHtml(artist, seen, total, opts.navigate, missingHtml(progress, index, artistId, seen.length, total, 'ficha'))}
     ${lookHtml(artist)}
     ${known ? stagesHtml(stageList(progress, index, artistId), opts.playable) : ''}
-    ${galleryHtml(artist, seen, total, opts.navigate, missingHtml(progress, index, artistId, seen.length, total, 'ficha'))}
+    ${known ? bioHtml(levelStory(story, 1)) : ''}
+    <section class="ap-bio" aria-label="Datos">${factsHtml(index, artist, seen.length)}</section>
     ${sourceFoot(artist)}`;
 }
 

@@ -6,6 +6,7 @@ import { accentStyle } from './dom.js';
 import { icons } from './icons.js';
 import { observeDeferred } from './lazy-img.js';
 import { loadCss } from './lazy-css.js';
+import { loadSealCss } from './seal.js';
 import { profileHtml, wireProfile } from './artist-profile.js';
 import { modalSlot, mountSheet } from './modal-slot.js';
 
@@ -22,7 +23,7 @@ export async function openArtistSheet(ctx, artistId, opts = {}) {
   if (!artist) return null;
   const turn = slot.begin();
   const opener = opts.opener || document.activeElement;
-  await loadCss('css/ficha.css');
+  await Promise.all([loadCss('css/ficha.css'), loadSealCss()]);
   const close = `<button type="button" class="ap-close" data-as="close" aria-label="Cerrar">${icons.close(22)}</button>`;
   const html = await profileHtml(ctx, artistId, { playable: opts.playable === true, branchId: opts.branchId || '', navigate: false, tag: 'h2', leadControl: close });
   if (slot.stale(turn)) return null; // otro toque ha pedido otra hoja mientras cargaba esta
