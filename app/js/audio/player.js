@@ -42,8 +42,9 @@ export function createGraph(ctx) {
 
 /**
  * Un reproductor por pieza (`era` o `era/variante`); al cambiar conviven dos durante el fundido cruzado.
+ * Con `onEnd`, la pieza suena una vez y avisa al terminar (en lugar de repetirse en bucle).
  */
-export function createMusicPlayer(ctx, graph, era) {
+export function createMusicPlayer(ctx, graph, era, { onEnd = null } = {}) {
   const piece = getPiece(era);
   const bus = ctx.createGain();
   const wetBus = ctx.createGain();
@@ -75,7 +76,7 @@ export function createMusicPlayer(ctx, graph, era) {
     fn(ctx, route(inst), when, ev.midi, dur, Math.min(1, ev.vel * (piece.vg[ev.voice] ?? 1)), { pedal: piece.pedal });
   };
 
-  const seq = new Sequencer(ctx, era, play, { seed: era.length * 977 + 13 });
+  const seq = new Sequencer(ctx, era, play, { seed: era.length * 977 + 13, onEnd });
   let disposed = false;
 
   const fadeTo = (target, secs) => {

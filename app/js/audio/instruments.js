@@ -41,14 +41,16 @@ function ksBuffer(ctx, kind, midi, cfg) {
 }
 
 // ---------------------------------------------------------------- cuerda pulsada
-// damp = paso bajo del bucle (los agudos mueren antes), cut = corte final (Hz), body = cuerpo de caja.
-// El clave es brillante por naturaleza: conserva su ataque pero sin siseo por encima de ~6 kHz.
-const KS = {
-  lute: { t60: 1.8, blend: 0.5, bright: 0.3, pick: 0.2, seconds: 1.6, rel: 0.5, peak: 0.9, octave: 0, damp: 0.6, cut: 5000, body: 0.45 },
-  harpsichord: { t60: 1.5, blend: 0.64, bright: 0.7, pick: 0.13, seconds: 1.2, rel: 0.07, peak: 0.8, octave: 0.3, damp: 0.75, cut: 6000, body: 0.3 },
-  harpsiLite: { t60: 0.85, blend: 0.6, bright: 0.55, pick: 0.27, seconds: 0.8, rel: 0.05, peak: 0.8, octave: 0.18, damp: 0.7, cut: 5500, body: 0.3 },
-  guitar: { t60: 2.6, blend: 0.5, bright: 0.38, pick: 0.28, seconds: 2.2, rel: 0.6, peak: 0.85, octave: 0, damp: 0.6, cut: 5200, body: 0.55 },
-  pizz: { t60: 0.55, blend: 0.5, bright: 0.35, pick: 0.32, seconds: 0.6, rel: 0.12, peak: 0.9, octave: 0, damp: 0.6, cut: 4500, body: 0.5 },
+// damp = paso bajo del bucle (los agudos mueren antes), cut = corte final (Hz), body = cuerpo de madera,
+// attack = subida inicial (s). Afinado contra el «suena demasiado metálico» (nov. 2026): excitación más
+// suave, bucle más cerrado, corte más bajo y caja de madera sin presencia aguda; el clave conserva algo
+// más de brillo (es su carácter), con menos registro de 4 pies.
+export const KS = {
+  lute: { t60: 1.8, blend: 0.5, bright: 0.22, pick: 0.2, seconds: 1.6, rel: 0.5, peak: 0.9, octave: 0, damp: 0.5, cut: 3200, body: 0.5, attack: 0.004 },
+  harpsichord: { t60: 1.5, blend: 0.6, bright: 0.5, pick: 0.13, seconds: 1.2, rel: 0.07, peak: 0.8, octave: 0.18, damp: 0.6, cut: 4200, body: 0.35, attack: 0.002 },
+  harpsiLite: { t60: 0.85, blend: 0.58, bright: 0.42, pick: 0.27, seconds: 0.8, rel: 0.05, peak: 0.8, octave: 0.12, damp: 0.58, cut: 4000, body: 0.35, attack: 0.002 },
+  guitar: { t60: 2.6, blend: 0.5, bright: 0.26, pick: 0.28, seconds: 2.2, rel: 0.6, peak: 0.85, octave: 0, damp: 0.5, cut: 3400, body: 0.6, attack: 0.004 },
+  pizz: { t60: 0.55, blend: 0.5, bright: 0.28, pick: 0.32, seconds: 0.6, rel: 0.12, peak: 0.9, octave: 0, damp: 0.5, cut: 3200, body: 0.55, attack: 0.003 },
 };
 
 function plucked(kind) {

@@ -1,17 +1,27 @@
 // Motor de sonido de Sfumato: música original por época + efectos, todo sintetizado con Web Audio.
 // Contrato (SPEC §5): unlock, setEra, startMusic, stopMusic, sfx, setMusicEnabled, setSfxEnabled,
 // setVolume, getState (+ restore para que la app persista las preferencias).
+// Rotación (activa por defecto): al empezar una lista (época o rama temática) o al terminar una
+// pieza, suena otra de esa lista sin repetir las últimas (rotation.js); onPiece avisa de cada pieza
+// elegida para que la app la recuerde. setEra acepta la clave de cualquier lista.
 // Ninguna función pública lanza: si algo falla o no hay Web Audio, simplemente no hace nada.
 import { SCORES, ERAS } from './scores.js';
 import { SFX_NAMES, playSfx } from './sfx.js';
 import { createGraph, createMusicPlayer } from './player.js';
 import { variantsOf, pieceKey, getPiece, DEFAULT_VARIANT } from './variants.js';
+import { pickNext, pushRecent, cleanRecent, hasList, rotationPool } from './rotation.js';
 
 export { ERAS, SFX_NAMES };
 
-const CROSSFADE = 1.5; // s, cambio de era
-// `variants`: variante elegida por era (solo las que no son la original); por defecto suena la base.
-const state = { unlocked: false, era: 'menu', musicEnabled: true, sfxEnabled: true, volume: 0.7, playing: false, variants: {} };
+const CROSSFADE = 1.5; // s, cambio de lista
+const PIECE_FADE = 2.5; // s, relevo entre dos piezas de la misma lista
+// `era`: clave de la lista que suena (época o rama). `variants`: variante elegida a mano por era (sin
+// rotación). `shuffle`: rotación activa; `recent`: por lista, las últimas piezas que sonaron (la más
+// reciente primero); `piece`: clave de la pieza actual de la lista.
+const DEFAULT_STATE = { unlocked: false, era: 'menu', musicEnabled: true, sfxEnabled: true, volume: 0.7, playing: false, variants: {}, shuffle: true, recent: {}, piece: 'menu' };
+const state = { ...DEFAULT_STATE, variants: {}, recent: {} };
+const chosen = {}; // lista -> clave de pieza elegida (por la rotación o a mano)
+const listeners = new Set();
 
 let ctx = null;
 let graph = null;
@@ -23,8 +33,9 @@ let visibilityBound = false;
 const num = (v, fb) => (v !== null && v !== '' && v !== undefined && Number.isFinite(Number(v)) ? Number(v) : fb);
 const safe = (fn, fallback) => (...args) => { try { return fn(...args); } catch { return fallback; } };
 
-/** Clave de la pieza que corresponde a una era con la variante elegida. */
-const currentKey = (era) => pieceKey(era, state.variants[era]);
+/** Clave de la pieza que toca en una lista: la elegida, o la variante de la era, o la primera de la rama. */
+const currentKey = (list) => chosen[list]
+  ?? (SCORES[list] ? pieceKey(list, state.variants[list]) : rotationPool(list)[0]?.key ?? 'menu');
 
 /** Desplazamiento de tónica (-6..5 semitonos) para transponer los efectos a la pieza actual. */
 const tonicOffset = () => {
@@ -52,14 +63,34 @@ function bindVisibility() {
   }));
 }
 
-function launchPlayer(era, fade) {
-  const p = createMusicPlayer(ctx, graph, currentKey(era));
+/** Rotación: elige la siguiente pieza de la lista (sin fundido; quien llama lanza el reproductor). */
+function pickPiece(list) {
+  if (!state.shuffle) return;
+  const key = pickNext(list, state.recent[list]);
+  if (!key) return;
+  state.recent[list] = pushRecent(state.recent[list], key);
+  chosen[list] = key;
+  for (const fn of listeners) { try { fn({ list, piece: key }); } catch { /* un oyente roto no para la música */ } }
+}
+
+function launchPlayer(list, fade) {
+  state.piece = currentKey(list);
+  const p = createMusicPlayer(ctx, graph, state.piece, { onEnd: state.shuffle ? () => advance(p) : null });
   p.start(fade);
   return p;
 }
 
+/** Al terminar una pieza entra la siguiente de la misma era, con un relevo suave. */
+function advance(finished) {
+  if (current !== finished || !ctx) return;
+  pickPiece(state.era);
+  finished.fadeOutAndDispose(PIECE_FADE);
+  current = launchPlayer(state.era, PIECE_FADE);
+}
+
 function startPlaying() {
   if (!ctx || !graph || !state.unlocked || !state.musicEnabled || current) return;
+  pickPiece(state.era);
   current = launchPlayer(state.era, 1.2);
   state.playing = true;
 }
@@ -91,9 +122,10 @@ function unlock() {
 }
 
 function setEra(era) {
-  if (!SCORES[era] || era === state.era) return;
+  if (!hasList(era) || era === state.era) return;
   state.era = era;
   if (!current || !ctx) return;
+  pickPiece(era);
   const old = current;
   old.fadeOutAndDispose(CROSSFADE);
   current = launchPlayer(era, CROSSFADE);
@@ -105,14 +137,25 @@ function setVariant(era, variant = DEFAULT_VARIANT) {
   const prev = state.variants[era] || DEFAULT_VARIANT;
   if (variant === DEFAULT_VARIANT) delete state.variants[era];
   else state.variants[era] = variant;
+  chosen[era] = pieceKey(era, variant); // la elegida a mano suena ya; la rotación sigue después
   if (prev === variant || era !== state.era || !current || !ctx) return;
   const old = current;
   old.fadeOutAndDispose(CROSSFADE);
   current = launchPlayer(era, CROSSFADE);
 }
 
+/** Activa o desactiva la rotación (la página de escucha la apaga para oír una pieza concreta). */
+function setShuffle(on) { state.shuffle = !!on; }
+
+/** Suscribe `fn({ list, piece })` a cada pieza que elige la rotación; devuelve la baja. */
+function onPiece(fn) {
+  if (typeof fn !== 'function') return () => {};
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
 /** Variantes disponibles de una era, sin la partitura: [{ id, name, label, character }]. */
-const listVariants = (era) => variantsOf(era).map(({ id, name, label, character }) => ({ id, name, label, character }));
+const listVariants = (era) => variantsOf(era).map(({ id, name, label, character, source }) => ({ id, name, label, character, ...(source ? { source } : {}) }));
 
 function startMusic() {
   wantMusic = true;
@@ -143,7 +186,10 @@ function setVolume(v) {
   applyVolume();
 }
 
-const readState = () => ({ ...state, variants: { ...state.variants } });
+const readState = () => ({
+  ...state, variants: { ...state.variants },
+  recent: Object.fromEntries(Object.entries(state.recent).map(([era, ids]) => [era, [...ids]])),
+});
 
 /** Carga preferencias guardadas por la app (admite estados parciales o corruptos). */
 function restoreState(saved) {
@@ -151,10 +197,12 @@ function restoreState(saved) {
   if ('musicEnabled' in saved) state.musicEnabled = !!saved.musicEnabled;
   if ('sfxEnabled' in saved) state.sfxEnabled = !!saved.sfxEnabled;
   if ('volume' in saved) setVolume(saved.volume);
+  if ('shuffle' in saved) setShuffle(saved.shuffle);
+  if (saved.recent && typeof saved.recent === 'object') state.recent = { ...state.recent, ...cleanRecent(saved.recent) };
   if (saved.variants && typeof saved.variants === 'object') {
     for (const [era, variant] of Object.entries(saved.variants)) if (typeof variant === 'string') setVariant(era, variant);
   }
-  if (typeof saved.era === 'string' && SCORES[saved.era]) setEra(saved.era);
+  if (typeof saved.era === 'string' && hasList(saved.era)) setEra(saved.era);
   if (!state.musicEnabled) stopPlaying(0.5);
 }
 
@@ -169,7 +217,9 @@ export const audio = {
   setVolume: safe(setVolume),
   setVariant: safe(setVariant),
   listVariants: safe(listVariants, []),
-  getState: safe(readState, { unlocked: false, era: 'menu', musicEnabled: true, sfxEnabled: true, volume: 0.7, playing: false, variants: {} }),
+  setShuffle: safe(setShuffle),
+  onPiece: safe(onPiece, () => {}),
+  getState: safe(readState, { ...DEFAULT_STATE, variants: {}, recent: {} }),
   restore: safe(restoreState),
 };
 

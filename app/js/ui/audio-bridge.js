@@ -1,6 +1,11 @@
 // Puente tolerante con el motor de audio (§5): si falta o falla, todo es no-op.
 // El motor se importa tarde (en reposo tras pintar o en el primer gesto) para no retrasar el
 // arranque; mientras tanto se recuerda lo pedido (era, ajustes, desbloqueo) y se aplica al cargar.
+// Rotación de piezas: el motor elige otra pieza de la época al entrar en ella o al acabar la que
+// suena; aquí se recuerdan las últimas de cada época entre visitas (para no repetir al volver y para
+// que la favorita suene primero solo la primera vez). Va en localStorage y no en el estado versionado:
+// es una comodidad de este navegador, no progreso; no merece migración ni viajar al exportar, y si se
+// pierde no pasa nada (solo podría repetirse una pieza una vez).
 
 const NOOP = {
   unlock() {}, setEra() {}, startMusic() {}, stopMusic() {}, sfx() {},
@@ -12,6 +17,23 @@ let engine = NOOP;
 let available = false;
 let loading = null;
 const pending = { era: 'menu', settings: null, unlocked: false, music: false };
+export const MUSIC_MEMORY_KEY = 'sfumato.music.recent';
+
+/** Últimas piezas por época guardadas en este navegador ({} si no hay o no se puede leer). */
+export function readMusicMemory() {
+  try {
+    const saved = JSON.parse(globalThis.localStorage?.getItem(MUSIC_MEMORY_KEY) || '{}');
+    return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+  } catch {
+    return {}; // sin almacenamiento o dato roto: se empieza sin memoria
+  }
+}
+
+function writeMusicMemory(recent) {
+  try {
+    globalThis.localStorage?.setItem(MUSIC_MEMORY_KEY, JSON.stringify(recent || {}));
+  } catch { /* sin almacenamiento: la rotación sigue, solo que sin recordar entre visitas */ }
+}
 
 export function loadAudio() {
   if (loading) return loading;
@@ -52,6 +74,8 @@ export function loadAudioWhenIdle(delay = 2500) {
 }
 
 function replay() {
+  call('restore', { recent: readMusicMemory() });
+  call('onPiece', () => writeMusicMemory(call('getState')?.recent));
   if (pending.settings) applyAudioSettings(pending.settings);
   call('setEra', pending.era);
   if (pending.unlocked) {

@@ -13,7 +13,7 @@ export const POSTIMPRESSIONISM = [
       scale: scalePcs(7, 'major'), bpm: 132, beatsPerBar: 3, form: FORM4, style: 'musette',
       voices: { mel: 'accordion', acc: 'guitar', bass: 'guitar', pad: 'accordion' },
       vg: { mel: 0.85, acc: 0.8, bass: 0.9, pad: 0.45 },
-      reverb: 0.3, level: 0.79, rubato: { amp: 0.006, ritard: 0.05 }, orn: { kind: 'grace', prob: 0.1 },
+      reverb: 0.3, level: 0.72, rubato: { amp: 0.006, ritard: 0.05 }, orn: { kind: 'grace', prob: 0.1 },
       art: 0.9, dyn: { A: 1, open: 1, close: 0.96, B: 1.06 },
       sections: {
         A: {
@@ -41,7 +41,7 @@ export const POSTIMPRESSIONISM = [
       scale: scalePcs(9, 'mixolydian'), bpm: 100, beatsPerBar: 4, form: FORM4, style: 'strum',
       voices: { mel: 'guitar', acc: 'guitar', bass: 'guitar', cnt: 'accordion' },
       vg: { mel: 1, acc: 0.75, bass: 0.9, cnt: 0.4 },
-      reverb: 0.3, level: 1.0, rubato: { amp: 0.008, ritard: 0.05 }, orn: { kind: 'grace', prob: 0.08 },
+      reverb: 0.3, level: 0.87, rubato: { amp: 0.008, ritard: 0.05 }, orn: { kind: 'grace', prob: 0.08 },
       dyn: { A: 1, open: 1, close: 0.96, B: 1.06 },
       sections: {
         A: {

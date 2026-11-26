@@ -8,8 +8,10 @@ export class Sequencer {
    * @param ctx    AudioContext (o un objeto con currentTime en las pruebas)
    * @param era    clave de la pieza
    * @param play   (ev, when, durSec, loopIdx) => void
+   * @param o.onEnd si se da, la pieza suena una sola vez: al acabar la vuelta se llama onEnd(fin en s)
+   *                en lugar de repetir (así la rotación encadena la siguiente pieza de la época)
    */
-  constructor(ctx, era, play, { seed = 1, lookahead = 0.4, interval = 100 } = {}) {
+  constructor(ctx, era, play, { seed = 1, lookahead = 0.4, interval = 100, onEnd = null } = {}) {
     this.ctx = ctx;
     this.compiled = compilePiece(era);
     this.play = play;
@@ -20,6 +22,8 @@ export class Sequencer {
     this.loop = 0;
     this.idx = 0;
     this.loopStart = 0;
+    this.onEnd = onEnd;
+    this.ended = false;
   }
 
   /** Prepara la vuelta `loop`: nuevo rubato y variaciones. */
@@ -48,7 +52,12 @@ export class Sequencer {
     while (guard++ < 5000) {
       if (this.idx >= this.events.length) {
         const next = this.loopStart + this.map.total;
-        if (next > horizon) return;
+        if (next > horizon || this.ended) return;
+        if (this.onEnd) {
+          this.ended = true;
+          this.onEnd(next);
+          return;
+        }
         this.loopStart = next;
         this.prepare(this.loop + 1);
         continue;

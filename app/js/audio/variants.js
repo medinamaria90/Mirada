@@ -1,7 +1,7 @@
 // Registro de variantes musicales por época. La variante `base` es la partitura original de
 // scores.js y sigue siendo la que suena por defecto; las demás viven en variants/<era>.js.
 //
-// Cada variante: { id, name, label, character, piece }
+// Cada variante: { id, name, label, character, piece } (los clásicos añaden source y arrangement)
 //   id        clave corta y estable (se guarda en preferencias)
 //   label     una línea: instrumentos, compás y motivo («Laúd y flauta, 6/8, motivo ascendente»)
 //   character tres palabras sobre su carácter
@@ -17,6 +17,7 @@ import { REALISM } from './variants/realism.js';
 import { IMPRESSIONISM } from './variants/impressionism.js';
 import { POSTIMPRESSIONISM } from './variants/postimpressionism.js';
 import { MODERN } from './variants/modern.js';
+import { CLASSICS } from './classics.js';
 
 export const DEFAULT_VARIANT = 'base';
 const SEP = '/';
@@ -40,13 +41,13 @@ const BASE_META = {
   modern: { label: 'Campanas, 5/4, acordes por cuartas', character: 'etéreo, extraño, flotante' },
 };
 
-/** Lista de variantes de una era (la primera es la original). Vacía si la era no existe. */
+/** Lista de variantes de una era (la original, las compuestas y los clásicos). Vacía si la era no existe. */
 export function variantsOf(era) {
   const base = SCORES[era];
   if (!base) return [];
   const meta = BASE_META[era] || { label: '', character: '' };
   return [{ id: DEFAULT_VARIANT, name: base.title, label: meta.label, character: meta.character, piece: base },
-    ...(EXTRA[era] || [])];
+    ...(EXTRA[era] || []), ...(CLASSICS[era] || [])];
 }
 
 /** Clave de pieza a partir de era y variante. */

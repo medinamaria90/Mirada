@@ -20,7 +20,7 @@ export const SCORES = {
     title: 'Pavana del alba', key: 'Re dórico', tonic: 2, mode: 'dorian',
     scale: scalePcs(2, 'dorian'), bpm: 72, beatsPerBar: 4, form: FORM4, style: 'lute',
     voices: { mel: 'lute', acc: 'lute', bass: 'lute' }, vg: { mel: 1, acc: 0.8, bass: 0.9 },
-    reverb: 0.35, level: 1.05, rubato: { amp: 0.012, ritard: 0.05 }, orn: { kind: 'mordent', prob: 0.14 },
+    reverb: 0.35, level: 0.94, rubato: { amp: 0.012, ritard: 0.05 }, orn: { kind: 'mordent', prob: 0.14 },
     sections: {
       A: {
         chords: ['Dm', 'C', 'F', 'C', 'Dm', 'F|C'],

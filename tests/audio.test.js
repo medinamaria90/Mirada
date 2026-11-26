@@ -7,10 +7,11 @@ import { noteToMidi, parseChord, voicing, bassMidi, mulberry32 } from '../app/js
 import { pluckBuffer } from '../app/js/audio/ks.js';
 import { SFX, SFX_NAMES, sfxLength } from '../app/js/audio/sfx.js';
 import { Sequencer } from '../app/js/audio/sequencer.js';
-import { INSTRUMENTS, WET } from '../app/js/audio/instruments.js';
+import { INSTRUMENTS, WET, KS } from '../app/js/audio/instruments.js';
 import { STYLES } from '../app/js/audio/styles.js';
 import { variantsOf, pieceKey, splitKey, getPiece, allPieceKeys, DEFAULT_VARIANT } from '../app/js/audio/variants.js';
 import { audio, getState, restore } from '../app/js/audio/index.js';
+import { rotationPool, pickNext, pushRecent, cleanRecent, hasList, firstPiece, RECENT_MAX } from '../app/js/audio/rotation.js';
 
 const CONTRACT_ERAS = ['menu', 'renaissance', 'baroque', 'rococo', 'neoclassic', 'romantic',
   'realism', 'impressionism', 'postimpressionism', 'modern'];
@@ -92,9 +93,10 @@ for (const key of ALL_KEYS) {
 test('las piezas no repiten tonalidad/tempo idénticos (variedad)', () => {
   const sigs = new Set(CONTRACT_ERAS.map((e) => `${SCORES[e].tonic}-${SCORES[e].bpm}-${SCORES[e].beatsPerBar}`));
   assert.equal(sigs.size, CONTRACT_ERAS.length);
-  // dentro de cada era, las variantes cambian de compás o de tempo y no comparten patrón de acompañamiento
+  // dentro de cada era, las variantes compuestas cambian de compás o de tempo y no comparten patrón
+  // (los clásicos siguen a la obra que arreglan y quedan fuera de esta regla)
   for (const era of PLAYED_ERAS) {
-    const vs = variantsOf(era);
+    const vs = variantsOf(era).filter((v) => !v.source);
     const meters = new Set(vs.map((v) => `${v.piece.beatsPerBar}-${v.piece.bpm}`));
     assert.equal(meters.size, vs.length, `${era}: variantes con el mismo compás y tempo`);
     const styles = vs.slice(1).map((v) => v.piece.style); // las nuevas no comparten patrón entre sí
@@ -268,7 +270,7 @@ test('la API pública no lanza sin AudioContext y devuelve un estado coherente',
   });
   assert.equal(audio.unlock(), false);
   const s = getState();
-  assert.deepEqual(Object.keys(s).sort(), ['era', 'musicEnabled', 'playing', 'sfxEnabled', 'unlocked', 'variants', 'volume']);
+  assert.deepEqual(Object.keys(s).sort(), ['era', 'musicEnabled', 'piece', 'playing', 'recent', 'sfxEnabled', 'shuffle', 'unlocked', 'variants', 'volume']);
   assert.equal(s.unlocked, false);
   assert.equal(s.playing, false);
   assert.ok(s.volume >= 0 && s.volume <= 1);
@@ -296,7 +298,9 @@ test('variantes: se eligen por era, se guardan y se sanean; listVariants no expo
 
 test('restore y getState: las preferencias se recuerdan y se sanean', () => {
   restore({ musicEnabled: false, sfxEnabled: false, volume: 0.25, era: 'romantic', variants: { romantic: 'balada', realism: 'nada', x: 'y' } });
-  assert.deepEqual(getState(), { unlocked: false, era: 'romantic', musicEnabled: false, sfxEnabled: false, volume: 0.25, playing: false, variants: { romantic: 'balada' } });
+  const { recent, piece, shuffle, ...prefs } = getState(); // rotación: se prueba aparte
+  assert.ok(recent && typeof piece === 'string' && typeof shuffle === 'boolean');
+  assert.deepEqual(prefs, { unlocked: false, era: 'romantic', musicEnabled: false, sfxEnabled: false, volume: 0.25, playing: false, variants: { romantic: 'balada' } });
   restore({ volume: 7 });
   assert.equal(getState().volume, 1);
   restore({ era: 'inexistente' });
@@ -305,4 +309,138 @@ test('restore y getState: las preferencias se recuerdan y se sanean', () => {
   assert.equal(getState().era, 'romantic');
   restore({ variants: { romantic: 'base' } });
   assert.deepEqual(getState().variants, {});
+});
+
+test('clásicos: obra y autor anotados, arreglo propio, y al menos uno en las épocas con boceto', () => {
+  const ERAS_WITH_SKETCH = ['renaissance', 'baroque', 'rococo', 'romantic', 'realism'];
+  for (const era of ERAS_WITH_SKETCH) assert.ok(variantsOf(era).some((v) => v.source), `${era} sin clásico`);
+  for (const era of CONTRACT_ERAS) {
+    for (const v of variantsOf(era).filter((x) => x.source)) {
+      assert.match(v.source, /\(c?\.? ?1[5-9]\d\d\)$/, `${era}/${v.id}: la fuente lleva autor y año`);
+      assert.equal(v.arrangement, 'arreglo propio');
+    }
+  }
+  assert.match(getPiece('renaissance/vacas').title, /Guárdame las vacas/);
+});
+
+test('rotación: la lista de cada época tiene todas sus piezas, con pesos', () => {
+  for (const era of CONTRACT_ERAS) {
+    const pool = rotationPool(era);
+    assert.deepEqual(pool.map((p) => p.key), variantsOf(era).map((v) => pieceKey(era, v.id)));
+    assert.ok(pool.every((p) => p.weight > 0 && getPiece(p.key)));
+  }
+  // «Guárdame las vacas» pesa más que el resto del Renacimiento; las compuestas del Barroco, menos
+  const ren = rotationPool('renaissance');
+  const vacas = ren.find((p) => p.key === 'renaissance/vacas').weight;
+  assert.ok(ren.every((p) => p.key === 'renaissance/vacas' || p.weight < vacas));
+  const bar = rotationPool('baroque');
+  const weightOf = (key) => bar.find((p) => p.key === key).weight;
+  assert.ok(weightOf('baroque/zarabanda') < weightOf('baroque/minueto'));
+  assert.ok(weightOf('baroque') < weightOf('baroque/canon'));
+  assert.deepEqual(rotationPool('nada'), []);
+  assert.equal(pickNext('nada', []), null);
+});
+
+test('rotación: la primera vez en el Renacimiento suena «Guárdame las vacas»', () => {
+  assert.equal(firstPiece('renaissance'), 'renaissance/vacas');
+  for (let seed = 1; seed < 20; seed++) assert.equal(pickNext('renaissance', [], mulberry32(seed)), 'renaissance/vacas');
+  // y sale más a menudo que cualquier otra después
+  const rng = mulberry32(3);
+  const counts = {};
+  let recent = ['renaissance/vacas'];
+  for (let i = 0; i < 3000; i++) {
+    const k = pickNext('renaissance', recent, rng);
+    counts[k] = (counts[k] || 0) + 1;
+    recent = pushRecent(recent, k);
+  }
+  const others = Object.entries(counts).filter(([k]) => k !== 'renaissance/vacas').map(([, n]) => n);
+  assert.ok(others.every((n) => counts['renaissance/vacas'] > n), JSON.stringify(counts));
+});
+
+test('rotación: encadena sin repetir la última y recorre toda la lista', () => {
+  for (const list of [...CONTRACT_ERAS, 'spain']) {
+    assert.ok(hasList(list), list);
+    const pool = rotationPool(list).map((p) => p.key);
+    const rng = mulberry32(list.length * 31);
+    let recent = [];
+    const seen = new Set();
+    let prev = null;
+    for (let i = 0; i < 400; i++) {
+      const k = pickNext(list, recent, rng);
+      assert.ok(pool.includes(k), `${list}: ${k} no es de la lista`);
+      if (pool.length > 1) assert.notEqual(k, prev, `${list}: repite ${k}`);
+      seen.add(k);
+      prev = k;
+      recent = pushRecent(recent, k);
+      assert.ok(recent.length <= RECENT_MAX && recent[0] === k);
+    }
+    assert.deepEqual([...seen].sort(), [...pool].sort(), `${list}: no salieron todas`);
+  }
+  assert.equal(hasList('nada'), false);
+});
+
+test('rotación: el historial guardado se sanea', () => {
+  assert.deepEqual(cleanRecent({
+    renaissance: ['renaissance/vacas', 'renaissance/vacas', 'baroque/canon', 'renaissance'],
+    nada: ['menu'], baroque: 'x', menu: [42, 'menu/umbral'],
+  }), { renaissance: ['renaissance/vacas', 'renaissance'], menu: ['menu/umbral'] });
+  assert.deepEqual(cleanRecent(null), {});
+  restore({ recent: { renaissance: ['renaissance/greensleeves', 'inventada'] }, shuffle: true });
+  assert.deepEqual(getState().recent.renaissance, ['renaissance/greensleeves']);
+  assert.equal(getState().shuffle, true);
+  audio.setShuffle(false);
+  assert.equal(getState().shuffle, false);
+  audio.setShuffle(true);
+  const off = audio.onPiece(() => {});
+  assert.equal(typeof off, 'function');
+  off();
+});
+
+test('secuenciador con onEnd: la pieza suena una vez y avisa al terminar, sin repetir', () => {
+  const played = [];
+  const ends = [];
+  const seq = new Sequencer({ currentTime: 0 }, 'menu/umbral', (ev, when, dur, loop) => played.push(loop), { seed: 2, onEnd: (t) => ends.push(t) });
+  seq.loopStart = 0;
+  seq.prepare(0);
+  const total = seq.map.total;
+  seq.scheduleRange(total * 3, -Infinity);
+  assert.equal(ends.length, 1);
+  assert.ok(Math.abs(ends[0] - total) < 1e-9);
+  assert.ok(played.length > 0 && played.every((loop) => loop === 0));
+  seq.scheduleRange(total * 4, -Infinity);
+  assert.equal(ends.length, 1, 'avisa una sola vez');
+});
+
+test('cuerda pulsada sin brillo metálico: casi toda la energía por debajo de 2 kHz (espectro medido)', () => {
+  const SR = 22050;
+  const N = 1024;
+  const energyAbove = (data, hz) => {
+    let hi = 0;
+    let all = 0;
+    for (let k = 1; k < N / 2; k++) {
+      let re = 0;
+      let im = 0;
+      for (let n = 0; n < N; n++) {
+        const w = 0.5 - 0.5 * Math.cos((2 * Math.PI * n) / N);
+        const ph = (2 * Math.PI * k * n) / N;
+        re += data[n] * w * Math.cos(ph);
+        im -= data[n] * w * Math.sin(ph);
+      }
+      const p = re * re + im * im;
+      all += p;
+      if ((k * SR) / N > hz) hi += p;
+    }
+    return hi / all;
+  };
+  const D3 = 146.8;
+  const OLD_LUTE = { t60: 1.8, blend: 0.5, bright: 0.3, pick: 0.2, damp: 0.6, cut: 5000, body: 0.45 }; // antes de nov. 2026
+  const old = energyAbove(pluckBuffer(SR, D3, 0.1, { ...OLD_LUTE, seed: 50 }).data, 2000);
+  for (const kind of ['lute', 'guitar']) {
+    const soft = energyAbove(pluckBuffer(SR, D3, 0.1, { ...KS[kind], seed: 50 }).data, 2000);
+    assert.ok(soft < 0.04, `${kind}: ${(soft * 100).toFixed(1)} % por encima de 2 kHz`);
+    assert.ok(soft < old / 2, `${kind}: el ajuste quita al menos la mitad del brillo`);
+  }
+  // el ataque sube en unos milisegundos (sin chasquido) y la afinación se conserva
+  const r = pluckBuffer(SR, 261.63, 0.3, { ...KS.lute, seed: 3 });
+  assert.ok(Math.abs(r.data[0]) < 1e-6 && Math.abs(r.freq / 261.63 - 1) < 0.02);
 });

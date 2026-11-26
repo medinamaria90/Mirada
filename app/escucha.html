@@ -98,6 +98,7 @@ function mark() {
 
 function play(era, id) {
   audio.unlock();
+  audio.setShuffle(false); // aquí se escucha una pieza concreta, sin rotación
   audio.setVariant(era, id);
   audio.setEra(era);
   audio.startMusic();

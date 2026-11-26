@@ -43,7 +43,7 @@ export const RENAISSANCE = [
       scale: scalePcs(9, 'minor', [8]), bpm: 66, beatsPerBar: 4, form: FORM4, style: 'ground',
       voices: { mel: 'lute', acc: 'lute', bass: 'lute', pad: 'viola', cnt: 'recorder' },
       vg: { mel: 1, acc: 0.75, bass: 0.9, pad: 0.5, cnt: 0.7 },
-      reverb: 0.4, level: 1.14, rubato: { amp: 0.012, ritard: 0.06 }, orn: { kind: 'mordent', prob: 0.12 },
+      reverb: 0.4, level: 1.05, rubato: { amp: 0.012, ritard: 0.06 }, orn: { kind: 'mordent', prob: 0.12 },
       dyn: { A: 1, open: 1, close: 0.95, B: 1.05 },
       sections: {
         A: {

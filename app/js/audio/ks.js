@@ -1,8 +1,13 @@
 // Karplus-Strong: cuerda pulsada sintetizada en un buffer (función pura, sin Web Audio).
 // Para que no suene metálica: excitación con ruido filtrado dos veces (sin brillo de ruido blanco),
 // un paso bajo de un polo dentro del bucle (los armónicos altos mueren antes que la fundamental),
-// un pequeño cuerpo resonante fijo (dos resonancias de caja) y un corte final que quita el siseo.
+// un cuerpo de madera (resonancias graves de aire y tapa, sin picos de presencia en los agudos, que
+// eran los que daban el brillo metálico), un ataque de pocos milisegundos (yema, no púa de metal) y
+// un corte final que quita el siseo.
 import { mulberry32 } from './theory.js';
+
+// Cuerpo de madera: [frecuencia (Hz), Q, ganancia] de las resonancias de la caja (aire, tapa, madera).
+const BODY_MODES = [[105, 1.4, 0.55], [215, 1.8, 0.75], [480, 1.2, 0.3]];
 
 /** Biquad RBJ (paso bajo o paso banda de pico constante); devuelve un Float32Array nuevo. */
 function biquad(data, sr, type, f0, q, gain = 1) {
@@ -51,11 +56,12 @@ function measurePeriod(data, sr, nominal) {
  * @param o.damp    paso bajo del bucle (1 = ninguno; 0,3–0,6 = los agudos mueren antes)
  * @param o.cut     corte final (Hz) que quita el siseo por encima (0 = ninguno)
  * @param o.body    cantidad de cuerpo resonante (0 = ninguno)
+ * @param o.attack  subida inicial (s): suaviza el golpe de la púa (0 = instantáneo)
  * @returns { data: Float32Array normalizado a pico 1, freq: frecuencia real medida }
  * El llamador afina exactamente con playbackRate = freq / resultado.freq.
  */
 export function pluckBuffer(sr, freq, seconds, o = {}) {
-  const { t60 = 1.5, blend = 0.5, bright = 0.5, pick = 0.2, seed = 1, damp = 1, cut = 0, body = 0 } = o;
+  const { t60 = 1.5, blend = 0.5, bright = 0.5, pick = 0.2, seed = 1, damp = 1, cut = 0, body = 0, attack = 0 } = o;
   const extra = damp < 1 ? (1 - damp) / damp : 0; // retardo que añade el paso bajo del bucle (en graves)
   const delay = Math.max(2, Math.floor(sr / freq - (1 - blend) - extra));
   const nominal = sr / freq;
@@ -93,13 +99,16 @@ export function pluckBuffer(sr, freq, seconds, o = {}) {
   }
   const period = measurePeriod(data, sr, nominal);
 
-  if (body > 0) { // caja: resonancia grave de madera y una presencia suave
-    const low = biquad(data, sr, 'bandpass', 190, 1.6, 0.9 * body);
-    const mid = biquad(data, sr, 'bandpass', 2400, 1.2, 0.35 * body);
-    for (let n = 0; n < total; n++) data[n] += low[n] + mid[n];
+  if (body > 0) { // caja de madera: suma de resonancias graves
+    for (const [f0, q, g] of BODY_MODES) {
+      const mode = biquad(data, sr, 'bandpass', f0, q, g * body);
+      for (let n = 0; n < total; n++) data[n] += mode[n];
+    }
   }
   if (cut > 0 && cut < sr / 2) data = biquad(data, sr, 'lowpass', cut, 0.7);
 
+  const rise = Math.min(total, Math.floor(sr * attack));
+  for (let n = 0; n < rise; n++) data[n] *= n / rise;
   let peak = 1e-9;
   for (let n = 0; n < total; n++) { const a = Math.abs(data[n]); if (a > peak) peak = a; }
   const norm = 1 / peak;
