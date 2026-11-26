@@ -36,9 +36,11 @@ function pageHtml(ctx, work) {
   const { index } = ctx;
   const artist = index.artist(work.artistId);
   const face = artist ? avatarWork(seenOf(ctx.store.get().progress, index, artist.id)) : null;
-  const painter = artist ? `<button type="button" class="ws-artist" data-artist="${esc(artist.id)}" aria-label="${esc(artist.name)}: ver ficha del pintor">
+  // Autor real de la obra (`by`) cuando la parada agrupa a varios (p. ej. los hermanos Lorenzetti); la ficha es la de la parada.
+  const name = work.by || artist?.name || '';
+  const painter = artist ? `<button type="button" class="ws-artist" data-artist="${esc(artist.id)}" aria-label="${esc(name)}: ver ficha del pintor">
       <span class="ws-face">${avatarHtml(artist, face)}</span>
-      <span class="ws-artist-txt"><span class="ws-artist-name">${esc(artist.name)}</span><span class="ws-artist-meta">${esc([lifeSpan(artist), index.movement(artist.movementId)?.name].filter(Boolean).join(' · '))}</span></span>
+      <span class="ws-artist-txt"><span class="ws-artist-name">${esc(name)}</span><span class="ws-artist-meta">${esc([lifeSpan(artist), index.movement(artist.movementId)?.name].filter(Boolean).join(' · '))}</span></span>
       ${icons.next(18)}</button>` : '';
   const curio = work.curio ? `<p class="ws-curio"><span class="ws-curio-mark" aria-hidden="true">${icons.spark(20)}</span><span>${esc(work.curio.text)}</span></p>` : '';
   const about = work.about ? `<section class="ws-about" aria-labelledby="ws-about-h"><h3 id="ws-about-h" class="ap-h">La obra</h3>
