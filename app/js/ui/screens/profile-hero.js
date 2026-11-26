@@ -28,7 +28,7 @@ function cover(ctx, work) {
   return `<div class="pf-cover ${focusY < 0.5 ? 'cap-bottom' : ''}" style="--focus:${focusPosition(work, 30)}">
     ${tinyFrame(work, { alt: '', cls: 'pf-cover-art', label: work.title, eager: true, zoom: { group: 'portada' } })}
     <img class="pf-cover-full" alt="" data-src="${esc(work.img)}">
-    <p class="pf-cover-cap">${esc(work.title)}${artist ? ` · ${esc(artist.name)}` : ''}</p>
+    <p class="pf-cover-cap">${esc(work.title)}${artist ? ` · ${esc(work.by || artist.name)}` : ''}</p>
   </div>`;
 }
 

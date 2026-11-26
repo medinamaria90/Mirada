@@ -3,7 +3,7 @@
 
 import { isSelfPortrait } from './painters.js';
 
-export const MAX_CARDS = 3;
+export const MAX_CARDS = 5;
 export const MAX_TEXT = 180;
 export const ZOOM_MIN = 1;
 export const ZOOM_MAX = 3;

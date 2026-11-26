@@ -68,8 +68,13 @@ export function renderHome(ctx, el) {
   // el mapa vive: luz según la hora, viento, agua y carruaje (map-life.js).
   const map = el.querySelector('.path-map');
   const life = startMapLife(map);
-  const stops = [fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); life.refresh(); }), watchMapMode(map), life.stop];
+  // Pintores nuevos de una actualización: etiqueta «Nuevo» y aviso (se carga solo si los hay).
+  const news = ctx.store.get().progress.roster?.fresh?.length ? import('../new-painters.js') : null;
+  const tagNew = () => news?.then((m) => m.tagNewStops(ctx, el)).catch((err) => console.error(err));
+  const stops = [fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); }), watchMapMode(map), life.stop];
   addLevelRings(ctx, el);
+  tagNew();
+  news?.then((m) => m.tellNewPainters(ctx, el)).catch((err) => console.error(err));
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
   if (!coachSeen()) {
     let stop = () => {};

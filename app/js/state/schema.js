@@ -3,8 +3,12 @@
 import { emptyProgress, DEFAULT_GOAL } from '../engine/progress.js';
 import { addDays, isDayKey } from '../engine/dates.js';
 import { LEGACY_IDS } from './legacy-ids.js';
+import { emptyRoster } from '../engine/roster.js';
 
-export const SCHEMA_VERSION = 8;
+export const SCHEMA_VERSION = 10;
+
+// Pintores que pasan a ser una sola parada (8 → 9): id antiguo → id de la parada conjunta.
+export const MERGED_ARTISTS = { 'pietro-lorenzetti': 'lorenzetti', 'ambrogio-lorenzetti': 'lorenzetti' };
 
 // Tema de la interfaz (settings.theme): claro, oscuro o como el móvil (el sistema).
 export const THEMES = ['light', 'dark', 'system'];
@@ -43,7 +47,8 @@ export function defaultState() {
   return {
     version: SCHEMA_VERSION,
     onboarded: false,
-    progress: emptyProgress(),
+    // roster: pintores conocidos del camino y ramas (engine/roster.js); en una partida nueva, todos.
+    progress: { ...emptyProgress(), roster: emptyRoster('new') },
     settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '', cover: '', avatar: '' },
     // Ronda en curso para retomarla al volver ({} = ninguna). Ver state/session.js.
     session: {},
@@ -129,7 +134,57 @@ export const MIGRATIONS = {
     ...old,
     settings: { ...(isPlain(old.settings) ? old.settings : {}), name: '', cover: '', avatar: '' },
   }),
+  // 8 → 9: los hermanos Lorenzetti pasan a ser una sola parada (MERGED_ARTISTS). Su progreso se une: lo mejor de los dos
+  // (dominado si lo estaba cualquiera, el último día más reciente, las obras vistas de ambos). La ronda en curso con uno de
+  // ellos se descarta. Lo demás se conserva.
+  8: (old) => {
+    const progress = isPlain(old.progress) ? old.progress : {};
+    const text = JSON.stringify(old.session ?? null);
+    const touched = Object.keys(MERGED_ARTISTS).some((id) => text.includes(id));
+    return {
+      ...old,
+      session: touched ? {} : old.session,
+      progress: {
+        ...progress,
+        artists: mergeKeys(progress.artists, (k) => MERGED_ARTISTS[k], mergeArtistState),
+        seen: mergeKeys(progress.seen, (k) => MERGED_ARTISTS[k], laterDay),
+        medals: mergeKeys(progress.medals, (k) => (k.startsWith('artist-') && MERGED_ARTISTS[k.slice(7)] ? `artist-${MERGED_ARTISTS[k.slice(7)]}` : null), laterDay),
+        srs: mergeKeys(progress.srs, (k) => (k.startsWith('artist:') && MERGED_ARTISTS[k.slice(7)] ? `artist:${MERGED_ARTISTS[k.slice(7)]}` : null), higherBox),
+      },
+    };
+  },
+  // 9 → 10 (aviso de pintores nuevos): lista de pintores conocidos del camino y ramas. Se rellena al cargar el catálogo
+  // (engine/roster.js, semilla 'legacy': todo lo de hoy menos lo añadido en la última actualización). Lo demás se conserva.
+  9: (old) => ({
+    ...old,
+    progress: { ...(isPlain(old.progress) ? old.progress : {}), roster: emptyRoster('legacy') },
+  }),
 };
+
+// Une las claves de `dict` que `rename` cambia (las demás quedan igual); si dos caen en la misma, `pick` decide.
+function mergeKeys(dict, rename, pick) {
+  if (!isPlain(dict)) return dict;
+  const out = {};
+  for (const [k, v] of Object.entries(dict)) {
+    const key = rename(k) || k;
+    out[key] = key in out ? pick(out[key], v) : v;
+  }
+  return out;
+}
+
+const laterDay = (a, b) => (typeof a === 'string' && typeof b === 'string' ? (a > b ? a : b) : a ?? b);
+const higherBox = (a, b) => ((Number(b?.box) || 0) > (Number(a?.box) || 0) ? b : a);
+
+function mergeArtistState(a, b) {
+  if (!isPlain(a) || !isPlain(b)) return isPlain(a) ? a : b;
+  const out = { ...a, ...b };
+  out.plays = (Number(a.plays) || 0) + (Number(b.plays) || 0);
+  out.best = Math.max(Number(a.best) || 0, Number(b.best) || 0);
+  out.mastered = Boolean(a.mastered || b.mastered);
+  out.last = laterDay(a.last, b.last);
+  if (Array.isArray(a.works) || Array.isArray(b.works)) out.works = [...new Set([...(a.works || []), ...(b.works || [])])];
+  return out;
+}
 
 export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, defaults = defaultState()) {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return defaults;

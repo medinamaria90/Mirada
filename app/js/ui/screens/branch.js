@@ -107,6 +107,7 @@ export async function renderBranch(ctx, el, branchId) {
   const life = startMapLife(map);
   const stops = [watchMapMode(map), life.stop];
   addLevelRings(ctx, el);
+  if (ctx.store.get().progress.roster?.fresh?.length) import('../new-painters.js').then((m) => m.tagNewStops(ctx, el)).catch((err) => console.error(err));
   ctx.setCleanup(() => stops.forEach((fn) => fn()));
   requestAnimationFrame(() => {
     const target = $('.stage-spot.is-current .stage', el);

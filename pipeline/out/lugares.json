@@ -6201,5 +6201,53 @@
   "up": "Q1210",
   "country": "Italia",
   "isCity": false
+ },
+ "Q41087": {
+  "label": "Raleigh",
+  "types": [
+   "Q62049",
+   "Q1549591",
+   "Q132680629"
+  ],
+  "up": "Q506215",
+  "country": "Estados Unidos",
+  "isCity": true
+ },
+ "Q82619": {
+  "label": "Borgo San Lorenzo",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q18288148",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q1419959": {
+  "label": "Monti",
+  "types": [
+   "Q123705",
+   "Q1229454"
+  ],
+  "up": "Q220",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q506215": {
+  "label": "condado de Wake",
+  "types": [
+   "Q13414758"
+  ],
+  "up": "Q1454",
+  "country": "Estados Unidos",
+  "isCity": false
+ },
+ "Q1454": {
+  "label": "Carolina del Norte",
+  "types": [
+   "Q35657"
+  ],
+  "up": "Q30",
+  "country": "Estados Unidos",
+  "isCity": false
  }
 }

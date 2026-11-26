@@ -19,7 +19,7 @@ const root = document.getElementById('app');
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
-  'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'ui/deep-badges.js',
+  'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/level-ring.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'ui/deep-badges.js',
   'ui/icons.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-scroll.js', 'ui/screens/path-art.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js',
   'ui/screens/path-nodes.js', 'ui/screens/path-signs.js', 'ui/shell.js',
 ];
@@ -166,6 +166,9 @@ async function boot() {
   applyAudioSettings(store.get().settings);
 
   const index = buildIndex(catalog);
+  // Pintores que trae una actualización: paradas extra o con «Nuevo» (engine/roster.js).
+  const withRoster = (s) => { const progress = reconcileRoster(s.progress, index); return progress === s.progress ? s : { ...s, progress }; };
+  store.update(withRoster);
   installZoom(() => index);
   installArtistLinks(() => ctx);
   // Textos de las pistas por obra (`look`) y rasgos: se piden tras pintar; sin ellos todo funciona.
@@ -287,6 +290,8 @@ async function boot() {
       if (isBoot && route.name === 'home') return go(session.route, { replace: true });
     }
     const flow = (fn) => lazy(token, screen, loadFlows, (m) => fn(m), true);
+    // Abrir la ficha de un pintor nuevo le quita la etiqueta «Nuevo».
+    if (route.name === 'artist') store.update((s) => { const progress = markRosterSeen(s.progress, route.artistId); return progress === s.progress ? s : { ...s, progress }; });
     switch (route.name) {
       case 'welcome': return welcome();
       case 'stage': return flow((m) => m.renderStage(ctx, screen, route.artistId, route.branchId));

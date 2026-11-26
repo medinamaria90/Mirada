@@ -6,7 +6,7 @@
 // de aciertos); los que ya tienen etapa en el camino común siguen su estado de allí.
 // Una sola regla de «se puede jugar» para el camino y las ramas: playStatus (la usan la ruta, la ficha y el mapa).
 
-import { stepStatus, stepPassed } from './progress.js';
+import { stepStatus, stepPassed, gateSteps } from './progress.js';
 
 // ¿Ha llegado la jugadora a esa época? Su primera parada del camino está abierta.
 export function movementReached(progress, index, movementId) {
@@ -23,13 +23,14 @@ export function firstTramo(index, movementId) {
   return end < 0 ? steps : steps.slice(0, end);
 }
 
-// Paradas del primer tramo de la época aún sin dominar (lo que falta para abrir sus tramos de rama).
+// Paradas del primer tramo de la época aún sin dominar (lo que falta para abrir sus tramos de rama). Las paradas
+// extra (pintores añadidos en un tramo ya superado) no cuentan.
 export function tramoPending(progress, index, movementId) {
-  return firstTramo(index, movementId).filter((s) => stepStatus(progress, index, s) !== 'mastered');
+  return gateSteps(progress, firstTramo(index, movementId)).filter((s) => stepStatus(progress, index, s) !== 'mastered');
 }
 
 export function tramoOpen(progress, index, movementId) {
-  return firstTramo(index, movementId).length > 0 && !tramoPending(progress, index, movementId).length;
+  return gateSteps(progress, firstTramo(index, movementId)).length > 0 && !tramoPending(progress, index, movementId).length;
 }
 
 function artistState(progress, id) {
@@ -57,9 +58,11 @@ export function branchStatus(progress, index, branchId) {
     let status;
     if (onPath) status = stepStatus(progress, index, { type: 'artist', id });
     else {
+      // Extra (añadido detrás de pintores ya superados): se juega en cuanto su tramo está abierto y no frena a nadie.
+      const extra = progress.roster?.extra?.includes?.(id);
       const s = artistState(progress, id);
-      status = s === 'idle' ? (reached && clear ? 'available' : 'locked') : s;
-      clear = clear && passed(progress, index, id);
+      status = s === 'idle' ? (reached && (clear || extra) ? 'available' : 'locked') : s;
+      if (!extra) clear = clear && passed(progress, index, id);
     }
     return { artistId: id, status, opensAt, reached, onPath };
   });
@@ -90,7 +93,7 @@ export function branchLockReason(progress, index, artistId, branchId) {
   const row = rows.find((r) => r.artistId === artistId);
   if (!row || row.status !== 'locked') return null;
   if (!row.reached) return { pending: tramoPending(progress, index, row.opensAt), before: null };
-  const before = rows.slice(0, rows.indexOf(row)).filter((r) => !r.onPath).find((r) => !passed(progress, index, r.artistId));
+  const before = rows.slice(0, rows.indexOf(row)).filter((r) => !r.onPath && !progress.roster?.extra?.includes?.(r.artistId)).find((r) => !passed(progress, index, r.artistId));
   return { pending: [], before: before ? before.artistId : null };
 }
 

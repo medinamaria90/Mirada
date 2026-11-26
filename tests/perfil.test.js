@@ -52,10 +52,10 @@ test('nombre: se limpia, se recorta a 24 caracteres, conserva los emojis compues
 });
 
 test('migración 7 → 8: nombre, portada y avatar vacíos, conserva el resto; y limpia lo que llegue sin pasar por la hoja', () => {
-  assert.equal(SCHEMA_VERSION, 8);
+  assert.ok(SCHEMA_VERSION >= 8);
   const v7 = { version: 7, onboarded: true, progress: { xp: 500 }, settings: { music: false, sfx: true, volume: 0.2, reducedMotion: true, dailyGoal: 100, theme: 'dark' }, session: {} };
   const out = migrate(v7);
-  assert.equal(out.version, 8);
+  assert.equal(out.version, SCHEMA_VERSION);
   assert.deepEqual(out.settings, { ...v7.settings, name: '', cover: '', avatar: '' });
   assert.equal(out.progress.xp, 500);
   assert.equal(migrate({ version: 8, settings: { name: 'Ana' } }).settings.name, 'Ana');

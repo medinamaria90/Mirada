@@ -55,6 +55,9 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
   anécdotas, el porqué de cada pintor y cada época; nada de tono de enciclopedia. Modelo validado por María:
   las tarjetas del Renacimiento (`contenido/epocas/renacimiento.json`): visión global en pocas líneas y
   curiosidad por saber más. Todo texto nuevo debe estar a su altura.
+  Cada historia de nivel 1 deja claro por qué el pintor es importante (referencia de tono: la de
+  Botticelli). Las historias tienen de 1 a 5 tarjetas (lo normal, 3; más solo si hace falta para que se
+  entienda), de hasta 180 caracteres cada una. Decisión de María, 26/11.
 - Datos de arte: se pueden escribir de memoria; solo se busca lo dudoso (fechas, lugares, anécdotas
   de las que no se esté seguro), y lo que siga dudoso se deja fuera. Cada texto lleva una fuente de
   referencia (Wikipedia del pintor o de la época, el museo de la obra). Decisión de María, 26/11.

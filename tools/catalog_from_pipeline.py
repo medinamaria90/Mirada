@@ -147,6 +147,28 @@ def titulos_cortos(pid):
     return {lv["level"]: lv["stage"] for lv in story.get("levels", []) if lv.get("level", 0) >= 2 and lv.get("stage")}
 
 
+def unir_paradas(pintores, works):
+    """Paradas conjuntas (tools/catalog_data.py JOINT, p. ej. los hermanos Lorenzetti): sus pintores salen como uno solo, con
+    sus obras juntas. Cada obra guarda en `by` su autor real (el del proceso, de Wikidata), y el pintor conjunto, sus miembros
+    con su QID."""
+    for jid, j in getattr(D, "JOINT", {}).items():
+        ms = [pintores.pop(m) for m in j["members"] if m in pintores]
+        if not ms:
+            continue
+        stages = [s for m in ms for s in m["stages"]]
+        assert not stages, f"{jid}: una parada conjunta no tiene niveles «a fondo»"
+        pintores[jid] = dict(ms[0], id=jid, name=j["name"], short=j["short"], qid=None,
+                             born=min(m["born"] for m in ms), died=max(m["died"] for m in ms),
+                             works=sum(m["works"] for m in ms), level1=sum(m["level1"] for m in ms),
+                             branches=sorted({b for m in ms for b in m["branches"]}),
+                             members=[dict(name=m["name"], qid=m["qid"]) for m in ms])
+        names = {m["id"]: m["name"] for m in ms}
+        for w in works:
+            if w["artistId"] in names:
+                w["by"] = names[w["artistId"]]
+                w["artistId"] = jid
+
+
 def main(app):
     obras = load("obras.json")
     pintores = {p["id"]: p for p in load("pintores.json")}
@@ -180,6 +202,7 @@ def main(app):
             w["spoiler"] = True
         if old in getattr(D, "ATTRIBUTED", ()):
             w["attributed"] = True
+    unir_paradas(pintores, works)
     by_artist = {}
     for w in works:
         by_artist.setdefault(w["artistId"], []).append(w)
@@ -188,7 +211,8 @@ def main(app):
     on_path = {}
     for pid, p in pintores.items():
         fame3 = any(w["fame"] >= PATH_FAME for w in by_artist.get(pid, []))
-        on_path[pid] = p["category"] in STAGE_CATEGORIES or (p["category"] == "invitado" and fame3)
+        # Un gran maestro de rama (Giotto en el Gótico) tiene niveles, pero no es parada del camino común.
+        on_path[pid] = (p["category"] in STAGE_CATEGORIES and p["movementId"] not in BRANCH_MOVEMENTS) or (p["category"] == "invitado" and fame3)
 
     # Orden y tramos del camino (tools/camino.json: movimiento → [{section, artists}]).
     order = {}
@@ -201,7 +225,7 @@ def main(app):
                 k += 1
                 order[pid] = k
                 section[pid] = t["section"]
-    stage_ids = {pid for pid, p in pintores.items() if p["category"] in STAGE_CATEGORIES}
+    stage_ids = {pid for pid, p in pintores.items() if p["category"] in STAGE_CATEGORIES and p["movementId"] not in BRANCH_MOVEMENTS}
     missing = stage_ids - set(order)
     assert not missing, f"pintores con etapa que no están en camino.json: {sorted(missing)}"
     for pid in stage_ids:
@@ -288,6 +312,8 @@ def main(app):
                  similarTo=[s for s in old.get("similarTo", []) if s in pintores])
         if not a["section"]:
             del a["section"]
+        if p.get("members"):
+            a["members"] = p["members"]
         artists.append(a)
         if old.get("traits"):
             text_traits[pid] = list(old["traits"])
@@ -318,6 +344,8 @@ def main(app):
                     level=w["level"], inSpain=bool(w["inSpain"]))
         if w.get("stage"):
             item["stage"] = w["stage"]
+        if w.get("by"):
+            item["by"] = w["by"]
         for k in ("spoiler", "attributed"):
             if w.get(k):
                 item[k] = True

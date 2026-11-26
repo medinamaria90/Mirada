@@ -12,15 +12,15 @@ const dataDir = join(here, '..', 'app', 'data', 'historias');
 const real = buildIndex(JSON.parse(readFileSync(join(here, '..', 'app', 'data', 'catalog.json'), 'utf8')));
 const story = (n) => JSON.parse(readFileSync(join(dataDir, `${n}.json`), 'utf8'));
 
-test('historias: nivel 1 con 1 a 3 tarjetas de hasta 180 caracteres; sin nivel o sin pintor, nada', () => {
+test('historias: nivel 1 con 1 a 5 tarjetas de hasta 180 caracteres; sin nivel o sin pintor, nada', () => {
   const lv = levelStory(story('goya'), 1);
   assert.ok(lv.cards.length >= 1 && lv.cards.length <= MAX_CARDS);
   assert.ok(lv.cards.every((c) => c.text.length <= MAX_TEXT));
   assert.equal(levelStory(story('goya'), 99), null);
   assert.equal(levelStory(null, 1), null);
   assert.equal(levelStory({ levels: [{ level: 1, cards: [{ text: 'x'.repeat(MAX_TEXT + 1), artwork: 'w1' }] }] }, 1), null, 'texto demasiado largo');
-  const four = { levels: [{ level: 1, title: 't', cards: [1, 2, 3, 4].map((n) => ({ text: `t${n}`, artwork: 'w1' })) }] };
-  assert.equal(levelStory(four, 1).cards.length, MAX_CARDS);
+  const six = { levels: [{ level: 1, title: 't', cards: [1, 2, 3, 4, 5, 6].map((n) => ({ text: `t${n}`, artwork: 'w1' })) }] };
+  assert.equal(levelStory(six, 1).cards.length, MAX_CARDS);
 });
 
 test('historias: las etapas «a fondo» (nivel 2 en adelante) llevan el título corto de su etapa (el mismo del catálogo)', () => {

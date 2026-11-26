@@ -26,9 +26,9 @@ const catalog = json('data/catalog.json');
 const TODAY = '2026-11-24';
 const askable = (w) => !w.spoiler && !w.attributed;
 
-test('cifras: 1.446 obras, 175 pintores, 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
+test('cifras: 1.446 obras, 174 pintores (los Lorenzetti, una sola parada), 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
   assert.equal(real.artworks.length, 1446);
-  assert.equal(real.artists.length, 175);
+  assert.equal(real.artists.length, 174);
   assert.equal(real.movements.length, 11);
   assert.deepEqual(real.movements.filter((m) => m.branch).map((m) => [m.id, m.opensAt]), [['gotico', 'renacimiento'], ['ukiyo-e', 'impresionismo']]);
   assert.equal(real.visibleMovements.length, 9);
@@ -89,7 +89,7 @@ test('ramas: cronológicas por dentro, con su tramo de apertura, y los «Descubr
   }
   const byId = Object.fromEntries(real.branches.map((b) => [b.id, b]));
   assert.equal(Object.keys(byId).filter((id) => id.startsWith('descubre-')).length, 9);
-  assert.ok(byId.gotico.artists.includes('giotto') && byId.gotico.artists.includes('van-eyck'));
+  assert.ok(byId.gotico.artists.includes('giotto') && !byId.gotico.artists.includes('van-eyck'), 'Van Eyck ya no está en el Gótico');
   assert.deepEqual(byId['ukiyo-e'].artists.slice().sort(), ['hiroshige', 'hokusai', 'kuniyoshi', 'sharaku', 'utamaro']);
   assert.equal(byId['ukiyo-e'].opensAt, 'impresionismo');
   assert.equal(byId['maestros-espanoles'].artists.length, 40);
@@ -282,7 +282,7 @@ test('rangos: XP + niveles «a fondo»; sin uno de los dos no se sube y nunca se
 // --- Migración de esquema v7 -------------------------------------------------------------------------
 
 test('migración 6 → 7: obras a<N> → w<QID>, lo que no tiene equivalente se pierde sin romper; pintores intactos', () => {
-  assert.equal(SCHEMA_VERSION, 8);
+  assert.equal(SCHEMA_VERSION, 10);
   const gioconda = W('a154');
   const v6 = {
     version: 6, onboarded: true,
@@ -301,7 +301,7 @@ test('migración 6 → 7: obras a<N> → w<QID>, lo que no tiene equivalente se 
   };
   assert.equal(LEGACY_IDS.a41, undefined, 'a41 (Matisse) no está en el catálogo grande');
   const out = migrate(v6);
-  assert.equal(out.version, 8);
+  assert.equal(out.version, SCHEMA_VERSION);
   assert.deepEqual(Object.keys(out.progress.collection).sort(), [W('a0'), gioconda].sort());
   assert.equal(out.progress.collection[gioconda], '2026-11-20');
   assert.deepEqual(out.progress.srs[`art:${gioconda}`], { box: 3, due: '2026-12-01' });
@@ -319,14 +319,14 @@ test('migración 6 → 7: obras a<N> → w<QID>, lo que no tiene equivalente se 
   assert.deepEqual(out.settings, { ...v6.settings, name: '', cover: '', avatar: '' });
   // Datos raros no rompen la migración.
   const odd = migrate({ version: 6, progress: { collection: null, srs: 7, fallados: [null, { id: 3 }], detail: { x: 5 } } });
-  assert.equal(odd.version, 8);
+  assert.equal(odd.version, SCHEMA_VERSION);
   assert.deepEqual(odd.progress.collection, {});
   assert.deepEqual(odd.progress.fallados, []);
   // Un id que ya es del catálogo grande no se pierde (estado sembrado a mano o repetido).
   assert.deepEqual(migrate({ version: 6, progress: { collection: { w12418: '2026-11-20', a41: '2026-11-21' } } }).progress.collection, { w12418: '2026-11-20' });
   // Desde muy atrás llega a la última versión.
-  assert.equal(migrate({ onboarded: true }).version, 8);
-  assert.equal(defaultState().version, 8);
+  assert.equal(migrate({ onboarded: true }).version, SCHEMA_VERSION);
+  assert.equal(defaultState().version, SCHEMA_VERSION);
   assert.equal(typeof MIGRATIONS[6], 'function');
 });
 
@@ -392,7 +392,7 @@ test('ramas: el resultado sigue en la rama de origen (pintores en dos ramas) y n
   assert.ok(real.branchesOf('giotto').length === 2);
   const gotico = branchAfterRound(p, real, 'giotto', 'gotico');
   assert.equal(gotico.branch.id, 'gotico');
-  assert.equal(gotico.next, 'pietro-lorenzetti');
+  assert.equal(gotico.next, 'lorenzetti');
   assert.equal(branchAfterRound(p, real, 'giotto', 'descubre-renacimiento').branch.id, 'descubre-renacimiento');
   assert.equal(branchAfterRound(p, real, 'giotto').branch.id, 'gotico', 'sin rama indicada, la más concreta');
   // Juan de Juanes desde Maestros españoles: sigue en la escuela, no salta a Descubre el Renacimiento.

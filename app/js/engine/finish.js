@@ -4,7 +4,7 @@
 import { recordAnswer, artKey, artistKey, updateFallados } from './srs.js';
 import { rankFor, RANKS } from './ranks.js';
 import { seenAfterRound, levelCovered, deepKey, LEVELS_MASTERY } from './levels.js';
-import { xpForAnswer, unseenArtists, MASTERY, STAGE_MASTERY, XP, stageRoundMastered, movementStatus, isReviewUnlocked, hasEye, normalizeGoal, touchStreak, STREAK_MEDALS, isStepUnlocked } from './progress.js';
+import { xpForAnswer, unseenArtists, MASTERY, STAGE_MASTERY, XP, stageRoundMastered, movementStatus, isReviewUnlocked, hasEye, normalizeGoal, touchStreak, STREAK_MEDALS, isStepUnlocked, isExtraStep } from './progress.js';
 
 function subjectArtwork(q) {
   return q.type === 'which' ? q.targetArtworkId : q.artworkId;
@@ -166,7 +166,8 @@ function markSeen(seen, index, answers, today, unseen) {
 // Recuerda si la parada siguiente estaba bloqueada y devuelve una función que, tras actualizar
 // el progreso, emite el evento de desbloqueo si ahora está abierta.
 function watchNextStep(p, index, step) {
-  const next = index.steps[index.stepIndex(step.type, step.id) + 1];
+  // La siguiente que cuenta (las paradas extra están siempre abiertas y no abren nada).
+  const next = isExtraStep(p, step) ? null : index.steps.slice(index.stepIndex(step.type, step.id) + 1).find((s) => !isExtraStep(p, s));
   const wasLocked = next && !isStepUnlocked(p, index, next);
   return (events) => {
     if (!wasLocked || !isStepUnlocked(p, index, next)) return;
