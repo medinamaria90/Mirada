@@ -1,0 +1,26 @@
+{
+ "artistId": "artemisia",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Artemisia",
+   "cards": [
+    {
+     "text": "Artemisia Gentileschi nació en Roma en 1593 y murió en Nápoles hacia 1656. Aprendió con su padre, Orazio, y empezó pintando al estilo de Caravaggio.",
+     "artwork": "w3978274",
+     "source": "https://es.wikipedia.org/wiki/Artemisia_Gentileschi"
+    },
+    {
+     "text": "Fue la primera mujer admitida en la Academia del Dibujo de Florencia. Pintó en Roma, Florencia, Nápoles y en Londres, en la corte de Carlos I.",
+     "artwork": "w3630745",
+     "source": "https://es.wikipedia.org/wiki/Artemisia_Gentileschi"
+    },
+    {
+     "text": "Fíjate en Judit decapitando a Holofernes: elige el instante más crudo, como Caravaggio, con luz dura sobre fondo oscuro. Pintó el tema varias veces.",
+     "artwork": "w2247406",
+     "source": "https://es.wikipedia.org/wiki/Judit_decapitando_a_Holofernes_(Gentileschi,_Florencia)"
+    }
+   ]
+  }
+ ]
+}

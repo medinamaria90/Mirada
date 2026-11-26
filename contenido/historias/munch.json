@@ -1,0 +1,26 @@
+{
+ "artistId": "munch",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Munch",
+   "cards": [
+    {
+     "text": "Edvard Munch nació en Løten (Noruega) en 1863. Su madre murió de tuberculosis cuando él tenía cinco años; su hermana Sophie, a los 15. Murió en Ekely en 1944.",
+     "artwork": "w16939042",
+     "source": "https://es.wikipedia.org/wiki/Edvard_Munch"
+    },
+    {
+     "text": "Reunió sus obras clave en el Friso de la vida, «una poesía sobre la vida, el amor y la muerte». Vampiro lo tituló así un crítico: él decía que era un beso en el cuello.",
+     "artwork": "w1683743",
+     "source": "https://es.wikipedia.org/wiki/Amor_y_Dolor_(Vampiro)"
+    },
+    {
+     "text": "Fíjate en La danza de la vida (1899-1900): un baile en la playa la noche de San Juan. Una pareja en el centro y dos mujeres a los lados, de la juventud a la vejez.",
+     "artwork": "w3208135",
+     "source": "https://es.wikipedia.org/wiki/La_danza_de_la_vida_(Munch)"
+    }
+   ]
+  }
+ ]
+}

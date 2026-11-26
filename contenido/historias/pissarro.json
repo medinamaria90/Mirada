@@ -1,0 +1,26 @@
+{
+ "artistId": "pissarro",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Pissarro",
+   "cards": [
+    {
+     "text": "Camille Pissarro nació en 1830 en la isla de Santo Tomás, en las Antillas. Pasó dos años pintando en Venezuela antes de instalarse en Francia.",
+     "artwork": "w5407253",
+     "source": "https://es.wikipedia.org/wiki/Camille_Pissarro"
+    },
+    {
+     "text": "Fue el único, con Berthe Morisot, que expuso en las ocho muestras impresionistas (1874-1886). Pintó la vida rural: paisajes y campesinos trabajando.",
+     "artwork": "w19905366",
+     "source": "https://es.wikipedia.org/wiki/Camille_Pissarro"
+    },
+    {
+     "text": "Fíjate en Los tejados rojos (1877): un pueblo en invierno cerca de Pontoise, hecho con pequeñas pinceladas rápidas que unifican todo el cuadro.",
+     "artwork": "w2843906",
+     "source": "https://es.wikipedia.org/wiki/Los_tejados_rojos"
+    }
+   ]
+  }
+ ]
+}

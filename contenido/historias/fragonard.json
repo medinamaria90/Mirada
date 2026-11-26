@@ -1,0 +1,26 @@
+{
+ "artistId": "fragonard",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Fragonard",
+   "cards": [
+    {
+     "text": "Fragonard nació en Grasse, en la Provenza, en 1732 y murió en París en 1806. Es uno de los grandes nombres del rococó francés.",
+     "artwork": "w2629423",
+     "source": "https://es.wikipedia.org/wiki/Jean-Honore_Fragonard"
+    },
+    {
+     "text": "El cerrojo (Louvre) se lo encargó el marqués de Véri en 1773; el museo lo compró en 1974. Una escena de amor con tensión de teatro.",
+     "artwork": "w3228069",
+     "source": "https://es.wikipedia.org/wiki/El_cerrojo_(Fragonard)"
+    },
+    {
+     "text": "Fíjate en El columpio (1767): un barón lo encargó como homenaje a su amante. Sedas rosas que brillan y follaje espumoso, pintados con pincelada rápida.",
+     "artwork": "w2629559",
+     "source": "https://es.wikipedia.org/wiki/El_columpio_(Fragonard)"
+    }
+   ]
+  }
+ ]
+}

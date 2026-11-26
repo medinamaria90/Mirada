@@ -1,0 +1,26 @@
+{
+ "artistId": "madrazo",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Madrazo",
+   "cards": [
+    {
+     "text": "Federico de Madrazo nació en Roma en 1815 y murió en Madrid en 1894. Fue el gran retratista romántico del Madrid de Isabel II.",
+     "artwork": "w133310569",
+     "source": "https://es.wikipedia.org/wiki/Federico_Madrazo_y_Kunz"
+    },
+    {
+     "text": "Se formó en París con Ingres. Dirigió el Museo del Prado dos veces: perdió el puesto con la revolución de 1868 y volvió en 1881, hasta su muerte.",
+     "artwork": "w23073062",
+     "source": "https://es.wikipedia.org/wiki/Federico_Madrazo_y_Kunz"
+    },
+    {
+     "text": "Fíjate en La condesa de Vilches (1853), obra maestra del retrato romántico español: tiene un marcado aire francés, aprendido de Ingres.",
+     "artwork": "w27766940",
+     "source": "https://es.wikipedia.org/wiki/Federico_Madrazo_y_Kunz"
+    }
+   ]
+  }
+ ]
+}

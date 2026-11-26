@@ -1,0 +1,26 @@
+{
+ "artistId": "juan-gris",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Juan Gris",
+   "cards": [
+    {
+     "text": "Juan Gris se llamaba José Victoriano González. Nació en Madrid en 1887 y en 1906 se fue a París, donde conoció a Picasso, Braque y Léger.",
+     "artwork": "w19922091",
+     "source": "https://es.wikipedia.org/wiki/Juan_Gris"
+    },
+    {
+     "text": "Su gran aportación al cubismo fue el papier collé, desde 1913 en Céret: recortes de papel y periódico pegados sobre el lienzo. Murió en 1927, con 40 años.",
+     "artwork": "w6461080",
+     "source": "https://es.wikipedia.org/wiki/Juan_Gris"
+    },
+    {
+     "text": "Fíjate en el Retrato de Pablo Picasso (1912, Chicago): fue uno de los primeros cuadros cubistas de alguien que no era Picasso ni Braque. Planos y facetas.",
+     "artwork": "w3399451",
+     "source": "https://es.wikipedia.org/wiki/Retrato_de_Pablo_Picasso"
+    }
+   ]
+  }
+ ]
+}

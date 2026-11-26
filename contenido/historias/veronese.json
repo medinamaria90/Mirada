@@ -1,0 +1,26 @@
+{
+ "artistId": "veronese",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Veronés",
+   "cards": [
+    {
+     "text": "Veronés nació en Verona en 1528 y trabajó en Venecia, donde murió en 1588. Es uno de los grandes nombres de la pintura veneciana del siglo XVI.",
+     "artwork": "w185255",
+     "source": "https://es.wikipedia.org/wiki/Veron%C3%A9s"
+    },
+    {
+     "text": "En 1573 la Inquisición le interrogó por una Última Cena llena de personajes y animales que juzgó impropios. No cambió nada: la retituló Cena en casa de Leví.",
+     "artwork": "w951105",
+     "source": "https://es.wikipedia.org/wiki/Cena_en_casa_de_Lev%C3%AD"
+    },
+    {
+     "text": "Fíjate en Las bodas de Caná (Louvre): los monjes que la encargaron le pidieron meter tantas figuras como cupieran. Columnas, balaustradas y sedas: un gran escenario.",
+     "artwork": "w185255",
+     "source": "https://es.wikipedia.org/wiki/Veron%C3%A9s"
+    }
+   ]
+  }
+ ]
+}

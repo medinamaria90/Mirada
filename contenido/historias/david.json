@@ -1,0 +1,26 @@
+{
+ "artistId": "david",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue David",
+   "cards": [
+    {
+     "text": "Jacques-Louis David nació en París en 1748. Pintó el Juramento de los Horacios en Roma en 1784 y en el Salón de 1785 fue el manifiesto del neoclasicismo.",
+     "artwork": "w476458",
+     "source": "https://es.wikipedia.org/wiki/Juramento_de_los_Horacios"
+    },
+    {
+     "text": "Vivió la Revolución junto a Robespierre y fue el pintor de Napoleón. Al caer el emperador se exilió en Bruselas, donde murió en 1825.",
+     "artwork": "w1231009",
+     "source": "https://es.wikipedia.org/wiki/Pintura_neoclasica"
+    },
+    {
+     "text": "Fíjate en La muerte de Marat (1793): la han llamado la «Piedad de la Revolución». Figura quieta como una estatua y fondo vacío y sobrio.",
+     "artwork": "w636537",
+     "source": "https://es.wikipedia.org/wiki/La_muerte_de_Marat"
+    }
+   ]
+  }
+ ]
+}

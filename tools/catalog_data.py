@@ -60,6 +60,10 @@ artist("bellini", "Giovanni Bellini", "Bellini", "renacimiento", 1430, 1516, "It
        "Fíjate en la luz suave y los paisajes serenos de la escuela veneciana.")
 artist("correggio", "Correggio", "Correggio", "renacimiento", 1489, 1534, "Italia", 8,
        "Fíjate en la sensualidad suave de las carnes y las figuras en escorzo.")
+artist("berruguete", "Pedro Berruguete", "Berruguete", "renacimiento", 1450, 1504, "España", 7,
+       "Fíjate en la mezcla: detalle flamenco, arquitecturas con perspectiva italiana y fondos de brocado dorado.",
+       ["brocados de oro en relieve", "arquitecturas con perspectiva italiana", "santos de rostro serio y detalle flamenco"],
+       ["van-eyck", "botticelli"])
 
 # --- Manierismo y norte
 artist("bosco", "El Bosco", "El Bosco", "manierismo-y-norte", 1450, 1516, "Países Bajos", 1,
@@ -106,6 +110,22 @@ artist("vermeer", "Johannes Vermeer", "Vermeer", "barroco", 1632, 1675, "Países
        "Fíjate en la luz de una ventana a la izquierda y en el azul intenso y el amarillo limón de las ropas.",
        ["luz de ventana a la izquierda", "azul intenso y amarillo limón", "puntitos de luz que brillan"],
        ["rembrandt"])
+artist("hals", "Frans Hals", "Hals", "barroco", 1582, 1666, "Países Bajos", 5,
+       "Fíjate en la pincelada rápida y suelta de los retratos: gente que sonríe o ríe, con encajes hechos a brochazos.",
+       ["pincelada suelta y rápida", "caras que sonríen o ríen", "negros y blancos de encajes y cuellos"],
+       ["rembrandt", "velazquez"])
+artist("ribera", "José de Ribera", "Ribera", "barroco", 1591, 1652, "España", 6,
+       "Fíjate en la piel: arrugas, vello y pies sucios a pincel espeso, con luz dura sobre fondo oscuro.",
+       ["pieles arrugadas, muy reales", "luz dura sobre fondo oscuro", "pintura espesa, casi en relieve"],
+       ["caravaggio", "zurbaran"])
+artist("artemisia", "Artemisia Gentileschi", "Artemisia", "barroco", 1593, 1656, "Italia", 7,
+       "Fíjate en las heroínas en plena acción, de brazos fuertes, bajo una luz dura y sobre fondo oscuro.",
+       ["fondo oscuro y luz dura", "mujeres decididas, en plena acción", "telas amarillas y rojas de pliegues pesados"],
+       ["caravaggio", "ribera"])
+artist("zurbaran", "Francisco de Zurbarán", "Zurbarán", "barroco", 1598, 1664, "España", 10,
+       "Fíjate en los hábitos blancos de pliegues duros, como esculpidos, con una sola luz lateral sobre fondo oscuro.",
+       ["blancos de pliegues duros, como de escultura", "fondo oscuro y una sola luz", "objetos y telas de realidad casi táctil"],
+       ["ribera", "caravaggio"])
 artist("van-dyck", "Antoon van Dyck", "Van Dyck", "barroco", 1599, 1641, "Flandes", 7,
        "Fíjate en la elegancia fluida de telas y retratos aristocráticos.")
 artist("poussin", "Nicolas Poussin", "Poussin", "barroco", 1594, 1665, "Francia", 8,
@@ -118,6 +138,14 @@ artist("fragonard", "Jean-Honoré Fragonard", "Fragonard", "rococo-neoclasicismo
        "Fíjate en la pincelada rápida y espumosa: sedas que brillan y follajes como nubes en escenas de amor.",
        ["pincelada rápida y espumosa", "sedas rosas y doradas que brillan", "escenas de amor y juego"],
        ["boucher", "renoir"])
+artist("watteau", "Antoine Watteau", "Watteau", "rococo-neoclasicismo", 1684, 1721, "Francia", 1,
+       "Fíjate en las parejas elegantes de sedas tornasoladas en parques brumosos, con un aire melancólico.",
+       ["parejas galantes en parques", "sedas que brillan en tonos suaves", "personajes de la comedia italiana"],
+       ["fragonard", "boucher"])
+artist("melendez", "Luis Meléndez", "Meléndez", "rococo-neoclasicismo", 1716, 1780, "España", 7,
+       "Fíjate en la cocina: frutas, pan y cacharros de barro sobre una mesa, con luz lateral en cada textura.",
+       ["frutas, pan y cacharros de barro", "mesa de madera y fondo oscuro", "cada textura, casi palpable"],
+       ["zurbaran"])
 artist("david", "Jacques-Louis David", "David", "rococo-neoclasicismo", 1748, 1825, "Francia", 2,
        "Fíjate en las figuras quietas como estatuas, de contorno duro, en fila delante de un fondo sobrio.",
        ["figuras como estatuas", "contornos duros y nítidos", "fondos sobrios y vacíos"],
@@ -169,6 +197,10 @@ artist("ivanov", "Alexander Ivánov", "Ivánov", "romanticismo", 1806, 1858, "Ru
        "Fíjate en la gran composición clásica con muchos cuerpos al aire libre.")
 artist("tropinin", "Vasili Tropinin", "Tropinin", "romanticismo", 1776, 1857, "Rusia", 11,
        "Fíjate en los retratos de gente corriente con mirada viva y luz cálida.")
+artist("madrazo", "Federico de Madrazo", "Madrazo", "romanticismo", 1815, 1894, "España", 11,
+       "Fíjate en el acabado liso y pulido de los retratos: caras suaves, sedas y elegancia aprendida de Ingres.",
+       ["acabado liso, sin pincelada visible", "vestidos de seda y encajes", "caras serenas sobre fondos neutros"],
+       ["ingres"])
 
 # --- Realismo (solo cuatro rusos con etapa en todo el camino: Aivazovski, Shishkin, Repin y
 # Levitán; el resto de rusos son invitados aunque tengan ≥3 obras, véase STAGE_RUSSIANS)
@@ -184,6 +216,18 @@ artist("levitan", "Isaak Levitán", "Levitán", "realismo", 1860, 1900, "Rusia",
        "Fíjate en la calma melancólica: mucho cielo y agua quieta, pincelada suave y casi nunca gente.",
        ["mucho cielo y agua quieta", "pincelada suave, sin detalle", "paisajes vacíos y melancólicos"],
        ["shishkin", "monet"])
+artist("millet", "Jean-François Millet", "Millet", "realismo", 1814, 1875, "Francia", 3,
+       "Fíjate en los campesinos, pesados y con la cara en sombra, inclinados sobre la tierra bajo cielos de atardecer.",
+       ["campesinos inclinados sobre la tierra", "figuras pesadas, con la cara en sombra", "campos llanos y luz de atardecer"],
+       ["courbet", "pissarro"])
+artist("rosales", "Eduardo Rosales", "Rosales", "realismo", 1836, 1873, "España", 14,
+       "Fíjate en lo abocetado: zonas a manchas junto a caras y manos acabadas, en tonos sobrios.",
+       ["historia de España en escenas íntimas", "pincelada amplia, zonas solo esbozadas", "tonos sobrios: ocres, grises y negros"],
+       ["velazquez", "madrazo"])
+artist("fortuny", "Marià Fortuny", "Fortuny", "realismo", 1838, 1874, "España", 16,
+       "Fíjate en el formato pequeño y el detalle minucioso: trajes, alfombras y objetos con toques de luz brillantes.",
+       ["cuadros pequeños llenos de detalle", "trajes y telas de toques brillantes", "luz de sol intensa, casi cegadora"],
+       ["madrazo", "sorolla"])
 artist("courbet", "Gustave Courbet", "Courbet", "realismo", 1819, 1877, "Francia", 4,
        "Fíjate en la pintura sólida y sin adornos de gente y paisajes reales.")
 artist("kuindzhi", "Arjip Kuindzhi", "Kuindzhi", "realismo", 1842, 1910, "Rusia", 5,
@@ -234,6 +278,22 @@ artist("renoir", "Pierre-Auguste Renoir", "Renoir", "impresionismo", 1841, 1919,
        ["monet", "fragonard"])
 artist("serov", "Valentín Serov", "Serov", "impresionismo", 1865, 1911, "Rusia", 5,
        "Fíjate en la luz fresca sobre retratos espontáneos y llenos de aire.")
+artist("pissarro", "Camille Pissarro", "Pissarro", "impresionismo", 1830, 1903, "Francia", 1,
+       "Fíjate en los pueblos y campos vistos entre árboles, con gente trabajando, a pinceladas pequeñas y rápidas.",
+       ["pueblos y caminos entre árboles", "campesinos trabajando", "pinceladas pequeñas que unifican el cuadro"],
+       ["sisley", "monet"])
+artist("sisley", "Alfred Sisley", "Sisley", "impresionismo", 1839, 1899, "Francia", 5,
+       "Fíjate en los cielos enormes de nubes y en el agua de ríos y pueblos del Sena, con pincelada suave y vaporosa.",
+       ["cielos grandes y nublados", "ríos, puentes y pueblos del Sena", "atmósfera vaporosa y pincelada suave"],
+       ["pissarro", "monet"])
+artist("morisot", "Berthe Morisot", "Morisot", "impresionismo", 1841, 1895, "Francia", 8,
+       "Fíjate en la pincelada rápida y ligera, casi inacabada, en escenas íntimas de mujeres y niños con mucho blanco.",
+       ["pincelada rápida, casi inacabada", "mujeres y niños en interiores y jardines", "blancos y tonos claros"],
+       ["renoir", "manet"])
+artist("sorolla", "Joaquín Sorolla", "Sorolla", "impresionismo", 1863, 1923, "España", 18,
+       "Fíjate en la luz blanca del sol de playa: reflejos en el agua y en la ropa, con pincelada larga y vigorosa.",
+       ["sol fuerte de playa y reflejos en el agua", "blancos deslumbrantes de ropa y velas", "pincelada larga, suelta y vigorosa"],
+       ["monet", "renoir"])
 
 # --- Postimpresionismo
 artist("gauguin", "Paul Gauguin", "Gauguin", "postimpresionismo", 1848, 1903, "Francia", 1,
@@ -280,6 +340,14 @@ artist("kandinsky", "Vasili Kandinsky", "Kandinsky", "simbolismo-modernismo", 18
        "Fíjate en las formas geométricas y líneas flotantes, sin objetos reconocibles.")
 artist("malevich", "Kazimir Malévich", "Malévich", "simbolismo-modernismo", 1879, 1935, "Rusia", 8,
        "Fíjate en las formas geométricas elementales sobre fondo blanco.")
+artist("romero-de-torres", "Julio Romero de Torres", "Romero de Torres", "simbolismo-modernismo", 1874, 1930, "España", 13,
+       "Fíjate en las mujeres morenas de mirada seria, en penumbra, con Córdoba al fondo y un acabado liso y oscuro.",
+       ["mujeres morenas de mirada seria", "fondos con vistas de Córdoba", "penumbra y acabado liso"],
+       ["klimt"])
+artist("juan-gris", "Juan Gris", "Juan Gris", "simbolismo-modernismo", 1887, 1927, "España", 17,
+       "Fíjate en guitarras, botellas y periódicos partidos en planos geométricos de colores limpios.",
+       ["objetos partidos en planos geométricos", "guitarras, botellas y periódicos sobre una mesa", "colores planos, limpios y bien delimitados"],
+       ["cezanne"])
 
 # Únicos pintores rusos con etapa propia (decisión del coordinador, oleada 4): el resto de rusos
 # son invitados aunque tengan ≥3 obras (sirven de distractores y de obras no vistas).
@@ -989,6 +1057,24 @@ TRAIT_TAGS = {
     "turner": [["difuminado"], ["difuminado"], ["difuminado", "oro"], ["barcos", "difuminado"]],
     "cezanne": [["bloques"], ["bloques"], ["bloques"], []],
     "seurat": [["puntos"], ["puntos"], [], ["claro"]],
+    # Maestros con etapa añadidos en la oleada de historias y rasgos: alineados con [pista, rasgo 1, 2, 3].
+    "berruguete": [["oro", "arquitectura", "nitido"], ["oro"], ["arquitectura"], ["nitido"]],
+    "hals": [["suelta", "retrato"], ["suelta"], ["expresion", "retrato"], ["negro"]],
+    "ribera": [["oscuro", "foco"], [], ["oscuro", "foco"], ["grueso"]],
+    "artemisia": [["oscuro", "foco", "expresion"], ["oscuro", "foco"], ["expresion"], ["amarillo", "rojo"]],
+    "zurbaran": [["oscuro", "foco"], ["nitido"], ["oscuro", "foco"], ["nitido"]],
+    "watteau": [["sedas", "paisaje", "difuminado"], ["paisaje"], ["sedas"], []],
+    "melendez": [["oscuro", "nitido"], [], ["oscuro"], ["nitido"]],
+    "madrazo": [["nitido", "retrato", "sedas"], ["nitido"], ["sedas"], ["retrato"]],
+    "millet": [["paisaje", "cielo"], [], [], ["paisaje", "cielo"]],
+    "rosales": [["suelta", "gris"], [], ["suelta"], ["gris", "negro"]],
+    "fortuny": [["nitido", "sedas"], ["nitido"], ["sedas"], ["claro"]],
+    "pissarro": [["paisaje", "arboles", "suelta"], ["paisaje", "arboles"], [], ["suelta"]],
+    "sisley": [["cielo", "agua", "difuminado"], ["cielo"], ["agua", "paisaje"], ["difuminado", "suelta"]],
+    "morisot": [["suelta", "claro"], ["suelta"], ["interior"], ["claro"]],
+    "sorolla": [["claro", "mar", "suelta"], ["mar", "agua", "claro"], ["claro"], ["suelta"]],
+    "romero-de-torres": [["oscuro", "mirada", "nitido"], ["mirada", "retrato"], ["paisaje", "arquitectura"], ["oscuro", "nitido"]],
+    "juan-gris": [["plano", "nitido"], ["plano"], [], ["plano", "nitido"]],
 }
 
 # Etiquetas visibles en cada cuadro, escritas mirando las imágenes (hojas de contacto a 420 px y

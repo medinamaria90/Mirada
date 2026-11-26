@@ -1,0 +1,26 @@
+{
+ "artistId": "romero-de-torres",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Romero de Torres",
+   "cards": [
+    {
+     "text": "Julio Romero de Torres nació en Córdoba en 1874 y allí murió en 1930. Un año después, en 1931, la ciudad abrió su museo con sus obras.",
+     "artwork": "w16913179",
+     "source": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres"
+    },
+    {
+     "text": "La gracia y El pecado (1913) son pareja: una representa la virtud y la otra el pecado. En El pecado, cuatro mujeres de luto rodean a una desnuda con espejo y manzana.",
+     "artwork": "w15093245",
+     "source": "https://es.wikipedia.org/wiki/El_pecado_(Julio_Romero_de_Torres)"
+    },
+    {
+     "text": "Fíjate en Las dos sendas: la joven desnuda tiene que elegir entre la devoción y el mundo. Por las dos ventanas del fondo asoman dos vistas de Córdoba.",
+     "artwork": "w100432952",
+     "source": "https://es.wikipedia.org/wiki/Las_dos_sendas"
+    }
+   ]
+  }
+ ]
+}
