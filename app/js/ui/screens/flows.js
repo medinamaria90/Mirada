@@ -1,7 +1,6 @@
 // Flujos de juego: etapa de pintor, sala de movimiento, intro de movimiento, repasos,
 // reto diario, reto de un amigo y ronda retomada.
 
-import { stageRoute } from '../router.js';
 import { esc, onAction, accentStyle, defaultAccent, focusHeading, announce, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
@@ -12,7 +11,7 @@ import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist, nextStepIn } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, avatarWork, seenOf } from '../../engine/painters.js';
@@ -146,7 +145,7 @@ export function introWorks(index, movementId) {
 }
 
 // mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa.
-export function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = null } = {}) {
+export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
   const { index } = ctx;
   const movement = index.movement(movementId);
   if (!movement || !index.visibleMovements.includes(movement)) return leave(ctx);
@@ -165,24 +164,14 @@ export function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = nul
     </main>
   </div>`;
   focusHeading(el);
-  // «Empezar a jugar» al final de las tarjetas: la primera vez, lo mismo que «Entrar»; desde el mapa, la siguiente
-  // parada jugable de la época (sin parada pendiente, no hay botón).
-  const step = mode === 'first' ? null : nextStepIn(ctx.store.get().progress, index, movementId);
-  const play = mode === 'first' ? { action: 'enter' } : step && { action: 'play', to: step.type === 'sala' ? `sala-${step.id}` : stageRoute(step.id) };
-  import('./era-cards.js').then((m) => m.mountEraCards(ctx, $('.intro', el), movementId, play)).catch((err) => console.error(err));
+  import('./era-cards.js').then((m) => m.mountEraCards(ctx, $('.intro', el), movementId)).catch((err) => console.error(err));
   const off = onAction(el, {
-    play: (b) => {
-      ctx.audio.sfx('tap');
-      off();
-      ctx.go(b.dataset.to);
-    },
     enter: () => {
       ctx.audio.sfx('tap');
       off();
       if (mode === 'first') {
         const today = ctx.today();
         ctx.store.update((s) => ({ ...s, progress: { ...s.progress, intros: { ...(s.progress.intros || {}), [movementId]: today } } }));
-        if (onEnter) return onEnter();
       }
       ctx.go('inicio');
     },
@@ -279,24 +268,30 @@ function gap(track) {
   return parseFloat(getComputedStyle(track).columnGap) || 0;
 }
 
-// Si es la primera vez en el movimiento, antes se muestra su intro.
-// Las ramas-movimiento (Gótico, Estampa japonesa) no tienen presentación propia: se entra directo.
+// Si es la primera vez en el movimiento, se muestra su intro en lugar de la parada: «Entrar» deja en el camino, donde se
+// elige el pintor. Las ramas-movimiento (Gótico, Estampa japonesa) no tienen presentación propia: se entra directo.
 function withIntro(ctx, el, movementId, show) {
   const visible = ctx.index.visibleMovements.some((m) => m.id === movementId);
   if (visible && needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
-    return renderIntro(ctx, el, movementId, { mode: 'first', onEnter: show });
+    return renderIntro(ctx, el, movementId, { mode: 'first' });
   }
   return show();
 }
 
-// Historia al empezar un nivel (una vez, saltable): después se muestra lo que sigue, con los cuadros que ha enseñado (la
-// ronda no abre con ellos). Sin historia, de seguido.
-// La historia sale siempre al entrar en un pintor (decisión de María, 26/11): se salta con un toque.
-function withStory(ctx, el, artistId, level, show) {
+// La historia sale siempre al entrar en un pintor (decisión de María, 26/11) y el embudo es historia → preguntas:
+// «Jugar» (o pasar de la última tarjeta) llama a show(shown, true) con los cuadros que ha enseñado (la ronda no abre con
+// ellos); sin historia, show([], false) y quien llama decide qué enseñar antes. La X, Esc o deslizar abajo vuelven al
+// camino; «Ver más» deja en la ficha y atrás, donde lleve el navegador.
+function withStory(ctx, el, artistId, level, show, { look = '', returnTo = null } = {}) {
   import('../story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true }))
-    .catch((err) => { console.error(err); return []; })
-    .then((shown) => { if (el.isConnected) show(Array.isArray(shown) ? shown : []); });
+    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look })
+      .then(({ shown, ended }) => {
+        if (!el.isConnected) return;
+        if (ended === m.STORY_END.CLOSE) ctx.go(returnTo || 'inicio', { replace: true });
+        else if (ended === m.STORY_END.PLAY) show(shown, true);
+        else if (ended === m.STORY_END.NONE) show([], false);
+      }))
+    .catch((err) => { console.error(err); if (el.isConnected) show([], false); });
 }
 
 // --- Etapa de pintor -------------------------------------------------------
@@ -310,12 +305,15 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx);
-  withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, (shown) => {
+  withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
-    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown });
+    // Tras la historia no hay «Conoce a»: lo recién visto son solo los cuadros de la historia.
+    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown, learnShown: !fromStory });
     playEra(movement.era);
+    const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo }));
+    if (fromStory) return start();
     const years = artist.born && artist.died ? `${artist.born}–${artist.died}` : '';
     learnScreen(ctx, el, {
       accent: movement.accent,
@@ -329,9 +327,9 @@ export function renderStage(ctx, el, artistId, branchId = '') {
       caption: (w) => ({ alt: `${w.title}, de ${artist.name}`, sub: w.year || '' }),
       aside: artist.hint ? `<p class="learn-look">${esc(artist.hint)}</p>` : '',
       carouselLabel: `Obras de ${artist.short || artist.name}`,
-      onPractice: () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo })),
+      onPractice: start,
     });
-  }));
+  }, { look: artist.hint, returnTo }));
 }
 
 // --- Nivel «a fondo» de un pintor: la historia de su etapa y la ronda (no toca la parada del camino) ---
@@ -349,7 +347,7 @@ export function renderDeep(ctx, el, artistId, level) {
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown });
     playEra(movement.era);
     ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
-  });
+  }, { look: artist.hint, returnTo });
 }
 
 // --- Sala de movimiento (sin pintores con etapa) ---------------------------------

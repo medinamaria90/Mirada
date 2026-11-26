@@ -5,7 +5,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { levelStory, cropOf, step, storyKey, MAX_CARDS, MAX_TEXT, sourceLabel } from '../app/js/engine/stories.js';
+import { levelStory, cropOf, step, storyKey, MAX_CARDS, MAX_TEXT, sourceLabel, lookLine } from '../app/js/engine/stories.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(here, '..', 'app', 'data', 'historias');
@@ -93,4 +93,12 @@ test('historias: el avatar es un autorretrato o nada (nunca el retrato de otro)'
   assert.equal(avatarWork([other], { selfOnly: true }), null);
   assert.equal(avatarWork([other, self], { selfOnly: true }).work.id, 's');
   assert.equal(avatarWork([other]).work.id, 'o', 'la ficha sigue admitiendo un retrato con encuadre revisado');
+});
+
+test('historias: la última tarjeta lleva el «Fíjate en…» del pintor salvo que alguna tarjeta ya invite a fijarse', () => {
+  const hint = 'Fíjate en los bordes difuminados.';
+  assert.equal(lookLine([{ text: 'Nació en Vinci.' }], hint), hint);
+  assert.equal(lookLine([{ text: 'Nació en Vinci.' }, { text: 'Fíjate en los contornos: no hay líneas.' }], hint), '');
+  assert.equal(lookLine([{ text: 'Nació en Vinci.' }], ''), '');
+  assert.equal(lookLine([{ text: 'Nació en Vinci.' }], undefined), '');
 });

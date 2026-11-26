@@ -15,6 +15,14 @@ export const cardDuration = (card) => CARD_BASE_MS + CARD_MS_PER_CHAR * String(c
 
 export const storyKey = (artistId, level) => `${artistId}:${level}`;
 
+// La pista «Fíjate en…» del pintor para la última tarjeta, salvo que alguna tarjeta ya invite a fijarse en algo ('' entonces).
+const LOOK_CUE = /f[ií]jate/i;
+export function lookLine(cards, hint) {
+  const text = String(hint || '').trim();
+  if (!text || (cards || []).some((c) => LOOK_CUE.test(String(c?.text || '')))) return '';
+  return text;
+}
+
 const validCard = (c) => c && typeof c.text === 'string' && c.text.length > 0 && c.text.length <= MAX_TEXT && typeof c.artwork === 'string';
 
 // La historia de un nivel ({ title, stage?, cards }) o null si el pintor no la tiene. Se ignoran las tarjetas

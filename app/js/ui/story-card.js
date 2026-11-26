@@ -15,14 +15,15 @@ export function mediaHtml(work, focus, pos, artistName) {
   const f = frameFor(work, focus);
   const crop = f.mode === 'crop';
   const alt = `${work.title}, de ${artistName}`;
-  const img = `<img class="story-img" src="${esc(work.img)}" alt="${esc(alt)}" width="${work.w || 4}" height="${work.h || 3}" decoding="async" fetchpriority="high">`;
-  const backdrop = crop ? '' : `<img class="story-bg" src="${esc(tinySrc(work))}" alt="" aria-hidden="true">`;
+  const img = `<img class="story-img" src="${esc(work.img)}" alt="${esc(alt)}" width="${work.w || 4}" height="${work.h || 3}" decoding="async" fetchpriority="high" draggable="false">`;
+  const backdrop = crop ? '' : `<img class="story-bg" src="${esc(tinySrc(work))}" alt="" aria-hidden="true" draggable="false">`;
   return `<div class="story-art${crop ? ' is-crop' : ''}" style="--x:${f.x}%;--y:${f.y}%;--z:${f.zoom}">
     <div class="story-pan" data-pan="${pos % PAN_KINDS}">${backdrop}${img}</div></div>`;
 }
 
-// Texto de la tarjeta y su pie. En la última, además, fuentes y acciones (play: false si no hay nada que jugar).
-export function copyHtml(card, work, { last, sources, play }) {
+// Texto de la tarjeta y su pie. En la última, además, la pista «Fíjate en…» (look, si la hay), fuentes y acciones (play: false
+// si no hay nada que jugar).
+export function copyHtml(card, work, { last, sources, look = '', play }) {
   const caption = captionOf(work);
   const foot = !last ? '' : `<div class="story-sources" id="story-sources" hidden>
       <p class="story-sources-title">Fuentes</p>
@@ -34,5 +35,6 @@ export function copyHtml(card, work, { last, sources, play }) {
       ${play ? '<button type="button" class="btn btn-primary story-play" data-st="play">Jugar</button>' : ''}
     </div>`;
   return `<div class="story-copy" tabindex="-1"><p class="story-text">${esc(card.text)}</p>
-      ${caption ? `<p class="story-caption">${esc(caption)}</p>` : ''}</div>${foot}`;
+      ${caption ? `<p class="story-caption">${esc(caption)}</p>` : ''}
+      ${last && look ? `<p class="story-look">${icons.eye(18)}<span>${esc(look)}</span></p>` : ''}</div>${foot}`;
 }

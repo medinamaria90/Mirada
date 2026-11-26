@@ -1,6 +1,6 @@
 // Tarjetas de una época (data/epocas/<movimiento>.json): en la presentación de la época se desliza a la derecha
 // para ver la época en ocho tarjetas (cuándo y dónde, por qué surge… y una curiosidad). Cada tarjeta, un cuadro de la
-// época (se abre en grande) y su fuente; la última puede invitar a jugar. Sin tarjetas, la presentación queda como estaba.
+// época (se abre en grande) y su fuente. Sin tarjetas, la presentación queda como estaba.
 
 import { esc, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
@@ -25,8 +25,7 @@ function loadCards(movementId) {
   return cache.get(movementId) || loadCards(movementId);
 }
 
-function cardHtml(index, card, n, total, play) {
-  const cta = n === total && play;
+function cardHtml(index, card, n, total) {
   const w = index.artwork(card.artwork);
   const who = w ? index.artist(w.artistId) : null;
   const label = sourceLabel(card.source);
@@ -36,13 +35,11 @@ function cardHtml(index, card, n, total, play) {
     <p class="era-chip">${esc(card.kicker)}</p>
     <p class="era-text">${esc(card.text)}</p>
     ${label ? `<a class="era-source" href="${esc(card.source)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : ''}
-    ${cta ? `<button type="button" class="btn btn-secondary btn-wide era-play" data-action="${esc(play.action)}"${play.to ? ` data-to="${esc(play.to)}"` : ''}>Empezar a jugar</button>` : ''}
   </section>`;
 }
 
 // root: el .welcome de la presentación. La portada (cuadros, título, frase) pasa a ser la primera diapositiva.
-// play: { action, to? } para el botón «Empezar a jugar» de la última tarjeta, o null para no ponerlo.
-export async function mountEraCards(ctx, root, movementId, play = null) {
+export async function mountEraCards(ctx, root, movementId) {
   const [cards] = await Promise.all([loadCards(movementId), loadCss('css/epocas.css')]);
   const body = $('.welcome-body', root);
   if (!cards.length || !body || !root.isConnected) return;
@@ -61,7 +58,7 @@ export async function mountEraCards(ctx, root, movementId, play = null) {
   first.append(...cover);
   first.insertAdjacentHTML('beforeend', `<button type="button" class="era-more" data-era="next">Descubre la época${icons.next(16)}</button>`);
   track.append(first);
-  track.insertAdjacentHTML('beforeend', cards.map((c, i) => cardHtml(ctx.index, c, i + 2, total, play)).join(''));
+  track.insertAdjacentHTML('beforeend', cards.map((c, i) => cardHtml(ctx.index, c, i + 2, total)).join(''));
   const dots = `<div class="era-dots">${Array.from({ length: total }, (_, i) => `<button type="button" class="era-dot" data-era="go" data-i="${i}" aria-label="Tarjeta ${i + 1} de ${total}"><span></span></button>`).join('')}</div>`;
   body.prepend(track);
   track.insertAdjacentHTML('afterend', dots);

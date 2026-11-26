@@ -15,7 +15,7 @@ import { loadStory } from './story-data.js';
 import { avatarHtml } from './avatar.js';
 import { mediaHtml, copyHtml } from './story-card.js';
 import { seenOf, avatarWork, openingWork, coverWork } from '../engine/painters.js';
-import { levelStory, step, storyKey, cardDuration, storySources } from '../engine/stories.js';
+import { levelStory, step, storyKey, cardDuration, storySources, lookLine } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
 const HOLD_MS = 180; // mantener el dedo así de rato pausa la historia
@@ -29,16 +29,28 @@ let current = null;
 // La duración crece con el tamaño de letra del sistema (con el texto al 200 % se tarda el doble en leer).
 const fontScale = () => Math.max(1, (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16);
 
-// Muestra la historia del nivel y devuelve una promesa que se cumple al cerrarla con los cuadros que ha enseñado ([] si no se
-// mostró). opts: { force } vuelve a mostrarla aunque ya se haya visto; { history: false } cuando va seguida de una ronda: no entra
-// en el historial (su «atrás» llegaría cuando la ronda ya está montada); { onPlay } lo que hace «Jugar» tras cerrar (sin él, solo
-// cerrar: lo que sigue es la ronda) o false si no hay nada que jugar; { onMore } lo que hace «Ver más» (sin él, abre la ficha).
+// Cómo se cerró la historia (lo que devuelve playStory en `ended`).
+export const STORY_END = Object.freeze({
+  NONE: 'none', // no había historia (o ya vista sin `force`): no se mostró nada
+  PLAY: 'play', // «Jugar» en la última tarjeta (o pasada la última)
+  MORE: 'more', // «Ver más»
+  CLOSE: 'close', // la X, Esc o deslizar hacia abajo
+  BACK: 'back', // atrás del navegador o cambio de ruta
+});
+
+// Muestra la historia del nivel y devuelve una promesa que se cumple al cerrarla con { shown, ended }: los cuadros que ha
+// enseñado y cómo se cerró (STORY_END). opts: { force } vuelve a mostrarla aunque ya se haya visto; { history: false } cuando va
+// seguida de una ronda: no entra en el historial (su «atrás» llegaría cuando la ronda ya está montada); { onPlay } lo que hace
+// «Jugar» tras cerrar (sin él, solo cerrar: lo que sigue lo decide quien llama) o false si no hay nada que jugar; { onMore } lo que
+// hace «Ver más» (sin él, abre la ficha); { look } la pista «Fíjate en…» del pintor, que la última tarjeta añade si la historia
+// no lo dice ya.
 export async function playStory(ctx, artistId, level, opts = {}) {
   const key = storyKey(artistId, level);
-  if (!opts.force && storySeen(key)) return [];
+  const none = { shown: [], ended: STORY_END.NONE };
+  if (!opts.force && storySeen(key)) return none;
   const [story] = await Promise.all([loadStory(artistId), loadCss('css/historias.css'), loadSealCss()]);
   const lv = levelStory(story, level);
-  if (!lv) return [];
+  if (!lv) return none;
   const { index } = ctx;
   if (current) current.close();
   markStorySeen(key);
@@ -54,6 +66,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
   const ownFace = avatarWork(mine, { selfOnly: true });
   const opening = ownFace ? ownFace.work : (mine.length ? openingWork(mine, null) : null);
   const sources = storySources(lv.cards);
+  const look = lookLine(lv.cards, opts.look);
   const more = opts.onMore || (() => ctx.go(`pintor-${artistId}`));
 
   return new Promise((resolve) => {
@@ -74,7 +87,6 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       </div>
       <button type="button" class="story-step story-back" data-st="prev" aria-label="Anterior">${icons.prev(22)}</button>
       <button type="button" class="story-step story-next" data-st="next" aria-label="Siguiente">${icons.next(22)}</button>
-      <p class="story-paused" aria-hidden="true">En pausa</p>
       <div class="story-bottom"></div>
       <p class="sr-only" data-live role="status" aria-live="polite"></p>
     </div>`;
@@ -103,7 +115,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const work = override || index.artwork(card.artwork);
       if (work) shownIds.push(work.id);
       media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name);
-      bottom.innerHTML = copyHtml(card, work, { last, sources, play: opts.onPlay !== false });
+      bottom.innerHTML = copyHtml(card, work, { last, sources, look, play: opts.onPlay !== false });
       dlg.classList.toggle('is-last', last);
       dlg.querySelector('.story-back').hidden = pos === 0;
       dlg.querySelector('.story-next').hidden = last;
@@ -116,7 +128,10 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       if (now) { now.style.animation = 'none'; void now.offsetWidth; now.style.animation = ''; }
       // Solo se anuncia lo que el usuario pide (la primera tarjeta y cada cambio a mano), no lo que avanza solo.
       const copy = bottom.querySelector('.story-copy');
-      const hint = () => copy.classList.toggle('has-more', copy.scrollHeight - copy.scrollTop - copy.clientHeight > 4);
+      const hint = () => {
+        copy.classList.toggle('has-more', copy.scrollHeight - copy.scrollTop - copy.clientHeight > 4);
+        copy.classList.toggle('is-scrollable', copy.scrollHeight > copy.clientHeight);
+      };
       copy.addEventListener('scroll', hint, { passive: true });
       hint();
       if (manual) dlg.querySelector('[data-live]').textContent = card.text;
@@ -132,10 +147,11 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     if (useHistory) {
       try { history.pushState({ sfStory: true }, ''); pushed = true; } catch { /* sin historial: la X y Esc siguen funcionando */ }
     }
-    const onPop = () => finish(true);
+    const onPop = () => finish(STORY_END.BACK);
 
     // then: lo que sigue al cerrar (Jugar, Ver más); con entrada propia en el historial, cuando esta ya se ha quitado.
-    function finish(fromPop = false, then = null) {
+    function finish(ended = STORY_END.CLOSE, then = null) {
+      const fromPop = ended === STORY_END.BACK;
       if (closed) return;
       closed = true;
       current = null;
@@ -144,7 +160,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       document.removeEventListener('keydown', onDocKey);
       if (dlg.open) dlg.close();
       dlg.remove();
-      const after = () => { resolve(shownIds); if (then) then(); };
+      const after = () => { resolve({ shown: shownIds, ended }); if (then) then(); };
       if (pushed && !fromPop) {
         window.addEventListener('popstate', after, { once: true });
         try { history.back(); } catch { window.removeEventListener('popstate', after); after(); return; }
@@ -153,7 +169,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     }
     const go = (delta, manual = true) => {
       const r = step(pos, lv.cards.length, delta);
-      if (r.end) return finish();
+      if (r.end) return finish(STORY_END.PLAY);
       if (r.pos === pos) return;
       pos = r.pos;
       if (manual) ctx.audio.sfx('tap');
@@ -175,8 +191,8 @@ export async function playStory(ctx, artistId, level, opts = {}) {
         if (what === 'close') finish();
         else if (what === 'pause') togglePause();
         else if (what === 'info') toggleSources(b);
-        else if (what === 'play') finish(false, typeof opts.onPlay === 'function' ? opts.onPlay : null);
-        else if (what === 'more') finish(false, more);
+        else if (what === 'play') finish(STORY_END.PLAY, typeof opts.onPlay === 'function' ? opts.onPlay : null);
+        else if (what === 'more') finish(STORY_END.MORE, more);
         else go(what === 'next' ? 1 : -1);
         return;
       }
@@ -190,18 +206,27 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     dlg.addEventListener('animationend', (ev) => {
       if (ev.target.parentElement?.classList.contains('is-now') && pos < lv.cards.length - 1) go(1, false);
     });
-    // Mantener el dedo pausa; al soltar sigue. Arrastrar a un lado pasa de tarjeta y hacia abajo la cierra.
+    // Mantener el dedo pausa y aparta la interfaz (el cuadro, limpio); al soltar sigue. Arrastrar a un lado pasa de tarjeta y hacia abajo la cierra.
     let holdTimer = null;
     let from = null;
-    const release = () => { clearTimeout(holdTimer); if (!userPaused && dlg.classList.contains('is-paused')) setPaused(false); };
+    const release = () => { clearTimeout(holdTimer); dlg.classList.remove('is-held'); if (!userPaused && dlg.classList.contains('is-paused')) setPaused(false); };
     dlg.addEventListener('pointerdown', (ev) => {
       const copy = ev.target.closest('.story-copy');
       from = { x: ev.clientX, y: ev.clientY, scrolls: Boolean(copy && copy.scrollHeight > copy.clientHeight) };
       delete dlg.dataset.swiped;
       delete dlg.dataset.held;
-      if (!ev.target.closest('button, a, .story-sources')) holdTimer = setTimeout(() => { setPaused(true); dlg.dataset.held = '1'; }, HOLD_MS);
+      if (!ev.target.closest('button, a, .story-sources')) holdTimer = setTimeout(() => { setPaused(true); dlg.classList.add('is-held'); dlg.dataset.held = '1'; }, HOLD_MS);
     });
-    dlg.addEventListener('pointercancel', () => { release(); from = null; });
+    // En el móvil, un dedo que se mueve un poco o una pulsación larga (menú de la imagen) cancelan el puntero aunque el dedo siga
+    // apoyado: la pausa dura entonces hasta que se levanta.
+    dlg.addEventListener('pointercancel', (ev) => {
+      from = null;
+      if (ev.pointerType !== 'touch') { release(); return; }
+      const lift = () => { document.removeEventListener('touchend', lift); document.removeEventListener('touchcancel', lift); release(); };
+      document.addEventListener('touchend', lift);
+      document.addEventListener('touchcancel', lift);
+    });
+    dlg.addEventListener('contextmenu', (ev) => ev.preventDefault());
     dlg.addEventListener('pointerup', (ev) => {
       release();
       if (!from) return;
@@ -256,7 +281,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     document.addEventListener('keydown', onDocKey);
     // Sin entrada propia en el historial, cambiar de ruta (atrás del navegador) cierra la historia.
     window.addEventListener(useHistory ? 'popstate' : 'hashchange', onPop);
-    current = { close: () => finish(false) };
+    current = { close: () => finish(STORY_END.CLOSE) };
     try { dlg.showModal(); } catch { dlg.setAttribute('open', ''); }
     show(true);
   });

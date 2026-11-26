@@ -42,3 +42,11 @@ test('freshFirst: adelanta la primera no enseñada (mejor del pintor) y, si toda
   assert.equal(order(freshFirst([slot('x'), slot('y')], new Set(['x', 'y']), 'a')), 'x,y');
   assert.equal(order(freshFirst([slot('n'), slot('x')], new Set(['x']), 'a')), 'n,x');
 });
+
+test('embudo historia → preguntas: sin «Conoce a» (learnShown: false), solo cuentan como vistos los cuadros de la historia', () => {
+  const shown = storyWorks('leonardo', 1);
+  for (let s = 1; s <= 30; s++) {
+    const plan = planStage(real, 'leonardo', s, { shown, learnShown: false });
+    assert.ok(!shown.includes(subjectOf(plan.questions[0])), `${s}: abre con ${subjectOf(plan.questions[0])}, recién visto en la historia`);
+  }
+});

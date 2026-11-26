@@ -93,8 +93,10 @@ export function planStage(index, artistId, seed, opts = {}) {
   const planned = !onlyWhich
     ? stageSlots(index, artist, learn, before, rng, opts.review || [], own)
     : firstStageSlots(index, artist, learn, rng, own);
-  // «Conoce a» (nivel 1) y la historia (opts.shown) acaban de enseñar sus cuadros: la ronda no abre con uno de ellos.
-  const shown = new Set([...(opts.shown || []), ...(level === 1 ? learn.map((w) => w.id) : [])]);
+  // La historia (opts.shown) y «Conoce a» (nivel 1, salvo opts.learnShown === false: tras la historia no sale) acaban de
+  // enseñar sus cuadros: la ronda no abre con uno de ellos.
+  const learnShown = level === 1 && opts.learnShown !== false;
+  const shown = new Set([...(opts.shown || []), ...(learnShown ? learn.map((w) => w.id) : [])]);
   const slots = freshFirst(planned, shown, artistId);
   const avoid = slots.map((s) => s.work.id).concat(slots.flatMap((s) => s.includeWorks || []));
   // Fase de cada pregunta: «practice» si el cuadro se enseña en «Conoce a» de su pintor y «fresh» si
