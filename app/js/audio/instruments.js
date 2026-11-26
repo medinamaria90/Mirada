@@ -50,6 +50,8 @@ export const KS = {
   harpsichord: { t60: 1.5, blend: 0.6, bright: 0.5, pick: 0.13, seconds: 1.2, rel: 0.07, peak: 0.8, octave: 0.18, damp: 0.6, cut: 4200, body: 0.35, attack: 0.002 },
   harpsiLite: { t60: 0.85, blend: 0.58, bright: 0.42, pick: 0.27, seconds: 0.8, rel: 0.05, peak: 0.8, octave: 0.12, damp: 0.58, cut: 4000, body: 0.35, attack: 0.002 },
   guitar: { t60: 2.6, blend: 0.5, bright: 0.26, pick: 0.28, seconds: 2.2, rel: 0.6, peak: 0.85, octave: 0, damp: 0.5, cut: 3400, body: 0.6, attack: 0.004 },
+  // arpa: cuerda de tripa pulsada en el centro (pocos armónicos), larga y sin cuerpo de caja
+  harp: { t60: 3.2, blend: 0.5, bright: 0.18, pick: 0.45, seconds: 2.6, rel: 1.2, peak: 0.8, octave: 0, damp: 0.45, cut: 3000, body: 0.3, attack: 0.006 },
   pizz: { t60: 0.55, blend: 0.5, bright: 0.28, pick: 0.32, seconds: 0.6, rel: 0.12, peak: 0.9, octave: 0, damp: 0.5, cut: 3200, body: 0.55, attack: 0.003 },
 };
 
@@ -244,6 +246,7 @@ export const INSTRUMENTS = {
   harpsichord: plucked('harpsichord'),
   harpsiLite: plucked('harpsiLite'),
   guitar: plucked('guitar'),
+  harp: plucked('harp'),
   pizz: plucked('pizz'),
   piano: pianoLike('piano'),
   felt: pianoLike('felt'),
@@ -261,7 +264,7 @@ export const INSTRUMENTS = {
 };
 
 /** Envío a reverb por instrumento (0..1, se multiplica por el de la pieza). */
-export const WET = { lute: 1, harpsichord: 0.8, harpsiLite: 0.8, guitar: 0.9, pizz: 0.6, piano: 1, felt: 1,
+export const WET = { lute: 1, harpsichord: 0.8, harpsiLite: 0.8, guitar: 0.9, harp: 1, pizz: 0.6, piano: 1, felt: 1,
   fortepiano: 0.7, musicbox: 1, celesta: 1, glock: 0.9, vibraphone: 1, bell: 1, cello: 1, pad: 1, chime: 1, soft: 0.5,
   recorder: 0.9, flute: 0.9, clarinet: 0.8, accordion: 0.6, viola: 1, strings: 1 };
 

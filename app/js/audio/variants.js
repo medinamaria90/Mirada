@@ -18,6 +18,7 @@ import { IMPRESSIONISM } from './variants/impressionism.js';
 import { POSTIMPRESSIONISM } from './variants/postimpressionism.js';
 import { MODERN } from './variants/modern.js';
 import { CLASSICS, BRANCH_CLASSICS } from './classics.js';
+import { THEME } from './variants/tema.js';
 
 export const DEFAULT_VARIANT = 'base';
 const SEP = '/';
@@ -41,13 +42,16 @@ const BASE_META = {
   modern: { label: 'Campanas, 5/4, acordes por cuartas', character: 'etéreo, extraño, flotante' },
 };
 
-/** Lista de variantes de una era (la original, las compuestas y los clásicos). Vacía si la era no existe. */
+/**
+ * Lista de variantes de una era (la original, las compuestas, los clásicos y, al final, la versión del
+ * tema principal de esa época). Vacía si la era no existe.
+ */
 export function variantsOf(era) {
   const base = SCORES[era];
   if (!base) return [];
   const meta = BASE_META[era] || { label: '', character: '' };
   return [{ id: DEFAULT_VARIANT, name: base.title, label: meta.label, character: meta.character, piece: base },
-    ...(EXTRA[era] || []), ...(CLASSICS[era] || [])];
+    ...(EXTRA[era] || []), ...(CLASSICS[era] || []), ...(THEME[era] || [])];
 }
 
 /** Ramas temáticas con piezas propias (claves de lista que no son épocas). */
