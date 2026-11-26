@@ -6,7 +6,6 @@
 import { buildIndex, mergeCatalogText } from './engine/catalog.js';
 import { dayKey, madridDayKey } from './engine/dates.js';
 import { createStore, safeStorage, STORAGE_KEY } from './state/store.js';
-import { reconcileRoster, markRosterSeen } from './engine/roster.js';
 import { parseRoute, go } from './ui/router.js';
 import { audio, loadAudioWhenIdle, applyAudioSettings, bindBackgroundPause } from './ui/audio-bridge.js';
 import { installArtListeners } from './ui/art.js';
@@ -19,7 +18,7 @@ const root = document.getElementById('app');
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
-  'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'ui/deep-badges.js',
+  'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/level-ring.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'ui/deep-badges.js',
   'ui/icons.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-scroll.js', 'ui/screens/path-art.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js',
   'ui/screens/path-nodes.js', 'ui/screens/path-signs.js', 'ui/shell.js',
 ];
