@@ -17,6 +17,7 @@ let engine = NOOP;
 let available = false;
 let loading = null;
 const pending = { era: 'menu', settings: null, unlocked: false, music: false };
+const pieceListeners = new Set(); // modo «afinar música»: quien quiere saber qué pieza suena
 export const MUSIC_MEMORY_KEY = 'sfumato.music.recent';
 
 /** Últimas piezas por época guardadas en este navegador ({} si no hay o no se puede leer). */
@@ -75,7 +76,11 @@ export function loadAudioWhenIdle(delay = 2500) {
 
 function replay() {
   call('restore', { recent: readMusicMemory() });
-  call('onPiece', () => writeMusicMemory(call('getState')?.recent));
+  call('onPiece', () => {
+    writeMusicMemory(call('getState')?.recent);
+    const info = call('nowPlaying');
+    for (const fn of pieceListeners) fn(info);
+  });
   if (pending.settings) applyAudioSettings(pending.settings);
   call('setEra', pending.era);
   if (pending.unlocked) {
@@ -116,6 +121,14 @@ export const audio = {
   setSfxEnabled: (v) => call('setSfxEnabled', v),
   setVolume: (v) => call('setVolume', v),
   getState: () => call('getState') || { ...NOOP.getState(), unlocked: pending.unlocked },
+  /** Pieza que suena ({ id, title, author, key }) o null si no hay música. */
+  nowPlaying: () => (call('getState')?.playing ? call('nowPlaying') || null : null),
+  nextPiece: () => call('next'),
+  /** Avisa con `fn(info)` cada vez que cambia la pieza; devuelve la baja. */
+  onPieceChange: (fn) => {
+    pieceListeners.add(fn);
+    return () => pieceListeners.delete(fn);
+  },
   isAvailable: () => available,
 };
 
