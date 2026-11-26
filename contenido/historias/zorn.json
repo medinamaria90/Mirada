@@ -1,0 +1,26 @@
+{
+ "artistId": "zorn",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Zorn",
+   "cards": [
+    {
+     "text": "Anders Zorn nació en 1860 en Mora, en el campo sueco, hijo de una campesina y un cervecero alemán al que apenas conoció. Lo criaron sus abuelos.",
+     "artwork": "w1219751",
+     "source": "https://es.wikipedia.org/wiki/Anders_Zorn"
+    },
+    {
+     "text": "De la acuarela pasó al óleo y llegó a ser un retratista de fama mundial: posaron para él hasta tres presidentes de Estados Unidos.",
+     "artwork": "w1219751",
+     "source": "https://es.wikipedia.org/wiki/Anders_Zorn"
+    },
+    {
+     "text": "Fíjate en la joven del ómnibus: la luz de la ventana le da en la cara mientras los demás pasajeros se apretujan. Un instante de ciudad, como una foto.",
+     "artwork": "w18601560",
+     "source": "https://es.wikipedia.org/wiki/Anders_Zorn"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "artistId": "serov",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Serov",
+   "cards": [
+    {
+     "text": "Valentín Serov nació en San Petersburgo en 1865, hijo de un compositor. De niño tomó clases con Repin, que enseguida vio su talento.",
+     "artwork": "w4373329",
+     "source": "https://es.wikipedia.org/wiki/Valent%C3%ADn_Serov"
+    },
+    {
+     "text": "Para la Muchacha con los melocotones, Vera Mamontova, de 12 años, posó cada día durante más de un mes. Serov quería pintar «algo alegre».",
+     "artwork": "w4156438",
+     "source": "https://es.wikipedia.org/wiki/La_muchacha_con_los_melocotones"
+    },
+    {
+     "text": "Fíjate en la luz de la ventana sobre la blusa rosa y la cara de la niña, y en los melocotones de la mesa. Todo parece recién ocurrido.",
+     "artwork": "w4156438",
+     "source": "https://es.wikipedia.org/wiki/La_muchacha_con_los_melocotones"
+    }
+   ]
+  }
+ ]
+}
