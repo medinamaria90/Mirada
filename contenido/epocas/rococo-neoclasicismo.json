@@ -8,10 +8,22 @@
    "source": "https://www.metmuseum.org/toah/hd/watt/hd_watt.htm"
   },
   {
+   "kicker": "Por qué surge",
+   "text": "Muere Luis XIV en 1715 y la nobleza huye de la solemne Versalles a sus casas de París. Se acabaron los techos de héroes: ahora quieren salones coquetos y cuadros alegres.",
+   "artwork": "w766011",
+   "source": "https://en.wikipedia.org/wiki/Rococo"
+  },
+  {
    "kicker": "Qué cambia",
    "text": "Tras los dramas oscuros del barroco llega lo ligero: rosas, jardines, amores. Y a final de siglo, la reacción: David pinta romanos severos, líneas rectas y orden.",
    "artwork": "w476458",
    "source": "https://en.wikipedia.org/wiki/Oath_of_the_Horatii"
+  },
+  {
+   "kicker": "Cómo se pintaba",
+   "text": "Triunfa el pastel: barras de color en polvo que se frotan sobre papel o pergamino. A La bella chocolatera de Liotard la llamaron «el pastel más bello jamás visto».",
+   "artwork": "w445627",
+   "source": "https://en.wikipedia.org/wiki/The_Chocolate_Girl"
   },
   {
    "kicker": "Fíjate en",
@@ -20,10 +32,22 @@
    "source": "https://www.wallacecollection.org/the-swing/origins-of-the-swing/the-commission"
   },
   {
-   "kicker": "Curiosidad",
-   "text": "Luis Meléndez pintó 44 bodegones para el gabinete de historia natural del futuro Carlos IV: frutas, panes y cacharros como piezas de ciencia. Casi todos están en el Prado.",
+   "kicker": "Sus grandes temas",
+   "text": "Amores, fiestas y diosas, pero también la vida sencilla. Luis Meléndez pintó panes, frutas y cacharros de cocina para el gabinete del futuro Carlos IV.",
    "artwork": "w27765779",
    "source": "https://www.museodelprado.es/en/the-collection/art-work/still-life-with-a-watermelon-pastries-bread-and/385038ae-e9b5-4375-a4aa-5a22fe51e1d2"
+  },
+  {
+   "kicker": "Qué nos dejó",
+   "text": "Los museos para todos. En 1793, en plena Revolución, el Louvre abrió sus puertas: los cuadros que habían sido de los reyes pasaban a ser del pueblo.",
+   "artwork": "w636537",
+   "source": "https://en.wikipedia.org/wiki/Louvre"
+  },
+  {
+   "kicker": "Curiosidad",
+   "text": "Los jóvenes ricos ingleses recorrían Italia en su «Grand Tour» y volvían con vistas de Venecia de Canaletto: eran su recuerdo del viaje, como postales gigantes.",
+   "artwork": "w19660427",
+   "source": "https://www.rct.uk/collection/themes/exhibitions/canaletto-the-art-of-venice/the-queens-gallery-buckingham-palace/canalettos-paintings"
   }
  ]
 }

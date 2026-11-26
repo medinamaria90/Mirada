@@ -8,10 +8,22 @@
    "source": "https://www.musee-orsay.fr/es/obras/un-enterrement-ornans-924"
   },
   {
+   "kicker": "Por qué surge",
+   "text": "En 1848 una revolución tumba al rey de Francia. Muchos pintores se preguntan: ¿para qué pintar dioses, si la historia está pasando ahí fuera?",
+   "artwork": "w3212566",
+   "source": "https://www.metmuseum.org/essays/nineteenth-century-french-realism"
+  },
+  {
    "kicker": "Qué cambia",
    "text": "Se acaban los héroes y las tormentas del alma. Los protagonistas son quienes trabajan: Repin pinta a once hombres arrastrando una barcaza por el Volga, agotados.",
    "artwork": "w175628",
    "source": "https://en.wikipedia.org/wiki/Barge_Haulers_on_the_Volga"
+  },
+  {
+   "kicker": "Cómo se pintaba",
+   "text": "Mirar de cerca, del natural. Rosa Bonheur iba a ferias de ganado y mataderos a estudiar animales, y pidió permiso a la policía para poder ir en pantalones.",
+   "artwork": "w14127232",
+   "source": "https://www.metmuseum.org/toah/hd/19wa/hd_19wa.htm"
   },
   {
    "kicker": "Fíjate en",
@@ -20,10 +32,22 @@
    "source": "https://www.musee-orsay.fr/es/obras/des-glaneuses-342"
   },
   {
+   "kicker": "Sus grandes temas",
+   "text": "El trabajo y la vida corriente. Y en España, la historia contada con detalle real: esta Juana la Loca de Pradilla ganó la medalla de honor en 1878.",
+   "artwork": "w3038406",
+   "source": "https://www.museodelprado.es/en/the-collection/art-work/juana-la-loca/74bffb8f-dfd0-431f-88a9-eed8cb2b578f"
+  },
+  {
+   "kicker": "Qué nos dejó",
+   "text": "Exposiciones que viajan. En 1870, pintores rusos como Kramskói se unieron para llevar sus cuadros de ciudad en ciudad y acercar el arte a la gente.",
+   "artwork": "w2354080",
+   "source": "https://www.britannica.com/art/Peredvizhniki"
+  },
+  {
    "kicker": "Curiosidad",
-   "text": "Fortuny entregó La vicaría a su marchante Goupil en 1870 y en París se vendió por 70.000 francos, una fortuna. Fue el acontecimiento del año.",
-   "artwork": "w4892369",
-   "source": "https://reunido.uniovi.es/index.php/RAHA/article/download/15859/13666/44137"
+   "text": "En 1855 la Exposición Universal de París rechazó El taller del pintor. Courbet no se rindió: levantó su propio pabellón al lado y lo llamó «Del Realismo».",
+   "artwork": "w1167178",
+   "source": "https://www.metmuseum.org/essays/gustave-courbet-1819-1877"
   }
  ]
 }

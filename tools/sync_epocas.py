@@ -1,6 +1,6 @@
 """Copia las tarjetas de época de contenido/epocas/ a app/data/epocas/ (lo que sirve la app) y escribe su índice.
 
-Valida cada archivo (formato de contenido/epocas/README.md): exactamente 4 tarjetas con los cuatro «kickers» en orden,
+Valida cada archivo (formato de contenido/epocas/README.md): exactamente 8 tarjetas con los ocho «kickers» en orden,
 texto de hasta 180 caracteres, fuente con URL y, si hay catálogo en app/data/catalog.json, que el movimiento exista y que
 cada obra exista, sea «learn» y pertenezca al movimiento. Uso: python3 -I tools/sync_epocas.py
 El índice (`index.json`) es la lista de ids de movimiento con tarjetas: así la app no pide archivos que no existen.
@@ -13,7 +13,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "contenido", "epocas")
 DST = os.path.join(ROOT, "app", "data", "epocas")
 MAX_TEXT = 180
-KICKERS = ["Cuándo y dónde", "Qué cambia", "Fíjate en", "Curiosidad"]
+KICKERS = [
+    "Cuándo y dónde", "Por qué surge", "Qué cambia", "Cómo se pintaba",
+    "Fíjate en", "Sus grandes temas", "Qué nos dejó", "Curiosidad",
+]
 FORBIDDEN_WORDS = ("ayer", "mañana")
 
 

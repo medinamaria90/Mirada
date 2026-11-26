@@ -3,9 +3,15 @@
  "cards": [
   {
    "kicker": "Cuándo y dónde",
-   "text": "Nace en Florencia en el siglo XV, en tiempos de los Médici, y de allí pasa a Roma y Venecia. Esta Primavera de Botticelli (h. 1480) perteneció a la familia.",
+   "text": "Nace en Florencia en el siglo XV y se extiende a Roma, Venecia y media Europa. A Castilla lo trae Pedro Berruguete, que probablemente trabajó en Urbino, en Italia.",
+   "artwork": "w27697131",
+   "source": "https://www.museodelprado.es/en/the-collection/artist/wd/5ceca922-7b6f-4073-8163-0f4b9b65d0ca"
+  },
+  {
+   "kicker": "Por qué surge",
+   "text": "Florencia es rica gracias a la lana y la banca. Los Médici, banqueros del papa, gastan su fortuna en arte: pagan iglesias, estatuas y cuadros como esta Primavera.",
    "artwork": "w549847",
-   "source": "https://uffizi.it/en/artworks/botticelli-spring"
+   "source": "https://www.britannica.com/place/Italy/Florence"
   },
   {
    "kicker": "Qué cambia",
@@ -14,16 +20,34 @@
    "source": "https://www.britannica.com/topic/Last-Supper-fresco-by-Leonardo-da-Vinci"
   },
   {
+   "kicker": "Cómo se pintaba",
+   "text": "Al fresco: colores sobre yeso aún húmedo, que al secar los atrapa para siempre. Hay que darse prisa, un trozo cada día. Así cubrió Miguel Ángel la bóveda de la Sixtina.",
+   "artwork": "w500242",
+   "source": "https://www.britannica.com/question/How-did-Michelangelo-paint-the-ceiling-of-the-Sistine-Chapel"
+  },
+  {
    "kicker": "Fíjate en",
    "text": "Sin líneas que recorten los contornos: todo pasa de la luz a la sombra como humo. Es el sfumato de Leonardo, capas finísimas de pintura. De ahí el nombre de esta app.",
    "artwork": "w12418",
    "source": "https://www.britannica.com/art/sfumato"
   },
   {
+   "kicker": "Sus grandes temas",
+   "text": "Junto a vírgenes y santos vuelven los dioses de Grecia y Roma. Un mito pintado tan en grande como esta Venus casi no se veía desde la Antigüedad.",
+   "artwork": "w151047",
+   "source": "https://en.wikipedia.org/wiki/The_Birth_of_Venus"
+  },
+  {
+   "kicker": "Qué nos dejó",
+   "text": "La propia palabra. En 1550 Giorgio Vasari publicó las vidas de los artistas, el primer libro de historia del arte, y habló de un «renacer» de las artes.",
+   "artwork": "w186953",
+   "source": "https://en.wikipedia.org/wiki/Lives_of_the_Most_Excellent_Painters,_Sculptors,_and_Architects"
+  },
+  {
    "kicker": "Curiosidad",
-   "text": "Pedro Berruguete, de Paredes de Nava (Palencia), trabajó probablemente en la corte de Urbino, en Italia, y trajo a Castilla lo aprendido. Sus tablas de Ávila están en el Prado.",
-   "artwork": "w27697131",
-   "source": "https://www.museodelprado.es/en/the-collection/artist/wd/5ceca922-7b6f-4073-8163-0f4b9b65d0ca"
+   "text": "En Florencia, los pintores entraban en el gremio de médicos y boticarios. ¿Por qué? Porque los colores se compraban en la botica, como las medicinas.",
+   "artwork": "w2378567",
+   "source": "https://en.wikipedia.org/wiki/Guilds_of_Florence"
   }
  ]
 }
