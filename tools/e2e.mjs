@@ -1040,7 +1040,7 @@ if (SMOKE) {
   check((await openDialogs()).length === 0, 'la hoja sigue abierta al cambiar de pantalla');
   await page.goto(`${base}#inicio`);
   await page.waitForSelector(goticoSign);
-  // «Empieza aquí» abre «Cómo se juega» y «Vamos» lo cierra.
+  // El botón de la salida abre «Cómo se juega» y «Vamos» lo cierra.
   await page.click('[data-action="start"]');
   await page.waitForSelector('dialog.map-sheet[open] .ms-how');
   await audit(page, '390 cómo se juega');

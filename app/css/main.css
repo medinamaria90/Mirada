@@ -195,6 +195,15 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .path-trail { z-index: 1; }
 .path-museum-art, .path-start-art { z-index: 0; }
 .path-start-art.is-front { z-index: 2; }
+/* «Cómo se juega»: botón redondo y discreto junto a la puerta de salida (el cartel es el de la primera época). */
+.start-help {
+  position: absolute; z-index: 3; display: grid; place-items: center; width: 44px; height: 44px; margin: 0; padding: 0; translate: -50% 0;
+  border: 1px solid var(--map-sign-line); border-radius: 999px; background: var(--map-sign); color: var(--map-sign-ink-2); box-shadow: 0 2px 0 var(--map-sign-line); cursor: pointer;
+}
+.start-help::after { content: ""; position: absolute; inset: -2px; }
+.start-help:active { transform: translateY(2px); box-shadow: none; }
+.start-help:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
+.path-map.is-linear .start-help { position: static; translate: none; align-self: flex-start; }
 .trail-edge, .trail-fill, .trail-steps, .spur-edge, .spur-fill { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 /* Trazado estirado (letra grande): el trazo conserva su grosor. */
 .path-map.is-tall .path-trail path { vector-effect: non-scaling-stroke; }
@@ -238,7 +247,6 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .sign-plate:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
 /* Filete superior con el acento de la época (cerrada, apagado). */
 .sign-plate::before { content: ""; position: absolute; top: -1px; left: 12px; right: 12px; height: 3px; border-radius: 0 0 3px 3px; background: var(--accent-ui); }
-.sign-plate.is-start::before { background: var(--brand); }
 .sign-plate.is-locked::before { background: var(--map-sign-line); }
 button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--map-sign-line); }
 .sign-plate:has(.sign-more) { padding-right: calc(1.6 * var(--map-fs)); }
@@ -258,10 +266,10 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 /* Nodos: cada parada es un punto (0×0) del trazado; el botón cuelga de él hacia el lado ancho. */
 .stages { position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; list-style: none; }
 .stage-spot { position: absolute; width: 0; height: 0; }
-/* Sello de niveles «a fondo» encima del nodo de un pintor dominado (ui/deep-badges.js): zona táctil de 48 px. */
-.deep-badge { position: absolute; z-index: 1; top: -82px; left: -24px; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; background: none; cursor: pointer; }
-.deep-seal { display: grid; place-items: center; min-width: 28px; height: 28px; padding: 0 .35rem; border-radius: 999px; background: var(--gold); color: var(--on-gold); font: 600 .8rem/1 var(--font); font-variant-numeric: lining-nums tabular-nums; box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-sm) 0 3px var(--line-2); }
-.deep-badge:active .deep-seal { transform: translateY(2px); }
+/* Aro de niveles «a fondo» alrededor del retrato (ui/deep-badges.js): un arco por nivel, dorados los que quedan. */
+.deep-ring { position: absolute; inset: calc(var(--deep-ring-out) * -1); width: calc(100% + 2 * var(--deep-ring-out)); height: calc(100% + 2 * var(--deep-ring-out)); rotate: -90deg; pointer-events: none; overflow: visible; }
+.deep-arc { fill: none; stroke: var(--line-2); stroke-width: var(--deep-ring-w); stroke-linecap: round; }
+.deep-arc.is-left { stroke: var(--brand); }
 .stage {
   --dot: 58px; --hit: max(var(--dot), 48px);
   position: absolute; top: calc(var(--hit) / -2); left: calc(var(--dot) / -2); display: flex; align-items: center; gap: calc(.75 * var(--map-fs)); min-height: var(--hit); width: max-content;
@@ -371,30 +379,34 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .stage-spot.is-right .lock-note { left: auto; right: 44px; }
 .lock-note.is-visible { opacity: 1; }
 
-/* Rama: desvío al margen con su cartel (placa hueso) sobre un hito redondo. */
+/* Rama: el desvío acaba en el margen, en su cartel (placa hueso) sobre un hito redondo. La placa nace del borde del
+   mapa hacia dentro (nunca se corta por el lado) y es lo bastante ancha para no partir palabras; el hito y el contador
+   quedan justo donde llega el desvío (--branch-x desde el borde: SIDE_X de path-layout.js). */
+.path-map { --branch-x: calc(100cqi * 42 / 390); --branch-edge: 8px; --branch-dot: 40px; }
 .branch-spot { position: absolute; z-index: 2; width: 0; height: 0; }
 .branch {
-  position: absolute; left: 0; top: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; width: max-content; min-width: min(56px, calc(21.5vw - 16px)); max-width: min(var(--map-branch-w), calc(21.5vw - 16px));
-  padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: center; cursor: pointer;
-  transform: translate(-50%, calc(-100% + 20px));
+  --dot-in: calc(var(--branch-x) - var(--branch-edge) - var(--branch-dot) / 2);
+  position: absolute; left: calc(var(--branch-edge) - var(--branch-x)); top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: max-content; max-width: calc(100cqi * 112 / 390);
+  padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  transform: translateY(calc(-100% + var(--branch-dot) / 2));
 }
+.branch-spot.is-right .branch { left: auto; right: calc(var(--branch-edge) - var(--branch-x)); align-items: flex-end; text-align: right; }
 .branch-plate {
-  display: grid; justify-items: center; gap: 2px; max-width: 100%; padding: calc(.28 * var(--map-fs)) calc(.35 * var(--map-fs)) calc(.32 * var(--map-fs)); border: 1px solid var(--map-sign-line); border-radius: var(--map-r);
+  display: grid; gap: 2px; min-width: min-content; max-width: 100%; padding: calc(.28 * var(--map-fs)) calc(.45 * var(--map-fs)) calc(.32 * var(--map-fs)); border: 1px solid var(--map-sign-line); border-radius: var(--map-r);
   background: var(--map-sign); box-shadow: 0 1.5px 0 var(--map-sign-line);
 }
-.branch-name { font: 600 calc(.75 * var(--map-fs))/1.15 var(--font); color: var(--map-sign-ink); text-wrap: balance; overflow-wrap: break-word; hyphens: manual; }
-/* El contador: panel complementario entre la placa y el hito, dentro del botón (el contorno de foco lo rodea y no
-   pisa el desvío, que llega al hito por abajo). Cuelga sobre el borde de arriba del hito (sin tapar su icono) para que
-   el cartel no suba. Con la letra grande se parte (guiones blandos) sin salirse. */
-.branch-count { position: relative; z-index: 1; display: block; max-width: 100%; margin: -1px 0 -9px; padding: 0 3px; border-radius: var(--map-r); background: var(--map-label); text-align: center; font: 600 calc(.75 * var(--map-fs))/1.05 var(--font); color: var(--ink-2); hyphens: manual; font-variant-numeric: lining-nums tabular-nums; }
+.branch-name { font: 600 calc(.75 * var(--map-fs))/1.15 var(--font); color: var(--map-sign-ink); text-wrap: balance; overflow-wrap: normal; hyphens: none; }
+/* El contador: entre la placa y el hito, centrado sobre el hito (cuelga sobre su borde de arriba sin tapar el icono). */
+.branch-count { position: relative; z-index: 1; display: block; min-width: var(--branch-dot); margin: -1px 0 -9px; margin-inline-start: var(--dot-in); padding: 0 3px; border-radius: var(--map-r); background: var(--map-label); text-align: center; font: 600 calc(.75 * var(--map-fs))/1.05 var(--font); color: var(--ink-2); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.branch-spot.is-right .branch-count, .branch-spot.is-right .branch-dot { margin-inline: 0 var(--dot-in); }
 .branch-dot {
-  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; background: var(--map-tag); color: var(--accent-ui);
+  display: grid; place-items: center; width: var(--branch-dot); height: var(--branch-dot); margin-inline-start: var(--dot-in); border-radius: 999px; background: var(--map-tag); color: var(--accent-ui);
   box-shadow: 0 0 0 2px var(--accent-ui), 0 3px 0 2px var(--map-sign-line); transition: transform .15s var(--ease);
 }
 .branch:active .branch-dot { transform: translateY(2px); }
 .branch.is-mastered .branch-dot { color: var(--gold-text); box-shadow: 0 0 0 2px var(--gold), 0 3px 0 2px var(--map-sign-line); }
-.branch.is-locked { transform: translate(-50%, calc(-100% + 16px)); }
-.branch.is-locked .branch-dot { width: 32px; height: 32px; background: var(--map-locked); color: var(--ink-2); box-shadow: 0 0 0 2px var(--map-sign-line); }
+.branch.is-locked { --branch-dot: 32px; }
+.branch.is-locked .branch-dot { background: var(--map-locked); color: var(--ink-2); box-shadow: 0 0 0 2px var(--map-sign-line); }
 .branch.is-locked .branch-plate { box-shadow: none; }
 .branch.is-locked .branch-name { color: var(--map-sign-ink-2); font-weight: 500; }
 
@@ -425,7 +437,8 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .path-map.is-linear .branch, .path-map.is-linear .branch.is-locked { position: relative; transform: none; flex-direction: row-reverse; justify-content: flex-end; width: calc(100% - var(--map-line-x) + 20px); max-width: none; margin-left: calc(var(--map-line-x) - 20px); gap: 10px; }
 .path-map.is-linear .branch-plate { justify-items: start; text-align: left; }
 .path-map.is-linear .branch, .path-map.is-linear .branch.is-locked { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; row-gap: 2px; justify-items: start; }
-.path-map.is-linear .branch-dot { grid-column: 1; grid-row: 1 / span 2; }
+.path-map.is-linear .branch-dot { grid-column: 1; grid-row: 1 / span 2; margin: 0; }
+.path-map.is-linear .branch-spot .branch { left: auto; right: auto; text-align: left; }
 .path-map.is-linear .branch-plate { grid-column: 2; grid-row: 1; align-self: end; }
 .path-map.is-linear .branch-count { grid-column: 2; grid-row: 2; align-self: start; margin: 0; padding: 0; background: none; text-align: left; }
 .path-map.is-linear .branch { min-height: 48px; align-items: center; }

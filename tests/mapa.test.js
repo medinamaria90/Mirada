@@ -55,7 +55,7 @@ test('mapa: el DOM va en orden cronológico y, dentro de cada tramo, las paradas
   // El museo cierra el camino (último en el DOM = arriba del todo) y el CSS invierte con column-reverse.
   assert.ok(html.trimEnd().endsWith('</li>') && html.lastIndexOf('path-museum') > html.lastIndexOf('path-era'));
   // Delante, solo el suelo que rellena el hueco de la barra de abajo (path-foot).
-  assert.ok(html.trimStart().replace(/^<li class="path-foot"[^>]*><\/li>/, '').startsWith('<li class="path-start"') && html.includes('Empieza aquí'), 'sin hito de salida al principio');
+  assert.ok(html.trimStart().replace(/^<li class="path-foot"[^>]*><\/li>/, '').startsWith('<li class="path-start"') && html.includes('aria-label="Cómo se juega"'), 'sin hito de salida al principio');
   assert.ok(html.includes('Tu museo') && html.includes(`${real.visibleMovements.length} épocas`));
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
   assert.ok(/\.path-map \{[^}]*flex-direction: column-reverse/.test(css), 'el CSS no invierte el camino');
@@ -177,7 +177,7 @@ test('mapa: carteles de época al borde del sendero, nunca encima; tramos sobre 
   for (const era of layout.eras) assert.ok(clear(era.segs, era.sign.top, era.sign.y, era.sign) && era.sign.room >= 150, `${era.id}: el cartel pisa el sendero o no cabe`);
   for (const b of [layout.start, layout.museum]) assert.ok(clear(b.segs, b.sign.top, b.sign.y, b.sign), 'la placa de salida o del museo pisa el sendero');
   const html = renderPathMap(ctxWith(real, masterFirst(real, 1)));
-  assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, real.visibleMovements.length + 2);
+  assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, real.visibleMovements.length + 1, 'un cartel por época y el del museo (la salida no lleva)');
   // Florencia y Castilla: rótulo dentro del texto de Botticelli (oculto al lector) y un elemento propio, legible,
   // justo antes de su parada en el DOM («Tramo …: 1 de 2 dominados»).
   const first = real.artist(real.steps[0].id);
@@ -217,7 +217,7 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   }
   // Época con dos ramas (Manierismo): carteles propios; la de época se llama «Más del …» y dice cuánto falta.
   assert.ok(html.includes('data-action="branch" data-id="descubre-manierismo-y-norte"') && html.includes('<span>faltan 2</span>'));
-  assert.ok(html.includes('Más del Manie­rismo'), 'la rama de época no se llama «Más del …» con guion blando');
+  assert.ok(html.includes('Más del Manierismo') && !html.includes('\u00ad'), 'la rama de época no se llama «Más del …» o lleva palabras partidas');
   const a = real.artist(real.steps.find((x) => x.movementId === 'manierismo-y-norte').id);
   assert.ok(html.includes(`Más del Manierismo y el Norte`) || /Descubre el Manierismo y el Norte: rama cerrada, se abre al dominar a /.test(html), 'la rama cerrada no dice qué la abre');
   assert.ok(a);
@@ -234,14 +234,12 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   // Abierta (primer tramo dominado): el grupo dice cuántas hay abiertas.
   const open = renderPathMap(ctxWith(real, masterFirst(real, 2)));
   assert.ok(/class="branch is-open is-group" data-action="branches" data-id="renacimiento"/.test(open));
-  assert.ok(open.includes('<span class="branch-count">2 abier­tas</span>') && /class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
+  assert.ok(open.includes('<span class="branch-count">2 abiertas</span>') && /class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
 });
 
 test('mapa: textos según el estado (hito, escuelas dominadas, parada actual)', () => {
   const none = renderPathMap(ctxWith(real));
-  assert.ok(none.includes(`${real.visibleMovements.length} épocas por delante`));
-  const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
-  assert.ok(all.includes('Camino completo') && !all.includes('épocas por delante'));
+  assert.ok(!none.includes('Empieza aquí'), 'la salida no repite cartel: el de la primera época basta');
   assert.equal((none.match(/aria-current="step"/g) || []).length, 1, 'la parada actual sin aria-current');
   assert.ok(none.includes(`data-id="${real.steps[0].id}" data-status="available" data-lock="" aria-current="step"`));
   // Escuela con su tramo dominado: «n/n», no «n nuevos».

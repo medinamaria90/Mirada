@@ -62,7 +62,7 @@ async function open(ctx, opener, accent, body, focus = '') {
   return handle;
 }
 
-// «Empieza aquí»: cómo se juega, en tres líneas. Es el único sitio donde la app se explica.
+// «Cómo se juega» (botón de la salida), en tres líneas. Es el único sitio donde la app se explica.
 const HOW = [
   ['arch', 'Cada parada es un pintor: miras sus cuadros y aprendes a reconocerlo.'],
   ['eye', 'Después, preguntas rápidas: ¿quién lo pintó? Aciertas y la parada se ilumina.'],

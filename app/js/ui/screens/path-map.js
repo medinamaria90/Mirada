@@ -48,10 +48,8 @@ export function renderPathMap(ctx, { lazy = false } = {}) {
     ? eraBlock(ctx, era, layout.eras[i - 1], keys)
     : `<li class="path-era is-pending" data-era="${esc(era.id)}" style="--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))"></li>`)).join('');
   const firstTint = layout.eras.length ? `var(--map-tint-${esc(layout.eras[0].id)})` : 'transparent';
-  const p = ctx.store.get().progress;
-  const done = isPathMastered(p, index);
-  const left = layout.eras.filter((e) => !p.medals[`movement-${e.id}`]).length;
-  return `${startBlock(layout.start, layout.eras, firstTint, done ? 0 : left)}${html}${museumBlock(layout.museum, index.visibleMovements.length, done)}`;
+  const done = isPathMastered(ctx.store.get().progress, index);
+  return `${startBlock(layout.start, firstTint)}${html}${museumBlock(layout.museum, index.visibleMovements.length, done)}`;
 }
 
 // Rellena las épocas pendientes, la más cercana a la actual primero, una por tarea. Devuelve cómo pararlo.
@@ -275,7 +273,8 @@ export function pathActions(ctx) {
     return ctx.go(`${route}-${b.dataset.id}`);
   };
   return {
-    stage: guarded('etapa'),
+    // Dominado con niveles «a fondo» por hacer (aro): a sus etapas, en la ficha.
+    stage: (b, ev) => (b.dataset.deep ? (ctx.audio.sfx('tap'), ctx.go(`pintor-${b.dataset.id}-etapas`)) : guarded('etapa')(b, ev)),
     sala: guarded('sala'),
     review: guarded('repaso'),
     intro: (b) => {
