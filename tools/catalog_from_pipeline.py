@@ -140,6 +140,13 @@ def parrafos_con_fuente(v):
     return dict(text=paras, source=source if isinstance(source, str) else "") if paras else None
 
 
+def titulos_cortos(pid):
+    """{nivel: título corto} de las etapas con historia: el `stage` de contenido/historias/<pid>.json (único origen; sin
+    historia no hay título ni tramo en el aro de niveles)."""
+    story = contenido_opcional(os.path.join("historias", f"{pid}.json"))
+    return {lv["level"]: lv["stage"] for lv in story.get("levels", []) if lv.get("level", 0) >= 2 and lv.get("stage")}
+
+
 def main(app):
     obras = load("obras.json")
     pintores = {p["id"]: p for p in load("pintores.json")}
@@ -264,8 +271,11 @@ def main(app):
         old = D.A.get(pid, {})
         cat = p["category"]
         stages = []
+        shorts = titulos_cortos(pid)
         for s in p["stages"]:
             st = dict(id=s["nivel"], name=s["nombre"], **{"from": s.get("desde"), "to": s.get("hasta"), "source": s.get("fuente")})
+            if s["nivel"] in shorts:
+                st["short"] = shorts[s["nivel"]]
             if s.get("verificar"):
                 st["verificar"] = True
             if s.get("provisional"):
