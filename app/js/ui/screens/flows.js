@@ -163,6 +163,7 @@ export function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = nul
     </main>
   </div>`;
   focusHeading(el);
+  import('./era-cards.js').then((m) => m.mountEraCards(ctx, $('.intro', el), movementId)).catch((err) => console.error(err));
   const off = onAction(el, {
     enter: () => {
       ctx.audio.sfx('tap');

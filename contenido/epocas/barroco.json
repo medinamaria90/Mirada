@@ -1,0 +1,29 @@
+{
+ "movementId": "barroco",
+ "cards": [
+  {
+   "kicker": "Cuándo y dónde",
+   "text": "Siglo XVII. Empieza en Roma hacia 1600, con Caravaggio, y se extiende a España, Flandes y Holanda. Este lienzo sigue en la iglesia para la que se pintó.",
+   "artwork": "w969377",
+   "source": "https://www.britannica.com/biography/Caravaggio/The-Contarelli-Chapel-and-other-church-commissions"
+  },
+  {
+   "kicker": "Qué cambia",
+   "text": "Ya no hay cuerpos estirados ni poses raras: hay gente real. Ribera, valenciano en Nápoles, pinta a un niño mendigo a tamaño de héroe, con su cartel pidiendo limosna.",
+   "artwork": "w24118",
+   "source": "https://en.wikipedia.org/wiki/The_Clubfoot"
+  },
+  {
+   "kicker": "Fíjate en",
+   "text": "Un primer plano en sombra y, al fondo, una sala llena de luz. Velázquez esconde ahí la fábula de Aracne. Luz y sombra muy marcadas: así se reconoce el barroco.",
+   "artwork": "w984058",
+   "source": "https://www.museodelprado.es/en/the-collection/art-work/the-spinners-or-the-fable-of-arachne/8c564e3d-a249-4e31-82b3-ac3abce417e8"
+  },
+  {
+   "kicker": "Curiosidad",
+   "text": "En 1715 recortaron La ronda de noche por los cuatro lados para que cupiera en el ayuntamiento de Ámsterdam. En 2021 el Rijksmuseum recreó las partes perdidas.",
+   "artwork": "w219831",
+   "source": "https://www.rijksmuseum.nl/en/stories/operation-night-watch/story/missing-pieces"
+  }
+ ]
+}

@@ -1,0 +1,44 @@
+/* Tarjetas de la época en su presentación (ui/screens/era-cards.js): un carrusel a pantalla completa con puntos. */
+:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, 38dvh, 340px); --era-dot-hit: 28px; }
+
+.has-era-cards { align-items: stretch; padding-left: 0; padding-right: 0; }
+.has-era-cards .welcome-body { max-width: 440px; align-content: center; gap: .9rem; }
+.has-era-cards .welcome-body > .btn { width: calc(100% - 2 * var(--era-pad)); }
+
+.era-track {
+  display: flex; width: 100%; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory;
+  scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.era-track::-webkit-scrollbar { display: none; }
+.era-track:focus-visible { outline: 2.5px solid var(--ink); outline-offset: -4px; border-radius: var(--radius-sm); }
+.era-slide {
+  flex: 0 0 100%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always;
+  display: grid; justify-items: center; align-content: center; gap: .9rem; padding: 0 var(--era-pad); text-align: center;
+}
+.era-cover .welcome-line { margin-bottom: 0; }
+.era-more {
+  display: inline-flex; align-items: center; gap: .35rem; min-height: 44px; padding: 0 1.1rem; border: 0; border-radius: 999px;
+  background: var(--accent-soft); color: var(--ink); font: 600 1rem/1 var(--font); cursor: pointer;
+}
+.era-more .icon { color: var(--accent-ui); transition: transform var(--era-dur) var(--ease); }
+.era-more:hover .icon { transform: translateX(3px); }
+.era-more:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
+
+.era-card { text-align: left; justify-items: stretch; }
+.era-card-art { display: grid; place-items: center; height: var(--era-art-h); }
+.era-card-art .art { max-height: 100%; max-width: 100%; width: auto; height: 100%; aspect-ratio: var(--arw) / var(--arh); border-radius: var(--radius-sm); box-shadow: var(--frame-shadow); }
+.era-card-work { margin: -.3rem 0 0; color: var(--ink-2); font: 400 .9rem/1.3 var(--font); text-align: center; }
+.era-chip {
+  justify-self: start; margin: .2rem 0 0; padding: .3rem .7rem; border-radius: 999px; background: var(--accent-soft);
+  color: var(--accent-ui); font: 600 .8rem/1.2 var(--font); letter-spacing: .06em; text-transform: uppercase;
+}
+.era-text { margin: 0; color: var(--ink); font: 400 clamp(1.15rem, 4.8vw, 1.3rem)/1.45 var(--font); text-wrap: pretty; }
+.era-source { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); font: 500 .9rem/1 var(--font); text-underline-offset: 3px; }
+
+.era-dots { display: flex; justify-content: center; gap: .1rem; }
+.era-dot { display: grid; place-items: center; width: var(--era-dot-hit); height: var(--era-dot-hit); padding: 0; border: 0; background: none; cursor: pointer; }
+.era-dot span { width: 8px; height: 8px; border-radius: 999px; background: var(--line-2); transition: width var(--era-dur) var(--ease), background var(--era-dur) var(--ease); }
+.era-dot[aria-current="true"] span { width: 22px; background: var(--accent-ui); }
+.era-dot:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 0; border-radius: 999px; }
+
+@media (prefers-reduced-motion: reduce) { .era-more .icon, .era-dot span { transition: none; } }

@@ -1,0 +1,29 @@
+{
+ "movementId": "realismo",
+ "cards": [
+  {
+   "kicker": "Cuándo y dónde",
+   "text": "Mediados del siglo XIX, Francia. Courbet pinta a los vecinos de su pueblo, Ornans, en un lienzo de más de seis metros, un tamaño reservado a los grandes temas.",
+   "artwork": "w540488",
+   "source": "https://www.musee-orsay.fr/es/obras/un-enterrement-ornans-924"
+  },
+  {
+   "kicker": "Qué cambia",
+   "text": "Se acaban los héroes y las tormentas del alma. Los protagonistas son quienes trabajan: Repin pinta a once hombres arrastrando una barcaza por el Volga, agotados.",
+   "artwork": "w175628",
+   "source": "https://en.wikipedia.org/wiki/Barge_Haulers_on_the_Volga"
+  },
+  {
+   "kicker": "Fíjate en",
+   "text": "Tres campesinas encorvadas recogen lo que queda tras la siega. Colores de tierra, nada de adornos. Trabajo duro contado sin dramatismo: eso es realismo.",
+   "artwork": "w1368055",
+   "source": "https://www.musee-orsay.fr/es/obras/des-glaneuses-342"
+  },
+  {
+   "kicker": "Curiosidad",
+   "text": "Fortuny entregó La vicaría a su marchante Goupil en 1870 y en París se vendió por 70.000 francos, una fortuna. Fue el acontecimiento del año.",
+   "artwork": "w4892369",
+   "source": "https://reunido.uniovi.es/index.php/RAHA/article/download/15859/13666/44137"
+  }
+ ]
+}
