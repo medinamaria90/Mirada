@@ -1,9 +1,11 @@
 {
  "renacimiento": [
   {
-   "section": "Florencia y Castilla",
+   "section": "Primer Renacimiento",
    "artists": [
     "botticelli",
+    "masaccio",
+    "piero",
     "berruguete"
    ]
   },
@@ -28,6 +30,7 @@
    "section": "Primitivos flamencos",
    "artists": [
     "van-eyck",
+    "van-der-weyden",
     "bosco"
    ]
   },
@@ -35,7 +38,15 @@
    "section": "Alemania y Flandes",
    "artists": [
     "durero",
+    "holbein",
     "bruegel"
+   ]
+  },
+  {
+   "section": "Manierismo",
+   "artists": [
+    "parmigianino",
+    "bronzino"
    ]
   },
   {
@@ -112,6 +123,7 @@
   {
    "section": "Historia",
    "artists": [
+    "gericault",
     "delacroix",
     "madrazo"
    ]
@@ -188,6 +200,7 @@
   {
    "section": "Vanguardias",
    "artists": [
+    "matisse",
     "kandinsky",
     "juan-gris"
    ]

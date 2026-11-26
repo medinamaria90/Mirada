@@ -80,11 +80,13 @@ test('«Se abre» frente a «Siguiente» se decide con el estado en la rama de o
 
 test('un pintor del camino común jugado desde una rama sigue en ella: Berruguete desde Maestros españoles', () => {
   const p = renacimientoAbierto();
+  // Bermejo (invitado, 1440) va antes que Berruguete en la rama: superado, el siguiente es Juan de Juanes.
+  p.artists.bermejo = { plays: 1, best: 1, mastered: true, last: TODAY };
   assert.ok(real.pathIndex('berruguete') >= 0, 'Berruguete está en el camino común');
   const after = branchAfterRound(p, real, 'berruguete', 'maestros-espanoles');
   assert.equal(after.branch.id, 'maestros-espanoles');
   assert.equal(after.next, 'juan-de-juanes', '«Siguiente en la rama»: Juan de Juanes');
-  assert.equal(after.mastered, 0);
+  assert.equal(after.mastered, 1);
   assert.equal(after.total, branchProgress(p, real, 'maestros-espanoles').total);
   assert.equal(stageRoute(after.next, after.branch.id), 'etapa-juan-de-juanes--maestros-espanoles');
   // Desde el camino (sin rama) o desde una rama que no lo tiene, sigue siendo una parada del camino.

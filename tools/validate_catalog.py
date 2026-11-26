@@ -15,12 +15,13 @@ from collections import Counter, defaultdict
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from atlas_layout import layout, packed_size  # noqa: E402
 
+FIRST_TRAMO = 4  # «Primer Renacimiento»: Botticelli, Masaccio, Piero y Berruguete
 MAX_APP_FILES = 600  # con las 86 hojas del atlas generadas en local (no entran en el repo)
 LOOK_MAX = 100
 MIN_PATH_LEVEL1 = 4          # obras de nivel 1 sin spoiler de un pintor con etapa
 STAGE_CATEGORIES = ("gran-maestro", "maestro")
 CATEGORIES = STAGE_CATEGORIES + ("invitado", "rama")
-ERAS = {"menu", "renaissance", "baroque", "rococo", "neoclassic", "romantic", "realism",
+ERAS = {"menu", "gothic", "renaissance", "northern", "baroque", "rococo", "neoclassic", "romantic", "realism",
         "impressionism", "postimpressionism", "modern"}
 errors = []
 warnings = []
@@ -142,8 +143,9 @@ def main():
     for mid, os_ in orders.items():
         check(len(os_) == len(set(os_)), f"order repetido en movimiento {mid}")
     path = sorted((a for a in cat["artists"] if a["category"] in STAGE_CATEGORIES), key=lambda a: (mov[a["movementId"]]["order"], a["order"]))
-    check(path and path[0]["id"] == "botticelli" and [a["id"] for a in path[2:4]] == ["rafael", "leonardo"],
-          "el camino abre con Botticelli; Rafael 3.º y Leonardo 4.º")
+    ids = [a["id"] for a in path]
+    check(ids[:1] == ["botticelli"] and ids[FIRST_TRAMO:FIRST_TRAMO + 2] == ["rafael", "leonardo"],
+          f"el camino abre con Botticelli; Rafael y Leonardo justo después del primer tramo ({FIRST_TRAMO} paradas)")
     # Los tramos de un movimiento son contiguos en el orden del camino.
     for mid in mids:
         stage = [a for a in path if a["movementId"] == mid]

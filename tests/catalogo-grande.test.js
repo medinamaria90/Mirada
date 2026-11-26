@@ -26,9 +26,9 @@ const catalog = json('data/catalog.json');
 const TODAY = '2026-11-24';
 const askable = (w) => !w.spoiler && !w.attributed;
 
-test('cifras: 1.297 obras, 162 pintores, 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
-  assert.equal(real.artworks.length, 1297);
-  assert.equal(real.artists.length, 162);
+test('cifras: 1.446 obras, 175 pintores, 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
+  assert.equal(real.artworks.length, 1446);
+  assert.equal(real.artists.length, 175);
   assert.equal(real.movements.length, 11);
   assert.deepEqual(real.movements.filter((m) => m.branch).map((m) => [m.id, m.opensAt]), [['gotico', 'renacimiento'], ['ukiyo-e', 'impresionismo']]);
   assert.equal(real.visibleMovements.length, 9);
@@ -44,13 +44,13 @@ test('camino común: onPath = grandes maestros + maestros + invitados con alguna
     if (a.category === 'rama') assert.equal(a.onPath, false, a.id);
   }
   const count = (c) => real.artists.filter((a) => a.onPath && a.category === c).length;
-  assert.deepEqual([count('gran-maestro'), count('maestro'), count('invitado')], [14, 42, 19]);
+  assert.deepEqual([count('gran-maestro'), count('maestro'), count('invitado')], [14, 50, 16]);
   // Solo los grandes maestros y los maestros son paradas; los invitados del camino van intercalados.
-  assert.equal(real.path.length, 56);
-  assert.deepEqual(real.path.map((a) => a.id).slice(0, 4), ['botticelli', 'berruguete', 'rafael', 'leonardo']);
+  assert.equal(real.path.length, 64);
+  assert.deepEqual(real.path.map((a) => a.id).slice(0, 6), ['botticelli', 'masaccio', 'piero', 'berruguete', 'rafael', 'leonardo']);
   assert.ok(real.path.every((a) => a.onPath && !a.guest));
   const hosted = real.path.flatMap((p) => real.guestsAt(p.id));
-  assert.equal(hosted.length, 19, 'cada invitado del camino tiene su pintor con etapa al lado');
+  assert.equal(hosted.length, 16, 'cada invitado del camino tiene su pintor con etapa al lado');
   assert.ok(hosted.every((g) => g.onPath && g.guest));
   // Los españoles siguen mezclados en su época (en el Postimpresionismo, el único español es invitado).
   for (const m of real.visibleMovements.filter((x) => x.id !== 'postimpresionismo')) assert.ok(real.stageArtists(m.id).some((a) => a.country === 'España'), m.id);
@@ -92,7 +92,7 @@ test('ramas: cronológicas por dentro, con su tramo de apertura, y los «Descubr
   assert.ok(byId.gotico.artists.includes('giotto') && byId.gotico.artists.includes('van-eyck'));
   assert.deepEqual(byId['ukiyo-e'].artists.slice().sort(), ['hiroshige', 'hokusai', 'kuniyoshi', 'sharaku', 'utamaro']);
   assert.equal(byId['ukiyo-e'].opensAt, 'impresionismo');
-  assert.equal(byId['maestros-espanoles'].artists.length, 38);
+  assert.equal(byId['maestros-espanoles'].artists.length, 40);
   assert.equal(byId['escuela-rusa'].artists.length, 25);
   assert.ok(byId['pintura-britanica'].artists.includes('millais') && byId['pintura-britanica'].artists.includes('turner'));
   const discover = real.branches.filter((b) => b.kind === 'epoca').flatMap((b) => b.artists);
@@ -108,14 +108,14 @@ test('ramas: un tramo se abre al dominar el primer tramo de su época; nunca el 
   const p0 = emptyProgress();
   for (const b of real.branches) assert.ok(branchStatus(p0, real, b.id).every((s) => s.onPath || s.status === 'locked'), `${b.id}: abierta el primer día`);
   assert.equal(movementReached(p0, real, 'renacimiento'), true);
-  assert.deepEqual(firstTramo(real, 'renacimiento').map((s) => s.id), ['botticelli', 'berruguete']);
+  assert.deepEqual(firstTramo(real, 'renacimiento').map((s) => s.id), ['botticelli', 'masaccio', 'piero', 'berruguete']);
   assert.deepEqual(firstTramo(real, 'romanticismo').map((s) => s.id), ['goya'], 'sin tramos, la primera parada');
-  // Con Botticelli solo, aún no; con el tramo «Florencia y Castilla» dominado, se abre el Gótico.
+  // Con Botticelli solo, aún no; con el tramo «Primer Renacimiento» dominado, se abre el Gótico.
   const p = emptyProgress();
   masterSteps(p, real.steps.slice(0, 1));
   assert.equal(tramoOpen(p, real, 'renacimiento'), false);
-  assert.deepEqual(tramoPending(p, real, 'renacimiento').map((s) => s.id), ['berruguete']);
-  masterSteps(p, real.steps.slice(0, 2));
+  assert.deepEqual(tramoPending(p, real, 'renacimiento').map((s) => s.id), ['masaccio', 'piero', 'berruguete']);
+  masterSteps(p, real.steps.slice(0, 4));
   assert.equal(branchStatus(p, real, 'gotico')[0].status, 'available');
   // La rama rusa empieza en el Rococó: cerrada hasta dominar su primer tramo («Rococó»: Watteau y Fragonard).
   const rusa = (q) => branchStatus(q, real, 'escuela-rusa');
@@ -345,7 +345,7 @@ test('ficha de museo: se pide aparte y se une a las obras', async () => {
   const { mergeCatalogFicha } = await import('../app/js/engine/catalog.js');
   const idx = buildIndex(catalog);
   const n = mergeCatalogFicha(idx, json('data/catalog-ficha.json'));
-  assert.equal(n, 1297);
+  assert.equal(n, 1446);
   const g = idx.artwork(W('a154'));
   assert.ok(g.museum && g.city, 'La Gioconda lleva museo y ciudad');
   assert.ok(g.source.wikidata.startsWith('Q'));
