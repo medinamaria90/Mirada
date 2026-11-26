@@ -34,7 +34,7 @@
   },
   {
    "level": 2,
-   "stage": "Primeros años en Umbría",
+   "stage": "Umbría",
    "title": "Primeros años en Umbría",
    "cards": [
     {
@@ -56,7 +56,7 @@
   },
   {
    "level": 3,
-   "stage": "Periodo florentino",
+   "stage": "Florencia",
    "title": "Periodo florentino",
    "cards": [
     {
@@ -78,7 +78,7 @@
   },
   {
    "level": 4,
-   "stage": "Las Estancias vaticanas",
+   "stage": "El Vaticano",
    "title": "Las Estancias vaticanas",
    "cards": [
     {
@@ -110,7 +110,7 @@
   },
   {
    "level": 5,
-   "stage": "Últimos años en Roma",
+   "stage": "Roma",
    "title": "Últimos años en Roma",
    "cards": [
     {

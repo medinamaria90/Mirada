@@ -79,10 +79,11 @@ export function playTargets(progress, index, artistId, branchId = '') {
   return { stage, next: open ? { id: open.id, name: open.name } : null };
 }
 
-// Nombre de una etapa «a fondo»: el de los datos; si es genérico («Más obras»), con sus años («Hals (1610–1625)») o, sin años,
-// «<Pintor> a fondo · n».
+// Nombre de una etapa «a fondo»: su título corto si tiene historia («La corte», el mismo del aro y de la historia); si no, el de
+// los datos; si es genérico («Más obras»), con sus años («Hals (1610–1625)») o, sin años, «<Pintor> a fondo · n».
 const GENERIC_STAGE = /^m[aá]s obras$/i;
 export function stageTitle(artist, stage) {
+  if (stage.short) return stage.short;
   if (!GENERIC_STAGE.test(stage.name || '')) return stage.name;
   const who = artist.short || artist.name;
   return stage.from && stage.to ? `${who} (${stage.from}–${stage.to})` : `${who} a fondo · ${stage.id - 1}`;

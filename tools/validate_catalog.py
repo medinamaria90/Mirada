@@ -60,6 +60,23 @@ def check_look(wid, look, kind, title, artist):
     check(t not in low, f"{wid}: el look nombra el título")
 
 
+def check_level_ring(app, artist, ws):
+    """Aro de niveles (engine/level-ring.js): un tramo por nivel con historia. El título corto de cada etapa (`short`) sale
+    del `stage` de su historia (único origen); sin historia no hay tramo, y los tramos van seguidos desde el nivel 1 (el aro
+    no se salta un nivel que hay que jugar)."""
+    path = f"{app}/data/historias/{artist['id']}.json"
+    story = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
+    told = {lv["level"]: lv.get("stage", "") for lv in story.get("levels", [])}
+    deep = sorted((s for s in artist["stages"] if any(w["level"] == s["id"] for w in ws)), key=lambda s: s["id"])
+    for s in artist["stages"]:
+        check(s.get("short", "") == told.get(s["id"], "") if s["id"] in told else "short" not in s,
+              f"{artist['id']}: etapa {s['id']} con título corto distinto del de su historia (o sin historia)")
+    check(all(lv == 1 or any(s["id"] == lv for s in deep) for lv in told), f"{artist['id']}: historia de un nivel sin etapa (sin tramo)")
+    ring = [s["id"] for s in deep if "short" in s]
+    check(ring == [s["id"] for s in deep][:len(ring)], f"{artist['id']}: tramos del aro con huecos {ring}")
+    check(not ring or 1 in told, f"{artist['id']}: aro sin historia de nivel 1")
+
+
 def main():
     app = sys.argv[1]
     imgs = sys.argv[2] if len(sys.argv) > 2 else None
@@ -135,6 +152,7 @@ def main():
             check(s.get("provisional") or s.get("source"), f"{a['id']}: etapa {s['id']} sin fuente")
         for s in a["similarTo"]:
             check(s in by_id and s != a["id"], f"similarTo inválido en {a['id']}: {s}")
+        check_level_ring(app, a, ws)
         check(isinstance(a["hint"], str) and "\n" not in a["hint"], f"hint de {a['id']}")
         if a["hint"]:
             check(a["hint"].startswith("Fíjate en"), f"hint de {a['id']} debe empezar por «Fíjate en»")

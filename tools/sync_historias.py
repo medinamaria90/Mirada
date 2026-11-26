@@ -1,7 +1,7 @@
 """Copia las historias de contenido/historias/ a app/data/historias/ (lo que sirve la app) y escribe su índice.
 
-Valida cada una (formato de contenido/historias/README.md): como mucho 3 tarjetas, texto de hasta 180 caracteres, fuente
-y, si hay catálogo en app/data/catalog.json, que el pintor y las obras existan. Uso: python3 -I tools/sync_historias.py
+Valida cada una (formato de contenido/historias/README.md): como mucho 3 tarjetas, texto de hasta 180 caracteres, fuente,
+título corto en cada etapa y, si hay catálogo en app/data/catalog.json, que el pintor y las obras existan. Uso: python3 -I tools/sync_historias.py
 El índice (`index.json`) dice qué niveles tiene cada pintor: así la app no pide archivos que no existen.
 """
 import json
@@ -13,6 +13,7 @@ SRC = os.path.join(ROOT, "contenido", "historias")
 DST = os.path.join(ROOT, "app", "data", "historias")
 MAX_TEXT = 180
 MAX_CARDS = 3
+SHORT_MAX = 12  # título corto de nivel (`stage`): cabe bajo su círculo en la fila de historias
 
 
 def check(story, name, artists, works):
@@ -22,6 +23,8 @@ def check(story, name, artists, works):
     if artists is not None and name not in artists:
         errors.append(f"{name}: pintor desconocido")
     for lv in story.get("levels", []):
+        if lv.get("level", 0) >= 2 and not 0 < len(str(lv.get("stage", "")).strip()) <= SHORT_MAX:
+            errors.append(f"{name} nivel {lv.get('level')}: falta el título corto (`stage`, hasta {SHORT_MAX} letras)")
         cards = lv.get("cards", [])
         if not 1 <= len(cards) <= MAX_CARDS:
             errors.append(f"{name} nivel {lv.get('level')}: {len(cards)} tarjetas")

@@ -23,10 +23,10 @@ test('historias: nivel 1 con 1 a 3 tarjetas de hasta 180 caracteres; sin nivel o
   assert.equal(levelStory(four, 1).cards.length, MAX_CARDS);
 });
 
-test('historias: las etapas «a fondo» (nivel 2 en adelante) llevan el nombre de su etapa', () => {
+test('historias: las etapas «a fondo» (nivel 2 en adelante) llevan el título corto de su etapa (el mismo del catálogo)', () => {
   const lv = levelStory(story('goya'), 2);
   assert.ok(lv && lv.stage, 'sin nombre de etapa');
-  assert.equal(lv.stage, real.deepLevels('goya').find((l) => l.id === 2).name);
+  assert.equal(lv.stage, real.deepLevels('goya').find((l) => l.id === 2).short);
 });
 
 test('historias: cada tarjeta enseña una obra del catálogo y del mismo pintor o de su nivel básico', () => {

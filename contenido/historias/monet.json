@@ -29,7 +29,7 @@
   },
   {
    "level": 2,
-   "stage": "Formación y Salón",
+   "stage": "Formación",
    "title": "Formación y Salón",
    "cards": [
     {
@@ -51,7 +51,7 @@
   },
   {
    "level": 3,
-   "stage": "Exposiciones impresionistas",
+   "stage": "Impresión",
    "title": "Exposiciones impresionistas",
    "cards": [
     {
@@ -100,7 +100,7 @@
   },
   {
    "level": 5,
-   "stage": "Últimos años y nenúfares",
+   "stage": "Nenúfares",
    "title": "Últimos años y nenúfares",
    "cards": [
     {
