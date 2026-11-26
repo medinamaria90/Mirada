@@ -282,7 +282,7 @@ test('cierre del día: bloque «Hoy» con pintores y cuadros nuevos, «La próxi
   const actions = html.match(/<div class="result-actions">[^]*?<\/div>\s*<\/main>/)?.[0] || '';
   assert.match(actions, /data-action="done"[^>]*>Seguir</);
   assert.doesNotMatch(actions, /Repetir|Repaso de 5|Repasar más/, 'en el cierre, sin llamadas a seguir jugando');
-  assert.deepEqual([...actions.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['done', 'share'], 'solo «Seguir» y compartir');
+  assert.deepEqual([...actions.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['share', 'done'], 'solo compartir y, en la barra de abajo, «Seguir»');
   assert.doesNotMatch(html, /Siguiente etapa/, 'sin llamada a la siguiente etapa: va en «La próxima vez»');
 });
 

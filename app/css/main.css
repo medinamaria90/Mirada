@@ -813,6 +813,13 @@ html.reduce-motion .ring-halo { animation: none; }
 .level-line .bar > span { display: block; height: 100%; background: var(--brand); border-radius: inherit; transition: width .8s var(--ease); }
 
 .result-actions { display: grid; gap: .6rem; margin-top: auto; padding-top: .6rem; }
+/* La acción principal, siempre a la vista: barra pegada abajo (como la de «Practicar»), con la zona segura del móvil. */
+.result-body { padding-bottom: 0; }
+.result-dock {
+  position: sticky; bottom: 0; z-index: 4; margin: -.4rem -1.2rem 0; padding: .6rem 1.2rem calc(.7rem + var(--safe-b));
+  background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
 .result-compact .result-body { justify-content: center; }
 .result-compact .result-actions { margin-top: .8rem; }
 .copy-status { min-height: 1.4em; text-align: center; font-weight: 600; color: var(--ok); opacity: 0; transition: opacity .2s; }
