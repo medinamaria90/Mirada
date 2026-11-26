@@ -905,7 +905,13 @@
  },
  {
   "id": "tropinin",
-  "qid": null
+  "qid": "Q434561",
+  "es": "Vasili Tropinin",
+  "en": "Vasily Andreevich Tropinin",
+  "nacimiento": 1780,
+  "muerte": 1857,
+  "sitelinks": 31,
+  "ok": true
  },
  {
   "id": "ingres",
