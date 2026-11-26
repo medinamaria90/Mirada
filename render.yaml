@@ -10,6 +10,17 @@ services:
     buildCommand: bash tools/fetch_images.sh app/img
     staticPublishPath: ./app
     autoDeploy: false
+    # Código, estilos y datos siempre revalidados: sin mezclar módulos de dos versiones tras un despliegue.
+    headers:
+      - path: /js/*
+        name: Cache-Control
+        value: no-cache
+      - path: /css/*
+        name: Cache-Control
+        value: no-cache
+      - path: /data/*
+        name: Cache-Control
+        value: no-cache
   # Dirección antigua: redirige todo a la nueva.
   - type: web
     name: mirada
