@@ -1,0 +1,26 @@
+{
+ "artistId": "canaletto",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Canaletto",
+   "cards": [
+    {
+     "text": "Giovanni Antonio Canal, Canaletto, nació en Venecia en 1697 y murió allí en 1768. Empezó pintando decorados de teatro con su padre.",
+     "artwork": "w19660427",
+     "source": "https://es.wikipedia.org/wiki/Canaletto"
+    },
+    {
+     "text": "Sus vistas de Venecia eran el recuerdo preferido de los viajeros ingleses. Tanto gustaban que vivió unos diez años en Inglaterra, pintando Londres.",
+     "artwork": "w19660427",
+     "source": "https://es.wikipedia.org/wiki/Canaletto"
+    },
+    {
+     "text": "Fíjate en El patio del cantero: entre los bloques de piedra, un niño se ha caído y su madre corre hacia él. Al fondo, el Gran Canal.",
+     "artwork": "w2943415",
+     "source": "https://es.wikipedia.org/wiki/Canaletto"
+    }
+   ]
+  }
+ ]
+}
