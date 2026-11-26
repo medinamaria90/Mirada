@@ -37,7 +37,7 @@ STAGE_CATEGORIES = ("gran-maestro", "maestro")
 PATH_FAME = 3          # un invitado entra en el camino común con alguna obra de esta fama
 BRANCH_ORDER = {"gotico": 0.5, "ukiyo-e": 7.5}  # orden cronológico de las ramas-movimiento
 BRANCH_MOVEMENTS = {
-    "gotico": dict(name="Gótico", period="s. XIII–XIV", era="renaissance",
+    "gotico": dict(name="Gótico", period="s. XIII–XIV", era="gothic",
                    blurb="Oro, devoción y los primeros pasos hacia el volumen.", accent="#7a6a45",
                    traits=["fondos dorados", "figuras solemnes", "primeros intentos de volumen"]),
     "ukiyo-e": dict(name="Estampa japonesa (ukiyo-e)", period="s. XVII–XIX", era="impressionism",

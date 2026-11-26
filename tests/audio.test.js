@@ -14,7 +14,7 @@ import { audio, getState, restore } from '../app/js/audio/index.js';
 import { playlistOf, nextPiece, hasList, isNight, dayIndex, MAIN_RUNS_BEFORE_ALT, NIGHT_FROM_HOUR, NIGHT_TO_HOUR } from '../app/js/audio/rotation.js';
 import { MAX_ALT } from '../app/js/audio/playlists.js';
 
-const CONTRACT_ERAS = ['menu', 'renaissance', 'baroque', 'rococo', 'neoclassic', 'romantic',
+const CONTRACT_ERAS = ['menu', 'gothic', 'renaissance', 'northern', 'baroque', 'rococo', 'neoclassic', 'romantic',
   'realism', 'impressionism', 'postimpressionism', 'modern'];
 // Eras que usa el catálogo (más la portada): cada una tiene al menos dos variantes además de la original.
 const PLAYED_ERAS = CONTRACT_ERAS.filter((e) => e !== 'neoclassic');

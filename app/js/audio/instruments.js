@@ -266,7 +266,8 @@ export const INSTRUMENTS = {
 /** Envío a reverb por instrumento (0..1, se multiplica por el de la pieza). */
 export const WET = { lute: 1, harpsichord: 0.8, harpsiLite: 0.8, guitar: 0.9, harp: 1, pizz: 0.6, piano: 1, felt: 1,
   fortepiano: 0.7, musicbox: 1, celesta: 1, glock: 0.9, vibraphone: 1, bell: 1, cello: 1, pad: 1, chime: 1, soft: 0.5,
-  recorder: 0.9, flute: 0.9, clarinet: 0.8, accordion: 0.6, viola: 1, strings: 1 };
+  recorder: 0.9, flute: 0.9, clarinet: 0.8, accordion: 0.6, viola: 1, strings: 1,
+  organ: 1, fiddle: 0.9, gamba: 0.9 };
 
 /** Control de polifonía: limita las notas simultáneas; descarta las menos importantes. */
 export class Budget {

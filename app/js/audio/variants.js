@@ -9,7 +9,9 @@
 // Clave de pieza: `era` (base) o `era/id`; compilePiece y createMusicPlayer trabajan con esa clave.
 import { SCORES, ERAS } from './scores.js';
 import { MENU } from './variants/menu.js';
+import { GOTHIC } from './variants/gothic.js';
 import { RENAISSANCE } from './variants/renaissance.js';
+import { NORTHERN } from './variants/northern.js';
 import { BAROQUE } from './variants/baroque.js';
 import { ROCOCO } from './variants/rococo.js';
 import { ROMANTIC } from './variants/romantic.js';
@@ -24,13 +26,15 @@ export const DEFAULT_VARIANT = 'base';
 const SEP = '/';
 
 const EXTRA = {
-  menu: MENU, renaissance: RENAISSANCE, baroque: BAROQUE, rococo: ROCOCO, romantic: ROMANTIC,
+  menu: MENU, gothic: GOTHIC, renaissance: RENAISSANCE, northern: NORTHERN, baroque: BAROQUE, rococo: ROCOCO, romantic: ROMANTIC,
   realism: REALISM, impressionism: IMPRESSIONISM, postimpressionism: POSTIMPRESSIONISM, modern: MODERN,
 };
 
 /** Descripción de las piezas originales (las que suenan hoy). */
 const BASE_META = {
   menu: { label: 'Piano de fieltro y cuerdas, 4/4, acordes mayores', character: 'cálido, amable, quieto' },
+  gothic: { label: 'Flauta dulce, arpa y órgano en bordón, 3/4, cantiga en re dórico', character: 'medieval, sereno, devoto' },
+  northern: { label: 'Flauta dulce, gamba y órgano, 4/4, motete en imitación', character: 'polifónico, sobrio, recogido' },
   renaissance: { label: 'Laúd solo, 4/4, pavana en re dórico', character: 'sereno, antiguo, cortesano' },
   baroque: { label: 'Clave solo, 4/4, corcheas sin pausa', character: 'ágil, ordenado, incansable' },
   rococo: { label: 'Caja de música y clave, 3/4, minué', character: 'ligero, dulce, decorativo' },

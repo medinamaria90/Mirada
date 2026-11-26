@@ -65,7 +65,9 @@ import { piecesOf, pieceKey, allPieceKeys, BRANCHES } from '../app/js/audio/vari
 // Portada primero y después las épocas en el orden del catálogo.
 const ERA_NAMES = {
   menu: ['Portada', 'tema principal de Mirada'],
-  renaissance: ['Renacimiento', 'también manierismo y norte'],
+  gothic: ['Gótico', ''],
+  renaissance: ['Renacimiento', ''],
+  northern: ['Manierismo y Norte', ''],
   baroque: ['Barroco', ''],
   rococo: ['Rococó y Neoclasicismo', ''],
   romantic: ['Romanticismo', ''],
@@ -78,7 +80,7 @@ const ERA_NAMES = {
   'escuela-rusa': ['Rama · Escuela rusa', ''],
   'ukiyo-e': ['Rama · Estampa japonesa', ''],
 };
-const ORDER = ['menu', 'renaissance', 'baroque', 'rococo', 'romantic', 'realism', 'impressionism', 'postimpressionism', 'modern', 'neoclassic']
+const ORDER = ['menu', 'gothic', 'renaissance', 'northern', 'baroque', 'rococo', 'romantic', 'realism', 'impressionism', 'postimpressionism', 'modern', 'neoclassic']
   .filter((e) => ERAS.includes(e)).concat(BRANCHES);
 
 const $ = (id) => document.getElementById(id);

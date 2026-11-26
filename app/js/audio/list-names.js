@@ -1,6 +1,6 @@
 // Nombre humano de cada lista de música (portada, épocas y ramas), con los nombres del catálogo.
 const LIST_NAMES = {
-  menu: 'Portada', gothic: 'Gótico', northern: 'Renacimiento del norte', renaissance: 'Renacimiento', baroque: 'Barroco', rococo: 'Rococó', neoclassic: 'Neoclasicismo',
+  menu: 'Portada', gothic: 'Gótico', northern: 'Manierismo y Norte', renaissance: 'Renacimiento', baroque: 'Barroco', rococo: 'Rococó', neoclassic: 'Neoclasicismo',
   romantic: 'Romanticismo', realism: 'Realismo', impressionism: 'Impresionismo', postimpressionism: 'Postimpresionismo',
   modern: 'Simbolismo y vanguardias', 'maestros-espanoles': 'Maestros españoles', 'escuela-rusa': 'Escuela rusa',
   'ukiyo-e': 'Estampa japonesa (ukiyo-e)',

@@ -322,7 +322,7 @@ export const audio = {
 };
 ```
 
-Eras: `menu`, `renaissance`, `baroque`, `rococo`, `neoclassic`, `romantic`, `realism`,
+Eras: `menu`, `gothic`, `renaissance`, `northern`, `baroque`, `rococo`, `neoclassic`, `romantic`, `realism`,
 `impressionism`, `postimpressionism`, `modern`. Todo sintetizado con Web Audio API (sin
 archivos). Piezas **originales** (no citar obras existentes), en bucle, discretas, que no cansen.
 Nunca lanza excepciones hacia fuera: si no hay audio, las llamadas no hacen nada.

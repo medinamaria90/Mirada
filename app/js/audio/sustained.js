@@ -88,5 +88,11 @@ export const WINDS = {
   accordion: sustained('accordion', { amps: [1, 0.55, 0.38, 0.26, 0.18, 0.12, 0.08, 0.05], attack: 0.06, release: 0.1, cut: 4.5, peak: 0.2, detune: 9 }),
   // Viola / cuerda ligera para colchón: dos voces desafinadas, ataque suave.
   viola: sustained('viola', { amps: [1, 0.6, 0.4, 0.3, 0.2, 0.14, 0.1, 0.06], attack: 0.1, release: 0.4, cut: 5.5, peak: 0.24, detune: 7, vib: { rate: 4.8, depth: 5, delay: 0.4 } }),
+  // Órgano portativo: tubos labiales (octava y quincena), sin vibrato, ataque rápido de tubo.
+  organ: sustained('organ', { amps: [1, 0.45, 0.16, 0.22, 0.05, 0.08, 0, 0.04], attack: 0.03, release: 0.12, cut: 8, peak: 0.2 }),
+  // Fídula medieval: arco con muchos armónicos (nasal), dos cuerdas al unísono y vibrato lento.
+  fiddle: sustained('fiddle', { amps: [1, 0.75, 0.6, 0.45, 0.35, 0.25, 0.18, 0.12, 0.08], attack: 0.09, release: 0.18, cut: 4.5, peak: 0.19, detune: 5, vib: { rate: 4.6, depth: 6, delay: 0.35 } }),
+  // Viola da gamba: arco que se hincha al empezar, timbre de caña suave y sin vibrato.
+  gamba: sustained('gamba', { amps: [1, 0.7, 0.5, 0.38, 0.28, 0.2, 0.14, 0.1], attack: 0.12, release: 0.3, cut: 4, peak: 0.24, detune: 3 }),
   strings: sustained('strings', { amps: [1, 0.5, 0.35, 0.25, 0.16, 0.1, 0.07], attack: 0.28, release: 0.7, cut: 4, peak: 0.18, detune: 11 }),
 };

@@ -7,14 +7,16 @@
 //   form: orden de secciones. A+open (8 compases, final abierto), A+close (8, final conclusivo), B (8).
 //   style: patrón de acompañamiento generado desde los acordes (ver styles.js).
 import { scalePcs } from './theory.js';
+import { FORM4, FORM3 } from './forms.js';
+import { EARLY_SCORES } from './scores-early.js';
 
-export const FORM4 = [['A', 'open'], ['A', 'close'], ['B'], ['A', 'close']]; // A–A'–B–A' = 32 compases
-export const FORM3 = [['A', 'open'], ['A', 'close'], ['B']];                 // A–A'–B = 24 compases
+export { FORM4, FORM3 };
 
-export const ERAS = ['menu', 'renaissance', 'baroque', 'rococo', 'neoclassic', 'romantic',
+export const ERAS = ['menu', 'gothic', 'renaissance', 'northern', 'baroque', 'rococo', 'neoclassic', 'romantic',
   'realism', 'impressionism', 'postimpressionism', 'modern'];
 
 export const SCORES = {
+  ...EARLY_SCORES, // Gótico y Manierismo y Norte (scores-early.js)
   // ------------------------------------------------------------------ Renacimiento
   renaissance: {
     title: 'Pavana del alba', key: 'Re dórico', tonic: 2, mode: 'dorian',

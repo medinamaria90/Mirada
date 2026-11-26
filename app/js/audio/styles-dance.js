@@ -2,12 +2,14 @@
 // Misma firma que styles.js: (part, next, piece) -> [{o, dur, midi, vel, voice}].
 // Voces: 'bass' (grave), 'acc' (acordes/arpegios), 'pad' (colchón sostenido), 'cnt' la define la partitura.
 import { bassMidi, pcMidi, voicing } from './theory.js';
+import { EARLY_STYLES } from './styles-early.js';
 
 const roll = (notes, o, dur, vel, voice, gap = 0.03) =>
   notes.map((midi, i) => ({ o: o + i * gap, dur, midi, vel, voice }));
 const fifthOf = (c, lo) => pcMidi((c.bass + 7) % 12, lo);
 
 export const DANCE_STYLES = {
+  ...EARLY_STYLES, // Gótico y Manierismo y Norte (styles-early.js)
   // Renacimiento, 6/8 (6 tiempos = corcheas): bajo en 1 y 4, acorde ligero en 3 y 6, viola sostenida.
   gigue({ chord: c, len }) {
     const bs = bassMidi(c, 38);
