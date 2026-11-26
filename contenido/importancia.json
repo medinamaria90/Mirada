@@ -243,6 +243,26 @@
   "text": "Pintó la vida de una ciudad entera en el Buen y el Mal Gobierno de Siena: escenas de cada día en un muro público.",
   "source": "https://en.wikipedia.org/wiki/The_Allegory_of_Good_and_Bad_Government"
  },
+ "utamaro": {
+  "text": "El gran pintor de las mujeres de Edo: hacia 1791 dejó los grupos y las retrató una a una, de cerca y de medio cuerpo.",
+  "source": "https://es.wikipedia.org/wiki/Kitagawa_Utamaro"
+ },
+ "hokusai": {
+  "text": "Su Gran ola, en azul de Prusia, es el emblema del arte japonés. Monet y Van Gogh lo admiraron, y el paisaje se hizo popular.",
+  "source": "https://es.wikipedia.org/wiki/Katsushika_Hokusai"
+ },
+ "sharaku": {
+  "text": "Un misterio: en solo diez meses hizo unos 140 retratos de actores de kabuki, casi caricaturas, y desapareció sin dejar rastro.",
+  "source": "https://es.wikipedia.org/wiki/T%C5%8Dsh%C5%ABsai_Sharaku"
+ },
+ "hiroshige": {
+  "text": "Pintó el viaje: caminos bajo la lluvia, la nieve y cada estación. Van Gogh tenía unas cincuenta estampas suyas y copió dos al óleo.",
+  "source": "https://es.wikipedia.org/wiki/Utagawa_Hiroshige"
+ },
+ "kuniyoshi": {
+  "text": "Lo llamaron «Kuniyoshi el de los guerreros»: sus héroes del Suikoden le dieron fama, y llenó sus estampas de espectros gigantes.",
+  "source": "https://es.wikipedia.org/wiki/Utagawa_Kuniyoshi"
+ },
  "giotto": {
   "text": "Dio peso a las figuras y un dramatismo nuevo a sus historias: con él los pliegues se modelan con luz y sombra, no con oro.",
   "source": "https://en.wikipedia.org/wiki/Giotto"
@@ -251,9 +271,21 @@
   "text": "Fraile dominico y pintor: en su Anunciación del Prado junta el paraíso perdido y la promesa, bajo un pórtico en perspectiva.",
   "source": "https://en.wikipedia.org/wiki/Annunciation_(Fra_Angelico,_Madrid)"
  },
+ "piero": {
+  "text": "El matemático de la pintura: escribió un tratado de perspectiva y pintó figuras serenas y sólidas bañadas en una luz clara.",
+  "source": "https://es.wikipedia.org/wiki/Piero_della_Francesca"
+ },
  "bellini": {
   "text": "El gran pintor de la Venecia de su tiempo y maestro de Giorgione y Tiziano: estudió la luz como los flamencos.",
   "source": "https://nga.gov/collection/highlights/bellini-titian-the-feast-of-the-gods.html"
+ },
+ "mantegna": {
+  "text": "Pintó como un escultor de la Roma antigua: escorzos audaces, como su Cristo muerto visto desde los pies, y perspectivas de vértigo.",
+  "source": "https://es.wikipedia.org/wiki/Andrea_Mantegna"
+ },
+ "giorgione": {
+  "text": "Apenas media docena de cuadros seguros y una revolución: en La tempestad el paisaje y la atmósfera mandan más que la historia.",
+  "source": "https://es.wikipedia.org/wiki/Giorgione"
  },
  "correggio": {
   "text": "Pintó los amores de Júpiter con una sensualidad suavísima: en su Ío, el dios es solo una nube que la abraza.",
@@ -262,6 +294,170 @@
  "juan-de-juanes": {
   "text": "El Prado lo cuenta entre los grandes del Renacimiento español: un valenciano que pintaba con la serenidad de Rafael.",
   "source": "https://www.museodelprado.es/en/the-collection/artist/juan-de-juanes/54316d5a-3170-46bf-9469-aae30c9fbedd"
+ },
+ "tintoretto": {
+  "text": "«El dibujo de Miguel Ángel y el color de Tiziano», dice la leyenda que era su lema: luz violenta y figuras en escorzo.",
+  "source": "https://es.wikipedia.org/wiki/Tintoretto"
+ },
+ "van-der-weyden": {
+  "text": "El gran pintor de la emoción en Flandes: en su Descendimiento del Prado, el dolor se ve en cada lágrima y en cada gesto.",
+  "source": "https://es.wikipedia.org/wiki/Rogier_van_der_Weyden"
+ },
+ "cranach": {
+  "text": "Amigo y retratista de Lutero, pintó la Reforma alemana, y unas Venus y Evas de cuerpo esbelto y pálido que no se parecen a nadie.",
+  "source": "https://es.wikipedia.org/wiki/Lucas_Cranach_el_Viejo"
+ },
+ "holbein": {
+  "text": "El retratista de Enrique VIII de Inglaterra: tan exacto que sus cuadros son casi documentos, como Los embajadores y su calavera.",
+  "source": "https://es.wikipedia.org/wiki/Hans_Holbein_el_Joven"
+ },
+ "morales": {
+  "text": "Lo llamaron «el Divino» por su pintura solo religiosa: Vírgenes y Cristos de dolor tierno, con un esfumado suave a lo Leonardo.",
+  "source": "https://es.wikipedia.org/wiki/Luis_de_Morales"
+ },
+ "sanchez-coello": {
+  "text": "El retratista de Felipe II y su familia: dio al retrato de corte un aire español, serio y formal, que duró hasta Velázquez.",
+  "source": "https://es.wikipedia.org/wiki/Alonso_S%C3%A1nchez_Coello"
+ },
+ "sofonisba": {
+  "text": "Una mujer pintora de fama europea en el siglo XVI: Miguel Ángel la elogió y fue pintora de la corte de Felipe II en Madrid.",
+  "source": "https://es.wikipedia.org/wiki/Sofonisba_Anguissola"
+ },
+ "ribalta": {
+  "text": "El primer tenebrista nacido en España: en Valencia pintó figuras monumentales con luz realista que anuncian a Ribera y Zurbarán.",
+  "source": "https://es.wikipedia.org/wiki/Francisco_Ribalta"
+ },
+ "maino": {
+  "text": "Fraile dominico y maestro de pintura de Felipe IV: trajo de Roma la luz de Caravaggio, pero con colores claros y vivos.",
+  "source": "https://es.wikipedia.org/wiki/Juan_Bautista_Ma%C3%ADno"
+ },
+ "la-tour": {
+  "text": "El pintor de la llama: escenas iluminadas por una sola vela, de un silencio total. Estuvo olvidado casi tres siglos.",
+  "source": "https://es.wikipedia.org/wiki/Georges_de_La_Tour"
+ },
+ "poussin": {
+  "text": "El pintor filósofo del clasicismo francés: paisajes ordenados como un razonamiento, con figuras de la Antigüedad.",
+  "source": "https://es.wikipedia.org/wiki/Nicolas_Poussin"
+ },
+ "claudio-de-lorena": {
+  "text": "Inventó el paisaje ideal: puertos y campiñas bañados por la luz dorada del sol bajo. Turner pidió colgar sus cuadros a su lado.",
+  "source": "https://es.wikipedia.org/wiki/Claudio_de_Lorena"
+ },
+ "alonso-cano": {
+  "text": "Pintor, escultor y arquitecto, el granadino Alonso Cano buscó la belleza: del claroscuro sevillano pasó a tonos claros venecianos.",
+  "source": "https://es.wikipedia.org/wiki/Alonso_Cano"
+ },
+ "leyster": {
+  "text": "Una de las pocas mujeres maestras del gremio de Haarlem: sus músicos y bebedores ríen como los de Hals, y durante siglos se le atribuyeron.",
+  "source": "https://es.wikipedia.org/wiki/Judith_Leyster"
+ },
+ "pereda": {
+  "text": "El gran pintor español del desengaño: en El sueño del caballero, calaveras, joyas y relojes recuerdan lo poco que dura todo.",
+  "source": "https://es.wikipedia.org/wiki/Antonio_de_Pereda"
+ },
+ "carreno": {
+  "text": "Pintor de cámara de Carlos II, siguió los pasos de Velázquez: retrató al rey de niño a viejo, siempre en el mismo salón.",
+  "source": "https://es.wikipedia.org/wiki/Juan_Carre%C3%B1o_de_Miranda"
+ },
+ "valdes-leal": {
+  "text": "El pintor de la muerte del barroco sevillano: sus Jeroglíficos de las postrimerías, con cadáveres y calaveras, aún sobrecogen.",
+  "source": "https://es.wikipedia.org/wiki/Juan_de_Vald%C3%A9s_Leal"
+ },
+ "steen": {
+  "text": "El cronista de las casas desordenadas: en Holanda se dice «una casa de Jan Steen» cuando reina el caos. Humor y moraleja.",
+  "source": "https://es.wikipedia.org/wiki/Jan_Steen"
+ },
+ "claudio-coello": {
+  "text": "El último gran pintor del barroco madrileño: su Sagrada Forma sigue en la sacristía de El Escorial, con una perspectiva que engaña.",
+  "source": "https://es.wikipedia.org/wiki/Claudio_Coello"
+ },
+ "tiepolo": {
+  "text": "El último gran decorador de techos: cielos inmensos y luminosos llenos de figuras que vuelan. Murió en Madrid, pintando para Carlos III.",
+  "source": "https://es.wikipedia.org/wiki/Giovanni_Battista_Tiepolo"
+ },
+ "canaletto": {
+  "text": "Pintó Venecia con tal exactitud que sus vistas fueron el recuerdo favorito de los viajeros ingleses del Grand Tour.",
+  "source": "https://es.wikipedia.org/wiki/Canaletto"
+ },
+ "chardin": {
+  "text": "Hizo de una jarra, una fruta o un niño jugando un mundo entero: la poesía callada de lo cotidiano en pleno rococó.",
+  "source": "https://es.wikipedia.org/wiki/Jean-Baptiste-Sim%C3%A9on_Chardin"
+ },
+ "liotard": {
+  "text": "El maestro del pastel: retratos de piel tan suave y luz tan limpia que parecen de porcelana. Viajó hasta Constantinopla.",
+  "source": "https://es.wikipedia.org/wiki/Jean-%C3%89tienne_Liotard"
+ },
+ "boucher": {
+  "text": "El pintor favorito de madame de Pompadour: diosas rosadas, cielos azules y la dulzura más pura del rococó.",
+  "source": "https://es.wikipedia.org/wiki/Fran%C3%A7ois_Boucher"
+ },
+ "reynolds": {
+  "text": "Primer presidente de la Royal Academy: quiso que el retrato inglés tuviera la grandeza de los maestros italianos.",
+  "source": "https://es.wikipedia.org/wiki/Joshua_Reynolds"
+ },
+ "greuze": {
+  "text": "Llevó a la pintura el drama de las familias corrientes: escenas con moraleja que hacían llorar al público de su tiempo.",
+  "source": "https://es.wikipedia.org/wiki/Jean-Baptiste_Greuze"
+ },
+ "gainsborough": {
+  "text": "Retratista de la alta sociedad inglesa que en realidad prefería el paisaje: pincelada ligera y figuras en plena naturaleza.",
+  "source": "https://es.wikipedia.org/wiki/Thomas_Gainsborough"
+ },
+ "paret": {
+  "text": "El rococó con acento madrileño: escenas elegantes de tiendas, fiestas y puertos de España pintadas como joyas diminutas.",
+  "source": "https://es.wikipedia.org/wiki/Luis_Paret_y_Alc%C3%A1zar"
+ },
+ "vigee-le-brun": {
+  "text": "La retratista de María Antonieta: una de las pintoras más famosas de su siglo, que siguió triunfando por Europa tras huir de la Revolución.",
+  "source": "https://es.wikipedia.org/wiki/%C3%89lisabeth_Vig%C3%A9e_Le_Brun"
+ },
+ "borovikovski": {
+  "text": "Uno de los grandes retratistas de la Rusia del siglo XVIII: damas soñadoras en jardines, con el gusto sentimental de su época.",
+  "source": "https://es.wikipedia.org/wiki/Vlad%C3%ADmir_Borovikovski"
+ },
+ "vicente-lopez": {
+  "text": "El retratista de Fernando VII y de su corte: primer pintor de cámara y el retratista más solicitado de la España de su tiempo.",
+  "source": "https://es.wikipedia.org/wiki/Vicente_L%C3%B3pez_Porta%C3%B1a"
+ },
+ "constable": {
+  "text": "Pintó el campo inglés tal como era, con sus nubes estudiadas del natural. Sus cielos abrieron camino al paisaje moderno.",
+  "source": "https://es.wikipedia.org/wiki/John_Constable"
+ },
+ "tropinin": {
+  "text": "Un siervo que llegó a gran retratista de Moscú: pintó a gente corriente con calidez y naturalidad, como su Encajera.",
+  "source": "https://es.wikipedia.org/wiki/Vasili_Tropinin"
+ },
+ "gericault": {
+  "text": "Con La balsa de la Medusa convirtió un naufragio real en un grito contra el poder: el romanticismo francés empezó con él.",
+  "source": "https://es.wikipedia.org/wiki/Th%C3%A9odore_G%C3%A9ricault"
+ },
+ "delaroche": {
+  "text": "Pintaba la historia como una escena de teatro, con detalle exacto y emoción: sus reinas y príncipes en desgracia triunfaron en París.",
+  "source": "https://es.wikipedia.org/wiki/Paul_Delaroche"
+ },
+ "briullov": {
+  "text": "Su Último día de Pompeya fue el primer cuadro ruso que deslumbró a Europa: catástrofe, gente que huye y luz de volcán.",
+  "source": "https://es.wikipedia.org/wiki/Karl_Briulov"
+ },
+ "ivanov": {
+  "text": "Dedicó veinte años a un solo cuadro, La aparición de Cristo al pueblo, estudiando del natural cada figura y cada paisaje.",
+  "source": "https://es.wikipedia.org/wiki/Aleksandr_Ivanov"
+ },
+ "aivazovski": {
+  "text": "El pintor del mar: miles de marinas de olas transparentes y naufragios a la luz de la luna, pintadas de memoria.",
+  "source": "https://es.wikipedia.org/wiki/Iv%C3%A1n_Aivazovski"
+ },
+ "rossetti": {
+  "text": "Poeta y pintor, fundó la Hermandad Prerrafaelita: mujeres de cabellera larga y labios rojos, entre el sueño y la leyenda.",
+  "source": "https://es.wikipedia.org/wiki/Dante_Gabriel_Rossetti"
+ },
+ "millais": {
+  "text": "Cofundador de los prerrafaelitas: su Ofelia flota en un río con cada flor y cada hoja pintada del natural.",
+  "source": "https://es.wikipedia.org/wiki/John_Everett_Millais"
+ },
+ "venetsianov": {
+  "text": "Pintó por primera vez a los campesinos rusos con dignidad y cariño, en campos de luz clara. Fundó su propia escuela en el campo.",
+  "source": "https://es.wikipedia.org/wiki/Alekséi_Venetsiánov"
  },
  "corot": {
   "text": "Dejó las telas por el paisaje y abrió el camino a los impresionistas: Monet, Pissarro y Morisot aprendieron de él.",
@@ -274,6 +470,10 @@
  "bonheur": {
   "text": "Famosa por la exactitud de sus animales: dicen que pidió permiso a la policía para pintar caballos vestida con pantalones.",
   "source": "https://en.wikipedia.org/wiki/The_Horse_Fair"
+ },
+ "bouguereau": {
+  "text": "El gran pintor académico del París del siglo XIX: pieles perfectas y acabado de porcelana, todo lo que los impresionistas combatían.",
+  "source": "https://es.wikipedia.org/wiki/William-Adolphe_Bouguereau"
  },
  "savrasov": {
   "text": "Sus grajillas en los abedules marcaron el paisaje ruso del siglo XIX. Fundó los Ambulantes, que llevaban el arte por Rusia.",
@@ -298,5 +498,153 @@
  "homer": {
   "text": "Empezó dibujando la guerra de Secesión para una revista y acabó frente al mar de Maine, donde pintó sus grandes marinas.",
   "source": "https://www.metmuseum.org/toah/hd/homr/hd_homr.htm"
+ },
+ "kramskoi": {
+  "text": "Encabezó la rebelión de los catorce contra la Academia rusa y fundó los Ambulantes. Su Desconocida aún mira desde lo alto.",
+  "source": "https://es.wikipedia.org/wiki/Iv%C3%A1n_Kramsk%C3%B3i"
+ },
+ "makovski": {
+  "text": "El pintor de la Rusia de los zares más brillante: bodas de boyardos, trajes bordados y joyas, como un cuento lujoso.",
+  "source": "https://es.wikipedia.org/wiki/Konstant%C3%ADn_Makovski"
+ },
+ "raimundo-madrazo": {
+  "text": "Hijo de Federico de Madrazo y cuñado de Fortuny, triunfó en París con retratos de damas elegantes y escenas de salón.",
+  "source": "https://es.wikipedia.org/wiki/Raimundo_de_Madrazo"
+ },
+ "kuindzhi": {
+  "text": "El mago de la luz rusa: su Noche de luna sobre el Dniéper se expuso a oscuras, y la gente creía que había una lámpara detrás.",
+  "source": "https://es.wikipedia.org/wiki/Arjip_Kuindzhi"
+ },
+ "vereshchagin": {
+  "text": "Pintó la guerra sin gloria: pirámides de calaveras y soldados abandonados. Murió en un barco hundido en la guerra ruso-japonesa.",
+  "source": "https://es.wikipedia.org/wiki/Vasili_Vereshchagin"
+ },
+ "polenov": {
+  "text": "Llevó la luz al aire libre al paisaje ruso: su Patio de Moscú, soleado y tranquilo, es un rincón cotidiano hecho poesía.",
+  "source": "https://es.wikipedia.org/wiki/Vasili_Pol%C3%A9nov"
+ },
+ "pradilla": {
+  "text": "El pintor de Juana la Loca: su cuadro de la reina velando el féretro de su marido triunfó en 1878 y sigue en el Prado.",
+  "source": "https://es.wikipedia.org/wiki/Francisco_Pradilla"
+ },
+ "surikov": {
+  "text": "El gran pintor de la historia rusa: multitudes en la nieve, como en La boyarda Morózova, donde un pueblo entero toma partido.",
+  "source": "https://es.wikipedia.org/wiki/Vasili_S%C3%BArikov"
+ },
+ "vasnetsov": {
+  "text": "Llevó a la pintura los cuentos y leyendas rusos: caballeros, princesas y héroes de las bylinas, como Los tres bogatires.",
+  "source": "https://es.wikipedia.org/wiki/V%C3%ADktor_Vasnetsov"
+ },
+ "levitan": {
+  "text": "El gran paisajista ruso del estado de ánimo: ríos quietos, abedules y cielos que dicen lo que no se puede decir con palabras.",
+  "source": "https://es.wikipedia.org/wiki/Isaak_Lev%C3%ADtan"
+ },
+ "whistler": {
+  "text": "Pintaba armonías, no historias: tituló sus cuadros como música, Sinfonía en blanco o Nocturno, y retrató a su madre en gris y negro.",
+  "source": "https://es.wikipedia.org/wiki/James_McNeill_Whistler"
+ },
+ "bazille": {
+  "text": "Amigo y mecenas de Monet y Renoir, pintó al aire libre antes que muchos. Murió con 28 años en la guerra franco-prusiana.",
+  "source": "https://es.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Bazille"
+ },
+ "cassatt": {
+  "text": "Una estadounidense entre los impresionistas de París, invitada por Degas: pintó como nadie la ternura entre madres e hijos.",
+  "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
+ },
+ "beruete": {
+  "text": "Paisajista madrileño, alumno de Haes y amigo de Sorolla: llevó el impresionismo a las vistas de Madrid y de Castilla.",
+  "source": "https://es.wikipedia.org/wiki/Aureliano_de_Beruete"
+ },
+ "caillebotte": {
+  "text": "Pintó el París de bulevares y obreros con encuadres atrevidos, y compró cuadros de sus amigos impresionistas para legarlos al Estado.",
+  "source": "https://es.wikipedia.org/wiki/Gustave_Caillebotte"
+ },
+ "pinazo": {
+  "text": "El valenciano de la mancha: antes que Sorolla, pintó con pincelada libre su familia y la luz del Mediterráneo.",
+  "source": "https://es.wikipedia.org/wiki/Ignacio_Pinazo"
+ },
+ "kroyer": {
+  "text": "El pintor de la luz del norte en Skagen: sus noches azules de verano junto al mar se han vuelto un emblema de Dinamarca.",
+  "source": "https://es.wikipedia.org/wiki/Peder_Severin_Kr%C3%B8yer"
+ },
+ "sargent": {
+  "text": "El retratista más brillante de su tiempo: pincelada veloz a lo Velázquez, al que estudió en el Prado, y damas que deslumbran.",
+  "source": "https://es.wikipedia.org/wiki/John_Singer_Sargent"
+ },
+ "regoyos": {
+  "text": "Un asturiano de vanguardia: llevó el impresionismo y el puntillismo belga al paisaje del norte de España.",
+  "source": "https://es.wikipedia.org/wiki/Dar%C3%ADo_de_Regoyos"
+ },
+ "zorn": {
+  "text": "El gran pintor sueco: retratos de pincelada rápida y bañistas en el agua, con el agua llena de reflejos.",
+  "source": "https://es.wikipedia.org/wiki/Anders_Zorn"
+ },
+ "serov": {
+  "text": "El gran retratista ruso del cambio de siglo: su Niña con melocotones trajo la luz y la frescura del aire libre a la pintura rusa.",
+  "source": "https://es.wikipedia.org/wiki/Valent%C3%ADn_Serov"
+ },
+ "rousseau": {
+  "text": "Un aduanero sin escuela que pintó selvas que nunca vio: Picasso y las vanguardias lo admiraron por su mirada ingenua.",
+  "source": "https://es.wikipedia.org/wiki/Henri_Rousseau"
+ },
+ "signac": {
+  "text": "Heredero de Seurat, llevó el puntillismo a puertos y mares de luz, con toques de color cada vez más grandes. Escribió su teoría.",
+  "source": "https://es.wikipedia.org/wiki/Paul_Signac"
+ },
+ "mir": {
+  "text": "El pintor de la luz de Mallorca: paisajes con colores encendidos que se acercan a la abstracción, un modernista único.",
+  "source": "https://es.wikipedia.org/wiki/Joaquim_Mir"
+ },
+ "moreau": {
+  "text": "El soñador del simbolismo: mitos llenos de joyas y misterio. Fue maestro de Matisse y dejó su casa convertida en museo.",
+  "source": "https://es.wikipedia.org/wiki/Gustave_Moreau"
+ },
+ "waterhouse": {
+  "text": "Heredero de los prerrafaelitas: damas de leyenda como La dama de Shalott, en barcas y estanques, con una melancolía muy inglesa.",
+  "source": "https://es.wikipedia.org/wiki/John_William_Waterhouse"
+ },
+ "vrubel": {
+  "text": "Un genio aparte del arte ruso: pintó su Demonio con pinceladas como cristales rotos, a medio camino entre el mosaico y el sueño.",
+  "source": "https://es.wikipedia.org/wiki/Mija%C3%ADl_Vr%C3%BAbel"
+ },
+ "rusinol": {
+  "text": "Pintor de jardines y alma del modernismo catalán: con sus fiestas en Sitges y Els Quatre Gats abrió Barcelona a la modernidad.",
+  "source": "https://es.wikipedia.org/wiki/Santiago_Rusi%C3%B1ol"
+ },
+ "nesterov": {
+  "text": "Pintó la Rusia espiritual: santos y monjes en paisajes de abedules delgados, con una calma casi de oración.",
+  "source": "https://es.wikipedia.org/wiki/Mija%C3%ADl_N%C3%A9sterov"
+ },
+ "hammershoi": {
+  "text": "El pintor del silencio: habitaciones casi vacías en Copenhague, luz gris de ventana y una mujer de espaldas.",
+  "source": "https://es.wikipedia.org/wiki/Vilhelm_Hammersh%C3%B8i"
+ },
+ "casas": {
+  "text": "El gran dibujante del modernismo catalán: retrató a toda la Barcelona de su tiempo y fundó con Rusiñol Els Quatre Gats.",
+  "source": "https://es.wikipedia.org/wiki/Ramon_Casas"
+ },
+ "zuloaga": {
+  "text": "Frente a la España luminosa de Sorolla, pintó la España negra: Castilla, toreros y gente dura con colores terrosos.",
+  "source": "https://es.wikipedia.org/wiki/Ignacio_Zuloaga"
+ },
+ "nonell": {
+  "text": "Pintó a los marginados de Barcelona, gitanas y mendigos, con trazos gruesos y sombríos. El joven Picasso lo admiraba.",
+  "source": "https://es.wikipedia.org/wiki/Isidre_Nonell"
+ },
+ "petrov-vodkin": {
+  "text": "Unió los iconos rusos con la vanguardia: su Baño del caballo rojo es un símbolo de una Rusia a punto de cambiar.",
+  "source": "https://es.wikipedia.org/wiki/Kuzm%C3%A1_Petrov-Vodkin"
+ },
+ "malevich": {
+  "text": "Pintó un cuadrado negro sobre fondo blanco y dejó la pintura en lo esencial: con él nació el suprematismo.",
+  "source": "https://es.wikipedia.org/wiki/Kazimir_Mal%C3%A9vich"
+ },
+ "modigliani": {
+  "text": "Cuellos larguísimos, caras ovaladas y ojos sin pupila: un italiano en París que creó un estilo inconfundible. Murió con 35 años.",
+  "source": "https://es.wikipedia.org/wiki/Amedeo_Modigliani"
+ },
+ "schiele": {
+  "text": "El alumno rebelde de Klimt: cuerpos angulosos y líneas nerviosas que muestran el deseo y la angustia. Murió con 28 años.",
+  "source": "https://es.wikipedia.org/wiki/Egon_Schiele"
  }
 }
