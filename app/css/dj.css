@@ -17,8 +17,10 @@
 }
 .dj-now:hover { background: var(--surface-2); }
 .dj-now:focus-visible, .dj-btn:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
-.dj-title, .dj-key { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dj-title, .dj-key, .dj-note { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dj-key { font-size: .72rem; color: var(--ink-2); }
+.dj-note { font-size: .72rem; color: var(--ink-2); }
+.dj-note[hidden] { display: none; }
 .dj-actions { display: flex; gap: 6px; }
 .dj-actions[hidden] { display: none; }
 .dj-btn {

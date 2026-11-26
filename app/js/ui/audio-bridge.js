@@ -108,6 +108,10 @@ export const audio = {
     return () => pieceListeners.delete(fn);
   },
   isAvailable: () => available,
+  /** Lista (época o rama) pedida para la pantalla actual. */
+  era: () => pending.era,
+  /** Preferencias de audio de Ajustes que la app ha aplicado (null si aún no). */
+  settings: () => (pending.settings ? { ...pending.settings } : null),
 };
 
 // Aplica las preferencias guardadas en el store al motor.
