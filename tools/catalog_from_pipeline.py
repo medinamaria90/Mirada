@@ -264,7 +264,10 @@ def main(app):
     # --- Obras (contrato) --------------------------------------------------------------------------------
     rank = {a["id"]: i for i, a in enumerate(artists)}
     artworks, ficha = [], {}
-    text = dict(version=3, look={}, looks={}, kind={}, tags={}, traits=text_traits, traitTags=text_trait_tags,
+    # «Por qué importa» de cada pintor (contenido/importancia.json, con fuente): lo primero de su ficha.
+    with open(os.path.join(ROOT, "contenido", "importancia.json"), encoding="utf-8") as f:
+        why = {pid: dict(text=v["text"], source=v["source"]) for pid, v in json.load(f).items() if pid in pintores}
+    text = dict(version=3, look={}, looks={}, kind={}, tags={}, traits=text_traits, traitTags=text_trait_tags, why=why,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
         o = w["_old"]

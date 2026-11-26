@@ -190,3 +190,20 @@ export function monogramVariant(id) {
   for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   return h % 5;
 }
+
+// Sello de categoría: oro para los grandes maestros, plata para los maestros (también los de las ramas: Cimabue, Duccio,
+// Hokusai… son los maestros de su rama) y bronce para los artistas invitados. Sin género en el catálogo: las pintoras con
+// sello de maestra van con nombre.
+const TIERS = {
+  'gran-maestro': { tier: 'gold', label: 'Gran maestro', labelF: 'Gran maestra' },
+  maestro: { tier: 'silver', label: 'Maestro', labelF: 'Maestra' },
+  rama: { tier: 'silver', label: 'Maestro', labelF: 'Maestra' },
+  invitado: { tier: 'bronze', label: 'Artista invitado', labelF: 'Artista invitada' },
+};
+const PAINTRESSES = new Set(['artemisia', 'morisot', 'sofonisba', 'leyster', 'vigee-le-brun', 'bonheur', 'cassatt']);
+export function tierOf(artist) {
+  const t = TIERS[artist?.category];
+  return t ? { tier: t.tier, label: PAINTRESSES.has(artist.id) ? t.labelF : t.label } : null;
+}
+// Los que merecen su momento al dominarlos por primera vez (oro y plata).
+export const isMasterTier = (artist) => ['gold', 'silver'].includes(tierOf(artist)?.tier);

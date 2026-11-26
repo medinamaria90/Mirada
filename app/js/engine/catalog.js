@@ -16,7 +16,7 @@ export function resolveThumb(thumb, atlas) {
 }
 
 // Textos que llegan después de pintar (data/catalog-text.json): `look`/`looks` (pistas con
-// fuente), `kind` y `tags` de obra; `traits` y `traitTags` de pintor; `tagLabels` y `negableTags`
+// fuente), `kind` y `tags` de obra; `traits`, `traitTags` y `why` («por qué importa», con fuente) de pintor; `tagLabels` y `negableTags`
 // del vocabulario visual. Se añaden a los objetos del índice; lo que no encaja se ignora.
 const MAX_TEXT = 140;
 const MAX_TAGS = 12;
@@ -58,6 +58,10 @@ export function mergeCatalogText(index, text) {
   for (const [id, traits] of Object.entries(text.traits || {})) {
     const a = index.artist(id);
     if (a && Array.isArray(traits)) { a.traits = traits.filter((t) => typeof t === 'string').slice(0, 6); n++; }
+  }
+  for (const [id, why] of Object.entries(text.why || {})) {
+    const a = index.artist(id);
+    if (a && why && typeof why.text === 'string' && why.text.length <= MAX_TEXT) { a.why = { text: why.text, source: typeof why.source === 'string' ? why.source : '' }; n++; }
   }
   for (const [id, tags] of Object.entries(text.traitTags || {})) {
     const a = index.artist(id);
