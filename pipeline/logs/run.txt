@@ -8,3 +8,8 @@ total 176 resueltos 174
 60M	.git
 3.3M	catalogo
 == candidates masaccio uccello filippo-lippi memling bermejo perugino grunewald pontormo parmigianino bronzino arcimboldo sanchez-cotan hogarth matisse 21:51:44
+ok     hogarth            Q171344     182 candidatas; de las 80 primeras, 60 con imagen >=1200px
+ok     matisse            Q5589       476 candidatas; de las 80 primeras, 47 con imagen >=1200px
+fin 2026-11-26 21:53:57
+61M	.git
+3.3M	catalogo
