@@ -1,42 +1,46 @@
-// Aro de niveles «a fondo» en el retrato de los pintores dominados (como el aro de las historias): un arco por
-// nivel, del color de la marca el que queda por hacer y apagado el ya hecho; con todos hechos, sin aro. Con niveles por hacer,
-// tocar el nodo abre la ficha del pintor en sus etapas (ahí está también repetir la primera). Se añade al DOM ya
-// pintado (los nodos los dibuja el mapa o la rama) y solo en pintores dominados con niveles.
+// Aro de niveles alrededor del retrato (engine/level-ring.js): un tramo por nivel con historia, desde las 12 en el sentido
+// del reloj. Oro lo hecho, coral (más grueso y con un halo que respira) el siguiente y apagado lo cerrado; el sello dice el
+// número del siguiente o, con todo hecho, lleva el check de oro y el aro se queda entero en oro. Sustituye al anillo de oro
+// de «dominado» en los pintores con niveles. Se añade al DOM ya pintado (los nodos los dibuja el mapa o la rama) y tocar el
+// nodo abre su tarjeta (ui/level-card.js), que también tienen los dominados con un «a fondo» sin historia (sin aro). El mismo
+// aro, más grande, va en el avatar de la ficha.
 
-import { deepProgress } from '../engine/levels.js';
+import { levelRing, levelPlan, ringLabel } from '../engine/level-ring.js';
 
-const RING_R = 47;              // radio del aro en su caja de 100
-const RING_GAP = 9;             // hueco entre arcos (en grados)
+const RING_R = 47;      // radio del aro en su caja de 100
+const RING_LEN = 100;   // longitud de la circunferencia (pathLength)
+const RING_GAP = 5;     // hueco entre tramos, sobre RING_LEN
+const HALO_R = 45;
 
-// Estado del aro de un pintor, o null si no lleva (sin dominar o sin niveles «a fondo»).
-export function deepBadgeInfo(progress, index, artistId) {
-  if (!progress.artists?.[artistId]?.mastered) return null;
-  const { total, mastered } = deepProgress(progress, index, artistId);
-  if (!total) return null;
-  const left = total - mastered;
-  return { left, total, done: left === 0 };
+// SVG del aro para unos niveles con estado ([{ state: 'done' | 'next' | 'locked' }]).
+export function ringSvg(levels, cls = 'level-ring') {
+  const step = RING_LEN / levels.length;
+  const arcs = levels.map((l, i) => `<circle class="ring-arc is-${l.state}" cx="50" cy="50" r="${RING_R}" pathLength="${RING_LEN}" stroke-dasharray="${(step - RING_GAP).toFixed(2)} ${(RING_LEN - step + RING_GAP).toFixed(2)}" stroke-dashoffset="${(-i * step - RING_GAP / 2).toFixed(2)}"/>`).join('');
+  const halo = levels.some((l) => l.state === 'next') ? `<circle class="ring-halo" cx="50" cy="50" r="${HALO_R}"/>` : '';
+  return `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">${halo}${arcs}</svg>`;
 }
 
-// Arcos del aro: los que quedan, primero (desde arriba, en el sentido del reloj).
-export function ringHtml(info) {
-  const len = 2 * Math.PI * RING_R;
-  const step = len / info.total;
-  const gap = info.total > 1 ? (RING_GAP / 360) * len : 0;
-  const arcs = Array.from({ length: info.total }, (_, i) => `<circle class="deep-arc${i < info.left ? ' is-left' : ''}" cx="50" cy="50" r="${RING_R}" pathLength="${len.toFixed(2)}" stroke-dasharray="${(step - gap).toFixed(2)} ${(len - step + gap).toFixed(2)}" stroke-dashoffset="${(-i * step - gap / 2).toFixed(2)}"/>`).join('');
-  return `<svg class="deep-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false">${arcs}</svg>`;
-}
-
-export const deepLabel = (info) => `${info.left === 1 ? 'queda 1 nivel' : `quedan ${info.left} niveles`} a fondo`;
-
-export function addDeepBadges(ctx, root) {
+export function addLevelRings(ctx, root) {
   const progress = ctx.store.get().progress;
   for (const spot of root.querySelectorAll('.stage-spot[data-step^="artist:"]')) {
     const id = spot.dataset.step.slice('artist:'.length);
-    const info = ctx.index.artist(id) && deepBadgeInfo(progress, ctx.index, id);
     const button = spot.querySelector('.stage');
-    if (!info || info.done || !button || button.dataset.deep) continue;
-    button.dataset.deep = '1';
-    button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${deepLabel(info)}`);
-    button.querySelector('.stage-dot')?.insertAdjacentHTML('afterbegin', ringHtml(info));
+    if (!button || button.dataset.card || !ctx.index.artist(id)) continue;
+    const plan = levelPlan(progress, ctx.index, id);
+    if (!plan) continue;
+    // Con niveles, tocar el retrato abre su tarjeta (aunque solo uno tenga historia y no lleve aro).
+    button.dataset.card = '1';
+    if (!button.classList.contains('is-onpath')) button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${ringLabel(plan)}`);
+    const ring = levelRing(progress, ctx.index, id);
+    if (!ring) continue;
+    button.classList.add('has-ring');
+    const dot = button.querySelector('.stage-dot');
+    dot?.insertAdjacentHTML('afterbegin', ringSvg(ring.levels));
+    const badge = dot?.querySelector('.stage-badge');
+    if (badge && !ring.done) {
+      badge.classList.add('is-next');
+      badge.textContent = String(ring.at);
+    }
   }
 }

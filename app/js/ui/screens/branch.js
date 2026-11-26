@@ -14,9 +14,9 @@ import { branchStatus, branchLockReason, branchProgress } from '../../engine/bra
 import { MAP_W, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { trailSvg, stepName, pct } from './path-signs.js';
 import { STATE_LABEL, metaFor, dotFor, nodeHtml } from './path-nodes.js';
-import { setMapFocus, showLockNote, watchMapMode, watchLandscapes } from './path-map.js';
+import { setMapFocus, showLockNote, watchMapMode, watchLandscapes, levelCard } from './path-map.js';
 import { startMapLife } from '../map-life.js';
-import { addDeepBadges } from '../deep-badges.js';
+import { addLevelRings } from '../deep-badges.js';
 import { loadCss } from '../lazy-css.js';
 
 // Música de la rama: su lista si la tiene; si no, la de su época.
@@ -106,7 +106,7 @@ export async function renderBranch(ctx, el, branchId) {
   const map = el.querySelector('.path-map');
   const life = startMapLife(map);
   const stops = [watchMapMode(map), life.stop];
-  addDeepBadges(ctx, el);
+  addLevelRings(ctx, el);
   ctx.setCleanup(() => stops.forEach((fn) => fn()));
   requestAnimationFrame(() => {
     const target = $('.stage-spot.is-current .stage', el);
@@ -121,8 +121,8 @@ export async function renderBranch(ctx, el, branchId) {
       else ctx.go('inicio');
     },
     stage: (b) => {
+      if (b.dataset.card) return levelCard(ctx, b, branch.id);
       ctx.audio.sfx('tap');
-      if (b.dataset.deep) return ctx.go(`pintor-${b.dataset.id}-etapas`);
       if (b.dataset.status === 'locked') return showLockNote(b);
       return ctx.go(stageRoute(b.dataset.id, branch.id));
     },

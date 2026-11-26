@@ -239,6 +239,12 @@ const sheet = (ctx, fn, b) => {
   import('../map-sheet.js').then((m) => m[fn](ctx, b.dataset.id, b)).catch((err) => console.error(err));
 };
 
+// La tarjeta del nodo de un pintor con niveles se carga al primer toque. branchId: rama desde la que se abre.
+export const levelCard = (ctx, b, branchId = '') => {
+  ctx.audio.sfx('tap');
+  import('../level-card.js').then((m) => m.openLevelCard(ctx, b, branchId)).catch((err) => console.error(err));
+};
+
 // Acciones de las paradas, para onAction en la portada.
 export function pathActions(ctx) {
   const guarded = (route) => (b) => {
@@ -247,8 +253,8 @@ export function pathActions(ctx) {
     return ctx.go(`${route}-${b.dataset.id}`);
   };
   return {
-    // Dominado con niveles «a fondo» por hacer (aro): a sus etapas, en la ficha.
-    stage: (b, ev) => (b.dataset.deep ? (ctx.audio.sfx('tap'), ctx.go(`pintor-${b.dataset.id}-etapas`)) : guarded('etapa')(b, ev)),
+    // Dominado con niveles (aro): su tarjeta, con sus historias y «Jugar».
+    stage: (b, ev) => (b.dataset.card ? levelCard(ctx, b) : guarded('etapa')(b, ev)),
     sala: guarded('sala'),
     review: guarded('repaso'),
     intro: (b) => {

@@ -1,0 +1,102 @@
+/* Tarjeta del nodo (ui/level-card.js) e historias destacadas (ui/level-row.js), en el mapa y en la ficha. Todo color sale de
+   brand.css. Se carga al primer toque de un pintor con niveles y con la ficha. */
+
+/* ---------- Historias destacadas ---------- */
+.hl-row {
+  --hl-ring: var(--surface);   /* separación entre la portada y su aro: el color de lo que hay detrás */
+  display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
+}
+.hl-row::-webkit-scrollbar { display: none; }
+.hl-row > li { flex: 0 0 auto; }
+.hl {
+  display: flex; flex-direction: column; align-items: center; gap: 7px; width: calc(var(--hl) - 2px); min-height: 44px; padding: 0; border: 0;
+  background: none; color: var(--ink); font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.hl-c { position: relative; display: grid; place-items: center; width: var(--hl); height: var(--hl); border-radius: 999px; transition: transform var(--dur-pop) var(--ease); }
+.hl:active .hl-c { transform: scale(.94); }
+.hl-c img { display: block; width: var(--hl-photo); height: var(--hl-photo); border-radius: 999px; object-fit: cover; background: var(--surface-2); box-shadow: 0 0 0 2.5px var(--hl-ring); }
+.hl.is-done .hl-c { background: var(--gold); }
+.hl.is-done .hl-c img { width: calc(var(--hl-photo) + 3px); height: calc(var(--hl-photo) + 3px); }
+.hl.is-next .hl-c { background: conic-gradient(from 200deg, var(--brand), var(--gold), var(--brand)); }
+.hl.is-next .hl-c img { box-shadow: 0 0 0 3px var(--hl-ring); }
+.hl.is-locked .hl-c { background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--ring-locked); }
+.hl.is-locked .hl-c img { width: calc(var(--hl-photo) + 4px); height: calc(var(--hl-photo) + 4px); filter: blur(5px) grayscale(1); opacity: .45; box-shadow: none; }
+.hl-lock { position: absolute; display: grid; color: var(--ink-2); }
+.hl-play {
+  position: absolute; right: -3px; bottom: -3px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;
+  background: var(--brand); color: var(--on-brand); box-shadow: 0 0 0 2.5px var(--hl-ring);
+}
+.hl-play .icon { fill: currentColor; stroke: none; }
+.hl-t {
+  display: -webkit-box; max-width: calc(var(--hl) + 10px); overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  font-size: .875rem; line-height: 1.15; text-align: center; overflow-wrap: anywhere; text-wrap: balance;
+}
+.hl.is-next .hl-t { font-weight: 600; }
+.hl.is-locked .hl-t { color: var(--ink-2); }
+.hl.is-shaking .hl-c { animation: nudge var(--dur-shake) var(--ease); }
+@media (prefers-reduced-motion: reduce) { .hl.is-shaking .hl-c { animation: none; } }
+html.reduce-motion .hl.is-shaking .hl-c { animation: none; }
+@media (hover: hover) { .hl:hover .hl-c { transform: scale(1.04); } }
+/* «Se abre al terminar …», al tocar un círculo cerrado. */
+.hl-note { margin: 10px 4px 0; color: var(--ink-2); font-size: .95rem; line-height: 1.3; text-align: center; }
+
+/* ---------- Tarjeta del nodo ---------- */
+.lc {
+  position: fixed; inset: 0; width: 100%; max-width: none; height: 100%; max-height: none; margin: 0; padding: 0; border: 0;
+  background: transparent; overflow: visible;
+}
+.lc::backdrop { background: var(--scrim); }
+.lc[open] .lc-card { animation: lc-in var(--dur-pop) var(--ease); }
+@keyframes lc-in { from { opacity: 0; transform: translateY(var(--lc-from, -8px)) scale(.97); } }
+@media (prefers-reduced-motion: reduce) { .lc[open] .lc-card { animation: none; } }
+html.reduce-motion .lc[open] .lc-card { animation: none; }
+/* El retrato del nodo, encendido sobre el velo (copia del original, en su sitio). */
+.lc-lit { position: absolute; z-index: 1; width: var(--dot); height: var(--dot); cursor: pointer; }
+.lc-lit .stage { position: static; display: block; min-height: 0; width: auto; }
+.lc-lit .stage-dot { width: var(--dot); height: var(--dot); }
+.lc-card {
+  position: absolute; z-index: 2; box-sizing: border-box; padding: 18px 16px; border-radius: var(--radius-pop); background: var(--surface); color: var(--ink);
+  box-shadow: var(--shadow-pop);
+}
+.lc-card[data-side="above"] { --lc-from: 8px; }
+/* El pico, hacia el retrato. */
+.lc-card::before {
+  content: ""; position: absolute; left: calc(var(--tip-x, 50%) - 10px); top: -9px; width: 20px; height: 20px; border-radius: 4px 0 0 0;
+  background: var(--surface); transform: rotate(45deg);
+}
+.lc-card[data-side="above"]::before { top: auto; bottom: -9px; border-radius: 0 0 4px 0; }
+.lc-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 4px; }
+.lc-name {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 44px; min-width: 0; padding: 0; border: 0; background: none; color: var(--ink);
+  font: 600 1.375rem/1.15 var(--font); letter-spacing: var(--track); text-align: left; cursor: pointer;
+}
+.lc-name .icon { flex: none; color: var(--ink-2); }
+.lc-level {
+  flex: none; padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, var(--gold) 16%, transparent); color: var(--gold-text);
+  font: 500 .95rem/1.25 var(--font); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap;
+}
+.lc-card .hl-row { justify-content: space-between; margin: 12px -12px 2px; padding: 0 4px; }
+.lc-play { margin-top: 14px; font-size: 1.125rem; }
+.lc-play small { font-size: 1rem; font-weight: 400; opacity: .8; }
+@media (hover: hover) { .lc-name:hover { text-decoration: underline; text-underline-offset: 4px; } }
+
+/* ---------- Ficha: las mismas historias bajo el nombre; el avatar con el aro de niveles ---------- */
+.ap .hl-row { --hl: var(--hl-lg); --hl-photo: var(--hl-photo-lg); --hl-ring: var(--bg); gap: 10px; margin: 1rem 0 0; padding: 0 1.2rem 2px; }
+.artist-sheet .hl-row { --hl-ring: var(--surface); }
+.ap .hl-note { margin: .6rem 0 0; text-align: left; }
+.ap-ring.has-levels { position: relative; width: 112px; height: 112px; padding: var(--ring-out-lg); background: none; }
+.ap-ring.has-levels .level-ring { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; rotate: -90deg; overflow: visible; }
+.ap-ring.has-levels .ap-photo { position: relative; z-index: 1; }
+.ap-ring.has-levels .ring-halo { display: none; }
+/* Nivel hecho: elegir entre volver a ver su historia y repetir el nivel. */
+.hl[aria-expanded="true"] .hl-c { transform: scale(1.06); }
+.hl-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.hl-pick-btn {
+  flex: 1 1 8rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 12px; border: 0;
+  border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); font: 600 .95rem/1.2 var(--font); cursor: pointer;
+}
+.hl-pick-btn:active { transform: translateY(1px); }
+@media (hover: hover) { .hl-pick-btn:hover { background: color-mix(in srgb, var(--surface-2) 90%, var(--ink)); } }
+.ap .hl-more { padding: 0 1.2rem; }
+.ap .hl-pick { margin-top: .8rem; }
+.hl-more[hidden] { display: none; }

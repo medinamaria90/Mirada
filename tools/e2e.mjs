@@ -7,6 +7,7 @@
 import { createRequire } from 'node:module';
 import { readFileSync, mkdirSync } from 'node:fs';
 import { stageTitle } from '../app/js/engine/painters.js';
+import { ringLevels } from '../app/js/engine/level-ring.js';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { hasMovementReview } from '../app/js/engine/progress.js';
 import { isoWeek, dayKey } from '../app/js/engine/dates.js';
@@ -1196,29 +1197,38 @@ if (SMOKE) {
   await sp.waitForSelector('.learn');
   check(await sp.locator('.story').count() === 0, 'la historia vuelve a salir sola');
   await storyCtx.close();
-  // Niveles «a fondo»: aro en el retrato del pintor dominado (tocarlo lleva a sus etapas), etapas jugables en su ficha, ronda propia con su
-  // celebración (nivel superado) o, si faltan cuadros por ver, el aviso de «una ronda más».
-  const deepArtist = index.path.find((a) => index.deepLevels(a.id).length >= 2);
+  // Niveles «a fondo»: aro por tramos en el retrato del pintor dominado (un tramo por nivel con historia, el 1 incluido); tocarlo
+  // abre su tarjeta con las historias destacadas y «Jugar · <nivel>»; ronda propia con su celebración (nivel superado) o, si faltan
+  // cuadros por ver, el aviso de «una ronda más».
+  const deepArtist = index.path.find((a) => ringLevels(index, a.id).length >= 3);
   const deepUpTo = index.pathIndex(deepArtist.id) + 1;
   const deepLevel = index.deepLevels(deepArtist.id)[0];
   const deepSeen = (all) => ({ artists: { ...seededState({ upTo: deepUpTo }).progress.artists, [deepArtist.id]: { plays: 1, best: 1, mastered: true, works: [...index.worksOf(deepArtist.id)].filter((w) => w.level === 1 || all).map((w) => w.id) } } });
   await seed(page, seededState({ upTo: deepUpTo, extra: deepSeen(false) }), 'inicio');
   const deepNode = '.stage-spot[data-step="artist:' + deepArtist.id + '"] .stage';
-  await page.waitForSelector(`${deepNode} .deep-ring`);
-  const ring = await page.locator(deepNode).evaluate((b) => ({ arcs: b.querySelectorAll('.deep-arc').length, left: b.querySelectorAll('.deep-arc.is-left').length, label: b.getAttribute('aria-label'), badge: document.querySelectorAll('.deep-badge').length }));
-  check(ring.arcs === index.deepLevels(deepArtist.id).length && ring.left === ring.arcs && /a fondo/.test(ring.label) && !ring.badge, `aro a fondo: ${JSON.stringify(ring)}`);
+  await page.waitForSelector(`${deepNode} .level-ring`);
+  const rungs = ringLevels(index, deepArtist.id).length;
+  const ring = await page.locator(deepNode).evaluate((b) => ({ arcs: b.querySelectorAll('.ring-arc').length, done: b.querySelectorAll('.ring-arc.is-done').length, next: b.querySelectorAll('.ring-arc.is-next').length, label: b.getAttribute('aria-label'), badge: b.querySelector('.stage-badge.is-next')?.textContent }));
+  check(ring.arcs === rungs && ring.done === 1 && ring.next === 1 && ring.badge === '2' && ring.label.endsWith(`Nivel 2 de ${index.deepLevels(deepArtist.id).length + 1} por jugar`), `aro de niveles: ${JSON.stringify(ring)}`);
   await page.locator(deepNode).scrollIntoViewIfNeeded();
-  await shot(page, '14h-mapa-aro-a-fondo');
+  await shot(page, '14h-mapa-aro-niveles');
   await page.locator(deepNode).click();
-  await page.waitForSelector('button.ap-stage');
-  const l1 = index.levelWorks(deepArtist.id, 1).length;
-  const allW = index.worksOf(deepArtist.id).length;
-  check((await page.locator('.ap-mastery.is-done').innerText()).trim() === 'Dominado' && (await page.locator('.ap-facts').innerText()).replace(/\s+/g, ' ').includes(`Cuadros ${allW}`) && (await page.locator('.ap-facts').innerText()).replace(/\s+/g, ' ').includes(`Vistos ${l1}`), `la ficha no dice «Dominado» con sus contadores aparte: ${await page.locator('.ap-progress').innerText()}`);
-  check((await page.locator('.ap-mastery-more').innerText()).includes(`Te quedan ${allW - l1} en los niveles a fondo`), 'la ficha no explica lo que queda en los niveles a fondo');
-  check(page.url().endsWith('#pintor-' + deepArtist.id + '-etapas'), `el nodo con aro no lleva a las etapas: ${page.url()}`);
-  await shot(page, '14i-ficha-etapas');
-  await audit(page, '390 ficha con etapas');
-  await page.locator('button.ap-stage[data-level="' + deepLevel.id + '"]').click();
+  await page.waitForSelector('.lc[open] .lc-card');
+  check(await page.locator('.lc .hl').count() === rungs && await page.locator('.lc .hl.is-next').count() === 1 && await page.locator('.lc .hl.is-locked').count() === rungs - 2, 'la tarjeta del nodo no enseña una historia por nivel con su estado');
+  check((await page.locator('.lc-play').innerText()).replace(/\s+/g, ' ').trim() === `Jugar · ${stageTitle(deepArtist, deepLevel)}`, `el botón de la tarjeta no es «Jugar · <nivel>»: ${await page.locator('.lc-play').innerText()}`);
+  await page.locator('.lc .hl.is-locked').first().click();
+  check((await page.locator('.lc .hl-note').innerText()).startsWith('Se abre al terminar'), 'un nivel cerrado no dice qué falta');
+  await page.locator('.lc .hl.is-done').click();
+  check(await page.locator('.lc .hl-pick-btn').count() === 2, 'un nivel hecho no ofrece ver su historia o repetirlo');
+  await shot(page, '14i-tarjeta-nodo');
+  await audit(page, '390 tarjeta del nodo');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.lc', { state: 'detached' });
+  check(page.url().endsWith('#inicio'), `cerrar la tarjeta cambia de pantalla: ${page.url()}`);
+  await page.locator(deepNode).click();
+  await page.click('.lc-play');
+  await page.waitForSelector('.story[open] .story-next');
+  await page.click('[data-st="skip"]');
   await page.waitForSelector('.lesson');
   check(page.url().endsWith('#a-fondo-' + deepArtist.id + '-' + deepLevel.id), `la etapa no lleva a su ronda: ${page.url()}`);
   await playRound(page);

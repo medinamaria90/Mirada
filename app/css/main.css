@@ -266,10 +266,16 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 /* Nodos: cada parada es un punto (0×0) del trazado; el botón cuelga de él hacia el lado ancho. */
 .stages { position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; list-style: none; }
 .stage-spot { position: absolute; width: 0; height: 0; }
-/* Aro de niveles «a fondo» alrededor del retrato (ui/deep-badges.js): un arco por nivel, dorados los que quedan. */
-.deep-ring { position: absolute; inset: calc(var(--deep-ring-out) * -1); width: calc(100% + 2 * var(--deep-ring-out)); height: calc(100% + 2 * var(--deep-ring-out)); rotate: -90deg; pointer-events: none; overflow: visible; }
-.deep-arc { fill: none; stroke: var(--line-2); stroke-width: var(--deep-ring-w); stroke-linecap: round; }
-.deep-arc.is-left { stroke: var(--brand); }
+/* Aro de niveles alrededor del retrato (ui/deep-badges.js): un tramo por nivel; oro lo hecho, coral el siguiente (con halo que
+   respira) y apagado lo cerrado. Va detrás del retrato y de su anillo blanco (z-index -1 dentro de .stages). */
+.level-ring { position: absolute; z-index: -1; inset: calc(var(--ring-out) * -1); width: calc(100% + 2 * var(--ring-out)); height: calc(100% + 2 * var(--ring-out)); rotate: -90deg; pointer-events: none; overflow: visible; }
+.ring-arc { fill: none; stroke: var(--ring-locked); stroke-width: var(--ring-w); stroke-linecap: round; }
+.ring-arc.is-done { stroke: var(--gold); }
+.ring-arc.is-next { stroke: var(--brand); stroke-width: var(--ring-w-next); }
+.ring-halo { fill: var(--brand-soft); transform-box: fill-box; transform-origin: center; animation: ring-breathe var(--dur-breathe) var(--ease) infinite; }
+@keyframes ring-breathe { 50% { transform: scale(1.08); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .ring-halo { animation: none; } }
+html.reduce-motion .ring-halo { animation: none; }
 .stage {
   --dot: 58px; --hit: max(var(--dot), 48px);
   position: absolute; top: calc(var(--hit) / -2); left: calc(var(--dot) / -2); display: flex; align-items: center; gap: calc(.75 * var(--map-fs)); min-height: var(--hit); width: max-content;
@@ -344,6 +350,11 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
   background: var(--gold); color: var(--on-gold); box-shadow: 0 0 0 2.5px var(--surface);
 }
 .stage-badge .icon { stroke-width: 2.6; }
+/* Con aro de niveles: el aro sustituye al anillo de oro (sin doble borde); el sello dice el número del siguiente. */
+.stage.has-ring { gap: calc(.75 * var(--map-fs) + var(--ring-out)); }
+.stage.has-ring .stage-dot, .stage.is-mastered.is-dormant.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px var(--line-2); }
+.stage.has-ring:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 2px 0 3px var(--line-2); }
+.stage-badge.is-next { min-width: 23px; width: auto; padding: 0 6px; background: var(--brand); color: var(--on-brand); font: 600 13px/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
 /* Dormido: dominado y sin salir en una semana. Se apaga (anillo y cuadro) sin perder el sello de hecho. */
 .stage.is-dormant .stage-thumb { filter: saturate(var(--map-dormant-saturate)); }
 .stage.is-mastered.is-dormant .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--map-dormant), 0 var(--relief-node) 0 6px var(--line-2); }

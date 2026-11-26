@@ -136,11 +136,26 @@
   --map-seam: 80px;
   --map-line-x: 30px;
   --map-indent: 16px;
-  --deep-ring-out: 13px;
+  /* Aro de niveles (ui/deep-badges.js): cuánto sale del retrato, grosor del tramo hecho y del siguiente (en la caja de 100 del
+     SVG), y el respiro del halo. */
+  --ring-out: 12px;
+  --ring-out-lg: 10px;
   --kiosk-hit: 56px;
   --dur-zoom: 420ms;
   --zoom-scale: 1.6;
-  --deep-ring-w: 3.2;
+  --ring-w: 4.6;
+  --ring-w-next: 6.4;
+  --dur-breathe: 2.6s;
+  /* Tarjeta del nodo (ui/level-card.js) e historias destacadas (ui/level-row.js): círculo, su portada, entrada y temblor. */
+  --hl: 64px;
+  --hl-lg: 68px;
+  --hl-photo: 54px;
+  --hl-photo-lg: 58px;
+  --radius-pop: 24px;
+  --dur-pop: 220ms;
+  --dur-shake: 360ms;
+  /* Tramo cerrado del aro y círculo cerrado de la fila de historias. */
+  --ring-locked: #d3c9ba;
   /* Sombras y velos. */
   --shadow-frame: 0 1px 1px rgba(35, 32, 28, .10), 0 6px 16px -6px rgba(35, 32, 28, .26), 0 18px 40px -18px rgba(35, 32, 28, .30);
   --shadow-card: 0 1px 2px rgba(35, 32, 28, .05), 0 6px 18px -10px rgba(35, 32, 28, .16);
@@ -255,6 +270,7 @@
     --map-tint-pintura-britanica: #1e251d;
     --map-tint-ukiyo-e: #28221f;
     --map-dormant: #5c5246;
+    --ring-locked: #5a5046;
     --map-dormant-saturate: .25;
     --map-sign: #4a4239;
     --map-sign-line: #5e5348;
@@ -346,6 +362,7 @@
   --map-tint-pintura-britanica: #1e251d;
   --map-tint-ukiyo-e: #28221f;
   --map-dormant: #5c5246;
+  --ring-locked: #5a5046;
   --map-dormant-saturate: .25;
   --map-sign: #4a4239;
   --map-sign-line: #5e5348;

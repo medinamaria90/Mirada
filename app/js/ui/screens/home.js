@@ -11,7 +11,7 @@ import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } f
 import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf } from '../../engine/dates.js';
-import { addDeepBadges } from '../deep-badges.js';
+import { addLevelRings } from '../deep-badges.js';
 import { coachSeen } from '../../state/store.js';
 
 export function renderHome(ctx, el) {
@@ -68,8 +68,8 @@ export function renderHome(ctx, el) {
   // el mapa vive: luz según la hora, viento, agua y carruaje (map-life.js).
   const map = el.querySelector('.path-map');
   const life = startMapLife(map);
-  const stops = [fillPendingEras(ctx, el, () => { watchLandscapes(el); life.refresh(); }), watchMapMode(map), life.stop];
-  addDeepBadges(ctx, el);
+  const stops = [fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); life.refresh(); }), watchMapMode(map), life.stop];
+  addLevelRings(ctx, el);
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
   if (!coachSeen()) {
     let stop = () => {};

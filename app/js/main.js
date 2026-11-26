@@ -6,6 +6,7 @@
 import { buildIndex, mergeCatalogText } from './engine/catalog.js';
 import { dayKey, madridDayKey } from './engine/dates.js';
 import { createStore, safeStorage, STORAGE_KEY } from './state/store.js';
+import { reconcileRoster, markRosterSeen } from './engine/roster.js';
 import { parseRoute, go } from './ui/router.js';
 import { audio, loadAudioWhenIdle, applyAudioSettings, bindBackgroundPause } from './ui/audio-bridge.js';
 import { installArtListeners } from './ui/art.js';
