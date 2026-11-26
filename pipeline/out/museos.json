@@ -8820,5 +8820,483 @@
   "parent": null,
   "country": "Japón",
   "isMuseum": false
+ },
+ "Q34217": {
+  "name": "Oxford",
+  "types": [
+   "Q515",
+   "Q1187811",
+   "Q1357964",
+   "Q7897276"
+  ],
+  "adm": "Q20986484",
+  "loc": null,
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": false
+ },
+ "Q573881": {
+  "name": "basílica de San Lorenzo de Florencia",
+  "types": [
+   "Q16970",
+   "Q33506",
+   "Q120560",
+   "Q317557",
+   "Q97588309"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q1042634": {
+  "name": "iglesia de Santa María del Carmine",
+  "types": [
+   "Q120560",
+   "Q334383"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q1968661": {
+  "name": "Nationalmuseum (Danzig)",
+  "types": [
+   "Q17431399"
+  ],
+  "adm": "Q1792",
+  "loc": "Q1792",
+  "parent": null,
+  "country": "Polonia",
+  "isMuseum": true
+ },
+ "Q2432540": {
+  "name": "Antiguo hospital de San Juan",
+  "types": [
+   "Q33506",
+   "Q43229",
+   "Q180370",
+   "Q64578911"
+  ],
+  "adm": "Q12994",
+  "loc": null,
+  "parent": null,
+  "country": "Bélgica",
+  "isMuseum": true
+ },
+ "Q3672358": {
+  "name": "iglesia de San Ambrosio",
+  "types": [
+   "Q16970"
+  ],
+  "adm": "Q2044",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3867768": {
+  "name": "Museo di Palazzo Pretorio",
+  "types": [
+   "Q207694",
+   "Q2087181",
+   "Q94701740",
+   "Q124830213"
+  ],
+  "adm": "Q13377",
+  "loc": "Q3890718",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q10855544": {
+  "name": "Galería de la Academia de Florencia",
+  "types": [
+   "Q33506",
+   "Q207694",
+   "Q17431399",
+   "Q121076356",
+   "Q124830411"
+  ],
+  "adm": "Q2044",
+  "loc": "Q3927157",
+  "parent": "Q121076398",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q25682457": {
+  "name": "Memling in Sint-Jan",
+  "types": [
+   "Q33506"
+  ],
+  "adm": "Q12994",
+  "loc": null,
+  "parent": "Q2432540",
+  "country": "Bélgica",
+  "isMuseum": true
+ },
+ "Q121076398": {
+  "name": "Galleria dell'Accademia e Musei del Bargello",
+  "types": [
+   "Q121076356"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q17155": {
+  "name": "Catedral de Santa Eulalia de Barcelona",
+  "types": [
+   "Q120560",
+   "Q56242215"
+  ],
+  "adm": "Q17154",
+  "loc": null,
+  "parent": "Q98690521",
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q569079": {
+  "name": "Musée des Beaux-Arts de Caen",
+  "types": [
+   "Q207694",
+   "Q24699794"
+  ],
+  "adm": "Q41185",
+  "loc": "Q2968752",
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q1069665": {
+  "name": "iglesia de Santa Felicita",
+  "types": [
+   "Q16970"
+  ],
+  "adm": "Q2044",
+  "loc": "Q1015257",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3657333": {
+  "name": "capilla Barbadori-Capponi",
+  "types": [
+   "Q108325",
+   "Q391414"
+  ],
+  "adm": "Q2044",
+  "loc": "Q1015257",
+  "parent": "Q1069665",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3923979": {
+  "name": "Rectory of Saints Michael and Francis",
+  "types": [
+   "Q16970",
+   "Q33506",
+   "Q2221906",
+   "Q3402326"
+  ],
+  "adm": "Q20385",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q14917275": {
+  "name": "Galería Estatal de Stuttgart",
+  "types": [
+   "Q207694"
+  ],
+  "adm": "Q1022",
+  "loc": null,
+  "parent": null,
+  "country": "Alemania",
+  "isMuseum": true
+ },
+ "Q19018238": {
+  "name": "Room 809",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": "Q161741",
+  "loc": null,
+  "parent": "Q17309944",
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q113496901": {
+  "name": "Uffizi Gallery - Room 83, Pontormo",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q16335227",
+  "parent": "Q16335227",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q131813024": {
+  "name": "Hall of Saturn",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": "Q2707802",
+  "loc": "Q866498",
+  "parent": "Q29286",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q98690521": {
+  "name": "Conjunto especial del sector de la muralla romana",
+  "types": [
+   "Q66626342"
+  ],
+  "adm": "Q17154",
+  "loc": null,
+  "parent": "Q17587742",
+  "country": "España",
+  "isMuseum": false
+ },
+ "Q238587": {
+  "name": "National Portrait Gallery",
+  "types": [
+   "Q207694",
+   "Q3343298",
+   "Q17431399"
+  ],
+  "adm": "Q179351",
+  "loc": "Q100312530",
+  "parent": "Q124813264",
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q913672": {
+  "name": "Museo de Arte Moderno de San Francisco",
+  "types": [
+   "Q33506",
+   "Q163740",
+   "Q207694",
+   "Q2085381",
+   "Q97662266"
+  ],
+  "adm": "Q62",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q1324926": {
+  "name": "Museo de Bellas Artes y Arqueología de Besanzón",
+  "types": [
+   "Q3196771",
+   "Q3329412"
+  ],
+  "adm": "Q37776",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": false
+ },
+ "Q1891413": {
+  "name": "Castillo de Skokloster",
+  "types": [
+   "Q23413",
+   "Q33506",
+   "Q1497375",
+   "Q2065736",
+   "Q2668072",
+   "Q96211395"
+  ],
+  "adm": "Q511253",
+  "loc": null,
+  "parent": "Q2324548",
+  "country": "Suecia",
+  "isMuseum": true
+ },
+ "Q2060860": {
+  "name": "Museo Soane",
+  "types": [
+   "Q708676",
+   "Q2087181",
+   "Q17431399",
+   "Q20669447"
+  ],
+  "adm": "Q149836",
+  "loc": null,
+  "parent": null,
+  "country": "Reino Unido",
+  "isMuseum": true
+ },
+ "Q2817221": {
+  "name": "Galería Nacional de Retratos de Suecia",
+  "types": [
+   "Q207694",
+   "Q7328910"
+  ],
+  "adm": "Q501532",
+  "loc": "Q714783",
+  "parent": "Q842858",
+  "country": "Suecia",
+  "isMuseum": true
+ },
+ "Q3585899": {
+  "name": "Église des Carmes de Besançon",
+  "types": [
+   "Q16970"
+  ],
+  "adm": "Q37776",
+  "loc": null,
+  "parent": null,
+  "country": "Francia",
+  "isMuseum": true
+ },
+ "Q6940464": {
+  "name": "Museo civico Ala Ponzone",
+  "types": [
+   "Q207694",
+   "Q2087181",
+   "Q118987801"
+  ],
+  "adm": "Q6231",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q30034332": {
+  "name": "The H. O. Havemeyer Collection",
+  "types": [
+   "Q667276"
+  ],
+  "adm": null,
+  "loc": "Q160236",
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q97040817": {
+  "name": "Gallery 638, Metropolitan Museum of Art",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": "Q160236",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q107209467": {
+  "name": "Q107209467",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": null,
+  "loc": "Q51252",
+  "parent": "Q51252",
+  "country": null,
+  "isMuseum": false
+ },
+ "Q135989752": {
+  "name": "Room D14 - Bronzino",
+  "types": [
+   "Q15206795"
+  ],
+  "adm": "Q3927157",
+  "loc": "Q51252",
+  "parent": "Q51252",
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q2324548": {
+  "name": "Museos Históricos Nacionales",
+  "types": [
+   "Q68295960"
+  ],
+  "adm": null,
+  "loc": "Q298489",
+  "parent": "Q2611994",
+  "country": "Suecia",
+  "isMuseum": false
+ },
+ "Q17587742": {
+  "name": "Barcino",
+  "types": [
+   "Q756780",
+   "Q839954",
+   "Q117025897"
+  ],
+  "adm": "Q17154",
+  "loc": null,
+  "parent": null,
+  "country": "Antigua Roma",
+  "isMuseum": false
+ },
+ "Q124813264": {
+  "name": "National Portrait Gallery Board of Trustees",
+  "types": [
+   "Q895526"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q377579": {
+  "name": "Museo de Arte de Baltimore",
+  "types": [
+   "Q163740",
+   "Q207694",
+   "Q2085381",
+   "Q24699794"
+  ],
+  "adm": "Q5092",
+  "loc": "Q5083136",
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q1760539": {
+  "name": "Museo de Arte de San Luis",
+  "types": [
+   "Q33506",
+   "Q207694"
+  ],
+  "adm": "Q38022",
+  "loc": null,
+  "parent": null,
+  "country": "Estados Unidos",
+  "isMuseum": true
+ },
+ "Q2622043": {
+  "name": "Edificio del Estado Mayor",
+  "types": [
+   "Q41176"
+  ],
+  "adm": "Q656",
+  "loc": "Q132783",
+  "parent": "Q132783",
+  "country": "Rusia",
+  "isMuseum": false
+ },
+ "Q2611994": {
+  "name": "Ministerio de Cultura de Suecia",
+  "types": [
+   "Q10330441",
+   "Q19973770"
+  ],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": "Suecia",
+  "isMuseum": false
  }
 }
