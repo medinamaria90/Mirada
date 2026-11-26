@@ -17,3 +17,7 @@ ok lote 1: 10 fichas (1794 en total)
 fin: 1794 fichas; con museo 1737, con ciudad 1718, con técnica 1704, con medidas 1697, en España 370
 62M	.git
 3.6M	catalogo
+== reconciliar  23:09:08
+reconciliar: 1784 imágenes en releases, 1784 en img_meta, quitadas 0 que no estaban subidas
+62M	.git
+3.6M	catalogo
