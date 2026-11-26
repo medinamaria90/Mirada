@@ -1,0 +1,26 @@
+{
+ "artistId": "zuloaga",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Zuloaga",
+   "cards": [
+    {
+     "text": "Ignacio Zuloaga nació en Eibar en 1870, hijo de un famoso damasquinador, y murió en Madrid en 1945. Hasta toreó, por afición, en su juventud.",
+     "artwork": "w16038461",
+     "source": "https://es.wikipedia.org/wiki/Ignacio_Zuloaga"
+    },
+    {
+     "text": "Pintó una España dura y dramática, de pueblos y tipos castellanos, que triunfó en París y en Estados Unidos.",
+     "artwork": "w16038461",
+     "source": "https://es.wikipedia.org/wiki/Ignacio_Zuloaga"
+    },
+    {
+     "text": "Fíjate en Gregorio, de pie con su bota de vino ante un paisaje castellano: lo pinta con la dignidad con que Velázquez pintaba a los bufones.",
+     "artwork": "w12108725",
+     "source": "https://es.wikipedia.org/wiki/Ignacio_Zuloaga"
+    }
+   ]
+  }
+ ]
+}

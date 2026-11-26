@@ -1,0 +1,26 @@
+{
+ "artistId": "schiele",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Schiele",
+   "cards": [
+    {
+     "text": "Egon Schiele nació en Tulln, cerca de Viena, en 1890. Klimt lo apadrinó. Murió en 1918, con 28 años, de gripe, tres días después que su mujer.",
+     "artwork": "w2438357",
+     "source": "https://es.wikipedia.org/wiki/Egon_Schiele"
+    },
+    {
+     "text": "El Retrato de Wally fue incautado en Nueva York en 1998 por una reclamación de expolio nazi. El pleito duró doce años.",
+     "artwork": "w1555137",
+     "source": "https://es.wikipedia.org/wiki/Retrato_de_Wally"
+    },
+    {
+     "text": "Fíjate en la pareja abrazada en La Muerte y la doncella: son él y Wally, como despedida, cuando la dejó para casarse con otra.",
+     "artwork": "w2438357",
+     "source": "https://es.wikipedia.org/wiki/Egon_Schiele"
+    }
+   ]
+  }
+ ]
+}

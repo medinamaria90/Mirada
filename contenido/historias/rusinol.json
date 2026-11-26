@@ -1,0 +1,26 @@
+{
+ "artistId": "rusinol",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Rusiñol",
+   "cards": [
+    {
+     "text": "Santiago Rusiñol nació en Barcelona en 1861, hijo de una rica familia textil, y murió en Aranjuez en 1931. Fue pintor, escritor y alma del modernismo.",
+     "artwork": "w11931061",
+     "source": "https://es.wikipedia.org/wiki/Santiago_Rusi%C3%B1ol"
+    },
+    {
+     "text": "En Sitges montó el Cau Ferrat, casa-museo y escenario de fiestas modernistas. Al final de su vida pintó, sobre todo, jardines.",
+     "artwork": "w11931061",
+     "source": "https://es.wikipedia.org/wiki/Santiago_Rusi%C3%B1ol"
+    },
+    {
+     "text": "Fíjate en la mano que aprieta la sábana en La morfina. Rusiñol conocía bien esa droga: él mismo fue adicto.",
+     "artwork": "w5967388",
+     "source": "https://es.wikipedia.org/wiki/Santiago_Rusi%C3%B1ol"
+    }
+   ]
+  }
+ ]
+}

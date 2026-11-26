@@ -1,0 +1,26 @@
+{
+ "artistId": "hammershoi",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Hammershøi",
+   "cards": [
+    {
+     "text": "Vilhelm Hammershøi nació en Copenhague en 1864 y murió allí en 1916. Pintó una y otra vez las habitaciones de su propia casa.",
+     "artwork": "w20354158",
+     "source": "https://es.wikipedia.org/wiki/Vilhelm_Hammersh%C3%B8i"
+    },
+    {
+     "text": "Sus cuadros son casi silencio: grises, puertas, luz de ventana y, a veces, su mujer, Ida, de espaldas. Lo llamaron el pintor de la quietud.",
+     "artwork": "w58411216",
+     "source": "https://es.wikipedia.org/wiki/Vilhelm_Hammersh%C3%B8i"
+    },
+    {
+     "text": "Fíjate en que no hay nadie: solo el caballete, las puertas y la luz gris del norte. Y aun así parece que alguien acaba de salir.",
+     "artwork": "w58411216",
+     "source": "https://es.wikipedia.org/wiki/Vilhelm_Hammersh%C3%B8i"
+    }
+   ]
+  }
+ ]
+}

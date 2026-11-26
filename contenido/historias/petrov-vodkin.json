@@ -1,0 +1,26 @@
+{
+ "artistId": "petrov-vodkin",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Petrov-Vodkin",
+   "cards": [
+    {
+     "text": "Kuzmá Petrov-Vodkin nació en 1878 en Jvalynsk, a orillas del Volga, hijo de un zapatero, y murió en Leningrado en 1939.",
+     "artwork": "w30067841",
+     "source": "https://es.wikipedia.org/wiki/Kuzm%C3%A1_Petrov-Vodkin"
+    },
+    {
+     "text": "Mezcló la pintura moderna con los colores puros de los iconos rusos, y buscó una perspectiva curva, como si el mundo fuera una esfera.",
+     "artwork": "w4247398",
+     "source": "https://es.wikipedia.org/wiki/Kuzm%C3%A1_Petrov-Vodkin"
+    },
+    {
+     "text": "Fíjate en el caballo: es rojo, rojo de icono. Un muchacho lo monta en el lago, y el cuadro se vio como un presagio de lo que vendría a Rusia.",
+     "artwork": "w4247398",
+     "source": "https://es.wikipedia.org/wiki/Ba%C3%B1ando_al_caballo_rojo"
+    }
+   ]
+  }
+ ]
+}

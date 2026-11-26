@@ -1,0 +1,26 @@
+{
+ "artistId": "vrubel",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Vrúbel",
+   "cards": [
+    {
+     "text": "Mijaíl Vrúbel nació en Omsk, en Siberia, en 1856. Vivió obsesionado con el Demonio del poema de Lérmontov y lo pintó una y otra vez.",
+     "artwork": "w4503153",
+     "source": "https://es.wikipedia.org/wiki/Mija%C3%ADl_Vr%C3%BAbel"
+    },
+    {
+     "text": "La princesa cisne es su mujer, la soprano Nadezhda Zabela, que cantaba ese papel en una ópera de Rimski-Kórsakov. Él acabó perdiendo la razón y la vista.",
+     "artwork": "w4503153",
+     "source": "https://es.wikipedia.org/wiki/Mija%C3%ADl_Vr%C3%BAbel"
+    },
+    {
+     "text": "Fíjate en la pincelada del Demonio sentado: el fondo y las flores parecen cristales o mosaico. Él se abraza las rodillas, triste y solo.",
+     "artwork": "w4157667",
+     "source": "https://es.wikipedia.org/wiki/Demonio_sentado"
+    }
+   ]
+  }
+ ]
+}
