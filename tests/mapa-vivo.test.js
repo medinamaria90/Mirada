@@ -100,7 +100,7 @@ test('paisajes: listos para vivir — clases del tema (k-*), árboles, luces, ag
   }
 });
 
-test('mapa vivo: el CSS solo anima transform y opacity, solo con el mapa vivo, y en línea no hay velo ni luces', () => {
+test('mapa vivo: la luz tiñe los colores del paisaje; el CSS solo anima transform y opacity y solo con el mapa vivo', () => {
   const css = readFileSync(join(app, 'css', 'mapa-vivo.css'), 'utf8');
   const frames = [...css.matchAll(/@keyframes [\w-]+ \{(.*?)\}\s*\}/gs)];
   assert.ok(frames.length >= 4);
@@ -110,8 +110,9 @@ test('mapa vivo: el CSS solo anima transform y opacity, solo con el mapa vivo, y
   for (const rule of css.match(/[^{}]+\{[^{}]*\banimation:[^{}]*\}/g) || []) {
     assert.ok(rule.trim().startsWith('.path-map.is-alive'), `animación sin .is-alive: ${rule.trim().slice(0, 60)}`);
   }
-  assert.ok(/\.path-map\.is-linear::after,\s*\.path-map\.is-linear \.path-lamps, \.path-map\.is-linear \.map-cart \{ display: none; \}/.test(css));
-  assert.ok(/--day-night/.test(css) && /mix-blend-mode: multiply/.test(css), 'sin velo de la noche');
+  assert.ok(/\.path-map\.is-linear \.path-lamps, \.path-map\.is-linear \.map-cart \{ display: none; \}/.test(css), 'en línea quedan las luces o el carruaje');
+  assert.ok(/--night-pct: calc\(var\(--day-night\)/.test(css) && /\.path-land \.k-leaf \{ fill: var\(--lit-leaf\); \}/.test(css), 'la luz del día no tiñe el paisaje');
+  assert.ok(!/mix-blend-mode/.test(css), 'velos con mezcla encima del mapa (rayas en las costuras, tapan carteles)');
   const js = readFileSync(join(app, 'js', 'ui', 'map-life.js'), 'utf8');
   assert.ok(!/requestAnimationFrame|setInterval\([^,]+,\s*\d{1,3}\)/.test(js), 'bucle por fotograma en map-life.js');
   assert.ok(/prefersReducedMotion\(\)/.test(js) && /document\.hidden/.test(js), 'no respeta «Reducir animaciones» ni la pestaña oculta');

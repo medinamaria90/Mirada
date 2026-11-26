@@ -16,51 +16,91 @@
   --map-flicker-step: -7s;
   --map-lamp-halo: 2.4;
   --map-cart-w: 7.2%;
-  --map-z-light: 1;
+  --map-z-cart: 1;
   --map-z-lamps: 2;
 }
 
-/* Paisaje en línea: cada clase pinta su variable (tools/mapa_svg.py las nombra igual). */
-.path-land .tint { fill: var(--era-tint); }
-.path-land .k-stone-far { fill: var(--map-stone-far); } .path-land .s-k-stone-far { stroke: var(--map-stone-far); }
-.path-land .k-stone-front { fill: var(--map-stone-front); } .path-land .s-k-stone-front { stroke: var(--map-stone-front); }
-.path-land .k-stone-side { fill: var(--map-stone-side); } .path-land .s-k-stone-side { stroke: var(--map-stone-side); }
-.path-land .k-stone-top { fill: var(--map-stone-top); } .path-land .s-k-stone-top { stroke: var(--map-stone-top); }
-.path-land .k-window { fill: var(--map-window); } .path-land .s-k-window { stroke: var(--map-window); }
-.path-land .k-tile { fill: var(--map-tile); } .path-land .s-k-tile { stroke: var(--map-tile); }
-.path-land .k-tile-2 { fill: var(--map-tile-2); } .path-land .s-k-tile-2 { stroke: var(--map-tile-2); }
-.path-land .k-slate { fill: var(--map-slate); } .path-land .s-k-slate { stroke: var(--map-slate); }
-.path-land .k-slate-2 { fill: var(--map-slate-2); } .path-land .s-k-slate-2 { stroke: var(--map-slate-2); }
-.path-land .k-leaf { fill: var(--map-leaf); } .path-land .s-k-leaf { stroke: var(--map-leaf); }
-.path-land .k-leaf-2 { fill: var(--map-leaf-2); } .path-land .s-k-leaf-2 { stroke: var(--map-leaf-2); }
-.path-land .k-water { fill: var(--map-water); } .path-land .s-k-water { stroke: var(--map-water); }
-.path-land .k-water-2 { fill: var(--map-water-2); } .path-land .s-k-water-2 { stroke: var(--map-water-2); }
-.path-land .k-shade { fill: var(--map-shade); } .path-land .s-k-shade { stroke: var(--map-shade); }
-.path-land .k-fruit { fill: var(--map-fruit); } .path-land .s-k-fruit { stroke: var(--map-fruit); }
-.path-land .k-hay { fill: var(--map-hay); } .path-land .s-k-hay { stroke: var(--map-hay); }
-.path-land .k-hay-2 { fill: var(--map-hay-2); } .path-land .s-k-hay-2 { stroke: var(--map-hay-2); }
-.path-land .k-field { fill: var(--map-field); } .path-land .s-k-field { stroke: var(--map-field); }
-.path-land .k-field-2 { fill: var(--map-field-2); } .path-land .s-k-field-2 { stroke: var(--map-field-2); }
-.path-land .k-crop { fill: var(--map-crop); } .path-land .s-k-crop { stroke: var(--map-crop); }
-.path-land .k-crop-2 { fill: var(--map-crop-2); } .path-land .s-k-crop-2 { stroke: var(--map-crop-2); }
-.path-land .k-gold { fill: var(--map-gold); } .path-land .s-k-gold { stroke: var(--map-gold); }
-.path-land .k-gold-2 { fill: var(--map-gold-2); } .path-land .s-k-gold-2 { stroke: var(--map-gold-2); }
-.path-land .k-awning { fill: var(--map-awning); } .path-land .s-k-awning { stroke: var(--map-awning); }
-.path-land .k-bloom { fill: var(--map-bloom); } .path-land .s-k-bloom { stroke: var(--map-bloom); }
 
-/* Luz del día: un solo velo sobre todo el mapa (sin rayas entre tramos) que multiplica: azul de noche, cálido al
-   amanecer y al atardecer. Queda encima del paisaje, el sendero y el carruaje (capa 1) y debajo de luces, nodos y
-   carteles (capas 2 y 3). */
-.path-map::after {
-  content: ""; position: absolute; inset: 0; z-index: var(--map-z-light); pointer-events: none;
-  background: color-mix(in oklab, var(--map-dusk) calc(var(--day-dusk) * 100%), var(--map-night));
-  mix-blend-mode: multiply;
-  opacity: max(calc(var(--day-night) * var(--map-night-max)), calc(var(--day-dusk) * var(--map-dusk-max)));
-  transition: opacity var(--map-light-fade) linear, background-color var(--map-light-fade) linear;
+/* Luz del día: cada color del paisaje se tiñe hacia el arrebol (al amanecer y al atardecer) y hacia la noche, según
+   --day-dusk y --day-night (map-life.js). Así cambian cielo, suelo, agua y casas sin velos encima: nodos, carteles y
+   textos no se tocan (su contraste es el de siempre). */
+.path-map {
+  --dusk-pct: calc(var(--day-dusk) * var(--map-dusk-max) * 100%);
+  --night-pct: calc(var(--day-night) * var(--map-night-max) * 100%);
+  --lit-stone-far: color-mix(in oklab, color-mix(in oklab, var(--map-stone-far), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-stone-front: color-mix(in oklab, color-mix(in oklab, var(--map-stone-front), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-stone-side: color-mix(in oklab, color-mix(in oklab, var(--map-stone-side), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-stone-top: color-mix(in oklab, color-mix(in oklab, var(--map-stone-top), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-window: color-mix(in oklab, color-mix(in oklab, var(--map-window), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-tile: color-mix(in oklab, color-mix(in oklab, var(--map-tile), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-tile-2: color-mix(in oklab, color-mix(in oklab, var(--map-tile-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-slate: color-mix(in oklab, color-mix(in oklab, var(--map-slate), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-slate-2: color-mix(in oklab, color-mix(in oklab, var(--map-slate-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-leaf: color-mix(in oklab, color-mix(in oklab, var(--map-leaf), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-leaf-2: color-mix(in oklab, color-mix(in oklab, var(--map-leaf-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-water: color-mix(in oklab, color-mix(in oklab, var(--map-water), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-water-2: color-mix(in oklab, color-mix(in oklab, var(--map-water-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-fruit: color-mix(in oklab, color-mix(in oklab, var(--map-fruit), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-hay: color-mix(in oklab, color-mix(in oklab, var(--map-hay), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-hay-2: color-mix(in oklab, color-mix(in oklab, var(--map-hay-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-field: color-mix(in oklab, color-mix(in oklab, var(--map-field), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-field-2: color-mix(in oklab, color-mix(in oklab, var(--map-field-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-crop: color-mix(in oklab, color-mix(in oklab, var(--map-crop), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-crop-2: color-mix(in oklab, color-mix(in oklab, var(--map-crop-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-gold: color-mix(in oklab, color-mix(in oklab, var(--map-gold), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-gold-2: color-mix(in oklab, color-mix(in oklab, var(--map-gold-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-awning: color-mix(in oklab, color-mix(in oklab, var(--map-awning), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-bloom: color-mix(in oklab, color-mix(in oklab, var(--map-bloom), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-post: color-mix(in oklab, color-mix(in oklab, var(--map-post), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-trail-edge: color-mix(in oklab, color-mix(in oklab, var(--map-trail-edge), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-trail: color-mix(in oklab, color-mix(in oklab, var(--map-trail), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-trail-step: color-mix(in oklab, color-mix(in oklab, var(--map-trail-step), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-trail-done-edge: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done-edge), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-trail-done: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  --lit-trail-done-step: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done-step), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
 }
-.path-start-art.is-front { z-index: var(--map-z-light); }
+.path-era, .path-start, .path-museum, .path-foot { --lit-tint: color-mix(in oklab, color-mix(in oklab, var(--era-tint), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)); background: var(--lit-tint); }
+.path-era::before { background: linear-gradient(to top, color-mix(in oklab, color-mix(in oklab, var(--era-prev), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)), transparent); }
 
-/* Luces: copias de las ventanas por encima del velo; se encienden en tres tandas al anochecer. */
+/* Paisaje en línea: cada clase pinta su variable (tools/mapa_svg.py las nombra igual), ya con la luz del día. */
+.path-land .tint { fill: var(--lit-tint); }
+.path-land .k-shade { fill: var(--map-shade); }
+.path-land .k-stone-far { fill: var(--lit-stone-far); } .path-land .s-k-stone-far { stroke: var(--lit-stone-far); }
+.path-land .k-stone-front { fill: var(--lit-stone-front); } .path-land .s-k-stone-front { stroke: var(--lit-stone-front); }
+.path-land .k-stone-side { fill: var(--lit-stone-side); } .path-land .s-k-stone-side { stroke: var(--lit-stone-side); }
+.path-land .k-stone-top { fill: var(--lit-stone-top); } .path-land .s-k-stone-top { stroke: var(--lit-stone-top); }
+.path-land .k-window { fill: var(--lit-window); } .path-land .s-k-window { stroke: var(--lit-window); }
+.path-land .k-tile { fill: var(--lit-tile); } .path-land .s-k-tile { stroke: var(--lit-tile); }
+.path-land .k-tile-2 { fill: var(--lit-tile-2); } .path-land .s-k-tile-2 { stroke: var(--lit-tile-2); }
+.path-land .k-slate { fill: var(--lit-slate); } .path-land .s-k-slate { stroke: var(--lit-slate); }
+.path-land .k-slate-2 { fill: var(--lit-slate-2); } .path-land .s-k-slate-2 { stroke: var(--lit-slate-2); }
+.path-land .k-leaf { fill: var(--lit-leaf); } .path-land .s-k-leaf { stroke: var(--lit-leaf); }
+.path-land .k-leaf-2 { fill: var(--lit-leaf-2); } .path-land .s-k-leaf-2 { stroke: var(--lit-leaf-2); }
+.path-land .k-water { fill: var(--lit-water); } .path-land .s-k-water { stroke: var(--lit-water); }
+.path-land .k-water-2 { fill: var(--lit-water-2); } .path-land .s-k-water-2 { stroke: var(--lit-water-2); }
+.path-land .k-fruit { fill: var(--lit-fruit); } .path-land .s-k-fruit { stroke: var(--lit-fruit); }
+.path-land .k-hay { fill: var(--lit-hay); } .path-land .s-k-hay { stroke: var(--lit-hay); }
+.path-land .k-hay-2 { fill: var(--lit-hay-2); } .path-land .s-k-hay-2 { stroke: var(--lit-hay-2); }
+.path-land .k-field { fill: var(--lit-field); } .path-land .s-k-field { stroke: var(--lit-field); }
+.path-land .k-field-2 { fill: var(--lit-field-2); } .path-land .s-k-field-2 { stroke: var(--lit-field-2); }
+.path-land .k-crop { fill: var(--lit-crop); } .path-land .s-k-crop { stroke: var(--lit-crop); }
+.path-land .k-crop-2 { fill: var(--lit-crop-2); } .path-land .s-k-crop-2 { stroke: var(--lit-crop-2); }
+.path-land .k-gold { fill: var(--lit-gold); } .path-land .s-k-gold { stroke: var(--lit-gold); }
+.path-land .k-gold-2 { fill: var(--lit-gold-2); } .path-land .s-k-gold-2 { stroke: var(--lit-gold-2); }
+.path-land .k-awning { fill: var(--lit-awning); } .path-land .s-k-awning { stroke: var(--lit-awning); }
+.path-land .k-bloom { fill: var(--lit-bloom); } .path-land .s-k-bloom { stroke: var(--lit-bloom); }
+.trail-edge, .spur-edge { stroke: var(--lit-trail-edge); }
+.trail-fill, .spur-fill { stroke: var(--lit-trail); }
+.trail-steps { stroke: var(--lit-trail-step); }
+.land-far { fill: var(--lit-stone-far); }
+.land-front { fill: var(--lit-stone-front); }
+.land-side { fill: var(--lit-stone-side); }
+.land-top { fill: var(--lit-stone-top); }
+.land-window { fill: var(--lit-window); }
+.land-leaf { fill: var(--lit-leaf); }
+.land-leaf-2 { fill: var(--lit-leaf-2); }
+
+/* Luces: copias de las ventanas en su propia capa; se encienden en tres tandas al anochecer. */
 .path-lamps { position: absolute; inset: 0; z-index: var(--map-z-lamps); display: block; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 .path-lamps .lamp {
   --lamp-at: .5;
@@ -98,28 +138,27 @@
 @keyframes map-jet { from { transform: scaleY(.7); opacity: .7; } to { transform: scaleY(1.15); opacity: 1; } }
 
 /* Carruaje (map-life.js lo mueve por el sendero con la Web Animations API). */
-.map-cart { position: absolute; left: 0; top: 0; z-index: var(--map-z-light); width: var(--map-cart-w); pointer-events: none; opacity: 0; will-change: transform, opacity; }
+.map-cart { position: absolute; left: 0; top: 0; z-index: var(--map-z-cart); width: var(--map-cart-w); pointer-events: none; opacity: 0; will-change: transform, opacity; }
 .map-cart svg { display: block; width: 100%; height: auto; overflow: visible; }
 .map-cart .cart-shade { fill: var(--map-shade); }
-.map-cart .cart-wheel { fill: var(--map-post); }
-.map-cart .cart-body { fill: var(--map-tile-2); }
-.map-cart .cart-roof { fill: var(--map-tile); }
-.map-cart .cart-shaft { fill: none; stroke: var(--map-post); stroke-width: .9; stroke-linecap: round; }
-.map-cart .cart-horse { fill: var(--map-post); }
+.map-cart .cart-wheel { fill: var(--lit-post); }
+.map-cart .cart-body { fill: var(--lit-tile-2); }
+.map-cart .cart-roof { fill: var(--lit-tile); }
+.map-cart .cart-shaft { fill: none; stroke: var(--lit-post); stroke-width: .9; stroke-linecap: round; }
+.map-cart .cart-horse { fill: var(--lit-post); }
 
 /* Sendero recorrido: de otro color hasta la parada actual. */
-.trail-edge.is-done { stroke: var(--map-trail-done-edge); }
-.trail-fill.is-done { stroke: var(--map-trail-done); }
-.trail-steps.is-done { stroke: var(--map-trail-done-step); }
+.trail-edge.is-done { stroke: var(--lit-trail-done-edge); }
+.trail-fill.is-done { stroke: var(--lit-trail-done); }
+.trail-steps.is-done { stroke: var(--lit-trail-done-step); }
 
 /* Piezas de los dibujos propios (puerta de salida, museo). */
-.land-tile { fill: var(--map-tile); }
-.land-tile-2 { fill: var(--map-tile-2); }
-.land-water { fill: var(--map-water); }
-.land-water-2 { fill: var(--map-water-2); }
-.land-bloom { fill: var(--map-bloom); }
-.land-gold { fill: var(--map-gold-2); }
+.land-tile { fill: var(--lit-tile); }
+.land-tile-2 { fill: var(--lit-tile-2); }
+.land-water { fill: var(--lit-water); }
+.land-water-2 { fill: var(--lit-water-2); }
+.land-bloom { fill: var(--lit-bloom); }
+.land-gold { fill: var(--lit-gold-2); }
 
-/* Camino en línea (letra grande): sin paisaje, sin velo ni luces. */
-.path-map.is-linear::after,
+/* Camino en línea (letra grande): sin paisaje, sin luces ni carruaje. */
 .path-map.is-linear .path-lamps, .path-map.is-linear .map-cart { display: none; }

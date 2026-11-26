@@ -1,5 +1,5 @@
-// Mapa vivo: la luz sigue a la hora del móvil (variables --day-night y --day-dusk en el mapa, que tiñen el paisaje
-// en mapa-vivo.css) y, si se permite el movimiento, de vez en cuando una racha de viento mece los árboles y un
+// Mapa vivo: la luz sigue a la hora del móvil (variables --day-night y --day-dusk en el mapa, que tiñen los colores
+// del paisaje en mapa-vivo.css) y, si se permite el movimiento, de vez en cuando una racha de viento mece los árboles y un
 // carruaje recorre un tramo del sendero. Todo son animaciones CSS de transform y opacity (el carruaje, con la
 // Web Animations API): ningún bucle por fotograma. Se para con la pestaña oculta o al salir de la portada; con
 // «Reducir animaciones» (o el ajuste del sistema), todo quieto, pero con la luz del día igualmente.
@@ -8,7 +8,7 @@ import { daylight } from '../engine/daylight.js';
 import { prefersReducedMotion } from './dom.js';
 import { MAP_W } from './screens/path-layout.js';
 
-const DAYLIGHT_TICK_MS = 3 * 60 * 1000;     // la luz se recalcula cada pocos minutos (el CSS la funde)
+const DAYLIGHT_TICK_MS = 60 * 1000;         // la luz se recalcula cada minuto (en media hora cambia poco a poco)
 const GUST_MS = 3600;                        // lo que dura una racha (y su animación en mapa-vivo.css)
 const GUST_GAP_MS = [16000, 40000];          // entre racha y racha, al azar
 const CART_GAP_MS = [22000, 55000];          // entre carruaje y carruaje
