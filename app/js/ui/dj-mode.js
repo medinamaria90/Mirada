@@ -1,5 +1,6 @@
-// Modo secreto «afinar música» (para María): una pastilla fija bajo la barra superior enseña la pieza
-// que suena (título, autor si es un clásico y la clave de la lista) y, al tocarla, deja saltar a otra.
+// Modo secreto «afinar música» (para María): una barra fina arriba de la app, en el flujo (empuja el
+// contenido), enseña la pieza que suena (título, autor, lista y papel) y deja ir a la anterior, a la
+// siguiente o a la siguiente lista.
 // Se activa desde Ajustes (dj-sheet.js) y se recuerda en este navegador: no es progreso.
 
 import { audio } from './audio-bridge.js';
@@ -9,7 +10,7 @@ import { listName } from '../audio/list-names.js';
 export const DJ_KEY = 'sfumato.dj';
 const ON = '1';
 
-let pill = null;
+let pill = null; // la barra
 let stopListening = null;
 
 export function isDjOn() {
@@ -31,13 +32,13 @@ let observer = null;
 let preview = null; // módulos puros del motor (sin Web Audio), para decir qué sonaría sin arrancarlo
 
 const pieceLine = (info) => [info.title, info.author].filter(Boolean).join(' · ');
-const hasTopbar = () => Boolean(document.querySelector('.topbar'));
 const musicOff = () => audio.settings()?.music === false;
 
 /** Pieza principal de la lista de esta pantalla: lo que sonaría si hubiera sonido. */
 function wouldPlay() {
   if (!preview) return null;
-  const era = preview.hasList(audio.era()) ? audio.era() : FALLBACK_ERA;
+  const want = audio.list();
+  const era = preview.hasList(want) ? want : FALLBACK_ERA;
   const main = preview.playlistOf(era)?.main;
   return main ? preview.pieceInfo(main, era) : null;
 }
@@ -46,14 +47,13 @@ function render() {
   if (!pill) return;
   const playing = audio.nowPlaying();
   const info = playing || wouldPlay();
-  pill.hidden = !info || !hasTopbar();
+  pill.hidden = !info;
+  document.documentElement.classList.toggle('has-dj', !pill.hidden);
   if (!info) return;
   pill.classList.toggle('is-silent', !playing);
   pill.querySelector('.dj-title').textContent = pieceLine(info);
-  pill.querySelector('.dj-key').textContent = `${listName(info.key)} · ${info.role}`;
-  const note = pill.querySelector('.dj-note');
-  note.hidden = Boolean(playing);
-  note.textContent = musicOff() ? NOTE_OFF : NOTE_SILENT;
+  const where = `${listName(info.key)} · ${info.role}`;
+  pill.querySelector('.dj-key').textContent = playing ? where : `${musicOff() ? NOTE_OFF : NOTE_SILENT} · ${where}`;
 }
 
 /** Gesto del usuario: intenta arrancar la música (respeta Ajustes: si está apagada, no la enciende). */
@@ -63,39 +63,25 @@ export function wakeMusic() {
   audio.startMusic();
 }
 
-const FOLD_MS = 5000; // sin tocar, la pastilla vuelve a plegarse
-let foldTimer = null;
-
-function setOpen(open) {
-  clearTimeout(foldTimer);
-  if (open) foldTimer = setTimeout(() => setOpen(false), FOLD_MS);
-  pill.classList.toggle('is-open', open);
-  pill.querySelector('.dj-now').setAttribute('aria-expanded', String(open));
-  pill.querySelector('.dj-actions').hidden = !open;
-}
-
 function mountPill() {
   if (pill) return;
   loadCss('css/dj.css');
   pill = document.createElement('div');
-  pill.className = 'dj-pill';
+  pill.className = 'dj-bar';
   pill.hidden = true;
-  pill.innerHTML = `<button type="button" class="dj-now" aria-expanded="false" aria-controls="dj-actions">
-      <span class="dj-title"></span><span class="dj-key"></span><span class="dj-note" hidden></span></button>
-    <div class="dj-actions" id="dj-actions" hidden>
-      <button type="button" class="dj-btn" data-dj="next">Siguiente</button>
-      <button type="button" class="dj-btn" data-dj="close">Cerrar</button>
-    </div>`;
+  pill.innerHTML = `<button type="button" class="dj-btn" data-dj="prev" aria-label="Pieza anterior">⏮</button>
+    <button type="button" class="dj-now" data-dj="now"><span class="dj-title"></span><span class="dj-key"></span></button>
+    <button type="button" class="dj-btn" data-dj="next" aria-label="Pieza siguiente">⏭</button>
+    <button type="button" class="dj-btn" data-dj="list" aria-label="Siguiente lista">⏭⏭</button>`;
   pill.addEventListener('click', (ev) => {
-    const btn = ev.target.closest('button');
-    if (!btn) return;
-    if (btn.dataset.dj === 'next') { audio.nextPiece(); setOpen(true); }
-    else {
-      if (btn.classList.contains('dj-now') && !audio.nowPlaying()) wakeMusic();
-      setOpen(btn.dataset.dj !== 'close' && pill.querySelector('.dj-actions').hidden);
-    }
+    const kind = ev.target.closest('button')?.dataset.dj;
+    if (kind === 'prev') audio.previousPiece();
+    else if (kind === 'next') audio.nextPiece();
+    else if (kind === 'list') audio.nextList();
+    else if (kind === 'now' && !audio.nowPlaying()) wakeMusic();
   });
-  document.body.appendChild(pill);
+  document.body.prepend(pill);
+  document.documentElement.classList.add('has-dj');
   // El motor avisa antes de marcar «suena»: se repinta en cuanto termina el aviso.
   stopListening = audio.onPieceChange(() => queueMicrotask(render));
   const app = document.getElementById('app') || document.body;
@@ -119,8 +105,8 @@ function unmountPill() {
   observer?.disconnect();
   observer = null;
   window.removeEventListener('hashchange', render);
-  clearTimeout(foldTimer);
   pill?.remove();
+  document.documentElement.classList.remove('has-dj');
   pill = null;
 }
 

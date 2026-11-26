@@ -1,4 +1,4 @@
-// Modo «afinar música» en el móvil: tras meter el código en Ajustes, la pastilla se ve en el mapa
+// Modo «afinar música» en el móvil: tras meter el código en Ajustes, la barra se ve en el mapa
 // (suene o no la música). Necesita Chrome y Playwright: solo con MIRADA_E2E=1.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,7 +18,7 @@ const STATE = { version: 4, onboarded: true,
     stats: { answered: 20, correct: 18, newCorrect: 10, rounds: 3 }, daily: {}, weekly: {}, challenges: { played: 0 }, xpByDay: {} },
   settings: { music: true, sfx: false, volume: 0.6, reducedMotion: false, dailyGoal: 50 }, session: {} };
 
-test('afinar música: la pastilla se ve en el mapa tras entrar con el código', {
+test('afinar música: la barra se ve en el mapa tras entrar con el código', {
   skip: enabled ? false : 'omitido: ejecuta con MIRADA_E2E=1',
   timeout: 90000,
 }, async () => {
@@ -42,12 +42,12 @@ test('afinar música: la pastilla se ve en el mapa tras entrar con el código', 
     await page.mouse.click(3, 300); // un toque: el navegador deja arrancar el audio
     await page.waitForTimeout(SETTLE_MS);
     const pill = await page.evaluate(() => {
-      const p = document.querySelector('.dj-pill');
+      const p = document.querySelector('.dj-bar');
       const r = p?.getBoundingClientRect();
       const hit = p && r.width ? document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2) : null;
-      return { hidden: !p || p.hidden, visibleOnTop: Boolean(hit?.closest('.dj-pill')), text: p?.innerText ?? '' };
+      return { hidden: !p || p.hidden, visibleOnTop: Boolean(hit?.closest('.dj-bar')), text: p?.innerText ?? '' };
     });
-    assert.equal(pill.hidden, false, 'la pastilla debe verse en el mapa');
+    assert.equal(pill.hidden, false, 'la barra debe verse en el mapa');
     assert.equal(pill.visibleOnTop, true, 'nada debe taparla');
     assert.ok(pill.text.trim().length > 0);
     assert.ok(!/menu|renaissance/.test(pill.text), 'nombres humanos, no claves');

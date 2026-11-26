@@ -32,3 +32,17 @@ test('afinar música: nombres humanos de las listas, de cada época y rama de la
   assert.equal(listName('maestros-espanoles'), 'Maestros españoles');
   for (const list of Object.keys(PLAYLISTS)) assert.notEqual(listName(list), list, list);
 });
+
+test('afinar música: orden lógico de listas y el salto pasa a la siguiente (da la vuelta)', async () => {
+  const { listOrder, followingList } = await import('../app/js/audio/list-names.js');
+  const { PLAYLISTS } = await import('../app/js/audio/playlists.js');
+  const { hasList } = await import('../app/js/audio/rotation.js');
+  const order = listOrder(Object.keys(PLAYLISTS), hasList);
+  assert.equal(order[0], 'menu');
+  assert.ok(order.indexOf('renaissance') < order.indexOf('baroque'));
+  assert.ok(order.indexOf('modern') < order.indexOf('escuela-rusa'), 'las ramas van después de las épocas');
+  assert.equal(new Set(order).size, Object.keys(PLAYLISTS).length);
+  assert.equal(followingList(order, 'menu'), order[1]);
+  assert.equal(followingList(order, order.at(-1)), 'menu');
+  assert.equal(followingList(listOrder(['x', 'menu', 'baroque']), 'menu'), 'baroque');
+});

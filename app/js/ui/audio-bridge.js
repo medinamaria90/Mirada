@@ -102,6 +102,10 @@ export const audio = {
   /** Pieza que suena ({ id, title, author, key }) o null si no hay música. */
   nowPlaying: () => (call('getState')?.playing ? call('nowPlaying') || null : null),
   nextPiece: () => call('next'),
+  previousPiece: () => call('previous'),
+  nextList: () => call('nextList'),
+  /** Lista que suena (la de la pantalla o la escogida a mano en el modo secreto). */
+  list: () => call('list') || pending.era,
   /** Avisa con `fn(info)` cada vez que cambia la pieza; devuelve la baja. */
   onPieceChange: (fn) => {
     pieceListeners.add(fn);

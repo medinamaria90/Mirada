@@ -11,6 +11,8 @@ import { createGraph, createMusicPlayer } from './player.js';
 import { piecesOf, pieceKey, getPiece, DEFAULT_VARIANT } from './variants.js';
 import { nextPiece, hasList, playlistOf } from './rotation.js';
 import { pieceInfo, allPieces } from './piece-info.js';
+import { PLAYLISTS } from './playlists.js';
+import { listOrder, followingList } from './list-names.js';
 
 export { ERAS, SFX_NAMES };
 
@@ -21,6 +23,7 @@ const PIECE_FADE = 2.5; // s, relevo entre dos piezas de la misma lista
 const DEFAULT_STATE = { unlocked: false, era: 'menu', musicEnabled: true, sfxEnabled: true, volume: 0.7, playing: false, variants: {}, shuffle: true, piece: 'menu' };
 const state = { ...DEFAULT_STATE, variants: {} };
 const chosen = {}; // lista -> clave de pieza elegida (por la lista o a mano)
+let pinned = null;           // lista escogida a mano en el modo secreto: suena en lugar de la de la pantalla
 let visit = { list: null, mainRuns: 0, altsPlayed: 0 }; // lo que ha sonado desde que se entró en el sitio
 const listeners = new Set();
 
@@ -35,12 +38,13 @@ const num = (v, fb) => (v !== null && v !== '' && v !== undefined && Number.isFi
 const safe = (fn, fallback) => (...args) => { try { return fn(...args); } catch { return fallback; } };
 
 /** Clave de la pieza que toca en una lista: la elegida, o la variante de la era, o la primera de la rama. */
+const activeList = () => pinned ?? state.era;
 const currentKey = (list) => chosen[list]
   ?? (SCORES[list] ? pieceKey(list, state.variants[list]) : playlistOf(list)?.main ?? 'menu');
 
 /** Desplazamiento de tónica (-6..5 semitonos) para transponer los efectos a la pieza actual. */
 const tonicOffset = () => {
-  const pc = getPiece(currentKey(state.era))?.tonic ?? 0;
+  const pc = getPiece(currentKey(activeList()))?.tonic ?? 0;
   return ((pc + 6) % 12) - 6;
 };
 
@@ -94,15 +98,15 @@ function launchPlayer(list, fade) {
 /** Al terminar una pieza entra la siguiente de la misma era, con un relevo suave. */
 function advance(finished) {
   if (current !== finished || !ctx) return;
-  pickPiece(state.era, state.piece);
+  pickPiece(activeList(), state.piece);
   finished.fadeOutAndDispose(PIECE_FADE);
-  current = launchPlayer(state.era, PIECE_FADE);
+  current = launchPlayer(activeList(), PIECE_FADE);
 }
 
 function startPlaying() {
   if (!ctx || !graph || !state.unlocked || !state.musicEnabled || current) return;
-  pickPiece(state.era);
-  current = launchPlayer(state.era, 1.2);
+  pickPiece(activeList());
+  current = launchPlayer(activeList(), 1.2);
   state.playing = true;
 }
 
@@ -135,6 +139,7 @@ function unlock() {
 function setEra(era) {
   if (!hasList(era) || era === state.era) return;
   state.era = era;
+  pinned = null; // otra pantalla: se acaba la lista escogida a mano
   if (!current || !ctx) return;
   pickPiece(era);
   const old = current;
@@ -166,18 +171,36 @@ function onPiece(fn) {
 }
 
 /** Pieza que toca ahora en la lista actual: { id, title, author, key, role } (modo «afinar música»). */
-const nowPlaying = () => pieceInfo(currentKey(state.era), state.era);
+const nowPlaying = () => pieceInfo(currentKey(activeList()), activeList());
 
-/** Modo «afinar música»: pasa a la pieza siguiente de la lista, recorriéndolas todas (también las que no rotan). */
-function next() {
+/** Modo «afinar música»: pasa `step` piezas por la lista (1 = siguiente, -1 = anterior), recorriéndolas todas, también las que no rotan. */
+function move(step) {
   if (!current || !ctx) return;
-  const keys = allPieces(state.era);
-  const key = keys[(keys.indexOf(currentKey(state.era)) + 1) % keys.length];
+  const list = activeList();
+  const keys = allPieces(list);
+  const key = keys[(keys.indexOf(currentKey(list)) + step + keys.length) % keys.length];
   if (!key) return;
-  chosen[state.era] = key;
-  emitPiece(state.era, key);
+  chosen[list] = key;
+  emitPiece(list, key);
   current.fadeOutAndDispose(CROSSFADE);
-  current = launchPlayer(state.era, CROSSFADE);
+  current = launchPlayer(list, CROSSFADE);
+}
+const next = () => move(1);
+const previous = () => move(-1);
+
+/** Lista que suena ahora (la de la pantalla, o la escogida a mano en el modo secreto). */
+const nowList = () => activeList();
+
+/** Modo «afinar música»: salta a la lista siguiente del catálogo de música y pone su principal; dura hasta cambiar de pantalla. */
+function nextList() {
+  const order = listOrder(Object.keys(PLAYLISTS), hasList);
+  const target = followingList(order, activeList());
+  if (!target) return;
+  pinned = target;
+  pickPiece(target);
+  if (!current || !ctx) return;
+  current.fadeOutAndDispose(CROSSFADE);
+  current = launchPlayer(target, CROSSFADE);
 }
 
 /** Variantes disponibles de una era, sin la partitura: [{ id, name, label, character }]. */
@@ -243,6 +266,9 @@ export const audio = {
   onPiece: safe(onPiece, () => {}),
   nowPlaying: safe(nowPlaying, null),
   next: safe(next),
+  previous: safe(previous),
+  nextList: safe(nextList),
+  list: safe(nowList, 'menu'),
   getState: safe(readState, { ...DEFAULT_STATE, variants: {} }),
   restore: safe(restoreState),
 };
