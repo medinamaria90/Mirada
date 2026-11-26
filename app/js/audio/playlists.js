@@ -10,7 +10,7 @@
 // están aquí siguen en el catálogo: el modo secreto («Siguiente») las recorre todas para escucharlas.
 export const PLAYLISTS = {
   menu: { main: 'base', alt: ['paseo'] }, // «Umbral» fuera: no le gusta a María (26/11)
-  renaissance: { main: 'base', alt: ['greensleeves', 'saltarello'] }, // «Pavana del alba»; «Guárdame las vacas» fuera: suena mal (María, 26/11)
+  renaissance: { main: 'base', alt: ['greensleeves', 'romanesca'] }, // «Pavana del alba»; «Guárdame las vacas» fuera: suena mal (María, 26/11)
   baroque: { main: 'base', alt: ['minueto', 'canon'] },
   rococo: { main: 'base', alt: ['mozart', 'gavota'] },
   neoclassic: { main: 'base', alt: [] },
