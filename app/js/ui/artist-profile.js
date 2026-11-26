@@ -44,6 +44,16 @@ function stagesHtml(stages, playable) {
     <ul class="ap-stages">${stages.map(item).join('')}</ul></section>`;
 }
 
+// «Quién fue»: la biografía corta, los textos de su historia de nivel 1, a la vista (sin tener que abrir la historia).
+function bioHtml(lv) {
+  const cards = lv ? lv.cards.filter((c) => c.text) : [];
+  if (!cards.length) return '';
+  const sources = [...new Map(cards.filter((c) => c.source).map((c) => [String(c.source).split('#')[0], sourceLabel(c.source)])).entries()];
+  return `<section class="ap-section ap-life" aria-labelledby="ap-life-h"><h2 id="ap-life-h" class="ap-h">Quién fue</h2>
+    ${cards.map((c) => `<p class="ap-life-text">${esc(c.text)}</p>`).join('')}
+    ${sources.length ? `<p class="ap-sources">${sources.map(([url, label]) => `<a class="ap-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`).join('')}</p>` : ''}</section>`;
+}
+
 function lookHtml(artist) {
   const traits = Array.isArray(artist.traits) ? artist.traits.filter(Boolean) : [];
   if (!traits.length && !artist.hint) return '';
@@ -131,6 +141,7 @@ export async function profileHtml(ctx, artistId, opts) {
   return `${heroHtml(artist, movement, seen, hasStory, !storySeen(storyKey(artistId, 1)), opts.tag || 'h2', opts.leadControl || '')}
     ${known && isMastered(progress, artistId) ? `<div class="ap-progress">${masteryHtml(progress, index, artistId, seen.length, total)}</div>` : ''}
     ${lock}${actions}
+    ${known ? bioHtml(levelStory(story, 1)) : ''}
     <section class="ap-bio" aria-label="Datos">${factsHtml(index, artist, seen.length)}</section>
     ${lookHtml(artist)}
     ${known ? stagesHtml(stageList(progress, index, artistId), opts.playable) : ''}
