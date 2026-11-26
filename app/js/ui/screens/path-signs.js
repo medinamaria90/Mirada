@@ -97,7 +97,7 @@ export function startBlock(start, eras, tint, left = eras.length) {
   const line = !left ? 'Camino completo' : left === 1 ? 'Una época por delante' : `${left} épocas por delante`;
   return `<li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
     ${art('path-start-art', START_GROUND)}${trailSvg(start.h, start.trail)}${art('path-start-art is-front', START_ARCH)}
-    <div ${signBox(start.sign, start.h)}><p class="sign-plate is-static"><span class="sign-name">Empieza aquí</span><span class="sign-meta"><span>${line}</span></span></p></div>
+    <div ${signBox(start.sign, start.h)}><button type="button" class="sign-plate is-start" data-action="start" aria-haspopup="dialog" aria-label="Empieza aquí, ${esc(line.toLowerCase())}: cómo se juega"><span class="sign-name">Empieza aquí</span><span class="sign-meta"><span>${line}</span></span><span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button></div>
   </li>`;
 }
 

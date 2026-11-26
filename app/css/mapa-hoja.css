@@ -23,6 +23,9 @@
 .ms-wait { display: grid; gap: .2rem; margin: 0; font: 400 1rem/1.45 var(--font); }
 .ms-label { font: 600 .78rem/1.2 var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
 .ms-ok { margin-top: .2rem; }
+.ms-how { display: grid; gap: .8rem; margin: 0; padding: 0; list-style: none; }
+.ms-how li { display: flex; align-items: flex-start; gap: .7rem; margin: 0; color: var(--ink); font: 400 1rem/1.45 var(--font); }
+.ms-how .ms-mark { margin-top: .15rem; }
 .ms-progress { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .7rem; margin: 0; font: 600 .88rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .ms-bar { flex: 1 1 8rem; display: block; height: 8px; border-radius: 8px; background: var(--line); overflow: hidden; }
 .ms-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--accent-ui); }

@@ -276,6 +276,7 @@ export function pathActions(ctx) {
       ctx.go(`galeria-${b.dataset.id}`);
     },
     'era-lock': (b) => sheet(ctx, 'openEraSheet', b),
+    start: (b) => sheet(ctx, 'openIntroSheet', b),
     'goto-current': (_, ev) => {
       ev.preventDefault();
       const target = $('.stage-spot.is-current .stage') || $('.stage.is-available, .stage.is-started');
