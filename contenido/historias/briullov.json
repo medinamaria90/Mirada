@@ -1,0 +1,26 @@
+{
+ "artistId": "briullov",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Briulov",
+   "cards": [
+    {
+     "text": "Karl Briulov nació en San Petersburgo en 1799 y vivió media vida en Italia. Allí, tras visitar las ruinas de Pompeya, decidió pintar su último día.",
+     "artwork": "w4127254",
+     "source": "https://es.wikipedia.org/wiki/Karl_Briulov"
+    },
+    {
+     "text": "El último día de Pompeya ganó el oro en el Salón de París de 1834. Fue el primer cuadro ruso que triunfó en Europa, y en Rusia lo recibieron como a un héroe.",
+     "artwork": "w2521909",
+     "source": "https://es.wikipedia.org/wiki/El_%C3%BAltimo_d%C3%ADa_de_Pompeya"
+    },
+    {
+     "text": "Fíjate en el hombre que huye con una caja de pinturas sobre la cabeza, a la izquierda: es el propio Briulov, metido en la catástrofe.",
+     "artwork": "w2521909",
+     "source": "https://es.wikipedia.org/wiki/El_%C3%BAltimo_d%C3%ADa_de_Pompeya"
+    }
+   ]
+  }
+ ]
+}

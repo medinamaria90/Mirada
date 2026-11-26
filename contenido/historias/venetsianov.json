@@ -1,0 +1,26 @@
+{
+ "artistId": "venetsianov",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Venetsiánov",
+   "cards": [
+    {
+     "text": "Alexéi Venetsiánov nació en Moscú en 1780. Dejó su puesto de funcionario y se retiró a su finca, en el campo, para pintar a los campesinos.",
+     "artwork": "w18683079",
+     "source": "https://es.wikipedia.org/wiki/Alexi%C3%A9i_Venetsi%C3%A1nov"
+    },
+    {
+     "text": "Fue de los primeros en Rusia en tomarlos en serio como tema. Y abrió una escuela gratuita donde enseñó a pintar a chicos de origen campesino.",
+     "artwork": "w18683079",
+     "source": "https://es.wikipedia.org/wiki/Alexi%C3%A9i_Venetsi%C3%A1nov"
+    },
+    {
+     "text": "Fíjate en la campesina que guía los caballos por el campo arado: camina con elegancia de diosa, mientras su hijo la espera sentado en la linde.",
+     "artwork": "w18683081",
+     "source": "https://es.wikipedia.org/wiki/Alexi%C3%A9i_Venetsi%C3%A1nov"
+    }
+   ]
+  }
+ ]
+}
