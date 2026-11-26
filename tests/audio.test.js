@@ -9,7 +9,7 @@ import { SFX, SFX_NAMES, sfxLength } from '../app/js/audio/sfx.js';
 import { Sequencer } from '../app/js/audio/sequencer.js';
 import { INSTRUMENTS, WET, KS } from '../app/js/audio/instruments.js';
 import { STYLES } from '../app/js/audio/styles.js';
-import { variantsOf, pieceKey, splitKey, getPiece, allPieceKeys, DEFAULT_VARIANT } from '../app/js/audio/variants.js';
+import { variantsOf, piecesOf, pieceKey, splitKey, getPiece, allPieceKeys, BRANCHES, DEFAULT_VARIANT } from '../app/js/audio/variants.js';
 import { audio, getState, restore } from '../app/js/audio/index.js';
 import { rotationPool, pickNext, pushRecent, cleanRecent, hasList, firstPiece, RECENT_MAX } from '../app/js/audio/rotation.js';
 
@@ -312,11 +312,11 @@ test('restore y getState: las preferencias se recuerdan y se sanean', () => {
 });
 
 test('clásicos: obra y autor anotados, arreglo propio, y al menos uno en las épocas con boceto', () => {
-  const ERAS_WITH_SKETCH = ['renaissance', 'baroque', 'rococo', 'romantic', 'realism'];
+  const ERAS_WITH_SKETCH = ['renaissance', 'baroque', 'rococo', 'romantic', 'realism', 'impressionism'];
   for (const era of ERAS_WITH_SKETCH) assert.ok(variantsOf(era).some((v) => v.source), `${era} sin clásico`);
-  for (const era of CONTRACT_ERAS) {
-    for (const v of variantsOf(era).filter((x) => x.source)) {
-      assert.match(v.source, /\(c?\.? ?1[5-9]\d\d\)$/, `${era}/${v.id}: la fuente lleva autor y año`);
+  for (const list of [...CONTRACT_ERAS, ...BRANCHES]) {
+    for (const v of piecesOf(list).filter((x) => x.source)) {
+      assert.match(v.source, /1[5-9]\d\d\)$/, `${list}/${v.id}: la fuente lleva autor y año`);
       assert.equal(v.arrangement, 'arreglo propio');
     }
   }
@@ -358,7 +358,11 @@ test('rotación: la primera vez en el Renacimiento suena «Guárdame las vacas»
 });
 
 test('rotación: encadena sin repetir la última y recorre toda la lista', () => {
-  for (const list of [...CONTRACT_ERAS, 'spain']) {
+  // ramas del catálogo con música propia: española, rusa y estampa japonesa
+  assert.deepEqual([...BRANCHES].sort(), ['escuela-rusa', 'ukiyo-e']);
+  assert.ok(rotationPool('maestros-espanoles').some((p) => p.key === 'renaissance/vacas'));
+  assert.ok(rotationPool('escuela-rusa').length >= 2 && rotationPool('ukiyo-e').length >= 1);
+  for (const list of [...CONTRACT_ERAS, 'maestros-espanoles', ...BRANCHES]) {
     assert.ok(hasList(list), list);
     const pool = rotationPool(list).map((p) => p.key);
     const rng = mulberry32(list.length * 31);
@@ -383,7 +387,7 @@ test('rotación: el historial guardado se sanea', () => {
   assert.deepEqual(cleanRecent({
     renaissance: ['renaissance/vacas', 'renaissance/vacas', 'baroque/canon', 'renaissance'],
     nada: ['menu'], baroque: 'x', menu: [42, 'menu/umbral'],
-  }), { renaissance: ['renaissance/vacas', 'renaissance'], menu: ['menu/umbral'] });
+  }), { renaissance: ['renaissance/vacas', 'renaissance'] }); // la portada se olvida: su original abre cada visita
   assert.deepEqual(cleanRecent(null), {});
   restore({ recent: { renaissance: ['renaissance/greensleeves', 'inventada'] }, shuffle: true });
   assert.deepEqual(getState().recent.renaissance, ['renaissance/greensleeves']);

@@ -1,27 +1,29 @@
 // Rotación de piezas por lista (función pura, sin Web Audio). Una lista tiene clave: una época
-// (original + variantes compuestas + clásicos) o una rama temática (BRANCH_LISTS, con piezas de
-// cualquier época). Al empezar una lista o al terminar una pieza se elige otra al azar con pesos,
+// (original + variantes compuestas + clásicos) o una rama temática (piezas propias de la rama y
+// prestadas de otras listas, BORROWED). Al empezar una lista o al terminar una pieza se elige otra al azar con pesos,
 // sin repetir las últimas, para que la música cambie sin que suene siempre la misma.
-import { variantsOf, pieceKey, getPiece } from './variants.js';
+import { variantsOf, piecesOf, pieceKey, getPiece, BRANCHES } from './variants.js';
 
 /** Cuántas piezas recientes se recuerdan por lista (las que no pueden volver a sonar enseguida). */
 export const RECENT_MAX = 2;
 /** Piezas favoritas de María: suenan las primeras la primera vez y salen más a menudo. */
-const FAVORITES = { renaissance: 'renaissance/vacas' };
+const FAVORITES = { menu: 'menu', renaissance: 'renaissance/vacas' };
+/** Listas cuya favorita abre cada visita (no solo la primera): el tema original de la portada. */
+const OPENS_EACH_VISIT = new Set(['menu']);
 const FAVORITE_WEIGHT = 3;
 /** Las piezas compuestas del Barroco no le convencieron («no me encanta»): salen menos. */
 const DISLIKED_ERAS = new Set(['baroque']);
 const DISLIKED_WEIGHT = 0.4;
 const DEFAULT_WEIGHT = 1;
 /**
- * Listas de las ramas temáticas (claves de pieza). Se irán llenando con arreglos propios de dominio
- * público: española (Narváez, Sanz, Soler, Albéniz, Granados, Falla), rusa (Glinka, Músorgski,
- * Chaikovski, Rimski-Kórsakov) y japonesa tradicional. Hoy solo hay una española terminada.
+ * Piezas que una rama toma de otras listas (claves de pieza); se suman a las suyas propias
+ * (BRANCH_CLASSICS). La española se irá llenando con Sanz, Soler, Albéniz, Granados y Falla.
  */
-const BRANCH_LISTS = { spain: ['renaissance/vacas'] };
+const BORROWED = { 'maestros-espanoles': ['renaissance/vacas'] };
+const BRANCH_KEYS = [...new Set([...Object.keys(BORROWED), ...BRANCHES])];
 
 /** ¿Hay lista con esa clave (época o rama)? */
-export const hasList = (key) => variantsOf(key).length > 0 || Object.hasOwn(BRANCH_LISTS, key);
+export const hasList = (key) => variantsOf(key).length > 0 || BRANCH_KEYS.includes(key);
 
 /** Lista con sus pesos: [{ key, weight }] (clave de pieza). Vacía si no existe. */
 export function rotationPool(list) {
@@ -29,8 +31,9 @@ export function rotationPool(list) {
     if (FAVORITES[list] === key) return FAVORITE_WEIGHT;
     return DISLIKED_ERAS.has(list) && composed ? DISLIKED_WEIGHT : DEFAULT_WEIGHT;
   };
-  if (Object.hasOwn(BRANCH_LISTS, list)) {
-    return BRANCH_LISTS[list].filter((key) => getPiece(key)).map((key) => ({ key, weight: weightOf(key, false) }));
+  if (BRANCH_KEYS.includes(list)) {
+    const own = piecesOf(list).map((v) => pieceKey(list, v.id));
+    return [...(BORROWED[list] || []), ...own].filter((key) => getPiece(key)).map((key) => ({ key, weight: weightOf(key, false) }));
   }
   return variantsOf(list).map(({ id, source }) => {
     const key = pieceKey(list, id);
@@ -68,12 +71,15 @@ export function pickNext(list, recent = [], rng = Math.random) {
 export const pushRecent = (recent, key) =>
   [key, ...(Array.isArray(recent) ? recent : []).filter((x) => x !== key)].slice(0, RECENT_MAX);
 
-/** Historial guardado y saneado: solo listas que existen y piezas que pertenecen a ellas. */
+/**
+ * Historial guardado y saneado: solo listas que existen y piezas que pertenecen a ellas. Las de
+ * OPENS_EACH_VISIT se olvidan, para que su favorita vuelva a sonar la primera en cada visita.
+ */
 export function cleanRecent(saved) {
   const out = {};
   if (!saved || typeof saved !== 'object') return out;
   for (const [list, keys] of Object.entries(saved)) {
-    if (!hasList(list) || !Array.isArray(keys)) continue;
+    if (!hasList(list) || !Array.isArray(keys) || OPENS_EACH_VISIT.has(list)) continue;
     const known = new Set(rotationPool(list).map((p) => p.key));
     const clean = keys.filter((k, i) => known.has(k) && keys.indexOf(k) === i).slice(0, RECENT_MAX);
     if (clean.length) out[list] = clean;

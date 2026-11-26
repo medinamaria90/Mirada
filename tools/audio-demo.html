@@ -60,7 +60,7 @@
 <script type="module">
 import { audio, ERAS, SFX_NAMES } from '../app/js/audio/index.js';
 import { renderEraOffline, renderSfxOffline } from '../app/js/audio/player.js';
-import { variantsOf, pieceKey, allPieceKeys } from '../app/js/audio/variants.js';
+import { piecesOf, pieceKey, allPieceKeys, BRANCHES } from '../app/js/audio/variants.js';
 
 // Portada primero y después las épocas en el orden del catálogo.
 const ERA_NAMES = {
@@ -74,16 +74,19 @@ const ERA_NAMES = {
   postimpressionism: ['Postimpresionismo', ''],
   modern: ['Simbolismo y vanguardias', ''],
   neoclassic: ['Neoclásico', 'pieza de reserva, sin época en el catálogo'],
+  'maestros-espanoles': ['Rama · Maestros españoles', ''],
+  'escuela-rusa': ['Rama · Escuela rusa', ''],
+  'ukiyo-e': ['Rama · Estampa japonesa', ''],
 };
 const ORDER = ['menu', 'renaissance', 'baroque', 'rococo', 'romantic', 'realism', 'impressionism', 'postimpressionism', 'modern', 'neoclassic']
-  .filter((e) => ERAS.includes(e));
+  .filter((e) => ERAS.includes(e)).concat(BRANCHES);
 
 const $ = (id) => document.getElementById(id);
 
 const show = () => { $('state').textContent = JSON.stringify(audio.getState(), null, 2); };
 function mark() {
   const st = audio.getState();
-  const key = st.playing ? pieceKey(st.era, st.variants[st.era]) : null;
+  const key = st.playing ? st.piece : null;
   document.querySelectorAll('.pieza').forEach((el) => {
     const on = el.dataset.key === key;
     el.classList.toggle('on', on);
@@ -112,7 +115,7 @@ for (const era of ORDER) {
   if (sub) { const s = document.createElement('small'); s.textContent = `· ${sub}`; h.append(s); }
   const list = document.createElement('div');
   list.className = 'lista';
-  variantsOf(era).forEach((v, i) => {
+  piecesOf(era).forEach((v) => {
     const key = pieceKey(era, v.id);
     const card = document.createElement('div');
     card.className = 'pieza';
@@ -127,10 +130,10 @@ for (const era of ORDER) {
     const name = document.createElement('div');
     name.className = 'nombre';
     name.textContent = v.name;
-    if (i === 0) { const s = document.createElement('small'); s.textContent = 'actual'; name.append(s); }
+    if (v.id === 'base') { const s = document.createElement('small'); s.textContent = 'original'; name.append(s); }
     const det = document.createElement('div');
     det.className = 'detalle';
-    det.textContent = v.label;
+    det.textContent = v.source ? `${v.label} · ${v.source}` : v.label;
     const car = document.createElement('div');
     car.className = 'caracter';
     car.textContent = v.character;

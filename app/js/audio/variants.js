@@ -17,7 +17,7 @@ import { REALISM } from './variants/realism.js';
 import { IMPRESSIONISM } from './variants/impressionism.js';
 import { POSTIMPRESSIONISM } from './variants/postimpressionism.js';
 import { MODERN } from './variants/modern.js';
-import { CLASSICS } from './classics.js';
+import { CLASSICS, BRANCH_CLASSICS } from './classics.js';
 
 export const DEFAULT_VARIANT = 'base';
 const SEP = '/';
@@ -50,6 +50,12 @@ export function variantsOf(era) {
     ...(EXTRA[era] || []), ...(CLASSICS[era] || [])];
 }
 
+/** Ramas temáticas con piezas propias (claves de lista que no son épocas). */
+export const BRANCHES = Object.keys(BRANCH_CLASSICS);
+
+/** Piezas de una lista: las variantes de una era o las piezas propias de una rama. */
+export const piecesOf = (list) => (SCORES[list] ? variantsOf(list) : BRANCH_CLASSICS[list] || []);
+
 /** Clave de pieza a partir de era y variante. */
 export const pieceKey = (era, variant = DEFAULT_VARIANT) =>
   (!variant || variant === DEFAULT_VARIANT ? era : `${era}${SEP}${variant}`);
@@ -63,10 +69,10 @@ export function splitKey(key) {
 /** Partitura de una clave de pieza, o null si no existe. */
 export function getPiece(key) {
   const { era, variant } = splitKey(key);
-  return variantsOf(era).find((v) => v.id === variant)?.piece ?? null;
+  return piecesOf(era).find((v) => v.id === variant)?.piece ?? null;
 }
 
-/** Todas las claves de pieza (base y variantes de todas las eras). */
+/** Todas las claves de pieza (base y variantes de todas las eras, y piezas de las ramas). */
 export function allPieceKeys() {
-  return ERAS.flatMap((era) => variantsOf(era).map((v) => pieceKey(era, v.id)));
+  return [...ERAS, ...BRANCHES].flatMap((list) => piecesOf(list).map((v) => pieceKey(list, v.id)));
 }

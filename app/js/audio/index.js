@@ -8,8 +8,9 @@
 import { SCORES, ERAS } from './scores.js';
 import { SFX_NAMES, playSfx } from './sfx.js';
 import { createGraph, createMusicPlayer } from './player.js';
-import { variantsOf, pieceKey, getPiece, DEFAULT_VARIANT } from './variants.js';
+import { piecesOf, pieceKey, getPiece, DEFAULT_VARIANT } from './variants.js';
 import { pickNext, pushRecent, cleanRecent, hasList, rotationPool } from './rotation.js';
+import { pieceInfo } from './piece-info.js';
 
 export { ERAS, SFX_NAMES };
 
@@ -131,14 +132,14 @@ function setEra(era) {
   current = launchPlayer(era, CROSSFADE);
 }
 
-/** Elige la variante de una era (`base` o un id de variantsOf). Si está sonando, cambia con fundido. */
+/** Elige la pieza de una lista (`base` o un id de piecesOf). Si está sonando, cambia con fundido. */
 function setVariant(era, variant = DEFAULT_VARIANT) {
-  if (!SCORES[era] || !variantsOf(era).some((v) => v.id === variant)) return;
-  const prev = state.variants[era] || DEFAULT_VARIANT;
+  if (!piecesOf(era).some((v) => v.id === variant)) return;
+  const before = currentKey(era);
   if (variant === DEFAULT_VARIANT) delete state.variants[era];
   else state.variants[era] = variant;
   chosen[era] = pieceKey(era, variant); // la elegida a mano suena ya; la rotación sigue después
-  if (prev === variant || era !== state.era || !current || !ctx) return;
+  if (currentKey(era) === before || era !== state.era || !current || !ctx) return;
   const old = current;
   old.fadeOutAndDispose(CROSSFADE);
   current = launchPlayer(era, CROSSFADE);
@@ -154,8 +155,14 @@ function onPiece(fn) {
   return () => listeners.delete(fn);
 }
 
+/** Pieza que toca ahora en la lista actual: { id, title, author, key } (modo «afinar música»). */
+const nowPlaying = () => pieceInfo(currentKey(state.era), state.era);
+
+/** Salta a otra pieza de la lista que suena, con el mismo relevo que al terminar una. */
+function next() { if (current) advance(current); }
+
 /** Variantes disponibles de una era, sin la partitura: [{ id, name, label, character }]. */
-const listVariants = (era) => variantsOf(era).map(({ id, name, label, character, source }) => ({ id, name, label, character, ...(source ? { source } : {}) }));
+const listVariants = (era) => piecesOf(era).map(({ id, name, label, character, source }) => ({ id, name, label, character, ...(source ? { source } : {}) }));
 
 function startMusic() {
   wantMusic = true;
@@ -219,6 +226,8 @@ export const audio = {
   listVariants: safe(listVariants, []),
   setShuffle: safe(setShuffle),
   onPiece: safe(onPiece, () => {}),
+  nowPlaying: safe(nowPlaying, null),
+  next: safe(next),
   getState: safe(readState, { ...DEFAULT_STATE, variants: {}, recent: {} }),
   restore: safe(restoreState),
 };

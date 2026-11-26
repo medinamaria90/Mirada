@@ -6,8 +6,14 @@ import { BAROQUE_CLASSICS } from './classics/baroque.js';
 import { ROCOCO_CLASSICS } from './classics/rococo.js';
 import { ROMANTIC_CLASSICS } from './classics/romantic.js';
 import { REALISM_CLASSICS } from './classics/realism.js';
+import { IMPRESSIONISM_CLASSICS } from './classics/impressionism.js';
+import { RUSSIAN_CLASSICS } from './classics/russian.js';
+import { UKIYOE_CLASSICS } from './classics/ukiyo-e.js';
 
 export const CLASSICS = {
   renaissance: RENAISSANCE_CLASSICS, baroque: BAROQUE_CLASSICS, rococo: ROCOCO_CLASSICS,
-  romantic: ROMANTIC_CLASSICS, realism: REALISM_CLASSICS,
+  romantic: ROMANTIC_CLASSICS, realism: REALISM_CLASSICS, impressionism: IMPRESSIONISM_CLASSICS,
 };
+
+/** Piezas propias de las ramas temáticas (claves de rama de app/data/catalog.json). */
+export const BRANCH_CLASSICS = { 'escuela-rusa': RUSSIAN_CLASSICS, 'ukiyo-e': UKIYOE_CLASSICS };
