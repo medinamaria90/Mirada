@@ -80,6 +80,16 @@
   "ok": false
  },
  {
+  "id": "uccello",
+  "qid": "Q192488",
+  "es": "Paolo Uccello",
+  "en": "Paolo Uccello",
+  "nacimiento": 1397,
+  "muerte": 1475,
+  "sitelinks": 59,
+  "ok": true
+ },
+ {
   "id": "van-der-weyden",
   "qid": "Q68631",
   "es": "Rogier van der Weyden",
@@ -88,6 +98,26 @@
   "muerte": 1464,
   "sitelinks": 61,
   "ok": false
+ },
+ {
+  "id": "masaccio",
+  "qid": "Q5811",
+  "es": "Masaccio",
+  "en": "Masaccio",
+  "nacimiento": 1401,
+  "muerte": 1428,
+  "sitelinks": 81,
+  "ok": true
+ },
+ {
+  "id": "filippo-lippi",
+  "qid": "Q205148",
+  "es": "Fra Filippo Lippi",
+  "en": "Filippo Lippi",
+  "nacimiento": 1406,
+  "muerte": 1469,
+  "sitelinks": 52,
+  "ok": true
  },
  {
   "id": "piero",
@@ -120,6 +150,26 @@
   "ok": true
  },
  {
+  "id": "memling",
+  "qid": "Q106851",
+  "es": "Hans Memling",
+  "en": "Hans Memling",
+  "nacimiento": 1435,
+  "muerte": 1494,
+  "sitelinks": 52,
+  "ok": true
+ },
+ {
+  "id": "bermejo",
+  "qid": "Q551241",
+  "es": "Bartolomé Bermejo",
+  "en": "Bartolomé Bermejo",
+  "nacimiento": 1440,
+  "muerte": 1500,
+  "sitelinks": 23,
+  "ok": true
+ },
+ {
   "id": "botticelli",
   "qid": "Q5669",
   "es": "Sandro Botticelli",
@@ -127,6 +177,16 @@
   "nacimiento": 1445,
   "muerte": 1510,
   "sitelinks": 116,
+  "ok": true
+ },
+ {
+  "id": "perugino",
+  "qid": "Q5827",
+  "es": "Pietro Perugino",
+  "en": "Pietro Perugino",
+  "nacimiento": 1448,
+  "muerte": 1523,
+  "sitelinks": 65,
   "ok": true
  },
  {
@@ -180,6 +240,10 @@
   "ok": true
  },
  {
+  "id": "grunewald",
+  "qid": null
+ },
+ {
   "id": "miguel-angel",
   "qid": "Q5592",
   "es": "Miguel Ángel",
@@ -230,6 +294,16 @@
   "ok": true
  },
  {
+  "id": "pontormo",
+  "qid": "Q207929",
+  "es": "Pontormo",
+  "en": "Pontormo",
+  "nacimiento": 1494,
+  "muerte": 1556,
+  "sitelinks": 51,
+  "ok": true
+ },
+ {
   "id": "holbein",
   "qid": "Q48319",
   "es": "Hans Holbein el Joven",
@@ -237,6 +311,26 @@
   "nacimiento": 1497,
   "muerte": 1543,
   "sitelinks": 73,
+  "ok": true
+ },
+ {
+  "id": "parmigianino",
+  "qid": "Q9348",
+  "es": "Parmigianino",
+  "en": "Parmigianino",
+  "nacimiento": 1503,
+  "muerte": 1540,
+  "sitelinks": 49,
+  "ok": true
+ },
+ {
+  "id": "bronzino",
+  "qid": "Q7803",
+  "es": "Bronzino",
+  "en": "Bronzino",
+  "nacimiento": 1503,
+  "muerte": 1572,
+  "sitelinks": 64,
   "ok": true
  },
  {
@@ -280,13 +374,23 @@
   "ok": true
  },
  {
+  "id": "arcimboldo",
+  "qid": "Q7751",
+  "es": "Giuseppe Arcimboldo",
+  "en": "Giuseppe Arcimboldo",
+  "nacimiento": 1527,
+  "muerte": 1593,
+  "sitelinks": 66,
+  "ok": true
+ },
+ {
   "id": "veronese",
   "qid": "Q9440",
   "es": "Paolo Veronese",
   "en": "Paolo Veronese",
   "nacimiento": 1528,
   "muerte": 1588,
-  "sitelinks": 79,
+  "sitelinks": 80,
   "ok": true
  },
  {
@@ -317,6 +421,16 @@
   "nacimiento": 1541,
   "muerte": 1614,
   "sitelinks": 116,
+  "ok": true
+ },
+ {
+  "id": "sanchez-cotan",
+  "qid": "Q919806",
+  "es": "Juan Sánchez Cotán",
+  "en": "Juan Sánchez Cotán",
+  "nacimiento": 1560,
+  "muerte": 1627,
+  "sitelinks": 19,
   "ok": true
  },
  {
@@ -367,7 +481,7 @@
   "nacimiento": 1582,
   "muerte": 1666,
   "sitelinks": 68,
-  "ok": false
+  "ok": true
  },
  {
   "id": "ribera",
@@ -436,7 +550,7 @@
   "en": "Anthony van Dyck",
   "nacimiento": 1599,
   "muerte": 1641,
-  "sitelinks": 84,
+  "sitelinks": 85,
   "ok": true
  },
  {
@@ -577,7 +691,17 @@
   "nacimiento": 1697,
   "muerte": 1768,
   "sitelinks": 72,
-  "ok": false
+  "ok": true
+ },
+ {
+  "id": "hogarth",
+  "qid": "Q171344",
+  "es": "William Hogarth",
+  "en": "William Hogarth",
+  "nacimiento": 1697,
+  "muerte": 1764,
+  "sitelinks": 82,
+  "ok": true
  },
  {
   "id": "chardin",
@@ -781,13 +905,7 @@
  },
  {
   "id": "tropinin",
-  "qid": "Q434561",
-  "es": "Vasili Tropinin",
-  "en": "Vasily Andreevich Tropinin",
-  "nacimiento": 1780,
-  "muerte": 1857,
-  "sitelinks": 31,
-  "ok": true
+  "qid": null
  },
  {
   "id": "ingres",
@@ -1527,6 +1645,16 @@
   "nacimiento": 1866,
   "muerte": 1944,
   "sitelinks": 103,
+  "ok": true
+ },
+ {
+  "id": "matisse",
+  "qid": "Q5589",
+  "es": "Henri Matisse",
+  "en": "Henri Matisse",
+  "nacimiento": 1869,
+  "muerte": 1954,
+  "sitelinks": 183,
   "ok": true
  },
  {

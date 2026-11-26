@@ -6012,5 +6012,194 @@
   "up": "Q1397",
   "country": "Estados Unidos",
   "isCity": false
+ },
+ "Q1792": {
+  "label": "Gdansk",
+  "types": [
+   "Q707813",
+   "Q925381",
+   "Q1549591",
+   "Q2264924"
+  ],
+  "up": "Q54180",
+  "country": "Polonia",
+  "isCity": true
+ },
+ "Q13377": {
+  "label": "Prato",
+  "types": [
+   "Q515",
+   "Q747074",
+   "Q1200957",
+   "Q1549591"
+  ],
+  "up": "Q16250",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q16250": {
+  "label": "Prato",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1273",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q54180": {
+  "label": "Voivodato de Pomerania",
+  "types": [
+   "Q150093"
+  ],
+  "up": "Q36",
+  "country": "Polonia",
+  "isCity": false
+ },
+ "Q1022": {
+  "label": "Stuttgart",
+  "types": [
+   "Q253030",
+   "Q1066984",
+   "Q1549591",
+   "Q2327515",
+   "Q14784328",
+   "Q42744322",
+   "Q106517174"
+  ],
+  "up": "Q8172",
+  "country": "Alemania",
+  "isCity": true
+ },
+ "Q20385": {
+  "label": "Carmignano",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q16250",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q41185": {
+  "label": "Caen",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q3249",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q16335227": {
+  "label": "Galería Uffizi",
+  "types": [
+   "Q207694",
+   "Q17431399"
+  ],
+  "up": "Q2044",
+  "country": "Italia",
+  "isCity": false
+ },
+ "Q941385": {
+  "label": "Distrito de Ciutat Vella",
+  "types": [
+   "Q676050",
+   "Q790344"
+  ],
+  "up": "Q1492",
+  "country": "España",
+  "isCity": false
+ },
+ "Q3249": {
+  "label": "Calvados",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18677875",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q6231": {
+  "label": "Cremona",
+  "types": [
+   "Q515",
+   "Q133442",
+   "Q747074"
+  ],
+  "up": "Q16163",
+  "country": "Italia",
+  "isCity": true
+ },
+ "Q37776": {
+  "label": "Besanzón",
+  "types": [
+   "Q484170",
+   "Q1549591"
+  ],
+  "up": "Q3361",
+  "country": "Francia",
+  "isCity": true
+ },
+ "Q149836": {
+  "label": "Camden Town",
+  "types": [
+   "Q2755753"
+  ],
+  "up": "Q202088",
+  "country": "Reino Unido",
+  "isCity": true
+ },
+ "Q298489": {
+  "label": "Östermalm",
+  "types": [
+   "Q2983893"
+  ],
+  "up": "Q506250",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q501532": {
+  "label": "municipio de Strängnäs",
+  "types": [
+   "Q127448"
+  ],
+  "up": "Q106915",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q511253": {
+  "label": "Håbo",
+  "types": [
+   "Q127448"
+  ],
+  "up": "Q104926",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q3361": {
+  "label": "Doubs",
+  "types": [
+   "Q6465"
+  ],
+  "up": "Q18578267",
+  "country": "Francia",
+  "isCity": false
+ },
+ "Q104926": {
+  "label": "Provincia de Upsala",
+  "types": [
+   "Q200547"
+  ],
+  "up": "Q34",
+  "country": "Suecia",
+  "isCity": false
+ },
+ "Q16163": {
+  "label": "provincia de Cremona",
+  "types": [
+   "Q15089"
+  ],
+  "up": "Q1210",
+  "country": "Italia",
+  "isCity": false
  }
 }

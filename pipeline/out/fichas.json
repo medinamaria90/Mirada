@@ -42609,5 +42609,3249 @@
   "movement": null,
   "source": "wikidata",
   "fetched": "2026-11-24"
+ },
+ "Q3649296": {
+  "museum": "museo Ashmolean",
+  "museumQid": "Q636400",
+  "city": "Oxford",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo y temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera",
+   "óleo"
+  ],
+  "dimensions": "73,3 × 177 cm",
+  "heightCm": 73.3,
+  "widthCm": 177.0,
+  "inception": "1470",
+  "depicts": [
+   "Lebreles",
+   "bosque",
+   "caballo",
+   "cazador"
+  ],
+  "genre": "escena de género",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3698199": {
+  "museum": "Museo Nacional Thyssen-Bornemisza",
+  "museumQid": "Q176251",
+  "city": "Madrid",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "45 × 67 cm",
+  "heightCm": 45.0,
+  "widthCm": 67.0,
+  "inception": "",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Virgen María",
+   "mujer",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q780466": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "57 × 73 cm",
+  "heightCm": 57.0,
+  "widthCm": 73.0,
+  "inception": "1470",
+  "depicts": [
+   "San Jorge",
+   "dragón",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3637223": {
+  "museum": "Museo di Palazzo Pretorio",
+  "museumQid": "Q3867768",
+  "city": "Prato",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "181 × 59 cm",
+  "heightCm": 181.0,
+  "widthCm": 59.0,
+  "inception": "1436",
+  "depicts": [
+   "Jacopone da Todi"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3982380": {
+  "museum": "Galería de la Academia de Florencia",
+  "museumQid": "Q10855544",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre lienzo",
+  "materials": [
+   "lienzo",
+   "témpera"
+  ],
+  "dimensions": "81 × 110 cm",
+  "heightCm": 81.0,
+  "widthCm": 110.0,
+  "inception": "1460",
+  "depicts": [],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q15965547": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "60,5 × 33,5 cm",
+  "heightCm": 60.5,
+  "widthCm": 33.5,
+  "inception": "1423",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Virgen María",
+   "mujer",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q16599926": {
+  "museum": "Galería Nacional de Victoria",
+  "museumQid": "Q1464509",
+  "city": "Ciudad de Melbourne",
+  "country": "Australia",
+  "inSpain": false,
+  "technique": "Temple y pan de oro sobre tabla",
+  "materials": [
+   "oro",
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "62,2 × 38,8 cm",
+  "heightCm": 62.2,
+  "widthCm": 38.8,
+  "inception": "1423",
+  "depicts": [
+   "San Jorge",
+   "antemuralla",
+   "armadura",
+   "caballo",
+   "ciudad/pueblo",
+   "combate",
+   "damisela en apuros",
+   "de pie",
+   "de rodillas",
+   "dragón"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q16596981": {
+  "museum": "Museo de Arte de Indianápolis",
+  "museumQid": "Q1117704",
+  "city": "Indianápolis",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "61,6 × 61,6 cm",
+  "heightCm": 61.6,
+  "widthCm": 61.6,
+  "inception": "",
+  "depicts": [],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3276176": {
+  "museum": "Museo Städel",
+  "museumQid": "Q163804",
+  "city": "Fráncfort del Meno",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Técnica mixta sobre tabla",
+  "materials": [
+   "madera de roble",
+   "técnica mixta"
+  ],
+  "dimensions": "61,7 × 46,1 cm",
+  "heightCm": 61.7,
+  "widthCm": 46.1,
+  "inception": "1460",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1395192": {
+  "museum": "Museo de Historia del Arte de Viena",
+  "museumQid": "Q95569",
+  "city": "Viena",
+  "country": "Austria",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "101 × 140 cm",
+  "heightCm": 101.0,
+  "widthCm": 140.0,
+  "inception": "1445",
+  "depicts": [
+   "Crucifixión de Jesús",
+   "Jesús de Nazaret",
+   "Juan el Apóstol",
+   "María Magdalena",
+   "Santa Faz",
+   "Virgen María",
+   "paisaje"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q5189814": {
+  "museum": "Museo de Arte de Filadelfia",
+  "museumQid": "Q510324",
+  "city": "Filadelfia",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "180,3 × 186,4 cm",
+  "heightCm": 180.3,
+  "widthCm": 186.4,
+  "inception": "1460",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Juan el Evangelista",
+   "cráneo",
+   "hueso"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3399428": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "29,8 × 20,3 cm",
+  "heightCm": 29.8,
+  "widthCm": 20.3,
+  "inception": "1460",
+  "depicts": [
+   "anillo",
+   "martillo",
+   "retrato",
+   "varón"
+  ],
+  "genre": "retrato",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1054459": {
+  "museum": "Museo Nacional de Capodimonte",
+  "museumQid": "Q290549",
+  "city": "Nápoles",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "83 × 63 cm",
+  "heightCm": 83.0,
+  "widthCm": 63.0,
+  "inception": "1426",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Juan el Evangelista",
+   "María Magdalena",
+   "Virgen María",
+   "aureola",
+   "melena",
+   "mujer",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3947827": {
+  "museum": "iglesia de Santa María del Carmine",
+  "museumQid": "Q1042634",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "230 × 162 cm",
+  "heightCm": 230.0,
+  "widthCm": 162.0,
+  "inception": "1425",
+  "depicts": [
+   "Pedro"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3711791": {
+  "museum": "iglesia de Santa María del Carmine",
+  "museumQid": "Q1042634",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "230 × 162 cm",
+  "heightCm": 230.0,
+  "widthCm": 162.0,
+  "inception": "1425",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q369582": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Temple al huevo sobre tabla",
+  "materials": [
+   "tabla",
+   "temple al huevo"
+  ],
+  "dimensions": "134,8 × 73,5 cm",
+  "heightCm": 134.8,
+  "widthCm": 73.5,
+  "inception": "1426",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3949530": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Tabla y pintura",
+  "materials": [
+   "panel de álamo",
+   "pintura"
+  ],
+  "dimensions": "38 × 12 cm",
+  "heightCm": 38.0,
+  "widthCm": 12.0,
+  "inception": "1426",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3605535": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Tabla y pintura",
+  "materials": [
+   "panel de álamo",
+   "pintura"
+  ],
+  "dimensions": "22,3 × 61,7 cm",
+  "heightCm": 22.3,
+  "widthCm": 61.7,
+  "inception": "1426",
+  "depicts": [
+   "Reyes Magos",
+   "Virgen María",
+   "adoración"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3948700": {
+  "museum": "Museo J. Paul Getty",
+  "museumQid": "Q731126",
+  "city": "Los Ángeles",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "52,4 × 32,1 cm",
+  "heightCm": 52.4,
+  "widthCm": 32.1,
+  "inception": "1426",
+  "depicts": [
+   "Andrés el Apóstol"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3949351": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "125 × 59 cm",
+  "heightCm": 125.0,
+  "widthCm": 59.0,
+  "inception": "",
+  "depicts": [
+   "Jerónimo",
+   "Juan el Bautista"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3698230": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "22 × 31 cm",
+  "heightCm": 22.0,
+  "widthCm": 31.0,
+  "inception": "1426",
+  "depicts": [
+   "Pedro"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3947289": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Tabla y pintura",
+  "materials": [
+   "panel de álamo",
+   "pintura"
+  ],
+  "dimensions": "38 × 12 cm",
+  "heightCm": 38.0,
+  "widthCm": 12.0,
+  "inception": "1426",
+  "depicts": [
+   "Jerónimo"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3948660": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Tabla y pintura",
+  "materials": [
+   "panel de álamo",
+   "pintura"
+  ],
+  "dimensions": "38 × 12 cm",
+  "heightCm": 38.0,
+  "widthCm": 12.0,
+  "inception": "1426",
+  "depicts": [
+   "Agustín de Hipona"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3899272": {
+  "museum": "iglesia de Santa María del Carmine",
+  "museumQid": "Q1042634",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [
+   "Pedro",
+   "Repentance of Saint Peter"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1055111": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "95 × 62 cm",
+  "heightCm": 95.0,
+  "widthCm": 62.0,
+  "inception": "",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "apoyabrazos",
+   "marco de ventana",
+   "niño",
+   "paisaje",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q291189": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "óleo"
+  ],
+  "dimensions": "129,5 × 118,5 cm",
+  "heightCm": 129.5,
+  "widthCm": 118.5,
+  "inception": "1459",
+  "depicts": [
+   "Dios Padre",
+   "Natividad",
+   "Niño Jesús",
+   "San Juan niño",
+   "Virgen María",
+   "dove"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1056007": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "68 × 152 cm",
+  "heightCm": 68.0,
+  "widthCm": 152.0,
+  "inception": "",
+  "depicts": [
+   "Arcángel Gabriel",
+   "Virgen María",
+   "mujer"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3889196": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "1437",
+  "depicts": [
+   "Agustín de Hipona",
+   "Frigidiano",
+   "Niño Jesús",
+   "Virgen María",
+   "Virgen con Niño",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1056043": {
+  "museum": "Galería Nacional de Arte Antiguo",
+  "museumQid": "Q2266081",
+  "city": "Roma",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "155 × 144 cm",
+  "heightCm": 155.0,
+  "widthCm": 144.0,
+  "inception": "",
+  "depicts": [
+   "Anunciación",
+   "Virgen María",
+   "mujer",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3797764": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "200 × 287 cm",
+  "heightCm": 200.0,
+  "widthCm": 287.0,
+  "inception": "1441",
+  "depicts": [
+   "Coronación de la Virgen",
+   "Dios en el cristianismo",
+   "Jesús de Nazaret",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3618193": {
+  "museum": "basílica de San Lorenzo de Florencia",
+  "museumQid": "Q573881",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "madera",
+   "témpera"
+  ],
+  "dimensions": "175 × 183 cm",
+  "heightCm": 175.0,
+  "widthCm": 183.0,
+  "inception": "1445",
+  "depicts": [
+   "Anunciación",
+   "Virgen María",
+   "mujer",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3958339": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "68 × 151 cm",
+  "heightCm": 68.0,
+  "widthCm": 151.0,
+  "inception": "",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3947293": {
+  "museum": "Galería de la Academia de Venecia",
+  "museumQid": "Q338330",
+  "city": "Venecia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Tabla y color",
+  "materials": [
+   "color",
+   "tabla"
+  ],
+  "dimensions": "49 × 42 cm",
+  "heightCm": 49.0,
+  "widthCm": 42.0,
+  "inception": "1440",
+  "depicts": [
+   "Jerónimo",
+   "donante"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3731175": {
+  "museum": "museo Isabella Stewart Gardner",
+  "museumQid": "Q49135",
+  "city": "Boston",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple sobre yeso",
+  "materials": [
+   "témpera",
+   "yeso"
+  ],
+  "dimensions": "151 × 126 cm",
+  "heightCm": 151.0,
+  "widthCm": 126.0,
+  "inception": "1465",
+  "depicts": [
+   "Heracles"
+  ],
+  "genre": "pintura mitológica",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3948659": {
+  "museum": "Museo Nacional de Arte Antiguo",
+  "museumQid": "Q212459",
+  "city": "Estrela",
+  "country": "Portugal",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "133 × 60 cm",
+  "heightCm": 133.0,
+  "widthCm": 60.0,
+  "inception": "1454",
+  "depicts": [
+   "Agustín de Hipona"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3842514": {
+  "museum": "Instituto de Arte Clark",
+  "museumQid": "Q1465805",
+  "city": "Massachusetts",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo y temple sobre tabla y lienzo",
+  "materials": [
+   "lienzo",
+   "tabla",
+   "témpera",
+   "óleo"
+  ],
+  "dimensions": "107,8 × 78,4 cm",
+  "heightCm": 107.8,
+  "widthCm": 78.4,
+  "inception": "1475",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "de pie",
+   "madre",
+   "mujer",
+   "niño",
+   "sentado",
+   "tarima",
+   "trono",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q701035": {
+  "museum": "Nationalmuseum (Danzig)",
+  "museumQid": "Q1968661",
+  "city": "Gdansk",
+  "country": "Polonia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "221 × 306 cm",
+  "heightCm": 221.0,
+  "widthCm": 306.0,
+  "inception": "1467",
+  "depicts": [
+   "Juicio Final",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q9392232": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "76,5 × 54,6 cm",
+  "heightCm": 76.5,
+  "widthCm": 54.6,
+  "inception": "",
+  "depicts": [
+   "Anunciación",
+   "Arcángel Gabriel",
+   "Virgen María",
+   "agua",
+   "candelero",
+   "cortina",
+   "decantador",
+   "dormitorio",
+   "flor",
+   "gomil"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q2711706": {
+  "museum": "Antiguo hospital de San Juan",
+  "museumQid": "Q2432540",
+  "city": "Brujas",
+  "country": "Bélgica",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "44,7 × 67 cm",
+  "heightCm": 44.7,
+  "widthCm": 67.0,
+  "inception": "1487",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q369913": {
+  "museum": "Colecciones de Pinturas del Estado de Baviera",
+  "museumQid": "Q812285",
+  "city": "Múnich",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "81,3 × 189,2 cm",
+  "heightCm": 81.3,
+  "widthCm": 189.2,
+  "inception": "1480",
+  "depicts": [
+   "Adoración de los Reyes Magos",
+   "Anunciación",
+   "Anunciación a los pastores",
+   "Niño Jesús",
+   "Pasión de Cristo",
+   "Resurrección de Jesús",
+   "Reyes Magos",
+   "Virgen María",
+   "adoración",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q2446983": {
+  "museum": "Galleria Sabauda",
+  "museumQid": "Q2245152",
+  "city": "Turín",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel de roble",
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "56,7 × 92,2 cm",
+  "heightCm": 56.7,
+  "widthCm": 92.2,
+  "inception": "1470",
+  "depicts": [
+   "Jesús de Nazaret",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q9169712": {
+  "museum": "Galería Estatal de Stuttgart",
+  "museumQid": "Q14917275",
+  "city": "Stuttgart",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "191,5 × 84,5 cm",
+  "heightCm": 191.5,
+  "widthCm": 84.5,
+  "inception": "1485",
+  "depicts": [
+   "Betsabé",
+   "chancla",
+   "lavado",
+   "mama",
+   "mujer",
+   "ombligo",
+   "palacio",
+   "pezón",
+   "ropaje",
+   "sentado"
+  ],
+  "genre": "desnudo",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q2628587": {
+  "museum": "Antiguo hospital de San Juan",
+  "museumQid": "Q2432540",
+  "city": "Brujas",
+  "country": "Bélgica",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel",
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "87 × 91 cm",
+  "heightCm": 87.0,
+  "widthCm": 91.0,
+  "inception": "1489",
+  "depicts": [
+   "Coronación de la Virgen",
+   "Úrsula de Colonia"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937623": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "42 × 32 cm",
+  "heightCm": 42.0,
+  "widthCm": 32.0,
+  "inception": "1470",
+  "depicts": [
+   "collar",
+   "mujer",
+   "sombrero",
+   "tocado"
+  ],
+  "genre": "retrato",
+  "movement": "Primitivo flamenco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q4884666": {
+  "museum": "Museo Nacional de Arte de Cataluña",
+  "museumQid": "Q861252",
+  "city": "Barcelona",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "90 × 69 cm",
+  "heightCm": 90.0,
+  "widthCm": 69.0,
+  "inception": "",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Resurrección de Jesús",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q29018377": {
+  "museum": "Catedral de Santa Eulalia de Barcelona",
+  "museumQid": "Q17155",
+  "city": "Barcelona",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Óleo",
+  "materials": [
+   "óleo"
+  ],
+  "dimensions": "175 × 189 cm",
+  "heightCm": 175.0,
+  "widthCm": 189.0,
+  "inception": "1490",
+  "depicts": [
+   "Jesús de Nazaret"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3947695": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "179,7 × 81,9 cm",
+  "heightCm": 179.7,
+  "widthCm": 81.9,
+  "inception": "1468",
+  "depicts": [
+   "Arcángel Miguel",
+   "diablo"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q28797583": {
+  "museum": "Museo de Bellas Artes de Bilbao",
+  "museumQid": "Q127064",
+  "city": "Bilbao",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "92,5 × 52 cm",
+  "heightCm": 92.5,
+  "widthCm": 52.0,
+  "inception": "",
+  "depicts": [
+   "Engracia de Zaragoza"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3224308": {
+  "museum": "Musée des Beaux-Arts de Caen",
+  "museumQid": "Q569079",
+  "city": "Caen",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "234 × 185 cm",
+  "heightCm": 234.0,
+  "widthCm": 185.0,
+  "inception": "1501",
+  "depicts": [
+   "José de Nazaret",
+   "Virgen María",
+   "mujer"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q673112": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "óleo"
+  ],
+  "dimensions": "39 × 29 cm",
+  "heightCm": 39.0,
+  "widthCm": 29.0,
+  "inception": "",
+  "depicts": [
+   "Apolo",
+   "Marsias",
+   "concurso musical"
+  ],
+  "genre": "pintura mitológica",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q945250": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "52 × 44 cm",
+  "heightCm": 52.0,
+  "widthCm": 44.0,
+  "inception": "1494",
+  "depicts": [
+   "Francesco delle Opere",
+   "paisaje"
+  ],
+  "genre": "retrato",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q368788": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "168 × 176 cm",
+  "heightCm": 168.0,
+  "widthCm": 176.0,
+  "inception": "1483",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Juan el Evangelista",
+   "Pietà",
+   "Virgen María",
+   "mujer",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": "Primer Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3221619": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Temple sobre lienzo",
+  "materials": [
+   "lienzo",
+   "témpera"
+  ],
+  "dimensions": "160 × 191 cm",
+  "heightCm": 160.0,
+  "widthCm": 191.0,
+  "inception": "1503",
+  "depicts": [
+   "Apolo",
+   "Cupido",
+   "Dafne",
+   "Júpiter",
+   "Mercurio",
+   "Minerva",
+   "Neptuno",
+   "amor",
+   "castidad",
+   "combate"
+  ],
+  "genre": "alegoría",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3207678": {
+  "museum": "Galería Palatina",
+  "museumQid": "Q866498",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "220 × 195 cm",
+  "heightCm": 220.0,
+  "widthCm": 195.0,
+  "inception": "1495",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Lamentación sobre Cristo muerto",
+   "María Magdalena",
+   "Virgen María",
+   "melena",
+   "mujer"
+  ],
+  "genre": "arte religioso",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3213774": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla y tabla de álamo",
+  "materials": [
+   "madera de álamo",
+   "panel de álamo",
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "148 × 148 cm",
+  "heightCm": 148.0,
+  "widthCm": 148.0,
+  "inception": "1492–1500",
+  "depicts": [
+   "Catalina de Alejandría",
+   "Niño Jesús",
+   "Rosa de Viterbo",
+   "Virgen María",
+   "balaustrada",
+   "madre",
+   "mujer",
+   "niño",
+   "sentado",
+   "terraza"
+  ],
+  "genre": "desnudo",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q11129389": {
+  "museum": "Colecciones de Pinturas del Estado de Baviera",
+  "museumQid": "Q812285",
+  "city": "Múnich",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "óleo"
+  ],
+  "dimensions": "173 × 170,7 cm",
+  "heightCm": 173.0,
+  "widthCm": 170.7,
+  "inception": "1488",
+  "depicts": [
+   "Bernardo de Claraval",
+   "Virgen María"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3607621": {
+  "museum": "Museo J. Paul Getty",
+  "museumQid": "Q731126",
+  "city": "Los Ángeles",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre transferido a lienzo y tabla",
+  "materials": [
+   "tabla",
+   "transferido a lienzo",
+   "óleo"
+  ],
+  "dimensions": "92 × 72 cm",
+  "heightCm": 92.0,
+  "widthCm": 72.0,
+  "inception": "1529",
+  "depicts": [],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3664358": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "230 × 173 cm",
+  "heightCm": 230.0,
+  "widthCm": 173.0,
+  "inception": "1525",
+  "depicts": [
+   "Cena de Emaús",
+   "Jesús de Nazaret"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937502": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "87 × 67 cm",
+  "heightCm": 87.0,
+  "widthCm": 67.0,
+  "inception": "",
+  "depicts": [
+   "Cosme de Médici"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1109475": {
+  "museum": "Rectory of Saints Michael and Francis",
+  "museumQid": "Q3923979",
+  "city": "Carmignano",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre cartón",
+  "materials": [
+   "cartón",
+   "óleo"
+  ],
+  "dimensions": "202 × 156 cm",
+  "heightCm": 202.0,
+  "widthCm": 156.0,
+  "inception": "1528",
+  "depicts": [
+   "Abaya",
+   "Isabel",
+   "Tichel",
+   "Virgen María",
+   "Visitación",
+   "blanco",
+   "calle",
+   "de pie",
+   "mujer",
+   "stole"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1706136": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "96 × 109 cm",
+  "heightCm": 96.0,
+  "widthCm": 109.0,
+  "inception": "1518",
+  "depicts": [
+   "José"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3944486": {
+  "museum": "Museo del Hermitage",
+  "museumQid": "Q132783",
+  "city": "San Petersburgo",
+  "country": "Rusia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "120 × 98,5 cm",
+  "heightCm": 120.0,
+  "widthCm": 98.5,
+  "inception": "1522",
+  "depicts": [
+   "Niño Jesús",
+   "San Juan niño",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937764": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "óleo"
+  ],
+  "dimensions": "70 × 53 cm",
+  "heightCm": 70.0,
+  "widthCm": 53.0,
+  "inception": "1517",
+  "depicts": [
+   "sombrero",
+   "varón"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3705703": {
+  "museum": "iglesia de Santa Felicita",
+  "museumQid": "Q1069665",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "313 × 192 cm",
+  "heightCm": 313.0,
+  "widthCm": 192.0,
+  "inception": "1525",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Nicodemo",
+   "Virgen María",
+   "mujer",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": "manierismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q6106746": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q19675",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo y vitela",
+  "materials": [
+   "lienzo",
+   "vitela",
+   "óleo"
+  ],
+  "dimensions": "65 × 48 cm",
+  "heightCm": 65.0,
+  "widthCm": 48.0,
+  "inception": "1539",
+  "depicts": [
+   "Ana de Cléveris",
+   "mujer",
+   "orfebrería",
+   "vestido"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3630726": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Pastel sobre papel",
+  "materials": [
+   "papel",
+   "pastel"
+  ],
+  "dimensions": "32 × 26 cm",
+  "heightCm": 32.0,
+  "widthCm": 26.0,
+  "inception": "",
+  "depicts": [
+   "Hans Holbein el Joven"
+  ],
+  "genre": "autorretrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q9144767": {
+  "museum": "Galería nacional de Escocia",
+  "museumQid": "Q942713",
+  "city": "Edimburgo",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "64,2 × 74,2 cm",
+  "heightCm": 64.2,
+  "widthCm": 74.2,
+  "inception": "1530",
+  "depicts": [],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q867403": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "219 × 132 cm",
+  "heightCm": 219.0,
+  "widthCm": 132.0,
+  "inception": "",
+  "depicts": [
+   "Jerónimo",
+   "Niño Jesús",
+   "Virgen María",
+   "Virgen con Niño",
+   "columna",
+   "desnudo",
+   "vaso",
+   "ángel"
+  ],
+  "genre": "arte religioso",
+  "movement": "manierismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q699319": {
+  "museum": "Museo de Historia del Arte de Viena",
+  "museumQid": "Q95569",
+  "city": "Viena",
+  "country": "Austria",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "óleo"
+  ],
+  "dimensions": "24,4 × 24,4 cm",
+  "heightCm": 24.4,
+  "widthCm": 24.4,
+  "inception": "",
+  "depicts": [
+   "Parmigianino",
+   "convex mirror"
+  ],
+  "genre": "autorretrato",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q867678": {
+  "museum": "Museo Nacional de Capodimonte",
+  "museumQid": "Q290549",
+  "city": "Nápoles",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "136 × 86 cm",
+  "heightCm": 136.0,
+  "widthCm": 86.0,
+  "inception": "1535",
+  "depicts": [
+   "armiño",
+   "cortesana",
+   "de pie",
+   "mujer",
+   "raya"
+  ],
+  "genre": "retrato",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3275305": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo",
+  "materials": [
+   "óleo"
+  ],
+  "dimensions": "343 × 149 cm",
+  "heightCm": 343.0,
+  "widthCm": 149.0,
+  "inception": "1526",
+  "depicts": [
+   "Jerónimo",
+   "John Baptiste",
+   "Niño Jesús",
+   "Virgen María",
+   "mujer"
+  ],
+  "genre": "arte religioso",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937595": {
+  "museum": "Galería Nacional de Dinamarca",
+  "museumQid": "Q671384",
+  "city": "Copenhague",
+  "country": "Dinamarca",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "madera",
+   "óleo"
+  ],
+  "dimensions": "126,5 × 104,5 cm",
+  "heightCm": 126.5,
+  "widthCm": 104.5,
+  "inception": "1524",
+  "depicts": [
+   "Lorenzo Cybo",
+   "niño",
+   "varón"
+  ],
+  "genre": "retrato",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937542": {
+  "museum": "Museo Nacional de Capodimonte",
+  "museumQid": "Q290549",
+  "city": "Nápoles",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "108 × 80 cm",
+  "heightCm": 108.0,
+  "widthCm": 80.0,
+  "inception": "1524",
+  "depicts": [
+   "Gian Galeazzo Sanvitale",
+   "armadura",
+   "barba",
+   "casco"
+  ],
+  "genre": "retrato",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q892604": {
+  "museum": "Museo de Historia del Arte de Viena",
+  "museumQid": "Q95569",
+  "city": "Viena",
+  "country": "Austria",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "lime panel",
+   "óleo"
+  ],
+  "dimensions": "135,5 × 65 cm",
+  "heightCm": 135.5,
+  "widthCm": 65.0,
+  "inception": "",
+  "depicts": [
+   "Cupido",
+   "ala",
+   "arco",
+   "carpintería",
+   "cuchillo",
+   "desnudo",
+   "espalda",
+   "intergluteal cleft",
+   "libro",
+   "nalga"
+  ],
+  "genre": "desnudo",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3851963": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "óleo"
+  ],
+  "dimensions": "20 × 27 cm",
+  "heightCm": 20.0,
+  "widthCm": 27.0,
+  "inception": "",
+  "depicts": [
+   "Catalina de Alejandría",
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q282277": {
+  "museum": "Detroit Institute of Arts",
+  "museumQid": "Q1201549",
+  "city": "Detroit",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "42 × 31,4 cm",
+  "heightCm": 42.0,
+  "widthCm": 31.4,
+  "inception": "1523",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Alto Renacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3839035": {
+  "museum": "Museo Nacional de Capodimonte",
+  "museumQid": "Q290549",
+  "city": "Nápoles",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "67 × 51 cm",
+  "heightCm": 67.0,
+  "widthCm": 51.0,
+  "inception": "1540",
+  "depicts": [
+   "Lucrecia",
+   "mujer",
+   "poignard",
+   "toples"
+  ],
+  "genre": "desnudo",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937503": {
+  "museum": "Museo de Historia del Arte de Viena",
+  "museumQid": "Q95569",
+  "city": "Viena",
+  "country": "Austria",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "óleo"
+  ],
+  "dimensions": "50 × 46,5 cm",
+  "heightCm": 50.0,
+  "widthCm": 46.5,
+  "inception": "1530",
+  "depicts": [
+   "Balzo (tocado)",
+   "Cecilia Gozzadini",
+   "mujer"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937655": {
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "133 × 98 cm",
+  "heightCm": 133.0,
+  "widthCm": 98.0,
+  "inception": "",
+  "depicts": [
+   "Pier Maria III de' Rossi",
+   "espada"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1328065": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "115 × 96 cm",
+  "heightCm": 115.0,
+  "widthCm": 96.0,
+  "inception": "",
+  "depicts": [
+   "Juan de Médici",
+   "Leonor Álvarez de Toledo y Osorio"
+  ],
+  "genre": "retrato",
+  "movement": "manierismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1430990": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "147 × 117 cm",
+  "heightCm": 147.0,
+  "widthCm": 117.0,
+  "inception": "1545",
+  "depicts": [
+   "Cupido",
+   "Folly",
+   "Venus",
+   "ala",
+   "desnudo",
+   "flecha",
+   "mascarón",
+   "perla",
+   "pigeon"
+  ],
+  "genre": "alegoría",
+  "movement": "manierismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1990128": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "102 × 85 cm",
+  "heightCm": 102.0,
+  "widthCm": 85.0,
+  "inception": "1545",
+  "depicts": [
+   "Lucrezia Panciatichi",
+   "anillo",
+   "apoyabrazos",
+   "collar",
+   "libro",
+   "melena",
+   "pelirrojo",
+   "pinjante",
+   "raya",
+   "sillón"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1131476": {
+  "museum": "Église des Carmes de Besançon",
+  "museumQid": "Q3585899",
+  "city": "Besanzón",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "268 × 173 cm",
+  "heightCm": 268.0,
+  "widthCm": 173.0,
+  "inception": "",
+  "depicts": [
+   "Arma Christi",
+   "Jesús de Nazaret",
+   "José de Arimatea",
+   "Juan el Apóstol",
+   "María Magdalena",
+   "Nicodemo",
+   "Virgen María",
+   "bijou",
+   "cabello",
+   "cofia"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937473": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "104 × 85 cm",
+  "heightCm": 104.0,
+  "widthCm": 85.0,
+  "inception": "1540",
+  "depicts": [
+   "Bartolomeo Panciatichi"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3625842": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "74 × 58 cm",
+  "heightCm": 74.0,
+  "widthCm": 58.0,
+  "inception": "",
+  "depicts": [
+   "Cosme I de Médici"
+  ],
+  "genre": "retrato",
+  "movement": "manierismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q7232310": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "102 × 85 cm",
+  "heightCm": 102.0,
+  "widthCm": 85.0,
+  "inception": "1536–1540",
+  "depicts": [
+   "Ugolino Martelli"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q18683039": {
+  "museum": "Museo Nacional Thyssen-Bornemisza",
+  "museumQid": "Q176251",
+  "city": "Madrid",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "87 × 76,5 cm",
+  "heightCm": 87.0,
+  "widthCm": 76.5,
+  "inception": "",
+  "depicts": [
+   "Sebastián de Milán"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937472": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "63,3 × 48 cm",
+  "heightCm": 63.3,
+  "widthCm": 48.0,
+  "inception": "",
+  "depicts": [
+   "Bia de Médici"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3937730": {
+  "museum": "Museo Metropolitano de Arte",
+  "museumQid": "Q160236",
+  "city": "Nueva York",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "95,6 × 74,9 cm",
+  "heightCm": 95.6,
+  "widthCm": 74.9,
+  "inception": "1540",
+  "depicts": [
+   "retrato",
+   "varón"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3944462": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "116,9 × 89,7 cm",
+  "heightCm": 116.9,
+  "widthCm": 89.7,
+  "inception": "",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3784272": {
+  "museum": "Galería Uffizi",
+  "museumQid": "Q51252",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "58 × 45 cm",
+  "heightCm": 58.0,
+  "widthCm": 45.0,
+  "inception": "1545",
+  "depicts": [
+   "Carduelis carduelis",
+   "Juan de Médici"
+  ],
+  "genre": "retrato",
+  "movement": "manierismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q16333797": {
+  "museum": "Castillo de Skokloster",
+  "museumQid": "Q1891413",
+  "city": "Håbo",
+  "country": "Suecia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "tabla",
+   "óleo"
+  ],
+  "dimensions": "70 × 58 cm",
+  "heightCm": 70.0,
+  "widthCm": 58.0,
+  "inception": "1591",
+  "depicts": [
+   "Rodolfo II del Sacro Imperio Romano Germánico",
+   "Vertumno",
+   "flor",
+   "fruta",
+   "varón"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q17021187": {
+  "museum": "Castillo de Skokloster",
+  "museumQid": "Q1891413",
+  "city": "Håbo",
+  "country": "Suecia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "98 × 71 cm",
+  "heightCm": 98.0,
+  "widthCm": 71.0,
+  "inception": "1556",
+  "depicts": [
+   "bibliotecario",
+   "libro"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q18601924": {
+  "museum": "Museo Nacional de Estocolmo",
+  "museumQid": "Q842858",
+  "city": "Estocolmo",
+  "country": "Suecia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "madera",
+   "óleo"
+  ],
+  "dimensions": "52,5 × 41 cm",
+  "heightCm": 52.5,
+  "widthCm": 41.0,
+  "inception": "",
+  "depicts": [
+   "cocinero"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1194663": {
+  "museum": "Museo Nacional de Estocolmo",
+  "museumQid": "Q842858",
+  "city": "Estocolmo",
+  "country": "Suecia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "64 × 51 cm",
+  "heightCm": 64.0,
+  "widthCm": 51.0,
+  "inception": "1566",
+  "depicts": [],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q18578019": {
+  "museum": "Museo civico Ala Ponzone",
+  "museumQid": "Q6940464",
+  "city": "Cremona",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Óleo sobre tabla",
+  "materials": [
+   "madera",
+   "óleo"
+  ],
+  "dimensions": "36 × 24 cm",
+  "heightCm": 36.0,
+  "widthCm": 24.0,
+  "inception": "1587",
+  "depicts": [],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q18572283": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "76 × 63,5 cm",
+  "heightCm": 76.0,
+  "widthCm": 63.5,
+  "inception": "1573",
+  "depicts": [
+   "flor",
+   "guirnalda",
+   "primavera",
+   "varón"
+  ],
+  "genre": "alegoría",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q18572291": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "76 × 63,5 cm",
+  "heightCm": 76.0,
+  "widthCm": 63.5,
+  "inception": "1573",
+  "depicts": [
+   "Hedera",
+   "boca",
+   "cabello",
+   "espada",
+   "flor",
+   "guirnalda",
+   "invierno",
+   "limón",
+   "raíz",
+   "seta"
+  ],
+  "genre": "alegoría",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q18572318": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "76 × 63,5 cm",
+  "heightCm": 76.0,
+  "widthCm": 63.5,
+  "inception": "1573",
+  "depicts": [
+   "Cynara scolymus",
+   "avellana",
+   "cereza",
+   "fruta",
+   "uva",
+   "varón",
+   "verano",
+   "verdura"
+  ],
+  "genre": "alegoría",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q5731138": {
+  "museum": "Museo del Prado",
+  "museumQid": "Q160112",
+  "city": "Madrid",
+  "country": "España",
+  "inSpain": true,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "68 × 88,2 cm",
+  "heightCm": 68.0,
+  "widthCm": 88.2,
+  "inception": "1602",
+  "depicts": [
+   "fruta",
+   "limón",
+   "manzana"
+  ],
+  "genre": "bodegón",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q90563978": {
+  "museum": "Museo de Arte de San Diego",
+  "museumQid": "Q1368166",
+  "city": "San Diego",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "69 × 85 cm",
+  "heightCm": 69.0,
+  "widthCm": 85.0,
+  "inception": "1602",
+  "depicts": [
+   "col",
+   "col blanca",
+   "melón",
+   "membrillo",
+   "pepino"
+  ],
+  "genre": "bodegón",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q20274935": {
+  "museum": "Instituto de Arte de Chicago",
+  "museumQid": "Q239303",
+  "city": "Chicago",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "67,8 × 88,7 cm",
+  "heightCm": 67.8,
+  "widthCm": 88.7,
+  "inception": "",
+  "depicts": [],
+  "genre": "bodegón",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q126956583": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "69,5 × 96,5 cm",
+  "heightCm": 69.5,
+  "widthCm": 96.5,
+  "inception": "1602",
+  "depicts": [],
+  "genre": "bodegón",
+  "movement": "Barroco",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3451328": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "160,5 × 181 cm",
+  "heightCm": 160.5,
+  "widthCm": 181.0,
+  "inception": "1742",
+  "depicts": [
+   "Carduelis carduelis",
+   "gato doméstico"
+  ],
+  "genre": "retrato de familia",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q4164272": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "63,5 × 52,5 cm",
+  "heightCm": 63.5,
+  "widthCm": 52.5,
+  "inception": "1743",
+  "depicts": [
+   "cesta",
+   "comerciante",
+   "diente humano",
+   "gamba",
+   "instrumento de medición",
+   "mujer",
+   "mussel",
+   "raya",
+   "tocado",
+   "transportar sobre la cabeza"
+  ],
+  "genre": "retrato",
+  "movement": "Rococó",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q5712840": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "90 × 69,9 cm",
+  "heightCm": 90.0,
+  "widthCm": 69.9,
+  "inception": "1745",
+  "depicts": [
+   "William Hogarth",
+   "carlino"
+  ],
+  "genre": "autorretrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q5722643": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "62 × 75,5 cm",
+  "heightCm": 62.0,
+  "widthCm": 75.5,
+  "inception": "",
+  "depicts": [
+   "trabajador doméstico"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q5234041": {
+  "museum": "Walker Art Gallery",
+  "museumQid": "Q1536471",
+  "city": "Liverpool",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "190,5 × 250,8 cm",
+  "heightCm": 190.5,
+  "widthCm": 250.8,
+  "inception": "1745",
+  "depicts": [
+   "David Garrick",
+   "Ricardo III",
+   "varón"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3944145": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "70 × 91 cm",
+  "heightCm": 70.0,
+  "widthCm": 91.0,
+  "inception": "1743",
+  "depicts": [
+   "candelero",
+   "chimenea",
+   "espejo",
+   "habitación",
+   "libro",
+   "mesa",
+   "mujer",
+   "perro",
+   "pintura",
+   "silla"
+  ],
+  "genre": "escena de género",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q5967685": {
+  "museum": "Museo Soane",
+  "museumQid": "Q2060860",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "62,5 × 75 cm",
+  "heightCm": 62.5,
+  "widthCm": 75.0,
+  "inception": "1735",
+  "depicts": [
+   "grupo de humanos",
+   "mujer",
+   "pub",
+   "varón"
+  ],
+  "genre": "escena de género",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q6772906": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "43,2 × 53,3 cm",
+  "heightCm": 43.2,
+  "widthCm": 53.3,
+  "inception": "1743",
+  "depicts": [
+   "cadáver",
+   "grupo de humanos",
+   "habitación",
+   "mujer",
+   "niño",
+   "perro",
+   "varón"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q18599152": {
+  "museum": "Museo Nacional de Estocolmo",
+  "museumQid": "Q842858",
+  "city": "Estocolmo",
+  "country": "Suecia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "50 × 61 cm",
+  "heightCm": 50.0,
+  "widthCm": 61.0,
+  "inception": "1818",
+  "depicts": [
+   "barba",
+   "bigote",
+   "cabeza humana",
+   "castaño",
+   "ceja",
+   "decapitación",
+   "diente humano",
+   "mujer",
+   "narina",
+   "ropaje"
+  ],
+  "genre": "bodegón",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q29902189": {
+  "museum": "Museo del Louvre",
+  "museumQid": "Q3044768",
+  "city": "París",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "51 × 62 cm",
+  "heightCm": 51.0,
+  "widthCm": 62.0,
+  "inception": "1819",
+  "depicts": [
+   "leona"
+  ],
+  "genre": "animalística",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q106701973": {
+  "museum": "Museo de Bellas Artes de Ruan",
+  "museumQid": "Q3086934",
+  "city": "Ruan",
+  "country": "Francia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "45,5 × 37,5 cm",
+  "heightCm": 45.5,
+  "widthCm": 37.5,
+  "inception": "1812",
+  "depicts": [
+   "Manta de montar",
+   "caballo"
+  ],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q26708040": {
+  "museum": "National Gallery de Londres",
+  "museumQid": "Q180788",
+  "city": "Londres",
+  "country": "Reino Unido",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "49 × 60 cm",
+  "heightCm": 49.0,
+  "widthCm": 60.0,
+  "inception": "",
+  "depicts": [],
+  "genre": null,
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1437492": {
+  "museum": "Museo de Arte Moderno de San Francisco",
+  "museumQid": "Q913672",
+  "city": "San Francisco",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "80 × 60 cm",
+  "heightCm": 80.0,
+  "widthCm": 60.0,
+  "inception": "1905",
+  "depicts": [
+   "Amélie Parayre",
+   "abanico",
+   "mujer",
+   "sombrero"
+  ],
+  "genre": "retrato",
+  "movement": "fovismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q2538580": {
+  "museum": "Barnes Foundation",
+  "museumQid": "Q808462",
+  "city": "Filadelfia",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "176,5 × 240,7 cm",
+  "heightCm": 176.5,
+  "widthCm": 240.7,
+  "inception": "1906",
+  "depicts": [
+   "mujer",
+   "varón"
+  ],
+  "genre": "desnudo",
+  "movement": "fovismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q2902188": {
+  "museum": "Galería Nacional de Dinamarca",
+  "museumQid": "Q671384",
+  "city": "Copenhague",
+  "country": "Dinamarca",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "40,5 × 32,5 cm",
+  "heightCm": 40.5,
+  "widthCm": 32.5,
+  "inception": "1905",
+  "depicts": [
+   "Amélie Parayre",
+   "cara",
+   "peinado"
+  ],
+  "genre": "retrato",
+  "movement": "fovismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3745698": {
+  "museum": "Galería Nacional de Arte",
+  "museumQid": "Q214867",
+  "city": "Washington",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "55,3 × 46 cm",
+  "heightCm": 55.3,
+  "widthCm": 46.0,
+  "inception": "1905",
+  "depicts": [
+   "Colliure",
+   "puerto",
+   "ventana"
+  ],
+  "genre": null,
+  "movement": "fovismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q1999166": {
+  "museum": "Museo del Hermitage",
+  "museumQid": "Q132783",
+  "city": "San Petersburgo",
+  "country": "Rusia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "260 × 389 cm",
+  "heightCm": 260.0,
+  "widthCm": 389.0,
+  "inception": "1910",
+  "depicts": [
+   "cantante",
+   "coro",
+   "desnudo",
+   "instrumento de viento",
+   "música",
+   "violín"
+  ],
+  "genre": null,
+  "movement": "fovismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q882584": {
+  "museum": "Museo de Arte de Baltimore",
+  "museumQid": "Q377579",
+  "city": "Baltimore",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "92,1 × 140,3 cm",
+  "heightCm": 92.1,
+  "widthCm": 140.3,
+  "inception": "1907",
+  "depicts": [
+   "desnudo",
+   "mujer"
+  ],
+  "genre": "desnudo",
+  "movement": "fovismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q3791123": {
+  "museum": "Museo Pushkin",
+  "museumQid": "Q4872",
+  "city": "Moscú",
+  "country": "Rusia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "140 × 98 cm",
+  "heightCm": 140.0,
+  "widthCm": 98.0,
+  "inception": "1912",
+  "depicts": [
+   "Carassius auratus"
+  ],
+  "genre": "bodegón",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q4869004": {
+  "museum": "Museo de Arte de San Luis",
+  "museumQid": "Q1760539",
+  "city": "San Luis",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "181,6 × 220,3 cm",
+  "heightCm": 181.6,
+  "widthCm": 220.3,
+  "inception": "",
+  "depicts": [
+   "desnudo",
+   "ser humano femenino",
+   "tortuga"
+  ],
+  "genre": "desnudo",
+  "movement": "modernismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q2049345": {
+  "museum": "Museo del Hermitage",
+  "museumQid": "Q132783",
+  "city": "San Petersburgo",
+  "country": "Rusia",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "115 × 147 cm",
+  "heightCm": 115.0,
+  "widthCm": 147.0,
+  "inception": "1908",
+  "depicts": [
+   "bowls",
+   "bowls player",
+   "césped",
+   "varón"
+  ],
+  "genre": "desnudo",
+  "movement": "modernismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q6728519": {
+  "museum": "Barnes Foundation",
+  "museumQid": "Q808462",
+  "city": "Filadelfia",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "100 × 81 cm",
+  "heightCm": 100.0,
+  "widthCm": 81.0,
+  "inception": "1907",
+  "depicts": [
+   "Amélie Parayre",
+   "sentado",
+   "silla",
+   "velo",
+   "vestido"
+  ],
+  "genre": "retrato",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q7447987": {
+  "museum": "Galería Nacional de Dinamarca",
+  "museumQid": "Q671384",
+  "city": "Copenhague",
+  "country": "Dinamarca",
+  "inSpain": false,
+  "technique": "Óleo sobre lienzo",
+  "materials": [
+   "lienzo",
+   "óleo"
+  ],
+  "dimensions": "55 × 46 cm",
+  "heightCm": 55.0,
+  "widthCm": 46.0,
+  "inception": "1906",
+  "depicts": [
+   "Henri Matisse",
+   "cara"
+  ],
+  "genre": "autorretrato",
+  "movement": "fovismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
+ },
+ "Q7727514": {
+  "museum": "Museo del Hermitage",
+  "museumQid": "Q132783",
+  "city": "San Petersburgo",
+  "country": "Rusia",
+  "inSpain": false,
+  "technique": "Lienzo y distemper",
+  "materials": [
+   "distemper",
+   "lienzo"
+  ],
+  "dimensions": "177 × 217 cm",
+  "heightCm": 177.0,
+  "widthCm": 217.0,
+  "inception": "1908",
+  "depicts": [
+   "Amélie Parayre",
+   "Henri Matisse",
+   "conversación",
+   "femenino",
+   "masculino",
+   "pijama",
+   "tronco",
+   "árbol"
+  ],
+  "genre": "escena de género",
+  "movement": "fovismo",
+  "source": "wikidata",
+  "fetched": "2026-11-26"
  }
 }
