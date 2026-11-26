@@ -35,7 +35,7 @@ test('primera etapa: 4 preguntas, 4 cuadros distintos, solo el primero recién v
     assert.equal(qs.length, FIRST_STAGE_ROUND, `${s}`);
     const subjects = qs.map(subjectOf);
     assert.equal(new Set(subjects).size, qs.length, `${s}: cuadro repetido ${subjects}`);
-    assert.equal(subjects[0], warmId, `${s}: calentamiento con la obra más conocida de «Conoce a»`);
+    assert.equal(subjects[1], warmId, `${s}: calentamiento (segunda) con la obra más conocida de «Conoce a»`);
     assert.equal(qs.filter((q) => !q.isNew).length, 1, `${s}: una sola recién vista`);
     const types = qs.map((q) => q.type);
     assert.ok(types.every((t) => t === 'which'), `${s}: ${types}`);

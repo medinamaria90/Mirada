@@ -49,15 +49,16 @@ function cardHtml(card, pos, count, forced) {
 // La duración crece con el tamaño de letra del sistema (con el texto al 200 % se tarda el doble en leer).
 const fontScale = () => Math.max(1, (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16);
 
-// Muestra la historia del nivel y devuelve una promesa que se cumple al terminar o saltarla (true si se mostró).
+// Muestra la historia del nivel y devuelve una promesa que se cumple al terminar o saltarla con los cuadros que ha enseñado
+// ([] si no se mostró).
 // opts: { force } vuelve a mostrarla aunque ya se haya visto; { history: false } cuando va seguida de una ronda: no entra en el
 // historial (su entrada de «atrás» llegaría de forma asíncrona cuando la ronda ya está montada y dispararía «¿Salir de la ronda?»).
 export async function playStory(ctx, artistId, level, opts = {}) {
   const key = storyKey(artistId, level);
-  if (!opts.force && storySeen(key)) return false;
+  if (!opts.force && storySeen(key)) return [];
   const [story] = await Promise.all([loadStory(artistId), loadCss('css/historias.css')]);
   const lv = levelStory(story, level);
-  if (!lv) return false;
+  if (!lv) return [];
   const { index } = ctx;
   if (current) current.close();
   markStorySeen(key);
@@ -106,9 +107,12 @@ export async function playStory(ctx, artistId, level, opts = {}) {
         pauseBtn.innerHTML = on ? icons.play(22) : icons.pause(22);
       }
     };
+    const shownIds = [];
     const show = (manual) => {
       // En la primera tarjeta del nivel básico, si hay un retrato o autorretrato visto, se ve la cara.
-      media.innerHTML = mediaHtml(index, lv.cards[pos], level === 1 && pos === 0 ? opening : null);
+      const override = level === 1 && pos === 0 ? opening : null;
+      shownIds.push((override || index.artwork(lv.cards[pos].artwork))?.id);
+      media.innerHTML = mediaHtml(index, lv.cards[pos], override);
       bottom.innerHTML = cardHtml(lv.cards[pos], pos, lv.cards.length, Boolean(opts.force));
       dlg.querySelectorAll('.story-bar').forEach((b, i) => {
         b.classList.toggle('is-done', i < pos || (i === pos && !auto));
@@ -148,7 +152,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       dlg.remove();
       if (pushed && !fromPop) { try { history.back(); } catch { /* nada */ } }
       if (opener && opener.isConnected) opener.focus({ preventScroll: true });
-      resolve(true);
+      resolve(shownIds);
     }
     const go = (delta, manual = true) => {
       const r = step(pos, lv.cards.length, delta);

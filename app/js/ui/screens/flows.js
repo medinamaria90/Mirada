@@ -272,12 +272,13 @@ function withIntro(ctx, el, movementId, show) {
   return show();
 }
 
-// Historia al empezar un nivel (una vez, saltable): después se muestra lo que sigue. Sin historia, de seguido.
+// Historia al empezar un nivel (una vez, saltable): después se muestra lo que sigue, con los cuadros que ha enseñado (la
+// ronda no abre con ellos). Sin historia, de seguido.
 function withStory(ctx, el, artistId, level, show) {
   import('../story-viewer.js')
     .then((m) => m.playStory(ctx, artistId, level, { history: false }))
-    .catch((err) => { console.error(err); })
-    .then(() => { if (el.isConnected) show(); });
+    .catch((err) => { console.error(err); return []; })
+    .then((shown) => { if (el.isConnected) show(Array.isArray(shown) ? shown : []); });
 }
 
 // --- Etapa de pintor -------------------------------------------------------
@@ -291,11 +292,11 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx);
-  withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, () => {
+  withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, (shown) => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
-    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen });
+    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown });
     playEra(movement.era);
     const years = artist.born && artist.died ? `${artist.born}–${artist.died}` : '';
     learnScreen(ctx, el, {
@@ -325,9 +326,9 @@ export function renderDeep(ctx, el, artistId, level) {
   if (deepStatus(ctx.store.get().progress, index, artistId, level) === 'locked') return leave(ctx, 'Aún no está abierto');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx);
-  withStory(ctx, el, artistId, level, () => {
+  withStory(ctx, el, artistId, level, (shown) => {
     const progress = ctx.store.get().progress;
-    const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)] });
+    const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown });
     playEra(movement.era);
     ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
   });

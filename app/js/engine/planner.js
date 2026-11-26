@@ -90,9 +90,12 @@ export function planStage(index, artistId, seed, opts = {}) {
     : index.branchBefore(artistId));
   const onlyWhich = !allowsOtherQuestions(knownPainters(before, artistId));
   const own = ownSelection(index, artist, learn, rng, { level, seen, first: onlyWhich });
-  const slots = !onlyWhich
+  const planned = !onlyWhich
     ? stageSlots(index, artist, learn, before, rng, opts.review || [], own)
     : firstStageSlots(index, artist, learn, rng, own);
+  // «Conoce a» (nivel 1) y la historia (opts.shown) acaban de enseñar sus cuadros: la ronda no abre con uno de ellos.
+  const shown = new Set([...(opts.shown || []), ...(level === 1 ? learn.map((w) => w.id) : [])]);
+  const slots = freshFirst(planned, shown, artistId);
   const avoid = slots.map((s) => s.work.id).concat(slots.flatMap((s) => s.includeWorks || []));
   // Fase de cada pregunta: «practice» si el cuadro se enseña en «Conoce a» de su pintor y «fresh» si
   // no. Las dos van mezcladas en la ronda (sin pantalla intermedia).
@@ -102,6 +105,17 @@ export function planStage(index, artistId, seed, opts = {}) {
   const practice = questions.filter((q) => q.phase === 'practice');
   const fresh = questions.filter((q) => q.phase === 'fresh');
   return { kind: 'stage', artistId, seed, ...(level > 1 ? { level } : {}), learn, practice, fresh, questions };
+}
+
+// Si la primera pregunta es de un cuadro recién enseñado, pasa delante la primera que no lo sea (mejor una del propio
+// pintor); la recién enseñada queda segunda. Sin ninguna así, el orden no cambia.
+export function freshFirst(slots, shown, artistId) {
+  if (!slots.length || !shown.has(slots[0].work.id)) return slots;
+  const ok = (s) => !shown.has(s.work.id);
+  let k = slots.findIndex((s) => ok(s) && s.work.artistId === artistId);
+  if (k < 0) k = slots.findIndex(ok);
+  if (k < 0) return slots;
+  return [slots[k], ...slots.slice(0, k), ...slots.slice(k + 1)];
 }
 
 // Solo «¿Cuál es de X?» (primera etapa): la respuesta ocupa cada posición una vez (en orden al azar),

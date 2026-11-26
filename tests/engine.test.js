@@ -104,7 +104,8 @@ test('planificador de etapa: conocer → una de calentamiento con lo visto → o
   const subjectOf = (q) => (q.type === 'which' ? q.targetArtworkId : q.artworkId);
   const own = plan.questions.filter((q) => q.artistId === artistId);
   assert.equal(plan.questions[0].artistId, artistId, 'empieza por el pintor recién visto');
-  assert.ok(learnIds.has(subjectOf(plan.questions[0])), 'la primera es de calentamiento con una obra vista');
+  assert.ok(!learnIds.has(subjectOf(plan.questions[0])), 'la primera no repite un cuadro recién enseñado');
+  assert.ok(learnIds.has(subjectOf(plan.questions[1])), 'la segunda es de calentamiento con una obra vista');
   const seenOwn = own.filter((q) => learnIds.has(subjectOf(q)));
   const unseenAvailable = index.newWorks(artistId).length;
   assert.ok(seenOwn.length === 1 || unseenAvailable < own.length - 1, `vistas preguntadas: ${seenOwn.length}`);

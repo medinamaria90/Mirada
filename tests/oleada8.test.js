@@ -23,17 +23,19 @@ test('composición: una sola de calentamiento con lo visto; más vistas solo si 
       const own = plan.questions.filter((q) => q.artistId === a.id && q.type !== 'movement'); // la de movimiento puede llevar otra obra suya ya enseñada
       const first = plan.questions[0];
       assert.equal(first.artistId, a.id, `${a.id}/${s}: la primera es del pintor`);
-      assert.ok(learnIds.has(subjectOf(first)), `${a.id}/${s}: la primera es de calentamiento (obra vista)`);
+      assert.ok(!learnIds.has(subjectOf(first)), `${a.id}/${s}: la primera no repite un cuadro de «Conoce a»`);
+      assert.ok(learnIds.has(subjectOf(plan.questions[1])), `${a.id}/${s}: la segunda es de calentamiento (obra vista)`);
       const seen = new Set(own.map(subjectOf).filter((id) => learnIds.has(id)));
       const asked = new Set(own.map(subjectOf));
       if (seen.size > 1) {
         assert.ok(unseen.every((id) => asked.has(id)), `${a.id}/${s}: ${seen.size} vistas y quedaban obras sin ver`);
       }
-      // Las vistas de más (no la de calentamiento) salen después de todas sus no vistas.
+      // Las vistas de más (no la de calentamiento, segunda) salen después de todas sus no vistas.
       const order = [...new Set(own.map(subjectOf))];
+      const warmAt = order.indexOf(subjectOf(plan.questions[1]));
       const lastUnseen = Math.max(-1, ...order.map((id, i) => (unseen.includes(id) ? i : -1)));
       order.forEach((id, i) => {
-        if (i > 0 && learnIds.has(id)) assert.ok(i > lastUnseen, `${a.id}/${s}: obra vista antes que una no vista`);
+        if (i !== warmAt && learnIds.has(id)) assert.ok(i > lastUnseen, `${a.id}/${s}: obra vista antes que una no vista`);
       });
       maxSeen = Math.max(maxSeen, seen.size);
     }
@@ -64,7 +66,8 @@ test('primera etapa: solo «¿Cuál es de X?» (un único pintor conocido) y una
     assert.ok(plan.questions.every((q) => q.type === 'which'), `${s}: ${plan.questions.map((q) => q.type)}`);
     const seenQs = plan.questions.filter((q) => learnIds.has(subjectOf(q))).length;
     assert.ok(seenQs <= 1, `${s}: ${seenQs} preguntas con obras de «Conoce a»`);
-    assert.ok(plan.questions.slice(1, 4).every((q) => !learnIds.has(subjectOf(q))), `${s}: tras el calentamiento vienen obras no vistas`);
+    assert.ok(!learnIds.has(subjectOf(plan.questions[0])), `${s}: abre con una obra no vista`);
+    assert.ok(plan.questions.slice(2, 4).every((q) => !learnIds.has(subjectOf(q))), `${s}: tras el calentamiento vienen obras no vistas`);
   }
 });
 
