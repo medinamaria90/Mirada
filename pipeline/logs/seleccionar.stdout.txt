@@ -1,48 +1,5 @@
 pintor             categ  cand aptas elegidas/obj  nivel 1 y «a fondo»  | motivos de descarte
-uccello            invit    31    18    8/8   n1=3 L2:5  | sin imagen apta:5, proporción ≠ medidas:4, sin título:3, palabra:1, duplicado/versión:1
-van-der-weyden   Q286096    sl= 18 palabra                    San Lucas dibujando a la Virgen               | 1478x1843 image/jpeg Public domain
-van-der-weyden   Q874058    sl= 16 proporción ≠ medidas       Tríptico del altar de Santa Columba           | 4574x2070 image/jpeg CC BY-SA 4.0
-van-der-weyden   Q3039856   sl= 16 sin imagen apta            La Magdalena leyendo                          | 700x819 image/jpeg Public domain
-van-der-weyden   Q323032    sl= 15 proporción ≠ medidas       Tríptico de Miraflores                        | 2347x1200 image/jpeg Public domain
-van-der-weyden   Q1698794   sl= 13 proporción ≠ medidas       Retablo de San Juan Bautista                  | 6728x3184 image/jpeg Public domain
-van-der-weyden   Q2604155   sl= 13 palabra                    Descendimiento en el sepulcro                 | 954x1119 image/jpeg Public domain
-van-der-weyden   Q881025    sl=  9 proporción ≠ medidas       Retablo Bladelin                              | 950x1049 image/jpeg Public domain;5155x2722 image/jpeg Public domain
-van-der-weyden   Q3399462   sl=  8 sin imagen apta            Díptico de Felipe de Croÿ con la Virgen y el  | 775x591 image/jpeg CC BY-SA 4.0
-van-der-weyden     maest    88    38   12/12  n1=7 L2:5  | palabra:16, sin imagen apta:15, proporción ≠ medidas:7, varios autores:7, duplicado/versión:6, fecha fuera de vida:2, autoría no preferente:1, sin título:1, sin datos de imagen:1
-masaccio         Q3395785   sl=  9 sin imagen apta            Pisa Polyptych                                | 507x518 image/jpeg CC BY-SA 4.0
-masaccio         Q32381     sl=  9 varios autores             Virgen con el Niño y Santa Ana                | 3563x5804 image/jpeg CC BY-SA 4.0
-masaccio           maest    25    13   12/12  n1=7 L2:5  | varios autores:5, sin imagen apta:4, proporción ≠ medidas:2, palabra:1
-filippo-lippi    Q3531531   sl= 13 varios autores             Adoración de los Reyes Magos                  | 5005x4872 image/jpeg Public domain
-filippo-lippi    Q3842743   sl=  9 proporción ≠ medidas       Madonna and Child Enthroned                   | 796x1401 image/jpeg Public domain;1256x2241 image/jpeg Public domain
-filippo-lippi      invit    82    45    8/8   n1=3 L2:5  | sin imagen apta:18, palabra:9, duplicado/versión:7, proporción ≠ medidas:5, varios autores:3, fecha fuera de vida:1, sin título:1
-piero            Q2296912   sl=  8 proporción ≠ medidas       Políptico de San Antonio                      | 800x1601 image/jpeg Public domain;800x1438 image/jpeg Public domain
-piero              maest    34    26   12/12  n1=7 L2:5  | sin imagen apta:5, proporción ≠ medidas:1, sin título:1, varios autores:1
-memling          Q2446971   sl= 11 proporción ≠ medidas       Bodas místicas de santa Catalina              | 1394x690 image/jpeg Public domain;914x961 image/jpeg Public domain
-memling          Q3428050   sl= 10 proporción ≠ medidas       Retablo de Santa María la Real de Nájera      | 5658x4452 image/jpeg Public domain;4812x1200 image/jpeg Public domain
-memling          Q9362085   sl=  9 sin imagen apta            Tríptico de Jan Floreins                      | 937x900 image/jpeg Public domain;675x386 image/jpeg Public domain
-memling            invit   175    61    8/8   n1=3 L2:5  | sin datos de imagen:80, sin imagen apta:11, palabra:11, proporción ≠ medidas:7, varios autores:3, fecha fuera de vida:2, duplicado/versión:2
-bermejo            invit    37    18    4/4   n1=4   | varios autores:14, sin imagen apta:4, palabra:1
-perugino         Q3395790   sl=  8 sin imagen apta            Políptico de San Pedro                        | 854x718 image/jpeg CC BY-SA 3.0
-perugino           invit   160    62    8/8   n1=3 L2:5  | sin datos de imagen:60, fecha fuera de vida:11, sin imagen apta:9, varios autores:7, palabra:7, duplicado/versión:6, proporción ≠ medidas:2, sin título:1, autoría no preferente:1
-grunewald          sin datos
-pontormo           invit    65    44    8/8   n1=3 L2:5  | sin imagen apta:12, sin título:5, duplicado/versión:3, varios autores:2, proporción ≠ medidas:1, palabra:1
-holbein          Q6106766   sl=  8 sin imagen apta            Retrato de Nicolas Kratzer                    | 834x1060 image/jpeg Public domain
-holbein            maest   152    57   12/12  n1=7 L2:5  | sin datos de imagen:55, palabra:15, sin imagen apta:13, autoría no preferente:7, sin título:3, proporción ≠ medidas:1, varios autores:1
-parmigianino     Q866500    sl= 10 sin imagen apta            La esclava turca                              | 545x698 image/jpeg Public domain
-parmigianino       maest    63    47   12/12  n1=7 L2:5  | sin imagen apta:9, proporción ≠ medidas:4, sin título:2, duplicado/versión:2, fecha fuera de vida:1
-bronzino         Q493792    sl= 15 proporción ≠ medidas       Retrato de Andrea Doria como Neptuno          | 2079x2751 image/jpeg Public domain
-bronzino           maest   115    59   12/12  n1=7 L2:5  | sin datos de imagen:33, sin imagen apta:13, palabra:4, varios autores:3, duplicado/versión:2, proporción ≠ medidas:1, sin título:1, autoría no preferente:1
-arcimboldo         invit    34    25    8/8   n1=3 L2:5  | sin imagen apta:5, duplicado/versión:5, varios autores:3, palabra:1
-sanchez-cotan      invit    24     9    4/4   n1=4   | sin imagen apta:13, varios autores:1, palabra:1
-hogarth            invit   182    48    8/8   n1=3 L2:5  | sin datos de imagen:88, sin imagen apta:22, palabra:14, proporción ≠ medidas:8, fecha fuera de vida:1, varios autores:1
-gericault          maest   165    44   12/12  n1=7 L2:5  | sin datos de imagen:77, sin imagen apta:22, palabra:9, sin título:5, varios autores:5, proporción ≠ medidas:1, autoría no preferente:1, fecha fuera de vida:1
-matisse          Q921429    sl= 16 sin imagen apta            La habitación roja                            | 3840x3166 image/jpeg Public domain
-matisse          Q3773123   sl= 15 sin imagen apta            Mujer leyendo                                 | 505x650 image/jpeg Public domain
-matisse          Q3268045   sl= 12 sin imagen apta            Lujo, calma y voluptuosidad                   | 800x667 image/jpeg Public domain
-matisse          Q3651370   sl=  9 posterior a 1929           La Blouse roumaine                            | 1911x2382 image/jpeg Public domain
-matisse          Q6455615   sl=  8 palabra                    L’Atelier Rouge                               | 1744x1440 image/jpeg Public domain
-matisse          Q16937070  sl=  8 sin imagen apta            Les toits de Collioure                        | 540x439 image/jpeg Public domain
-matisse            maest   476    39   12/12  n1=7 L2:5  | sin datos de imagen:328, posterior a 1929:66, sin imagen apta:30, palabra:10, sin fecha (pintor muerto ≥1930):3
-TOTAL 160 obras de 175 pintores
-por país: Italia 88, Francia 24, Flandes 20, Alemania 12, España 8, Reino Unido 8
-títulos por fuente: {'traducir': 184, 'traducido': 146, 'revisar-idioma': 1, 'manual': 22, 'wikidata-es': 1093}
+giotto             gran-    55    23   18/26  n1=8 L2:3 L3:3 L4:4  | sin imagen apta:18, varios autores:5, proporción ≠ medidas:3, palabra:2, sin título:2, excluida:1, autoría no preferente:1  <-- corto
+TOTAL 18 obras de 175 pintores
+por país: Italia 18
+títulos por fuente: {'traducir': 135, 'traducido': 202, 'manual': 23, 'revisar-idioma': 1, 'wikidata-es': 1100}
