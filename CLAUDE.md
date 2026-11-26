@@ -41,6 +41,11 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
   destino (mapa, tarjeta «Continuar», medallas), que lleva a su sitio. Sin zoom de página (pellizco o
   doble toque); para ver detalles está la lupa del visor.
 - Sin `alert`/`confirm`/`prompt`.
+- Música: todas las piezas nuevas son composiciones propias (los clásicos encajados en el motor suenan
+  peor). Cada sitio tiene su música: portada, cada época y cada rama (también las «Descubre…»), con un
+  tema principal y como mucho dos secundarios (`app/js/audio/playlists.js`). El tema de la portada,
+  «Sala de entrada», es el hilo de la app: sus variaciones por época, a lo Animal Crossing. María elige
+  con el modo secreto (Perfil → Ajustes, 5 toques en el título, código 1538).
 - Código, letras, imágenes y música se sirven desde la propia app (más rápido y sin depender de nadie).
   Un servicio externo se permite si aporta algo claro y no usa cookies ni datos personales: hoy, solo
   el contador de visitas GoatCounter (`app/js/stats.js`). Cada servicio nuevo, con el visto bueno de
