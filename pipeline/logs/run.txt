@@ -1,2 +1,6 @@
 inicio Thu Nov 26 23:08:59 UTC 2026
 == candidates giotto 23:08:59
+ya     giotto             55 candidatas
+fin 2026-11-26 23:08:59
+62M	.git
+3.6M	catalogo
