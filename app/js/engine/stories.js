@@ -1,6 +1,8 @@
 // Historias de inicio de nivel: formato (contenido/historias/README.md), encuadre del detalle y avance entre
 // tarjetas. Puro: no toca el DOM ni la red.
 
+import { isSelfPortrait } from './painters.js';
+
 export const MAX_CARDS = 3;
 export const MAX_TEXT = 180;
 export const ZOOM_MIN = 1;
@@ -36,11 +38,16 @@ export function cropOf(focus) {
 // apaisadas solo se recortan si hay punto de interés (el de la tarjeta o el de la obra); si no, enteras. { mode, x, y, zoom }
 export const TALL_RATIO = 0.65;
 export const WIDE_RATIO = 1.6;
+// Sin punto de interés, las de proporción vertical o casi cuadrada (hasta COVER_MAX) también van a sangre, centradas un poco por
+// encima de la mitad (donde suelen estar las caras) y sin zoom: la historia llena la pantalla como en Instagram.
+export const COVER_MAX = 1.15;
+const COVER_CENTER = { x: 50, y: 40, zoom: 1 };
 export function frameFor(work, focus) {
   const ratio = work && work.w && work.h ? work.w / work.h : 1;
   if (ratio < TALL_RATIO) return { mode: 'fit', ...cropOf(null) };
   const c = cropOf(focus || work?.focus);
-  return c.whole ? { mode: 'fit', ...c } : { mode: 'crop', ...c };
+  if (!c.whole) return { mode: 'crop', ...c };
+  return ratio <= COVER_MAX ? { mode: 'crop', whole: false, ...COVER_CENTER } : { mode: 'fit', ...c };
 }
 
 // Posición siguiente al pasar de tarjeta: { pos } o { end: true } al pasar de la última; atrás se queda en la primera.
@@ -48,6 +55,19 @@ export function step(pos, count, delta) {
   const next = pos + delta;
   if (next >= count) return { end: true, pos };
   return { pos: Math.max(0, next) };
+}
+
+// Pie de la obra de una tarjeta: su título y, si es un autorretrato que no lo dice ya, «· autorretrato». Así nadie toma el
+// retrato de otro por la cara del pintor.
+export function captionOf(work) {
+  if (!work?.title) return '';
+  return isSelfPortrait(work) && !/autorretrato/i.test(work.title) ? `${work.title} · autorretrato` : work.title;
+}
+
+// Fuentes de una historia, juntas y sin repetir (sin el ancla de la sección): [{ url, label }].
+export function storySources(cards) {
+  const urls = [...new Set((cards || []).map((c) => String(c.source || '').split('#')[0]).filter(Boolean))];
+  return urls.map((url) => ({ url, label: sourceLabel(url) })).filter((s) => s.label);
 }
 
 // «es.wikipedia.org» → «Wikipedia»; el resto, el nombre del sitio.

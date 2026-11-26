@@ -160,7 +160,10 @@ export function wireProfile(ctx, root, artistId, hooks = {}) {
     const go = (route) => { if (hooks.beforeGo) hooks.beforeGo(); ctx.go(route); };
     const what = b.dataset.ap;
     if (what === 'story') {
-      import('./story-viewer.js').then((m) => m.playStory(ctx, artistId, 1, { force: true }))
+      // «Jugar» de la última tarjeta hace lo mismo que el botón de jugar de la ficha; «Ver más» deja en la ficha.
+      const playBtn = root.querySelector('[data-ap="play"], [data-ap="deep"]');
+      const onPlay = playBtn ? () => playBtn.click() : false;
+      import('./story-viewer.js').then((m) => m.playStory(ctx, artistId, 1, { force: true, onPlay, onMore: () => {} }))
         .then(() => root.querySelector('.ap-ring.is-new')?.classList.replace('is-new', 'is-seen'))
         .catch((err) => console.error(err));
     } else if (what === 'play') go(stageRoute(artistId, b.dataset.branch || ''));

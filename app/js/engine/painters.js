@@ -124,6 +124,7 @@ export function avatarCrop(work) {
 
 const SELF_PORTRAIT = /autorretrato|self-?\s?portrait/i;
 const PORTRAIT = /retrato|portrait/i;
+export const isSelfPortrait = (work) => SELF_PORTRAIT.test(work?.title || '');
 // Autorretratos con más gente o con escenario («con Isabel Brant», «pintando a…», «ante el Kremlin»): el recorte por defecto
 // enseñaría otra persona o una falda; solo valen con un `focus` revisado.
 const WITH_SOMEONE = /\bcon\s+\p{Lu}/u; // «con Isabel Brant»
@@ -134,13 +135,14 @@ const byFame = (a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b
 // Avatar del pintor, de obras ya vistas, nunca muy apaisadas: un autorretrato sencillo (título con «Autorretrato» o
 // «self-portrait» y sin más gente) o con `focus`; si no, un retrato con `focus` revisado; si no, ninguno (monograma sobre el color
 // de su movimiento). Nunca un recorte al azar de un paisaje, un barco o una falda. { work, x, y } o null.
-export function avatarWork(seen) {
+// { selfOnly }: solo un autorretrato (la cara del pintor de verdad; un retrato de otro no vale, p. ej. en la historia).
+export function avatarWork(seen, { selfOnly = false } = {}) {
   const fits = (w) => ratioOf(w) >= ROUND_RATIO[0] && ratioOf(w) <= ROUND_RATIO[1];
   const focused = (w) => Array.isArray(w.focus);
   const pick = (list) => list.slice().sort(byFame)[0];
   const candidates = seen.filter(fits);
-  const self = pick(candidates.filter((w) => SELF_PORTRAIT.test(w.title) && (focused(w) || !crowded(w.title))));
-  const work = self || pick(candidates.filter((w) => PORTRAIT.test(w.title) && focused(w)));
+  const self = pick(candidates.filter((w) => isSelfPortrait(w) && (focused(w) || !crowded(w.title))));
+  const work = self || (selfOnly ? null : pick(candidates.filter((w) => PORTRAIT.test(w.title) && focused(w))));
   return work ? { work, ...avatarCrop(work) } : null;
 }
 

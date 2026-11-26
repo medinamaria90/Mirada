@@ -1179,11 +1179,12 @@ if (SMOKE) {
     check(await sp.locator('.story-bar.is-done').count() === 1, `← no retrocede exactamente una tarjeta (${await sp.locator('.story-bar.is-done').count()} barras)`);
   }
   for (let k = 0; k < nCards - 1; k++) {
-    await sp.click('.story-next');
+    await sp.keyboard.press('ArrowRight');
     await sp.waitForTimeout(150);
   }
-  check(await sp.locator('.story-bar.is-done').count() === nCards && /Listo/.test(await sp.locator('.story-next').innerText()), 'al llegar a la última tarjeta no dice «Listo»');
-  await sp.click('.story-next');
+  check(await sp.locator('.story-bar.is-done').count() === nCards && await sp.locator('.story-play').count() === 1 && await sp.locator('.story-more').count() === 1, 'la última tarjeta no ofrece «Jugar» y «Ver más»');
+  check(await sp.locator('.story-caption').count() === 1, 'la tarjeta no lleva el pie con el título de la obra');
+  await sp.click('.story-play');
   await sp.waitForSelector('.learn');
   check(await sp.locator('.story').count() === 0, 'la historia no se cierra al terminar');
   await sp.goto(`${base}#pintor-${storyArtist.id}`);

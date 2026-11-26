@@ -121,6 +121,7 @@ test('historia: cómo se enseña cada obra (a sangre con punto de interés; muy 
   assert.equal(frameFor(W(1377, 1600), [0.5, 0.3, 2.2]).mode, 'crop');
   assert.equal(frameFor(W(1600, 833, { focus: [0.5, 0.52] })).mode, 'crop', 'La Última Cena: con el punto de interés de la obra');
   assert.equal(frameFor(W(1600, 903)).mode, 'fit', 'El jardín de las delicias sin punto de interés: entero');
+  assert.deepEqual(frameFor(W(1566, 1600)), { mode: 'crop', whole: false, x: 50, y: 40, zoom: 1 }, 'Virgen de la silla (casi cuadrada) sin punto de interés: a sangre');
   assert.deepEqual([frameFor(W(1600, 833, { focus: [0.5, 0.52] })).x, frameFor(W(1600, 833, { focus: [0.5, 0.52] })).zoom], [50, 1.5]);
 });
 
