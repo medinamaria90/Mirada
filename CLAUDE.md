@@ -15,6 +15,13 @@ empezar: tiene el estado, las decisiones tomadas y la lista de pendientes en ord
   Si tiene que entrar en algún sitio, dale el enlace exacto.
 - No pegues ni pidas claves en el chat. Las claves van en variables de entorno o secretos.
 
+## Publicar
+
+- Cada novedad se sube a producción (main + despliegue en Render) en cuanto está hecha, sin pedir
+  permiso: María la prueba en tiempo real desde el móvil y da feedback. Aún no hay usuarios.
+- Pruebas justas: `node --test tests/` antes de publicar; el e2e completo solo cuando el cambio lo
+  pida. María hace las pruebas de estrés a mano.
+
 ## Puerta de calidad (obligatoria para toda pantalla o mejora)
 
 Planificador → generador → **evaluador independiente nuevo** que puntúa de 0 a 10 ocho criterios:
@@ -38,9 +45,14 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
   Un servicio externo se permite si aporta algo claro y no usa cookies ni datos personales: hoy, solo
   el contador de visitas GoatCounter (`app/js/stats.js`). Cada servicio nuevo, con el visto bueno de
   María y anotado aquí.
-- Datos de arte verificados con fuentes (museos, Wikidata, enciclopedias) y con su fuente anotada.
-  Nada de memoria del modelo. Solo pintores muertos antes de 1956 (dominio público en Europa) y obras
-  anteriores a 1930; lo comprueba `tools/validate_catalog.py`.
+- **Valor supremo de los textos: que sean didácticos y enganchen.** Que quien lo lea piense «qué
+  interesante el arte, quiero saber más de esta gente». Por encima de la exhaustividad: frases vivas,
+  anécdotas, el porqué de cada pintor y cada época; nada de tono de enciclopedia.
+- Datos de arte: se pueden escribir de memoria; solo se busca lo dudoso (fechas, lugares, anécdotas
+  de las que no se esté seguro), y lo que siga dudoso se deja fuera. Cada texto lleva una fuente de
+  referencia (Wikipedia del pintor o de la época, el museo de la obra). Decisión de María, 26/11.
+- Solo pintores muertos antes de 1956 (dominio público en Europa) y obras anteriores a 1930; lo
+  comprueba `tools/validate_catalog.py`.
 - Los autores españoles van sobrerrepresentados, mezclados en su época (no en un bloque aparte).
 
 ## Código (skill `buenas-practicas-codigo`)
