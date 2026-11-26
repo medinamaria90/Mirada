@@ -329,6 +329,9 @@ test('vihuela: bajo y díada en el 1, sin rasgueo; «Guárdame las vacas» va so
   assert.deepEqual(three.filter((e) => e.voice === 'bass').map((e) => [e.o, e.midi]), [[0, 50]]);
   assert.deepEqual(three.filter((e) => e.voice === 'acc').map((e) => e.midi), [54, 57], 'fa# y la por debajo de la melodía');
   assert.equal(STYLES.vihuela({ chord: parseChord('Gm'), len: 4 }).filter((e) => e.voice === 'acc').length, 4);
+  const withViola = STYLES.vihuela({ chord: parseChord('Am'), len: 4 }, null, { voices: { pad: 'viola' } });
+  assert.deepEqual(withViola.filter((e) => e.voice === 'pad').map((e) => [e.midi, e.dur]), [[57, 4]], 'la viola sostiene el bajo');
+  assert.ok(!three.some((e) => e.voice === 'pad'));
   const c = compilePiece('renaissance/vacas');
   const bass = c.events.filter((e) => e.voice === 'bass').slice(0, 9).map((e) => e.midi % 12);
   assert.deepEqual(bass, [10, 5, 7, 2, 10, 5, 7, 2, 7], 'Sib–Fa–Sol–Re | Sib–Fa–Sol–Re–Sol');

@@ -2,6 +2,9 @@
 import { scalePcs } from '../theory.js';
 import { FORM4 } from '../scores.js';
 
+/** Primera mitad de la romanesca en la menor (III–VII–i–V–III–VII), compartida por el canto y su glosa. */
+const ROMANESCA_A = ['C', 'G', 'Am', 'E', 'C', 'G'];
+
 export const RENAISSANCE = [
   {
     id: 'saltarello',
@@ -36,20 +39,28 @@ export const RENAISSANCE = [
   {
     id: 'romanesca',
     name: 'Romanesca de la tarde',
-    label: 'Laúd, viola y flauta dulce, 4/4, bajo obstinado',
+    label: 'Vihuela, viola y flauta dulce, 4/4, bajo obstinado',
     character: 'grave, noble, meditativo',
     piece: {
       title: 'Romanesca de la tarde', key: 'La menor', tonic: 9, mode: 'minor',
-      scale: scalePcs(9, 'minor', [8]), bpm: 66, beatsPerBar: 4, form: FORM4, style: 'ground',
-      voices: { mel: 'lute', acc: 'lute', bass: 'lute', pad: 'viola', cnt: 'recorder' },
-      vg: { mel: 1, acc: 0.75, bass: 0.9, pad: 0.5, cnt: 0.7 },
-      reverb: 0.4, level: 1.05, rubato: { amp: 0.012, ritard: 0.06 }, orn: { kind: 'mordent', prob: 0.12 },
-      dyn: { A: 1, open: 1, close: 0.95, B: 1.05 },
+      scale: scalePcs(9, 'minor', [8]), bpm: 66, beatsPerBar: 4, style: 'vihuela',
+      // la última vuelta repite el canto glosado en corcheas (G) antes de la cadencia
+      form: [['A', 'open'], ['A', 'close'], ['B'], ['G', 'close']],
+      voices: { mel: 'guitar', acc: 'guitar', bass: 'guitar', pad: 'viola', cnt: 'recorder' },
+      vg: { mel: 1, acc: 0.6, bass: 0.85, pad: 0.45, cnt: 0.65 },
+      reverb: 0.36, level: 1.13, rubato: { amp: 0.012, ritard: 0.07 }, orn: { kind: 'mordent', prob: 0.1 },
+      dyn: { A: 1, open: 1, close: 0.95, B: 1.05, G: 1.02 },
       sections: {
         A: {
-          chords: ['C', 'G', 'Am', 'E', 'C', 'G'],
+          chords: ROMANESCA_A,
           mel: ['E5/2 D5/1 C5/1', 'D5/1.5 B4/.5 G4/1 B4/1', 'C5/2 B4/1 A4/1',
             'G#4/2 B4/1 E5/1', 'E5/1 G5/1 E5/1 C5/1', 'D5/2 B4/.5 C5/.5 D5/1'],
+        },
+        G: {
+          chords: ROMANESCA_A,
+          mel: ['E5/.5 G5/.5 F5/.5 E5/.5 D5/1 C5/.5 D5/.5', 'D5/.5 E5/.5 D5/.5 B4/.5 G4/.5 A4/.5 B4/1',
+            'C5/.5 E5/.5 D5/.5 C5/.5 B4/.5 C5/.5 A4/1', 'G#4/.5 A4/.5 B4/.5 G#4/.5 E4/.5 G#4/.5 B4/.5 E5/.5',
+            'E5/.5 F5/.5 G5/.5 F5/.5 E5/.5 D5/.5 C5/1', 'D5/.5 B4/.5 G4/.5 B4/.5 C5/.5 B4/.5 D5/1'],
         },
         open: { chords: ['Am|E', 'E'], mel: ['E5/1 C5/1 B4/1 G#4/1', 'B4/1 E5/1 G#5/1 B5/1'] },
         close: { chords: ['Am|E', 'Am'], mel: ['C5/1 A4/1 B4/1 G#4/1', 'A4/4'] },
