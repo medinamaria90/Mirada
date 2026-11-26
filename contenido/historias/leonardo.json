@@ -6,12 +6,12 @@
    "title": "Quién fue Leonardo",
    "cards": [
     {
-     "text": "Leonardo nació en Vinci en 1452 y murió en Francia en 1519. Fue pintor, ingeniero y anatomista. Solo se conocen unas veinte obras suyas, entre ellas La Última Cena.",
+     "text": "Leonardo diseñaba máquinas voladoras, abría cadáveres para entender los músculos y dejaba cuadros a medias. Su Última Cena empezó a estropearse en vida suya.",
      "artwork": "w128910",
      "source": "https://es.wikipedia.org/wiki/Leonardo_da_Vinci"
     },
     {
-     "text": "La Gioconda, quizá el cuadro más famoso de Occidente, retrata a Lisa Gherardini, esposa de Francesco del Giocondo. Trabajó en ella de 1503 a 1506 y la conservó siempre.",
+     "text": "Nunca entregó La Gioconda: se la llevó a Francia y la retocó durante años. En 1911 la robaron del Louvre, y aquel escándalo la convirtió en el cuadro más famoso del mundo.",
      "artwork": "w12418",
      "focus": [
       0.5,
@@ -21,7 +21,7 @@
      "source": "https://es.wikipedia.org/wiki/Leonardo_da_Vinci#D%C3%A9cada_de_1500"
     },
     {
-     "text": "Fíjate en el esfumado: los colores se funden unos con otros, sin bordes duros. Leonardo lo refinó como nadie y lo unió a una luz muy estudiada y a gestos llenos de emoción.",
+     "text": "Fíjate en los contornos: no hay líneas, todo se funde en una bruma suave. Es el sfumato, de «fumo», humo. Leonardo lo usaba para que las figuras parecieran respirar.",
      "artwork": "w563727",
      "focus": [
       0.45,
