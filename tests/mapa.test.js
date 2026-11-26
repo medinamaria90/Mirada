@@ -54,7 +54,8 @@ test('mapa: el DOM va en orden cronológico y, dentro de cada tramo, las paradas
   }
   // El museo cierra el camino (último en el DOM = arriba del todo) y el CSS invierte con column-reverse.
   assert.ok(html.trimEnd().endsWith('</li>') && html.lastIndexOf('path-museum') > html.lastIndexOf('path-era'));
-  assert.ok(html.trimStart().startsWith('<li class="path-start"') && html.includes('Empieza aquí'), 'sin hito de salida al principio');
+  // Delante, solo el suelo que rellena el hueco de la barra de abajo (path-foot).
+  assert.ok(html.trimStart().replace(/^<li class="path-foot"[^>]*><\/li>/, '').startsWith('<li class="path-start"') && html.includes('Empieza aquí'), 'sin hito de salida al principio');
   assert.ok(html.includes('Tu museo') && html.includes(`${real.visibleMovements.length} épocas`));
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
   assert.ok(/\.path-map \{[^}]*flex-direction: column-reverse/.test(css), 'el CSS no invierte el camino');
