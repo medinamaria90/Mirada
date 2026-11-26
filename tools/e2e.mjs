@@ -540,7 +540,7 @@ const ZOOM_TAG_HIDE_MS = 1100;
 // Pasa la historia del pintor tarjeta a tarjeta hasta «Jugar» (cerrarla con la X devolvería al mapa).
 async function skipStory(page) {
   const MAX_CARDS = 20;
-  for (let k = 0; k < MAX_CARDS && !(await page.locator('.story[open] .story-play').count()); k++) await page.click('.story[open] .story-next');
+  for (let k = 0; k < MAX_CARDS && !(await page.locator('.story[open] .story-play').count()); k++) await page.keyboard.press('ArrowRight');
   await page.click('.story[open] .story-play');
 }
 
