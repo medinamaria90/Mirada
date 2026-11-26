@@ -105,7 +105,7 @@ while read -r step args <&3; do
         echo "pack rc=$rc: paquete NO subido (faltan imágenes o hay fallos; ver pipeline/logs/pack.txt)" >> pipeline/logs/run.txt
       fi
       rm -rf "$src" "$out" ;;
-    seleccionar) python3 pipeline/seleccionar.py > pipeline/logs/seleccionar.stdout.txt 2>&1; tail -n 4 pipeline/logs/seleccionar.stdout.txt >> pipeline/logs/run.txt ;;  # sin red: elige a partir de las candidatas
+    seleccionar) python3 pipeline/seleccionar.py $args > pipeline/logs/seleccionar.stdout.txt 2>&1; tail -n 4 pipeline/logs/seleccionar.stdout.txt >> pipeline/logs/run.txt ;;  # sin red: elige a partir de las candidatas; con ids, solo esos pintores
     fichas)   python3 pipeline/fichas.py $args > pipeline/logs/fichas.stdout.txt 2>&1; tail -n 3 pipeline/logs/fichas.stdout.txt >> pipeline/logs/run.txt ;;
     build)    python3 pipeline/build.py >> pipeline/logs/run.txt 2>&1 ;;
     validate) python3 pipeline/validate.py $args >> pipeline/logs/run.txt 2>&1 ;;  # validate --parcial mientras falten imágenes

@@ -106,6 +106,19 @@
   "categoria": "invitado"
  },
  {
+  "id": "uccello",
+  "nombre": "Paolo Uccello",
+  "corto": "Uccello",
+  "en": "Paolo Uccello",
+  "qid": null,
+  "nacimiento": 1397,
+  "muerte": 1475,
+  "movimiento": "renacimiento",
+  "pais": "Italia",
+  "objetivo": 8,
+  "categoria": "invitado"
+ },
+ {
   "id": "van-der-weyden",
   "nombre": "Rogier van der Weyden",
   "corto": "Van der Weyden",
@@ -115,6 +128,32 @@
   "muerte": 1464,
   "movimiento": "manierismo-y-norte",
   "pais": "Flandes",
+  "objetivo": 12,
+  "categoria": "maestro"
+ },
+ {
+  "id": "masaccio",
+  "nombre": "Masaccio",
+  "corto": "Masaccio",
+  "en": "Masaccio",
+  "qid": null,
+  "nacimiento": 1401,
+  "muerte": 1428,
+  "movimiento": "renacimiento",
+  "pais": "Italia",
+  "objetivo": 12,
+  "categoria": "maestro"
+ },
+ {
+  "id": "filippo-lippi",
+  "nombre": "Filippo Lippi",
+  "corto": "Filippo Lippi",
+  "en": "Filippo Lippi",
+  "qid": null,
+  "nacimiento": 1406,
+  "muerte": 1469,
+  "movimiento": "renacimiento",
+  "pais": "Italia",
   "objetivo": 8,
   "categoria": "invitado"
  },
@@ -128,8 +167,8 @@
   "muerte": 1492,
   "movimiento": "renacimiento",
   "pais": "Italia",
-  "objetivo": 8,
-  "categoria": "invitado"
+  "objetivo": 12,
+  "categoria": "maestro"
  },
  {
   "id": "bellini",
@@ -158,6 +197,32 @@
   "categoria": "invitado"
  },
  {
+  "id": "memling",
+  "nombre": "Hans Memling",
+  "corto": "Memling",
+  "en": "Hans Memling",
+  "qid": null,
+  "nacimiento": 1433,
+  "muerte": 1494,
+  "movimiento": "manierismo-y-norte",
+  "pais": "Flandes",
+  "objetivo": 8,
+  "categoria": "invitado"
+ },
+ {
+  "id": "bermejo",
+  "nombre": "Bartolomé Bermejo",
+  "corto": "Bermejo",
+  "en": "Bartolomé Bermejo",
+  "qid": null,
+  "nacimiento": 1440,
+  "muerte": 1501,
+  "movimiento": "renacimiento",
+  "pais": "España",
+  "objetivo": 4,
+  "categoria": "invitado"
+ },
+ {
   "id": "botticelli",
   "nombre": "Sandro Botticelli",
   "corto": "Botticelli",
@@ -169,6 +234,19 @@
   "pais": "Italia",
   "objetivo": 10,
   "categoria": "maestro"
+ },
+ {
+  "id": "perugino",
+  "nombre": "Pietro Perugino",
+  "corto": "Perugino",
+  "en": "Pietro Perugino",
+  "qid": null,
+  "nacimiento": 1448,
+  "muerte": 1523,
+  "movimiento": "renacimiento",
+  "pais": "Italia",
+  "objetivo": 8,
+  "categoria": "invitado"
  },
  {
   "id": "berruguete",
@@ -233,6 +311,19 @@
   "movimiento": "manierismo-y-norte",
   "pais": "Alemania",
   "objetivo": 9,
+  "categoria": "invitado"
+ },
+ {
+  "id": "grunewald",
+  "nombre": "Matthias Grünewald",
+  "corto": "Grünewald",
+  "en": "Matthias Grünewald",
+  "qid": null,
+  "nacimiento": 1472,
+  "muerte": 1528,
+  "movimiento": "manierismo-y-norte",
+  "pais": "Alemania",
+  "objetivo": 8,
   "categoria": "invitado"
  },
  {
@@ -301,6 +392,19 @@
   "categoria": "invitado"
  },
  {
+  "id": "pontormo",
+  "nombre": "Jacopo da Pontormo",
+  "corto": "Pontormo",
+  "en": "Pontormo",
+  "qid": null,
+  "nacimiento": 1494,
+  "muerte": 1557,
+  "movimiento": "manierismo-y-norte",
+  "pais": "Italia",
+  "objetivo": 8,
+  "categoria": "invitado"
+ },
+ {
   "id": "holbein",
   "nombre": "Hans Holbein el Joven",
   "corto": "Holbein",
@@ -310,8 +414,34 @@
   "muerte": 1543,
   "movimiento": "manierismo-y-norte",
   "pais": "Alemania",
-  "objetivo": 9,
-  "categoria": "invitado"
+  "objetivo": 12,
+  "categoria": "maestro"
+ },
+ {
+  "id": "parmigianino",
+  "nombre": "Parmigianino",
+  "corto": "Parmigianino",
+  "en": "Parmigianino",
+  "qid": null,
+  "nacimiento": 1503,
+  "muerte": 1540,
+  "movimiento": "manierismo-y-norte",
+  "pais": "Italia",
+  "objetivo": 12,
+  "categoria": "maestro"
+ },
+ {
+  "id": "bronzino",
+  "nombre": "Agnolo Bronzino",
+  "corto": "Bronzino",
+  "en": "Agnolo Bronzino",
+  "qid": null,
+  "nacimiento": 1503,
+  "muerte": 1572,
+  "movimiento": "manierismo-y-norte",
+  "pais": "Italia",
+  "objetivo": 12,
+  "categoria": "maestro"
  },
  {
   "id": "juan-de-juanes",
@@ -366,6 +496,19 @@
   "categoria": "maestro"
  },
  {
+  "id": "arcimboldo",
+  "nombre": "Giuseppe Arcimboldo",
+  "corto": "Arcimboldo",
+  "en": "Giuseppe Arcimboldo",
+  "qid": null,
+  "nacimiento": 1526,
+  "muerte": 1593,
+  "movimiento": "manierismo-y-norte",
+  "pais": "Italia",
+  "objetivo": 8,
+  "categoria": "invitado"
+ },
+ {
   "id": "veronese",
   "nombre": "Veronés",
   "corto": "Veronés",
@@ -416,6 +559,19 @@
   "pais": "España",
   "objetivo": 15,
   "categoria": "gran-maestro"
+ },
+ {
+  "id": "sanchez-cotan",
+  "nombre": "Juan Sánchez Cotán",
+  "corto": "Sánchez Cotán",
+  "en": "Juan Sánchez Cotán",
+  "qid": null,
+  "nacimiento": 1560,
+  "muerte": 1627,
+  "movimiento": "barroco",
+  "pais": "España",
+  "objetivo": 4,
+  "categoria": "invitado"
  },
  {
   "id": "ribalta",
@@ -756,6 +912,19 @@
   "categoria": "invitado"
  },
  {
+  "id": "hogarth",
+  "nombre": "William Hogarth",
+  "corto": "Hogarth",
+  "en": "William Hogarth",
+  "qid": null,
+  "nacimiento": 1697,
+  "muerte": 1764,
+  "movimiento": "rococo-neoclasicismo",
+  "pais": "Reino Unido",
+  "objetivo": 8,
+  "categoria": "invitado"
+ },
+ {
   "id": "chardin",
   "nombre": "Jean-Siméon Chardin",
   "corto": "Chardin",
@@ -1079,8 +1248,8 @@
   "muerte": 1824,
   "movimiento": "romanticismo",
   "pais": "Francia",
-  "objetivo": 8,
-  "categoria": "invitado"
+  "objetivo": 12,
+  "categoria": "maestro"
  },
  {
   "id": "corot",
@@ -2013,6 +2182,19 @@
   "movimiento": "simbolismo-modernismo",
   "pais": "Rusia",
   "objetivo": 6,
+  "categoria": "maestro"
+ },
+ {
+  "id": "matisse",
+  "nombre": "Henri Matisse",
+  "corto": "Matisse",
+  "en": "Henri Matisse",
+  "qid": "Q5589",
+  "nacimiento": 1869,
+  "muerte": 1954,
+  "movimiento": "simbolismo-modernismo",
+  "pais": "Francia",
+  "objetivo": 12,
   "categoria": "maestro"
  },
  {

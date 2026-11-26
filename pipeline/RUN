@@ -1,10 +1,11 @@
-# 24/11 noche (2) — fase 1: ramas Gótico y ukiyo-e, Silla con pipa (etapa a mano) y series fuera; fichas y descargas de las obras nuevas
+# 26/11 — pintores que faltan (docs/eval/pintores-que-faltan.md): 14 nuevos y Piero, Van der Weyden, Holbein y Géricault pasan a maestros.
+# seleccionar solo con esos pintores: el resto de seleccion.json (con sus exclusiones y niveles a mano) no se toca.
 resolve
-candidates cimabue duccio simone-martini pietro-lorenzetti ambrogio-lorenzetti hokusai utamaro sharaku kuniyoshi hiroshige
-seleccionar
+candidates masaccio uccello filippo-lippi memling bermejo perugino grunewald pontormo parmigianino bronzino arcimboldo sanchez-cotan hogarth matisse
+seleccionar masaccio uccello filippo-lippi memling bermejo perugino grunewald pontormo parmigianino bronzino arcimboldo sanchez-cotan hogarth matisse piero van-der-weyden holbein gericault
 fichas
 reconciliar
-download 4 150
+download 2 150
 build
 validate --parcial
 pack 1200

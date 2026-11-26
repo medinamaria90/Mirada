@@ -9,6 +9,8 @@ Entrada: pipeline/painters.json, pipeline/out/candidates/*.json, pipeline/out/pa
          pipeline/etapas.json (pintor -> etapas con años y fuente; la `categoria` de cada pintor está en painters.json).
 Salida:  catalogo/seleccion.json (con `level` 1..n y `etapa`: nivel 1 = básico; 2..n = «a fondo», uno por etapa),
          pipeline/logs/select.txt (recuento por pintor) y pipeline/logs/select_drops.txt (descartes con fama).
+Uso:     seleccionar.py [pintor ...]  Con ids, solo vuelve a elegir esos pintores: el resto de seleccion.json se queda
+         tal cual (con su fama), para no deshacer ajustes hechos a mano en la selección.
 """
 import math, os, re, sys, unicodedata
 from lib import *
@@ -154,9 +156,15 @@ def main():
     tit = load(os.path.join(PIPE, "titulos_es.json"), {})
     extra = load(os.path.join(PIPE, "extra.json"), {})  # pintor -> {QID: motivo} obras a forzar
     etapas_all = (load(os.path.join(PIPE, "etapas.json"), {}) or {}).get("pintores", {})
+    solo = set(sys.argv[1:])
+    desconocidos = solo - {p["id"] for p in painters}
+    if desconocidos:
+        sys.exit(f"pintores que no están en painters.json: {sorted(desconocidos)}")
     sel, total, pais = [], 0, {}
     log(f"{'pintor':18} {'categ':5} {'cand':>5} {'aptas':>5} {'elegidas':>4}/obj  nivel 1 y «a fondo»  | motivos de descarte")
     for p in painters:
+        if solo and p["id"] not in solo:
+            continue
         r = resolved.get(p["id"], {})
         pq = p.get("qid") or r.get("qid")
         cand = load(os.path.join(OUT, "candidates", p["id"] + ".json"))
@@ -308,12 +316,17 @@ def main():
         log(f"{p['id']:18} {cat[:5]:5} {len(cand['items']):5} {len(ok):5} {len(chosen):4}/{objetivo:<3} n1={len(nivel1)} "
             + " ".join(f"L{k}:{v}" for k, v in sorted(porNivel.items())) + "  | "
             + ", ".join(f"{k}:{v}" for k, v in sorted(why.items(), key=lambda kv: -kv[1])) + mark)
+    # Con pintores sueltos, el resto de la selección anterior se conserva (y su fama, que decide quién va al camino).
+    previa = [s for s in load(os.path.join(CAT, "seleccion.json"), []) if s["pintorId"] not in solo] if solo else []
     # fama 1-3 por cuantiles de sitelinks
-    sls = sorted(s["sitelinks"] for s in sel)
+    sls = sorted(s["sitelinks"] for s in sel + previa)
     if sls:
         t1, t2 = sls[int(len(sls) * 0.5)], sls[int(len(sls) * 0.85)]
         for s in sel:
             s["fama"] = 3 if s["sitelinks"] >= t2 else 2 if s["sitelinks"] >= t1 else 1
+    if solo:
+        orden = {p["id"]: i for i, p in enumerate(painters)}
+        sel = sorted(previa + sel, key=lambda s: orden[s["pintorId"]])
     save(os.path.join(CAT, "seleccion.json"), sel)
     log("TOTAL", total, "obras de", len({s['pintorId'] for s in sel}), "pintores")
     log("por país:", ", ".join(f"{k} {v}" for k, v in sorted(pais.items(), key=lambda kv: -kv[1])))

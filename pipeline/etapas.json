@@ -1299,8 +1299,8 @@
     "nombre": "Más obras",
     "desde": null,
     "hasta": null,
-    "fuente": null,
-    "fase": 2,
+    "fuente": "https://es.wikipedia.org/wiki/Piero_della_Francesca",
+    "fase": 1,
     "provisional": true
    }
   ],
@@ -1365,8 +1365,8 @@
     "nombre": "Más obras",
     "desde": null,
     "hasta": null,
-    "fuente": null,
-    "fase": 2,
+    "fuente": "https://es.wikipedia.org/wiki/Rogier_van_der_Weyden",
+    "fase": 1,
     "provisional": true
    }
   ],
@@ -1387,8 +1387,8 @@
     "nombre": "Más obras",
     "desde": null,
     "hasta": null,
-    "fuente": null,
-    "fase": 2,
+    "fuente": "https://es.wikipedia.org/wiki/Hans_Holbein_el_Joven",
+    "fase": 1,
     "provisional": true
    }
   ],
@@ -1508,8 +1508,8 @@
     "nombre": "Más obras",
     "desde": null,
     "hasta": null,
-    "fuente": null,
-    "fase": 2,
+    "fuente": "https://es.wikipedia.org/wiki/Th%C3%A9odore_G%C3%A9ricault",
+    "fase": 1,
     "provisional": true
    }
   ],
@@ -1718,6 +1718,138 @@
     "desde": null,
     "hasta": null,
     "fuente": null,
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "masaccio": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Masaccio",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "parmigianino": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Parmigianino",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "bronzino": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Agnolo_Bronzino",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "matisse": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Henri_Matisse",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "uccello": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Paolo_Uccello",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "filippo-lippi": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Filippo_Lippi",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "memling": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Hans_Memling",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "perugino": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Pietro_Perugino",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "grunewald": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Matthias_Gr%C3%BCnewald",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "pontormo": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Jacopo_da_Pontormo",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "arcimboldo": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Giuseppe_Arcimboldo",
+    "fase": 1,
+    "provisional": true
+   }
+  ],
+  "hogarth": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/William_Hogarth",
     "fase": 1,
     "provisional": true
    }
