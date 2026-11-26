@@ -19,7 +19,7 @@ const root = document.getElementById('app');
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
   'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'ui/deep-badges.js',
-  'ui/icons.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/path-art.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js',
+  'ui/icons.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-scroll.js', 'ui/screens/path-art.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js',
   'ui/screens/path-nodes.js', 'ui/screens/path-signs.js', 'ui/shell.js',
 ];
 function preloadModules(list) {

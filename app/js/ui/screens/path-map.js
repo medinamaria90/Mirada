@@ -5,6 +5,7 @@
 // (salida primero) y el CSS lo invierte (column-reverse): el tabulador y el lector de pantalla recorren el
 // camino en el orden del juego. Trazado en path-layout.js; carteles y desvíos en path-signs.js.
 
+import { placeMap } from './map-scroll.js';
 import { esc, accentStyle, announce, plural, joinNames, $ } from '../dom.js';
 import { icons } from '../icons.js';
 import { coverOf } from '../art.js';
@@ -48,7 +49,7 @@ export function renderPathMap(ctx, { lazy = false } = {}) {
   const layout = pathLayout(index);
   const keys = mapKeys(ctx);
   const here = Math.max(0, layout.eras.findIndex((e) => e.id === keys.era));
-  const stepEra = focusStep.startsWith('artist:') ? index.movementOf(focusStep.slice(7))?.id : '';
+  const stepEra = focusStep.startsWith('artist:') ? index.movementOf(focusStep.slice(7))?.id : focusStep.startsWith('sala:') ? focusStep.slice(5) : '';
   const focus = stepEra ? layout.eras.findIndex((e) => e.id === stepEra)
     : focusBranch ? layout.eras.findIndex((e) => e.branches.some((b) => b.id === focusBranch || b.members?.some((x) => x.id === focusBranch))) : -1;
   const html = layout.eras.map((era, i) => (!lazy || Math.abs(i - here) <= NEAR_ERAS || i === focus
@@ -329,31 +330,10 @@ export function watchMapMode(map) {
   return () => { ro.disconnect(); probe.remove(); };
 }
 
-// Al abrir la portada, la vista va a la parada actual si queda fuera de la primera pantalla.
+// Al abrir la portada, la vista va a la parada actual (o a la parada o rama de la que se vuelve): ui/screens/map-scroll.js.
 export function scrollToCurrent(el) {
-  const branchId = focusBranch;
-  const step = focusStep;
+  const focus = { branchId: focusBranch, step: focusStep };
   focusBranch = '';
   focusStep = '';
-  requestAnimationFrame(() => {
-    const stop = step && $(`.stage-spot[data-step="${step}"] .stage`, el);
-    if (stop) {
-      stop.scrollIntoView({ block: 'center' });
-      stop.focus({ preventScroll: true });
-      return;
-    }
-    const branch = branchId && $(`.branch[data-id="${branchId}"], .branch[data-members~="${branchId}"]`, el);
-    if (branch) {
-      branch.scrollIntoView({ block: 'center' });
-      return;
-    }
-    if ($('.stage-spot', el)?.classList.contains('is-current')) {
-      window.scrollTo(0, document.documentElement.scrollHeight);
-      return;
-    }
-    const target = $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
-    if (target && target.getBoundingClientRect().top > window.innerHeight * 0.8) {
-      target.scrollIntoView({ block: 'center' });
-    }
-  });
+  return placeMap(el, focus);
 }
