@@ -1,0 +1,26 @@
+{
+ "artistId": "morales",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Morales",
+   "cards": [
+    {
+     "text": "Luis de Morales nació hacia 1510, probablemente en Badajoz, y murió en 1586. Tras trabajar en Plasencia, se asentó en Badajoz en 1539.",
+     "artwork": "w6163544",
+     "source": "https://www.museunacional.cat/en/divine-morales"
+    },
+    {
+     "text": "En su tiempo lo llamaban «el Divino», por la intensa religiosidad de sus cuadros: sobre todo Vírgenes con el Niño y escenas de la Pasión.",
+     "artwork": "w11917963",
+     "source": "https://dbe.rah.es/biografias/13221/luis-de-morales"
+    },
+    {
+     "text": "Fíjate en la cercanía: la Virgen da el pecho al Niño en un primer plano íntimo, con la construcción delicada que el Prado destaca en sus Vírgenes.",
+     "artwork": "w6163544",
+     "source": "https://fbbva.es/wp-content/uploads/2015/09/NdP_Expos_DivinoMorales_Museo-del-Prado.pdf"
+    }
+   ]
+  }
+ ]
+}

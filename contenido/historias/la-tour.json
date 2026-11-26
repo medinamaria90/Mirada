@@ -1,0 +1,26 @@
+{
+ "artistId": "la-tour",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue La Tour",
+   "cards": [
+    {
+     "text": "Georges de La Tour nació en 1593 en Vic-sur-Seille, en Lorena, hijo de un panadero. Desde 1620 vivió en Lunéville, donde murió en 1652.",
+     "artwork": "w3210253",
+     "source": "https://en.wikipedia.org/wiki/Georges_de_La_Tour"
+    },
+    {
+     "text": "Tras su muerte cayó en el olvido. Su obra no empezó a redescubrirse hasta principios del siglo XX.",
+     "artwork": "w3210253",
+     "source": "https://en.wikipedia.org/wiki/Georges_de_La_Tour"
+    },
+    {
+     "text": "Fíjate en el tahúr de la izquierda: mientras la partida sigue, saca a escondidas el as de diamantes que oculta a la espalda.",
+     "artwork": "w1193312",
+     "source": "https://en.wikipedia.org/wiki/The_Card_Sharp_with_the_Ace_of_Diamonds"
+    }
+   ]
+  }
+ ]
+}

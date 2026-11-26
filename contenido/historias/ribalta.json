@@ -1,0 +1,26 @@
+{
+ "artistId": "ribalta",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Ribalta",
+   "cards": [
+    {
+     "text": "Francisco Ribalta nació en Solsona (Lérida) en 1565 y murió en 1628. Pintor del Barroco español, pintó casi siempre temas religiosos.",
+     "artwork": "w35485695",
+     "source": "https://en.wikipedia.org/wiki/Francesc_Ribalta"
+    },
+    {
+     "text": "Cuando el Prado compró su Cristo abrazando a san Bernardo, se creyó que era de Zurbarán. Hoy se fecha hacia 1625-1627, al final de su vida.",
+     "artwork": "w27700100",
+     "source": "https://en.wikipedia.org/wiki/Christ_embracing_Saint_Bernard_(Ribalta)"
+    },
+    {
+     "text": "Fíjate en el hábito de san Bernardo: los pliegues del paño basto, marcados con luz y sombra, son de lo más admirado de su pintura.",
+     "artwork": "w27700100",
+     "source": "https://ojs.uv.es/index.php/arslonga/article/download/16512/18635"
+    }
+   ]
+  }
+ ]
+}

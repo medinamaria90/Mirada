@@ -1,0 +1,26 @@
+{
+ "artistId": "tintoretto",
+ "levels": [
+  {
+   "level": 1,
+   "title": "Quién fue Tintoretto",
+   "cards": [
+    {
+     "text": "Jacopo Robusti nació en Venecia hacia 1518 y murió allí en 1594. Su padre era tintorero; de ahí el apodo: Tintoretto, «el pequeño tintorero».",
+     "artwork": "w2472983",
+     "source": "https://en.wikipedia.org/wiki/Tintoretto"
+    },
+    {
+     "text": "En 1548 pintó El milagro del esclavo: san Marcos baja del cielo para librar a un esclavo de la tortura. Desde 1815 está en la Accademia de Venecia.",
+     "artwork": "w2273890",
+     "source": "https://en.wikipedia.org/wiki/Miracle_of_the_Slave_(Tintoretto)"
+    },
+    {
+     "text": "Fíjate en el santo, suspendido en el aire sobre la multitud: el turbante blanco que queda debajo da profundidad y hace que su figura se despegue.",
+     "artwork": "w2273890",
+     "source": "https://en.wikipedia.org/wiki/Miracle_of_the_Slave_(Tintoretto)"
+    }
+   ]
+  }
+ ]
+}
