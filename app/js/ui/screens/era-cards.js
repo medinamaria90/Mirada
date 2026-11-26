@@ -1,6 +1,6 @@
 // Tarjetas de una época (data/epocas/<movimiento>.json): en la presentación de la época se desliza a la derecha
-// para ver cuándo y dónde, qué cambia, en qué fijarse y una curiosidad. Cada tarjeta, un cuadro de la época (se abre
-// en grande) y su fuente. Sin tarjetas para esa época, la presentación queda como estaba.
+// para ver la época en ocho tarjetas (cuándo y dónde, por qué surge… y una curiosidad). Cada tarjeta, un cuadro de la
+// época (se abre en grande) y su fuente; la última invita a jugar. Sin tarjetas, la presentación queda como estaba.
 
 import { esc, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
@@ -26,6 +26,7 @@ function loadCards(movementId) {
 }
 
 function cardHtml(index, card, n, total) {
+  const last = n === total;
   const w = index.artwork(card.artwork);
   const who = w ? index.artist(w.artistId) : null;
   const label = sourceLabel(card.source);
@@ -35,6 +36,7 @@ function cardHtml(index, card, n, total) {
     <p class="era-chip">${esc(card.kicker)}</p>
     <p class="era-text">${esc(card.text)}</p>
     ${label ? `<a class="era-source" href="${esc(card.source)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>` : ''}
+    ${last ? '<button type="button" class="btn btn-secondary btn-wide era-play" data-action="enter">Empezar a jugar</button>' : ''}
   </section>`;
 }
 
