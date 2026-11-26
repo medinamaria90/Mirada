@@ -111,3 +111,9 @@ aviso w945250 (perugino): título pendiente de traducir: Portrait of Francesco d
 aviso w368788 (perugino): título pendiente de traducir: Pietà
 62M	.git
 3.6M	catalogo
+== pack 1200 21:57:16
+pack 1200px: 1446 imágenes, 329.6 MB de JPEG (media 222 KB), zip 329.7 MB, sha256 516472eb2625d04c…
+obras del catálogo 1446; sin imagen 0; con fallo 0
+paquete app-img-1200 subido a catalogo-img (315M)
+62M	.git
+3.6M	catalogo
