@@ -18,8 +18,8 @@ const root = document.getElementById('app');
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
-  'engine/branches.js', 'engine/goals.js', 'engine/questions.js', 'engine/review.js', 'ui/icons.js',
-  'ui/screens/home.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js', 'ui/screens/path-signs.js', 'ui/shell.js',
+  'engine/branches.js', 'engine/goals.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'ui/deep-badges.js',
+  'ui/icons.js', 'ui/screens/home.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js', 'ui/screens/path-signs.js', 'ui/shell.js',
 ];
 function preloadModules(list) {
   for (const path of list) {
@@ -322,8 +322,15 @@ async function boot() {
   });
   loadAudioWhenIdle();
   bindBackgroundPause();
+  registerServiceWorker();
   // Contador de visitas sin cookies (vacío por defecto: no pide nada). En reposo, como el audio.
   setTimeout(() => import('./stats.js').then((m) => m.startStats({ store })).catch(() => {}), 3000);
+}
+
+// Instalable como app (sin barra de direcciones) y abre sin red lo ya visto. Solo en https o en local.
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  whenIdle(() => navigator.serviceWorker.register(new URL('../sw.js', import.meta.url)).catch((err) => console.info('Sin service worker:', err.message)));
 }
 
 boot();
