@@ -9,7 +9,7 @@
 // una pieza de otra lista se escribe con su clave completa (`renaissance/vacas`). Las piezas que no
 // están aquí siguen en el catálogo: el modo secreto («Siguiente») las recorre todas para escucharlas.
 export const PLAYLISTS = {
-  menu: { main: 'base', alt: ['umbral', 'paseo'] },
+  menu: { main: 'base', alt: ['paseo'] }, // «Umbral» fuera: no le gusta a María (26/11)
   renaissance: { main: 'vacas', alt: ['greensleeves', 'saltarello'] },
   baroque: { main: 'base', alt: ['minueto', 'canon'] },
   rococo: { main: 'base', alt: ['mozart', 'gavota'] },
