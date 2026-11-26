@@ -8,6 +8,7 @@ import { todayXp, normalizeGoal, GOAL_OPTIONS } from '../../engine/progress.js';
 import { applyAudioSettings, playEra } from '../audio-bridge.js';
 import { themePicker, chooseTheme, markThemePicker } from '../theme.js';
 import { bindSheet } from './profile-sheet.js';
+import { bindDjTaps } from '../dj-sheet.js';
 
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
 const RING = 56;
@@ -74,6 +75,7 @@ export function wireSettings(ctx, el) {
   const sheet = bindSheet(dialog);
   const confirm = $('.confirm', dialog);
   el.addEventListener('change', (ev) => onSettingChange(ctx, ev));
+  bindDjTaps($('#settings-title', dialog));
   return {
     'open-settings': (b) => { ctx.audio.sfx('tap'); sheet.open(b, '[data-action="close-sheet"]'); },
     goal: (b) => {

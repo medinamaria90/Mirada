@@ -1,0 +1,32 @@
+/* Modo «afinar música»: pastilla fija bajo la barra superior con la pieza que suena (ui/dj-mode.js) y la
+   hoja secreta que lo enciende (ui/dj-sheet.js). Discreta: no compite con los cuadros. */
+.dj-pill {
+  --dj-z: 7; /* sobre la barra superior (5) y la de navegación (6) */
+  --dj-gap: 6px;
+  --dj-max: min(calc(100vw - 32px), 420px);
+  position: fixed; top: calc(var(--topbar-h) + var(--dj-gap)); left: 50%; transform: translateX(-50%); z-index: var(--dj-z);
+  display: grid; justify-items: center; gap: 4px; max-width: var(--dj-max);
+  padding: 4px; border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--surface) 92%, transparent); box-shadow: var(--shadow-card);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.dj-pill[hidden] { display: none; }
+.dj-now {
+  display: grid; justify-items: center; gap: 1px; max-width: 100%; min-height: 44px; padding: 4px 12px;
+  border: 0; border-radius: var(--radius-sm); background: none; color: var(--ink); font: 500 .85rem/1.2 var(--font); cursor: pointer;
+}
+.dj-now:hover { background: var(--surface-2); }
+.dj-now:focus-visible, .dj-btn:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+.dj-title, .dj-key { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dj-key { font-size: .72rem; color: var(--ink-2); }
+.dj-actions { display: flex; gap: 6px; }
+.dj-actions[hidden] { display: none; }
+.dj-btn {
+  min-height: 44px; padding: 0 14px; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--brand-soft); color: var(--brand-text); font: 600 .8rem/1 var(--font);
+}
+.dj-btn:hover { background: color-mix(in srgb, var(--brand-soft) 85%, var(--brand)); }
+.dj-sheet .dj-code { display: grid; gap: .7rem; padding-top: .4rem; }
+.dj-sheet .dj-code[hidden], .dj-sheet .dj-switch[hidden] { display: none; }
+.dj-wrong { color: var(--bad); font-size: .9rem; }
+.dj-wrong[hidden] { display: none; }
