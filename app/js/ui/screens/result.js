@@ -97,7 +97,8 @@ const secondaryBtn = (b) => (b.iconOnly
   ? `<button class="btn btn-secondary res-btn2 is-icon" data-action="${b.action}" aria-label="${esc(b.label)}">${icons[b.icon](20)}</button>`
   : `<button class="btn btn-secondary res-btn2" data-action="${b.action}"${b.to ? ` data-to="${esc(b.to)}"` : ''}>${b.icon ? icons[b.icon](20) : ''}<span>${esc(b.label)}</span></button>`);
 
-const STEP_ICON = { retry: 'repeat', review: 'repeat', weekly: 'target' };
+// ↻ solo para «Repasar»; «Repetir» va sin icono.
+const STEP_ICON = { review: 'repeat', weekly: 'target' };
 
 // Botón principal: el siguiente paso. Al camino («Seguir», «Volver al camino») cierra como siempre; el resto va a su ruta.
 // «Sigue: <pintor>» lleva su miniatura.

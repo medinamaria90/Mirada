@@ -57,7 +57,7 @@
 .pf-cond.is-done .pf-cond-val { font-weight: 500; color: var(--ink-2); }
 /* La acción recomendada: su condición y, debajo, un solo botón a lo ancho. */
 .pf-cond.is-focus { flex-wrap: wrap; row-gap: .5rem; padding-block: .2rem .3rem; }
-.pf-cond.is-focus .pf-cond-mark { box-shadow: inset 0 0 0 2px var(--brand); }
+.pf-cond.is-focus .pf-cond-mark, .pf-cond.is-also .pf-cond-mark { box-shadow: inset 0 0 0 2px var(--brand); }
 .pf-cond-play { flex: 1 0 100%; min-height: 48px; }
 /* Las demás pendientes, discretas: una fila que se toca, sin botón grande. */
 .pf-cond.is-quiet { min-height: 44px; }

@@ -163,16 +163,17 @@ export function reviewSession(progress, index, today) {
 }
 
 // ¿Existe el repaso? Desde REVIEW_MIN cuadros vistos (antes, el botón no aparece).
-export function hasReview(progress, index) {
-  return reviewPool(progress, index).length >= REVIEW_MIN;
+export function hasReview(progress, index, pool = reviewPool(progress, index)) {
+  return pool.length >= REVIEW_MIN;
 }
 
 // ¿Hay algo pendiente (el punto del botón)? Fallados, vencidos del repaso espaciado o pintores a medias.
 export function reviewPending(progress, index, today) {
-  if (!hasReview(progress, index)) return false;
+  const all = reviewPool(progress, index);
+  if (!hasReview(progress, index, all)) return false;
   if (startedArtists(progress, index).length) return true;
   if (reviewFallados(progress, index).length) return true;
-  const pool = new Set(reviewPool(progress, index).map((w) => w.id));
+  const pool = new Set(all.map((w) => w.id));
   return dueKeys(progress.srs || {}, today).some((key) => {
     const [kind, id] = key.split(':');
     return kind === 'art' ? pool.has(id) : kind === 'artist' && isKnownArtist(progress, index, id);

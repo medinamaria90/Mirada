@@ -112,8 +112,8 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   position: sticky; top: 0; z-index: 5; box-sizing: border-box; min-height: var(--topbar-h);
   display: flex; align-items: center; justify-content: space-between; gap: .5rem;
   padding: .5rem .6rem .5rem 1rem;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  /* Opaca: translúcida, un nodo del mapa que pasaba por debajo se veía como una mancha borrosa. */
+  background: var(--bg);
   border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
 }
 .brand { display: inline-flex; align-items: center; gap: .35rem; min-height: 48px; font: 500 1.4rem/1 var(--font); text-decoration: none; letter-spacing: var(--track); padding: 0 .1rem; border-radius: 10px; flex: none; }
@@ -148,7 +148,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .chip-review .chip-pill { position: relative; padding: 0 .5rem; }
 .chip-daily-text { font-size: .74rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .chip-daily.is-done .icon { color: var(--ok); }
-.chip-dot { position: absolute; top: 5px; right: 5px; width: 9px; height: 9px; border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
+.chip-dot { position: absolute; top: var(--chip-dot-at); right: var(--chip-dot-at); width: var(--chip-dot); height: var(--chip-dot); border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
 .chip-streak .chip-pill { padding: 0 .5rem 0 .4rem; }
 .chip-stack { display: grid; justify-items: center; line-height: 1; }
 .chip-num { font-size: .95rem; }

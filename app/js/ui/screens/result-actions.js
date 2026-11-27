@@ -21,6 +21,6 @@ export function extraRounds(ctx, plan, { prevKind = null } = {}) {
 // al cerrar el día ni en un duelo; nunca la misma que el botón principal (`main`: su ruta).
 export function practiceAction(ctx, plan, { retry = null, closing = false, duel = false, prevKind = null, main = '' } = {}) {
   if (closing || duel) return null;
-  if (retry && retry !== main) return { to: retry, label: 'Repetir', icon: 'repeat' };
+  if (retry && retry !== main) return { to: retry, label: 'Repetir' };
   return extraRounds(ctx, plan, { prevKind }).find((r) => r.to !== main) || null;
 }

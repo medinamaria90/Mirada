@@ -25,7 +25,7 @@ const px = (name) => parseFloat(getComputedStyle(document.documentElement).getPr
 // A medias (ring.started): una línea con lo que falta («67 % · dominas con 75 %» o «Te faltan n cuadros por ver») y «Repetir».
 function cardHtml(artist, ring, levels) {
   const next = ring.levels.find((l) => l.state === 'next');
-  const play = ring.started ? `${icons.repeat(20)}<span>Repetir</span>` : next ? `Empezar <small>· ${esc(next.short)}</small>` : 'Repasar';
+  const play = ring.started ? 'Repetir' : next ? `Empezar <small>· ${esc(next.short)}</small>` : 'Repasar';
   const pill = ring.done ? 'Completo' : ring.total < 2 ? '' : `Nivel ${ring.at} de ${ring.total}`;
   return `<div class="lc-card">
       <div class="lc-head">

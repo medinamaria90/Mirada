@@ -102,7 +102,7 @@ test('resultado: con 50-74 % «Repetir» va como secundario y el principal es el
   p.artists[c.id] = { plays: 1, best: 0.6, mastered: false, last: '2026-11-24' };
   const mid = resultActions(p, { kind: 'stage', artistId: c.id, seed: 3 }, { xp: 30, score: 5, total: 8, accuracy: 0.62, mastered: false, events: [] });
   assert.doesNotMatch(mid.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Repetir/);
-  assert.match(mid, /res-btn2[^>]*data-to="etapa-[^"]+"><svg[^]*?<span>Repetir<\/span>/);
+  assert.match(mid, /res-btn2[^>]*data-to="etapa-[^"]+"><span>Repetir<\/span>/);
   const low = resultActions(p, { kind: 'stage', artistId: c.id, seed: 3 }, { xp: 10, score: 2, total: 8, accuracy: 0.25, mastered: false, events: [] });
   assert.match(low.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Repetir/);
 });

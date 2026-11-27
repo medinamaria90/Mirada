@@ -151,6 +151,8 @@
   --map-indent: 16px;
   /* Aro de niveles (ui/deep-badges.js): cuánto sale del retrato, grosor del tramo hecho y del siguiente (en la caja de 100 del
      SVG), y el respiro del halo. */
+  --chip-dot: 9px;      /* punto de aviso de los botones de la cabecera (reto diario, «Repasar») */
+  --chip-dot-at: 5px;
   --ring-out: 12px;
   --ring-out-lg: 10px;
   --kiosk-hit: 56px;

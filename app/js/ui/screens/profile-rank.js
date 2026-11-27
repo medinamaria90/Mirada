@@ -49,6 +49,8 @@ function condRow(ctx, rank, c, focus) {
   }
   const label = `<span class="pf-cond-label"><span class="sr-only">Falta: </span>${text}</span>`;
   if (focus && c.key === focus.key) return `<li class="pf-cond is-focus">${mark}${label}${focusAction(ctx, rank, c, focus)}</li>`;
+  // Otra condición que avanza con el mismo nivel recomendado: su marca, del color de la acción.
+  if (focus?.choice && focus.keys.includes(c.key)) return `<li class="pf-cond is-also">${mark}${label.replace('</span></span>', '</span><span class="sr-only">. Avanza con el mismo nivel</span></span>')}</li>`;
   // Discretas: una fila que se toca (con su flecha) o, si nada cuenta aún, la línea de por qué.
   const chev = `<span class="pf-chev" aria-hidden="true">${icons.next(18)}</span>`;
   if (c.key === 'xp') return `<li class="pf-cond is-quiet"><a class="pf-cond-row" href="#inicio">${mark}${label}${chev}</a></li>`;

@@ -110,7 +110,7 @@ test('mapa: el nodo actual se distingue por el nodo y la marca «Tú», sin bot�
   assert.ok(html.includes(`is-current" data-step="artist:${real.steps[2].id}"`));
   assert.ok(!html.includes('Repite'), 'ningún nodo lleva «Repite»: el único repaso es el botón ↻');
   assert.ok(html.includes(`aria-label="${real.steps[1].name || real.artist(real.steps[1].id).name}, a medias, 50 %. Dominas con 75 %"`), 'el nodo a medias dice su nota y con cuánto se domina');
-  assert.ok(html.includes('class="stage-badge is-partial"'), 'el nodo a medias lleva la insignia ↻');
+  assert.ok(html.includes('class="stage-badge is-partial"'), 'el nodo a medias lleva su insignia');
   assert.ok(/class="stage [^"]*is-mastered"/.test(html) && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
   // Camino jugado entero pero no dominado: el actual es el primero por repasar e invita a repetir, como los demás.
   const q = emptyProgress();

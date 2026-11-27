@@ -11,7 +11,7 @@ export const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', start
 export const DORMANT_TEXT = '¿Lo recuerdas?';
 
 // Lo jugado que aún no está dominado (a medias) no lleva texto bajo el nombre: se ve en su aro (el tramo del nivel 1 lleno
-// en proporción a su nota, ui/deep-badges.js) y en la insignia ↻; al tocarlo, su tarjeta dice lo que falta. El único repaso
+// en proporción a su nota, ui/deep-badges.js) y en su insignia (medio círculo); al tocarlo, su tarjeta dice lo que falta. El único repaso
 // a mano es el botón ↻ «Repasar» (shell.js).
 // Lo que dice el lector de pantalla de un nodo a medias: «Miguel Ángel, a medias, 67 %. Dominas con 75 %».
 export function startedLabel(name, best) {
@@ -24,7 +24,7 @@ export function dotFor(status, cover, name) {
   if (status === 'locked') return icons.lock(12);
   const thumb = cover ? artFrame(cover, { cls: 'stage-thumb', alt: '', label: initials(name), thumb: true }) : '';
   const badge = status === 'mastered' ? `<span class="stage-badge">${icons.check(13)}</span>`
-    : status === 'started' ? `<span class="stage-badge is-partial">${icons.repeat(13)}</span>` : '';
+    : status === 'started' ? `<span class="stage-badge is-partial">${icons.half(13)}</span>` : '';
   return `${thumb}${badge}`;
 }
 
