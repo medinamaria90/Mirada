@@ -6,12 +6,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { realIndex, realTextJson } from './helpers-real.js';
-import { feedbackFor, artistLines, teachingLines, skipsTrait, scopeFits, tagsOf } from '../app/js/engine/feedback.js';
+import { feedbackFor, looksOf, artistLines, teachingLines, skipsTrait, scopeFits, tagsOf, generalLine } from '../app/js/engine/feedback.js';
 import { traitDetails } from '../app/js/engine/ficha.js';
 import { buildIndex, mergeCatalogText, GENRES } from '../app/js/engine/catalog.js';
 
 const TORMENTOS = 'w2327759';
 const WEYDEN_MUJER_JOVEN = 'w3399411';
+const MASACCIO_VIRGEN = 'w369582';
+const MASACCIO_ANDRES = 'w3948700';
 const ROUNDS = 6;
 
 const whoQ = (work) => ({
@@ -149,11 +151,51 @@ test('catálogo real: ningún rasgo de un género sale en una obra de otro, ni u
     if (!all.length) continue;
     const tags = tagsOf(w);
     for (const line of new Set(linesOver(real, w, all.length + 2))) {
-      if (!line || !all.includes(line) || (w.looks || []).some((l) => line.startsWith(l.text))) continue;
+      if (!line || looksOf(w).some((l) => line.startsWith(l.text))) continue;
+      if (!all.includes(line)) {
+        // Versión general de una frase: tiene que ser de ese pintor y encajar en la obra.
+        const i = all.findIndex((_, k) => generalLine(a, w, k) === line);
+        assert.ok(i >= 0, `${w.id}: «${line}» no es frase ni versión general de ${a.id}`);
+        continue;
+      }
       const i = all.indexOf(line);
       const scope = a.traitScope[i];
       if (Array.isArray(scope)) assert.ok(scope.includes(w.genre), `${w.id} (${w.title}, ${w.genre}): «${line}» es de ${scope.join('/')}`);
       if (scope === 'etiquetas') assert.ok(a.traitTags[i]?.length && a.traitTags[i].every((t) => tags.has(t)), `${w.id}: «${line}» sin etiquetas que lo confirmen`);
     }
   }
+});
+
+test('frase con un detalle concreto: entera donde se ve; si no, su versión general', () => {
+  const index = miniIndex();
+  mergeCatalogText(index, {
+    traitScope: { p: ['etiquetas', 'estilo', 'estilo'] },
+    traitTags: { p: ['oscuro', '', ''] },
+    traitGeneral: { p: [{ text: 'Fíjate en lo general', scope: ['figuras'] }, null, { text: 'mal', scope: 'etiquetas' }] },
+    genre: { c: 'figuras', d: 'figuras', b: 'retrato' },
+    tags: { c: 'oscuro', d: 'claro' },
+  });
+  const p = index.artist('p');
+  const lines = artistLines(p);
+  const plain = (id) => ({ ...index.artwork(id), skipTraits: undefined });
+  assert.equal(p.traitGeneral[2], null, 'una versión general no puede depender de etiquetas');
+  assert.deepEqual(teachingLines(lines, p, plain('c')), ['Fíjate en la pista general.', 'Rasgo uno.', 'Rasgo dos.'], 'el detalle se ve: la frase entera');
+  assert.deepEqual(teachingLines(lines, p, plain('d')), ['Rasgo uno.', 'Rasgo dos.', 'Fíjate en lo general.'], 'no se ve: la general');
+  assert.deepEqual(teachingLines(lines, p, plain('b')), ['Rasgo uno.', 'Rasgo dos.'], 'la general tampoco encaja en un retrato');
+  assert.equal(generalLine(p, plain('d'), 0), 'Fíjate en lo general.');
+});
+
+test('Masaccio, «Virgen y el Niño» en su trono: nada de «pisan firme», sí el volumen y la luz lateral', () => {
+  const real = realIndex();
+  const work = real.artwork(MASACCIO_VIRGEN);
+  const lines = linesOver(real, work);
+  assert.ok(lines.every((l) => !/pisan/i.test(l)), lines.join(' | '));
+  assert.ok(lines.includes('Fíjate en el volumen macizo, como de escultura, y en la luz que llega de un lado.'), lines.join(' | '));
+});
+
+test('Masaccio, «San Andrés»: una figura sola sobre oro, con su propio «fíjate» (el manto y la luz lateral)', () => {
+  const real = realIndex();
+  const lines = linesOver(real, real.artwork(MASACCIO_ANDRES));
+  assert.match(lines[0], /manto/);
+  assert.ok(lines.every((l) => !/pisan|figuras/i.test(l)), lines.join(' | '));
 });

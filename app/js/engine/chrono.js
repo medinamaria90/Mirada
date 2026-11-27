@@ -38,7 +38,7 @@ export function isAskable(a, b) {
 }
 
 // Pintores conocidos: los que el usuario ya ha visto (alguna obra vista o dominados), en el orden del catálogo. `met`
-// (ids de engine/painters.js metArtistIds: historia vista o nivel jugado) los restringe aún más, como en las preguntas por
+// (ids de engine/painters.js metArtistIds: pintores jugados) los restringe aún más, como en las preguntas por
 // autor (planner.metOnly).
 export function knownArtists(progress, index, exclude = '', met = null) {
   const ids = met ? new Set(met) : null;

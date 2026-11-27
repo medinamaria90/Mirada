@@ -127,6 +127,8 @@ function cleanQuestion(q, index) {
     isNew: Boolean(q.isNew),
     phase: typeof q.phase === 'string' ? q.phase.replace(/[^a-z]/g, '').slice(0, 12) : '',
   };
+  // Pintor de la ronda (engine/guest-intro.js): se conserva si existe.
+  if (typeof q.host === 'string' && index.artist(q.host)) out.host = q.host;
   if (q.type === 'which') {
     const target = index.artwork(q.targetArtworkId);
     if (!target || target.artistId !== artist.id || q.answerId !== target.id) throw new Error('obra');

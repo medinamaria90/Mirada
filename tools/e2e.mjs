@@ -1292,6 +1292,7 @@ if (SMOKE) {
   // «Jugar» empieza la ronda: sin «Conoce a» tras la historia.
   await sp.click('.story-play');
   await sp.waitForSelector('.lesson .option');
+  await sp.waitForTimeout(500); // pasado el margen contra toques fantasma al cerrar la historia (ui/tap-guard.js)
   check(await sp.locator('.story').count() === 0, 'la historia no se cierra al terminar');
   check(await sp.locator('.learn').count() === 0, 'tras la historia sale «Conoce a»');
   // Sale de la ronda (si no, al volver a la parada se retoma la ronda guardada).
