@@ -13,6 +13,12 @@
     {
      "text": "Fue el último gran pintor de techos de Europa: cielos inmensos llenos de figuras que vuelan. Carlos III lo llamó para el Palacio Real de Madrid, y aquí murió en 1770.",
      "artwork": "w5916308",
+     "region": [
+      0.15,
+      0.0,
+      0.85,
+      0.5
+     ],
      "source": "https://es.wikipedia.org/wiki/Giovanni_Battista_Tiepolo"
     },
     {

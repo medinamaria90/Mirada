@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en los que bailan alrededor del becerro: cuerpos musculosos y paños al vuelo, en fila como un friso, por su amor a la escultura antigua.",
      "artwork": "w377810",
+     "region": [
+      0.06,
+      0.38,
+      0.42,
+      1.0
+     ],
      "source": "https://www.nationalgallery.org.uk/paintings/NG5597"
     }
    ]
