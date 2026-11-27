@@ -81,6 +81,8 @@ export function renderHome(ctx, el) {
   Promise.all([import('../../engine/next-step.js'), import('../last-step.js')]).then(([m, last]) => {
     const guide = guideFor(ctx, el, m.mapGuide, last.lastStep());
     if (!guide || !el.isConnected) return;
+    // Lo que enseña el mapa cuenta como recomendado: lo de atrás no sale justo después en el resultado.
+    last.rememberStep(guide.kind);
     guideStop = guideButton(el, guide, (g) => {
       ctx.audio.sfx('tap');
       const key = g.artistId ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
