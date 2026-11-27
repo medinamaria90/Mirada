@@ -78,12 +78,12 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
   const total = real.stepsOf(firstEra).length;
   assert.ok(html.includes(`2 de ${total} pintores: ver presentación`) && html.includes(`class="arch-progress-fill" style="--p:${Math.round((2 / total) * 100) / 100}"`), 'la lápida no dice cuántas van (ranura y lector)');
   assert.ok(!html.includes(` · 2/${total}`), 'queda la cifra pegada a los siglos');
-  assert.ok(html.includes('finales s.\u00a0XVIII–mediados s.\u00a0XIX'), 'los siglos sin espacio duro');
+  assert.ok(html.includes('finales s. XVIII–mediados s. XIX: ver presentación') || html.includes('finales s. XVIII–mediados s. XIX. Cerrada'), 'los siglos no llegan al lector');
   assert.ok(html.includes('class="arch-band" data-action="intro"'), 'el arco abierto no lleva a la presentación');
   // El arco de la primera época va sobre la puerta de la muralla de salida; los demás, en su tramo.
   const first = real.visibleMovements[0].id;
   assert.ok(html.indexOf(`data-action="intro" data-id="${first}"`) < html.indexOf('class="path-era'), 'el arco de la primera época no va en la salida');
-  assert.equal((html.match(/<h2 class="era-arch is-(left|right)"/g) || []).length, real.visibleMovements.length, 'una lápida por época');
+  assert.equal((html.match(/<h2 class="era-arch"/g) || []).length, real.visibleMovements.length, 'un dintel por época');
   assert.ok(!html.includes('class="road-sign is-left"><button type="button" class="sign-plate" data-action="intro"'), 'queda la placa de época antigua');
   const locked = real.visibleMovements[2];
   assert.ok(html.includes(`data-action="era-lock" data-id="${locked.id}"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el cartel cerrado no abre su hoja');
@@ -185,7 +185,7 @@ test('mapa: el repaso cerrado dice en claro cuánto falta; los nombres, en la no
 
 // Ningún cartel pisa el sendero: su borde junto al camino queda fuera de la franja del sendero (con aire) en
 // toda su altura, y le queda sitio. Cada tramo lleva su cartel, antes de su primera parada.
-test('mapa: lápida de la época junto a su puerta y mojones de tramo al borde; el tramo, antes de su primera parada', () => {
+test('mapa: dintel de la época sobre su puerta y tablillas de tramo al borde; el tramo, antes de su primera parada', () => {
   const layout = pathLayout(real);
   const GAP = 8;
   const clear = (segs, y1, y2, box) => {
@@ -193,17 +193,16 @@ test('mapa: lápida de la época junto a su puerta y mojones de tramo al borde; 
     return box.side === 'left' ? box.edge <= Math.min(...xs) - ROAD_HALF - GAP : box.edge >= Math.max(...xs) + ROAD_HALF + GAP;
   };
   for (const [i, era] of layout.eras.entries()) {
-    // Lápida: junto a la puerta de la época (o, la primera, junto a la de la muralla), nunca sobre el sendero, y dentro
-    // del mapa con sitio para su nombre.
+    // Dintel: sobre los pilares de la puerta de la época (o, la primera, sobre el arco de la muralla), centrado en el
+    // sendero y dentro del mapa.
     const arch = i ? era.arch : layout.start.arch;
-    assert.ok(arch && arch.x0 >= 0 && arch.x1 <= MAP_W && arch.x1 - arch.x0 >= 150, `${era.id}: sin lápida, fuera del mapa o sin sitio`);
-    assert.ok(arch.side === 'left' ? arch.x1 <= arch.x - ROAD_HALF - GAP : arch.x0 >= arch.x + ROAD_HALF + GAP, `${era.id}: la lápida pisa el sendero`);
-    if (i) assert.ok(Math.abs(arch.x - roadX(era.segs, era.gate.y)) < 1 && Math.abs(arch.y - era.gate.y) < 10, `${era.id}: la lápida no está junto a su puerta`);
+    assert.ok(arch && arch.x0 >= 0 && arch.x1 <= MAP_W && Math.abs((arch.x0 + arch.x1) / 2 - arch.x) < 0.5, `${era.id}: sin dintel o fuera del mapa`);
+    if (i) assert.ok(Math.abs(arch.x - roadX(era.segs, era.gate.y)) < 1 && arch.y < era.gate.y && arch.top >= arch.y - 40, `${era.id}: el dintel no está sobre su puerta o es demasiado alto`);
     for (const s of era.sections) assert.ok(clear(era.segs, s.sign.top, s.sign.y, s.sign) && s.sign.room >= 110, `${era.id}/${s.name}: la tablilla del tramo pisa el sendero o no cabe`);
   }
   assert.ok(clear(layout.museum.segs, layout.museum.sign.top, layout.museum.sign.y, layout.museum.sign), 'la placa del museo pisa el sendero');
   const html = renderPathMap(ctxWith(real, masterFirst(real, 1)));
-  assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, 1, 'solo la placa del museo (las épocas llevan lápida)');
+  assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, 1, 'solo la placa del museo (las épocas llevan dintel)');
   // Primer tramo: tablilla propia sin cuenta (va en el arco); para el lector, «dominados de paradas» (todas, también las
   // extra), justo antes de su parada en el DOM.
   const first = real.artist(real.steps[0].id);
@@ -302,7 +301,7 @@ test('mapa: jerarquía de nodos (actual, siguiente cerrado y el resto cerrado m�
   assert.ok(!/--map-fs-max/.test(css) && /aspect-ratio:\$\{MAP_W\}\/calc\(\$\{era\.h\} \* var\(--k, 1\)\)/.test(readFileSync(join(app, 'js', 'ui', 'screens', 'path-map.js'), 'utf8')));
   // Letra mínima de 12 px en lo que hay que leer del mapa (0,75 × 16 px), y crece con la del navegador.
   const small = [/\.sign-meta \{[^}]*font: \d+ calc\(([\d.]+) \* var\(--map-fs\)\)/, /\.sign-plate\.branch \.sign-name \{ font: \d+ calc\(([\d.]+) \* var\(--map-fs\)\)/,
-    /\.sign-plate\.branch \.sign-meta \{ font-size: calc\(([\d.]+) \* var\(--map-fs\)\)/, /\.arch-meta \{[^}]*font: \d+ calc\(([\d.]+) \* var\(--map-fs\)\)/];
+    /\.sign-plate\.branch \.sign-meta \{ font-size: calc\(([\d.]+) \* var\(--map-fs\)\)/, /\.arch-name \{[^}]*font: \d+ calc\(([\d.]+) \* var\(--map-fs\)\)/];
   for (const re of small) {
     const m = (css + signs).match(re);
     assert.ok(m && Number(m[1]) >= 0.75, `${re} por debajo de 12 px`);

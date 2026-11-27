@@ -352,7 +352,7 @@
    "order": 3,
    "section": null,
    "qid": "Q5811",
-   "works": 12,
+   "works": 11,
    "category": "maestro",
    "branches": [],
    "stages": [
@@ -8302,47 +8302,6 @@
     "credit": "book: John T. Spike, Masaccio, Rizzoli libri illustrati, Milano 2002",
     "ficha": "wikidata",
     "fetched": "2026-11-26"
-   },
-   "confidence": "high",
-   "warnings": []
-  },
-  {
-   "id": "w3933568",
-   "artistId": "masaccio",
-   "title": "La resurrección del hijo de Teófilo y san Pedro en su cátedra",
-   "titleSource": "manual",
-   "year": "1427",
-   "yearSort": 1427,
-   "yearQuality": "exact",
-   "level": 2,
-   "stage": "Más obras",
-   "fame": 1,
-   "sitelinks": 5,
-   "img": "img/w3933568.jpg",
-   "w": 1600,
-   "h": 655,
-   "downloaded": true,
-   "museum": "Capilla Brancacci",
-   "city": "Florencia",
-   "country": "Italia",
-   "inSpain": false,
-   "technique": "Fresco",
-   "dimensions": "230 × 599 cm",
-   "inception": "1427",
-   "depicts": [
-    "Pedro"
-   ],
-   "genre": "arte religioso",
-   "about": "",
-   "look": "",
-   "source": {
-    "wikidata": "Q3933568",
-    "commons": "https://commons.wikimedia.org/wiki/File:Cappella_brancacci,_Resurrezione_del_figlio_di_Teofilo_e_San_Pietro_in_cattedra_(restaurato),_Masaccio.jpg",
-    "file": "Cappella brancacci, Resurrezione del figlio di Teofilo e San Pietro in cattedra (restaurato), Masaccio.jpg",
-    "license": "Public domain",
-    "credit": "book: La Cappella Brancacci a Santa Maria del Carmine, in AA.VV., Cappelle del Rinascimento a Firenze, Editrice Giusti, Firenze 1998.",
-    "ficha": "wikidata",
-    "fetched": "2026-11-27"
    },
    "confidence": "high",
    "warnings": []

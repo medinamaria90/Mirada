@@ -11,7 +11,9 @@
 export const PLAYLISTS = {
   menu: { main: 'base', alt: ['paseo'] }, // «Umbral» fuera: no le gusta a María (26/11)
   gothic: { main: 'base', alt: ['estampida', 'lauda'] }, // provisional: María decide con el modo secreto
-  renaissance: { main: 'base', alt: ['greensleeves', 'romanesca'] }, // «Pavana del alba»; «Guárdame las vacas» fuera: suena mal (María, 26/11)
+  // «Pavana del alba» y dos variaciones suyas (misma tonalidad y motivo): «Pavana en sombra» y «Gallarda del
+  // alba». Greensleeves y «Romanesca de la tarde» pasan a fuera de lista; «Guárdame las vacas», fuera (María, 26/11)
+  renaissance: { main: 'base', alt: ['sombra', 'gallarda'] },
   northern: { main: 'base', alt: ['espejo', 'tema'] }, // provisional: María decide con el modo secreto
   baroque: { main: 'base', alt: ['minueto', 'canon'] },
   rococo: { main: 'base', alt: ['mozart', 'gavota'] },

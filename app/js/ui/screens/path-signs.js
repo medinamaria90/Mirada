@@ -58,24 +58,23 @@ export function signBox(sign, h, extra = '') {
   return `class="road-sign is-${sign.side}${extra ? ` ${extra}` : ''}" style="${across};bottom:${pct(h - sign.y, h)};max-width:${pct(sign.room, MAP_W)}"`;
 }
 
-// Lápida (época o rama): su caja junto a la puerta, con el pie en el suelo; la lápida se arrima a la puerta.
+// Dintel (época o rama): su caja, simétrica respecto al sendero, con el pie sobre los pilares de la puerta.
 // tone: estilo del acento de la época (el arco de la primera va en la salida, fuera de su tramo).
-const archBox = (arch, h, tone = '') => `class="era-arch is-${arch.side}" style="left:${pct(arch.x0, MAP_W)};right:${pct(MAP_W - arch.x1, MAP_W)};bottom:${pct(h - arch.y, h)}${tone ? `;${tone}` : ''}"`;
+const archBox = (arch, h, tone = '') => `class="era-arch" style="left:${pct(arch.x0, MAP_W)};right:${pct(MAP_W - arch.x1, MAP_W)};bottom:${pct(h - arch.y, h)}${tone ? `;${tone}` : ''}"`;
 
-// Lápida de una época, en el dintel de su puerta: el nombre (dos líneas como mucho), los siglos y, debajo, una ranura
-// grabada que se va llenando con los pintores dominados (la única cuenta de la época, sin cifras pegadas al título).
-// Completa, la losa se dora y la ranura queda llena de oro. Abierta, lleva a la presentación; cerrada, candado y una
-// hoja con lo que hay que hacer (el motivo no ocupa la lápida).
+// Dintel de una época: su nombre grabado en la losa de piedra sobre los pilares de su puerta y, debajo, una ranura fina
+// que se va llenando con los pintores dominados (la única cuenta de la época; los siglos, para el lector y en su
+// presentación). Completa, letras y ranura de oro. Abierta, lleva a la presentación; cerrada, candado y una hoja con lo
+// que hay que hacer.
 const groove = (share) => `<span class="arch-progress" aria-hidden="true"><span class="arch-progress-fill" style="--p:${f(share)}"></span></span>`;
 export function eraArch({ movement, status, sealed, done, total, prevName, arch, h, tone = '' }) {
   const locked = status === 'locked';
-  const meta = `<span class="arch-meta">${locked ? `${icons.lock(12)} ` : ''}${esc(period(movement.period))}</span>`;
-  const name = `<span class="arch-name">${esc(movement.name)}</span>`;
+  const name = `<span class="arch-name">${locked ? `${icons.lock(11)} ` : ''}${esc(movement.name)}</span>`;
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
   const count = `${done} de ${total} ${total === 1 ? 'pintor' : 'pintores'}`;
   const button = locked
-    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${meta}</button>`
-    : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}${meta}${groove(sealed ? 1 : total ? done / total : 0)}</button>`;
+    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${groove(0)}</button>`
+    : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}${groove(sealed ? 1 : total ? done / total : 0)}</button>`;
   return `<h2 ${archBox(arch, h, tone)}>${button}</h2>`;
 }
 
@@ -170,18 +169,14 @@ export function backSpot(back, eraName, h) {
     </button></li>`;
 }
 
-// Números romanos del mojón (el orden del tramo en su época; pocos tramos por época).
-const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
-
-// Mojón de un tramo (unidad de pintores), en su hueco justo antes de su primer pintor: una piedra al borde del sendero,
-// con el número romano del tramo grabado, y a su lado la tablilla con el nombre (la cuenta va en la lápida de la
-// época). Completo, la tablilla se dora y el número va en oro, sin iconos sueltos. Se lee siempre, aunque sus pintores
-// estén cerrados: abre su cartel en tarjetas (sign-cards.js).
-export function tramoSign(sec, info, h, n = 0) {
+// Tablilla de un tramo (unidad de pintores), en su hueco justo antes de su primer pintor, al borde del sendero: un solo
+// objeto con el nombre (la cuenta va en el dintel de la época). Completo, se dora, sin iconos sueltos. Se lee siempre,
+// aunque sus pintores estén cerrados: abre su cartel en tarjetas (sign-cards.js).
+export function tramoSign(sec, info, h) {
   const done = info.total > 0 && info.got === info.total;
   const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} pintores`}. Ver cartel`;
   return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo${done ? ' is-done' : ''}" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="tramo-stone" aria-hidden="true" data-n="${ROMAN[n] || ''}"></span><span class="sign-name">${esc(sec.name)}</span></button></li>`;
+      <span class="sign-name">${esc(sec.name)}</span></button></li>`;
 }
 
 // Arco de la rama en su pantalla, a la entrada: solo el nombre (la cuenta ya está en la cabecera); abre el cartel de la

@@ -22,6 +22,9 @@ test('portada: la original abre cada visita (de día)', () => {
   assert.equal(pieceInfo('menu/paseo', 'menu').role, 'secundaria');
   assert.equal(pieceInfo('renaissance/villancico', 'renaissance').role, 'fuera de lista');
   assert.ok(allPieces('renaissance').includes('renaissance/villancico'), '«Siguiente» recorre también las de fuera');
+  assert.deepEqual(['renaissance/sombra', 'renaissance/gallarda'].map((k) => pieceInfo(k, 'renaissance').title), ['Pavana en sombra', 'Gallarda del alba']);
+  assert.equal(pieceInfo('renaissance/gallarda', 'renaissance').role, 'secundaria');
+  assert.equal(pieceInfo('renaissance/greensleeves', 'renaissance').role, 'fuera de lista', 'sigue en el catálogo para el modo secreto');
 });
 
 test('afinar música: nombres humanos de las listas, de cada época y rama de la música', async () => {

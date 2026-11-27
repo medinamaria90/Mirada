@@ -1,58 +1,44 @@
 /* Sistema visual del mapa (ui/screens/path-signs.js, path-nodes.js). Tres estilos de texto y nada más:
-   1. LÁPIDA de cada época (y de cada rama en su pantalla): la losa del dintel de su puerta, centrada en el sendero que
-      pasa por debajo. Lleva el nombre, los siglos y la única cuenta de la época (una ranura que se llena).
-   2. MOJONES de tramo (estela + tablilla, en su hueco antes de sus pintores) y TABLILLAS de rama: pequeñas, al borde
-      del camino sobre dos postes; letra pequeña. Completas, se doran.
+   1. DINTEL de cada época (y de cada rama en su pantalla): el nombre grabado en la losa sobre los pilares de su puerta,
+      centrado en el sendero que pasa por debajo, con la única cuenta de la época (una ranura que se llena).
+   2. TABLILLAS de tramo (en su hueco antes de sus pintores) y de rama: pequeñas, al borde del camino sobre dos postes;
+      letra pequeña. Completas, se doran.
    3. ETIQUETAS de las paradas (pintor, sala, repaso): la misma placa translúcida; cerradas, apagadas. La parada actual,
       con el nombre más marcado y el nodo destacado (sin botón aparte). */
 
-/* ---------- 1. Lápida de la época ---------- */
-/* Estela de piedra junto a la puerta (nunca sobre el sendero): zócalo en el suelo, marco de piedra (el de los pilares, con
-   la luz del día), cornisa encima y la cara grabada con el nombre, los siglos y la ranura del progreso. La caja (h2) va
-   del borde del mapa a la puerta; la lápida se arrima a la puerta. */
+/* ---------- 1. Dintel de la época ---------- */
+/* El nombre, grabado en una losa estrecha de piedra sobre los pilares de la puerta (sin caja blanca): letras en relieve
+   sobre la piedra, cornisa fina encima y una ranura de progreso debajo. Centrado en el sendero, que pasa bajo él. */
 .era-arch {
   --arch-tone: color-mix(in srgb, var(--accent) 78%, var(--map-sign-ink));
-  --arch-stone: var(--lit-stone-side, var(--map-stone-side));
-  --arch-cap: var(--lit-stone-top, var(--map-stone-top));
-  position: absolute; z-index: var(--map-z-sign); margin: 0; display: flex; justify-content: center; align-items: flex-end; padding-bottom: var(--map-lapida-plinth); pointer-events: none;
+  position: absolute; z-index: var(--map-z-sign); margin: 0; display: flex; justify-content: center; align-items: flex-end; pointer-events: none;
 }
-.era-arch.is-left { justify-content: flex-end; }
-.era-arch.is-right { justify-content: flex-start; }
-
 .path-start .era-arch { z-index: var(--map-z-sign-start); }
 .arch-band {
-  position: relative; display: grid; justify-items: center; gap: calc(.22 * var(--map-fs)); min-width: calc(7 * var(--map-fs)); max-width: min(100%, calc(14 * var(--map-fs))); min-height: var(--hit);
-  margin: 0; padding: calc(.55 * var(--map-fs)) calc(1.1 * var(--map-fs)) calc(.6 * var(--map-fs));
-  border: var(--map-lapida-frame) solid var(--arch-stone); border-radius: var(--map-lapida-r);
-  background: var(--map-sign); color: var(--map-sign-ink); font: inherit; text-align: center; pointer-events: auto; cursor: pointer;
-  /* Grabado: un filete fino dentro de la cara; grosor de la losa debajo. */
-  box-shadow: inset 0 0 0 var(--map-lapida-inset) var(--map-sign), inset 0 0 0 calc(var(--map-lapida-inset) + 1px) var(--map-sign-line), 0 var(--map-lapida-depth) 0 var(--arch-stone);
-  transition: transform .15s var(--ease), box-shadow .15s var(--ease);
+  position: relative; display: grid; justify-items: center; align-content: center; gap: var(--map-lintel-gap); min-width: var(--map-lintel-min); min-height: var(--hit); max-width: min(100%, calc(14 * var(--map-fs)));
+  margin: 0; padding: var(--map-lintel-pad); border: 0; border-radius: var(--map-lapida-r);
+  background: var(--map-stone-front); color: var(--map-sign-ink); font: inherit; text-align: center; pointer-events: auto; cursor: pointer;
+  box-shadow: inset 0 -2px 0 var(--map-stone-side), 0 2px 0 var(--map-shade);
+  transition: transform .15s var(--ease);
 }
-/* Cornisa: una losa algo más ancha encima, del color de los remates de los pilares. */
+/* Cornisa fina encima, del color de los remates de los pilares. */
 .arch-band::before {
-  content: ""; position: absolute; left: calc(-1 * var(--map-lapida-cornice-out)); right: calc(-1 * var(--map-lapida-cornice-out)); bottom: calc(100% + var(--map-lapida-frame));
-  height: var(--map-lapida-cornice); border-radius: var(--map-lapida-r) var(--map-lapida-r) 0 0; background: var(--arch-cap); box-shadow: 0 1px 0 var(--arch-stone);
+  content: ""; position: absolute; left: calc(-1 * var(--map-lapida-cornice-out)); right: calc(-1 * var(--map-lapida-cornice-out)); bottom: 100%;
+  height: var(--map-lapida-cornice); border-radius: var(--map-lapida-r) var(--map-lapida-r) 0 0; background: var(--map-stone-top); box-shadow: 0 1px 0 var(--map-stone-side);
 }
-/* Zócalo: una losa algo más ancha bajo la estela, apoyada en el suelo con su sombra. */
-.arch-band::after {
-  content: ""; position: absolute; left: calc(-1 * var(--map-lapida-cornice-out)); right: calc(-1 * var(--map-lapida-cornice-out)); top: calc(100% + var(--map-lapida-frame) + var(--map-lapida-depth));
-  height: var(--map-lapida-plinth); border-radius: 0 0 2px 2px; background: var(--arch-cap); box-shadow: inset 0 -2px 0 var(--arch-stone), 0 var(--map-lapida-shadow) var(--map-lapida-shadow) calc(-.5 * var(--map-lapida-shadow)) var(--map-shade);
-}
-button.arch-band:active { transform: translateY(2px); }
-.arch-band:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 5px; }
-.arch-name { display: block; max-width: 100%; font: 600 calc(.95 * var(--map-fs))/1.2 var(--font); letter-spacing: var(--map-lapida-track); text-wrap: balance; hyphens: manual; }
-.arch-meta { display: block; text-wrap: balance; font: 500 calc(.76 * var(--map-fs))/1.2 var(--font); color: var(--map-sign-ink-2); letter-spacing: .02em; font-variant-numeric: lining-nums tabular-nums; }
-.arch-meta .icon { display: inline-block; vertical-align: -1px; margin-right: calc(.2 * var(--map-fs)); }
+/* El toque abarca algo más que la losa (≥ --hit de alto). */
+.arch-band::after { content: ""; position: absolute; inset: calc(-1 * var(--map-tablet-hit)) 0; }
+button.arch-band:active { transform: translateY(1px); }
+.arch-band:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
+.arch-name { display: block; max-width: 100%; font: 600 calc(.8 * var(--map-fs))/1.1 var(--font); letter-spacing: var(--map-lintel-track); text-transform: uppercase; text-wrap: balance; text-shadow: 0 1px 0 var(--map-stone-top); }
+.arch-name .icon { display: inline-block; vertical-align: -1px; }
 /* Ranura grabada del progreso: se llena con el color de la época; completa, de oro. */
-.arch-progress { display: block; width: 62%; height: var(--map-lapida-groove); margin-top: 2px; overflow: hidden; border-radius: 999px; background: var(--map-sign-line); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--map-sign-ink) 14%, transparent); }
+.arch-progress { display: block; width: 70%; height: var(--map-lapida-groove); overflow: hidden; border-radius: var(--radius-pill); background: var(--map-stone-side); }
 .arch-progress-fill { display: block; width: calc(var(--p) * 100%); height: 100%; border-radius: inherit; background: var(--arch-tone); }
-/* Completa: la cara se dora (pan de oro suave), letras de oro y ranura llena. */
-.arch-band.is-done { --arch-tone: var(--gold); background: color-mix(in srgb, var(--gold) 20%, var(--map-sign)); box-shadow: inset 0 0 0 var(--map-lapida-inset) color-mix(in srgb, var(--gold) 20%, var(--map-sign)), inset 0 0 0 calc(var(--map-lapida-inset) + 1px) var(--gold), 0 var(--map-lapida-depth) 0 var(--arch-stone); }
+.arch-band.is-done { --arch-tone: var(--gold); }
 .arch-band.is-done .arch-name { color: var(--gold-text); }
-.arch-band.is-locked { background: color-mix(in srgb, var(--map-sign) 55%, var(--map-tag)); }
 .arch-band.is-locked .arch-name { color: var(--map-sign-ink-2); font-weight: 500; }
-@media (hover: hover) { button.arch-band:hover { background: color-mix(in srgb, var(--map-sign) 92%, var(--ink)); } button.arch-band.is-done:hover { background: color-mix(in srgb, var(--gold) 26%, var(--map-sign)); } }
+@media (hover: hover) { button.arch-band:hover { background: color-mix(in srgb, var(--map-stone-front) 92%, var(--ink)); } }
 
 /* Frontera: bajo el seto de la puerta, el suelo de la época anterior se corta en él (color en mapa-vivo.css). */
 .path-era.has-gate::before { height: calc(100% * var(--gate-y) / var(--era-h)); }
@@ -67,27 +53,7 @@ button.arch-band:active { transform: translateY(2px); }
 /* Poste indicador del desvío de una rama (y de la vuelta al camino en su pantalla): flecha hacia donde se va. */
 .sign-arrow { display: grid; flex: none; place-items: center; color: var(--map-sign-ink-2); }
 .sign-plate.branch.is-mastered .sign-arrow { color: var(--gold-text); }
-/* Mojón: la estela de piedra va entre el sendero y la tablilla (un solo botón); los postes, bajo la tablilla. */
-.road-sign.is-tramo.is-left { padding-right: var(--tramo-stone-room); }
-.road-sign.is-tramo.is-right { padding-left: var(--tramo-stone-room); }
-.road-sign.is-tramo.is-left::before, .road-sign.is-tramo.is-left::after { right: calc(var(--tramo-stone-room) + var(--map-post-in)); }
-.road-sign.is-tramo.is-right::before, .road-sign.is-tramo.is-right::after { left: calc(var(--tramo-stone-room) + var(--map-post-in)); }
-.tramo-stone {
-  position: absolute; bottom: calc(-1 * var(--map-post-h)); box-sizing: border-box; width: var(--tramo-stone-w); height: var(--tramo-stone-h); padding-right: var(--tramo-stone-edge); text-align: center;
-  border-radius: var(--tramo-stone-arch);
-  /* Mojón de piedra: cara iluminada y canto estrecho en sombra; el número del tramo, grabado. */
-  background: linear-gradient(to right, var(--map-stone-top) 0 calc(100% - var(--tramo-stone-edge)), var(--map-stone-side) calc(100% - var(--tramo-stone-edge)));
-  box-shadow: inset 0 0 0 1px var(--map-sign-line), 0 calc(.6 * var(--tramo-stone-shadow)) var(--tramo-stone-shadow) calc(-.2 * var(--tramo-stone-shadow)) var(--map-shade);
-  color: var(--map-sign-ink); font: 700 var(--tramo-stone-fs)/var(--tramo-stone-line) var(--font); letter-spacing: var(--tramo-stone-track);
-}
-/* Zócalo algo más ancho que el fuste. */
-.tramo-stone::before { content: ""; position: absolute; left: calc(-1 * var(--tramo-plinth-out)); right: calc(-1 * var(--tramo-plinth-out)); bottom: calc(-1 * var(--tramo-plinth)); height: var(--tramo-plinth); border-radius: 1px; background: var(--map-stone-side); }
-.is-left .tramo-stone { right: calc(-1 * var(--tramo-stone-room) + var(--tramo-stone-gap)); }
-.is-right .tramo-stone { left: calc(-1 * var(--tramo-stone-room) + var(--tramo-stone-gap)); }
-/* El número, grabado (decorativo: el orden ya lo da la lectura del camino). */
-.tramo-stone::after { content: attr(data-n); }
-.sign-plate.is-tramo.is-done .tramo-stone { color: var(--gold-text); }
-/* Completo: la tablilla se dora (cara de pan de oro, marco y cinta de oro en el canto) y el mojón, inscrito en oro. */
+/* Completo: la tablilla se dora (cara de pan de oro, marco y cinta de oro en el canto). */
 .sign-plate.is-tramo.is-done, .sign-plate.branch.is-mastered {
   border-color: var(--gold); background: color-mix(in srgb, var(--gold) 20%, var(--map-sign)); outline-color: color-mix(in srgb, var(--gold) 55%, var(--map-sign));
   box-shadow: inset 0 calc(-1 * var(--map-ribbon)) 0 var(--gold), 0 2px 0 var(--map-sign-line);
@@ -123,9 +89,8 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 /* Camino en línea (letra muy grande): la lápida pasa a ser una placa más, a todo el ancho y en el flujo; el mojón, solo su
    tablilla. */
 .path-map.is-linear .era-arch { position: static; display: block; }
-.path-map.is-linear .arch-band { width: 100%; max-width: none; border-radius: var(--map-r); }
-.path-map.is-linear .arch-band::before, .path-map.is-linear .tramo-stone { display: none; }
-.path-map.is-linear .road-sign.is-tramo { padding-inline: 0; }
+.path-map.is-linear .arch-band { width: 100%; max-width: none; min-height: var(--hit); border-radius: var(--map-r); }
+.path-map.is-linear .arch-band::before, .path-map.is-linear .arch-band::after { display: none; }
 
 /* ---------- Volver a tu parada (screens/map-return.js) ---------- */
 /* Círculo pequeño (como en Duolingo) con la flecha hacia donde queda y «Tú», la marca de la parada actual. Solo se ve

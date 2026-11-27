@@ -67,7 +67,7 @@ function mapHtml(ctx, branch) {
   // propios de la rama, como su cartel de entrada y la cabecera (los «En el camino» cuentan en el camino común).
   const tramo = (s) => {
     const group = rows.filter((r) => r.opensAt === s.movementId && !r.onPath);
-    return tramoSign(s, { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, layout.h, layout.sections.indexOf(s) + 1);
+    return tramoSign(s, { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, layout.h);
   };
   const items = rows.map((row, i) => {
     const pt = layout.points[i];
