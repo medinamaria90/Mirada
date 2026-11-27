@@ -186,15 +186,15 @@ test('tarjeta: nombre, quién era y relación con el pintor de la ronda en ≤ 1
   }
   const m = guestIntro(real, 'mantegna', { hostId: 'van-eyck' });
   assert.equal(m.name, 'Andrea Mantegna');
-  assert.match(m.text, /^Mantegna, el pintor de Mantua/);
-  assert.match(m.text, /Una generación más joven que Van Eyck, pero italiano\.$/);
+  assert.match(m.text, /^Mantegna, el pintor de la corte de Mantua/);
+  assert.match(m.text.replace(/\u00a0/g, ' '), /Una generación más joven que Van Eyck, italiano\.$/);
 });
 
 test('relationLine: misma generación, antes, después y sin datos', () => {
   const a = (born, country, short = 'X') => ({ born, country, short });
   assert.equal(relationLine(a(1776, 'Reino Unido'), a(1775, 'Reino Unido', 'Turner')), 'De la generación de Turner, también británico.');
-  assert.equal(relationLine(a(1400, 'Italia'), a(1480, 'Flandes', 'Y')), 'Casi un siglo mayor que Y, pero italiano.');
-  assert.equal(relationLine(a(1830, 'Rusia'), a(1770, 'Francia', 'Z')), 'Dos generaciones más joven que Z, pero ruso.');
+  assert.equal(relationLine(a(1400, 'Italia'), a(1480, 'Flandes', 'Y')), 'Casi un siglo mayor que Y, italiano.');
+  assert.equal(relationLine(a(1830, 'Rusia'), a(1770, 'Francia', 'Z')), 'Dos generaciones más joven que Z, ruso.');
   assert.equal(relationLine(a(0, 'Italia'), a(1400, 'Italia')), '');
   assert.equal(relationLine(a(1500, 'Atlántida'), a(1500, 'Italia', 'W')), 'De la generación de W.');
 });

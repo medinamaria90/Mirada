@@ -1,6 +1,6 @@
 {
  "mantegna": {
-  "text": "el pintor de Mantua de las figuras duras como estatuas romanas",
+  "text": "el pintor de la corte de Mantua, de figuras duras como estatuas romanas",
   "source": "https://es.wikipedia.org/wiki/Andrea_Mantegna"
  },
  "giorgione": {
@@ -52,7 +52,7 @@
   "source": "https://es.wikipedia.org/wiki/John_Singer_Sargent"
  },
  "rousseau": {
-  "text": "el aduanero sin escuela que pintó selvas que nunca vio",
+  "text": "el aduanero (cobraba impuestos a las puertas de París) que pintó selvas que nunca vio",
   "source": "https://es.wikipedia.org/wiki/Henri_Rousseau"
  },
  "waterhouse": {
@@ -60,7 +60,7 @@
   "source": "https://es.wikipedia.org/wiki/John_William_Waterhouse"
  },
  "malevich": {
-  "text": "el que pintó un cuadrado negro sobre blanco y lo llamó arte",
+  "text": "el que pintó un cuadrado negro sobre blanco y abrió paso a la pintura abstracta (sin figuras)",
   "source": "https://es.wikipedia.org/wiki/Kazimir_Malévich"
  }
 }

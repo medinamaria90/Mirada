@@ -30,7 +30,8 @@
 .cdd-img { position: absolute; max-width: none; object-fit: fill; transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); user-select: none; -webkit-user-drag: none; }
 .cdd-hi { opacity: 0; transition: opacity .3s, left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
 .cdd-hi.is-ready { opacity: 1; }
-.cdd-veil { position: absolute; pointer-events: none; border-radius: var(--radius-sm, 6px); backdrop-filter: blur(var(--cuadro-veil-blur)); -webkit-backdrop-filter: blur(var(--cuadro-veil-blur)); background: color-mix(in srgb, var(--surface-2) 18%, transparent); transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
+.cdd-veil { position: absolute; overflow: hidden; pointer-events: none; border-radius: var(--cuadro-veil-radius); background: var(--surface-2); transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
+.cdd-veil-img { position: absolute; max-width: none; filter: blur(var(--cuadro-veil-blur)); transform: scale(var(--cuadro-veil-grow)); }
 .cdd-zoom-badge { position: absolute; right: .5rem; bottom: .5rem; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 999px; background: var(--scrim); color: var(--viewer-ink); }
 .reduce-motion .cdd-img, .reduce-motion .cdd-hi { transition: opacity .2s; }
 @media (prefers-reduced-motion: reduce) { .cdd-img, .cdd-hi { transition: opacity .2s; } }
