@@ -34,7 +34,7 @@ export function branchMusic(index, branch) {
 // Por qué está cerrado un pintor de la rama, en una frase.
 function lockText(index, progress, row, branchId) {
   const why = branchLockReason(progress, index, row.artistId, branchId);
-  if (why?.pending.length) return `Se abre al dominar a ${joinNames(why.pending.map((s) => stepName(index, s)))}`;
+  if (why?.pending.length) return `Se abre después de ${joinNames(why.pending.map((s) => stepName(index, s)))}`;
   if (why?.before) return `Se abre al acertar la mitad en ${index.artist(why.before)?.short || index.artist(why.before)?.name}`;
   return 'Aún cerrado';
 }
@@ -43,7 +43,7 @@ function node(ctx, branch, row, current) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const a = index.artist(row.artistId);
-  const dot = dotFor(row.status, coverOf(index, a.id), a.name);
+  const dot = dotFor(row.status, coverOf(index, a.id), a.name, p.artists[a.id]?.best);
   if (row.onPath) {
     return nodeHtml({
       cls: 'is-onpath', action: 'path-stop', id: a.id, status: row.status, lock: '',
@@ -115,7 +115,7 @@ export async function renderBranch(ctx, el, branchId) {
     <header class="topbar branch-bar">
       <button type="button" class="branch-back" data-action="back" aria-label="Volver al camino">${icons.prev(20)}<span>Camino</span></button>
       <h1 class="branch-title">${esc(branch.name)}</h1>
-      <span class="branch-tally" aria-label="${mastered} de ${total} dominados">${mastered}/${total}</span>
+      <span class="branch-tally" aria-label="${mastered} de ${total} pintores">${mastered}/${total}</span>
     </header>
     <main class="content" id="main">
       <ol class="path path-map path-branch" aria-label="Pintores de la rama ${esc(branch.name)}">${mapHtml(ctx, branch)}</ol>

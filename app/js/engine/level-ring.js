@@ -57,11 +57,14 @@ export function startedRing(progress, index, artistId) {
 }
 
 export const percent = (k) => `${Math.round(k * 100)}\u00a0%`;
-export const MASTERY_TEXT = `dominas con ${percent(MASTERY)}`;
+export const MASTERY_TEXT = `de ${percent(MASTERY)}`;
+// A partir de aquí, «te falta poco».
+export const CLOSE_BEST = 0.5;
 
-// Lo que le falta a un pintor a medias, en una línea: «67 % · dominas con 75 %» o, si ya llega a la nota y le faltan
-// cuadros por ver, «Te faltan n cuadros por ver».
+// Lo que le falta a un pintor a medias, en una línea: «Te falta poco: 67 % de 75 %» (o «40 % de 75 %») o, si ya llega a la
+// nota y le faltan cuadros por ver, «Te faltan n cuadros por ver».
 export function startedLine(ring) {
   if (ring.best >= MASTERY && ring.missing > 0) return ring.missing === 1 ? 'Te falta 1 cuadro por ver' : `Te faltan ${ring.missing} cuadros por ver`;
-  return `${percent(ring.best)} · ${MASTERY_TEXT}`;
+  const score = `${percent(ring.best)} ${MASTERY_TEXT}`;
+  return ring.best >= CLOSE_BEST ? `Te falta poco: ${score}` : score;
 }

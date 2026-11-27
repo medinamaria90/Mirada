@@ -913,13 +913,15 @@ check(await page.locator('.overall-bar, .card-daily, .card-continue, .card-revie
 for (const box of await page.$$eval('.topbar a', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return { w: r.width, h: r.height, t: e.getAttribute('aria-label') }; }))) {
   check(box.w >= 48 && box.h >= 48, `cabecera: ${box.t} mide ${Math.round(box.w)}×${Math.round(box.h)}`);
 }
-const ringLabel = await page.locator('.chip-goal').getAttribute('aria-label');
-check(/Meta de hoy: 0 de 50 XP/.test(ringLabel), `anillo de meta: ${ringLabel}`);
-check(/\b0\/50\b/.test(await page.locator('.chip-goal').innerText()), 'el anillo de meta no lleva la cifra 0/50');
-// Racha: llama y «n día(s)» (el sol con un número parecía el interruptor de modo claro).
-const streakChip = await page.locator('.chip-streak').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), icon: Boolean(a.querySelector('.icon')) }));
-check(/^Racha: \d+ días?$/.test(streakChip.label) && streakChip.icon, `chip de racha: ${JSON.stringify(streakChip)}`);
-check(/\d+\s*días?$/.test(streakChip.text), `chip de racha sin «n día(s)»: ${streakChip.text}`);
+// Meta y racha en una pieza: la llama dentro del aro de la meta y «n día(s)»; al tocarla, su explicación en una línea.
+const streakChip = await page.locator('.chip-streak').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), icon: Boolean(a.querySelector('.ring .icon')) }));
+check(/^Racha: \d+ días?\. Meta de hoy: 0 de 50 XP$/.test(streakChip.label) && streakChip.icon, `pieza de racha y meta: ${JSON.stringify(streakChip)}`);
+check(/\d+\s*días?$/.test(streakChip.text), `racha sin «n día(s)»: ${streakChip.text}`);
+await page.locator('.chip-streak').click();
+check(/meta de hoy: 0 de 50 XP/.test(await page.locator('.chip-tip').innerText()), 'la racha no se explica al tocarla');
+await page.mouse.click(5, 400);
+check(await page.locator('.chip-tip').count() === 0, 'la explicación de la racha no se cierra al tocar fuera');
+check(await page.locator('.brand > span').isVisible(), 'la cabecera no lleva el nombre «Sfumato» a 390 px');
 check(!/\bsol\b/i.test(await page.locator('.topbar').evaluate((e) => e.innerHTML)), 'la cabecera sigue hablando de un sol');
 check((await page.locator('.topbar').boundingBox()).height < 80, 'la cabecera salta a dos líneas a 390 px');
 const mapSrcs = await page.$$eval('.stage-thumb img, .card-thumb img', (els) => els.map((e) => e.getAttribute('src')));
@@ -1074,7 +1076,7 @@ if (SMOKE) {
   await page.locator(goticoSign).scrollIntoViewIfNeeded();
   await page.click(goticoSign);
   await page.waitForSelector('.branch-spot .lock-note.is-visible');
-  check(/^Se abre al dominar a /.test(await page.locator('.branch-spot .lock-note.is-visible').innerText()), 'la rama cerrada no dice qué falta');
+  check(/^Se abre después de /.test(await page.locator('.branch-spot .lock-note.is-visible').innerText()), 'la rama cerrada no dice qué falta');
   check(page.url().endsWith('#inicio'), 'una rama cerrada deja entrar');
   const ownGotico = index.branch('gotico').artists.filter((id) => index.pathIndex(id) < 0);
   const tramo1 = index.steps.filter((x) => x.movementId === index.steps[0].movementId).findIndex((x) => index.artist(x.id).section !== index.artist(index.steps[0].id).section);
@@ -1817,7 +1819,7 @@ await page.waitForSelector('.settings-dialog[open]');
 const range = await page.locator('[data-setting="volume"]').boundingBox();
 check(range.height >= 48, `deslizador de volumen de ${Math.round(range.height)} px`);
 await page.click('[data-action="goal"][data-goal="100"]');
-check((await page.locator('.chip-goal').getAttribute('aria-label')).includes('de 100 XP'), 'la cabecera no refleja la nueva meta');
+check((await page.locator('.chip-streak').getAttribute('aria-label')).includes('de 100 XP'), 'la cabecera no refleja la nueva meta');
 check(await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.dailyGoal) === 100, 'meta no persistida');
 check(await page.locator('.pf-medal.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
 await page.goto(`${base}#coleccion`);
@@ -1974,7 +1976,7 @@ await playRound(spage);
 await spage.waitForTimeout(1600);
 await shot(spage, '23-sello-movimiento');
 check(await spage.locator('.res-medal .medal-lg').count() === 1, 'no se estampa la medalla');
-check(/Dominado/.test(await spage.locator('.res-kicker').innerText()), 'no se dice que el movimiento está dominado');
+check(/Completo/.test(await spage.locator('.res-kicker').innerText()), 'no se dice que el movimiento está completo');
 await spage.click('[data-action="done"]');
 await spage.waitForSelector('.path');
 check(await spage.locator('.movement.is-sealed').count() >= 1, 'el mapa no muestra el sello');
@@ -2006,7 +2008,7 @@ watch(hpage, 'por-dominar');
   check(await hpage.locator('[data-action="free"]').count() === 0, 'ronda libre sin tener todo dominado');
   check(!/Camino completo/.test(await hpage.locator('#main').innerText()), '«Camino completo» con paradas por repasar');
   const fin = hpage.locator('.finale');
-  check(/Te quedan 2 por dominar/.test(await fin.innerText()), `final sin cuántas quedan: ${await fin.innerText()}`);
+  check(/Te quedan 2 paradas/.test(await fin.innerText()), `final sin cuántas quedan: ${await fin.innerText()}`);
   check(await fin.locator(`[data-action="stage"][data-id="${pend[0].id}"]`).count() === 1, 'el final no lleva al primero por repasar');
   await fin.scrollIntoViewIfNeeded();
   await shot(hpage, '27a-por-dominar');
@@ -2384,7 +2386,7 @@ await npage.click('[data-action="practice"]');
 await playRound(npage);
 await npage.click('[data-action="done"]');
 check(await npage.locator('.path-character, .path-chest').count() === 0, 'sin storage: quedan personaje o cofres');
-check((await npage.locator('.chip-goal').getAttribute('aria-label')).includes('50 de 50'), 'sin storage: la meta no avanza en memoria');
+check((await npage.locator('.chip-streak').getAttribute('aria-label')).includes('50 de 50'), 'sin storage: la meta no avanza en memoria');
 
 // ---------------------------------------------------------------- Escritorio 1280×800
 const desk = await browser.newContext({ ...ctxOpts, viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1, hasTouch: false });
@@ -2502,7 +2504,7 @@ for (const scheme of ['light', 'dark']) {
       await p7.waitForSelector('.medal-dialog[open]');
       await p7.waitForTimeout(400);
       check(/7 días seguidos/.test(await p7.locator('.medal-dialog').innerText()), `[${tag}] la hoja de medalla no dice cómo se gana`);
-      check(!/dominado/i.test(await p7.locator('.medal-dialog .dlg-meta').innerText()), `[${tag}] el logro pendiente se da por hecho en su subtítulo`);
+      check(!/ya lo reconoces/i.test(await p7.locator('.medal-dialog .dlg-meta').innerText()), `[${tag}] el logro pendiente se da por hecho en su subtítulo`);
       await shot(p7, `medalla-hoja-${tag}`);
       await audit(p7, `o7 ${tag} hoja de medalla`);
       for (let k = 0; k < 3; k++) await p7.keyboard.press('Tab');
@@ -2526,7 +2528,7 @@ for (const scheme of ['light', 'dark']) {
       await p7.goto(`${base}#perfil`);
       await p7.waitForSelector('.pf-hero');
       check((await p7.locator('.pf-rank-name').innerText()).length > 0, `[${tag}] Perfil sin rango`);
-      check(!/cuadros? vistos?|pintores? dominados?|Mi museo/i.test(await p7.locator('.pf-layout').innerText()), `[${tag}] el perfil repite lo que ya está en la Colección`);
+      check(!/cuadros? vistos?|pintores? que reconoces|Mi museo/i.test(await p7.locator('.pf-layout').innerText()), `[${tag}] el perfil repite lo que ya está en la Colección`);
       await shot(p7, `perfil-${tag}`);
       await c7.close();
       // Reto semanal aceptado por un jugador nuevo: aviso breve, sin bloquear.

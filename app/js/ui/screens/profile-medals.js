@@ -20,12 +20,12 @@ export const GROUPS = [
 const KIND_NAMES = { artist: 'Pintor', movement: 'Movimiento', streak: 'Racha', eye: 'Ojo de…', other: 'Meta' };
 export const kindOf = (id) => { const k = id.split('-')[0]; return GROUPS.some(([g]) => g === k) ? k : 'other'; };
 
-// El logro conseguido es un hecho («Veronés dominado») y el pendiente, una meta («Domina a Veronés»). Para la hoja.
+// El logro conseguido es un hecho («Veronés, ya lo reconoces») y el pendiente, una meta («Reconocer a Veronés»). Para la hoja.
 export const medalName = (ctx, id, has) => {
   const title = medalInfo(id, ctx.index).title;
   if (id.startsWith('streak-')) return `Racha de ${title}`;
   if (!id.startsWith('artist-')) return title;
-  return has ? `${title} dominado` : `Domina a ${title}`;
+  return has ? `${title}, ya lo reconoces` : `Reconocer a ${title}`;
 };
 
 // Nombre corto para la casilla («Piero», «3 días»): el anillo de metal ya dice si está conseguido.

@@ -81,10 +81,10 @@ export function deepChoices(progress, index, key, rank) {
 
 // Por qué ninguna elección cuenta todavía, en una línea humana (para no poner un botón que no cumple).
 export function whyNoChoice(key, rank) {
-  if (key === 'grand') return rank.grand.upTo > 2 ? `Antes, llega al nivel ${rank.grand.upTo - 1} de un gran maestro` : 'Se abre al dominar a un gran maestro del camino';
+  if (key === 'grand') return rank.grand.upTo > 2 ? `Antes, llega al nivel ${rank.grand.upTo - 1} de un gran maestro` : 'Termina la parada de un gran maestro y se abre su nivel 2';
   if (key === 'complete') return 'Antes, llega al último nivel de un gran maestro';
-  if (key === 'eras') return 'Se abre al dominar a un pintor de otra época';
-  return 'Se abre al dominar a un pintor del camino';
+  if (key === 'eras') return 'Termina la parada de un pintor de otra época y se abre su nivel 2';
+  return 'Termina una parada del camino y se abre su nivel 2';
 }
 
 // La acción recomendada para el siguiente rango: un nivel concreto que cuenta para el mayor número de condiciones

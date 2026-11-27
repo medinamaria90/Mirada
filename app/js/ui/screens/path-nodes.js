@@ -6,25 +6,26 @@ import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
 import { percent, MASTERY_TEXT } from '../../engine/level-ring.js';
 
-export const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'a medias', mastered: 'dominado' };
+export const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'a medias', mastered: 'ya lo reconoces' };
 // Pintor dormido (engine/review.js): dominado y sin salir en una semana.
 export const DORMANT_TEXT = '¿Lo recuerdas?';
 
 // Lo jugado que aún no está dominado (a medias) no lleva texto bajo el nombre: se ve en su aro (el tramo del nivel 1 lleno
-// en proporción a su nota, ui/deep-badges.js) y en su insignia (medio círculo); al tocarlo, su tarjeta dice lo que falta. El único repaso
+// en proporción a su nota, ui/deep-badges.js) y en su insignia con la nota («67 %»); al tocarlo, su tarjeta dice lo que falta. El único repaso
 // a mano es el botón ↻ «Repasar» (shell.js).
-// Lo que dice el lector de pantalla de un nodo a medias: «Miguel Ángel, a medias, 67 %. Dominas con 75 %».
+// Lo que dice el lector de pantalla de un nodo a medias: «Miguel Ángel, a medias: 67 % de 75 %».
 export function startedLabel(name, best) {
-  const text = MASTERY_TEXT.charAt(0).toUpperCase() + MASTERY_TEXT.slice(1);
-  return `${name}, ${STATE_LABEL.started}, ${percent(Number(best) || 0).replace('\u00a0', ' ')}. ${text.replace('\u00a0', ' ')}`;
+  return `${name}, ${STATE_LABEL.started}: ${percent(Number(best) || 0)} ${MASTERY_TEXT}`.replaceAll('\u00a0', ' ');
 }
 
-// Cerrado: sin cuadro (no se adelanta nada) y un candado pequeño; el nodo es más pequeño y suave.
-export function dotFor(status, cover, name) {
+// A medias, la insignia dice su nota («67 %»): con el aro casi lleno, se entiende sola que falta un poco.
+const shortPercent = (best) => `${Math.round((Number(best) || 0) * 100)}%`;
+
+export function dotFor(status, cover, name, best = 0) {
   if (status === 'locked') return icons.lock(12);
   const thumb = cover ? artFrame(cover, { cls: 'stage-thumb', alt: '', label: initials(name), thumb: true }) : '';
   const badge = status === 'mastered' ? `<span class="stage-badge">${icons.check(13)}</span>`
-    : status === 'started' ? `<span class="stage-badge is-partial">${icons.half(13)}</span>` : '';
+    : status === 'started' ? `<span class="stage-badge is-partial" aria-hidden="true">${shortPercent(best)}</span>` : '';
   return `${thumb}${badge}`;
 }
 

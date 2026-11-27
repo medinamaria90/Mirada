@@ -171,6 +171,22 @@ test('cuadro del día: el calendario pasa la validación (obras, 6 pintores, nit
   });
 });
 
+test('cuadro del día: las firmas legibles (Van Eyck, El Greco, Monet, Sorolla) van tapadas hasta acabar y fuera de los recortes', () => {
+  const veiled = cal.days.filter((d) => day(d.n).veil).map((d) => index.artwork(d.artwork).artistId).sort();
+  assert.deepEqual(veiled, ['el-greco', 'monet', 'sorolla', 'van-eyck']);
+  for (const d of cal.days) {
+    const e = day(d.n);
+    if (!e.veil) continue;
+    for (const z of [3, 1.6]) {
+      const [x0, y0, x1, y1] = cropRect(index.artwork(e.artwork), e.focus, z);
+      const [a0, b0, a1, b1] = e.veil;
+      assert.ok(!(x0 < a1 && a0 < x1 && y0 < b1 && b0 < y1), `día ${d.n}: el recorte ×${z} enseña la firma`);
+    }
+  }
+  const src = readFileSync(join(root, 'app/js/ui/screens/cuadro-dia.js'), 'utf8');
+  assert.match(src, /isOver\(game\) \? null : entry\.veil/, 'el velo se quita solo al acabar');
+});
+
 test('cuadro del día: sin «ayer» ni «mañana» en sus textos ni en sus pantallas', () => {
   const banned = /\b(ayer|mañana)\b/i;
   for (const f of readdirSync(join(root, 'app/data/dia'))) assert.doesNotMatch(readFileSync(join(root, 'app/data/dia', f), 'utf8'), banned, f);
