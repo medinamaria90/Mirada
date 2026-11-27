@@ -26,11 +26,10 @@ export function dotFor(status, cover, name) {
   return `${thumb}${badge}`;
 }
 
-export function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, section, current = false }) {
-  const kicker = section ? `<span class="stage-kicker" aria-hidden="true">${esc(section.name)} <span class="stage-kicker-count">${section.got}/${section.total}</span></span>` : '';
-  return `<button class="stage ${cls}${section ? ' has-kicker' : ''} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}"${current ? ' aria-current="step"' : ''} aria-label="${esc(label)}">
+export function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, current = false }) {
+  return `<button class="stage ${cls} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}"${current ? ' aria-current="step"' : ''} aria-label="${esc(label)}">
       <span class="stage-dot">${dot}</span>
-      <span class="stage-text">${kicker}<span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
+      <span class="stage-text"><span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
     </button>`;
 }
 
