@@ -8,9 +8,9 @@ import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendi
 import { rememberMap } from './map-memory.js';
 import { liveArt } from '../map-land.js';
 import { watchReturn } from './map-return.js';
+import { mountReviewPill } from './review-pill.js';
 import { startMapLife } from '../map-life.js';
 import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } from '../../engine/progress.js';
-import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf } from '../../engine/dates.js';
 import { addLevelRings } from '../deep-badges.js';
@@ -21,8 +21,6 @@ export function renderHome(ctx, el) {
   const { index } = ctx;
   const state = ctx.store.get();
   const p = state.progress;
-  const today = ctx.today();
-  const due = dueKeys(p.srs, today).length;
   const complete = isPathComplete(p, index);
   // «Camino completo» solo con todo dominado; si quedan paradas por repasar, se dice cuántas.
   const mastered = isPathMastered(p, index);
@@ -39,7 +37,6 @@ export function renderHome(ctx, el) {
       <div class="finale-actions">
         <button class="btn btn-primary btn-wide" data-action="free">${icons.shuffle(20)}<span>Ronda libre</span></button>
         <button class="btn btn-secondary btn-wide" data-action="weekly">${icons.target(20)}<span>Reto semanal</span></button>
-        ${due > 0 ? `<button class="btn btn-secondary btn-wide" data-action="srs">${icons.repeat(20)}<span>Repaso</span></button>` : ''}
       </div>
     </section>`;
   } else if (pending.length) {
@@ -77,7 +74,7 @@ export function renderHome(ctx, el) {
   // Al salir, se guarda dónde estaba la vista: se vuelve exactamente ahí (map-memory.js).
   // Historias de la parada actual y de los pintores con niveles a la vista: su tarjeta se pinta sin esperar (story-prefetch.js).
   let stories = null;
-  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, watchReturn(el), () => stories?.stop()];
+  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, watchReturn(el), mountReviewPill(ctx, el), () => stories?.stop()];
   addLevelRings(ctx, el);
   stories = watchStoryPrefetch(el);
   tagNew();
@@ -93,10 +90,6 @@ export function renderHome(ctx, el) {
 
   onAction(el, {
     ...pathActions(ctx),
-    srs: () => {
-      ctx.audio.sfx('tap');
-      ctx.go('repaso');
-    },
     collection: () => {
       ctx.audio.sfx('tap');
       ctx.go('coleccion');

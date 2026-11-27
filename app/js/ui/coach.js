@@ -1,5 +1,5 @@
-// Guía de bienvenida: tres «coach marks» que señalan el nodo actual, la franja «Hoy» y la pestaña
-// Colección. Solo la primera vez (marca propia en localStorage), saltable con «Saltar» o Esc, sin
+// Guía de bienvenida: tres «coach marks» que señalan el nodo actual, el reto diario y la pestaña
+// Colección (el botón ↻ «Repasar» aún no está: aparece con 3 cuadros vistos). Solo la primera vez (marca propia en localStorage), saltable con «Saltar» o Esc, sin
 // tapar lo que señala y sin bloquear la pantalla.
 
 import { esc } from './dom.js';

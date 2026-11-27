@@ -437,10 +437,10 @@ test('el foco de la portada gana a main.css y va por encima de la imagen; las ho
   assert.match(css, /\.pf-layout \{[^}]*\}[\s\S]*@media \(min-width: 720px\)[\s\S]*grid-template-areas: "hero hero" "rank stats" "medals practice"/);
 });
 
-test('el repaso se ve siempre (bloqueado y con el motivo) y el logro pendiente no se da por hecho', () => {
+test('Practicar ya no lleva la fila del repaso (va en el botón ↻) y el logro pendiente no se da por hecho', () => {
   const practice = practiceHtml(ctxFor(emptyProgress()));
-  assert.match(practice, /is-locked[\s\S]*Repasar lo aprendido[\s\S]*Vuelve cuando tengas 3 cuadros que repasar/);
-  assert.doesNotMatch(practice, /data-action="review5"/);
+  assert.doesNotMatch(practice, /Repasar|review5|repaso/i);
+  assert.doesNotMatch(read('../app/js/ui/screens/profile.js'), /review5|repaso5/);
   const medals = read('../app/js/ui/screens/profile-medals.js');
   assert.match(medals, /date \? info\.sub : KIND_NAMES\[kindOf\(id\)\]/);
 });

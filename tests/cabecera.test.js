@@ -59,3 +59,28 @@ test('cabecera: el reto diario está en la cabecera (sin chip de rango): pendien
   state.progress.daily = { [TODAY]: { score: 5, total: 5 } };
   assert.ok(topBar(ctx).includes('>5/5<'));
 });
+
+test('cabecera: «Repasar» (↻) lleva a #repaso, aparece desde 3 cuadros vistos, sin candado, y el punto solo con algo pendiente', async () => {
+  const { reviewChip, reviewState, topBar: bar, REVIEW_PLACE } = await import('../app/js/ui/shell.js');
+  const { bigIndex } = await import('./helpers.js');
+  const index = bigIndex();
+  const a = index.path[0];
+  const progress = emptyProgress();
+  progress.artists[a.id] = { plays: 1, best: 0.9, mastered: true, last: TODAY };
+  const ctx = { ...ctxWith(), index, store: { get: () => ({ progress, settings: defaultState().settings }) } };
+  index.worksOf(a.id).slice(0, 2).forEach((w) => { progress.srs[`art:${w.id}`] = { box: 3, due: '2026-12-20' }; });
+  assert.equal(reviewState(ctx), null, 'con 2 cuadros vistos aún no aparece');
+  assert.doesNotMatch(bar(ctx), /chip-review|lock/);
+  progress.srs[`art:${index.worksOf(a.id)[2].id}`] = { box: 3, due: '2026-12-20' };
+  assert.deepEqual(reviewState(ctx), { pending: false });
+  const calm = reviewChip(reviewState(ctx));
+  assert.ok(calm.includes('href="#repaso"') && calm.includes('aria-label="Repasar"') && calm.includes(icons.repeat(20)));
+  assert.ok(!calm.includes('chip-dot'), 'sin nada pendiente, sin punto');
+  progress.fallados = [{ id: index.worksOf(a.id)[0].id, date: TODAY, times: 1, hits: 0 }];
+  const due = reviewChip(reviewState(ctx));
+  assert.ok(due.includes('chip-dot') && due.includes('hay cuadros pendientes') && !/\d/.test(due.replace(/<svg[^]*?<\/svg>/g, '').replace(/\d+(px|em)/g, '')), 'punto sin número');
+  if (REVIEW_PLACE === 'header') {
+    const html = bar(ctx);
+    assert.ok(html.indexOf('chip-streak') < html.indexOf('chip-review') && html.indexOf('chip-review') < html.indexOf('chip-daily'), 'entre la racha y el reto diario');
+  }
+});

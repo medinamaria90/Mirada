@@ -1,4 +1,4 @@
-// Piezas del perfil (HTML): bienvenida y «Practicar» (repaso, test de pintura y reto semanal). La identidad está
+// Piezas del perfil (HTML): bienvenida y «Practicar» (test de pintura y reto semanal; el repaso va en el botón ↻). La identidad está
 // en profile-hero.js, el rango en profile-rank.js, las cifras en profile-stats.js, los logros en profile-medals.js
 // y los ajustes en profile-settings.js.
 
@@ -6,7 +6,6 @@ import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { plural } from '../../engine/profile.js';
 import { isPathMastered, pathProgress } from '../../engine/progress.js';
-import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 
 const QUESTION = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6"/><path d="M12 17h.01"/></svg>';
@@ -21,7 +20,7 @@ export function welcomeHtml() {
   </section>`;
 }
 
-// «Practicar»: el repaso de 5 (bloqueado y con el motivo si no hay qué repasar), el test de pintura (con el
+// «Practicar»: el test de pintura (con el
 // último resultado y «Compartir» al lado, si lo hay) y el reto semanal; sin el camino dominado, el reto se ve
 // bloqueado y dice lo que falta (una fila que no se pulsa y lo parece: candado y sin flecha).
 export function practiceHtml(ctx, last = null) {
@@ -38,12 +37,6 @@ export function practiceHtml(ctx, last = null) {
       ${it.done ? `<span class="pf-go-done"><span class="sr-only">Hecho: </span>${icons.check(16)}${esc(it.done)}</span>` : ''}
       <span class="pf-go-next" aria-hidden="true">${icons.next(20)}</span></button></li>`);
   const items = [];
-  // El repaso se ve siempre: sin cuadros que repasar, bloqueado y con el motivo.
-  if (review5Works(p, index, ctx.today()).length >= REVIEW5_MIN) {
-    items.push({ action: 'review5', icon: icons.repeat(24), name: REVIEW5_NAME, done: '' });
-  } else {
-    items.push({ locked: true, name: REVIEW5_NAME, sub: `Vuelve cuando tengas ${REVIEW5_MIN} cuadros que repasar` });
-  }
   items.push({ test: true });
   if (isPathMastered(p, index)) {
     const week = p.weekly?.[isoWeek(ctx.dailyDay()).key];
