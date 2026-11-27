@@ -18,6 +18,7 @@ Un archivo por pintor, `contenido/historias/<pintorId>.json` (el id es el de `ca
 - `cards`: de 1 a 5. Lo normal son 3 o 4; una cuarta o quinta cuando aporta: una anécdota buena que no cabe con otra idea (una idea por tarjeta), por qué importa el pintor o el contexto que falta; nunca para rellenar. `text` tiene como máximo 180 caracteres.
 - `artwork`: id (`w<QID>`) de `catalogo/obras.json`. Debe ser del pintor y del mismo nivel que la historia, o del básico (nivel 1) cuando es una obra clave que ilustra bien la tarjeta. En el nivel básico, solo obras del nivel 1.
 - `focus` (opcional): `[x, y, zoom]`; detalle de la tarjeta (centro de 0 a 1, zoom de 1 a 3). Solo se usa si el recorte no pierde más de lo que permite `engine/framing.js` (`LOSS_FOCUSED`); si no, la obra se ve entera. Sin él, manda el foco revisado de la obra (`contenido/focos.json`): a sangre si el recorte es pequeño o la obra tiene foco; si no, entera sobre un fondo desenfocado de ella misma.
+- `region` (opcional): `[x0, y0, x1, y1]`; detalle intencionado, el rectángulo de la obra que enseña la tarjeta (de 0 a 1), por ejemplo cada panel de un tríptico (El Bosco). Se ve siempre a sangre, como si fuera la obra, y manda sobre la portada propia de la primera tarjeta; con `focus`, su punto es relativo a la región. Su proporción no puede perder más que `LOSS_FOCUSED` (lo vigilan `tools/sync_historias.py` y su prueba). Dos regiones distintas de la misma obra cuentan como imágenes distintas.
 - `source`: URL que respalda lo que dice la tarjeta.
 
 ## Regla de las fuentes

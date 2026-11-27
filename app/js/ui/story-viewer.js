@@ -124,7 +124,8 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     const show = (manual) => {
       const card = lv.cards[pos];
       const last = pos === lv.cards.length - 1;
-      const override = level === 1 && pos === 0 ? opening : null;
+      // Una tarjeta con detalle intencionado (`region`) enseña siempre su obra: la portada propia no la sustituye.
+      const override = level === 1 && pos === 0 && !card.region ? opening : null;
       const work = override || index.artwork(card.artwork);
       if (work) shownIds.push(work.id);
       bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, playLabel: opts.playLabel, more: opts.onMore !== false });
@@ -132,7 +133,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const textH = bottom.offsetHeight - parseFloat(getComputedStyle(bottom).paddingTop || '0');
       media.style.setProperty('--story-text-h', `${Math.max(0, Math.round(textH))}px`);
       const frame = media.clientWidth && media.clientHeight ? media.clientWidth / media.clientHeight : undefined;
-      media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name, frame);
+      media.innerHTML = override ? mediaHtml(work, null, pos, name, frame) : mediaHtml(work, card.focus, pos, name, frame, card.region);
       dlg.classList.toggle('is-last', last);
       dlg.querySelector('.story-back').hidden = pos === 0;
       dlg.querySelector('.story-next').hidden = last;
