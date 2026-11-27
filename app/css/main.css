@@ -2,6 +2,11 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; } /* sin el destello azul de Android al tocar: cada elemento pulsable ya tiene su respuesta propia */
+/* Como app nativa: nada se selecciona ni saca menú al mantener pulsado (Android: Traducir/Copiar/diccionario). Se hereda desde html. */
+html { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+img { -webkit-user-drag: none; }
+/* Excepciones: escribir (campos) y leer-copiar (créditos y «Acerca de»: copiar un enlace o una fuente es útil). */
+input, textarea, [contenteditable]:not([contenteditable="false"]), .cr-body, .ab-text { -webkit-user-select: text; user-select: text; }
 body {
   margin: 0;
   font-variant-numeric: lining-nums;

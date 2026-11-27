@@ -193,7 +193,7 @@ test('pintor dormido: dominado y sin salir en 7 días se apaga y pregunta «¿Lo
   assert.doesNotMatch(stageButton(html2, a.id), /is-dormant/);
   // Colores por variable: el anillo apagado vive en brand.css (claro y las dos copias del oscuro).
   const brand = readFileSync(new URL('../app/css/brand.css', import.meta.url), 'utf8');
-  assert.equal((brand.match(/--map-dormant:/g) || []).length, 3);
+  assert.equal((brand.match(/--map-dormant:/g) || []).length, 4);   // claro, oscuro (×2) y mapa claro con el móvil en oscuro
   assert.match(readFileSync(new URL('../app/css/main.css', import.meta.url), 'utf8'), /\.stage\.is-mastered\.is-dormant \.stage-dot \{[^}]*var\(--map-dormant\)/);
 });
 
