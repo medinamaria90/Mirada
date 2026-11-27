@@ -151,7 +151,8 @@ def year_info(dates, born, died):
 def main():
     painters = load(os.path.join(PIPE, "painters.json"))
     resolved = {r["id"]: r for r in load(os.path.join(OUT, "painters_resolved.json"), [])}
-    excl = load(os.path.join(PIPE, "excluir.json"), {})
+    # Las claves de excluir.json pueden ser el QID o el id de obra de la app (w<número>): se pasan a QID.
+    excl = {re.sub(r"^w(?=\d+$)", "Q", k): v for k, v in load(os.path.join(PIPE, "excluir.json"), {}).items()}
     adj = load(os.path.join(PIPE, "ajustes.json"), {})
     tit = load(os.path.join(PIPE, "titulos_es.json"), {})
     extra = load(os.path.join(PIPE, "extra.json"), {})  # pintor -> {QID: motivo} obras a forzar

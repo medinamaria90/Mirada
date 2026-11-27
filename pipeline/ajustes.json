@@ -253,6 +253,61 @@
   "etapa": 3
  },
  "Q3769209": {
+  "archivo": "Last Judgement - Capella degli Scrovegni - Padua 2016 (2).jpg",
+  "archivoInfo": {
+   "width": 2048,
+   "height": 3072,
+   "mime": "image/jpeg",
+   "license": "CC BY-SA 4.0",
+   "artist": "José Luiz",
+   "credit": "Own work"
+  },
   "etapa": 3
+ },
+ "Q1215809": {
+  "archivo": "Fra Angelico — San Marco Altarpiece.jpg",
+  "archivoInfo": {
+   "width": 4971,
+   "height": 5139,
+   "mime": "image/jpeg",
+   "license": "Public domain",
+   "artist": "Gsimonov",
+   "credit": "Own work"
+  }
+ },
+ "Q667202": {
+  "archivo": "Siena Museo dell'Opera del Duomo Maestà 1.jpg",
+  "archivoInfo": {
+   "width": 4803,
+   "height": 2504,
+   "mime": "image/jpeg",
+   "license": "CC0",
+   "artist": "Zairon",
+   "credit": "Own work"
+  }
+ },
+ "Q3276413": {
+  "titulo": "Maestà del Palazzo Pubblico",
+  "archivo": "Simone Martini - Maestà - Google Art Project.jpg",
+  "archivoInfo": {
+   "width": 4135,
+   "height": 3179,
+   "mime": "image/jpeg",
+   "license": "Public domain",
+   "artist": "Simone Martini",
+   "credit": "Google Arts & Culture"
+  }
+ },
+ "Q3119488": {
+  "titulo": "Guidoriccio da Fogliano en el asedio de Montemassi",
+  "archivo": "Simone Martini - Guidoriccio da Fogliano - Google Art Project.jpg",
+  "archivoInfo": {
+   "width": 6967,
+   "height": 2772,
+   "mime": "image/jpeg",
+   "license": "Public domain",
+   "artist": "Simone Martini",
+   "credit": "Google Arts & Culture"
+  }
  }
 }
