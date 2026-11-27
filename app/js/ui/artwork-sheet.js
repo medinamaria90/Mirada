@@ -13,6 +13,7 @@ import { loadCss } from './lazy-css.js';
 import { ensureFicha, museumLine } from './ficha-data.js';
 import { modalSlot, tapAfterOpen } from './modal-slot.js';
 import { avatarWork, lifeSpan, seenOf } from '../engine/painters.js';
+import { guardGhostTaps } from './tap-guard.js';
 
 const slot = modalSlot();
 const HISTORY_STATE = { miradaGuard: true, miradaWork: true };
@@ -91,6 +92,7 @@ export async function openArtworkSheet(ctx, workId, opts = {}) {
     window.removeEventListener('hashchange', onHash);
     if (dlg.open) dlg.close();
     dlg.remove();
+    guardGhostTaps();
     if (pushed && !fromPop && !silent) {
       const done = () => { window.removeEventListener('popstate', done); setTimeout(restoreScroll, 0); };
       window.addEventListener('popstate', done);

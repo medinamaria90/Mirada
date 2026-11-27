@@ -8,6 +8,7 @@ import { esc } from './dom.js';
 import { icons } from './icons.js';
 import { smallSrc, tinySrc } from './art.js';
 import { cropRect } from '../engine/cuadro-calendar.js';
+import { guardGhostTaps } from './tap-guard.js';
 
 const pct = (v) => `${(v * 100).toFixed(2)}%`;
 
@@ -86,6 +87,7 @@ function openLoupe(work, focus, zoom, opener) {
     window.removeEventListener('popstate', onPop);
     if (dlg.open) dlg.close();
     dlg.remove();
+    guardGhostTaps();
     if (pushed && !fromPop) history.back();
     if (opener && opener.isConnected) opener.focus({ preventScroll: true });
   }
