@@ -13,7 +13,8 @@ import { playEra } from '../audio-bridge.js';
 import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
-import { trailSvg, tramoSign, branchEntrySign, backSpot, stepName, pct } from './path-signs.js';
+import { eraPlace } from './path-art.js';
+import { trailSvg, tramoSign, branchEntrySign, backSpot, branchShort, stepName, pct, FOOT_H } from './path-signs.js';
 import { STATE_LABEL, startedLabel, startedMeta, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
@@ -23,7 +24,6 @@ import { addLevelRings } from '../deep-badges.js';
 import { watchStoryPrefetch } from '../story-prefetch.js';
 import { loadCss } from '../lazy-css.js';
 
-const FOOT_H = 84;                  // alto de la franja bajo el mapa (.path-foot en main.css)
 
 // Música de la rama: su lista si la tiene; si no, la de su época.
 export function branchMusic(index, branch) {
@@ -81,7 +81,8 @@ function mapHtml(ctx, branch) {
   }).join('');
   const done = rows.every((r) => r.status === 'mastered');
   const { mastered, total } = branchProgress(ctx.store.get().progress, index, branch.id);
-  const sign = branchEntrySign(branch, layout.arch, layout.h, mastered, total);
+  const place = eraPlace(layout.gate.x, layout.gate.y);
+  const sign = branchEntrySign(branch, { ...layout.arch, ...place.box }, layout.h, mastered, total, branchShort(branch, index));
   const walked = at >= 0 ? walkedD(layout, at) : done ? walkedD(layout) : '';
   const land = branchLand(branch);
   const tint = `var(--map-tint-${esc(land)})`;

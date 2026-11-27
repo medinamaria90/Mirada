@@ -70,7 +70,7 @@ test('mapa: el sendero recorrido va de otro color hasta la parada actual (entero
   assert.ok(walkedD(layout.eras[1], 1).length > walkedD(layout.eras[1], 0).length);
 });
 
-test('mapa: la salida es corta y con encanto (muralla con puerta, plaza con fuente) y el primer tramo arranca enseguida', () => {
+test('mapa: la salida es corta y con encanto (muralla con su puerta de ciudad, sin plaza) y el primer tramo arranca enseguida', () => {
   const layout = pathLayout(real);
   assert.ok(START_H <= 150, 'el hito de salida vuelve a ser largo');
   const [a, b] = layout.eras;
@@ -80,7 +80,7 @@ test('mapa: la salida es corta y con encanto (muralla con puerta, plaza con fuen
   const start = html.slice(html.indexOf('<li class="path-start"'), html.indexOf('</li>', html.indexOf('<li class="path-start"')));
   assert.ok((start.match(/data-lamp/g) || []).length >= 4, 'la puerta de salida no tiene ventanas que se enciendan');
   assert.ok((start.match(/data-sway/g) || []).length >= 3, 'la salida no tiene árboles que se mezan');
-  assert.ok(start.includes('class="land-water"') && start.includes('data-jet'), 'la plaza no tiene fuente');
+  assert.ok(!start.includes('plaza') && !start.includes('data-jet'), 'queda la plaza o la fuente (María las quitó)');
 });
 
 test('paisajes: listos para vivir — clases del tema (k-*), árboles, luces, agua y detalles esparcidos', () => {

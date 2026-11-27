@@ -25,10 +25,9 @@ export const SIDE_X = { left: 42, right: MAP_W - 42 }; // margen estrecho: sala 
 export const ROAD_HALF = 13;         // medio ancho del sendero (borde incluido)
 const ROAD_GAP = 12;                 // aire entre el sendero y un cartel
 const EDGE = 10;                     // aire con el borde del mapa
-// Nombre de la época grabado en el dintel de su puerta: una losa estrecha de piedra sobre los pilares, centrada en el
-// sendero (lo tapa solo lo que tapa un arco). lift: del pie de la puerta al pie del dintel (el alto de los pilares);
-// h: su alto (una línea de nombre y la ranura del progreso); gap: aire mínimo hasta lo siguiente.
-export const ARCH = { lift: 48, h: 34, gap: 30 };
+// Puerta de ciudad de la época (path-art.js): lift + h es lo que ocupa sobre su pie (torreones con su tejado); gap: aire
+// mínimo hasta lo siguiente.
+export const ARCH = { lift: 48, h: 50, gap: 30 };
 // Espaciado por elementos (docs/eval/plan-composicion-camino.md §3): el hueco entre dos paradas no es fijo, suma lo
 // que hay dentro, apilado de abajo arriba (puente → desvío de rama → mojón del tramo, siempre justo antes de su primer
 // pintor). node: medio nodo con su aire, a cada lado del hueco; el resto, el alto de cada pieza con su aire.
@@ -52,7 +51,9 @@ const SPUR_EASE = 0.38;              // cuánto se alarga la curva al llegar al 
 export const START_H = 150;
 export const START_PLAZA = { x: MAP_W / 2, y: 118 };
 export const START_OUT_X = 270;      // por donde sale el sendero hacia el primer tramo
-export const START_ARCH = { x: 209, y: 66 };   // pie del dintel de la primera época: sobre el arco de la puerta de la muralla
+const START_GATE_TOP = 48;           // hasta aquí sube recto (por el arco y el ático); luego se curva hacia el primer tramo
+export const START_GATE_X = 225;     // paso de la puerta de la muralla: el sendero la cruza recto, por el centro del arco
+export const START_ARCH = { x: START_GATE_X, y: 66 };
 export const MUSEUM_H = 280;
 export const MUSEUM_DOOR = { x: MAP_W / 2, y: 112 };
 
@@ -209,7 +210,7 @@ export const branchLand = (branch) => (branch.kind === 'epoca' ? branch.movement
 
 // Vuelta al camino desde la pantalla de una rama: una tablilla como la del desvío por el que se entró, junto a la puerta,
 // en el lado por el que queda el camino común (el contrario al que salió el desvío), con su vereda hacia el borde.
-const BACK = { foot: 8, spurUp: 22, out: 8, clear: 36 };
+const BACK = { foot: 8, spurUp: 22, out: 8, clear: 92 };   // clear: del paso al borde de la tablilla (fuera de la puerta de ciudad)
 function backSign(era, side) {
   const x = era.gate.x;
   const edge = side === 'left' ? x - BACK.clear : x + BACK.clear;
@@ -251,7 +252,8 @@ function museumLayout(xIn) {
 
 // Salida: la puerta de la muralla es también la entrada de la primera época; su rótulo va sobre ella.
 function startLayout() {
-  const segs = spline([{ ...START_PLAZA, v: true }, { x: START_OUT_X, y: 0, v: true }]);
+  // El sendero llega desde abajo (sigue bajo la barra de abajo, en la franja path-foot): sin arranque en punta.
+  const segs = spline([{ x: START_GATE_X, y: START_H, v: true, line: true }, { x: START_GATE_X, y: START_GATE_TOP, v: true }, { x: START_OUT_X, y: 0, v: true }]);
   return { h: START_H, segs, arch: archAt(START_ARCH.x, START_ARCH.y), trail: segmentsD(segs) };
 }
 

@@ -1,65 +1,57 @@
 /* Sistema visual del mapa (ui/screens/path-signs.js, path-nodes.js). Tres estilos de texto y nada más:
-   1. DINTEL de cada época (y de cada rama en su pantalla): el nombre grabado en la losa sobre los pilares de su puerta,
-      centrado en el sendero que pasa por debajo, con la única cuenta de la época (una ranura que se llena).
-   2. TABLILLAS de tramo (en su hueco antes de sus pintores) y de rama: pequeñas, al borde del camino sobre dos postes;
-      letra pequeña. Completas, se doran.
+   1. INSCRIPCIÓN de cada época (y de cada rama en su pantalla): el nombre grabado en el ático de su puerta de ciudad, en
+      capitales semibold espaciadas; toda la puerta se pulsa.
+   2. MOJONES de tramo (piedra con el nombre al lado, antes de sus pintores) y TABLILLAS de rama (al borde del camino,
+      sobre dos postes, con flecha). Completos, en oro.
    3. ETIQUETAS de las paradas (pintor, sala, repaso): la misma placa translúcida; cerradas, apagadas. La parada actual,
       con el nombre más marcado y el nodo destacado (sin botón aparte). */
 
-/* ---------- 1. Dintel de la época ---------- */
-/* El nombre, grabado en una losa estrecha de piedra sobre los pilares de la puerta (sin caja blanca): letras en relieve
-   sobre la piedra, cornisa fina encima y una ranura de progreso debajo. Centrado en el sendero, que pasa bajo él. */
-.era-arch {
-  --arch-tone: color-mix(in srgb, var(--accent) 78%, var(--map-sign-ink));
-  position: absolute; z-index: var(--map-z-sign); margin: 0; display: flex; justify-content: center; align-items: flex-end; pointer-events: none;
-}
+/* ---------- 1. Inscripción de la época ---------- */
+/* La caja es toda la puerta de ciudad (path-art.js): se pulsa entera y se hunde un poco al tocarla; el nombre va en el
+   ático (--attic-*, fracciones de la caja), letras hundidas en la misma piedra, sin caja ni placa. */
+.era-arch { position: absolute; z-index: var(--map-z-sign); margin: 0; pointer-events: none; }
 .path-start .era-arch { z-index: var(--map-z-sign-start); }
 .arch-band {
-  position: relative; display: grid; justify-items: center; align-content: center; gap: var(--map-lintel-gap); min-width: var(--map-lintel-min); min-height: var(--hit); max-width: min(100%, calc(14 * var(--map-fs)));
-  margin: 0; padding: var(--map-lintel-pad); border: 0; border-radius: var(--map-lapida-r);
-  background: var(--map-stone-front); color: var(--map-sign-ink); font: inherit; text-align: center; pointer-events: auto; cursor: pointer;
-  box-shadow: inset 0 -2px 0 var(--map-stone-side), 0 2px 0 var(--map-shade);
-  transition: transform .15s var(--ease);
+  position: absolute; inset: 0; margin: 0; padding: 0; border: 0; background: none; color: var(--map-sign-ink-2); font: inherit;
+  pointer-events: auto; cursor: pointer;
 }
-/* Cornisa fina encima, del color de los remates de los pilares. */
-.arch-band::before {
-  content: ""; position: absolute; left: calc(-1 * var(--map-lapida-cornice-out)); right: calc(-1 * var(--map-lapida-cornice-out)); bottom: 100%;
-  height: var(--map-lapida-cornice); border-radius: var(--map-lapida-r) var(--map-lapida-r) 0 0; background: var(--map-stone-top); box-shadow: 0 1px 0 var(--map-stone-side);
+/* Al pulsar, el ático se oscurece un poco (el edificio no salta). */
+button.arch-band:active .arch-name { background: color-mix(in srgb, var(--map-stone-side) 45%, transparent); }
+.arch-band:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; border-radius: var(--map-r); }
+.arch-name {
+  position: absolute; left: 50%; bottom: var(--attic-at); translate: -50% 0; width: var(--attic-w); height: var(--attic-h);
+  display: flex; align-items: center; justify-content: center; overflow: hidden; padding-inline: 3%; text-align: center; text-wrap: balance; hyphens: none; word-break: keep-all;
+  font: var(--inscr-weight) max(var(--inscr-min), calc(var(--inscr-fs) * var(--fit, 1)))/var(--inscr-line) var(--font); letter-spacing: calc(var(--inscr-track) * var(--track-on, 1)); text-transform: uppercase;
+  /* De noche la piedra se oscurece con el mapa (--day-night): las letras pasan a crema, la sombra a oscura y el hueco del
+     ático se ahonda (un velo de noche tras las letras), para leerse con la luz baja. */
+  background: color-mix(in srgb, var(--map-night) calc(var(--day-night, 0) * var(--inscr-night-recess)), transparent);
+  border-radius: var(--inscr-recess-r); box-shadow: 0 0 var(--inscr-recess-blur) var(--inscr-recess-blur) color-mix(in srgb, var(--map-night) calc(var(--day-night, 0) * var(--inscr-night-recess)), transparent);
+  color: color-mix(in oklab, var(--map-sign-ink), var(--inscr-night-ink) calc(var(--day-night, 0) * 100%));
+  text-shadow: 0 1px 0 color-mix(in oklab, color-mix(in srgb, var(--map-stone-top) 85%, transparent), var(--map-night) calc(var(--day-night, 0) * 100%));
 }
-/* El toque abarca algo más que la losa (≥ --hit de alto). */
-.arch-band::after { content: ""; position: absolute; inset: calc(-1 * var(--map-tablet-hit)) 0; }
-button.arch-band:active { transform: translateY(1px); }
-.arch-band:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
-.arch-name { display: block; max-width: 100%; font: 600 calc(.8 * var(--map-fs))/1.1 var(--font); letter-spacing: var(--map-lintel-track); text-transform: uppercase; text-wrap: balance; text-shadow: 0 1px 0 var(--map-stone-top); }
-.arch-name .icon { display: inline-block; vertical-align: -1px; }
-/* Ranura grabada del progreso: se llena con el color de la época; completa, de oro. */
-.arch-progress { display: block; width: 70%; height: var(--map-lapida-groove); overflow: hidden; border-radius: var(--radius-pill); background: var(--map-stone-side); }
-.arch-progress-fill { display: block; width: calc(var(--p) * 100%); height: 100%; border-radius: inherit; background: var(--arch-tone); }
-.arch-band.is-done { --arch-tone: var(--gold); }
-.arch-band.is-done .arch-name { color: var(--gold-text); }
-.arch-band.is-locked .arch-name { color: var(--map-sign-ink-2); font-weight: 500; }
-@media (hover: hover) { button.arch-band:hover { background: color-mix(in srgb, var(--map-stone-front) 92%, var(--ink)); } }
+.arch-band.is-done .arch-name { color: color-mix(in oklab, var(--gold-text), var(--inscr-night-gold) calc(var(--day-night, 0) * 100%)); }
+@media (hover: hover) { button.arch-band:hover .arch-name { color: color-mix(in oklab, var(--map-sign-ink), var(--accent) 25%); } }
 
 /* Frontera: bajo el seto de la puerta, el suelo de la época anterior se corta en él (color en mapa-vivo.css). */
 .path-era.has-gate::before { height: calc(100% * var(--gate-y) / var(--era-h)); }
 
-/* ---------- 2. Mojones de tramo y tablillas de rama ---------- */
-.is-tramo .sign-plate, .sign-plate.branch { min-height: 0; gap: 1px; padding: calc(.3 * var(--map-fs)) calc(.6 * var(--map-fs)); outline-offset: -4px; }
-.is-tramo .sign-plate::before, .sign-plate.branch::before { display: none; }
-.is-tramo .sign-name, .sign-plate.branch .sign-name { font: 600 calc(.76 * var(--map-fs))/1.15 var(--font); }
+/* ---------- 2. Tablillas de rama y mojones de tramo ---------- */
+.sign-plate.branch { min-height: 0; gap: 1px; padding: calc(.3 * var(--map-fs)) calc(.6 * var(--map-fs)); outline-offset: -4px; }
+.sign-plate.branch::before { display: none; }
+.sign-plate.branch .sign-name { font: 600 calc(.76 * var(--map-fs))/1.15 var(--font); }
 .sign-plate.branch .sign-meta { font-size: calc(.75 * var(--map-fs)); }
 /* El toque abarca algo más que la tablilla (≥ --hit de alto). */
-.is-tramo .sign-plate::after, .sign-plate.branch::after { content: ""; position: absolute; inset: calc(-1 * var(--map-tablet-hit)) calc(-.5 * var(--map-tablet-hit)); }
+.sign-plate.branch::after { content: ""; position: absolute; inset: calc(-1 * var(--map-tablet-hit)) calc(-.5 * var(--map-tablet-hit)); }
 /* Poste indicador del desvío de una rama (y de la vuelta al camino en su pantalla): flecha hacia donde se va. */
 .sign-arrow { display: grid; flex: none; place-items: center; color: var(--map-sign-ink-2); }
 .sign-plate.branch.is-mastered .sign-arrow { color: var(--gold-text); }
 /* Completo: la tablilla se dora (cara de pan de oro, marco y cinta de oro en el canto). */
-.sign-plate.is-tramo.is-done, .sign-plate.branch.is-mastered {
+.sign-plate.branch.is-mastered {
   border-color: var(--gold); background: color-mix(in srgb, var(--gold) 20%, var(--map-sign)); outline-color: color-mix(in srgb, var(--gold) 55%, var(--map-sign));
   box-shadow: inset 0 calc(-1 * var(--map-ribbon)) 0 var(--gold), 0 2px 0 var(--map-sign-line);
 }
-.sign-plate.is-tramo.is-done .sign-name, .sign-plate.branch.is-mastered .sign-name { color: var(--gold-text); }
-@media (hover: hover) { button.sign-plate.is-tramo.is-done:hover, button.sign-plate.branch.is-mastered:hover { background: color-mix(in srgb, var(--gold) 26%, var(--map-sign)); } }
+.sign-plate.branch.is-mastered .sign-name { color: var(--gold-text); }
+@media (hover: hover) { button.sign-plate.branch.is-mastered:hover { background: color-mix(in srgb, var(--gold) 26%, var(--map-sign)); } }
 
 /* ---------- 3. Etiquetas de las paradas ---------- */
 /* Parada actual: sin botón; se toca el nodo. Destaca por el nodo (más grande, aro de acento brillante con halo lento),
@@ -89,8 +81,8 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 /* Camino en línea (letra muy grande): la lápida pasa a ser una placa más, a todo el ancho y en el flujo; el mojón, solo su
    tablilla. */
 .path-map.is-linear .era-arch { position: static; display: block; }
-.path-map.is-linear .arch-band { width: 100%; max-width: none; min-height: var(--hit); border-radius: var(--map-r); }
-.path-map.is-linear .arch-band::before, .path-map.is-linear .arch-band::after { display: none; }
+.path-map.is-linear .arch-band { position: relative; inset: auto; display: block; width: 100%; min-height: var(--hit); padding: 0 var(--map-fs); border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); }
+.path-map.is-linear .arch-name { position: static; translate: none; width: auto; height: auto; min-height: var(--hit); }
 
 /* ---------- Volver a tu parada (screens/map-return.js) ---------- */
 /* Círculo pequeño (como en Duolingo) con la flecha hacia donde queda y «Tú», la marca de la parada actual. Solo se ve
@@ -110,10 +102,42 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 .map-guide {
   position: fixed; right: calc(max(16px, calc(50% - var(--col) / 2 + 16px)) + var(--map-return-size) + 8px); bottom: calc(var(--map-return-b) + var(--safe-b)); z-index: var(--map-z-float);
   display: flex; align-items: center; gap: .4rem; max-width: min(60vw, calc(var(--col) * .6)); min-height: var(--map-return-size); padding: 0 1rem 0 .8rem; border: 0; border-radius: 999px;
-  background: var(--brand); color: var(--on-brand); font: 600 .95rem/1.1 var(--font); box-shadow: var(--shadow-pop); cursor: pointer;
+  background: var(--brand); color: var(--on-brand); font: 600 .9rem/1.15 var(--font); box-shadow: var(--shadow-pop); cursor: pointer;
 }
+/* Con la guía a la vista, el mapa deja sitio debajo: la salida y las últimas paradas se pueden subir por encima de ella. */
+body:has(.map-guide:not([hidden])) .path-map { padding-bottom: calc(var(--map-return-size) + var(--map-guide-room)); }
 .map-guide-icon { display: grid; flex: none; }
-.map-guide-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.map-guide-label { min-width: 0; text-wrap: balance; }
 .map-guide:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
 .map-guide:active { transform: translateY(1px); }
 @media (hover: hover) { .map-return:hover { background: color-mix(in srgb, var(--surface) 92%, var(--ink)); } }
+
+/* Mojón del tramo: una piedra alta y estrecha (cabeza redonda, cara y canto, banda grabada) al borde del sendero, con el
+   nombre al lado en una o dos líneas, sin caja. Completo, banda y nombre en oro. */
+.road-sign.is-tramo { padding-bottom: 0; }
+.road-sign.is-tramo::before, .road-sign.is-tramo::after { display: none; }
+.sign-plate.is-tramo {
+  display: flex; align-items: flex-end; gap: var(--milestone-gap); min-height: var(--hit); max-width: var(--milestone-label-max); padding: 0; border: 0; outline: 0; border-radius: 0; background: none; box-shadow: none;
+}
+.sign-plate.is-tramo::before { display: none; }
+.sign-plate.is-tramo:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
+.is-left .sign-plate.is-tramo { flex-direction: row-reverse; text-align: right; }
+.is-tramo .sign-name {
+  --halo: color-mix(in oklab, var(--map-tag), var(--map-night) calc(var(--day-night, 0) * 100%));
+  padding-bottom: 2px; font: 500 calc(.75 * var(--map-fs))/1.15 var(--font); text-wrap: balance;
+  /* Sobre el prado: de día, tinta con halo claro; de noche, crema con halo oscuro (se lee igual). */
+  color: color-mix(in oklab, var(--map-sign-ink-2), var(--inscr-night-ink) calc(var(--day-night, 0) * 100%));
+  text-shadow: 0 0 3px var(--halo), 0 0 6px var(--halo), 0 0 1px var(--halo);
+}
+.sign-plate.is-tramo.is-done .sign-name { color: color-mix(in oklab, var(--gold-text), var(--inscr-night-gold) calc(var(--day-night, 0) * 100%)); }
+.tramo-stone { position: relative; flex: none; width: var(--milestone-w); height: var(--milestone-h); }
+/* Hito de piedra gris cálido, de cabeza apuntada, con cara, canto y una banda grabada; su sombra en el suelo. */
+.tramo-stone::before {
+  --band: color-mix(in srgb, var(--map-sign-ink) 24%, transparent);
+  content: ""; position: absolute; inset: 0; clip-path: polygon(50% 0, 100% 24%, 100% 100%, 0 100%, 0 24%);
+  background: linear-gradient(transparent 46%, var(--band) 46% 54%, transparent 54%),
+    linear-gradient(to right, color-mix(in srgb, var(--map-stone-side) 85%, var(--map-sign-ink-2)) 0 62%, color-mix(in srgb, var(--map-stone-side) 65%, var(--map-sign-ink)) 62%);
+}
+.tramo-stone::after { content: ""; position: absolute; left: -4px; right: -6px; bottom: -3px; height: 6px; border-radius: 50%; background: var(--map-shade); z-index: -1; }
+.sign-plate.is-tramo.is-done .tramo-stone::before { --band: var(--gold); }
+@media (hover: hover) { button.sign-plate.is-tramo:hover { background: none; } button.sign-plate.is-tramo:hover .sign-name { color: var(--map-sign-ink); } }
