@@ -1197,10 +1197,12 @@ if (SMOKE) {
   await sp.waitForSelector('.learn');
   check(await sp.locator('.story').count() === 0, 'la historia vuelve a salir sola');
   await storyCtx.close();
-  // Niveles «a fondo»: aro por tramos en el retrato del pintor dominado (un tramo por nivel con historia, el 1 incluido); tocarlo
-  // abre su tarjeta con las historias destacadas y «Jugar · <nivel>»; ronda propia con su celebración (nivel superado) o, si faltan
+  // Niveles «a fondo»: aro por tramos en el retrato del pintor dominado (un tramo por nivel, el 1 incluido); tocarlo abre su
+  // tarjeta con un círculo por nivel y «Empezar · <nivel>»; ronda propia con su celebración (nivel superado) o, si faltan
   // cuadros por ver, el aviso de «una ronda más».
-  const deepArtist = index.path.find((a) => ringLevels(index, a.id).length >= 3);
+  // Uno cuyo nivel 2 tenga historia (la tarjeta la pone antes de la ronda).
+  const toldDeep = (id) => { try { return JSON.parse(readFileSync(new URL(`../app/data/historias/${id}.json`, import.meta.url), 'utf8')).levels.some((l) => l.level === 2); } catch { return false; } };
+  const deepArtist = index.path.find((a) => ringLevels(index, a.id).length >= 3 && toldDeep(a.id));
   const deepUpTo = index.pathIndex(deepArtist.id) + 1;
   const deepLevel = index.deepLevels(deepArtist.id)[0];
   const deepSeen = (all) => ({ artists: { ...seededState({ upTo: deepUpTo }).progress.artists, [deepArtist.id]: { plays: 1, best: 1, mastered: true, works: [...index.worksOf(deepArtist.id)].filter((w) => w.level === 1 || all).map((w) => w.id) } } });
@@ -1214,14 +1216,17 @@ if (SMOKE) {
   await shot(page, '14h-mapa-aro-niveles');
   await page.locator(deepNode).click();
   await page.waitForSelector('.lc[open] .lc-card');
-  check(await page.locator('.lc .hl').count() === rungs && await page.locator('.lc .hl.is-next').count() === 1 && await page.locator('.lc .hl.is-locked').count() === rungs - 2, 'la tarjeta del nodo no enseña una historia por nivel con su estado');
-  check((await page.locator('.lc-play').innerText()).replace(/\s+/g, ' ').trim() === `Jugar · ${stageTitle(deepArtist, deepLevel)}`, `el botón de la tarjeta no es «Jugar · <nivel>»: ${await page.locator('.lc-play').innerText()}`);
+  check(await page.locator('.lc .hl').count() === rungs && await page.locator('.lc .hl.is-next').count() === 1 && await page.locator('.lc .hl.is-locked').count() === rungs - 2, 'la tarjeta del nodo no enseña un círculo por nivel con su estado');
+  check((await page.locator('.lc-play').innerText()).replace(/\s+/g, ' ').trim() === `Empezar · ${stageTitle(deepArtist, deepLevel)}`, `el botón de la tarjeta no es «Empezar · <nivel>»: ${await page.locator('.lc-play').innerText()}`);
   await page.locator('.lc .hl.is-locked').first().click();
   check((await page.locator('.lc .hl-note').innerText()).startsWith('Se abre al terminar'), 'un nivel cerrado no dice qué falta');
-  await page.locator('.lc .hl.is-done').click();
-  check(await page.locator('.lc .hl-pick-btn').count() === 2, 'un nivel hecho no ofrece ver su historia o repetirlo');
   await shot(page, '14i-tarjeta-nodo');
   await audit(page, '390 tarjeta del nodo');
+  await page.locator('.lc .hl.is-done').click();
+  await page.waitForSelector('.story[open]');
+  check(await page.locator('.lc .hl-pick-btn').count() === 0, 'un nivel hecho no abre directamente su historia');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.story[open]', { state: 'detached' });
   await page.keyboard.press('Escape');
   await page.waitForSelector('.lc', { state: 'detached' });
   check(page.url().endsWith('#inicio'), `cerrar la tarjeta cambia de pantalla: ${page.url()}`);

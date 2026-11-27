@@ -85,15 +85,9 @@ export function playTargets(progress, index, artistId, branchId = '') {
   return { stage, next: open ? { id: open.id, name: open.name } : null };
 }
 
-// Nombre de una etapa «a fondo»: su título corto si tiene historia («La corte», el mismo del aro y de la historia); si no, el de
-// los datos; si es genérico («Más obras»), con sus años («Hals (1610–1625)») o, sin años, «<Pintor> a fondo · n».
-const GENERIC_STAGE = /^m[aá]s obras$/i;
-export function stageTitle(artist, stage) {
-  if (stage.short) return stage.short;
-  if (!GENERIC_STAGE.test(stage.name || '')) return stage.name;
-  const who = artist.short || artist.name;
-  return stage.from && stage.to ? `${who} (${stage.from}–${stage.to})` : `${who} a fondo · ${stage.id - 1}`;
-}
+// Nombre de una etapa «a fondo»: su título corto («La corte», «Castilla», «Más obras»), el mismo del aro, de la tarjeta y de la
+// ronda (tools/catalog_from_pipeline.py lo pone en todas).
+export const stageTitle = (artist, stage) => stage.short || stage.name;
 
 // Etapas (niveles «a fondo») de un pintor con su estado y su nombre, para la ficha.
 export function stageList(progress, index, artistId) {
