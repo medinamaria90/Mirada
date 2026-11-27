@@ -259,20 +259,11 @@
   "order": 3,
   "section": null,
   "qid": "Q5811",
-  "works": 12,
+  "works": 8,
   "category": "maestro",
   "branches": [],
-  "stages": [
-   {
-    "nivel": 2,
-    "nombre": "Más obras",
-    "desde": null,
-    "hasta": null,
-    "fuente": "https://es.wikipedia.org/wiki/Masaccio",
-    "provisional": true
-   }
-  ],
-  "level1": 7
+  "stages": [],
+  "level1": 8
  },
  {
   "id": "filippo-lippi",
@@ -1418,11 +1409,11 @@
   "order": 15,
   "section": null,
   "qid": "Q378783",
-  "works": 4,
+  "works": 3,
   "category": "invitado",
   "branches": [],
   "stages": [],
-  "level1": 4
+  "level1": 3
  },
  {
   "id": "rembrandt",
@@ -2887,7 +2878,7 @@
   "order": 16,
   "section": null,
   "qid": "Q380052",
-  "works": 11,
+  "works": 10,
   "category": "maestro",
   "branches": [],
   "stages": [

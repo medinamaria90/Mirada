@@ -14,6 +14,7 @@ from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from atlas_layout import layout, packed_size  # noqa: E402
+from monocromo import monochrome_works  # noqa: E402
 
 FIRST_TRAMO = 4  # «Nace el Renacimiento»: Botticelli, Masaccio, Piero y Berruguete
 # Techo de archivos de app/ ya desplegada. El número original (512 por versión) era de cuando la app era un artifact; en Render
@@ -278,6 +279,9 @@ def main():
                     continue
                 with Image.open(hd_path) as im:
                     check(list(im.size) == [hd["w"], hd["h"]], f"{w['id']}: la HD mide {im.size}, el catálogo espera {hd['w']}x{hd['h']}")
+        for wid, c in monochrome_works(app, imgs):
+            err(f"{wid}: imagen casi monocroma (colorido {c}): foto en blanco y negro o dibujo; exclúyela en pipeline/excluir.json "
+                "o, si de verdad vale, añádela a tools/monocromas_permitidas.json")
         for k, src in enumerate(atlas["sheets"]):
             p = f"{app}/{src}"
             if os.path.isfile(p):
