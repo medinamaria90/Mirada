@@ -45,6 +45,11 @@ export function gameLight(min) {
 
 export const isNight = (min) => gameLight(min).night >= NIGHT_AT;
 
+// Luz del mapa según el tema de Ajustes: «Como el móvil» (sin tema forzado) sigue al reloj aunque el móvil vaya en
+// oscuro (el paisaje no se pinta con el tema, brand.css); forzar «Oscuro» deja el mapa de noche y «Claro», de día.
+const FORCED_LIGHT = { dark: { night: 1, dusk: 0 }, light: { night: 0, dusk: 0 } };
+export const mapLight = (min, forcedTheme = null) => FORCED_LIGHT[forcedTheme] || gameLight(min);
+
 // Minuto del día de juego que corresponde a una hora del reloj (0 a 24): la inversa de gameHour.
 export function minuteAtHour(hour) {
   const h = ((Number(hour) % HOURS_PER_DAY) + HOURS_PER_DAY) % HOURS_PER_DAY;

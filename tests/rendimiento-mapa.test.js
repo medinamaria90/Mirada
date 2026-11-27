@@ -35,7 +35,7 @@ function setup() {
   const observers = [];
   globalThis.document = {
     hidden: false,
-    documentElement: { classList: { contains: () => false } },
+    documentElement: { classList: { contains: () => false }, getAttribute: () => null },
     addEventListener: (t, fn) => listeners.set(t, fn),
     removeEventListener: (t) => listeners.delete(t),
   };
