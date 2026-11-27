@@ -12,6 +12,13 @@
   width: min(100%, 440px); margin: 0 auto; padding: calc(3.4rem + var(--safe-t)) 0 calc(1.2rem + var(--safe-b));
 }
 .sc-close { position: absolute; top: calc(.5rem + var(--safe-t)); right: .5rem; z-index: 1; }
+/* Como paso del camino (antes del primer pintor del tramo): «Saltar», y «Seguir» en la última tarjeta, en vez de la cruz. */
+.sc-skip {
+  position: absolute; top: calc(.5rem + var(--safe-t)); right: .5rem; z-index: 1; min-width: var(--hit); min-height: var(--hit);
+  padding: 0 1rem; border: 0; border-radius: var(--radius-pill); background: none; color: var(--ink-2); font: 600 1rem/1 var(--font); cursor: pointer;
+}
+.sc-skip:active { transform: scale(.97); }
+.sc-skip:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 .sc-body .era-track { height: 100%; }
 .sc-body .era-dots { grid-row: 2; }
 .sc-cover .era-chip { justify-self: center; }

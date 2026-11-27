@@ -202,8 +202,9 @@ test('logros: oro, plata y bronce; reparto por clases; inicial (primera letra); 
   assert.equal(P.parseLastTest(`{"correct":24,"asked":40,"level":"${lvl}"}`).percentile, null);
   assert.equal(P.parseLastTest(`{"correct":1,"asked":2,"level":"${lvl}","grid":"🟩🟨⬜⬜⬜"}`).grid, '🟩🟨⬜⬜⬜');
   assert.equal(P.parseLastTest(`{"correct":1,"asked":2,"level":"${lvl}","grid":"<img>"}`).grid, '');
-  assert.match(shareText({ correct: 24, asked: 40, level: lvl, percentile: 78, grid: '🟩🟩🟨⬜⬜' }, 'https://x/test/'), /24 de 40[^\n]*\n[^\n]*78 % de la gente 🟩🟩🟨⬜⬜\nhttps:\/\/x\/test\//);
-  assert.doesNotMatch(shareText({ correct: 1, asked: 40, level: '', percentile: null, grid: '' }, 'u'), /·|%/, 'sin nivel ni percentil no quedan huecos');
+  assert.equal(shareText({ correct: 24, asked: 40, level: lvl, percentile: 78, grid: '🟩🟩🟨⬜⬜' }, 'https://x/test/'), 'Sfumato · Sé más de pintura que el 78 % de la gente. ¿Y tú?\nhttps://x/test/');
+  assert.equal(P.parseLastTest('{"correct":24,"asked":40,"level":"Mirada entrenada","percentile":78}').level, lvl, 'un nombre de nivel de antes se lee con el nuevo');
+  assert.doesNotMatch(shareText({ correct: 1, asked: 40, level: '', percentile: null, grid: '' }, 'u'), /%|undefined|null|· ·/, 'sin nivel ni percentil no quedan huecos');
   assert.deepEqual(cardLines({ correct: 24, asked: 40, level: lvl, percentile: 78 }), { level: lvl, score: '24 de 40', percentile: 'Sé más de pintura que el 78 % de la gente' }, 'la tarjeta habla en primera persona, como el texto que se comparte');
 });
 

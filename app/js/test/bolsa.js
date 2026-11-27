@@ -11,6 +11,8 @@
 //   · pintor: con etapa en la app y alguna obra icónica 0 · con etapa sin icónicas 0,75 · invitado
 //     con icónica 0,5 · invitado sin icónicas 1,5;
 //     en «¿Movimiento?», fama ×0,6 y pintor ×0,5: la época se adivina por el estilo sin conocerlos;
+//     pintor de fama local (LOCAL_FAME: famosísimos en su país, desconocidos para el público español,
+//     como los rusos) +3,25 en «¿Quién?» y «¿Cuál?»: de difícil para arriba;
 //   · mecánica: «¿Quién?» 0,25 · «¿Cuál?» 0,5 (hay que reconocer la mano entre cuatro) ·
 //     «¿Movimiento?» 0,75 (hay que saber qué es cada movimiento);
 //   · distractores: en «¿Quién?» y «¿Cuál?», el parecido medio de los pintores de relleno con el
@@ -37,6 +39,8 @@ export const ARTIST_POINTS = { stageIcon: 0, stage: 0.75, guestIcon: 0.5, guest:
 export const MOVEMENT_FAME_WEIGHT = 0.6;
 export const MOVEMENT_ARTIST_WEIGHT = 0.5;
 export const KIND_POINTS = { who: 0.25, which: 0.5, movement: 0.75 };
+export const LOCAL_FAME_COUNTRIES = ['Rusia'];
+export const LOCAL_FAME_POINTS = 3.25;
 export const SIMILARITY_WEIGHT = { 3: 0.75, 2: 1, 1: 1 }; // por fama de la obra
 export const MOVEMENT_CLOSE_WEIGHT = 1.2;
 export const MOVEMENT_FAR_GAP = 4;
@@ -76,7 +80,8 @@ export function intrinsicScore(index, work, kind) {
   const fame = (FAME_POINTS[work.fame] ?? FAME_POINTS[1]) * (movement ? MOVEMENT_FAME_WEIGHT : 1);
   const key = `${isStage(index, artist) ? 'stage' : 'guest'}${hasIcon(index, artist) ? 'Icon' : ''}`;
   const who = ARTIST_POINTS[key] * (movement ? MOVEMENT_ARTIST_WEIGHT : 1);
-  return fame + who + KIND_POINTS[kind];
+  const local = !movement && LOCAL_FAME_COUNTRIES.includes(artist.country) ? LOCAL_FAME_POINTS : 0;
+  return fame + who + local + KIND_POINTS[kind];
 }
 
 // Parte que ponen los distractores de la pregunta ya hecha (formato del motor).

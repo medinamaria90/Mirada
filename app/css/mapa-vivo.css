@@ -165,10 +165,6 @@
 .trail-edge.is-done { stroke: var(--lit-trail-done-edge); }
 .trail-fill.is-done { stroke: var(--lit-trail-done); }
 .trail-rim.is-done, .trail-grain.is-done { stroke: var(--lit-trail-done-edge); }
-.plaza-stones { stroke: var(--lit-stone-side); }
-.plaza-rim { fill: var(--lit-stone-side); }
-.fountain-rim { stroke: var(--lit-stone-side); }
-.plaza-fill { fill: var(--lit-stone-top); }
 
 /* Piezas de los dibujos propios (puerta de salida, museo). */
 .land-tile { fill: var(--lit-tile); }
@@ -177,6 +173,17 @@
 .land-water-2 { fill: var(--lit-water-2); }
 .land-bloom { fill: var(--lit-bloom); }
 .land-gold { fill: var(--lit-gold-2); }
+/* Puerta de ciudad de noche: sombra de luna (más suave y fría), piedra con algo más de valor y filo de luna en las
+   aristas, para que destaque sin competir con los cuadros. */
+.gate-shadow, .gate-vault { fill: color-mix(in oklab, var(--map-shade), var(--map-night) calc(var(--day-night, 0) * 70%)); }
+.gate-shadow { opacity: calc(1 - var(--day-night, 0) * .35); }
+.gate-moon { opacity: calc(var(--day-night, 0) * var(--gate-moon-o)); }
+/* Faroles y ventanas de la puerta de la época: encendidos de noche. */
+.path-gate [data-lamp] { fill: color-mix(in oklab, var(--lit-window), var(--map-gold-2) calc(var(--day-night, 0) * 100%)); }
+.path-gate .land-front, .path-start-art.is-front .land-front { fill: color-mix(in oklab, var(--lit-stone-front), var(--map-moon) calc(var(--day-night, 0) * var(--gate-moon-lift))); }
+.path-gate .land-top, .path-start-art.is-front .land-top { fill: color-mix(in oklab, var(--lit-stone-top), var(--map-moon) calc(var(--day-night, 0) * var(--gate-moon-lift))); }
+/* La «i» de la caseta de información guarda su oro de noche: es la única pista de que se pulsa. */
+.path-start-art .land-gold { fill: var(--map-gold-2); }
 
 /* Camino en línea (letra grande): sin paisaje, sin luces ni carruaje. */
 .path-map.is-linear .path-lamps, .path-map.is-linear .map-cart { display: none; }

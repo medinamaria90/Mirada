@@ -5,7 +5,7 @@
 import { esc, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { MAP_W, f } from './path-layout.js';
-import { startArt, museumArt, KIOSK, START_PAVING } from './path-art.js';
+import { startArt, museumArt, KIOSK, inscription } from './path-art.js';
 import { branchProgress, branchStatus, tramoOpen, tramoPending } from '../../engine/branches.js';
 
 const KIOSK_SIGN = 8;      // el botón de la caseta abarca también su letrero
@@ -35,20 +35,13 @@ export const toEra = (name) => withArticle(name).replace(/^el /, 'al ').replace(
 const spurSvg = (b) => `${b.tail ? `<path class="spur-tail" d="${b.tail}"/>` : ''}<path class="spur-edge${b.open ? '' : ' is-locked'}" d="${b.spur}"/><path class="spur-fill${b.open ? '' : ' is-locked'}" d="${b.spur}"/>${b.open ? `<path class="spur-grain" d="${b.spur}"/>` : ''}`;
 
 // Sendero de tierra: sombra suave debajo, borde algo irregular (rim), firme y unas piedrecitas sueltas (grain). done: el
-// tramo ya recorrido, en tierra más cálida y pisada (encima del pendiente). plaza: la salida, donde el sendero nace de
-// una plaza empedrada (sin remate en punta): su borde va bajo el sendero y su suelo encima, así se funden.
+// tramo ya recorrido, en tierra más cálida y pisada (encima del pendiente).
 const dirt = (d, cls = '') => `<path class="trail-rim${cls}" d="${d}"/><path class="trail-rim is-b${cls}" d="${d}"/><path class="trail-edge${cls}" d="${d}"/><path class="trail-fill${cls}" d="${d}"/>`;
 const grain = (d, cls = '') => `<path class="trail-grain${cls}" d="${d}"/><path class="trail-grain is-b${cls}" d="${d}"/>`;
-const ellipse = (cls, e, grow = 0) => `<ellipse class="${cls}" cx="${f(e.cx)}" cy="${f(e.cy)}" rx="${f(e.rx + grow)}" ry="${f(e.ry + grow)}"/>`;
-export const PLAZA_RIM = 3;
-// Hileras de adoquines de la plaza: elipses cada vez más pequeñas (fracción que encogen).
-const PLAZA_RINGS = [0, 0.22, 0.44, 0.66];
-export function trailSvg(h, d, spurs = [], done = '', plaza = null) {
+export function trailSvg(h, d, spurs = [], done = '') {
   const walked = done ? `${dirt(done, ' is-done')}${grain(done, ' is-done')}` : '';
-  const under = plaza ? ellipse('plaza-rim', plaza, PLAZA_RIM) : '';
-  const over = plaza ? `${ellipse('plaza-fill', plaza)}${PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...plaza, rx: plaza.rx * (1 - k) - PLAZA_RIM, ry: plaza.ry * (1 - k) - PLAZA_RIM })).join('')}` : '';
   return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-      <path class="trail-shade" d="${d}"/>${spurs.map(spurSvg).join('')}${under}${dirt(d)}${grain(d)}${walked}${over}</svg>`;
+      <path class="trail-shade" d="${d}"/>${spurs.map(spurSvg).join('')}${dirt(d)}${grain(d)}${walked}</svg>`;
 }
 
 // Caja del cartel (placa sobre dos postes): su borde junto al camino en `edge`, el pie de los postes en `y`; la placa
@@ -58,35 +51,46 @@ export function signBox(sign, h, extra = '') {
   return `class="road-sign is-${sign.side}${extra ? ` ${extra}` : ''}" style="${across};bottom:${pct(h - sign.y, h)};max-width:${pct(sign.room, MAP_W)}"`;
 }
 
-// Dintel (época o rama): su caja, simétrica respecto al sendero, con el pie sobre los pilares de la puerta.
-// tone: estilo del acento de la época (el arco de la primera va en la salida, fuera de su tramo).
-const archBox = (arch, h, tone = '') => `class="era-arch" style="left:${pct(arch.x0, MAP_W)};right:${pct(MAP_W - arch.x1, MAP_W)};bottom:${pct(h - arch.y, h)}${tone ? `;${tone}` : ''}"`;
+// Puerta de la época (o de la rama): su caja es toda la puerta, pulsable; el ático, donde va el nombre, en fracciones de
+// ella (path-art.js, eraPlace). tone: estilo del acento de la época (la primera va en la salida, fuera de su tramo).
+const archBox = (arch, h, tone = '') => `class="era-arch" style="left:${pct(arch.x0, MAP_W)};right:${pct(MAP_W - arch.x1, MAP_W)};bottom:${pct(h - arch.y, h)};top:${pct(arch.top, h)};--attic-at:${f(arch.atticAt * 100)}%;--attic-h:${f(arch.atticH * 100)}%;--attic-w:${f(arch.atticW * 100)}%${tone ? `;${tone}` : ''}"`;
 
-// Dintel de una época: su nombre grabado en la losa de piedra sobre los pilares de su puerta y, debajo, una ranura fina
-// que se va llenando con los pintores dominados (la única cuenta de la época; los siglos, para el lector y en su
-// presentación). Completa, letras y ranura de oro. Abierta, lleva a la presentación; cerrada, candado y una hoja con lo
-// que hay que hacer.
-const groove = (share) => `<span class="arch-progress" aria-hidden="true"><span class="arch-progress-fill" style="--p:${f(share)}"></span></span>`;
+// Nombre grabado en el ático, en capitales (una o dos líneas, por palabras enteras). Los largos, algo más pequeños, pero
+// nunca por debajo de 10,5 px (--fit en mapa-carteles.css); la puerta no crece.
+const INSCR_CHARS = 12;   // letras por línea que caben a tamaño completo
+const INSCR_MIN = 0.88;   // 10,5 px de 12
+export const inscriptionHtml = (word) => {
+  const longest = Math.max(...word.split(' ').map((w) => w.length));
+  const fit = Math.max(INSCR_MIN, Math.min(1, INSCR_CHARS / longest));
+  return `<span class="arch-name" style="--fit:${f(fit)}${fit < 1 ? ';--track-on:0' : ''}">${esc(word)}</span>`;
+};
+
+// Puerta de una época: toda la puerta se pulsa; abierta, lleva a la presentación (con el nombre completo); cerrada, el
+// portón lo dice (path-art.js) y una hoja cuenta qué hay que hacer.
 export function eraArch({ movement, status, sealed, done, total, prevName, arch, h, tone = '' }) {
   const locked = status === 'locked';
-  const name = `<span class="arch-name">${locked ? `${icons.lock(11)} ` : ''}${esc(movement.name)}</span>`;
+  const name = inscriptionHtml(inscription(movement.name));
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
   const count = `${done} de ${total} ${total === 1 ? 'pintor' : 'pintores'}`;
   const button = locked
-    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${groove(0)}</button>`
-    : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}${groove(sealed ? 1 : total ? done / total : 0)}</button>`;
+    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}</button>`
+    : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}</button>`;
   return `<h2 ${archBox(arch, h, tone)}>${button}</h2>`;
 }
 
 // Salida: la puerta de la muralla, que es también la entrada de la primera época (archHtml: su arco, encima); junto a la
 // puerta, la caseta de «Información» (dibujada en el paisaje, path-art.js) abre «Cómo se juega»: un botón transparente
 // la cubre.
+// Alto de la franja bajo el mapa (.path-foot en main.css): el sendero sigue por ella hasta el borde.
+export const FOOT_H = 84;
 export function startBlock(start, tint, archHtml = '') {
   const art = (cls, body) => `<svg class="${cls}" viewBox="0 0 ${MAP_W} ${start.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${body}</svg>`;
   // path-foot: el suelo sigue bajo la barra de abajo (sin franja oscura al llegar al final del mapa).
-  return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true"></li><li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
-    ${art('path-start-art', startArt().back)}${trailSvg(start.h, start.trail, [], start.trail, START_PAVING)}${art('path-start-art is-front', startArt().front)}
-    ${archHtml}<button type="button" class="start-kiosk" data-action="start" style="left:${pct(KIOSK.x + KIOSK.w / 2, MAP_W)};top:${pct(KIOSK.y - KIOSK.h / 2 - KIOSK_SIGN, start.h)}" aria-haspopup="dialog" aria-label="Cómo se juega"><span class="start-kiosk-text">Cómo se juega</span></button>
+  const x = start.segs[0].a.x;
+  const foot = `M${f(x)} 0V${FOOT_H}`;
+  return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true">${trailSvg(FOOT_H, foot, [], foot)}</li><li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
+    ${art('path-start-art', startArt().back)}${trailSvg(start.h, start.trail, [], start.trail)}${art('path-start-art is-front', startArt().front)}
+    ${archHtml}<button type="button" class="start-kiosk" data-action="start" style="left:${pct(KIOSK.x + KIOSK.w / 2, MAP_W)};top:${pct(KIOSK.y - KIOSK.h / 2 - KIOSK_SIGN, start.h)}" aria-haspopup="dialog" aria-label="Cómo se juega"><span class="start-kiosk-text" aria-hidden="true">Cómo se juega</span></button>
   </li>`;
 }
 
@@ -165,7 +169,7 @@ const metaRow = (side, body) => `<span class="sign-meta">${side === 'left' ? sig
 // por el que queda el camino común, con la época a la que se vuelve. Lleva de vuelta al camino, a la vista del desvío.
 export function backSpot(back, eraName, h) {
   return `<li ${signBox(back, h, 'branch-spot is-back')}><button type="button" class="sign-plate branch is-back" data-action="back-to-fork" aria-label="Volver al camino${eraName ? `, ${esc(toEra(eraName))}` : ''}">
-      <span class="sign-name">Volver al camino</span>${metaRow(back.side, eraName ? `<span>${esc(eraName)}</span>` : '')}
+      ${metaRow(back.side, '<span class="sign-name">Volver al camino</span>')}
     </button></li>`;
 }
 
@@ -176,13 +180,13 @@ export function tramoSign(sec, info, h) {
   const done = info.total > 0 && info.got === info.total;
   const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} pintores`}. Ver cartel`;
   return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo${done ? ' is-done' : ''}" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="sign-name">${esc(sec.name)}</span></button></li>`;
+      <span class="tramo-stone" aria-hidden="true"></span><span class="sign-name">${esc(sec.name)}</span></button></li>`;
 }
 
-// Arco de la rama en su pantalla, a la entrada: solo el nombre (la cuenta ya está en la cabecera); abre el cartel de la
+// Puerta de la rama en su pantalla, a la entrada: su nombre corto grabado (la cuenta ya está en la cabecera); abre el cartel de la
 // rama en tarjetas.
-export function branchEntrySign(branch, arch, h, mastered, total) {
+export function branchEntrySign(branch, arch, h, mastered, total, short = branch.name) {
   const label = `${branch.name}, ${mastered} de ${total} pintores. Ver cartel`;
   return `<h2 ${archBox(arch, h)}><button type="button" class="arch-band${total && mastered === total ? ' is-done' : ''}" data-action="cartel" data-kind="rama" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="arch-name">${esc(branch.name)}</span></button></h2>`;
+      ${inscriptionHtml(inscription(short))}</button></h2>`;
 }

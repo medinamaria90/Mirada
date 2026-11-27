@@ -274,3 +274,25 @@ apaisada que ella. Ahora la caja toma la proporción de la obra (`--card-ar`, ha
 tarjeta, con el hueco reservado): ninguna obra se recorta. Solo una tarjeta con `region` enseña un detalle a propósito
 (`cardFrame` en `engine/framing.js`); hoy ninguna lo necesita. Revisadas con capturas a 360 px las 81 tarjetas de época
 visibles y las de los 54 carteles. Prueba: `tests/epocas-encuadre.test.js`.
+
+## La época, una puerta de ciudad en el camino (27/11)
+
+Tras el prototipo y varias vueltas con evaluadores y directores de arte (`docs/eval/eval-camino-r5*`, `eval-proto-r5*`),
+María eligió la puerta de ciudad: cada época entra por una puerta del mismo tamaño (dos torreones de tejado cónico) y el
+sendero cruza su arco; cerrada, lleva portón. El nombre va grabado en el ático en la letra de la app, semibold y en
+capitales, tinta oscura de día y casi blanca de noche, sin partir palabras («Manierismo y Renacimiento del Norte» se
+graba «Renacimiento del Norte»; «Manierismo» sigue en su tramo y en la presentación). La puerta proyecta su sombra
+(de noche, la de la luna) y de noche se ilumina un poco con filo de luna y dos faroles. Sin plaza ni fuente (se probó y
+se quitó). La salida usa la misma puerta en la muralla, con el sendero desde abajo y la caseta de información sin
+rótulo (la «i» basta). El tramo es un hito de piedra con el nombre al lado; las ramas por época se llaman «Más del …»;
+los pintores dormidos ya no llevan «¿Lo recuerdas?» bajo el nombre; la guía dice «Prueba del Renacimiento» y cabe entera.
+
+## Test de pintura depurado (27/11)
+Portada con gancho («¿Distinguirías un Velázquez de un Murillo?») y una línea práctica; fuera «Cuadros de verdad» y
+«Sin registro». Sin pausa a mitad: sigue mientras aciertes (máx. 40) y avisa «Sube la dificultad» sin parar. Niveles
+nuevos («Primera visita al museo» … «Ojo clínico»; los guardados con el nombre de antes se traducen). Resultado con la
+cifra grande del percentil (estimación de `docs/eval/reconocimiento-fuentes.md`, sin cambios) y texto para compartir
+con reto («Sfumato · Sé más de pintura que el 78 % de la gente. ¿Y tú?»; por debajo del 40 %, los aciertos). Salir a
+medias (aspa, Esc o «atrás») pide confirmación con hoja propia (`app/js/test/salida.js`). Efectos de sonido de la app
+con el ajuste «Sonidos» (`app/js/test/sonido.js`). Los pintores rusos ya no salen en el tramo fácil ni en el medio
+(`LOCAL_FAME` en `bolsa.js`). Vista previa (`app/test/portada.jpg`) rehecha con la marca Sfumato.

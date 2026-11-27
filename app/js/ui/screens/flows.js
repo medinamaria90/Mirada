@@ -13,7 +13,7 @@ import { planStage, planMovementReview, planReviewSession, planSala, salaLearnWo
 import { knownArtists } from '../../engine/chrono.js';
 import { planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, needsTramo, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
@@ -25,6 +25,7 @@ import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
 import { stageReturnTo, isGoalScreen } from '../router.js';
+import { takePlayContext } from '../play-context.js';
 import { makeSession, withSession, clearSession } from '../../state/session.js';
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
@@ -70,7 +71,7 @@ function falladoExtras(ctx, kind, plan) {
 
 // Ejecuta una ronda y la guarda tras cada respuesta para poder retomarla (state/session.js).
 function play(ctx, el, opts) {
-  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, returnTo = null } = opts;
+  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, returnTo = null, contextArtist = '' } = opts;
   const home = returnTo || 'inicio';
   const meta = { route: opts.route || currentRoute(), title, accent, kind, extra, friendScore, shareTopic, plan: planMeta(plan) };
   const questions = resume ? resume.round.queue.map((it) => it.q) : plan.questions;
@@ -98,10 +99,17 @@ function play(ctx, el, opts) {
       const goalJustMet = outcome.events.some((e) => e.type === 'goal');
       resultCss.then(() => renderResult(ctx, el, {
         plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before, prevKind, goalJustMet,
-        origin: isGoalScreen(returnTo) ? returnTo : '',
+        origin: isGoalScreen(returnTo) ? returnTo : '', contextArtist,
       }));
     },
   });
+}
+
+// El contexto manda: si se entró desde un pintor (su ficha o galería, o su tarjeta del mapa), el resultado ofrece algo
+// sobre él (engine/next-step.js artistStep).
+function contextOf(returnTo, artistId) {
+  const fromPainter = /^(pintor|obras)-/.test(returnTo || '');
+  return takePlayContext(artistId) || fromPainter ? artistId : '';
 }
 
 // Si la ronda se lanzó desde la ficha de un pintor (o su galería) o desde la pantalla de una rama, atrás y «Salir»
@@ -153,15 +161,16 @@ export function introWorks(index, movementId) {
 }
 
 // Texto del botón de la presentación según cómo se llega a ella.
-const INTRO_ENTER = { first: 'Entrar', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
+const INTRO_ENTER = { first: 'Seguir', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
 
 // Lo que la presentación espera a sus tarjetas antes de pintarse; con una red peor, sale sin ellas y llegan con fundido.
 const ERA_CARDS_WAIT_MS = 1200;
 const waitMs = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
-// mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa; 'shared': desde un enlace
-// compartido (#epoca-<id>), sin tocar la partida; a quien aún no juega, el botón le invita a empezar.
-export async function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
+// mode 'first': se ve al entrar por primera vez, como un paso del camino, y «Seguir» continúa a lo que se iba a jugar
+// (onEnter); 'again': desde el mapa; 'shared': desde un enlace compartido (#epoca-<id>), sin tocar la partida; a quien aún
+// no juega, el botón le invita a empezar.
+export async function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = null } = {}) {
   const { index } = ctx;
   const movement = index.movement(movementId);
   if (!movement || !index.visibleMovements.includes(movement)) return leave(ctx);
@@ -200,7 +209,8 @@ export async function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) 
         ctx.audio.unlock();
         ctx.store.update((s) => ({ ...s, onboarded: true }));
       }
-      ctx.go('inicio');
+      if (onEnter) return onEnter();
+      return ctx.go('inicio');
     },
   });
 }
@@ -295,14 +305,26 @@ function gap(track) {
   return parseFloat(getComputedStyle(track).columnGap) || 0;
 }
 
-// Si es la primera vez en el movimiento, se muestra su intro en lugar de la parada: «Entrar» deja en el camino, donde se
-// elige el pintor. Las ramas-movimiento (Gótico, Estampa japonesa) no tienen presentación propia: se entra directo.
+// La primera vez en el movimiento, su presentación sale como un paso más del camino, en lugar de la parada; «Seguir» la
+// cierra y continúa a la parada (venga de la guía, de «Siguiente» o del mapa). Las ramas-movimiento (Gótico, Estampa
+// japonesa) no tienen presentación propia: se entra directo.
 function withIntro(ctx, el, movementId, show) {
   const visible = ctx.index.visibleMovements.some((m) => m.id === movementId);
   if (visible && needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
-    return renderIntro(ctx, el, movementId, { mode: 'first' });
+    return renderIntro(ctx, el, movementId, { mode: 'first', onEnter: show });
   }
   return show();
+}
+
+// Igual con el tramo: la primera vez que se entra en uno, su cartel en tarjetas (sign-cards.js) antes del pintor;
+// «Saltar» (o «Seguir», al final) lo cierra y sigue al pintor. Salir de la pantalla (atrás) no continúa.
+function withTramo(ctx, el, artistId, show) {
+  if (!needsTramo(ctx.store.get().progress, ctx.index, artistId)) return show();
+  const key = ctx.index.artist(artistId).section;
+  return import('../sign-cards.js')
+    .then((m) => m.openSignCards(ctx, 'tramo', key, null, { title: key, onDone: () => { if (el.isConnected) show(); } }))
+    .then((handle) => { if (!handle && el.isConnected) show(); })
+    .catch((err) => { console.error(err); if (el.isConnected) show(); });
 }
 
 // La historia sale siempre al entrar en un pintor (decisión de María, 26/11) y el embudo es historia → preguntas:
@@ -332,7 +354,8 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx, branchId);
-  withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
+  const contextArtist = contextOf(returnTo, artistId);
+  withIntro(ctx, el, movement.id, () => withTramo(ctx, el, artistId, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
@@ -340,7 +363,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
     const met = metArtistIds(ctx.store.get().progress, index);
     const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown, learnShown: !fromStory, branchId, met });
     playEra(movement.era);
-    const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo }));
+    const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo, contextArtist }));
     if (fromStory) return start();
     const years = artist.born && artist.died ? `${artist.born}–${artist.died}` : '';
     learnScreen(ctx, el, {
@@ -357,7 +380,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
       carouselLabel: `Obras de ${artist.short || artist.name}`,
       onPractice: start,
     });
-  }, { look: artist.hint, returnTo }));
+  }, { look: artist.hint, returnTo })));
 }
 
 // --- Nivel «a fondo» de un pintor: la historia de su etapa y la ronda (no toca la parada del camino) ---
@@ -370,12 +393,13 @@ export function renderDeep(ctx, el, artistId, level) {
   if (deepStatus(ctx.store.get().progress, index, artistId, level) === 'locked') return leave(ctx, 'Aún no está abierto');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx);
+  const contextArtist = contextOf(returnTo, artistId);
   withStory(ctx, el, artistId, level, (shown) => {
     const progress = ctx.store.get().progress;
     const met = metArtistIds(progress, index);
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown, met });
     playEra(movement.era);
-    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
+    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo, contextArtist }));
   }, { look: artist.hint, returnTo });
 }
 

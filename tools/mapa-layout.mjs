@@ -16,7 +16,8 @@ const HALF_H = 36;        // medio alto del rótulo (nombre y botón)
 const SIGN_PX = 7.2;      // ancho medio de una letra en los carteles de tramo y de rama (600, 13 px)
 const SIGN_PAD = 30;      // relleno y flecha de la placa
 const SIGN_H = 62;        // alto de un cartel de tramo o de rama, postes incluidos
-const LINTEL_HALF = 110;  // medio ancho máximo del dintel con el nombre de la época
+const PLACE_HALF = 94;    // medio ancho de la puerta de ciudad de la época (torreones incluidos)
+const PLACE_UP = 98;      // de su pie a la punta de los tejados
 function eraNames(era) {
   const names = (index.isSala(era.id) ? [] : index.stageArtists(era.id)).map((a) => a.name);
   if (hasMovementReview(index, era.id)) names.push('Repaso · faltan 10');
@@ -37,8 +38,8 @@ function signBox(sign, text, extra = 0) {
   const [x0, x1] = sign.side === 'left' ? [sign.edge - w, sign.edge] : [sign.edge, sign.edge + w];
   return { x0: Math.round(x0), x1: Math.round(x1), y0: Math.round(sign.y - SIGN_H), y1: Math.round(sign.y) };
 }
-// Caja del dintel de la época: el nombre centrado en el sendero y, debajo, los pilares hasta la puerta.
-const archBox = (e) => (e.arch ? [{ x0: Math.round(Math.max(e.arch.x0, e.arch.x - LINTEL_HALF)), x1: Math.round(Math.min(e.arch.x1, e.arch.x + LINTEL_HALF)), y0: Math.round(e.arch.top - 6), y1: Math.round(e.gate.y) }] : []);
+// Caja de la puerta de ciudad de la época (path-art.js): ahí no se pinta nada.
+const archBox = (e) => (e.gate ? [{ x0: Math.max(0, Math.round(e.gate.x - PLACE_HALF)), x1: Math.min(MAP_W, Math.round(e.gate.x + PLACE_HALF)), y0: Math.round(e.gate.y - PLACE_UP), y1: Math.round(e.gate.y + 4) }] : []);
 const signBoxes = (e) => [...archBox(e), ...(e.sections || []).map((s) => signBox(s.sign, s.name)), ...(e.branches || []).map((b) => signBox(b.sign, 'Más del Renacimiento'))];
 // x del sendero cada ROAD_STEP de alto (el esparcido de detalles no cae sobre él).
 const ROAD_STEP = 8;

@@ -10,12 +10,14 @@ import { dayKey } from '../engine/dates.js';
 import { $, $$, onAction, announce } from '../ui/dom.js';
 import { installArtListeners } from '../ui/art.js';
 import { upgradeMarcos } from '../ui/marco.js';
-import { createTest, answer, advance, resume, finish, summary, isAnswered, perfectScore } from './motor.js';
-import { buildResult, shareText } from './resultado.js';
+import { createTest, answer, advance, finish, summary, isAnswered, perfectScore } from './motor.js';
+import { buildResult, shareText, testLevelName } from './resultado.js';
 import { validateBank, viewOf, prefixImages } from './preguntas.js';
 import { buildBolsa } from './bolsa.js';
 import { drawGame, startHistory, markSeen } from './sorteo.js';
-import { barHtml, questionHtml, feedbackHtml, pauseHtml, resultHtml, errorHtml } from './pantallas.js';
+import { barHtml, questionHtml, feedbackHtml, resultHtml, errorHtml, CHEER_UP } from './pantallas.js';
+import { setupSound, play } from './sonido.js';
+import { createLeaveGuard } from './salida.js';
 import { revealAnswers, resetReveal } from './revelar.js';
 import { STORAGE_KEY } from '../state/store.js';
 
@@ -125,7 +127,8 @@ function showLast() {
   const last = readLast();
   const line = $('.test-last', home);
   if (!last || !line) return;
-  line.textContent = `La última vez: ${last.correct} de ${last.asked} · ${last.level}`;
+  const level = testLevelName(last.level);
+  line.textContent = `La última vez: ${last.correct} de ${last.asked}${level ? ` · ${level}` : ''}`;
   line.hidden = false;
 }
 
@@ -151,6 +154,7 @@ async function start() {
     btn.removeAttribute('aria-disabled');
   }
   stats('test/empieza');
+  play('tap');
   const bank = newGame();
   ctx = { ...ctx, maxScore: perfectScore(bank) };
   state = createTest(bank);
@@ -158,11 +162,12 @@ async function start() {
   root.hidden = false;
   document.documentElement.classList.add('is-playing');
   root.innerHTML = `<div class="lesson test-lesson">${barHtml(state)}<div class="lesson-stage" id="main"></div><div class="feedback" role="status" aria-live="polite"></div></div>`;
+  leaveGuard.arm();
   renderQuestion();
 }
 
 // ---------------------------------------------------------------- Pregunta y feedback
-function renderQuestion() {
+function renderQuestion(cheer = '') {
   const q = state.current;
   view = viewOf(ctx.index, q);
   saveHistory(markSeen(seen, q.id));
@@ -172,7 +177,7 @@ function renderQuestion() {
   stage.dataset.type = view.kind;
   resetReveal(root);
   stage.classList.remove('enter');
-  stage.innerHTML = questionHtml(view, state.answers.length + 1);
+  stage.innerHTML = questionHtml(view, state.answers.length + 1, { cheer });
   upgradeMarcos(stage);
   requestAnimationFrame(() => stage.classList.add('enter'));
   const feedback = $('.feedback', root);
@@ -222,6 +227,7 @@ function choose(optionId) {
     }
     if (b.dataset.id === optionId) b.classList.add('is-picked');
   }
+  play(correct ? 'correct' : 'wrong');
   const feedback = $('.feedback', root);
   feedback.innerHTML = feedbackHtml(view, correct);
   feedback.classList.add('is-open', correct ? 'is-correct' : 'is-wrong');
@@ -232,22 +238,17 @@ function choose(optionId) {
 
 function next() {
   if (!state || state.status !== 'playing' || !isAnswered(state)) return;
+  const tier = state.tier;
   state = advance(state);
-  render();
+  render(state.tier > tier ? CHEER_UP : '');
 }
 
-function render() {
+function render(cheer = '') {
   if (state.status === 'done') return showResult();
-  if (state.status === 'pause') {
-    root.innerHTML = `<div class="lesson test-lesson">${barHtml(state)}<div class="lesson-stage" id="main">${pauseHtml(state.answers.length)}</div></div>`;
-    window.scrollTo(0, 0);
-    $('#pause-title', root).focus({ preventScroll: true });
-    return;
-  }
   if (!$('.lesson-stage', root) || !$('.feedback', root)) {
     root.innerHTML = `<div class="lesson test-lesson">${barHtml(state)}<div class="lesson-stage" id="main"></div><div class="feedback" role="status" aria-live="polite"></div></div>`;
   }
-  renderQuestion();
+  renderQuestion(cheer);
 }
 
 // ---------------------------------------------------------------- Resultado
@@ -258,6 +259,7 @@ function showResult() {
   document.documentElement.classList.remove('is-playing');
   lastResult = buildResult(summary(state), ctx.maxScore);
   saveLast(lastResult);
+  play('complete');
   stats('test/termina');
   stats(`test/tramo-${lastResult.top.id}`);
   root.innerHTML = resultHtml(lastResult);
@@ -298,18 +300,39 @@ async function share() {
 onAction(document.body, {
   start,
   answer: (b) => choose(b.dataset.id),
-  pick: (b) => zoom(b, Number(b.dataset.pos) || 0),
-  zoom: (b) => zoom(b),
-  continue: next,
+  pick: (b) => { play('tap'); zoom(b, Number(b.dataset.pos) || 0); },
+  zoom: (b) => { play('tap'); zoom(b); },
+  continue: () => { play('tap'); next(); },
   finish: () => { if (state && state.status !== 'done') { state = finish(state); showResult(); } },
-  resume: () => { if (state && state.status === 'pause') { state = resume(state); render(); } },
   share,
-  restart: () => { state = null; lastResult = null; showHome(); },
+  restart: () => { play('tap'); backToHome(); },
+  'leave-ask': () => { play('tap'); leaveGuard.ask(); },
+  'leave-stay': () => { play('tap'); leaveGuard.stay(); },
+  'leave-go': () => { play('tap'); leaveGuard.leave(); },
+});
+
+function backToHome() {
+  leaveGuard.disarm();
+  state = null;
+  lastResult = null;
+  showHome();
+}
+
+// Salir a medias pide confirmación (aspa, Esc y «atrás»); con el resultado en pantalla, «atrás» vuelve a la portada.
+const leaveGuard = createLeaveGuard(document, window, {
+  phase: () => (!state ? null : state.status === 'done' ? 'done' : 'playing'),
+  onLeave: () => { state = null; lastResult = null; showHome(); },
+  onBackFromResult: () => { state = null; lastResult = null; showHome(); },
 });
 
 document.addEventListener('keydown', (ev) => {
   // Con el visor abierto, el teclado es suyo (flechas, Esc, «Es este»).
-  if (!state || state.status !== 'playing' || ev.altKey || ev.ctrlKey || ev.metaKey || document.querySelector('.viewer')) return;
+  if (!state || ev.altKey || ev.ctrlKey || ev.metaKey || document.querySelector('.viewer')) return;
+  if (ev.key === 'Escape') {
+    if (leaveGuard.onEscape()) ev.preventDefault();
+    return;
+  }
+  if (state.status !== 'playing' || leaveGuard.isOpen()) return;
   if (KEY_OPTIONS.includes(ev.key) && !isAnswered(state)) {
     const b = $$('.lesson-stage .option', root)[Number(ev.key) - 1];
     if (b) { ev.preventDefault(); choose(b.dataset.id); }
@@ -319,4 +342,5 @@ document.addEventListener('keydown', (ev) => {
   }
 });
 
+setupSound(localStore);
 showLast();
