@@ -2,6 +2,7 @@
 // tarjetas. Puro: no toca el DOM ni la red.
 
 import { isSelfPortrait } from './painters.js';
+import { ratioOf, coverLoss, coverBox, focusOf, LOSS_OK, LOSS_FOCUSED, STORY_RATIO } from './framing.js';
 
 export const MAX_CARDS = 5;
 export const MAX_TEXT = 180;
@@ -45,21 +46,21 @@ export function cropOf(focus) {
   return { whole: false, x: Math.round(clamp(focus[0], 0, 1) * 100), y: Math.round(clamp(focus[1], 0, 1) * 100), zoom: clamp(focus[2] ?? 1.5, ZOOM_MIN, ZOOM_MAX) };
 }
 
-// Cómo se enseña una obra en una tarjeta: 'crop' (a sangre, centrada en su punto de interés) o 'fit' (entera sobre un fondo
-// desenfocado de la propia obra). Las muy altas (un retrato de cuerpo entero) se enseñan enteras: un recorte corta la cabeza; las muy
-// apaisadas solo se recortan si hay punto de interés (el de la tarjeta o el de la obra); si no, enteras. { mode, x, y, zoom }
-export const TALL_RATIO = 0.65;
-export const WIDE_RATIO = 1.6;
-// Sin punto de interés, las de proporción vertical o casi cuadrada (hasta COVER_MAX) también van a sangre, centradas un poco por
-// encima de la mitad (donde suelen estar las caras) y sin zoom: la historia llena la pantalla como en Instagram.
-export const COVER_MAX = 1.15;
-const COVER_CENTER = { x: 50, y: 40, zoom: 1 };
-export function frameFor(work, focus) {
-  const ratio = work && work.w && work.h ? work.w / work.h : 1;
-  if (ratio < TALL_RATIO) return { mode: 'fit', ...cropOf(null) };
-  const c = cropOf(focus || work?.focus);
-  if (!c.whole) return { mode: 'crop', ...c };
-  return ratio <= COVER_MAX ? { mode: 'crop', whole: false, ...COVER_CENTER } : { mode: 'fit', ...c };
+// Cómo se enseña una obra en una tarjeta (engine/framing.js): 'crop' (a sangre) solo si se pierde poco del cuadro o, con un
+// punto de foco (el de la tarjeta, [x, y, zoom], o el revisado de la obra), hasta LOSS_FOCUSED, con ese punto llevado a
+// STORY_TARGET, por encima del texto. Si no, 'fit': entera sobre un fondo desenfocado de la propia obra (y con `whole`, siempre
+// entera). `frame` es la proporción del marco (ancho / alto). { mode, box? } con la caja de la imagen en % del marco.
+export const STORY_TARGET = [0.5, 0.4];
+const COVER_POINT = [0.5, 0.4]; // sin foco, un poco por encima de la mitad, donde suelen estar las caras
+export function frameFor(work, focus, frame = STORY_RATIO) {
+  const ratio = ratioOf(work);
+  const card = cropOf(focus);
+  const point = card.whole ? focusOf(work) : [card.x / 100, card.y / 100];
+  const zoom = card.whole ? 1 : card.zoom;
+  const loss = 1 - (1 - coverLoss(ratio, frame)) / zoom;
+  const limit = point ? LOSS_FOCUSED : LOSS_OK;
+  if ((work?.whole && card.whole) || loss > limit) return { mode: 'fit' };
+  return { mode: 'crop', box: coverBox(ratio, frame, point || COVER_POINT, zoom, STORY_TARGET) };
 }
 
 // Posición siguiente al pasar de tarjeta: { pos } o { end: true } al pasar de la última; atrás se queda en la primera.

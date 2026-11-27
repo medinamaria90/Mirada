@@ -10,18 +10,24 @@ import { esc, announce } from './dom.js';
 import { icons } from './icons.js';
 import { tinySrc } from './art.js';
 import { levelStory, cropOf } from '../engine/stories.js';
+import { focusOf } from '../engine/framing.js';
 import { deepRoute, stageRoute } from './router.js';
 
 const LABEL = { done: 'hecho, volver a ver su historia', next: 'empezar', locked: 'cerrado' };
 const LABEL_BARE = { ...LABEL, done: 'hecho, repetir' };
 const NO_STORY = 'Este nivel no tiene historia';
 
-// Niveles con su portada: [{ level, short, state, story (si tiene historia), work, crop }].
+// Niveles con su portada: [{ level, short, state, story (si tiene historia), work, crop }]. El círculo se centra en el detalle
+// de la tarjeta o, si no lo tiene, en el foco revisado de la obra.
+const cropFor = (work, focus) => {
+  const f = focus ? null : focusOf(work);
+  return f ? { x: Math.round(f[0] * 100), y: Math.round(f[1] * 100) } : cropOf(focus);
+};
 export function rowLevels(index, artistId, story, levels) {
   return levels.map((l) => {
     const card = levelStory(story, l.level)?.cards[0];
-    if (card) return { ...l, story: true, work: index.artwork(card.artwork), crop: cropOf(card.focus) };
-    return { ...l, story: false, work: index.levelWorks(artistId, l.level)[0], crop: cropOf() };
+    const work = card ? index.artwork(card.artwork) : index.levelWorks(artistId, l.level)[0];
+    return { ...l, story: Boolean(card), work, crop: cropFor(work, card?.focus) };
   });
 }
 

@@ -66,6 +66,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 
 /* ---------- Cuadros ---------- */
 .art {
+  --fx: .5; --fy: .5; /* foco revisado del recorte (art.js); al centro si no lo tiene */
   position: relative; display: block; overflow: hidden;
   aspect-ratio: var(--arw) / var(--arh);
   background: var(--surface-2);
@@ -78,17 +79,17 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   background-size: 250% 100%; animation: sheen 1.4s linear infinite;
 }
 .art.is-loaded::before, .art.is-broken::before { display: none; }
-.art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .35s var(--ease); }
+.art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: calc(var(--fx) * 100%) calc(var(--fy) * 100%); opacity: 0; transition: opacity .35s var(--ease); }
 .art.is-loaded img { opacity: 1; }
 /* Miniatura recortada de una hoja del atlas: escala la región (--tx, --ty, --tw, --th) de la hoja
-   (--sw × --sh) para cubrir el marco, como object-fit: cover. */
+   (--sw × --sh) para cubrir el marco, como object-fit: cover, centrada en el foco (--fx, --fy) sin salirse de su región. */
 .art-sheet { container-type: size; }
 .art.art-sheet img {
   --k: max(100cqw / var(--tw), 100cqh / var(--th));
   inset: auto; max-width: none; max-height: none; object-fit: fill;
   width: calc(var(--sw) * var(--k)); height: calc(var(--sh) * var(--k));
-  left: calc((100cqw - var(--tw) * var(--k)) / 2 - var(--tx) * var(--k));
-  top: calc((100cqh - var(--th) * var(--k)) / 2 - var(--ty) * var(--k));
+  left: calc(var(--tx) * var(--k) * -1 + clamp(100cqw - var(--tw) * var(--k), 50cqw - var(--fx) * var(--tw) * var(--k), 0px));
+  top: calc(var(--ty) * var(--k) * -1 + clamp(100cqh - var(--th) * var(--k), 50cqh - var(--fy) * var(--th) * var(--k), 0px));
 }
 .art.is-broken {
   background:
@@ -610,7 +611,7 @@ html.reduce-motion .ring-halo { animation: none; }
    de interés (--fx, --fy; al centro si no lo tiene). El anillo de estado rodea el marco. */
 .marco {
   --moldura: 2px; --paspartu: 9px; --grosor: calc(var(--moldura) + var(--paspartu));
-  --anillo: transparent; --fx: .5; --fy: .5;
+  --anillo: transparent;
   position: relative; display: block; width: 100%; padding: var(--moldura); border-radius: 2px;
   background: linear-gradient(135deg, var(--frame-gold), var(--frame-gold-2));
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--anillo), var(--frame-shadow);
@@ -619,12 +620,6 @@ html.reduce-motion .ring-halo { animation: none; }
 .marco .art {
   width: 100%; height: auto; aspect-ratio: var(--mar); border-radius: 0;
   box-shadow: 0 0 0 1px var(--frame-mat-line);
-}
-.marco .art img { object-fit: cover; object-position: calc(var(--fx) * 100%) calc(var(--fy) * 100%); }
-/* Miniatura del atlas recortada hacia el punto de interés, sin salirse de su región. */
-.marco .art.art-sheet img {
-  left: calc(var(--tx) * var(--k) * -1 + clamp(100cqw - var(--tw) * var(--k), 50cqw - var(--fx) * var(--tw) * var(--k), 0px));
-  top: calc(var(--ty) * var(--k) * -1 + clamp(100cqh - var(--th) * var(--k), 50cqh - var(--fy) * var(--th) * var(--k), 0px));
 }
 .options-grid .option-art:hover:not([aria-disabled="true"]):not(.is-done) .marco { --anillo: var(--accent); }
 .options-grid .option-art:focus-visible { outline: none; }
