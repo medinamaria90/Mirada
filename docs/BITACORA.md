@@ -257,3 +257,11 @@ Segundo caso («el llanto» de Van der Weyden en un retrato): el filtro pasa a s
 género (Wikidata reducido a retrato, figuras, paisaje, bodegón o abstracto; 213 a mano en `contenido/generos.json`) y cada
 una de las ~600 frases de los 174 pintores declara su alcance en `contenido/rasgos.json` (estilo, géneros o etiquetas).
 Unas 265 obras se quedan sin «fíjate» genérico (antes enseñaban algo que quizá no se veía).
+
+## Tarjetas de época y de cartel: el cuadro entero (27/11)
+
+«La creación de Adán» salía en cuadrado y a Adán le faltaba la cabeza: la caja tenía alto fijo y recortaba toda obra más
+apaisada que ella. Ahora la caja toma la proporción de la obra (`--card-ar`, hasta `--era-art-h` de alto y el ancho de la
+tarjeta, con el hueco reservado): ninguna obra se recorta. Solo una tarjeta con `region` enseña un detalle a propósito
+(`cardFrame` en `engine/framing.js`); hoy ninguna lo necesita. Revisadas con capturas a 360 px las 81 tarjetas de época
+visibles y las de los 54 carteles. Prueba: `tests/epocas-encuadre.test.js`.

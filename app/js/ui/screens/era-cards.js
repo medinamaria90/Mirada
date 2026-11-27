@@ -8,6 +8,8 @@ import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
 import { loadCss } from '../lazy-css.js';
 import { eraUrl, shareLink, NOTES } from '../story-share.js';
+import { cardFrame } from '../../engine/framing.js';
+import { regionOf } from '../../engine/stories.js';
 
 const cache = new Map();
 
@@ -43,11 +45,19 @@ export function loadCards(movementId) {
   return cache.get(movementId);
 }
 
+// Caja del cuadro de una tarjeta: la proporción de la obra entera (o de su `region`, si la tarjeta enseña un detalle a
+// propósito), para que nada se recorte y el hueco quede reservado antes de que llegue la imagen.
+function artBoxAttrs(w, card) {
+  const { ratio, box } = cardFrame(w, regionOf(card.region));
+  const place = box ? `;--rl:${box.left}%;--rt:${box.top}%;--rw:${box.width}%;--rh:${box.height}%` : '';
+  return `class="era-card-art${box ? ' is-region' : ''}" style="--card-ar:${ratio.toFixed(4)}${place}"`;
+}
+
 export function cardHtml(index, card, n, total) {
   const w = index.artwork(card.artwork);
   const who = w ? index.artist(w.artistId) : null;
   return `<section class="era-slide era-card" role="group" aria-roledescription="tarjeta" aria-label="${n} de ${total}: ${esc(card.kicker)}">
-    ${w ? `<div class="era-card-art">${artFrame(w, { alt: '', cls: 'era-art', label: w.title, zoom: { group: 'era-cards', label: `Ver en grande: ${w.title}` } })}</div>
+    ${w ? `<div ${artBoxAttrs(w, card)}>${artFrame(w, { alt: '', cls: 'era-art', label: w.title, zoom: { group: 'era-cards', label: `Ver en grande: ${w.title}` } })}</div>
       <p class="era-card-work">${esc(w.title)}${who ? ` · ${esc(who.short || who.name)}` : ''}</p>` : ''}
     <p class="era-chip">${esc(card.kicker)}</p>
     <p class="era-text">${esc(card.text)}</p>
