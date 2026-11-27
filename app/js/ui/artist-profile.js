@@ -136,7 +136,7 @@ export async function profileHtml(ctx, artistId, opts) {
   // Cerrado en la rama desde la que se abre: qué falta (y sin botón de jugar).
   const why = opts.playable && branchId && !play.stage ? branchLockReason(progress, index, artistId, branchId) : null;
   const nameOf = (s) => (s.type === 'sala' ? index.movement(s.id)?.name : index.artist(s.id)?.short || index.artist(s.id)?.name);
-  const whyText = !why ? '' : why.before ? `Se abre al superar a ${nameOf({ type: 'artist', id: why.before })}` : why.pending.length ? `Se abre después de ${joinNames(why.pending.map(nameOf))}` : '';
+  const whyText = !why ? '' : why.before ? `Se abre después de ${nameOf({ type: 'artist', id: why.before })}` : why.pending.length ? `Se abre después de ${joinNames(why.pending.map(nameOf))}` : '';
   const lock = whyText ? `<p class="ap-lock">${icons.lock(16)}<span>${esc(`${whyText} en ${index.branch(branchId).name}.`)}</span></p>` : '';
   const target = play.stage;
   // Fila de niveles: un círculo por nivel (el mismo aro del mapa); con un solo nivel, solo si tiene historia.
