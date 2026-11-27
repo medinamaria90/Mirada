@@ -1,7 +1,7 @@
 // Ficha de pintor, un perfil que se desplaza con un primer vistazo que se basta solo: portada, avatar con su aro, nombre,
 // sello, «por qué importa», la fila de círculos de sus niveles (ui/level-row.js) y el botón de jugar, con «Sus cuadros»
-// asomando. Debajo, sus cuadros vistos, cómo reconocerlo (cada rasgo con un detalle de un cuadro) y con quién no
-// confundirlo. Solo obras y pintores ya vistos (sin spoilers). El contenido es común a la pantalla
+// asomando. Debajo, sus cuadros vistos, cómo reconocerlo (cada rasgo con un detalle de un cuadro), su tiempo (si lo hay) y
+// con quién no confundirlo. Solo obras y pintores ya vistos (sin spoilers). El contenido es común a la pantalla
 // (`#pintor-<id>`, con cabecera compacta al desplazarse: screens/artist-page.js) y al diálogo de dentro de una ronda
 // (ui/artist-sheet.js).
 
@@ -20,6 +20,7 @@ import { levelStory, storyKey } from '../engine/stories.js';
 import { storySeen } from '../state/stories-seen.js';
 import { sealHtml } from './seal.js';
 import { traitDetails, lookAlikes } from '../engine/ficha.js';
+import { timeHtml } from './ficha-tiempo.js';
 import { lifeSpan, seenOf, playTargets, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
 
 // La tira de cuadros enseña unos cuantos; el resto, en su galería.
@@ -150,6 +151,7 @@ export async function profileHtml(ctx, artistId, opts) {
     ${lock}${actions}
     ${galleryHtml(artist, seen, total, opts.navigate)}
     ${lookHtml(artist, seen)}
+    ${known ? timeHtml(ctx, artistId, (id) => faceOf(progress, index, id)) : ''}
     ${known ? twinsHtml(progress, index, artist, opts.navigate) : ''}`;
 }
 

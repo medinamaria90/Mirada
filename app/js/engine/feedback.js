@@ -4,6 +4,8 @@
 // que el cuadro elegido también cumpla: se apoya en las etiquetas visuales del catálogo (`tags` de
 // obra, `traitTags` de pintor, `tagLabels` y `negableTags`), que llegan con data/catalog-text.json.
 
+import { BEFORE_TYPE, beforeFeedback } from './question-before.js';
+
 // --- Elección de la pista ---------------------------------------------------------------
 // Tipos de cuadro: el típico enseña el rasgo del autor; el atípico se reconoce por otra cosa
 // («no parece un X»); el de memoria «hay que sabérselo». En los dos últimos no se enseñan los
@@ -131,6 +133,10 @@ function chosenOf(index, q, chosenId) {
 // Devuelve { title, who, lines[], kind, source, chosen } con una línea como mucho (texto plano; la
 // UI escapa). chosen: { artistId, name, artworkId, title, line } tras un fallo de autor; si no, null.
 export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { retry = false, chosenId = null } = {}) {
+  if (q.type === BEFORE_TYPE) {
+    const fb = beforeFeedback(index, q, correct, rng ? rng.pick(PRAISE) : PRAISE[0]);
+    return { ...fb, who: '', artistId: null, kind: kindOf(null), source: '', chosen: null };
+  }
   const artist = index.artist(q.artistId);
   const movement = artist ? index.movement(artist.movementId) : null;
   const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);

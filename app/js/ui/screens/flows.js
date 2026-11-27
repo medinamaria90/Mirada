@@ -10,6 +10,7 @@ import { loadCss } from '../lazy-css.js';
 import { playEra } from '../audio-bridge.js';
 import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
+import { knownArtists } from '../../engine/chrono.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
 import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
@@ -402,10 +403,17 @@ export function renderMovementReview(ctx, el, movementId) {
 
 // --- Repaso espaciado (completo o rápido de 3 preguntas desde el inicio) ----------------
 
+// Pintores para «¿Quién fue antes?» en los repasos: conocidos de verdad (historia vista o nivel jugado), como en las
+// preguntas por autor.
+function reviewKnown(ctx) {
+  const progress = ctx.store.get().progress;
+  return knownArtists(progress, ctx.index, '', metArtistIds(progress, ctx.index, (id) => storySeen(storyKey(id, 1))));
+}
+
 export function renderSrsReview(ctx, el, { quick = false } = {}) {
   const { index } = ctx;
   const due = dueKeys(ctx.store.get().progress.srs, ctx.today());
-  const plan = planSrsReview(index, due, randomSeed(), quick ? QUICK_REVIEW : undefined);
+  const plan = planSrsReview(index, due, randomSeed(), quick ? QUICK_REVIEW : undefined, { known: reviewKnown(ctx) });
   if (!plan.questions.length) return leave(ctx, 'Hoy no hay nada que repasar');
   playEra('menu');
   ctx.setCleanup(play(ctx, el, {
@@ -418,7 +426,7 @@ export function renderSrsReview(ctx, el, { quick = false } = {}) {
 
 export function renderReview5(ctx, el) {
   const ids = review5Works(ctx.store.get().progress, ctx.index, ctx.today());
-  const plan = planReview5(ctx.index, ids, randomSeed());
+  const plan = planReview5(ctx.index, ids, randomSeed(), { known: reviewKnown(ctx) });
   if (ids.length < REVIEW5_MIN || plan.questions.length < REVIEW5_MIN) return leave(ctx, 'Hoy no hay nada que repasar');
   playEra('menu');
   ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW5_NAME, kind: 'review5' }));
