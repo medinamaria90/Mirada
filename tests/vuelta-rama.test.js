@@ -20,3 +20,10 @@ test('sin rama, vuelve a la ficha o galería de la que se venía; si no, al cami
 test('la ruta de etapa de rama lleva la rama', () => {
   assert.deepEqual(parseRoute(`#${stageRoute('cimabue', 'gotico')}`), { name: 'stage', artistId: 'cimabue', branchId: 'gotico' });
 });
+
+test('«Ver» de pintores nuevos encuentra la rama aunque vaya dentro de «Ramas (n)»', async () => {
+  const { branchSignSelector } = await import('../app/js/ui/new-painters.js');
+  const sel = branchSignSelector('escuela-rusa');
+  assert.ok(sel.includes('.branch[data-id="escuela-rusa"]'));
+  assert.ok(sel.includes('.branch.is-group[data-members~="escuela-rusa"]'));
+});
