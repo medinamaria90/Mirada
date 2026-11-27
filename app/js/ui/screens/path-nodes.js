@@ -10,17 +10,14 @@ export const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', start
 // Pintor dormido (engine/review.js): terminado y sin salir en una semana.
 export const DORMANT_TEXT = '¿Lo recuerdas?';
 
-// Lo jugado y sin terminar (a medias) se ve en su aro, lleno hasta su nota con una muesca en el 75 % (ui/deep-badges.js), y
-// en una línea bajo el nombre («Vas por el 67 %»); al tocarlo, su tarjeta dice lo que falta. El único repaso a mano es el
+// Lo jugado y sin terminar (a medias) se ve en su aro, lleno hasta su nota con una muesca en el 75 % (ui/deep-badges.js),
+// sin texto bajo el nombre (la cifra, en el aria-label y en su tarjeta al tocarlo). El único repaso a mano es el
 // botón ↻ «Repasar» (shell.js).
 
 // Lo que dice el lector de pantalla de un nodo a medias: «Miguel Ángel, a medias: vas por el 50 %; hace falta un 75 %».
 export function startedLabel(name, best) {
   return `${name}, ${STATE_LABEL.started}: ${startedMeta(best).toLowerCase()}; ${NEED_TEXT}`.replaceAll('\u00a0', ' ');
 }
-
-// Bajo el nombre de un nodo a medias, su nota («Vas por el 50 %»); el aro se llena hasta ella.
-export { startedMeta };
 
 // Cerrado: sin cuadro (no se adelanta nada) y un candado pequeño; terminado, el sello con la marca de hecho.
 export function dotFor(status, cover, name) {
