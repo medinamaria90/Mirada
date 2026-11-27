@@ -1,11 +1,12 @@
-"""Páginas para compartir historias: app/h/<pintor>-1.html, una por historia de nivel 1 (las que se comparten).
+"""Páginas para compartir: app/h/<pintor>-1.html por historia de nivel 1 y app/h/epoca-<id>.html por época con tarjetas.
 
 La app es una página sin servidor y WhatsApp (o Telegram, iMessage…) no ejecuta su código: para que el enlace enseñe el
-cuadro, el título y la primera frase, cada historia tiene su página estática con sus etiquetas og:, que nada más abrirse
-lleva a la app en esa historia (#historia-<pintor>-1). Se generan desde app/data/historias/ y app/data/catalog.json
-(las llama tools/sync_historias.py; también a mano: python3 -I tools/share_pages.py). La imagen es una versión ligera del
-cuadro de la primera tarjeta (img/og/<pintor>-1.jpg: WhatsApp no enseña las pesadas), que se pinta al desplegar con
-tools/fetch_images.sh: python3 -I tools/share_pages.py --images <carpeta con las w*.jpg> (las deja en su og/; necesita Pillow).
+cuadro, el título y una frase, cada cosa que se comparte tiene su página estática con sus etiquetas og:, que nada más
+abrirse lleva a la app (#historia-<pintor>-1 o #epoca-<id>). Se generan desde app/data/historias/, app/data/epocas/ y
+app/data/catalog.json (las llama tools/sync_historias.py; también a mano: python3 -I tools/share_pages.py). La imagen es una
+versión ligera del cuadro de la primera tarjeta (img/og/<nombre de la página>.jpg: WhatsApp no enseña las pesadas), que se
+pinta al desplegar con tools/fetch_images.sh: python3 -I tools/share_pages.py --images <carpeta con las w*.jpg> (las deja en
+su og/; necesita Pillow).
 """
 import html
 import json
@@ -15,6 +16,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP = os.path.join(ROOT, "app")
 STORIES = os.path.join(APP, "data", "historias")
+ERAS = os.path.join(APP, "data", "epocas")
 OUT = os.path.join(APP, "h")
 SITE = "https://sfumato.dibulios.com"  # dirección pública de la app: la única que llevan las páginas
 APP_NAME = "Sfumato"
@@ -51,28 +53,25 @@ PAGE = """<!DOCTYPE html>
 """
 
 
-def page_name(artist_id):
-    return f"{artist_id}-{SHARE_LEVEL}.html"
+ERA_PREFIX = "epoca-"  # como eraRoute de app/js/ui/router.js
 
 
-def og_image_name(artist_id):
-    return f"{artist_id}-{SHARE_LEVEL}.jpg"
+def read_json(*parts):
+    with open(os.path.join(*parts), encoding="utf8") as f:
+        return json.load(f)
 
 
 def shared_cards():
     """[(pintor, nombre, nivel, primera tarjeta, obra)] de las historias que se comparten."""
-    with open(os.path.join(APP, "data", "catalog.json"), encoding="utf8") as f:
-        cat = json.load(f)
+    cat = read_json(APP, "data", "catalog.json")
     works = {w["id"]: w for w in cat["artworks"]}
     artists = {a["id"]: a for a in cat["artists"]}
-    with open(os.path.join(STORIES, "index.json"), encoding="utf8") as f:
-        index = json.load(f)
+    index = read_json(STORIES, "index.json")
     out = []
     for artist_id, levels in sorted(index.items()):
         if SHARE_LEVEL not in levels or artist_id not in artists:
             continue
-        with open(os.path.join(STORIES, f"{artist_id}.json"), encoding="utf8") as f:
-            story = json.load(f)
+        story = read_json(STORIES, f"{artist_id}.json")
         lv = next(l for l in story["levels"] if l["level"] == SHARE_LEVEL)
         card = lv["cards"][0]
         work = works.get(card["artwork"])
@@ -81,20 +80,48 @@ def shared_cards():
     return out
 
 
+def shared_eras():
+    """[(movimiento, obra de su primera tarjeta, nombre del pintor)] de las épocas con tarjetas."""
+    cat = read_json(APP, "data", "catalog.json")
+    works = {w["id"]: w for w in cat["artworks"]}
+    artists = {a["id"]: a for a in cat["artists"]}
+    movements = {m["id"]: m for m in cat["movements"]}
+    out = []
+    for movement_id in sorted(read_json(ERAS, "index.json")):
+        cards = read_json(ERAS, f"{movement_id}.json").get("cards") or []
+        work = works.get(cards[0]["artwork"]) if cards else None
+        if movement_id in movements and work:
+            out.append((movements[movement_id], work, artists[work["artistId"]]["name"]))
+    return out
+
+
+def shared_items():
+    """[(nombre sin extensión, título, frase, obra, pintor de la obra, ruta de la app)] de todo lo que se comparte."""
+    items = [
+        (f"{artist_id}-{SHARE_LEVEL}", lv.get("title") or name, card["text"], work, name, f"historia-{artist_id}-{SHARE_LEVEL}")
+        for artist_id, name, lv, card, work in shared_cards()
+    ]
+    items += [
+        (f"{ERA_PREFIX}{m['id']}", m["name"], m["blurb"], work, painter, f"{ERA_PREFIX}{m['id']}")
+        for m, work, painter in shared_eras()
+    ]
+    return items
+
+
 def build_pages():
-    """{nombre de archivo: html} de todas las historias que se comparten."""
+    """{nombre de archivo: html} de todo lo que se comparte."""
+    esc = lambda s: html.escape(str(s), quote=True)
     pages = {}
-    for artist_id, name, lv, card, work in shared_cards():
-        esc = lambda s: html.escape(str(s), quote=True)
-        fname = page_name(artist_id)
+    for stem, title, text, work, painter, route in shared_items():
+        fname = f"{stem}.html"
         pages[fname] = PAGE.format(
             app=APP_NAME,
-            title=esc(lv.get("title") or name),
-            text=esc(card["text"]),
+            title=esc(title),
+            text=esc(text),
             url=esc(f"{SITE}/h/{fname}"),
-            image=esc(f"{SITE}/img/{OG_DIR}/{og_image_name(artist_id)}"),
-            alt=esc(f"{work['title']}, de {name}"),
-            route=f"historia-{artist_id}-{SHARE_LEVEL}",
+            image=esc(f"{SITE}/img/{OG_DIR}/{stem}.jpg"),
+            alt=esc(f"{work['title']}, de {painter}"),
+            route=route,
         )
     return pages
 
@@ -117,16 +144,16 @@ def save_light(src, dst):
 
 
 def make_images(img_dir):
-    """Pinta <img_dir>/og/<pintor>-1.jpg desde las imágenes de img_dir (en el despliegue, app/img). Devuelve cuántas."""
+    """Pinta <img_dir>/og/<página>.jpg desde las imágenes de img_dir (en el despliegue, app/img). Devuelve cuántas."""
     out = os.path.join(img_dir, OG_DIR)
     os.makedirs(out, exist_ok=True)
     made, missing = 0, []
-    for artist_id, _name, _lv, _card, work in shared_cards():
+    for stem, _title, _text, work, _painter, _route in shared_items():
         src = os.path.join(img_dir, os.path.basename(work["img"]))
         if not os.path.isfile(src):
             missing.append(work["id"])
             continue
-        save_light(src, os.path.join(out, og_image_name(artist_id)))
+        save_light(src, os.path.join(out, f"{stem}.jpg"))
         made += 1
     print(f"{made} imágenes para compartir -> {out}")
     if missing:

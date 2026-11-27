@@ -290,7 +290,7 @@ async function boot() {
       return go('inicio', { replace: true });
     }
     const welcome = () => lazy(token, screen, loadWelcome, (m) => m.renderWelcome(ctx, screen));
-    if (!onboarded && route.name !== 'challenge') return welcome();
+    if (!onboarded && route.name !== 'challenge' && route.name !== 'era') return welcome();
 
     // Ronda a medias: se retoma en su ruta y, al abrir la app en el inicio, se vuelve a ella.
     const session = readSession(store.get(), index, Date.now());
@@ -312,6 +312,7 @@ async function boot() {
       case 'deep': return flow((m) => m.renderDeep(ctx, screen, route.artistId, route.level));
       case 'sala': return flow((m) => m.renderSala(ctx, screen, route.movementId));
       case 'intro': return flow((m) => m.renderIntro(ctx, screen, route.movementId));
+      case 'era': return flow((m) => m.renderIntro(ctx, screen, route.movementId, { mode: 'shared' }));
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));
       case 'srs': return flow((m) => m.renderSrsReview(ctx, screen));
       case 'quick': return flow((m) => m.renderSrsReview(ctx, screen, { quick: true }));

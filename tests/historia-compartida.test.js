@@ -36,7 +36,7 @@ test('historia compartida: sin «Jugar» ni «Ver más», la última tarjeta no 
 test('historia compartida: cada historia de nivel 1 tiene su página con su imagen ligera, la primera frase y el salto a la app', () => {
   const index = json('data/historias/index.json');
   const works = new Map(json('data/catalog.json').artworks.map((w) => [w.id, w]));
-  const pages = new Set(readdirSync(join(app, 'h')));
+  const pages = new Set(readdirSync(join(app, 'h')).filter((f) => !f.startsWith('epoca-')));
   const expected = Object.keys(index).filter((id) => index[id].includes(SHARE_LEVEL));
   assert.equal(pages.size, expected.length, 'páginas de más o de menos: python3 -I tools/share_pages.py');
   for (const id of expected) {
