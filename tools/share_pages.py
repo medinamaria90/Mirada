@@ -14,7 +14,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP = os.path.join(ROOT, "app")
 STORIES = os.path.join(APP, "data", "historias")
 OUT = os.path.join(APP, "h")
-SITE = "https://sfumato-arte.onrender.com"
+SITE = "https://sfumato.dibulios.com"  # dirección principal; la antigua se pasa sola a esta (app/js/state/mudanza.js)
 APP_NAME = "Sfumato"
 SHARE_LEVEL = 1  # como SHARE_LEVEL de app/js/engine/stories.js
 

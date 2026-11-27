@@ -44,7 +44,7 @@ test('historia compartida: cada historia de nivel 1 tiene su página con el cuad
     assert.ok(pages.has(name), `falta app/h/${name}`);
     const html = readFileSync(join(app, 'h', name), 'utf8');
     const card = levelStory(json(`data/historias/${id}.json`), SHARE_LEVEL).cards[0];
-    assert.ok(html.includes(`content="https://sfumato-arte.onrender.com/${works.get(card.artwork).img}"`), `${name}: imagen`);
+    assert.ok(html.includes(`content="https://sfumato.dibulios.com/${works.get(card.artwork).img}"`), `${name}: imagen`);
     assert.ok(html.includes(`location.replace('../#${storyRoute(id, SHARE_LEVEL)}')`), `${name}: salto`);
   }
 });
