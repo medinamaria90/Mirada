@@ -1,6 +1,6 @@
 // Ajustes del perfil, en una hoja aparte (botón ⚙ de la portada): meta del día, tema, música,
 // sonidos, volumen, reducir animaciones, la sección «Superusuario» (con «Empezar de cero» y su confirmación) y,
-// al final, el enlace a «Fuentes y créditos».
+// al final, los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
 
 import { $, announce } from '../dom.js';
 import { icons } from '../icons.js';
@@ -53,6 +53,7 @@ export function settingsHtml(ctx) {
       </label>
       ${toggle('reducedMotion', 'Reducir animaciones', s.reducedMotion)}
       ${superHtml(RESET_HTML)}
+      <button type="button" class="settings-credits" data-action="about">Acerca de Sfumato</button>
       <button type="button" class="settings-credits" data-action="credits">Fuentes y créditos</button>
     </div>
   </dialog>`;
@@ -103,6 +104,11 @@ export function wireSettings(ctx, el) {
     theme: (b) => {
       ctx.audio.sfx('tap');
       markThemePicker(dialog, chooseTheme(ctx.store, b.dataset.value));
+    },
+    about: () => {
+      ctx.audio.sfx('tap');
+      sheet.close();
+      ctx.go('acerca');
     },
     credits: () => {
       ctx.audio.sfx('tap');

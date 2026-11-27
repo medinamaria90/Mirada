@@ -141,8 +141,8 @@ def parrafos_con_fuente(v):
 
 
 def titulos_cortos(pid):
-    """{nivel: título corto} de las etapas con historia: el `stage` de contenido/historias/<pid>.json (único origen; sin
-    historia no hay título ni tramo en el aro de niveles)."""
+    """{nivel: título corto} de las etapas con historia: el `stage` de contenido/historias/<pid>.json (único origen; las que no
+    tienen historia lo toman de D.STAGE_SHORT o de su nombre)."""
     story = contenido_opcional(os.path.join("historias", f"{pid}.json"))
     return {lv["level"]: lv["stage"] for lv in story.get("levels", []) if lv.get("level", 0) >= 2 and lv.get("stage")}
 
@@ -298,8 +298,8 @@ def main(app):
         shorts = titulos_cortos(pid)
         for s in p["stages"]:
             st = dict(id=s["nivel"], name=s["nombre"], **{"from": s.get("desde"), "to": s.get("hasta"), "source": s.get("fuente")})
-            if s["nivel"] in shorts:
-                st["short"] = shorts[s["nivel"]]
+            st["short"] = shorts.get(s["nivel"]) or D.STAGE_SHORT.get((pid, s["nivel"])) or s["nombre"]
+            assert len(st["short"]) <= D.STAGE_SHORT_MAX, f"{pid}: etapa {s['nivel']} sin título corto (STAGE_SHORT)"
             if s.get("verificar"):
                 st["verificar"] = True
             if s.get("provisional"):
@@ -334,6 +334,9 @@ def main(app):
     # Explicación larga (contenido/explicaciones.json, párrafos): solo en la página de la obra, así que va en la ficha.
     curio = {wid: v for wid, v in ((k, texto_con_fuente(v)) for k, v in contenido_opcional("curiosidades.json").items()) if v}
     about = {wid: v for wid, v in ((k, parrafos_con_fuente(v)) for k, v in contenido_opcional("explicaciones.json").items()) if v}
+    # Foco revisado de las obras que alguna vista recorta mucho y las que la historia enseña enteras (contenido/focos.json;
+    # el «Detalle del día» de tools/catalog_data.py manda donde lo hay). Pendientes: node tools/recortes.mjs.
+    focos = {"focos": {}, "enteras": [], **contenido_opcional("focos.json")}
     text = dict(version=3, look={}, looks={}, kind={}, tags={}, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
@@ -351,6 +354,10 @@ def main(app):
                 item[k] = True
         if o in getattr(D, "FOCUS", {}):
             item["focus"] = [round(float(v), 3) for v in D.FOCUS[o]]
+        elif w["id"] in focos["focos"]:
+            item["focus"] = [round(float(v), 3) for v in focos["focos"][w["id"]]]
+        if w["id"] in focos["enteras"]:
+            item["whole"] = True
         if o in D.LOOK:
             text["look"][w["id"]] = D.LOOK[o]
             if o in D.LOOK2 or o in D.LOOK_SOURCE:

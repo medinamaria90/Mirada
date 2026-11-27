@@ -13,6 +13,9 @@ empezar: tiene el estado, las decisiones tomadas y la lista de pendientes en ord
   modelos ligeros donde baste y el potente solo donde haga falta.
 - Si pide instrucciones «paso a paso», da un solo paso cada vez y espera a que diga que lo ha hecho.
   Si tiene que entrar en algún sitio, dale el enlace exacto.
+- Conectores primero: si hay un conector (Render, Cloudflare, Gmail, GitHub…) que pueda hacer la tarea, úsalo tú en vez
+  de pedirle pasos manuales a María; si falta, propón conectarlo (claude.ai/customize/connectors) antes del paso a mano.
+  Decisión de María, 27/11.
 - No pegues ni pidas claves en el chat. Las claves van en variables de entorno o secretos.
 
 ## Publicar
@@ -34,6 +37,13 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
 ## Reglas de producto y diseño
 
 - Textos mínimos y en lenguaje humano. Nada de textos de ayuda bajo los botones.
+- Cada término o nombre que un público general no conozca se enseña, no se quita: va con su explicación al lado,
+  para que se aprenda («una Maestà (una Virgen en su trono)», «el gran museo de Florencia (los Uffizi)», «al fresco
+  (pintado sobre el yeso húmedo de la pared)», «sfumato (contornos difuminados como humo)»).
+- No te apoyes en un pintor que el usuario aún no ha visto en el camino sin presentarlo en la frase («su alumno Giotto,
+  que lo superaría»). Si citas a alguien, di quién era en dos palabras («el poeta Dante», «el biógrafo Vasari») y qué
+  significa la cita.
+- Una idea por tarjeta: si hay dos anécdotas buenas, dos tarjetas (las historias admiten hasta 5).
 - Todo lo que parece pulsable se puede pulsar.
 - Colores armoniosos, nada estridente. La interfaz no compite con los cuadros.
 - Nunca «ayer» ni «mañana» en textos de la app (los títulos de cuadros no cuentan).

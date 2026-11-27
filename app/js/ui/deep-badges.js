@@ -1,11 +1,10 @@
-// Aro de niveles alrededor del retrato (engine/level-ring.js): un tramo por nivel con historia, desde las 12 en el sentido
+// Aro de niveles alrededor del retrato (engine/level-ring.js): un tramo por nivel, desde las 12 en el sentido
 // del reloj. Oro lo hecho, coral (más grueso y con un halo que respira) el siguiente y apagado lo cerrado; el sello dice el
 // número del siguiente o, con todo hecho, lleva el check de oro y el aro se queda entero en oro. Sustituye al anillo de oro
 // de «dominado» en los pintores con niveles. Se añade al DOM ya pintado (los nodos los dibuja el mapa o la rama) y tocar el
-// nodo abre su tarjeta (ui/level-card.js), que también tienen los dominados con un «a fondo» sin historia (sin aro). El mismo
-// aro, más grande, va en el avatar de la ficha.
+// nodo abre su tarjeta (ui/level-card.js). El mismo aro, más grande, va en el avatar de la ficha.
 
-import { levelRing, levelPlan, ringLabel } from '../engine/level-ring.js';
+import { levelRing, ringLabel } from '../engine/level-ring.js';
 
 const RING_R = 47;      // radio del aro en su caja de 100
 const RING_LEN = 100;   // longitud de la circunferencia (pathLength)
@@ -26,14 +25,12 @@ export function addLevelRings(ctx, root) {
     const id = spot.dataset.step.slice('artist:'.length);
     const button = spot.querySelector('.stage');
     if (!button || button.dataset.card || !ctx.index.artist(id)) continue;
-    const plan = levelPlan(progress, ctx.index, id);
-    if (!plan) continue;
-    // Con niveles, tocar el retrato abre su tarjeta (aunque solo uno tenga historia y no lleve aro).
-    button.dataset.card = '1';
-    if (!button.classList.contains('is-onpath')) button.setAttribute('aria-haspopup', 'dialog');
-    button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${ringLabel(plan)}`);
     const ring = levelRing(progress, ctx.index, id);
     if (!ring) continue;
+    // Con más de un nivel, tocar el retrato abre su tarjeta.
+    button.dataset.card = '1';
+    if (!button.classList.contains('is-onpath')) button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${ringLabel(ring)}`);
     button.classList.add('has-ring');
     const dot = button.querySelector('.stage-dot');
     dot?.insertAdjacentHTML('afterbegin', ringSvg(ring.levels));

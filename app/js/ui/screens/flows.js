@@ -15,7 +15,9 @@ import { encodeChallenge } from '../../engine/challenge.js';
 import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
-import { stageTitle, avatarWork, seenOf } from '../../engine/painters.js';
+import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
+import { storyKey } from '../../engine/stories.js';
+import { storySeen } from '../../state/stories-seen.js';
 import { avatarHtml } from '../avatar.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
@@ -312,7 +314,8 @@ export function renderStage(ctx, el, artistId, branchId = '') {
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
     // Tras la historia no hay «Conoce a»: lo recién visto son solo los cuadros de la historia.
-    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown, learnShown: !fromStory });
+    const met = metArtistIds(ctx.store.get().progress, index, (id) => storySeen(storyKey(id, 1)));
+    const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown, learnShown: !fromStory, branchId, met });
     playEra(movement.era);
     const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo }));
     if (fromStory) return start();
@@ -346,7 +349,8 @@ export function renderDeep(ctx, el, artistId, level) {
   const returnTo = cameFrom(ctx);
   withStory(ctx, el, artistId, level, (shown) => {
     const progress = ctx.store.get().progress;
-    const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown });
+    const met = metArtistIds(progress, index, (id) => storySeen(storyKey(id, 1)));
+    const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown, met });
     playEra(movement.era);
     ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
   }, { look: artist.hint, returnTo });

@@ -14,7 +14,7 @@ import { realIndex } from './helpers-real.js';
 import { periodStart } from '../app/js/engine/movements.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
 import { initials } from '../app/js/ui/artist-profile.js';
-import { sourceLabel } from '../app/js/engine/stories.js';
+import { sourceLabel, MAX_CARDS, MAX_TEXT } from '../app/js/engine/stories.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const app = join(here, '..', 'app');
@@ -188,12 +188,12 @@ test('historias: app/data/historias es copia exacta de contenido/historias (pyth
   for (const n of names) assert.deepEqual(readJson(join(dst, n)), readJson(join(src, n)), `${n} desfasado: ejecuta tools/sync_historias.py`);
 });
 
-test('historias: como mucho 3 tarjetas, texto de hasta 180 caracteres y fuente', () => {
+test('historias: como mucho MAX_CARDS tarjetas, texto de hasta MAX_TEXT caracteres y fuente', () => {
   const dst = join(app, 'data', 'historias');
   for (const n of readdirSync(dst).filter((f) => f !== 'index.json')) {
     for (const lv of readJson(join(dst, n)).levels) {
-      assert.ok(lv.cards.length >= 1 && lv.cards.length <= 3, `${n} nivel ${lv.level}`);
-      for (const c of lv.cards) assert.ok(c.text.length <= 180 && /^https?:/.test(c.source), `${n} nivel ${lv.level}`);
+      assert.ok(lv.cards.length >= 1 && lv.cards.length <= MAX_CARDS, `${n} nivel ${lv.level}`);
+      for (const c of lv.cards) assert.ok(c.text.length <= MAX_TEXT && /^https?:/.test(c.source), `${n} nivel ${lv.level}`);
     }
   }
 });

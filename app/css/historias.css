@@ -8,6 +8,12 @@
   --story-step: 44px;
   --story-shade: color-mix(in srgb, var(--viewer-bg) 82%, transparent);
   --story-shade-soft: color-mix(in srgb, var(--viewer-bg) 45%, transparent);
+  --story-target-x: 50%; --story-target-y: 40%; /* STORY_TARGET de engine/stories.js: donde cae el punto de interés */
+  --story-fit-top: calc(env(safe-area-inset-top, 0px) + 4.75rem); /* bajo la cabecera */
+  --story-fit-gap: .5rem;
+  --story-fit-max: 45%; /* con letra muy grande el texto se desplaza; la obra no se encoge más */
+  --story-fit-center: 45%;
+  --story-fit-zoom: 1.04;
   box-sizing: border-box; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0;
   background: var(--viewer-bg); color: var(--viewer-ink); overflow: hidden;
 }
@@ -20,18 +26,26 @@
 .story-img, .story-bg { -webkit-user-drag: none; pointer-events: none; }
 .story-copy.is-scrollable { touch-action: pan-y; }
 
-/* El cuadro, a sangre, con su barrido. */
+/* El cuadro con su barrido. A sangre, la imagen ocupa la caja que calcula engine/stories.js (--bl, --bt, --bw, --bh: el punto de
+   interés queda por encima del texto); entera, se coloca en el hueco entre la cabecera y el texto (--story-text-h lo mide
+   story-viewer.js) sobre un fondo desenfocado de ella misma, y solo se acerca o se aleja un poco. */
 .story-media, .story-art { position: absolute; inset: 0; overflow: hidden; }
-.story-pan { position: absolute; inset: 0; transform-origin: var(--x) var(--y); animation: story-pan-in var(--story-pan-dur) var(--ease) both; will-change: transform; }
-.story-pan[data-pan="1"] { animation-name: story-pan-left; }
-.story-pan[data-pan="2"] { animation-name: story-pan-right; }
+.story-pan { position: absolute; inset: 0; transform-origin: var(--story-target-x) var(--story-target-y); animation: story-pan-in var(--story-pan-dur) var(--ease) both; will-change: transform; }
+.story-pan[data-pan="pan-1"] { animation-name: story-pan-left; }
+.story-pan[data-pan="pan-2"] { animation-name: story-pan-right; }
+.story-art.is-fit .story-pan { transform-origin: 50% var(--story-fit-center); animation-name: story-fit-in; }
+.story-art.is-fit .story-pan[data-pan="fit-1"] { animation-name: story-fit-out; }
 @keyframes story-pan-in { from { transform: scale(1.02); } to { transform: scale(1.1); } }
 @keyframes story-pan-left { from { transform: scale(1.1) translateX(2.5%); } to { transform: scale(1.1) translateX(-2.5%); } }
 @keyframes story-pan-right { from { transform: scale(1.1) translateX(-2.5%); } to { transform: scale(1.1) translateX(2.5%); } }
+@keyframes story-fit-in { from { transform: scale(1); } to { transform: scale(var(--story-fit-zoom)); } }
+@keyframes story-fit-out { from { transform: scale(var(--story-fit-zoom)); } to { transform: scale(1); } }
 .story.is-paused .story-pan { animation-play-state: paused; }
-.story-img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: contain; }
+.story-img { position: absolute; max-width: none; }
+.story-art.is-crop .story-img { left: var(--bl); top: var(--bt); width: var(--bw); height: var(--bh); object-fit: fill; }
+.story-art.is-fit { --fit-bottom: calc(min(var(--story-text-h, 30%), var(--story-fit-max)) + var(--story-fit-gap)); }
+.story-art.is-fit .story-img { left: 0; top: var(--story-fit-top); width: 100%; height: calc(100% - var(--story-fit-top) - var(--fit-bottom)); object-fit: contain; }
 .story-bg { position: absolute; inset: -6%; width: 112%; height: 112%; max-width: none; object-fit: cover; filter: blur(22px) brightness(.55) saturate(1.1); }
-.story-art.is-crop .story-img { object-fit: cover; object-position: var(--x) var(--y); transform: scale(var(--z)); transform-origin: var(--x) var(--y); }
 
 /* Cabecera encima del cuadro. */
 .story-head { position: absolute; z-index: 2; inset: 0 0 auto; padding: calc(env(safe-area-inset-top, 0px) + .6rem) .6rem 2.2rem var(--story-gutter); background: linear-gradient(to bottom, var(--story-shade), transparent); pointer-events: none; }
@@ -80,3 +94,14 @@
 }
 html.reduce-motion .story[open], html.reduce-motion .story-pan { animation: none; }
 html.reduce-motion .story-bar.is-now > span { animation: none; width: 100%; }
+
+/* Compartir (ui/story-share.js): el aviso «Enlace copiado», bajo la cabecera. */
+.story-note { position: absolute; z-index: 4; top: calc(env(safe-area-inset-top, 0px) + 5.4rem); left: 50%; translate: -50% 0; margin: 0; padding: .5rem 1rem; border-radius: 999px; background: var(--story-shade); color: var(--viewer-ink); font: 500 .9rem/1.3 var(--font); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity var(--dur-pop) var(--ease); }
+.story-note.is-on { opacity: 1; }
+
+/* Invitación a jugar al terminar una historia compartida (ui/story-link.js): el último cuadro de fondo, quieto y en penumbra. */
+.story-invite .story-frame { cursor: default; touch-action: auto; }
+.story-invite .story-pan { animation: none; transform: scale(1.06); }
+.story-invite .story-media::after { content: ""; position: absolute; inset: 0; background: var(--story-shade-soft); }
+.story-invite .story-bottom { max-height: none; }
+.story-invite .story-ask { margin: 0; font: 700 1.6rem/1.2 var(--font); color: var(--viewer-ink); }

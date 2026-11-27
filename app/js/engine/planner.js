@@ -73,6 +73,16 @@ export function allowsOtherQuestions(count) {
 // Probabilidad de que la de movimiento tenga como respuesta el movimiento de la etapa.
 export const MOVEMENT_CURRENT_SHARE = 0.34;
 
+// Pintores anteriores que de verdad ya han salido: las preguntas por autor («¿Quién lo pintó?» con él de respuesta,
+// «¿Cuál es de X?») y el repaso solo usan a estos. `met`: ids de los pintores conocidos (historia vista o nivel
+// jugado); sin él, se dan por conocidos todos los anteriores.
+export function metOnly(before, met) {
+  if (!met) return before;
+  const ids = new Set(met);
+  return before.filter((a) => ids.has(a.id));
+}
+
+// opts.branchId: rama desde la que se juega (da el orden de los pintores anteriores). opts.met: ver metOnly.
 // opts.review: obras de pintores anteriores que van, en ese orden, en las primeras preguntas de
 // repaso (el cuadro de repaso elegido por antigüedad: engine/review.js). Sin cambiar nada más: mismo
 // número de preguntas, mismos tipos y mismos distractores que cualquier otra ronda.
@@ -85,9 +95,9 @@ export function planStage(index, artistId, seed, opts = {}) {
   // Nivel 1 = «Conoce a» + ronda del pintor; 2..n = ronda «a fondo» de su etapa (todas sus obras).
   const level = Number.isInteger(opts.level) && opts.level >= 2 ? opts.level : 1;
   const seen = new Set(opts.seen || []);
-  const before = opts.before || (index.pathIndex(artistId) >= 0
+  const before = metOnly(opts.before || (index.pathIndex(artistId) >= 0
     ? index.path.slice(0, index.pathIndex(artistId))
-    : index.branchBefore(artistId));
+    : index.branchBefore(artistId, opts.branchId)), opts.met);
   const onlyWhich = !allowsOtherQuestions(knownPainters(before, artistId));
   const own = ownSelection(index, artist, learn, rng, { level, seen, first: onlyWhich });
   const planned = !onlyWhich
