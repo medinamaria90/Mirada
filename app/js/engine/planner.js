@@ -5,6 +5,7 @@ import { createRng } from './rng.js';
 import { makeQuestion, makeWhoQuestion, makeMovementQuestion, isSpoiler, noAuthorQuestion } from './questions.js';
 import { salaLearnWorks, SALA_LEARN, levelOf, RELAX_MAX } from './catalog.js';
 import { REVIEW5_SIZE } from './review.js';
+import { withBeforeQuestion } from './question-before.js';
 
 // Ejecución de una ronda (cola, reintentos y puntuación): engine/round.js.
 export { createRound, currentItem, answerRound, roundDone, roundProgress, roundScore } from './round.js';
@@ -505,7 +506,8 @@ export function planMovementReview(index, movementId, seed) {
 export const SRS_MAX = 8;
 export { QUICK_REVIEW } from './srs.js';
 
-export function planSrsReview(index, dueKeys, seed, max = SRS_MAX) {
+// opts.known: pintores que conoce el usuario (engine/chrono.js knownArtists); con ellos, a veces una «¿Quién fue antes?».
+export function planSrsReview(index, dueKeys, seed, max = SRS_MAX, opts = {}) {
   const rng = createRng(`srs:${seed}`);
   const works = [];
   const seen = new Set();
@@ -530,12 +532,14 @@ export function planSrsReview(index, dueKeys, seed, max = SRS_MAX) {
     if (q && q.type === 'which') q.options.forEach((o) => avoid.add(o.artworkId));
     return tag(q, 'srs');
   });
-  return { kind: 'srs', seed, questions: questions.filter(Boolean) };
+  // Semilla aparte: añadirla no cambia el resto del repaso.
+  const all = withBeforeQuestion(index, questions.filter(Boolean), opts.known, createRng(`antes:${seed}`), 'srs');
+  return { kind: 'srs', seed, questions: all };
 }
 
 // «Repaso de 5» (engine/review.js elige los cuadros): las mismas preguntas que el repaso espaciado.
-export function planReview5(index, workIds, seed) {
-  return { ...planSrsReview(index, workIds.map((id) => `art:${id}`), seed, REVIEW5_SIZE), kind: 'review5' };
+export function planReview5(index, workIds, seed, opts = {}) {
+  return { ...planSrsReview(index, workIds.map((id) => `art:${id}`), seed, REVIEW5_SIZE, opts), kind: 'review5' };
 }
 
 // Ronda general de 10 preguntas sobre un conjunto de obras (reto diario y retos).

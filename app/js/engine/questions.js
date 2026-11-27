@@ -281,8 +281,8 @@ export function makeQuestion(type, index, artwork, difficulty, rng, opts = {}) {
 // movimiento no cambian (opciones en orden cronológico) y, si la otra mecánica no es posible, se barajan.
 export const RETRY_DIFFICULTY = 0.4;
 export function retryQuestion(index, q, rng) {
-  // Las de movimiento mantienen el orden cronológico (solo las otras barajan sus opciones).
-  if (q.type === 'movement') return { ...q };
+  // Las de movimiento mantienen el orden cronológico (solo las otras barajan sus opciones); «¿Quién fue antes?» vuelve igual.
+  if (q.type === 'movement' || q.type === 'before') return { ...q };
   const shuffled = { ...q, options: rng.shuffle(q.options) };
   const work = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
   if (!work) return shuffled;
@@ -294,7 +294,7 @@ export function retryQuestion(index, q, rng) {
 
 // Artworks que aparecen en pantalla en una pregunta (para precarga y fallos de imagen).
 export function artworksInQuestion(q) {
-  if (q.type === 'which') return q.options.map((o) => o.artworkId);
+  if (q.type === 'which' || q.type === 'before') return q.options.map((o) => o.artworkId);
   return [q.artworkId];
 }
 
