@@ -94,6 +94,11 @@ def main():
         check(not any(k in w for w in cat["artworks"]), f"catalog.json no debe llevar {k} (va en catalog-text.json)")
     for k in ("traits", "traitTags"):
         check(not any(k in a for a in cat["artists"]), f"catalog.json no debe llevar {k} de pintor")
+    # Ninguna obra de pipeline/excluir.json (claves QID o w<número>) puede llegar al catálogo de la app.
+    excl_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "pipeline", "excluir.json")
+    excluded = {re.sub(r"^Q(?=\d+$)", "w", k) for k in json.load(open(excl_path, encoding="utf-8"))}
+    for w in cat["artworks"]:
+        check(w["id"] not in excluded, f"{w['id']}: está en pipeline/excluir.json y no debe estar en el catálogo")
     labels = text.get("tagLabels", {})
     check(isinstance(labels, dict) and labels, "catalog-text: falta tagLabels")
     check(set(text.get("negableTags", [])) <= set(labels), "catalog-text: negableTags fuera del vocabulario")
