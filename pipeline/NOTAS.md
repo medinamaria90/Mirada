@@ -131,6 +131,18 @@ Aplicada la fase 1 de `docs/propuesta-pintores.md` con las decisiones de María 
 - Ojo: `excluir.json` solo actúa al volver a ejecutar `seleccionar` de ese pintor. Una exclusión hecha a mano en `obras.json` vuelve con
   el siguiente `build` si no se quita también de `catalogo/seleccion.json` (pasó con Kuniyoshi Q69729449; ya quitada).
 
+### 27/11 (2.ª y 3.ª pasada) — archivos alternativos, ramas sienesas y exclusiones
+
+- Archivos de Commons en `ajustes.json` (con `archivoInfo`): *El Juicio Final* de Giotto (foto de 2016, 2048 × 3072), *Retablo de
+  San Marcos* (4971 × 5139) y *Maestà* de Duccio (tabla central, CC0; sale de `excluir.json`). Simone Martini: *Maestà* del Palazzo
+  Pubblico y *Guidoriccio* (Google Art Project), forzadas. Duccio y Simone Martini, 4 obras de nivel 1; Fra Angelico, 5.
+- **`excluir.json` en todos los pasos.** `lib.seleccion()` lee la selección sin las excluidas (claves QID o `w<número>`); la usan
+  `seleccionar` (también para los pintores que no vuelve a elegir), `fichas`, `download` y `build`. `validate.py`,
+  `tools/validate_catalog.py` y `tests/excluir.test.js` fallan si una excluida llega a `catalogo/` o a `app/data`. Antes solo
+  `seleccionar.py` excluía, y solo con claves Q. El *Políptico del juicio final* de Van der Weyden sale de `excluir.json`: volvió y lo
+  usan sus textos.
+- Ojo: `run.sh` hace `git pull --rebase -X theirs`; si se cambia `catalogo/` en main mientras corre el proceso, gana lo del proceso.
+
 ## Plan de migración de la app al catálogo grande (sin tocar `app/` hasta que acabe la portada)
 
 Hoy la app vive de `tools/catalog_data.py` (datos a mano de 235 obras y 75 pintores, ids `a<N>`/`b<N>`,
