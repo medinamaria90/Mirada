@@ -53,7 +53,7 @@ La app se publica como página con archivos propios. Reglas que el código DEBE 
 - Sin zoom de página (oleada 8): viewport con `maximum-scale=1, user-scalable=no`, `touch-action:
   pan-x pan-y` en todo (no se hereda) y, en Safari, freno de `gesture*` y de movimientos con dos
   dedos. El tamaño de texto del sistema sigue funcionando (estilos en rem).
-- Límite duro del artifact: 512 archivos por versión. Objetivo propio: **< 320 archivos en `app/`**
+- Límite duro del artifact: 512 archivos por versión (ya no aplica: la app se sirve desde Render; techo actual de 1000 en `tools/validate_catalog.py`). Objetivo propio (histórico): **< 320 archivos en `app/`**
   (imágenes ya optimizadas en `app/img/`, miniaturas agrupadas en hojas `app/img/s/`; lo comprueba
   `tools/validate_catalog.py`).
 

@@ -1,10 +1,9 @@
-# 27/11 — Gótico: Giotto pasa a gran maestro de la rama, con tres «a fondo» (Formación y Asís, Padua y la capilla
-# Scrovegni, Florencia y el campanile). Van Eyck sale de la rama Gótico. Solo se vuelve a elegir a Giotto.
-# Tras el pase, en local: mover contenido/historias/pendientes/giotto.json a contenido/historias/giotto.json (historias
-# de sus tres niveles, con las obras que fija pipeline/ajustes.json), regenerar catálogo, historias y paisajes, y poner al
-# día las pruebas que daban a Giotto como invitado en dos ramas (tests/rama-origen.test.js, tests/catalogo-grande.test.js).
-candidates giotto
-seleccionar giotto
+# 27/11 — Fra Angelico: entran las forzadas de extra.json (Adoración de los Reyes Magos, Anunciación de Cortona; la Coronación
+# se fuerza para no perderla; el Retablo de San Marcos queda fuera: imagen de 848 px). Giotto: tres frescos más de los Scrovegni
+# (El beso de Judas, Llanto sobre Cristo muerto, El Juicio Final) en su nivel «Padua». Leyster y Malévich: «Colección privada»
+# en vez del marchante (fichas_ajustes.json, se aplica en build).
+candidates giotto fra-angelico
+seleccionar giotto fra-angelico
 fichas
 reconciliar
 download 1 150

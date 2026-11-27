@@ -671,6 +671,68 @@
   "fama": 2
  },
  {
+  "id": "w2067212",
+  "pintorId": "giotto",
+  "qid": "Q2067212",
+  "titulo": "Lamentación sobre Cristo muerto",
+  "tituloFuente": "wikidata-es",
+  "level": 3,
+  "etapa": "Padua y la capilla Scrovegni",
+  "forzada": true,
+  "anio": "1305",
+  "anioSort": 1305,
+  "anioCalidad": "exact",
+  "coleccion": "capilla de los Scrovegni",
+  "tipo": [
+   "?"
+  ],
+  "archivo": "Compianto sul Cristo morto.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Compianto_sul_Cristo_morto.jpg",
+  "srcW": 10240,
+  "srcH": 9632,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Gennadii Saus i Segura",
+  "creditoArchivo": "Own work",
+  "sitelinks": 13,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 2
+ },
+ {
+  "id": "w3504778",
+  "pintorId": "giotto",
+  "qid": "Q3504778",
+  "titulo": "El beso de Judas",
+  "tituloFuente": "wikidata-es",
+  "level": 3,
+  "etapa": "Padua y la capilla Scrovegni",
+  "forzada": true,
+  "anio": "1303–1304",
+  "anioSort": 1303,
+  "anioCalidad": "exact",
+  "coleccion": "capilla de los Scrovegni",
+  "tipo": [
+   "?"
+  ],
+  "archivo": "Giotto di Bondone - No. 31 Scenes from the Life of Christ - 15. The Arrest of Christ (Kiss of Judas) - WGA09216.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Giotto_di_Bondone_-_No._31_Scenes_from_the_Life_of_Christ_-_15._The_Arrest_of_Christ_(Kiss_of_Judas)_-_WGA09216.jpg",
+  "srcW": 1000,
+  "srcH": 980,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Giotto",
+  "creditoArchivo": "Web Gallery of Art:   Image  ; Wikimedia Commons",
+  "sitelinks": 9,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 1
+ },
+ {
   "id": "w734197",
   "pintorId": "giotto",
   "qid": "Q734197",
@@ -684,6 +746,7 @@
   "anioCalidad": "exact",
   "coleccion": "capilla de los Scrovegni",
   "tipo": [
+   "?",
    "painting"
   ],
   "archivo": "Giotto di Bondone - No. 16 Scenes from the Life of the Virgin - 7. Visitation - WGA09192.jpg",
@@ -715,6 +778,7 @@
   "anioCalidad": "exact",
   "coleccion": "capilla de los Scrovegni",
   "tipo": [
+   "?",
    "painting"
   ],
   "archivo": "Giotto di Bondone - No. 15 Annunciation - The Virgin Receiving the Message - WGA09191.jpg",
@@ -1645,6 +1709,35 @@
   "fama": 2
  },
  {
+  "id": "w3531531",
+  "pintorId": "fra-angelico",
+  "qid": "Q3531531",
+  "titulo": "Adoración de los Reyes Magos",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "1430",
+  "anioSort": 1430,
+  "anioCalidad": "exact",
+  "coleccion": "Samuel H. Kress Collection",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Fra Angelico Adoration.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Fra_Angelico_Adoration.jpg",
+  "srcW": 5005,
+  "srcH": 4872,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Fra Angelico / Filippo Lippi",
+  "creditoArchivo": "see above",
+  "sitelinks": 13,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
   "id": "w3797771",
   "pintorId": "fra-angelico",
   "qid": "Q3797771",
@@ -1652,7 +1745,7 @@
   "tituloFuente": "wikidata-es",
   "level": 1,
   "etapa": null,
-  "forzada": false,
+  "forzada": true,
   "anio": "c. 1434",
   "anioSort": 1434,
   "anioCalidad": "circa",
@@ -1671,6 +1764,37 @@
   "sitelinks": 10,
   "confianza": "high",
   "avisos": [],
+  "fama": 2
+ },
+ {
+  "id": "w2376881",
+  "pintorId": "fra-angelico",
+  "qid": "Q2376881",
+  "titulo": "Anunciación de Cortona",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "c. 1430",
+  "anioSort": 1430,
+  "anioCalidad": "circa",
+  "coleccion": "Museo Diocesano de Cortona",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Beato angelico, annunciazione di cortona, 1434-36, da s. domenico, 01.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Beato_angelico,_annunciazione_di_cortona,_1434-36,_da_s._domenico,_01.jpg",
+  "srcW": 3102,
+  "srcH": 3348,
+  "mime": "image/jpeg",
+  "licencia": "CC BY-SA 4.0",
+  "autorArchivo": "Sailko",
+  "creditoArchivo": "Own work",
+  "sitelinks": 10,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
   "fama": 2
  },
  {
