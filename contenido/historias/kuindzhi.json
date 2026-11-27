@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en el reflejo de la luna en el río: un brillo verdoso que parece salir del propio cuadro. Poco después, en la cima de su fama, dejó de exponer.",
      "artwork": "w3205872",
+     "region": [
+      0.3,
+      0.0,
+      0.7,
+      0.95
+     ],
      "source": "https://es.wikipedia.org/wiki/Arjip_Kuindzhi"
     }
    ]

@@ -43,7 +43,7 @@ function galleryHtml(artist, seen, total, withLink) {
   if (!seen.length) return '';
   const all = withLink ? `<button type="button" class="ap-all" data-ap="gallery">Ver todos${icons.next(16)}</button>` : '';
   return `<section class="ap-section ap-gallery" aria-labelledby="ap-gal-h"><div class="ap-head"><h2 id="ap-gal-h" class="ap-h">Sus cuadros <span class="ap-count">${seen.length} de ${total}</span></h2>${all}</div>
-    <ul class="ap-strip">${previewCells(seen, STRIP_CELLS).map((w) => `<li>${artFrame(w, { alt: '', cls: 'ap-strip-art', label: w.title, small: true, defer: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}`, badge: false } })}</li>`).join('')}</ul>
+    <ul class="ap-strip">${previewCells(seen, STRIP_CELLS).map((w) => `<li>${artFrame(w, { alt: '', cls: 'ap-strip-art', label: w.title, small: true, defer: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}`, badge: false, more: withLink } })}</li>`).join('')}</ul>
     </section>`;
 }
 

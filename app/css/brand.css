@@ -139,6 +139,14 @@
   --map-return-b: 5.6rem;
   --map-r: 8px;
   --map-seam: 80px;
+  /* Sistema de carteles (mapa-carteles.css): arco de época, tablillas de tramo y rama, tarjeta de la parada actual. */
+  --map-frontier-solid: 80%;
+  --map-arch-crown: 2.4rem;
+  --map-arch-band: 4px;
+  --map-tablet-hit: 7px;
+  --map-current-dot: 70px;
+  --map-halo-dur: 3.2s;
+  --map-bob-dur: 2.8s;
   --map-line-x: 30px;
   --map-indent: 16px;
   /* Aro de niveles (ui/deep-badges.js): cuánto sale del retrato, grosor del tramo hecho y del siguiente (en la caja de 100 del
@@ -181,6 +189,11 @@
   --radius-sm: 12px;
   --marco-gap: 16px;
   --radius-btn: 16px;
+  /* Logotipo de Google del botón «Continuar con Google» (sus colores de marca, iguales en claro y oscuro). */
+  --google-blue: #4285f4;
+  --google-green: #34a853;
+  --google-yellow: #fbbc05;
+  --google-red: #ea4335;
   --font: "Outfit", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --track: -0.02em;
   --col: 560px;

@@ -1,4 +1,4 @@
-"""Servidor estático de pruebas: sirve <app> y, bajo /img/, las w<QID>.jpg de otra carpeta.
+"""Servidor estático de pruebas: sirve <app> y, bajo /img/, las w<QID>.jpg (y hd/w<QID>.jpg) de otra carpeta.
 
 Uso: python3 tools/serve_local.py <puerto> <dir_app> [<dir_imagenes>]
 Las imágenes del catálogo no están en el repo (se bajan de la release con tools/fetch_images.sh): en local se
@@ -13,7 +13,7 @@ import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-WORK_IMG = re.compile(r"^/img/(w\d+\.jpg)$")
+WORK_IMG = re.compile(r"^/img/((?:hd/)?w\d+\.jpg)$")  # también las HD de los detalles (img/hd/)
 COMPRESSIBLE = (".json", ".js", ".mjs", ".css", ".html", ".svg", ".md")
 
 

@@ -9,11 +9,10 @@ export const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', start
 // Pintor dormido (engine/review.js): dominado y sin salir en una semana.
 export const DORMANT_TEXT = '¿Lo recuerdas?';
 
-// Texto bajo el nombre solo cuando dice algo: «Empezar»/«Seguir» en el nodo actual y «Repite · n %»
-// (pintado como botón) en lo jugado que aún no está dominado: el repaso de la época solo se abre al
-// dominarlos a todos, y María quería que se viera claro qué hacer.
-export function metaFor(status, info, current) {
-  if (current) return status === 'started' ? 'Seguir' : 'Empezar';
+// Texto bajo el nombre solo cuando dice algo: «Repite · n %» (pintado como botón) en lo jugado que aún no está dominado:
+// el repaso de la época solo se abre al dominarlos a todos, y María quería que se viera claro qué hacer. La parada
+// actual no lleva botón: se distingue por su nodo (más grande, aro con halo y la marca «Tú») y se toca el propio nodo.
+export function metaFor(status, info) {
   if (status === 'started') return `Repite · ${Math.round((info?.best || 0) * 100)}\u00a0%`;
   return '';
 }
@@ -28,7 +27,7 @@ export function dotFor(status, cover, name) {
 
 export function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, current = false }) {
   return `<button class="stage ${cls} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}"${current ? ' aria-current="step"' : ''} aria-label="${esc(label)}">
-      <span class="stage-dot">${dot}</span>
+      <span class="stage-dot">${dot}${current ? '<span class="stage-you" aria-hidden="true">Tú</span>' : ''}</span>
       <span class="stage-text"><span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
     </button>`;
 }

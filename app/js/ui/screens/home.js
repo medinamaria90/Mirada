@@ -4,7 +4,8 @@ import { esc, onAction, accentStyle } from '../dom.js';
 import { icons } from '../icons.js';
 import { page } from '../shell.js';
 import { artFrame } from '../art.js';
-import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode } from './path-map.js';
+import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode, HOME_MAP } from './path-map.js';
+import { rememberMap } from './map-memory.js';
 import { liveArt } from '../map-land.js';
 import { watchReturn } from './map-return.js';
 import { startMapLife } from '../map-life.js';
@@ -72,7 +73,8 @@ export function renderHome(ctx, el) {
   // Pintores nuevos de una actualización: etiqueta «Nuevo» y aviso (se carga solo si los hay).
   const news = ctx.store.get().progress.roster?.fresh?.length ? import('../new-painters.js') : null;
   const tagNew = () => news?.then((m) => m.tagNewStops(ctx, el)).catch((err) => console.error(err));
-  const stops = [fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); }), watchMapMode(map), life.stop, watchReturn(el)];
+  // Al salir, se guarda dónde estaba la vista: se vuelve exactamente ahí (map-memory.js).
+  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); }), watchMapMode(map), life.stop, watchReturn(el)];
   addLevelRings(ctx, el);
   tagNew();
   news?.then((m) => m.tellNewPainters(ctx, el)).catch((err) => console.error(err));

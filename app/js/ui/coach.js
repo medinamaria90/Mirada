@@ -8,7 +8,7 @@ import { coachPlacement } from './coach-place.js';
 import { coachSeen, markCoachSeen } from '../state/store.js';
 
 export const COACH_STEPS = [
-  { target: '.stage-spot.is-current .stage, .stage-spot.is-current .stage-text', text: 'Aquí empieza tu camino. Toca «Empezar» y conoce a tu primer pintor.' },
+  { target: '.stage-spot.is-current .stage, .stage-spot.is-current .stage-text', text: 'Aquí empieza tu camino. Toca el cuadro y conoce a tu primer pintor.' },
   { target: '.chip-daily', text: 'Cada día, un reto de cinco preguntas.' },
   { target: '.bottomnav a[href="#coleccion"]', text: 'Cada cuadro que reconozcas se guarda en Colección.' },
 ];

@@ -1,0 +1,28 @@
+# El plan gratuito de Supabase pausa el proyecto tras una semana sin uso. Cada 3 días se llama a la función
+# `ping` (devuelve 1, no lee ningún dato) con la clave anónima, que es pública. URL y clave salen de
+# app/js/cloud/config.js; si están vacías, no hace nada.
+name: Supabase despierta
+
+on:
+  schedule:
+    - cron: '17 6 */3 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: app/js/cloud/config.js
+          sparse-checkout-cone-mode: false
+      - name: Llamar a ping
+        run: |
+          url=$(sed -n "s/^export const SUPABASE_URL = '\(.*\)';$/\1/p" app/js/cloud/config.js)
+          key=$(sed -n "s/^export const SUPABASE_ANON_KEY = '\(.*\)';$/\1/p" app/js/cloud/config.js)
+          if [ -z "$url" ] || [ -z "$key" ]; then echo "Sin proyecto configurado: nada que hacer."; exit 0; fi
+          curl -fsS -X POST "$url/rest/v1/rpc/ping" -H "apikey: $key" -H "Content-Type: application/json" -d '{}'

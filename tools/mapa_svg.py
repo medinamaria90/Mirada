@@ -9,8 +9,8 @@
 # bloque oscuro): el SVG lleva su propio <style> con las dos paletas y una media query prefers-color-scheme,
 # que Chrome y Firefox evalúan con el color-scheme del <img> (así sigue al tema elegido en Ajustes).
 #
-# Bajo los carteles no se pinta relleno: el lado del cartel de la época (abajo) y el margen de las paradas
-# con el desvío de una rama quedan libres (los da el trazado: signSide y branchAt).
+# Bajo los carteles no se pinta relleno: el arco de la época, las tablillas y el margen de las paradas con el desvío
+# de una rama quedan libres (los da el trazado: labels y branchAt).
 #
 # Mapa vivo: la app mete el SVG en la página (ui/map-land.js) y lo anima con CSS. Por eso las clases dicen qué
 # variable pintan (k-<variable>), los árboles van en <g data-sway="x"> (se mecen con el viento), las ventanas y
@@ -86,9 +86,9 @@ def tinte(h, tint_class):
     return (-10_000, f'<rect x="0" y="0" width="{W}" height="{h}" class="{tint_class}"/>')
 
 
-# Huecos de la época que se está pintando (los fija build): lado del cartel, paradas con rama y cajas de los
-# rótulos de cada parada (nombre y tramo, lado ancho).
-LIBRE = {'cartel': None, 'ramas': set(), 'rotulos': [], 'road': None}
+# Huecos de la época que se está pintando (los fija build): paradas con rama y cajas de los rótulos de cada parada
+# (nombre, lado ancho) y de los carteles.
+LIBRE = {'ramas': set(), 'rotulos': [], 'road': None}
 # Lo ya pintado en la época (base de cada pieza y ríos), para que el esparcido no se le monte encima.
 OCUPADO = {'piezas': [], 'rios': [], 'agua': []}
 # Puentes del tramo que se está pintando (los da el trazado) y errores de agua de todos los tramos.
@@ -258,8 +258,8 @@ M.chimenea = _chimenea_viva
 
 
 def margenes(p, h, arbol):
-    """Relleno común (árboles, nunca farolas ni palos sueltos): algo pequeño en el margen estrecho de cada nodo y en las esquinas de abajo, salvo bajo
-    los carteles (el de la época y los de las ramas)."""
+    """Relleno común (árboles, nunca farolas ni palos sueltos): algo pequeño en el margen estrecho de cada nodo y en las esquinas de abajo, salvo junto
+    a las paradas con rama."""
     out = []
     for i, q in enumerate(p):
         if i in LIBRE['ramas']:
@@ -270,8 +270,7 @@ def margenes(p, h, arbol):
             my = mid(q, p[i + 1])[1]
             out.append(arbol(xm + (14 if xm < 195 else -14), my + 10, i + 1))
     esquinas = [(44, h - 42, 0), (346, h - 38, 1), (28, h - 20, 2), (362, h - 16, 3)]
-    lado_cartel = LIBRE['cartel']
-    out += [arbol(x, y, i) for x, y, i in esquinas if not lado_cartel or (x < 195) != (lado_cartel == 'left')]
+    out += [arbol(x, y, i) for x, y, i in esquinas]
     return out
 
 
@@ -652,9 +651,6 @@ def libre(era, x, y):
         return False
     if any(r['x0'] - AIRE['rotulo'] <= x <= r['x1'] + AIRE['rotulo'] and r['y0'] - AIRE['rotulo'] <= y <= r['y1'] + AIRE['rotulo'] for r in era['labels']):
         return False
-    sg = era['sign']
-    if sg['top'] - 10 <= y <= sg['y'] + 4 and ((x <= sg['edge'] + 6) if sg['side'] == 'left' else (x >= sg['edge'] - 6)):
-        return False
     for b in era['branches']:
         rx = min(b['x'], 195) - 30, max(b['x'], 195) + 30
         if b['y'] - 50 <= y <= b['y'] + 76 and (abs(x - b['x']) < 48 or rx[0] <= x <= rx[1] and y > b['y'] + 20):
@@ -722,7 +718,6 @@ def brillos(era):
 
 def build(era, light, dark):
     pts = [(q['x'], q['y']) for q in era['points']]
-    LIBRE['cartel'] = era.get('signSide')
     LIBRE['ramas'] = set(era.get('branchAt', []))
     LIBRE['rotulos'] = era.get('labels', [])
     LIBRE['road'] = lambda y: A.x_en(era, y)

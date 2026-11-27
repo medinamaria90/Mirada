@@ -1,8 +1,8 @@
 // Pantalla de una rama (#rama-<id>): su propio tramo de mapa, con su paisaje, su música y la luz de la hora. Sus
-// pintores son las paradas (mismos nodos que el camino común), con el cartel de la rama a la entrada y uno por tramo.
+// pintores son las paradas (mismos nodos que el camino común), con el arco de la rama a la entrada y una tablilla por tramo.
 // Los que también están en el camino común se ven como
 // «En el camino» y llevan a su parada allí. Jugar usa las rutas de siempre (#etapa-<pintor>--<rama>). Arriba,
-// «Camino» vuelve al mapa centrado en el desvío. Se entra con un acercamiento desde el desvío (map-zoom.js).
+// «Camino» vuelve al mapa donde estaba. Se entra con un acercamiento desde el desvío (map-zoom.js).
 
 import { esc, onAction, accentStyle, joinNames, $ } from '../dom.js';
 import { icons } from '../icons.js';
@@ -12,10 +12,11 @@ import { stageRoute } from '../router.js';
 import { playEra } from '../audio-bridge.js';
 import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
-import { MAP_W, branchLayout, branchLand, walkedD } from './path-layout.js';
+import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { trailSvg, tramoSign, branchEntrySign, stepName, pct } from './path-signs.js';
 import { STATE_LABEL, metaFor, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
+import { rememberMap, recallMap, forgetMap } from './map-memory.js';
 import { setMapFocus, takeBranchFocus, showLockNote, watchMapMode, watchLandscapes, levelCard, pathActions, frontSvg } from './path-map.js';
 import { startMapLife } from '../map-life.js';
 import { addLevelRings } from '../deep-badges.js';
@@ -52,7 +53,7 @@ function node(ctx, branch, row, current) {
   return nodeHtml({
     cls: '', action: 'stage', id: a.id, status: row.status, lock, current,
     label: `${a.name}, ${STATE_LABEL[row.status]}${lock ? `. ${lock}` : ''}`,
-    name: a.name, meta: metaFor(row.status, p.artists[a.id], current), dot,
+    name: a.name, meta: metaFor(row.status, p.artists[a.id]), dot,
   });
 }
 
@@ -77,14 +78,14 @@ function mapHtml(ctx, branch) {
   }).join('');
   const done = rows.every((r) => r.status === 'mastered');
   const { mastered, total } = branchProgress(ctx.store.get().progress, index, branch.id);
-  const sign = branchEntrySign(branch, layout.sign, layout.h, mastered, total);
+  const sign = branchEntrySign(branch, layout.arch, layout.h, mastered, total);
   const walked = at >= 0 ? walkedD(layout, at) : done ? walkedD(layout) : '';
   const land = branchLand(branch);
   const tint = `var(--map-tint-${esc(land)})`;
   // Bajo la barra de abajo, el sendero sigue hasta el borde (no empieza cortado en seco).
   const foot = `M${layout.start.x} 0V${FOOT_H}`;
   return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true">${trailSvg(FOOT_H, foot, [], walked ? foot : '')}</li>
-    <li class="path-era" data-era="${esc(branch.id)}" style="--era-tint:${tint};--era-prev:${tint};--era-h:${layout.h};aspect-ratio:${MAP_W}/calc(${layout.h} * var(--k, 1))">
+    <li class="path-era has-gate" data-era="${esc(branch.id)}" style="--gate-y:${GATE_Y};--era-tint:${tint};--era-prev:${tint};--era-h:${layout.h};aspect-ratio:${MAP_W}/calc(${layout.h} * var(--k, 1))">
       <img class="path-land" alt="" width="${MAP_W}" height="${layout.h}" decoding="async" data-src="img/mapa/rama-${esc(branch.id)}.svg">
       ${trailSvg(layout.h, layout.trail, [], walked)}
       ${frontSvg(layout)}
@@ -111,20 +112,25 @@ export async function renderBranch(ctx, el, branchId) {
       <ol class="path path-map path-branch" aria-label="Pintores de la rama ${esc(branch.name)}">${mapHtml(ctx, branch)}</ol>
     </main>${bottomNav('home')}</div>`;
 
-  // Al volver al mapa (con «Camino» o con atrás), se centra en el desvío de esta rama.
+  // Al volver al mapa (con «Camino» o con atrás), el desvío de esta rama recibe el foco (la vista, donde estaba).
   setMapFocus(branch.id);
   playEra(branchMusic(index, branch));
   watchLandscapes(el);
   const map = el.querySelector('.path-map');
   const life = startMapLife(map);
-  const stops = [watchMapMode(map), life.stop];
+  // Al salir, se guarda dónde estaba la vista; al volver (de una ronda, una ficha…), se vuelve ahí. Entrar desde el
+  // camino empieza de nuevo en la parada actual.
+  const memo = `rama-${branch.id}`;
+  if (ctx.prevRoute() === 'inicio') forgetMap(memo);
+  const back = recallMap(memo);
+  const stops = [() => rememberMap(memo, map), watchMapMode(map), life.stop];
   addLevelRings(ctx, el);
   if (ctx.store.get().progress.roster?.fresh?.length) import('../new-painters.js').then((m) => m.tagNewStops(ctx, el)).catch((err) => console.error(err));
-  // De vuelta de una ronda: la parada jugada y, si la siguiente no se ve, el camino sube suave hasta ella.
+  // De vuelta (de una ronda, una ficha…): donde estaba la vista, con el foco en la parada jugada.
   const played = takeBranchFocus();
-  if (played) stops.push(placeMap(el, { step: played }));
+  if (played || back) stops.push(placeMap(el, { step: played, restore: back }));
   ctx.setCleanup(() => stops.forEach((fn) => fn()));
-  if (!played) {
+  if (!played && !back) {
     requestAnimationFrame(() => {
       const target = $('.stage-spot.is-current .stage', el);
       if (target) target.scrollIntoView({ block: 'center' });
@@ -148,7 +154,7 @@ export async function renderBranch(ctx, el, branchId) {
     // Pintor del camino común: al mapa, centrado en su parada.
     'path-stop': (b) => {
       ctx.audio.sfx('tap');
-      setMapFocus(branch.id, `artist:${b.dataset.id}`);
+      setMapFocus(branch.id, `artist:${b.dataset.id}`, true);
       ctx.go('inicio');
     },
   });

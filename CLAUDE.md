@@ -59,9 +59,11 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
   «Sala de entrada», es el hilo de la app: sus variaciones por época, a lo Animal Crossing. María elige
   con el modo secreto (Perfil → Ajustes, 5 toques en el título, código 1612).
 - Código, letras, imágenes y música se sirven desde la propia app (más rápido y sin depender de nadie).
-  Un servicio externo se permite si aporta algo claro y no usa cookies ni datos personales: hoy, solo
-  el contador de visitas GoatCounter (`app/js/stats.js`). Cada servicio nuevo, con el visto bueno de
-  María y anotado aquí.
+  Un servicio externo se permite si aporta algo claro y no usa cookies ni datos personales (salvo
+  aprobación expresa): hoy, el contador de visitas GoatCounter (`app/js/stats.js`) y Supabase (acceso con
+  Google y progreso en la nube, `app/js/cloud/`; solo con sesión iniciada; privacidad en
+  `app/privacidad.html`), aprobado por María 27/11. Cada servicio nuevo, con el visto bueno de María y
+  anotado aquí.
 - **Valor supremo de los textos: que sean didácticos y enganchen.** Que quien lo lea piense «qué
   interesante el arte, quiero saber más de esta gente». Por encima de la exhaustividad: frases vivas,
   anécdotas, el porqué de cada pintor y cada época; nada de tono de enciclopedia. Modelo validado por María:

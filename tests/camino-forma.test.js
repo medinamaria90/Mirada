@@ -1,5 +1,5 @@
 // Forma del camino (docs/eval/camino-experto.md): sendero que siempre sube, con curvas amplias y sin giros bruscos,
-// unas cuatro paradas por pantalla, puerta al entrar en cada época, puentes rectos y alineados con el sendero, carteles
+// unas cuatro paradas por pantalla, puerta con su arco al entrar en cada época (y en cada rama), puentes rectos y alineados con el sendero, carteles
 // que no se pisan, el cartel de un tramo o de una rama en tarjetas y ningún cruce de agua sin puente en los paisajes.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -8,7 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { pathLayout, branchLayout, roadX, bridgeSlots, BRIDGE_HALF, GATE_Y, STEP } from '../app/js/ui/screens/path-layout.js';
+import { pathLayout, branchLayout, roadX, bridgeSlots, BRIDGE_HALF, GATE_Y, STEP, ARCH } from '../app/js/ui/screens/path-layout.js';
 import { at } from '../app/js/ui/screens/path-curve.js';
 import { signSources } from '../app/js/engine/credits.js';
 
@@ -90,15 +90,25 @@ test('camino: el desvío de una rama nunca sale del paso de un puente ni pegado 
   }
 });
 
-test('camino: los carteles de tramo no pisan el de la época ni los de las ramas', () => {
+test('camino: las tablillas de tramo no pisan el arco de la época ni los carteles de las ramas, y nunca quedan pegadas al arco', () => {
   const box = (s) => ({ x0: s.side === 'left' ? s.edge - s.room : s.edge, x1: s.side === 'left' ? s.edge : s.edge + s.room, y0: s.top ?? s.y - 60, y1: s.y });
   const overlap = (a, b) => a.y0 < b.y1 && b.y0 < a.y1 && a.x0 < b.x1 && b.x0 < a.x1;
-  for (const era of layout.eras) {
-    const era0 = box(era.sign);
+  for (const era of tramos) {
     for (const s of era.sections) {
-      assert.ok(!overlap(box(s.sign), era0), `${era.id}/${s.name}: pisa el cartel de la época`);
-      for (const b of era.branches) assert.ok(!overlap(box(s.sign), box({ ...b.sign, top: b.sign.y - 60 })), `${era.id}/${s.name}: pisa el cartel de ${b.id}`);
+      // Si el tramo empieza nada más cruzar la puerta, su tablilla queda después del arco, con aire (nunca pegados).
+      if (era.arch) assert.ok(s.sign.y <= era.arch.top - ARCH.gap, `${era.id}/${s.name}: pegada al arco de la época`);
+      for (const b of era.branches || []) assert.ok(!overlap(box(s.sign), box({ ...b.sign, top: b.sign.y - 60 })), `${era.id}/${s.name}: pisa el cartel de ${b.id}`);
     }
+  }
+});
+
+test('camino: cada época y cada rama entran por una puerta con su arco; la primera, por la muralla de salida', () => {
+  assert.ok(!layout.eras[0].arch && layout.start.arch, 'el arco de la primera época no va sobre la muralla');
+  for (const era of tramos.filter((e) => e !== layout.eras[0])) {
+    assert.ok(era.gate && era.arch, `${era.id}: sin puerta o sin arco`);
+    assert.ok(era.arch.top < era.arch.y && era.arch.y < era.gate.y, `${era.id}: el arco no se apoya sobre la puerta`);
+    // Lo primero del tramo (el rótulo de la primera parada) queda por encima del arco.
+    assert.ok(era.points[0].y + 36 < era.arch.top, `${era.id}: la primera parada choca con el arco`);
   }
 });
 

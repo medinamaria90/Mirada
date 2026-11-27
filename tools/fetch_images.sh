@@ -5,6 +5,8 @@
 # Después pinta las hojas del atlas de miniaturas (<carpeta_destino>/s) con tools/make_atlas.py a partir de esas imágenes y
 # de app/data/catalog.json (las coordenadas de las miniaturas salen del catálogo: hojas y catálogo van siempre a juego) y las
 # imágenes ligeras de las historias compartidas (<carpeta_destino>/og, tools/share_pages.py).
+# Si el zip va por detrás del catálogo (obra añadida antes de que «pack» rehaga el zip), make_atlas avisa y deja un
+# hueco neutro para esa obra en vez de tumbar el despliegue; solo falla si faltan muchas.
 # Necesita python3 con Pillow (si falta, lo instala con pip). MIRADA_SKIP_ATLAS=1 lo omite.
 # Solo necesita bash, curl, sha256sum (o shasum) y unzip (o python3). No usa gh ni token.
 # Variable opcional MIRADA_IMG_BASE: otra URL base (pruebas locales).

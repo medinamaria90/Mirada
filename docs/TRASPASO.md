@@ -477,6 +477,8 @@ Decisiones de la tarde del 24/11:
     y difíciles, nunca absurdas ni fuera de tema. Antes de construir, que un experto diseñe y pruebe los
     tipos de pregunta.
 
+12. **«Continuar con Google» en Sfumato** (pendiente de María, en pasos): ver `docs/cuenta-google.md`. El código está publicado; el botón sigue oculto hasta configurar Google y Supabase.
+
 ## 6. Avisos
 
 - **Estadísticas en Superusuario** (`app/js/ui/su-stats.js`): fila que abre el panel de GoatCounter

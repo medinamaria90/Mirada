@@ -1,5 +1,6 @@
-// Señalética del mapa del camino: carteles de época al borde del sendero (poste y placa), hito de salida,
-// «Tu museo», desvíos de las ramas con su cartel y el sendero en SVG. Solo HTML (sin DOM ni estado propio).
+// Señalética del mapa del camino, en tres familias: el arco de cada época (rótulo grande sobre su puerta, centrado en
+// el sendero), las tablillas pequeñas de tramo y de rama al borde del camino (placa sobre dos postes) y las placas de
+// salida y de «Tu museo». También los desvíos de las ramas y el sendero en SVG. Solo HTML (sin DOM ni estado propio).
 
 import { esc, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
@@ -48,30 +49,34 @@ export function signBox(sign, h, extra = '') {
   return `class="road-sign is-${sign.side}${extra ? ` ${extra}` : ''}" style="${across};bottom:${pct(h - sign.y, h)};max-width:${pct(sign.room, MAP_W)}"`;
 }
 
-// Cartel de época: nombre (dos líneas como mucho), siglos y «n/m». Abierta, lleva a la presentación;
-// cerrada, abre una hoja con lo que hay que hacer (el motivo no ocupa el cartel).
-export function eraSign({ movement, status, sealed, done, total, prevName, sign, h }) {
+// Rótulo de un arco (época o rama): su caja, simétrica respecto al sendero, con el pie sobre los pilares de la puerta.
+// tone: estilo del acento de la época (el arco de la primera va en la salida, fuera de su tramo).
+const archBox = (arch, h, tone = '') => `style="left:${pct(arch.x0, MAP_W)};right:${pct(MAP_W - arch.x1, MAP_W)};bottom:${pct(h - arch.y, h)}${tone ? `;${tone}` : ''}"`;
+
+// Arco de una época: su nombre (dos líneas como mucho) y debajo los siglos con la cuenta de la época, la única del
+// tramo. Abierta, lleva a la presentación; completa, una corona de laurel en vez de la cuenta; cerrada, un candado y
+// una hoja con lo que hay que hacer (el motivo no ocupa el rótulo).
+export function eraArch({ movement, status, sealed, done, total, prevName, arch, h, tone = '' }) {
   const locked = status === 'locked';
-  const count = locked ? '' : ` · ${done}/${total}`;
-  // El candado va dentro del mismo texto: si los siglos no caben en una línea, no se queda solo.
-  const meta = `<span class="sign-meta"><span>${locked ? `${icons.lock(12)} ` : ''}${esc(period(movement.period))}${count}</span></span>`;
-  const seal = sealed ? `<span class="sign-seal" aria-hidden="true">${icons.laurel(16)}</span>` : '';
-  const name = `<span class="sign-name">${esc(movement.name)}</span>`;
+  const tally = locked ? '' : sealed ? ` ${icons.laurel(14)}` : ` · ${done}/${total}`;
+  const meta = `<span class="arch-meta">${locked ? `${icons.lock(12)} ` : ''}${esc(period(movement.period))}${tally}</span>`;
+  const name = `<span class="arch-name">${esc(movement.name)}</span>`;
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
   const button = locked
-    ? `<button type="button" class="sign-plate is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${meta}</button>`
-    : `<button type="button" class="sign-plate" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${done} de ${total}${sealed ? ', completa' : ''}: ver presentación">${seal}${name}${meta}<span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button>`;
-  return `<h2 ${signBox(sign, h)}>${button}</h2>`;
+    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${meta}</button>`
+    : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${done} de ${total}${sealed ? ', completa' : ''}: ver presentación">${name}${meta}</button>`;
+  return `<h2 class="era-arch" ${archBox(arch, h, tone)}>${button}</h2>`;
 }
 
-// Salida: la puerta de la muralla. El cartel es el de la primera época (justo encima); junto a la puerta, la caseta de
-// «Información» (dibujada en el paisaje, path-art.js) abre «Cómo se juega»: un botón transparente la cubre.
-export function startBlock(start, tint) {
+// Salida: la puerta de la muralla, que es también la entrada de la primera época (archHtml: su arco, encima); junto a la
+// puerta, la caseta de «Información» (dibujada en el paisaje, path-art.js) abre «Cómo se juega»: un botón transparente
+// la cubre.
+export function startBlock(start, tint, archHtml = '') {
   const art = (cls, body) => `<svg class="${cls}" viewBox="0 0 ${MAP_W} ${start.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${body}</svg>`;
   // path-foot: el suelo sigue bajo la barra de abajo (sin franja oscura al llegar al final del mapa).
   return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true"></li><li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
     ${art('path-start-art', startArt().back)}${trailSvg(start.h, start.trail, [], start.trail)}${art('path-start-art is-front', startArt().front)}
-    <button type="button" class="start-kiosk" data-action="start" style="left:${pct(KIOSK.x + KIOSK.w / 2, MAP_W)};top:${pct(KIOSK.y - KIOSK.h / 2 - KIOSK_SIGN, start.h)}" aria-haspopup="dialog" aria-label="Información: cómo se juega"><span class="start-kiosk-text">Información</span></button>
+    ${archHtml}<button type="button" class="start-kiosk" data-action="start" style="left:${pct(KIOSK.x + KIOSK.w / 2, MAP_W)};top:${pct(KIOSK.y - KIOSK.h / 2 - KIOSK_SIGN, start.h)}" aria-haspopup="dialog" aria-label="Información: cómo se juega"><span class="start-kiosk-text">Información</span></button>
   </li>`;
 }
 
@@ -120,7 +125,8 @@ export function branchWhy(index, st) {
   return st.pending.length ? `se abre al dominar a ${joinNames(st.pending.map((p) => stepName(index, p)))}` : 'aún cerrada';
 }
 
-// Cartel de una rama al final de su desvío (placa sobre dos postes): nombre y cifra; cerrada, «faltan n» con candado.
+// Tablilla de una rama al final de su desvío (sobre dos postes): nombre y cifra (completa, con el sello de hecho);
+// cerrada, «faltan n» con candado.
 // Abierta, entra directamente en la pantalla de la rama; cerrada, una nota dice qué falta. extra: señal de una escuela
 // en una época posterior («Escuela rusa · 14 nuevos»), que entra en la misma rama.
 export function branchSpot(spot, branch, st, index, h) {
@@ -135,21 +141,23 @@ export function branchSpot(spot, branch, st, index, h) {
   const line = !st.open ? `${icons.lock(11)} ${n === 1 ? 'falta 1' : `faltan ${n}`}` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li ${signBox(spot.sign, h, 'branch-spot')}>
       <button type="button" class="sign-plate branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}" aria-label="${esc(label)}">
-        ${done ? `<span class="sign-seal" aria-hidden="true">${icons.laurel(14)}</span>` : ''}<span class="sign-name">${esc(branchShort(branch, index))}</span><span class="sign-meta"><span>${line}</span></span>
+        <span class="sign-name">${esc(branchShort(branch, index))}</span><span class="sign-meta">${done ? `<span class="sign-check" aria-hidden="true">${icons.check(11)}</span>` : ''}<span>${line}</span></span>
       </button></li>`;
 }
 
-// Cartel de un tramo (unidad de pintores) al borde del sendero, antes de su primera parada: nombre y dominados. Abre su
-// cartel en tarjetas (sign-cards.js).
+// Tablilla de un tramo (unidad de pintores) al borde del sendero, bajo su primera parada: solo el nombre (la cuenta va
+// en el arco de la época); completo, un sello pequeño de hecho. Abre su cartel en tarjetas (sign-cards.js).
 export function tramoSign(sec, info, h) {
-  const label = `Tramo ${sec.name}: ${info.got} de ${info.total} dominados. Ver cartel`;
-  return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="sign-name">${esc(sec.name)}</span><span class="sign-meta"><span>${info.got}/${info.total}</span></span><span class="sign-more" aria-hidden="true">${icons.next(12)}</span></button></li>`;
+  const done = info.total > 0 && info.got === info.total;
+  const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} dominados`}. Ver cartel`;
+  return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo${done ? ' is-done' : ''}" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
+      <span class="sign-name">${esc(sec.name)}</span>${done ? `<span class="sign-check" aria-hidden="true">${icons.check(11)}</span>` : ''}</button></li>`;
 }
 
-// Cartel de la rama en su pantalla, junto a la entrada: nombre y dominados; abre el cartel de la rama en tarjetas.
-export function branchEntrySign(branch, sign, h, mastered, total) {
+// Arco de la rama en su pantalla, a la entrada: solo el nombre (la cuenta ya está en la cabecera); abre el cartel de la
+// rama en tarjetas.
+export function branchEntrySign(branch, arch, h, mastered, total) {
   const label = `${branch.name}, ${mastered} de ${total} dominados. Ver cartel`;
-  return `<h2 ${signBox(sign, h)}><button type="button" class="sign-plate" data-action="cartel" data-kind="rama" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="sign-name">${esc(branch.name)}</span><span class="sign-meta"><span>${mastered}/${total}</span></span><span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button></h2>`;
+  return `<h2 class="era-arch" ${archBox(arch, h)}><button type="button" class="arch-band${total && mastered === total ? ' is-done' : ''}" data-action="cartel" data-kind="rama" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
+      <span class="arch-name">${esc(branch.name)}</span></button></h2>`;
 }

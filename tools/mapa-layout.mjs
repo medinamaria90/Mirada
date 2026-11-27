@@ -1,7 +1,7 @@
 // Trazado del mapa del camino en JSON, para que tools/mapa_svg.py pinte los paisajes con las mismas
 // medidas que la app (ui/screens/path-layout.js es la única fuente del trazado): alto de cada tramo, nodos,
-// puentes (el agua sale de ellos), puerta de la época, lado del cartel de la época, desvíos de las ramas y, por
-// parada, la caja aproximada de su rótulo; también las cajas de los carteles de tramo y de rama: ahí no se pinta nada.
+// puentes (el agua sale de ellos), puerta de la época, desvíos de las ramas y, por parada, la caja aproximada de su
+// rótulo; también las cajas del arco de la época y de las tablillas de tramo y de rama: ahí no se pinta nada.
 //   node tools/mapa-layout.mjs app/data/catalog.json
 import { readFileSync } from 'node:fs';
 import { buildIndex } from '../app/js/engine/catalog.js';
@@ -16,6 +16,7 @@ const HALF_H = 36;        // medio alto del rótulo (nombre y botón)
 const SIGN_PX = 7.2;      // ancho medio de una letra en los carteles de tramo y de rama (600, 13 px)
 const SIGN_PAD = 30;      // relleno y flecha de la placa
 const SIGN_H = 62;        // alto de un cartel de tramo o de rama, postes incluidos
+const ARCH_HALF = 132;    // medio ancho máximo del rótulo del arco (16rem y su borde)
 function eraNames(era) {
   const names = (index.isSala(era.id) ? [] : index.stageArtists(era.id)).map((a) => a.name);
   if (hasMovementReview(index, era.id)) names.push('Repaso · faltan 10');
@@ -36,8 +37,10 @@ function signBox(sign, text) {
   const [x0, x1] = sign.side === 'left' ? [sign.edge - w, sign.edge] : [sign.edge, sign.edge + w];
   return { x0: Math.round(x0), x1: Math.round(x1), y0: Math.round(sign.y - SIGN_H), y1: Math.round(sign.y) };
 }
-const signBoxes = (e) => [...(e.sections || []).map((s) => signBox(s.sign, s.name)), ...(e.branches || []).map((b) => signBox(b.sign, 'Más del Renacimiento'))];
-// x del sendero cada ROAD_STEP de alto (el esparcido de detalles no cae sobre él) y la caja del cartel de la época.
+// Caja del arco de la época: el rótulo centrado en el sendero y, debajo, los pilares hasta la puerta.
+const archBox = (e) => (e.arch ? [{ x0: Math.round(Math.max(e.arch.x0, e.arch.x - ARCH_HALF)), x1: Math.round(Math.min(e.arch.x1, e.arch.x + ARCH_HALF)), y0: Math.round(e.arch.top), y1: Math.round(e.gate.y) }] : []);
+const signBoxes = (e) => [...archBox(e), ...(e.sections || []).map((s) => signBox(s.sign, s.name)), ...(e.branches || []).map((b) => signBox(b.sign, 'Más del Renacimiento'))];
+// x del sendero cada ROAD_STEP de alto (el esparcido de detalles no cae sobre él).
 const ROAD_STEP = 8;
 const road = (e) => Array.from({ length: Math.floor(e.h / ROAD_STEP) + 1 }, (_, i) => Math.round(roadX(e.segs, i * ROAD_STEP)));
 // Desvío de una rama en puntos (para comprobar que no cruza agua): curva del sendero al cartel, cada SPUR_T.
@@ -49,18 +52,16 @@ const spurPoints = (b) => {
 };
 const common = (e) => ({ h: e.h, points: e.points, start: e.start, road: road(e), roadStep: ROAD_STEP, bridges: e.bridges, gate: e.gate });
 const eras = layout.eras.map((e) => ({
-  id: e.id, ...common(e), signSide: e.sign.side, branchAt: e.branches.map((b) => b.at), labels: [...labels(e, eraNames(e)), ...signBoxes(e)],
-  sign: { side: e.sign.side, edge: Math.round(e.sign.edge), top: e.sign.top, y: e.sign.y },
+  id: e.id, ...common(e), branchAt: e.branches.map((b) => b.at), labels: [...labels(e, eraNames(e)), ...signBoxes(e)],
   branches: e.branches.map((b) => ({ x: b.x, y: b.y, spur: spurPoints(b) })),
 }));
-// Pantallas de rama (rama-<id>.svg): su tramo, con el paisaje de su época o el suyo (deco), su cartel a la entrada y
-// los de tramo.
+// Pantallas de rama (rama-<id>.svg): su tramo, con el paisaje de su época o el suyo (deco), su arco a la entrada y las
+// tablillas de tramo.
 const branches = (index.branches || []).map((b) => {
   const e = branchLayout(index, b);
   return {
-    id: `rama-${b.id}`, deco: branchLand(b), ...common(e), signSide: e.sign.side, branchAt: [],
-    labels: [...labels(e, b.artists.map((id) => index.artist(id)?.name || '')), ...signBoxes(e)],
-    sign: { side: e.sign.side, edge: Math.round(e.sign.edge), top: e.sign.top, y: e.sign.y }, branches: [],
+    id: `rama-${b.id}`, deco: branchLand(b), ...common(e), branchAt: [],
+    labels: [...labels(e, b.artists.map((id) => index.artist(id)?.name || '')), ...signBoxes(e)], branches: [],
   };
 });
 process.stdout.write(JSON.stringify({ width: MAP_W, step: STEP, eras, branches }));

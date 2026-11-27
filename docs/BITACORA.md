@@ -164,3 +164,42 @@ tramo, rama) son una placa sobre dos postes; los de rama, bajo su parada en el m
 (se quita la hoja «Ramas»). Carteles de tramo y de rama con sus textos (`contenido/ramas.json`, `tramos.json`, copiados a
 `app/data/carteles/` con `tools/sync_carteles.py`) en tarjetas como las de época. Botón flotante para volver a la parada
 actual. Hitos del paisaje (molino, castillo…) que caen bajo un rótulo se corren a un hueco libre en vez de perderse.
+
+## Sistema de carteles del mapa, «Tu parada» y vuelta al mismo sitio (27/11)
+María vio carteles casi iguales apilados («Primer Renacimiento 4/4» sobre «Renacimiento 8/9») y un desorden de estilos al
+inicio de cada época. Ahora el mapa tiene tres estilos de texto y nada más (`app/css/mapa-carteles.css`):
+- **Arco de época**: el cartel de la época es el rótulo arqueado sobre los pilares de su puerta, centrado en el sendero,
+  con un arco del color de la época (de oro si está completa); nombre, siglos y la única cuenta de la época. El de la
+  primera va sobre la puerta de la muralla de salida. Las ramas entran también por su puerta con arco (sin cuenta: ya
+  está en la cabecera). Al tocarlo, las tarjetas de siempre.
+- **Frontera**: bajo el seto de cada puerta sigue el suelo de la época anterior y se corta en él; de arco a arco se lee
+  un bloque, la época.
+- **Tablillas** de tramo y de rama: pequeñas, sobre dos postes, bajo la primera parada del tramo. El tramo no lleva
+  contador (completo, un sello pequeño de hecho); si empieza nada más cruzar la puerta, su tablilla queda después del
+  arco con aire (`ARCH.gap`).
+- **Etiquetas** de parada: las de siempre; el repaso cerrado, apagado y en claro («Domina 1 pintor más»).
+- **Parada actual** (decisión de María): sin botón «Empezar»; nodo más grande, aro coral con halo lento, nombre más
+  marcado y la marca «Tú» que se mece encima (quietas con «Reducir animaciones»). Se toca el nodo. La guía de la primera
+  vez dice «Toca el cuadro».
+- **«Tu parada»**: el botón flotante pasa a píldora con la miniatura, el texto y una flecha hacia donde queda; solo
+  aparece cuando la parada no se ve.
+- **Vuelta al mismo sitio** (`app/js/ui/screens/map-memory.js`): al volver al mapa (de un arco, una ficha, una historia,
+  una ronda…) la vista queda exactamente donde estaba, anclada al tramo y a la fracción de su alto que había en el centro.
+  Se quita la subida automática a la parada siguiente. Solo se centra en la parada actual al abrir la app, al entrar en
+  una rama desde el camino o con «Tu parada». Paisajes regenerados (`python3 -I tools/mapa_svg.py`): las ramas entran
+  por puerta (seto y entrada más alta) y nada se pinta bajo los arcos. Pruebas en `tests/mapa-carteles.test.js`.
+
+## Colección rehecha: una sola página con estanterías y pintores por descubrir (28/11)
+Encargo de María: la Colección estaba desordenada, se entendía poco y no daban ganas de entrar; un pintor no alcanzado no
+salía ni en el buscador. Auditoría y propuesta en `docs/eval/ux-coleccion.md`. Fuera las pestañas «Cuadros | Pintores» (las
+dos ordenaban lo mismo): una sola página con el buscador siempre visible, «Lo último» (cuadros en su proporción, se abren en
+el visor; «Ver los n» lleva a `#coleccion-cuadros`) y una fila por época con tarjetas de pintor (portada de su cuadro visto
+más famoso, «n de m», check dorado si está dominado; llevan a su ficha). Las épocas en las que aún no conoces a nadie van al
+final, bajo «Por descubrir». Los pintores no alcanzados salen bloqueados (monograma y candado, nunca una obra suya) y su hoja
+dice quién es (la frase «por qué importa») y dónde se conoce (camino o rama). El buscador los encuentra como «Por
+descubrir». Código: `engine/collection-shelves.js`, `ui/screens/collection-shelves.js`, `ui/locked-painter-sheet.js`;
+`#coleccion-pintores` abre la misma página. Pruebas en `tests/coleccion.test.js`.
+Los cuadros de la Colección, de «Ver los n» y de la ficha del pintor abren el visor con su dato curioso bajo el título y un
+«Ver más» que lleva a la página de la obra (al deslizar cambia el texto: lo que María pidió el 24/11). La página de la obra
+termina con «Más de <pintor>», sus otras obras vistas, para pasar de una a otra sin cerrarla. Dentro de una ronda, el visor
+sigue igual. Código: `ui/viewer-more.js` (`data-zoom-more` en `artFrame`), `ui/artwork-sheet.js`.

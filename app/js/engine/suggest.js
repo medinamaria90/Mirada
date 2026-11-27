@@ -1,6 +1,6 @@
 // Sugerencias del buscador de Colección: por el principio de cualquier palabra, sin tildes ni mayúsculas
 // y tolerante a una errata («velazques» → Velázquez). Pintores primero, después títulos; solo lo que ya
-// está desbloqueado (el llamador pasa ese conjunto). Puro y sin dependencias.
+// está desbloqueado y, aparte, los pintores por conocer (el llamador pasa esos conjuntos). Puro y sin dependencias.
 
 export const SUGGEST_MAX = 6;
 const TYPO_MIN = 4; // desde esta longitud de palabra se admite una errata
@@ -63,8 +63,9 @@ export function matchLabel(tokens, label) {
   return { marks: marks.sort((a, b) => a[0] - b[0]), exact, rank };
 }
 
-// pool: { artists: [{ id, name, thumbId }], works: [{ id, title, artistId }] }
-// → [{ kind: 'artist' | 'work', id, label, marks, thumbId }], como mucho `max`.
+// pool: { artists: [{ id, name, thumbId }], works: [{ id, title, artistId }], locked?: [{ id, name }] }
+// → [{ kind: 'artist' | 'locked' | 'work', id, label, marks, thumbId }], como mucho `max`. Los pintores aún por conocer
+// (`locked`) van tras los conocidos y sin miniatura: no se enseña ninguna obra suya.
 export function suggest(pool, query, max = SUGGEST_MAX) {
   const tokens = wordsOf(foldText(query)).map((w) => w.text);
   if (!tokens.length) return [];
@@ -74,8 +75,9 @@ export function suggest(pool, query, max = SUGGEST_MAX) {
     .sort((a, b) => (b.m.exact - a.m.exact) || (a.m.rank - b.m.rank) || (labelOf(a.item).length - labelOf(b.item).length) || labelOf(a.item).localeCompare(labelOf(b.item), 'es'))
     .map((x) => make(x.item, x.m));
   const artists = collect(pool.artists, (a) => a.name, (a, m) => ({ kind: 'artist', id: a.id, label: a.name, marks: m.marks, thumbId: a.thumbId }));
+  const locked = collect(pool.locked || [], (a) => a.name, (a, m) => ({ kind: 'locked', id: a.id, label: a.name, marks: m.marks, thumbId: null }));
   const works = collect(pool.works, (w) => w.title, (w, m) => ({ kind: 'work', id: w.id, label: w.title, marks: m.marks, thumbId: w.id }));
-  return [...artists, ...works].slice(0, max);
+  return [...artists, ...locked, ...works].slice(0, max);
 }
 
 // Trozos de la etiqueta para pintar en negrita lo que casa: [{ text, hit }].
