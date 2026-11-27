@@ -1,12 +1,5 @@
-selección 1461, ya bajadas 1451, pendientes 10; este lote 10
-ok   w3842479    giotto           1154x1600 495KB  Virgen con el Niño
-ok   w3276168    giotto           871x1600 311KB  Virgen de Borgo San Lorenzo
-ok   w3395777    giotto           1600x724 270KB  Retablo Peruzzi
-ok   w3642142    giotto           1457x1600 512KB  Bonifacio VIII proclama el jubileo de 1300
-ok   w734197     giotto           848x1000 178KB  Visitación
-ok   w61989282   giotto           1001x922 173KB  La Virgen de la Anunciación
-ok   w19911414   giotto           1558x1600 721KB  La Epifanía
-ok   w141270724  giotto           1600x1013 513KB  Ascensión de san Juan Evangelista
-ok   w27016037   giotto           1545x1600 635KB  Presentación de Jesucristo en el Templo
-ok   w118495235  giotto           650x1279 200KB  Tríptico Stefaneschi: Cristo en el trono
-lote: 10/10 bien; quedan 0
+selección 1465, ya bajadas 1462, pendientes 3; este lote 3
+ok   w2067212    giotto           1600x1505 630KB  Lamentación sobre Cristo muerto
+ok   w3504778    giotto           1000x980 228KB  El beso de Judas
+ok   w3531531    fra-angelico     1600x1558 442KB  Adoración de los Reyes Magos
+lote: 3/3 bien; quedan 0

@@ -1,0 +1,178 @@
+/* Perfil, tarjetas: rango (escalera y condiciones), las cuatro cifras, logros (fila del perfil y pantalla
+   #logros) y las hojas de rangos y de elegir pintor. Se carga con profile.css (ui/screens/profile.js). Los
+   colores vienen de brand.css. */
+
+.page-profile {
+  --pf-card-pad: 1rem;
+  --pf-medal-cell: 4.6rem;
+  --pf-step-h: 6px;
+  --pf-stat-icon: 44px;
+  --pf-stat-h: 72px;
+}
+
+/* Tarjeta común: superficie con el relieve suave de la app. */
+.pf-rank-card, .pf-stat, .pf-medal-row, .pf-near-card {
+  border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm);
+}
+.pf-chev { display: inline-grid; color: var(--ink-2); }
+
+/* ---------- Rango ---------- */
+.pf-rank-card { display: grid; gap: .7rem; padding: .4rem var(--pf-card-pad) var(--pf-card-pad); }
+.pf-rank-head {
+  display: flex; align-items: center; gap: .8rem; width: calc(100% + 1rem); min-height: 64px; margin: 0 -.5rem; padding: .3rem .5rem;
+  border: 0; border-radius: var(--radius-sm); background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer;
+  transition: background-color .18s var(--ease);
+}
+.pf-rank-head:hover { background: var(--surface-2); }
+.pf-rank-gem {
+  display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--gold) 20%, var(--surface)); color: var(--gold-text);
+}
+.pf-rank-titles { display: grid; gap: .15rem; flex: 1; min-width: 0; }
+.pf-rank-name { font: 500 1.35rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
+.pf-rank-pos { font-size: .9rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+
+/* Escalera de los ocho rangos: alcanzados en oro, el siguiente punteado. */
+.pf-ladder { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; }
+.pf-ladder > li { height: var(--pf-step-h); border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line); }
+.pf-ladder > li.is-on { background: var(--gold); box-shadow: none; }
+.pf-ladder > li.is-next {
+  box-shadow: none;
+  background: repeating-linear-gradient(90deg, var(--gold) 0 5px, transparent 5px 8px);
+  opacity: .7;
+}
+
+.pf-rank-next { font-weight: 600; color: var(--ink); }
+.pf-rank-next strong { color: var(--brand-text); font-weight: 600; }
+.pf-conds { display: grid; gap: .35rem; }
+.pf-cond { display: flex; align-items: center; gap: .7rem; min-height: 48px; }
+.pf-cond-mark {
+  display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 999px;
+  box-shadow: inset 0 0 0 2px var(--brand-text);
+}
+.pf-cond.is-done .pf-cond-mark { background: var(--ok); color: var(--on-ok); box-shadow: none; }
+.pf-cond-label { flex: 1; min-width: 0; color: var(--ink); overflow-wrap: break-word; }
+.pf-cond.is-done .pf-cond-label { color: var(--ink-2); }
+.pf-cond-val { font-weight: 600; color: var(--brand-text); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.pf-cond.is-done .pf-cond-val { font-weight: 500; color: var(--ink-2); }
+.pf-cond-go { flex: none; min-height: 48px; padding-inline: 1.1rem; }
+
+/* Hoja de los rangos. */
+.pf-rank-list { display: grid; gap: .2rem; }
+.pf-rank-row { display: flex; align-items: flex-start; gap: .8rem; padding: .6rem 0; border-top: 1px solid var(--line); }
+.pf-rank-row:first-child { border-top: 0; }
+.pf-rank-step {
+  display: grid; place-items: center; flex: none; width: 30px; height: 30px; border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px var(--line-2); color: var(--ink-2); font: 600 .85rem/1 var(--font);
+}
+.pf-rank-row.is-past .pf-rank-step, .pf-rank-row.is-current .pf-rank-step { background: var(--gold); color: var(--on-gold); box-shadow: none; }
+.pf-rank-row-text { display: grid; gap: .15rem; min-width: 0; }
+.pf-rank-row-name { font-weight: 600; }
+.pf-rank-you { margin-left: .3rem; padding: .1rem .5rem; border-radius: 999px; background: var(--brand-soft); color: var(--brand-text); font-size: .78rem; }
+.pf-rank-row-needs { font-size: .88rem; color: var(--ink-2); overflow-wrap: break-word; }
+
+/* Hoja de elegir pintor. */
+.pf-choices { display: grid; gap: .3rem; }
+.pf-choice {
+  display: flex; align-items: center; gap: .8rem; width: 100%; min-height: 64px; padding: .4rem .5rem; border: 0; border-radius: var(--radius-sm);
+  background: none; color: var(--ink); font: 600 1rem/1.2 var(--font); text-align: left; cursor: pointer;
+}
+.pf-choice:hover { background: var(--surface-2); }
+.pf-choice-name { flex: 1; min-width: 0; }
+.pf-choice-sub { display: block; margin-top: .1rem; font: 400 .85rem/1.2 var(--font); color: var(--ink-2); }
+
+/* ---------- Cifras ---------- */
+.pf-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
+.pf-stats > li { display: grid; }
+.pf-stat {
+  display: flex; align-items: center; gap: .7rem; min-height: var(--pf-stat-h); padding: .6rem .8rem; min-width: 0;
+  border: 0; color: var(--ink); font: inherit; text-align: left; text-decoration: none; cursor: pointer;
+  transition: transform .12s var(--ease), box-shadow .12s var(--ease);
+}
+.pf-stat:hover { box-shadow: 0 var(--relief-sm) 0 var(--line-2), inset 0 0 0 1.5px var(--line-2); }
+.pf-stat:active { transform: translateY(var(--relief-sm)); box-shadow: var(--lift-down); }
+.pf-stat-icon { display: grid; place-items: center; flex: none; width: var(--pf-stat-icon); height: var(--pf-stat-icon); border-radius: var(--radius-sm); }
+.tone-brand .pf-stat-icon { background: var(--brand-soft); color: var(--brand-text); }
+.tone-gold .pf-stat-icon { background: color-mix(in srgb, var(--gold) 20%, var(--surface)); color: var(--gold-text); }
+.tone-ok .pf-stat-icon { background: var(--ok-soft); color: var(--ok); }
+.tone-accent .pf-stat-icon { background: var(--accent-soft); color: var(--accent-ui); }
+.pf-stat-text { display: grid; gap: .1rem; min-width: 0; }
+.pf-stat-num { font: 500 1.6rem/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
+.pf-stat-total { font-size: 1rem; color: var(--ink-2); }
+.pf-stat-label { font-size: .85rem; line-height: 1.2; color: var(--ink-2); overflow-wrap: break-word; }
+
+/* ---------- Logros: casillas ---------- */
+.pf-medals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem .2rem; }
+.pf-medals > li { display: grid; min-width: 0; }
+.pf-medal {
+  display: grid; justify-items: center; align-content: start; gap: .35rem; width: 100%; min-height: 48px; padding: .3rem .1rem;
+  border: 0; border-radius: var(--radius-sm); background: none; color: inherit; font: inherit; text-align: center; cursor: pointer;
+  transition: background-color .18s var(--ease);
+}
+.pf-medal:hover { background: var(--surface-2); }
+/* Nombre de dos líneas como mucho: los nombres cortos de los pintores caben en una. */
+.pf-medal-name {
+  max-width: 100%; font-size: .8rem; line-height: 1.2; color: var(--ink); overflow-wrap: break-word; hyphens: auto;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+}
+.pf-medal.is-missing .pf-medal-name { color: var(--ink-2); }
+.pf-medal.is-near .pf-medal-name { color: var(--brand-text); font-weight: 600; }
+.medal-thumb { background: var(--accent); }
+/* Metal: anillo con degradado del oro, la plata o el bronce (el nombre del metal va en la hoja). */
+.tier-gold { --tier: var(--tier-gold); --tier-hi: var(--tier-gold-hi); --tier-lo: var(--tier-gold-lo); }
+.tier-silver { --tier: var(--tier-silver); --tier-hi: var(--tier-silver-hi); --tier-lo: var(--tier-silver-lo); }
+.tier-bronze { --tier: var(--tier-bronze); --tier-hi: var(--tier-bronze-hi); --tier-lo: var(--tier-bronze-lo); }
+.pf-ring {
+  display: inline-grid; padding: var(--pf-ring); border-radius: 999px;
+  background: linear-gradient(135deg, var(--tier-hi), var(--tier) 48%, var(--tier-lo));
+}
+.medal-dlg .pf-ring { --pf-ring: 6px; }
+/* Pendiente más cercana: arco del avance alrededor del sello gris. */
+.pf-near-seal { position: relative; display: grid; place-items: center; width: 64px; height: 64px; flex: none; }
+.pf-near-seal > .medal { grid-area: 1 / 1; }
+.pf-arc { grid-area: 1 / 1; }
+.pf-arc-track { fill: none; stroke: var(--line); stroke-width: 3; }
+.pf-arc-fill { fill: none; stroke: var(--brand); stroke-width: 3; stroke-linecap: round; }
+/* Todas las casillas miden lo mismo: el sello pendiente ocupa lo que el anillo y el arco no se sale de él. */
+.pf-medal > .medal { margin: var(--pf-ring); }
+.pf-medal .pf-near-seal { margin: calc((var(--pf-ring) * 2 + 52px - 64px) / 2); }
+
+/* Fila del perfil, dentro de su tarjeta. */
+.pf-medal-row { padding: .7rem .4rem; }
+.pf-medals-sec .pf-link { gap: .2rem; font-variant-numeric: lining-nums tabular-nums; }
+.pf-medals-sec .pf-link .pf-chev { color: inherit; font-size: 1.3rem; line-height: 1; }
+
+/* ---------- Pantalla «Logros» (#logros) ---------- */
+.pf-logros { padding-bottom: 1.5rem; }
+.pf-logros-head {
+  position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: .5rem;
+  padding: calc(env(safe-area-inset-top, 0px) + .4rem) var(--pf-gutter) .4rem .5rem;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.pf-logros-title { flex: 1; min-width: 0; font: 500 1.4rem/1.1 var(--font); letter-spacing: var(--track); }
+.pf-logros-body { display: grid; gap: 1.2rem; padding: 1rem var(--pf-gutter) 0; }
+.pf-filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+.pf-filter {
+  min-height: 48px; padding: 0 1.1rem; border: 0; border-radius: 999px; background: var(--surface); color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--line-2); font: 600 .95rem/1 var(--font); cursor: pointer;
+}
+.pf-filter:hover { background: var(--surface-2); }
+.pf-filter[aria-pressed="true"] { background: var(--ink); color: var(--bg); box-shadow: none; }
+.pf-near-card {
+  display: flex; align-items: center; gap: 1rem; width: 100%; padding: .9rem var(--pf-card-pad); border: 0;
+  color: var(--ink); font: inherit; text-align: left; cursor: pointer;
+}
+.pf-near-card[hidden] { display: none; }
+.pf-near-text { display: grid; gap: .3rem; flex: 1; min-width: 0; }
+.pf-near-kicker { font: 600 .78rem/1 var(--font); letter-spacing: .08em; text-transform: uppercase; color: var(--brand-text); }
+.pf-near-name { font: 500 1.15rem/1.2 var(--font); overflow-wrap: break-word; }
+.pf-near-bar { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.pf-near-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--brand); }
+.pf-near-count { font-size: .88rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.pf-medal-groups { display: grid; gap: 1.4rem; }
+.pf-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; margin-bottom: .6rem; font: 500 1.15rem/1.2 var(--font); }
+
+@media (min-width: 720px) {
+  .pf-medal-grid { grid-template-columns: repeat(auto-fill, minmax(var(--pf-medal-cell), 1fr)); }
+  .page-medals .content { max-width: 760px; margin-inline: auto; }
+}

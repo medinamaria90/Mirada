@@ -150,7 +150,7 @@
    "order": 3,
    "section": null,
    "qid": "Q7814",
-   "works": 18,
+   "works": 20,
    "category": "gran-maestro",
    "branches": [
     "gotico"
@@ -283,11 +283,11 @@
    "order": 1,
    "section": null,
    "qid": "Q5664",
-   "works": 2,
+   "works": 4,
    "category": "invitado",
    "branches": [],
    "stages": [],
-   "level1": 2
+   "level1": 4
   },
   {
    "id": "uccello",
@@ -2423,7 +2423,7 @@
    "order": 5,
    "section": null,
    "qid": "Q317736",
-   "works": 7,
+   "works": 8,
    "category": "rama",
    "branches": [
     "ukiyo-e"
@@ -2438,7 +2438,7 @@
      "provisional": true
     }
    ],
-   "level1": 3
+   "level1": 4
   },
   {
    "id": "hiroshige",
@@ -5112,6 +5112,100 @@
    "warnings": []
   },
   {
+   "id": "w2067212",
+   "artistId": "giotto",
+   "title": "Lamentación sobre Cristo muerto",
+   "titleSource": "wikidata-es",
+   "year": "1305",
+   "yearSort": 1305,
+   "yearQuality": "exact",
+   "level": 3,
+   "stage": "Padua y la capilla Scrovegni",
+   "fame": 2,
+   "sitelinks": 13,
+   "img": "img/w2067212.jpg",
+   "w": 1600,
+   "h": 1505,
+   "downloaded": true,
+   "museum": "Capilla de los Scrovegni",
+   "city": "Padua",
+   "country": "Italia",
+   "inSpain": false,
+   "technique": "Fresco",
+   "dimensions": "200 × 185 cm",
+   "inception": "1305",
+   "depicts": [
+    "Jesús de Nazaret",
+    "varón"
+   ],
+   "genre": "arte gótico",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q2067212",
+    "commons": "https://commons.wikimedia.org/wiki/File:Compianto_sul_Cristo_morto.jpg",
+    "file": "Compianto sul Cristo morto.jpg",
+    "license": "Public domain",
+    "credit": "Own work",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
+   },
+   "confidence": "medium",
+   "warnings": [
+    "proporcion"
+   ]
+  },
+  {
+   "id": "w3504778",
+   "artistId": "giotto",
+   "title": "El beso de Judas",
+   "titleSource": "wikidata-es",
+   "year": "1303–1304",
+   "yearSort": 1303,
+   "yearQuality": "exact",
+   "level": 3,
+   "stage": "Padua y la capilla Scrovegni",
+   "fame": 1,
+   "sitelinks": 9,
+   "img": "img/w3504778.jpg",
+   "w": 1000,
+   "h": 980,
+   "downloaded": true,
+   "museum": "Capilla de los Scrovegni",
+   "city": "Padua",
+   "country": "Italia",
+   "inSpain": false,
+   "technique": "Fresco sobre yeso",
+   "dimensions": "200 × 185 cm",
+   "inception": "1303–1304",
+   "depicts": [
+    "Jesús de Nazaret",
+    "Judas Iscariote",
+    "antorcha",
+    "arresto de Jesús",
+    "aureola",
+    "fuego",
+    "nimbo",
+    "varón"
+   ],
+   "genre": "arte religioso",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q3504778",
+    "commons": "https://commons.wikimedia.org/wiki/File:Giotto_di_Bondone_-_No._31_Scenes_from_the_Life_of_Christ_-_15._The_Arrest_of_Christ_(Kiss_of_Judas)_-_WGA09216.jpg",
+    "file": "Giotto di Bondone - No. 31 Scenes from the Life of Christ - 15. The Arrest of Christ (Kiss of Judas) - WGA09216.jpg",
+    "license": "Public domain",
+    "credit": "Web Gallery of Art:   Image  ; Wikimedia Commons",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
+   },
+   "confidence": "medium",
+   "warnings": [
+    "proporcion"
+   ]
+  },
+  {
    "id": "w734197",
    "artistId": "giotto",
    "title": "Visitación",
@@ -6589,6 +6683,52 @@
    "warnings": []
   },
   {
+   "id": "w3531531",
+   "artistId": "fra-angelico",
+   "title": "Adoración de los Reyes Magos",
+   "titleSource": "wikidata-es",
+   "year": "1430",
+   "yearSort": 1430,
+   "yearQuality": "exact",
+   "level": 1,
+   "stage": null,
+   "fame": 2,
+   "sitelinks": 13,
+   "img": "img/w3531531.jpg",
+   "w": 1600,
+   "h": 1558,
+   "downloaded": true,
+   "museum": "Galería Nacional de Arte",
+   "city": "Washington",
+   "country": "Estados Unidos",
+   "inSpain": false,
+   "technique": "Temple sobre tabla",
+   "dimensions": "137,2 × 137,2 cm",
+   "inception": "1430",
+   "depicts": [
+    "Niño Jesús",
+    "Reyes Magos",
+    "Virgen María",
+    "adoración",
+    "mujer",
+    "niño"
+   ],
+   "genre": "arte religioso",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q3531531",
+    "commons": "https://commons.wikimedia.org/wiki/File:Fra_Angelico_Adoration.jpg",
+    "file": "Fra Angelico Adoration.jpg",
+    "license": "Public domain",
+    "credit": "see above",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
+   },
+   "confidence": "high",
+   "warnings": []
+  },
+  {
    "id": "w3797771",
    "artistId": "fra-angelico",
    "title": "Coronación de la Virgen",
@@ -6628,6 +6768,49 @@
    },
    "confidence": "high",
    "warnings": []
+  },
+  {
+   "id": "w2376881",
+   "artistId": "fra-angelico",
+   "title": "Anunciación de Cortona",
+   "titleSource": "wikidata-es",
+   "year": "c. 1430",
+   "yearSort": 1430,
+   "yearQuality": "circa",
+   "level": 1,
+   "stage": null,
+   "fame": 2,
+   "sitelinks": 10,
+   "img": "img/w2376881.jpg",
+   "w": 1483,
+   "h": 1600,
+   "downloaded": true,
+   "museum": "Museo Diocesano de Cortona",
+   "city": "Cortona",
+   "country": "Italia",
+   "inSpain": false,
+   "technique": "Temple sobre tabla",
+   "dimensions": "175 × 180 cm",
+   "inception": "",
+   "depicts": [
+    "Anunciación"
+   ],
+   "genre": "arte religioso",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q2376881",
+    "commons": "https://commons.wikimedia.org/wiki/File:Beato_angelico,_annunciazione_di_cortona,_1434-36,_da_s._domenico,_01.jpg",
+    "file": "Beato angelico, annunciazione di cortona, 1434-36, da s. domenico, 01.jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "Own work",
+    "ficha": "wikidata",
+    "fetched": "2026-11-24"
+   },
+   "confidence": "medium",
+   "warnings": [
+    "proporcion"
+   ]
   },
   {
    "id": "w3649296",
@@ -31507,9 +31690,9 @@
    "w": 1338,
    "h": 1600,
    "downloaded": true,
-   "museum": "Kunsthandel P. de Boer",
+   "museum": "Colección privada",
    "city": null,
-   "country": "Países Bajos",
+   "country": null,
    "inSpain": false,
    "technique": "Óleo sobre lienzo",
    "dimensions": "72 × 60,3 cm",
@@ -44407,6 +44590,45 @@
    "warnings": [
     "proporcion"
    ]
+  },
+  {
+   "id": "w69729449",
+   "artistId": "kuniyoshi",
+   "title": "Honchō suikoden gōyū 800 nin hitori",
+   "titleSource": "traducir",
+   "year": "c. 1830",
+   "yearSort": 1830,
+   "yearQuality": "circa",
+   "level": 1,
+   "stage": null,
+   "fame": 1,
+   "sitelinks": 2,
+   "img": "img/w69729449.jpg",
+   "w": 617,
+   "h": 1600,
+   "downloaded": true,
+   "museum": null,
+   "city": null,
+   "country": null,
+   "inSpain": false,
+   "technique": "",
+   "dimensions": "",
+   "inception": "1830",
+   "depicts": [],
+   "genre": "ukiyo-e",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q69729449",
+    "commons": "https://commons.wikimedia.org/wiki/File:Honcho_Suikoden_Goketsu_(BM_1973,0723,0.29_76).jpg",
+    "file": "Honcho Suikoden Goketsu (BM 1973,0723,0.29 76).jpg",
+    "license": "Public domain",
+    "credit": "https://www.britishmuseum.org/collection/object/A_1973-0723-0-29",
+    "ficha": "wikidata",
+    "fetched": "2026-11-24"
+   },
+   "confidence": "medium",
+   "warnings": []
   },
   {
    "id": "w70738658",
@@ -67717,7 +67939,7 @@
    "w": 1281,
    "h": 1600,
    "downloaded": true,
-   "museum": "Brett Gorvy",
+   "museum": "Colección privada",
    "city": null,
    "country": null,
    "inSpain": false,
