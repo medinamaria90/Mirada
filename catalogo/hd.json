@@ -97,9 +97,9 @@
  },
  "w12418": {
   "archivo": "Mona Lisa, by Leonardo da Vinci, from C2RMF retouched.jpg",
-  "w": 2214,
-  "h": 3300,
-  "bytes": 2310319
+  "w": 2550,
+  "h": 3800,
+  "bytes": 2306385
  },
  "w125359587": {
   "archivo": "Joan de Joanes Dernière Cène.jpg",
@@ -112,6 +112,12 @@
   "w": 2898,
   "h": 2250,
   "bytes": 1155868
+ },
+ "w151047": {
+  "archivo": "Sandro Botticelli - La nascita di Venere - Google Art Project - edited.jpg",
+  "w": 3840,
+  "h": 2412,
+  "bytes": 2495038
  },
  "w15130000": {
   "archivo": "Mary Stevenson Cassatt, American - Woman with a Pearl Necklace in a Loge - Google Art Project.jpg",
@@ -190,6 +196,12 @@
   "w": 2622,
   "h": 3840,
   "bytes": 1410443
+ },
+ "w185372": {
+  "archivo": "1665 Girl with a Pearl Earring.jpg",
+  "w": 2533,
+  "h": 3000,
+  "bytes": 1820658
  },
  "w18683079": {
   "archivo": "Alexei Venetsianov - Threshing Barn - Google Art Project.jpg",
@@ -293,6 +305,12 @@
   "h": 2929,
   "bytes": 2146281
  },
+ "w220859": {
+  "archivo": "Van Eyck - Arnolfini Portrait.jpg",
+  "w": 2559,
+  "h": 3500,
+  "bytes": 1176333
+ },
  "w2273890": {
   "archivo": "Tintoretto - Miracle of the Slave.jpg",
   "w": 3800,
@@ -357,7 +375,7 @@
   "archivo": "Karl Brullov - The Last Day of Pompeii - Google Art Project.jpg",
   "w": 3840,
   "h": 2696,
-  "bytes": 1975613
+  "bytes": 1954718
  },
  "w252485": {
   "archivo": "Katsushika Hokusai - The Great Wave off the Coast of Kanagawa LCCN2008660568.jpg",
@@ -445,9 +463,9 @@
  },
  "w321303": {
   "archivo": "The Garden of Earthly Delights by Bosch High Resolution 2.jpg",
-  "w": 3700,
-  "h": 2086,
-  "bytes": 2202173
+  "w": 3840,
+  "h": 2165,
+  "bytes": 2437360
  },
  "w3224308": {
   "archivo": "Pietro Perugino cat66.jpg",
@@ -615,7 +633,7 @@
   "archivo": "Van Gogh - Starry Night - Google Art Project.jpg",
   "w": 3840,
   "h": 3041,
-  "bytes": 3029876
+  "bytes": 3008432
  },
  "w4717953": {
   "archivo": "Retrato de Juan Pareja, by Diego Velázquez.jpg",
@@ -689,6 +707,12 @@
   "h": 2000,
   "bytes": 331350
  },
+ "w6065609": {
+  "archivo": "Joaquín Sorolla y Bastida - Strolling along the Seashore - Google Art Project.jpg",
+  "w": 2567,
+  "h": 2600,
+  "bytes": 1837415
+ },
  "w6163544": {
   "archivo": "Luis de Morales 001.jpg",
   "w": 1452,
@@ -718,6 +742,12 @@
   "w": 3500,
   "h": 2639,
   "bytes": 2354225
+ },
+ "w883994": {
+  "archivo": "El Greco View of Toledo.jpg",
+  "w": 2569,
+  "h": 2900,
+  "bytes": 1370229
  },
  "w9295442": {
   "archivo": "John William Waterhouse - Hylas and the Nymphs (1896, Manchester Art Gallery).jpg",
@@ -760,5 +790,11 @@
   "w": 2249,
   "h": 3840,
   "bytes": 2222688
+ },
+ "w969377": {
+  "archivo": "Caravaggio — The Calling of Saint Matthew.jpg",
+  "w": 2700,
+  "h": 2550,
+  "bytes": 1419618
  }
 }
