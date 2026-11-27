@@ -12,3 +12,9 @@ por país: Italia 42
 títulos por fuente: {'traducir': 136, 'revisar-idioma': 1, 'wikidata-es': 1107, 'manual': 25, 'traducido': 202}
 63M	.git
 3.7M	catalogo
+== fichas  01:22:31
+selección 1471, con ficha 1465, este lote 6
+ok lote 1: 6 fichas (1803 en total)
+fin: 1803 fichas; con museo 1746, con ciudad 1731, con técnica 1713, con medidas 1706, en España 371
+63M	.git
+3.7M	catalogo
