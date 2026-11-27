@@ -93,3 +93,11 @@ aviso w3731232 (rubens): título pendiente de traducir: Hercules and Omphale
 aviso w3636299 (rubens): título pendiente de traducir: The Battle of the Amazons
 65M	.git
 3.7M	catalogo
+== pack 1200 01:27:50
+HTTP 403: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 0814:39413D:323DCEC:9D7A37A:6B08DCB9 and timestamp 2026-11-27 01:28:25 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (https://api.github.com/repos/medinamaria90/Mirada/releases/assets/788725334)
+pack 1200px: 1072 imágenes, 243.6 MB de JPEG (media 221 KB), zip 243.7 MB, sha256 2de1c1d86bf7f91d…
+obras del catálogo 1472; sin imagen 400; con fallo 0
+faltan: w68496636 w3276414 w667202 w948745 w644734 w3842715 w6728425 w3873252 w4015930 w3842479 w3276168 w3395777 w3642142 w3504778 w734197 w3769209 w61989282 w3873247 w3948917 w3842761 w3843026 w979440 w3119488 w3276413 w3907529 w3225814 w3910903 w3618171 w3842740 w3843028 w3399498 w3553389 w3399452 w3531531 w3649296 w3698199 w780466 w3637223 w3982380 w3276176 w5189814 w3399428 w3947827 w3711791 w369582 w3949530 w3605535 w3948700 w3949351 w3698230 w3947289 w3948660 w3899272 w3889196 w3797764 w3618193 w3958339 w3947293 w3731175 w3948659 …
+pack rc=3: paquete NO subido (faltan imágenes o hay fallos; ver pipeline/logs/pack.txt)
+65M	.git
+3.7M	catalogo
