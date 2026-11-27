@@ -886,9 +886,10 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // es el peso, y ese presupuesto no cambia.
 // Inicio +1: ui/lazy-css.js en la cadena estática (pide las hojas del arranque si un index.html viejo no las enlaza).
 // 27/11 (tarde): main sin cambios ya medía 59 en el inicio (oscila con el orden de carga): 60 de margen; los KB no cambian.
-// Inicio +1: la letra de las inscripciones del mapa (Cinzel, 15 KB), que solo usan los nombres grabados en las puertas
-// (y el mismo margen de ±1 por el orden de carga).
-const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 62, kb: 460 } };
+// Inicio: la letra de las inscripciones del mapa (Cinzel, 15 KB) suma una petición y, como la medida espera a que
+// carguen las letras (document.fonts), entran en la ventana unas pocas que antes llegaban justo después (módulos y
+// miniaturas diferidos). Contadas a mano con y sin ella: las mismas peticiones en total, más la letra.
+const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 66, kb: 470 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
