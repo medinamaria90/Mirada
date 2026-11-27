@@ -109,3 +109,10 @@
 }
 @media (prefers-reduced-motion: reduce) { .res-title, .res-chip, .res-seal, .res-face, .res-medal-check { animation: none; } }
 html.reduce-motion .res-title, html.reduce-motion .res-chip, html.reduce-motion .res-seal, html.reduce-motion .res-face, html.reduce-motion .res-medal-check { animation: none; }
+
+/* Tres secundarias: compartir va solo con su icono (screens/result.js). */
+.res-row.has-icon { grid-template-columns: repeat(2, minmax(0, 1fr)) var(--res-btn2-h); }
+.res-btn2.is-icon { padding: 0; min-width: var(--res-btn2-h); }
+/* «Sigue: <pintor>»: su miniatura dentro del botón principal. */
+.res-next-art { flex: none; width: 28px; height: 28px; overflow: hidden; border-radius: 999px; box-shadow: 0 0 0 2px var(--on-brand); }
+.res-next-art img { display: block; width: 100%; height: 100%; object-fit: cover; }

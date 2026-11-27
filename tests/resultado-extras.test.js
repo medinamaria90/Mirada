@@ -48,7 +48,7 @@ test('reto diario: 5 preguntas y 5 casillas al compartir', () => {
 // ---------------------------------------------------------------- Acciones del resultado sin duplicados
 const { renderResult } = await import('../app/js/ui/screens/result.js');
 const { practiceAction } = await import('../app/js/ui/screens/result-actions.js');
-const { REVIEW5_NAME, REVIEW5_MISSED } = await import('../app/js/engine/review.js');
+const { REVIEW_NAME } = await import('../app/js/engine/review.js');
 
 // Pintores dominados con cuadros ya vistos: hay material para repasar lo aprendido.
 function withReview() {
@@ -71,32 +71,40 @@ function resultHtmlOf(progress, plan, outcome, opts = {}) {
 }
 const resultActions = (...args) => resultHtmlOf(...args).match(/<footer class="res-foot">[^]*?<\/footer>/)?.[0] || '';
 
-test('resultado: tras dominar a un pintor, un solo botón para repasar (no dos iguales) y con nombre que se entiende', () => {
+test('resultado: tras dominar a un pintor, un solo botón principal (el siguiente paso) y «Repasar» una sola vez', () => {
   const p = withReview();
   const veronese = real.artist('veronese');
   const outcome = { xp: 60, score: 8, total: 8, accuracy: 1, mastered: true, events: [] };
   const actions = resultActions(p, { kind: 'stage', artistId: veronese.id, seed: 3 }, outcome);
-  assert.equal((actions.match(/data-to="repaso5"/g) || []).length, 1, actions);
-  assert.ok(actions.includes(`<span>${REVIEW5_NAME}</span>`));
-  assert.doesNotMatch(actions, /Repaso de 5/);
+  assert.ok((actions.match(/data-to="repaso"/g) || []).length <= 1, actions);
+  assert.doesNotMatch(actions, /repaso5|Repaso de 5|Repasar lo aprendido/);
   assert.equal((actions.match(/data-primary/g) || []).length, 1, 'un solo botón principal');
+  assert.match(actions, /Sigue: /, 'la parada abierta, como principal');
+  assert.match(actions, /data-action="done"[^>]*><span>Volver al camino<\/span>/, '«Volver al camino» como secundario');
 });
 
-test('resultado: una sola acción para practicar, por prioridad (repetir, la del flujo, otra ronda)', () => {
+test('resultado: una sola acción para practicar, por prioridad (repetir y, si no, otra ronda), nunca la del principal', () => {
   const p = withReview();
   const ctx = ctxWith(p);
-  assert.equal(practiceAction(ctx, { kind: 'stage' }, { retry: 'etapa-x', more: { to: 'repaso', label: 'Repasar más' } }).label, 'Repetir');
-  assert.equal(practiceAction(ctx, { kind: 'srs' }, { more: { to: 'repaso', label: 'Repasar más' } }).to, 'repaso');
-  assert.equal(practiceAction(ctx, { kind: 'stage' }).to, 'repaso5');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { retry: 'etapa-x' }).label, 'Repetir');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }).to, 'repaso');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }).label, REVIEW_NAME);
+  assert.equal(practiceAction(ctx, { kind: 'srs' }), null, 'tras un repaso no se ofrece otro');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { prevKind: 'srs' }), null, 'nunca dos repasos seguidos');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { main: 'repaso' }), null, 'no repite el botón principal');
   assert.equal(practiceAction(ctx, { kind: 'stage' }, { closing: true }), null, 'al cerrar el día, sin llamadas a seguir jugando');
   assert.equal(practiceAction(ctx, { kind: 'stage' }, { duel: true }), null);
 });
 
-test('resultado: si entre los cuadros del repaso hay fallados, el botón lo dice', () => {
+test('resultado: con 50-74 % «Repetir» va como secundario y el principal es el siguiente paso; con menos del 50 %, principal', () => {
   const p = withReview();
-  const w = real.worksOf(real.path[0].id)[0];
-  p.fallados = [{ id: w.id, date: '2026-11-20', hits: 0 }];
-  assert.equal(practiceAction(ctxWith(p), { kind: 'stage' }).label, REVIEW5_MISSED);
+  const c = real.path[3];
+  p.artists[c.id] = { plays: 1, best: 0.6, mastered: false, last: '2026-11-24' };
+  const mid = resultActions(p, { kind: 'stage', artistId: c.id, seed: 3 }, { xp: 30, score: 5, total: 8, accuracy: 0.62, mastered: false, events: [] });
+  assert.doesNotMatch(mid.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Repetir/);
+  assert.match(mid, /res-btn2[^>]*data-to="etapa-[^"]+"><svg[^]*?<span>Repetir<\/span>/);
+  const low = resultActions(p, { kind: 'stage', artistId: c.id, seed: 3 }, { xp: 10, score: 2, total: 8, accuracy: 0.25, mastered: false, events: [] });
+  assert.match(low.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Repetir/);
 });
 
 test('momento de dominar a un maestro: se queda hasta cerrarlo (X, «Seguir», Esc o fuera), sin cierre automático', () => {

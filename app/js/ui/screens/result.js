@@ -1,13 +1,16 @@
 // Fin de ronda: una sola pantalla que no se desplaza. Arriba el cuadro con la medalla, el titular y lo aprendido; después
 // tres cifras (aciertos, experiencia, cuadros nuevos) y una fila de logros de alto fijo (result-chips.js). Abajo, fija,
-// la acción principal («Seguir») y como mucho dos secundarias. Con letra grande solo se desplaza lo de en medio. El momento
+// la acción principal (el siguiente paso recomendado, engine/next-step.js) y como mucho tres secundarias: «Volver al
+// camino», una para practicar y compartir (solo icono). Con letra grande solo se desplaza lo de en medio. El momento
 // de dominar a un maestro (ui/match-moment.js) va antes, encima, hasta que se cierra. Estilos: css/resultado.css.
 
 import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotion, $ } from '../dom.js';
 import { icons } from '../icons.js';
-import { mediumSrc, coverOf } from '../art.js';
+import { mediumSrc, tinySrc, coverOf } from '../art.js';
 import { MASTERY, UNLOCK_MIN, isStepUnlocked, gateSteps } from '../../engine/progress.js';
-import { pendingWorks, deepStatus } from '../../engine/levels.js';
+import { nextStep, DONE_TITLE } from '../../engine/next-step.js';
+import { isoWeek } from '../../engine/dates.js';
+import { pendingWorks } from '../../engine/levels.js';
 import { stageTitle, tierOf, isMasterTier, avatarCrop, avatarWork, seenOf } from '../../engine/painters.js';
 import { deepRoute, stageRoute, branchRoute } from '../router.js';
 import { practiceAction } from './result-actions.js';
@@ -28,13 +31,6 @@ export function headline(accuracy) {
   if (accuracy >= 0.75) return 'Muy buen ojo';
   if (accuracy >= 0.5) return 'Vas cogiendo el estilo';
   return 'Se aprende mirando';
-}
-
-// El «siguiente» de un nivel «a fondo» superado: la etapa siguiente si ya está abierta, o null.
-function deepNext(ctx, ev) {
-  const { index } = ctx;
-  const next = index.deepLevels(ev.artistId).find((l) => l.id > ev.level);
-  return next && deepStatus(ctx.store.get().progress, index, ev.artistId, next.id) !== 'locked' ? next : null;
 }
 
 const subjectOf = (q) => (q.type === 'which' ? q.targetArtworkId : q.artworkId);
@@ -91,10 +87,26 @@ function medalHtml(ctx, heroMedal, deepDone, topWork) {
   return deepDone ? `<div class="res-medal"><span class="res-seal" aria-hidden="true">${icons.check(40)}</span></div>` : '';
 }
 
-const secondaryBtn = (b) => `<button class="btn btn-secondary res-btn2" data-action="${b.action}"${b.to ? ` data-to="${esc(b.to)}"` : ''}>${b.icon ? icons[b.icon](20) : ''}<span>${esc(b.label)}</span></button>`;
+const secondaryBtn = (b) => (b.iconOnly
+  ? `<button class="btn btn-secondary res-btn2 is-icon" data-action="${b.action}" aria-label="${esc(b.label)}">${icons[b.icon](20)}</button>`
+  : `<button class="btn btn-secondary res-btn2" data-action="${b.action}"${b.to ? ` data-to="${esc(b.to)}"` : ''}>${b.icon ? icons[b.icon](20) : ''}<span>${esc(b.label)}</span></button>`);
 
-// opts: { plan, outcome, title, accent, friendScore?, firstTry, shareTopic?, primary?, onDone?, more?, before?, branchId? }
-// more: { label, to } acción extra (p. ej. «Repasar más» tras el repaso rápido); va como la acción de practicar.
+const STEP_ICON = { retry: 'repeat', review: 'repeat', weekly: 'target' };
+
+// Botón principal: el siguiente paso. Al camino («Seguir», «Volver al camino») cierra como siempre; el resto va a su ruta.
+// «Sigue: <pintor>» lleva su miniatura.
+function mainButtonHtml(ctx, step, primaryText) {
+  if (step.kind === 'path' || step.kind === 'done') {
+    return `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(step.kind === 'path' ? primaryText || step.label : step.label)}</button>`;
+  }
+  const work = step.kind === 'stop' && step.artistId ? coverOf(ctx.index, step.artistId) : null;
+  const lead = work ? `<span class="res-next-art" aria-hidden="true"><img src="${esc(tinySrc(work))}" alt="" decoding="async"></span>`
+    : STEP_ICON[step.kind] ? icons[STEP_ICON[step.kind]](20) : '';
+  return `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(step.to)}" data-primary>${lead}<span>${esc(step.label)}</span></button>`;
+}
+
+// opts: { plan, outcome, title, accent, friendScore?, firstTry, shareTopic?, primary?, onDone?, before?, branchId?, prevKind?,
+// goalJustMet? } (prevKind: tipo de la sesión anterior; goalJustMet: esta sesión cumple la meta del día).
 export function renderResult(ctx, el, opts) {
   const { index } = ctx;
   const { outcome, plan } = opts;
@@ -115,10 +127,9 @@ export function renderResult(ctx, el, opts) {
     && !(streak && m.id.startsWith('streak-')));
 
   const low = (plan.kind === 'stage' || plan.kind === 'sala') && outcome.accuracy < UNLOCK_MIN;
-  // Ronda de un pintor de rama (opts.branchId: la rama desde la que se entró): su avance va en una ficha y, si se abre el
-  // siguiente, es la acción principal; al volver, el mapa se centra en esa rama.
+  // Ronda de un pintor de rama (opts.branchId: la rama desde la que se entró): su avance va en una ficha; al volver, el mapa
+  // se centra en esa rama.
   const inBranch = plan.kind === 'stage' && plan.artistId ? branchAfterRound(p, index, plan.artistId, opts.branchId) : null;
-  const branchNext = inBranch && !low && inBranch.next ? index.artist(inBranch.next) : null;
   if (inBranch) setMapFocus(inBranch.branch.id);
   const branchDone = Boolean(inBranch && inBranch.total && inBranch.mastered === inBranch.total);
   const chips = roundChips(index, { events, otherMedals, branch: inBranch && { ...inBranch, done: branchDone } });
@@ -131,26 +142,29 @@ export function renderResult(ctx, el, opts) {
   const step = plan.kind === 'stage' && !isDeep ? { type: 'artist', id: plan.artistId } : plan.kind === 'sala' ? { type: 'sala', id: plan.movementId } : null;
   // La siguiente parada normal: las extra (pintores nuevos en tramos ya superados) no cuentan.
   const nextOf = step ? gateSteps(p, index.steps.slice(index.stepIndex(step.type, step.id) + 1))[0] || null : null;
-  const blocked = Boolean(retry && low);
+  const duel = opts.friendScore != null;
+  const goalJustMet = opts.goalJustMet ?? Boolean(goal);
+  // El siguiente paso (engine/next-step.js); los duelos no llevan recomendación.
+  const week = typeof ctx.dailyDay === 'function' ? isoWeek(ctx.dailyDay()).key : '';
+  const next = duel ? { kind: 'path', to: 'inicio', label: 'Seguir' }
+    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week });
+  const blocked = next.kind === 'retry';
   const gated = Boolean(blocked && nextOf && !isStepUnlocked(p, index, nextOf));
-  const deepTo = deepDone && deepNext(ctx, deepDone);
+  const toPath = next.kind === 'path' || next.kind === 'done';
 
-  // Una sola acción para seguir practicando (sin duplicados); al cerrar el día, ninguna. Con la ronda floja, «Repetir» ya es
-  // la principal y la secundaria es volver al camino.
-  const practice = blocked ? null : practiceAction(ctx, plan, { retry, more: opts.more, closing: Boolean(goal), duel: opts.friendScore != null });
-  const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar';
+  // Secundarias: volver (si el principal no vuelve ya), una para practicar (nunca la misma que el principal; ninguna al
+  // cerrar el día ni en un duelo) y compartir.
+  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to });
+  const shareLabel = isDaily ? 'Copiar resultado' : duel ? 'Devolver el reto' : 'Retar';
+  const backLabel = opts.branchId && plan.kind === 'stage' && !isDeep ? 'Volver a la rama' : 'Volver al camino';
   const secondary = [
-    blocked || branchNext || deepTo ? { action: 'done', label: opts.branchId && !deepTo ? 'Volver a la rama' : 'Volver al camino' } : null,
+    toPath ? null : { action: 'done', label: backLabel },
     practice ? { action: 'go', to: practice.to, label: practice.label, icon: practice.icon } : null,
     token && !blocked ? { action: 'share', label: shareLabel, icon: isDaily ? 'copy' : 'duel' } : null,
-  ].filter(Boolean).slice(0, 2);
-  const mainButton = blocked
-    ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(retry)}" data-primary>${icons.repeat(20)}<span>Repetir</span></button>`
-    : branchNext
-      ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(stageRoute(branchNext.id, inBranch.branch.id))}" data-primary>Siguiente en la rama</button>`
-      : deepTo
-        ? `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(deepRoute(deepDone.artistId, deepTo.id))}" data-primary>${esc(`Siguiente: ${stageTitle(index.artist(deepDone.artistId), deepTo)}`)}</button>`
-        : `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(opts.primary || 'Seguir')}</button>`;
+  ].filter(Boolean);
+  // Con tres, compartir va solo con su icono.
+  if (secondary.length === 3) secondary[2].iconOnly = true;
+  const mainButton = mainButtonHtml(ctx, next, opts.primary);
 
   const master = heroMedal?.id.startsWith('artist-') ? index.artist(heroMedal.id.slice('artist-'.length)) : null;
   const deepStage = deepDone && index.deepLevels(deepDone.artistId).find((l) => l.id === deepDone.level);
@@ -167,7 +181,7 @@ export function renderResult(ctx, el, opts) {
       <div class="res-head">
         ${medalHtml(ctx, heroMedal, deepDone, work)}
         <p class="res-kicker">${esc(kicker)}</p>
-        <h1 class="res-title">${headline(outcome.accuracy)}</h1>
+        <h1 class="res-title">${goalJustMet && !duel ? DONE_TITLE : headline(outcome.accuracy)}</h1>
         ${lineHtml(ctx, { plan, outcome, low, gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry })}
       </div>
       <dl class="res-tally">
@@ -180,7 +194,7 @@ export function renderResult(ctx, el, opts) {
     <footer class="res-foot">
       <p class="copy-status" role="status"></p>
       <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="3"></textarea>
-      ${secondary.length ? `<div class="res-row${secondary.length === 1 ? ' is-one' : ''}">${secondary.map(secondaryBtn).join('')}</div>` : ''}
+      ${secondary.length ? `<div class="res-row${secondary.length === 1 ? ' is-one' : secondary.length === 3 ? ' has-icon' : ''}">${secondary.map(secondaryBtn).join('')}</div>` : ''}
       ${mainButton}
     </footer>
   </div>`;
