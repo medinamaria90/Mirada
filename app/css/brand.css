@@ -180,6 +180,11 @@
   --radius-sm: 12px;
   --marco-gap: 16px;
   --radius-btn: 16px;
+  /* Logotipo de Google del botón «Continuar con Google» (sus colores de marca, iguales en claro y oscuro). */
+  --google-blue: #4285f4;
+  --google-green: #34a853;
+  --google-yellow: #fbbc05;
+  --google-red: #ea4335;
   --font: "Outfit", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --track: -0.02em;
   --col: 560px;
