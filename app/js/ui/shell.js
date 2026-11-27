@@ -101,6 +101,8 @@ export function page(ctx, active, content) {
 
 // Explicación de una línea al tocar una pieza de la cabecera que no lleva a ningún sitio ([data-tip]): sale debajo y se
 // cierra al tocar fuera, con Esc o al desplazarse. Se instala una vez, con la primera pantalla que lleva cabecera.
+const TIP_SCROLL_PX = 24;
+
 export function installHeaderTips(doc = document) {
   let open = null;
   const close = () => {
@@ -125,9 +127,10 @@ export function installHeaderTips(doc = document) {
     const vw = doc.documentElement.clientWidth;
     tip.style.left = `${Math.round(Math.min(Math.max(r.left + r.width / 2 - w / 2, 12), vw - 12 - w))}px`;
     chip.setAttribute('aria-expanded', 'true');
-    open = { chip, tip };
+    open = { chip, tip, y: window.scrollY };
   });
   doc.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') close(); });
-  window.addEventListener('scroll', close, { passive: true });
+  // Solo un desplazamiento de verdad la cierra (no el ajuste de unos píxeles que hace el navegador al tocar).
+  window.addEventListener('scroll', () => { if (open && Math.abs(window.scrollY - open.y) > TIP_SCROLL_PX) close(); }, { passive: true });
   window.addEventListener('hashchange', close);
 }

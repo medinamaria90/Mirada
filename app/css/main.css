@@ -151,8 +151,9 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .ring-inner { display: grid; place-items: center; }
 .ring-inner .icon { color: var(--brand-text); }
 /* «Repasar» con su nombre al lado del ↻ cuando cabe (con la cabecera estrecha, solo el icono). */
-.chip-review-text { font-size: .9rem; }
-@container (max-width: 26em) { .chip-review-text { display: none; } }
+.chip-review-text { font-size: .9rem; padding-inline-end: .2rem; }
+.chip-review .chip-dot { top: var(--chip-dot-edge); right: var(--chip-dot-edge); }
+@container (max-width: 26em) { .topbar:has(.chip-streak) .chip-review-text { display: none; } }
 /* Explicación de una línea al tocar una pieza de la cabecera (shell.js installHeaderTips). */
 .chip-tip {
   position: fixed; z-index: 30; max-width: min(20rem, calc(100vw - 24px)); margin: 0; padding: .6rem .8rem; border-radius: var(--radius-sm);
