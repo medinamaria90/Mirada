@@ -94,6 +94,11 @@ export function renderHome(ctx, el) {
   const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, () => returnStop(), () => guideStop(), () => stories?.stop()];
   addLevelRings(ctx, el);
   stories = watchStoryPrefetch(el);
+  // Desplazamiento rápido por épocas (map-scrubber.js), cargado después de pintar: no pesa en el arranque.
+  let scrubStop = () => {};
+  let scrubLeft = false;
+  import('./map-scrubber-items.js').then((m) => { if (!scrubLeft) scrubStop = m.mountHomeScrubber(ctx, el); }).catch((err) => console.error(err));
+  stops.push(() => { scrubLeft = true; scrubStop(); });
   tagNew();
   news?.then((m) => m.tellNewPainters(ctx, el)).catch((err) => console.error(err));
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).

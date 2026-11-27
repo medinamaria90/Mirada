@@ -183,6 +183,28 @@
   --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
   --map-z-sign-start: 4;
   --map-z-float: 5;
+  /* Desplazamiento rápido del mapa (ui/map-scrubber.js, mapa-rapido.css): carril fino en el borde derecho que se
+     ensancha al arrastrar, marcas de época, asa «estás aquí», punto de tu parada y burbuja con la época. */
+  --scrub-edge: 2px;               /* del borde de la pantalla (o de la columna) al carril */
+  --scrub-gap: 12px;               /* aire bajo la cabecera y sobre el botón «Tú» */
+  --scrub-hit: 40px;               /* ancho de la zona táctil del asa y las marcas (de alto, --hit) */
+  --scrub-line-x: 8px;             /* del borde de la zona táctil al eje del carril */
+  --scrub-line-w: 2px;
+  --scrub-line-grow: 2;            /* el carril, al arrastrar */
+  --scrub-grip-w: 6px;
+  --scrub-grip-h: 34px;
+  --scrub-grip-grow: 1.8;          /* el asa, al arrastrar */
+  --scrub-mark-w: 9px;
+  --scrub-mark-h: 2px;
+  --scrub-mark-grow: 1.6;
+  --scrub-mark-hit: 24px;          /* alto de la zona táctil de una marca */
+  --scrub-mark-hit-w: 28px;        /* y su ancho: no llega a los carteles del borde */
+  --scrub-here: 8px;
+  --scrub-bubble-gap: 6px;
+  --scrub-bubble-max: 15rem;
+  --scrub-pic: 40px;
+  --scrub-out: 8px;                /* lo que se aparta al esconderse */
+  --scrub-fade: .22s;
   --lock-note-w: 232px;            /* globo de lo cerrado */
   --lock-note-gap: 6px;               /* cinta de oro en el canto de lo completado */
   --map-tablet-hit: 11px;          /* la tablilla mide unos 26 px: con esto, el toque llega a --hit */
@@ -269,6 +291,23 @@
   --dj-h: calc(var(--dj-bar-h) + var(--trial-h)); /* alto total de las barras de superusuario */
   --screen-h: calc(100dvh - var(--dj-h)); /* pantalla completa descontando esa barra */
   color-scheme: light dark;
+}
+
+/* Colores del desplazamiento rápido del mapa (mapa-rapido.css): se calculan en el propio carril, que va fuera del mapa
+   (así siguen al tema de la app y no a la luz del paisaje). */
+.scrub {
+  --scrub-line: color-mix(in srgb, var(--ink) 16%, transparent);
+  --scrub-line-active: color-mix(in srgb, var(--ink) 26%, transparent);
+  --scrub-mark: color-mix(in srgb, var(--ink) 42%, transparent);
+  --scrub-mark-on: var(--ink);
+  --scrub-grip: var(--surface);
+  --scrub-grip-edge: var(--line-2);
+  --scrub-grip-active: var(--brand);
+  --scrub-here-dot: var(--brand);
+  --scrub-bubble: var(--surface);
+  --scrub-bubble-ink: var(--ink);
+  --scrub-bubble-ink-2: var(--ink-2);
+  --scrub-shadow: var(--shadow-frame);
 }
 
 /* Tema oscuro. Vale en dos casos: el móvil va en oscuro y no se ha forzado «Claro» en Ajustes, o se ha
