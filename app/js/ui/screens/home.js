@@ -8,7 +8,6 @@ import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendi
 import { rememberMap } from './map-memory.js';
 import { liveArt } from '../map-land.js';
 import { watchReturn } from './map-return.js';
-import { mountReviewPill } from './review-pill.js';
 import { startMapLife } from '../map-life.js';
 import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } from '../../engine/progress.js';
 import { playEra } from '../audio-bridge.js';
@@ -74,7 +73,7 @@ export function renderHome(ctx, el) {
   // Al salir, se guarda dónde estaba la vista: se vuelve exactamente ahí (map-memory.js).
   // Historias de la parada actual y de los pintores con niveles a la vista: su tarjeta se pinta sin esperar (story-prefetch.js).
   let stories = null;
-  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, watchReturn(el), mountReviewPill(ctx, el), () => stories?.stop()];
+  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, watchReturn(el), () => stories?.stop()];
   addLevelRings(ctx, el);
   stories = watchStoryPrefetch(el);
   tagNew();

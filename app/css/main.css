@@ -144,16 +144,6 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .chip-goal-text { font-size: .74rem; color: var(--ink-2); }
 /* Racha: el número con «día(s)» debajo, como el nivel lleva su barra: cabe en una línea de 390 px. */
 .chip-daily .chip-pill { position: relative; padding: 0 .5rem; gap: .25rem; }
-/* «Repasar» en el mapa (screens/review-pill.js, variante 'map'): a la izquierda, simétrica a «Tu parada». */
-.map-review {
-  position: fixed; left: max(16px, calc(50% - var(--col) / 2 + 16px)); bottom: calc(var(--map-return-b) + var(--safe-b)); z-index: 5;
-  display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 16px 6px 6px; border-radius: 999px;
-  background: var(--surface); color: var(--ink); font: 600 .9rem/1 var(--font); text-decoration: none; box-shadow: var(--shadow-pop), inset 0 0 0 1px var(--line);
-}
-.map-review:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
-.map-review:active { transform: translateY(1px); }
-.map-review-icon { position: relative; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 999px; background: var(--brand-soft); color: var(--brand-text); }
-.map-review-icon .chip-dot { top: 0; right: 0; }
 /* «Repasar» (shell.js): redondo con ↻, como el reto diario pendiente; el punto coral si hay algo pendiente. */
 .chip-review .chip-pill { position: relative; padding: 0 .5rem; }
 .chip-daily-text { font-size: .74rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }

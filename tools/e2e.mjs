@@ -842,7 +842,8 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // de build): medidos 31 peticiones en la bienvenida (3 hojas del mapa que el HTML pide antes de saber la pantalla, roster,
 // encuadre) y 58 en el inicio (≈25 módulos del mapa y la precarga de historias). Por HTTP/2 y con el service worker eso cuesta poco; lo que manda
 // es el peso, y ese presupuesto no cambia.
-const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 58, kb: 440 } };
+// 27/11 (tarde): main sin cambios ya mide 59 en el inicio (oscila con el orden de carga): 60 de margen; los KB no cambian.
+const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 60, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -2264,7 +2265,7 @@ const r5 = await r5Ctx.newPage();
 watch(r5, 'repasar');
 await seed(r5, seededState({ upTo: 4, extra: { srs } }));
 await r5.waitForSelector('.path');
-check(await r5.locator('.chip-review .chip-dot, .map-review .chip-dot').count() === 1, 'el botón «Repasar» no lleva el punto con cuadros vencidos');
+check(await r5.locator('.chip-review .chip-dot').count() === 1, 'el botón «Repasar» no lleva el punto con cuadros vencidos');
 await r5.goto(`${base}#repaso5`);
 await r5.waitForSelector('.lesson .option');
 check(r5.url().endsWith('#repaso'), `#repaso5 no redirige a #repaso: ${r5.url()}`);

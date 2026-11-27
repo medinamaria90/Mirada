@@ -322,7 +322,7 @@ test('cierre del día: «Por hoy, hecho», tres cifras (sin precisión), fichas 
   assert.match(html, /<h1 class="res-title">Por hoy, hecho<\/h1>/);
   assert.match(foot, /data-action="done"[^>]*>Volver al camino</);
   assert.doesNotMatch(foot, /Repetir|Repasar|Sigue:/, 'en el cierre, sin llamadas a seguir jugando');
-  assert.deepEqual([...foot.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['share', 'done'], 'solo compartir y, abajo, «Volver al camino»');
+  assert.deepEqual([...foot.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['done', 'share'], 'solo «Volver al camino» (primero al leer, abajo al verse) y compartir');
 });
 
 test('resultado sin meta cumplida: una sola acción para practicar y la racha a salvo en su ficha', () => {
@@ -339,9 +339,11 @@ test('logros: como mucho tres a la vista; con más, dos y «+N» con el resto oc
   assert.equal((three.match(/class="res-chip"/g) || []).length, CHIPS_SHOWN);
   assert.doesNotMatch(three, / hidden>|data-chips="more"/);
   const five = chipsHtml(roundChips(big, { events, otherMedals: [{ id: 'new-1' }, { id: 'challenge-1' }] }));
-  assert.equal((five.match(/ hidden>/g) || []).length, 3);
-  assert.match(five, /data-chips="more" aria-label="Ver 3 más"><strong>\+3<\/strong>/);
-  assert.match(five, /aria-label="Medalla nueva: Primer cuadro nuevo"/);
+  assert.equal((five.match(/ hidden>/g) || []).length, 2, 'dos medallas van en una sola ficha');
+  assert.match(five, /data-chips="more" aria-label="Ver 2 más"><strong>\+2<\/strong>/);
+  assert.match(five, /aria-label="2 medallas nuevas: Primer cuadro nuevo, [^"]+"/);
+  const one = chipsHtml(roundChips(big, { events: [], otherMedals: [{ id: 'new-1' }] }));
+  assert.match(one, /aria-label="Medalla nueva: Primer cuadro nuevo"/);
   assert.ok([...five.matchAll(/<button[^>]*class="res-chip"[^>]*>/g)].every((m) => /data-to="[a-z-]+"/.test(m[0])), 'cada ficha lleva a su sitio');
 });
 

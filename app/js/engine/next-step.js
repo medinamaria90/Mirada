@@ -29,8 +29,7 @@ export const DONE_TITLE = 'Por hoy, hecho';
 export const STARTED_FOR_REVIEW = 3;
 export const FALLADOS_FOR_REVIEW = 5;
 
-const REVIEW_KINDS = new Set(['srs', 'review5']);
-export const isReviewKind = (kind) => REVIEW_KINDS.has(kind);
+export const isReviewKind = (kind) => kind === 'srs';
 
 const shortName = (artist) => artist.short || artist.name;
 
@@ -38,9 +37,11 @@ function stepRoute(index, step) {
   return step.type === 'sala' ? `sala-${step.id}` : stageRoute(step.id);
 }
 
-function canReview(progress, index, today, plan, prevKind) {
+// ¿Se puede proponer «Repasar»? Nunca tras un repaso, ni ahora ni en la sesión anterior. `count`: cuántos cuadros traería la
+// sesión (se calcula una sola vez por llamada a nextStep).
+function canReview(count, plan, prevKind) {
   if (isReviewKind(plan?.kind) || isReviewKind(prevKind)) return false;
-  return reviewSession(progress, index, today).works.length >= REVIEW_MIN;
+  return count() >= REVIEW_MIN;
 }
 
 const review = () => ({ kind: 'review', to: REVIEW_ROUTE, label: 'Repasar' });
@@ -50,6 +51,8 @@ export const ORIGIN_LABEL = { perfil: 'Volver al perfil', logros: 'Volver a logr
 
 export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, branchId = '', week = '', origin = '' } = {}) {
   const kind = plan.kind;
+  let reviewCount = null;
+  const count = () => (reviewCount ??= reviewSession(progress, index, today).works.length);
   const isDeep = kind === 'stage' && plan.level >= 2;
   // 1. Ronda floja de una etapa o sala.
   if ((kind === 'stage' || kind === 'sala') && outcome && outcome.accuracy < UNLOCK_MIN) {
@@ -66,7 +69,7 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   }
   // 4. Mucho pendiente.
   const many = startedArtists(progress, index).length >= STARTED_FOR_REVIEW || reviewFallados(progress, index).length >= FALLADOS_FOR_REVIEW;
-  if (many && canReview(progress, index, today, plan, prevKind)) return review();
+  if (many && canReview(count, plan, prevKind)) return review();
   // 5. Lo que sigue en el nivel o en la rama.
   const deepDone = outcome?.events?.find((e) => e.type === 'deep-mastered');
   if (deepDone) {
@@ -98,6 +101,6 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
     const a = index.artist(focus.choice.artistId);
     return { kind: 'rank', to: deepRoute(a.id, focus.choice.level), label: `Siguiente: ${shortName(a)} · nivel ${focus.choice.level}`, artistId: a.id };
   }
-  if (mastered && canReview(progress, index, today, plan, prevKind)) return review();
+  if (mastered && canReview(count, plan, prevKind)) return review();
   return { kind: 'path', to: HOME_ROUTE, label: 'Seguir' };
 }

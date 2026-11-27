@@ -8,7 +8,7 @@ const WEEK_RE = /^\d{4}-W\d{2}$/;
 // 'before': «¿Quién fue antes?» (engine/question-before.js). Sin importar el motor: este módulo va en el arranque.
 const BEFORE = 'before';
 const TYPES = new Set(['who', 'movement', 'which', BEFORE]);
-const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'review5', 'daily', 'weekly', 'general', 'challenge']);
+const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'daily', 'weekly', 'general', 'challenge']);
 
 // meta: { route, title, accent, kind, extra, friendScore, shareTopic, plan:{kind,seed,artistId,movementId,date} }
 // lesson: { round, answers, xpLive, freshIntroShown }

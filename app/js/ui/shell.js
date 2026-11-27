@@ -36,10 +36,6 @@ export function dailyChip(daily) {
   return `<a class="chip chip-daily is-done" href="#reto-diario" aria-label="Reto diario, hecho: ${daily.score} de ${daily.total}"><span class="chip-pill">${icons.calendar(18)}<span class="chip-daily-text">${daily.score}/${daily.total}</span></span></a>`;
 }
 
-// Dónde va el botón «Repasar»: 'header' (cabecera, entre la racha y el reto diario) o 'map' (píldora fija en el mapa,
-// simétrica a «Tu parada», screens/review-pill.js). Lo decide la puerta de calidad comparando las dos.
-export const REVIEW_PLACE = 'header';
-
 // Estado del botón «Repasar»: null si aún no existe (menos de 3 cuadros vistos; nunca con candado) o { pending }.
 export function reviewState(ctx) {
   if (!ctx.index) return null;
@@ -48,7 +44,9 @@ export function reviewState(ctx) {
   return { pending: reviewPending(p, ctx.index, ctx.today()) };
 }
 
-// «Repasar»: botón redondo con ↻, como el del reto diario; con algo pendiente, el punto coral (sin número).
+// «Repasar»: en la cabecera de todas las pantallas, entre la racha y el reto diario (la puerta de calidad lo prefirió a una
+// píldora en el mapa: el mismo sitio en todas, pareja del reto diario y sin tapar el camino). Botón redondo con ↻, como el
+// del reto diario; con algo pendiente, el punto coral (sin número).
 export function reviewChip(review) {
   if (!review) return '';
   return `<a class="chip chip-review" href="#repaso" aria-label="Repasar${review.pending ? ', hay cuadros pendientes' : ''}"><span class="chip-pill">${icons.repeat(20)}${review.pending ? '<span class="chip-dot" aria-hidden="true"></span>' : ''}</span></a>`;
@@ -66,7 +64,7 @@ export function topBar(ctx) {
     <div class="topbar-stats">
       ${goalChip(done, goal)}
       ${streakChip(streak)}
-      ${REVIEW_PLACE === 'header' ? reviewChip(reviewState(ctx)) : ''}
+      ${reviewChip(reviewState(ctx))}
       ${dailyChip(p.daily?.[ctx.dailyDay()])}
     </div>
   </header>`;

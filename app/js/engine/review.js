@@ -68,7 +68,9 @@ export function contrabandWork(progress, index, artistId, today) {
 
 // ---------------------------------------------------------------- Repasar (sesión automática)
 
+// Rótulo del botón (un verbo) y título de la sesión (un nombre).
 export const REVIEW_NAME = 'Repasar';
+export const REVIEW_TITLE = 'Repaso';
 export const REVIEW_SIZE = 7;
 // Cuadros vistos a partir de los que existe el repaso (el botón ↻ aparece y la sesión nunca sale vacía).
 export const REVIEW_MIN = 3;

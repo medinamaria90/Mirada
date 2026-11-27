@@ -22,7 +22,7 @@ import { storySeen } from '../../state/stories-seen.js';
 import { avatarHtml } from '../avatar.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
-import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_NAME } from '../../engine/review.js';
+import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_TITLE } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
@@ -57,7 +57,7 @@ function planMeta(plan) {
 
 // Rondas que no llevan al final un cuadro fallado antes: los retos con un amigo y el semanal (iguales
 // para todos) y el repaso (ya lleva los fallados entre sus preguntas).
-const NO_EXTRA = new Set(['challenge', 'weekly', 'srs', 'review5']);
+const NO_EXTRA = new Set(['challenge', 'weekly', 'srs']);
 
 // Tipo de la sesión anterior terminada (en memoria, sin tocar el estado): el siguiente paso nunca propone dos repasos
 // seguidos (engine/next-step.js).
@@ -439,7 +439,7 @@ export function renderReview(ctx, el) {
   const plan = planReviewSession(ctx.index, session, randomSeed(), { known: reviewKnown(ctx) });
   if (session.works.length < REVIEW_MIN || plan.questions.length < REVIEW_MIN) return leave(ctx, 'Aún no hay cuadros que repasar');
   playEra('menu');
-  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_NAME, kind: 'srs' }));
+  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_TITLE, kind: 'srs' }));
 }
 
 // --- Reto diario ------------------------------------------------------------

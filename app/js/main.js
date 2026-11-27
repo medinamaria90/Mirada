@@ -33,7 +33,7 @@ const HOME_MODULES = [
   'ui/icons.js', 'ui/map-actor.js', 'ui/map-critters.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-scene.js', 'ui/map-sky.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-memory.js',
   'ui/screens/map-return.js',
   'ui/screens/map-scroll.js', 'ui/screens/path-actions.js', 'ui/screens/path-art.js', 'ui/screens/path-curve.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js', 'ui/screens/path-nodes.js',
-  'ui/screens/path-signs.js', 'ui/screens/review-pill.js', 'ui/shell.js', 'ui/story-prefetch.js',
+  'ui/screens/path-signs.js', 'ui/shell.js', 'ui/story-prefetch.js',
 ];
 function preloadModules(list) {
   for (const path of list) {

@@ -63,9 +63,9 @@ function lineHtml(ctx, r) {
     const verdict = mine > r.friendScore ? 'Ganas tú' : mine < r.friendScore ? 'Gana tu amigo' : 'Empate';
     return `<p class="res-line"><strong>${verdict}</strong> · ${mine} a ${r.friendScore}</p>`;
   }
-  // Subida de rango: qué has conseguido y qué viene ahora, en una línea.
-  if (r.rankUp && !r.low) return `<p class="res-line res-rank">${icons.gem(18)}<span>${esc(RANK_UP(r.rankUp))}</span></p>`;
   if (r.isDaily) return `<div class="grid-row res-grid" role="img" aria-label="${outcome.score} aciertos de ${outcome.total}">${r.firstTry.map((ok) => `<span class="sq ${ok ? 'is-ok' : ''}"></span>`).join('')}</div>`;
+  // Subida de rango: qué has conseguido y qué viene ahora, en una línea (la cuadrícula del reto va antes).
+  if (r.rankUp && !r.low) return `<p class="res-line res-rank">${icons.gem(18)}<span>${esc(RANK_UP(r.rankUp))}</span></p>`;
   if (r.low) {
     const gate = r.gated ? `<span class="res-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></span>` : '';
     return `<p class="res-line">Vuelve a mirar sus cuadros: a la segunda se ve más.</p>${gate}`;
@@ -200,8 +200,8 @@ export function renderResult(ctx, el, opts) {
     <footer class="res-foot">
       <p class="copy-status" role="status"></p>
       <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="3"></textarea>
-      ${secondary.length ? `<div class="res-row${secondary.length === 1 ? ' is-one' : secondary.length === 3 ? ' has-icon' : ''}">${secondary.map(secondaryBtn).join('')}</div>` : ''}
       ${mainButton}
+      ${secondary.length ? `<div class="res-row${secondary.length === 1 ? ' is-one' : secondary.length === 3 ? ' has-icon' : ''}">${secondary.map(secondaryBtn).join('')}</div>` : ''}
     </footer>
   </div>`;
 

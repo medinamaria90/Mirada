@@ -61,7 +61,7 @@ test('cabecera: el reto diario está en la cabecera (sin chip de rango): pendien
 });
 
 test('cabecera: «Repasar» (↻) lleva a #repaso, aparece desde 3 cuadros vistos, sin candado, y el punto solo con algo pendiente', async () => {
-  const { reviewChip, reviewState, topBar: bar, REVIEW_PLACE } = await import('../app/js/ui/shell.js');
+  const { reviewChip, reviewState, topBar: bar } = await import('../app/js/ui/shell.js');
   const { bigIndex } = await import('./helpers.js');
   const index = bigIndex();
   const a = index.path[0];
@@ -79,8 +79,6 @@ test('cabecera: «Repasar» (↻) lleva a #repaso, aparece desde 3 cuadros visto
   progress.fallados = [{ id: index.worksOf(a.id)[0].id, date: TODAY, times: 1, hits: 0 }];
   const due = reviewChip(reviewState(ctx));
   assert.ok(due.includes('chip-dot') && due.includes('hay cuadros pendientes') && !/\d/.test(due.replace(/<svg[^]*?<\/svg>/g, '').replace(/\d+(px|em)/g, '')), 'punto sin número');
-  if (REVIEW_PLACE === 'header') {
-    const html = bar(ctx);
-    assert.ok(html.indexOf('chip-streak') < html.indexOf('chip-review') && html.indexOf('chip-review') < html.indexOf('chip-daily'), 'entre la racha y el reto diario');
-  }
+  const html = bar(ctx);
+  assert.ok(html.indexOf('chip-streak') < html.indexOf('chip-review') && html.indexOf('chip-review') < html.indexOf('chip-daily'), 'entre la racha y el reto diario');
 });
