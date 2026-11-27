@@ -55,6 +55,9 @@ function sceneChoices(scene, { night, dusk }) {
 // atardecer). Se pone en los tramos que se ven y en el que entra en pantalla; y en pasos de LIGHT_STEP, que el ojo no
 // distingue, para cambiar menos veces.
 const LIGHT_STEP = 0.05;
+// Mientras se toca o se desplaza el mapa, la luz espera (cambiarla cuesta un recálculo de estilos que retrasaría el toque).
+const INPUT_QUIET_MS = 1500;
+const INPUT_EVENTS = ['pointerdown', 'touchstart', 'wheel', 'scroll', 'keydown'];
 const LIGHT_PARTS = `${LIVE_PARTS}, .path-foot`;
 const stepped = (v) => (Math.round(v / LIGHT_STEP) * LIGHT_STEP).toFixed(2);
 function lightPart(el, night, dusk) {
@@ -83,8 +86,14 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
     timers.add(t);
   };
   const alive = () => !document.hidden && !prefersReducedMotion() && !map.classList.contains('is-linear');
-  // Tramos que aún no tienen luz (recién pintados) y los que se ven; los demás la reciben al entrar en pantalla.
-  const litNow = () => (io ? [...map.querySelectorAll(LIGHT_PARTS)].filter((el) => el.classList.contains('is-seen') || !el.style.getPropertyValue('--day-night')) : null);
+  let lastInput = -Infinity;
+  const onInput = () => { lastInput = performance.now(); };
+  const quiet = () => performance.now() - lastInput > INPUT_QUIET_MS;
+  INPUT_EVENTS.forEach((t) => window.addEventListener(t, onInput, { capture: true, passive: true }));
+  // Tramos que aún no tienen luz (recién pintados) y, si no se está tocando el mapa, los que se ven; los demás la reciben
+  // al entrar en pantalla.
+  const unlit = (el) => !el.style.getPropertyValue('--day-night');
+  const litNow = () => (io ? [...map.querySelectorAll(LIGHT_PARTS)].filter((el) => unlit(el) || (el.classList.contains('is-seen') && quiet())) : null);
   const refresh = () => {
     applyDaylight(map, clock(), litNow());
     map.classList.toggle('is-alive', alive());
@@ -133,7 +142,7 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
     io = new IntersectionObserver((entries) => entries.forEach((e) => {
       if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target);
       e.target.classList.toggle('is-seen', e.isIntersecting);
-      if (e.isIntersecting) applyDaylight(map, clock(), [e.target]);
+      if (e.isIntersecting && (quiet() || unlit(e.target))) applyDaylight(map, clock(), [e.target]);
     }), { rootMargin: VISIBLE_MARGIN });
   }
   refresh();
@@ -152,6 +161,7 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
       timers.clear();
       io?.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
+      INPUT_EVENTS.forEach((t) => window.removeEventListener(t, onInput, true));
       map.classList.remove('is-alive', 'is-gust');
       map.querySelectorAll('.is-seen').forEach((li) => li.classList.remove('is-seen'));
       map.querySelectorAll('.map-critter').forEach((c) => c.remove());

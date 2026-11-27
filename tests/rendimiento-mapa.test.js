@@ -39,7 +39,12 @@ function setup() {
     addEventListener: (t, fn) => listeners.set(t, fn),
     removeEventListener: (t) => listeners.delete(t),
   };
-  globalThis.window = { matchMedia: () => ({ matches: false }) };
+  const winListeners = new Map();
+  globalThis.window = {
+    matchMedia: () => ({ matches: false }),
+    addEventListener: (t, fn) => winListeners.set(t, fn),
+    removeEventListener: (t) => winListeners.delete(t),
+  };
   globalThis.setTimeout = (fn, ms) => { const id = nextId++; timers.set(id, { fn, ms }); return id; };
   globalThis.clearTimeout = (id) => timers.delete(id);
   globalThis.setInterval = (fn, ms) => { const id = nextId++; timers.set(id, { fn, ms, every: true }); return id; };
@@ -52,7 +57,7 @@ function setup() {
   const eras = [fakeEl('path-era'), fakeEl('path-era'), fakeEl('path-start')];
   const map = fakeEl('path path-map');
   map.querySelectorAll = (sel) => (sel.includes('path-era') ? eras.filter((e) => !(sel.includes(':not([data-life])') && e.dataset.life)) : []);
-  return { map, eras, timers, listeners, observers };
+  return { map, eras, timers, listeners, observers, winListeners };
 }
 
 test('mapa vivo: con la pestaña oculta se para y al salir de la portada no deja temporizadores ni capas animadas', async () => {
@@ -72,6 +77,7 @@ test('mapa vivo: con la pestaña oculta se para y al salir de la portada no deja
   life.stop();
   assert.equal(env.timers.size, 0, 'al salir de la portada quedan temporizadores corriendo');
   assert.ok(!env.listeners.has('visibilitychange'), 'al salir de la portada queda el aviso de visibilidad');
+  assert.equal(env.winListeners.size, 0, 'al salir de la portada quedan escuchas en la ventana');
   assert.ok(!env.map.classList.contains('is-alive'));
 });
 
@@ -92,6 +98,11 @@ test('mapa vivo: solo el tramo a la vista se anima y recibe la luz; de día no t
   assert.ok(env.map.classList.contains('is-night') && env.map.classList.contains('is-lit'));
   env.observers[0].cb([{ target: b, isIntersecting: true }]);
   assert.equal(b.style.getPropertyValue('--day-night'), '1.00', 'el tramo que entra en pantalla no recibe la luz');
+  // Mientras se toca el mapa, la luz espera (no retrasa el toque); después, llega.
+  minute = 6;
+  env.winListeners.get('pointerdown')();
+  life.refresh();
+  assert.equal(a.style.getPropertyValue('--day-night'), '1.00', 'la luz cambia en mitad de un toque');
   life.stop();
 });
 
