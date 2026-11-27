@@ -113,7 +113,7 @@ test('ramas: un tramo se abre al dominar el primer tramo de su época; nunca el 
   assert.equal(movementReached(p0, real, 'renacimiento'), true);
   assert.deepEqual(firstTramo(real, 'renacimiento').map((s) => s.id), ['botticelli', 'masaccio', 'piero', 'berruguete']);
   assert.deepEqual(firstTramo(real, 'romanticismo').map((s) => s.id), ['goya'], 'sin tramos, la primera parada');
-  // Con Botticelli solo, aún no; con el tramo «Primer Renacimiento» dominado, se abre el Gótico.
+  // Con Botticelli solo, aún no; con el tramo «Nace el Renacimiento» dominado, se abre el Gótico.
   const p = emptyProgress();
   masterSteps(p, real.steps.slice(0, 1));
   assert.equal(tramoOpen(p, real, 'renacimiento'), false);
