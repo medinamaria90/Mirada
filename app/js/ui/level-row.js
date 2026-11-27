@@ -9,6 +9,7 @@ import { esc, announce } from './dom.js';
 import { icons } from './icons.js';
 import { tinySrc } from './art.js';
 import { levelStory, cropOf } from '../engine/stories.js';
+import { focusOf } from '../engine/framing.js';
 import { deepRoute, stageRoute } from './router.js';
 
 const LABEL = { done: 'vista, volver a verla', next: 'jugar', locked: 'cerrada' };
@@ -16,7 +17,12 @@ const LABEL = { done: 'vista, volver a verla', next: 'jugar', locked: 'cerrada' 
 // Niveles con historia (sin historia no hay círculo), con su portada: [{ level, short, state, work, crop }].
 export function rowLevels(index, story, levels) {
   return levels.map((l) => ({ ...l, card: levelStory(story, l.level)?.cards[0] })).filter((l) => l.card)
-    .map(({ card, ...l }) => ({ ...l, work: index.artwork(card.artwork), crop: cropOf(card.focus) }));
+    .map(({ card, ...l }) => {
+      const work = index.artwork(card.artwork);
+      // El círculo se centra en el detalle de la tarjeta o, si no lo tiene, en el foco revisado de la obra.
+      const f = card.focus ? null : focusOf(work);
+      return { ...l, work, crop: f ? { x: Math.round(f[0] * 100), y: Math.round(f[1] * 100) } : cropOf(card.focus) };
+    });
 }
 
 const lockText = (levels, i) => `Se abre al terminar ${levels[i - 1]?.short || ''}`.trim();

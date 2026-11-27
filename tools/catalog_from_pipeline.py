@@ -334,6 +334,9 @@ def main(app):
     # Explicación larga (contenido/explicaciones.json, párrafos): solo en la página de la obra, así que va en la ficha.
     curio = {wid: v for wid, v in ((k, texto_con_fuente(v)) for k, v in contenido_opcional("curiosidades.json").items()) if v}
     about = {wid: v for wid, v in ((k, parrafos_con_fuente(v)) for k, v in contenido_opcional("explicaciones.json").items()) if v}
+    # Foco revisado de las obras que alguna vista recorta mucho y las que la historia enseña enteras (contenido/focos.json;
+    # el «Detalle del día» de tools/catalog_data.py manda donde lo hay). Pendientes: node tools/recortes.mjs.
+    focos = {"focos": {}, "enteras": [], **contenido_opcional("focos.json")}
     text = dict(version=3, look={}, looks={}, kind={}, tags={}, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
@@ -351,6 +354,10 @@ def main(app):
                 item[k] = True
         if o in getattr(D, "FOCUS", {}):
             item["focus"] = [round(float(v), 3) for v in D.FOCUS[o]]
+        elif w["id"] in focos["focos"]:
+            item["focus"] = [round(float(v), 3) for v in focos["focos"][w["id"]]]
+        if w["id"] in focos["enteras"]:
+            item["whole"] = True
         if o in D.LOOK:
             text["look"][w["id"]] = D.LOOK[o]
             if o in D.LOOK2 or o in D.LOOK_SOURCE:
