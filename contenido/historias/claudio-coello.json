@@ -8,6 +8,12 @@
     {
      "text": "Claudio Coello fue el último gran pintor del Siglo de Oro madrileño. Cuentan que murió de pena cuando el rey trajo a un italiano, Luca Giordano, para los grandes encargos.",
      "artwork": "w18684020",
+     "region": [
+      0.25,
+      0.08,
+      0.7,
+      0.5
+     ],
      "source": "https://es.wikipedia.org/wiki/Claudio_Coello"
     },
     {

@@ -13,20 +13,22 @@
     {
      "text": "Hoy cuelga en el gran museo de Florencia (los Uffizi) junto a las Maestà de Duccio y de Giotto, que vinieron después: tres tronos seguidos donde se ve avanzar la pintura.",
      "artwork": "w1569622",
-     "focus": [
-      0.5,
-      0.3,
-      1.6
+     "region": [
+      0.0,
+      0.1,
+      0.45,
+      0.75
      ],
      "source": "https://www.uffizi.it/en/artworks/virgin-and-child-enthroned-and-prophets-santa-trinita-maesta"
     },
     {
      "text": "El poeta Dante escribió que Cimabue se creía el mejor pintor, hasta que llegó su alumno Giotto y lo eclipsó. Lo que quería decir: la fama dura poco.",
      "artwork": "w1569622",
-     "focus": [
-      0.5,
+     "region": [
       0.25,
-      2.2
+      0.03,
+      0.75,
+      0.4
      ],
      "source": "https://www.britannica.com/biography/Cimabue"
     },
@@ -38,6 +40,12 @@
     {
      "text": "Fíjate en el trono, visto en profundidad, con cuatro profetas bajo sus arcos. Y en los pliegues: Cimabue los marca con finas líneas de oro, no con luz y sombra.",
      "artwork": "w1569622",
+     "region": [
+      0.2,
+      0.5,
+      0.8,
+      1.0
+     ],
      "source": "https://uen.pressbooks.pub/arth2720/chapter/cimabue-virgin-and-child-enthroned-and-prophets-santa-trinita-maesta/"
     }
    ]

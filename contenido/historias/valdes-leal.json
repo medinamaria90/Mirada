@@ -13,6 +13,12 @@
     {
      "text": "Miguel de Mañara, un noble arrepentido, le encargó dos cuadros sobre la muerte para el Hospital de la Caridad de Sevilla. Siguen allí, colgados donde los pensó.",
      "artwork": "w28220571",
+     "region": [
+      0.45,
+      0.05,
+      0.95,
+      0.75
+     ],
      "source": "https://es.wikipedia.org/wiki/Juan_de_Vald%C3%A9s_Leal"
     },
     {
