@@ -1,5 +1,5 @@
 // «Acerca de Sfumato» (`#acerca`, desde Perfil → Ajustes): qué es, por qué existe y quién lo hace. Página corta y discreta;
-// enlaza a «Fuentes y créditos». Sin datos de contacto.
+// enlaza a «Fuentes y créditos». Solo su LinkedIn como enlace; sin email ni teléfono.
 
 import { focusHeading } from '../dom.js';
 import { bottomNav } from '../shell.js';
@@ -8,11 +8,12 @@ import { playEra } from '../audio-bridge.js';
 import { backButton } from './artist-page.js';
 
 const AUTHOR = 'María Medina Cañete';
+const LINKEDIN = 'https://www.linkedin.com/in/mariamedinacanete';
 
 const SECTIONS = [
   { id: 'ab-what', title: 'Qué es', text: 'Un juego para aprender a mirar pintura clásica. Rondas cortas, cuadros de verdad y, con cada acierto, algo más que contar de quien lo pintó.' },
   { id: 'ab-why', title: 'Por qué existe', text: 'Porque el arte parece cosa de entendidos y no lo es. Con unas pocas pistas, un cuadro deja de ser una pared bonita y empieza a hablarte.' },
-  { id: 'ab-who', title: 'Quién lo hace', text: `${AUTHOR}, autora y dueña de Sfumato.` },
+  { id: 'ab-who', title: 'Quién lo hace', text: `${AUTHOR}, autora y dueña de Sfumato. <a class="ab-link" href="${LINKEDIN}" target="_blank" rel="noopener noreferrer">LinkedIn</a>` },
 ];
 
 const sectionHtml = (s) => `<section class="ab-section" aria-labelledby="${s.id}"><h2 id="${s.id}" class="ab-h">${s.title}</h2><p class="ab-text">${s.text}</p></section>`;
