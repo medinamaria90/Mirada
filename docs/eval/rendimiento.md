@@ -98,6 +98,10 @@ que cierren hojas sin cambiar de pantalla.
 La tarjeta del pintor sigue tardando unos 700 ms en verse porque pide la historia del pintor (`loadStory`) en ese
 momento. Es el siguiente paso si se quiere bajar más.
 
+Hecho (27/11): la tarjeta se pinta sin esperar y los círculos se completan con la historia al llegar; el mapa precarga
+la historia de la parada actual y de los pintores con niveles que se van a ver (`story-prefetch.js`). El humo lo
+comprueba con la historia retrasada 2,5 s: la tarjeta sale en menos de 0,6 s.
+
 ### Doble toque (reproducción, CPU ×4)
 
 | Segundo toque a los… | 120 ms | 300 ms | 600 ms | 1.000 ms |
