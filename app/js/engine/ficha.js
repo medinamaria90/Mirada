@@ -13,7 +13,7 @@ const byFame = (a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b
 
 // Rasgos con su detalle: [{ text, work, x, y }]. Para cada rasgo, el cuadro visto más famoso cuyas etiquetas lo enseñan
 // seguro (las del rasgo, todas en el cuadro) y que no se haya usado ya; si no hay ninguno, la portada recortada en otro
-// punto. Sin rasgos, la pista. Sin obras vistas, rasgos sin detalle (work null).
+// punto (y solo si no queda otro cuadro por usar). Sin rasgos, la pista. Sin obras vistas, rasgos sin detalle (work null).
 export function traitDetails(artist, seen) {
   const raw = Array.isArray(artist?.traits) ? artist.traits : [];
   const tags = traitTagsOf(artist, 1 + raw.length);
@@ -29,6 +29,13 @@ export function traitDetails(artist, seen) {
       return { text, work: shows, ...avatarCrop(shows) };
     }
     if (!cover) return { text, work: null, x: 50, y: 50 };
+    // Sin cuadro que lo enseñe seguro: otro cuadro visto aún no usado en la ficha (que dos rasgos no repitan obra);
+    // solo si ya están todos usados, la portada recortada en otro punto.
+    const other = seen.filter((w) => !used.has(w.id)).sort(byFame)[0];
+    if (other) {
+      used.add(other.id);
+      return { text, work: other, ...avatarCrop(other) };
+    }
     const c = avatarCrop(cover);
     const [dx, dy] = SPREAD[spread++ % SPREAD.length];
     return { text, work: cover, x: clamp(c.x + dx), y: clamp(c.y + dy) };
