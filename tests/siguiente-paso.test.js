@@ -108,12 +108,12 @@ const oficial = RANKS.find((r) => r.name === 'Oficial de taller');
 const masterReal = (ids) => { const p = emptyProgress(); for (const id of ids) { p.artists[id] = { plays: 1, best: 0.9, mastered: true }; p.medals[`artist-${id}`] = TODAY; } return p; };
 
 test('rango: «Elegir» solo ofrece niveles «a fondo» que, aprobados, cuentan; ordenados por cercanía; si ninguno, por qué', () => {
-  const p = masterReal(['botticelli', 'rafael', 'masaccio']);
+  const p = masterReal(['botticelli', 'rafael', 'leonardo']);
   const deep = deepChoices(p, real, 'deep', copista);
   assert.ok(deep.length >= 3 && deep.every((c) => c.level === 2), 'el nivel 2 de cada pintor dominado cuenta');
   // Uno empezado y casi hecho va primero.
-  p.deep = { 'masaccio:2': { plays: 1, best: 0.7, mastered: false } };
-  assert.equal(deepChoices(p, real, 'deep', copista)[0].artistId, 'masaccio');
+  p.deep = { 'leonardo:2': { plays: 1, best: 0.7, mastered: false } };
+  assert.equal(deepChoices(p, real, 'deep', copista)[0].artistId, 'leonardo');
   // «El nivel 2 de un gran maestro»: solo grandes maestros y solo su nivel 2.
   const grand = deepChoices(p, real, 'grand', oficial);
   assert.ok(grand.length && grand.every((c) => real.artist(c.artistId).category === 'gran-maestro' && c.level === oficial.grand.upTo), JSON.stringify(grand));
@@ -131,7 +131,7 @@ test('rango: «Elegir» solo ofrece niveles «a fondo» que, aprobados, cuentan;
 });
 
 test('rango: una sola acción recomendada, el nivel que cuenta para más condiciones', () => {
-  const p = masterReal(['botticelli', 'rafael', 'masaccio']);
+  const p = masterReal(['botticelli', 'rafael', 'leonardo']);
   p.xp = 2325;
   const conds = rankConditions(oficial, { xp: 2325, deep: 1, eras: 1, grand: [1], complete: 0 });
   const focus = rankFocus(p, real, oficial, conds);
