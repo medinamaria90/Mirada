@@ -3,7 +3,7 @@
 Evaluador y director de arte nuevo; no he construido nada ni toco código. Playwright (Chromium, `isMobile`, `hasTouch`),
 360, 412 y 768 px; claro, oscuro, «Como el móvil» de día y **de noche** (reloj del juego a las 23 h); estado `version: 10`
 con 9 pintores del Renacimiento dominados, y sin progreso. 1.470 imágenes reales y atlas. Comparado con `origin/main`
-en otro puerto. 0 px de desborde horizontal, sin errores de consola.
+en otro puerto. 0 px de desborde horizontal, sin errores de consola. `node --test tests/`: 690 pruebas, 687 bien, 3 omitidas, 0 fallos.
 
 ## Notas
 
