@@ -253,7 +253,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .plaza-fill { fill: var(--map-stone-top); }
 .plaza-stones.is-in { stroke-dasharray: var(--plaza-cobble-dash); stroke-width: var(--plaza-cobble-w); }
 .plaza-fill.is-halo { opacity: var(--plaza-halo-o); }
-/* Las plazas empedradas, algo transparentes: se funden con el suelo de cada época (y en oscuro no son un plato). */
+/* Las plazas empedradas, del tono de la piedra mezclado con el suelo de su época: se funden con él (también en oscuro). */
 .plaza-fill.is-soft { opacity: var(--plaza-soft-o); }
 .plaza-cobbles.is-edge { opacity: calc(var(--plaza-cobble-o) * .55); }
 .plaza-cobbles { fill: none; stroke: var(--map-cobble); stroke-width: var(--plaza-cobble-dot); stroke-linecap: round; opacity: var(--plaza-cobble-o); }

@@ -22,7 +22,9 @@ button.arch-band:active .arch-name { background: color-mix(in srgb, var(--map-st
   position: absolute; left: 50%; bottom: var(--attic-at); translate: -50% 0; width: var(--attic-w); height: var(--attic-h);
   display: flex; align-items: center; justify-content: center; overflow: hidden; padding-inline: 5%; text-align: center; text-wrap: balance; hyphens: manual;
   font: var(--inscr-weight) max(var(--inscr-min), calc(var(--inscr-fs) * var(--fit, 1)))/var(--inscr-line) var(--font-inscription); letter-spacing: calc(var(--inscr-track) * var(--track-on, 1)); text-transform: uppercase;
-  /* De noche la piedra se oscurece con el mapa (--day-night): las letras pasan a crema y la sombra, a oscura. */
+  /* De noche la piedra se oscurece con el mapa (--day-night): las letras pasan a crema, la sombra a oscura y el hueco del
+     ático se ahonda (un velo de noche tras las letras), para leerse con la luz baja. */
+  background: color-mix(in srgb, var(--map-night) calc(var(--day-night, 0) * var(--inscr-night-recess)), transparent);
   color: color-mix(in oklab, var(--map-sign-ink-2), var(--inscr-night-ink) calc(var(--day-night, 0) * 100%));
   text-shadow: 0 1px 0 color-mix(in oklab, color-mix(in srgb, var(--map-stone-top) 85%, transparent), var(--map-night) calc(var(--day-night, 0) * 100%));
 }
@@ -117,8 +119,14 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 .sign-plate.is-tramo::before { display: none; }
 .sign-plate.is-tramo:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
 .is-left .sign-plate.is-tramo { flex-direction: row-reverse; text-align: right; }
-.is-tramo .sign-name { padding-bottom: 2px; font: 500 calc(.75 * var(--map-fs))/1.15 var(--font); color: var(--map-sign-ink-2); text-shadow: 0 0 3px var(--map-tag), 0 0 6px var(--map-tag); text-wrap: balance; }
-.sign-plate.is-tramo.is-done .sign-name { color: var(--gold-text); }
+.is-tramo .sign-name {
+  --halo: color-mix(in oklab, var(--map-tag), var(--map-night) calc(var(--day-night, 0) * 100%));
+  padding-bottom: 2px; font: 500 calc(.75 * var(--map-fs))/1.15 var(--font); text-wrap: balance;
+  /* Sobre el prado: de día, tinta con halo claro; de noche, crema con halo oscuro (se lee igual). */
+  color: color-mix(in oklab, var(--map-sign-ink-2), var(--inscr-night-ink) calc(var(--day-night, 0) * 100%));
+  text-shadow: 0 0 3px var(--halo), 0 0 6px var(--halo), 0 0 1px var(--halo);
+}
+.sign-plate.is-tramo.is-done .sign-name { color: color-mix(in oklab, var(--gold-text), var(--inscr-night-gold) calc(var(--day-night, 0) * 100%)); }
 .tramo-stone { position: relative; flex: none; width: var(--milestone-w); height: var(--milestone-h); }
 /* Hito de piedra gris cálido, de cabeza apuntada, con cara, canto y una banda grabada; su sombra en el suelo. */
 .tramo-stone::before {
