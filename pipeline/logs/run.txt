@@ -5,3 +5,10 @@ ya     fra-angelico       194 candidatas
 fin 2026-11-27 00:51:33
 64M	.git
 3.7M	catalogo
+== seleccionar giotto fra-angelico 00:51:37
+fra-angelico       invit   194    42    4/3   n1=4   | sin datos de imagen:92, palabra:37, sin imagen apta:11, varios autores:7, proporción ≠ medidas:5, duplicado/versión:5
+TOTAL 24 obras de 175 pintores
+por país: Italia 24
+títulos por fuente: {'revisar-idioma': 1, 'traducido': 202, 'wikidata-es': 1104, 'traducir': 135, 'manual': 23}
+64M	.git
+3.7M	catalogo
