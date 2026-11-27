@@ -13,14 +13,15 @@
 .path-start .era-arch { z-index: var(--map-z-sign-start); }
 .arch-band {
   position: absolute; inset: 0; margin: 0; padding: 0; border: 0; background: none; color: var(--map-sign-ink-2); font: inherit;
-  pointer-events: auto; cursor: pointer; transition: transform .15s var(--ease);
+  pointer-events: auto; cursor: pointer;
 }
-button.arch-band:active { transform: translateY(2px); }
+/* Al pulsar, el ático se oscurece un poco (el edificio no salta). */
+button.arch-band:active .arch-name { background: color-mix(in srgb, var(--map-stone-side) 45%, transparent); }
 .arch-band:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; border-radius: var(--map-r); }
 .arch-name {
   position: absolute; left: 50%; bottom: var(--attic-at); translate: -50% 0; width: var(--attic-w); height: var(--attic-h);
-  display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; text-wrap: balance; hyphens: manual;
-  font: var(--inscr-weight) calc(var(--inscr-fs) * var(--fit, 1))/var(--inscr-line) var(--font-inscription); letter-spacing: var(--inscr-track); text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center; overflow: hidden; padding-inline: 5%; text-align: center; text-wrap: balance; hyphens: manual;
+  font: var(--inscr-weight) max(var(--inscr-min), calc(var(--inscr-fs) * var(--fit, 1)))/var(--inscr-line) var(--font-inscription); letter-spacing: calc(var(--inscr-track) * var(--track-on, 1)); text-transform: uppercase;
   text-shadow: 0 1px 0 color-mix(in srgb, var(--map-stone-top) 85%, transparent);
 }
 .arch-band.is-done .arch-name { color: var(--gold-text); }
@@ -106,13 +107,14 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 .is-left .sign-plate.is-tramo { flex-direction: row-reverse; text-align: right; }
 .is-tramo .sign-name { padding-bottom: 2px; font: 500 calc(.75 * var(--map-fs))/1.15 var(--font); color: var(--map-sign-ink-2); text-shadow: 0 0 3px var(--map-tag), 0 0 6px var(--map-tag); text-wrap: balance; }
 .sign-plate.is-tramo.is-done .sign-name { color: var(--gold-text); }
-.tramo-stone {
-  --band: color-mix(in srgb, var(--map-sign-ink) 22%, transparent);
-  position: relative; flex: none; width: var(--milestone-w); height: var(--milestone-h); border-radius: 50% 50% 2px 2px / 40% 40% 2px 2px;
-  background: linear-gradient(transparent 44%, var(--band) 44% 52%, transparent 52%),
-    linear-gradient(to right, var(--map-stone-side) 0 64%, color-mix(in srgb, var(--map-stone-side) 80%, var(--map-sign-ink)) 64%);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--map-sign-ink) 10%, transparent);
+.tramo-stone { position: relative; flex: none; width: var(--milestone-w); height: var(--milestone-h); }
+/* Hito de piedra gris cálido, de cabeza apuntada, con cara, canto y una banda grabada; su sombra en el suelo. */
+.tramo-stone::before {
+  --band: color-mix(in srgb, var(--map-sign-ink) 24%, transparent);
+  content: ""; position: absolute; inset: 0; clip-path: polygon(50% 0, 100% 24%, 100% 100%, 0 100%, 0 24%);
+  background: linear-gradient(transparent 46%, var(--band) 46% 54%, transparent 54%),
+    linear-gradient(to right, color-mix(in srgb, var(--map-stone-side) 85%, var(--map-sign-ink-2)) 0 62%, color-mix(in srgb, var(--map-stone-side) 65%, var(--map-sign-ink)) 62%);
 }
 .tramo-stone::after { content: ""; position: absolute; left: -4px; right: -6px; bottom: -3px; height: 6px; border-radius: 50%; background: var(--map-shade); z-index: -1; }
-.sign-plate.is-tramo.is-done .tramo-stone { --band: var(--gold); }
+.sign-plate.is-tramo.is-done .tramo-stone::before { --band: var(--gold); }
 @media (hover: hover) { button.sign-plate.is-tramo:hover { background: none; } button.sign-plate.is-tramo:hover .sign-name { color: var(--map-sign-ink); } }

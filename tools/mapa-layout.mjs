@@ -17,7 +17,7 @@ const SIGN_PX = 7.2;      // ancho medio de una letra en los carteles de tramo y
 const SIGN_PAD = 30;      // relleno y flecha de la placa
 const SIGN_H = 62;        // alto de un cartel de tramo o de rama, postes incluidos
 const PLACE_HALF = 140;   // medio ancho de la plaza de la época (y su puerta)
-const PLACE_UP = 132;     // de la puerta al fondo de la plaza
+const PLACE_UP = 140;     // de la puerta al fondo de la plaza
 function eraNames(era) {
   const names = (index.isSala(era.id) ? [] : index.stageArtists(era.id)).map((a) => a.name);
   if (hasMovementReview(index, era.id)) names.push('Repaso · faltan 10');

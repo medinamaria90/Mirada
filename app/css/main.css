@@ -252,6 +252,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 /* Plaza de cada época al cruzar su puerta: a ras del sendero, que entra y sale de ella (path-art.js, eraPlace). */
 .plaza-fill { fill: var(--map-stone-top); }
 .plaza-stones.is-in { stroke-dasharray: var(--plaza-cobble-dash); stroke-width: var(--plaza-cobble-w); }
+.plaza-cobbles { fill: none; stroke: var(--map-stone-side); stroke-width: var(--plaza-cobble-dot); stroke-linecap: round; opacity: var(--plaza-cobble-o); }
 .plaza-stones { fill: none; stroke: var(--map-stone-side); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }
 /* Desvío de una rama: sendero estrecho; cerrado, más fino y apagado. */
 .spur-edge { stroke: var(--map-trail-edge); stroke-width: 15; }

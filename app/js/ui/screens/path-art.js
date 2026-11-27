@@ -25,7 +25,7 @@ const fountain = (cx, y) => `<ellipse class="land-shade" cx="${f(cx)}" cy="${f(y
 // Caseta de «Información» en el borde de la plaza, a la derecha de la puerta (a la izquierda va la lápida de la primera
 // época), apartada del botón «Tú» de la esquina: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
 // «Cómo se juega» (el botón transparente que la cubre lo pone path-signs.js con KIOSK).
-export const KIOSK = { x: 268, y: 136, w: 32, h: 22 };
+export const KIOSK = { x: 246, y: 136, w: 32, h: 22 };
 const kiosk = ({ x, y, w, h }) => {
   const d = 10 * KX;
   const top = y - h;
@@ -86,8 +86,9 @@ export function museumArt() {
 // del sendero) con un pozo, balas de paja, sacos y un carro. Cerrada: portón de madera en el arco. x, y: centro del
 // paso, al pie.
 const CITY = { half: 60, body: 42, side: 7, arch: 15, tower: 17, towerH: 72, roof: 19, attic: 28 };
-const PLAZA = { up: 100, rx: 128, ry: 28 };   // centro de la plaza sobre el pie de la puerta y sus radios
+const PLAZA = { up: 104, rx: 118, ry: 34, edge: 6 };   // centro de la plaza sobre el pie de la puerta, sus radios y su aire con el borde
 const CITY_W = (CITY.half + CITY.tower) * 2;
+const MAP_SIZE = 390;   // ancho de diseño (path-layout.js, MAP_W)
 // Nombre grabado en el ático: el de la época sin paréntesis, en una o dos líneas de capitales. Si no cabe, uno corto
 // fiel a lo que hay al cruzar la puerta (la época de Van Eyck empieza por el Renacimiento del Norte; «Manierismo» sigue
 // en su tramo y en la presentación). Las palabras muy largas se pueden partir con guion.
@@ -97,8 +98,10 @@ export const inscription = (name) => SHORT[name] || String(name).replace(/\s*\(.
 export function eraPlace(x, y) {
   const top = y - CITY.towerH - CITY.roof;
   const hh = y - top;
+  // La plaza no se sale del mapa: si la puerta va cerca de un borde, se corre hacia dentro (el sendero la cruza igual).
+  const cx = Math.min(Math.max(x, PLAZA.rx + PLAZA.edge), MAP_SIZE - PLAZA.rx - PLAZA.edge);
   return {
-    plaza: { cx: x, cy: y - PLAZA.up, rx: PLAZA.rx, ry: PLAZA.ry, rim: 1 },
+    plaza: { cx, cy: y - PLAZA.up, rx: PLAZA.rx, ry: PLAZA.ry, rim: 1, cobbles: true },
     box: { x0: x - CITY.half - CITY.tower, x1: x + CITY.half + CITY.tower, y, top, atticAt: CITY.body / hh, atticH: CITY.attic / hh, atticW: (CITY.half * 2 - 6) / CITY_W },
   };
 }
@@ -109,14 +112,17 @@ const townTower = (x, y) => {
     <path class="land-side" d="M${f(x + w)} ${f(y)}V${f(y - h)}L${f(x + w + d)} ${f(y - h - d * .6)}V${f(y - d * .6)}Z"/><rect class="land-front" x="${f(x)}" y="${f(y - h)}" width="${w}" height="${h}"/>
     <path class="land-window" data-lamp d="M${f(x + w / 2 - 2)} ${f(y - h + 18)}V${f(y - h + 12)}a2 2 0 0 1 4 0V${f(y - h + 18)}Z"/>${cone(x, y - h, w + d * .6)}`;
 };
-// Vida de la plaza, a escala del mapa: un pozo, balas de paja, sacos y un carro, repartidos a los lados del sendero.
-const well = (x, y) => `<ellipse class="land-shade" cx="${f(x + 1)}" cy="${f(y + 1)}" rx="8" ry="2.4"/><rect class="land-side" x="${f(x - 6)}" y="${f(y - 7)}" width="12" height="7"/><ellipse class="land-top" cx="${f(x)}" cy="${f(y - 7)}" rx="6" ry="2"/><rect class="land-side" x="${f(x - 6)}" y="${f(y - 17)}" width="1.4" height="10"/><rect class="land-side" x="${f(x + 4.6)}" y="${f(y - 17)}" width="1.4" height="10"/><path class="land-tile" d="M${f(x - 8)} ${f(y - 16)}L${f(x)} ${f(y - 21)}L${f(x + 8)} ${f(y - 16)}Z"/>`;
-const bale = (x, y) => `<ellipse class="land-shade" cx="${f(x + 1)}" cy="${f(y + .6)}" rx="6" ry="1.8"/><rect class="land-hay" x="${f(x - 5)}" y="${f(y - 5)}" width="10" height="5" rx="1"/><rect class="land-hay-2" x="${f(x - 5)}" y="${f(y - 3)}" width="10" height="1"/>`;
-const sack = (x, y) => `<path class="land-top" d="M${f(x - 3)} ${f(y)}Q${f(x - 4)} ${f(y - 4)} ${f(x - 1.5)} ${f(y - 6)}H${f(x + 1.5)}Q${f(x + 4)} ${f(y - 4)} ${f(x + 3)} ${f(y)}Z"/><rect class="land-side" x="${f(x - 1.5)}" y="${f(y - 6.6)}" width="3" height="1.2"/>`;
-const cart = (x, y) => `<ellipse class="land-shade" cx="${f(x + 2)}" cy="${f(y + 1)}" rx="12" ry="2.4"/><rect class="land-side" x="${f(x - 9)}" y="${f(y - 8)}" width="16" height="5" rx="1"/><rect class="land-hay" x="${f(x - 8)}" y="${f(y - 11)}" width="14" height="3.4" rx="1.4"/><circle class="land-side" cx="${f(x - 5)}" cy="${f(y - 2.6)}" r="2.6"/><circle class="land-side" cx="${f(x + 4)}" cy="${f(y - 2.6)}" r="2.6"/><rect class="land-side" x="${f(x + 7)}" y="${f(y - 5)}" width="9" height="1.1" rx=".5"/>`;
+// Vida de la plaza, a escala del mapa: un pozo, un carro con balas de paja al lado y unos sacos, cerca del sendero.
+const LIFE = 1.6;   // escala de las piezas de la plaza
+const life = (x, y, body) => `<g transform="translate(${f(x)} ${f(y)}) scale(${LIFE})">${body}</g>`;
+const well = () => `<ellipse class="land-shade" cx="1" cy="1" rx="8" ry="2.4"/><rect class="land-side" x="-6" y="-7" width="12" height="7"/><ellipse class="land-top" cx="0" cy="-7" rx="6" ry="2"/><rect class="land-side" x="-6" y="-17" width="1.4" height="10"/><rect class="land-side" x="4.6" y="-17" width="1.4" height="10"/><path class="land-tile" d="M-8 -16L0 -21L8 -16Z"/>`;
+const bale = (dx = 0, dy = 0) => `<ellipse class="land-shade" cx="${f(dx + 1)}" cy="${f(dy + .6)}" rx="6" ry="1.8"/><rect class="land-hay" x="${f(dx - 5)}" y="${f(dy - 5)}" width="10" height="5" rx="1"/><rect class="land-hay-2" x="${f(dx - 5)}" y="${f(dy - 3)}" width="10" height="1"/>`;
+const sacks = () => `<path class="land-top" d="M-6 0Q-7 -4 -4.5 -6H-1.5Q1 -4 0 0Z"/><path class="land-top" d="M0 .5Q-1 -3.5 1.5 -5.5H4.5Q7 -3.5 6 .5Z"/><rect class="land-side" x="-4.5" y="-6.6" width="3" height="1.2"/><rect class="land-side" x="1.5" y="-6.1" width="3" height="1.2"/>`;
+const cart = () => `<ellipse class="land-shade" cx="2" cy="1" rx="12" ry="2.4"/><rect class="land-side" x="-9" y="-8" width="16" height="5" rx="1"/><rect class="land-hay" x="-8" y="-11" width="14" height="3.4" rx="1.4"/><circle class="land-side" cx="-5" cy="-2.6" r="2.6"/><circle class="land-side" cx="4" cy="-2.6" r="2.6"/><rect class="land-side" x="7" y="-5" width="9" height="1.1" rx=".5"/>${bale(22, 2)}${bale(17, 6)}`;
 const plazaLife = (x, y) => {
-  const cy = y - PLAZA.up;
-  return `${well(x - 88, cy + 2)}${bale(x - 112, cy + 10)}${bale(x - 103, cy + 14)}${sack(x - 36, cy - 8)}${sack(x - 31, cy - 7)}${cart(x + 62, cy - 6)}${bale(x + 104, cy + 8)}`;
+  const { plaza } = eraPlace(x, y);
+  const near = (dx) => plaza.cx + dx;
+  return `${life(near(-62), plaza.cy + 6, well())}${life(near(-30), plaza.cy - 14, sacks())}${life(near(40), plaza.cy + 4, cart())}`;
 };
 export function eraGate(x, y, { locked = false, plaza = true } = {}) {
   const { half, body, arch, attic, side: d } = CITY;
