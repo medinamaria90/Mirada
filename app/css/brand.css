@@ -164,25 +164,16 @@
   --map-lapida-plinth: 7px;        /* zócalo de la estela */
   --map-lapida-shadow: 6px;        /* sombra del zócalo en el suelo */
   --map-lapida-track: .02em;       /* letras de inscripción */
-  --tramo-stone-w: 22px;           /* mojón del tramo */
-  --tramo-stone-h: 32px;
-  --tramo-stone-r: 6px;
-  --tramo-stone-room: 30px;        /* sitio del mojón junto a su tablilla */
-  --tramo-stone-shadow: 6px;
-  --tramo-plinth: 4px;             /* zócalo del mojón */
-  --tramo-stone-line: 36px;        /* el número, algo por debajo del centro del mojón */
-  --tramo-stone-arch: 50% 50% 2px 2px / 35% 35% 2px 2px;   /* remate en arco */
-  --tramo-stone-edge: 4.4px;       /* canto en sombra (un quinto del ancho) */
-  --tramo-stone-fs: .7rem;
-  --tramo-stone-track: .04em;
-  --tramo-plinth-out: 3px;
+  --map-lintel-pad: 5px 12px 6px;  /* dintel con el nombre de la época */
+  --map-lintel-gap: 4px;
+  --map-lintel-min: 72px;
+  --map-lintel-track: .08em;
   --you-lift: 20px;                /* marca «Tú» sobre la parada actual */
   --you-pad: 3px 10px 4px;
   --radius-pill: 999px;
   --plaza-cobble-dash: 2 5;        /* adoquines de las hileras de dentro de la plaza */
   --plaza-cobble-w: 1.2;
   --fountain-rim-w: 1.6;
-  --tramo-stone-gap: 1px;
   --map-ribbon: 3px;
   --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
   --map-z-sign-start: 4;
