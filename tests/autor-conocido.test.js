@@ -55,8 +55,8 @@ test('sin historia ni nivel, un pintor anterior de la rama no sale como autor po
     const plan = planStage(real, JUANES, seed, { branchId: 'maestros-espanoles', met });
     assert.ok(!authorsAsked(plan).includes('berruguete'), `semilla ${seed}`);
   }
-  // Con su historia vista, ya vale.
-  assert.ok(metArtistIds(p, real, (id) => id === 'berruguete').includes('berruguete'));
+  // Ver su historia no basta: hay que haberlo jugado (decisión de María, 27/11).
+  assert.ok(!metArtistIds(p, real, (id) => id === 'berruguete').includes('berruguete'));
 });
 
 test('primer pintor de la rama (Bermejo): todas las preguntas son de él', () => {

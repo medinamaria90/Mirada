@@ -325,8 +325,9 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .ring-arc { fill: none; stroke: var(--ring-locked); stroke-width: var(--ring-w); stroke-linecap: round; }
 .ring-arc.is-done { stroke: var(--gold); }
 .ring-arc.is-next { stroke: var(--brand); stroke-width: var(--ring-w-next); }
-/* A medias: la parte lograda del tramo del nivel 1, en coral, sobre el tramo apagado. */
+/* A medias (deep-badges.js scoreRingSvg): el aro lleno en coral hasta su nota, sobre el aro apagado, y la muesca del 75 %. */
 .ring-arc.is-partial { stroke: var(--brand); stroke-width: var(--ring-w-next); }
+.ring-arc.is-mark { stroke: var(--ink); stroke-width: calc(var(--ring-w-next) * 1.6); stroke-linecap: butt; }
 .ring-halo { fill: var(--brand-soft); transform-origin: center; animation: ring-breathe var(--dur-breathe) var(--ease) infinite; }
 @keyframes ring-breathe { 50% { transform: scale(1.08); opacity: .55; } }
 @media (prefers-reduced-motion: reduce) { .ring-halo { animation: none; } }
@@ -382,7 +383,6 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage.has-ring { gap: calc(.75 * var(--map-fs) + var(--ring-out)); }
 .stage.has-ring .stage-dot, .stage.is-mastered.is-dormant.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px var(--line-2); }
 .stage.has-ring:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 2px 0 3px var(--line-2); }
-.stage-badge.is-partial { min-width: 23px; width: auto; padding: 0 5px; background: var(--brand); color: var(--on-brand); font: 600 12px/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
 /* Parada actual a medias: el aro manda (sin el anillo coral entero encima), con su halo. */
 .stage-spot.is-current .stage.is-started.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 16px var(--brand-soft); }
 .stage-badge.is-next { min-width: 23px; width: auto; padding: 0 6px; background: var(--brand); color: var(--on-brand); font: 600 13px/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
@@ -419,6 +419,9 @@ html.reduce-motion .ring-halo { animation: none; }
   transition: opacity .2s, visibility 0s .2s;
 }
 .lock-note-text { margin: 0; padding-block: calc(.4 * var(--map-fs)); font-size: calc(.8 * var(--map-fs)); line-height: 1.25; text-align: left; }
+.lock-note-go { flex: none; min-width: var(--hit); min-height: var(--hit); margin: calc(-.25 * var(--map-fs)) 0 calc(-.25 * var(--map-fs)) calc(.4 * var(--map-fs)); padding: 0 calc(.7 * var(--map-fs)); border: 0; border-radius: var(--map-r); background: var(--brand); color: var(--on-brand); font: 600 calc(.8 * var(--map-fs))/1 var(--font); cursor: pointer; }
+.lock-note-go[hidden] { display: none; }
+.lock-note-go:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 .lock-note-close { display: grid; flex: none; place-items: center; width: var(--hit); height: var(--hit); margin: calc(-.25 * var(--map-fs)) 0; padding: 0; border: 0; border-radius: var(--map-r); background: none; color: var(--ink-2); cursor: pointer; }
 .lock-note-close:focus-visible { outline: 2.5px solid var(--ink); outline-offset: -4px; }
 .stage-spot.is-right .lock-note { left: auto; right: 44px; }
@@ -1276,3 +1279,11 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 @media (prefers-reduced-motion: reduce) { .viewer, .viewer-lens.is-on, .viewer-zoom { animation: none; } .viewer-img, .viewer-frame.is-settling { transition: none; } }
 .reduce-motion .viewer, .reduce-motion .viewer-lens.is-on, .reduce-motion .viewer-zoom { animation: none; }
 .reduce-motion .viewer-frame.is-settling { transition: none; }
+
+/* Entrada del repaso (screens/review-intro.js): la cara del pintor a medias (o el ↻), «Repaso» y la frase. */
+.review-intro { position: relative; }
+.ri-bar { position: absolute; top: 0; left: 0; right: 0; }
+.ri-face { padding: 0; border: 0; background: none; border-radius: 999px; cursor: pointer; }
+.ri-face:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
+.ri-av { display: block; width: var(--ri-face); height: var(--ri-face); box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--brand); }
+.ri-icon { display: grid; place-items: center; width: var(--ri-face); height: var(--ri-face); border-radius: 999px; background: var(--brand-soft); color: var(--brand-text); }

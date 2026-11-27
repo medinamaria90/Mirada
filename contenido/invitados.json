@@ -1,0 +1,66 @@
+{
+ "mantegna": {
+  "text": "el pintor de Mantua de las figuras duras como estatuas romanas",
+  "source": "https://es.wikipedia.org/wiki/Andrea_Mantegna"
+ },
+ "giorgione": {
+  "text": "el misterioso veneciano del que apenas quedan media docena de cuadros seguros",
+  "source": "https://es.wikipedia.org/wiki/Giorgione"
+ },
+ "memling": {
+  "text": "el pintor de moda en la rica Brujas, de retratos serenos y luminosos",
+  "source": "https://es.wikipedia.org/wiki/Hans_Memling"
+ },
+ "gainsborough": {
+  "text": "el retratista de la aristocracia que en realidad prefería pintar paisajes",
+  "source": "https://es.wikipedia.org/wiki/Thomas_Gainsborough"
+ },
+ "constable": {
+  "text": "el pintor del campo y de sus nubes, estudiadas al aire libre",
+  "source": "https://es.wikipedia.org/wiki/John_Constable"
+ },
+ "briullov": {
+  "text": "el autor de El último día de Pompeya, el cuadro que deslumbró a Europa",
+  "source": "https://es.wikipedia.org/wiki/Karl_Briulov"
+ },
+ "aivazovski": {
+  "text": "el pintor del mar, con miles de olas pintadas de memoria",
+  "source": "https://es.wikipedia.org/wiki/Iván_Aivazovski"
+ },
+ "millais": {
+  "text": "el que pintó a Ofelia flotando en un río entre flores",
+  "source": "https://es.wikipedia.org/wiki/John_Everett_Millais"
+ },
+ "bouguereau": {
+  "text": "el pintor más cotizado de su tiempo, de pieles lisas como porcelana",
+  "source": "https://es.wikipedia.org/wiki/William-Adolphe_Bouguereau"
+ },
+ "shishkin": {
+  "text": "el gran pintor de los bosques de pinos",
+  "source": "https://es.wikipedia.org/wiki/Iván_Shishkin"
+ },
+ "kramskoi": {
+  "text": "el retratista que se rebeló contra la Academia (la escuela oficial de arte)",
+  "source": "https://es.wikipedia.org/wiki/Iván_Kramskói"
+ },
+ "whistler": {
+  "text": "el que titulaba sus cuadros como piezas de música: Sinfonía, Nocturno",
+  "source": "https://es.wikipedia.org/wiki/James_McNeill_Whistler"
+ },
+ "sargent": {
+  "text": "el retratista más brillante de su tiempo, de pincelada veloz",
+  "source": "https://es.wikipedia.org/wiki/John_Singer_Sargent"
+ },
+ "rousseau": {
+  "text": "el aduanero sin escuela que pintó selvas que nunca vio",
+  "source": "https://es.wikipedia.org/wiki/Henri_Rousseau"
+ },
+ "waterhouse": {
+  "text": "el pintor de damas de leyenda, entre barcas y estanques",
+  "source": "https://es.wikipedia.org/wiki/John_William_Waterhouse"
+ },
+ "malevich": {
+  "text": "el que pintó un cuadrado negro sobre blanco y lo llamó arte",
+  "source": "https://es.wikipedia.org/wiki/Kazimir_Malévich"
+ }
+}

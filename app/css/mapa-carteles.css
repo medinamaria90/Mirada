@@ -106,4 +106,7 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 .map-return-text { font: 700 calc(.68 * var(--map-fs, 1rem))/1 var(--font); letter-spacing: .02em; margin-top: -2px; }
 .map-return-arrow { display: grid; place-items: center; rotate: 90deg; transition: rotate .2s var(--ease); }
 .map-return.is-up .map-return-arrow { rotate: -90deg; }
+/* El juego recomienda otra cosa que la parada actual (repasar, lo que pide el rango): el mismo botón, alargado y con su rótulo. */
+.map-return.is-guide { grid-auto-flow: column; gap: .4rem; width: auto; padding: 0 1rem 0 .8rem; background: var(--brand); color: var(--on-brand); font: 600 .95rem/1 var(--font); }
+.map-return.is-guide .icon { color: inherit; }
 @media (hover: hover) { .map-return:hover { background: color-mix(in srgb, var(--surface) 92%, var(--ink)); } }
