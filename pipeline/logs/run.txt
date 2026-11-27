@@ -9,3 +9,9 @@ build: 1470 obras (1470 con imagen, 1466 con ficha), 175 pintores, 40 españoles
 download rc=3
 79M	.git
 3.7M	catalogo
+== fichas  09:19:40
+selección 1470, con ficha 1466, este lote 4
+ok lote 1: 4 fichas (1808 en total)
+fin: 1808 fichas; con museo 1750, con ciudad 1735, con técnica 1715, con medidas 1710, en España 371
+79M	.git
+3.7M	catalogo
