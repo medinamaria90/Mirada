@@ -1,7 +1,9 @@
 /* Tarjetas de la época en su presentación (ui/screens/era-cards.js): un carrusel a pantalla completa con puntos. */
-:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, calc(var(--screen-h) * .38), 340px); --era-dot-hit: 28px; }
+:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, calc(var(--screen-h) * .38), 340px); --era-dot-hit: 28px; --era-share-gap: .5rem; }
 
-.has-era-cards { align-items: stretch; padding-left: 0; padding-right: 0; }
+.has-era-cards { position: relative; align-items: stretch; padding-left: 0; padding-right: 0; }
+.era-share { position: absolute; top: calc(env(safe-area-inset-top, 0px) + var(--era-share-gap)); right: var(--era-share-gap); color: var(--ink-2); }
+.era-share:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 0; }
 .has-era-cards .welcome-body { max-width: 440px; align-content: center; gap: .9rem; }
 .has-era-cards .welcome-body > .btn { width: calc(100% - 2 * var(--era-pad)); }
 

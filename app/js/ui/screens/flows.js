@@ -149,7 +149,11 @@ export function introWorks(index, movementId) {
   return picks;
 }
 
-// mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa.
+// Texto del botón de la presentación según cómo se llega a ella.
+const INTRO_ENTER = { first: 'Entrar', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
+
+// mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa; 'shared': desde un enlace
+// compartido (#epoca-<id>), sin tocar la partida; a quien aún no juega, el botón le invita a empezar.
 export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
   const { index } = ctx;
   const movement = index.movement(movementId);
@@ -158,6 +162,7 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
   const works = introWorks(index, movementId);
   const order = works.length === 3 ? [works[1], works[0], works[2]] : works;
   const wall = order.map((w, i) => `<span class="wall-item wall-${i}">${artFrame(w, { alt: '', eager: true, label: '', thumb: true, zoom: { group: 'intro' } })}</span>`).join('');
+  const guest = mode === 'shared' && !ctx.store.get().onboarded;
   playEra(movement.era);
   el.innerHTML = `<div class="welcome intro" style="${accentStyle(movement.accent)}">
     <main class="welcome-body" id="main">
@@ -165,7 +170,7 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
       <p class="kicker intro-kicker"><span class="intro-num">${ROMAN[n] || n + 1}</span>${esc(movement.period)}</p>
       <h1 class="welcome-title welcome-title-sm">${esc(movement.name)}</h1>
       <p class="welcome-line">${esc(movement.blurb)}</p>
-      <button class="btn btn-primary btn-wide" data-action="enter" data-primary>${mode === 'first' ? 'Entrar' : 'Volver al camino'}</button>
+      <button class="btn btn-primary btn-wide" data-action="enter" data-primary>${INTRO_ENTER[guest ? 'guest' : mode]}</button>
     </main>
   </div>`;
   focusHeading(el);
@@ -177,6 +182,10 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
       if (mode === 'first') {
         const today = ctx.today();
         ctx.store.update((s) => ({ ...s, progress: { ...s.progress, intros: { ...(s.progress.intros || {}), [movementId]: today } } }));
+      }
+      if (guest) {
+        ctx.audio.unlock();
+        ctx.store.update((s) => ({ ...s, onboarded: true }));
       }
       ctx.go('inicio');
     },

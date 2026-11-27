@@ -1,7 +1,8 @@
-// Compartir una historia (ui/story-viewer.js): el botón de la cabecera manda el enlace a su página para compartir (h/<pintor>-1.html,
-// tools/share_pages.py: lleva el cuadro y la primera frase para la vista previa de WhatsApp), que abre la app en la historia para
-// cualquiera (ui/story-link.js). Con la hoja de compartir del móvil (Web Share API) si la hay; si no, copia el enlace y lo avisa
-// dentro de la propia historia (el aviso general quedaría debajo de ella).
+// Compartir una historia (ui/story-viewer.js) o las tarjetas de una época (ui/screens/era-cards.js): el botón manda el enlace a su
+// página para compartir (h/<pintor>-1.html, h/epoca-<id>.html; tools/share_pages.py: llevan el cuadro y una frase para la vista
+// previa de WhatsApp), que abre la app en la historia o en la época para cualquiera (ui/story-link.js, renderIntro 'shared').
+// Con la hoja de compartir del móvil (Web Share API) si la hay; si no, copia el enlace y lo avisa (en la historia, dentro de ella:
+// el aviso general quedaría debajo).
 
 import { icons } from './icons.js';
 
@@ -20,9 +21,11 @@ export const noteHtml = () => '<p class="story-note" role="status" aria-live="po
 // Enlace a la página de la historia en esta misma dirección de la app (sin nada de quien comparte).
 export const storyUrl = (artistId, level, href = location.href) => new URL(`h/${artistId}-${level}.html`, href).href;
 
-// title: el de la historia («Quién fue Velázquez»). Devuelve SHARE_RESULT.
-export async function shareStory({ artistId, level, title }) {
-  const url = storyUrl(artistId, level);
+// Enlace a la página de las tarjetas de una época, igual que el de las historias.
+export const eraUrl = (movementId, href = location.href) => new URL(`h/epoca-${movementId}.html`, href).href;
+
+// title: lo que se comparte («Quién fue Velázquez», «Barroco»). Devuelve SHARE_RESULT.
+export async function shareLink({ url, title }) {
   if (navigator.share) {
     try {
       await navigator.share({ title: `${title} · ${APP_NAME}`, text: `${title}, en ${APP_NAME}`, url });
@@ -41,7 +44,9 @@ export async function shareStory({ artistId, level, title }) {
   }
 }
 
-const NOTES = { [SHARE_RESULT.COPIED]: 'Enlace copiado', [SHARE_RESULT.FAILED]: 'No se ha podido copiar' };
+export const shareStory = ({ artistId, level, title }) => shareLink({ url: storyUrl(artistId, level), title });
+
+export const NOTES = { [SHARE_RESULT.COPIED]: 'Enlace copiado', [SHARE_RESULT.FAILED]: 'No se ha podido copiar' };
 
 // Aviso breve dentro de la historia según cómo fue (nada si se compartió o se canceló).
 export function flashNote(dlg, result) {
