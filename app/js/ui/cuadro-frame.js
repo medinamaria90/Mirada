@@ -27,14 +27,27 @@ export function imageBox(work, focus, zoom) {
 
 const boxStyle = (b) => `left:${pct(b.left)};top:${pct(b.top)};width:${pct(b.width)};height:${pct(b.height)}`;
 
-// Velo sobre la firma o una inscripción legible (`veil`: [x0, y0, x1, y1] de la obra): se coloca dentro de la caja de la
-// imagen y la desenfoca hasta acabar, en el marco y en la vista grande. Un poco de margen por si el trazo se sale.
+// Velo sobre la firma o una inscripción legible (`veil`: [x0, y0, x1, y1] de la obra), hasta acabar, en el marco y en la vista
+// grande. No desenfoca lo de debajo (backdrop-filter casi no actúa junto al borde del cuadro y la firma se leía): pinta encima
+// el mismo trozo sacado de la miniatura de 240 px (donde la firma ya casi no existe), desenfocado y algo ampliado alrededor del
+// velo para que el borde borroso quede fuera. Un poco de margen por si el trazo se sale.
 const VEIL_PAD = 0.01;
+const veilRect = (veil) => [veil[0] - VEIL_PAD, veil[1] - VEIL_PAD, veil[2] + VEIL_PAD, veil[3] + VEIL_PAD].map((v) => Math.min(1, Math.max(0, v)));
 function veilStyle(b, veil) {
-  const [x0, y0, x1, y1] = [veil[0] - VEIL_PAD, veil[1] - VEIL_PAD, veil[2] + VEIL_PAD, veil[3] + VEIL_PAD].map((v) => Math.min(1, Math.max(0, v)));
+  const [x0, y0, x1, y1] = veilRect(veil);
   return boxStyle({ left: b.left + x0 * b.width, top: b.top + y0 * b.height, width: (x1 - x0) * b.width, height: (y1 - y0) * b.height });
 }
-const veilHtml = (b, veil) => (veil ? `<span class="cdd-veil" aria-hidden="true" style="${veilStyle(b, veil)}"></span>` : '');
+// La miniatura dentro del velo, con la caja de la obra entera (en % del velo) y ampliada desde el centro del velo.
+function veilInner(veil) {
+  const [x0, y0, x1, y1] = veilRect(veil);
+  const w = x1 - x0;
+  const h = y1 - y0;
+  const origin = `${(((x0 + x1) / 2) * 100).toFixed(2)}% ${(((y0 + y1) / 2) * 100).toFixed(2)}%`;
+  return `${boxStyle({ left: -x0 / w, top: -y0 / h, width: 1 / w, height: 1 / h })};transform-origin:${origin}`;
+}
+const veilHtml = (b, veil, work) => (veil
+  ? `<span class="cdd-veil" aria-hidden="true" style="${veilStyle(b, veil)}"><img class="cdd-veil-img" src="${esc(tinySrc(work))}" alt="" style="${veilInner(veil)}" draggable="false"></span>`
+  : '');
 const bigSrc = (work) => (work.hd && work.hd.img) || work.img;
 
 // El marco: dos imágenes con la misma caja (la pequeña debajo y la grande encima, que aparece al cargar) y, con el cuadro
@@ -49,7 +62,7 @@ export function frameHtml(work, focus, zoom, label = '', veil = null) {
     <img class="cdd-bg" src="${esc(tinySrc(work))}" alt="" aria-hidden="true" draggable="false">
     <img class="cdd-img cdd-low" src="${esc(smallSrc(work))}" alt="" style="${style}" draggable="false">
     <img class="cdd-img cdd-hi" src="${esc(bigSrc(work))}" alt="" style="${style}" draggable="false" fetchpriority="high" decoding="async">
-    ${veilHtml(box, veil)}
+    ${veilHtml(box, veil, work)}
     ${label ? `<span class="cdd-zoom-badge" aria-hidden="true">${icons.loupe(18)}</span>` : ''}
   </${tag}>`;
 }
@@ -65,7 +78,7 @@ export function setFrame(root, work, focus, zoom, veil = null) {
   const old = frame.querySelector('.cdd-veil');
   if (!veil) { if (old) old.remove(); return; }
   if (old) old.setAttribute('style', veilStyle(box, veil));
-  else frame.querySelector('.cdd-hi').insertAdjacentHTML('afterend', veilHtml(box, veil));
+  else frame.querySelector('.cdd-hi').insertAdjacentHTML('afterend', veilHtml(box, veil, work));
 }
 
 // La grande aparece cuando ha cargado (si falla, se queda la pequeña).
