@@ -108,9 +108,10 @@
   --map-bloom: #e9bfb5;
   --map-trail-done-edge: #d7bb7f;
   --map-trail-done: #f0dba5;
-  --map-night: #43507e;
-  --map-night-max: .44;
+  --map-night: #2f3a63;
+  --map-night-max: .54;
   --map-dusk: #f2a46c;
+  --map-dawn: #e7b8c6;
   --map-dusk-max: .3;
   --map-lamp: #ffd88a;
   --map-star: #fff3d6;
@@ -163,9 +164,14 @@
   --map-lapida-plinth: 7px;        /* zócalo de la estela */
   --map-lapida-shadow: 6px;        /* ranura del progreso */
   --map-lapida-track: .02em;       /* letras de inscripción */
-  --tramo-stone-w: 18px;           /* estela del mojón */
-  --tramo-stone-h: 28px;
-  --tramo-stone-room: 24px;        /* sitio de la estela junto a la tablilla */
+  --tramo-stone-w: 22px;           /* mojón del tramo */
+  --tramo-stone-h: 32px;
+  --tramo-stone-r: 6px;
+  --tramo-stone-room: 30px;
+  --tramo-stone-shadow: 6px;
+  --you-lift: 20px;                /* marca «Tú» sobre la parada actual */
+  --you-pad: 3px 10px 4px;
+  --radius-pill: 999px;        /* sitio de la estela junto a la tablilla */
   --tramo-stone-gap: 1px;
   --map-ribbon: 3px;
   --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
@@ -302,9 +308,10 @@
     --map-bloom: #7e5a52;
     --map-trail-done-edge: #57472a;
     --map-trail-done: #75603b;
-    --map-night: #10162a;
-    --map-night-max: .42;
+    --map-night: #1f2a4a;
+    --map-night-max: .34;
     --map-dusk: #c27a46;
+    --map-dawn: #9a7183;
     --map-dusk-max: .22;
     --map-lamp: #f2c46c;
     --map-star: #f6e7c4;
@@ -394,9 +401,10 @@
   --map-bloom: #7e5a52;
   --map-trail-done-edge: #57472a;
   --map-trail-done: #75603b;
-  --map-night: #10162a;
-  --map-night-max: .42;
+  --map-night: #1f2a4a;
+  --map-night-max: .34;
   --map-dusk: #c27a46;
+  --map-dawn: #9a7183;
   --map-dusk-max: .22;
   --map-lamp: #f2c46c;
   --map-star: #f6e7c4;
@@ -490,9 +498,10 @@
     --map-bloom: #e9bfb5;
     --map-trail-done-edge: #d7bb7f;
     --map-trail-done: #f0dba5;
-    --map-night: #43507e;
-    --map-night-max: .44;
+    --map-night: #2f3a63;
+    --map-night-max: .54;
     --map-dusk: #f2a46c;
+    --map-dawn: #e7b8c6;
     --map-dusk-max: .3;
     --map-lamp: #ffd88a;
     --map-star: #fff3d6;

@@ -147,6 +147,13 @@ export async function renderBranch(ctx, el, branchId) {
       if (ctx.prevRoute() === 'inicio') history.back();
       else ctx.go('inicio');
     },
+    // Tablilla «Volver al camino»: siempre al desvío de esta rama (aunque se llegara a ella por otro sitio).
+    'back-to-fork': () => {
+      ctx.audio.sfx('tap');
+      setMapFocus(branch.id, '', true);
+      if (ctx.prevRoute() === 'inicio') history.back();
+      else ctx.go('inicio');
+    },
     stage: (b) => {
       if (b.dataset.card) return levelCard(ctx, b, branch.id);
       ctx.audio.sfx('tap');

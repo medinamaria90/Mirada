@@ -41,10 +41,12 @@ const dirt = (d, cls = '') => `<path class="trail-rim${cls}" d="${d}"/><path cla
 const grain = (d, cls = '') => `<path class="trail-grain${cls}" d="${d}"/><path class="trail-grain is-b${cls}" d="${d}"/>`;
 const ellipse = (cls, e, grow = 0) => `<ellipse class="${cls}" cx="${f(e.cx)}" cy="${f(e.cy)}" rx="${f(e.rx + grow)}" ry="${f(e.ry + grow)}"/>`;
 export const PLAZA_RIM = 3;
+// Hileras de adoquines de la plaza: elipses cada vez más pequeñas (fracción que encogen).
+const PLAZA_RINGS = [0, 0.22, 0.44, 0.66];
 export function trailSvg(h, d, spurs = [], done = '', plaza = null) {
   const walked = done ? `${dirt(done, ' is-done')}${grain(done, ' is-done')}` : '';
   const under = plaza ? ellipse('plaza-rim', plaza, PLAZA_RIM) : '';
-  const over = plaza ? `${ellipse('plaza-fill', plaza)}${ellipse('plaza-stones', plaza, -PLAZA_RIM)}` : '';
+  const over = plaza ? `${ellipse('plaza-fill', plaza)}${PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...plaza, rx: plaza.rx * (1 - k) - PLAZA_RIM, ry: plaza.ry * (1 - k) - PLAZA_RIM })).join('')}` : '';
   return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path class="trail-shade" d="${d}"/>${spurs.map(spurSvg).join('')}${under}${dirt(d)}${grain(d)}${walked}${over}</svg>`;
 }
@@ -163,7 +165,7 @@ const metaRow = (side, body) => `<span class="sign-meta">${side === 'left' ? sig
 // Vuelta al camino en la pantalla de una rama: el mismo poste que se tocó para entrar, junto a la puerta y del lado
 // por el que queda el camino común, con la época a la que se vuelve. Lleva de vuelta al camino, a la vista del desvío.
 export function backSpot(back, eraName, h) {
-  return `<li ${signBox(back, h, 'branch-spot is-back')}><button type="button" class="sign-plate branch is-back" data-action="back" aria-label="Volver al camino${eraName ? `, ${esc(toEra(eraName))}` : ''}">
+  return `<li ${signBox(back, h, 'branch-spot is-back')}><button type="button" class="sign-plate branch is-back" data-action="back-to-fork" aria-label="Volver al camino${eraName ? `, ${esc(toEra(eraName))}` : ''}">
       <span class="sign-name">Volver al camino</span>${metaRow(back.side, eraName ? `<span>${esc(eraName)}</span>` : '')}
     </button></li>`;
 }

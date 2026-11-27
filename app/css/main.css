@@ -234,6 +234,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 /* Plaza de salida: el empedrado de piedra del que nace el sendero (borde bajo el sendero, suelo encima; sin punta). */
 .plaza-rim { fill: var(--map-stone-side); }
 .plaza-fill { fill: var(--map-stone-top); }
+.plaza-stones.is-in { stroke-dasharray: 2 5; stroke-width: 1.2; }
 .plaza-stones { fill: none; stroke: var(--map-stone-side); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }
 /* Desvío de una rama: sendero estrecho; cerrado, más fino y apagado. */
 .spur-edge { stroke: var(--map-trail-edge); stroke-width: 15; }
@@ -269,9 +270,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 /* Carteles de tramo y de rama: más pequeños y bajos que el de la época. */
 .road-sign.is-tramo, .road-sign.branch-spot { --map-post-h: var(--map-post-h-low); }
 .road-sign.branch-spot { z-index: 2; }
-.is-tramo .sign-plate, .sign-plate.branch { min-height: 44px; padding: calc(.4 * var(--map-fs)) calc(.65 * var(--map-fs)); }
-.is-tramo .sign-plate:has(.sign-more) { padding-right: calc(1.4 * var(--map-fs)); }
-.is-tramo .sign-name, .sign-plate.branch .sign-name { font-size: calc(.82 * var(--map-fs)); }
+/* Tamaño y letra de mojones y tablillas de rama: mapa-carteles.css. */
 .sign-plate.is-static { cursor: default; }
 .sign-plate {
   position: relative; z-index: 1; display: grid; gap: 3px; justify-items: start; min-width: 0; max-width: min(100%, calc(15 * var(--map-fs))); min-height: 48px;
