@@ -73,7 +73,7 @@ export function eraArch({ movement, status, sealed, done, total, prevName, arch,
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
   const count = `${done} de ${total} ${total === 1 ? 'pintor dominado' : 'pintores dominados'}`;
   const button = locked
-    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}</button>`
+    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${groove(0)}</button>`
     : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}${groove(sealed ? 1 : total ? done / total : 0)}</button>`;
   return `<h2 ${archBox(arch, h, tone)}>${button}</h2>`;
 }

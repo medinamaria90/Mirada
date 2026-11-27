@@ -58,7 +58,7 @@ test('carteles: tablilla de tramo (un solo objeto) sin contador; completa, dorad
   const sealed = eraArch({ movement, status: 'mastered', sealed: true, done: 9, total: 9, prevName: '', arch, h: 1000 });
   assert.ok(sealed.includes('arch-band is-done') && !sealed.includes('9/9') && sealed.includes('--p:1'), 'la completa lleva cifra');
   const locked = eraArch({ movement, status: 'locked', sealed: false, done: 0, total: 9, prevName: 'el Manierismo', arch, h: 1000 });
-  assert.ok(locked.includes('data-action="era-lock"') && !locked.includes('0/9') && !locked.includes('arch-progress'));
+  assert.ok(locked.includes('data-action="era-lock"') && !locked.includes('0/9') && locked.includes('--p:0'), 'la cerrada, con la ranura vacía (mismo alto, sin cifra)');
   const rama = branchEntrySign({ id: 'gotico', name: 'Gótico' }, arch, 1000, 2, 5);
   assert.ok(rama.includes('class="era-arch"') && rama.includes('data-kind="rama"') && !rama.includes('2/5'), 'el dintel de la rama repite la cuenta de la cabecera');
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8') + readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
