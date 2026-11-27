@@ -8,6 +8,12 @@
     {
      "text": "Jacopo Carucci tomó su apodo de Pontorme, el pueblo donde nació. Huérfano de niño, acabó siendo el pintor más raro y original de Florencia.",
      "artwork": "w3607621",
+     "region": [
+      0.28,
+      0.0,
+      0.72,
+      0.45
+     ],
      "source": "https://es.wikipedia.org/wiki/Jacopo_da_Pontormo"
     },
     {
@@ -18,6 +24,12 @@
     {
      "text": "Escribió un diario donde anota lo que come, lo que le duele y lo que pinta. El biógrafo Vasari cuenta que subía a su cuarto por una escalera que retiraba tras de sí.",
      "artwork": "w3664358",
+     "region": [
+      0.28,
+      0.05,
+      0.72,
+      0.5
+     ],
      "source": "https://es.wikipedia.org/wiki/Jacopo_da_Pontormo"
     },
     {
