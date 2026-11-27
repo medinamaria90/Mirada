@@ -122,13 +122,13 @@ function eraBlock(ctx, era, prevEra, keys) {
   }).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';
-  const place = era.gate ? protoPlace(era.gate.x, era.gate.y) : null;
+  const place = era.gate ? protoPlace(era.gate.x, era.gate.y, movement.name) : null;
   const sign = era.arch ? archHtml(ctx, era, prevEra, place ? { ...era.arch, ...place.box } : era.arch, era.h) : '';
   const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}${era.gate ? ' has-gate' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--gate-y:${GATE_Y};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
     ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, tail: b.spot.tail, open: b.st.open })), walked(index, era, nodes, keys), place ? place.plaza : null)}
-    ${frontSvg(era)}
+    ${frontSvg(era, movement.name)}
     ${sign}
     <ol class="stages">${items}${gallery}</ol>
   </li>`;
@@ -149,8 +149,8 @@ function archHtml(ctx, era, prevEra, arch, h) {
 }
 
 // Delante del sendero: la puerta de la época (el arco pasa por encima) y los pretiles de sus puentes.
-export function frontSvg(era) {
-  const art = `${era.gate ? eraGate(era.gate.x, era.gate.y) : ''}${era.bridges.map(bridgeRails).join('')}`;
+export function frontSvg(era, name = '') {
+  const art = `${era.gate ? eraGate(era.gate.x, era.gate.y, name) : ''}${era.bridges.map(bridgeRails).join('')}`;
   return art ? `<svg class="path-gate" viewBox="0 0 ${MAP_W} ${era.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${art}</svg>` : '';
 }
 

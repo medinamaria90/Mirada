@@ -109,26 +109,28 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 @media (hover: hover) { .map-return:hover { background: color-mix(in srgb, var(--surface) 92%, var(--ink)); } }
 
 /* ---------- PROTOTIPO (rama proto-epoca-lugar): la época como lugar y el tramo como piedra ---------- */
-/* Inscripción: letras grabadas en la propia piedra del edificio, sin caja. */
-.era-arch .arch-band {
-  min-width: 0; min-height: 0; padding: 0 2px; align-content: end; gap: 2px; background: none; box-shadow: none; border-radius: 0;
+/* Toda la puerta es pulsable; el nombre, grabado en el ático (letras hundidas en la piedra, sin caja). */
+.era-arch.is-place { display: block; }
+.era-arch.is-place .arch-band { position: absolute; inset: 0; width: 100%; max-width: none; min-height: 0; padding: 0; background: none; box-shadow: none; border-radius: 0; }
+.era-arch.is-place .arch-band::before { display: none; }
+.era-arch.is-place .arch-band::after { inset: 0; }
+.era-arch.is-place .arch-name {
+  position: absolute; left: 50%; bottom: var(--attic-at); translate: -50% 0; width: var(--attic-w); height: var(--attic-h);
+  display: flex; align-items: center; justify-content: center; gap: 3px; overflow: hidden; white-space: nowrap;
+  text-transform: none; font: 600 var(--proto-inscr-fs)/1 var(--font); letter-spacing: var(--proto-inscr-track); color: var(--map-sign-ink-2);
+  text-shadow: 0 1px 0 color-mix(in srgb, var(--map-stone-top) 85%, transparent);
 }
-.era-arch .arch-band::before { display: none; }
-.era-arch .arch-name {
-  text-transform: none; font: 700 var(--proto-inscr-fs)/1.05 var(--font); letter-spacing: var(--proto-inscr-track); color: var(--map-sign-ink-2);
-  text-shadow: 0 1px 0 color-mix(in srgb, var(--map-stone-top) 80%, transparent);
-}
-.era-arch .arch-progress { width: 60%; height: 2px; background: color-mix(in srgb, var(--map-sign-ink) 18%, transparent); }
-@media (hover: hover) { .era-arch button.arch-band:hover { background: none; } .era-arch button.arch-band:hover .arch-name { color: var(--map-sign-ink); } }
-/* Tramo: una piedra baja con el nombre grabado, al borde del sendero (sin tablilla ni postes). */
+.era-arch.is-place button.arch-band:active { transform: translateY(2px); }
+.era-arch.is-place .arch-band.is-done .arch-name { color: var(--gold-text); }
+@media (hover: hover) { .era-arch.is-place button.arch-band:hover { background: none; } .era-arch.is-place button.arch-band:hover .arch-name { color: var(--map-sign-ink); } }
+/* Tramo: un mojón bajo de piedra al borde del sendero, con el nombre grabado (sin tablilla ni postes). */
 .road-sign.is-tramo { padding-bottom: 0; }
 .road-sign.is-tramo::before { display: none; }
-.road-sign.is-tramo::after { left: 4px; right: 4px; bottom: -3px; }
-.is-tramo .sign-plate {
+.road-sign.is-tramo::after { left: -2px; right: -2px; bottom: -4px; height: 8px; }
+.is-tramo .sign-plate, .sign-plate.is-tramo.is-done {
   min-height: 0; padding: var(--proto-stone-pad); border: 0; outline: 0; border-radius: var(--proto-stone-r);
-  background: linear-gradient(var(--map-stone-top), var(--map-stone-front)); color: var(--map-sign-ink-2);
-  box-shadow: inset calc(-1 * var(--proto-stone-edge)) 0 0 var(--map-stone-side), 0 2px 0 var(--map-stone-side);
+  background: var(--map-stone-side); color: var(--map-sign-ink);
+  box-shadow: inset calc(-1 * var(--proto-stone-edge)) calc(-1 * var(--proto-stone-edge)) 0 color-mix(in srgb, var(--map-sign-ink) 10%, transparent), inset 0 2px 0 var(--map-stone-top);
 }
-.is-tramo .sign-name { font: 700 var(--proto-stone-fs)/1.1 var(--font); letter-spacing: var(--proto-inscr-track); text-shadow: 0 1px 0 var(--map-stone-top); }
-.sign-plate.is-tramo.is-done { background: linear-gradient(var(--map-stone-top), var(--map-stone-front)); border: 0; outline: 0; box-shadow: inset calc(-1 * var(--proto-stone-edge)) 0 0 var(--map-stone-side), 0 2px 0 var(--map-stone-side); }
+.is-tramo .sign-name { font: 600 var(--proto-stone-fs)/1.1 var(--font); letter-spacing: var(--proto-inscr-track); text-shadow: 0 1px 0 var(--map-stone-top); }
 .sign-plate.is-tramo.is-done .sign-name { color: var(--gold-text); }
