@@ -1,7 +1,6 @@
-obras con detalle que piden HD: 128
+obras con detalle que piden HD: 127
 ok   w1055111    filippo-lippi  pide 2300 px -> 1568x2300 q82 684 KB
 ok   w1065493    millais        pide 3840 px -> 3840x2612 q74 2381 KB
-ok   w106839951  alonso-cano    pide 3700 px -> 2828x3700 q82 2426 KB
 ok   w1070896    aivazovski     pide 3840 px -> 3840x2580 q82 1076 KB
 ok   w107308907  pinazo         pide 3840 px -> 3840x1535 q82 1273 KB
 ok   w1091086    goya           pide 3051 px -> 3051x2328 q82 870 KB
@@ -59,7 +58,7 @@ ok   w23936176   regoyos        pide 3840 px -> 3840x2785 q70 3138 KB
 ok   w23936265   beruete        pide 3840 px -> 3840x2498 q70 2078 KB
 ok   w2438357    schiele        pide 2800 px -> 2800x2369 q82 2048 KB
 ok   w2456003    murillo        pide 2952 px -> 2012x2952 q82 815 KB
-ok   w2521909    briullov       pide 3840 px -> 3840x2696 q82 1908 KB
+ok   w2521909    briullov       pide 3840 px -> 3840x2696 q82 1929 KB
 ok   w252485     hokusai        pide 3840 px -> 3840x2708 q82 2435 KB
 ok   w2535563    rafael         pide 2952 px -> 2267x2952 q82 718 KB
 ok   w2537138    goya           pide 3051 px -> 3051x2114 q82 1052 KB
@@ -102,7 +101,7 @@ ok   w4458429    levitan        pide 2000 px -> 2000x1601 q82 614 KB
 ok   w4478998    surikov        pide 3767 px -> 3767x2157 q82 1727 KB
 ok   w4503153    vrubel         pide 2048 px -> 1346x2048 q82 515 KB
 ok   w4536026    ivanov         pide 2800 px -> 2800x1953 q82 1148 KB
-ok   w45585      van-gogh       pide 3840 px -> 3840x3041 q70 2937 KB
+ok   w45585      van-gogh       pide 3840 px -> 3840x3041 q70 2958 KB
 ok   w4717953    velazquez      pide 3840 px -> 3304x3840 q82 1926 KB
 ok   w4884666    bermejo        pide 3700 px -> 2831x3700 q82 2361 KB
 ok   w4889277    casas          pide 3840 px -> 3840x2684 q82 2004 KB
@@ -127,4 +126,4 @@ ok   w948745     duccio         pide 3840 px -> 2350x3840 q82 1360 KB
 ok   w949323     el-greco       pide 3300 px -> 2538x3300 q82 1778 KB
 ok   w96471562   kuniyoshi      pide 1497 px -> 1190x1497 q82 367 KB
 ok   w965822     mantegna       pide 3840 px -> 2249x3840 q78 2170 KB
-hd: 128 imágenes, 194.0 MB, fallos 0, sha256 ff3081cbaa499b2e…
+hd: 127 imágenes, 191.5 MB, fallos 0, sha256 d6e0197d339d17d8…
