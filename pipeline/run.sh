@@ -96,15 +96,27 @@ while read -r step args <&3; do
       python3 pipeline/reconciliar.py "$TMPDIR_REC" >> pipeline/logs/run.txt 2>&1 ;;
     pack)  # pack [lado] [--parcial]: zip único app-img-<lado>.zip (+ .sha256) con <id>.jpg a <lado> px, subido a catalogo-img
       set -- $args; lado=${1:-1200}; parcial=${2:-}
-      src=$(mktemp -d); out=$(mktemp -d)
-      descargar_origen "$src" >> pipeline/logs/run.txt 2>&1
-      python3 pipeline/pack.py "$lado" --src catalogo/img --src "$src" --out "$out" >> pipeline/logs/run.txt 2>&1; rc=$?
+      src=$(mktemp -d); out=$(mktemp -d); prev=$(mktemp -d)
+      # Reutiliza el paquete anterior (1 descarga) y baja solo los originales que faltan; si son muchos, todos de golpe.
+      gh release download catalogo-img --pattern "app-img-$lado.zip" -D "$prev" --clobber >> pipeline/logs/run.txt 2>&1 \
+        && python3 -m zipfile -e "$prev/app-img-$lado.zip" "$prev/z" && rm -f "$prev/app-img-$lado.zip"
+      python3 pipeline/pack.py "$lado" --needs --reuse "$prev/z" > "$prev/faltan.txt"
+      nf=$(grep -c . "$prev/faltan.txt"); echo "pack: $nf originales que bajar" >> pipeline/logs/run.txt
+      if [ "$nf" -gt 200 ]; then
+        descargar_origen "$src" >> pipeline/logs/run.txt 2>&1
+      else
+        while read -r id; do
+          [ -f "catalogo/img/$id.jpg" ] && continue
+          for t in $TAGS; do gh release download "$t" -D "$src" --pattern "$id.jpg" --clobber >/dev/null 2>&1 && break; done
+        done < "$prev/faltan.txt"
+      fi
+      python3 pipeline/pack.py "$lado" --src catalogo/img --src "$src" --reuse "$prev/z" --out "$out" >> pipeline/logs/run.txt 2>&1; rc=$?
       if [ $rc -eq 0 ] || { [ $rc -eq 3 ] && [ "$parcial" = "--parcial" ]; }; then
         liberar_hueco && gh release upload catalogo-img "$out/app-img-$lado.zip" "$out/app-img-$lado.sha256" --clobber >> pipeline/logs/run.txt 2>&1           && echo "paquete app-img-$lado subido a catalogo-img ($(du -h "$out/app-img-$lado.zip" | cut -f1))" >> pipeline/logs/run.txt           || echo "NO SE PUDO SUBIR EL PAQUETE" >> pipeline/logs/run.txt
       else
         echo "pack rc=$rc: paquete NO subido (faltan imágenes o hay fallos; ver pipeline/logs/pack.txt)" >> pipeline/logs/run.txt
       fi
-      rm -rf "$src" "$out" ;;
+      rm -rf "$src" "$out" "$prev" ;;
     hd)  # imágenes HD de las obras que las historias enseñan en detalle (pipeline/hd.py): app-img-hd.zip a catalogo-img
       out=$(mktemp -d)
       if python3 pipeline/hd.py --out "$out" >> pipeline/logs/run.txt 2>&1; then
