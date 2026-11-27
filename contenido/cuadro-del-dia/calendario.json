@@ -152,7 +152,7 @@
           ]
         },
         {
-          "text": "Picasso, el gran pintor del siglo XX, retomó esta escena en su Masacre en Corea, de 1951: los fusiles a un lado y la gente indefensa al otro.",
+          "text": "Picasso, siglo y medio después, retomó esta escena en su Masacre en Corea, de 1951: los fusiles a un lado y la gente indefensa al otro.",
           "whole": true
         }
       ]
@@ -173,7 +173,7 @@
       "source": "https://es.wikipedia.org/wiki/La_vocaci%C3%B3n_de_San_Mateo",
       "cards": [
         {
-          "text": "La mano del principio copia la de Adán que pintó el gran Miguel Ángel en la Capilla Sixtina (la del Papa, en Roma). Era Caravaggio, el rebelde de la luz de sótano.",
+          "text": "La mano del principio copia la de Adán que pintó el gran Miguel Ángel en la Capilla Sixtina (la del Papa, en Roma). Era Caravaggio, el rebelde de la luz y la sombra.",
           "focus": [
             0.72,
             0.47,
@@ -309,7 +309,8 @@
           "text": "Es de los primeros paisajes españoles sin escena religiosa: la protagonista es la ciudad. Y no es un mapa: se tomó libertades con los edificios.",
           "whole": true
         }
-      ]
+      ],
+      "era": "Manierismo · s. XVI"
     },
     {
       "artwork": "w328523",
@@ -472,7 +473,8 @@
           "text": "Pintaba al aire libre y muy deprisa, con lienzos enormes en plena playa, para atrapar la luz antes de que cambiara. Lo llamaban «el pintor de la luz».",
           "whole": true
         }
-      ]
+      ],
+      "era": "Pintura española · hacia 1900"
     },
     {
       "artwork": "w2456003",

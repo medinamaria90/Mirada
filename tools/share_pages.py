@@ -66,7 +66,7 @@ CUADRO_SIDE = 1080  # lado del recorte cuadrado para la vista previa
 DETAIL_DIR = "dia"  # dentro de img/: el detalle de cada día para los pasos 1 y 2 del juego (img/dia/<n>.jpg)
 DETAIL_ZOOM = 1.6  # el recorte del paso 2, que contiene el del paso 1 (WIDE_ZOOM de app/js/engine/cuadro-calendar.js)
 DETAIL_SIDE = 1200  # px: el detalle del paso 1 (0,53 del recorte) queda a 1,52 px de imagen por px CSS en un marco de 420 px
-DETAIL_QUALITIES = (74, 68, 62, 56)
+DETAIL_QUALITIES = (74, 68, 62, 56, 50)
 DETAIL_MAX_BYTES = 250 * 1024
 
 

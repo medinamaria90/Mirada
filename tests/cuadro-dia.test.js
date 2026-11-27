@@ -18,6 +18,7 @@ import { migrate, SCHEMA_VERSION } from '../app/js/state/schema.js';
 import { readSession } from '../app/js/state/session.js';
 import { parseRoute } from '../app/js/ui/router.js';
 import { medalInfo } from '../app/js/engine/medal-info.js';
+import { gainsHtml } from '../app/js/ui/cuadro-gains.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
@@ -110,6 +111,13 @@ test('cuadro del día: finishCuadro una sola vez, con XP, racha, meta y medallas
   assert.ok(!finishCuadro(p0, index, { date: '2026-11-27', n: 1, game: newGame() }, '2026-11-27').applied, 'sin terminar no se guarda');
   assert.deepEqual(medalInfo('daily-1', index).title, 'Primer cuadro del día');
   assert.deepEqual(medalInfo('daily-perfect', index).title, 'A la primera');
+});
+
+test('cuadro del día: lo ganado se cuenta (puntos, racha y medallas) sin repetir la medalla de racha', () => {
+  const won = gainsHtml(index, { won: true, tries: 2 }, [{ type: 'streak', value: 3 }, { type: 'medal', id: 'streak-3' }, { type: 'medal', id: 'daily-1' }]);
+  assert.ok(won.includes('+10 puntos') && won.includes('3 días de racha') && won.includes('Primer cuadro del día'));
+  assert.equal((won.match(/<li/g) || []).length, 3, 'la medalla de racha no se repite');
+  assert.ok(gainsHtml(index, { won: false, tries: 4 }, []).includes('+5 puntos'));
 });
 
 test('cuadro del día: cuadritos y texto compartido sin pintor, título ni año', () => {

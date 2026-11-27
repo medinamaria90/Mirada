@@ -11,8 +11,8 @@ import { frameHtml, wireFrame, openLarge } from '../cuadro-frame.js';
 import { copyText } from './result.js';
 import { madridClock } from '../../engine/dates.js';
 import { isKnownArtist } from '../../engine/progress.js';
-import { cuadroGrid, cuadroShareText, cuadroCount, tryLabel, nextInLabel, CUADRO_TRIES, CUADRO_XP } from '../../engine/cuadro-dia.js';
-import { medalInfo } from '../../engine/medal-info.js';
+import { cuadroGrid, cuadroShareText, cuadroCount, tryLabel, nextInLabel, CUADRO_TRIES } from '../../engine/cuadro-dia.js';
+import { gainsHtml } from '../cuadro-gains.js';
 import { countEvent } from '../../stats.js';
 
 const SHARE_PAGE = (slot) => `h/cuadro-${slot}.html`; // tools/share_pages.py: abre siempre el cuadro de hoy
@@ -31,16 +31,6 @@ function squaresHtml(record) {
   return `<div class="cdd-squares is-in" role="img" aria-label="${label}">${marks.map((m) => `<span class="cdd-sq ${m === '🟩' ? 'is-hit' : m === '🟥' ? 'is-miss' : ''}"></span>`).join('')}</div>`;
 }
 
-// Lo ganado al acabar (solo recién acabado): XP, racha que sube y medallas nuevas, en una fila de pastillas.
-function gainsHtml(ctx, record, events) {
-  const items = [`+${record.won ? CUADRO_XP.won : CUADRO_XP.lost} XP`];
-  const streak = events.find((e) => e.type === 'streak');
-  if (streak) items.push(`${streak.value} ${streak.value === 1 ? 'día' : 'días'} de racha`);
-  // La medalla de racha ya la dice la pastilla de la racha.
-  for (const m of events.filter((e) => e.type === 'medal' && !(streak && e.id.startsWith('streak-')))) items.push(medalInfo(m.id, ctx.index).title);
-  return `<ul class="cdd-gains" aria-label="Lo que has ganado">${items.map((t, i) => `<li class="cdd-gain${i ? ' is-extra' : ''}">${i === 0 ? '' : icons.medal(16)}<span>${esc(t)}</span></li>`).join('')}</ul>`;
-}
-
 export async function renderCuadroDone(ctx, el, data, record, { fresh = false, events = [] } = {}) {
   await loadCss('css/cuadro-dia.css');
   const { index } = ctx;
@@ -57,8 +47,8 @@ export async function renderCuadroDone(ctx, el, data, record, { fresh = false, e
       <p class="cdd-answer">${record.won ? 'Es de' : 'Era'} <strong>${esc(short)}</strong></p>
       ${frameHtml(work, entry.focus, 1, `${work.title}, en grande`, null, null, doneRatio(work))}
       <p class="cdd-caption">${esc(work.title)} · ${esc(work.year)}</p>
-      <div class="cdd-tally">${squaresHtml(record)}${fresh ? gainsHtml(ctx, record, events) : ''}</div>
-      <p class="cdd-count">${esc(countLine(cuadroCount(p)))}</p>
+      <div class="cdd-tally">${squaresHtml(record)}${fresh ? gainsHtml(ctx.index, record, events) : ''}</div>
+      <p class="cdd-count">${esc(countLine(cuadroCount(p)))}<span class="cdd-next">${icons.calendar(16)}<span>El siguiente, en ${esc(nextInLabel(madridClock(new Date())))}</span></span></p>
       <div class="cdd-actions">
         <button type="button" class="btn btn-primary btn-wide" data-action="share">${icons.share(20)}<span>Compartir</span></button>
         <div class="cdd-row">
@@ -68,7 +58,6 @@ export async function renderCuadroDone(ctx, el, data, record, { fresh = false, e
         <p class="copy-status" role="status"></p>
         <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="3"></textarea>
       </div>
-      <p class="cdd-next">${icons.calendar(16)}<span>El siguiente, en ${esc(nextInLabel(madridClock(new Date())))}</span></p>
     </section>`;
   el.innerHTML = onboarded ? page(ctx, 'home', body) : `<div class="cdd-guest"><main class="content" id="main">${body}</main></div>`;
   wireFrame(el);
