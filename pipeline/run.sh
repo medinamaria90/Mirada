@@ -105,6 +105,16 @@ while read -r step args <&3; do
         echo "pack rc=$rc: paquete NO subido (faltan imágenes o hay fallos; ver pipeline/logs/pack.txt)" >> pipeline/logs/run.txt
       fi
       rm -rf "$src" "$out" ;;
+    hd)  # imágenes HD de las obras que las historias enseñan en detalle (pipeline/hd.py): app-img-hd.zip a catalogo-img
+      out=$(mktemp -d)
+      if python3 pipeline/hd.py --out "$out" >> pipeline/logs/run.txt 2>&1; then
+        liberar_hueco && gh release upload catalogo-img "$out/app-img-hd.zip" "$out/app-img-hd.sha256" --clobber >> pipeline/logs/run.txt 2>&1 \
+          && echo "paquete app-img-hd subido a catalogo-img ($(du -h "$out/app-img-hd.zip" | cut -f1))" >> pipeline/logs/run.txt \
+          || { echo "NO SE PUDO SUBIR EL PAQUETE HD" >> pipeline/logs/run.txt; git checkout -- catalogo/hd.json 2>/dev/null || rm -f catalogo/hd.json; }
+      else
+        echo "hd: paquete NO subido (ver pipeline/logs/hd.txt)" >> pipeline/logs/run.txt
+      fi
+      rm -rf "$out" ;;
     seleccionar) python3 pipeline/seleccionar.py $args > pipeline/logs/seleccionar.stdout.txt 2>&1; tail -n 4 pipeline/logs/seleccionar.stdout.txt >> pipeline/logs/run.txt ;;  # sin red: elige a partir de las candidatas; con ids, solo esos pintores
     fichas)   python3 pipeline/fichas.py $args > pipeline/logs/fichas.stdout.txt 2>&1; tail -n 3 pipeline/logs/fichas.stdout.txt >> pipeline/logs/run.txt ;;
     build)    python3 pipeline/build.py >> pipeline/logs/run.txt 2>&1 ;;

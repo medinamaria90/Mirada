@@ -3,6 +3,7 @@
 import { SU_OPTIONS } from './su-options.js';
 import { isSuperOn, setSuper, SU_EVENT } from './su-mode.js';
 import { loadCss } from './lazy-css.js';
+import { statsRowHtml, fillVisitors } from './su-stats.js';
 import { setTrial } from './su-trial.js';
 
 const optionHtml = (ctx, o) => `<label class="setting">
@@ -27,7 +28,8 @@ export function wireSuper(root, ctx, close) {
     section.hidden = !on;
     if (!on) return;
     loadCss('css/dj.css');
-    box.innerHTML = SU_OPTIONS.map((o) => optionHtml(ctx, o)).join('');
+    box.innerHTML = SU_OPTIONS.map((o) => optionHtml(ctx, o)).join('') + statsRowHtml();
+    fillVisitors(box);
   };
   box.addEventListener('change', (ev) => {
     const opt = SU_OPTIONS.find((o) => o.id === ev.target.dataset.su);
