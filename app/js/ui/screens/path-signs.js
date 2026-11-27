@@ -33,17 +33,19 @@ export const toEra = (name) => withArticle(name).replace(/^el /, 'al ').replace(
 // Más allá del cartel, el desvío se pierde en el paisaje: unas piedras que se apagan hacia el borde.
 const spurSvg = (b) => `${b.tail ? `<path class="spur-tail" d="${b.tail}"/>` : ''}<path class="spur-edge${b.open ? '' : ' is-locked'}" d="${b.spur}"/><path class="spur-fill${b.open ? '' : ' is-locked'}" d="${b.spur}"/>`;
 
-// done: el tramo ya recorrido (de otro color, encima del pendiente).
+// Sendero de tierra: sombra suave debajo, borde y firme. done: el tramo ya recorrido, en tierra dorada con un hilo de
+// oro por el centro (encima del pendiente).
 export function trailSvg(h, d, spurs = [], done = '') {
-  const walked = done ? `<path class="trail-edge is-done" d="${done}"/><path class="trail-fill is-done" d="${done}"/><path class="trail-steps is-done" d="${done}"/>` : '';
+  const walked = done ? `<path class="trail-edge is-done" d="${done}"/><path class="trail-fill is-done" d="${done}"/><path class="trail-thread" d="${done}"/>` : '';
   return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-      ${spurs.map(spurSvg).join('')}<path class="trail-edge" d="${d}"/><path class="trail-fill" d="${d}"/><path class="trail-steps" d="${d}"/>${walked}</svg>`;
+      <path class="trail-shade" d="${d}"/>${spurs.map(spurSvg).join('')}<path class="trail-edge" d="${d}"/><path class="trail-fill" d="${d}"/>${walked}</svg>`;
 }
 
-// Caja del cartel: su borde junto al camino en `edge`, el pie del poste en `y`; la placa crece hacia fuera.
-export function signBox(sign, h) {
+// Caja del cartel (placa sobre dos postes): su borde junto al camino en `edge`, el pie de los postes en `y`; la placa
+// crece hacia fuera.
+export function signBox(sign, h, extra = '') {
   const across = sign.side === 'left' ? `right:${pct(MAP_W - sign.edge, MAP_W)}` : `left:${pct(sign.edge, MAP_W)}`;
-  return `class="road-sign is-${sign.side}" style="${across};bottom:${pct(h - sign.y, h)};max-width:${pct(sign.room, MAP_W)}"`;
+  return `class="road-sign is-${sign.side}${extra ? ` ${extra}` : ''}" style="${across};bottom:${pct(h - sign.y, h)};max-width:${pct(sign.room, MAP_W)}"`;
 }
 
 // Cartel de época: nombre (dos líneas como mucho), siglos y «n/m». Abierta, lleva a la presentación;
@@ -118,39 +120,36 @@ export function branchWhy(index, st) {
   return st.pending.length ? `se abre al dominar a ${joinNames(st.pending.map((p) => stepName(index, p)))}` : 'aún cerrada';
 }
 
-// Desvío de una rama: su placa y su hito (el candado va en el hito; bajo él, solo «faltan n»). Abierta, entra en la
-// pantalla de la rama; cerrada, una nota dice qué falta. extra: señal de una escuela en una época posterior
-// («Escuela rusa · 14 nuevos»), que entra en la misma rama.
+// Cartel de una rama al final de su desvío (placa sobre dos postes): nombre y cifra; cerrada, «faltan n» con candado.
+// Abierta, entra directamente en la pantalla de la rama; cerrada, una nota dice qué falta. extra: señal de una escuela
+// en una época posterior («Escuela rusa · 14 nuevos»), que entra en la misma rama.
 export function branchSpot(spot, branch, st, index, h) {
   const done = st.total && st.mastered === st.total;
   const cls = `${done ? 'is-mastered' : st.open ? 'is-open' : 'is-locked'}${spot.extra ? ' is-extra' : ''}`;
-  const short = branchShort(branch, index);
   const n = st.pending.length;
   const allDone = spot.extra && st.total && st.mastered === st.total;
   const fresh = allDone ? `${st.mastered}/${st.total}` : `${st.fresh} ${st.fresh === 1 ? 'nuevo' : 'nuevos'}`;
   const label = spot.extra
     ? `${branch.name}: ${allDone ? `${st.total} de ${st.total} dominados` : `${st.fresh === 1 ? 'un pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época`}${st.open ? '' : `, ${branchWhy(index, st)}`}`
     : done ? `${branch.name}: rama completa, ${st.total} de ${st.total} dominados` : st.open ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} dominados` : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
-  const line = !st.open ? `<span>${n === 1 ? 'falta 1' : `faltan ${n}`}</span>` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
-  return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
-      <button type="button" class="branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}" aria-label="${esc(label)}">
-        <span class="branch-plate"><span class="branch-name">${esc(short)}</span></span><span class="branch-count">${line}</span>
-        <span class="branch-dot">${done ? icons.laurel(18) : st.open ? icons.fork(18) : icons.lock(12)}</span>
+  const line = !st.open ? `${icons.lock(11)} ${n === 1 ? 'falta 1' : `faltan ${n}`}` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
+  return `<li ${signBox(spot.sign, h, 'branch-spot')}>
+      <button type="button" class="sign-plate branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}" aria-label="${esc(label)}">
+        ${done ? `<span class="sign-seal" aria-hidden="true">${icons.laurel(14)}</span>` : ''}<span class="sign-name">${esc(branchShort(branch, index))}</span><span class="sign-meta"><span>${line}</span></span>
       </button></li>`;
 }
 
-// Cartel único de las ramas de la época cuando hay más de dos: «Ramas (n)» en la placa estrecha (el nombre accesible
-// y la hoja dicen «Ramas de esta época»); abre una hoja con todas.
-export function branchGroupSpot(spot, sts, eraId, h) {
-  const n = sts.length;
-  const open = sts.filter((st) => st.open).length;
-  const done = sts.every((st) => st.total && st.mastered === st.total);
-  const cls = done ? 'is-mastered' : open ? 'is-open' : 'is-locked';
-  const line = done ? `${n}/${n}` : open ? `${open} ${open === 1 ? 'abierta' : 'abiertas'}` : '<span>cerradas</span>';
-  const label = `Ramas de esta época: ${n}${done ? ', todas dominadas' : open ? `, ${open} ${open === 1 ? 'abierta' : 'abiertas'}` : ', cerradas'}`;
-  return `<li class="branch-spot is-${spot.side}" style="left:${pct(spot.x, MAP_W)};top:${pct(spot.y, h)}">
-      <button type="button" class="branch ${cls} is-group" data-action="branches" data-id="${esc(eraId)}" data-members="${esc(spot.members.map((m) => m.id).join(' '))}" aria-haspopup="dialog" aria-label="${esc(label)}">
-        <span class="branch-plate"><span class="branch-name">Ramas (${n})</span></span><span class="branch-count">${line}</span>
-        <span class="branch-dot">${done ? icons.laurel(18) : open ? icons.fork(18) : icons.lock(12)}</span>
-      </button></li>`;
+// Cartel de un tramo (unidad de pintores) al borde del sendero, antes de su primera parada: nombre y dominados. Abre su
+// cartel en tarjetas (sign-cards.js).
+export function tramoSign(sec, info, h) {
+  const label = `Tramo ${sec.name}: ${info.got} de ${info.total} dominados. Ver cartel`;
+  return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
+      <span class="sign-name">${esc(sec.name)}</span><span class="sign-meta"><span>${info.got}/${info.total}</span></span><span class="sign-more" aria-hidden="true">${icons.next(12)}</span></button></li>`;
+}
+
+// Cartel de la rama en su pantalla, junto a la entrada: nombre y dominados; abre el cartel de la rama en tarjetas.
+export function branchEntrySign(branch, sign, h, mastered, total) {
+  const label = `${branch.name}, ${mastered} de ${total} dominados. Ver cartel`;
+  return `<h2 ${signBox(sign, h)}><button type="button" class="sign-plate" data-action="cartel" data-kind="rama" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
+      <span class="sign-name">${esc(branch.name)}</span><span class="sign-meta"><span>${mastered}/${total}</span></span><span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button></h2>`;
 }

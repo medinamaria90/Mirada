@@ -20,6 +20,9 @@
 # medida, aspas de molino que giran (data-spin), humo que sube (data-puff) y, en el SVG raíz, los huecos libres
 # (data-free: estrellas de noche, mariposas de día) y los brillos del agua (data-glints).
 #
+# Agua y puertas (tools/mapa_agua.py): los ríos salen de los puentes del trazado, alineados con el sendero; el seto de
+# la entrada de cada época, con el hueco de su puerta; y la comprobación de que nada cruza agua sin puente.
+#
 # Las pantallas de rama tienen su tramo propio (rama-<id>.svg): el paisaje de su época o el suyo (tools/mapa_ramas.py).
 #
 # Uso (desde la raíz del repositorio): python -I tools/mapa_svg.py [ramas]
@@ -32,7 +35,9 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'marca', 'tools'))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mapa as M  # noqa: E402
+import mapa_agua as A  # noqa: E402
 
 OUT = os.path.join(ROOT, 'app', 'img', 'mapa')
 MAX_KB = 64   # en la página va comprimido (~10 KB el mayor)
@@ -83,9 +88,13 @@ def tinte(h, tint_class):
 
 # Huecos de la época que se está pintando (los fija build): lado del cartel, paradas con rama y cajas de los
 # rótulos de cada parada (nombre y tramo, lado ancho).
-LIBRE = {'cartel': None, 'ramas': set(), 'rotulos': []}
+LIBRE = {'cartel': None, 'ramas': set(), 'rotulos': [], 'road': None}
 # Lo ya pintado en la época (base de cada pieza y ríos), para que el esparcido no se le monte encima.
-OCUPADO = {'piezas': [], 'rios': []}
+OCUPADO = {'piezas': [], 'rios': [], 'agua': []}
+# Puentes del tramo que se está pintando (los da el trazado) y errores de agua de todos los tramos.
+PUENTES = []
+ERRORES = []
+VINETA_SUBE = 64   # unidades que suben las viñetas de cada parada (algo menos de media distancia entre paradas)
 
 # Piezas que se dejan de pintar si su base cae bajo un rótulo (o justo debajo: crecen hacia arriba).
 SOBRE_ROTULO = ['caja', 'casa', 'casa_larga', 'torre', 'cupula', 'arcada', 'muralla', 'fuente', 'obelisco', 'columna',
@@ -96,14 +105,42 @@ MARGEN_X = 14
 ALTO_PIEZA = 34
 
 
+# Hitos que, si caen bajo un rótulo, se corren de lado a un hueco libre lejos del sendero (no se pierden). Por hito,
+# lo que ocupa a lo ancho desde su x (a la izquierda y a la derecha).
+HITOS = {'molino': (0, 20), 'castillo': (-15, 95), 'ruina': (0, 56), 'eiffel': (-14, 14), 'noria': (-22, 22), 'sagrada': (0, 60)}
+HITO_PASOS = [(dx, dy) for dy in (0, -50, 50) for dx in (0, -40, 40, -80, 80, -120, 120, -160, 160, -200, 200) if dx or dy]
+HITO_AIRE = 30       # del sendero al hito
+
+
+def _bajo_rotulo(x, y):
+    return any(r['x0'] - MARGEN_X <= x <= r['x1'] + MARGEN_X and r['y0'] <= y <= r['y1'] + ALTO_PIEZA for r in LIBRE['rotulos'])
+
+
+def _hueco_hito(nombre, x, y):
+    """Primer hueco (x, y) cerca del sitio pedido donde el hito cabe entero, sin rótulos ni sendero; None si no hay."""
+    road = LIBRE.get('road')
+    izq, der = HITOS[nombre]
+    for dx, dy in HITO_PASOS:
+        a, b, ny = x + dx + izq, x + dx + der, y + dy
+        if a < MARGEN_X or b > W - MARGEN_X or any(_bajo_rotulo(c, ny) or _bajo_rotulo(c, ny - ALTO_PIEZA) for c in (a, (a + b) / 2, b)):
+            continue
+        if road and (a - HITO_AIRE < road(ny) < b + HITO_AIRE):
+            continue
+        return (x + dx, ny)
+    return None
+
+
 def _libre(nombre):
     pieza = getattr(M, nombre)
 
     def envuelta(*a, **k):
         x, y = a[0], a[1]
-        for r in LIBRE['rotulos']:
-            if r['x0'] - MARGEN_X <= x <= r['x1'] + MARGEN_X and r['y0'] <= y <= r['y1'] + ALTO_PIEZA:
+        if _bajo_rotulo(x, y):
+            hueco = _hueco_hito(nombre, x, y) if nombre in HITOS else None
+            if hueco is None:
                 return (y, '')
+            x, y = hueco
+            a = (x, y) + tuple(a[2:])
         res = pieza(*a, **k)
         if res[1]:
             OCUPADO['piezas'].append((x, y))
@@ -155,6 +192,7 @@ _rio = M.rio
 def _rio_vivo(y, h=26, x0=0, x1=W, onda=10):
     orden, svg = _rio(y, h, x0, x1, onda)
     OCUPADO['rios'].append(y)
+    OCUPADO['agua'].append(('rio', y, h))
     # data-river: «x0 x1 y alto onda», para que la app sepa por dónde navegar (barcas, nadadores, reflejos).
     return (orden, f'<g data-river="{M.f(x0)} {M.f(x1)} {M.f(y)} {M.f(h)} {M.f(onda)}">{svg.replace("<rect", "<rect data-flow=\"\"")}</g>')
 
@@ -167,6 +205,7 @@ def _lago_vivo(cx, y, rx, ry):
     orden, svg = _lago(cx, y, rx, ry)
     if not svg:
         return (orden, svg)
+    OCUPADO['agua'].append(('lago', cx, y, rx, ry))
     i = svg.rfind('<ellipse')
     return (orden, f'<g data-lake="{M.f(cx)} {M.f(y)} {M.f(rx)} {M.f(ry)}">{svg[:i]}<ellipse data-flow=""{svg[i + 8:]}</g>')
 
@@ -181,6 +220,19 @@ def _puente_vivo(cx, y, w=52, arcos=2):
 
 
 M.puente = _puente_vivo
+
+
+def _puente_sendero_vivo(cx, y, largo, ancho=A.PUENTE_ANCHO):
+    orden, svg = A.puente_sendero(M, cx, y, largo, ancho)
+    return (orden, f'<g data-bridge="{M.f(cx)} {M.f(y)} {M.f(ancho)}">{svg}</g>')
+
+
+M.puente_sendero = _puente_sendero_vivo
+
+
+def agua(alto, onda, barcas=()):
+    """Los ríos del tramo, uno por puente del trazado (barcas: (x, dy, largo), lejos del puente)."""
+    return A.rios(M, W, PUENTES, alto, onda, barcas)
 ASPAS = re.compile(r'(?:<path d="M[^"]*" fill="none" stroke="#[0-9A-Fa-f]{6}" stroke-width="2\.5"[^>]*/>){4}')
 _molino = M.molino
 
@@ -250,8 +302,7 @@ def deco_renacimiento(p, h):
     x = lado(p[0])     # Florencia: cúpula de Brunelleschi, campanile y el Arno con su puente
     out += [M.cupula(x + 6, p[0][1] + 22, 30, 16, nervios=True), M.torre(x - 48, p[0][1] + 10, 14, 50, 'plano', win=(1, 2)),
             M.cipres(x - 60, p[0][1] + 16, 30), M.cipres(x + 52, p[0][1] + 20, 26), M.casa(x + 34, p[0][1] + 30, 18, 12, 10), M.casa(x - 30, p[0][1] + 32, 16, 12, 9)]
-    m = mid(p[0], p[1])
-    out += [M.rio(m[1], 26), M.puente(m[0], m[1], 56, 3), M.barca(26, m[1] + 4), M.barca(330, m[1] - 3), M.barca(60, m[1] - 6, 14)]
+    out += agua(26, 10, [(26, 4, 18), (330, -3, 18), (60, -6, 14)])     # el Arno, con su puente
     x = lado(p[1])     # pueblo de teja y cipreses
     out += [M.casa(x - 28, p[1][1] + 16, 26, 18, 12), M.casa(x + 6, p[1][1] + 22, 22, 14, 10), M.casa(x - 6, p[1][1] + 4, 20, 14, 10),
             M.cipres(x + 42, p[1][1] + 20, 30), M.arbol(x - 40, p[1][1] + 24, 9), M.cipres(x + 50, p[1][1] + 6, 22)]
@@ -278,8 +329,7 @@ def deco_norte(p, h):
     x = lado(p[0])     # ciudad flamenca: aguja, casas de pizarra con hastial, canal con puente
     out += [M.torre(x - 8, p[0][1] + 12, 16, 60, 'aguja', ar=36, win=(1, 3)), M.casa(x - 40, p[0][1] + 16, 20, 22, 10, teja=M.PIZARRA, teja2=M.PIZARRA2),
             M.casa(x + 20, p[0][1] + 18, 18, 18, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.casa(x + 40, p[0][1] + 20, 16, 14, 10, teja=M.PIZARRA, teja2=M.PIZARRA2)]
-    m = mid(p[0], p[1])
-    out += [M.rio(m[1], 22, onda=6), M.puente(m[0], m[1], 50, 2), M.barca(50, m[1] + 3, 16), M.barca(320, m[1] - 2, 14)]
+    out += agua(22, 6, [(50, 3, 16), (320, -2, 14)])                    # canal con su puente
     x = lado(p[1])     # hilera de casas estrechas
     out += [M.casa(x - 30, p[1][1] + 14, 18, 24, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.casa(x - 10, p[1][1] + 16, 16, 28, 10, teja=M.PIZARRA, teja2=M.PIZARRA2),
             M.casa(x + 8, p[1][1] + 14, 18, 22, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.casa(x + 28, p[1][1] + 18, 16, 18, 10, teja=M.PIZARRA, teja2=M.PIZARRA2),
@@ -408,8 +458,7 @@ def deco_impresionismo(p, h):
     x = lado(p[0])     # bulevar haussmanniano y la torre Eiffel
     out += [M.caja(x - 36, p[0][1] + 10, 68, 32, 16, win=(5, 2), cornisa=True), (p[0][1] + 11, M.R(x - 36, p[0][1] - 26, 68, 4, M.PIZARRA2)), M.eiffel(x + 50, p[0][1] + 10, 90),
             M.arbol(x - 46, p[0][1] + 16, 8), M.farola(x - 10, p[0][1] + 30, 14), M.farola(x + 20, p[0][1] + 30, 14)]
-    m = mid(p[0], p[1]) if len(p) > 1 else (195, p[0][1] - 56)
-    out += [M.rio(m[1], 26, onda=8), M.puente(m[0], m[1], 60, 3), M.barca(40, m[1] + 4, 16), M.barca(300, m[1] - 3, 14), M.barca(340, m[1] + 5, 12)]
+    out += agua(26, 8, [(40, 4, 16), (300, -3, 14), (340, 5, 12)])      # el Sena, con su puente
     if len(p) > 1:
         x = lado(p[1])  # jardín público con quiosco
         out += [M.arbol(x - 32, p[1][1] + 14, 10), M.arbol(x - 6, p[1][1] + 18, 9), M.arbol(x + 20, p[1][1] + 14, 10), M.arbol(x + 42, p[1][1] + 18, 8),
@@ -488,7 +537,6 @@ DECO = {
     'simbolismo-modernismo': deco_modernismo,
 }
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mapa_ramas  # noqa: E402  (paisajes de las pantallas de rama)
 
 _deco_ramas, _esparcido_ramas = mapa_ramas.registrar(sys.modules[__name__])
@@ -677,9 +725,14 @@ def build(era, light, dark):
     LIBRE['cartel'] = era.get('signSide')
     LIBRE['ramas'] = set(era.get('branchAt', []))
     LIBRE['rotulos'] = era.get('labels', [])
-    OCUPADO['piezas'], OCUPADO['rios'] = [], []
+    LIBRE['road'] = lambda y: A.x_en(era, y)
+    OCUPADO['piezas'], OCUPADO['rios'], OCUPADO['agua'] = [], [], []
+    PUENTES[:] = era.get('bridges', [])
     deco = era.get('deco', era['id'])
-    pieces = [tinte(era['h'], CLASS['tint'])] + DECO[deco](pts, era['h'])
+    # Las viñetas de cada parada, entre ella y la siguiente (el hueco sin rótulos), no a su altura: así no las tapa su nombre.
+    vinetas = [(x, y - VINETA_SUBE) for x, y in pts]
+    pieces = [tinte(era['h'], CLASS['tint'])] + DECO[deco](vinetas, era['h']) + A.seto(M, W, era.get('gate'))
+    ERRORES.extend(A.comprobar(era, OCUPADO['agua']))
     pieces += esparcir(era)
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))
@@ -711,6 +764,8 @@ def main():
         if kb > tope:
             raise SystemExit(f'{path}: {kb:.1f} KB, por encima de {tope:.0f} KB')
         print(f'{era["id"]:24s} {era["h"]:4d} px  {kb:5.1f} KB')
+    if ERRORES:
+        raise SystemExit('agua sin puente:\n  ' + '\n  '.join(ERRORES))
 
 
 if __name__ == '__main__':
