@@ -2,6 +2,7 @@
 // para que Google la lea). Reutiliza las clases de la app (main.css): barra, pregunta, opciones,
 // hoja de feedback, resultado.
 
+import { veilsHtml } from '../ui/signature-veil.js';
 import { titleSlotHtml } from '../ui/title-slot.js';
 import { esc } from '../ui/dom.js';
 import { artFrame } from '../ui/art.js';
@@ -43,7 +44,7 @@ export function questionHtml(view, number, { cheer = '' } = {}) {
   const opts = view.options.map((o, i) => `<button class="option" data-action="answer" data-id="${esc(o.id)}"><span class="key" aria-hidden="true">${i + 1}</span><span class="opt-text">${esc(o.label)}${o.detail ? `<span class="opt-sub">${esc(o.detail)}</span>` : ''}</span></button>`).join('');
   // El cuadro de la pregunta se abre en grande al tocarlo, sin responder ni revelar nada.
   const titleLine = titleSlotHtml();
-  return `<div class="q-head">${head}</div><div class="q-art">${artFrame(view.artwork, { alt: ALT_WORK, eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${ALT_WORK}: ver en grande` } })}${titleLine}</div>
+  return `<div class="q-head">${head}</div><div class="q-art">${artFrame(view.artwork, { alt: ALT_WORK, eager: true, cls: 'art-hero', veils: veilsHtml(view.artwork), label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${ALT_WORK}: ver en grande` } })}${titleLine}</div>
     <div class="options options-list" role="group" aria-label="Respuestas">${opts}</div>`;
 }
 

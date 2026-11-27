@@ -46,3 +46,24 @@ test('revealTitle rellena el hueco y lo hace accesible', () => {
   assert.ok(classes.has('is-on'));
   delete globalThis.requestAnimationFrame;
 });
+
+test('velo de firmas: cajas válidas, HTML con la miniatura y sin velo si no hay firma', async () => {
+  const { signsOf, veilsHtml, touchesSign } = await import('../app/js/ui/signature-veil.js');
+  const work = { id: 'w220859', signs: [[0.4, 0.18, 0.58, 0.245], [0.9, 0.1, 0.2, 0.3], 'x'] };
+  assert.deepEqual(signsOf(work), [[0.4, 0.18, 0.58, 0.245]], 'ignora las cajas mal formadas');
+  assert.deepEqual(signsOf({ id: 'w1' }), []);
+  assert.deepEqual(signsOf(null), []);
+  assert.equal(veilsHtml({ id: 'w1' }), '');
+  const html = veilsHtml(work);
+  assert.match(html, /class="cdd-veil"/);
+  assert.match(html, /img\/t\/w220859\.jpg/);
+  assert.ok(touchesSign(work, [0.5, 0.2, 0.7, 0.3]));
+  assert.ok(!touchesSign(work, [0.0, 0.5, 0.2, 0.9]));
+});
+
+test('el HTML de una pregunta de autor lleva el velo de la firma del cuadro', () => {
+  const w = { ...index.artwork('w1'), signs: [[0, 0.9, 0.2, 1]] };
+  const view = { kind: 'who', prompt: 'P', artwork: w, options: [{ id: 'a', label: 'A', detail: '' }] };
+  assert.match(questionHtml(view, 1), /cdd-veil/);
+  assert.doesNotMatch(questionHtml({ ...view, artwork: index.artwork('w1') }, 1), /cdd-veil/);
+});

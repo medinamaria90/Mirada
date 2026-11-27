@@ -12,6 +12,7 @@ import { createRound, currentItem, answerRound, roundDone, roundProgress } from 
 import { xpForAnswer } from '../../engine/progress.js';
 import { feedbackFor } from '../../engine/feedback.js';
 import { titleSlotHtml, revealTitle } from '../title-slot.js';
+import { veilsHtml, unveil } from '../signature-veil.js';
 import { beforeQuestionHtml, beforeRibbonHtml } from '../before-question.js';
 import { loadRibbonCss } from '../chrono-ribbon.js';
 import { guestCardHtml, loadGuestCss } from '../guest-card.js';
@@ -203,7 +204,7 @@ export function runLesson(ctx, el, config) {
     // En escritorio, el cuadro a la izquierda y la pregunta con las opciones a la derecha.
     // El título (hueco reservado) se escribe tras responder: antes delataría autor, época o movimiento.
     const titleLine = titleSlotHtml();
-    return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}${titleLine}</div>
+    return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', veils: veilsHtml(art), label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}${titleLine}</div>
       <div class="options options-list" role="group" aria-label="Respuestas">${opts}</div>`;
   }
 
@@ -288,6 +289,7 @@ export function runLesson(ctx, el, config) {
     });
     if (!correct) button.classList.add('is-wrong');
     else button.classList.add('is-picked');
+    if (q.type !== 'which') unveil(stage);
     if (q.type !== 'which') revealTitle(stage, index.artwork(q.artworkId)?.title);
 
     // Combo: cada 3 seguidas suena la pequeña fanfarria ascendente en lugar del acierto.

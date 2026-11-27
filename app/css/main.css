@@ -1285,3 +1285,7 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 .ri-av { display: block; overflow: hidden; width: var(--ri-face); height: var(--ri-face); border-radius: 999px; background: var(--surface-2); box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--brand); }
 .ri-av img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .ri-icon { display: grid; place-items: center; width: var(--ri-face); height: var(--ri-face); border-radius: 999px; background: var(--brand-soft); color: var(--brand-text); }
+
+/* Velo sobre firmas legibles (ui/signature-veil.js y Cuadro del día). */
+.cdd-veil { position: absolute; overflow: hidden; pointer-events: none; border-radius: var(--cuadro-veil-radius); background: var(--surface-2); transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
+.cdd-veil-img { position: absolute; max-width: none; filter: blur(var(--cuadro-veil-blur)); transform: scale(var(--cuadro-veil-grow)); }
