@@ -51,7 +51,9 @@ const SPUR_EASE = 0.38;              // cuánto se alarga la curva al llegar al 
 export const START_H = 150;
 export const START_PLAZA = { x: MAP_W / 2, y: 118 };
 export const START_OUT_X = 270;      // por donde sale el sendero hacia el primer tramo
-export const START_ARCH = { x: 209, y: 66 };   // pie del dintel de la primera época: sobre el arco de la puerta de la muralla
+const START_GATE_TOP = 56;           // hasta aquí sube recto (por el arco y el ático); luego se curva hacia el primer tramo
+export const START_GATE_X = 225;     // paso de la puerta de la muralla: el sendero la cruza recto, por el centro del arco
+export const START_ARCH = { x: START_GATE_X, y: 66 };
 export const MUSEUM_H = 280;
 export const MUSEUM_DOOR = { x: MAP_W / 2, y: 112 };
 
@@ -251,7 +253,7 @@ function museumLayout(xIn) {
 // Salida: la puerta de la muralla es también la entrada de la primera época; su rótulo va sobre ella.
 function startLayout() {
   // El sendero llega desde abajo (sigue bajo la barra de abajo, en la franja path-foot): sin arranque en punta.
-  const segs = spline([{ x: START_PLAZA.x, y: START_H, v: true, line: true }, { ...START_PLAZA, v: true }, { x: START_OUT_X, y: 0, v: true }]);
+  const segs = spline([{ x: START_GATE_X, y: START_H, v: true, line: true }, { x: START_GATE_X, y: START_GATE_TOP, v: true }, { x: START_OUT_X, y: 0, v: true }]);
   return { h: START_H, segs, arch: archAt(START_ARCH.x, START_ARCH.y), trail: segmentsD(segs) };
 }
 

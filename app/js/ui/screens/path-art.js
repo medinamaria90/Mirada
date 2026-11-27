@@ -3,7 +3,7 @@
 // variables --map-* de brand.css); los árboles llevan data-sway (se mecen con el viento) y las ventanas que se
 // encienden de noche, data-lamp (map-land.js las copia a la capa de luces).
 
-import { START_PLAZA, f } from './path-layout.js';
+import { START_PLAZA, START_GATE_X, f } from './path-layout.js';
 
 const KX = 0.5;   // falsa 3D: la profundidad va hacia arriba y a la derecha
 const KY = 0.3;
@@ -21,9 +21,10 @@ const wall = (x0, x1, y, h) => {
 };
 const roof = (x, y, w, h) => `<rect class="land-front" x="${f(x)}" y="${f(y - h)}" width="${f(w)}" height="${f(h)}"/><path class="land-tile" d="M${f(x - 1)} ${f(y - h)}H${f(x + w + 1)}L${f(x + w - 2 + 6 * KX)} ${f(y - h - 9)}H${f(x + 2)}Z"/><rect class="land-window" data-lamp x="${f(x + w / 2 - 2)}" y="${f(y - h + 3)}" width="4" height="5" rx="1"/>`;
 
-// Caseta de «Información» a la derecha de la puerta, apartada del botón «Tú» de la esquina: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
+// Caseta de «Información» a la izquierda de la puerta, delante de la muralla (su «i» dorada, entera a la vista) y lejos
+// del botón «Tú» de la esquina: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
 // «Cómo se juega» (el botón transparente que la cubre lo pone path-signs.js con KIOSK).
-export const KIOSK = { x: 246, y: 136, w: 32, h: 22 };
+export const KIOSK = { x: 74, y: 136, w: 32, h: 22 };
 const kiosk = ({ x, y, w, h }) => {
   const d = 10 * KX;
   const top = y - h;
@@ -50,7 +51,7 @@ const START_BACK = `${cypress(28, 80, 30)}${cypress(112, 82, 24)}${roof(262, 80,
       ${flowers(232, PY + 28)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${flowers(KIOSK.x + 50, KIOSK.y + 4)}`;
 // La primera época entra por la misma puerta de ciudad que las demás, abierta en la muralla (delante del sendero, con la
 // caseta de «Información»); el sendero llega desde abajo y cruza su arco.
-const START_GATE = { x: (GATE.left + GATE.tower + GATE.right) / 2, y: GATE.y };
+const START_GATE = { x: START_GATE_X, y: GATE.y };
 export const startPlace = () => eraPlace(START_GATE.x, START_GATE.y).box;
 export const startArt = () => ({ back: START_BACK, front: `${kiosk(KIOSK)}${eraGate(START_GATE.x, START_GATE.y)}` });
 
