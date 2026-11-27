@@ -13,6 +13,12 @@
     {
      "text": "Su gran amigo fue el escritor Chéjov. Los dos buscaban lo mismo: la emoción callada del paisaje ruso, un río, un monasterio, la tarde.",
      "artwork": "w4458429",
+     "region": [
+      0.6,
+      0.15,
+      0.9,
+      0.95
+     ],
      "source": "https://es.wikipedia.org/wiki/Isaak_Levit%C3%A1n"
     },
     {

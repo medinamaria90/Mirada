@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en las grajillas posadas en las ramas desnudas de los abedules. Tomó los apuntes en el pueblo de Molvítino y acabó el cuadro en Moscú.",
      "artwork": "w1993685",
+     "region": [
+      0.25,
+      0.0,
+      0.75,
+      0.55
+     ],
      "source": "https://en.wikipedia.org/wiki/The_Rooks_Have_Returned"
     }
    ]

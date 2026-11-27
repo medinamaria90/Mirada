@@ -1,11 +1,12 @@
-// Botón flotante «Volver a tu parada» (docs/eval/ux-posicion-mapa.md): solo aparece cuando la parada actual sale de la
-// vista, con su cuadro en pequeño y una flecha hacia donde queda (arriba o abajo, calculada al moverse, no guardada). Al
-// tocarlo, el camino vuelve a ella y el foco pasa a su nodo. Devuelve cómo quitarlo.
+// Botón flotante «Tu parada» (píldora: su cuadro en pequeño, el texto y una flecha hacia donde queda, arriba o abajo,
+// calculada al moverse): solo aparece cuando la parada actual sale de la vista. Al tocarlo, el camino vuelve a ella y el
+// foco pasa a su nodo; es, con abrir la app, lo único que centra el mapa en la parada actual. Devuelve cómo quitarlo.
 
 import { $, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
 
 const VIEW_MARGIN = '-96px 0px -96px 0px';   // la cabecera y la barra de abajo tapan esa franja
+export const RETURN_TEXT = 'Tu parada';
 
 export function watchReturn(el) {
   const dot = $('.stage-spot.is-current .stage-dot', el);
@@ -15,8 +16,8 @@ export function watchReturn(el) {
   button.type = 'button';
   button.className = 'map-return';
   button.hidden = true;
-  button.setAttribute('aria-label', 'Volver a tu parada');
-  button.innerHTML = `<span class="map-return-art" aria-hidden="true"></span><span class="map-return-arrow" aria-hidden="true">${icons.next(18)}</span>`;
+  button.setAttribute('aria-label', 'Ir a tu parada');
+  button.innerHTML = `<span class="map-return-art" aria-hidden="true"></span><span class="map-return-text">${RETURN_TEXT}</span><span class="map-return-arrow" aria-hidden="true">${icons.next(18)}</span>`;
   if (thumb) $('.map-return-art', button).append(thumb);
   el.append(button);
   button.addEventListener('click', () => {

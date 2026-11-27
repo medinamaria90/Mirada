@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en Juana, de pie junto al ataúd de Felipe el Hermoso en pleno campo: el viento tuerce el humo de la hoguera y las damas tiritan. Ella no se mueve.",
      "artwork": "w3038406",
+     "region": [
+      0.35,
+      0.25,
+      0.7,
+      0.95
+     ],
      "source": "https://es.wikipedia.org/wiki/Do%C3%B1a_Juana_la_Loca_(Pradilla)"
     }
    ]

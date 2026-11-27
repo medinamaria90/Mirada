@@ -1,0 +1,15 @@
+/* Cuenta en Ajustes (ui/account-section.js): acceso con Google, estado del guardado y borrar la cuenta. */
+.acc { display: grid; gap: .6rem; padding-top: 1rem; margin-top: .5rem; border-top: 1px solid var(--line); }
+.acc[hidden] { display: none; }
+.acc-title { margin: 0; font: 600 .95rem/1.2 var(--font); color: var(--ink); }
+.acc-google { gap: .7rem; }
+.acc-google[aria-busy="true"] { opacity: .7; }
+.acc-g { flex: none; width: 20px; height: 20px; }
+.acc-g .g-b { fill: var(--google-blue); }
+.acc-g .g-g { fill: var(--google-green); }
+.acc-g .g-y { fill: var(--google-yellow); }
+.acc-g .g-r { fill: var(--google-red); }
+.acc-who { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .3rem 1rem; margin: 0; min-height: 48px; align-content: center; }
+.acc-email { min-width: 0; overflow-wrap: anywhere; font-weight: 600; }
+.acc-status { font: 500 .85rem/1.2 var(--font); color: var(--ink-2); }
+.acc .settings-credits { margin-top: 0; }

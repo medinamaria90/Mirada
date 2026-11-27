@@ -8,6 +8,12 @@
     {
      "text": "En 1633 Judith Leyster entró en el gremio de pintores de Haarlem, algo rarísimo para una mujer. Tuvo taller y aprendices, y llegó a denunciar a Frans Hals por quitarle uno.",
      "artwork": "w18888002",
+     "region": [
+      0.05,
+      0.1,
+      0.5,
+      0.6
+     ],
      "source": "https://es.wikipedia.org/wiki/Judith_Leyster"
     },
     {

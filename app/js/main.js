@@ -22,11 +22,15 @@ const root = document.getElementById('app');
 const MOVE_HASH = '#mudanza=';
 const OLD_HOSTNAME = 'sfumato-arte.onrender.com';
 const MOVE_TOAST = 'Tu progreso ya está aquí';
+// Vuelta del acceso con Google (cloud/cloud.js): Supabase añade «?code=…» o, si no se completa, «?error=…».
+const SIGN_IN_RETURN = /[?&](code|error)=/;
+const SIGN_IN_FAILED = 'No se ha podido entrar';
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
   'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/level-ring.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'state/game-clock.js', 'ui/deep-badges.js',
-  'ui/icons.js', 'ui/map-actor.js', 'ui/map-critters.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-scene.js', 'ui/map-sky.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-return.js',
+  'ui/icons.js', 'ui/map-actor.js', 'ui/map-critters.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-scene.js', 'ui/map-sky.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-memory.js',
+  'ui/screens/map-return.js',
   'ui/screens/map-scroll.js', 'ui/screens/path-actions.js', 'ui/screens/path-art.js', 'ui/screens/path-curve.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js', 'ui/screens/path-nodes.js',
   'ui/screens/path-signs.js', 'ui/shell.js',
 ];
@@ -105,14 +109,17 @@ function installPrimaryKeys() {
 
 // Cualquier cuadro con data-zoom se abre en el visor a pantalla completa (módulo diferido: no
 // cuenta en el arranque).
-function installZoom(getIndex) {
+// «Ver más» del visor (Colección, ficha del pintor) abre la página de la obra.
+function installZoom(getIndex, getCtx) {
+  const more = (id, opener) => import('./ui/artwork-sheet.js')
+    .then((m) => m.openArtworkSheet(getCtx(), id, { opener })).catch((err) => console.error(err));
   document.addEventListener('click', (ev) => {
     const el = ev.target.closest('[data-zoom]');
     const index = getIndex();
     if (!el || !index) return;
     ev.preventDefault();
     import('./ui/viewer.js')
-      .then((m) => m.zoomFromElement(index, el))
+      .then((m) => m.zoomFromElement(index, el, { more }))
       .catch((err) => console.error(err));
   });
 }
@@ -168,6 +175,12 @@ async function boot() {
   if (location.hostname === OLD_HOSTNAME) {
     import('./ui/move-redirect.js').then((m) => m.moveToNewHome({ storage, stateKey: STORAGE_KEY })).catch(() => {});
   }
+  // Vuelta de Google: se junta el progreso de la nube con el de aquí antes de crear el almacén; se vuelve al perfil.
+  let signedIn = '';
+  if (SIGN_IN_RETURN.test(location.search)) {
+    signedIn = await import('./cloud/cloud.js').then((m) => m.finishSignIn(storage, STORAGE_KEY)).catch(() => 'error');
+    if (signedIn) history.replaceState(null, '', `${location.pathname}#perfil`);
+  }
   const store = createStore({ storage });
   document.documentElement.classList.toggle('reduce-motion', Boolean(store.get().settings.reducedMotion));
   applyTheme(store.get().settings.theme);
@@ -193,7 +206,7 @@ async function boot() {
   // Pintores que trae una actualización: paradas extra o con «Nuevo» (engine/roster.js).
   const withRoster = (s) => { const progress = reconcileRoster(s.progress, index); return progress === s.progress ? s : { ...s, progress }; };
   store.update(withRoster);
-  installZoom(() => index);
+  installZoom(() => index, () => ctx);
   installArtistLinks(() => ctx);
   // Textos de las pistas por obra (`look`) y rasgos: se piden tras pintar; sin ellos todo funciona.
   let textPromise = null;
@@ -346,7 +359,7 @@ async function boot() {
       case 'gallery': return lazy(token, screen, loadGallery, (m) => m.renderGallery(ctx, screen, route.movementId), true);
       case 'challenge': return flow((m) => m.renderChallenge(ctx, screen, route.challenge));
       case 'free': return flow((m) => m.renderFree(ctx, screen));
-      case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen, { tab: route.tab }), true);
+      case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen), true);
       case 'profile': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen));
       case 'medals': return lazy(token, screen, loadProfile, (m) => m.renderMedals(ctx, screen));
       case 'credits': return lazy(token, screen, loadCredits, (m) => m.renderCredits(ctx, screen), true);
@@ -362,19 +375,35 @@ async function boot() {
   window.addEventListener('hashchange', render);
   installPrimaryKeys();
   replayToast();
-  if (moved === 'traido') toast(MOVE_TOAST, { carry: true });
+  if (moved === 'traido' || signedIn === 'traido') toast(MOVE_TOAST, { carry: true });
+  else if (signedIn === 'error') toast(SIGN_IN_FAILED, { carry: true });
   render();
   // Después de pintar: textos del catálogo, audio y las pantallas que vendrán.
   whenIdle(() => {
     ensureText();
     loadFlows().catch(() => {});
     import('./ui/dj-mode.js').then((m) => m.startDjIfOn()).catch(() => {}); // modo secreto «afinar música»
+    startCloudWhenReady(store, storage, () => {
+      // Progreso de otro dispositivo: se aplica su tema y se repinta (salvo en mitad de una ronda).
+      applyTheme(store.get().settings.theme);
+      document.documentElement.classList.toggle('reduce-motion', Boolean(store.get().settings.reducedMotion));
+      if (!FLOW_ROUTES.has(parseRoute(location.hash, { today: ctx.dailyDay() }).name)) render();
+      toast(MOVE_TOAST);
+    });
   });
   loadAudioWhenIdle();
   bindBackgroundPause();
   registerServiceWorker();
   // Contador de visitas sin cookies (vacío por defecto: no pide nada). En reposo, como el audio.
   setTimeout(() => import('./stats.js').then((m) => m.startStats({ store })).catch(() => {}), 3000);
+}
+
+// Cuenta y progreso en la nube (cloud/): solo si hay proyecto configurado; sin sesión no pide nada.
+function startCloudWhenReady(store, storage, refresh) {
+  import('./cloud/config.js')
+    .then((c) => (c.cloudReady() ? import('./cloud/cloud.js') : null))
+    .then((m) => m?.startCloud({ store, storage, stateKey: STORAGE_KEY, refresh }))
+    .catch(() => {});
 }
 
 // Instalable como app (sin barra de direcciones) y abre sin red lo ya visto. Solo en https o en local.

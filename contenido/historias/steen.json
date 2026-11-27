@@ -8,6 +8,12 @@
     {
      "text": "Jan Steen pintaba y llevaba una taberna. Quizá por eso sus cuadros están llenos de gente que bebe, canta y ríe, y él mismo sale a menudo haciendo de borracho.",
      "artwork": "w17342250",
+     "region": [
+      0.15,
+      0.15,
+      0.5,
+      0.75
+     ],
      "source": "https://es.wikipedia.org/wiki/Jan_Steen"
     },
     {

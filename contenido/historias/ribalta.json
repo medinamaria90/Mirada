@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en el hábito de san Bernardo: los pliegues del paño basto, marcados con luz y sombra, son de lo más admirado de su pintura.",
      "artwork": "w27700100",
+     "region": [
+      0.05,
+      0.3,
+      0.6,
+      0.95
+     ],
      "source": "https://ojs.uv.es/index.php/arslonga/article/download/16512/18635"
     }
    ]

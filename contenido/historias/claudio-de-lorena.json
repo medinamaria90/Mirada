@@ -13,6 +13,12 @@
     {
      "text": "Inventó el paisaje ideal: puertos y campos bañados por la luz dorada del sol bajo. Lo copiaban tanto que dibujó sus cuadros en un libro para probar cuáles eran suyos.",
      "artwork": "w7731855",
+     "region": [
+      0.3,
+      0.15,
+      0.65,
+      0.85
+     ],
      "source": "https://en.wikipedia.org/wiki/The_Embarkation_of_the_Queen_of_Sheba"
     },
     {

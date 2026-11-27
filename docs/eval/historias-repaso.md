@@ -19,11 +19,11 @@ idea por tarjeta. «Antes → después» solo donde se ha tocado. Rafael y El Bo
 | Van Eyck | 9 | — |
 | Van der Weyden | 7 → 8 | Primera tarjeta con gancho: el nombre traducido y por qué importa (el dolor, el más imitado). |
 | El Bosco | 9 | (otro agente) |
-| Durero | 6 → 9 | Nivel 1 nuevo: selfi y autorretrato como un Cristo, primer gran viajero del norte a Italia, el grabado (Melancolía, rinoceronte), precisión de orfebre. Nivel 2 «Aprendizaje» nuevo, con la liebre y la mata de hierba. |
+| Durero | 6 → 9 | Nivel 1 nuevo: selfi y autorretrato como un Cristo, primer gran viajero del norte a Italia, los Cuatro apóstoles que regaló a Núremberg (y sus grabados por toda Europa, con el rinoceronte), precisión de orfebre. Nivel 2 «Aprendizaje» nuevo, con la liebre y la mata de hierba. |
 | Holbein | 7 → 9 | La tarjeta de Ana de Cléves, partida: el nivel 1 cuenta que conocemos la corte de Enrique VIII por él; la anécdota pasa a un nivel 2 nuevo («Londres») con el retrato de Ana (en el catálogo es de nivel 2). |
 | Bruegel | 9 | — |
 | Parmigianino | 8 | — |
-| Bronzino | 7 | Correcta pero sin chispa; pendiente de una anécdota segura. |
+| Bronzino | 7 → 8 | Gancho (también escribía poemas burlones) y por qué importa: el retrato frío y perfecto que copió media Europa. |
 | El Greco | 9 | — |
 | Caravaggio | 10 | Referencia. |
 | Artemisia | 9 | — |
@@ -46,8 +46,8 @@ idea por tarjeta. «Antes → después» solo donde se ha tocado. Rafael y El Bo
 | Turner | 9 | — |
 | Géricault | 8 | — |
 | Delacroix | 8 | — |
-| Federico de Madrazo | 7 | Mucho dato de familia; pendiente. |
-| Millet | 7,5 | La segunda tarjeta junta tres ideas; pendiente. |
+| Federico de Madrazo | 7 → 7,5 | La saga familiar contada con más gracia. |
+| Millet | 7,5 → 8 | Una idea por tarjeta (Van Gogh pasa a la primera). |
 | Courbet | 8 | — |
 | Rosales | 8 | — |
 | Fortuny | 8 | — |
@@ -55,10 +55,10 @@ idea por tarjeta. «Antes → después» solo donde se ha tocado. Rafael y El Bo
 | Manet | 8 | — |
 | Monet | 8 | — |
 | Degas | 8 | — |
-| Renoir | 7,5 | — |
+| Renoir | 7,5 → 8 | Por qué importa: los primeros pasos del impresionismo, pintando junto a Monet en el Sena. |
 | Pissarro | 8 | — |
-| Morisot | 7,5 | — |
-| Sisley | 7 | Correcta, poco gancho; pendiente. |
+| Morisot | 7,5 → 8 | Gancho: Manet la retrató y ella se casó con su hermano. |
+| Sisley | 7 → 8 | Gancho: la ruina de su padre en 1870 le obligó a vivir de pintar. |
 | Sorolla | 8 | — |
 | Cézanne | 8 → 8,5 | Salto atrás: va después de Sorolla y nació 24 años antes. |
 | Seurat | 8 | — |
@@ -72,7 +72,7 @@ idea por tarjeta. «Antes → después» solo donde se ha tocado. Rafael y El Bo
 | Kandinsky | 8 | — |
 | Juan Gris | 8 | — |
 
-Media del camino principal (64): **8,3 → 8,5**.
+Media del camino principal (64): **8,3 → 8,6**.
 
 ## Invitados con la misma obra repetida
 
@@ -83,7 +83,14 @@ simuladas del marco de la historia (412 × 915): sin caras cortadas.
 Hechos: Tintoretto, Giorgione, Mantegna, Correggio, Perugino, Fra Angelico, Filippo Lippi, Uccello, Memling, Cranach, Poussin,
 Canaletto, Tiepolo, La Tour, Constable, Corot, Gainsborough, Reynolds, Hogarth, Schiele, Modigliani, Sargent, Cassatt, Signac,
 Hokusai (cuatro vistas de la Gran ola), Hiroshige, Arcimboldo, Sofonisba, Sánchez Cotán, Chardin (y su primera tarjeta ya no
-repite «cosas humildes»), Boucher, Vigée Le Brun, Waterhouse, Millais, Rossetti, Caillebotte.
+repite «cosas humildes»), Boucher, Vigée Le Brun, Waterhouse, Millais, Rossetti, Caillebotte, Zuloaga, Alonso Cano, Valdés Leal, Morales, Maíno, Carreño,
+Claudio Coello, Sánchez Coello, Pereda, Bellini, Cimabue (cuatro vistas de su Maestà) y Pontormo (52 en total).
 
-Fra Angelico: la Adoración de los Reyes Magos (nueva, «learn») sustituye a la Coronación (ahora «new»); la Anunciación sale
-entera y en detalle (Adán y Eva).
+Segunda pasada: los 56 invitados que quedaban (Aivazovski, Bazille, Bermejo, Beruete, Bonheur, Borovikovski, Briulov, Casas, Claudio
+de Lorena, Delaroche, Duccio, Fedótov, Gisbert, Greuze, Hammershøi, Homer, Ivánov, Juan de Juanes, Kramskói, Krøyer, Kuindzhi,
+Kuniyoshi, Levitán, Leyster, Liotard, Makovski, Malévich, Martín Rico, Mir, Moreau, Nésterov, Nonell, Paret, Perov, Petrov-Vodkin,
+Pinazo, Polénov, Pradilla, Raimundo de Madrazo, Regoyos, Ribalta, Rusiñol, Savrásov, Serov, Sharaku, Shishkin, Steen, Súrikov,
+Tropinin, Utamaro, Vasnetsov, Venetsiánov, Vereshchaguin, Vicente López, Vrúbel y Zorn).
+
+Pendiente: Simone Martini, cuando se regenere el catálogo (tendrá una obra «learn» libre). Los detalles se verán más nítidos
+cuando el proceso saque las imágenes HD (aviso «detalle borroso» de `sync_historias.py`, no bloquea).

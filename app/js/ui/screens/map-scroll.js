@@ -1,42 +1,47 @@
-// Dónde queda la vista del mapa al abrir la portada (docs/eval/ux-posicion-mapa.md):
-//  · Al abrir: la parada actual hacia el 60 % de la altura, sin animación.
-//  · Al volver de una parada (o de una rama): en esa misma parada; si la siguiente abierta queda fuera de la pantalla,
-//    el camino sube suave hasta ella (se cancela si se toca o se desplaza; sin animación con movimiento reducido).
+// Dónde queda la vista del mapa al pintarlo (portada o pantalla de rama):
+//  · Al abrir la app (o entrar en una rama desde el camino): la parada actual hacia el 60 % de la altura, sin animación.
+//  · Al volver a él (de un cartel, una ficha, una historia, una ronda…): EXACTAMENTE donde estaba (map-memory.js), con
+//    el foco en la parada jugada si se viene de ella. Nunca se recentra a la fuerza en la parada actual: para eso está
+//    el botón «Tu parada» (map-return.js).
+//  · Si se pide ir a una parada concreta (un pintor «En el camino» desde una rama), centrada en ella.
 // Mientras se pintan las épocas lejanas y los paisajes la altura puede cambiar: la vista se recoloca hasta que se
 // asienta o hasta que se toca la pantalla.
 
-import { $, prefersReducedMotion } from '../dom.js';
+import { $ } from '../dom.js';
+import { restoreTop } from './map-memory.js';
 
 const CURRENT_AT = 0.6;     // la parada actual, a esta fracción de la altura de la ventana
 const SETTLE_MS = 1500;     // tiempo en que se recoloca si cambia la altura del mapa
-const GLIDE_DELAY_MS = 700; // la parada jugada se ve un momento antes de subir a la siguiente
-const MARGIN = 0.12;        // «se ve» si queda dentro de la ventana con este margen arriba y abajo
 const STOP_EVENTS = ['pointerdown', 'wheel', 'touchstart', 'keydown', 'hashchange'];
 
 const yFor = (node, at) => {
   const r = node.getBoundingClientRect();
   return Math.max(0, window.scrollY + r.top + r.height / 2 - window.innerHeight * at);
 };
-const inView = (node) => {
-  const r = node.getBoundingClientRect();
-  const h = window.innerHeight;
-  return r.top >= h * MARGIN && r.bottom <= h * (1 - MARGIN);
-};
 
-// el: la portada; branchId / step: la rama o la parada («artist:<id>», «sala:<id>») de la que se vuelve.
+// el: la pantalla; branchId / step: la rama o la parada («artist:<id>», «sala:<id>») de la que se vuelve (recibe el
+// foco); jump: centrar la vista en esa parada; restore: el ancla guardada de este mapa (map-memory.js).
 // Devuelve cómo dejar de vigilarla.
-export function placeMap(el, { branchId = '', step = '' } = {}) {
+export function placeMap(el, { branchId = '', step = '', jump = false, restore = null } = {}) {
   const map = $('.path-map', el);
   const current = () => $('.stage-spot.is-current .stage', el) || $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
   const from = () => (step && $(`.stage-spot[data-step="${step}"] .stage`, el))
     || (branchId && $(`.branch[data-id="${branchId}"]`, el)) || null;
-  let anchor = () => { const f = from(); return f ? [f, 0.5] : current() ? [current(), CURRENT_AT] : null; };
+  const target = () => {
+    const f = from();
+    if (jump && f) return yFor(f, 0.5);
+    const back = restore && map ? restoreTop(map, restore) : null;
+    if (back !== null) return back;
+    if (f) return yFor(f, 0.5);
+    const c = current();
+    return c ? yFor(c, CURRENT_AT) : null;
+  };
   let user = false;
   let timers = [];
   let ro = null;
   const place = () => {
-    const a = anchor();
-    if (a && !user && a[0].isConnected) window.scrollTo({ top: yFor(a[0], a[1]), behavior: 'instant' });
+    const top = user ? null : target();
+    if (top !== null) window.scrollTo({ top, behavior: 'instant' });
   };
   const stop = () => {
     timers.forEach(clearTimeout);
@@ -53,18 +58,7 @@ export function placeMap(el, { branchId = '', step = '' } = {}) {
       ro.observe(map);
     }
     timers.push(setTimeout(() => ro?.disconnect(), SETTLE_MS));
-    // Desde una parada ya jugada: el foco, en ella; si la actual es otra y no se ve, se sube hasta ella.
-    const f = from();
-    if (step && f) f.focus({ preventScroll: true });
-    const next = current();
-    if (step && f && next && next !== f) {
-      timers.push(setTimeout(() => {
-        if (user || !next.isConnected || inView(next)) return;
-        ro?.disconnect();
-        anchor = () => [next, CURRENT_AT];
-        window.scrollTo({ top: yFor(next, CURRENT_AT), behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
-      }, GLIDE_DELAY_MS));
-    }
+    from()?.focus({ preventScroll: true });
   });
   return stop;
 }

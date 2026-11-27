@@ -11,8 +11,8 @@ import { spline, segmentsD, roadX, f } from './path-curve.js';
 export { segmentsD, roadX, f };
 export const MAP_W = 390;
 export const STEP = 172;             // distancia vertical entre paradas (unas cuatro por pantalla)
-const ENTRY = { pad: 232, run: 64, gate: true };   // entrada de la época: recta por la puerta, con el cartel al lado
-// El primer tramo arranca justo tras la puerta de salida: sin puerta propia y con una recta más corta.
+const ENTRY = { pad: 232, run: 64, gate: true };   // entrada de la época (y de una rama): recta por la puerta y su arco
+// El primer tramo arranca justo tras la puerta de salida: sin puerta propia (su arco va sobre la de la muralla).
 const FIRST_ENTRY = { pad: 172, run: 64, gate: false };
 const PAD_TOP = 28;                  // salida del tramo
 export const GATE_Y = 44;            // la puerta de la época, sobre la recta de entrada
@@ -22,10 +22,12 @@ const FIRST_PHASE = 2;               // el primer tramo empieza del lado por el 
 export const SIDE_X = { left: 42, right: MAP_W - 42 }; // margen estrecho: sala de la época
 export const ROAD_HALF = 13;         // medio ancho del sendero (borde incluido)
 const ROAD_GAP = 12;                 // aire entre el sendero y un cartel
-const GATE_GAP = 30;                 // el cartel de la época, fuera de los pilares de la puerta
 const EDGE = 10;                     // aire con el borde del mapa
-const SIGN_BOX = { top: 134, bottom: 14 };  // cartel de época (o de rama, en su pantalla): entre h-134 y h-14
-const TRAMO_BOX = { top: 52, bottom: 112 }; // cartel de tramo: bajo su primera parada, en el lado ancho
+// Arco de la época: el rótulo con su nombre se apoya en los pilares de la puerta, centrado en el sendero. lift: de la
+// puerta al pie del rótulo; h: su alto aproximado (dos líneas de nombre y los siglos); gap: aire mínimo con la tablilla
+// de un tramo que empiece justo después.
+export const ARCH = { lift: 52, h: 82, gap: 24 };
+const TRAMO_BOX = { top: 58, bottom: 106 }; // tablilla de tramo: bajo su primera parada, en el lado de los nombres
 // Puentes: el sendero va recto BRIDGE_HALF por encima y por debajo del centro (el tablero no se curva) y solo se
 // tiende donde dos paradas seguidas quedan del mismo lado (el camino llega derecho, sin giros forzados).
 export const BRIDGE_HALF = 35;
@@ -42,7 +44,7 @@ const SPUR_DROP = 6;                 // el desvío sale del sendero algo por deb
 export const START_H = 150;
 export const START_PLAZA = { x: MAP_W / 2, y: 118 };
 export const START_OUT_X = 270;      // por donde sale el sendero hacia el primer tramo
-const START_ARCH_LEFT = 140;         // la placa de salida no tapa la puerta de la muralla
+export const START_ARCH = { x: 209, y: 52 };   // pie del rótulo de la primera época: sobre la puerta de la muralla
 export const MUSEUM_H = 280;
 export const MUSEUM_DOOR = { x: MAP_W / 2, y: 112 };
 
@@ -96,16 +98,24 @@ export function eraLayout(nodeCount, phase = 0, xIn = null, entry = ENTRY, river
   way.push({ x: points[points.length - 1].x, y: 0, v: true });
   const segs = spline(way);
   const gate = entry.gate ? { x: start.x, y: h - GATE_Y } : null;
-  // Cartel de la época: al lado de la recta de entrada, en el lado contrario al de la primera parada.
-  const sign = { y: h - SIGN_BOX.bottom, top: h - SIGN_BOX.top, ...besideRoad(segs, h - SIGN_BOX.top, h - SIGN_BOX.bottom, other(sideOf(start.x)), gate ? GATE_GAP : ROAD_GAP) };
-  return { h, points, start, segs, nodeSeg: nodeAt.map((w) => w - 1), bridges, gate, sign, trail: segmentsD(segs) };
+  // Rótulo del arco: pie centrado en el sendero, sobre los pilares de la puerta.
+  const arch = gate ? archAt(gate.x, gate.y - ARCH.lift) : null;
+  return { h, points, start, segs, nodeSeg: nodeAt.map((w) => w - 1), bridges, gate, arch, trail: segmentsD(segs) };
 }
 
-// Cartel de un tramo (unidad de pintores) que empieza en la parada i: bajo ella, en el lado ancho (el de su nombre).
+// Rótulo de un arco con su pie en (x, y): la caja en la que se centra (simétrica respecto a x, recortada por los bordes
+// del mapa) y su borde de arriba.
+export function archAt(x, y) {
+  const half = Math.min(x, MAP_W - x) - EDGE;
+  return { x, y, top: y - ARCH.h, x0: x - half, x1: x + half };
+}
+
+// Tablilla de un tramo (unidad de pintores) que empieza en la parada i: bajo ella, en el lado de su nombre. Si el
+// tramo empieza nada más cruzar el arco, la tablilla sube lo justo para no quedar pegada al rótulo de la época.
 export function tramoSign(era, i) {
   const p = era.points[i];
-  const y1 = p.y + TRAMO_BOX.top;
-  const y2 = p.y + TRAMO_BOX.bottom;
+  const y2 = Math.min(p.y + TRAMO_BOX.bottom, era.arch ? era.arch.top - ARCH.gap : Infinity);
+  const y1 = y2 - (TRAMO_BOX.bottom - TRAMO_BOX.top);
   return { at: i, y: y2, top: y1, ...besideRoad(era.segs, y1, y2, other(sideOf(p.x))) };
 }
 
@@ -157,13 +167,13 @@ export function branchesAt(index, movementId) {
 export const branchLand = (branch) => (branch.kind === 'epoca' ? branch.movementId : branch.id);
 
 // Pantalla de una rama: su propio tramo con sus pintores como paradas (mismo trazado que una época). Entra por abajo
-// con el cartel de la rama al lado y sale por arriba, perdiéndose en el paisaje. Carteles de tramo (escuelas): uno por
+// por su puerta, bajo el arco con el nombre de la rama, y sale por arriba, perdiéndose en el paisaje. Carteles de tramo (escuelas): uno por
 // época en la que se abre un grupo de pintores, si hay más de uno. Las temáticas (Gótico, Estampa japonesa) no llevan.
 export function branchLayout(index, branch) {
   const n = branch.artists.length;
   const opens = new Map(branch.tramos.flatMap((t) => t.artists.map((id) => [id, t.opensAt])));
   const eraOf = (id) => opens.get(id) || branch.opensAt;
-  const era = eraLayout(n, 0, MAP_W / 2, FIRST_ENTRY, RIVERS[branchLand(branch)] || 0);
+  const era = eraLayout(n, 0, MAP_W / 2, ENTRY, RIVERS[branchLand(branch)] || 0);
   const groups = new Set(branch.artists.map(eraOf)).size;
   // Cada época, una vez: en su primer pintor (el orden es cronológico y alguna época vuelve a salir más arriba).
   const sections = groups < 2 || branch.kind === 'rama' ? [] : branch.artists.map((id, i) => (branch.artists.findIndex((x) => eraOf(x) === eraOf(id)) === i
@@ -179,13 +189,10 @@ function museumLayout(xIn) {
   return { h: MUSEUM_H, segs, sign, trail: segmentsD(segs) };
 }
 
+// Salida: la puerta de la muralla es también la entrada de la primera época; su rótulo va sobre ella.
 function startLayout() {
   const segs = spline([{ ...START_PLAZA, v: true }, { x: START_OUT_X, y: 0, v: true }]);
-  // La placa de salida, a la izquierda del arco (sus pilares quedan en x 158-236).
-  const beside = besideRoad(segs, START_H - 78, START_H - 22, 'left');
-  const edge = Math.min(beside.edge, START_ARCH_LEFT);
-  const sign = { y: START_H - 22, top: START_H - 78, side: 'left', edge, room: Math.round(edge - 10) };
-  return { h: START_H, segs, sign, trail: segmentsD(segs) };
+  return { h: START_H, segs, arch: archAt(START_ARCH.x, START_ARCH.y), trail: segmentsD(segs) };
 }
 
 // Trazado de todo el camino: salida, época a época (con su puerta, sus puentes, sus carteles de tramo y un desvío con
