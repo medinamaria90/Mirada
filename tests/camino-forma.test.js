@@ -142,7 +142,7 @@ test('carteles: portada y tarjetas del cartel; sin textos, solo el nombre', asyn
   assert.ok(signSources(ramas, tramosData).length >= 10, 'las fuentes de los carteles no llegan a «Fuentes y créditos»');
 });
 
-test('paisajes: el sendero y los desvíos nunca cruzan agua sin puente (regla del generador)', { skip: spawnSync('python3', ['--version']).status !== 0 }, () => {
+test('paisajes: el sendero y los desvíos nunca cruzan agua sin puente, y ningún edificio pisa un río (por él pasan las barcas)', { skip: spawnSync('python3', ['--version']).status !== 0 }, () => {
   const code = `
 import json, subprocess, sys
 sys.path.insert(0, 'tools')

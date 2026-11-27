@@ -93,7 +93,7 @@
 .path-land .k-gold-2 { fill: var(--lit-gold-2); } .path-land .s-k-gold-2 { stroke: var(--lit-gold-2); }
 .path-land .k-awning { fill: var(--lit-awning); } .path-land .s-k-awning { stroke: var(--lit-awning); }
 .path-land .k-bloom { fill: var(--lit-bloom); } .path-land .s-k-bloom { stroke: var(--lit-bloom); }
-.trail-edge, .trail-rim, .trail-grain, .spur-edge { stroke: var(--lit-trail-edge); }
+.trail-edge, .trail-rim, .trail-grain, .spur-edge, .spur-grain { stroke: var(--lit-trail-edge); }
 .trail-fill, .spur-fill { stroke: var(--lit-trail); }
 .land-far { fill: var(--lit-stone-far); }
 .land-front { fill: var(--lit-stone-front); }

@@ -47,7 +47,9 @@ const BRANCH_SIGN_H = 66;            // alto del cartel de una rama, postes incl
 const BRANCH_SIGN_X = 58;            // el desvío acaba bajo el cartel de la rama, a esta distancia del borde
 const TAIL_OUT = 6;                  // tras el cartel, el desvío sigue hasta salir del mapa…
 const TAIL_DROP = 26;                // …bajando un poco
-const SPUR_DROP = 6;                 // el desvío sale del sendero algo por debajo del pie del cartel
+const SPUR_DROP = 20;                // el desvío nace del sendero por debajo del pie del cartel…
+const SPUR_RUN = 30;                 // …y sale tangente a él (sigue su dirección este trecho antes de abrirse)
+const SPUR_EASE = 0.38;              // cuánto se alarga la curva al llegar al cartel (sin codo)
 // Salida (abajo del todo) y «Tu museo» (arriba): bloques propios con su dibujo.
 export const START_H = 150;
 export const START_PLAZA = { x: MAP_W / 2, y: 118 };
@@ -146,8 +148,8 @@ export function eraLayout(nodeCount, phase = 0, xIn = null, entry = ENTRY, river
 
 // Lápida de la puerta con el paso en x y su pie en y: la caja junto a la puerta, del lado con más sitio, del borde del
 // mapa a `clear` del paso (la lápida se arrima a la puerta), y su borde de arriba.
-export function archAt(x, y, clear = ARCH.clear) {
-  const side = x - clear - EDGE >= MAP_W - EDGE - x - clear ? 'left' : 'right';
+export function archAt(x, y, clear = ARCH.clear, prefer = '') {
+  const side = prefer || (x - clear - EDGE >= MAP_W - EDGE - x - clear ? 'left' : 'right');
   const [x0, x1] = side === 'left' ? [EDGE, x - clear] : [x + clear, MAP_W - EDGE];
   return { x, y, top: y - ARCH.h, side, x0, x1 };
 }
@@ -184,7 +186,9 @@ function branchSpot(era, i) {
   const edge = side === 'left' ? Math.min(...xs) - ROAD_HALF - ROAD_GAP : Math.max(...xs) + ROAD_HALF + ROAD_GAP;
   const end = { x: side === 'left' ? BRANCH_SIGN_X : MAP_W - BRANCH_SIGN_X, y };
   const from = { x: roadX(era.segs, y + SPUR_DROP), y: y + SPUR_DROP };
-  const spur = `M${f(from.x)} ${f(from.y)}C${f((from.x + end.x) / 2)} ${f(from.y)} ${f(end.x)} ${f(from.y)} ${f(end.x)} ${f(end.y)}`;
+  // Bifurcación natural: nace tangente al sendero (el primer control, sobre él mismo) y se abre poco a poco hacia el cartel.
+  const c1 = { x: roadX(era.segs, from.y - SPUR_RUN), y: from.y - SPUR_RUN };
+  const spur = `M${f(from.x)} ${f(from.y)}C${f(c1.x)} ${f(c1.y)} ${f(end.x + (from.x - end.x) * SPUR_EASE)} ${f(end.y)} ${f(end.x)} ${f(end.y)}`;
   const out = side === 'left' ? -TAIL_OUT : MAP_W + TAIL_OUT;
   const tail = `M${f(end.x)} ${f(end.y)}C${f(end.x)} ${f(end.y + TAIL_DROP)} ${f((end.x + out) / 2)} ${f(end.y + TAIL_DROP)} ${f(out)} ${f(end.y + TAIL_DROP / 2)}`;
   const sign = { side, edge, y, room: Math.round(side === 'left' ? edge - EDGE : MAP_W - EDGE - edge) };
@@ -206,10 +210,26 @@ export function branchesAt(index, movementId) {
 // Paisaje de una rama: las de época, el de su época; las temáticas (escuelas, gótico, estampa), el suyo.
 export const branchLand = (branch) => (branch.kind === 'epoca' ? branch.movementId : branch.id);
 
+// Vuelta al camino desde la pantalla de una rama: una tablilla como la del desvío por el que se entró, junto a la puerta,
+// en el lado por el que queda el camino común (el contrario al que salió el desvío), con su vereda hacia el borde.
+const BACK = { foot: 8, spurUp: 22, out: 8 };
+function backSign(era, side) {
+  const x = era.gate.x;
+  const edge = side === 'left' ? x - ARCH.clear : x + ARCH.clear;
+  const y = era.h - BACK.foot;
+  const from = { x, y: era.h - BACK.spurUp };
+  const out = side === 'left' ? -BACK.out : MAP_W + BACK.out;
+  const spur = `M${f(from.x)} ${f(from.y + SPUR_DROP)}C${f(from.x)} ${f(from.y + SPUR_DROP - SPUR_RUN)} ${f(from.x + (out - from.x) * SPUR_EASE)} ${f(from.y - 4)} ${f(out)} ${f(from.y - 4)}`;
+  return { side, edge, y, room: Math.round(side === 'left' ? edge - EDGE : MAP_W - EDGE - edge), spur };
+}
+
 // Pantalla de una rama: su propio tramo con sus pintores como paradas (mismo trazado que una época). Entra por abajo
 // por su puerta, bajo el arco con el nombre de la rama, y sale por arriba, perdiéndose en el paisaje. Carteles de tramo (escuelas): uno por
 // época en la que se abre un grupo de pintores, si hay más de uno. Las temáticas (Gótico, Estampa japonesa) no llevan.
+// La vuelta al camino va del lado por el que queda el camino común (el contrario al del desvío en el mapa); la lápida,
+// al otro.
 export function branchLayout(index, branch) {
+  const backSide = other(branchSide(index, branch.id));
   const n = branch.artists.length;
   const opens = new Map(branch.tramos.flatMap((t) => t.artists.map((id) => [id, t.opensAt])));
   const eraOf = (id) => opens.get(id) || branch.opensAt;
@@ -221,7 +241,8 @@ export function branchLayout(index, branch) {
     const id = branch.artists[i];
     return { at: i, movementId: eraOf(id), key: `${branch.id}/${eraOf(id)}`, name: String(index.movement(eraOf(id))?.name || '').split(' y ')[0], sign: tramoSign(era, i) };
   });
-  return { id: branch.id, ...era, sections };
+  const arch = archAt(era.gate.x, era.gate.y + ARCH.drop, ARCH.clear, other(backSide));
+  return { id: branch.id, ...era, arch, sections, back: backSign(era, backSide) };
 }
 
 // «Tu museo»: el sendero entra recto (su placa va al lado, bajo el edificio) y sube hasta la puerta.
@@ -236,6 +257,15 @@ function museumLayout(xIn) {
 function startLayout() {
   const segs = spline([{ ...START_PLAZA, v: true }, { x: START_OUT_X, y: 0, v: true }]);
   return { h: START_H, segs, arch: archAt(START_ARCH.x, START_ARCH.y, START_CLEAR), trail: segmentsD(segs) };
+}
+
+// Lado hacia el que sale el desvío de una rama en el camino común (su cartel principal, no las señales extra).
+export function branchSide(index, branchId) {
+  for (const era of pathLayout(index).eras) {
+    const spot = era.branches.find((b) => b.id === branchId && !b.extra);
+    if (spot) return spot.side;
+  }
+  return 'left';
 }
 
 // Trazado de todo el camino: salida, época a época (con su puerta, sus puentes, sus carteles de tramo y un desvío con

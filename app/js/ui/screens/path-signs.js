@@ -32,7 +32,7 @@ export const toEra = (name) => withArticle(name).replace(/^el /, 'al ').replace(
 
 // Desvío (sendero estrecho de una rama): dos trazos como el camino, más finos.
 // Más allá del cartel, el desvío se pierde en el paisaje: unas piedras que se apagan hacia el borde.
-const spurSvg = (b) => `${b.tail ? `<path class="spur-tail" d="${b.tail}"/>` : ''}<path class="spur-edge${b.open ? '' : ' is-locked'}" d="${b.spur}"/><path class="spur-fill${b.open ? '' : ' is-locked'}" d="${b.spur}"/>`;
+const spurSvg = (b) => `${b.tail ? `<path class="spur-tail" d="${b.tail}"/>` : ''}<path class="spur-edge${b.open ? '' : ' is-locked'}" d="${b.spur}"/><path class="spur-fill${b.open ? '' : ' is-locked'}" d="${b.spur}"/>${b.open ? `<path class="spur-grain" d="${b.spur}"/>` : ''}`;
 
 // Sendero de tierra: sombra suave debajo, borde algo irregular (rim), firme y unas piedrecitas sueltas (grain). done: el
 // tramo ya recorrido, en tierra más cálida y pisada (encima del pendiente). plaza: la salida, donde el sendero nace de
@@ -151,8 +151,21 @@ export function branchSpot(spot, branch, st, index, h) {
   const line = !st.open ? `${icons.lock(11)} ${n === 1 ? `tras ${esc(stepName(index, st.pending[0]))}` : `faltan ${n} pintores`}` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li ${signBox(spot.sign, h, 'branch-spot')}>
       <button type="button" class="sign-plate branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}" aria-label="${esc(label)}">
-        <span class="sign-name">${esc(branchShort(branch, index))}</span><span class="sign-meta"><span>${line}</span></span>
+        <span class="sign-name">${esc(branchShort(branch, index))}</span>${metaRow(spot.sign.side, `<span>${line}</span>`)}
       </button></li>`;
+}
+
+// Fila de abajo del poste indicador, con su flecha hacia donde se va (el lado del cartel): delante si va a la
+// izquierda, detrás si va a la derecha.
+const signArrow = (side) => `<span class="sign-arrow" aria-hidden="true">${side === 'left' ? icons.prev(13) : icons.next(13)}</span>`;
+const metaRow = (side, body) => `<span class="sign-meta">${side === 'left' ? signArrow(side) : ''}${body}${side === 'left' ? '' : signArrow(side)}</span>`;
+
+// Vuelta al camino en la pantalla de una rama: el mismo poste que se tocó para entrar, junto a la puerta y del lado
+// por el que queda el camino común, con la época a la que se vuelve. Lleva de vuelta al camino, a la vista del desvío.
+export function backSpot(back, eraName, h) {
+  return `<li ${signBox(back, h, 'branch-spot is-back')}><button type="button" class="sign-plate branch is-back" data-action="back" aria-label="Volver al camino${eraName ? `, ${esc(toEra(eraName))}` : ''}">
+      <span class="sign-name">Volver al camino</span>${metaRow(back.side, eraName ? `<span>${esc(eraName)}</span>` : '')}
+    </button></li>`;
 }
 
 // Mojón de un tramo (unidad de pintores), en su hueco justo antes de su primer pintor: una estela de piedra al borde

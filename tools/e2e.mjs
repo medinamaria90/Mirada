@@ -1105,7 +1105,7 @@ if (SMOKE) {
   check(await page.locator(branchNode('giotto')).getAttribute('data-status') === 'locked', 'la rama no marca a Giotto cerrado');
   await page.click(branchNode('giotto'));
   await page.waitForSelector('.page-branch .lock-note.is-visible');
-  check(/mitad de aciertos en duccio/i.test(await page.locator('.page-branch .lock-note.is-visible').innerText()), 'la parada de Giotto en el Gótico no dice qué falta');
+  check(/acertar la mitad en duccio/i.test(await page.locator('.page-branch .lock-note.is-visible').innerText()), 'la parada de Giotto en el Gótico no dice qué falta');
   check(page.url().endsWith('#rama-gotico'), 'tocar un pintor cerrado de la rama cambia de pantalla');
   await audit(page, '390 parada cerrada en la rama');
   // Doble toque (muy habitual en el móvil) en un cartel: una sola entrada en el historial y ninguna hoja.

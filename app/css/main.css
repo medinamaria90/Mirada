@@ -231,6 +231,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .plaza-stones { fill: none; stroke: var(--map-trail-done-edge); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }
 /* Desvío de una rama: sendero estrecho; cerrado, más fino y apagado. */
 .spur-edge { stroke: var(--map-trail-edge); stroke-width: 15; }
+.spur-grain { fill: none; stroke: var(--map-trail-edge); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }
 .spur-fill { stroke: var(--map-trail); stroke-width: 10; }
 .spur-edge.is-locked { stroke-width: 9; opacity: .75; }
 .spur-fill.is-locked { stroke-width: 5; opacity: .75; }

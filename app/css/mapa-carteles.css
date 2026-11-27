@@ -64,6 +64,9 @@ button.arch-band:active { transform: translateY(2px); }
 .sign-plate.branch .sign-meta { font-size: calc(.75 * var(--map-fs)); }
 /* El toque abarca algo más que la tablilla (≥ --hit de alto). */
 .is-tramo .sign-plate::after, .sign-plate.branch::after { content: ""; position: absolute; inset: calc(-1 * var(--map-tablet-hit)) calc(-.5 * var(--map-tablet-hit)); }
+/* Poste indicador del desvío de una rama (y de la vuelta al camino en su pantalla): flecha hacia donde se va. */
+.sign-arrow { display: grid; flex: none; place-items: center; color: var(--map-sign-ink-2); }
+.sign-plate.branch.is-mastered .sign-arrow { color: var(--gold-text); }
 /* Mojón: la estela de piedra va entre el sendero y la tablilla (un solo botón); los postes, bajo la tablilla. */
 .road-sign.is-tramo.is-left { padding-right: var(--tramo-stone-room); }
 .road-sign.is-tramo.is-right { padding-left: var(--tramo-stone-room); }
