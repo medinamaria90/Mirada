@@ -21,7 +21,7 @@
  },
  "cards": [
   {
-   "text": "En el detalle del principio estaban la catedral y el Alcázar, en lo alto de Toledo. Era El Greco, un pintor de Creta que vivió en esa ciudad casi cuarenta años.",
+   "text": "En el detalle del principio estaban la catedral y el Alcázar (la fortaleza), en lo alto de Toledo. Era El Greco, un pintor de Creta que vivió allí casi cuarenta años.",
    "artwork": "w883994",
    "region": [
     0.545,
@@ -41,7 +41,7 @@
    ]
   },
   {
-   "text": "Es de los primeros paisajes españoles sin santos ni personajes: solo la ciudad. Y no es un mapa: se tomó libertades con los edificios para enseñar mejor Toledo.",
+   "text": "Es de los primeros paisajes españoles sin escena religiosa: la protagonista es la ciudad. Y no es un mapa: se tomó libertades con los edificios.",
    "artwork": "w883994",
    "whole": true
   }

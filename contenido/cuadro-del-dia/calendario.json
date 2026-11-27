@@ -34,7 +34,7 @@
           ]
         },
         {
-          "text": "Una diosa desnuda tan grande no se pintaba desde la Antigüedad. Hoy la llevas en el bolsillo: sale en la moneda italiana de diez céntimos.",
+          "text": "Hoy la llevas en el bolsillo sin saberlo: esta Venus sale en la cara de la moneda italiana de diez céntimos.",
           "whole": true
         }
       ]
@@ -61,7 +61,7 @@
       "source": "https://es.wikipedia.org/wiki/Retrato_de_Giovanni_Arnolfini_y_su_esposa",
       "cards": [
         {
-          "text": "El perrito que viste al empezar está pintado pelo a pelo, y se suele leer como un símbolo de fidelidad. Era Van Eyck, el flamenco que llevó el óleo a un detalle nunca visto.",
+          "text": "El perrito del principio está pintado pelo a pelo: se suele leer como símbolo de fidelidad. Era Van Eyck, pintor flamenco (de Flandes, la actual Bélgica).",
           "focus": [
             0.5,
             0.86,
@@ -152,7 +152,7 @@
           ]
         },
         {
-          "text": "Lo pintó en 1814, acabada la guerra contra Napoleón: el primer gran cuadro moderno sobre la guerra. Picasso retomó su escena en su Masacre en Corea, de 1951.",
+          "text": "Picasso, el gran pintor del siglo XX, retomó esta escena en su Masacre en Corea, de 1951: los fusiles a un lado y la gente indefensa al otro.",
           "whole": true
         }
       ]
@@ -173,7 +173,7 @@
       "source": "https://es.wikipedia.org/wiki/La_vocaci%C3%B3n_de_San_Mateo",
       "cards": [
         {
-          "text": "La mano del principio es la de Cristo, copiada de la de Adán que pintó Miguel Ángel en la Capilla Sixtina. Era Caravaggio, el rebelde que pintaba con luz de sótano.",
+          "text": "La mano del principio copia la de Adán que pintó el gran Miguel Ángel en la Capilla Sixtina (la del Papa, en Roma). Era Caravaggio, el rebelde de la luz de sótano.",
           "focus": [
             0.72,
             0.47,
@@ -181,7 +181,7 @@
           ]
         },
         {
-          "text": "Fíjate en la luz: entra en diagonal desde arriba, como el foco de un teatro, y cae sobre la mesa donde Mateo, el cobrador de impuestos, cuenta el dinero.",
+          "text": "Mira la luz: entra en diagonal desde arriba, como el foco de un teatro, y cae sobre la mesa de Mateo, el cobrador de impuestos, y sus ayudantes.",
           "focus": [
             0.45,
             0.5,
@@ -255,7 +255,7 @@
           ]
         },
         {
-          "text": "Fíjate en el azul del turbante: es lapislázuli, una piedra molida más cara que el oro. Vermeer lo usaba aunque vivía lleno de deudas.",
+          "text": "El azul del turbante es lapislázuli, una piedra molida más cara que el oro. Vermeer lo usaba aunque vivía lleno de deudas.",
           "focus": [
             0.55,
             0.27,
@@ -263,7 +263,7 @@
           ]
         },
         {
-          "text": "No es un retrato: es un «tronie», el estudio de una cara con un traje exótico. Nadie sabe quién posó. La llaman «la Mona Lisa del norte».",
+          "text": "No es un retrato: es un «tronie», el estudio de una cara con un traje exótico. Por eso nadie sabe quién posó.",
           "whole": true
         }
       ]
@@ -290,7 +290,7 @@
       "source": "https://www.metmuseum.org/art/collection/search/436575",
       "cards": [
         {
-          "text": "En el detalle del principio estaban la catedral y el Alcázar, en lo alto de Toledo. Era El Greco, un pintor de Creta que vivió en esa ciudad casi cuarenta años.",
+          "text": "En el detalle del principio estaban la catedral y el Alcázar (la fortaleza), en lo alto de Toledo. Era El Greco, un pintor de Creta que vivió allí casi cuarenta años.",
           "focus": [
             0.72,
             0.38,
@@ -306,7 +306,7 @@
           ]
         },
         {
-          "text": "Es de los primeros paisajes españoles sin santos ni personajes: solo la ciudad. Y no es un mapa: se tomó libertades con los edificios para enseñar mejor Toledo.",
+          "text": "Es de los primeros paisajes españoles sin escena religiosa: la protagonista es la ciudad. Y no es un mapa: se tomó libertades con los edificios.",
           "whole": true
         }
       ]
@@ -379,7 +379,7 @@
           ]
         },
         {
-          "text": "Fíjate en el centro: cientos de personas desnudas entre fresas gigantes, burbujas y pájaros enormes. Un paraíso de placeres a un paso del infierno.",
+          "text": "¿Ves el centro? Cientos de personas desnudas entre fresas gigantes, burbujas y pájaros enormes. Un paraíso de placeres a un paso del infierno.",
           "focus": [
             0.5,
             0.6,
@@ -417,7 +417,7 @@
           ]
         },
         {
-          "text": "Fíjate en el cielo: remolinos, estrellas enormes y una luna con halo. No es una noche tranquila: es una noche que se mueve.",
+          "text": "Mira el cielo: remolinos, estrellas enormes y una luna con halo. No es una noche tranquila: es una noche que se mueve.",
           "focus": [
             0.45,
             0.35,
@@ -432,7 +432,12 @@
     },
     {
       "artwork": "w6065609",
-      "signature": [0.0, 0.94, 0.16, 1.0],
+      "signature": [
+        0.0,
+        0.94,
+        0.16,
+        1.0
+      ],
       "focus": [
         0.68,
         0.55
@@ -456,7 +461,7 @@
           ]
         },
         {
-          "text": "Fíjate en las sombras de los vestidos blancos: no son grises, son azules y moradas. Sorolla pintaba la luz que veía, no la que se suponía.",
+          "text": "¿Ves las sombras de los vestidos blancos? No son grises, son azules y moradas. Sorolla pintaba la luz que veía, no la que se suponía.",
           "focus": [
             0.27,
             0.5,
@@ -530,7 +535,7 @@
           ]
         },
         {
-          "text": "Fíjate en la mano del capitán: su sombra cae sobre el traje amarillo del teniente. Nadie posa quieto; todos se mueven, como en una película.",
+          "text": "Mira la mano del capitán: su sombra cae sobre el traje amarillo del teniente. Nadie posa quieto; todos se mueven, como en una película.",
           "focus": [
             0.53,
             0.62,

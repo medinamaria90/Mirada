@@ -41,7 +41,7 @@ SPANISH_WINDOW = 4
 ALARM_DAYS = 3            # como CUADRO_ALARM_DAYS de app/js/engine/cuadro-dia.js
 SPAIN = "España"
 BANNED = re.compile(r"\b(ayer|mañana)\b", re.I)
-LOOK_CUE = re.compile(r"^f[ií]jate", re.I)
+LOOK_CUE = re.compile(r"^(f[ií]jate|mira|¿ves|el |la )", re.I)
 
 
 def read(path):
@@ -162,7 +162,7 @@ def validate(cal, cat, ficha, explain):
             if f"era {short.lower()}" not in cards[0]["text"].lower():
                 err(f"{tag}: la primera tarjeta dice quién es («Era {short}…»)")
             if not LOOK_CUE.search(cards[1]["text"]):
-                err(f"{tag}: la segunda tarjeta empieza por «Fíjate en»")
+                err(f"{tag}: la segunda tarjeta invita a mirar («Fíjate en», «Mira», «¿Ves…?» o lo que se mira)")
             if not cards[2].get("whole"):
                 err(f"{tag}: la tercera tarjeta enseña la obra entera (whole)")
         if not str(d.get("source", "")).startswith("https://"):

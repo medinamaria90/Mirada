@@ -66,7 +66,8 @@ CUADRO_SIDE = 1080  # lado del recorte cuadrado para la vista previa
 DETAIL_DIR = "dia"  # dentro de img/: el detalle de cada día para los pasos 1 y 2 del juego (img/dia/<n>.jpg)
 DETAIL_ZOOM = 1.6  # el recorte del paso 2, que contiene el del paso 1 (WIDE_ZOOM de app/js/engine/cuadro-calendar.js)
 DETAIL_SIDE = 1200  # px: el detalle del paso 1 (0,53 del recorte) queda a 1,52 px de imagen por px CSS en un marco de 420 px
-DETAIL_QUALITY = 72
+DETAIL_QUALITIES = (74, 68, 62, 56)
+DETAIL_MAX_BYTES = 250 * 1024
 
 
 def read_json(*parts):
@@ -197,7 +198,10 @@ def save_detail(src, dst, crop):
         im = im.crop((round(crop[0] * W), round(crop[1] * H), round(crop[2] * W), round(crop[3] * H)))
         side = min(DETAIL_SIDE, max(im.size))
         im = im.resize((side, round(side * im.size[1] / im.size[0])), Image.LANCZOS)
-        im.save(dst, "JPEG", quality=DETAIL_QUALITY, optimize=True, progressive=True)
+        for q in DETAIL_QUALITIES:  # se baja la calidad hasta que quepa en DETAIL_MAX_BYTES (las pinceladas pesan)
+            im.save(dst, "JPEG", quality=q, optimize=True, progressive=True)
+            if os.path.getsize(dst) <= DETAIL_MAX_BYTES:
+                break
     return os.path.getsize(dst)
 
 

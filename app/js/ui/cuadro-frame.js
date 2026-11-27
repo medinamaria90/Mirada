@@ -6,20 +6,22 @@
 
 import { esc } from './dom.js';
 import { icons } from './icons.js';
+import { guardGhostTaps } from './tap-guard.js';
 import { smallSrc, tinySrc } from './art.js';
 import { cropRect, WIDE_ZOOM, DETAIL_ZOOM } from '../engine/cuadro-calendar.js';
 
 const pct = (v) => `${(v * 100).toFixed(2)}%`;
 
-// Caja de la imagen dentro del marco (en % del marco): recortada (zoom > 1) o entera y centrada (zoom 1).
-export function imageBox(work, focus, zoom) {
+// Caja de la imagen dentro del marco (en % del marco): recortada (zoom > 1) o entera y centrada (zoom 1). `frame`: proporción
+// del marco (ancho / alto; cuadrado en el juego, la del cuadro en la vista grande del cuadro entero).
+export function imageBox(work, focus, zoom, frame = 1) {
   if (zoom > 1) {
     const [x0, y0, x1, y1] = cropRect(work, focus, zoom);
     const w = x1 - x0;
     const h = y1 - y0;
     return { left: -x0 / w, top: -y0 / h, width: 1 / w, height: 1 / h };
   }
-  const ratio = work.w > 0 && work.h > 0 ? work.w / work.h : 1;
+  const ratio = (work.w > 0 && work.h > 0 ? work.w / work.h : 1) / frame;
   const width = ratio >= 1 ? 1 : ratio;
   const height = ratio >= 1 ? 1 / ratio : 1;
   return { left: (1 - width) / 2, top: (1 - height) / 2, width, height };
@@ -58,12 +60,13 @@ function detailStyle(b, [x0, y0, x1, y1]) {
 // El marco: dos imágenes con la misma caja (la pequeña debajo y la grande encima, que aparece al cargar), el detalle del día si
 // lo hay y, con el cuadro entero, su fondo desenfocado. `label`: nombre accesible del botón; sin él, un marco que no se pulsa
 // (el de la lupa). `veil`: la firma que se tapa (mientras no se ha acabado). `detail`: detailOf(…) o null.
-export function frameHtml(work, focus, zoom, label = '', veil = null, detail = null) {
-  const box = imageBox(work, focus, zoom);
+export function frameHtml(work, focus, zoom, label = '', veil = null, detail = null, frame = 1) {
+  const box = imageBox(work, focus, zoom, frame);
   const style = boxStyle(box);
   const tag = label ? 'button' : 'div';
   const attrs = label ? ` type="button" data-action="zoom" aria-label="${esc(label)}"` : '';
-  return `<${tag} class="cdd-frame${zoom > 1 ? ' is-detail' : ''}"${attrs}>
+  const shape = frame === 1 ? '' : ` style="aspect-ratio:${frame.toFixed(4)}"`;
+  return `<${tag} class="cdd-frame${zoom > 1 ? ' is-detail' : ''}"${attrs}${shape}>
     <img class="cdd-bg" src="${esc(tinySrc(work))}" alt="" aria-hidden="true" draggable="false">
     <img class="cdd-img cdd-low" src="${esc(smallSrc(work))}" alt="" style="${style}" draggable="false">
     <img class="cdd-img cdd-hi" ${detail && zoom >= DETAIL_ZOOM ? 'data-src' : 'src'}="${esc(work.img)}" alt="" style="${style}" draggable="false" decoding="async">
@@ -119,11 +122,13 @@ export function openLarge(ctx, work, focus, zoom, { reveal = false, opener = nul
 }
 
 function openLoupe(work, focus, zoom, opener, veil, detail) {
+  // Con el detalle, el mismo marco cuadrado; con el cuadro entero, un marco con su proporción: lo más grande que quepa.
+  const frame = zoom > 1 ? 1 : (work.w > 0 && work.h > 0 ? work.w / work.h : 1);
   const dlg = document.createElement('dialog');
   dlg.className = 'cdd-loupe';
   dlg.setAttribute('aria-label', zoom > 1 ? 'Detalle en grande' : 'Cuadro en grande');
   dlg.innerHTML = `<button type="button" class="cdd-loupe-close" data-l="close" aria-label="Cerrar">${icons.close(24)}</button>
-    <div class="cdd-loupe-box">${frameHtml(work, focus, zoom, '', veil, detail)}</div>`;
+    <div class="cdd-loupe-box" style="--loupe-ratio:${frame.toFixed(4)}">${frameHtml(work, focus, zoom, '', veil, detail, frame)}</div>`;
   document.body.appendChild(dlg);
   wireFrame(dlg);
   let pushed = false;
@@ -136,6 +141,7 @@ function openLoupe(work, focus, zoom, opener, veil, detail) {
     window.removeEventListener('popstate', onPop);
     if (dlg.open) dlg.close();
     dlg.remove();
+    guardGhostTaps();
     if (pushed && !fromPop) history.back();
     if (opener && opener.isConnected) opener.focus({ preventScroll: true });
   }

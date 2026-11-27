@@ -80,7 +80,7 @@ function play(ctx, el, data, day) {
       <div class="cdd-options" role="group" aria-label="Pintores">
         ${entry.options.map((id) => `<button type="button" class="btn cdd-opt" data-action="pick" data-id="${esc(id)}">${esc(name(id))}</button>`).join('')}
       </div>
-      <p class="cdd-left" aria-live="polite"></p>
+      <p class="cdd-left"></p>
     </main>
   </div>`;
   wireFrame(el);
@@ -146,7 +146,8 @@ function play(ctx, el, data, day) {
       try { navigator.vibrate?.(BUZZ_MS); } catch { /* sin vibración */ }
       const hint = hintsFor(game).slice(-1)[0];
       const added = revealStep(game) === 3 ? 'Ahora, el cuadro entero' : '';
-      announce([`No es de ${name(b.dataset.id)}.`, added, hint ? `${HINT_LABEL[hint]}: ${entry.hints[hint]}.` : ''].filter(Boolean).join(' '));
+      const left = el.querySelector('.cdd-left').textContent;
+      announce([`No es de ${name(b.dataset.id)}.`, added, hint ? `${HINT_LABEL[hint]}: ${entry.hints[hint]}.` : '', left ? `${left}.` : ''].filter(Boolean).join(' '));
       el.querySelector('.cdd-title').focus({ preventScroll: true });
     },
   });
