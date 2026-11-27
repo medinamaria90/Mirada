@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { anchorOf, scrollForAnchor } from '../app/js/ui/screens/map-memory.js';
 import { tramoSign, eraArch, branchEntrySign } from '../app/js/ui/screens/path-signs.js';
+import { eraPlace, eraGate, inscription } from '../app/js/ui/screens/path-art.js';
 import { nodeHtml } from '../app/js/ui/screens/path-nodes.js';
 import { pointsUp } from '../app/js/ui/screens/map-return.js';
 
@@ -44,25 +45,32 @@ test('vuelta al mapa: solo se centra en la parada actual al abrir o con «Tu par
   assert.ok(/prevRoute\(\) === 'inicio'\) forgetMap\(memo\)/.test(branch), 'entrar en una rama desde el camino no empieza en su parada actual');
 });
 
-test('carteles: tablilla de tramo (un solo objeto) sin contador; completa, dorada sin iconos; el dintel lleva la única cuenta', () => {
+test('carteles: mojón de tramo (un solo objeto, sin caja ni cifra); completo, en oro; la puerta de la época, con su nombre grabado', () => {
   const half = tramoSign({ name: 'Venecia', key: 'Venecia', sign: SIGN }, { got: 1, total: 3 }, 1000);
-  assert.ok(half.includes('>Venecia</span>') && !/\d\/\d/.test(half) && !half.includes('is-done') && !half.includes('tramo-stone'), 'la tablilla a medias lleva cifra, va dorada o repite con un mojón');
+  assert.ok(half.includes('>Venecia</span>') && half.includes('tramo-stone') && !/\d\/\d/.test(half) && !half.includes('is-done'), 'el mojón a medias lleva cifra o va en oro');
   assert.ok(half.includes('aria-label="Tramo Venecia: 1 de 3 pintores. Ver cartel"'));
   const done = tramoSign({ name: 'Venecia', key: 'Venecia', sign: SIGN }, { got: 3, total: 3 }, 1000);
-  assert.ok(done.includes('sign-plate is-tramo is-done') && !done.includes('<svg') && !/\d\/\d/.test(done) && done.includes('Tramo Venecia: completo'), 'la completa no se dora o lleva un icono suelto');
-  const arch = { x: 200, y: 900, top: 866, side: 'center', x0: 10, x1: 390 };
+  assert.ok(done.includes('sign-plate is-tramo is-done') && !done.includes('<svg') && done.includes('Tramo Venecia: completo'), 'el completo no va en oro o lleva un icono suelto');
+  const arch = { x: 200, y: 900, ...eraPlace(200, 900).box };
   const movement = { id: 'barroco', name: 'Barroco', period: 's. XVII' };
   const open = eraArch({ movement, status: 'available', sealed: false, done: 4, total: 9, prevName: 'Renacimiento', arch, h: 1000 });
-  assert.ok(open.includes('class="era-arch"') && open.includes('data-action="intro"') && open.includes('arch-progress') && open.includes('4 de 9 pintores'));
-  assert.ok(!open.includes('4/9') && !open.includes('arch-meta'), 'cifra o siglos pegados al nombre');
+  assert.ok(open.includes('class="era-arch"') && open.includes('data-action="intro"') && open.includes('>Barroco</span>') && open.includes('4 de 9 pintores'), 'la puerta abierta no lleva su nombre o no abre la presentación');
+  assert.ok(!open.includes('4/9') && !open.includes('arch-progress') && !open.includes('arch-meta'), 'cifra, ranura o siglos sobre la puerta');
   const sealed = eraArch({ movement, status: 'mastered', sealed: true, done: 9, total: 9, prevName: '', arch, h: 1000 });
-  assert.ok(sealed.includes('arch-band is-done') && !sealed.includes('9/9') && sealed.includes('--p:1'), 'la completa lleva cifra');
+  assert.ok(sealed.includes('arch-band is-done') && sealed.includes('completa'), 'la completa no lo dice');
   const locked = eraArch({ movement, status: 'locked', sealed: false, done: 0, total: 9, prevName: 'el Manierismo', arch, h: 1000 });
-  assert.ok(locked.includes('data-action="era-lock"') && !locked.includes('0/9') && locked.includes('--p:0'), 'la cerrada, con la ranura vacía (mismo alto, sin cifra)');
+  assert.ok(locked.includes('data-action="era-lock"') && !locked.includes('0/9') && !locked.includes('icon'), 'la cerrada lleva cifra o candado en el ático (lo dice el portón)');
+  assert.ok(eraGate(200, 900, { locked: true }).length > eraGate(200, 900).length, 'la puerta cerrada no lleva portón');
+  // El nombre corto de la época de Van Eyck, fiel a lo que hay al cruzar la puerta; el resto, entero y sin paréntesis.
+  assert.equal(inscription('Manierismo y Renacimiento del Norte'), 'Renacimiento del Norte');
+  assert.equal(inscription('Estampa japonesa (ukiyo-e)'), 'Estampa japonesa');
+  assert.equal(inscription('Rococó y Neoclasicismo'), 'Rococó y Neoclasicismo');
   const rama = branchEntrySign({ id: 'gotico', name: 'Gótico' }, arch, 1000, 2, 5);
-  assert.ok(rama.includes('class="era-arch"') && rama.includes('data-kind="rama"') && !rama.includes('2/5'), 'el dintel de la rama repite la cuenta de la cabecera');
+  assert.ok(rama.includes('class="era-arch"') && rama.includes('data-kind="rama"') && !rama.includes('2/5'), 'la puerta de la rama repite la cuenta de la cabecera');
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8') + readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
-  assert.ok(!css.includes('sign-check') && !css.includes('trail-thread'), 'queda el sello suelto o la raya central del sendero');
+  assert.ok(!css.includes('sign-check') && !css.includes('trail-thread') && !css.includes('proto-'), 'queda el sello suelto, la raya central o restos del prototipo');
+  const brand = readFileSync(join(app, 'css', 'brand.css'), 'utf8');
+  assert.ok(brand.includes('cinzel-latin-600-normal.woff2') && /--font-inscription: "Cinzel"/.test(brand), 'la inscripción no usa su letra (Cinzel, servida desde la app)');
 });
 
 test('candados: un solo aviso a la vez, sin temporizador; se cierra al tocar fuera, al desplazar o con Esc', () => {

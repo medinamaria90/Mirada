@@ -13,7 +13,8 @@ import { playEra } from '../audio-bridge.js';
 import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
-import { trailSvg, tramoSign, branchEntrySign, backSpot, stepName, pct } from './path-signs.js';
+import { eraPlace } from './path-art.js';
+import { trailSvg, tramoSign, branchEntrySign, backSpot, branchShort, stepName, pct } from './path-signs.js';
 import { STATE_LABEL, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
@@ -79,7 +80,8 @@ function mapHtml(ctx, branch) {
   }).join('');
   const done = rows.every((r) => r.status === 'mastered');
   const { mastered, total } = branchProgress(ctx.store.get().progress, index, branch.id);
-  const sign = branchEntrySign(branch, layout.arch, layout.h, mastered, total);
+  const place = eraPlace(layout.gate.x, layout.gate.y);
+  const sign = branchEntrySign(branch, { ...layout.arch, ...place.box }, layout.h, mastered, total, branchShort(branch, index));
   const walked = at >= 0 ? walkedD(layout, at) : done ? walkedD(layout) : '';
   const land = branchLand(branch);
   const tint = `var(--map-tint-${esc(land)})`;
@@ -88,7 +90,7 @@ function mapHtml(ctx, branch) {
   return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true">${trailSvg(FOOT_H, foot, [], walked ? foot : '')}</li>
     <li class="path-era has-gate" data-era="${esc(branch.id)}" style="--gate-y:${GATE_Y};--era-tint:${tint};--era-prev:${tint};--era-h:${layout.h};aspect-ratio:${MAP_W}/calc(${layout.h} * var(--k, 1))">
       <img class="path-land" alt="" width="${MAP_W}" height="${layout.h}" decoding="async" data-src="img/mapa/rama-${esc(branch.id)}.svg">
-      ${trailSvg(layout.h, layout.trail, [{ spur: layout.back.spur, open: true }], walked)}
+      ${trailSvg(layout.h, layout.trail, [{ spur: layout.back.spur, open: true }], walked, place.plaza)}
       ${frontSvg(layout)}
       ${sign}
       <ol class="stages">${backSpot(layout.back, index.movement(branch.opensAt)?.name || '', layout.h)}${items}</ol>

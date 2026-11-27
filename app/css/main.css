@@ -249,7 +249,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .trail-grain.is-b { stroke-dasharray: 0 var(--trail-grain-gap-b); stroke-dashoffset: var(--trail-grain-off); transform: translateX(var(--trail-grain-x)); }
 /* Plaza de salida: el empedrado de piedra del que nace el sendero (borde bajo el sendero, suelo encima; sin punta). */
 .plaza-rim { fill: var(--map-stone-side); }
-/* PROTOTIPO: la plaza de una época, a ras del sendero (lo tapa: el sendero entra y sale de ella). */
+/* Plaza de cada época al cruzar su puerta: a ras del sendero, que entra y sale de ella (path-art.js, eraPlace). */
 .plaza-fill { fill: var(--map-stone-top); }
 .plaza-stones.is-in { stroke-dasharray: var(--plaza-cobble-dash); stroke-width: var(--plaza-cobble-w); }
 .plaza-stones { fill: none; stroke: var(--map-stone-side); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }
@@ -268,6 +268,8 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .land-top { fill: var(--map-stone-top); }
 .land-window { fill: var(--map-window); }
 .land-shade { fill: var(--map-shade); }
+.land-hay { fill: var(--map-hay); }
+.land-hay-2 { fill: var(--map-hay-2); }
 /* La fuente de la plaza, con su borde marcado sobre el empedrado. */
 .fountain-rim { stroke: var(--map-stone-side); stroke-width: var(--fountain-rim-w); }
 .land-leaf { fill: var(--map-leaf); }

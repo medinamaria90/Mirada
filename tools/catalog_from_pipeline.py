@@ -14,8 +14,8 @@ tools/atlas_layout.py, que es función solo del catálogo.
 Reglas (decisiones de María):
   · Camino común (`onPath`): grandes maestros + maestros + invitados con alguna obra de fama 3.
     Solo grandes maestros y maestros tienen etapa propia (son las paradas del camino); los invitados
-    del camino salen intercalados (como pregunta) y los demás invitados, solo en ramas «Descubre…».
-  · Ramas: por época («Descubre …»), por escuela y las del proceso (Gótico, Estampa japonesa);
+    del camino salen intercalados (como pregunta) y los demás invitados, solo en ramas «Más del…».
+  · Ramas: por época («Más del …»), por escuela y las del proceso (Gótico, Estampa japonesa);
     cronológicas por dentro, con el tramo (época) en que se abre cada pintor.
   · `role` «learn»: 4 obras de nivel 1 en grandes maestros y maestros (las con firma o atribución
     dudosa primero: no se pueden preguntar), 2 en los invitados y pintores de ramas (el resto, «new»: los invitados del camino salen en el repaso
@@ -45,15 +45,15 @@ BRANCH_MOVEMENTS = {
                     traits=["línea limpia y color plano", "composiciones atrevidas", "escenas de la vida y el paisaje"]),
 }
 DISCOVER_NAMES = {
-    "renacimiento": "Descubre el Renacimiento",
-    "manierismo-y-norte": "Descubre el Manierismo y el Norte",
-    "barroco": "Descubre el Barroco",
-    "rococo-neoclasicismo": "Descubre el Rococó y el Neoclasicismo",
-    "romanticismo": "Descubre el Romanticismo",
-    "realismo": "Descubre el Realismo",
-    "impresionismo": "Descubre el Impresionismo",
-    "postimpresionismo": "Descubre el Postimpresionismo",
-    "simbolismo-modernismo": "Descubre el Simbolismo y las vanguardias",
+    "renacimiento": "Más del Renacimiento",
+    "manierismo-y-norte": "Más del Manierismo y el Norte",
+    "barroco": "Más del Barroco",
+    "rococo-neoclasicismo": "Más del Rococó y el Neoclasicismo",
+    "romanticismo": "Más del Romanticismo",
+    "realismo": "Más del Realismo",
+    "impresionismo": "Más del Impresionismo",
+    "postimpresionismo": "Más del Postimpresionismo",
+    "simbolismo-modernismo": "Más del Simbolismo y las vanguardias",
 }
 # Rasgos de color sin etiquetas en los datos curados (el motor las necesita para no dar pistas de color
 # que comparte el distractor): Cézanne es ahora maestro del camino y su rasgo «ocres, verdes y azules» las lleva.

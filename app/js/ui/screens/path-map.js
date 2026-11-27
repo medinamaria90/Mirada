@@ -19,7 +19,7 @@ import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, GATE_Y, pathLayout, eraLayout, walkedD } from './path-layout.js';
 import { trailSvg, eraArch, startBlock, museumBlock, branchSpot, tramoSign, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
-import { eraGate, bridgeRails, protoPlace, startPlace } from './path-art.js';
+import { eraGate, bridgeRails, eraPlace, startPlace } from './path-art.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout, DORMANT_TEXT };
 import { pathActions, showLockNote, levelCard } from './path-actions.js';
@@ -122,7 +122,7 @@ function eraBlock(ctx, era, prevEra, keys) {
   }).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';
-  const place = era.gate ? protoPlace(era.gate.x, era.gate.y) : null;
+  const place = era.gate ? eraPlace(era.gate.x, era.gate.y) : null;
   const sign = era.arch ? archHtml(ctx, era, prevEra, place ? { ...era.arch, ...place.box } : era.arch, era.h) : '';
   const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}${era.gate ? ' has-gate' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--gate-y:${GATE_Y};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
@@ -148,9 +148,9 @@ function archHtml(ctx, era, prevEra, arch, h) {
   });
 }
 
-// Delante del sendero: la puerta de la época (el arco pasa por encima) y los pretiles de sus puentes.
+// Delante del sendero: la puerta de ciudad de la época (cerrada, con su portón) y los pretiles de sus puentes.
 export function frontSvg(era, locked = false) {
-  const art = `${era.gate ? eraGate(era.gate.x, era.gate.y, locked) : ''}${era.bridges.map(bridgeRails).join('')}`;
+  const art = `${era.gate ? eraGate(era.gate.x, era.gate.y, { locked }) : ''}${era.bridges.map(bridgeRails).join('')}`;
   return art ? `<svg class="path-gate" viewBox="0 0 ${MAP_W} ${era.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${art}</svg>` : '';
 }
 
@@ -187,7 +187,7 @@ function artistNode(ctx, artist, keys) {
     cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, current: key === keys.current,
     label: status === 'started' ? startedLabel(artist.name, p.artists[artist.id]?.best)
       : `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
-    name: quiet ? artist.short || artist.name : artist.name, meta: dormant ? DORMANT_TEXT : '',
+    name: quiet ? artist.short || artist.name : artist.name, meta: '',   // dormido: sin texto bajo el nombre (lo dice la etiqueta)
     dot: dotFor(status, coverOf(index, artist.id), artist.name, p.artists[artist.id]?.best),
   });
   return { type: 'artist', key, status, html };

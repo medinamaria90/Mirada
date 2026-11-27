@@ -172,6 +172,8 @@
 
 /* Piezas de los dibujos propios (puerta de salida, museo). */
 .land-tile { fill: var(--lit-tile); }
+.land-hay { fill: var(--lit-hay); }
+.land-hay-2 { fill: var(--lit-hay-2); }
 .land-tile-2 { fill: var(--lit-tile-2); }
 .land-water { fill: var(--lit-water); }
 .land-water-2 { fill: var(--lit-water-2); }

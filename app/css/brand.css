@@ -2,6 +2,8 @@
    Es el archivo de variables: ningún otro CSS ni el JS escribe colores a mano. */
 
 /* Outfit (OFL), variable en peso 300-600, subconjunto latino, servida con la app. */
+/* Capitales de inscripción (Cinzel, OFL, app/fonts/OFL-Cinzel.txt): solo los nombres grabados en las puertas del mapa. */
+@font-face { font-family: "Cinzel"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/cinzel-latin-600-normal.woff2") format("woff2"); }
 @font-face { font-family: "Outfit"; font-style: normal; font-weight: 300 600; font-display: swap; src: url("../fonts/outfit-latin-wght-normal.woff2") format("woff2"); }
 
 :root {
@@ -154,26 +156,6 @@
   --map-seam: 80px;
   /* Sistema de carteles (mapa-carteles.css): arco de época, tablillas de tramo y rama, tarjeta de la parada actual. */
   --map-frontier-solid: 80%;
-  --map-lapida-frame: 3px;         /* marco de piedra de la lápida */
-  --map-lapida-inset: 3px;         /* del marco al filete grabado */
-  --map-lapida-depth: 3px;         /* grosor de la losa, debajo */
-  --map-lapida-r: 3px;
-  --map-lapida-cornice: 5px;
-  --map-lapida-cornice-out: 7px;
-  --map-lapida-groove: 4px;        /* ranura del progreso */
-  --map-lapida-plinth: 7px;        /* zócalo de la estela */
-  --map-lapida-shadow: 6px;        /* sombra del zócalo en el suelo */
-  --map-lapida-track: .02em;       /* letras de inscripción */
-  --map-lintel-pad: 5px 12px 6px;  /* dintel con el nombre de la época */
-  --map-lintel-gap: 4px;
-  --map-lintel-min: 72px;
-  --map-lintel-track: .08em;
-  --proto-inscr-fs: .7rem;        /* PROTOTIPO: inscripción de la época y piedra del tramo */
-  --proto-inscr-track: .02em;
-  --proto-stone-pad: 5px 11px 4px;
-  --proto-stone-r: 45% 40% 6px 8px / 70% 60% 6px 6px;
-  --proto-stone-edge: 3px;
-  --proto-stone-fs: .75rem;
   --you-lift: 20px;                /* marca «Tú» sobre la parada actual */
   --you-pad: 3px 10px 4px;
   --radius-pill: 999px;
@@ -181,6 +163,16 @@
   --plaza-cobble-w: 1.2;
   --fountain-rim-w: 1.6;
   --map-ribbon: 3px;
+  /* Inscripción de la época en el ático de su puerta (mapa-carteles.css) y mojón del tramo. */
+  --font-inscription: "Cinzel", "Trajan Pro", Georgia, serif;
+  --inscr-fs: calc(.72 * var(--map-fs, 1rem));   /* 11,5 px; en capitales se lee como 14 px de minúsculas */
+  --inscr-weight: 600;
+  --inscr-line: 1.12;
+  --inscr-track: .02em;
+  --milestone-w: 15px;
+  --milestone-h: 25px;
+  --milestone-gap: 6px;
+  --milestone-label-max: 9.5rem;
   --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
   --map-z-sign-start: 4;
   --map-z-float: 5;
