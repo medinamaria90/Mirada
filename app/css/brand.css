@@ -163,11 +163,16 @@
   --map-lapida-plinth: 7px;        /* zócalo de la estela */
   --map-lapida-shadow: 6px;        /* ranura del progreso */
   --map-lapida-track: .02em;       /* letras de inscripción */
-  --tramo-stone-w: 13px;           /* estela del mojón */
-  --tramo-stone-h: 22px;
-  --tramo-stone-room: 19px;        /* sitio de la estela junto a la tablilla */
+  --tramo-stone-w: 18px;           /* estela del mojón */
+  --tramo-stone-h: 28px;
+  --tramo-stone-room: 24px;        /* sitio de la estela junto a la tablilla */
   --tramo-stone-gap: 1px;
-  --map-ribbon: 3px;               /* cinta de oro en el canto de lo completado */
+  --map-ribbon: 3px;
+  --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
+  --map-z-sign-start: 4;
+  --map-z-float: 5;
+  --lock-note-w: 232px;            /* globo de lo cerrado */
+  --lock-note-gap: 6px;               /* cinta de oro en el canto de lo completado */
   --map-tablet-hit: 11px;          /* la tablilla mide unos 26 px: con esto, el toque llega a --hit */
   --map-current-dot: 70px;
   --map-halo-dur: 3.2s;

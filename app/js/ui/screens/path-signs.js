@@ -151,12 +151,12 @@ export function branchSpot(spot, branch, st, index, h) {
   const line = !st.open ? `${icons.lock(11)} ${n === 1 ? `tras ${esc(stepName(index, st.pending[0]))}` : `faltan ${n} pintores`}` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li ${signBox(spot.sign, h, 'branch-spot')}>
       <button type="button" class="sign-plate branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}" aria-label="${esc(label)}">
-        <span class="sign-name">${esc(branchShort(branch, index))}</span>${metaRow(spot.sign.side, `<span>${line}</span>`)}
+        <span class="sign-name">${esc(branchShort(branch, index))}</span>${st.open ? metaRow(spot.sign.side, `<span>${line}</span>`) : `<span class="sign-meta"><span>${line}</span></span>`}
       </button></li>`;
 }
 
 // Fila de abajo del poste indicador, con su flecha hacia donde se va (el lado del cartel): delante si va a la
-// izquierda, detrás si va a la derecha.
+// izquierda, detrás si va a la derecha. Cerrada, sin flecha (aún no se puede ir; lleva el candado).
 const signArrow = (side) => `<span class="sign-arrow" aria-hidden="true">${side === 'left' ? icons.prev(13) : icons.next(13)}</span>`;
 const metaRow = (side, body) => `<span class="sign-meta">${side === 'left' ? signArrow(side) : ''}${body}${side === 'left' ? '' : signArrow(side)}</span>`;
 

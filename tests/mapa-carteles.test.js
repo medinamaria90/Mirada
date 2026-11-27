@@ -9,6 +9,7 @@ import { dirname, join } from 'node:path';
 import { anchorOf, scrollForAnchor } from '../app/js/ui/screens/map-memory.js';
 import { tramoSign, eraArch, branchEntrySign } from '../app/js/ui/screens/path-signs.js';
 import { metaFor, nodeHtml } from '../app/js/ui/screens/path-nodes.js';
+import { pointsUp } from '../app/js/ui/screens/map-return.js';
 
 const app = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
 const SIGN = { side: 'right', edge: 220, y: 500, top: 452, room: 150 };
@@ -80,6 +81,14 @@ test('parada actual: sin botón «Empezar»; marca «Tú» y se toca el propio n
   assert.ok(!nodeHtml({ cls: '', action: 'stage', id: 'x', status: 'available', lock: '', label: 'X', name: 'X', meta: '', dot: '' }).includes('stage-you'));
   const coach = readFileSync(join(app, 'js', 'ui', 'coach.js'), 'utf8');
   assert.ok(!coach.includes('«Empezar»'), 'la guía de bienvenida sigue hablando del botón «Empezar»');
+});
+
+test('volver a tu parada: la flecha apunta a donde queda, también tras un salto largo (se calcula al desplazar)', () => {
+  assert.equal(pointsUp(-7000, 800), true, 'parada muy arriba: flecha arriba');
+  assert.equal(pointsUp(7181, 800), false, 'parada muy abajo: flecha abajo');
+  assert.equal(pointsUp(900, 800), false);
+  const ret = readFileSync(join(app, 'js', 'ui', 'screens', 'map-return.js'), 'utf8');
+  assert.ok(ret.includes("addEventListener('scroll'") && ret.includes('.news-card'), 'la flecha no se recalcula al desplazar o el botón queda bajo la tarjeta de novedades');
 });
 
 test('volver a tu parada: círculo con flecha y «Tú» (sin cuadro volando); los colores de carteles, solo en variables', async () => {

@@ -28,9 +28,10 @@ const tower = (x, y, w, h) => {
 };
 const fountain = (cx, y) => `<ellipse class="land-shade" cx="${f(cx)}" cy="${f(y + 2)}" rx="20" ry="5"/><ellipse class="land-side" cx="${f(cx)}" cy="${f(y)}" rx="16" ry="4.6"/><ellipse class="land-front" cx="${f(cx)}" cy="${f(y - 3)}" rx="16" ry="4.6"/><ellipse class="land-water" cx="${f(cx)}" cy="${f(y - 3)}" rx="12.6" ry="3.2"/><ellipse class="land-water-2" data-flow cx="${f(cx - 3)}" cy="${f(y - 3.6)}" rx="4" ry="1"/><rect class="land-front" x="${f(cx - 2)}" y="${f(y - 17)}" width="4" height="14"/><ellipse class="land-front" cx="${f(cx)}" cy="${f(y - 17)}" rx="7" ry="2.2"/><ellipse class="land-water-2" data-jet cx="${f(cx)}" cy="${f(y - 21)}" rx="1.6" ry="3.4"/>`;
 
-// Caseta de «Información» junto a la muralla, a la derecha de la puerta (a la izquierda va la lápida de la primera época): caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
+// Caseta de «Información» en el borde de la plaza, a la derecha de la puerta (a la izquierda va la lápida de la primera
+// época), apartada del botón «Tú» de la esquina: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
 // «Cómo se juega» (el botón transparente que la cubre lo pone path-signs.js con KIOSK).
-export const KIOSK = { x: 318, y: 134, w: 32, h: 22 };
+export const KIOSK = { x: 268, y: 136, w: 32, h: 22 };
 const kiosk = ({ x, y, w, h }) => {
   const d = 10 * KX;
   const top = y - h;
@@ -59,9 +60,9 @@ const START_BACK = `<ellipse class="land-shade" cx="${PX + 28}" cy="${PY + 9}" r
       <rect class="land-front" x="326" y="44" width="12" height="36"/><path class="land-side" d="M338 80V44L344 40.4V76.4Z"/><path class="land-top" d="M326 44H338L344 40.4H332Z"/><path class="land-tile-2" d="M326 44H338L335 22Z"/><path class="land-tile" d="M338 44L344 40.4L335 22Z"/><path class="land-window" data-lamp d="M330 56V51a2 2 0 0 1 4 0V56Z"/>
       ${wall(-10, GATE.left, GATE.y, 18)}${wall(GATE.right + GATE.tower, 400, GATE.y, 18)}
       ${fountain(96, PY + 10)}${tree(30, PY + 6, 8)}${cypress(122, PY + 20, 22)}
-      ${flowers(260, PY + 22)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${kiosk(KIOSK)}${flowers(KIOSK.x - 14, KIOSK.y + 4)}`;
-// Delante del sendero: las dos torres de la puerta y el arco por el que pasa.
-const START_FRONT = `${tower(GATE.left, GATE.y, GATE.tower, GATE.h)}${tower(GATE.right, GATE.y, GATE.tower, GATE.h)}
+      ${flowers(232, PY + 28)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${flowers(KIOSK.x + 50, KIOSK.y + 4)}`;
+// Delante del sendero (y de la plaza): las dos torres de la puerta, el arco por el que pasa y la caseta.
+const START_FRONT = `${kiosk(KIOSK)}${tower(GATE.left, GATE.y, GATE.tower, GATE.h)}${tower(GATE.right, GATE.y, GATE.tower, GATE.h)}
       <path class="land-top" d="M${GATE.left + GATE.tower} 68H${GATE.right}L${GATE.right + 4} 65.6H${GATE.left + GATE.tower + 4}Z"/>
       <path class="land-front" d="M${GATE.left + GATE.tower} 68H${GATE.right}V82Q${(GATE.left + GATE.tower + GATE.right) / 2} 70 ${GATE.left + GATE.tower} 82Z"/>
       ${[0, 1, 2, 3].map((i) => `<rect class="land-front" x="${GATE.left + GATE.tower + 2 + i * 11}" y="64" width="5" height="4"/>`).join('')}`;

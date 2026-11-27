@@ -397,7 +397,7 @@ html.reduce-motion .ring-halo { animation: none; }
 @keyframes halo { 0% { opacity: .6; transform: scale(.92); } 70%, 100% { opacity: 0; transform: scale(1.12); } }
 /* Aviso al pulsar una parada cerrada (screens/lock-note.js): un solo globo bajo el nodo, con su cruz. */
 .lock-note {
-  position: absolute; top: 26px; left: 44px; z-index: 4; display: flex; align-items: center; gap: 2px; width: max-content; max-width: min(232px, calc(100vw - 32px)); margin: 0; padding: 0 0 0 calc(.65 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-tag); box-shadow: 0 2px 0 var(--map-sign-line), inset 0 0 0 1px var(--map-sign-line);
+  position: absolute; top: 26px; left: 44px; z-index: var(--map-z-sign-start); display: flex; align-items: center; gap: 2px; width: max-content; max-width: min(var(--lock-note-w), calc(100vw - 32px)); margin: 0; padding: 0 0 0 calc(.65 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-tag); box-shadow: 0 2px 0 var(--map-sign-line), inset 0 0 0 1px var(--map-sign-line);
   color: var(--ink); opacity: 0; visibility: hidden; pointer-events: none;
   transition: opacity .2s, visibility 0s .2s;
 }
@@ -405,6 +405,10 @@ html.reduce-motion .ring-halo { animation: none; }
 .lock-note-close { display: grid; flex: none; place-items: center; width: var(--hit); height: var(--hit); margin: calc(-.25 * var(--map-fs)) 0; padding: 0; border: 0; border-radius: var(--map-r); background: none; color: var(--ink-2); cursor: pointer; }
 .lock-note-close:focus-visible { outline: 2.5px solid var(--ink); outline-offset: -4px; }
 .stage-spot.is-right .lock-note { left: auto; right: 44px; }
+/* En un cartel de rama, debajo de él (nunca sobre su texto ni sobre el mojón que puede ir encima). */
+.branch-spot .lock-note { top: calc(100% + var(--lock-note-gap)); }
+.branch-spot.is-left .lock-note { left: auto; right: 0; }
+.branch-spot.is-right .lock-note { left: 0; }
 .lock-note.is-visible { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .2s; }
 /* El candado tiembla como un cofre cerrado al tocarlo. */
 .is-shaking { animation: lock-shake var(--dur-lock-shake) var(--ease); }

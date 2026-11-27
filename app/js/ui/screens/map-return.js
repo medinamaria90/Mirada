@@ -7,6 +7,10 @@ import { $, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
 
 const VIEW_MARGIN = '-96px 0px -96px 0px';   // la cabecera y la barra de abajo tapan esa franja
+
+// La parada queda por encima del centro de la pantalla: la flecha apunta arriba. Se calcula con cada desplazamiento
+// (no solo cuando la parada entra o sale de la vista: un salto largo nunca la cruza).
+export const pointsUp = (dotTop, viewH) => dotTop < viewH / 2;
 export const RETURN_TEXT = 'Tú';
 
 export function watchReturn(el) {
@@ -24,10 +28,19 @@ export function watchReturn(el) {
     stage.scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
     stage.focus({ preventScroll: true });
   });
-  const io = new IntersectionObserver(([entry]) => {
-    button.hidden = entry.isIntersecting;
-    button.classList.toggle('is-up', entry.boundingClientRect.top < 0);
-  }, { rootMargin: VIEW_MARGIN });
+  let away = false;
+  let frame = 0;
+  // Mientras está la tarjeta de pintores nuevos (abajo, en el mismo sitio), el botón se aparta.
+  const update = () => {
+    frame = 0;
+    button.hidden = !away || Boolean(el.querySelector('.news-card:not(.is-leaving)'));
+    button.classList.toggle('is-up', pointsUp(dot.getBoundingClientRect().top, window.innerHeight));
+  };
+  const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+  const io = new IntersectionObserver(([entry]) => { away = !entry.isIntersecting; update(); }, { rootMargin: VIEW_MARGIN });
   io.observe(dot);
-  return () => { io.disconnect(); button.remove(); };
+  const news = new MutationObserver(onScroll);
+  news.observe(el, { childList: true, subtree: false });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return () => { io.disconnect(); news.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(frame); button.remove(); };
 }
