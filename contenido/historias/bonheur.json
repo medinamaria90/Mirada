@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en los caballos, que se encabritan en un lienzo de unos cinco metros de ancho. Se expuso en el Salón de 1853 y hoy está en el Metropolitan de Nueva York.",
      "artwork": "w40432",
+     "region": [
+      0.4,
+      0.1,
+      0.65,
+      0.9
+     ],
      "source": "https://www.metmuseum.org/toah/works-of-art/87.25"
     }
    ]

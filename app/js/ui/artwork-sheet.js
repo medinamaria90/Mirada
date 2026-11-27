@@ -1,5 +1,7 @@
 // Página de una obra, abierta desde «Ver más» del dato curioso en la hoja de feedback: el cuadro grande (abre el visor
-// con la lupa), título, año y pintor (su ficha), el dato curioso, la explicación larga si la hay y la ficha de museo (las fuentes, en «Fuentes y créditos»).
+// con la lupa), título, año y pintor (su ficha), el dato curioso, la explicación larga si la hay, la ficha de museo (las fuentes,
+// en «Fuentes y créditos») y «Más de <pintor>» (sus otras obras vistas: se pasa de una a otra sin cerrar). También se abre
+// desde «Ver más» del visor en la Colección y la ficha del pintor.
 // Va en un diálogo a pantalla completa, sin cambiar de ruta, para no perder la ronda; el «atrás» del móvil lo cierra
 // (entrada de historial propia, marcada también como guarda de la ronda para que la ronda no lo tome por salir).
 
@@ -40,7 +42,18 @@ function pageHtml(ctx, work) {
       ${work.year ? `<p class="ws-year">${esc(work.year)}</p>` : ''}
       ${painter}
     </header>
-    ${curio}${about}${factsHtml(work)}`;
+    ${curio}${about}${factsHtml(work)}${moreOfHtml(ctx, work, artist)}`;
+}
+
+// «Más de <pintor>»: sus otras obras ya vistas; tocar una cambia la página a esa obra sin cerrarla.
+const MORE_OF_MAX = 12;
+function moreOfHtml(ctx, work, artist) {
+  if (!artist) return '';
+  const others = seenOf(ctx.store.get().progress, ctx.index, artist.id).filter((w) => w.id !== work.id).slice(0, MORE_OF_MAX);
+  if (!others.length) return '';
+  return `<section class="ws-more" aria-labelledby="ws-more-h"><h3 id="ws-more-h" class="ap-h">Más de ${esc(artist.short || artist.name)}</h3>
+    <ul class="ws-more-list">${others.map((w) => `<li><button type="button" class="ws-more-item" data-ws="work" data-id="${esc(w.id)}" aria-label="${esc(w.title)}">${artFrame(w, { alt: '', cls: 'ws-more-art', label: w.title, small: true })}</button></li>`).join('')}</ul>
+  </section>`;
 }
 
 export async function openArtworkSheet(ctx, workId, opts = {}) {
@@ -48,7 +61,7 @@ export async function openArtworkSheet(ctx, workId, opts = {}) {
   if (!work) return null;
   const turn = slot.begin();
   const opener = opts.opener || document.activeElement;
-  await Promise.all([loadCss('css/ficha.css'), loadCss('css/obra.css'), ensureFicha(ctx.index)]);
+  await Promise.all([loadCss('css/ficha.css'), loadCss('css/obra.css'), ensureFicha(ctx.index), ctx.ensureText?.()]);
   if (slot.stale(turn)) return null;
   const dlg = document.createElement('dialog');
   dlg.className = 'artist-sheet work-sheet';
@@ -92,7 +105,18 @@ export async function openArtworkSheet(ctx, workId, opts = {}) {
   const onHash = () => close({ silent: true });
   handle.close = close;
   slot.take(handle);
-  dlg.addEventListener('click', (ev) => { if (ev.target === dlg || ev.target.closest('[data-ws="close"]')) close(); });
+  dlg.addEventListener('click', (ev) => {
+    if (ev.target === dlg || ev.target.closest('[data-ws="close"]')) return close();
+    const next = ev.target.closest('[data-ws="work"]');
+    const nextWork = next && ctx.index.artwork(next.dataset.id);
+    if (!nextWork) return;
+    ctx.audio.sfx('tap');
+    const box = dlg.querySelector('.ws');
+    box.innerHTML = pageHtml(ctx, nextWork);
+    dlg.scrollTop = 0;
+    box.scrollTop = 0;
+    box.querySelector('.ap-close').focus({ preventScroll: true });
+  });
   // Esc cierra la página y no llega a la ronda (que lo tomaría por «salir»).
   dlg.addEventListener('keydown', (ev) => {
     if (ev.key !== 'Escape') return;

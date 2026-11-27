@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en el niño frente al viejo monje, bajo un árbol, en un paisaje de otoño: es el futuro san Sergio, en el momento de su visión.",
      "artwork": "w4110588",
+     "region": [
+      0.49,
+      0.0,
+      0.82,
+      1.0
+     ],
      "source": "https://es.wikipedia.org/wiki/La_visi%C3%B3n_del_joven_Bartolom%C3%A9"
     }
    ]

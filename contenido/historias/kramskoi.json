@@ -13,6 +13,12 @@
     {
      "text": "Su Cristo no hace milagros: está sentado en las piedras, agotado, con las manos apretadas. De aquella rebeldía nacieron los Ambulantes, que llevaban el arte por toda Rusia.",
      "artwork": "w2354080",
+     "region": [
+      0.35,
+      0.15,
+      0.75,
+      0.95
+     ],
      "source": "https://es.wikipedia.org/wiki/Iv%C3%A1n_Kramsk%C3%B3i"
     },
     {

@@ -45,7 +45,8 @@ export const ZOOM_BADGE = '<span class="zoom-badge" aria-hidden="true"><svg widt
 //   dispersas, cada una trae una hoja entera del atlas y pedirlas todas de golpe pesa megas.
 // alt vacío: imagen decorativa (el texto va en el botón o la tarjeta que la contiene).
 // zoom: el cuadro es un botón que lo abre en el visor a pantalla completa (ui/viewer.js):
-//   { group?, label? } usa la delegación global (data-zoom; con pie de título · autor · año);
+//   { group?, label?, more? } usa la delegación global (data-zoom; con pie de título · autor · año; more: con su dato
+//   curioso y «Ver más», que abre la página de la obra: ui/viewer-more.js);
 //   { action, label } deja la acción a la pantalla (p. ej. en las preguntas, sin revelar nada).
 export function artFrame(artwork, opts = {}) {
   if (!artwork) return '';
@@ -62,7 +63,7 @@ export function artFrame(artwork, opts = {}) {
   const z = opts.zoom;
   const tag = z ? 'button' : 'span';
   const zoomAttrs = !z ? '' : ` type="button" aria-label="${esc(z.label || `Ver en grande: ${artwork.title}`)}"${
-    z.action ? ` data-action="${esc(z.action)}"` : ` data-zoom="${esc(artwork.id)}"${z.group ? ` data-zoom-group="${esc(z.group)}"` : ''}`}`;
+    z.action ? ` data-action="${esc(z.action)}"` : ` data-zoom="${esc(artwork.id)}"${z.group ? ` data-zoom-group="${esc(z.group)}"` : ''}${z.more ? ' data-zoom-more="1"' : ''}`}`;
   return `<${tag} class="art ${sheet ? 'art-sheet ' : ''}${z ? 'art-zoom ' : ''}${opts.cls || ''} ${failed ? 'is-broken' : ''}" style="${style}" data-art="${esc(artwork.id)}" data-label="${esc(label)}"${zoomAttrs}>${
     failed
       ? ''
