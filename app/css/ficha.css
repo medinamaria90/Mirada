@@ -1,6 +1,20 @@
 /* Ficha de pintor (ui/artist-profile.js, pantalla y diálogo) y galería del pintor (screens/artist-works.js), al estilo de un
    perfil de Instagram. Todo color sale de brand.css; el acento lo pone el movimiento del pintor. */
 
+:root {
+  --ap-pad: 1.25rem;
+  --ap-cover-h: clamp(176px, 50vw, 240px);
+  --ap-avatar: 104px;
+  --ap-overlap: 64px;          /* cuánto sube la identidad sobre el final de la portada */
+  --ap-strip-h: clamp(132px, 36vw, 180px);
+  --ap-detail: 72px;           /* detalle de «Cómo reconocerlo» */
+  --ap-detail-zoom: 2.4;       /* aumento del detalle sobre el cuadro entero */
+  --ap-twin-av: 48px;
+  --ap-mini-h: 64px;
+  --ap-mini-av: 36px;
+  --ap-mini-play-h: 44px;
+}
+
 .ap { position: relative; color: var(--ink); }
 .ap-page { padding: 0 0 calc(var(--safe-b) + 5.5rem); margin: 0; }
 .page-artist .content.ap-page, .page-works .content.aw { padding-top: 0; }
@@ -9,69 +23,90 @@
 
 /* Portada a sangre con su cuadro más famoso de los ya vistos (sin spoilers) que se funde con el fondo. */
 .ap-hero { position: relative; }
-.ap-cover { position: relative; height: clamp(230px, 66vw, 340px); overflow: hidden; background: linear-gradient(160deg, var(--accent), color-mix(in srgb, var(--accent) 40%, var(--bg))); }
-.ap-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-.ap-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, color-mix(in srgb, var(--viewer-bg) 55%, transparent) 0, transparent 38%, transparent 55%, var(--bg) 100%); }
+.ap-cover { position: relative; height: var(--ap-cover-h); overflow: hidden; }
+.ap-cover:empty { background: linear-gradient(160deg, var(--accent), color-mix(in srgb, var(--accent) 40%, var(--bg))); }
+/* El cuadro se funde con el fondo con una máscara (sin filo al final de la portada; de la máscara solo cuenta la opacidad). */
+.ap-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; -webkit-mask-image: linear-gradient(to bottom, var(--bg) 50%, transparent 98%); mask-image: linear-gradient(to bottom, var(--bg) 50%, transparent 98%); }
+.ap-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, color-mix(in srgb, var(--viewer-bg) 45%, transparent) 0, transparent 38%); pointer-events: none; }
 .ap-back, .ap-close {
   position: absolute; z-index: 2; top: calc(env(safe-area-inset-top, 0px) + .6rem); display: grid; place-items: center; width: 48px; height: 48px;
   border: 0; border-radius: 999px; background: color-mix(in srgb, var(--viewer-bg) 72%, transparent); color: var(--viewer-ink); box-shadow: 0 0 0 1px color-mix(in srgb, var(--viewer-ink) 24%, transparent); cursor: pointer;
 }
 .ap-back { left: .6rem; }
 .ap-close { right: .6rem; }
-.ap-id { position: relative; display: flex; flex-wrap: wrap; align-items: flex-end; gap: .6rem 1rem; margin-top: -48px; padding: 0 1.2rem; }
+.ap-id { position: relative; display: flex; flex-wrap: wrap; align-items: flex-end; gap: .6rem .9rem; margin-top: calc(-1 * var(--ap-overlap)); padding: 0 var(--ap-pad); }
 
 /* Avatar con el anillo de historia: degradado de marca si no se ha visto, gris si ya se vio. */
 .ap-avatar { flex: none; padding: 0; border: 0; background: none; border-radius: 999px; line-height: 0; }
 button.ap-avatar { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 button.ap-avatar:active .ap-ring { transform: scale(.96); }
-.ap-ring { display: block; width: 104px; height: 104px; padding: 3px; border-radius: 999px; background: var(--line-2); transition: transform .15s var(--ease); }
+.ap-ring { display: block; width: var(--ap-avatar); height: var(--ap-avatar); padding: 3px; border-radius: 999px; background: var(--line-2); transition: transform .15s var(--ease); }
 .ap-ring.is-new { padding: 5px; background: linear-gradient(135deg, var(--brand), var(--gold) 55%, var(--accent)); }
 .ap-ring.is-none { background: var(--bg); padding: 0; }
 .ap-photo { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 999px; background: var(--surface-2); box-shadow: 0 0 0 3px var(--bg); }
 .ap-ring.is-none .ap-photo { box-shadow: 0 0 0 4px var(--bg); }
 .ap-who { flex: 1 1 11rem; min-width: 0; padding-bottom: .3rem; }
-.ap-name { font: 500 1.9rem/1.08 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; hyphens: manual; }
+.ap-name { font: 600 1.72rem/1.05 var(--font); letter-spacing: -.03em; overflow-wrap: break-word; hyphens: manual; }
 .ap-meta { margin-top: .25rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.ap-tags { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .9rem 1.2rem 0; }
+.ap-tags { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .9rem var(--ap-pad) 0; }
 .ap-era { display: inline-flex; align-items: center; min-height: 30px; padding: 0 .8rem; border-radius: 999px; background: color-mix(in srgb, var(--accent) 22%, var(--surface)); font: 600 .82rem/1.2 var(--font); }
-/* «Por qué importa»: lo primero que se lee, grande y con aire; un filete del color de su movimiento. */
-.ap-why { margin: 1.3rem 1.2rem 0; padding-left: 1rem; border-left: 3px solid var(--accent-ui); font: 400 1.32rem/1.42 var(--font); letter-spacing: -.005em; text-wrap: pretty; }
+/* «Por qué importa»: lo primero que se lee; debajo, la fila de sus niveles. */
+.ap-why { margin: .9rem var(--ap-pad) 0; font: 400 1.06rem/1.42 var(--font); text-wrap: pretty; }
+.ap-hero .hl-row { --hl-ring: var(--bg); gap: 12px; margin-top: 1rem; padding: 0 var(--ap-pad); }
+.ap-hero .hl-more { padding: 0 var(--ap-pad); }
 
-.ap-actions { display: flex; flex-wrap: wrap; gap: .6rem; padding: 1.2rem 1.2rem 0; }
+.ap-actions { display: flex; flex-wrap: wrap; gap: .6rem; padding: 1.2rem var(--ap-pad) 0; }
 .ap-actions .btn { flex: 1 1 9rem; min-width: 0; padding: .5rem 1rem; text-align: center; overflow-wrap: break-word; }
 .ap-actions .btn-secondary { flex: 0 0 auto; white-space: nowrap; }
 @media (min-width: 720px) { .ap-actions .btn-primary { flex: 0 1 auto; min-width: 12rem; } }
 
-.ap-bio, .ap-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem; padding: 1.6rem 1.2rem 0; }
-.ap-bio { font: 400 1.08rem/1.55 var(--font); }
-.ap-facts { display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; margin: 0; }
-.ap-facts div { display: grid; gap: .1rem; }
-.ap-facts dt { color: var(--ink-2); font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; }
-.ap-facts dd { margin: 0; font: 500 1.5rem/1.1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
-.ap-h { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; font: 500 1.15rem/1.1 var(--font); letter-spacing: var(--track); }
-.ap-count { font: 600 .82rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.ap-hint { font: 400 1.05rem/1.5 var(--font); }
-.ap-traits { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; font: 400 1.05rem/1.4 var(--font); }
-.ap-traits li { position: relative; padding-left: 1.2rem; }
-.ap-traits li::before { content: ""; position: absolute; left: 0; top: .55em; width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
+.ap-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: .75rem; padding: 1.75rem var(--ap-pad) 0; }
+.ap-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-height: 44px; }
+.ap-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .4rem; font: 600 1.18rem/1.15 var(--font); letter-spacing: -.02em; }
+.ap-count { font: 500 .9rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.ap-all { flex: none; display: inline-flex; align-items: center; gap: .1rem; min-height: 44px; padding: 0 0 0 .5rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; }
+/* «Cómo reconocerlo»: cada rasgo, con un detalle recortado del cuadro que lo enseña. */
+.ap-traits { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; }
+.ap-trait { display: flex; align-items: center; gap: .9rem; width: 100%; min-height: calc(var(--ap-detail) + 1rem); padding: .5rem .9rem .5rem .5rem; border: 0; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-card); color: var(--ink); font: inherit; text-align: left; }
+button.ap-trait { cursor: zoom-in; }
+.ap-trait p { margin: 0; min-width: 0; font: 400 1.02rem/1.3 var(--font); overflow-wrap: break-word; }
+li.ap-trait { padding-left: .9rem; }
+.ap-detail { position: relative; flex: none; width: var(--ap-detail); height: var(--ap-detail); overflow: hidden; border-radius: var(--radius-sm); background: var(--surface-2); }
+.ap-detail img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(var(--ap-detail-zoom)); }
 
-.ap-stages { display: grid; gap: .2rem; margin: 0; padding: 0; list-style: none; }
-.ap-stage { display: grid; grid-template-columns: auto minmax(0, max-content) auto 1fr; align-items: center; gap: .7rem; min-height: 48px; padding: .3rem 0; }
-button.ap-stage { width: 100%; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-button.ap-stage:hover { background: var(--surface-2); }
-.ap-stage-go { justify-self: end; color: var(--ink-2); }
-.ap-stage-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); }
-.ap-stage.is-mastered .ap-stage-mark { background: var(--gold); color: var(--on-gold); }
-.ap-stage.is-started .ap-stage-mark, .ap-stage.is-available .ap-stage-mark { background: var(--brand); color: var(--on-brand); }
-.ap-stage-name { overflow-wrap: anywhere; }
-.ap-stage-state { font: 600 .8rem/1 var(--font); color: var(--ink-2); }
+/* «No lo confundas con»: fichas a la ficha de cada parecido. */
+.ap-twins { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); gap: .6rem; margin: 0; padding: 0; list-style: none; }
+.ap-twin { display: flex; align-items: center; gap: .6rem; width: 100%; min-height: 64px; padding: .5rem .8rem .5rem .5rem; border: 0; border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm); color: var(--ink); font: 600 .98rem/1.15 var(--font); text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.ap-twin:active { transform: translateY(var(--relief-sm)); box-shadow: var(--lift-down); }
+@media (hover: hover) and (pointer: fine) { .ap-twin:hover { background: var(--bg); } }
+.ap-twin-av { flex: none; width: var(--ap-twin-av); height: var(--ap-twin-av); }
+
+/* Cabecera compacta: aparece al desplazarse, con «Jugar» siempre a mano. */
+.ap-mini {
+  position: fixed; z-index: 5; top: 0; left: 50%; display: flex; align-items: center; gap: .6rem; width: min(100%, 720px); height: calc(var(--ap-mini-h) + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) .9rem 0 .4rem; transform: translate(-50%, -100%); opacity: 0;
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  transition: transform var(--dur-pop) var(--ease), opacity var(--dur-pop) var(--ease);
+}
+.ap-mini.is-on { transform: translate(-50%, 0); opacity: 1; }
+.ap-mini-back { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 999px; background: none; color: var(--ink); cursor: pointer; }
+.ap-mini-av { flex: none; width: var(--ap-mini-av); height: var(--ap-mini-av); overflow: hidden; border-radius: 999px; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--gold); }
+.ap-mini-av .av { width: 100%; height: 100%; }
+.ap-mini-name { flex: 1; min-width: 0; overflow: hidden; font: 600 1.08rem/1.2 var(--font); text-overflow: ellipsis; white-space: nowrap; }
+.ap-mini-play {
+  flex: none; display: inline-flex; align-items: center; gap: .4rem; min-height: var(--ap-mini-play-h); padding: 0 1rem; border: 0; border-radius: 999px;
+  background: var(--brand); color: var(--on-brand); box-shadow: 0 var(--relief-sm) 0 var(--brand-shadow); font: 600 .95rem/1 var(--font); cursor: pointer;
+}
+.ap-mini-play .icon { fill: currentColor; stroke: none; }
+@media (prefers-reduced-motion: reduce) { .ap-mini { transition: none; } }
+html.reduce-motion .ap-mini { transition: none; }
 
 /* Tira deslizable de sus cuadros vistos: a sangre por la derecha, con la siguiente asomando para invitar a deslizar. */
 .ap-gallery { padding-right: 0; }
-.ap-gallery > :not(.ap-strip) { margin-right: 1.2rem; }
-.ap-strip { display: flex; gap: .55rem; margin: 0 0 0 -1.2rem; padding: .2rem 1.2rem .5rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 1.2rem; scrollbar-width: none; list-style: none; }
+.ap-gallery > :not(.ap-strip) { margin-right: var(--ap-pad); }
+.ap-strip { display: flex; gap: .6rem; margin: -.25rem 0 -.6rem calc(-1 * var(--ap-pad)); padding: .2rem var(--ap-pad) 1.1rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--ap-pad); scrollbar-width: none; list-style: none; }
 .ap-strip::-webkit-scrollbar { display: none; }
-.ap-strip { --strip-h: clamp(150px, 44vw, 200px); align-items: flex-end; }
+.ap-strip { --strip-h: var(--ap-strip-h); align-items: flex-end; }
 .ap-strip > li { flex: none; scroll-snap-align: start; }
 /* Cada cuadro con su forma, a la misma altura (uno muy apaisado se queda más bajo antes que desbordar). */
 .ap-strip .art { width: min(calc(var(--strip-h) * var(--arw) / var(--arh)), 76vw); border-radius: var(--radius-sm); }
@@ -82,7 +117,6 @@ button.ap-stage:hover { background: var(--surface-2); }
 .ap-gap { aspect-ratio: 1; border: 2px dashed var(--line-2); border-radius: 4px; }
 .ap-missing { display: flex; flex-wrap: wrap; align-items: center; gap: 0 .6rem; margin: .4rem 0 0; color: var(--ink-2); font: 500 .95rem/1.4 var(--font); }
 .ap-missing-link { display: inline-flex; align-items: center; gap: .1rem; min-height: 48px; padding: 0 .4rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
-.ap-more { display: inline-flex; align-items: center; justify-content: center; gap: .3rem; min-height: 48px; margin-top: .3rem; border: 0; background: none; color: var(--brand-text); font: 600 1rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 
 /* Diálogo (dentro de una ronda). */
 .artist-sheet { box-sizing: border-box; width: min(100vw, 520px); height: min(100dvh, 880px); max-width: none; max-height: none; margin: auto; padding: 0; border: 0; border-radius: 0; background: var(--bg); color: var(--ink); overflow: hidden; }
@@ -111,13 +145,3 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
 .aw-more { margin: 1rem .8rem 0; color: var(--ink-2); font: 500 1rem/1.4 var(--font); }
 .aw-who { display: block; margin-top: 2px; color: var(--ink-2); font: 500 .74rem/1.15 var(--font); overflow-wrap: break-word; }
 .aw-empty { margin: 2rem 1.2rem; display: grid; gap: 1rem; justify-items: center; text-align: center; color: var(--ink-2); }
-
-/* «Quién fue»: la biografía corta, plegada; se abre tocando el título. */
-.ap-life-sum { min-height: 48px; cursor: pointer; list-style: none; align-items: center; }
-.ap-life-sum::-webkit-details-marker { display: none; }
-.ap-life-h { font: inherit; }
-.ap-life-chev { display: grid; color: var(--ink-2); transition: transform .2s var(--ease); }
-.ap-life[open] .ap-life-chev { transform: rotate(90deg); }
-.ap-life-body { display: grid; gap: .7rem; }
-@media (prefers-reduced-motion: reduce) { .ap-life-chev { transition: none; } }
-.ap-life-text { margin: 0; color: var(--ink); font: 400 1.05rem/1.55 var(--font); text-wrap: pretty; }

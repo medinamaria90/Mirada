@@ -16,6 +16,7 @@ export const ROUTES = {
   free: 'ronda-libre',
   weekly: 'reto-semanal',
   credits: 'fuentes',
+  about: 'acerca',
 };
 
 // Ronda «a fondo» de un pintor: a-fondo-<pintor>-<nivel> (nivel 2 en adelante).
@@ -25,6 +26,9 @@ export const deepRoute = (artistId, level) => `a-fondo-${artistId}-${level}`;
 // Un nombre que no es ninguna ruta devuelve { name: 'invalid' } (se avisa y se va al inicio).
 // Ruta de la etapa de un pintor; desde una rama lleva la rama («etapa-giotto--gotico») para seguir en ella.
 export const stageRoute = (artistId, branchId = '') => `etapa-${artistId}${branchId ? `--${branchId}` : ''}`;
+
+// Historia compartida (ui/story-link.js): la ve cualquiera, juegue o no, sin tocar su progreso.
+export const storyRoute = (artistId, level) => `historia-${artistId}-${level}`;
 
 // Pantalla de una rama (su propio paisaje y sus pintores): rama-<id>.
 export const branchRoute = (branchId) => `rama-${branchId}`;
@@ -52,6 +56,7 @@ export function parseRoute(hash, opts = {}) {
   if (name === ROUTES.free) return { name: 'free' };
   if (name === ROUTES.weekly) return { name: 'weekly' };
   if (name === ROUTES.credits) return { name: 'credits' };
+  if (name === ROUTES.about) return { name: 'about' };
   let m = /^obras-invitados-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'works', spec: { kind: 'guests', movementId: m[1] } };
   m = /^obras-([a-z0-9-]+)$/.exec(name);
@@ -64,6 +69,8 @@ export function parseRoute(hash, opts = {}) {
   if (m) return { name: 'deep', artistId: m[1], level: Number(m[2]) };
   m = /^etapa-([a-z0-9]+(?:-[a-z0-9]+)*)(?:--([a-z0-9]+(?:-[a-z0-9]+)*))?$/.exec(name);
   if (m) return { name: 'stage', artistId: m[1], branchId: m[2] || '' };
+  m = /^historia-([a-z0-9-]+)-([1-9])$/.exec(name);
+  if (m) return { name: 'story', artistId: m[1], level: Number(m[2]) };
   m = /^rama-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'branch', branchId: m[1] };
   m = /^repaso-([a-z0-9-]+)$/.exec(name);
