@@ -206,6 +206,33 @@ fallecidos antes de 1956 y obras anteriores a 1930. Movimientos previstos (ids):
   si se acierta (cuenta para la meta, no para la racha).
 - Estado v4 (`state/schema.js`, migración 3 → 4): `progress.weekly` y `progress.detail`.
 
+## 4 bis bis. Un único repaso y el siguiente paso (27/11, diseño aprobado por María)
+
+- **Repasar (botón ↻):** la única sesión de repaso a mano, en `#repaso` (`#repaso5` y `#repaso-rapido` redirigen).
+  `engine/review.js reviewSession(progress, index, today)` elige 7 cuadros sin repetir, por este orden: fallados de la
+  cola de cualquier pintor jugado (como mucho 3, los más antiguos), 2 vistos del pintor a medias con peor `best`, vencidos
+  del repaso espaciado (caja más baja primero), 1 de un pintor apagado y relleno con lo que lleva más tiempo sin salir.
+  Nunca pintores sin jugar. `planner.planReviewSession`: preguntas del repaso espaciado (dificultad 0,6, reintento de lo
+  fallado), `kind: 'srs'`; da XP, meta y racha y no cambia el dominio. El botón aparece desde 3 cuadros vistos
+  (`hasReview`), nunca con candado, y lleva un punto coral sin número si hay fallados, vencidos o pintores a medias
+  (`reviewPending`). Va en la cabecera (`shell.js`, `REVIEW_PLACE`) entre la racha y el reto diario.
+- **Mapa:** sin «Repite». El pintor a medias llena el tramo del nivel 1 de su aro en proporción a `best / 0,75`
+  (`level-ring.js startedRing`, `deep-badges.js`), con insignia ↻; aria-label «X, a medias, 67 %. Dominas con 75 %». Su
+  tarjeta (`level-card.js`) dice «67 % · dominas con 75 %» o «Te faltan n cuadros por ver» y «Repetir». El nodo de época
+  se llama «Prueba de época». Los repasos invisibles (cuadro de repaso en cada ronda, fallado extra, apagado) siguen igual.
+- **Siguiente paso** (`engine/next-step.js nextStep`): un solo botón principal al cerrar nivel, sala, repaso y retos
+  diario y semanal, y en la última tarjeta de una historia repetida desde un nodo; los duelos no lo llevan. Reglas, gana la
+  primera: (1) etapa o sala < 50 % → «Repetir»; (1 bis) se entró desde el Perfil o los logros → «Volver al perfil»;
+  (2) la sesión cumple la meta → «Por hoy, hecho» y «Volver al camino»; (3) repaso con un pintor a medias → «Volver a X»;
+  (4) ≥ 3 a medias o ≥ 5 fallados, sin repaso ni ahora ni antes → «Repasar»; (5) «a fondo» o rama con siguiente;
+  (6) parada abierta sin jugar → «Sigue: X» con su miniatura; (7) camino dominado y semanal pendiente → «Reto semanal»;
+  si no, el nivel que pide el rango y, con el camino dominado, «Repasar». Con 50-74 % «Repetir» va como secundario. Frenos:
+  nada arranca solo, nunca dos repasos seguidos (`prevKind` en memoria), siempre «Volver al camino» como secundario.
+- **Rango del Perfil** (`rank-goals.js`): `deepChoices` solo ofrece niveles «a fondo» que, aprobados, cuentan de verdad
+  (ordenados por cercanía); `rankFocus` elige una sola acción (el nivel que suma a más condiciones; «Jugar» si solo falta
+  XP); el resto, filas discretas; si nada cuenta aún, `whyNoChoice` en una línea sin botón. Lo jugado desde el Perfil o
+  los logros vuelve allí (`router.js GOAL_SCREENS`); al subir de rango, «¡Ya eres X! Ahora, a por Y».
+
 ## 4 ter. Catálogo grande (migración de 24/11, `catalog.json` versión 2)
 
 Lo genera `tools/catalog_from_pipeline.py` desde `catalogo/obras.json` + `catalogo/pintores.json` (proceso `pipeline/`),
