@@ -18,6 +18,12 @@ export function seenOf(progress, index, artistId) {
     .sort((a, b) => (a.yearSort || 0) - (b.yearSort || 0));
 }
 
+// Pintores que ya ha conocido: con algún nivel jugado o con la historia de su nivel 1 vista (`storySeen(id)`, que
+// guarda la interfaz). Solo a estos se pregunta por autor en el repaso de una etapa (planner.planStage, opts.met).
+export function metArtistIds(progress, index, storySeen = () => false) {
+  return index.artists.filter((a) => (progress.artists?.[a.id]?.plays || 0) > 0 || storySeen(a.id)).map((a) => a.id);
+}
+
 // Estado de un pintor: 'mastered' | 'started' | 'new'.
 // «Dominado» tiene UNA definición, la del motor: `progress.artists[id].mastered`, que se marca al superar una ronda de
 // su etapa habiendo visto todas sus obras de nivel 1 (engine/levels.js, engine/finish.js) y con ≥ 75 % de aciertos. Es la misma
@@ -53,16 +59,6 @@ export function painterGroups(progress, index, query = '') {
     if (artists.length) groups.push({ movement, known: known.length, total: all.length, hidden: all.length - known.length, artists });
   }
   return groups;
-}
-
-// Datos clave de la ficha (el relato es de la historia): cuántos cuadros hay, cuántos se han visto y cuántas etapas «a fondo» tiene
-// (las mismas que se listan). Son contadores de la app: no llevan fuente. [{ label, value }]
-export function factsOf(index, artist, seenCount) {
-  const facts = [{ label: 'Cuadros', value: index.worksOf(artist.id).length }];
-  if (seenCount > 0) facts.push({ label: 'Vistos', value: seenCount });
-  const deep = index.deepLevels(artist.id).length;
-  if (deep > 0) facts.push({ label: 'A fondo', value: deep });
-  return facts;
 }
 
 // Fuente de las fechas y el país del pintor (curados y comprobados con Wikidata): enlace a su ficha de Wikidata, o ''.

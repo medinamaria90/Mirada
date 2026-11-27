@@ -7,7 +7,7 @@ import { buildIndex, mergeCatalogText } from './engine/catalog.js';
 import { dayKey, madridDayKey } from './engine/dates.js';
 import { createStore, safeStorage, STORAGE_KEY } from './state/store.js';
 import { reconcileRoster, markRosterSeen } from './engine/roster.js';
-import { parseRoute, go } from './ui/router.js';
+import { parseRoute, go, ROUTES } from './ui/router.js';
 import { audio, loadAudioWhenIdle, applyAudioSettings, bindBackgroundPause } from './ui/audio-bridge.js';
 import { installArtListeners } from './ui/art.js';
 import { esc, onAction, focusHeading, clearAnnounce } from './ui/dom.js';
@@ -33,6 +33,7 @@ function preloadModules(list) {
   }
 }
 const loadWelcome = () => import('./ui/screens/welcome.js');
+const loadStoryLink = () => import('./ui/story-link.js');
 const loadHome = () => import('./ui/screens/home.js');
 const loadFlows = () => import('./ui/screens/flows.js');
 const loadCollection = () => import('./ui/screens/collection.js');
@@ -263,7 +264,16 @@ async function boot() {
     }
     if (currentRouteName) scrollByRoute.set(currentRouteName, window.scrollY);
     const token = ++renderToken;
-    const route = parseRoute(location.hash, { today: ctx.dailyDay() });
+    let route = parseRoute(location.hash, { today: ctx.dailyDay() });
+    // Historia compartida: se ve encima del camino (o de la bienvenida) y la dirección queda en el inicio, sin saltar a una ronda
+    // a medias.
+    if (route.name === 'story') {
+      const { artistId, level } = route;
+      history.replaceState(null, '', `${location.pathname}${location.search}#${ROUTES.home}`);
+      route = { name: 'home' };
+      firstRender = false;
+      loadStoryLink().then((m) => m.playSharedStory(ctx, artistId, level)).catch((err) => console.error(err));
+    }
     const routeName = String(location.hash || '').replace(/^#/, '') || 'inicio';
     if (routeName !== currentRouteName) { prevRoute = currentRouteName; currentRouteName = routeName; routeChanged(); }
     restoreY = navigationKind() === 'back' ? (scrollByRoute.get(routeName) ?? null) : null;

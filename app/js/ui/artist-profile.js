@@ -1,8 +1,9 @@
-// Ficha de pintor: lo primero, por qué importa. Portada grande (su cuadro más famoso de los ya vistos), avatar con anillo de
-// historia (o con el aro de niveles: ui/deep-badges.js), nombre, sello de categoría, sus historias destacadas (ui/level-row.js)
-// y la frase «por qué importa»; después jugar, la tira de sus cuadros
-// vistos, cómo reconocerlo, etapas, quién fue (plegable) y, al pie, sus datos. Solo obras ya vistas (sin spoilers). El
-// contenido es común a la pantalla (`#pintor-<id>`) y al diálogo que se abre dentro de una ronda (ui/artist-sheet.js).
+// Ficha de pintor, un perfil que se desplaza con un primer vistazo que se basta solo: portada, avatar con su aro, nombre,
+// sello, «por qué importa», la fila de círculos de sus niveles (ui/level-row.js) y el botón de jugar, con «Sus cuadros»
+// asomando. Debajo, sus cuadros vistos, cómo reconocerlo (cada rasgo con un detalle de un cuadro) y con quién no
+// confundirlo. Solo obras y pintores ya vistos (sin spoilers). El contenido es común a la pantalla
+// (`#pintor-<id>`, con cabecera compacta al desplazarse: screens/artist-page.js) y al diálogo de dentro de una ronda
+// (ui/artist-sheet.js).
 
 import { esc, joinNames } from './dom.js';
 import { icons } from './icons.js';
@@ -18,70 +19,68 @@ import { loadStory } from './story-data.js';
 import { levelStory, storyKey } from '../engine/stories.js';
 import { storySeen } from '../state/stories-seen.js';
 import { sealHtml } from './seal.js';
-import { factsOf, lifeSpan, seenOf, playTargets, stageList, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
+import { traitDetails, lookAlikes } from '../engine/ficha.js';
+import { lifeSpan, seenOf, playTargets, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
 
-const STAGE_LABEL = { mastered: 'Dominada', started: 'En marcha', available: 'Abierta', locked: 'Por abrir' };
-const STAGE_ICON = { mastered: 'check', started: 'play', available: 'play', locked: 'lock' };
 // La tira de cuadros enseña unos cuantos; el resto, en su galería.
 const STRIP_CELLS = 12;
 
 export { initials };
 
-function factsHtml(index, artist, seenCount) {
-  return `<dl class="ap-facts">${factsOf(index, artist, seenCount).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${f.value}</dd></div>`).join('')}</dl>`;
+// «Te faltan 24 · se desbloquean en sus etapas» (galería del pintor), con enlace a sus niveles en la ficha si procede.
+export function missingHtml(progress, index, artistId, seenCount, total) {
+  const note = missingNote(progress, index, artistId, seenCount, total);
+  if (!note) return '';
+  const link = note.toStages ? `<button type="button" class="ap-missing-link" data-artist="${esc(artistId)}" data-focus="stages">Ver etapas${icons.next(14)}</button>` : '';
+  return `<p class="ap-missing"><span>${esc(note.text)}</span>${link}</p>`;
 }
 
 const whyHtml = (artist) => (artist.why ? `<p class="ap-why">${esc(artist.why.text)}</p>` : '');
 
-function stagesHtml(stages, playable) {
-  if (!stages.length) return '';
-  const item = (s) => {
-    const inner = `<span class="ap-stage-mark" aria-hidden="true">${icons[STAGE_ICON[s.status]](16)}</span>
-      <span class="ap-stage-name">${esc(s.name)}</span><span class="ap-stage-state">${STAGE_LABEL[s.status]}</span>`;
-    return playable && s.status !== 'locked'
-      ? `<li><button type="button" class="ap-stage is-${s.status}" data-ap="deep" data-level="${s.id}" aria-label="${esc(s.name)}: ${STAGE_LABEL[s.status].toLowerCase()}, jugar">${inner}<span class="ap-stage-go" aria-hidden="true">${icons.next(16)}</span></button></li>`
-      : `<li class="ap-stage is-${s.status}">${inner}</li>`;
-  };
-  return `<section class="ap-section ap-stages-section" aria-labelledby="ap-stages-h"><h2 id="ap-stages-h" class="ap-h">Etapas</h2>
-    <ul class="ap-stages">${stages.map(item).join('')}</ul></section>`;
-}
-
-// «Quién fue»: la biografía corta (los textos de su historia de nivel 1), plegada al final: lo primero es por qué importa.
-function bioHtml(lv) {
-  const cards = lv ? lv.cards.filter((c) => c.text) : [];
-  if (!cards.length) return '';
-  return `<details class="ap-section ap-life"><summary class="ap-h ap-life-sum"><h2 class="ap-life-h">Quién fue</h2><span class="ap-life-chev" aria-hidden="true">${icons.next(18)}</span></summary>
-    <div class="ap-life-body">${cards.map((c) => `<p class="ap-life-text">${esc(c.text)}</p>`).join('')}</div></details>`;
-}
-
-function lookHtml(artist) {
-  const traits = Array.isArray(artist.traits) ? artist.traits.filter(Boolean) : [];
-  if (!traits.length && !artist.hint) return '';
-  const body = traits.length
-    ? `<ul class="ap-traits">${traits.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>`
-    : `<p class="ap-hint">${esc(artist.hint)}</p>`;
-  return `<section class="ap-section ap-look" aria-labelledby="ap-look-h"><h2 id="ap-look-h" class="ap-h">Cómo reconocerlo</h2>${body}</section>`;
-}
-
-// «Te faltan 24 · se desbloquean en sus etapas» con enlace a las etapas si procede (en la ficha baja a ellas; en la galería va a la ficha).
-export function missingHtml(progress, index, artistId, seenCount, total, where) {
-  const note = missingNote(progress, index, artistId, seenCount, total);
-  if (!note) return '';
-  const link = !note.toStages ? '' : where === 'ficha'
-    ? `<button type="button" class="ap-missing-link" data-ap="stages">Ver etapas${icons.next(14)}</button>`
-    : `<button type="button" class="ap-missing-link" data-artist="${esc(artistId)}" data-focus="stages">Ver etapas${icons.next(14)}</button>`;
-  return `<p class="ap-missing"><span>${esc(note.text)}</span>${link}</p>`;
-}
-
-// Tira deslizable con sus cuadros vistos (se abren a pantalla completa); lo que falta, un bloque discreto y, con navegación,
-// «Ver sus N cuadros».
-function galleryHtml(artist, seen, total, withLink, missing) {
+// Tira deslizable con sus cuadros vistos (se abren a pantalla completa) y, con navegación, «Ver todos» (su galería).
+function galleryHtml(artist, seen, total, withLink) {
   if (!seen.length) return '';
-  const more = withLink
-    ? `<button type="button" class="ap-more" data-ap="gallery">${seen.length === 1 ? 'Ver su cuadro' : `Ver sus ${seen.length} cuadros`}${icons.next(16)}</button>` : '';
-  return `<section class="ap-section ap-gallery" aria-labelledby="ap-gal-h"><h2 id="ap-gal-h" class="ap-h">Sus cuadros <span class="ap-count">${seen.length} de ${total}</span></h2>
+  const all = withLink ? `<button type="button" class="ap-all" data-ap="gallery">Ver todos${icons.next(16)}</button>` : '';
+  return `<section class="ap-section ap-gallery" aria-labelledby="ap-gal-h"><div class="ap-head"><h2 id="ap-gal-h" class="ap-h">Sus cuadros <span class="ap-count">${seen.length} de ${total}</span></h2>${all}</div>
     <ul class="ap-strip">${previewCells(seen, STRIP_CELLS).map((w) => `<li>${artFrame(w, { alt: '', cls: 'ap-strip-art', label: w.title, small: true, defer: true, zoom: { group: `ap-${artist.id}`, label: `Ver en grande: ${w.title}`, badge: false } })}</li>`).join('')}</ul>
-    ${missing}${more}</section>`;
+    </section>`;
+}
+
+const upperFirst = (t) => `${t.charAt(0).toUpperCase()}${t.slice(1)}`;
+
+// «Cómo reconocerlo»: cada rasgo con un detalle recortado del cuadro que lo enseña (se abre en grande al tocarlo).
+function lookHtml(artist, seen) {
+  const rows = traitDetails(artist, seen);
+  if (!rows.length) return '';
+  const item = (r) => {
+    const text = upperFirst(r.text.trim());
+    if (!r.work) return `<li class="ap-trait"><p>${esc(text)}</p></li>`;
+    const pos = `${r.x}% ${r.y}%`;
+    return `<li><button type="button" class="ap-trait" data-zoom="${esc(r.work.id)}" aria-label="${esc(`${text}. Ver en grande: ${r.work.title}`)}">
+      <span class="ap-detail" aria-hidden="true"><img src="${esc(mediumSrc(r.work))}" alt="" loading="lazy" decoding="async" style="object-position:${pos};transform-origin:${pos}"></span>
+      <p>${esc(text)}</p></button></li>`;
+  };
+  return `<section class="ap-section ap-look" aria-labelledby="ap-look-h"><h2 id="ap-look-h" class="ap-h">Cómo reconocerlo</h2>
+    <ul class="ap-traits">${rows.map(item).join('')}</ul></section>`;
+}
+
+// Cara de un pintor: su autorretrato o retrato visto o, si no, un detalle de su cuadro visto más famoso.
+function faceOf(progress, index, artistId) {
+  const seen = seenOf(progress, index, artistId);
+  const cover = coverWork(seen);
+  return avatarWork(seen) || (cover ? { work: cover, ...avatarCrop(cover) } : null);
+}
+
+// «No lo confundas con»: los parecidos ya conocidos, cada uno a su ficha (solo con navegación: dentro de una ronda, no).
+function twinsHtml(progress, index, artist, withLink) {
+  const ids = withLink ? lookAlikes(progress, index, artist) : [];
+  if (!ids.length) return '';
+  const twin = (id) => {
+    const a = index.artist(id);
+    return `<li><button type="button" class="ap-twin" data-ap="artist" data-id="${esc(id)}">${avatarHtml(a, faceOf(progress, index, id), 'ap-twin-av')}<span>${esc(a.short || a.name)}</span></button></li>`;
+  };
+  return `<section class="ap-section ap-twins-section" aria-labelledby="ap-twins-h"><h2 id="ap-twins-h" class="ap-h">No lo confundas con</h2>
+    <ul class="ap-twins">${ids.map(twin).join('')}</ul></section>`;
 }
 
 // Avatar: con aro de niveles (pintor dominado con niveles), tocarlo juega el siguiente nivel o, con todo hecho, vuelve a ver
@@ -113,13 +112,13 @@ function heroHtml(artist, movement, seen, story, tag, leadControl) {
         <p class="ap-meta">${esc(meta)}</p></div>
     </div>
     <div class="ap-tags">${sealHtml(artist)}${movement ? `<span class="ap-era">${esc(movement.name)}</span>` : ''}</div>
-    ${story.row ? `${story.row}<div class="hl-more" hidden></div>` : ''}
     ${whyHtml(artist)}
+    ${story.row ? `${story.row}<div class="hl-more" hidden></div>` : ''}
   </header>`;
 }
 
 // opts: { playable, branchId (abierta desde la hoja de una rama: manda el estado en esa rama), navigate (hay navegación:
-// galería enlazada), tag ('h1' | 'h2'), leadControl (aspa o atrás) }
+// galería y parecidos enlazados), tag ('h1' | 'h2'), leadControl (aspa o atrás) }
 export async function profileHtml(ctx, artistId, opts) {
   const { index } = ctx;
   const artist = index.artist(artistId);
@@ -149,11 +148,9 @@ export async function profileHtml(ctx, artistId, opts) {
   const storyInfo = { has: hasStory, isNew: !storySeen(storyKey(artistId, 1)), ring, playable: Boolean(opts.playable), row: levels.length > 1 || levels.some((l) => l.story) ? rowHtml(levels, opts.playable ? '' : 'is-watch') : '' };
   return `${heroHtml(artist, movement, seen, storyInfo, opts.tag || 'h2', opts.leadControl || '')}
     ${lock}${actions}
-    ${galleryHtml(artist, seen, total, opts.navigate, missingHtml(progress, index, artistId, seen.length, total, 'ficha'))}
-    ${lookHtml(artist)}
-    ${known ? stagesHtml(stageList(progress, index, artistId), opts.playable) : ''}
-    ${known ? bioHtml(levelStory(story, 1)) : ''}
-    <section class="ap-bio" aria-label="Datos">${factsHtml(index, artist, seen.length)}</section>`;
+    ${galleryHtml(artist, seen, total, opts.navigate)}
+    ${lookHtml(artist, seen)}
+    ${known ? twinsHtml(progress, index, artist, opts.navigate) : ''}`;
 }
 
 // Acciones de la ficha. hooks: { beforeGo() } se llama antes de salir a otra ruta.
@@ -179,7 +176,7 @@ export function wireProfile(ctx, root, artistId, hooks = {}) {
     const what = b.dataset.ap;
     if (what === 'story') {
       // «Jugar» de la última tarjeta hace lo mismo que el botón de jugar de la ficha; «Ver más» deja en la ficha.
-      const playBtn = root.querySelector('[data-ap="play"], [data-ap="deep"]');
+      const playBtn = root.querySelector('.ap-actions [data-ap]');
       const onPlay = playBtn ? () => playBtn.click() : false;
       import('./story-viewer.js').then((m) => m.playStory(ctx, artistId, 1, { force: true, onPlay, onMore: () => {} }))
         .then(() => root.querySelector('.ap-ring.is-new')?.classList.replace('is-new', 'is-seen'))
@@ -187,12 +184,6 @@ export function wireProfile(ctx, root, artistId, hooks = {}) {
     } else if (what === 'play') go(stageRoute(artistId, b.dataset.branch || ''));
     else if (what === 'deep') go(deepRoute(artistId, Number(b.dataset.level)));
     else if (what === 'gallery') go(`obras-${artistId}`);
-    else if (what === 'stages') {
-      // «Ver etapas» baja a ellas y mueve el foco a su título (el lector de pantalla se entera).
-      const h = root.querySelector('#ap-stages-h');
-      h?.setAttribute('tabindex', '-1');
-      h?.scrollIntoView({ block: 'start', behavior: 'smooth' });
-      h?.focus({ preventScroll: true });
-    }
+    else if (what === 'artist') go(`pintor-${b.dataset.id}`);
   });
 }

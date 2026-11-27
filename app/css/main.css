@@ -771,15 +771,6 @@ html.reduce-motion .ring-halo { animation: none; }
 .sq { width: 24px; height: 24px; border-radius: 5px; background: var(--line); }
 .sq.is-ok { background: var(--ok); }
 
-.event {
-  display: flex; align-items: center; gap: .85rem; padding: .8rem .95rem; border-radius: var(--radius);
-  background: var(--surface); border: 0; box-shadow: var(--lift-sm); animation: rise .5s var(--ease) both; animation-delay: .25s;
-}
-.event-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ui); flex: none; }
-.event-kicker { font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
-.event-title { font: 500 1.2rem/1.15 var(--font); }
-.event-sub { font-size: .9rem; color: var(--ink-2); }
-
 .medal {
   position: relative; display: grid; place-items: center; width: 52px; height: 52px; flex: none; border-radius: 999px;
   background: var(--accent); color: var(--on-accent);
@@ -803,18 +794,7 @@ html.reduce-motion .ring-halo { animation: none; }
 .duel-who { font-size: .82rem; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
 .duel-vs { font: 500 1.15rem/1.1 var(--font); text-align: center; }
 
-.level-line { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .7rem; font-size: .85rem; color: var(--ink-2); font-weight: 600; }
-.level-line .bar { height: 6px; border-radius: 6px; background: var(--line); overflow: hidden; }
-.level-line .bar > span { display: block; height: 100%; background: var(--brand); border-radius: inherit; transition: width .8s var(--ease); }
-
 .result-actions { display: grid; gap: .6rem; margin-top: auto; padding-top: .6rem; }
-/* La acción principal, siempre a la vista: barra pegada abajo (como la de «Practicar»), con la zona segura del móvil. */
-.result-body { padding-bottom: 0; }
-.result-dock {
-  position: sticky; bottom: 0; z-index: 4; margin: -.4rem -1.2rem 0; padding: .6rem 1.2rem calc(.7rem + var(--safe-b));
-  background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
-}
 .result-compact .result-body { justify-content: center; }
 .result-compact .result-actions { margin-top: .8rem; }
 .copy-status { min-height: 1.4em; text-align: center; font-weight: 600; color: var(--ok); opacity: 0; transition: opacity .2s; }
@@ -922,17 +902,6 @@ html.reduce-motion .ring-halo { animation: none; }
 .fb-combo { justify-self: start; font-size: .78rem; font-weight: 600; color: var(--brand-text); background: var(--brand-soft); padding: .15rem .55rem; border-radius: 999px; margin-bottom: .3rem; }
 .slide-look { margin-top: .25rem; font-size: .86rem; color: var(--ink-2); max-width: 34ch; justify-self: center; }
 
-/* Resultado: celebración */
-.result-hero { position: relative; display: grid; justify-items: center; gap: .35rem; padding-top: .4rem; isolation: isolate; }
-.result-glow {
-  position: absolute; z-index: -1; left: 50%; top: 40%; width: 300px; height: 300px; translate: -50% -50%; border-radius: 999px;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent) 0%, transparent 65%);
-  opacity: 0; animation: glow-pulse 2.4s var(--ease) .5s 2 both;
-}
-.has-medal .result-glow { animation-iteration-count: 3; }
-@keyframes glow-pulse { 0% { opacity: 0; transform: scale(.7); } 40% { opacity: .9; transform: scale(1); } 100% { opacity: .25; transform: scale(1.12); } }
-.hero-medal { margin-bottom: .3rem; }
-.hero-medal-name { font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--brand-text); }
 .medal-lg { width: 108px; height: 108px; }
 .medal-lg::after { inset: 8px; border-width: 1.5px; }
 .medal-lg.is-new { animation: stamp-lg .8s cubic-bezier(.3, 1.4, .5, 1) .45s both; }
@@ -951,51 +920,6 @@ html.reduce-motion .ring-halo { animation: none; }
 .medal-num { font: 600 .82rem/1 var(--font); }
 .medal-streak { background: var(--accent); }
 .medal-lg .medal-num { font-size: 1.2rem; }
-
-.event-text { display: grid; gap: 1px; flex: 1; min-width: 0; text-align: left; }
-.event-link { width: 100%; font: inherit; color: inherit; cursor: pointer; box-shadow: var(--lift); transition: transform .12s var(--ease), box-shadow .12s var(--ease), background-color .2s; }
-@media (hover: hover) and (pointer: fine) {
-  .event-link:hover { background: var(--bg); }
-}
-.event-link:active { transform: translateY(var(--relief)); box-shadow: var(--lift-down); }
-.event-go { display: grid; place-items: center; width: 36px; height: 36px; flex: none; color: var(--ink-2); }
-/* Informativas (no se pulsan): solo el filete, sin relieve. */
-section.event { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
-.event-goal .event-icon { background: var(--ok-soft); }
-/* Celebración de un nivel «a fondo»: su propio momento, el primero del resultado. */
-.deep-cele { display: grid; justify-items: center; gap: .25rem; padding: 1.5rem 1rem 1rem; border-radius: var(--radius); text-align: center; background: linear-gradient(160deg, var(--accent-soft), var(--surface)); box-shadow: var(--lift), inset 0 0 0 2px var(--gold); animation: rise .45s var(--ease); }
-.deep-cele-seal { display: grid; place-items: center; width: 76px; height: 76px; margin-bottom: .4rem; border-radius: 999px; background: var(--gold); color: var(--on-gold); box-shadow: 0 var(--relief-node) 0 color-mix(in srgb, var(--gold) 65%, var(--ink)); }
-.deep-cele-seal { animation: stamp-seal .7s var(--ease) both; }
-@keyframes stamp-seal { 0% { transform: scale(2.2) rotate(-14deg); opacity: 0; } 55% { transform: scale(.9) rotate(3deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
-.deep-cele-works { display: grid; grid-template-columns: repeat(var(--cols, 5), 56px); justify-content: center; gap: .4rem; margin: .5rem 0 0; padding: 0; list-style: none; }
-.deep-cele-thumb { display: block; width: 56px; aspect-ratio: 1; border-radius: 10px; }
-.deep-cele-title { font: 500 1.55rem/1.15 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
-.deep-cele-who { color: var(--ink-2); }
-.deep-cele-actions .btn { padding: .7rem 1.2rem; line-height: 1.25; white-space: normal; }
-.deep-cele-actions { display: grid; gap: .1rem; width: 100%; margin-top: .6rem; }
-.deep-cele-link { display: flex; align-items: center; justify-content: center; gap: .2rem; min-height: 48px; padding: 0 .6rem; border: 0; background: none; color: var(--brand-text); font: 600 1rem/1.2 var(--font); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
-@media (prefers-reduced-motion: reduce) { .deep-cele, .deep-cele-seal { animation: none; } }
-html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: none; }
-.event-seal { background: var(--accent-soft); box-shadow: inset 0 0 0 1.5px var(--accent-ui); }
-
-.learned {
-  display: flex; align-items: center; gap: .9rem; padding: .75rem; border-radius: var(--radius);
-  background: var(--accent-soft); animation: rise .5s var(--ease) both; animation-delay: .2s;
-}
-.learned-art { width: 76px; height: 76px; flex: none; aspect-ratio: auto; border-radius: 8px; }
-.learned-text { display: grid; gap: 2px; min-width: 0; }
-.learned-name { font: 500 1.15rem/1.1 var(--font); }
-.learned-trait { font-size: .93rem; color: var(--ink); }
-/* Cierre del día (meta cumplida): lo aprendido hoy y la próxima parada. Informativo. */
-.day-done {
-  display: grid; gap: .45rem; padding: .9rem 1rem; border-radius: var(--radius);
-  box-shadow: inset 0 0 0 1.5px var(--line); animation: rise .5s var(--ease) both; animation-delay: .3s;
-}
-.day-done-line { font: 500 1.08rem/1.25 var(--font); }
-.day-done-thumbs { display: flex; gap: .5rem; margin: .15rem 0; }
-.day-done-thumb { width: 52px; height: 52px; flex: none; aspect-ratio: auto; border-radius: 8px; }
-.day-done-next { color: var(--ink-2); }
-.day-done-next strong { color: var(--ink); font-weight: 600; }
 
 /* Mapa: final del camino */
 .finale { display: grid; justify-items: center; gap: .7rem; margin-top: 2.6rem; padding: 1.4rem 1.1rem; border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm); text-align: center; }
@@ -1069,10 +993,6 @@ html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: n
 .toast.is-on { opacity: 1; translate: -50% 0; }
 .toast[hidden] { display: none; }
 
-/* Resultado: aviso de que hace falta la mitad para seguir */
-.result-gate { display: flex; align-items: center; justify-content: center; gap: .45rem; font-weight: 600; color: var(--ink-2); }
-.result-gate .icon { flex: none; }
-
 /* Escritorio: semana y colección en la columna lateral (en el móvil no se muestran) */
 .side-extras { display: none; }
 .side-head { display: flex; align-items: center; gap: .5rem; }
@@ -1096,11 +1016,10 @@ html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: n
 .week { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .day-dot { width: min(26px, 100%); height: auto; aspect-ratio: 1; }
 .segs { grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.2rem), 1fr)); }
-.option > span:last-child, .event-text, .learned-text, .fb-inner p,
+.option > span:last-child, .fb-inner p,
 .welcome-line, .learn-title, .q-prompt, .result-title, .section-head h1, .slide figcaption {
   min-width: 0; overflow-wrap: anywhere;
 }
-.event-title { overflow-wrap: anywhere; }
 .coll-artist { flex-wrap: wrap; }
 .tally dd { overflow-wrap: anywhere; }
 @media (max-width: 300px), (max-width: 18.75em) {
@@ -1112,7 +1031,6 @@ html.reduce-motion .deep-cele, html.reduce-motion .deep-cele-seal { animation: n
   .key { display: none; }
   .option { padding-inline: .7rem; }
   .duel-side { min-width: 0; }
-  .level-line { grid-template-columns: minmax(0, 1fr); }
   .week { gap: .1rem; }
 }
 
@@ -1203,8 +1121,8 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--viewer-ink) 14%, transparent);
 }
 .option-art.is-done { cursor: zoom-in; }
-.learned-art .zoom-badge, .wall-item .zoom-badge { width: 22px; height: 22px; right: 4px; bottom: 4px; }
-.learned-art .zoom-badge svg, .wall-item .zoom-badge svg { width: 12px; height: 12px; }
+.wall-item .zoom-badge { width: 22px; height: 22px; right: 4px; bottom: 4px; }
+.wall-item .zoom-badge svg { width: 12px; height: 12px; }
 .option-art { cursor: zoom-in; }
 .medal-zoom {
   position: relative; display: block; padding: 0; border: 0; margin: 0; background: none; color: inherit; font: inherit;

@@ -16,6 +16,10 @@ export const cardDuration = (card) => CARD_BASE_MS + CARD_MS_PER_CHAR * String(c
 
 export const storyKey = (artistId, level) => `${artistId}:${level}`;
 
+// Historias que se comparten con un enlace: las del nivel 1 (presentan al pintor y no destripan nada de lo que viene).
+export const SHARE_LEVEL = 1;
+export const isShareable = (level) => level === SHARE_LEVEL;
+
 // La pista «Fíjate en…» del pintor para la última tarjeta, salvo que alguna tarjeta ya invite a fijarse en algo ('' entonces).
 const LOOK_CUE = /f[ií]jate/i;
 export function lookLine(cards, hint) {
