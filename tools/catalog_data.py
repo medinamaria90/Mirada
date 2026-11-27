@@ -126,7 +126,7 @@ artist("zurbaran", "Francisco de Zurbarán", "Zurbarán", "barroco", 1598, 1664,
        "Fíjate en los hábitos blancos de pliegues duros, como esculpidos, con una sola luz lateral sobre fondo oscuro.",
        ["blancos de pliegues duros, como de escultura", "fondo oscuro y una sola luz", "objetos y telas de realidad casi táctil"],
        ["ribera", "caravaggio"])
-artist("van-dyck", "Antoon van Dyck", "Van Dyck", "barroco", 1599, 1641, "Flandes", 7,
+artist("van-dyck", "Anton van Dyck", "Van Dyck", "barroco", 1599, 1641, "Flandes", 7,
        "Fíjate en la elegancia fluida de telas y retratos aristocráticos.")
 artist("poussin", "Nicolas Poussin", "Poussin", "barroco", 1594, 1665, "Francia", 8,
        "Fíjate en los paisajes ordenados como un teatro, con figuras clásicas.")
@@ -226,7 +226,7 @@ artist("rosales", "Eduardo Rosales", "Eduardo Rosales", "realismo", 1836, 1873, 
        "Fíjate en lo abocetado: zonas a manchas junto a caras y manos acabadas, en tonos sobrios.",
        ["historia de España en escenas íntimas", "pincelada amplia, zonas solo esbozadas", "tonos sobrios: ocres, grises y negros"],
        ["velazquez", "madrazo"])
-artist("fortuny", "Marià Fortuny", "Fortuny", "realismo", 1838, 1874, "España", 16,
+artist("fortuny", "Mariano Fortuny", "Fortuny", "realismo", 1838, 1874, "España", 16,
        "Fíjate en el formato pequeño y el detalle minucioso: trajes, alfombras y objetos con toques de luz brillantes.",
        ["cuadros pequeños llenos de detalle", "trajes y telas de toques brillantes", "luz de sol intensa, casi cegadora"],
        ["madrazo", "sorolla"])
@@ -572,7 +572,7 @@ artist("signac", "Paul Signac", "Signac", "postimpresionismo", 1863, 1935, "Fran
        "Fíjate en los puertos y las velas hechos con toques cuadrados de color puro, como un mosaico de luz.",
        ["toques de color en forma de teselas", "puertos, barcos y mar", "colores puros y vibrantes"],
        ["seurat", "regoyos"])
-artist("mir", "Joaquim Mir", "Joaquim Mir", "postimpresionismo", 1873, 1940, "España", 8,
+artist("mir", "Joaquín Mir", "Joaquín Mir", "postimpresionismo", 1873, 1940, "España", 8,
        "Fíjate en la explosión de color: paisajes casi abstractos con manchas encendidas de luz mediterránea.",
        ["colores encendidos e irreales", "paisajes que rozan la abstracción", "grutas, rocas y calas de Mallorca"],
        ["sorolla", "rusinol"])
@@ -592,7 +592,7 @@ artist("hammershoi", "Vilhelm Hammershøi", "Hammershøi", "simbolismo-modernism
        "Fíjate en las habitaciones casi vacías, grises y en silencio, con luz de ventana y una mujer de espaldas.",
        ["habitaciones vacías y grises", "luz suave de ventana", "una mujer de espaldas"],
        ["vermeer"])
-artist("casas", "Ramon Casas", "Ramon Casas", "simbolismo-modernismo", 1866, 1932, "España", 12,
+artist("casas", "Ramón Casas", "Ramón Casas", "simbolismo-modernismo", 1866, 1932, "España", 12,
        "Fíjate en el dibujo seguro y en la gente moderna de Barcelona, con grises y negros elegantes.",
        ["dibujo firme y seguro", "gente de la Barcelona moderna", "grises y negros elegantes"],
        ["rusinol", "sargent"])
@@ -600,7 +600,7 @@ artist("zuloaga", "Ignacio Zuloaga", "Zuloaga", "simbolismo-modernismo", 1870, 1
        "Fíjate en la España dura: toreros, campesinos y pueblos de Castilla, en tonos terrosos y cielos de tormenta.",
        ["tipos populares y toreros", "colores terrosos y negros", "cielos oscuros sobre Castilla"],
        ["goya", "velazquez"])
-artist("nonell", "Isidre Nonell", "Nonell", "simbolismo-modernismo", 1872, 1911, "España", 14,
+artist("nonell", "Isidro Nonell", "Nonell", "simbolismo-modernismo", 1872, 1911, "España", 14,
        "Fíjate en las figuras encogidas de gitanas y mendigos, hechas con trazos gruesos y tonos sombríos.",
        ["gitanas y marginados encogidos", "trazos gruesos y cortos", "tonos azulados y sombríos"],
        ["casas"])
