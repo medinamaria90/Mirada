@@ -21,6 +21,16 @@ Documento para el agente que continúa el proyecto en Claude Code. Las reglas pe
 - **Repositorio:** github.com/medinamaria90/Mirada (público por ahora para que GitHub Actions sea gratis).
 - **Contenido actual:** 235 obras, 75 pintores (32 con etapa), 9 movimientos. Imágenes de ≤1000 px.
 
+## 1 bis. Dominio y despliegue
+
+- **Dominio:** dibulios.com, registrado y gestionado en Cloudflare (cuenta de María).
+- **DNS:** CNAME `sfumato` → `sfumato-arte.onrender.com`, sin proxy (solo DNS, TTL automático), para que
+  Render emita el certificado.
+- **Render:** static site `sfumato-arte` (`srv-dc309qd6e07s738cruo0`), gestionado por el blueprint «mirada»
+  (`exs-dc2vukd9el5s73d178k0`) desde `render.yaml`, con `sfumato.dibulios.com` en `domains`.
+- **Dirección antigua:** sfumato-arte.onrender.com redirige sola al dominio nuevo llevándose el progreso
+  (`app/js/state/mudanza.js`).
+
 ## 2. Estado de calidad
 
 - `node --test tests/` en verde (más las pruebas nuevas de v8). Humo e2e en verde; el e2e completo

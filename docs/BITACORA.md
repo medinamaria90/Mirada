@@ -152,3 +152,15 @@ Petición de María: las tarjetas «Descubre la época» se comparten como las h
 
 ## Validador: límite de archivos y Fra Angelico (27/11)
 El límite de 600 archivos venía del tope de 512 del artifact; en Render no hay límite, así que sube a 1000 (repo ~630 + atlas 86 + og generadas ~190 ≈ 900) y queda como techo de cordura. Fra Angelico (2 obras) pasa a aviso en `PENDING_WORKS` hasta que el próximo pipeline traiga más (candidatas forzadas en `pipeline/extra.json`); no se rebaja el mínimo de 3 porque hace falta una obra «new» para los retos.
+## Camino nuevo: sendero de tierra, puentes alineados y carteles de dos postes (27/11)
+Propuesta del experto (`docs/eval/camino-experto.md`), aprobada por María. El sendero es de tierra, sin raya, con
+curvas amplias (puntos de paso suavizados en `path-curve.js`), unas cuatro paradas por pantalla y una puerta en el seto
+al entrar en cada época. Lo recorrido va en tierra dorada con un hilo de oro hasta la parada actual; lo pendiente ya no
+se desatura a gris (los dominados por repasar, menos apagados). Puentes: el trazado (`path-layout.js`) los pone donde el
+sendero va recto entre dos paradas del mismo lado, y `tools/mapa_agua.py` hace nacer el río del puente, de borde a borde
+y más allá (sale de la pantalla, nunca se corta), con el tablero alineado; `mapa_svg.py` falla si el sendero o un desvío
+cruzan agua sin puente. Los desvíos de rama nunca salen de un puente ni van encima de uno. Todos los carteles (época,
+tramo, rama) son una placa sobre dos postes; los de rama, bajo su parada en el margen, y al tocarlos se entra en la rama
+(se quita la hoja «Ramas»). Carteles de tramo y de rama con sus textos (`contenido/ramas.json`, `tramos.json`, copiados a
+`app/data/carteles/` con `tools/sync_carteles.py`) en tarjetas como las de época. Botón flotante para volver a la parada
+actual. Hitos del paisaje (molino, castillo…) que caen bajo un rótulo se corren a un hueco libre en vez de perderse.

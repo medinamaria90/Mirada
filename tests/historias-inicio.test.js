@@ -5,7 +5,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { levelStory, cropOf, step, storyKey, MAX_CARDS, MAX_TEXT, sourceLabel, lookLine } from '../app/js/engine/stories.js';
+import { levelStory, cropOf, step, storyKey, MAX_CARDS, MAX_TEXT, sourceLabel, lookLine, openingCandidates } from '../app/js/engine/stories.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(here, '..', 'app', 'data', 'historias');
@@ -42,6 +42,13 @@ test('historias: cada tarjeta enseña una obra del catálogo y del mismo pintor 
       }
     }
   }
+});
+
+test('historias: la obra que abre la primera tarjeta no repite ninguna de las tarjetas siguientes (Tiziano)', () => {
+  const cards = [{ artwork: 'w2046100' }, { artwork: 'w1899740' }, { artwork: 'w1123378' }];
+  const seen = [{ id: 'w1123378' }, { id: 'w2046100' }, { id: 'w727875' }];
+  assert.deepEqual(openingCandidates(seen, cards).map((w) => w.id), ['w2046100', 'w727875']);
+  assert.deepEqual(openingCandidates([], cards), []);
 });
 
 test('historias: encuadre [x, y, zoom] acotado; sin focus, la obra entera', () => {
