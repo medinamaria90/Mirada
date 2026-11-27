@@ -1,8 +1,11 @@
 /* Tarjetas de la época en su presentación (ui/screens/era-cards.js): un carrusel a pantalla completa con puntos. */
-:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, calc(var(--screen-h) * .38), 340px); --era-dot-box: 16px; --era-share-gap: .5rem; }
+:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, calc(var(--screen-h) * .38), 340px); --era-dot-box: 16px; --era-share-gap: .5rem; --era-late-dur: .32s; }
 
 .has-era-cards { position: relative; align-items: stretch; padding-left: 0; padding-right: 0; }
 .era-share { position: absolute; top: calc(env(safe-area-inset-top, 0px) + var(--era-share-gap)); right: var(--era-share-gap); color: var(--ink-2); }
+/* Tarjetas que llegan con la pantalla ya pintada (red muy lenta): la presentación reaparece con un fundido en vez de un salto. */
+.era-late .welcome-body, .era-late .era-share { animation: era-late-in var(--era-late-dur) var(--ease) both; }
+@keyframes era-late-in { from { opacity: 0; } }
 .era-share:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 0; }
 .has-era-cards .welcome-body { max-width: 440px; align-content: center; gap: .9rem; }
 .has-era-cards .welcome-body > .btn { width: calc(100% - 2 * var(--era-pad)); }
@@ -41,4 +44,4 @@
 .era-dot span { width: 8px; height: 8px; border-radius: 999px; background: var(--line-2); transition: width var(--era-dur) var(--ease), background var(--era-dur) var(--ease); }
 .era-dot.is-now span { width: 22px; background: var(--accent-ui); }
 
-@media (prefers-reduced-motion: reduce) { .era-more .icon, .era-dot span { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .era-more .icon, .era-dot span { transition: none; } .era-late .welcome-body, .era-late .era-share { animation: none; } }
