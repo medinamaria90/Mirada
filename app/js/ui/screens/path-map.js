@@ -177,7 +177,7 @@ function artistNode(ctx, artist, keys) {
   const key = `artist:${artist.id}`;
   const prevStep = index.steps[index.stepIndex('artist', artist.id) - 1];
   const dormant = status === 'mastered' && isDormant(p, artist.id, ctx.today ? ctx.today() : null);
-  const lock = prevStep ? `Se abre con la mitad de aciertos en ${stepName(index, prevStep)}` : '';
+  const lock = prevStep ? `Se abre al acertar la mitad en ${stepName(index, prevStep)}` : '';
   // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
   const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
@@ -195,7 +195,7 @@ function salaNode(ctx, movement, keys) {
   const status = salaStatus(p, index, movement.id);
   const key = `sala:${movement.id}`;
   const prev = index.steps[index.stepIndex('sala', movement.id) - 1];
-  const lock = prev ? `Se abre con la mitad de aciertos en ${stepName(index, prev)}` : '';
+  const lock = prev ? `Se abre al acertar la mitad en ${stepName(index, prev)}` : '';
   const html = nodeHtml({
     cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current,
     label: `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,

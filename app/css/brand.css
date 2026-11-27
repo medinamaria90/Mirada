@@ -66,6 +66,18 @@
   /* Mapa del camino: sendero y personaje (CSS) y paisaje (tools/mapa_svg.py lee estas variables y las
      escribe en los SVG de app/img/mapa, con el bloque oscuro como media query). */
   --map-trail-edge: #d9cdb5;
+  /* Textura del sendero (main.css): piedras del borde y piedrecitas sueltas, en unidades del dibujo (ancho 390). */
+  --trail-rim-w: 28;
+  --trail-rim-gap: 9;
+  --trail-rim-w-b: 27.4;
+  --trail-rim-gap-b: 13;
+  --trail-rim-off: 4;
+  --trail-grain-w: 2.2;
+  --trail-grain-gap: 15;
+  --trail-grain-gap-b: 21;
+  --trail-grain-off: 8;
+  --trail-grain-x: 4px;
+  --trail-grain-o: .55;
   --map-trail: #f1e7d4;
   --map-stone-far: #efe8dd;
   --map-stone-front: #e6ddcf;
@@ -96,7 +108,6 @@
   --map-bloom: #e9bfb5;
   --map-trail-done-edge: #d7bb7f;
   --map-trail-done: #f0dba5;
-  --map-trail-thread: #c9973a;
   --map-night: #43507e;
   --map-night-max: .44;
   --map-dusk: #f2a46c;
@@ -141,8 +152,21 @@
   --map-seam: 80px;
   /* Sistema de carteles (mapa-carteles.css): arco de época, tablillas de tramo y rama, tarjeta de la parada actual. */
   --map-frontier-solid: 80%;
-  --map-arch-crown: 2.4rem;
-  --map-arch-band: 4px;
+  --map-lapida-frame: 3px;         /* marco de piedra de la lápida */
+  --map-lapida-inset: 3px;         /* del marco al filete grabado */
+  --map-lapida-depth: 3px;         /* grosor de la losa, debajo */
+  --map-lapida-r: 3px;
+  --map-lapida-cornice: 5px;
+  --map-lapida-cornice-out: 7px;
+  --map-lapida-groove: 4px;
+  --map-lapida-plinth: 7px;        /* zócalo de la estela */
+  --map-lapida-shadow: 6px;        /* ranura del progreso */
+  --map-lapida-track: .02em;       /* letras de inscripción */
+  --tramo-stone-w: 13px;           /* estela del mojón */
+  --tramo-stone-h: 22px;
+  --tramo-stone-room: 19px;        /* sitio de la estela junto a la tablilla */
+  --tramo-stone-gap: 1px;
+  --map-ribbon: 3px;               /* cinta de oro en el canto de lo completado */
   --map-tablet-hit: 11px;          /* la tablilla mide unos 26 px: con esto, el toque llega a --hit */
   --map-current-dot: 70px;
   --map-halo-dur: 3.2s;
@@ -169,6 +193,7 @@
   --dur-pop: 220ms;
   --press-scale: .96;             /* lo que se encoge al tocarlo lo que no tiene relieve propio */
   --dur-shake: 360ms;
+  --dur-lock-shake: 420ms;        /* temblor del candado (screens/lock-note.js, SHAKE_MS) */
   /* Tramo cerrado del aro y círculo cerrado de la fila de historias. */
   --ring-locked: #d3c9ba;
   /* Sombras y velos. */
@@ -271,7 +296,6 @@
     --map-bloom: #7e5a52;
     --map-trail-done-edge: #57472a;
     --map-trail-done: #75603b;
-    --map-trail-thread: #d6a94f;
     --map-night: #10162a;
     --map-night-max: .42;
     --map-dusk: #c27a46;
@@ -364,7 +388,6 @@
   --map-bloom: #7e5a52;
   --map-trail-done-edge: #57472a;
   --map-trail-done: #75603b;
-  --map-trail-thread: #d6a94f;
   --map-night: #10162a;
   --map-night-max: .42;
   --map-dusk: #c27a46;

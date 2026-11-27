@@ -35,7 +35,7 @@ export function branchMusic(index, branch) {
 function lockText(index, progress, row, branchId) {
   const why = branchLockReason(progress, index, row.artistId, branchId);
   if (why?.pending.length) return `Se abre al dominar a ${joinNames(why.pending.map((s) => stepName(index, s)))}`;
-  if (why?.before) return `Se abre con la mitad de aciertos en ${index.artist(why.before)?.short || index.artist(why.before)?.name}`;
+  if (why?.before) return `Se abre al acertar la mitad en ${index.artist(why.before)?.short || index.artist(why.before)?.name}`;
   return 'Aún cerrado';
 }
 

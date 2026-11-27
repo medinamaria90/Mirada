@@ -1,8 +1,11 @@
 // Acciones del mapa del camino (portada y ramas): paradas, carteles, desvíos y la nota de lo que falta en lo cerrado.
 
-import { announce, $, prefersReducedMotion } from '../dom.js';
+import { $, prefersReducedMotion } from '../dom.js';
 import { branchRoute } from '../router.js';
 import { zoomInto } from '../map-zoom.js';
+import { showLockNote } from './lock-note.js';
+
+export { showLockNote };
 
 // La hoja del mapa (época cerrada, cómo se juega) se carga al primer toque: no cuenta en el arranque.
 const sheet = (ctx, fn, b) => {
@@ -57,25 +60,4 @@ export function pathActions(ctx) {
       return zoomInto(b, () => ctx.go(branchRoute(b.dataset.id)));
     },
   };
-}
-
-const NOTE_MS = 4500;   // da tiempo a leerla con la letra grande
-export function showLockNote(button) {
-  let note = button.parentElement.querySelector('.lock-note');
-  if (!note) {
-    note = document.createElement('p');
-    note.className = 'lock-note';
-    note.setAttribute('aria-hidden', 'true');
-    button.after(note);
-  }
-  note.textContent = button.dataset.lock || 'Aún bloqueado';
-  note.style.translate = '';
-  note.classList.add('is-visible');
-  // Dentro de la pantalla: si asoma por un lado, se corre.
-  const r = note.getBoundingClientRect();
-  const shift = r.left < 8 ? 8 - r.left : r.right > window.innerWidth - 8 ? window.innerWidth - 8 - r.right : 0;
-  if (shift) note.style.translate = `${Math.round(shift)}px 0`;
-  announce(note.textContent);
-  clearTimeout(note._t);
-  note._t = setTimeout(() => note.classList.remove('is-visible'), NOTE_MS);
 }

@@ -278,7 +278,7 @@ test('mapa: jerarquía de nodos (actual, siguiente cerrado y el resto cerrado m�
   assert.ok(!/is-locked"[^>]*>\s*<span class="stage-dot">[^<]*<span class="art/.test(html), 'un nodo cerrado enseña el cuadro');
   // Cerrado y lejos: nombre corto; el lector oye por qué está cerrado.
   const far = real.artist(real.steps[6].id);
-  assert.ok(html.includes(`aria-label="${far.name}, bloqueado. Se abre con la mitad de aciertos en `), 'el cerrado no explica su candado al lector');
+  assert.ok(html.includes(`aria-label="${far.name}, bloqueado. Se abre al acertar la mitad en `), 'el cerrado no explica su candado al lector');
   if (far.short && far.short !== far.name) assert.ok(html.includes(`<span class="stage-name">${far.short}</span>`), 'el cerrado lejano no usa el nombre corto');
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
   const px = (re) => Number((css.match(re) || [])[1]);

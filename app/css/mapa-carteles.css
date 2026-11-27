@@ -1,50 +1,92 @@
 /* Sistema visual del mapa (ui/screens/path-signs.js, path-nodes.js). Tres estilos de texto y nada más:
-   1. Rótulo del ARCO de cada época (y de cada rama en su pantalla): el más grande, centrado en el sendero, apoyado en
-      los pilares de la puerta. Lleva el nombre, los siglos y la única cuenta de la época.
-   2. TABLILLAS de tramo y de rama: pequeñas, al borde del camino sobre dos postes; letra pequeña.
+   1. LÁPIDA de cada época (y de cada rama en su pantalla): la losa del dintel de su puerta, centrada en el sendero que
+      pasa por debajo. Lleva el nombre, los siglos y la única cuenta de la época (una ranura que se llena).
+   2. MOJONES de tramo (estela + tablilla, en su hueco antes de sus pintores) y TABLILLAS de rama: pequeñas, al borde
+      del camino sobre dos postes; letra pequeña. Completas, se doran.
    3. ETIQUETAS de las paradas (pintor, sala, repaso): la misma placa translúcida; cerradas, apagadas. La parada actual,
       con el nombre más marcado y el nodo destacado (sin botón aparte). */
 
-/* ---------- 1. Arco de la época ---------- */
-/* La caja (h2) es simétrica respecto al sendero; el rótulo se centra en ella y crece hacia arriba desde los remates. */
+/* ---------- 1. Lápida de la época ---------- */
+/* Estela de piedra junto a la puerta (nunca sobre el sendero): zócalo en el suelo, marco de piedra (el de los pilares, con
+   la luz del día), cornisa encima y la cara grabada con el nombre, los siglos y la ranura del progreso. La caja (h2) va
+   del borde del mapa a la puerta; la lápida se arrima a la puerta. */
 .era-arch {
   --arch-tone: color-mix(in srgb, var(--accent) 78%, var(--map-sign-ink));
-  position: absolute; z-index: 3; margin: 0; display: flex; justify-content: center; align-items: flex-end; pointer-events: none;
+  --arch-stone: var(--lit-stone-side, var(--map-stone-side));
+  --arch-cap: var(--lit-stone-top, var(--map-stone-top));
+  position: absolute; z-index: 3; margin: 0; display: flex; justify-content: center; align-items: flex-end; padding-bottom: var(--map-lapida-plinth); pointer-events: none;
 }
+.era-arch.is-left { justify-content: flex-end; }
+.era-arch.is-right { justify-content: flex-start; }
+
 .path-start .era-arch { z-index: 4; }
 .arch-band {
-  position: relative; display: grid; justify-items: center; gap: 2px; min-width: 0; max-width: min(100%, calc(15 * var(--map-fs))); min-height: 48px;
-  margin: 0; padding: calc(.95 * var(--map-fs)) calc(1.25 * var(--map-fs)) calc(.5 * var(--map-fs));
-  border: 1px solid var(--map-sign-line); border-radius: 50% 50% var(--map-r) var(--map-r) / var(--map-arch-crown) var(--map-arch-crown) var(--map-r) var(--map-r);
+  position: relative; display: grid; justify-items: center; gap: calc(.22 * var(--map-fs)); min-width: calc(7 * var(--map-fs)); max-width: min(100%, calc(14 * var(--map-fs))); min-height: var(--hit);
+  margin: 0; padding: calc(.55 * var(--map-fs)) calc(1.1 * var(--map-fs)) calc(.6 * var(--map-fs));
+  border: var(--map-lapida-frame) solid var(--arch-stone); border-radius: var(--map-lapida-r);
   background: var(--map-sign); color: var(--map-sign-ink); font: inherit; text-align: center; pointer-events: auto; cursor: pointer;
-  /* Arco de color de la época por dentro de la curva y relieve bajo el rótulo. */
-  box-shadow: inset 0 var(--map-arch-band) 0 var(--arch-tone), 0 3px 0 var(--map-sign-line);
+  /* Grabado: un filete fino dentro de la cara; grosor de la losa debajo. */
+  box-shadow: inset 0 0 0 var(--map-lapida-inset) var(--map-sign), inset 0 0 0 calc(var(--map-lapida-inset) + 1px) var(--map-sign-line), 0 var(--map-lapida-depth) 0 var(--arch-stone);
   transition: transform .15s var(--ease), box-shadow .15s var(--ease);
 }
-button.arch-band:active { transform: translateY(2px); box-shadow: inset 0 var(--map-arch-band) 0 var(--arch-tone), 0 1px 0 var(--map-sign-line); }
-.arch-band:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
-.arch-name { display: block; max-width: 100%; font: 600 calc(1.1 * var(--map-fs))/1.15 var(--font); letter-spacing: var(--track); text-wrap: balance; }
+/* Cornisa: una losa algo más ancha encima, del color de los remates de los pilares. */
+.arch-band::before {
+  content: ""; position: absolute; left: calc(-1 * var(--map-lapida-cornice-out)); right: calc(-1 * var(--map-lapida-cornice-out)); bottom: calc(100% + var(--map-lapida-frame));
+  height: var(--map-lapida-cornice); border-radius: var(--map-lapida-r) var(--map-lapida-r) 0 0; background: var(--arch-cap); box-shadow: 0 1px 0 var(--arch-stone);
+}
+/* Zócalo: una losa algo más ancha bajo la estela, apoyada en el suelo con su sombra. */
+.arch-band::after {
+  content: ""; position: absolute; left: calc(-1 * var(--map-lapida-cornice-out)); right: calc(-1 * var(--map-lapida-cornice-out)); top: calc(100% + var(--map-lapida-frame) + var(--map-lapida-depth));
+  height: var(--map-lapida-plinth); border-radius: 0 0 2px 2px; background: var(--arch-cap); box-shadow: inset 0 -2px 0 var(--arch-stone), 0 var(--map-lapida-shadow) var(--map-lapida-shadow) calc(-.5 * var(--map-lapida-shadow)) var(--map-shade);
+}
+button.arch-band:active { transform: translateY(2px); }
+.arch-band:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 5px; }
+.arch-name { display: block; max-width: 100%; font: 600 calc(.95 * var(--map-fs))/1.2 var(--font); letter-spacing: var(--map-lapida-track); text-wrap: balance; hyphens: manual; }
 .arch-meta { display: flex; align-items: center; gap: calc(.3 * var(--map-fs)); font: 500 calc(.76 * var(--map-fs))/1.2 var(--font); color: var(--map-sign-ink-2); letter-spacing: .02em; font-variant-numeric: lining-nums tabular-nums; }
 .arch-meta .icon { flex: none; }
-.arch-band.is-done { --arch-tone: var(--gold); }
-.arch-band.is-done .arch-meta .icon { color: var(--gold-text); }
-.arch-band.is-locked { --arch-tone: var(--map-sign-line); background: color-mix(in srgb, var(--map-sign) 55%, var(--map-tag)); }
+/* Ranura grabada del progreso: se llena con el color de la época; completa, de oro. */
+.arch-progress { display: block; width: 62%; height: var(--map-lapida-groove); margin-top: 2px; overflow: hidden; border-radius: 999px; background: var(--map-sign-line); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--map-sign-ink) 14%, transparent); }
+.arch-progress-fill { display: block; width: calc(var(--p) * 100%); height: 100%; border-radius: inherit; background: var(--arch-tone); }
+/* Completa: la cara se dora (pan de oro suave), letras de oro y ranura llena. */
+.arch-band.is-done { --arch-tone: var(--gold); background: color-mix(in srgb, var(--gold) 20%, var(--map-sign)); box-shadow: inset 0 0 0 var(--map-lapida-inset) color-mix(in srgb, var(--gold) 20%, var(--map-sign)), inset 0 0 0 calc(var(--map-lapida-inset) + 1px) var(--gold), 0 var(--map-lapida-depth) 0 var(--arch-stone); }
+.arch-band.is-done .arch-name { color: var(--gold-text); }
+.arch-band.is-locked { background: color-mix(in srgb, var(--map-sign) 55%, var(--map-tag)); }
 .arch-band.is-locked .arch-name { color: var(--map-sign-ink-2); font-weight: 500; }
-@media (hover: hover) { button.arch-band:hover { background: color-mix(in srgb, var(--map-sign) 92%, var(--ink)); } }
+@media (hover: hover) { button.arch-band:hover { background: color-mix(in srgb, var(--map-sign) 92%, var(--ink)); } button.arch-band.is-done:hover { background: color-mix(in srgb, var(--gold) 26%, var(--map-sign)); } }
 
 /* Frontera: bajo el seto de la puerta, el suelo de la época anterior se corta en él (color en mapa-vivo.css). */
 .path-era.has-gate::before { height: calc(100% * var(--gate-y) / var(--era-h)); }
 
-/* ---------- 2. Tablillas de tramo y de rama ---------- */
+/* ---------- 2. Mojones de tramo y tablillas de rama ---------- */
 .is-tramo .sign-plate, .sign-plate.branch { min-height: 0; gap: 1px; padding: calc(.3 * var(--map-fs)) calc(.6 * var(--map-fs)); outline-offset: -4px; }
-.is-tramo .sign-plate { grid-auto-flow: column; align-items: center; gap: calc(.35 * var(--map-fs)); }
 .is-tramo .sign-plate::before, .sign-plate.branch::before { display: none; }
 .is-tramo .sign-name, .sign-plate.branch .sign-name { font: 600 calc(.76 * var(--map-fs))/1.15 var(--font); }
 .sign-plate.branch .sign-meta { font-size: calc(.75 * var(--map-fs)); }
 /* El toque abarca algo más que la tablilla (≥ --hit de alto). */
 .is-tramo .sign-plate::after, .sign-plate.branch::after { content: ""; position: absolute; inset: calc(-1 * var(--map-tablet-hit)) calc(-.5 * var(--map-tablet-hit)); }
-.sign-check { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 999px; background: var(--gold); color: var(--on-gold); }
-.sign-check .icon { stroke-width: 3; }
+/* Mojón: la estela de piedra va entre el sendero y la tablilla (un solo botón); los postes, bajo la tablilla. */
+.road-sign.is-tramo.is-left { padding-right: var(--tramo-stone-room); }
+.road-sign.is-tramo.is-right { padding-left: var(--tramo-stone-room); }
+.road-sign.is-tramo.is-left::before, .road-sign.is-tramo.is-left::after { right: calc(var(--tramo-stone-room) + var(--map-post-in)); }
+.road-sign.is-tramo.is-right::before, .road-sign.is-tramo.is-right::after { left: calc(var(--tramo-stone-room) + var(--map-post-in)); }
+.tramo-stone {
+  position: absolute; bottom: calc(-1 * var(--map-post-h)); width: var(--tramo-stone-w); height: var(--tramo-stone-h);
+  border-radius: calc(var(--tramo-stone-w) / 2) calc(var(--tramo-stone-w) / 2) 2px 2px;
+  background: linear-gradient(to right, var(--map-stone-top) 0 55%, var(--map-stone-side) 55%);
+  box-shadow: inset 0 0 0 1px var(--map-sign-line), 0 2px 0 var(--map-shade);
+}
+.is-left .tramo-stone { right: calc(-1 * var(--tramo-stone-room) + var(--tramo-stone-gap)); }
+.is-right .tramo-stone { left: calc(-1 * var(--tramo-stone-room) + var(--tramo-stone-gap)); }
+/* Inscripción de la estela: una raya grabada; completa, de oro. */
+.tramo-stone::after { content: ""; position: absolute; left: 28%; right: 28%; top: 38%; height: 2px; border-radius: 1px; background: var(--map-sign-line); }
+/* Completo: la tablilla se dora (cara de pan de oro, marco y cinta de oro en el canto) y la estela, inscrita en oro. */
+.sign-plate.is-tramo.is-done, .sign-plate.branch.is-mastered {
+  border-color: var(--gold); background: color-mix(in srgb, var(--gold) 20%, var(--map-sign)); outline-color: color-mix(in srgb, var(--gold) 55%, var(--map-sign));
+  box-shadow: inset 0 calc(-1 * var(--map-ribbon)) 0 var(--gold), 0 2px 0 var(--map-sign-line);
+}
+.sign-plate.is-tramo.is-done .sign-name, .sign-plate.branch.is-mastered .sign-name { color: var(--gold-text); }
+.sign-plate.is-tramo.is-done .tramo-stone::after { background: var(--gold); height: 3px; }
+@media (hover: hover) { button.sign-plate.is-tramo.is-done:hover, button.sign-plate.branch.is-mastered:hover { background: color-mix(in srgb, var(--gold) 26%, var(--map-sign)); } }
 
 /* ---------- 3. Etiquetas de las paradas ---------- */
 /* Parada actual: sin botón; se toca el nodo. Destaca por el nodo (más grande, aro de acento brillante con halo lento),
@@ -71,9 +113,12 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 .stage-review.is-locked .stage-name { color: var(--ink-2); font-size: calc(.78 * var(--map-fs)); background: var(--map-label-soft); }
 .stage-review.is-locked .stage-meta { padding: 0 calc(.3 * var(--map-fs)); background: none; }
 
-/* Camino en línea (letra muy grande): el arco pasa a ser una placa más, a todo el ancho y en el flujo. */
+/* Camino en línea (letra muy grande): la lápida pasa a ser una placa más, a todo el ancho y en el flujo; el mojón, solo su
+   tablilla. */
 .path-map.is-linear .era-arch { position: static; display: block; }
 .path-map.is-linear .arch-band { width: 100%; max-width: none; border-radius: var(--map-r); }
+.path-map.is-linear .arch-band::before, .path-map.is-linear .tramo-stone { display: none; }
+.path-map.is-linear .road-sign.is-tramo { padding-inline: 0; }
 
 /* ---------- «Tu parada» (screens/map-return.js) ---------- */
 /* Botón flotante extendido (Material 3): miniatura de la parada, «Tu parada» y una flecha hacia donde queda. Solo se ve

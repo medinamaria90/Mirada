@@ -59,7 +59,6 @@
   --lit-trail: color-mix(in oklab, color-mix(in oklab, var(--map-trail), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
   --lit-trail-done-edge: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done-edge), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
   --lit-trail-done: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-trail-thread: color-mix(in oklab, color-mix(in oklab, var(--map-trail-thread), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
 }
 .path-era, .path-start, .path-museum, .path-foot { --lit-tint: color-mix(in oklab, color-mix(in oklab, var(--era-tint), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)); background: var(--lit-tint); }
 .path-era { --lit-prev: color-mix(in oklab, color-mix(in oklab, var(--era-prev), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)); }
@@ -94,7 +93,7 @@
 .path-land .k-gold-2 { fill: var(--lit-gold-2); } .path-land .s-k-gold-2 { stroke: var(--lit-gold-2); }
 .path-land .k-awning { fill: var(--lit-awning); } .path-land .s-k-awning { stroke: var(--lit-awning); }
 .path-land .k-bloom { fill: var(--lit-bloom); } .path-land .s-k-bloom { stroke: var(--lit-bloom); }
-.trail-edge, .spur-edge { stroke: var(--lit-trail-edge); }
+.trail-edge, .trail-rim, .trail-grain, .spur-edge { stroke: var(--lit-trail-edge); }
 .trail-fill, .spur-fill { stroke: var(--lit-trail); }
 .land-far { fill: var(--lit-stone-far); }
 .land-front { fill: var(--lit-stone-front); }
@@ -161,7 +160,9 @@
 /* Sendero recorrido: de otro color hasta la parada actual. */
 .trail-edge.is-done { stroke: var(--lit-trail-done-edge); }
 .trail-fill.is-done { stroke: var(--lit-trail-done); }
-.trail-thread { stroke: var(--lit-trail-thread); }
+.trail-rim.is-done, .trail-grain.is-done, .plaza-stones { stroke: var(--lit-trail-done-edge); }
+.plaza-rim { fill: var(--lit-trail-done-edge); }
+.plaza-fill { fill: var(--lit-trail-done); }
 
 /* Piezas de los dibujos propios (puerta de salida, museo). */
 .land-tile { fill: var(--lit-tile); }
