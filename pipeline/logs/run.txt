@@ -1,169 +1,77 @@
-inicio Fri Nov 27 01:27:32 UTC 2026
-== seleccionar kuniyoshi 01:27:32
-kuniyoshi          rama    341    77    8/8   n1=4 L2:4  | sin datos de imagen:251, varios autores:5, sin imagen apta:3, palabra:3, duplicado/versión:3, excluida:1, sin título:1
-TOTAL 8 obras de 175 pintores
-por país: Japón 8
-títulos por fuente: {'manual': 25, 'revisar-idioma': 1, 'traducir': 137, 'wikidata-es': 1107, 'traducido': 202}
-63M	.git
-3.7M	catalogo
-== fichas  01:27:34
-selección 1472, con ficha 1471, este lote 1
-ok lote 1: 1 fichas (1804 en total)
-fin: 1804 fichas; con museo 1746, con ciudad 1731, con técnica 1713, con medidas 1706, en España 371
+inicio Fri Nov 27 01:33:38 UTC 2026
+== hd  01:33:38
+obras con detalle que piden HD: 67
+ok   w1055111    filippo-lippi  pide 2300 px -> 1568x2300 q82 684 KB
+ok   w1065493    millais        pide 3840 px -> 3840x2612 q74 2381 KB
+ok   w1091086    goya           pide 3051 px -> 3051x2328 q82 870 KB
+ok   w1115403    velazquez      pide 3051 px -> 2325x3051 q82 1353 KB
+ok   w1133420    velazquez      pide 3051 px -> 3051x2516 q82 1710 KB
+ok   w1240092    velazquez      pide 3700 px -> 3085x3700 q74 2391 KB
+ok   w12418      leonardo       pide 3300 px -> 2214x3300 q82 2256 KB
+ok   w1452762    caillebotte    pide 2898 px -> 2898x2250 q82 1128 KB
+ok   w15130000   cassatt        pide 3400 px -> 2467x3400 q82 1092 KB
+ok   w1569622    cimabue        pide 3596 px -> 2008x3596 q82 1176 KB
+ok   w1585399    goya           pide 3700 px -> 2446x3700 q82 1368 KB
+ok   w1619527    gainsborough   pide 3200 px -> 3200x1875 q82 1206 KB
+ok   w167605     vermeer        pide 3000 px -> 2675x3000 q82 1689 KB
+ok   w17021187   arcimboldo     pide 3700 px -> 1920x2652 q82 900 KB
+ok   w18177816   corot          pide 2560 px -> 2560x1810 q82 496 KB
+ok   w18744757   signac         pide 2201 px -> 2201x1748 q82 1831 KB
+ok   w19660427   canaletto      pide 3200 px -> 3200x2183 q82 1916 KB
+ok   w2046100    tiziano        pide 3840 px -> 2880x3840 q82 2064 KB
+ok   w208758     velazquez      pide 3300 px -> 2867x3300 q82 1484 KB
+ok   w21127606   hiroshige      pide 3000 px -> 2041x3000 q82 1518 KB
+ok   w21204021   sofonisba      pide 3045 px -> 2349x3045 q82 1886 KB
+ok   w219831     rembrandt      pide 3600 px -> 3600x2929 q82 2095 KB
+ok   w2273890    tintoretto     pide 3800 px -> 3800x2964 q70 2300 KB
+ok   w2366825    constable      pide 2800 px -> 2800x1931 q82 1376 KB
+ok   w2378567    fra-angelico   pide 3100 px -> 3100x2480 q82 1454 KB
+ok   w2388965    durero         pide 3000 px -> 2376x3000 q82 1329 KB
+ok   w2438357    schiele        pide 2800 px -> 2800x2369 q82 2048 KB
+ok   w2456003    murillo        pide 2952 px -> 2012x2952 q82 815 KB
+ok   w252485     hokusai        pide 3840 px -> 3840x2708 q82 2435 KB
+ok   w2535563    rafael         pide 2952 px -> 2267x2952 q82 718 KB
+ok   w2537138    goya           pide 3051 px -> 3051x2114 q82 1052 KB
+ok   w2546309    durero         pide 3000 px -> 2128x3000 q82 736 KB
+ok   w2872725    rembrandt      pide 3700 px -> 3070x3700 q82 1412 KB
+ok   w2983399    goya           pide 3051 px -> 3051x2359 q82 1607 KB
+ok   w3210253    la-tour        pide 1478 px -> 1055x1478 q82 234 KB
+ok   w3212142    chardin        pide 3400 px -> 3400x2653 q82 1364 KB
+ok   w321303     bosco          pide 3700 px -> 3700x2086 q82 2150 KB
+ok   w3224308    perugino       pide 3327 px -> 2562x3327 q82 818 KB
+ok   w3235872    cranach        pide 3700 px -> 2479x3700 q82 1005 KB
+ok   w328523     monet          pide 3840 px -> 3840x2979 q74 2398 KB
+ok   w3451328    hogarth        pide 1512 px -> 1512x1346 q82 349 KB
+ok   w3556817    boucher        pide 3700 px -> 3700x2842 q82 2264 KB
+ok   w3630735    van-gogh       pide 3300 px -> 2714x3300 q82 1819 KB
+ok   w3630751    rembrandt      pide 3300 px -> 2766x3300 q82 818 KB
+ok   w377810     poussin        pide 3124 px -> 3124x2235 q82 853 KB
+ok   w3937621    vigee-le-brun  pide 3840 px -> 2999x3840 q82 2001 KB
+ok   w4062416    modigliani     pide 3840 px -> 1921x3840 q82 2324 KB
+ok   w45585      van-gogh       pide 3840 px -> 3840x3041 q70 2958 KB
+ok   w4717953    velazquez      pide 3840 px -> 3304x3840 q82 1926 KB
+ok   w4936154    rossetti       pide 2367 px -> 2012x2367 q82 767 KB
+ok   w563727     leonardo       pide 3300 px -> 2495x3300 q82 1595 KB
+ok   w5640196    chardin        pide 3277 px -> 3277x2864 q82 1326 KB
+ok   w5731138    sanchez-cotan  pide 3000 px -> 3000x2320 q82 1421 KB
+ok   w5794826    reynolds       pide 3700 px -> 2930x3700 q82 1836 KB
+ok   w5916308    tiepolo        pide 3700 px -> 2013x3700 q82 1013 KB
+ok   w604761     gainsborough   pide 2000 px -> 1375x2000 q82 323 KB
+ok   w644106     sargent        pide 2026 px -> 2020x2026 q82 491 KB
+ok   w701035     memling        pide 3543 px -> 3543x2359 q82 2151 KB
+ok   w780466     uccello        pide 3500 px -> 3500x2639 q82 2299 KB
+ok   w920030     goya           pide 1911 px -> 1911x1595 q82 314 KB
+ok   w9295442    waterhouse     pide 3840 px -> 3840x2306 q74 2434 KB
+ok   w930137     giorgione      pide 3696 px -> 3329x3696 q82 2438 KB
+ok   w939962     correggio      pide 3100 px -> 1346x3100 q82 1005 KB
+ok   w94802      el-greco       pide 1612 px -> 1316x1612 q82 464 KB
+ok   w949323     el-greco       pide 3300 px -> 2538x3300 q82 1778 KB
+ok   w965822     mantegna       pide 3840 px -> 2249x3840 q78 2170 KB
+ok   w984058     velazquez      pide 2911 px -> 2911x2008 q82 1440 KB
+hd: 67 imágenes, 101.7 MB, fallos 0, sha256 9952c06f34235d1d…
+HTTP 403: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID B9F7:1EED47:2C7B1:4373E:6B08DE41 and timestamp 2026-11-27 01:34:57 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (https://uploads.github.com/repos/medinamaria90/Mirada/releases/457164776/assets?label=&name=app-img-hd.zip)
+NO SE PUDO SUBIR EL PAQUETE HD
 64M	.git
 3.7M	catalogo
-== reconciliar  01:27:35
-reconciliar: 1803 imágenes en releases, 1803 en img_meta, quitadas 0 que no estaban subidas
-64M	.git
-3.7M	catalogo
-== download 1 150 01:27:42
-selección 1472, ya bajadas 1471, pendientes 1; este lote 1
-ok   w96471658   kuniyoshi        1107x1600 294KB  Illustrations of Moral Conduct Compared with the Chapters of
-lote: 1/1 bien; quedan 0
-subidas 1 imágenes a la release catalogo-img-2
-build: 1472 obras (1472 con imagen, 1472 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 20, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 6, ukiyo-e 5
-download rc=3
-65M	.git
-3.7M	catalogo
-== build  01:27:48
-build: 1472 obras (1472 con imagen, 1472 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 20, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 6, ukiyo-e 5
-65M	.git
-3.7M	catalogo
-== validate --parcial 01:27:49
-validate: 1472 obras (1472 con imagen), 175 pintores, imágenes 0.0 MB; 0 errores, 335 avisos
-aviso duccio: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso giotto: nivel 2 «Formación y Asís» con 3 obras (< 5: faltan candidatas)
-aviso giotto: nivel 4 «Florencia y el campanile» con 4 obras (< 5: faltan candidatas)
-aviso simone-martini: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso berruguete: nivel 2 «Etapa castellana» con 3 obras (< 5: faltan candidatas)
-aviso leonardo: nivel 2 «Primeras obras en Florencia» con 3 obras (< 5: faltan candidatas)
-aviso durero: nivel 2 «Aprendizaje y 1.er viaje a Italia» con 4 obras (< 5: faltan candidatas)
-aviso utamaro: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso sharaku: nivel 2 «Más obras» con 2 obras (< 5: faltan candidatas)
-aviso kuniyoshi: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso fortuny: nivel 2 «Roma y Marruecos» con 4 obras (< 5: faltan candidatas)
-aviso w15974342 (cimabue): título pendiente de traducir: The Virgin and Child with Two Angels
-aviso w3842715 (duccio): título pendiente de traducir: Madonna di Crevole
-aviso w6728425 (duccio): título pendiente de traducir: Madonna with Child and six Angels
-aviso w3873252 (duccio): título pendiente de traducir: The Nativity with the Prophets Isaiah and Ezekiel
-aviso w4015930 (duccio): título pendiente de traducir: The Calling of the Apostles Peter and Andrew
-aviso w3276168 (giotto): ficha sin technique
-aviso w3395777 (giotto): ficha sin technique
-aviso w3276180 (giotto): ficha sin technique
-aviso w3642142 (giotto): ficha sin technique
-aviso w141270724 (giotto): ficha sin dimensions
-aviso w27016037 (giotto): ficha sin technique
-aviso w118495235 (giotto): ficha sin dimensions
-aviso w3873247 (pietro-lorenzetti): título pendiente de traducir: Nativity of the Virgin
-aviso w3948917 (pietro-lorenzetti): título pendiente de traducir: Saint Margaret or Agatha
-aviso w3842761 (pietro-lorenzetti): título pendiente de traducir: Madonna and Child Enthroned with Eight Angels
-aviso w3843026 (pietro-lorenzetti): título pendiente de traducir: Cortone Maesta
-aviso w3225814 (simone-martini): título pendiente de traducir: The Carrying of the Cross
-aviso w20173074 (simone-martini): título pendiente de traducir: The Angel of the Annunciation
-aviso w21614531 (simone-martini): título pendiente de traducir: Descent from the Cross
-aviso w3618171 (ambrogio-lorenzetti): título pendiente de traducir: Annunciation
-aviso w3842740 (ambrogio-lorenzetti): título pendiente de traducir: Madonna with child
-aviso w3843028 (ambrogio-lorenzetti): título pendiente de traducir: Madonna and child with saints and angels
-aviso w18572975 (ambrogio-lorenzetti): título pendiente de traducir: The Charity of St. Nicholas of Bari
-aviso w3637223 (uccello): ficha sin technique
-aviso w15965547 (uccello): ficha sin museum
-aviso w16596981 (uccello): ficha sin technique
-aviso w3948700 (masaccio): ficha sin technique
-aviso w3949351 (masaccio): ficha sin technique
-aviso w3899272 (masaccio): ficha sin technique
-aviso w3899272 (masaccio): ficha sin dimensions
-aviso w3889196 (filippo-lippi): ficha sin dimensions
-aviso w2247307 (piero): ficha sin technique
-aviso w2551625 (botticelli): ficha sin dimensions
-aviso w11947062 (berruguete): ficha sin technique
-aviso w2276130 (bosco): ficha sin dimensions
-aviso w3685113 (durero): título pendiente de traducir: Lamentation of Christ
-aviso w3707697 (miguel-angel): ficha sin dimensions
-aviso w23922 (tiziano): título pendiente de traducir: Woman with a Mirror
-aviso w3842778 (tiziano): título pendiente de traducir: The Gypsy Madonna
-aviso w3937673 (tiziano): título pendiente de traducir: Portrait of Vincenzo Mosti
-aviso w125359587 (juan-de-juanes): ficha sin technique
-aviso w15074981 (veronese): título pendiente de traducir: The Feast in the House of Simon the Pharisee
-aviso w3849979 (veronese): título pendiente de traducir: Mars and Venus with Cupid and a Dog
-aviso w17994180 (sanchez-coello): ficha sin dimensions
-aviso w3078569 (el-greco): ficha sin technique
-aviso w126956583 (sanchez-cotan): ficha sin museum
-aviso w2338417 (caravaggio): ficha sin dimensions
-aviso w3731232 (rubens): título pendiente de traducir: Hercules and Omphale
-aviso w3636299 (rubens): título pendiente de traducir: The Battle of the Amazons
-65M	.git
-3.7M	catalogo
-== pack 1200 01:27:50
-HTTP 403: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 0814:39413D:323DCEC:9D7A37A:6B08DCB9 and timestamp 2026-11-27 01:28:25 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (https://api.github.com/repos/medinamaria90/Mirada/releases/assets/788725334)
-pack 1200px: 1072 imágenes, 243.6 MB de JPEG (media 221 KB), zip 243.7 MB, sha256 2de1c1d86bf7f91d…
-obras del catálogo 1472; sin imagen 400; con fallo 0
-faltan: w68496636 w3276414 w667202 w948745 w644734 w3842715 w6728425 w3873252 w4015930 w3842479 w3276168 w3395777 w3642142 w3504778 w734197 w3769209 w61989282 w3873247 w3948917 w3842761 w3843026 w979440 w3119488 w3276413 w3907529 w3225814 w3910903 w3618171 w3842740 w3843028 w3399498 w3553389 w3399452 w3531531 w3649296 w3698199 w780466 w3637223 w3982380 w3276176 w5189814 w3399428 w3947827 w3711791 w369582 w3949530 w3605535 w3948700 w3949351 w3698230 w3947289 w3948660 w3899272 w3889196 w3797764 w3618193 w3958339 w3947293 w3731175 w3948659 …
-pack rc=3: paquete NO subido (faltan imágenes o hay fallos; ver pipeline/logs/pack.txt)
-65M	.git
-3.7M	catalogo
-== validate  01:29:31
-validate: 1472 obras (1472 con imagen), 175 pintores, imágenes 0.0 MB; 0 errores, 335 avisos
-aviso duccio: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso giotto: nivel 2 «Formación y Asís» con 3 obras (< 5: faltan candidatas)
-aviso giotto: nivel 4 «Florencia y el campanile» con 4 obras (< 5: faltan candidatas)
-aviso simone-martini: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso berruguete: nivel 2 «Etapa castellana» con 3 obras (< 5: faltan candidatas)
-aviso leonardo: nivel 2 «Primeras obras en Florencia» con 3 obras (< 5: faltan candidatas)
-aviso durero: nivel 2 «Aprendizaje y 1.er viaje a Italia» con 4 obras (< 5: faltan candidatas)
-aviso utamaro: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso sharaku: nivel 2 «Más obras» con 2 obras (< 5: faltan candidatas)
-aviso kuniyoshi: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
-aviso fortuny: nivel 2 «Roma y Marruecos» con 4 obras (< 5: faltan candidatas)
-aviso w15974342 (cimabue): título pendiente de traducir: The Virgin and Child with Two Angels
-aviso w3842715 (duccio): título pendiente de traducir: Madonna di Crevole
-aviso w6728425 (duccio): título pendiente de traducir: Madonna with Child and six Angels
-aviso w3873252 (duccio): título pendiente de traducir: The Nativity with the Prophets Isaiah and Ezekiel
-aviso w4015930 (duccio): título pendiente de traducir: The Calling of the Apostles Peter and Andrew
-aviso w3276168 (giotto): ficha sin technique
-aviso w3395777 (giotto): ficha sin technique
-aviso w3276180 (giotto): ficha sin technique
-aviso w3642142 (giotto): ficha sin technique
-aviso w141270724 (giotto): ficha sin dimensions
-aviso w27016037 (giotto): ficha sin technique
-aviso w118495235 (giotto): ficha sin dimensions
-aviso w3873247 (pietro-lorenzetti): título pendiente de traducir: Nativity of the Virgin
-aviso w3948917 (pietro-lorenzetti): título pendiente de traducir: Saint Margaret or Agatha
-aviso w3842761 (pietro-lorenzetti): título pendiente de traducir: Madonna and Child Enthroned with Eight Angels
-aviso w3843026 (pietro-lorenzetti): título pendiente de traducir: Cortone Maesta
-aviso w3225814 (simone-martini): título pendiente de traducir: The Carrying of the Cross
-aviso w20173074 (simone-martini): título pendiente de traducir: The Angel of the Annunciation
-aviso w21614531 (simone-martini): título pendiente de traducir: Descent from the Cross
-aviso w3618171 (ambrogio-lorenzetti): título pendiente de traducir: Annunciation
-aviso w3842740 (ambrogio-lorenzetti): título pendiente de traducir: Madonna with child
-aviso w3843028 (ambrogio-lorenzetti): título pendiente de traducir: Madonna and child with saints and angels
-aviso w18572975 (ambrogio-lorenzetti): título pendiente de traducir: The Charity of St. Nicholas of Bari
-aviso w3637223 (uccello): ficha sin technique
-aviso w15965547 (uccello): ficha sin museum
-aviso w16596981 (uccello): ficha sin technique
-aviso w3948700 (masaccio): ficha sin technique
-aviso w3949351 (masaccio): ficha sin technique
-aviso w3899272 (masaccio): ficha sin technique
-aviso w3899272 (masaccio): ficha sin dimensions
-aviso w3889196 (filippo-lippi): ficha sin dimensions
-aviso w2247307 (piero): ficha sin technique
-aviso w2551625 (botticelli): ficha sin dimensions
-aviso w11947062 (berruguete): ficha sin technique
-aviso w2276130 (bosco): ficha sin dimensions
-aviso w3685113 (durero): título pendiente de traducir: Lamentation of Christ
-aviso w3707697 (miguel-angel): ficha sin dimensions
-aviso w23922 (tiziano): título pendiente de traducir: Woman with a Mirror
-aviso w3842778 (tiziano): título pendiente de traducir: The Gypsy Madonna
-aviso w3937673 (tiziano): título pendiente de traducir: Portrait of Vincenzo Mosti
-aviso w125359587 (juan-de-juanes): ficha sin technique
-aviso w15074981 (veronese): título pendiente de traducir: The Feast in the House of Simon the Pharisee
-aviso w3849979 (veronese): título pendiente de traducir: Mars and Venus with Cupid and a Dog
-aviso w17994180 (sanchez-coello): ficha sin dimensions
-aviso w3078569 (el-greco): ficha sin technique
-aviso w126956583 (sanchez-cotan): ficha sin museum
-aviso w2338417 (caravaggio): ficha sin dimensions
-aviso w3731232 (rubens): título pendiente de traducir: Hercules and Omphale
-aviso w3636299 (rubens): título pendiente de traducir: The Battle of the Amazons
-65M	.git
-3.7M	catalogo
-fin Fri Nov 27 01:29:32 UTC 2026
-estado del job: success Fri Nov 27 01:29:33 UTC 2026
+fin Fri Nov 27 01:34:59 UTC 2026
+estado del job: success Fri Nov 27 01:35:00 UTC 2026

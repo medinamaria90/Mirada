@@ -1,10 +1,2 @@
-# 27/11 (3.ª pasada) — excluir.json se respeta en todos los pasos (lib.seleccion()); Kuniyoshi recupera su 4.ª obra de nivel 1
-# en lugar de la «800 nin» excluida.
-seleccionar kuniyoshi
-fichas
-reconciliar
-download 1 150
-build
-validate --parcial
-pack 1200
-validate
+# 27/11 — HD de los detalles de las historias (region o zoom grande): app-img-hd.zip a catalogo-img y catalogo/hd.json.
+hd

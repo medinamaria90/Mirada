@@ -81,4 +81,14 @@ tarjetas enseña un detalle (`region`) elegido mirando la imagen, y el texto apu
 simuladas del marco de la historia (412 × 915): sin caras cortadas.
 
 Hechos: Tintoretto, Giorgione, Mantegna, Correggio, Perugino, Fra Angelico, Filippo Lippi, Uccello, Memling, Cranach, Poussin,
-Canaletto, Tiepolo, La Tour, Constable, Corot, Gainsborough, Reynolds, Hogarth, Schiele, Modigliani, Sargent, Cassatt, Signac.
+Canaletto, Tiepolo, La Tour, Constable, Corot, Gainsborough, Reynolds, Hogarth, Schiele, Modigliani, Sargent, Cassatt, Signac,
+Hokusai (cuatro vistas de la Gran ola), Hiroshige, Arcimboldo, Sofonisba, Sánchez Cotán, Chardin (y su primera tarjeta ya no
+repite «cosas humildes»), Boucher, Vigée Le Brun, Waterhouse, Millais, Rossetti, Caillebotte, Zuloaga, Alonso Cano, Valdés Leal, Morales, Maíno, Carreño,
+Claudio Coello, Sánchez Coello, Pereda, Bellini, Cimabue (cuatro vistas de su Maestà) y Pontormo (52 en total).
+
+Pendientes (repiten obra entera; menos conocidos): el resto de invitados rusos, nórdicos y españoles del XIX, los de ukiyo-e
+(Utamaro, Sharaku, Kuniyoshi), Duccio, Simone Martini y unos 50 más; `python3 -I tools/sync_historias.py` no los marca porque
+no tienen otra obra libre.
+
+Fra Angelico: la Adoración de los Reyes Magos (nueva, «learn») sustituye a la Coronación (ahora «new»); la Anunciación sale
+entera y en detalle (Adán y Eva).

@@ -270,6 +270,14 @@ def main():
             with Image.open(path_) as im:
                 check(im.size == packed_size(w["w"], w["h"]), f"{w['id']}: mide {im.size}, el catálogo espera {packed_size(w['w'], w['h'])}")
                 check(not im.getexif(), f"{w['id']}: lleva EXIF")
+            hd = w.get("hd")
+            if hd:  # HD de los detalles de las historias (paso «hd» del proceso): en <imgs>/hd/
+                hd_path = f"{imgs}/hd/{w['id']}.jpg"
+                if not os.path.isfile(hd_path):
+                    err(f"{w['id']}: falta {hd_path}")
+                    continue
+                with Image.open(hd_path) as im:
+                    check(list(im.size) == [hd["w"], hd["h"]], f"{w['id']}: la HD mide {im.size}, el catálogo espera {hd['w']}x{hd['h']}")
         for k, src in enumerate(atlas["sheets"]):
             p = f"{app}/{src}"
             if os.path.isfile(p):

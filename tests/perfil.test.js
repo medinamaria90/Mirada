@@ -35,8 +35,6 @@ const ctxFor = (progress, settings = {}) => {
   return { index, today: () => TODAY, dailyDay: () => TODAY, store: { get: () => state } };
 };
 const FORBIDDEN = /\bayer\b|\bmañana\b/i;
-const gentleData = JSON.parse(readFileSync(new URL('../app/data/gentle.json', import.meta.url), 'utf8'));
-const GENTLE = P.gentleSet(gentleData);
 const read = (path) => readFileSync(new URL(path, import.meta.url), 'utf8');
 
 test('nombre: se limpia, se recorta a 24 caracteres, conserva los emojis compuestos y lo que no es texto queda vacío', () => {
@@ -405,48 +403,19 @@ test('el perfil no carga el audio con la música apagada', () => {
   assert.match(read('../app/js/ui/screens/profile.js'), /settings\.music\) \(/);
 });
 
-test('lista blanca: la portada automática de cada pintor y la tarjeta salen siempre de app/data/gentle.json', () => {
+test('portada: la automática sale de la colección sin excluir ninguna obra por su contenido', () => {
   const real = realIndex();
-  assert.ok(GENTLE.size >= 200, `la lista blanca tiene ${GENTLE.size} obras`);
-  assert.equal(GENTLE.size, gentleData.works.length, 'ids repetidos');
-  for (const w of gentleData.works) {
-    const art = real.artwork(w.id);
-    assert.ok(art, `${w.id} no está en el catálogo`);
-    assert.equal(art.title, w.title, `${w.id}: el título del catálogo cambió, revisa la obra`);
-    assert.ok(!P.isHarsh(art), `«${art.title}» está en la lista y la red de seguridad la tumba`);
-  }
-  let checked = 0;
-  for (const a of real.artists) {
-    const works = real.worksOf(a.id);
-    if (!works.length) continue;
-    const progress = { ...emptyProgress(), collection: Object.fromEntries(works.map((w) => [w.id, '2026-11-20'])) };
-    const cover = P.coverWork(progress, real, '', GENTLE);
-    assert.ok(cover && GENTLE.has(cover.id), `${a.name}: «${cover?.title}» no está en la lista blanca`);
-    const card = P.shareCover(progress, real, '', GENTLE);
-    assert.ok(GENTLE.has(card.id), `${a.name}: la tarjeta lleva «${card.title}»`);
-    // Aunque haya elegido a mano cualquier obra suya, la tarjeta no sale de la lista.
-    for (const w of works.slice(0, 40)) assert.ok(GENTLE.has(P.shareCover(progress, real, w.id, GENTLE).id), `${a.name}: elegida «${w.title}», la tarjeta se sale de la lista`);
-    checked += 1;
-  }
-  assert.ok(checked >= 150, `solo se comprobaron ${checked} pintores`);
-  assert.ok(GENTLE.has(P.sampleCover(real, GENTLE).id));
-  // Con todo el catálogo en la colección gana la obra amable más famosa; una colección solo de escenas duras da la de muestra.
+  const maja = real.artworks.find((x) => /maja desnuda/i.test(x.title));
+  assert.ok(maja);
+  const only = { ...emptyProgress(), collection: { [maja.id]: '2026-11-20' } };
+  assert.equal(P.coverWork(only, real).id, maja.id);
+  assert.equal(P.shareCover(only, real, maja.id).id, maja.id);
   const all = { ...emptyProgress(), collection: Object.fromEntries(real.artworks.map((w) => [w.id, '2026-11-20'])) };
-  const top = P.coverWork(all, real, '', GENTLE);
-  assert.ok(GENTLE.has(top.id));
-  assert.ok(real.artworks.filter((w) => GENTLE.has(w.id)).every((w) => (w.fame || 0) <= (top.fame || 0)), 'no es la de más fama');
-  for (const t of [/judit decapitando/i, /lamentaci[oó]n sobre cristo muerto/i, /elevaci[oó]n de la cruz/i, /ecce homo/i, /maja desnuda/i, /tres de mayo/i]) {
-    const w = real.artworks.find((x) => t.test(x.title));
-    assert.ok(w, String(t));
-    assert.ok(!GENTLE.has(w.id), `«${w.title}» no debe estar en la lista`);
-    const only = { ...emptyProgress(), collection: { [w.id]: '2026-11-20' } };
-    assert.ok(GENTLE.has(P.coverWork(only, real, '', GENTLE).id), `«${w.title}»: la portada automática no es de la lista`);
-    assert.equal(P.coverWork(only, real, w.id, GENTLE).id, w.id, 'elegida a mano, en pantalla se respeta');
-    assert.ok(GENTLE.has(P.shareCover(only, real, w.id, GENTLE).id), `«${w.title}» elegida a mano acaba en la tarjeta`);
-  }
-  // Sin lista (no cargó), la red de seguridad por palabras sigue tumbando lo duro.
-  for (const t of ['El tres de mayo de 1808', 'Lamentación sobre Cristo muerto', 'La elevación de la cruz', 'Ecce Homo', 'Desollamiento de Marsias', 'La coronación de espinas', 'Duelo a garrotazos', 'The Battle of the Amazons', 'La maja desnuda', 'La balsa de la Medusa', 'Saturno devorando a un hijo']) assert.ok(P.isHarsh({ title: t }), t);
-  assert.ok(!P.isHarsh({ title: 'La noche estrellada' }));
+  const top = P.coverWork(all, real);
+  assert.ok(real.artworks.every((w) => (w.fame || 0) <= (top.fame || 0)), 'no es la de más fama');
+  assert.ok(P.sampleCover(real));
+  assert.equal(P.isHarsh, undefined);
+  assert.equal(P.gentleSet, undefined);
 });
 
 test('último test: rechaza aciertos mayores que preguntas o negativos', () => {
