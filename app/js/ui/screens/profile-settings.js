@@ -39,12 +39,12 @@ export function settingsHtml(ctx) {
   const goal = normalizeGoal(s.dailyGoal);
   const done = todayXp(ctx.store.get().progress, ctx.today());
   const goalButtons = GOAL_OPTIONS.map((g) => `<button type="button" class="seg ${g === goal ? 'is-on' : ''}" data-action="goal" data-goal="${g}" aria-pressed="${g === goal}">
-      <span class="seg-num">${g} XP</span><span class="seg-name">${GOAL_NAMES[g] || ''}</span></button>`).join('');
+      <span class="seg-num">${g} puntos</span><span class="seg-name">${GOAL_NAMES[g] || ''}</span></button>`).join('');
   return `<dialog class="card-dialog sheet-dialog settings-dialog" aria-labelledby="settings-title">
     <div class="dlg-body">
       <div class="sheet-head"><h2 id="settings-title" class="dlg-title">Ajustes</h2>
         <button type="button" class="icon-btn" data-action="close-sheet" aria-label="Cerrar">${icons.close(22)}</button></div>
-      <div class="setting setting-goal"><span id="goal-h">Meta del día <span class="goal-aside">${Math.min(done, goal)}/${goal} XP</span></span>
+      <div class="setting setting-goal"><span id="goal-h">Meta del día <span class="goal-aside">${Math.min(done, goal)}/${goal} puntos</span></span>
         <div class="goal-row">${goalRing(done, goal, RING)}<div class="segs" role="group" aria-labelledby="goal-h">${goalButtons}</div></div></div>
       ${themePicker(s.theme)}
       ${toggle('music', 'Música', s.music)}
@@ -100,7 +100,7 @@ export function wireSettings(ctx, el) {
         x.setAttribute('aria-pressed', String(on));
       });
       $('.goal-row .ring', dialog).outerHTML = goalRing(done, g, RING);
-      $('.goal-aside', dialog).textContent = `${Math.min(done, g)}/${g} XP`;
+      $('.goal-aside', dialog).textContent = `${Math.min(done, g)}/${g} puntos`;
       const chip = $('.chip-streak', el);
       if (chip) chip.outerHTML = headerStreakChip(ctx);
     },

@@ -24,7 +24,7 @@ export function ringSvg(levels, cls = 'level-ring') {
   return `${halo}<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">${arcs}</svg>`;
 }
 
-const MARK_LEN = 1.2;    // largo de la muesca del 75 % (sobre RING_LEN)
+const MARK_LEN = 2;      // largo de la muesca del 75 % (sobre RING_LEN)
 
 // Aro de un pintor a medias: entero, lleno en coral hasta su nota y con una muesca en el 75 % (lo que hace falta).
 export function scoreRingSvg(best, mastery, cls = 'level-ring') {

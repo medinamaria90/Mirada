@@ -327,7 +327,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .ring-arc.is-next { stroke: var(--brand); stroke-width: var(--ring-w-next); }
 /* A medias (deep-badges.js scoreRingSvg): el aro lleno en coral hasta su nota, sobre el aro apagado, y la muesca del 75 %. */
 .ring-arc.is-partial { stroke: var(--brand); stroke-width: var(--ring-w-next); }
-.ring-arc.is-mark { stroke: var(--ink); stroke-width: calc(var(--ring-w-next) * 1.6); stroke-linecap: butt; }
+.ring-arc.is-mark { stroke: var(--surface); stroke-width: calc(var(--ring-w-next) + 1); stroke-linecap: butt; }
 .ring-halo { fill: var(--brand-soft); transform-origin: center; animation: ring-breathe var(--dur-breathe) var(--ease) infinite; }
 @keyframes ring-breathe { 50% { transform: scale(1.08); opacity: .55; } }
 @media (prefers-reduced-motion: reduce) { .ring-halo { animation: none; } }
@@ -1285,5 +1285,6 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 .ri-bar { position: absolute; top: 0; left: 0; right: 0; }
 .ri-face { padding: 0; border: 0; background: none; border-radius: 999px; cursor: pointer; }
 .ri-face:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
-.ri-av { display: block; width: var(--ri-face); height: var(--ri-face); box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--brand); }
+.ri-av { display: block; overflow: hidden; width: var(--ri-face); height: var(--ri-face); border-radius: 999px; background: var(--surface-2); box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--brand); }
+.ri-av img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .ri-icon { display: grid; place-items: center; width: var(--ri-face); height: var(--ri-face); border-radius: 999px; background: var(--brand-soft); color: var(--brand-text); }

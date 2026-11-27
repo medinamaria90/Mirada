@@ -25,6 +25,7 @@ import { medalInfo } from '../../engine/medal-info.js';
 import { newWorksCount } from '../../engine/closure.js';
 import { branchAfterRound } from '../../engine/branches.js';
 import { setMapFocus, setBranchFocus } from './path-map.js';
+import { lastStep, rememberStep } from '../last-step.js';
 
 export { extraRounds } from './result-actions.js';
 
@@ -100,8 +101,7 @@ const secondaryBtn = (b) => (b.iconOnly
 
 // ↻ solo para «Repasar»; «Repetir» va sin icono.
 const STEP_ICON = { review: 'repeat', weekly: 'target' };
-// El último paso recomendado (en memoria): lo de atrás se recomienda de vez en cuando, nunca dos veces seguidas.
-let lastStepKind = null;
+
 
 // Botón principal: el siguiente paso. Al camino («Seguir», «Volver al camino») cierra como siempre; el resto va a su ruta.
 // «Sigue: <pintor>» lleva su miniatura.
@@ -157,8 +157,8 @@ export function renderResult(ctx, el, opts) {
   // El siguiente paso (engine/next-step.js); los duelos no llevan recomendación.
   const week = typeof ctx.dailyDay === 'function' ? isoWeek(ctx.dailyDay()).key : '';
   const next = duel ? { kind: 'path', to: 'inicio', label: 'Volver al camino' }
-    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '', prevStep: lastStepKind });
-  lastStepKind = next.kind;
+    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '', prevStep: lastStep() });
+  if (!duel) rememberStep(next.kind);
   const blocked = next.kind === 'retry';
   const gated = Boolean(blocked && nextOf && !isStepUnlocked(p, index, nextOf));
   const toPath = next.kind === 'path' || next.kind === 'done';
@@ -199,7 +199,7 @@ export function renderResult(ctx, el, opts) {
       </div>
       <dl class="res-tally">
         <div><dt>Aciertos</dt><dd>${outcome.score}/${outcome.total}</dd></div>
-        <div><dt>Experiencia</dt><dd>+<span class="countup" data-to="${outcome.xp}">${reduce ? outcome.xp : 0}</span></dd></div>
+        <div><dt>Puntos</dt><dd>+<span class="countup" data-to="${outcome.xp}">${reduce ? outcome.xp : 0}</span></dd></div>
         <div><dt>Cuadros nuevos</dt><dd>${fresh}</dd></div>
       </dl>
       ${chipsHtml(chips)}

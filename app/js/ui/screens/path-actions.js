@@ -151,7 +151,7 @@ export function showLockNote(button) {
 const GO_SETTLE_MS = 450;   // lo que tarda el camino en llegar a la parada antes de tocarla
 
 // A la parada que abre lo cerrado: en esta pantalla, el camino baja (o sube) hasta ella y se toca; si no está, a jugarla.
-function goToStep(key) {
+export function goToStep(key) {
   const [type, id] = key.split(':');
   const target = document.querySelector(`.stage-spot[data-step="${CSS.escape(key)}"] .stage`);
   if (!target) return go(type === 'sala' ? `sala-${id}` : stageRoute(id));

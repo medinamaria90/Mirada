@@ -74,12 +74,12 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   let bar = P.rankProgress(rankFor(p, index));
   assert.equal(bar.next, 'Aficionado');
   assert.deepEqual(bar.conds.map((c) => [c.key, c.have, c.need, c.done]), [['xp', 0, 300, false]]);
-  assert.deepEqual(bar.parts, ['Ganar 300 XP más']);
+  assert.deepEqual(bar.parts, ['Ganar 300 puntos más']);
   p.xp = 1877;
   p.rank = 1;
   bar = P.rankProgress(rankFor(p, index));
   assert.equal(bar.next, 'Copista');
-  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1.200 XP', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
+  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1.200 puntos', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
     'con el XP cumplido se ve cumplido, y lo que falta aparte');
   assert.match(bar.parts[0], /^Superar 1 nivel «a fondo» más$/);
   assert.equal('fraction' in bar, false, 'ya no hay barra del mínimo');
@@ -87,7 +87,7 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   const ladder = rankLadder();
   assert.equal(ladder.length, RANKS.length);
   assert.deepEqual(ladder[0].conds, [], 'el primero no pide nada');
-  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3.000 XP', '4 niveles «a fondo»', 'El nivel 2 de un gran maestro (los más grandes, como Rafael)']);
+  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3.000 puntos', '4 niveles «a fondo»', 'El nivel 2 de un gran maestro (los más grandes, como Rafael)']);
   assert.deepEqual(rankConditions(RANKS[6]).map((c) => c.key), ['xp', 'deep', 'eras', 'complete']);
 });
 
@@ -97,7 +97,7 @@ test('rango: una sola acción recomendada (el nivel que cuenta, a lo ancho); sin
   assert.match(card, /Aficionado/);
   assert.match(card, /Rango 2 de 8/);
   assert.match(card, /Para ser <strong>Copista<\/strong>/);
-  assert.match(card, /pf-cond is-done[\s\S]*<span class="pf-cond-val">1\.500<\/span>\/1\.200 XP/, 'el XP cumplido se lee como «1.500/1.200 XP», no «1200 XP … 1500»');
+  assert.match(card, /pf-cond is-done[\s\S]*<span class="pf-cond-val">1\.500<\/span>\/1\.200 puntos/, 'el XP cumplido se lee como «1.500/1.200 XP», no «1200 XP … 1500»');
   assert.match(card, /Un nivel «a fondo» <span class="pf-cond-val">0\/1<\/span>/);
   assert.doesNotMatch(card, />Jugar<|>Elegir</, 'sin nada que cuente, ningún botón que no cumpliría');
   assert.match(card, /class="pf-cond-why">Termina una parada del camino y se abre su nivel 2</);
@@ -220,7 +220,7 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   const card = rankCardHtml(ctx);
   assert.match(card, /Curioso/);
   assert.match(card, /Para ser <strong>Aficionado<\/strong>/);
-  assert.match(card, /300 XP/);
+  assert.match(card, /300 puntos/);
   const welcome = welcomeHtml();
   assert.match(welcome, /Tu perfil empieza aquí/);
   assert.match(welcome, /btn-primary[^>]*href="#inicio"/);
