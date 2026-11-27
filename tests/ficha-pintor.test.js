@@ -45,17 +45,17 @@ test('ficha: la fuente de fechas y país es su ficha de Wikidata', () => {
   assert.equal(wikidataUrl({}), '');
 });
 
-test('cómo reconocerlo: cada rasgo con el cuadro visto que lo enseña (sus etiquetas) y, si no hay, la portada en otro punto', () => {
+test('cómo reconocerlo: cada rasgo con el cuadro visto que lo enseña (sus etiquetas) y, si no hay, otro cuadro visto (la portada en otro punto solo si no quedan)', () => {
   const real = realIndex();
   const velazquez = real.artist('velazquez');
   const works = real.worksOf('velazquez');
   const meninas = works.find((w) => w.id === 'w208758');
   const level1 = works.filter((w) => (w.level || 1) === 1);
-  // Sin Las Meninas vista, ningún cuadro visto lleva las etiquetas: la portada, recortada en puntos distintos.
+  // Sin Las Meninas vista, ningún cuadro visto lleva las etiquetas: cada rasgo, un cuadro visto distinto.
   const plain = traitDetails(velazquez, level1);
   assert.equal(plain.length, velazquez.traits.length);
   assert.ok(plain.every((r) => r.work && level1.includes(r.work)), 'solo obras vistas');
-  assert.equal(new Set(plain.map((r) => `${r.x},${r.y}`)).size, plain.length, 'tres rasgos, tres recortes distintos');
+  assert.equal(new Set(plain.map((r) => r.work.id)).size, plain.length, 'tres rasgos, tres obras distintas');
   assert.ok(plain.every((r) => r.x >= 15 && r.x <= 85 && r.y >= 15 && r.y <= 85), 'el recorte no se pega al marco');
   // Con Las Meninas (gris, suelta) vista, el rasgo de los grises sale de ella, recortada en su punto de interés.
   const tagged = traitDetails(velazquez, [...level1, meninas]);
@@ -132,4 +132,10 @@ test('historias: como mucho MAX_CARDS tarjetas, texto de hasta MAX_TEXT caracter
 test('catálogo: cada pintor lleva su QID de Wikidata (fuente de la ficha sin historia); una parada conjunta, el de cada miembro', () => {
   const qid = (q) => /^Q\d+$/.test(q || '');
   assert.ok(real.artists.every((a) => qid(a.qid) || (a.members?.length >= 2 && a.members.every((m) => qid(m.qid)))));
+});
+
+test('rasgos: sin etiquetas que los enseñen, no repiten obra mientras queden cuadros vistos por usar', () => {
+  const seenWorks = [1, 2, 3].map((n) => ({ id: `w${n}`, artistId: 'x', fame: 10 - n, tags: [] }));
+  const rows = traitDetails({ id: 'x', traits: ['uno', 'dos', 'tres'] }, seenWorks);
+  assert.equal(new Set(rows.map((r) => r.work.id)).size, 3);
 });

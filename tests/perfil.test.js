@@ -1,4 +1,4 @@
-// Perfil nuevo: datos puros (rango, portada, museo, metales, test), nombre con su migración y HTML sin navegador.
+// Perfil nuevo: datos puros (rango, cuadro de la tarjeta, museo, metales, test), nombre con su migración y HTML sin navegador.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -59,12 +59,12 @@ test('migración 7 → 8: nombre, portada y avatar vacíos, conserva el resto; y
   const v7 = { version: 7, onboarded: true, progress: { xp: 500 }, settings: { music: false, sfx: true, volume: 0.2, reducedMotion: true, dailyGoal: 100, theme: 'dark' }, session: {} };
   const out = migrate(v7);
   assert.equal(out.version, SCHEMA_VERSION);
-  assert.deepEqual(out.settings, { ...v7.settings, name: '', cover: '', avatar: '' });
+  assert.deepEqual(out.settings, { ...v7.settings, name: '', avatar: '' });
   assert.equal(out.progress.xp, 500);
   assert.equal(migrate({ version: 8, settings: { name: 'Ana' } }).settings.name, 'Ana');
   const dirty = migrate({ version: 8, settings: { name: `  ${'x'.repeat(50)}\n`, cover: '<script>', avatar: 'w9' } });
   assert.equal(dirty.settings.name.length, NAME_MAX);
-  assert.equal(dirty.settings.cover, '');
+  assert.equal('cover' in dirty.settings, false, 'la portada ya no existe');
   assert.equal(dirty.settings.avatar, 'w9');
   assert.equal(defaultState().settings.name, '');
 });
@@ -79,7 +79,7 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   p.rank = 1;
   bar = P.rankProgress(rankFor(p, index));
   assert.equal(bar.next, 'Copista');
-  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1200 XP', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
+  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1.200 XP', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
     'con el XP cumplido se ve cumplido, y lo que falta aparte');
   assert.match(bar.parts[0], /^Dominar 1 nivel «a fondo» más$/);
   assert.equal('fraction' in bar, false, 'ya no hay barra del mínimo');
@@ -87,7 +87,7 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   const ladder = rankLadder();
   assert.equal(ladder.length, RANKS.length);
   assert.deepEqual(ladder[0].conds, [], 'el primero no pide nada');
-  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3000 XP', '4 niveles «a fondo»', 'Un gran maestro hasta el nivel 2']);
+  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3.000 XP', '4 niveles «a fondo»', 'Un gran maestro hasta el nivel 2']);
   assert.deepEqual(rankConditions(RANKS[6]).map((c) => c.key), ['xp', 'deep', 'eras', 'complete']);
 });
 
@@ -97,7 +97,7 @@ test('rango: «Elegir» ofrece los pintores dominados con un nivel «a fondo» a
   assert.match(card, /Aficionado/);
   assert.match(card, /Rango 2 de 8/);
   assert.match(card, /Para ser <strong>Copista<\/strong>/);
-  assert.match(card, /pf-cond is-done[\s\S]*1200 XP[\s\S]*1500/);
+  assert.match(card, /pf-cond is-done[\s\S]*<span class="pf-cond-val">1\.500<\/span>\/1\.200 XP/, 'el XP cumplido se lee como «1.500/1.200 XP», no «1200 XP … 1500»');
   assert.match(card, /Un nivel «a fondo» <span class="pf-cond-val">0\/1<\/span>/);
   assert.match(card, /href="#inicio"[^>]*>Jugar</, 'sin pintores dominados, se juega el camino');
   assert.equal((card.match(/class="pf-ladder/g) || []).length, 1);
@@ -206,8 +206,8 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.match(hero, /Ponte un nombre/);
   assert.match(hero, /class="logo"/);
   assert.doesNotMatch(hero, /Curioso|role="progressbar"/, 'el rango va en su tarjeta');
-  assert.match(hero, /pf-cover-cap/, 'portada de muestra con su pie');
-  assert.doesNotMatch(hero, /pf-look/, 'sin cuadros no hay nada que elegir');
+  assert.doesNotMatch(hero, /pf-cover/, 'sin portada');
+  assert.doesNotMatch(hero, /open-look|pf-avatar-btn/, 'sin cuadros no hay nada que elegir');
   assert.match(hero, /data-action="open-settings"[^>]*aria-label="Ajustes"/);
   const card = rankCardHtml(ctx);
   assert.match(card, /Curioso/);
@@ -266,27 +266,24 @@ test('los XP junto al rango: exactos hasta 9 999 y abreviados hacia abajo («31,
   assert.match(read('../app/css/profile-cards.css').match(/\.pf-cond-val \{[^}]*\}/)[0], /white-space: nowrap/);
 });
 
-test('texto al 200 %: el saludo no se recorta (sin line-clamp ni overflow oculto), baja bajo el avatar si no cabe y el avatar no come el ancho', () => {
+test('texto al 200 %: el saludo no se recorta (sin line-clamp ni overflow oculto), baja a su fila si no cabe y el avatar no come el ancho', () => {
   const css = read('../app/css/profile.css');
   const name = css.match(/\.pf-name-text \{[^}]*\}/)[0];
   assert.doesNotMatch(name, /line-clamp|overflow: hidden/);
-  assert.match(css.match(/\.pf-id \{[^}]*\}/)[0], /flex-wrap: wrap/);
-  assert.match(css.match(/\.pf-greeting \{[^}]*\}/)[0], /flex: 1 1 11rem/);
-  assert.match(css, /--pf-avatar: min\(5\.5rem, 22vw\)/);
+  assert.match(css.match(/\.pf-id \{[^}]*\}/)[0], /grid-template-areas: "avatar name gear"/);
+  assert.match(css, /\.pf-hero \{ container: pf-hero \/ inline-size; \}/);
+  assert.match(css, /@container pf-hero \(max-width: 20em\) \{\s*\.pf-id \{[^}]*"avatar gear" "name name"/, 'con letra grande el saludo baja a su fila');
+  assert.match(css, /--pf-avatar: min\(4\.5rem, 20vw\)/);
 });
 
 test('el móvil apaisado gana a las reglas de ancho (va después de ellas) y el escritorio va por filas del DOM', () => {
   const css = read('../app/css/profile.css');
-  assert.ok(css.indexOf('max-height: 500px') > css.indexOf('min-width: 1024px'), 'el bloque apaisado debe ir al final');
+  assert.ok(css.indexOf('max-height: 500px') > css.indexOf('min-width: 720px') && css.indexOf('min-width: 720px') > 0, 'el bloque apaisado debe ir al final');
   assert.match(css, /grid-template-areas: "hero hero" "rank stats" "medals practice"/);
 });
 
 test('las pestañas Portada y Avatar siguen el patrón ARIA: flechas, Inicio y Fin, y solo la activa en el orden de Tab', () => {
-  const src = read('../app/js/ui/screens/profile-look.js');
-  for (const key of ['ArrowRight', 'ArrowLeft', 'Home', 'End']) assert.match(src, new RegExp(key));
-  assert.match(src, /tabs\[go\]\.focus\(\)/);
-  assert.match(src, /b\.tabIndex = on \? 0 : -1/);
-  assert.match(read('../app/js/ui/screens/profile-look.js'), /aria-pressed', String\(!now\)/, '«Automática» marca cuándo está activa');
+  assert.match(read('../app/js/ui/screens/profile-look.js'), /aria-pressed', String\(!now\)/, '«Usar mi inicial» marca cuándo está activa');
 });
 
 test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de portada, último test en su fila con «Compartir»; nombre escapado', () => {
@@ -295,8 +292,7 @@ test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de port
   const hero = heroHtml(ctxFor(p, { name: '<b>Ana</b>' }));
   assert.doesNotMatch(hero, /<b>Ana/);
   assert.match(hero, /Hola, &lt;b&gt;Ana/);
-  assert.match(hero, /pf-cover-cap/);
-  assert.match(hero, /data-action="open-look"/);
+  assert.match(hero, /<button[^>]*class="pf-avatar-slot pf-avatar-btn"[^>]*data-action="open-look"[^>]*aria-label="Cambiar avatar"/);
   assert.match(heroHtml(ctxFor(p, { name: 'María' })), /pf-initial">M</);
   const withAvatar = heroHtml(ctxFor(p, { name: 'María', avatar: index.artworks[1].id }));
   assert.match(withAvatar, /pf-avatar has-art/);
@@ -347,7 +343,7 @@ test('logros del perfil: una fila de cuatro (tres últimas y la más cercana con
   assert.equal((fresh.match(/<li>/g) || []).length, 4, 'sin logros, cuatro pendientes');
 });
 
-test('hojas: ajustes con todo, nombre con contador y nota, portada y avatar en pestañas; sin «ayer» ni «mañana»', () => {
+test('hojas: ajustes con todo, nombre con contador y nota, avatar; sin «ayer» ni «mañana»', () => {
   const html = settingsHtml(ctxFor(emptyProgress()));
   for (const k of ['music', 'sfx', 'volume', 'reducedMotion']) assert.match(html, new RegExp(`data-setting="${k}"`));
   assert.match(html, /data-action="theme"/);
@@ -361,8 +357,7 @@ test('hojas: ajustes con todo, nombre con contador y nota, portada y avatar en p
   assert.match(name, /pf-counter/);
   assert.match(read('../app/js/ui/screens/profile-name.js'), /graphemes\(/, 'el contador cuenta caracteres, no puntos de código');
   const look = lookSheetHtml();
-  assert.match(look, /role="tablist"/);
-  assert.match(look, /role="tab"[^>]*data-target="avatar"/);
+  assert.match(look, /look-grid/);
   const ctx = ctxFor(emptyProgress());
   for (const h of [html, name, look, heroHtml(ctx), welcomeHtml(), practiceHtml(ctx), rankCardHtml(ctx), statsHtml(ctx), medalsHtml(ctx), medalGroupsHtml(ctx, 'all')]) assert.doesNotMatch(h, FORBIDDEN);
 });
@@ -374,9 +369,9 @@ test('el foco se queda: las hojas repintan solo lo que cambia, no la cabecera en
   assert.doesNotMatch(read('../app/js/ui/screens/profile-name.js'), /\.focus\(\{ preventScroll/, 'el foco vuelve en el cierre de la hoja, no antes');
 });
 
-test('«Empezar de cero» borra también el nombre, la portada, el avatar y el último test', () => {
+test('«Empezar de cero» borra también el nombre, el avatar y el último test', () => {
   const src = read('../app/js/ui/screens/profile-settings.js');
-  assert.match(src, /name: '', cover: '', avatar: ''/);
+  assert.match(src, /name: '', avatar: ''/);
   assert.match(src, /'mirada\.test\.last'/);
   assert.match(src, /localStorage\.removeItem/);
 });
@@ -426,12 +421,10 @@ test('último test: rechaza aciertos mayores que preguntas o negativos', () => {
   assert.ok(P.parseLastTest(`{"correct":12,"asked":12,"level":"${lvl}"}`));
 });
 
-test('el foco de la portada gana a main.css y va por encima de la imagen; las hojas se comportan como dicen', () => {
+test('el avatar y el engranaje llevan su anillo de foco; las hojas se comportan como dicen', () => {
   const css = read('../app/css/profile.css');
-  assert.match(css, /\.pf-cover \.pf-cover-art:focus-visible \{ outline: none; \}/);
-  const ring = css.match(/\.pf-cover \.pf-cover-art:focus-visible::after \{[^}]*\}/)[0];
-  assert.match(ring, /z-index: 3/);
-  assert.match(ring, /border: 4px solid var\(--ink\)/);
+  assert.match(css, /\.pf-avatar-btn:focus-visible \{ outline: 2\.5px solid var\(--ink\)/);
+  assert.match(css, /\.pf-gear:focus-visible \{ outline: 2\.5px solid var\(--ink\)/);
   assert.doesNotMatch(css.match(/\.look-panel \{[^}]*\}/)[0], /overflow|max-height/, 'un solo scroll: el de la hoja');
   assert.match(css, /\.look-body > \.btn \{ position: sticky; bottom: 0/);
   assert.match(css, /\.pf-layout \{[^}]*\}[\s\S]*@media \(min-width: 720px\)[\s\S]*grid-template-areas: "hero hero" "rank stats" "medals practice"/);
@@ -474,5 +467,44 @@ test('«vistos» en toda la app: el final del camino y la Colección vacía no h
   assert.match(read('../app/js/ui/screens/home.js'), /cuadros vistos/);
   assert.doesNotMatch(read('../app/js/ui/screens/collection.js'), /reconozcas/);
   assert.doesNotMatch(read('../app/js/ui/screens/profile-hero.js'), /pf-mini/, 'sin barra duplicada por requisito');
-  assert.match(read('../app/css/profile.css'), /\.pf-cover\.cap-bottom \.pf-cover-cap/, 'el pie baja si lo que hay que ver está arriba');
+});
+
+test('cabecera sin portada (27/11): avatar, saludo y engranaje en una fila; el avatar abre su hoja, que ya no tiene pestañas', () => {
+  const p = emptyProgress();
+  index.artworks.slice(0, 3).forEach((w, i) => { p.collection[w.id] = `2026-11-2${i}`; });
+  const hero = heroHtml(ctxFor(p, { name: 'Meri', cover: index.artworks[0].id }));
+  assert.doesNotMatch(hero, /pf-cover|pf-look|zoom/, 'ni portada, ni su pie, ni pantalla completa, ni el botón de cuadrícula');
+  const row = hero.match(/<div class="pf-id">([\s\S]*)<\/div>\s*<\/header>/)[1];
+  const order = ['pf-avatar-btn', 'pf-name-btn', 'pf-gear'].map((c) => row.indexOf(c));
+  assert.ok(order.every((i, k) => i >= 0 && (k === 0 || i > order[k - 1])), `orden avatar → saludo → engranaje: ${order}`);
+  const sheet = lookSheetHtml();
+  assert.match(sheet, />Tu avatar</);
+  assert.doesNotMatch(sheet, /role="tab|Portada/);
+  assert.match(sheet, />Usar mi inicial</);
+  assert.doesNotMatch(read('../app/css/profile.css'), /pf-cover|look-tabs/, 'sin estilos huérfanos');
+});
+
+test('estado guardado con portada elegida: se descarta al cargar sin tocar el progreso ni el avatar', () => {
+  const saved = { ...defaultState(), onboarded: true, progress: { ...emptyProgress(), xp: 1932, collection: { w1: '2026-11-20' } }, settings: { ...defaultState().settings, name: 'Meri', cover: 'w1', avatar: 'w1' } };
+  const out = migrate(JSON.parse(JSON.stringify(saved)));
+  assert.equal(out.version, SCHEMA_VERSION, 'sin versión nueva: un móvil con la app vieja en caché no la rechaza');
+  assert.equal('cover' in out.settings, false);
+  assert.equal(out.settings.avatar, 'w1');
+  assert.equal(out.settings.name, 'Meri');
+  assert.equal(out.progress.xp, 1932);
+  assert.deepEqual(out.progress.collection, { w1: '2026-11-20' });
+  assert.equal('cover' in defaultState().settings, false);
+});
+
+test('compartir: la tarjeta usa el cuadro del avatar (ya no hay portada)', () => {
+  const src = read('../app/js/ui/screens/profile.js');
+  assert.match(src, /shareCover\(st\.progress, ctx\.index, st\.settings\.avatar\)/);
+  assert.doesNotMatch(src, /settings\.cover/);
+});
+
+test('letra al 200 %: la cabecera del rango no se sale (su rejilla se encoge) y la hoja del avatar usa casillas cuadradas', () => {
+  const cards = read('../app/css/profile-cards.css');
+  for (const sel of ['pf-rank-card', 'pf-conds', 'pf-rank-titles']) assert.match(cards.match(new RegExp(`\\.${sel} \\{[^}]*\\}`))[0], /grid-template-columns: minmax\(0, 1fr\)/, `${sel} sin columna encogible`);
+  assert.match(cards, /@container pf-stats \(max-width: 16em\)/);
+  assert.match(read('../app/css/profile.css'), /\.look-grid \.pf-tile \{ aspect-ratio: 1; \}/);
 });

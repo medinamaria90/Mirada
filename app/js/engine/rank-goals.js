@@ -4,12 +4,13 @@
 import { deepStatus } from './levels.js';
 import { RANKS } from './ranks.js';
 
-const fmt = (n) => n.toLocaleString('es-ES');
+// Cifras de XP con punto de miles también en las de cuatro cifras («1.932», no «1932», que parecía un año).
+export const fmtXp = (n) => n.toLocaleString('es-ES', { useGrouping: 'always' });
 const ORDER = ['xp', 'deep', 'eras', 'grand', 'complete'];
 
 // Nombre corto de cada condición, en forma de meta («Un nivel «a fondo»»), para la fila del perfil.
 const LABEL = {
-  xp: (n) => `${fmt(n)} XP`,
+  xp: (n) => `${fmtXp(n)} XP`,
   deep: (n) => (n === 1 ? 'Un nivel «a fondo»' : `${n} niveles «a fondo»`),
   eras: (n) => `«A fondo» en ${n === 1 ? 'una época' : `${n} épocas`}`,
   grand: (n, upTo) => `${n === 1 ? 'Un gran maestro' : `${n} grandes maestros`} hasta el nivel ${upTo}`,

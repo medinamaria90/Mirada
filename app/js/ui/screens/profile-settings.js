@@ -1,4 +1,4 @@
-// Ajustes del perfil, en una hoja aparte (botón ⚙ de la portada): meta del día, tema, música,
+// Ajustes del perfil, en una hoja aparte (botón ⚙ de la cabecera): meta del día, tema, música,
 // sonidos, volumen, reducir animaciones, la sección «Superusuario» (con «Empezar de cero» y su confirmación) y,
 // «Tu cuenta» (ui/account-section.js) y, al final, los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
 
@@ -132,9 +132,9 @@ export function wireSettings(ctx, el) {
       ask.focus();
     },
     reset: () => {
-      // Se queda con los ajustes (tema, sonido…), pero el nombre, la portada, el avatar y el último
+      // Se queda con los ajustes (tema, sonido…), pero el nombre, el avatar y el último
       // resultado del test son tuyos y se van con el progreso.
-      const keepSettings = { ...ctx.store.get().settings, name: '', cover: '', avatar: '' };
+      const keepSettings = { ...ctx.store.get().settings, name: '', avatar: '' };
       for (const key of TEST_KEYS) {
         try { localStorage.removeItem(key); } catch { /* sin almacenamiento: nada que borrar */ }
       }

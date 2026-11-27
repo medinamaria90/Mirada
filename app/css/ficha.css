@@ -92,8 +92,8 @@ li.ap-trait { padding-left: .9rem; }
 .st-rows { display: grid; gap: var(--st-gap); margin: .2rem 0 0; padding: 0; list-style: none; }
 .st-row { position: relative; height: var(--st-bar-h); container-type: inline-size; }
 .st-bar {
-  position: absolute; top: 0; bottom: 0; left: var(--from); width: max(var(--width), var(--st-bar-h)); display: flex; align-items: center; gap: .45rem;
-  padding: 0 .7rem 0 3px; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2);
+  position: absolute; top: 0; bottom: 0; left: var(--from); width: max(var(--width), var(--st-bar-h)); display: flex; align-items: center; gap: .35rem;
+  padding: 0 .55rem 0 3px; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2);
 }
 .st-bar.is-current { background: var(--brand-soft); box-shadow: inset 0 0 0 2px var(--brand); }
 .st-av { flex: none; width: var(--st-av); height: var(--st-av); }
@@ -103,8 +103,14 @@ button.st-hit { cursor: pointer; }
 button.st-hit:active .st-bar { transform: translateY(var(--relief-sm)); }
 button.st-hit:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; border-radius: var(--radius-sm); }
 @media (hover: hover) and (pointer: fine) { button.st-hit:hover .st-bar:not(.is-current) { background: var(--bg); } }
+/* Barra apretada: un poco menos de letra y de huecos antes de sacar el nombre fuera. */
+.st-bar.is-tight { gap: .25rem; padding-right: .4rem; }
+.st-bar.is-tight .st-name { font-size: .85rem; }
 /* Nombre fuera de la barra: a su derecha o a su izquierda, con el sitio que quede (si hace falta, en dos líneas). */
 .st-bar.is-name-right, .st-bar.is-name-left { overflow: visible; }
+.st-bar.is-name-right .st-name::before, .st-bar.is-name-left .st-name::before { content: ''; position: absolute; top: .55em; width: .5rem; height: 2px; border-radius: 1px; background: var(--ink-2); }
+.st-bar.is-name-right .st-name::before { right: 100%; }
+.st-bar.is-name-left .st-name::before { left: 100%; }
 .st-bar.is-name-right .st-name { position: absolute; left: calc(100% + .5rem); width: max-content; max-width: calc(var(--room) * 1cqw); overflow: visible; white-space: normal; text-overflow: clip; overflow-wrap: break-word; }
 .st-bar.is-name-left .st-name { position: absolute; right: calc(100% + .5rem); width: max-content; max-width: calc(var(--room) * 1cqw); overflow: visible; white-space: normal; text-overflow: clip; overflow-wrap: break-word; text-align: right; }
 .st-axis { position: relative; height: 1.6rem; border-top: 1px solid var(--line); }

@@ -17,7 +17,7 @@
 .pf-chev { display: inline-grid; color: var(--ink-2); }
 
 /* ---------- Rango ---------- */
-.pf-rank-card { display: grid; gap: .7rem; padding: .4rem var(--pf-card-pad) var(--pf-card-pad); }
+.pf-rank-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem; padding: .4rem var(--pf-card-pad) var(--pf-card-pad); }
 .pf-rank-head {
   display: flex; align-items: center; gap: .8rem; width: calc(100% + 1rem); min-height: 64px; margin: 0 -.5rem; padding: .3rem .5rem;
   border: 0; border-radius: var(--radius-sm); background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer;
@@ -28,8 +28,8 @@
   display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--gold) 20%, var(--surface)); color: var(--gold-text);
 }
-.pf-rank-titles { display: grid; gap: .15rem; flex: 1; min-width: 0; }
-.pf-rank-name { font: 500 1.35rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
+.pf-rank-titles { display: grid; grid-template-columns: minmax(0, 1fr); gap: .15rem; flex: 1; min-width: 0; }
+.pf-rank-name { font: 500 1.35rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: anywhere; hyphens: auto; }
 .pf-rank-pos { font-size: .9rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 
 /* Escalera de los ocho rangos: alcanzados en oro, el siguiente punteado. */
@@ -42,9 +42,9 @@
   opacity: .7;
 }
 
-.pf-rank-next { font-weight: 600; color: var(--ink); }
+.pf-rank-next { font-weight: 600; color: var(--ink); overflow-wrap: break-word; }
 .pf-rank-next strong { color: var(--brand-text); font-weight: 600; }
-.pf-conds { display: grid; gap: .35rem; }
+.pf-conds { display: grid; grid-template-columns: minmax(0, 1fr); gap: .35rem; }
 .pf-cond { display: flex; align-items: center; gap: .7rem; min-height: 48px; }
 .pf-cond-mark {
   display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 999px;
@@ -83,6 +83,9 @@
 
 /* ---------- Cifras ---------- */
 .pf-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
+/* Con letra muy grande (consulta en em del contenedor), una columna: en dos, «racha» ya no cabía. */
+.pf-stats-sec { container: pf-stats / inline-size; }
+@container pf-stats (max-width: 16em) { .pf-stats { grid-template-columns: minmax(0, 1fr); } }
 .pf-stats > li { display: grid; }
 .pf-stat {
   display: flex; align-items: center; gap: .7rem; min-height: var(--pf-stat-h); padding: .6rem .8rem; min-width: 0;

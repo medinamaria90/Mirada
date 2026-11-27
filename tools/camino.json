@@ -1,7 +1,7 @@
 {
  "renacimiento": [
   {
-   "section": "Primer Renacimiento",
+   "section": "Nace el Renacimiento",
    "artists": [
     "botticelli",
     "masaccio",
@@ -10,7 +10,7 @@
    ]
   },
   {
-   "section": "Alto Renacimiento",
+   "section": "Los tres genios",
    "artists": [
     "leonardo",
     "miguel-angel",
@@ -18,7 +18,7 @@
    ]
   },
   {
-   "section": "Venecia",
+   "section": "El color de Venecia",
    "artists": [
     "tiziano",
     "veronese"
@@ -27,7 +27,7 @@
  ],
  "manierismo-y-norte": [
   {
-   "section": "Primitivos flamencos",
+   "section": "El óleo en Flandes",
    "artists": [
     "van-eyck",
     "van-der-weyden",
@@ -58,7 +58,7 @@
  ],
  "barroco": [
   {
-   "section": "Claroscuro",
+   "section": "Luz en la oscuridad",
    "artists": [
     "caravaggio",
     "artemisia",
@@ -67,7 +67,7 @@
    ]
   },
   {
-   "section": "Pintores de corte",
+   "section": "Pintores de reyes",
    "artists": [
     "rubens",
     "van-dyck",
@@ -75,7 +75,7 @@
    ]
   },
   {
-   "section": "Vida cotidiana",
+   "section": "La vida de cada día",
    "artists": [
     "hals",
     "rembrandt",
@@ -93,7 +93,7 @@
    ]
   },
   {
-   "section": "Bodegón",
+   "section": "El bodegón español",
    "artists": [
     "melendez"
    ]
@@ -114,14 +114,14 @@
    ]
   },
   {
-   "section": "Paisaje",
+   "section": "El paisaje romántico",
    "artists": [
     "friedrich",
     "turner"
    ]
   },
   {
-   "section": "Historia",
+   "section": "Pintar la historia",
    "artists": [
     "gericault",
     "delacroix",
@@ -131,14 +131,14 @@
  ],
  "realismo": [
   {
-   "section": "Campo",
+   "section": "La vida del campo",
    "artists": [
     "millet",
     "courbet"
    ]
   },
   {
-   "section": "Historia y luz",
+   "section": "Historia a lo grande",
    "artists": [
     "rosales",
     "fortuny",
@@ -148,14 +148,14 @@
  ],
  "impresionismo": [
   {
-   "section": "Pioneros",
+   "section": "Nace el impresionismo",
    "artists": [
     "manet",
     "monet"
    ]
   },
   {
-   "section": "El grupo",
+   "section": "Los impresionistas",
    "artists": [
     "degas",
     "renoir",
@@ -173,14 +173,14 @@
  ],
  "postimpresionismo": [
   {
-   "section": "Forma y método",
+   "section": "Poner orden en la luz",
    "artists": [
     "cezanne",
     "seurat"
    ]
   },
   {
-   "section": "Color y expresión",
+   "section": "El color desatado",
    "artists": [
     "van-gogh",
     "gauguin",
@@ -190,7 +190,7 @@
  ],
  "simbolismo-modernismo": [
   {
-   "section": "Simbolismo",
+   "section": "Sueños y símbolos",
    "artists": [
     "klimt",
     "munch",
@@ -198,7 +198,7 @@
    ]
   },
   {
-   "section": "Vanguardias",
+   "section": "Romper las reglas",
    "artists": [
     "matisse",
     "kandinsky",

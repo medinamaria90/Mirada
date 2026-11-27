@@ -156,9 +156,13 @@ export function introWorks(index, movementId) {
 // Texto del botón de la presentación según cómo se llega a ella.
 const INTRO_ENTER = { first: 'Entrar', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
 
+// Lo que la presentación espera a sus tarjetas antes de pintarse; con una red peor, sale sin ellas y llegan con fundido.
+const ERA_CARDS_WAIT_MS = 1200;
+const waitMs = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+
 // mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa; 'shared': desde un enlace
 // compartido (#epoca-<id>), sin tocar la partida; a quien aún no juega, el botón le invita a empezar.
-export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
+export async function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
   const { index } = ctx;
   const movement = index.movement(movementId);
   if (!movement || !index.visibleMovements.includes(movement)) return leave(ctx);
@@ -168,6 +172,10 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
   const wall = order.map((w, i) => `<span class="wall-item wall-${i}">${artFrame(w, { alt: '', eager: true, label: '', thumb: true, zoom: { group: 'intro' } })}</span>`).join('');
   const guest = mode === 'shared' && !ctx.store.get().onboarded;
   playEra(movement.era);
+  // Tarjetas y su hoja antes de pintar: así la pantalla sale una sola vez, ya con el carrusel.
+  const eraCards = import('./era-cards.js').then((m) => m.prepareEraCards(movementId).then((cards) => ({ m, cards })));
+  const early = await Promise.race([eraCards.catch(() => null), waitMs(ERA_CARDS_WAIT_MS)]);
+  if (!el.isConnected) return;
   el.innerHTML = `<div class="welcome intro" style="${accentStyle(movement.accent)}">
     <main class="welcome-body" id="main">
       <div class="wall">${wall}</div>
@@ -177,8 +185,10 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
       <button class="btn btn-primary btn-wide" data-action="enter" data-primary>${INTRO_ENTER[guest ? 'guest' : mode]}</button>
     </main>
   </div>`;
+  const intro = $('.intro', el);
+  if (early) early.m.mountEraCards(ctx, intro, movementId, early.cards);
+  else eraCards.then(({ m, cards }) => m.mountEraCards(ctx, intro, movementId, cards, { late: true })).catch((err) => console.error(err));
   focusHeading(el);
-  import('./era-cards.js').then((m) => m.mountEraCards(ctx, $('.intro', el), movementId)).catch((err) => console.error(err));
   const off = onAction(el, {
     enter: () => {
       ctx.audio.sfx('tap');
