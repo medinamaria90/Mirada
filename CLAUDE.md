@@ -37,6 +37,7 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
 
 ## Reglas de producto y diseño
 
+- No se veta ninguna obra por su contenido (desnudos, erotismo…): es arte. Lo que se cuida es el lenguaje: nada de expresiones que, leídas hoy, suenen mal (p. ej. «vírgenes dulces»); se describe con naturalidad y contexto. Decisión de María, 27/11.
 - Textos mínimos y en lenguaje humano. Nada de textos de ayuda bajo los botones.
 - Cada término o nombre que un público general no conozca se enseña, no se quita: va con su explicación al lado,
   para que se aprenda («una Maestà (una Virgen en su trono)», «el gran museo de Florencia (los Uffizi)», «al fresco
