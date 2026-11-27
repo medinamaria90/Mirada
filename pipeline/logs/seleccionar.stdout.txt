@@ -1,16 +1,5 @@
 pintor             categ  cand aptas elegidas/obj  nivel 1 y «a fondo»  | motivos de descarte
-duccio           Q6728394   sl=  9 excluida                   La Virgen y el Niño                           | 2807x3722 image/jpeg Public domain
-duccio             rama     62    42    8/8   n1=4 L2:4  | sin imagen apta:8, palabra:4, fecha fuera de vida:3, proporción ≠ medidas:2, duplicado/versión:2, excluida:1, varios autores:1, sin título:1
-giotto             gran-    57    26   21/26  n1=8 L2:3 L3:6 L4:4  | sin imagen apta:18, varios autores:5, proporción ≠ medidas:3, palabra:2, sin título:2, excluida:1  <-- corto
-simone-martini   Q3947520   sl= 10 excluida                   San Luis de Tolosa coronando a Roberto de Anj | 823x1200 image/jpeg Public domain
-simone-martini   Q14790751  sl=  8 proporción ≠ medidas       Orsini Polyptych                              | 6646x2313 image/jpeg CC0
-simone-martini     rama     43    26    8/8   n1=4 L2:4  | proporción ≠ medidas:5, sin imagen apta:5, excluida:3, duplicado/versión:3, varios autores:2, autoría no preferente:1, sin título:1
-fra-angelico     Q2529591   sl= 11 varios autores             Descendimiento de la Cruz                     | 3216x3496 image/jpeg CC BY-SA 4.0
-fra-angelico     Q61588     sl= 10 varios autores             Retablo de Fiesole                            | 1700x1274 image/jpeg Public domain
-fra-angelico     Q3223807   sl=  9 palabra                    El Juicio Final                               | 8864x4664 image/jpeg Public domain
-fra-angelico     Q4009968   sl=  9 excluida                   Madonna and Child                             | 1206x1255 image/jpeg Public domain
-fra-angelico     Q3539582   sl=  8 palabra                    San Pietro Martire Triptych                   | 3882x3456 image/jpeg CC BY-SA 4.0
-fra-angelico       invit   194    42    5/3   n1=5   | sin datos de imagen:92, palabra:37, sin imagen apta:10, varios autores:7, proporción ≠ medidas:5, duplicado/versión:4, excluida:1
-TOTAL 42 obras de 175 pintores
-por país: Italia 42
-títulos por fuente: {'traducir': 136, 'revisar-idioma': 1, 'wikidata-es': 1107, 'manual': 25, 'traducido': 202}
+kuniyoshi          rama    341    77    8/8   n1=4 L2:4  | sin datos de imagen:251, varios autores:5, sin imagen apta:3, palabra:3, duplicado/versión:3, excluida:1, sin título:1
+TOTAL 8 obras de 175 pintores
+por país: Japón 8
+títulos por fuente: {'manual': 25, 'revisar-idioma': 1, 'traducir': 137, 'wikidata-es': 1107, 'traducido': 202}

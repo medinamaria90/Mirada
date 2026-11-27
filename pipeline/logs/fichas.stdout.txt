@@ -1,3 +1,3 @@
-selección 1471, con ficha 1465, este lote 6
-ok lote 1: 6 fichas (1803 en total)
-fin: 1803 fichas; con museo 1746, con ciudad 1731, con técnica 1713, con medidas 1706, en España 371
+selección 1472, con ficha 1471, este lote 1
+ok lote 1: 1 fichas (1804 en total)
+fin: 1804 fichas; con museo 1746, con ciudad 1731, con técnica 1713, con medidas 1706, en España 371
