@@ -15,3 +15,7 @@ ok lote 1: 4 fichas (1808 en total)
 fin: 1808 fichas; con museo 1750, con ciudad 1735, con técnica 1715, con medidas 1710, en España 371
 79M	.git
 3.7M	catalogo
+== build  09:19:43
+build: 1470 obras (1470 con imagen, 1470 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 20, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 6, ukiyo-e 5
+79M	.git
+3.7M	catalogo

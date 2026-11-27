@@ -8322,15 +8322,17 @@
    "w": 1600,
    "h": 655,
    "downloaded": true,
-   "museum": "iglesia de Santa María del Carmine",
-   "city": null,
-   "country": null,
+   "museum": "Capilla Brancacci",
+   "city": "Florencia",
+   "country": "Italia",
    "inSpain": false,
-   "technique": "",
-   "dimensions": "",
-   "inception": "",
-   "depicts": [],
-   "genre": null,
+   "technique": "Fresco",
+   "dimensions": "230 × 599 cm",
+   "inception": "1427",
+   "depicts": [
+    "Pedro"
+   ],
+   "genre": "arte religioso",
    "about": "",
    "look": "",
    "source": {
@@ -8339,13 +8341,11 @@
     "file": "Cappella brancacci, Resurrezione del figlio di Teofilo e San Pietro in cattedra (restaurato), Masaccio.jpg",
     "license": "Public domain",
     "credit": "book: La Cappella Brancacci a Santa Maria del Carmine, in AA.VV., Cappelle del Rinascimento a Firenze, Editrice Giusti, Firenze 1998.",
-    "ficha": null,
-    "fetched": null
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
    },
    "confidence": "high",
-   "warnings": [
-    "sin-ficha"
-   ]
+   "warnings": []
   },
   {
    "id": "w3999132",
@@ -8364,14 +8364,19 @@
    "h": 1150,
    "downloaded": true,
    "museum": "Masaccio Museum",
-   "city": null,
-   "country": null,
+   "city": "Reggello",
+   "country": "Italia",
    "inSpain": false,
    "technique": "",
-   "dimensions": "",
-   "inception": "",
-   "depicts": [],
-   "genre": null,
+   "dimensions": "110 × 65 cm",
+   "inception": "1422",
+   "depicts": [
+    "Niño Jesús",
+    "Virgen María",
+    "mujer",
+    "niño"
+   ],
+   "genre": "arte religioso",
    "about": "",
    "look": "",
    "source": {
@@ -8380,13 +8385,12 @@
     "file": "Masaccio, trittico di san giovenale, 1422, 01.JPG",
     "license": "CC BY 3.0",
     "credit": "Own work",
-    "ficha": null,
-    "fetched": null
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
    },
    "confidence": "medium",
    "warnings": [
-    "proporcion",
-    "sin-ficha"
+    "proporcion"
    ]
   },
   {
@@ -8406,14 +8410,16 @@
    "h": 1248,
    "downloaded": true,
    "museum": "Gemäldegalerie de Berlín",
-   "city": null,
-   "country": null,
+   "city": "Berlín",
+   "country": "Alemania",
    "inSpain": false,
    "technique": "",
-   "dimensions": "",
-   "inception": "",
-   "depicts": [],
-   "genre": null,
+   "dimensions": "30,5 × 21 cm",
+   "inception": "1426",
+   "depicts": [
+    "Juan el Bautista"
+   ],
+   "genre": "arte religioso",
    "about": "",
    "look": "",
    "source": {
@@ -8422,13 +8428,12 @@
     "file": "Masaccio martirio di san giovanni Battista.jpg",
     "license": "Public domain",
     "credit": "www.wga.hu",
-    "ficha": null,
-    "fetched": null
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
    },
    "confidence": "medium",
    "warnings": [
-    "proporcion",
-    "sin-ficha"
+    "proporcion"
    ]
   },
   {
@@ -8447,15 +8452,21 @@
    "w": 659,
    "h": 1299,
    "downloaded": true,
-   "museum": "Andrew W. Mellon collection",
-   "city": null,
-   "country": null,
+   "museum": "Galería Nacional de Arte",
+   "city": "Washington",
+   "country": "Estados Unidos",
    "inSpain": false,
-   "technique": "",
-   "dimensions": "",
-   "inception": "",
-   "depicts": [],
-   "genre": null,
+   "technique": "Temple sobre tabla",
+   "dimensions": "105,6 × 54,1 cm",
+   "inception": "1424",
+   "depicts": [
+    "Niño Jesús",
+    "Virgen María",
+    "madre",
+    "mujer",
+    "niño"
+   ],
+   "genre": "arte religioso",
    "about": "",
    "look": "",
    "source": {
@@ -8464,13 +8475,11 @@
     "file": "Masaccio, madonna dell'umiltà, washington.jpg",
     "license": "Public domain",
     "credit": "http://www.aiwaz.net/",
-    "ficha": null,
-    "fetched": null
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
    },
    "confidence": "high",
-   "warnings": [
-    "sin-ficha"
-   ]
+   "warnings": []
   },
   {
    "id": "w3698230",
