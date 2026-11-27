@@ -240,9 +240,10 @@ export function buildIndex(catalog) {
     if (!guestsAt.has(host.id)) guestsAt.set(host.id, []);
     guestsAt.get(host.id).push(g);
   }
-  // Pintores que preceden a uno de rama dentro de su rama (la primera que lo lista).
-  const branchBefore = (artistId) => {
-    const b = branches.find((x) => x.artists.includes(artistId));
+  // Pintores que preceden a uno de rama dentro de su rama: la indicada (desde la que se juega) o, si no lo
+  // lista, la primera que lo lista.
+  const branchBefore = (artistId, branchId = '') => {
+    const b = branches.find((x) => x.id === branchId && x.artists.includes(artistId)) || branches.find((x) => x.artists.includes(artistId));
     return b ? b.artists.slice(0, b.artists.indexOf(artistId)).map((id) => artistById.get(id)) : [];
   };
 

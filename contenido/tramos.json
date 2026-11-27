@@ -1,0 +1,830 @@
+{
+ "Primer Renacimiento": {
+  "title": "Primer Renacimiento",
+  "lead": "Florencia descubre la perspectiva y Castilla la aprende: el siglo XV que puso el mundo en tres dimensiones.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Espacios medidos con reglas de geometría, cuerpos con peso y luz de un solo lado. Masaccio abre el camino; Piero lo convierte en matemática."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XV, en Florencia y Urbino. Pedro Berruguete, de Paredes de Nava, probablemente trabajó en Urbino y trajo lo aprendido a Castilla.",
+    "artwork": "w5712368"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "El duque de Urbino siempre sale de perfil, y no por estilo: había perdido el ojo derecho y parte de la nariz en un torneo.",
+    "artwork": "w1227359"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Pedro_Berruguete"
+ },
+ "Alto Renacimiento": {
+  "title": "Alto Renacimiento",
+  "lead": "Tres genios en veinte años: Leonardo, Miguel Ángel y Rafael llevan la pintura a su punto más alto.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Equilibrio, cuerpos perfectos y escenas ordenadas como una arquitectura. Lo aprendido en el siglo XV llega aquí a su madurez."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1490 a 1520, entre Florencia, Milán y la Roma de los papas, que encargan la Capilla Sixtina y las Estancias del Vaticano."
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En La escuela de Atenas, Rafael dio a Platón la cara de Leonardo y, según la tradición, a Heráclito la de Miguel Ángel, pensativo en primer plano.",
+    "artwork": "w186953"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/La_escuela_de_Atenas"
+ },
+ "Venecia": {
+  "title": "Venecia",
+  "lead": "En la ciudad del agua, el color manda más que el dibujo. Y Felipe II se llevó lo mejor al Prado.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Óleo sobre lienzo, capas de color cálido y pincelada que se ve. En Florencia se dibuja primero; en Venecia se construye con color."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVI, en la república de Venecia. Tiziano fue pintor de Carlos V y Felipe II: por eso el Prado guarda una de sus grandes colecciones.",
+    "artwork": "w1123378"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En 1573 la Inquisición juzgó a Veronés por llenar una Última Cena de bufones y perros. Él no repintó nada: le cambió el título a Cena en casa de Leví.",
+    "artwork": "w951105"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Escuela_veneciana"
+ },
+ "Primitivos flamencos": {
+  "title": "Primitivos flamencos",
+  "lead": "En Flandes el óleo hace milagros: cada pelo, cada joya y cada reflejo, pintados con lupa.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Detalle minucioso, colores brillantes como esmaltes y capas finas de óleo que dejan pasar la luz. Ricos mercaderes y duques pagan la cuenta."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XV en Brujas, Bruselas y Gante. Felipe II los adoraba: el Descendimiento de Van der Weyden y El jardín de las delicias están en el Prado.",
+    "artwork": "w568847"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En el espejo del fondo del Arnolfini se ve a dos personas más entrando en la sala. Encima, Van Eyck escribió en latín: «Jan van Eyck estuvo aquí».",
+    "artwork": "w220859"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Primitivos_flamencos"
+ },
+ "Alemania y Flandes": {
+  "title": "Alemania y Flandes",
+  "lead": "El Renacimiento cruza los Alpes: grabados, retratos implacables y aldeas llenas de gente.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Unen la precisión del norte con lo aprendido en Italia. Y miran a su alrededor: humanistas, mercaderes, campesinos y fiestas de pueblo."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVI, de Núremberg y Basilea a Londres y Amberes. El Prado guarda El triunfo de la muerte de Bruegel, un ejército de esqueletos.",
+    "artwork": "w644856"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Mira de lado, desde abajo a la derecha, la mancha a los pies de Los embajadores: aparece una calavera. Holbein la pintó deformada a propósito.",
+    "artwork": "w1212937"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Los_embajadores_(Holbein)"
+ },
+ "Manierismo": {
+  "title": "Manierismo",
+  "lead": "Cuellos larguísimos, colores fríos y poses imposibles: la elegancia llevada al extremo.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Tras Rafael y Miguel Ángel, la perfección ya está hecha. Ellos estiran las figuras, enfrían la piel y buscan lo raro y lo refinado."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1520 a 1580, en Parma, Roma y la Florencia de los Médici, donde Bronzino retrata a la duquesa Leonor de Toledo, hija del virrey de Nápoles.",
+    "artwork": "w1328065"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Parmigianino la dejó sin acabar: al fondo se ve una columna sin capitel y un profeta diminuto. Por el cuello del Niño, la llamamos Virgen del cuello largo.",
+    "artwork": "w867403"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Manierismo"
+ },
+ "Claroscuro": {
+  "title": "Claroscuro",
+  "lead": "Un foco de luz en la oscuridad y gente de la calle haciendo de santos: Caravaggio y sus herederos.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Fondos negros, luz dura que cae de lado y modelos reales, con arrugas y pies sucios. Es el tenebrismo, y se extiende de Roma a Sevilla."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVII. Ribera, de Xàtiva, triunfa en el Nápoles español; Zurbarán pinta monjes y santos para los conventos de Sevilla.",
+    "artwork": "w3842290"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En La vocación de San Mateo, la luz entra justo detrás de la mano de Cristo. No hay ventana a la vista: la luz es la llamada.",
+    "artwork": "w969377"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Tenebrismo"
+ },
+ "Pintores de corte": {
+  "title": "Pintores de corte",
+  "lead": "Pintaban para reyes y se trataban casi como iguales: Rubens, Van Dyck y Velázquez.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Retratos de reyes y nobles, y grandes encargos para palacios. Saben dar majestad sin perder a la persona, cada uno con su pincelada."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVII, en Amberes, Londres y el Madrid de Felipe IV, donde Velázquez fue pintor del rey casi cuarenta años. Hoy, casi todo está en el Prado.",
+    "artwork": "w2528741"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En 1628 Rubens pasó meses en Madrid como diplomático. Allí trató a un Velázquez joven, que lo acompañó a ver los Tizianos de El Escorial."
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+ },
+ "Vida cotidiana": {
+  "title": "Vida cotidiana",
+  "lead": "Lecheras, bebedores y niños de la calle: el Barroco que mira la vida de todos los días.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "La gente corriente se vuelve protagonista: risas, faenas de casa, una carta, una ventana. Escenas pequeñas pintadas con enorme cuidado."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVII, en la Holanda de los mercaderes, que compran cuadros para sus casas, y en la Sevilla de Murillo, que pinta a sus pilluelos con ternura.",
+    "artwork": "w3757652"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "La ronda de noche no es de noche. Era una escena de día, pero el barniz oscureció con los siglos y el apodo se quedó para siempre.",
+    "artwork": "w219831"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/La_ronda_de_noche"
+ },
+ "Rococó": {
+  "title": "Rococó",
+  "lead": "Columpios, sedas y jardines: el placer de vivir pintado en tonos pastel.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Fiestas al aire libre, enamorados y colores claros. Pincelada ligera y nada de dramas: el arte de una aristocracia que quiere divertirse."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVIII, en el París de Luis XV. Watteau inventa la «fiesta galante» y Fragonard la lleva al columpio, al tocador y al jardín.",
+    "artwork": "w531329"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "El columpio lo encargó un noble que quería a su amante en lo alto y a sí mismo abajo, mirando. Fíjate en el zapato que sale volando.",
+    "artwork": "w2629559"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/El_columpio_(Fragonard)"
+ },
+ "Bodegón": {
+  "title": "Bodegón",
+  "lead": "Besugos, naranjas y cacharros de barro tan reales que dan hambre: Luis Meléndez, el gran bodegonista español.",
+  "cards": [
+   {
+    "kicker": "Qué lo hace único",
+    "text": "Objetos humildes vistos muy de cerca, con luz fuerte y sombras limpias. Cada textura cuenta: la piel del pescado, la corteza del pan, el barro."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Madrid, siglo XVIII. Pintó una larga serie para el futuro Carlos IV, con todos los alimentos de España. Muchos están hoy en el Prado.",
+    "artwork": "w27765779"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Meléndez nunca logró ser pintor de cámara y murió pobre, aunque hoy es uno de los grandes del bodegón europeo."
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Luis_Egidio_Mel%C3%A9ndez"
+ },
+ "Neoclasicismo": {
+  "title": "Neoclasicismo",
+  "lead": "Vuelta a Grecia y Roma: líneas limpias, virtud y heroísmo para tiempos de revolución.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Dibujo preciso, colores sobrios y héroes de la Antigüedad. Contra la frivolidad del rococó, una pintura seria que da lecciones de moral."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1780 a 1830, en París y Roma. David pinta la Revolución y luego a Napoleón; Ingres, su alumno, lleva la línea a la perfección.",
+    "artwork": "w476458"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "A la Gran odalisca le sobran vértebras: su espalda es demasiado larga. Los críticos se burlaron, pero Ingres prefería la belleza a la anatomía.",
+    "artwork": "w1978815"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/La_gran_odalisca"
+ },
+ "Paisaje": {
+  "title": "Paisaje",
+  "lead": "La naturaleza como espejo del alma: brumas, montañas y tormentas que sobrecogen.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "El paisaje deja de ser fondo y se vuelve protagonista. Friedrich lo llena de silencio y misterio; Turner, de luz, viento y fuego."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Primera mitad del siglo XIX, en Alemania e Inglaterra. Es la época de lo «sublime»: lo inmenso que da miedo y fascina a la vez."
+   },
+   {
+    "kicker": "Fíjate en",
+    "text": "Lo vemos de espaldas, como si fuéramos nosotros. Friedrich repite este truco para que miremos el paisaje con los ojos del personaje.",
+    "artwork": "w311243"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/El_caminante_sobre_el_mar_de_nubes"
+ },
+ "Historia": {
+  "title": "Historia",
+  "lead": "Naufragios, revoluciones y retratos de una época: la historia contada con pasión.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Temas actuales y dramáticos, color intenso y movimiento. Géricault y Delacroix rompen con la calma neoclásica; Madrazo lleva esa época a Madrid."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1815 a 1860, en París y Madrid. Federico de Madrazo fue retratista de la corte de Isabel II y dos veces director del Prado.",
+    "artwork": "w27766940"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "La balsa de la Medusa cuenta un naufragio real de 1816. Géricault habló con supervivientes y estudió cadáveres en el hospital para pintarlo.",
+    "artwork": "w212616"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/La_balsa_de_la_Medusa"
+ },
+ "Campo": {
+  "title": "Campo",
+  "lead": "Campesinos que se doblan sobre la tierra, pintados a tamaño de héroe.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Pintan lo que ven, sin embellecer: el trabajo duro, la gente de su pueblo, el barro. Y lo hacen en lienzos enormes, antes solo para reyes y dioses."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Mediados del siglo XIX en Francia. Millet, en Barbizon, junto al bosque de Fontainebleau; Courbet, en su Ornans natal.",
+    "artwork": "w1368055"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En 1855 rechazaron dos cuadros de Courbet en la Exposición Universal. Él levantó su propio pabellón al lado y lo llamó «del Realismo».",
+    "artwork": "w1167178"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Gustave_Courbet"
+ },
+ "Historia y luz": {
+  "title": "Historia y luz",
+  "lead": "Dos españoles y un ruso: la gran pintura de historia, y la luz que empieza a brillar en ella.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Saben contar una historia en un solo cuadro y la pintan con pincelada cada vez más suelta y luminosa. Son el puente hacia la pintura moderna."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Segunda mitad del siglo XIX, entre Madrid, Roma y San Petersburgo. Rosales pintó el testamento de Isabel la Católica, hoy en el Prado.",
+    "artwork": "w3155095"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Fortuny se casó con Cecilia, hija de Federico de Madrazo. La vicaría, que pinta una boda, se vendió en París por una fortuna.",
+    "artwork": "w4892369"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/La_vicar%C3%ADa"
+ },
+ "Pioneros": {
+  "title": "Pioneros",
+  "lead": "Un escándalo en el salón y un amanecer en el puerto: así empezó el impresionismo.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Manet rompe las normas del salón oficial con temas de su tiempo y manchas planas. Monet da el paso siguiente: pintar la luz que cambia."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "París y la costa de Normandía, de 1860 a 1880. En 1874 un grupo de artistas rechazados monta su propia exposición."
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Un crítico se burló de este cuadro de Monet llamando «impresionistas» a todos los del grupo. Ellos adoptaron el insulto como nombre.",
+    "artwork": "w328523"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Impresi%C3%B3n,_sol_naciente"
+ },
+ "El grupo": {
+  "title": "El grupo",
+  "lead": "Cinco amigos que salieron a pintar al aire libre y cambiaron la manera de mirar.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Pincelada rápida, colores claros, sombras de color y escenas de su día a día: bailes, ríos, jardines y bailarinas."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "París y sus alrededores, de 1874 a 1886: ocho exposiciones propias, fuera del salón oficial. Morisot, la única mujer del grupo inicial.",
+    "artwork": "w683274"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Pissarro fue el único que expuso en las ocho muestras del grupo. Era el mayor y hacía de padre de todos, también de Cézanne y Gauguin."
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Impresionismo"
+ },
+ "Luz mediterránea": {
+  "title": "Luz mediterránea",
+  "lead": "El sol de las playas de Valencia, atrapado en blancos que deslumbran: Joaquín Sorolla.",
+  "cards": [
+   {
+    "kicker": "Qué lo hace único",
+    "text": "Pinta al aire libre y deprisa, persiguiendo el reflejo del sol en el agua y en las telas blancas. Nadie pintó la luz del Mediterráneo como él."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1890 a 1920, entre Valencia y Madrid. Su casa madrileña, con estudio y jardín, es hoy el Museo Sorolla.",
+    "artwork": "w6065609"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Sorolla pintaba en la misma arena, a pleno sol, lienzos de más de dos metros. Para no perder la luz, trabajaba a toda velocidad."
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Museo_Sorolla"
+ },
+ "Forma y método": {
+  "title": "Forma y método",
+  "lead": "Manzanas que parecen montañas y cuadros hechos de puntitos: dos maneras de poner orden en la luz.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Después del impresionismo, quieren algo más sólido. Cézanne construye con planos de color; Seurat, con puntos colocados con método científico."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1880 a 1906, en París y en la Provenza de Cézanne, que pintó una y otra vez la montaña Sainte-Victoire."
+   },
+   {
+    "kicker": "Fíjate en",
+    "text": "De lejos es una tarde de domingo; de cerca, miles de puntos de colores puros. Tu ojo los mezcla. Seurat tardó dos años en pintarla.",
+    "artwork": "w1044742"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Tarde_de_domingo_en_la_isla_de_la_Grande_Jatte"
+ },
+ "Color y expresión": {
+  "title": "Color y expresión",
+  "lead": "Girasoles en llamas, Tahití y el Moulin Rouge: el color ya no copia, expresa.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Colores intensos, contornos marcados y formas simplificadas. Lo que importa es lo que sienten, no lo que ven, y eso abre la puerta al siglo XX."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1885 a 1900: el París de Montmartre de Lautrec, la Arles de Van Gogh y los mares del Sur de Gauguin.",
+    "artwork": "w3633443"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En 1888 Gauguin y Van Gogh pintaron juntos en Arles nueve semanas. Acabó en una pelea terrible, la noche en que Van Gogh se cortó la oreja.",
+    "artwork": "w21948567"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"
+ },
+ "Simbolismo": {
+  "title": "Simbolismo",
+  "lead": "Oro de Viena, gritos de Noruega y mujeres de Córdoba: pintar lo que no se ve.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Amor, deseo, celos y muerte contados con símbolos. Klimt los cubre de oro, Munch de angustia y Romero de Torres de misterio andaluz."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1890 a 1930, en Viena, Oslo y Córdoba, donde el museo de Romero de Torres está en la casa en que vivió.",
+    "artwork": "w15093245"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En 1953 la cara de Romero de Torres y una de sus mujeres morenas aparecieron en el billete de 100 pesetas.",
+    "artwork": "w698487"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres"
+ },
+ "Vanguardias": {
+  "title": "Vanguardias",
+  "lead": "Colores salvajes, formas puras y guitarras en pedazos: la pintura se reinventa del todo.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Rompen con siglos de imitar la realidad: Matisse libera el color, Kandinsky llega a la abstracción y Juan Gris ordena el cubismo."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1905 a 1930, en París y Múnich. Juan Gris, madrileño, vivió en el mismo edificio que Picasso en Montmartre, el Bateau-Lavoir.",
+    "artwork": "w19922323"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En 1905 a Matisse y sus amigos los llamaron «fieras» (fauves) por sus colores. Su mujer posó para este retrato con la cara verde y lila.",
+    "artwork": "w1437492"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Fovismo"
+ },
+ "maestros-espanoles/renacimiento": {
+  "title": "Españoles del Renacimiento",
+  "lead": "Oro de retablo y óleo flamenco con aires italianos: así empieza la gran pintura española.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Mezclan el detalle flamenco con el espacio italiano, y aún usan oro en los fondos. Pintan sobre todo retablos para iglesias."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Fines del siglo XV y XVI. Bermejo, cordobés, en Aragón y Barcelona; Berruguete, en Castilla; Juan de Juanes, en Valencia.",
+    "artwork": "w125359587"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Bermejo fue de los primeros en España en dominar el óleo. Su Piedad Desplá, de 1490, se considera una de las obras maestras del siglo.",
+    "artwork": "w29018377"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Bermejo"
+ },
+ "maestros-espanoles/manierismo-y-norte": {
+  "title": "Españoles del siglo XVI",
+  "lead": "La devoción de Morales, los retratos de la corte de Felipe II y el fuego de El Greco en Toledo.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "La España de Felipe II: religión intensa y retrato de corte. Cada uno a su modo, ternura, majestad o éxtasis."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Segunda mitad del siglo XVI. Morales, en Extremadura; Sánchez Coello, en la corte de Madrid; El Greco, cretense, en Toledo.",
+    "artwork": "w94802"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "A Luis de Morales lo apodaron «el Divino» por la emoción de sus vírgenes y cristos, muy pedidos para rezar en casa y en las iglesias.",
+    "artwork": "w6163544"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Luis_de_Morales"
+ },
+ "maestros-espanoles/barroco": {
+  "title": "El Siglo de Oro",
+  "lead": "Velázquez, Murillo, Zurbarán y Ribera: el momento en que la pintura española fue la mejor del mundo.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Realismo profundo, luz que esculpe y un tono serio, muy de la Contrarreforma. Pintan santos, reyes, bodegones y gente de la calle."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVII. Sevilla, puerto de las Américas, es la gran escuela; Madrid tiene la corte; Toledo y Valencia, sus talleres. Casi todos, en el Prado.",
+    "artwork": "w2627810"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Cuentan que Murillo, ante estas calaveras de Valdés Leal, dijo que había que mirarlas tapándose la nariz.",
+    "artwork": "w42189928"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Pintura_barroca_de_Espa%C3%B1a"
+ },
+ "maestros-espanoles/rococo-neoclasicismo": {
+  "title": "Españoles del siglo XVIII",
+  "lead": "Bodegones de despensa, puertos del Cantábrico y retratos de corte en la España de los Borbones.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Pintan para la nueva corte borbónica: encargos del rey, vistas de ciudades y retratos. Detalle exacto y una elegancia muy del siglo."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVIII y primeros del XIX, en Madrid. Meléndez y Paret con Carlos III; Vicente López, valenciano, pintor de cámara de Fernando VII.",
+    "artwork": "w18688145"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En 1826 Vicente López retrató a un Goya de 80 años, de visita en Madrid. Es uno de sus retratos más conocidos y está en el Prado.",
+    "artwork": "w6106800"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Vicente_L%C3%B3pez_Porta%C3%B1a"
+ },
+ "maestros-espanoles/romanticismo": {
+  "title": "Españoles del Romanticismo",
+  "lead": "Goya, que lo vio todo y pintó sus sombras, y Madrazo, el retratista de la España isabelina.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Del sueño y la pesadilla de Goya a los retratos de Madrazo: la emoción entra en la pintura española, con Madrid como escenario."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1790 a 1860, en Madrid. Goya pasa de los cartones alegres a las Pinturas negras; Madrazo retrata a la sociedad de Isabel II.",
+    "artwork": "w15728649"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Goya era pintor del rey y a la vez pintaba brujas y aquelarres. Muchos ven en ellos una burla de la superstición de su época.",
+    "artwork": "w2537138"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Vuelo_de_brujas"
+ },
+ "maestros-espanoles/realismo": {
+  "title": "Españoles del Realismo",
+  "lead": "Reinas, batallas y fusilamientos: la pintura de historia española, y la luz de Fortuny.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Cuadros enormes con escenas de la historia de España, para las Exposiciones Nacionales. Y, al lado, vistas y escenas con pincelada brillante."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Segunda mitad del siglo XIX, entre Madrid, Roma, París y Venecia. Muchos de estos cuadros cuelgan hoy en el Prado.",
+    "artwork": "w19032360"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Torrijos y sus compañeros fueron fusilados en una playa de Málaga en 1831. Gisbert lo pintó por encargo del Estado, como homenaje a la libertad.",
+    "artwork": "w19915289"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Fusilamiento_de_Torrijos_y_sus_compa%C3%B1eros_en_las_playas_de_M%C3%A1laga"
+ },
+ "maestros-espanoles/impresionismo": {
+  "title": "Luz de España",
+  "lead": "Castilla, Valencia y el Cantábrico pintados al aire libre: el impresionismo a la española.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Salen a pintar fuera del taller y buscan la luz de su tierra: la meseta de Beruete, el mar de Pinazo y Sorolla, la lluvia del norte de Regoyos."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1880 a 1920. Regoyos expone en Bruselas con la vanguardia belga; Sorolla triunfa en París y Nueva York.",
+    "artwork": "w23499053"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Beruete, además de pintor, fue un gran experto en Velázquez y escribió un libro sobre él. Sorolla lo retrató varias veces.",
+    "artwork": "w23936265"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Aureliano_de_Beruete"
+ },
+ "maestros-espanoles/postimpresionismo": {
+  "title": "Joaquim Mir",
+  "lead": "Un catalán que pintó la luz de Mallorca hasta convertirla en pura mancha de color.",
+  "cards": [
+   {
+    "kicker": "Qué lo hace único",
+    "text": "Colores intensos, casi sin dibujo. Mir se olvida del contorno y deja que el amarillo y el azul construyan el paisaje."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Barcelona y Mallorca, hacia 1900. Allí, ante el mar, pintó sus cuadros más libres.",
+    "artwork": "w23500160"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Joaquim_Mir"
+ },
+ "maestros-espanoles/simbolismo-modernismo": {
+  "title": "Españoles del cambio de siglo",
+  "lead": "La Barcelona modernista, la España negra de Zuloaga y la Córdoba de Romero de Torres, hasta el cubismo de Gris.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Buscan la modernidad: unos en París, otros en lo más hondo de España. De los cafés de Barcelona al cubismo, en solo treinta años."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1890 a 1930. Rusiñol y Casas, en Barcelona y Montmartre; Zuloaga, en Castilla y el País Vasco; Nonell, en los barrios pobres.",
+    "artwork": "w893162"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Rusiñol vivió en el Moulin de la Galette de París y pintó sus cocinas. Luego volvió y montó en Sitges su casa-museo, el Cau Ferrat.",
+    "artwork": "w11931061"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Santiago_Rusi%C3%B1ol"
+ },
+ "escuela-rusa/rococo-neoclasicismo": {
+  "title": "Rusia en el siglo XVIII",
+  "lead": "El retrato sentimental llega a la corte de San Petersburgo con Borovikovski.",
+  "cards": [
+   {
+    "kicker": "Qué lo hace único",
+    "text": "Retratos suaves, en tonos plata y rosa, con la naturaleza al fondo. Buscan el sentimiento más que la pompa."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "San Petersburgo, hacia 1800. Borovikovski, nacido en Ucrania e hijo de un pintor de iconos, se hizo retratista de la corte.",
+    "artwork": "w4373337"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Vlad%C3%ADmir_Borovikovski"
+ },
+ "escuela-rusa/romanticismo": {
+  "title": "Rusos del Romanticismo",
+  "lead": "Volcanes, olas gigantes y un mesías esperado veinte años: la Rusia romántica que soñaba con Italia.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Grandes emociones en grandes formatos: catástrofes, el mar y la fe. Varios se formaron en Italia, que les dio la luz y la escala."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1820 a 1860, entre San Petersburgo, Moscú y Roma. Tropinin, que nació siervo, fue liberado y se hizo retratista de Moscú.",
+    "artwork": "w4242050"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "En El último día de Pompeya, Briulov se pintó a sí mismo huyendo con su caja de pinturas en la cabeza. Búscalo a la izquierda.",
+    "artwork": "w2521909"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/El_%C3%BAltimo_d%C3%ADa_de_Pompeya"
+ },
+ "escuela-rusa/realismo": {
+  "title": "Los Itinerantes",
+  "lead": "Bosques infinitos, campesinos y zares terribles: el realismo que llevó la pintura a toda Rusia.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Pintan la vida rusa tal cual: la pobreza, la historia, los paisajes del norte. Quieren que el arte sirva al pueblo y llegue a todos."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1860 a 1900. En 1863 catorce alumnos plantaron a la Academia de San Petersburgo; en 1870 fundaron los Itinerantes.",
+    "artwork": "w11791202"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Casi todos acabaron en la galería del comerciante Pável Tretiakov, que compraba sus cuadros y en 1892 regaló su colección a Moscú.",
+    "artwork": "w4089077"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Galer%C3%ADa_Tretiakov"
+ },
+ "escuela-rusa/impresionismo": {
+  "title": "Valentín Serov",
+  "lead": "La luz del verano en una habitación: el impresionismo ruso tiene nombre propio.",
+  "cards": [
+   {
+    "kicker": "Qué lo hace único",
+    "text": "Pincelada fresca, luz que entra por la ventana y retratos llenos de vida. Serov fue el gran retratista de la Rusia de 1900."
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "La muchacha de los melocotones es Vera Mamontova, de 12 años. Serov, con 22, la hizo posar a diario durante semanas en la finca de su padre.",
+    "artwork": "w4156438"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Muchacha_con_melocotones"
+ },
+ "escuela-rusa/simbolismo-modernismo": {
+  "title": "Rusos de la vanguardia",
+  "lead": "Del demonio de Vrúbel al cuadrado negro de Malévich: en treinta años Rusia pasó del cuento a la abstracción.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Buscan algo más allá de lo visible: la leyenda, lo espiritual, la forma pura. Rusia se pone en la primera fila del arte moderno."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1890 a 1930, entre Moscú, San Petersburgo y Múnich, donde Kandinsky pintó sus primeros cuadros abstractos.",
+    "artwork": "w4247398"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Malévich colgó su Cuadrado negro en lo alto de una esquina, el lugar donde las casas rusas ponían los iconos.",
+    "artwork": "w1170315"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Cuadrado_negro"
+ },
+ "pintura-britanica/rococo-neoclasicismo": {
+  "title": "Británicos del siglo XVIII",
+  "lead": "Retratos elegantes, sátiras morales y fincas de campo: nace la escuela inglesa.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Por fin una pintura propia en Inglaterra. Hogarth critica las costumbres; Reynolds y Gainsborough retratan a la buena sociedad."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "Siglo XVIII, en Londres. Gainsborough, que prefería pintar paisajes, coloca a sus clientes en plena campiña.",
+    "artwork": "w1619527"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Hogarth pintaba historias por capítulos, como una serie, y vendía grabados baratos de ellas. Así llegó a todo el mundo.",
+    "artwork": "w4164272"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/William_Hogarth"
+ },
+ "pintura-britanica/romanticismo": {
+  "title": "Británicos del Romanticismo",
+  "lead": "Cielos de Constable, tormentas de Turner y las damas de leyenda de los prerrafaelitas.",
+  "cards": [
+   {
+    "kicker": "Qué los une",
+    "text": "Dos generaciones: Turner y Constable reinventan el paisaje; Rossetti y Millais vuelven al detalle y a las leyendas medievales."
+   },
+   {
+    "kicker": "Cuándo y dónde",
+    "text": "De 1810 a 1870, en Londres y el campo inglés. En 1848 Rossetti y Millais fundan la Hermandad Prerrafaelita.",
+    "artwork": "w2366825"
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Turner nació en 1775 y Constable en 1776, y fueron rivales toda la vida. Uno pintaba el fuego del cielo; el otro, las nubes de su pueblo.",
+    "artwork": "w257580"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Hermandad_Prerrafaelita"
+ },
+ "pintura-britanica/impresionismo": {
+  "title": "John Singer Sargent",
+  "lead": "Un estadounidense nacido en Florencia que se convirtió en el retratista de moda de Londres.",
+  "cards": [
+   {
+    "kicker": "Qué lo hace único",
+    "text": "Pincelada rápida y brillante, aprendida de Velázquez, y un ojo infalible para la elegancia. Retrató a media alta sociedad de su época."
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "Su Madame X causó tal escándalo en París en 1884, por un tirante caído, que Sargent se mudó a Londres. Luego repintó el tirante en su sitio.",
+    "artwork": "w2664039"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/Retrato_de_Madame_X"
+ },
+ "pintura-britanica/simbolismo-modernismo": {
+  "title": "John William Waterhouse",
+  "lead": "El último prerrafaelita: ninfas, hechiceras y damas de los poemas de Tennyson.",
+  "cards": [
+   {
+    "kicker": "Qué lo hace único",
+    "text": "Mitos y leyendas con el detalle prerrafaelita y una pincelada más libre. Sus heroínas suelen estar al borde del agua y del destino."
+   },
+   {
+    "kicker": "Curiosidad",
+    "text": "La señora de Shalott sale de un poema de Tennyson: una dama hechizada que muere en su barca camino de Camelot.",
+    "artwork": "w2445726"
+   }
+  ],
+  "source": "https://es.wikipedia.org/wiki/La_dama_de_Shalott_(Waterhouse)"
+ }
+}
