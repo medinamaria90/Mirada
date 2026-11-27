@@ -1,6 +1,6 @@
-inicio Fri Nov 27 02:30:59 UTC 2026
-== hd  02:30:59
-obras con detalle que piden HD: 134
+inicio Fri Nov 27 02:56:05 UTC 2026
+== hd  02:56:05
+obras con detalle que piden HD: 128
 ok   w1055111    filippo-lippi  pide 2300 px -> 1568x2300 q82 684 KB
 ok   w1065493    millais        pide 3840 px -> 3840x2612 q74 2381 KB
 ok   w106839951  alonso-cano    pide 3700 px -> 2828x3700 q82 2426 KB
@@ -28,7 +28,7 @@ ok   w16038461   zuloaga        pide 3200 px -> 3200x2316 q82 1812 KB
 ok   w1619527    gainsborough   pide 3200 px -> 3200x1875 q82 1206 KB
 ok   w16518912   perov          pide 2048 px -> 2048x1496 q82 475 KB
 ok   w167605     vermeer        pide 3000 px -> 2675x3000 q82 1689 KB
-ok   w17021187   arcimboldo     pide 3700 px -> 1920x2652 q82 900 KB
+ok   w17021187   arcimboldo     pide 3500 px -> 1920x2652 q82 900 KB
 ok   w17342250   steen          pide 3840 px -> 3840x2990 q70 2210 KB
 ok   w17994180   sanchez-coello pide 3744 px -> 1840x3744 q82 625 KB
 ok   w18085208   kroyer         pide 3600 px -> 3600x2343 q82 926 KB
@@ -61,8 +61,7 @@ ok   w23936176   regoyos        pide 3840 px -> 3840x2785 q70 3138 KB
 ok   w23936265   beruete        pide 3840 px -> 3840x2498 q70 2078 KB
 ok   w2438357    schiele        pide 2800 px -> 2800x2369 q82 2048 KB
 ok   w2456003    murillo        pide 2952 px -> 2012x2952 q82 815 KB
-ok   w24951450   carreno        pide 1380 px -> 736x1380 q82 168 KB
-ok   w2521909    briullov       pide 3840 px -> 3840x2696 q82 1929 KB
+ok   w2521909    briullov       pide 3840 px -> 3840x2696 q82 1908 KB
 ok   w252485     hokusai        pide 3840 px -> 3840x2708 q82 2435 KB
 ok   w2535563    rafael         pide 2952 px -> 2267x2952 q82 718 KB
 ok   w2537138    goya           pide 3051 px -> 3051x2114 q82 1052 KB
@@ -81,7 +80,6 @@ ok   w321303     bosco          pide 3700 px -> 3700x2086 q82 2150 KB
 ok   w3224308    perugino       pide 3327 px -> 2562x3327 q82 818 KB
 ok   w3235872    cranach        pide 3700 px -> 2479x3700 q82 1005 KB
 ok   w328523     monet          pide 3840 px -> 3840x2979 q74 2398 KB
-ok   w3451328    hogarth        pide 1512 px -> 1512x1346 q82 349 KB
 ok   w3556817    boucher        pide 3700 px -> 3700x2842 q82 2264 KB
 ok   w3607621    pontormo       pide 3840 px -> 2916x3840 q82 1530 KB
 ok   w3630735    van-gogh       pide 3300 px -> 2714x3300 q82 1819 KB
@@ -106,7 +104,7 @@ ok   w4458429    levitan        pide 2000 px -> 2000x1601 q82 614 KB
 ok   w4478998    surikov        pide 3767 px -> 3767x2157 q82 1727 KB
 ok   w4503153    vrubel         pide 2048 px -> 1346x2048 q82 515 KB
 ok   w4536026    ivanov         pide 2800 px -> 2800x1953 q82 1148 KB
-ok   w45585      van-gogh       pide 3840 px -> 3840x3041 q70 2958 KB
+ok   w45585      van-gogh       pide 3840 px -> 3840x3041 q70 2937 KB
 ok   w4717953    velazquez      pide 3840 px -> 3304x3840 q82 1926 KB
 ok   w4884666    bermejo        pide 3700 px -> 2831x3700 q82 2361 KB
 ok   w4889277    casas          pide 3840 px -> 3840x2684 q82 2004 KB
@@ -120,24 +118,19 @@ ok   w58411216   hammershoi     pide 2700 px -> 2415x2700 q82 1178 KB
 ok   w5916308    tiepolo        pide 3700 px -> 2013x3700 q82 1013 KB
 ok   w604761     gainsborough   pide 2000 px -> 1375x2000 q82 323 KB
 ok   w6163544    morales        pide 1920 px -> 1452x1920 q82 243 KB
-ok   w62029258   sharaku        pide 1402 px -> 900x1402 q82 209 KB
 ok   w644106     sargent        pide 2026 px -> 2020x2026 q82 491 KB
 ok   w701035     memling        pide 3543 px -> 3543x2359 q82 2151 KB
 ok   w7731855    claudio-de-lorena pide 3500 px -> 3500x2661 q82 2253 KB
 ok   w780466     uccello        pide 3500 px -> 3500x2639 q82 2299 KB
-ok   w920030     goya           pide 1911 px -> 1911x1595 q82 314 KB
 ok   w9295442    waterhouse     pide 3840 px -> 3840x2306 q74 2434 KB
 ok   w930137     giorgione      pide 3696 px -> 3329x3696 q82 2438 KB
 ok   w939962     correggio      pide 3100 px -> 1346x3100 q82 1005 KB
-ok   w94802      el-greco       pide 1612 px -> 1316x1612 q82 464 KB
 ok   w948745     duccio         pide 3840 px -> 2350x3840 q82 1360 KB
 ok   w949323     el-greco       pide 3300 px -> 2538x3300 q82 1778 KB
 ok   w96471562   kuniyoshi      pide 1497 px -> 1190x1497 q82 367 KB
 ok   w965822     mantegna       pide 3840 px -> 2249x3840 q78 2170 KB
-ok   w984058     velazquez      pide 2911 px -> 2911x2008 q82 1440 KB
-hd: 134 imágenes, 197.0 MB, fallos 0, sha256 75ec7af797030e10…
-paquete app-img-hd subido a catalogo-img (188M)
+hd: 128 imágenes, 194.0 MB, fallos 0, sha256 ff3081cbaa499b2e…
+movidas 2 imágenes de catalogo-img a catalogo-img-2 para hacer sitio al paquete
+paquete app-img-hd subido a catalogo-img (185M)
 65M	.git
 3.7M	catalogo
-fin Fri Nov 27 02:33:42 UTC 2026
-estado del job: success Fri Nov 27 02:33:43 UTC 2026

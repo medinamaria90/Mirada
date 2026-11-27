@@ -359,17 +359,11 @@
   "h": 2952,
   "bytes": 834946
  },
- "w24951450": {
-  "archivo": "Juan Carreno de Miranda 023.jpg",
-  "w": 736,
-  "h": 1380,
-  "bytes": 172648
- },
  "w2521909": {
   "archivo": "Karl Brullov - The Last Day of Pompeii - Google Art Project.jpg",
   "w": 3840,
   "h": 2696,
-  "bytes": 1975613
+  "bytes": 1954718
  },
  "w252485": {
   "archivo": "Katsushika Hokusai - The Great Wave off the Coast of Kanagawa LCCN2008660568.jpg",
@@ -478,12 +472,6 @@
   "w": 3840,
   "h": 2979,
   "bytes": 2455776
- },
- "w3451328": {
-  "archivo": "William Hogarth 047.jpg",
-  "w": 1512,
-  "h": 1346,
-  "bytes": 358000
  },
  "w3556817": {
   "archivo": "Diane sortant du bain - François Boucher - Musée du Louvre Peintures INV 2712.jpg",
@@ -633,7 +621,7 @@
   "archivo": "Van Gogh - Starry Night - Google Art Project.jpg",
   "w": 3840,
   "h": 3041,
-  "bytes": 3029876
+  "bytes": 3008432
  },
  "w4717953": {
   "archivo": "Retrato de Juan Pareja, by Diego Velázquez.jpg",
@@ -713,12 +701,6 @@
   "h": 1920,
   "bytes": 249276
  },
- "w62029258": {
-  "archivo": "Ishikawa Ebizo IV dans le role de Takemura Sadanoshin.jpg",
-  "w": 900,
-  "h": 1402,
-  "bytes": 214225
- },
  "w644106": {
   "archivo": "John Singer Sargent 001.jpg",
   "w": 2020,
@@ -743,12 +725,6 @@
   "h": 2639,
   "bytes": 2354225
  },
- "w920030": {
-  "archivo": "La familia de Carlos IV, por Francisco de Goya.jpg",
-  "w": 1911,
-  "h": 1595,
-  "bytes": 322194
- },
  "w9295442": {
   "archivo": "John William Waterhouse - Hylas and the Nymphs (1896, Manchester Art Gallery).jpg",
   "w": 3840,
@@ -766,12 +742,6 @@
   "w": 1346,
   "h": 3100,
   "bytes": 1029257
- },
- "w94802": {
-  "archivo": "El Greco - The Burial of the Count of Orgaz.JPG",
-  "w": 1316,
-  "h": 1612,
-  "bytes": 475857
  },
  "w948745": {
   "archivo": "Duccio - Maestà - Google Art Project.jpg",
@@ -796,11 +766,5 @@
   "w": 2249,
   "h": 3840,
   "bytes": 2222688
- },
- "w984058": {
-  "archivo": "Velazquez-las hilanderas.jpg",
-  "w": 2911,
-  "h": 2008,
-  "bytes": 1475391
  }
 }
