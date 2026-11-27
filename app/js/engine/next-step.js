@@ -2,6 +2,8 @@
 // Gana la primera regla que se cumple:
 //   1. etapa o sala por debajo del 50 % → «Repetir»;
 //   1 bis. se entró a jugar desde una pantalla con un objetivo (el rango del Perfil, los logros) → «Volver al perfil»;
+//   1 ter. el contexto manda: se entró desde un pintor (su historia, su ficha o su tarjeta del mapa) → algo sobre ESE
+//      pintor: su siguiente nivel «a fondo» abierto («Nivel 2 de Botticelli») o «Practicar a Botticelli» (artistStep);
 //   2. esta sesión cumple la meta del día → «Por hoy, hecho», con «Volver al camino»;
 //   3. repaso que traía un pintor a medias (y sigue a medias) → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»);
 //   4. 3 o más pintores a medias, o 5 o más fallados, sin repaso ni ahora ni en la sesión anterior → «Repasar»;
@@ -75,7 +77,19 @@ export function backDebt(progress, index, open) {
   return null;
 }
 
-export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '' } = {}) {
+// Lo que toca con un pintor concreto: su siguiente nivel «a fondo» abierto o, si no, practicarlo (su ronda: sus cuadros ya
+// vistos y alguno nuevo si lo hay). Siempre dice de quién.
+export function artistStep(progress, index, artistId) {
+  const a = index.artist(artistId);
+  if (!a) return null;
+  if (progress.artists?.[artistId]?.mastered) {
+    const next = index.deepLevels(artistId).find((l) => !['mastered', 'locked'].includes(deepStatus(progress, index, artistId, l.id)));
+    if (next) return { kind: 'deep', to: deepRoute(artistId, next.id), label: `Nivel ${next.id} de ${shortName(a)}`, artistId };
+  }
+  return { kind: 'practice', to: stageRoute(artistId), label: `Practicar a ${shortName(a)}`, artistId };
+}
+
+export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '', contextArtist = '' } = {}) {
   const kind = plan.kind;
   let reviewCount = null;
   const count = () => (reviewCount ??= reviewSession(progress, index, today).works.length);
@@ -87,6 +101,9 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   }
   // 1 bis. Vuelta al objetivo.
   if (ORIGIN_LABEL[origin]) return { kind: 'origin', to: origin, label: ORIGIN_LABEL[origin] };
+  // 1 ter. El contexto manda: sobre el pintor desde el que se entró.
+  const context = contextArtist ? artistStep(progress, index, contextArtist) : null;
+  if (context) return context;
   // 2. Meta del día cumplida en esta sesión.
   if (goalJustMet) return { kind: 'done', to: HOME_ROUTE, label: BACK_LABEL };
   // 3. Repaso con un pintor a medias.

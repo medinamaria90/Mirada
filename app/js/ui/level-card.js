@@ -12,6 +12,7 @@ import { loadStory, peekStory } from './story-data.js';
 import { modalSlot, mountSheet } from './modal-slot.js';
 import { levelRing, startedRing, startedLine } from '../engine/level-ring.js';
 import { rowLevels, rowHtml, wireRow, levelRoute } from './level-row.js';
+import { setPlayContext } from './play-context.js';
 
 const slot = modalSlot();
 const EDGE = 16;        // margen de la tarjeta con los bordes de la ventana
@@ -111,14 +112,15 @@ export async function openLevelCard(ctx, button, branchId = '') {
     window.removeEventListener('resize', onResize);
   });
   const go = (route) => { close({ silent: true }); ctx.go(route); };
-  const play = (level) => go(levelRoute(artistId, level, branchId));
+  // Lo que se juega desde la tarjeta de un pintor cierra con algo sobre él (ui/play-context.js).
+  const play = (level) => { setPlayContext(artistId); go(levelRoute(artistId, level, branchId)); };
   wireRow(ctx, dlg, artistId, dlg.querySelector('.hl-more'), { play, replay: play });
   dlg.addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-lc]');
     if (!b) return;
     ctx.audio.sfx('tap');
     if (b.dataset.lc === 'profile') go(`pintor-${artistId}`);
-    else go(levelRoute(artistId, ring.next || 1, branchId));
+    else play(ring.next || 1);
   });
   dlg.querySelector('.lc-play').focus({ preventScroll: true });
   if (known === undefined) loadStory(artistId).then((story) => { if (story && dlg.open) fillStories(dlg, rowLevels(index, artistId, story, rowStates)); });

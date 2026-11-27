@@ -25,6 +25,7 @@ import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
 import { stageReturnTo, isGoalScreen } from '../router.js';
+import { takePlayContext } from '../play-context.js';
 import { makeSession, withSession, clearSession } from '../../state/session.js';
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
@@ -70,7 +71,7 @@ function falladoExtras(ctx, kind, plan) {
 
 // Ejecuta una ronda y la guarda tras cada respuesta para poder retomarla (state/session.js).
 function play(ctx, el, opts) {
-  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, returnTo = null } = opts;
+  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, returnTo = null, contextArtist = '' } = opts;
   const home = returnTo || 'inicio';
   const meta = { route: opts.route || currentRoute(), title, accent, kind, extra, friendScore, shareTopic, plan: planMeta(plan) };
   const questions = resume ? resume.round.queue.map((it) => it.q) : plan.questions;
@@ -98,10 +99,17 @@ function play(ctx, el, opts) {
       const goalJustMet = outcome.events.some((e) => e.type === 'goal');
       resultCss.then(() => renderResult(ctx, el, {
         plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before, prevKind, goalJustMet,
-        origin: isGoalScreen(returnTo) ? returnTo : '',
+        origin: isGoalScreen(returnTo) ? returnTo : '', contextArtist,
       }));
     },
   });
+}
+
+// El contexto manda: si se entró desde un pintor (su ficha o galería, o su tarjeta del mapa), el resultado ofrece algo
+// sobre él (engine/next-step.js artistStep).
+function contextOf(returnTo, artistId) {
+  const fromPainter = /^(pintor|obras)-/.test(returnTo || '');
+  return takePlayContext(artistId) || fromPainter ? artistId : '';
 }
 
 // Si la ronda se lanzó desde la ficha de un pintor (o su galería) o desde la pantalla de una rama, atrás y «Salir»
@@ -346,6 +354,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx, branchId);
+  const contextArtist = contextOf(returnTo, artistId);
   withIntro(ctx, el, movement.id, () => withTramo(ctx, el, artistId, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
@@ -354,7 +363,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
     const met = metArtistIds(ctx.store.get().progress, index);
     const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown, learnShown: !fromStory, branchId, met });
     playEra(movement.era);
-    const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo }));
+    const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo, contextArtist }));
     if (fromStory) return start();
     const years = artist.born && artist.died ? `${artist.born}–${artist.died}` : '';
     learnScreen(ctx, el, {
@@ -384,12 +393,13 @@ export function renderDeep(ctx, el, artistId, level) {
   if (deepStatus(ctx.store.get().progress, index, artistId, level) === 'locked') return leave(ctx, 'Aún no está abierto');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx);
+  const contextArtist = contextOf(returnTo, artistId);
   withStory(ctx, el, artistId, level, (shown) => {
     const progress = ctx.store.get().progress;
     const met = metArtistIds(progress, index);
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown, met });
     playEra(movement.era);
-    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
+    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo, contextArtist }));
   }, { look: artist.hint, returnTo });
 }
 

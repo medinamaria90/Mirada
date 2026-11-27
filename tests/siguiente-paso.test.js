@@ -198,3 +198,20 @@ test('guía del mapa: lo de atrás, nunca dos veces seguidas (como el resultado)
   assert.equal(lastStep(), 'stop', 'sin almacenamiento, en memoria');
   delete globalThis.window;
 });
+
+test('el contexto manda: desde un pintor, el paso es sobre él y dice de quién («Practicar a…», «Nivel 2 de…»)', async () => {
+  const { artistStep } = await import('../app/js/engine/next-step.js');
+  const p = base();
+  // Con mucho pendiente, sin contexto se recomendaría el repaso general; con contexto, el pintor.
+  for (const x of [c, d, e]) p.artists[x.id] = { plays: 1, best: 0.6, mastered: false };
+  seenWorksOf(p, c.id);
+  assert.equal(step(p, { plan: { kind: 'stage', artistId: a.id }, outcome: outcome(0.9) }).kind, 'review');
+  const s = step(p, { plan: { kind: 'stage', artistId: a.id }, outcome: outcome(0.9), contextArtist: a.id });
+  assert.deepEqual([s.kind, s.label, s.to], ['practice', `Practicar a ${a.short || a.name}`, `etapa-${a.id}`]);
+  // Con un nivel «a fondo» abierto, ese nivel, con su nombre.
+  const levels = [{ id: 2, name: 'La corte', short: 'La corte' }];
+  const deepIndex = { ...big, deepLevels: (id) => (id === a.id ? levels : []), levelWorks: () => [] };
+  assert.deepEqual(artistStep(p, deepIndex, a.id), { kind: 'deep', to: `a-fondo-${a.id}-2`, label: `Nivel 2 de ${a.short || a.name}`, artistId: a.id });
+  // Ninguna etiqueta genérica «Repasar» en un paso con contexto.
+  assert.doesNotMatch(s.label, /^Repasar$/);
+});

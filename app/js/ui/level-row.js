@@ -12,7 +12,8 @@ import { tinySrc } from './art.js';
 import { levelStory, cropOf, regionOf } from '../engine/stories.js';
 import { focusOf } from '../engine/framing.js';
 import { deepRoute, stageRoute } from './router.js';
-import { nextStep } from '../engine/next-step.js';
+import { artistStep } from '../engine/next-step.js';
+import { setPlayContext } from './play-context.js';
 
 const LABEL = { done: 'hecho, volver a ver su historia', next: 'empezar', locked: 'cerrado' };
 const LABEL_BARE = { ...LABEL, done: 'hecho, repetir' };
@@ -53,17 +54,13 @@ export function rowHtml(levels, cls = '') {
 // Ruta que juega un nivel (su historia y después las preguntas).
 export const levelRoute = (artistId, level, branchId = '') => (level === 1 ? stageRoute(artistId, branchId) : deepRoute(artistId, level));
 
-// Pasos que la última tarjeta de una historia repetida recomienda en lugar de «Repetir nivel» (engine/next-step.js).
-const STORY_STEPS = new Set(['review', 'stop', 'weekly', 'rank', 'debt']);
-
-// Vuelve a poner la historia de un nivel, sin ronda; con `replay`, su última tarjeta ofrece el siguiente paso recomendado
-// (repasar, la parada abierta o el reto semanal) o, si no hay, «Repetir nivel».
+// Vuelve a poner la historia de un nivel, sin ronda; con `replay`, su última tarjeta ofrece algo sobre ESE pintor (el contexto
+// manda): su siguiente nivel «a fondo» abierto («Nivel 2 de Botticelli») o «Practicar a Botticelli». Nunca un repaso general.
 export function watchStory(ctx, artistId, level, replay = null) {
-  const step = replay ? nextStep(ctx.store.get().progress, ctx.index, ctx.today(), { plan: { kind: 'story' } }) : null;
-  const ahead = step && STORY_STEPS.has(step.kind) ? step : null;
-  const onPlay = ahead ? () => ctx.go(ahead.to) : replay ? () => replay(level) : false;
+  const step = replay ? artistStep(ctx.store.get().progress, ctx.index, artistId) : null;
+  const onPlay = step ? () => { setPlayContext(artistId); ctx.go(step.to); } : false;
   return import('./story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { force: true, onPlay, playLabel: ahead ? ahead.label : 'Repetir nivel' }))
+    .then((m) => m.playStory(ctx, artistId, level, { force: true, onPlay, playLabel: step ? step.label : '' }))
     .catch((err) => console.error(err));
 }
 
