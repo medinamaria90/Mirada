@@ -70,7 +70,7 @@ export function fitTimeNames(root) {
     }
   };
   fit();
-  if (document.fonts?.ready) document.fonts.ready.then(fit);
+  globalThis.document?.fonts?.ready?.then(fit);
   if (typeof ResizeObserver !== 'function') return () => {};
   const ro = new ResizeObserver(fit);
   ro.observe(card);

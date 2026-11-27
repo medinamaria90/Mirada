@@ -59,7 +59,6 @@ test('«Su tiempo»: fitTimeNames saca fuera solo el nombre que se corta y vuelv
   t.classList.replace = (x, y) => { t.cls.delete(x); t.cls.add(y); };
   for (const m of [a, b]) m.classList.replace = (x, y) => { m.cls.delete(x); m.cls.add(y); };
   const card = { querySelectorAll: () => [a, b, c, t] };
-  globalThis.document = {};
   const stop = fitTimeNames({ querySelector: () => card });
   assert.deepEqual([...a.cls], ['is-name-right']);
   assert.deepEqual([...b.cls], ['is-name-left']);
@@ -70,7 +69,6 @@ test('«Su tiempo»: fitTimeNames saca fuera solo el nombre que se corta y vuelv
   fitTimeNames({ querySelector: () => card });
   assert.deepEqual([...a.cls], []);
   stop();
-  delete globalThis.document;
 });
 
 test('«Su tiempo»: el nombre de fuera va unido a su barra por una rayita', () => {
