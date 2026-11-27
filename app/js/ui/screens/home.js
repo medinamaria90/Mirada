@@ -41,11 +41,11 @@ export function renderHome(ctx, el) {
   } else if (pending.length) {
     const first = pending[0];
     const firstName = first.type === 'sala' ? index.movement(first.id).name : index.artist(first.id).name;
-    finale = `<section class="finale" aria-label="Por dominar">
+    finale = `<section class="finale" aria-label="Por terminar">
       <span class="finale-icon">${icons.repeat(28)}</span>
-      <h2 class="finale-title">${pending.length === 1 ? 'Te queda 1 por dominar' : `Te quedan ${pending.length} por dominar`}</h2>
+      <h2 class="finale-title">${pending.length === 1 ? 'Te queda 1 parada' : `Te quedan ${pending.length} paradas`}</h2>
       <div class="finale-actions">
-        <button class="btn btn-primary btn-wide" data-action="${first.type === 'sala' ? 'sala' : 'stage'}" data-id="${esc(first.id)}">${icons.repeat(20)}<span>Repasar ${esc(firstName)}</span></button>
+        <button class="btn btn-primary btn-wide" data-action="${first.type === 'sala' ? 'sala' : 'stage'}" data-id="${esc(first.id)}">${icons.repeat(20)}<span>Volver a ${esc(firstName)}</span></button>
       </div>
     </section>`;
   }
@@ -150,7 +150,7 @@ function sideNow(ctx) {
   const name = cur.type === 'sala' ? 'Conoce el movimiento' : index.artist(cur.id).name;
   return `<section class="side-now" style="${accentStyle(m.accent)}" aria-labelledby="side-now-h">
       <span class="side-head"><span class="side-title" id="side-now-h">${esc(m.name)}</span><span class="side-count">${done}/${steps.length}</span></span>
-      <span class="side-bar" role="img" aria-label="${done} de ${steps.length} dominados"><span style="width:${Math.round((done / steps.length) * 100)}%"></span></span>
+      <span class="side-bar" role="img" aria-label="${done} de ${steps.length} paradas"><span style="width:${Math.round((done / steps.length) * 100)}%"></span></span>
       <p class="side-next">Siguiente: <strong>${esc(name)}</strong></p>
       <button class="btn btn-primary btn-wide" data-action="${cur.type === 'sala' ? 'sala' : 'stage'}" data-id="${esc(cur.id)}" data-status="${status}">${status === 'started' ? 'Seguir' : 'Empezar'}</button>
     </section>`;

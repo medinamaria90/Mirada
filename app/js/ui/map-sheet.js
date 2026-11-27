@@ -30,7 +30,7 @@ export async function openSheet(ctx, opener, accent, body) {
 const HOW = [
   ['arch', 'Cada parada es un pintor: miras sus cuadros y aprendes a reconocerlo.'],
   ['eye', 'Después, preguntas rápidas: ¿quién lo pintó? Aciertas y la parada se ilumina.'],
-  ['fork', 'Al dominar una época se abre la siguiente, y ramas con más pintores.'],
+  ['fork', 'Al terminar una época se abre la siguiente, y ramas con más pintores.'],
 ];
 export function openIntroSheet(ctx, _id, opener) {
   const body = `<header class="ms-head"><p class="ms-kicker">El camino</p><h2 class="ms-title" id="ms-title">Cómo se juega</h2></header>

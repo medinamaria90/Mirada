@@ -72,7 +72,7 @@ function lineHtml(ctx, r) {
   }
   const artist = plan.artistId ? index.artist(plan.artistId) : null;
   const who = artist ? artist.short || artist.name : '';
-  if (outcome.ownShort && artist) return `<p class="res-line">Para dominarlo, acierta más cuadros de ${esc(who)}</p>`;
+  if (outcome.ownShort && artist) return `<p class="res-line">Acierta más cuadros de ${esc(who)} y ganas su medalla</p>`;
   const missing = outcome.coverShort && artist ? pendingWorks(ctx.store.get().progress, index, artist.id, plan.level || 1).length : 0;
   if (missing) return `<p class="res-line">${missing === 1 ? 'Te falta 1 cuadro suyo por ver' : `Te faltan ${missing} cuadros suyos por ver`}: una ronda más</p>`;
   const trait = plan.kind === 'stage' && artist ? mainTrait(artist) : '';
@@ -175,8 +175,8 @@ export function renderResult(ctx, el, opts) {
 
   const master = heroMedal?.id.startsWith('artist-') ? index.artist(heroMedal.id.slice('artist-'.length)) : null;
   const deepStage = deepDone && index.deepLevels(deepDone.artistId).find((l) => l.id === deepDone.level);
-  const kicker = master ? `${master.short || master.name} · Dominado`
-    : heroMedal ? `${medalInfo(heroMedal.id, index).title} · Dominado`
+  const kicker = master ? `${master.short || master.name} · Ya lo reconoces`
+    : heroMedal ? `${medalInfo(heroMedal.id, index).title} · Completo`
       : deepStage ? `${stageTitle(index.artist(deepDone.artistId), deepStage)} · Superado` : opts.title;
   const work = heroWork(index, plan);
   const art = work ? heroArt(work) : '';

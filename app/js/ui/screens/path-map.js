@@ -187,7 +187,7 @@ function artistNode(ctx, artist, keys) {
     label: status === 'started' ? startedLabel(artist.name, p.artists[artist.id]?.best)
       : `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
     name: quiet ? artist.short || artist.name : artist.name, meta: dormant ? DORMANT_TEXT : '',
-    dot: dotFor(status, coverOf(index, artist.id), artist.name),
+    dot: dotFor(status, coverOf(index, artist.id), artist.name, p.artists[artist.id]?.best),
   });
   return { type: 'artist', key, status, html };
 }
@@ -204,7 +204,7 @@ function salaNode(ctx, movement, keys) {
     label: status === 'started' ? startedLabel(`Conoce el movimiento ${movement.name}`, p.salas?.[movement.id]?.best)
       : `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
     name: 'Conoce el movimiento', meta: '',
-    dot: dotFor(status, salaCover(index, movement.id), movement.name),
+    dot: dotFor(status, salaCover(index, movement.id), movement.name, p.salas?.[movement.id]?.best),
   });
   return { type: 'sala', key, status, html };
 }
@@ -230,13 +230,13 @@ function reviewNode(ctx, movement, quiet = false) {
   const medal = (best || 0) >= 0.75;
   const status = medal ? 'mastered' : open ? 'available' : 'locked';
   const pending = open ? [] : pendingOf(ctx, p, movement.id);
-  const lock = pending.length ? `Domina a ${pendingNames(pending)} para abrirlo` : 'Se abre al dominar a todos sus pintores';
+  const lock = pending.length ? `Se abre después de ${pendingNames(pending)}` : 'Se abre al terminar la época';
   // Cerrado: lo que falta, dicho en claro bajo la etiqueta («Domina 1 pintor más»).
-  const missing = pending.length && !quiet ? `Domina ${pending.length === 1 ? '1 pintor' : `${pending.length} pintores`} más` : '';
+  const missing = pending.length && !quiet ? (pending.length === 1 ? 'Falta 1 pintor' : `Faltan ${pending.length} pintores`) : '';
   const name = REVIEW_NODE_NAME;
   const meta = best ? `Mejor: ${Math.round(best * 100)}\u00a0%` : missing;
   const icon = medal ? icons.medal(22) : icons.arch(open ? 24 : 18);
-  const label = `${REVIEW_NODE_NAME} ${ofEra(movement.name)}${open ? '' : `, bloqueado. Para abrirlo, domina a ${joinNames(pending)}`}`;
+  const label = `${REVIEW_NODE_NAME} ${ofEra(movement.name)}${open ? '' : `, cerrada. Se abre después de ${joinNames(pending)}`}`;
   const html = `<button class="stage stage-review is-${status}" data-action="review" data-id="${esc(movement.id)}" data-status="${open ? 'open' : 'locked'}"
         aria-label="${esc(label)}" data-lock="${esc(lock)}">
         <span class="stage-dot">${icon}${open ? '' : `<span class="stage-lock">${icons.lock(10)}</span>`}</span>

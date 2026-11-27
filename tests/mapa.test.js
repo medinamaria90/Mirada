@@ -76,7 +76,7 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
   assert.equal((html.match(/<svg class="path-trail"/g) || []).length, real.visibleMovements.length + 2, 'un sendero por tramo, el de la salida y el del museo');
   const firstEra = real.steps[0].movementId;
   const total = real.stepsOf(firstEra).length;
-  assert.ok(html.includes(`2 de ${total} pintores dominados: ver presentación`) && html.includes(`class="arch-progress-fill" style="--p:${Math.round((2 / total) * 100) / 100}"`), 'la lápida no dice cuántas van (ranura y lector)');
+  assert.ok(html.includes(`2 de ${total} pintores: ver presentación`) && html.includes(`class="arch-progress-fill" style="--p:${Math.round((2 / total) * 100) / 100}"`), 'la lápida no dice cuántas van (ranura y lector)');
   assert.ok(!html.includes(` · 2/${total}`), 'queda la cifra pegada a los siglos');
   assert.ok(html.includes('finales s.\u00a0XVIII–mediados s.\u00a0XIX'), 'los siglos sin espacio duro');
   assert.ok(html.includes('class="arch-band" data-action="intro"'), 'el arco abierto no lleva a la presentación');
@@ -112,8 +112,8 @@ test('mapa: el nodo actual se distingue por el nodo y la marca «Tú», sin bot�
   html = renderPathMap(ctxWith(real, p));
   assert.ok(html.includes(`is-current" data-step="artist:${real.steps[2].id}"`));
   assert.ok(!html.includes('Repite'), 'ningún nodo lleva «Repite»: el único repaso es el botón ↻');
-  assert.ok(html.includes(`aria-label="${real.steps[1].name || real.artist(real.steps[1].id).name}, a medias, 50 %. Dominas con 75 %"`), 'el nodo a medias dice su nota y con cuánto se domina');
-  assert.ok(html.includes('class="stage-badge is-partial"'), 'el nodo a medias lleva su insignia');
+  assert.ok(html.includes(`aria-label="${real.steps[1].name || real.artist(real.steps[1].id).name}, a medias: 50 % de 75 %"`), 'el nodo a medias dice su nota y la que hace falta');
+  assert.ok(html.includes('class="stage-badge is-partial" aria-hidden="true">50%</span>'), 'el nodo a medias lleva su nota en la insignia');
   assert.ok(/class="stage [^"]*is-mastered"/.test(html) && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
   // Camino jugado entero pero no dominado: el actual es el primero por repasar e invita a repetir, como los demás.
   const q = emptyProgress();
@@ -127,7 +127,7 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
   const html = renderPathMap(ctxWith(real));
   const reviews = real.visibleMovements.filter((m) => hasMovementReview(real, m.id));
   assert.equal((html.match(/class="stage stage-review is-/g) || []).length, reviews.length);
-  assert.ok(html.includes(`aria-label="Prueba de época del ${reviews[0].name}, bloqueado`));
+  assert.ok(html.includes(`aria-label="Prueba de época del ${reviews[0].name}, cerrada`));
   for (const era of pathLayout(real).eras) assert.equal(era.points.length, real.stepsOf(era.id).length + (hasMovementReview(real, era.id) ? 1 : 0));
   const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
   assert.equal((all.match(/class="stage stage-gallery is-mastered"/g) || []).length, real.visibleMovements.length, 'sin salas con todo dominado');
@@ -174,12 +174,12 @@ test('mapa: el repaso cerrado dice en claro cuánto falta; los nombres, en la no
   const last = real.artist(artists[artists.length - 1].id);
   const html = renderPathMap(ctxWith(real, progress));
   const who = last.short || last.name;
-  assert.ok(html.includes('<span class="stage-name">Prueba de época</span><span class="stage-meta">Domina 1 pintor más</span>'), 'el repaso cerrado no dice cuánto falta');
-  assert.ok(html.includes(`data-lock="Domina a ${who} para abrirlo"`), 'la nota al pulsar no nombra al pintor');
-  assert.ok(html.includes(`bloqueado. Para abrirlo, domina a ${who}"`), 'el lector no oye a quién falta dominar');
+  assert.ok(html.includes('<span class="stage-name">Prueba de época</span><span class="stage-meta">Falta 1 pintor</span>'), 'el repaso cerrado no dice cuánto falta');
+  assert.ok(html.includes(`data-lock="Se abre después de ${who}"`), 'la nota al pulsar no nombra al pintor');
+  assert.ok(html.includes(`cerrada. Se abre después de ${who}"`), 'el lector no oye a quién falta dominar');
   const none = renderPathMap(ctxWith(real, emptyProgress()));
-  assert.ok(none.includes(`<span class="stage-meta">Domina ${artists.length} pintores más</span>`));
-  assert.ok(/data-lock="Domina a [^",]+, [^",]+ y \d+ más para abrirlo"/.test(none), 'la nota resume («X, Y y n más»)');
+  assert.ok(none.includes(`<span class="stage-meta">Faltan ${artists.length} pintores</span>`));
+  assert.ok(/data-lock="Se abre después de [^",]+, [^",]+ y \d+ más"/.test(none), 'la nota resume («X, Y y n más»)');
   assert.ok(!/<b>Repaso:<\/b>/.test(none) && !/ y [^"<]+ y \d+ más para/.test(none), 'queda el formato antiguo o una doble «y»');
 });
 
@@ -208,7 +208,7 @@ test('mapa: lápida de la época junto a su puerta y mojones de tramo al borde; 
   // extra), justo antes de su parada en el DOM.
   const first = real.artist(real.steps[0].id);
   const n = real.stageArtists(first.movementId).filter((a) => a.section === first.section).length;
-  const at = html.indexOf(`aria-label="Tramo ${first.section}: 1 de ${n} dominados. Ver cartel"`);
+  const at = html.indexOf(`aria-label="Tramo ${first.section}: 1 de ${n} pintores. Ver cartel"`);
   assert.ok(at >= 0 && at < html.indexOf(`data-step="artist:${first.id}"`), 'el cartel del tramo no va antes de su primera parada');
   assert.ok(html.includes(`data-action="cartel" data-kind="tramo" data-id="${first.section}"`), 'el cartel del tramo no abre sus tarjetas');
   assert.ok(!html.includes('stage-kicker') && !html.includes('class="lock-note"'), 'quedan rótulos de tramo sobre el nombre o párrafos vacíos');
@@ -234,7 +234,7 @@ test('mapa: cada rama, su desvío y su cartel de dos postes; al tocarlo se entra
   assert.equal(found.length, layout.eras.reduce((n, e) => n + e.branches.length, 0), 'una rama sin cartel');
   assert.ok(found.every(([, cls]) => cls === 'is-locked'), 'una rama abierta el primer día');
   assert.ok(html.includes('class="spur-edge is-locked"') && html.includes('class="spur-tail"'), 'sin desvío o sin su vereda hacia el borde');
-  assert.ok(/data-action="branch" data-id="gotico" data-status="locked" data-lock="Se abre al dominar a [^"]+"/.test(html), 'la rama cerrada no dice qué falta al tocarla');
+  assert.ok(/data-action="branch" data-id="gotico" data-status="locked" data-lock="Se abre después de [^"]+"/.test(html), 'la rama cerrada no dice qué falta al tocarla');
   // Escuelas: una señal en cada época en la que abren un tramo con pintores propios.
   const rusa = real.branch('escuela-rusa');
   const rusaEras = [...new Set(rusa.artists.filter((id) => real.pathIndex(id) < 0).map((id) => rusa.tramos.find((t) => t.artists.includes(id)).opensAt))];
@@ -326,7 +326,7 @@ test('textos: «y» → «e» ante /i/ y artículos en las épocas', async () =>
   // En el mapa: el repaso y la hoja de época usan la misma regla.
   const p = masterFirst(real, real.steps.findIndex((x) => x.movementId === 'rococo-neoclasicismo') + 3);
   const html = renderPathMap(ctxWith(real, p));
-  assert.ok(html.includes('Domina a David e Ingres para abrirlo'), 'el repaso dice «David y Ingres»');
+  assert.ok(html.includes('Se abre después de David e Ingres'), 'el repaso dice «David y Ingres»');
 });
 
 test('mapa: «Tu museo» celebra el camino completo y lleva a la Colección', () => {
@@ -391,7 +391,8 @@ test('mapa: el pintor a medias llena el tramo del nivel 1 de su aro en proporci�
   const svg = ringSvg(ring.levels);
   const dash = (cls) => Number(svg.match(new RegExp(`class="ring-arc is-${cls}"[^>]*stroke-dasharray="([\\d.]+)`))[1]);
   assert.ok(Math.abs(dash('partial') / dash('locked') - 0.5 / 0.75) < 0.01, 'la parte coral mide lo que lleva');
-  assert.equal(startedLine(ring), '50 % · dominas con 75 %');
+  assert.equal(startedLine(ring), 'Te falta poco: 50\u00a0% de 75\u00a0%');
+  assert.equal(startedLine({ ...ring, best: 0.3 }), '30\u00a0% de 75\u00a0%');
   assert.equal(startedLine({ ...ring, best: 0.8, missing: 3 }), 'Te faltan 3 cuadros por ver');
   assert.equal(startedRing(masterFirst(real, 2), real, id), null, 'dominado: sin aro a medias');
 });

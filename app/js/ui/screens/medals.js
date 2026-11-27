@@ -72,8 +72,8 @@ export function allMedalIds(index) {
 export function medalHow(id) {
   const [kind, ...rest] = id.split('-');
   const ref = rest.join('-');
-  if (kind === 'artist') return 'Domina su etapa del camino';
-  if (kind === 'movement') return 'Domina todas sus paradas del camino';
+  if (kind === 'artist') return 'Supera su parada del camino con 3 de cada 4';
+  if (kind === 'movement') return 'Supera todas sus paradas del camino';
   if (kind === 'streak') return `Practica ${ref} días seguidos`;
   if (kind === 'eye') return 'Acierta cada cuadro suyo en repasos de días distintos, hasta reconocerlos todos';
   if (id === 'weekly-1') return 'Juega un reto semanal';

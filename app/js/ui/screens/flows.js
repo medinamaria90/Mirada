@@ -463,7 +463,7 @@ export function weekKey(ctx) {
 
 export function renderWeekly(ctx, el) {
   const { index } = ctx;
-  if (!isPathMastered(ctx.store.get().progress, index)) return leave(ctx, 'Se abre al dominar todo el camino');
+  if (!isPathMastered(ctx.store.get().progress, index)) return leave(ctx, 'Se abre al terminar el camino');
   const week = weekKey(ctx);
   const plan = planWeekly(index, week);
   const done = ctx.store.get().progress.weekly?.[week];
@@ -619,7 +619,7 @@ function lookFirst(ctx, el, plan, accent, start) {
 export function renderFree(ctx, el) {
   const { index } = ctx;
   const plan = planFree(index, randomSeed());
-  if (!isPathMastered(ctx.store.get().progress, index) || plan.questions.length < 4) return leave(ctx, 'Se abre al dominar todo el camino');
+  if (!isPathMastered(ctx.store.get().progress, index) || plan.questions.length < 4) return leave(ctx, 'Se abre al terminar el camino');
   playEra('menu');
   ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Ronda libre', kind: 'general', shareTopic: 'ronda libre' }));
 }
