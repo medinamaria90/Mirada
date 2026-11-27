@@ -5,7 +5,8 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { levelStory, cropOf, step, storyKey, MAX_CARDS, MAX_TEXT, sourceLabel, lookLine, openingCandidates } from '../app/js/engine/stories.js';
+import { levelStory, cropOf, step, storyKey, MAX_CARDS, MAX_TEXT, sourceLabel, lookLine, openingCandidates, regionOf, regionRatio, frameFor } from '../app/js/engine/stories.js';
+import { coverLoss, LOSS_FOCUSED, STORY_RATIO } from '../app/js/engine/framing.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = join(here, '..', 'app', 'data', 'historias');
@@ -106,4 +107,34 @@ test('historias: la última tarjeta lleva el «Fíjate en…» del pintor salvo 
   assert.equal(lookLine([{ text: 'Nació en Vinci.' }, { text: 'Fíjate en los contornos: no hay líneas.' }], hint), '');
   assert.equal(lookLine([{ text: 'Nació en Vinci.' }], ''), '');
   assert.equal(lookLine([{ text: 'Nació en Vinci.' }], undefined), '');
+});
+
+test('historias: un detalle intencionado (`region`) enseña esa parte de la obra a sangre, como si fuera la obra', () => {
+  assert.equal(regionOf([0, 0, 1]), null);
+  assert.equal(regionOf([0.2, 0, 0.21, 1]), null, 'demasiado estrecha');
+  assert.equal(regionOf([-0.1, 0, 0.5, 1]), null, 'fuera de la obra');
+  const triptych = { w: 1600, h: 903 };
+  const left = [0, 0, 0.25, 1];
+  // Un panel de un tríptico apaisado, que entero saldría pequeño sobre el fondo: con su región, a sangre.
+  assert.equal(frameFor(triptych, null, STORY_RATIO).mode, 'fit');
+  const f = frameFor(triptych, null, STORY_RATIO, left);
+  assert.equal(f.mode, 'crop');
+  // La imagen entera mide 4 veces la región de ancho y empieza en el borde izquierdo: no asoma nada del panel de al lado.
+  assert.ok(f.box.left <= 0 && f.box.left + f.box.width * 0.25 >= 100, 'la región cubre el marco');
+  assert.ok(f.box.width / f.box.height > 1.5, 'sin deformar: la imagen conserva su proporción en el marco');
+  const right = frameFor(triptych, null, STORY_RATIO, [0.75, 0, 1, 1]);
+  assert.ok(right.box.left + right.box.width * 0.75 <= 0.1, 'el panel derecho empieza en el borde del marco');
+});
+
+test('historias: cada región de las historias cabe a sangre sin perder más de lo permitido, en el móvil y en 9:16', () => {
+  for (const f of readdirSync(dataDir).filter((n) => n !== 'index.json')) {
+    for (const lv of JSON.parse(readFileSync(join(dataDir, f), 'utf8')).levels) {
+      for (const c of lv.cards.filter((card) => 'region' in card)) {
+        const part = regionOf(c.region);
+        assert.ok(part, `${f}: región mal formada`);
+        const r = regionRatio(real.artwork(c.artwork), part);
+        for (const frame of [STORY_RATIO, 9 / 16]) assert.ok(coverLoss(r, frame) <= LOSS_FOCUSED, `${f} nivel ${lv.level}: la región pierde demasiado`);
+      }
+    }
+  }
 });

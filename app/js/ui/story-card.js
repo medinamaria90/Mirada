@@ -11,10 +11,10 @@ const FIT_KINDS = 2; // con la obra entera, solo un zoom suave (acercarse o alej
 
 // La obra, a sangre con su punto de interés por encima del texto o, si el recorte perdería demasiado, entera sobre un fondo
 // desenfocado de ella misma y en el hueco que deja el texto (engine/stories.js, frameFor). `frame`: proporción del marco.
-// El barrido mueve el conjunto (solo transform).
-export function mediaHtml(work, focus, pos, artistName, frame) {
+// El barrido mueve el conjunto (solo transform). `region`: el detalle intencionado de la tarjeta, si lo tiene.
+export function mediaHtml(work, focus, pos, artistName, frame, region = null) {
   if (!work) return '';
-  const f = frameFor(work, focus, frame);
+  const f = frameFor(work, focus, frame, region);
   const crop = f.mode === 'crop';
   const alt = `${work.title}, de ${artistName}`;
   const img = `<img class="story-img" src="${esc(work.img)}" alt="${esc(alt)}" width="${work.w || 4}" height="${work.h || 3}" decoding="async" fetchpriority="high" draggable="false">`;
