@@ -3,6 +3,7 @@
 import { SU_OPTIONS } from './su-options.js';
 import { isSuperOn, setSuper, SU_EVENT } from './su-mode.js';
 import { loadCss } from './lazy-css.js';
+import { setTrial } from './su-trial.js';
 
 const optionHtml = (ctx, o) => `<label class="setting">
     <span>${o.label}</span>
@@ -34,7 +35,11 @@ export function wireSuper(root, ctx, close) {
     opt.set(ctx, ev.target.checked);
     if (opt.leaves) close();
   });
-  section.querySelector('[data-su-exit]').addEventListener('click', () => setSuper(false));
+  // Al salir del modo, el modo prueba también se acaba: vuelve la partida real.
+  section.querySelector('[data-su-exit]').addEventListener('click', () => {
+    if (ctx.store.inTrial()) { close(); setTrial(ctx, false); }
+    setSuper(false);
+  });
   window.addEventListener(SU_EVENT, refresh);
   refresh();
 }
