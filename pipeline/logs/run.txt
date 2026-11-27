@@ -132,3 +132,4 @@ hd: 127 imágenes, 191.5 MB, fallos 0, sha256 d6e0197d339d17d8…
 paquete app-img-hd subido a catalogo-img (183M)
 79M	.git
 3.7M	catalogo
+fin Fri Nov 27 09:27:37 UTC 2026
