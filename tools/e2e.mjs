@@ -102,7 +102,7 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
   const seenTypes = new Set();
   while (step < maxSteps) {
     await page.waitForTimeout(110);
-    if (await page.locator('.result').count()) return step;
+    if (await page.locator('.res').count()) return step;
     const look = page.locator('.look-first [data-action="go"]');
     if (await look.count()) { await look.click(); continue; }
     const interlude = page.locator('.interlude [data-action="continue"]');
@@ -567,7 +567,7 @@ async function assertPracticeVisible(page, label) {
 
 async function noHorizontalScroll(page, label) {
   const r = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, w: window.innerWidth,
-    cut: [...document.querySelectorAll('.option, .stage, .card, .event, .panel, .stats > div, .q-prompt, .result-title')]
+    cut: [...document.querySelectorAll('.option, .stage, .card, .event, .panel, .stats > div, .q-prompt, .res-title, .res-chip')]
       .filter((e) => e.getBoundingClientRect().right > window.innerWidth + 1).map((e) => e.className).slice(0, 3) }));
   check(r.sw <= r.w && !r.cut.length, `${label}: desborde horizontal ${JSON.stringify(r)}`);
 }
@@ -955,18 +955,16 @@ check(fbTexts.every((t) => t.split('\n').length >= 3), 'feedback sin explicació
 check(fbTexts.every((t) => !(t.includes('Mira') && t.includes('Fíjate'))), 'feedback con «Mira…» y «Fíjate…» a la vez');
 check(fbTexts.every((t) => t.split('\n').filter((l) => /^(Mira|Fíjate)/.test(l)).length <= 1), 'feedback con más de una frase de pista');
 check(new Set(fbTexts).size === fbTexts.length, 'feedback repetido idéntico');
-await page.waitForSelector('.result');
+await page.waitForSelector('.res');
+await page.keyboard.press('Escape'); // el momento de dominar a un maestro, si sale, se cierra antes
+await page.waitForTimeout(500);
 await shot(page, '13-fin-etapa');
 await audit(page, '390 resultado');
-await shot(page, '14-fin-etapa-completo', true);
-check(await page.locator('.learned').count() === 1, 'falta «Hoy has aprendido»');
-check(/Primer día/.test(await page.locator('.event-streak').innerText()), 'la racha no se ve el día 1');
-check(await page.locator('.event-goal').count() === 1, 'meta diaria no celebrada');
-check(await page.locator('.event-go').count() === await page.locator('button.event-link .event-go').count(), 'chevron en una tarjeta no pulsable');
-check(await page.locator('section.event .event-go').count() === 0, 'tarjeta fija con aspecto pulsable');
-await page.mouse.move(1, 1);
-const borders = await page.$$eval('.event:not(.event-seal)', (els) => [...new Set(els.map((e) => getComputedStyle(e).borderTopColor))]);
-check(borders.length <= 1, `bordes distintos en las tarjetas del resultado: ${borders}`);
+check(await page.locator('.res-line').count() === 1, 'falta lo aprendido bajo el titular');
+check(/1 día/.test(await page.locator('[data-chip="streak"]').innerText()), 'la racha no se ve el día 1');
+check(await page.locator('[data-chip="goal"]').count() === 1, 'meta diaria no celebrada');
+check(!/Precisión/.test(await page.locator('.res-tally').innerText()), 'el resultado repite la precisión');
+check(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 1 && document.querySelector('.res-foot [data-primary]').getBoundingClientRect().bottom <= innerHeight), 'el resultado se desplaza o «Seguir» no queda a la vista');
 if (SMOKE) {
   await page.goto(`${base}#inicio`);
   await page.waitForSelector('.stage-spot.is-current .stage-meta');
@@ -1015,13 +1013,12 @@ if (SMOKE) {
   check(page.url().endsWith(`#etapa-${ownGotico[0]}--gotico`), `la rama no lleva a la etapa con su rama: ${page.url()}`);
   await page.click('[data-action="practice"]');
   await playRound(page);
-  await page.waitForSelector('.result');
-  // Resultado de rama: su avance arriba (pulsable, a la rama) y «Siguiente en la rama» como acción principal.
-  check(/Rama · Gótico \d+\/\d+/i.test(await page.locator('.event-branch').innerText()), 'el resultado no enseña el avance de la rama');
-  check(await page.locator('.event-branch[data-to="rama-gotico"]').count() === 1, 'el avance de la rama no lleva a su pantalla');
-  check(await page.evaluate(() => document.querySelector('.result-body .event, .result-body section.learned, .result-body .day-done')?.classList.contains('event-branch')), 'la tarjeta de rama no va la primera');
+  await page.waitForSelector('.res');
+  // Resultado de rama: su avance en la primera ficha (pulsable, a la rama) y «Siguiente en la rama» como acción principal.
+  check(/Rama · \d+\/\d+/i.test(await page.locator('[data-chip="branch"]').innerText()), 'el resultado no enseña el avance de la rama');
+  check(await page.locator('[data-chip="branch"][data-to="rama-gotico"]').count() === 1, 'el avance de la rama no lleva a su pantalla');
+  check(await page.evaluate(() => document.querySelector('.res-chip')?.dataset.chip === 'branch'), 'la ficha de rama no va la primera');
   check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}--gotico"]`).innerText() === 'Siguiente en la rama', 'la acción principal no es «Siguiente en la rama» del Gótico');
-  check(!(await page.locator('.day-done-next').count()), 'tras una ronda de rama sale «La próxima vez» del camino común');
   await shot(page, '14f-rama-resultado', true);
   await audit(page, '390 resultado de rama');
   await page.click('[data-action="done"]');
@@ -1046,7 +1043,7 @@ if (SMOKE) {
   await page.waitForSelector('.learn');
   await page.click('[data-action="practice"]');
   await playRound(page, { wrongAt: Array.from({ length: 30 }, (_, k) => k) });
-  await page.waitForSelector('.result');
+  await page.waitForSelector('.res');
   check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}--gotico"]`).count() === 1, '«Repetir» tras una ronda de rama no sigue en la rama');
   // Dentro de una rama manda su estado allí: con Duccio sin superar, Giotto está cerrado en el Gótico aunque en
   // Descubre el Renacimiento se pueda jugar. La URL directa no lo deja jugar y su parada dice qué falta.
@@ -1120,7 +1117,7 @@ if (SMOKE) {
   await page.waitForTimeout(400);
   check(page.url().endsWith(`#pintor-${firstRowArtist}`), `la ficha no es una pantalla con su ruta: ${page.url()}`);
   check((await page.locator('.ap-name').innerText()).length > 2, 'la ficha de pintor no tiene nombre');
-  check(await page.locator('.ap-facts > div').count() >= 2 && await page.locator('.ap-foot a').count() === 1, 'la ficha no tiene datos clave ni la fuente de fechas y país al pie');
+  check(await page.locator('.ap-facts, .ap-stages, .ap-life').count() === 0, 'la ficha repite datos, etapas o «Quién fue»');
   // Estilo Instagram: avatar con anillo de historia (de marca si no se ha visto) y portada con su cuadro más famoso visto.
   check(await page.locator('button.ap-avatar .ap-ring.is-seen').count() === 1, 'el avatar no lleva el anillo de historia (gris, ya vista en este contexto)');
   check(await page.locator('.ap-cover img').count() === 1, 'la portada no enseña ningún cuadro visto');
@@ -1237,17 +1234,16 @@ if (SMOKE) {
   await page.waitForSelector('.lesson');
   check(page.url().endsWith('#a-fondo-' + deepArtist.id + '-' + deepLevel.id), `la etapa no lleva a su ronda: ${page.url()}`);
   await playRound(page);
-  await page.waitForSelector('.result-title');
-  check(/por ver: una ronda más/.test(await page.locator('.result-actions').innerText()) || await page.locator('.deep-cele').count() === 1, 'faltan cuadros por ver y el resultado no lo dice');
-  check(await page.locator('.result-actions [data-to="a-fondo-' + deepArtist.id + '-' + deepLevel.id + '"]').count() === 1 || await page.locator('.deep-cele').count() === 1, 'sin «Repetir» en el nivel a fondo');
+  await page.waitForSelector('.res-title');
+  check(/por ver: una ronda más/.test(await page.locator('.res-line').innerText()) || await page.locator('[data-chip="deep"]').count() === 1, 'faltan cuadros por ver y el resultado no lo dice');
+  check(await page.locator('.res-foot [data-to="a-fondo-' + deepArtist.id + '-' + deepLevel.id + '"]').count() === 1 || await page.locator('[data-chip="deep"]').count() === 1, 'sin «Repetir» en el nivel a fondo');
   await shot(page, '14j-resultado-a-fondo-faltan', true);
   await seed(page, seededState({ upTo: deepUpTo, extra: deepSeen(true) }), `a-fondo-${deepArtist.id}-${deepLevel.id}`);
   await page.waitForSelector('.lesson');
   await playRound(page);
-  await page.waitForSelector('.result-title');
-  check(await page.locator('.deep-cele').count() === 1 && (await page.locator('.deep-cele').innerText()).includes(stageTitle(deepArtist, deepLevel)), 'el nivel a fondo superado no se celebra');
-  check(await page.locator('.result .btn-primary').count() === 1, `la celebración a fondo no tiene un solo «siguiente» principal (${await page.locator('.result .btn-primary').count()})`);
-  check(await page.locator('.deep-cele-works li').count() >= 1 && await page.locator('.day-done-next').count() === 0, 'la celebración a fondo no enseña las obras de la etapa o dice «La próxima vez»');
+  await page.waitForSelector('.res-title');
+  check(await page.locator('.res-seal').count() === 1 && (await page.locator('.res-kicker').innerText()).toLowerCase().includes(stageTitle(deepArtist, deepLevel).toLowerCase()), 'el nivel a fondo superado no se celebra');
+  check(await page.locator('.res .btn-primary').count() === 1, `la celebración a fondo no tiene un solo «siguiente» principal (${await page.locator('.res .btn-primary').count()})`);
   await shot(page, '14k-resultado-a-fondo-superado', true);
   await audit(page, '390 resultado a fondo');
 
@@ -1266,8 +1262,8 @@ if (SMOKE) {
       // El camino real: ficha → etapa, sin recargar.
       await spg.goto(`${base}#pintor-${stageStoryArtist.id}-etapas`);
       await spg.reload();
-      await spg.waitForSelector('button.ap-stage[data-level="2"]');
-      await spg.click('button.ap-stage[data-level="2"]');
+      await spg.waitForSelector('.hl[data-hl="2"]');
+      await spg.click('.hl[data-hl="2"]');
     } else {
       await spg.goto(`${base}#a-fondo-${stageStoryArtist.id}-2`);
       await spg.reload();
@@ -1317,7 +1313,7 @@ if (SMOKE) {
   await page.locator('.aw-ficha').click();
   await page.waitForSelector('.ap-name');
   check(page.url().endsWith(`#pintor-${allArtist.id}`), 'el enlace «Su ficha» no lleva a la ficha');
-  await page.locator('.ap-more').click();
+  await page.locator('.ap-all').click();
   await page.waitForSelector('.aw-grid');
   check(page.url().endsWith(`#obras-${allArtist.id}`), '«Ver sus n cuadros» de la ficha no lleva a la galería');
   await page.locator('.ap-back').click();
@@ -1620,14 +1616,12 @@ if (!SMOKE) {
 await page.click('[data-action="share"]');
 await page.waitForTimeout(300);
 challengeText = await page.evaluate(() => navigator.clipboard.readText());
-// La primera ronda cumple la meta del día (50 XP): cierre con «Hoy» y «La próxima vez: <segunda>», sin
-// tarjeta de siguiente etapa ni otras llamadas a seguir jugando (v12). Se sigue por el enlace de la etapa.
+// La primera ronda cumple la meta del día (50 XP): ficha «Meta · Cumplida», sin siguiente etapa (la enseña el mapa) ni
+// otras llamadas a seguir jugando. Se sigue por el enlace de la etapa.
 const second = index.steps[1];
-const secondName = second.type === 'sala' ? movement.get(second.id).name : artist.get(second.id).name;
-const dayDone = (await page.locator('.day-done').innerText().catch(() => '')).replace(/\s+/g, ' ');
-check(/^Hoy\b/i.test(dayDone) && dayDone.includes(`La próxima vez: ${secondName}`), `cierre del día: «${dayDone}»`);
-check(await page.locator('button.event-link', { hasText: 'Siguiente etapa' }).count() === 0, 'el cierre del día lleva la tarjeta de siguiente etapa');
-check(!/Repetir|Repaso de 5|Repasar más/.test(await page.locator('.result-actions').innerText()), 'el cierre del día lleva llamadas a seguir jugando');
+check(await page.locator('[data-chip="goal"]').count() === 1, 'el cierre del día no dice que la meta está cumplida');
+check(!/Siguiente etapa|La próxima vez/.test(await page.locator('.res').innerText()), 'el cierre del día lleva la siguiente etapa');
+check(!/Repetir|Repaso de 5|Repasar más/.test(await page.locator('.res-foot').innerText()), 'el cierre del día lleva llamadas a seguir jugando');
 await page.goto(`${base}#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`);
 await page.waitForSelector('.learn, .intro, .story[open]');
 check(page.url().endsWith(`#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`), `la tarjeta lleva a ${page.url()}`);
@@ -1835,8 +1829,8 @@ await spage.click('[data-action="practice"]');
 await playRound(spage);
 await spage.waitForTimeout(1600);
 await shot(spage, '23-sello-movimiento');
-check(await spage.locator('.hero-medal .medal-lg').count() === 1, 'no se estampa la medalla');
-check(await spage.locator('.event-seal').count() === 1, 'no aparece el sello del movimiento');
+check(await spage.locator('.res-medal .medal-lg').count() === 1, 'no se estampa la medalla');
+check(/Dominado/.test(await spage.locator('.res-kicker').innerText()), 'no se dice que el movimiento está dominado');
 await spage.click('[data-action="done"]');
 await spage.waitForSelector('.path');
 check(await spage.locator('.movement.is-sealed').count() >= 1, 'el mapa no muestra el sello');
@@ -1971,8 +1965,7 @@ await dpage0.waitForSelector('.finale [data-action="free"]');
 await dpage0.locator('.finale [data-action="free"]').click();
 await playRound(dpage0);
 await shot(dpage0, '29-ronda-libre-fin', true);
-const freeGap = await dpage0.evaluate(() => document.querySelector('.result-actions').getBoundingClientRect().top - document.querySelector('.level-line').getBoundingClientRect().bottom);
-check(freeGap < 120, `resultado de la ronda libre con hueco central de ${Math.round(freeGap)} px`);
+check(await dpage0.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 1), 'el resultado de la ronda libre se desplaza');
 await dpage0.goto(`${base}#perfil`);
 await dpage0.waitForSelector('.pf-hero');
 check(!/cuadros? vistos?|Mi museo/i.test(await dpage0.locator('.pf-layout').innerText()), 'el perfil repite los cuadros vistos o el museo');
@@ -1990,7 +1983,8 @@ watch(epage, 'ojo');
   await epage.goto(`${base}#repaso5`);
   await playRound(epage);
   await epage.waitForTimeout(900);
-  const eyeCard = epage.locator('.event-medal', { hasText: `Ojo de ${who.short || who.name}` });
+  const eyeCard = epage.locator(`[data-chip="medal-eye-${who.id}"]`);
+  if (await epage.locator('[data-chips="more"]').count()) await epage.click('[data-chips="more"]');
   check(await eyeCard.count() === 1, `no se gana «Ojo de ${who.short || who.name}»`);
   await shot(epage, '29e-ojo-de', true);
   await eyeCard.click();
@@ -2051,10 +2045,9 @@ await playRound(mpage, {
 });
 await noHorizontalScroll(mpage, '360 resultado');
 // Con menos de la mitad no se abre la siguiente: «Repetir» primero y una línea que lo explica.
-check(await mpage.locator('.result-gate').count() === 1, 'falta el aviso de la mitad de aciertos');
-check((await mpage.locator('.result-actions .btn-primary').innerText()).includes('Repetir'), '«Repetir» no es la acción principal');
-check(await mpage.locator('.learned').count() === 0, '«Hoy has aprendido» con menos de la mitad de aciertos');
-check(await mpage.locator('.result-cheer').count() === 1, 'falta la frase de ánimo con menos de la mitad');
+check(await mpage.locator('.res-gate').count() === 1, 'falta el aviso de la mitad de aciertos');
+check((await mpage.locator('.res-foot .btn-primary').innerText()).includes('Repetir'), '«Repetir» no es la acción principal');
+check(/a la segunda se ve más/.test(await mpage.locator('.res-line').innerText()), 'falta la frase de ánimo con menos de la mitad');
 await audit(mpage, '360 resultado bajo');
 await shot(mpage, '31b-360-repetir', true);
 await mpage.click('[data-action="done"]');
@@ -2170,9 +2163,9 @@ await kq.waitForSelector('.lesson .option');
 const qSteps = await playRound(kq);
 check(qSteps === 3, `el repaso rápido tiene ${qSteps} preguntas`);
 await kq.waitForTimeout(900);
-check(/Primer día/.test(await kq.locator('.event-streak').innerText()), 'el repaso rápido no cuenta para la racha');
+check(/1 día/.test(await kq.locator('[data-chip="streak"]').innerText()), 'el repaso rápido no cuenta para la racha');
 check(Number((await kq.locator('.countup').getAttribute('data-to')) || 0) > 0, 'el repaso rápido no da XP para la meta');
-check(await kq.locator('.result-actions [data-to="repaso"]').count() === 1, 'falta «Repasar más» con cuadros pendientes');
+check(await kq.locator('.res-foot [data-to="repaso"]').count() === 1, 'falta «Repasar más» con cuadros pendientes');
 await shot(kq, '39-repaso-rapido-fin', true);
 // Repaso de 5 (v12): con pintores dominados y cuadros vistos, en la portada; cuenta para meta y racha
 // y, al cumplir la meta, cierra con el bloque «Hoy».
@@ -2186,8 +2179,8 @@ await r5.waitForSelector('.lesson .option');
 check(await playRound(r5) === 5, 'el repaso de 5 no tiene 5 preguntas');
 await r5.waitForTimeout(900);
 check(r5.url().endsWith('#repaso5'), `el repaso de 5 no va en su ruta: ${r5.url()}`);
-check(/Primer día/.test(await r5.locator('.event-streak').innerText()), 'el repaso de 5 no cuenta para la racha');
-check(await r5.locator('.event-goal').count() === 1 && await r5.locator('.day-done').count() === 1, 'el repaso de 5 no cumple la meta ni cierra el día');
+check(/1 día/.test(await r5.locator('[data-chip="streak"]').innerText()), 'el repaso de 5 no cuenta para la racha');
+check(await r5.locator('[data-chip="goal"]').count() === 1, 'el repaso de 5 no cumple la meta');
 await shot(r5, '39c-repaso-5-fin', true);
 await audit(r5, '390 cierre del día');
 await r5Ctx.close();
@@ -2559,7 +2552,7 @@ for (const scheme of ['light', 'dark']) {
       const done = new Set();
       for (let step = 0; step < 30; step++) {
         await p8.waitForTimeout(150);
-        if (await p8.locator('.result').count()) break;
+        if (await p8.locator('.res').count()) break;
         check(await p8.locator('.interlude').count() === 0, `[${cfg.tag}] la etapa aún tiene la pantalla intermedia`);
         const prompt = (await p8.locator('.q-prompt').innerText()).trim();
         const isWhich = await p8.locator('.option-art').count() > 0;
@@ -2627,11 +2620,9 @@ for (const scheme of ['light', 'dark']) {
         }
         await p8.locator('.feedback [data-action="continue"]').click();
       }
-      await p8.waitForSelector('.result');
+      await p8.waitForSelector('.res');
       await p8.waitForTimeout(900);
-      // El pintor de esta ronda ya estaba dominado (estado sembrado): «Hoy has aprendido» no tiene sentido y no sale.
-      check(await p8.locator('.learned').count() === 0, `[${cfg.tag}] «Hoy has aprendido» en un pintor ya dominado`);
-      check(await p8.locator('.result').count() === 1, `[${cfg.tag}] cerrar el visor con atrás sale del resultado`);
+      check(await p8.locator('.res').count() === 1, `[${cfg.tag}] cerrar el visor con atrás sale del resultado`);
     }
 
     // Intro de movimiento: la pared de 3 cuadros.
@@ -2813,7 +2804,7 @@ for (const scheme of ['light', 'dark']) {
       const seq = [];
       for (let step = 0; step < 12; step++) {
         await p9.waitForTimeout(200);
-        if (await p9.locator('.result').count()) break;
+        if (await p9.locator('.res').count()) break;
         const isWhich = await p9.locator('.option-art').count() > 0;
         const subj = isWhich ? null : await p9.locator('.q-art .art').getAttribute('data-art');
         const options = p9.locator('.lesson-stage .option');
@@ -2905,7 +2896,7 @@ for (const scheme of ['light', 'dark']) {
         }
         await p9.locator('.feedback [data-action="continue"]').click();
       }
-      await p9.waitForSelector('.result');
+      await p9.waitForSelector('.res');
       if (cfg.full) await shot(p9, 'leonardo-6-resultado');
       check(seq.length === 5, L(`Leonardo con ${seq.length} preguntas`));
       check(new Set(seq.map((x) => x.id)).size === seq.length, L(`Leonardo repite cuadro: ${seq.map((x) => x.id)}`));
