@@ -16,8 +16,7 @@ const HALF_H = 36;        // medio alto del rótulo (nombre y botón)
 const SIGN_PX = 7.2;      // ancho medio de una letra en los carteles de tramo y de rama (600, 13 px)
 const SIGN_PAD = 30;      // relleno y flecha de la placa
 const SIGN_H = 62;        // alto de un cartel de tramo o de rama, postes incluidos
-const LAPIDA_W = 250;     // ancho máximo de la lápida de la época (14rem, marco y cornisa)
-const STONE = 22;         // estela del mojón de un tramo, entre el sendero y su tablilla
+const LINTEL_HALF = 110;  // medio ancho máximo del dintel con el nombre de la época
 function eraNames(era) {
   const names = (index.isSala(era.id) ? [] : index.stageArtists(era.id)).map((a) => a.name);
   if (hasMovementReview(index, era.id)) names.push('Repaso · faltan 10');
@@ -38,14 +37,9 @@ function signBox(sign, text, extra = 0) {
   const [x0, x1] = sign.side === 'left' ? [sign.edge - w, sign.edge] : [sign.edge, sign.edge + w];
   return { x0: Math.round(x0), x1: Math.round(x1), y0: Math.round(sign.y - SIGN_H), y1: Math.round(sign.y) };
 }
-// Caja de la lápida de la época: de pie junto a la puerta, arrimada a ella (y los pilares de la puerta).
-const archBox = (e) => {
-  if (!e.arch) return [];
-  const { x0, x1, side, top, y, x } = e.arch;
-  const [a, b] = side === 'left' ? [Math.max(x0, x1 - LAPIDA_W), x + 30] : [x - 30, Math.min(x1, x0 + LAPIDA_W)];
-  return [{ x0: Math.round(a), x1: Math.round(b), y0: Math.round(top - 8), y1: Math.round(y + 8) }];
-};
-const signBoxes = (e) => [...archBox(e), ...(e.sections || []).map((s) => signBox(s.sign, s.name, STONE)), ...(e.branches || []).map((b) => signBox(b.sign, 'Más del Renacimiento'))];
+// Caja del dintel de la época: el nombre centrado en el sendero y, debajo, los pilares hasta la puerta.
+const archBox = (e) => (e.arch ? [{ x0: Math.round(Math.max(e.arch.x0, e.arch.x - LINTEL_HALF)), x1: Math.round(Math.min(e.arch.x1, e.arch.x + LINTEL_HALF)), y0: Math.round(e.arch.top - 6), y1: Math.round(e.gate.y) }] : []);
+const signBoxes = (e) => [...archBox(e), ...(e.sections || []).map((s) => signBox(s.sign, s.name)), ...(e.branches || []).map((b) => signBox(b.sign, 'Más del Renacimiento'))];
 // x del sendero cada ROAD_STEP de alto (el esparcido de detalles no cae sobre él).
 const ROAD_STEP = 8;
 const road = (e) => Array.from({ length: Math.floor(e.h / ROAD_STEP) + 1 }, (_, i) => Math.round(roadX(e.segs, i * ROAD_STEP)));
