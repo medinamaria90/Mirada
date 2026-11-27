@@ -19,3 +19,16 @@ export function loadCss(href) {
   }
   return loaded.get(href);
 }
+
+// Hojas del arranque: las mismas que enlaza index.html (lo comprueba tests/hojas-arranque.test.js). Si el navegador
+// sirve un index.html viejo de su caché, sin una hoja añadida después, el módulo (que siempre llega fresco) la pide:
+// así el mapa nunca sale sin sus estilos.
+export const BOOT_CSS = ['css/brand.css', 'css/main.css', 'css/mapa-vivo.css', 'css/mapa-vida.css', 'css/mapa-carteles.css'];
+
+// Las de `wanted` que no están entre los href presentes.
+export const missingCss = (present, wanted = BOOT_CSS) => wanted.filter((href) => !present.some((p) => p === href || p.endsWith(`/${href}`)));
+
+export function ensureBootCss() {
+  const present = [...document.querySelectorAll('link[rel="stylesheet"]')].map((l) => l.getAttribute('href') || '');
+  for (const href of missingCss(present)) loadCss(href);
+}

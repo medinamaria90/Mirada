@@ -15,6 +15,7 @@ import { toast, replayToast, routeChanged } from './ui/toast.js';
 import { readSession } from './state/session.js';
 import { applyTheme } from './ui/theme.js';
 import { shouldAutoReload } from './ui/load-recovery.js';
+import { ensureBootCss } from './ui/lazy-css.js';
 
 const root = document.getElementById('app');
 // Mudanza de dirección: fragmento con el progreso y dirección antigua, iguales que MOVE_PREFIX y OLD_HOST de
@@ -151,6 +152,7 @@ function blockPageZoom() {
 }
 
 async function boot() {
+  ensureBootCss();
   blockPageZoom();
   installArtListeners(document);
   const storage = safeStorage(() => window.localStorage);
