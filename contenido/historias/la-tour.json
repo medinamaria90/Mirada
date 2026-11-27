@@ -8,6 +8,12 @@
     {
      "text": "Georges de La Tour, hijo de un panadero, fue famoso en vida y luego desapareció de la historia durante casi tres siglos. Lo redescubrieron a principios del siglo XX.",
      "artwork": "w3210253",
+     "region": [
+      0.25,
+      0.05,
+      0.65,
+      0.6
+     ],
      "source": "https://en.wikipedia.org/wiki/Georges_de_La_Tour"
     },
     {

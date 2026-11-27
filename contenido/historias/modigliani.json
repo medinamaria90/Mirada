@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en los ojos de Alice: almendras sin pupilas y un cuello largo, como de escultura. Modigliani fue también escultor.",
      "artwork": "w4062416",
+     "region": [
+      0.15,
+      0.0,
+      0.85,
+      0.45
+     ],
      "source": "https://es.wikipedia.org/wiki/Amedeo_Modigliani"
     }
    ]

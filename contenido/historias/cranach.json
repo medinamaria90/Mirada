@@ -8,6 +8,12 @@
     {
      "text": "Cranach fue pintor, boticario, impresor y alcalde de Wittenberg. Allí fue amigo de Lutero, el monje que rompió con el papa, y padrino de uno de sus hijos.",
      "artwork": "w3235872",
+     "region": [
+      0.4,
+      0.05,
+      0.75,
+      0.55
+     ],
      "source": "https://www.britannica.com/topic/Lucas-Cranach-the-Elder"
     },
     {
