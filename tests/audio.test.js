@@ -117,6 +117,23 @@ test('portada: las dos variantes del tema principal comparten el motivo-firma (m
   }
 });
 
+test('Renacimiento: los secundarios son variaciones de «Pavana del alba» (motivo la–re–do–re, en re, otro carácter)', () => {
+  const MOTIF = [9, 2, 0, 2];
+  const { main, alt } = playlistOf('renaissance');
+  const mainPiece = getPiece(main);
+  assert.deepEqual(alt, ['renaissance/sombra', 'renaissance/gallarda']);
+  for (const key of alt) {
+    const p = getPiece(key);
+    const mel = compilePiece(key).events.filter((e) => e.voice === 'mel').map((e) => e.midi % 12);
+    assert.ok(mel.some((_, i) => MOTIF.every((pc, j) => mel[i + j] === pc)), `${key} no contiene el motivo`);
+    assert.equal(p.tonic, mainPiece.tonic, `${key}: misma tónica que el principal (empalma sin salto)`);
+    assert.notEqual(p.voices.mel, mainPiece.voices.mel, `${key}: otro instrumento lleva la melodía`);
+    assert.notEqual(`${p.beatsPerBar}-${p.bpm}`, `${mainPiece.beatsPerBar}-${mainPiece.bpm}`, `${key}: otro tempo o compás`);
+    assert.ok(Object.values(p.sections).some((s) => s.cnt), `${key}: con contramelodía`);
+  }
+  assert.ok(alt.every((k) => !variantsOf('renaissance').find((v) => pieceKey('renaissance', v.id) === k).source), 'composiciones propias, no clásicos');
+});
+
 test('parseBar y notas', () => {
   assert.equal(noteToMidi('C4'), 60);
   assert.equal(noteToMidi('Bb3'), 58);
