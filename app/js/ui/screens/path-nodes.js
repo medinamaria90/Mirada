@@ -4,24 +4,27 @@
 import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
+import { percent, MASTERY_TEXT } from '../../engine/level-ring.js';
 
-export const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'por repasar', mastered: 'dominado' };
+export const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'a medias', mastered: 'dominado' };
 // Pintor dormido (engine/review.js): dominado y sin salir en una semana.
 export const DORMANT_TEXT = '¿Lo recuerdas?';
 
-// Texto bajo el nombre solo cuando dice algo: «Repite · n %» (pintado como botón) en lo jugado que aún no está dominado:
-// el repaso de la época solo se abre al dominarlos a todos, y María quería que se viera claro qué hacer. La parada
-// actual no lleva botón: se distingue por su nodo (más grande, aro con halo y la marca «Tú») y se toca el propio nodo.
-export function metaFor(status, info) {
-  if (status === 'started') return `Repite · ${Math.round((info?.best || 0) * 100)}\u00a0%`;
-  return '';
+// Lo jugado que aún no está dominado (a medias) no lleva texto bajo el nombre: se ve en su aro (el tramo del nivel 1 lleno
+// en proporción a su nota, ui/deep-badges.js) y en la insignia ↻; al tocarlo, su tarjeta dice lo que falta. El único repaso
+// a mano es el botón ↻ «Repasar» (shell.js).
+// Lo que dice el lector de pantalla de un nodo a medias: «Miguel Ángel, a medias, 67 %. Dominas con 75 %».
+export function startedLabel(name, best) {
+  const text = MASTERY_TEXT.charAt(0).toUpperCase() + MASTERY_TEXT.slice(1);
+  return `${name}, ${STATE_LABEL.started}, ${percent(Number(best) || 0).replace('\u00a0', ' ')}. ${text.replace('\u00a0', ' ')}`;
 }
 
 // Cerrado: sin cuadro (no se adelanta nada) y un candado pequeño; el nodo es más pequeño y suave.
 export function dotFor(status, cover, name) {
   if (status === 'locked') return icons.lock(12);
   const thumb = cover ? artFrame(cover, { cls: 'stage-thumb', alt: '', label: initials(name), thumb: true }) : '';
-  const badge = status === 'mastered' ? `<span class="stage-badge">${icons.check(13)}</span>` : '';
+  const badge = status === 'mastered' ? `<span class="stage-badge">${icons.check(13)}</span>`
+    : status === 'started' ? `<span class="stage-badge is-partial">${icons.repeat(13)}</span>` : '';
   return `${thumb}${badge}`;
 }
 

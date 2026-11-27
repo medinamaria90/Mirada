@@ -10,7 +10,7 @@ import { recallMap } from './map-memory.js';
 import { esc, accentStyle, plural, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { coverOf } from '../art.js';
-import { STATE_LABEL, DORMANT_TEXT, metaFor, dotFor, nodeHtml } from './path-nodes.js';
+import { STATE_LABEL, DORMANT_TEXT, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import {
   artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered,
 } from '../../engine/progress.js';
@@ -45,6 +45,8 @@ const NEAR_ERAS = 0;
 // Rama o parada («artist:<id>») de la que se vuelve al mapa: recibe el foco. jump: además, centrar la vista en esa
 // parada (un pintor «En el camino» desde una rama); sin él, la vista vuelve a donde estaba (map-memory.js).
 export const HOME_MAP = 'inicio';
+// Nodo de cada época que la pone a prueba (antes «Repaso»: el único repaso a mano es el botón ↻).
+export const REVIEW_NODE_NAME = 'Prueba de época';
 let focusBranch = '';
 let focusStep = '';
 let focusJump = false;
@@ -182,8 +184,9 @@ function artistNode(ctx, artist, keys) {
   const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
     cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, current: key === keys.current,
-    label: `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
-    name: quiet ? artist.short || artist.name : artist.name, meta: dormant ? DORMANT_TEXT : metaFor(status, p.artists[artist.id]),
+    label: status === 'started' ? startedLabel(artist.name, p.artists[artist.id]?.best)
+      : `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
+    name: quiet ? artist.short || artist.name : artist.name, meta: dormant ? DORMANT_TEXT : '',
     dot: dotFor(status, coverOf(index, artist.id), artist.name),
   });
   return { type: 'artist', key, status, html };
@@ -198,8 +201,9 @@ function salaNode(ctx, movement, keys) {
   const lock = prev ? `Se abre con la mitad de aciertos en ${stepName(index, prev)}` : '';
   const html = nodeHtml({
     cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current,
-    label: `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
-    name: 'Conoce el movimiento', meta: metaFor(status, p.salas?.[movement.id]),
+    label: status === 'started' ? startedLabel(`Conoce el movimiento ${movement.name}`, p.salas?.[movement.id]?.best)
+      : `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
+    name: 'Conoce el movimiento', meta: '',
     dot: dotFor(status, salaCover(index, movement.id), movement.name),
   });
   return { type: 'sala', key, status, html };
@@ -229,10 +233,10 @@ function reviewNode(ctx, movement, quiet = false) {
   const lock = pending.length ? `Domina a ${pendingNames(pending)} para abrirlo` : 'Se abre al dominar a todos sus pintores';
   // Cerrado: lo que falta, dicho en claro bajo la etiqueta («Domina 1 pintor más»).
   const missing = pending.length && !quiet ? `Domina ${pending.length === 1 ? '1 pintor' : `${pending.length} pintores`} más` : '';
-  const name = 'Repaso';
+  const name = REVIEW_NODE_NAME;
   const meta = best ? `Mejor: ${Math.round(best * 100)}\u00a0%` : missing;
   const icon = medal ? icons.medal(22) : icons.arch(open ? 24 : 18);
-  const label = `Repaso ${ofEra(movement.name)}${open ? '' : `, bloqueado. Para abrirlo, domina a ${joinNames(pending)}`}`;
+  const label = `${REVIEW_NODE_NAME} ${ofEra(movement.name)}${open ? '' : `, bloqueado. Para abrirlo, domina a ${joinNames(pending)}`}`;
   const html = `<button class="stage stage-review is-${status}" data-action="review" data-id="${esc(movement.id)}" data-status="${open ? 'open' : 'locked'}"
         aria-label="${esc(label)}" data-lock="${esc(lock)}">
         <span class="stage-dot">${icon}${open ? '' : `<span class="stage-lock">${icons.lock(10)}</span>`}</span>

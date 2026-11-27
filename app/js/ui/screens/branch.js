@@ -14,7 +14,7 @@ import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { trailSvg, tramoSign, branchEntrySign, stepName, pct } from './path-signs.js';
-import { STATE_LABEL, metaFor, dotFor, nodeHtml } from './path-nodes.js';
+import { STATE_LABEL, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
 import { setMapFocus, takeBranchFocus, showLockNote, watchMapMode, watchLandscapes, levelCard, pathActions, frontSvg } from './path-map.js';
@@ -53,8 +53,8 @@ function node(ctx, branch, row, current) {
   const lock = row.status === 'locked' ? lockText(index, p, row, branch.id) : '';
   return nodeHtml({
     cls: '', action: 'stage', id: a.id, status: row.status, lock, current,
-    label: `${a.name}, ${STATE_LABEL[row.status]}${lock ? `. ${lock}` : ''}`,
-    name: a.name, meta: metaFor(row.status, p.artists[a.id]), dot,
+    label: row.status === 'started' ? startedLabel(a.name, p.artists[a.id]?.best) : `${a.name}, ${STATE_LABEL[row.status]}${lock ? `. ${lock}` : ''}`,
+    name: a.name, meta: '', dot,
   });
 }
 

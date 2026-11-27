@@ -4,7 +4,7 @@
 // de «dominado» en los pintores con niveles. Se añade al DOM ya pintado (los nodos los dibuja el mapa o la rama) y tocar el
 // nodo abre su tarjeta (ui/level-card.js). El mismo aro, más grande, va en el avatar de la ficha.
 
-import { levelRing, ringLabel } from '../engine/level-ring.js';
+import { levelRing, startedRing, ringLabel } from '../engine/level-ring.js';
 
 const RING_R = 47;      // radio del aro en su caja de 100
 const RING_LEN = 100;   // longitud de la circunferencia (pathLength)
@@ -14,7 +14,11 @@ const HALO_R = 45;
 // SVG del aro para unos niveles con estado ([{ state: 'done' | 'next' | 'locked' }]).
 export function ringSvg(levels, cls = 'level-ring') {
   const step = RING_LEN / levels.length;
-  const arcs = levels.map((l, i) => `<circle class="ring-arc is-${l.state}" cx="50" cy="50" r="${RING_R}" pathLength="${RING_LEN}" stroke-dasharray="${(step - RING_GAP).toFixed(2)} ${(RING_LEN - step + RING_GAP).toFixed(2)}" stroke-dashoffset="${(-i * step - RING_GAP / 2).toFixed(2)}"/>`).join('');
+  const arc = (state, i, len) => `<circle class="ring-arc is-${state}" cx="50" cy="50" r="${RING_R}" pathLength="${RING_LEN}" stroke-dasharray="${len.toFixed(2)} ${(RING_LEN - len).toFixed(2)}" stroke-dashoffset="${(-i * step - RING_GAP / 2).toFixed(2)}"/>`;
+  // A medias ('partial'): el tramo cerrado debajo y, encima, la parte lograda (fill).
+  const arcs = levels.map((l, i) => (l.state === 'partial'
+    ? `${arc('locked', i, step - RING_GAP)}${l.fill > 0 ? arc('partial', i, (step - RING_GAP) * l.fill) : ''}`
+    : arc(l.state, i, step - RING_GAP))).join('');
   // El halo que respira va en su propio SVG, debajo: así su animación la hace la tarjeta gráfica y no obliga a repintar el aro
   // en cada fotograma (docs/eval/rendimiento.md).
   const halo = levels.some((l) => l.state === 'next')
@@ -29,17 +33,18 @@ export function addLevelRings(ctx, root) {
     const id = spot.dataset.step.slice('artist:'.length);
     const button = spot.querySelector('.stage');
     if (!button || button.dataset.card || !ctx.index.artist(id)) continue;
-    const ring = levelRing(progress, ctx.index, id);
+    const ring = levelRing(progress, ctx.index, id) || startedRing(progress, ctx.index, id);
     if (!ring) continue;
     // Con más de un nivel, tocar el retrato abre su tarjeta.
     button.dataset.card = '1';
     if (!button.classList.contains('is-onpath')) button.setAttribute('aria-haspopup', 'dialog');
-    button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${ringLabel(ring)}`);
+    // A medias, el nodo ya dice su nota y con cuánto se domina (path-nodes.js startedLabel).
+    if (!ring.started) button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${ringLabel(ring)}`);
     button.classList.add('has-ring');
     const dot = button.querySelector('.stage-dot');
     dot?.insertAdjacentHTML('afterbegin', ringSvg(ring.levels));
     const badge = dot?.querySelector('.stage-badge');
-    if (badge && !ring.done) {
+    if (badge && !ring.done && !ring.started) {
       badge.classList.add('is-next');
       badge.textContent = String(ring.at);
     }

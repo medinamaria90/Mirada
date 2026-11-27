@@ -43,7 +43,7 @@ export function roundChips(index, r) {
   for (const m of otherMedals) out.push({ key: `medal-${m.id}`, icon: 'medal', tone: 'gold', title: 'Medalla', sub: 'Nueva', label: `Medalla nueva: ${medalInfo(m.id, index).title}`, to: 'medallas' });
   const review = find('review-unlock');
   const reviewed = review && !find('goal') && index.movement(review.movementId);
-  if (reviewed) out.push({ key: 'review', icon: 'repeat', tone: 'brand', title: reviewed.name, sub: 'Repaso', to: `repaso-${review.movementId}` });
+  if (reviewed) out.push({ key: 'review', icon: 'repeat', tone: 'brand', title: reviewed.name, sub: 'Prueba de época', to: `repaso-${review.movementId}` });
   return out;
 }
 
