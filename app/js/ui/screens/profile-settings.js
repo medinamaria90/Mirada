@@ -1,5 +1,6 @@
 // Ajustes del perfil, en una hoja aparte (botón ⚙ de la portada): meta del día, tema, música,
-// sonidos, volumen, reducir animaciones, «Empezar de cero» con su confirmación y, al final, los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
+// sonidos, volumen, reducir animaciones, la sección «Superusuario» (con «Empezar de cero» y su confirmación) y,
+// al final, los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
 
 import { $, announce } from '../dom.js';
 import { icons } from '../icons.js';
@@ -14,6 +15,18 @@ import { superHtml, wireSuper } from '../su-section.js';
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
 const RING = 56;
 const TEST_KEYS = ['mirada.test.last', 'mirada.test.recent']; // los guarda el test de cultura (js/test/main.js)
+
+// «Empezar de cero» no está en los ajustes de siempre: va en la sección «Superusuario», con su confirmación.
+const RESET_HTML = `<div class="setting-reset">
+        <button type="button" class="btn btn-quiet btn-wide" data-action="ask-reset">Empezar de cero</button>
+        <div class="confirm" hidden>
+          <p>Se borrará todo tu progreso.</p>
+          <div class="sheet-actions">
+            <button type="button" class="btn btn-secondary" data-action="cancel-reset">Cancelar</button>
+            <button type="button" class="btn btn-danger" data-action="reset">Borrar todo</button>
+          </div>
+        </div>
+      </div>`;
 
 const toggle = (key, label, on) => `<label class="setting">
     <span>${label}</span>
@@ -39,17 +52,7 @@ export function settingsHtml(ctx) {
         <input type="range" min="0" max="100" step="5" value="${Math.round(s.volume * 100)}" data-setting="volume" aria-label="Volumen">
       </label>
       ${toggle('reducedMotion', 'Reducir animaciones', s.reducedMotion)}
-      <div class="setting-reset">
-        <button type="button" class="btn btn-quiet btn-wide" data-action="ask-reset">Empezar de cero</button>
-        <div class="confirm" hidden>
-          <p>Se borrará todo tu progreso.</p>
-          <div class="sheet-actions">
-            <button type="button" class="btn btn-secondary" data-action="cancel-reset">Cancelar</button>
-            <button type="button" class="btn btn-danger" data-action="reset">Borrar todo</button>
-          </div>
-        </div>
-      </div>
-      ${superHtml()}
+      ${superHtml(RESET_HTML)}
       <button type="button" class="settings-credits" data-action="about">Acerca de Sfumato</button>
       <button type="button" class="settings-credits" data-action="credits">Fuentes y créditos</button>
     </div>

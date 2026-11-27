@@ -44,6 +44,10 @@ const NEAR_ERAS = 0;
 let focusBranch = '';
 let focusStep = '';
 export const setMapFocus = (branchId, step = '') => { focusBranch = branchId || ''; focusStep = step; };
+// Pantalla de una rama: la parada recién jugada («artist:<id>»), para volver centrada en ella y subir a la siguiente.
+let branchStep = '';
+export const setBranchFocus = (step = '') => { branchStep = step; };
+export const takeBranchFocus = () => { const s = branchStep; branchStep = ''; return s; };
 export function renderPathMap(ctx, { lazy = false } = {}) {
   const { index } = ctx;
   const layout = pathLayout(index);

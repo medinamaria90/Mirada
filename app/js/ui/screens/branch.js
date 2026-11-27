@@ -15,7 +15,8 @@ import { isExtraStep } from '../../engine/progress.js';
 import { MAP_W, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { trailSvg, stepName, pct } from './path-signs.js';
 import { STATE_LABEL, metaFor, dotFor, nodeHtml } from './path-nodes.js';
-import { setMapFocus, showLockNote, watchMapMode, watchLandscapes, levelCard } from './path-map.js';
+import { placeMap } from './map-scroll.js';
+import { setMapFocus, takeBranchFocus, showLockNote, watchMapMode, watchLandscapes, levelCard } from './path-map.js';
 import { startMapLife } from '../map-life.js';
 import { addLevelRings } from '../deep-badges.js';
 import { loadCss } from '../lazy-css.js';
@@ -110,12 +111,17 @@ export async function renderBranch(ctx, el, branchId) {
   const stops = [watchMapMode(map), life.stop];
   addLevelRings(ctx, el);
   if (ctx.store.get().progress.roster?.fresh?.length) import('../new-painters.js').then((m) => m.tagNewStops(ctx, el)).catch((err) => console.error(err));
+  // De vuelta de una ronda: la parada jugada y, si la siguiente no se ve, el camino sube suave hasta ella.
+  const played = takeBranchFocus();
+  if (played) stops.push(placeMap(el, { step: played }));
   ctx.setCleanup(() => stops.forEach((fn) => fn()));
-  requestAnimationFrame(() => {
-    const target = $('.stage-spot.is-current .stage', el);
-    if (target) target.scrollIntoView({ block: 'center' });
-    else window.scrollTo(0, document.documentElement.scrollHeight);
-  });
+  if (!played) {
+    requestAnimationFrame(() => {
+      const target = $('.stage-spot.is-current .stage', el);
+      if (target) target.scrollIntoView({ block: 'center' });
+      else window.scrollTo(0, document.documentElement.scrollHeight);
+    });
+  }
 
   onAction(el, {
     back: () => {

@@ -1,12 +1,11 @@
 // Identidad del perfil: portada (cuadro elegido o el favorito, con pie y recorte hacia su punto de
-// interés), avatar (logo, inicial o un cuadro), saludo con lápiz y rango con lo que falta.
+// interés), avatar (logo, inicial o un cuadro) y saludo con lápiz. El rango va en su tarjeta (profile-rank.js).
 
 import { esc, $ } from '../dom.js';
 import { icons, logoMark } from '../icons.js';
 import { tinyFrame, tinySrc, gentleWorks } from './profile-art.js';
-import { rankFor } from '../../engine/ranks.js';
 import { graphemes } from '../../state/schema.js';
-import { rankProgress, coverWork, sampleCover, avatarWork, focusPosition, initialOf, collectionIds, compactNumber } from '../../engine/profile.js';
+import { coverWork, sampleCover, avatarWork, focusPosition, initialOf, collectionIds } from '../../engine/profile.js';
 
 const IDLE_TIMEOUT_MS = 800;
 const PENCIL = '<svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>';
@@ -32,34 +31,11 @@ function cover(ctx, work) {
   </div>`;
 }
 
-// Los XP en total: lo único de cifras que el perfil guarda (lo demás ya se ve en la Colección y en la cabecera).
-// Abreviados desde 10 000 («31,2 mil», sin partirse); la cifra exacta, para lectores de pantalla.
-function xpHtml(xp) {
-  const exact = xp.toLocaleString('es-ES');
-  const short = compactNumber(xp);
-  return `<span class="pf-rank-xp">${short === String(xp) ? exact : `<span aria-hidden="true">${short}</span><span class="sr-only">${exact}</span>`}<span class="pf-rank-xp-unit"> XP</span></span>`;
-}
-
-function rankBlock(rank, bar, pct, xp) {
-  const needs = bar.next
-    ? `<p class="pf-rank-next">Para ser ${esc(bar.next)}</p>
-      <ul class="pf-needs">${bar.items.map((i) => `<li>${esc(i.text)}</li>`).join('')}</ul>`
-    : '<p class="pf-rank-next">El rango más alto</p>';
-  return `<div class="pf-rank">
-      <p class="pf-rank-name">${icons.gem(20)}<span>${esc(rank.name)}</span>${xpHtml(xp)}</p>
-      <div class="pf-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}" aria-label="${bar.next ? `Avance hacia ${esc(bar.next)}` : 'Rango más alto'}"><span style="width:${pct}%"></span></div>
-      ${needs}
-    </div>`;
-}
-
 export function heroHtml(ctx) {
   const { index } = ctx;
   const state = ctx.store.get();
   const p = state.progress;
   const { name = '', cover: coverId = '', avatar: avatarId = '' } = state.settings;
-  const rank = rankFor(p, index);
-  const bar = rankProgress(rank);
-  const pct = Math.round(bar.fraction * 100);
   const greeting = name ? `Hola, ${esc(name)}` : 'Ponte un nombre';
   const hasPictures = collectionIds(p, index).length > 0;
   return `<header class="pf-hero">
@@ -71,7 +47,6 @@ export function heroHtml(ctx) {
       ${avatar(name, avatarWork(p, index, avatarId))}
       <div class="pf-greeting"><button type="button" class="pf-name-btn ${name ? '' : 'is-empty'} ${graphemes(name).length > 14 ? 'is-long' : ''}" data-action="edit-name" aria-haspopup="dialog" aria-label="${name ? `Hola, ${esc(name)}. Cambiar nombre` : 'Ponte un nombre'}"><span class="pf-name-text">${greeting}</span>${PENCIL}</button></div>
     </div>
-    ${rankBlock(rank, bar, pct, p.xp)}
   </header>`;
 }
 

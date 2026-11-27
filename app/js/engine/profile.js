@@ -4,6 +4,7 @@
 import { artKey } from './srs.js';
 import { STREAK_MEDALS } from './progress.js';
 import { TEST_LEVELS } from '../test/resultado.js';
+import { rankConditions } from './rank-goals.js';
 
 // Metal de cada logro (oro, plata o bronce) según lo difícil que es.
 export const TIERS = ['gold', 'silver', 'bronze'];
@@ -46,9 +47,9 @@ export function compactNumber(n) {
   return `${one(v / 1000000)} M`;
 }
 
-// Avance hacia el siguiente rango: el del requisito menos cumplido (0..1), porque el rango no sube hasta
-// cumplirlos todos, y, por requisito, lo que falta en una frase y su avance. Rango máximo: barra llena y
-// sin nada pendiente.
+// Lo que pide el siguiente rango: todas sus condiciones, cumplidas y pendientes (`conds`, para pintar una
+// fila por condición: el rango no sube hasta cumplirlas todas, así que una barra única engañaba) y, de las
+// pendientes, lo que falta en una frase (`parts`). Rango máximo: sin siguiente ni nada pendiente.
 export const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const fmt = (n) => n.toLocaleString('es-ES');
 const NEED_TEXT = {
@@ -61,21 +62,12 @@ const NEED_TEXT = {
 
 export function rankProgress(rank) {
   const next = rank.next;
-  if (!next) return { fraction: 1, next: null, parts: [], items: [] };
-  const s = rank.stats;
-  const have = {
-    xp: s.xp,
-    deep: s.deep,
-    eras: s.eras,
-    complete: s.complete,
-    grand: next.grand ? s.grand.filter((v) => v >= next.grand.upTo).length : 0,
+  if (!next) return { next: null, conds: [], parts: [] };
+  return {
+    next: next.name,
+    conds: rankConditions(next, rank.stats),
+    parts: rank.missing.map((m) => NEED_TEXT[m.key](m.need - m.have, next.grand)),
   };
-  const want = { xp: next.xp, deep: next.deep, eras: next.eras, complete: next.complete, grand: next.grand?.count };
-  const keys = Object.keys(want).filter((k) => want[k]);
-  const ratio = (k) => Math.min(1, have[k] / want[k]);
-  const fraction = Math.min(...keys.map(ratio));
-  const items = rank.missing.map((m) => ({ key: m.key, text: NEED_TEXT[m.key](m.need - m.have, next.grand), fraction: ratio(m.key) }));
-  return { fraction, next: next.name, parts: items.map((i) => i.text), items };
 }
 
 // Cuadros de la colección (los mismos que cuentan Colección y el inicio).

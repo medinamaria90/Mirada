@@ -30,9 +30,13 @@ test('afinar música: la barra se ve en el mapa tras entrar con el código', {
     await new Promise((r) => setTimeout(r, 1000));
     const page = await browser.newPage({ ...devices['Pixel 7'] });
     const base = `http://127.0.0.1:${PORT}/`;
-    await page.goto(base);
-    await page.evaluate((st) => { localStorage.setItem('mirada.state', JSON.stringify(st)); localStorage.setItem('sfumato.coach', '1'); localStorage.setItem('mirada.coach', '1'); }, STATE);
-    await page.goto(`${base}#perfil`); await page.reload(); await page.waitForTimeout(SETTLE_MS);
+    // Partida sembrada antes de que arranque la app (una sola vez por pestaña), sin carreras con su primer guardado.
+    await page.addInitScript((st) => {
+      if (sessionStorage.getItem('seeded')) return;
+      sessionStorage.setItem('seeded', '1');
+      localStorage.setItem('mirada.state', JSON.stringify(st)); localStorage.setItem('sfumato.coach', '1'); localStorage.setItem('mirada.coach', '1');
+    }, STATE);
+    await page.goto(`${base}#perfil`); await page.waitForTimeout(SETTLE_MS);
     await page.click('[data-action="open-settings"]');
     for (let i = 0; i < TAPS; i += 1) await page.click('#settings-title');
     await page.fill('.dj-sheet input[name=code]', CODE);
@@ -60,7 +64,7 @@ test('afinar música: la barra se ve en el mapa tras entrar con el código', {
     assert.equal(await page.locator('.dj-bar').count(), 0, 'apagada, la barra desaparece');
     assert.equal(await page.locator('.su-section').isVisible(), true, 'la sección sigue disponible');
     const keyBefore = await page.evaluate(() => localStorage.getItem('mirada.state'));
-    await page.check('[data-su=trial]');
+    await page.click('[data-su=trial]');
     await page.waitForSelector('.trial-bar');
     assert.match(await page.innerText('.trial-bar'), /Modo prueba/);
     assert.equal(await page.locator('.stage.is-locked, [data-status="locked"]').count(), 0, 'en prueba no queda nada cerrado en el mapa');
@@ -69,7 +73,15 @@ test('afinar música: la barra se ve en el mapa tras entrar con el código', {
     assert.equal(await page.evaluate(() => localStorage.getItem('mirada.state')), keyBefore, 'la partida real no cambia');
     await page.goto(`${base}#perfil`); await page.waitForTimeout(SETTLE_MS);
     await page.click('[data-action="open-settings"]');
+    await page.click('[data-su=trial]'); // sale de Ajustes al momento: click, no check
+    await page.waitForSelector('.trial-bar');
+    await page.goto(`${base}#perfil`); await page.waitForTimeout(SETTLE_MS);
+    await page.click('[data-action="open-settings"]');
     await page.click('[data-su-exit]');
+    assert.equal(await page.locator('.trial-bar').count(), 0, 'salir del modo acaba también la prueba');
+    assert.equal(await page.evaluate(() => localStorage.getItem('mirada.state')), keyBefore, 'y vuelve la partida real');
+    await page.goto(`${base}#perfil`); await page.waitForTimeout(SETTLE_MS);
+    await page.click('[data-action="open-settings"]');
     assert.equal(await page.locator('.su-section').isVisible(), false, 'salir oculta la sección');
     await page.reload(); await page.waitForTimeout(SETTLE_MS);
     await page.click('[data-action="open-settings"]');

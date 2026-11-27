@@ -57,7 +57,7 @@
   "order": 3,
   "section": null,
   "qid": "Q7814",
-  "works": 18,
+  "works": 20,
   "category": "gran-maestro",
   "branches": [
    "gotico"
@@ -190,11 +190,11 @@
   "order": 1,
   "section": null,
   "qid": "Q5664",
-  "works": 2,
+  "works": 4,
   "category": "invitado",
   "branches": [],
   "stages": [],
-  "level1": 2
+  "level1": 4
  },
  {
   "id": "uccello",
@@ -2330,7 +2330,7 @@
   "order": 5,
   "section": null,
   "qid": "Q317736",
-  "works": 7,
+  "works": 8,
   "category": "rama",
   "branches": [
    "ukiyo-e"
@@ -2345,7 +2345,7 @@
     "provisional": true
    }
   ],
-  "level1": 3
+  "level1": 4
  },
  {
   "id": "hiroshige",
