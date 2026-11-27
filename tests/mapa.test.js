@@ -112,8 +112,9 @@ test('mapa: el nodo actual se distingue por el nodo y la marca «Tú», sin bot�
   html = renderPathMap(ctxWith(real, p));
   assert.ok(html.includes(`is-current" data-step="artist:${real.steps[2].id}"`));
   assert.ok(!html.includes('Repite'), 'ningún nodo lleva «Repite»: el único repaso es el botón ↻');
-  assert.ok(html.includes(`aria-label="${real.steps[1].name || real.artist(real.steps[1].id).name}, a medias: 50 % de 75 %"`), 'el nodo a medias dice su nota y la que hace falta');
-  assert.ok(html.includes('class="stage-badge is-partial" aria-hidden="true">50%</span>'), 'el nodo a medias lleva su nota en la insignia');
+  assert.ok(html.includes(`aria-label="${real.steps[1].name || real.artist(real.steps[1].id).name}, a medias: vas por el 50 %; hace falta un 75 %"`), 'el nodo a medias dice su nota y la que hace falta');
+  assert.ok(html.includes('<span class="stage-meta">Vas por el 50\u00a0%</span>'), 'bajo el nombre, su nota');
+  assert.ok(!html.includes('is-partial'), 'sin insignia con cifra: la nota va bajo el nombre');
   assert.ok(/class="stage [^"]*is-mastered"/.test(html) && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
   // Camino jugado entero pero no dominado: el actual es el primero por repasar e invita a repetir, como los demás.
   const q = emptyProgress();
@@ -175,11 +176,11 @@ test('mapa: el repaso cerrado dice en claro cuánto falta; los nombres, en la no
   const html = renderPathMap(ctxWith(real, progress));
   const who = last.short || last.name;
   assert.ok(html.includes('<span class="stage-name">Prueba de época</span><span class="stage-meta">Falta 1 pintor</span>'), 'el repaso cerrado no dice cuánto falta');
-  assert.ok(html.includes(`data-lock="Se abre después de ${who}"`), 'la nota al pulsar no nombra al pintor');
+  assert.ok(html.includes(`data-lock="Te falta ${who}" data-unlock="artist:`), 'la nota al pulsar no nombra al pintor ni lleva a él');
   assert.ok(html.includes(`cerrada. Se abre después de ${who}"`), 'el lector no oye a quién falta dominar');
   const none = renderPathMap(ctxWith(real, emptyProgress()));
   assert.ok(none.includes(`<span class="stage-meta">Faltan ${artists.length} pintores</span>`));
-  assert.ok(/data-lock="Se abre después de [^",]+, [^",]+ y \d+ más"/.test(none), 'la nota resume («X, Y y n más»)');
+  assert.ok(/data-lock="Te faltan [^",]+, [^",]+ y \d+ más"/.test(none), 'la nota resume («X, Y y n más»)');
   assert.ok(!/<b>Repaso:<\/b>/.test(none) && !/ y [^"<]+ y \d+ más para/.test(none), 'queda el formato antiguo o una doble «y»');
 });
 
@@ -284,7 +285,7 @@ test('mapa: jerarquía de nodos (actual, siguiente cerrado y el resto cerrado m�
   assert.ok(!/is-locked"[^>]*>\s*<span class="stage-dot">[^<]*<span class="art/.test(html), 'un nodo cerrado enseña el cuadro');
   // Cerrado y lejos: nombre corto; el lector oye por qué está cerrado.
   const far = real.artist(real.steps[6].id);
-  assert.ok(html.includes(`aria-label="${far.name}, bloqueado. Se abre al acertar la mitad en `), 'el cerrado no explica su candado al lector');
+  assert.ok(html.includes(`aria-label="${far.name}, bloqueado. Antes, acierta la mitad con `), 'el cerrado no explica su candado al lector');
   if (far.short && far.short !== far.name) assert.ok(html.includes(`<span class="stage-name">${far.short}</span>`), 'el cerrado lejano no usa el nombre corto');
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
   const px = (re) => Number((css.match(re) || [])[1]);
@@ -377,21 +378,22 @@ test('pantalla de rama: ruta propia, sus pintores como paradas, cada época rotu
   }
 });
 
-test('mapa: el pintor a medias llena el tramo del nivel 1 de su aro en proporción a su nota / 75 %', async () => {
+test('mapa: el pintor a medias llena el aro con su nota y una muesca en el 75 %', async () => {
   const { startedRing, startedLine } = await import('../app/js/engine/level-ring.js');
-  const { ringSvg } = await import('../app/js/ui/deep-badges.js');
   const id = real.path[1].id;
   const p = masterFirst(real, 1);
   p.artists[id] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
   const ring = startedRing(p, real, id);
   assert.equal(ring.levels[0].state, 'partial');
-  assert.ok(Math.abs(ring.levels[0].fill - 0.5 / 0.75) < 1e-9, 'tramo proporcional a best / 0,75');
   assert.ok(ring.levels.slice(1).every((l) => l.state === 'locked'));
-  const svg = ringSvg(ring.levels);
+  const { scoreRingSvg } = await import('../app/js/ui/deep-badges.js');
+  const svg = scoreRingSvg(ring.best, 0.75);
   const dash = (cls) => Number(svg.match(new RegExp(`class="ring-arc is-${cls}"[^>]*stroke-dasharray="([\\d.]+)`))[1]);
-  assert.ok(Math.abs(dash('partial') / dash('locked') - 0.5 / 0.75) < 0.01, 'la parte coral mide lo que lleva');
-  assert.equal(startedLine(ring), 'Te falta poco: 50\u00a0% de 75\u00a0%');
-  assert.equal(startedLine({ ...ring, best: 0.3 }), '30\u00a0% de 75\u00a0%');
+  assert.ok(Math.abs(dash('partial') / dash('locked') - 0.5) < 0.01, 'el aro entero se llena con la nota');
+  const mark = Number(svg.match(/class="ring-arc is-mark"[^>]*stroke-dashoffset="(-?[\d.]+)"/)[1]);
+  assert.ok(Math.abs(-mark - 75) < 1, 'la muesca marca el 75 %');
+  assert.equal(startedLine(ring), 'Has acertado el 50\u00a0%; hace falta un 75\u00a0%');
+  assert.equal(startedLine({ ...ring, best: 0.7 }), 'Te falta poco: has acertado el 70\u00a0%; hace falta un 75\u00a0%');
   assert.equal(startedLine({ ...ring, best: 0.8, missing: 3 }), 'Te faltan 3 cuadros por ver');
   assert.equal(startedRing(masterFirst(real, 2), real, id), null, 'dominado: sin aro a medias');
 });
