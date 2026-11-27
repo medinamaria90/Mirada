@@ -1,2 +1,7 @@
 inicio Fri Nov 27 00:51:19 UTC 2026
 == candidates giotto fra-angelico 00:51:19
+ok     giotto             Q7814        57 candidatas; de las 80 primeras, 30 con imagen >=1200px
+ya     fra-angelico       194 candidatas
+fin 2026-11-27 00:51:33
+64M	.git
+3.7M	catalogo
