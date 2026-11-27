@@ -13,6 +13,7 @@ import { signWall } from './sign-wall.js';
 
 const FILES = { rama: 'ramas', tramo: 'tramos' };
 const KICKER = { rama: 'Rama', tramo: 'Tramo' };
+const SKIP_LABEL = { skip: 'Saltar', end: 'Seguir' };
 const cache = new Map();
 const slot = modalSlot();
 
@@ -55,24 +56,48 @@ export function signSlides(index, kind, sign, fallbackTitle, id = '') {
 }
 
 // kind: «rama» o «tramo»; id: la rama o la clave del tramo; opener: el cartel tocado (recupera el foco al cerrar).
-export async function openSignCards(ctx, kind, id, opener) {
+// onDone: abierto como paso del camino (flows.js withTramo): en vez de la cruz, «Saltar» (y «Seguir» en la última
+// tarjeta), y al cerrarlo se continúa al pintor; salir de la pantalla no continúa.
+export async function openSignCards(ctx, kind, id, opener, { title: fallback = '', onDone = null } = {}) {
   const turn = slot.begin();
   const [signs] = await Promise.all([loadSigns(kind), loadCss('css/epocas.css'), loadCss('css/carteles.css')]);
   if (slot.stale(turn)) return null;
-  const title = opener?.querySelector('.sign-name')?.textContent || '';
+  const title = opener?.querySelector('.sign-name')?.textContent || fallback;
   const { total, html } = signSlides(ctx.index, kind, signs[id], title, id);
   const dlg = document.createElement('dialog');
-  dlg.className = 'sign-cards';
+  dlg.className = onDone ? 'sign-cards is-step' : 'sign-cards';
   dlg.setAttribute('aria-labelledby', 'sc-title');
   dlg.innerHTML = `<div class="sc-body">
-      <button type="button" class="icon-btn sc-close" data-sc="close" aria-label="Cerrar">${icons.close(22)}</button>
+      ${onDone
+    ? `<button type="button" class="sc-skip" data-sc="close">${SKIP_LABEL.skip}</button>`
+    : `<button type="button" class="icon-btn sc-close" data-sc="close" aria-label="Cerrar">${icons.close(22)}</button>`}
       <div class="era-track" tabindex="0" aria-roledescription="carrusel" aria-label="El cartel en tarjetas">${html}</div>
     </div>`;
   document.body.appendChild(dlg);
   const handle = { dlg };
-  mountSheet(dlg, { slot, handle, opener, closeSelector: '[data-sc="close"]' });
+  // Cartel de tramo visto (también si se salta): el camino ya no lo enseña antes del pintor (progress.signs).
+  if (kind === 'tramo') {
+    if (!ctx.store.get().progress.signs?.[id]) {
+      const today = ctx.today();
+      ctx.store.update((s) => ({ ...s, progress: { ...s.progress, signs: { ...(s.progress.signs || {}), [id]: today } } }));
+    }
+  }
+  const onClose = onDone ? ({ silent }) => { if (!silent) onDone(); } : null;
+  mountSheet(dlg, { slot, handle, opener, closeSelector: '[data-sc="close"]', onClose });
   const body = dlg.querySelector('.sc-body');
-  if (total > 1) wireCards(ctx, body, dlg.querySelector('.era-track'), total);
-  dlg.querySelector('.sc-close').focus({ preventScroll: true });
+  const track = dlg.querySelector('.era-track');
+  if (total > 1) wireCards(ctx, body, track, total);
+  if (onDone) relabelAtEnd(track, dlg.querySelector('.sc-skip'));
+  dlg.querySelector('[data-sc="close"]').focus({ preventScroll: true });
   return handle;
+}
+
+// Como paso del camino, el botón de arriba dice «Saltar» mientras quedan tarjetas y «Seguir» en la última.
+function relabelAtEnd(track, button) {
+  const sync = () => {
+    const last = track.scrollLeft + track.clientWidth >= track.scrollWidth - track.clientWidth / 2;
+    button.textContent = last ? SKIP_LABEL.end : SKIP_LABEL.skip;
+  };
+  sync();
+  track.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
 }
