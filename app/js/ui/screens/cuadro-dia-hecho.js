@@ -18,6 +18,11 @@ import { countEvent } from '../../stats.js';
 const SHARE_PAGE = (slot) => `h/cuadro-${slot}.html`; // tools/share_pages.py: abre siempre el cuadro de hoy
 const STORY_DELAY_MS = 1600; // recién acabado, el resultado se disfruta un momento antes de que se abra la historia
 
+// El marco del cuadro entero toma su proporción (entre DONE_RATIO_MIN y DONE_RATIO_MAX): sin bandas vacías, cabe todo en el móvil.
+const DONE_RATIO_MIN = 0.75;
+const DONE_RATIO_MAX = 1.6;
+const doneRatio = (work) => Math.min(DONE_RATIO_MAX, Math.max(DONE_RATIO_MIN, work.w > 0 && work.h > 0 ? work.w / work.h : 1));
+
 const countLine = (k) => `Llevas ${k} ${k === 1 ? 'cuadro del día' : 'cuadros del día'}`;
 
 function squaresHtml(record) {
@@ -31,7 +36,8 @@ function gainsHtml(ctx, record, events) {
   const items = [`+${record.won ? CUADRO_XP.won : CUADRO_XP.lost} XP`];
   const streak = events.find((e) => e.type === 'streak');
   if (streak) items.push(`${streak.value} ${streak.value === 1 ? 'día' : 'días'} de racha`);
-  for (const m of events.filter((e) => e.type === 'medal')) items.push(medalInfo(m.id, ctx.index).title);
+  // La medalla de racha ya la dice la pastilla de la racha.
+  for (const m of events.filter((e) => e.type === 'medal' && !(streak && e.id.startsWith('streak-')))) items.push(medalInfo(m.id, ctx.index).title);
   return `<ul class="cdd-gains" aria-label="Lo que has ganado">${items.map((t, i) => `<li class="cdd-gain${i ? ' is-extra' : ''}">${i === 0 ? '' : icons.medal(16)}<span>${esc(t)}</span></li>`).join('')}</ul>`;
 }
 
@@ -49,10 +55,9 @@ export async function renderCuadroDone(ctx, el, data, record, { fresh = false, e
       <p class="cdd-kicker">Cuadro del día ${today.n}</p>
       <h1 class="cdd-title" tabindex="-1">${esc(tryLabel(record))}</h1>
       <p class="cdd-answer">${record.won ? 'Es de' : 'Era'} <strong>${esc(short)}</strong></p>
-      ${frameHtml(work, entry.focus, 1, `${work.title}, en grande`)}
+      ${frameHtml(work, entry.focus, 1, `${work.title}, en grande`, null, null, doneRatio(work))}
       <p class="cdd-caption">${esc(work.title)} · ${esc(work.year)}</p>
-      ${squaresHtml(record)}
-      ${fresh ? gainsHtml(ctx, record, events) : ''}
+      <div class="cdd-tally">${squaresHtml(record)}${fresh ? gainsHtml(ctx, record, events) : ''}</div>
       <p class="cdd-count">${esc(countLine(cuadroCount(p)))}</p>
       <div class="cdd-actions">
         <button type="button" class="btn btn-primary btn-wide" data-action="share">${icons.share(20)}<span>Compartir</span></button>

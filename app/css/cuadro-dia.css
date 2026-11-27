@@ -66,7 +66,7 @@
 .cdd-done .cdd-title { font-size: 1.6rem; }
 .cdd-answer { margin: -.2rem 0 .2rem; font-size: 1.05rem; color: var(--ink-2); }
 .cdd-answer strong { color: var(--ink); font-weight: 600; }
-.cdd-done .cdd-frame { cursor: zoom-in; width: min(100%, var(--cuadro-frame-max), var(--cuadro-done-vh)); }
+.cdd-done .cdd-frame { cursor: zoom-in; width: min(100%, var(--cuadro-frame-max), calc(var(--cuadro-done-vh) * var(--frame-ratio, 1))); }
 .cdd-squares.is-in .cdd-sq { animation: cdd-pop .35s var(--ease) both; }
 .cdd-squares.is-in .cdd-sq:nth-child(2) { animation-delay: .08s; }
 .cdd-squares.is-in .cdd-sq:nth-child(3) { animation-delay: .16s; }
@@ -78,6 +78,8 @@
 .cdd-squares { display: inline-flex; gap: .3rem; margin-top: .2rem; }
 .cdd-squares .cdd-sq { width: 1.1rem; height: 1.1rem; border-radius: 4px; }
 .cdd-count { margin: 0; font-weight: 600; }
+.cdd-tally { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .4rem .6rem; }
+.cdd-tally .cdd-squares { margin-top: 0; }
 .cdd-gains { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem; margin: 0; padding: 0; list-style: none; }
 .cdd-gain { display: inline-flex; align-items: center; gap: .3rem; padding: .25rem .65rem; border-radius: var(--radius-pill, 999px); background: var(--brand-soft); color: var(--brand-text); font-size: .88rem; font-weight: 600; animation: cdd-in .35s var(--ease) both; }
 .cdd-gain.is-extra { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }

@@ -65,7 +65,7 @@ export function frameHtml(work, focus, zoom, label = '', veil = null, detail = n
   const style = boxStyle(box);
   const tag = label ? 'button' : 'div';
   const attrs = label ? ` type="button" data-action="zoom" aria-label="${esc(label)}"` : '';
-  const shape = frame === 1 ? '' : ` style="aspect-ratio:${frame.toFixed(4)}"`;
+  const shape = frame === 1 ? '' : ` style="aspect-ratio:${frame.toFixed(4)};--frame-ratio:${frame.toFixed(4)}"`;
   return `<${tag} class="cdd-frame${zoom > 1 ? ' is-detail' : ''}"${attrs}${shape}>
     <img class="cdd-bg" src="${esc(tinySrc(work))}" alt="" aria-hidden="true" draggable="false">
     <img class="cdd-img cdd-low" src="${esc(smallSrc(work))}" alt="" style="${style}" draggable="false">
