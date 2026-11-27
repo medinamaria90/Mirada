@@ -99,9 +99,61 @@ const pillar = (x, y) => {
       <rect class="land-front" x="${f(x)}" y="${f(y - h)}" width="${w}" height="${h}"/>
       <rect class="land-top" x="${f(x - 1.5)}" y="${f(y - h - 4)}" width="${w + 3}" height="4"/>`;
 };
+// PROTOTIPO (rama proto-epoca-lugar): ?proto=a puerta de ciudad con torreones y plaza detrás; ?proto=b logia de tres
+// arcos a un lado, con plaza delante por la que pasa el sendero.
+export const PROTO = (globalThis.location && new URLSearchParams(globalThis.location.search).get('proto')) || 'a';
+const CITY = { half: 22, tower: 18, h: 62, arch: 46, attic: 46, atticHalf: 52, plazaUp: 124, plazaRx: 50, plazaRy: 12 };
+const LOGGIA = { w: 158, h: 58, gap: 24, frieze: 30, up: 50, plazaRy: 13 };
+const loggiaSide = (x) => (x < MAP_W_PROTO / 2 ? 'right' : 'left');
+const MAP_W_PROTO = 390;
+// Geometría del lugar de la época: plaza (para trailSvg) y caja de la inscripción (para el rótulo).
+export function protoPlace(x, y) {
+  if (PROTO === 'b') {
+    const side = loggiaSide(x);
+    const x0 = side === 'right' ? x + LOGGIA.gap : x - LOGGIA.gap - LOGGIA.w;
+    const foot = y - LOGGIA.up;
+    return {
+      plaza: { cx: (x + x0 + LOGGIA.w / 2) / 2, cy: foot + 10, rx: Math.abs(x0 + LOGGIA.w / 2 - x) / 2 + LOGGIA.w / 2, ry: LOGGIA.plazaRy },
+      box: { x0, x1: x0 + LOGGIA.w, y: foot - LOGGIA.h + LOGGIA.frieze - 1, top: foot - LOGGIA.h - 6 },
+      loggia: { x0, foot },
+    };
+  }
+  return {
+    plaza: { cx: x, cy: y - CITY.plazaUp, rx: CITY.plazaRx, ry: CITY.plazaRy },
+    box: { x0: x - CITY.atticHalf, x1: x + CITY.atticHalf, y: y - CITY.h + 2, top: y - CITY.h - CITY.attic },
+  };
+}
+const loggia = ({ x0, foot }) => {
+  const { w, h, frieze } = LOGGIA;
+  const d = 8 * KX;
+  const top = foot - h;
+  const bays = [0, 1, 2].map((i) => {
+    const bx = x0 + 10 + i * ((w - 20) / 3);
+    const bw = (w - 20) / 3 - 8;
+    return `<path class="land-side" d="M${f(bx)} ${f(foot)}V${f(top + frieze + 10)}a${f(bw / 2)} ${f(bw / 2)} 0 0 1 ${f(bw)} 0V${f(foot)}Z"/>`;
+  }).join('');
+  return `<ellipse class="land-shade" cx="${f(x0 + w / 2 + 4)}" cy="${f(foot + 2)}" rx="${f(w * .58)}" ry="5"/>
+    <path class="land-side" d="M${f(x0 + w)} ${f(foot)}V${f(top)}L${f(x0 + w + d)} ${f(top - d * KY / KX)}V${f(foot - d * KY / KX)}Z"/>
+    <rect class="land-front" x="${f(x0)}" y="${f(top)}" width="${w}" height="${h}"/>${bays}
+    <rect class="land-front" x="${f(x0 - 2)}" y="${f(top)}" width="${w + 4}" height="${frieze}"/><rect class="land-top" x="${f(x0 - 2)}" y="${f(top + frieze - 2)}" width="${w + 4}" height="2"/>
+    <path class="land-tile" d="M${f(x0 - 3)} ${f(top)}H${f(x0 + w + 3)}L${f(x0 + w + 3 + d)} ${f(top - 7)}H${f(x0 - 3 + d)}Z"/>`;
+};
+const cityGate = (x, y) => {
+  const { half, tower: tw, h, arch } = CITY;
+  return `<ellipse class="land-shade" cx="${f(x + 5)}" cy="${f(y + 2)}" rx="${half + tw + 10}" ry="4"/>${tower(x - half - tw, y, tw, h)}${tower(x + half, y, tw, h - 4)}
+    <path class="land-front" d="M${f(x - half)} ${f(y - h + 8)}H${f(x + half)}V${f(y - arch + 14)}Q${f(x)} ${f(y - arch - 6)} ${f(x - half)} ${f(y - arch + 14)}Z"/>
+    <path class="land-top" d="M${f(x - half)} ${f(y - h + 8)}H${f(x + half)}L${f(x + half + 4)} ${f(y - h + 5.6)}H${f(x - half + 4)}Z"/>
+    <rect class="land-front" x="${f(x - CITY.atticHalf)}" y="${f(y - h - CITY.attic + 4)}" width="${CITY.atticHalf * 2}" height="${CITY.attic - 2}"/>
+    <path class="land-side" d="M${f(x + CITY.atticHalf)} ${f(y - h + 2)}V${f(y - h - CITY.attic + 4)}L${f(x + CITY.atticHalf + 4)} ${f(y - h - CITY.attic + 1.6)}V${f(y - h - 0.4)}Z"/>
+    <path class="land-top" d="M${f(x - CITY.atticHalf)} ${f(y - h - CITY.attic + 4)}H${f(x + CITY.atticHalf)}L${f(x + CITY.atticHalf + 4)} ${f(y - h - CITY.attic + 1.6)}H${f(x - CITY.atticHalf + 4)}Z"/>
+    ${Array.from({ length: 9 }, (_, i) => `<rect class="land-front" x="${f(x - CITY.atticHalf + 2 + i * 12)}" y="${f(y - h - CITY.attic)}" width="6" height="4"/>`).join('')}`;
+};
 export function eraGate(x, y) {
-  const { half, pillar: w } = GATE_ART;
-  return `<ellipse class="land-shade" cx="${f(x + 5)}" cy="${f(y + 2)}" rx="${half + w + 8}" ry="4"/>${pillar(x - half - w, y)}${pillar(x + half, y)}`;
+  if (PROTO === 'b') {
+    const { half, pillar: w } = GATE_ART;
+    return `<ellipse class="land-shade" cx="${f(x + 5)}" cy="${f(y + 2)}" rx="${half + w + 8}" ry="4"/>${pillar(x - half - w, y)}${pillar(x + half, y)}${loggia(protoPlace(x, y).loggia)}`;
+  }
+  return cityGate(x, y);
 }
 
 // Pretiles de un puente del sendero (delante del sendero, que pasa entre ellos; el tablero, el agua y la sombra los

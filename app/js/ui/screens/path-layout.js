@@ -28,7 +28,7 @@ const EDGE = 10;                     // aire con el borde del mapa
 // Nombre de la época grabado en el dintel de su puerta: una losa estrecha de piedra sobre los pilares, centrada en el
 // sendero (lo tapa solo lo que tapa un arco). lift: del pie de la puerta al pie del dintel (el alto de los pilares);
 // h: su alto (una línea de nombre y la ranura del progreso); gap: aire mínimo hasta lo siguiente.
-export const ARCH = { lift: 48, h: 34, gap: 30 };
+export const ARCH = { lift: 48, h: 100, gap: 30 };   // PROTOTIPO: h con sitio para el lugar de la época
 // Espaciado por elementos (docs/eval/plan-composicion-camino.md §3): el hueco entre dos paradas no es fijo, suma lo
 // que hay dentro, apilado de abajo arriba (puente → desvío de rama → mojón del tramo, siempre justo antes de su primer
 // pintor). node: medio nodo con su aire, a cada lado del hueco; el resto, el alto de cada pieza con su aire.

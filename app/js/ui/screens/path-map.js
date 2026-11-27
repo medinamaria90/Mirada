@@ -19,7 +19,7 @@ import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, GATE_Y, pathLayout, eraLayout, walkedD } from './path-layout.js';
 import { trailSvg, eraArch, startBlock, museumBlock, branchSpot, tramoSign, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
-import { eraGate, bridgeRails } from './path-art.js';
+import { eraGate, bridgeRails, protoPlace } from './path-art.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout, DORMANT_TEXT };
 import { pathActions, showLockNote, levelCard } from './path-actions.js';
@@ -122,11 +122,12 @@ function eraBlock(ctx, era, prevEra, keys) {
   }).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';
-  const sign = era.arch ? archHtml(ctx, era, prevEra, era.arch, era.h) : '';
+  const place = era.gate ? protoPlace(era.gate.x, era.gate.y) : null;
+  const sign = era.arch ? archHtml(ctx, era, prevEra, place ? { ...era.arch, ...place.box } : era.arch, era.h) : '';
   const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}${era.gate ? ' has-gate' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--gate-y:${GATE_Y};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
-    ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, tail: b.spot.tail, open: b.st.open })), walked(index, era, nodes, keys))}
+    ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, tail: b.spot.tail, open: b.st.open })), walked(index, era, nodes, keys), place ? place.plaza : null)}
     ${frontSvg(era)}
     ${sign}
     <ol class="stages">${items}${gallery}</ol>
