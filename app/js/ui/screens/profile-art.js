@@ -3,7 +3,6 @@
 // costaban megas; así cuestan cien kilobytes. El visor y la portada grande siguen usando la imagen entera.
 
 import { artFrame } from '../art.js';
-import { gentleSet } from '../../engine/profile.js';
 
 export const tinySrc = (work) => `img/t/${work.id}.jpg`;
 
@@ -11,20 +10,3 @@ export const tinySrc = (work) => `img/t/${work.id}.jpg`;
 export function tinyFrame(work, opts = {}) {
   return artFrame({ ...work, img: tinySrc(work) }, opts);
 }
-
-// Lista blanca de obras amables (data/gentle.json): se pide una vez, al abrir el perfil por primera vez. Sin
-// ella (red caída, archivo ausente) las funciones del motor usan solo la red de seguridad de palabras clave.
-let gentle = null;
-let gentleLoad = null;
-
-export function loadGentle() {
-  if (!gentleLoad) {
-    gentleLoad = (typeof fetch === 'function' ? fetch(new URL('../../../data/gentle.json', import.meta.url)) : Promise.reject(new Error('sin fetch')))
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => { gentle = gentleSet(data); return gentle; })
-      .catch(() => null);
-  }
-  return gentleLoad;
-}
-
-export const gentleWorks = () => gentle;
