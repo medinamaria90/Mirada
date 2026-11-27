@@ -22,8 +22,10 @@ export function extraRounds(ctx, plan, { prevKind = null, weak = false } = {}) {
 
 // La acción para seguir practicando, una sola y por prioridad: repetir la ronda si no salió y, si no, otra ronda. Ninguna
 // al cerrar el día ni en un duelo; nunca la misma que el botón principal (`main`: su ruta).
-export function practiceAction(ctx, plan, { retry = null, closing = false, duel = false, prevKind = null, main = '', weak = false } = {}) {
+// context: se entró desde un pintor; no se ofrece el repaso general (llevaría a otros pintores sin decirlo).
+export function practiceAction(ctx, plan, { retry = null, closing = false, duel = false, prevKind = null, main = '', weak = false, context = false } = {}) {
   if (closing || duel) return null;
   if (retry && retry !== main) return { to: retry, label: 'Repetir' };
+  if (context) return null;
   return extraRounds(ctx, plan, { prevKind, weak }).find((r) => r.to !== main) || null;
 }

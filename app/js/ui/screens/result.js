@@ -109,7 +109,7 @@ function mainButtonHtml(ctx, step, primaryText) {
   if (step.kind === 'path' || step.kind === 'done') {
     return `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(step.kind === 'path' ? primaryText || step.label : step.label)}</button>`;
   }
-  const work = (step.kind === 'stop' || step.kind === 'debt') && step.artistId ? coverOf(ctx.index, step.artistId) : null;
+  const work = ['stop', 'debt', 'practice', 'deep'].includes(step.kind) && step.artistId ? coverOf(ctx.index, step.artistId) : null;
   const lead = work ? `<span class="res-next-art" aria-hidden="true"><img src="${esc(tinySrc(work))}" alt="" decoding="async"></span>`
     : STEP_ICON[step.kind] ? icons[STEP_ICON[step.kind]](20) : '';
   return `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(step.to)}" data-primary>${lead}<span>${esc(step.label)}</span></button>`;
@@ -157,7 +157,7 @@ export function renderResult(ctx, el, opts) {
   // El siguiente paso (engine/next-step.js); los duelos no llevan recomendación.
   const week = typeof ctx.dailyDay === 'function' ? isoWeek(ctx.dailyDay()).key : '';
   const next = duel ? { kind: 'path', to: 'inicio', label: 'Volver al camino' }
-    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '', prevStep: lastStep() });
+    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '', prevStep: lastStep(), contextArtist: opts.contextArtist || '' });
   if (!duel) rememberStep(next.kind);
   const blocked = next.kind === 'retry';
   const gated = Boolean(blocked && nextOf && !isStepUnlocked(p, index, nextOf));
@@ -165,7 +165,7 @@ export function renderResult(ctx, el, opts) {
 
   // Secundarias: volver (si el principal no vuelve ya), una para practicar (nunca la misma que el principal; ninguna al
   // cerrar el día ni en un duelo) y compartir.
-  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to, weak: outcome.accuracy < MASTERY });
+  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to, weak: outcome.accuracy < MASTERY, context: Boolean(opts.contextArtist) });
   // La guía propone el Cuadro del día una sola vez al día.
   if (practice?.to === CUADRO_ROUTE) ctx.store.update((s) => ({ ...s, progress: markNudged(s.progress, ctx.dailyDay()) }));
   const shareLabel = isDaily ? 'Copiar resultado' : duel ? 'Devolver el reto' : 'Retar';
