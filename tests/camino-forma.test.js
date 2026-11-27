@@ -113,10 +113,10 @@ test('camino: espaciado por elementos; el mojón de cada tramo, en su hueco ante
 test('camino: cada época y cada rama entran por una puerta con su arco; la primera, por la muralla de salida', () => {
   assert.ok(!layout.eras[0].arch && layout.start.arch, 'el arco de la primera época no va sobre la muralla');
   for (const era of tramos.filter((e) => e !== layout.eras[0])) {
-    assert.ok(era.gate && era.arch, `${era.id}: sin puerta o sin lápida`);
-    assert.ok(era.arch.top < era.arch.y && Math.abs(era.arch.y - era.gate.y) < 10, `${era.id}: la lápida no está de pie junto a la puerta`);
-    // Lo primero del tramo (el rótulo de la primera parada) queda por encima de la lápida.
-    assert.ok(era.points[0].y + 36 < era.arch.top, `${era.id}: la primera parada choca con la lápida`);
+    assert.ok(era.gate && era.arch, `${era.id}: sin puerta o sin dintel`);
+    assert.ok(era.arch.top < era.arch.y && era.arch.y < era.gate.y, `${era.id}: el dintel no se apoya sobre la puerta`);
+    // Lo primero del tramo (el rótulo de la primera parada) queda por encima del dintel.
+    assert.ok(era.points[0].y + 36 < era.arch.top, `${era.id}: la primera parada choca con el dintel`);
   }
 });
 

@@ -223,9 +223,9 @@ en Leonardo, avisos de candado apilados, «Tu parada» poco claro, ramas sin vue
 evaluadores independientes (`docs/eval/eval-camino-r1..r4.md`; aprueba la r4).
 - Antes de todo: el mapa salía sin estilos en el móvil de María (un index.html viejo en caché sin `mapa-carteles.css`):
   `main.js` pide las hojas del arranque que falten (`ui/lazy-css.js`) y la página va sin caché.
-- La época es una lápida de piedra junto a su puerta (nunca sobre el sendero), con nombre, siglos y una ranura que se
-  llena; completa, se dora. El tramo es un mojón (piedra con su número romano y tablilla) en un hueco propio antes de sus
-  pintores; completo, la tablilla se dora. Época y tramo no son paradas: en el camino solo hay lo que se juega.
+- La época, su nombre grabado en el dintel de piedra de su puerta (sin caja blanca: la lápida grande no gustó), con una
+  ranura que se llena; completa, se dora. El tramo, una sola tablilla en un hueco propio antes de sus pintores; completo,
+  se dora (el mojón de al lado duplicaba). Siguiente ronda: la época como lugar (plaza) en el sendero.
 - Espaciado por elementos (`GAP` en `path-layout.js`): el hueco entre paradas suma lo que lleva (puente, rama, mojón).
 - Sendero de tierra sin raya, con borde irregular y piedrecitas; nace de una plaza empedrada con fuente, arco y la caseta
   «Cómo se juega». Desvíos tangentes con poste de flecha; en cada rama, «Volver al camino» del lado del camino común.
