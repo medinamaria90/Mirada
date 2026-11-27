@@ -1,15 +1,14 @@
 // Tarjeta del nodo de un pintor con niveles (como la de las lecciones de Duolingo): al tocar su retrato en el mapa o en una
 // rama sale anclada con su pico al retrato, que sigue encendido sobre el velo. Arriba, «Pintor ›» (a su ficha) y «Nivel 3 de
-// 5»; en medio, sus historias destacadas (ui/level-row.js); abajo, un único botón «Jugar · <nivel>» («Repasar» con todo
-// hecho). Se carga al primer toque. Pulsar fuera, Esc, desplazar el mapa o cambiar de pantalla la cierran.
+// 5»; en medio, un círculo por nivel (ui/level-row.js); abajo, un único botón «Empezar · <nivel>», que hace lo mismo que el
+// círculo resaltado («Repasar» con todo hecho). Solo la tienen los pintores con más de un nivel. Se carga al primer toque. Pulsar fuera, Esc, desplazar el mapa o cambiar de pantalla la cierran.
 
 import { esc } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { loadStory } from './story-data.js';
 import { modalSlot, mountSheet } from './modal-slot.js';
-import { levelPlan } from '../engine/level-ring.js';
-import { stageTitle } from '../engine/painters.js';
+import { levelRing } from '../engine/level-ring.js';
 import { rowLevels, rowHtml, wireRow, levelRoute } from './level-row.js';
 
 const slot = modalSlot();
@@ -20,9 +19,9 @@ const TOP_ROOM = 0.18;  // si no cabe ni arriba ni abajo, el retrato sube a esta
 
 const px = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
 
-function cardHtml(index, artist, ring, levels) {
-  const next = ring.next && index.deepLevels(artist.id).find((s) => s.id === ring.next);
-  const play = next ? `Jugar <small>· ${esc(stageTitle(artist, next))}</small>` : 'Repasar';
+function cardHtml(artist, ring, levels) {
+  const next = ring.levels.find((l) => l.state === 'next');
+  const play = next ? `Empezar <small>· ${esc(next.short)}</small>` : 'Repasar';
   const pill = ring.done ? 'Completo' : `Nivel ${ring.at} de ${ring.total}`;
   return `<div class="lc-card">
       <div class="lc-head">
@@ -71,17 +70,17 @@ export async function openLevelCard(ctx, button, branchId = '') {
   const artistId = button.dataset.id;
   const { index } = ctx;
   const artist = index.artist(artistId);
-  const ring = artist && levelPlan(ctx.store.get().progress, index, artistId);
+  const ring = artist && levelRing(ctx.store.get().progress, index, artistId);
   if (!ring) return null;
   const turn = slot.begin();
   const [story] = await Promise.all([loadStory(artistId), loadCss('css/niveles.css')]);
   if (slot.stale(turn) || !button.isConnected) return null;
-  const levels = rowLevels(index, story, ring.levels);
+  const levels = rowLevels(index, artistId, story, ring.levels);
   const dot = button.querySelector('.stage-dot');
   const dlg = document.createElement('dialog');
   dlg.className = 'lc';
   dlg.setAttribute('aria-labelledby', 'lc-name');
-  dlg.innerHTML = `<div class="lc-lit" aria-hidden="true"><span class="stage is-mastered${button.classList.contains('has-ring') ? ' has-ring' : ''}">${dot.outerHTML}</span></div>${cardHtml(index, artist, ring, levels)}`;
+  dlg.innerHTML = `<div class="lc-lit" aria-hidden="true"><span class="stage is-mastered${button.classList.contains('has-ring') ? ' has-ring' : ''}">${dot.outerHTML}</span></div>${cardHtml(artist, ring, levels)}`;
   document.body.appendChild(dlg);
   const handle = { dlg };
   const close = mountSheet(dlg, { slot, handle, opener: button, closeSelector: '.lc-lit' });

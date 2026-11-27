@@ -43,10 +43,10 @@ export const STORY_END = Object.freeze({
 // Muestra la historia del nivel y devuelve una promesa que se cumple al cerrarla con { shown, ended }: los cuadros que ha
 // enseñado y cómo se cerró (STORY_END). opts: { force } vuelve a mostrarla aunque ya se haya visto; { history: false } cuando va
 // seguida de una ronda: no entra en el historial (su «atrás» llegaría cuando la ronda ya está montada); { onPlay } lo que hace
-// «Jugar» tras cerrar (sin él, solo cerrar: lo que sigue lo decide quien llama) o false si no hay nada que jugar; { onMore } lo que
-// hace «Ver más» (sin él, abre la ficha) o false para no ofrecerlo; { look } la pista «Fíjate en…» del pintor, que la última
-// tarjeta añade si la historia no lo dice ya; { guest } la abre un enlace compartido: no se marca como vista ni usa lo que ha
-// visto quien la abre (no toca su partida).
+// «Jugar» tras cerrar (sin él, solo cerrar: lo que sigue lo decide quien llama) o false si no hay nada que jugar, y { playLabel }
+// otro texto para ese botón («Repetir nivel»); { onMore } lo que hace «Ver más» (sin él, abre la ficha) o false para no ofrecerlo;
+// { look } la pista «Fíjate en…» del pintor, que la última tarjeta añade si la historia no lo dice ya; { guest } la abre un enlace
+// compartido: no se marca como vista ni usa lo que ha visto quien la abre (no toca su partida).
 export async function playStory(ctx, artistId, level, opts = {}) {
   const key = storyKey(artistId, level);
   const none = { shown: [], ended: STORY_END.NONE };
@@ -128,7 +128,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const work = override || index.artwork(card.artwork);
       if (work) shownIds.push(work.id);
       media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name);
-      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, more: opts.onMore !== false });
+      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, playLabel: opts.playLabel, more: opts.onMore !== false });
       dlg.classList.toggle('is-last', last);
       dlg.querySelector('.story-back').hidden = pos === 0;
       dlg.querySelector('.story-next').hidden = last;

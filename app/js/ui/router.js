@@ -16,6 +16,7 @@ export const ROUTES = {
   free: 'ronda-libre',
   weekly: 'reto-semanal',
   credits: 'fuentes',
+  about: 'acerca',
 };
 
 // Ronda «a fondo» de un pintor: a-fondo-<pintor>-<nivel> (nivel 2 en adelante).
@@ -48,6 +49,7 @@ export function parseRoute(hash, opts = {}) {
   if (name === ROUTES.free) return { name: 'free' };
   if (name === ROUTES.weekly) return { name: 'weekly' };
   if (name === ROUTES.credits) return { name: 'credits' };
+  if (name === ROUTES.about) return { name: 'about' };
   let m = /^obras-invitados-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'works', spec: { kind: 'guests', movementId: m[1] } };
   m = /^obras-([a-z0-9-]+)$/.exec(name);
