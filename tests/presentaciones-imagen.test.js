@@ -56,3 +56,27 @@ test('presentación de época: su pared de tres cuadros sale entera', () => {
     assert.ok(works.length >= INTRO_WALL, `${m.id}: menos de ${INTRO_WALL} cuadros para su presentación`);
   }
 });
+
+test('portada de cartel: pared de tres cuadros del grupo, sin repetir los de sus tarjetas si hay otros', async () => {
+  globalThis.document = globalThis.document || { documentElement: {} };
+  const { signWall, signGroup, WALL_SIZE } = await import('../app/js/ui/sign-wall.js');
+  const { signSlides } = await import('../app/js/ui/sign-cards.js');
+  for (const [kind, file] of [['tramo', 'tramos'], ['rama', 'ramas']]) {
+    for (const [key, sign] of Object.entries(json('carteles', `${file}.json`))) {
+      const group = new Set(signGroup(index, kind, key));
+      const wall = signWall(index, kind, key, sign);
+      assert.equal(wall.length, WALL_SIZE, `${file} ${key}: pared incompleta`);
+      assert.equal(new Set(wall).size, WALL_SIZE, `${file} ${key}: cuadro repetido en la pared`);
+      assert.ok(wall.every((w) => group.has(w.artistId) && shown(w.id)), `${file} ${key}: cuadro de fuera del grupo o sin imagen`);
+      const used = new Set(sign.cards.map((c) => c.artwork));
+      const spare = [...group].flatMap((a) => index.worksOf(a)).filter((w) => !used.has(w.id)).length;
+      const repeated = wall.filter((w) => used.has(w.id)).length;
+      assert.ok(repeated <= Math.max(0, WALL_SIZE - spare), `${file} ${key}: la pared repite cuadros de sus tarjetas`);
+      const { html } = signSlides(index, kind, sign, key, key);
+      const cover = html.slice(0, html.indexOf('</section>'));
+      assert.equal((cover.match(/class="wall-item/g) || []).length, WALL_SIZE, `${file} ${key}: portada sin pared`);
+    }
+  }
+  // Sin saber el grupo (o sin datos), la portada sigue siendo solo el nombre.
+  assert.ok(!signSlides(index, 'tramo', undefined, 'X').html.includes('wall'));
+});

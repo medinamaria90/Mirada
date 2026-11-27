@@ -1,6 +1,6 @@
 // Carteles del mapa en tarjetas: al tocar el cartel de un tramo (o el de una rama, en su pantalla) se abre a pantalla
-// completa como las tarjetas de época (screens/era-cards.js): una portada con el nombre y la idea en una frase, y
-// después sus tarjetas, cada una con su cuadro. Textos en data/carteles/ (de contenido/ramas.json y tramos.json, con
+// completa como las tarjetas de época (screens/era-cards.js): una portada con tres cuadros del grupo (sign-wall.js), el
+// nombre y la idea en una frase, y después sus tarjetas, cada una con su cuadro. Textos en data/carteles/ (de contenido/ramas.json y tramos.json, con
 // tools/sync_carteles.py); su fuente queda en los datos y se ve en «Fuentes y créditos». Se carga al primer toque.
 
 import { esc } from './dom.js';
@@ -8,6 +8,8 @@ import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { modalSlot, mountSheet } from './modal-slot.js';
 import { cardHtml, wireCards } from './screens/era-cards.js';
+import { artFrame } from './art.js';
+import { signWall } from './sign-wall.js';
 
 const FILES = { rama: 'ramas', tramo: 'tramos' };
 const KICKER = { rama: 'Rama', tramo: 'Tramo' };
@@ -29,11 +31,21 @@ export function loadSigns(kind) {
   return cache.get(file);
 }
 
-// Portada y tarjetas de un cartel. Sin textos (o sin red), solo la portada con el nombre que se tocó.
-export function signSlides(index, kind, sign, fallbackTitle) {
+// Pared de la portada: tres cuadros del grupo (sign-wall.js), de alto fijo para que nada salte al cargar.
+function wallHtml(index, kind, id, sign) {
+  const works = id ? signWall(index, kind, id, sign) : [];
+  if (!works.length) return '';
+  const items = works.map((w, i) => `<span class="wall-item wall-${i}">${artFrame(w, { alt: '', eager: true, label: '', thumb: true, zoom: { group: 'sign-wall' } })}</span>`);
+  return `<div class="wall wall-sm sc-wall">${items.join('')}</div>`;
+}
+
+// Portada y tarjetas de un cartel (id: la rama o la clave del tramo). Sin textos (o sin red), solo la portada con el
+// nombre que se tocó y, si se sabe el grupo, su pared de cuadros.
+export function signSlides(index, kind, sign, fallbackTitle, id = '') {
   const cards = (sign?.cards || []).filter((c) => c && c.text);
   const total = cards.length + 1;
   const cover = `<section class="era-slide era-cover sc-cover" role="group" aria-label="1 de ${total}">
+      ${wallHtml(index, kind, id, sign)}
       <p class="era-chip">${esc(sign?.kicker || KICKER[kind])}</p>
       <h2 class="sc-title" id="sc-title">${esc(sign?.title || fallbackTitle)}</h2>
       ${sign?.lead ? `<p class="sc-lead">${esc(sign.lead)}</p>` : ''}
@@ -48,7 +60,7 @@ export async function openSignCards(ctx, kind, id, opener) {
   const [signs] = await Promise.all([loadSigns(kind), loadCss('css/epocas.css'), loadCss('css/carteles.css')]);
   if (slot.stale(turn)) return null;
   const title = opener?.querySelector('.sign-name')?.textContent || '';
-  const { total, html } = signSlides(ctx.index, kind, signs[id], title);
+  const { total, html } = signSlides(ctx.index, kind, signs[id], title, id);
   const dlg = document.createElement('dialog');
   dlg.className = 'sign-cards';
   dlg.setAttribute('aria-labelledby', 'sc-title');
