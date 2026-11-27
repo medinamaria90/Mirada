@@ -6,7 +6,6 @@ import { onAction, focusHeading } from '../dom.js';
 import { page } from '../shell.js';
 import { playEra } from '../audio-bridge.js';
 import { parseLastTest, shareCover, collectionIds } from '../../engine/profile.js';
-import { loadGentle, gentleWorks } from './profile-art.js';
 import { heroHtml, upgradeCover } from './profile-hero.js';
 import { welcomeHtml, practiceHtml } from './profile-parts.js';
 import { medalsHtml, medalSheetHtml, wireMedals } from './profile-medals.js';
@@ -37,7 +36,7 @@ function loadStyles(file) {
     setTimeout(resolve, STYLES_WAIT_MS);
   });
 }
-const stylesReady = Promise.all([loadStyles('profile.css'), loadStyles('profile-cards.css'), loadGentle()]);
+const stylesReady = Promise.all([loadStyles('profile.css'), loadStyles('profile-cards.css')]);
 
 function readLastTest() {
   try {
@@ -111,7 +110,7 @@ async function shareLast(ctx, button, last) {
     const { shareTest } = await import('./profile-share.js');
     const st = ctx.store.get();
     // La tarjeta sale de la lista blanca: la portada elegida solo viaja si es amable.
-    await shareTest(ctx, last, shareCover(st.progress, ctx.index, st.settings.cover, gentleWorks()));
+    await shareTest(ctx, last, shareCover(st.progress, ctx.index, st.settings.cover));
   } catch (err) {
     console.error(err);
     ctx.toast('No se ha podido compartir');
