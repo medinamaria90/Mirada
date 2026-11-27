@@ -107,6 +107,13 @@ test('resultado: con 50-74 % «Repetir» va como secundario y el principal es el
   assert.match(low.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Repetir/);
 });
 
+test('resultado: al subir de rango, una línea con lo conseguido y lo que viene; desde el Perfil, «Volver al perfil»', () => {
+  const p = withReview();
+  const html = resultHtmlOf(p, { kind: 'stage', artistId: 'rafael', level: 2, seed: 3 }, { xp: 60, score: 8, total: 8, accuracy: 1, mastered: true, events: [{ type: 'rank', index: 2, name: 'Copista' }] }, { origin: 'perfil' });
+  assert.match(html, /class="res-line res-rank">[^]*?¡Ya eres Copista! Ahora, a por Oficial de taller</);
+  assert.match(html, /data-to="perfil" data-primary><span>Volver al perfil<\/span>/);
+});
+
 test('momento de dominar a un maestro: se queda hasta cerrarlo (X, «Seguir», Esc o fuera), sin cierre automático', () => {
   const src = readFileSync(join(here, '..', 'app', 'js', 'ui', 'match-moment.js'), 'utf8');
   assert.doesNotMatch(src, /setTimeout\(close/, 'sin temporizador que la cierre sola');

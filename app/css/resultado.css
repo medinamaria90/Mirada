@@ -116,3 +116,7 @@ html.reduce-motion .res-title, html.reduce-motion .res-chip, html.reduce-motion 
 /* «Sigue: <pintor>»: su miniatura dentro del botón principal. */
 .res-next-art { flex: none; width: 28px; height: 28px; overflow: hidden; border-radius: 999px; box-shadow: 0 0 0 2px var(--on-brand); }
 .res-next-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Subida de rango (screens/result.js): la línea lleva la gema del rango. */
+.res-rank { display: inline-flex; align-items: center; gap: .4rem; color: var(--gold-text); font-weight: 600; }
+.res-rank .icon { flex: none; }

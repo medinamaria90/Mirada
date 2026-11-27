@@ -27,6 +27,9 @@ import { setMapFocus, setBranchFocus } from './path-map.js';
 
 export { extraRounds } from './result-actions.js';
 
+// Subida de rango, en una línea: lo conseguido y lo que viene («¡Ya eres Copista! Ahora, a por Oficial de taller»).
+const RANK_UP = (ev) => `¡Ya eres ${ev.name}!${RANKS[ev.index + 1] ? ` Ahora, a por ${RANKS[ev.index + 1].name}` : ''}`;
+
 export function headline(accuracy) {
   if (accuracy >= 1) return 'Impecable';
   if (accuracy >= 0.75) return 'Muy buen ojo';
@@ -60,6 +63,8 @@ function lineHtml(ctx, r) {
     const verdict = mine > r.friendScore ? 'Ganas tú' : mine < r.friendScore ? 'Gana tu amigo' : 'Empate';
     return `<p class="res-line"><strong>${verdict}</strong> · ${mine} a ${r.friendScore}</p>`;
   }
+  // Subida de rango: qué has conseguido y qué viene ahora, en una línea.
+  if (r.rankUp && !r.low) return `<p class="res-line res-rank">${icons.gem(18)}<span>${esc(RANK_UP(r.rankUp))}</span></p>`;
   if (r.isDaily) return `<div class="grid-row res-grid" role="img" aria-label="${outcome.score} aciertos de ${outcome.total}">${r.firstTry.map((ok) => `<span class="sq ${ok ? 'is-ok' : ''}"></span>`).join('')}</div>`;
   if (r.low) {
     const gate = r.gated ? `<span class="res-gate">${icons.lock(16)}<span>Con la mitad de aciertos se abre la siguiente</span></span>` : '';
@@ -93,8 +98,6 @@ const secondaryBtn = (b) => (b.iconOnly
   : `<button class="btn btn-secondary res-btn2" data-action="${b.action}"${b.to ? ` data-to="${esc(b.to)}"` : ''}>${b.icon ? icons[b.icon](20) : ''}<span>${esc(b.label)}</span></button>`);
 
 const STEP_ICON = { retry: 'repeat', review: 'repeat', weekly: 'target' };
-// Botón principal que vuelve a la pantalla de origen: al subir de rango, al llegar lo celebra con un aviso.
-const RANK_UP = (ev) => `¡Ya eres ${ev.name}!${RANKS[ev.index + 1] ? ` Ahora, a por ${RANKS[ev.index + 1].name}` : ''}`;
 
 // Botón principal: el siguiente paso. Al camino («Seguir», «Volver al camino») cierra como siempre; el resto va a su ruta.
 // «Sigue: <pintor>» lleva su miniatura.
@@ -185,7 +188,7 @@ export function renderResult(ctx, el, opts) {
         ${medalHtml(ctx, heroMedal, deepDone, work)}
         <p class="res-kicker">${esc(kicker)}</p>
         <h1 class="res-title">${next.kind === 'done' ? DONE_TITLE : headline(outcome.accuracy)}</h1>
-        ${lineHtml(ctx, { plan, outcome, low, gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry })}
+        ${lineHtml(ctx, { plan, outcome, low, gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry, rankUp: events.find((e) => e.type === 'rank') })}
       </div>
       <dl class="res-tally">
         <div><dt>Aciertos</dt><dd>${outcome.score}/${outcome.total}</dd></div>
