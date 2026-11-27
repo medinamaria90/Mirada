@@ -501,3 +501,10 @@ test('compartir: la tarjeta usa el cuadro del avatar (ya no hay portada)', () =>
   assert.match(src, /shareCover\(st\.progress, ctx\.index, st\.settings\.avatar\)/);
   assert.doesNotMatch(src, /settings\.cover/);
 });
+
+test('letra al 200 %: la cabecera del rango no se sale (su rejilla se encoge) y la hoja del avatar usa casillas cuadradas', () => {
+  const cards = read('../app/css/profile-cards.css');
+  for (const sel of ['pf-rank-card', 'pf-conds', 'pf-rank-titles']) assert.match(cards.match(new RegExp(`\\.${sel} \\{[^}]*\\}`))[0], /grid-template-columns: minmax\(0, 1fr\)/, `${sel} sin columna encogible`);
+  assert.match(cards, /@container pf-stats \(max-width: 16em\)/);
+  assert.match(read('../app/css/profile.css'), /\.look-grid \.pf-tile \{ aspect-ratio: 1; \}/);
+});

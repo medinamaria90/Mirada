@@ -28,8 +28,8 @@
   display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--gold) 20%, var(--surface)); color: var(--gold-text);
 }
-.pf-rank-titles { display: grid; gap: .15rem; flex: 1; min-width: 0; }
-.pf-rank-name { font: 500 1.35rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
+.pf-rank-titles { display: grid; grid-template-columns: minmax(0, 1fr); gap: .15rem; flex: 1; min-width: 0; }
+.pf-rank-name { font: 500 1.35rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: anywhere; hyphens: auto; }
 .pf-rank-pos { font-size: .9rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 
 /* Escalera de los ocho rangos: alcanzados en oro, el siguiente punteado. */
