@@ -74,13 +74,16 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
   }
   assert.ok(!/<img class="path-land"[^>]* src=/.test(html), 'un paisaje se pide antes de tiempo');
   assert.equal((html.match(/<svg class="path-trail"/g) || []).length, real.visibleMovements.length + 2, 'un sendero por tramo, el de la salida y el del museo');
-  assert.ok(html.includes(`${real.movement(real.steps[0].movementId).period.replace(/s\. /g, 's.\u00a0')} · 2/${real.stepsOf(real.steps[0].movementId).length}`), 'la cartela no dice cuántas van');
+  const firstEra = real.steps[0].movementId;
+  const total = real.stepsOf(firstEra).length;
+  assert.ok(html.includes(`2 de ${total} pintores dominados: ver presentación`) && html.includes(`class="arch-progress-fill" style="--p:${Math.round((2 / total) * 100) / 100}"`), 'la lápida no dice cuántas van (ranura y lector)');
+  assert.ok(!html.includes(` · 2/${total}`), 'queda la cifra pegada a los siglos');
   assert.ok(html.includes('finales s.\u00a0XVIII–mediados s.\u00a0XIX'), 'los siglos sin espacio duro');
   assert.ok(html.includes('class="arch-band" data-action="intro"'), 'el arco abierto no lleva a la presentación');
   // El arco de la primera época va sobre la puerta de la muralla de salida; los demás, en su tramo.
   const first = real.visibleMovements[0].id;
   assert.ok(html.indexOf(`data-action="intro" data-id="${first}"`) < html.indexOf('class="path-era'), 'el arco de la primera época no va en la salida');
-  assert.equal((html.match(/<h2 class="era-arch"/g) || []).length, real.visibleMovements.length, 'un arco por época');
+  assert.equal((html.match(/<h2 class="era-arch is-(left|right)"/g) || []).length, real.visibleMovements.length, 'una lápida por época');
   assert.ok(!html.includes('class="road-sign is-left"><button type="button" class="sign-plate" data-action="intro"'), 'queda la placa de época antigua');
   const locked = real.visibleMovements[2];
   assert.ok(html.includes(`data-action="era-lock" data-id="${locked.id}"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el cartel cerrado no abre su hoja');
@@ -126,7 +129,7 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
   for (const era of pathLayout(real).eras) assert.equal(era.points.length, real.stepsOf(era.id).length + (hasMovementReview(real, era.id) ? 1 : 0));
   const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
   assert.equal((all.match(/class="stage stage-gallery is-mastered"/g) || []).length, real.visibleMovements.length, 'sin salas con todo dominado');
-  assert.ok(all.includes('class="path-era movement movement-mastered is-sealed') && all.includes('class="arch-band is-done"') && all.includes(icons.laurel(14)), 'una época completa no lo dice en su arco');
+  assert.ok(all.includes('class="path-era movement movement-mastered is-sealed') && all.includes('class="arch-band is-done"') && all.includes('style="--p:1"'), 'una época completa no lo dice en su lápida');
   const sala = buildIndex(salaCatalog());
   const sh = renderPathMap(ctxWith(sala));
   assert.ok(sala.visibleMovements.some((m) => sala.isSala(m.id)));
@@ -180,7 +183,7 @@ test('mapa: el repaso cerrado dice en claro cuánto falta; los nombres, en la no
 
 // Ningún cartel pisa el sendero: su borde junto al camino queda fuera de la franja del sendero (con aire) en
 // toda su altura, y le queda sitio. Cada tramo lleva su cartel, antes de su primera parada.
-test('mapa: arco de la época centrado en el sendero y tablillas de tramo a su borde; el tramo, antes de su primera parada', () => {
+test('mapa: lápida de la época junto a su puerta y mojones de tramo al borde; el tramo, antes de su primera parada', () => {
   const layout = pathLayout(real);
   const GAP = 8;
   const clear = (segs, y1, y2, box) => {
@@ -188,15 +191,17 @@ test('mapa: arco de la época centrado en el sendero y tablillas de tramo a su b
     return box.side === 'left' ? box.edge <= Math.min(...xs) - ROAD_HALF - GAP : box.edge >= Math.max(...xs) + ROAD_HALF + GAP;
   };
   for (const [i, era] of layout.eras.entries()) {
-    // Arco: sobre la puerta de la época (o, la primera, sobre la de la muralla), centrado en el sendero y dentro del mapa.
+    // Lápida: junto a la puerta de la época (o, la primera, junto a la de la muralla), nunca sobre el sendero, y dentro
+    // del mapa con sitio para su nombre.
     const arch = i ? era.arch : layout.start.arch;
-    assert.ok(arch && arch.x0 >= 0 && arch.x1 <= MAP_W && Math.abs((arch.x0 + arch.x1) / 2 - arch.x) < 0.5, `${era.id}: sin arco o fuera del mapa`);
-    if (i) assert.ok(Math.abs(arch.x - roadX(era.segs, era.gate.y)) < 1 && arch.y < era.gate.y, `${era.id}: el arco no está sobre su puerta`);
+    assert.ok(arch && arch.x0 >= 0 && arch.x1 <= MAP_W && arch.x1 - arch.x0 >= 150, `${era.id}: sin lápida, fuera del mapa o sin sitio`);
+    assert.ok(arch.side === 'left' ? arch.x1 <= arch.x - ROAD_HALF - GAP : arch.x0 >= arch.x + ROAD_HALF + GAP, `${era.id}: la lápida pisa el sendero`);
+    if (i) assert.ok(Math.abs(arch.x - roadX(era.segs, era.gate.y)) < 1 && Math.abs(arch.y - era.gate.y) < 10, `${era.id}: la lápida no está junto a su puerta`);
     for (const s of era.sections) assert.ok(clear(era.segs, s.sign.top, s.sign.y, s.sign) && s.sign.room >= 110, `${era.id}/${s.name}: la tablilla del tramo pisa el sendero o no cabe`);
   }
   assert.ok(clear(layout.museum.segs, layout.museum.sign.top, layout.museum.sign.y, layout.museum.sign), 'la placa del museo pisa el sendero');
   const html = renderPathMap(ctxWith(real, masterFirst(real, 1)));
-  assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, 1, 'solo la placa del museo (las épocas llevan arco)');
+  assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, 1, 'solo la placa del museo (las épocas llevan lápida)');
   // Primer tramo: tablilla propia sin cuenta (va en el arco); para el lector, «dominados de paradas» (todas, también las
   // extra), justo antes de su parada en el DOM.
   const first = real.artist(real.steps[0].id);
@@ -234,7 +239,7 @@ test('mapa: cada rama, su desvío y su cartel de dos postes; al tocarlo se entra
   for (const id of rusaEras.filter((x) => x !== rusa.opensAt)) {
     assert.ok(layout.eras.find((e) => e.id === id).branches.some((b) => b.id === 'escuela-rusa' && b.extra), `Escuela rusa sin señal en ${id}`);
   }
-  assert.ok(html.includes('data-action="branch" data-id="descubre-manierismo-y-norte"') && html.includes('faltan 2</span>'));
+  assert.ok(html.includes('data-action="branch" data-id="descubre-manierismo-y-norte"') && html.includes('faltan 2 pintores</span>'));
   assert.ok(html.includes('Más del Manierismo') && !html.includes('­'), 'la rama de época no se llama «Más del …» o lleva palabras partidas');
   // Orden de lectura: el cartel de la rama va justo después de su parada.
   const era = layout.eras[0];

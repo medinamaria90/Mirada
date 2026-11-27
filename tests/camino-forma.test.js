@@ -8,7 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { pathLayout, branchLayout, roadX, bridgeSlots, BRIDGE_HALF, GATE_Y, STEP, ARCH } from '../app/js/ui/screens/path-layout.js';
+import { pathLayout, branchLayout, roadX, bridgeSlots, BRIDGE_HALF, GATE_Y, STEP, GAP } from '../app/js/ui/screens/path-layout.js';
 import { at } from '../app/js/ui/screens/path-curve.js';
 import { signSources } from '../app/js/engine/credits.js';
 
@@ -90,14 +90,22 @@ test('camino: el desvío de una rama nunca sale del paso de un puente ni pegado 
   }
 });
 
-test('camino: las tablillas de tramo no pisan el arco de la época ni los carteles de las ramas, y nunca quedan pegadas al arco', () => {
-  const box = (s) => ({ x0: s.side === 'left' ? s.edge - s.room : s.edge, x1: s.side === 'left' ? s.edge : s.edge + s.room, y0: s.top ?? s.y - 60, y1: s.y });
-  const overlap = (a, b) => a.y0 < b.y1 && b.y0 < a.y1 && a.x0 < b.x1 && b.x0 < a.x1;
+test('camino: espaciado por elementos; el mojón de cada tramo, en su hueco antes de su primer pintor, sin pisar nada', () => {
+  const box = (s) => ({ y0: s.top ?? s.y - 66, y1: s.y });
+  const overlapY = (a, b) => a.y0 < b.y1 && b.y0 < a.y1;
   for (const era of tramos) {
+    const ys = era.points.map((p) => p.y);
+    // Nunca menos de STEP entre dos paradas; donde hay mojón, rama o puente, más.
+    ys.slice(1).forEach((y, i) => assert.ok(ys[i] - y >= STEP - 0.5, `${era.id}: paradas ${i} y ${i + 1} amontonadas`));
     for (const s of era.sections) {
-      // Si el tramo empieza nada más cruzar la puerta, su tablilla queda después del arco, con aire (nunca pegados).
-      if (era.arch) assert.ok(s.sign.y <= era.arch.top - ARCH.gap, `${era.id}/${s.name}: pegada al arco de la época`);
-      for (const b of era.branches || []) assert.ok(!overlap(box(s.sign), box({ ...b.sign, top: b.sign.y - 60 })), `${era.id}/${s.name}: pisa el cartel de ${b.id}`);
+      const below = s.at ? era.points[s.at - 1].y : era.h;
+      // Entre la parada anterior (o la entrada) y su primer pintor, con aire para el medio nodo y su nombre.
+      assert.ok(s.sign.top > era.points[s.at].y + 40 && s.sign.y < below - 40, `${era.id}/${s.name}: el mojón no va en su hueco`);
+      if (era.arch && !s.at) assert.ok(s.sign.y <= era.arch.top - 10, `${era.id}/${s.name}: pegado a la lápida`);
+      for (const b of era.branches || []) assert.ok(!overlapY(box(s.sign), box(b.sign)), `${era.id}/${s.name}: comparte altura con el cartel de ${b.id}`);
+      for (const b of era.bridges) assert.ok(s.sign.top > b.y + BRIDGE_HALF || s.sign.y < b.y - BRIDGE_HALF, `${era.id}/${s.name}: sobre un puente`);
+      // Hueco con mojón y rama: suma los dos.
+      if (s.at && (era.branches || []).some((b) => b.at === s.at)) assert.ok(era.points[s.at - 1].y - era.points[s.at].y >= GAP.node * 2 + GAP.tramo + GAP.rama - 0.5, `${era.id}/${s.name}: mojón y rama sin sitio`);
     }
   }
 });
@@ -105,10 +113,10 @@ test('camino: las tablillas de tramo no pisan el arco de la época ni los cartel
 test('camino: cada época y cada rama entran por una puerta con su arco; la primera, por la muralla de salida', () => {
   assert.ok(!layout.eras[0].arch && layout.start.arch, 'el arco de la primera época no va sobre la muralla');
   for (const era of tramos.filter((e) => e !== layout.eras[0])) {
-    assert.ok(era.gate && era.arch, `${era.id}: sin puerta o sin arco`);
-    assert.ok(era.arch.top < era.arch.y && era.arch.y < era.gate.y, `${era.id}: el arco no se apoya sobre la puerta`);
-    // Lo primero del tramo (el rótulo de la primera parada) queda por encima del arco.
-    assert.ok(era.points[0].y + 36 < era.arch.top, `${era.id}: la primera parada choca con el arco`);
+    assert.ok(era.gate && era.arch, `${era.id}: sin puerta o sin lápida`);
+    assert.ok(era.arch.top < era.arch.y && Math.abs(era.arch.y - era.gate.y) < 10, `${era.id}: la lápida no está de pie junto a la puerta`);
+    // Lo primero del tramo (el rótulo de la primera parada) queda por encima de la lápida.
+    assert.ok(era.points[0].y + 36 < era.arch.top, `${era.id}: la primera parada choca con la lápida`);
   }
 });
 

@@ -148,6 +148,7 @@
   --map-post-w: 4px;
   --map-post-in: 12px;
   --map-return-b: 5.6rem;
+  --map-return-size: 52px;
   --map-r: 8px;
   --map-seam: 80px;
   /* Sistema de carteles (mapa-carteles.css): arco de época, tablillas de tramo y rama, tarjeta de la parada actual. */
@@ -484,7 +485,6 @@
     --map-bloom: #e9bfb5;
     --map-trail-done-edge: #d7bb7f;
     --map-trail-done: #f0dba5;
-    --map-trail-thread: #c9973a;
     --map-night: #43507e;
     --map-night-max: .44;
     --map-dusk: #f2a46c;

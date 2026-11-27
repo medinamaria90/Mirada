@@ -147,7 +147,8 @@ export function branchSpot(spot, branch, st, index, h) {
   const label = spot.extra
     ? `${branch.name}: ${allDone ? `${st.total} de ${st.total} dominados` : `${st.fresh === 1 ? 'un pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época`}${st.open ? '' : `, ${branchWhy(index, st)}`}`
     : done ? `${branch.name}: rama completa, ${st.total} de ${st.total} dominados` : st.open ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} dominados` : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
-  const line = !st.open ? `${icons.lock(11)} ${n === 1 ? 'falta 1' : `faltan ${n}`}` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
+  // Cerrada: tras quién se abre («tras Goya»; con varias paradas pendientes, cuántos pintores faltan).
+  const line = !st.open ? `${icons.lock(11)} ${n === 1 ? `tras ${esc(stepName(index, st.pending[0]))}` : `faltan ${n} pintores`}` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li ${signBox(spot.sign, h, 'branch-spot')}>
       <button type="button" class="sign-plate branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}" aria-label="${esc(label)}">
         <span class="sign-name">${esc(branchShort(branch, index))}</span><span class="sign-meta"><span>${line}</span></span>

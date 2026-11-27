@@ -1,5 +1,5 @@
-// Sistema de carteles del mapa y vuelta al mismo sitio: arco de época con la única cuenta, tablillas de tramo sin
-// contador (completas, con un sello), la parada actual sin botón «Empezar» y la vista que vuelve exactamente a donde
+// Sistema de carteles del mapa y vuelta al mismo sitio: lápida de época con la única cuenta (una ranura), mojones de
+// tramo sin contador (completos, dorados), la parada actual sin botón «Empezar» y la vista que vuelve exactamente a donde
 // estaba (map-memory.js), sin recentrar a la fuerza en la parada actual.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -43,22 +43,33 @@ test('vuelta al mapa: solo se centra en la parada actual al abrir o con «Tu par
   assert.ok(/prevRoute\(\) === 'inicio'\) forgetMap\(memo\)/.test(branch), 'entrar en una rama desde el camino no empieza en su parada actual');
 });
 
-test('carteles: tablilla de tramo sin contador; completa, con su sello; el arco lleva la única cuenta de la época', () => {
+test('carteles: mojón de tramo sin contador; completo, dorado sin iconos; la lápida lleva la única cuenta de la época', () => {
   const half = tramoSign({ name: 'Venecia', key: 'Venecia', sign: SIGN }, { got: 1, total: 3 }, 1000);
-  assert.ok(half.includes('>Venecia</span>') && !/\d\/\d/.test(half) && !half.includes('sign-check'), 'la tablilla a medias lleva cifra o sello');
+  assert.ok(half.includes('>Venecia</span>') && !/\d\/\d/.test(half) && half.includes('tramo-stone') && !half.includes('is-done'), 'el mojón a medias lleva cifra o va dorado');
   assert.ok(half.includes('aria-label="Tramo Venecia: 1 de 3 dominados. Ver cartel"'));
   const done = tramoSign({ name: 'Venecia', key: 'Venecia', sign: SIGN }, { got: 3, total: 3 }, 1000);
-  assert.ok(done.includes('sign-check') && !/\d\/\d/.test(done) && done.includes('Tramo Venecia: completo'), 'la completa no lleva su sello');
-  const arch = { x: 200, y: 900, top: 818, x0: 10, x1: 390 };
+  assert.ok(done.includes('sign-plate is-tramo is-done') && !done.includes('<svg') && !/\d\/\d/.test(done) && done.includes('Tramo Venecia: completo'), 'el completo no se dora o lleva un icono suelto');
+  const arch = { x: 200, y: 900, top: 804, side: 'left', x0: 10, x1: 164 };
   const movement = { id: 'barroco', name: 'Barroco', period: 's. XVII' };
   const open = eraArch({ movement, status: 'available', sealed: false, done: 4, total: 9, prevName: 'Renacimiento', arch, h: 1000 });
-  assert.ok(open.includes('class="era-arch"') && open.includes('data-action="intro"') && open.includes('s. XVII · 4/9'));
+  assert.ok(open.includes('class="era-arch is-left"') && open.includes('data-action="intro"') && open.includes('arch-progress') && open.includes('4 de 9 pintores dominados'));
+  assert.ok(!open.includes('4/9'), 'la cifra pegada al título');
   const sealed = eraArch({ movement, status: 'mastered', sealed: true, done: 9, total: 9, prevName: '', arch, h: 1000 });
-  assert.ok(sealed.includes('arch-band is-done') && !sealed.includes('9/9') && !sealed.includes('sign-seal'), 'la completa lleva cifra o sello flotante');
+  assert.ok(sealed.includes('arch-band is-done') && !sealed.includes('9/9') && !sealed.includes('sign-seal') && sealed.includes('--p:1'), 'la completa lleva cifra o sello flotante');
   const locked = eraArch({ movement, status: 'locked', sealed: false, done: 0, total: 9, prevName: 'el Manierismo', arch, h: 1000 });
-  assert.ok(locked.includes('data-action="era-lock"') && !locked.includes('0/9'));
+  assert.ok(locked.includes('data-action="era-lock"') && !locked.includes('0/9') && !locked.includes('arch-progress'));
   const rama = branchEntrySign({ id: 'gotico', name: 'Gótico' }, arch, 1000, 2, 5);
-  assert.ok(rama.includes('class="era-arch"') && rama.includes('data-kind="rama"') && !rama.includes('2/5'), 'el arco de la rama repite la cuenta de la cabecera');
+  assert.ok(rama.includes('class="era-arch is-left"') && rama.includes('data-kind="rama"') && !rama.includes('2/5'), 'la lápida de la rama repite la cuenta de la cabecera');
+  const css = readFileSync(join(app, 'css', 'main.css'), 'utf8') + readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
+  assert.ok(!css.includes('sign-check') && !css.includes('trail-thread'), 'queda el sello suelto o la raya central del sendero');
+});
+
+test('candados: un solo aviso a la vez, sin temporizador; se cierra al tocar fuera, al desplazar o con Esc', () => {
+  const js = readFileSync(join(app, 'js', 'ui', 'screens', 'lock-note.js'), 'utf8');
+  assert.ok(/export function showLockNote\(button\) \{\s*closeLockNote\(\);/.test(js), 'un aviso nuevo no cierra el anterior');
+  assert.ok(!/setTimeout\(\(\) => note/.test(js), 'el aviso se va solo mientras se lee');
+  assert.ok(js.includes("'pointerdown'") && js.includes("'scroll'") && js.includes("'Escape'") && js.includes('lock-note-close'), 'falta una forma de cerrarlo');
+  assert.ok(js.includes('navigator.vibrate') && js.includes('prefersReducedMotion()'), 'sin temblor/vibración o sin respetar el movimiento reducido');
 });
 
 test('parada actual: sin botón «Empezar»; marca «Tú» y se toca el propio nodo', () => {
@@ -71,9 +82,9 @@ test('parada actual: sin botón «Empezar»; marca «Tú» y se toca el propio n
   assert.ok(!coach.includes('«Empezar»'), 'la guía de bienvenida sigue hablando del botón «Empezar»');
 });
 
-test('«Tu parada»: píldora con texto y flecha; los colores del sistema de carteles, solo en variables', async () => {
+test('volver a tu parada: círculo con flecha y «Tú» (sin cuadro volando); los colores de carteles, solo en variables', async () => {
   const ret = readFileSync(join(app, 'js', 'ui', 'screens', 'map-return.js'), 'utf8');
-  assert.ok(/RETURN_TEXT = 'Tu parada'/.test(ret) && ret.includes('map-return-text') && ret.includes('map-return-arrow'));
+  assert.ok(/RETURN_TEXT = 'Tú'/.test(ret) && ret.includes('map-return-arrow') && !ret.includes('map-return-art') && ret.includes("'Ir a tu parada'"));
   const css = readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
   assert.ok(!/#[0-9a-f]{3,8}\b|rgba?\(/i.test(css), 'colores escritos a mano en mapa-carteles.css');
   assert.ok(readFileSync(join(app, 'index.html'), 'utf8').includes('href="css/mapa-carteles.css"'));
