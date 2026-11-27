@@ -125,7 +125,8 @@ export function runStory(ctx, opts) {
       };
       copy.addEventListener('scroll', hint, { passive: true });
       hint();
-      if (manual) dlg.querySelector('[data-live]').textContent = card.text;
+      // El texto lo lee el lector al recibir el foco (abajo): la región viva solo dice en qué tarjeta se está (sin leerlo dos veces).
+      if (manual) dlg.querySelector('[data-live]').textContent = `Tarjeta ${pos + 1} de ${cards.length}`;
       // El foco, en el texto (sin anillo): los botones de anterior/siguiente solo aparecen cuando se llega a ellos con Tab.
       if (manual || pos === 0) copy.focus({ preventScroll: true });
       const nextCard = cards[pos + 1];

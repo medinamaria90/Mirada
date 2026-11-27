@@ -21,7 +21,7 @@
  },
  "cards": [
   {
-   "text": "Era Goya, el pintor que contó la guerra sin adornos. ¿Recuerdas el farol del principio? Es la única luz de la noche y cae sobre el hombre de blanco que abre los brazos.",
+   "text": "Ese farol del suelo es la única luz de la noche, y cae sobre el hombre de blanco que abre los brazos. Era Goya, el pintor que contó la guerra sin adornos.",
    "artwork": "w1091086",
    "region": [
     0.302,
@@ -41,7 +41,7 @@
    ]
   },
   {
-   "text": "Lo pintó en 1814, ya acabada la guerra contra Napoleón. Es el primer gran cuadro moderno sobre la guerra, y Picasso lo tuvo muy presente al pintar el Guernica.",
+   "text": "Lo pintó en 1814, acabada la guerra contra Napoleón: el primer gran cuadro moderno sobre la guerra. Picasso retomó su escena en su Masacre en Corea, de 1951.",
    "artwork": "w1091086",
    "whole": true
   }

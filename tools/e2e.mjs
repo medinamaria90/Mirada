@@ -1596,7 +1596,7 @@ if (SMOKE) {
   await audit(page, '390 cuadro del día');
   await playCuadro(page, 1);
   check(await page.locator('.story .story-bar').count() === 3, 'la historia del Cuadro del día no lleva 3 tarjetas');
-  check(/Recuerdas/.test(await page.locator('.story-text').innerText()), 'la primera tarjeta no vuelve al detalle');
+  check(/^Era |\. Era /.test(await page.locator('.story-text').innerText()), 'la primera tarjeta no dice de quién era');
   await shot(page, '14b-cuadro-historia');
   await page.keyboard.press('Escape');
   await page.waitForSelector('.cdd-done');

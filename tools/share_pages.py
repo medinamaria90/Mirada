@@ -63,6 +63,10 @@ CUADRO_TEXT = "¿De quién es? Un detalle, seis pintores y cuatro intentos."
 CUADRO_ALT = "Detalle de un cuadro"
 CUADRO_ZOOM = 3  # el detalle del paso 1 (CUADRO_STEPS de app/js/engine/cuadro-dia.js)
 CUADRO_SIDE = 1080  # lado del recorte cuadrado para la vista previa
+DETAIL_DIR = "dia"  # dentro de img/: el detalle de cada día para los pasos 1 y 2 del juego (img/dia/<n>.jpg)
+DETAIL_ZOOM = 1.6  # el recorte del paso 2, que contiene el del paso 1 (WIDE_ZOOM de app/js/engine/cuadro-calendar.js)
+DETAIL_SIDE = 1200  # px: el detalle del paso 1 (0,53 del recorte) queda a 1,52 px de imagen por px CSS en un marco de 420 px
+DETAIL_QUALITY = 72
 
 
 def read_json(*parts):
@@ -181,6 +185,22 @@ def save_light(src, dst, crop=None):
             side = int(side * OG_SHRINK)
 
 
+def save_detail(src, dst, crop):
+    """El detalle de los pasos 1 y 2 del Cuadro del día: el recorte del paso 2 a DETAIL_SIDE px (unos 200 KB frente a los
+    1-3 MB de la imagen HD entera)."""
+    from PIL import Image
+
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    with Image.open(src) as im:
+        im = im.convert("RGB")
+        W, H = im.size
+        im = im.crop((round(crop[0] * W), round(crop[1] * H), round(crop[2] * W), round(crop[3] * H)))
+        side = min(DETAIL_SIDE, max(im.size))
+        im = im.resize((side, round(side * im.size[1] / im.size[0])), Image.LANCZOS)
+        im.save(dst, "JPEG", quality=DETAIL_QUALITY, optimize=True, progressive=True)
+    return os.path.getsize(dst)
+
+
 def make_images(img_dir):
     """Pinta <img_dir>/og/<página>.jpg desde las imágenes de img_dir (en el despliegue, app/img). Devuelve cuántas."""
     out = os.path.join(img_dir, OG_DIR)
@@ -201,6 +221,7 @@ def make_images(img_dir):
             missing.append(work["id"])
             continue
         save_light(src, os.path.join(out, f"{stem}.jpg"), crop_rect(work["w"] / work["h"], focus, CUADRO_ZOOM))
+        save_detail(src, os.path.join(img_dir, DETAIL_DIR, f"{stem[len(CUADRO_PREFIX):]}.jpg"), crop_rect(work["w"] / work["h"], focus, DETAIL_ZOOM))
         made += 1
     print(f"{made} imágenes para compartir -> {out}")
     if missing:

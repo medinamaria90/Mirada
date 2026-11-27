@@ -21,7 +21,7 @@
  },
  "cards": [
   {
-   "text": "Era Rembrandt, el gran maestro holandés de la luz y la sombra. ¿Recuerdas a la niña del principio? Brilla en dorado entre los soldados y lleva un pollo colgado de la cintura.",
+   "text": "La niña del principio brilla en dorado entre los soldados y lleva un pollo colgado de la cintura. Era Rembrandt, el gran maestro holandés de la luz y la sombra.",
    "artwork": "w219831",
    "region": [
     0.174,
@@ -41,7 +41,7 @@
    ]
   },
   {
-   "text": "No es de noche: el barniz se oscureció con los siglos y le dio ese nombre. En 1715 la recortaron por los lados para que cupiera en una pared del ayuntamiento.",
+   "text": "No es de noche: el barniz se oscureció con los siglos y la gente empezó a llamarla así. En realidad, la escena pasa a plena luz del día.",
    "artwork": "w219831",
    "whole": true
   }

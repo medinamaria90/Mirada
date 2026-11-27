@@ -242,6 +242,12 @@ fallecidos antes de 1956 y obras anteriores a 1930. Movimientos previstos (ids):
   pintor). Si falla los cuatro, «Era X». La imagen se abre en grande sin enseñar más de lo que permite el paso (lupa con
   el mismo recorte en los pasos 1-2; visor sin título ni autor en los 3-4). La partida a medias se recuerda en el
   navegador (`mirada.cuadro`).
+- **Firmas e imagen**: la firma o inscripción legible de cada día (`signature` en el calendario: Van Eyck, El Greco, Monet,
+  Sorolla) va tapada con un velo desenfocado hasta acabar, en el marco y en la vista grande (antes de acabar, la lupa del
+  juego, nunca el visor); el validador comprueba que los recortes de los pasos 1 y 2 no la tocan. Los pasos 1 y 2 usan
+  `img/dia/<n>.jpg` (el recorte del paso 2 a 1.200 px, ~200 KB, pintado al desplegar por `share_pages.py --images`); la
+  imagen de 1.200 px de la obra se pide desde el paso 2. `era` en un día cambia la pista de época si la del camino confunde
+  (Van Eyck y el Bosco: «Pintura flamenca»).
 - **Al acabar** (`finishCuadro`, una vez al día): `progress.cuadros[día] = { n, guesses, won, tries }`, 10 XP si acierta y
   5 si no, cuenta para la meta y la racha general (sin racha propia), medallas `daily-1` («Primer cuadro del día») y
   `daily-perfect` («A la primera»). Pantalla de hecho (`ui/screens/cuadro-dia-hecho.js`): cuadro entero, «A la segunda» o

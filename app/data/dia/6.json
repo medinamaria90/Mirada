@@ -21,7 +21,7 @@
  },
  "cards": [
   {
-   "text": "Era Leonardo da Vinci, el genio que quería entenderlo todo. ¿Recuerdas las manos del principio? Son las de Lisa Gherardini, la mujer de un comerciante de seda de Florencia.",
+   "text": "Esas manos tranquilas son las de Lisa Gherardini, la mujer de un comerciante de seda de Florencia. Era Leonardo da Vinci, el genio que quería entenderlo todo.",
    "artwork": "w12418",
    "region": [
     0.189,
@@ -41,7 +41,7 @@
    ]
   },
   {
-   "text": "No era tan famosa hasta 1911, cuando un empleado italiano la robó del Louvre. La tuvo dos años en su casa, y su foto en los periódicos la volvió una estrella.",
+   "text": "No era tan famosa hasta 1911, cuando la robó un vidriero italiano que había trabajado en el Louvre. Su foto en todos los periódicos la volvió una estrella.",
    "artwork": "w12418",
    "whole": true
   }

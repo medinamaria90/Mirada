@@ -15,13 +15,14 @@ import { cuadroGrid, cuadroShareText, cuadroCount, tryLabel, nextInLabel, CUADRO
 import { countEvent } from '../../stats.js';
 
 const SHARE_PAGE = (slot) => `h/cuadro-${slot}.html`; // tools/share_pages.py: abre siempre el cuadro de hoy
+const STORY_DELAY_MS = 1600; // recién acabado, el resultado se disfruta un momento antes de que se abra la historia
 
 const countLine = (k) => `Llevas ${k} ${k === 1 ? 'cuadro del día' : 'cuadros del día'}`;
 
 function squaresHtml(record) {
   const marks = [...cuadroGrid(record)];
   const label = record.won ? `Acertado en ${record.tries} de ${CUADRO_TRIES} intentos` : `Sin acertar en ${CUADRO_TRIES} intentos`;
-  return `<div class="cdd-squares" role="img" aria-label="${label}">${marks.map((m) => `<span class="cdd-sq ${m === '🟩' ? 'is-hit' : m === '🟥' ? 'is-miss' : ''}"></span>`).join('')}</div>`;
+  return `<div class="cdd-squares is-in" role="img" aria-label="${label}">${marks.map((m) => `<span class="cdd-sq ${m === '🟩' ? 'is-hit' : m === '🟥' ? 'is-miss' : ''}"></span>`).join('')}</div>`;
 }
 
 export async function renderCuadroDone(ctx, el, data, record, { fresh = false } = {}) {
@@ -79,7 +80,9 @@ export async function renderCuadroDone(ctx, el, data, record, { fresh = false } 
   });
   if (fresh) {
     announce(`${tryLabel(record)}. ${record.won ? 'Es de' : 'Era'} ${short}.`);
-    story();
+    const hash = location.hash;
+    const timer = setTimeout(() => { if (el.isConnected && location.hash === hash && !document.querySelector('dialog[open]')) story(); }, STORY_DELAY_MS);
+    ctx.setCleanup(() => clearTimeout(timer));
   }
 }
 

@@ -30,16 +30,18 @@
 .cdd-img { position: absolute; max-width: none; object-fit: fill; transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); user-select: none; -webkit-user-drag: none; }
 .cdd-hi { opacity: 0; transition: opacity .3s, left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
 .cdd-hi.is-ready { opacity: 1; }
+.cdd-det { opacity: 0; transition: opacity .45s, left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
+.cdd-det.is-on.is-ready { opacity: 1; }
 .cdd-veil { position: absolute; pointer-events: none; border-radius: var(--radius-sm, 6px); backdrop-filter: blur(var(--cuadro-veil-blur)); -webkit-backdrop-filter: blur(var(--cuadro-veil-blur)); background: color-mix(in srgb, var(--surface-2) 18%, transparent); transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
 .cdd-zoom-badge { position: absolute; right: .5rem; bottom: .5rem; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 999px; background: var(--scrim); color: var(--viewer-ink); }
-.reduce-motion .cdd-img, .reduce-motion .cdd-hi { transition: opacity .2s; }
-@media (prefers-reduced-motion: reduce) { .cdd-img, .cdd-hi { transition: opacity .2s; } }
+.reduce-motion .cdd-img, .reduce-motion .cdd-hi, .reduce-motion .cdd-det { transition: opacity .2s; }
+@media (prefers-reduced-motion: reduce) { .cdd-img, .cdd-hi, .cdd-det { transition: opacity .2s; } }
 
 /* Pistas: pastillas que se suman con cada fallo. */
 .cdd-hints { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem; margin: 0; padding: 0; list-style: none; min-height: 0; }
 .cdd-hints:empty { display: none; }
 .cdd-hint { display: inline-flex; align-items: baseline; gap: .35rem; padding: .3rem .7rem; border-radius: var(--radius-pill, 999px); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font-size: .88rem; animation: cdd-in .3s var(--ease) both; }
-.cdd-hint-k { color: var(--ink-2); font-size: .74rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.cdd-hint-k { color: var(--ink-2); font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
 @keyframes cdd-in { from { opacity: 0; transform: translateY(4px); } }
 
 /* Seis nombres en dos columnas. */
@@ -50,6 +52,10 @@
 .cdd-opt:disabled { cursor: default; }
 .cdd-opt.is-off { background: var(--surface-2); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); text-decoration: line-through; text-decoration-color: var(--bad); opacity: .75; }
 .cdd-opt.is-right { background: var(--ok); color: var(--on-ok); box-shadow: 0 3px 0 var(--ok-shadow); }
+.cdd-opt.is-shake { animation: cdd-shake var(--dur-shake, .35s) var(--ease); }
+@keyframes cdd-shake { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+.reduce-motion .cdd-opt.is-shake { animation: none; }
+@media (prefers-reduced-motion: reduce) { .cdd-opt.is-shake { animation: none; } }
 .cdd-left { margin: 0; min-height: 1.3em; color: var(--ink-2); font-size: .88rem; }
 
 /* Hecho. */
@@ -57,7 +63,14 @@
 .cdd-done .cdd-title { font-size: 1.6rem; }
 .cdd-answer { margin: -.2rem 0 .2rem; font-size: 1.05rem; color: var(--ink-2); }
 .cdd-answer strong { color: var(--ink); font-weight: 600; }
-.cdd-done .cdd-frame { cursor: zoom-in; }
+.cdd-done .cdd-frame { cursor: zoom-in; width: min(100%, var(--cuadro-frame-max), var(--cuadro-done-vh)); }
+.cdd-squares.is-in .cdd-sq { animation: cdd-pop .35s var(--ease) both; }
+.cdd-squares.is-in .cdd-sq:nth-child(2) { animation-delay: .08s; }
+.cdd-squares.is-in .cdd-sq:nth-child(3) { animation-delay: .16s; }
+.cdd-squares.is-in .cdd-sq:nth-child(4) { animation-delay: .24s; }
+@keyframes cdd-pop { from { opacity: 0; transform: scale(.4); } }
+.reduce-motion .cdd-squares.is-in .cdd-sq { animation: none; }
+@media (prefers-reduced-motion: reduce) { .cdd-squares.is-in .cdd-sq { animation: none; } }
 .cdd-caption { margin: 0; color: var(--ink-2); font-size: .9rem; }
 .cdd-squares { display: inline-flex; gap: .3rem; margin-top: .2rem; }
 .cdd-squares .cdd-sq { width: 1.1rem; height: 1.1rem; border-radius: 4px; }
@@ -79,6 +92,7 @@
 .story-avatar-icon { display: grid; place-items: center; color: var(--on-accent, var(--viewer-ink)); background: var(--accent); }
 
 @media (min-width: 48em) {
-  .cdd-body { gap: .7rem; }
-  .cdd-options { gap: .6rem; }
+  .cdd-body { gap: .7rem; max-width: 40rem; }
+  .cdd-frame { width: min(100%, var(--cuadro-frame-max-lg), var(--cuadro-frame-vh)); }
+  .cdd-options { grid-template-columns: repeat(3, 1fr); gap: .6rem; }
 }

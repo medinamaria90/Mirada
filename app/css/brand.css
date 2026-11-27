@@ -195,6 +195,8 @@
   --cuadro-chip-ok: 16px;
   --cuadro-frame-max: 26rem;
   --cuadro-frame-vh: 44vh;
+  --cuadro-frame-max-lg: 32rem;
+  --cuadro-done-vh: 38vh;
   --cuadro-radius: 18px;
   --cuadro-gap: .5rem;
   --cuadro-veil-blur: 7px; /* velo sobre la firma hasta acabar */
