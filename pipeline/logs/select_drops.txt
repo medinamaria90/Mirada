@@ -1,0 +1,5 @@
+fra-angelico     Q1215809   sl= 12 sin imagen apta            Retablo de San Marcos                         | 848x743 image/jpeg CC BY-SA 3.0
+fra-angelico     Q2529591   sl= 11 varios autores             Descendimiento de la Cruz                     | 3216x3496 image/jpeg CC BY-SA 4.0
+fra-angelico     Q61588     sl= 10 varios autores             Retablo de Fiesole                            | 1700x1274 image/jpeg Public domain
+fra-angelico     Q3223807   sl=  9 palabra                    El Juicio Final                               | 8864x4664 image/jpeg Public domain
+fra-angelico     Q3539582   sl=  8 palabra                    San Pietro Martire Triptych                   | 3882x3456 image/jpeg CC BY-SA 4.0

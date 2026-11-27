@@ -46089,5 +46089,86 @@
   "movement": null,
   "source": "wikidata",
   "fetched": "2026-11-26"
+ },
+ "Q2067212": {
+  "museum": "capilla de los Scrovegni",
+  "museumQid": "Q963954",
+  "city": "Padua",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "200 × 185 cm",
+  "heightCm": 200.0,
+  "widthCm": 185.0,
+  "inception": "1305",
+  "depicts": [
+   "Jesús de Nazaret",
+   "varón"
+  ],
+  "genre": "arte gótico",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q3504778": {
+  "museum": "capilla de los Scrovegni",
+  "museumQid": "Q963954",
+  "city": "Padua",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco sobre yeso",
+  "materials": [
+   "fresco",
+   "yeso"
+  ],
+  "dimensions": "200 × 185 cm",
+  "heightCm": 200.0,
+  "widthCm": 185.0,
+  "inception": "1303–1304",
+  "depicts": [
+   "Jesús de Nazaret",
+   "Judas Iscariote",
+   "antorcha",
+   "arresto de Jesús",
+   "aureola",
+   "fuego",
+   "nimbo",
+   "varón"
+  ],
+  "genre": "arte religioso",
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q3531531": {
+  "museum": "Galería Nacional de Arte",
+  "museumQid": "Q214867",
+  "city": "Washington",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "panel de álamo",
+   "témpera"
+  ],
+  "dimensions": "137,2 × 137,2 cm",
+  "heightCm": 137.2,
+  "widthCm": 137.2,
+  "inception": "1430",
+  "depicts": [
+   "Niño Jesús",
+   "Reyes Magos",
+   "Virgen María",
+   "adoración",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
  }
 }

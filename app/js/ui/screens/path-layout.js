@@ -123,6 +123,10 @@ function branchSpot(era, i) {
 
 const KIND_ORDER = { rama: 0, epoca: 1, escuela: 2 };
 export const MAX_BRANCH_SIGNS = 2;
+// Ramas que siempre llevan su propio cartel y entran directas en su camino, sin pasar por la hoja «Ramas (n)»: las
+// temáticas (Gótico, Estampa japonesa) y Maestros españoles, en cada época donde abre pintores (decisión de María, 27/11).
+export const OWN_SIGN_BRANCHES = new Set(['maestros-espanoles']);
+const ownSign = (b) => (b.branch.kind === 'rama' && !b.extra) || OWN_SIGN_BRANCHES.has(b.branch.id);
 
 // Ramas de cada época: las que empiezan en ella (medieval/estampa, época, escuela) y, como señal aparte (extra),
 // las escuelas que abren en ella un tramo nuevo con pintores propios.
@@ -183,9 +187,9 @@ export function pathLayout(index) {
     if (!n) continue;
     const era = eraLayout(n, phase, xIn, eras.length ? undefined : FIRST_ENTRY);
     const branches = branchesAt(index, m.id);
-    // Las ramas temáticas (Gótico, Estampa japonesa) llevan siempre su cartel; si con las demás pasan de
-    // MAX_BRANCH_SIGNS carteles, las demás van juntas en uno solo («Ramas (n)»), que abre una hoja con todas.
-    const themed = branches.filter((b) => b.branch.kind === 'rama' && !b.extra);
+    // Las de cartel propio (ownSign) lo llevan siempre; si con las demás pasan de MAX_BRANCH_SIGNS carteles, las demás
+    // van juntas en uno solo («Ramas (n)»), que abre una hoja con todas.
+    const themed = branches.filter(ownSign);
     const rest = branches.filter((b) => !themed.includes(b));
     const grouped = branches.length > MAX_BRANCH_SIGNS && rest.length > 1;
     const slots = branchSlots(n, themed.length + (grouped ? 1 : rest.length));

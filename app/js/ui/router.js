@@ -12,12 +12,15 @@ export const ROUTES = {
   collection: 'coleccion',
   painters: 'coleccion-pintores',
   profile: 'perfil',
-  medals: 'medallas',
+  medals: 'logros',
   free: 'ronda-libre',
   weekly: 'reto-semanal',
   credits: 'fuentes',
   about: 'acerca',
 };
+
+// Nombre antiguo de la pantalla de logros: los enlaces que ya lo usan siguen valiendo.
+const OLD_MEDALS = 'medallas';
 
 // Ronda «a fondo» de un pintor: a-fondo-<pintor>-<nivel> (nivel 2 en adelante).
 export const deepRoute = (artistId, level) => `a-fondo-${artistId}-${level}`;
@@ -36,6 +39,13 @@ export const eraRoute = (movementId) => `epoca-${movementId}`;
 // Pantalla de una rama (su propio paisaje y sus pintores): rama-<id>.
 export const branchRoute = (branchId) => `rama-${branchId}`;
 
+// A dónde vuelven atrás, «Salir» y la X de una ronda: a la rama si se juega desde ella (la ruta de la etapa la lleva,
+// aunque la pantalla anterior sea otra etapa de la misma rama); si no, a la ficha del pintor o su galería.
+export function stageReturnTo(branchId, prev) {
+  if (branchId) return branchRoute(branchId);
+  return /^(pintor|obras|rama)-[a-z0-9-]+$/.test(prev) ? prev : null;
+}
+
 export function parseRoute(hash, opts = {}) {
   const name = String(hash || '').replace(/^#/, '');
   if (name === '' || name === ROUTES.home) return { name: 'home' };
@@ -48,7 +58,7 @@ export function parseRoute(hash, opts = {}) {
   if (name === ROUTES.collection) return { name: 'collection', tab: 'works' };
   if (name === ROUTES.painters) return { name: 'collection', tab: 'painters' };
   if (name === ROUTES.profile) return { name: 'profile' };
-  if (name === ROUTES.medals) return { name: 'medals' };
+  if (name === ROUTES.medals || name === OLD_MEDALS) return { name: 'medals' };
   if (name === ROUTES.free) return { name: 'free' };
   if (name === ROUTES.weekly) return { name: 'weekly' };
   if (name === ROUTES.credits) return { name: 'credits' };

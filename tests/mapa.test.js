@@ -11,7 +11,7 @@ import { emptyProgress, hasMovementReview, nextStep } from '../app/js/engine/pro
 import { firstTramo } from '../app/js/engine/branches.js';
 import { icons } from '../app/js/ui/icons.js';
 import { renderPathMap, pathLayout, eraLayout, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
-import { roadX, ROAD_HALF, branchSlots, branchLayout, branchLand } from '../app/js/ui/screens/path-layout.js';
+import { roadX, ROAD_HALF, branchSlots, branchLayout, branchLand, OWN_SIGN_BRANCHES } from '../app/js/ui/screens/path-layout.js';
 import { parseRoute } from '../app/js/ui/router.js';
 import { bigIndex, salaCatalog } from './helpers.js';
 
@@ -196,7 +196,7 @@ test('mapa: carteles de época al borde del sendero, nunca encima; tramos sobre 
   assert.ok(!html.includes('stage-section') && !html.includes('class="lock-note"'), 'quedan rótulos sobre el sendero o párrafos vacíos');
 });
 
-test('mapa: ramas como desvíos en su época, cerradas el primer día; con más de dos, un solo cartel', () => {
+test('mapa: ramas como desvíos en su época, cerradas el primer día; con más de dos, un solo cartel (salvo las de cartel propio)', () => {
   const html = renderPathMap(ctxWith(real));
   const layout = pathLayout(real);
   for (const b of real.branches) {
@@ -207,10 +207,11 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
     assert.ok(spot.x < 60 || spot.x > MAP_W - 60, `${b.id}: no está en el margen`);
   }
   for (const era of layout.eras) {
-    assert.ok(era.branches.length <= 2, `${era.id}: más de dos carteles de rama`);
+    // Dos como mucho, más las de cartel propio (temáticas y Maestros españoles).
+    assert.ok(era.branches.filter((x) => !OWN_SIGN_BRANCHES.has(x.id)).length <= 2, `${era.id}: demasiados carteles de rama`);
     const group = era.branches.find((x) => x.group);
     if (group) {
-      assert.ok(group.members.length >= 2 && group.members.every((m) => real.branch(m.id).kind !== 'rama'), `${era.id}: cartel de grupo con ${group.members.length}`);
+      assert.ok(group.members.length >= 2 && group.members.every((m) => real.branch(m.id).kind !== 'rama' && !OWN_SIGN_BRANCHES.has(m.id)), `${era.id}: cartel de grupo con ${group.members.length}`);
       assert.ok(html.includes(`data-action="branches" data-id="${era.id}"`) && html.includes(`>Ramas (${group.members.length})<`) && html.includes(`aria-label="Ramas de esta época: ${group.members.length}`));
     }
   }
@@ -231,7 +232,7 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   assert.ok(html.includes(`Más del Manierismo y el Norte`) || /Descubre el Manierismo y el Norte: rama cerrada, se abre al dominar a /.test(html), 'la rama cerrada no dice qué la abre');
   assert.ok(a);
   // Orden de lectura: el cartel de ramas va justo después de su parada.
-  const era = layout.eras[0];
+  const era = layout.eras.find((e) => e.branches.some((b) => b.group));
   // Gótico y Estampa japonesa (ramas temáticas), siempre con cartel propio.
   for (const id of ['gotico', 'ukiyo-e']) assert.ok(layout.eras.some((e) => e.branches.some((b) => b.id === id && !b.group)), `${id} sin cartel propio`);
   const g = era.branches.find((b) => b.group);
@@ -242,8 +243,11 @@ test('mapa: ramas como desvíos en su época, cerradas el primer día; con más 
   assert.ok(iHost < iBranch && iBranch < iNext, 'la rama no va tras su parada en el orden de tabulación');
   // Abierta (primer tramo dominado): el grupo dice cuántas hay abiertas.
   const open = renderPathMap(ctxWith(real, masterFirst(real, tramo1Of(real))));
-  assert.ok(/class="branch is-open is-group" data-action="branches" data-id="renacimiento"/.test(open));
-  assert.ok(open.includes('<span class="branch-count">2 abiertas</span>') && /class="branch is-open" data-action="branch" data-id="gotico"/.test(open));
+  // Renacimiento: Gótico, Maestros españoles y la de época, cada una con su cartel y directa a su camino (sin hoja).
+  assert.ok(!/data-action="branches" data-id="renacimiento"/.test(open), 'Renacimiento aún agrupa sus ramas en una hoja');
+  for (const id of ['gotico', 'maestros-espanoles', 'descubre-renacimiento']) assert.ok(new RegExp(`class="branch is-open" data-action="branch" data-id="${id}"`).test(open), `${id} sin cartel propio abierto`);
+  // Maestros españoles: cartel propio también en las épocas donde abre más pintores.
+  assert.ok(layout.eras.every((e) => !e.branches.some((b) => b.members?.some((m) => m.id === 'maestros-espanoles'))), 'Maestros españoles dentro de un grupo');
 });
 
 test('mapa: textos según el estado (hito, escuelas dominadas, parada actual)', () => {

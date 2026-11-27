@@ -346,7 +346,7 @@ async function boot() {
       case 'free': return flow((m) => m.renderFree(ctx, screen));
       case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen, { tab: route.tab }), true);
       case 'profile': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen));
-      case 'medals': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen, { focus: 'medals' }));
+      case 'medals': return lazy(token, screen, loadProfile, (m) => m.renderMedals(ctx, screen));
       case 'credits': return lazy(token, screen, loadCredits, (m) => m.renderCredits(ctx, screen), true);
       case 'about': return lazy(token, screen, loadAbout, (m) => m.renderAbout(ctx, screen), true);
       default:
