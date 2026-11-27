@@ -199,19 +199,22 @@ test('guía del mapa: lo de atrás, nunca dos veces seguidas (como el resultado)
   delete globalThis.window;
 });
 
-test('el contexto manda: desde un pintor, el paso es sobre él y dice de quién («Practicar a…», «Nivel 2 de…»)', async () => {
+test('el contexto manda antes de jugar (sobre el pintor); al terminar su ronda, la guía global y «Repetir <pintor>» como secundario', async () => {
   const { artistStep } = await import('../app/js/engine/next-step.js');
+  const { practiceAction } = await import('../app/js/ui/screens/result-actions.js');
   const p = base();
-  // Con mucho pendiente, sin contexto se recomendaría el repaso general; con contexto, el pintor.
-  for (const x of [c, d, e]) p.artists[x.id] = { plays: 1, best: 0.6, mastered: false };
-  seenWorksOf(p, c.id);
-  assert.equal(step(p, { plan: { kind: 'stage', artistId: a.id }, outcome: outcome(0.9) }).kind, 'review');
-  const s = step(p, { plan: { kind: 'stage', artistId: a.id }, outcome: outcome(0.9), contextArtist: a.id });
-  assert.deepEqual([s.kind, s.label, s.to], ['practice', `Practicar a ${a.short || a.name}`, `etapa-${a.id}`]);
-  // Con un nivel «a fondo» abierto, ese nivel, con su nombre.
+  // Antes de jugar (última tarjeta de su historia): sobre él, diciendo de quién.
+  assert.deepEqual(artistStep(p, big, a.id), { kind: 'practice', to: `etapa-${a.id}`, label: `Practicar a ${a.short || a.name}`, artistId: a.id });
   const levels = [{ id: 2, name: 'La corte', short: 'La corte' }];
   const deepIndex = { ...big, deepLevels: (id) => (id === a.id ? levels : []), levelWorks: () => [] };
-  assert.deepEqual(artistStep(p, deepIndex, a.id), { kind: 'deep', to: `a-fondo-${a.id}-2`, label: `Nivel 2 de ${a.short || a.name}`, artistId: a.id });
-  // Ninguna etiqueta genérica «Repasar» en un paso con contexto.
-  assert.doesNotMatch(s.label, /^Repasar$/);
+  assert.equal(artistStep(p, deepIndex, a.id).label, `Nivel 2 de ${a.short || a.name}`);
+  // Al terminar: el principal es la guía global (no «Practicar a…» otra vez)…
+  const s = step(p, { plan: { kind: 'stage', artistId: a.id }, outcome: outcome(0.9) });
+  assert.ok(!/^Practicar a/.test(s.label), s.label);
+  // …y repetirlo va como secundario discreto, con su nombre.
+  const ctx = { index: big, today: () => TODAY, dailyDay: () => TODAY, store: { get: () => ({ progress: p }) } };
+  const replay = { to: `etapa-${a.id}`, name: a.short || a.name };
+  assert.deepEqual(practiceAction(ctx, { kind: 'stage', artistId: a.id }, { main: s.to, replay }), { to: `etapa-${a.id}`, label: `Repetir ${a.short || a.name}` });
+  // Ronda floja: «Repetir» sigue siendo el principal (regla 1).
+  assert.equal(step(p, { plan: { kind: 'stage', artistId: a.id }, outcome: outcome(0.3) }).kind, 'retry');
 });

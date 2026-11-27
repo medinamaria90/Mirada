@@ -2,8 +2,8 @@
 // Gana la primera regla que se cumple:
 //   1. etapa o sala por debajo del 50 % → «Repetir»;
 //   1 bis. se entró a jugar desde una pantalla con un objetivo (el rango del Perfil, los logros) → «Volver al perfil»;
-//   1 ter. el contexto manda: se entró desde un pintor (su historia, su ficha o su tarjeta del mapa) → algo sobre ESE
-//      pintor: su siguiente nivel «a fondo» abierto («Nivel 2 de Botticelli») o «Practicar a Botticelli» (artistStep);
+// (El contexto de un pintor manda ANTES de jugar: la última tarjeta de su historia ofrece artistStep. Al TERMINAR su ronda la
+// intención está cumplida y vale la guía global; repetirlo va como secundario, «Repetir <pintor>», en result-actions.js.)
 //   2. esta sesión cumple la meta del día → «Por hoy, hecho», con «Volver al camino»;
 //   3. repaso que traía un pintor a medias (y sigue a medias) → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»);
 //   4. 3 o más pintores a medias, o 5 o más fallados, sin repaso ni ahora ni en la sesión anterior → «Repasar»;
@@ -89,7 +89,7 @@ export function artistStep(progress, index, artistId) {
   return { kind: 'practice', to: stageRoute(artistId), label: `Practicar a ${shortName(a)}`, artistId };
 }
 
-export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '', contextArtist = '' } = {}) {
+export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '' } = {}) {
   const kind = plan.kind;
   let reviewCount = null;
   const count = () => (reviewCount ??= reviewSession(progress, index, today).works.length);
@@ -101,9 +101,6 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   }
   // 1 bis. Vuelta al objetivo.
   if (ORIGIN_LABEL[origin]) return { kind: 'origin', to: origin, label: ORIGIN_LABEL[origin] };
-  // 1 ter. El contexto manda: sobre el pintor desde el que se entró.
-  const context = contextArtist ? artistStep(progress, index, contextArtist) : null;
-  if (context) return context;
   // 2. Meta del día cumplida en esta sesión.
   if (goalJustMet) return { kind: 'done', to: HOME_ROUTE, label: BACK_LABEL };
   // 3. Repaso con un pintor a medias.

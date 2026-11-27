@@ -157,7 +157,7 @@ export function renderResult(ctx, el, opts) {
   // El siguiente paso (engine/next-step.js); los duelos no llevan recomendación.
   const week = typeof ctx.dailyDay === 'function' ? isoWeek(ctx.dailyDay()).key : '';
   const next = duel ? { kind: 'path', to: 'inicio', label: 'Volver al camino' }
-    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '', prevStep: lastStep(), contextArtist: opts.contextArtist || '' });
+    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '', prevStep: lastStep() });
   if (!duel) rememberStep(next.kind);
   const blocked = next.kind === 'retry';
   const gated = Boolean(blocked && nextOf && !isStepUnlocked(p, index, nextOf));
@@ -165,7 +165,10 @@ export function renderResult(ctx, el, opts) {
 
   // Secundarias: volver (si el principal no vuelve ya), una para practicar (nunca la misma que el principal; ninguna al
   // cerrar el día ni en un duelo) y compartir.
-  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to, weak: outcome.accuracy < MASTERY, context: Boolean(opts.contextArtist) });
+  // Ronda elegida desde un pintor: repetirla queda como secundario discreto, «Repetir <pintor>».
+  const replay = opts.contextArtist && plan.kind === 'stage' && plan.artistId === opts.contextArtist && index.artist(plan.artistId)
+    ? { to: isDeep ? deepRoute(plan.artistId, plan.level) : stageRoute(plan.artistId, inBranch?.branch.id), name: index.artist(plan.artistId).short || index.artist(plan.artistId).name } : null;
+  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to, weak: outcome.accuracy < MASTERY, replay });
   // La guía propone el Cuadro del día una sola vez al día.
   if (practice?.to === CUADRO_ROUTE) ctx.store.update((s) => ({ ...s, progress: markNudged(s.progress, ctx.dailyDay()) }));
   const shareLabel = isDaily ? 'Copiar resultado' : duel ? 'Devolver el reto' : 'Retar';
