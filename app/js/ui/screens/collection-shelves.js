@@ -15,7 +15,7 @@ export function recentHtml(works, total) {
   const all = total > works.length ? `<a class="cx-all" href="#coleccion-cuadros">Ver los ${total}${icons.next(16)}</a>` : '';
   return `<section class="cx-sec" aria-labelledby="cx-recent-h">
     <div class="cx-head"><h2 class="cx-h" id="cx-recent-h">Lo último</h2>${all}</div>
-    <ul class="cx-rail cx-works">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'cx-work', label: w.title, small: true, defer: true, zoom: { group: RECENT_GROUP, label: `Ver en grande: ${w.title}`, badge: false } })}</li>`).join('')}</ul>
+    <ul class="cx-rail cx-works">${works.map((w) => `<li>${artFrame(w, { alt: '', cls: 'cx-work', label: w.title, small: true, defer: true, zoom: { group: RECENT_GROUP, label: `Ver en grande: ${w.title}`, badge: false, more: true } })}</li>`).join('')}</ul>
   </section>`;
 }
 

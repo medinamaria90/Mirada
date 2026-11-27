@@ -175,3 +175,7 @@ final, bajo «Por descubrir». Los pintores no alcanzados salen bloqueados (mono
 dice quién es (la frase «por qué importa») y dónde se conoce (camino o rama). El buscador los encuentra como «Por
 descubrir». Código: `engine/collection-shelves.js`, `ui/screens/collection-shelves.js`, `ui/locked-painter-sheet.js`;
 `#coleccion-pintores` abre la misma página. Pruebas en `tests/coleccion.test.js`.
+Los cuadros de la Colección, de «Ver los n» y de la ficha del pintor abren el visor con su dato curioso bajo el título y un
+«Ver más» que lleva a la página de la obra (al deslizar cambia el texto: lo que María pidió el 24/11). La página de la obra
+termina con «Más de <pintor>», sus otras obras vistas, para pasar de una a otra sin cerrarla. Dentro de una ronda, el visor
+sigue igual. Código: `ui/viewer-more.js` (`data-zoom-more` en `artFrame`), `ui/artwork-sheet.js`.

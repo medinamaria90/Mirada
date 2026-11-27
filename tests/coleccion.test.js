@@ -152,3 +152,14 @@ test('colección: rutas; «Pintores» de antes abre la misma página y «Ver los
   assert.deepEqual(parseRoute('#coleccion-pintores'), { name: 'collection' });
   assert.deepEqual(parseRoute('#coleccion-cuadros'), { name: 'works', spec: { kind: 'all' } });
 });
+
+test('visor: «Ver más» solo donde se pide, con el dato curioso de la obra', async () => {
+  const { artFrame } = await import('../app/js/ui/art.js');
+  const { moreHtml } = await import('../app/js/ui/viewer-more.js');
+  const w = real.worksOf(first.id)[0];
+  assert.match(artFrame(w, { zoom: { group: 'g', more: true } }), /data-zoom-more="1"/);
+  assert.doesNotMatch(artFrame(w, { zoom: { group: 'g' } }), /data-zoom-more/, 'en una ronda, sin «Ver más»');
+  assert.match(moreHtml({ ...w, curio: { text: 'Un secreto <b>' } }), /Un secreto &lt;b&gt;/);
+  assert.doesNotMatch(moreHtml({ ...w, curio: undefined }), /viewer-curio/);
+  assert.match(moreHtml(w), /data-v="more"/);
+});

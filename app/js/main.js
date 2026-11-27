@@ -104,14 +104,17 @@ function installPrimaryKeys() {
 
 // Cualquier cuadro con data-zoom se abre en el visor a pantalla completa (módulo diferido: no
 // cuenta en el arranque).
-function installZoom(getIndex) {
+// «Ver más» del visor (Colección, ficha del pintor) abre la página de la obra.
+function installZoom(getIndex, getCtx) {
+  const more = (id, opener) => import('./ui/artwork-sheet.js')
+    .then((m) => m.openArtworkSheet(getCtx(), id, { opener })).catch((err) => console.error(err));
   document.addEventListener('click', (ev) => {
     const el = ev.target.closest('[data-zoom]');
     const index = getIndex();
     if (!el || !index) return;
     ev.preventDefault();
     import('./ui/viewer.js')
-      .then((m) => m.zoomFromElement(index, el))
+      .then((m) => m.zoomFromElement(index, el, { more }))
       .catch((err) => console.error(err));
   });
 }
@@ -192,7 +195,7 @@ async function boot() {
   // Pintores que trae una actualización: paradas extra o con «Nuevo» (engine/roster.js).
   const withRoster = (s) => { const progress = reconcileRoster(s.progress, index); return progress === s.progress ? s : { ...s, progress }; };
   store.update(withRoster);
-  installZoom(() => index);
+  installZoom(() => index, () => ctx);
   installArtistLinks(() => ctx);
   // Textos de las pistas por obra (`look`) y rasgos: se piden tras pintar; sin ellos todo funciona.
   let textPromise = null;

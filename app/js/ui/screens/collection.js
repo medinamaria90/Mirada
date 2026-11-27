@@ -20,6 +20,7 @@ function openLocked(ctx, id, opener) {
 }
 
 export async function renderCollection(ctx, el) {
+  const openWork = (id, opener) => import('../artwork-sheet.js').then((m) => m.openArtworkSheet(ctx, id, { opener })).catch((err) => console.error(err));
   await loadCss('css/coleccion.css');
   const { index } = ctx;
   const progress = ctx.store.get().progress;
@@ -52,7 +53,7 @@ export async function renderCollection(ctx, el) {
     onPick: ({ kind, id }) => {
       if (kind === 'artist') ctx.go(`pintor-${id}`);
       else if (kind === 'locked') openLocked(ctx, id, input);
-      else import('../viewer.js').then((m) => m.openViewer({ index, works: [index.artwork(id)], start: 0, reveal: true, opener: input })).catch((err) => console.error(err));
+      else import('../viewer.js').then((m) => m.openViewer({ index, works: [index.artwork(id)], start: 0, reveal: true, opener: input, more: openWork })).catch((err) => console.error(err));
     },
   }));
 
