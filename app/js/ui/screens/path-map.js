@@ -19,7 +19,7 @@ import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, GATE_Y, pathLayout, eraLayout, walkedD } from './path-layout.js';
 import { trailSvg, eraArch, startBlock, museumBlock, branchSpot, tramoSign, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
-import { eraGate, bridgeRails, protoPlace } from './path-art.js';
+import { eraGate, bridgeRails, protoPlace, startPlace } from './path-art.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout, DORMANT_TEXT };
 import { pathActions, showLockNote, levelCard } from './path-actions.js';
@@ -70,7 +70,7 @@ export function renderPathMap(ctx, { lazy = false } = {}) {
   const done = isPathMastered(ctx.store.get().progress, index);
   // El arco de la primera época va sobre la puerta de la muralla de salida.
   const first = layout.eras[0];
-  const firstArch = first && !first.arch ? archHtml(ctx, first, null, layout.start.arch, layout.start.h) : '';
+  const firstArch = first && !first.arch ? archHtml(ctx, first, null, { ...layout.start.arch, ...startPlace() }, layout.start.h) : '';
   return `${startBlock(layout.start, firstTint, firstArch)}${html}${museumBlock(layout.museum, index.visibleMovements.length, done)}`;
 }
 

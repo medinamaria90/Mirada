@@ -70,7 +70,17 @@ const START_FRONT = `${fountain(FOUNTAIN.x, FOUNTAIN.y)}${kiosk(KIOSK)}${tower(G
       <path class="land-side" d="M${GATE.left + GATE.tower} 88Q${(GATE.left + GATE.tower + GATE.right) / 2} 70 ${GATE.right} 88L${GATE.right} 85.5Q${(GATE.left + GATE.tower + GATE.right) / 2} 67.5 ${GATE.left + GATE.tower} 85.5Z"/>
       ${[0, 1, 2, 3].map((i) => `<rect class="land-front" x="${GATE.left + GATE.tower + 2 + i * 11}" y="62" width="5" height="4"/>`).join('')}`;
 
-export const startArt = () => ({ back: START_BACK, front: START_FRONT });
+// PROTOTIPO: ático con el nombre de la primera época sobre el arco de la puerta de la muralla.
+const START_ATTIC = { x0: 165, x1: 253, top: 46, bottom: 62, foot: GATE.y, boxTop: 40 };
+const START_ATTIC_SVG = `<rect class="land-front" x="${START_ATTIC.x0}" y="${START_ATTIC.top}" width="${START_ATTIC.x1 - START_ATTIC.x0}" height="${START_ATTIC.bottom - START_ATTIC.top}"/>
+      <path class="land-top" d="M${START_ATTIC.x0} ${START_ATTIC.top}H${START_ATTIC.x1}L${START_ATTIC.x1 + 4} ${START_ATTIC.top - 2.4}H${START_ATTIC.x0 + 4}Z"/>
+      <path class="land-side" d="M${START_ATTIC.x1} ${START_ATTIC.bottom}V${START_ATTIC.top}L${START_ATTIC.x1 + 4} ${START_ATTIC.top - 2.4}V${START_ATTIC.bottom - 2.4}Z"/>`;
+export const startPlace = () => {
+  const { x0, x1, bottom, foot, boxTop } = START_ATTIC;
+  const hh = foot - boxTop;
+  return { x0, x1, y: foot, top: boxTop, atticAt: (foot - bottom) / hh, atticH: (bottom - START_ATTIC.top) / hh, atticW: 1 };
+};
+export const startArt = () => ({ back: START_BACK, front: START_FRONT + START_ATTIC_SVG });
 
 // «Tu museo»: cúpula y columnas; sus ventanas se encienden de noche.
 export function museumArt() {
