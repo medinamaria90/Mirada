@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en Jane, de blanco y con los ojos vendados: busca a tientas el tajo mientras un hombre la guía con la mano.",
      "artwork": "w1213453",
+     "region": [
+      0.3,
+      0.2,
+      0.7,
+      0.9
+     ],
      "source": "https://es.wikipedia.org/wiki/La_ejecuci%C3%B3n_de_Lady_Jane_Grey"
     }
    ]

@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en la luz sobre Toledo: pincelada suelta y rápida, la ciudad y su paisaje vistos al aire libre, sin la solemnidad de las vistas antiguas.",
      "artwork": "w23936265",
+     "region": [
+      0.42,
+      0.15,
+      0.75,
+      0.8
+     ],
      "source": "https://es.wikipedia.org/wiki/Aureliano_de_Beruete"
     }
    ]

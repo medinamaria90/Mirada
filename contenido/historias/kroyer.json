@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en las dos mujeres que pasean por la orilla en la hora azul: son su esposa, Marie, y la pintora Anna Ancher.",
      "artwork": "w18085208",
+     "region": [
+      0.18,
+      0.15,
+      0.45,
+      0.75
+     ],
      "source": "https://es.wikipedia.org/wiki/Peder_Severin_Kr%C3%B8yer"
     }
    ]

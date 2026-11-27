@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en los náufragos agarrados al mástil tras la tormenta. Los marinos decían que la novena ola es la peor, pero el sol ya rompe la niebla: hay esperanza.",
      "artwork": "w1070896",
+     "region": [
+      0.3,
+      0.45,
+      0.6,
+      1.0
+     ],
      "source": "https://es.wikipedia.org/wiki/La_novena_ola"
     }
    ]
