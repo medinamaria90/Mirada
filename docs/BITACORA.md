@@ -164,3 +164,14 @@ tramo, rama) son una placa sobre dos postes; los de rama, bajo su parada en el m
 (se quita la hoja «Ramas»). Carteles de tramo y de rama con sus textos (`contenido/ramas.json`, `tramos.json`, copiados a
 `app/data/carteles/` con `tools/sync_carteles.py`) en tarjetas como las de época. Botón flotante para volver a la parada
 actual. Hitos del paisaje (molino, castillo…) que caen bajo un rótulo se corren a un hueco libre en vez de perderse.
+
+## Colección rehecha: una sola página con estanterías y pintores por descubrir (28/11)
+Encargo de María: la Colección estaba desordenada, se entendía poco y no daban ganas de entrar; un pintor no alcanzado no
+salía ni en el buscador. Auditoría y propuesta en `docs/eval/ux-coleccion.md`. Fuera las pestañas «Cuadros | Pintores» (las
+dos ordenaban lo mismo): una sola página con el buscador siempre visible, «Lo último» (cuadros en su proporción, se abren en
+el visor; «Ver los n» lleva a `#coleccion-cuadros`) y una fila por época con tarjetas de pintor (portada de su cuadro visto
+más famoso, «n de m», check dorado si está dominado; llevan a su ficha). Las épocas en las que aún no conoces a nadie van al
+final, bajo «Por descubrir». Los pintores no alcanzados salen bloqueados (monograma y candado, nunca una obra suya) y su hoja
+dice quién es (la frase «por qué importa») y dónde se conoce (camino o rama). El buscador los encuentra como «Por
+descubrir». Código: `engine/collection-shelves.js`, `ui/screens/collection-shelves.js`, `ui/locked-painter-sheet.js`;
+`#coleccion-pintores` abre la misma página. Pruebas en `tests/coleccion.test.js`.

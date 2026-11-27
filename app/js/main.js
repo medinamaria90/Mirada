@@ -345,7 +345,7 @@ async function boot() {
       case 'gallery': return lazy(token, screen, loadGallery, (m) => m.renderGallery(ctx, screen, route.movementId), true);
       case 'challenge': return flow((m) => m.renderChallenge(ctx, screen, route.challenge));
       case 'free': return flow((m) => m.renderFree(ctx, screen));
-      case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen, { tab: route.tab }), true);
+      case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen), true);
       case 'profile': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen));
       case 'medals': return lazy(token, screen, loadProfile, (m) => m.renderMedals(ctx, screen));
       case 'credits': return lazy(token, screen, loadCredits, (m) => m.renderCredits(ctx, screen), true);

@@ -11,6 +11,7 @@ export const ROUTES = {
   review5: 'repaso5',
   collection: 'coleccion',
   painters: 'coleccion-pintores',
+  allWorks: 'coleccion-cuadros',
   profile: 'perfil',
   medals: 'logros',
   free: 'ronda-libre',
@@ -55,8 +56,9 @@ export function parseRoute(hash, opts = {}) {
   if (name === ROUTES.welcome) return { name: 'welcome' };
   if (name === ROUTES.daily) return { name: 'daily' };
   if (name === ROUTES.srs) return { name: 'srs' };
-  if (name === ROUTES.collection) return { name: 'collection', tab: 'works' };
-  if (name === ROUTES.painters) return { name: 'collection', tab: 'painters' };
+  if (name === ROUTES.collection) return { name: 'collection' };
+  if (name === ROUTES.painters) return { name: 'collection' };
+  if (name === ROUTES.allWorks) return { name: 'works', spec: { kind: 'all' } };
   if (name === ROUTES.profile) return { name: 'profile' };
   if (name === ROUTES.medals || name === OLD_MEDALS) return { name: 'medals' };
   if (name === ROUTES.free) return { name: 'free' };
