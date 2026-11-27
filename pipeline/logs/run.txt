@@ -22,3 +22,10 @@ fin: 1803 fichas; con museo 1746, con ciudad 1731, con técnica 1713, con medida
 reconciliar: 1797 imágenes en releases, 1797 en img_meta, quitadas 0 que no estaban subidas
 64M	.git
 3.7M	catalogo
+== download 1 150 01:22:39
+ok   w3276413    simone-martini   1600x1230 661KB  Maestà del Palazzo Pubblico
+ok   w21614531   simone-martini   1000x1600 338KB  Descent from the Cross
+ok   w1215809    fra-angelico     1548x1600 780KB  Retablo de San Marcos
+lote: 7/7 bien; quedan 0
+subidas 7 imágenes a la release catalogo-img-2
+build: 1471 obras (1471 con imagen, 1471 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 20, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 6, ukiyo-e 5
