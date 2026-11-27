@@ -15,7 +15,7 @@ import { branchStatus, branchLockReason, branchProgress } from '../../engine/bra
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { eraPlace } from './path-art.js';
 import { trailSvg, tramoSign, branchEntrySign, backSpot, branchShort, stepName, pct, FOOT_H } from './path-signs.js';
-import { STATE_LABEL, startedLabel, startedMeta, dotFor, nodeHtml } from './path-nodes.js';
+import { STATE_LABEL, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
 import { setMapFocus, takeBranchFocus, showLockNote, watchMapMode, watchLandscapes, levelCard, pathActions, frontSvg } from './path-map.js';
@@ -56,7 +56,7 @@ function node(ctx, branch, row, current) {
   return nodeHtml({
     cls: '', action: 'stage', id: a.id, status: row.status, lock, current, unlock: locked.unlock,
     label: row.status === 'started' ? startedLabel(a.name, p.artists[a.id]?.best) : `${a.name}, ${STATE_LABEL[row.status]}${lock ? `. ${lock}` : ''}`,
-    name: a.name, meta: row.status === 'started' ? startedMeta(p.artists[a.id]?.best) : '', dot,
+    name: a.name, meta: '', dot,
   });
 }
 

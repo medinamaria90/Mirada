@@ -10,6 +10,7 @@ const LIST_NAMES = {
   'descubre-romanticismo': 'Más del Romanticismo', 'descubre-realismo': 'Más del Realismo',
   'descubre-impresionismo': 'Más del Impresionismo', 'descubre-postimpresionismo': 'Más del Postimpresionismo',
   'descubre-simbolismo-modernismo': 'Más del Simbolismo y las vanguardias',
+  test: 'Test de cultura pictórica',
 };
 
 /** «Renacimiento» para `renaissance`; si la lista no se conoce, su propia clave. */

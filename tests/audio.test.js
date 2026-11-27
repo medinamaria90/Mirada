@@ -472,3 +472,39 @@ test('cuerda pulsada sin brillo metálico: casi toda la energía por debajo de 2
   const r = pluckBuffer(SR, 261.63, 0.3, { ...KS.lute, seed: 3 });
   assert.ok(Math.abs(r.data[0]) < 1e-6 && Math.abs(r.freq / 261.63 - 1) < 0.02);
 });
+
+test('test de cultura: su pieza es «Sala de entrada» nota a nota, en do mayor y sin pasarse de su registro', () => {
+  assert.equal(playlistOf('test').main, 'test/reto');
+  const orig = compilePiece('menu');
+  const reto = compilePiece('test/reto');
+  const mel = (c) => c.events.filter((e) => e.voice === 'mel');
+  const line = (c) => mel(c).map((e) => `${e.midi}/${e.dur}`).join(' ');
+  assert.ok(line(reto).includes(line(orig)), 'la melodía de la portada, entera y con su ritmo');
+  const range = (ev) => [Math.min(...ev.map((e) => e.midi)), Math.max(...ev.map((e) => e.midi))];
+  assert.deepEqual(range(mel(reto)), range(mel(orig)), 'mismo rango melódico que el original');
+  assert.equal(getPiece('test/reto').orn, null, 'sin adornos que añadan notas');
+  const C_MAJOR = new Set([0, 2, 4, 5, 7, 9, 11]);
+  for (let loop = 0; loop < 4; loop++) {
+    const sounding = varyLoop(reto, loop, mulberry32(loop + 1));
+    assert.deepEqual(sounding.filter((e) => !C_MAJOR.has(e.midi % 12)), [], `vuelta ${loop}: nota fuera de do mayor`);
+    assert.deepEqual(range(sounding.filter((e) => e.voice === 'mel')), range(mel(orig)), `vuelta ${loop}: pico fuera del registro`);
+  }
+  assert.equal(new Set(reto.events.map((e) => getPiece('test/reto').voices[e.voice])).size, 1, 'piano solo');
+  const seconds = (reto.bars * reto.beatsPerBar * 60) / reto.bpm;
+  assert.ok(seconds >= 60 && seconds <= 90, `${seconds} s antes de repetirse`);
+  assert.equal(mel(reto).at(-1).midi % 12, 0, 'acaba en do: el empalme con el principio no se nota');
+});
+
+test('test de cultura: la página lee los ajustes de sonido de la app sin escribir nada', async () => {
+  const { savedSettings, TEST_LIST } = await import('../app/js/test/musica.js');
+  assert.ok(hasList(TEST_LIST));
+  assert.equal(savedSettings(null).music, true, 'sin nada guardado, música encendida como en la app');
+  const writes = [];
+  const storage = { getItem: () => JSON.stringify({ version: 1, settings: { music: false, sfx: true, volume: 0.3 } }), setItem: (k) => writes.push(k) };
+  assert.equal(savedSettings(storage).music, false, 'si la apagó en la app, aquí tampoco suena');
+  assert.equal(savedSettings({ getItem: () => '{roto' }).music, true);
+  assert.deepEqual(writes, []);
+  audio.setEra(TEST_LIST);
+  assert.equal(getState().era, TEST_LIST);
+  audio.setEra('menu');
+});
