@@ -1164,6 +1164,16 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 .viewer-name { font: 500 1.08rem/1.25 var(--font); overflow-wrap: anywhere; }
 .viewer-meta, .viewer-museum { font-size: .9rem; color: var(--viewer-ink-3); overflow-wrap: anywhere; }
 .viewer-museum:empty { display: none; }
+/* «Ver más» (ui/viewer-more.js): el dato curioso en tres líneas como mucho y el enlace a la página de la obra. */
+.viewer-curio {
+  max-width: 36rem; margin: .45rem auto 0; color: var(--viewer-ink-2); font: 400 .95rem/1.4 var(--font); text-wrap: pretty;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.viewer-more {
+  justify-self: center; display: inline-flex; align-items: center; gap: .2rem; min-height: 44px; margin-top: .15rem; padding: 0 .6rem 0 .9rem;
+  border: 0; border-radius: 999px; background: none; color: var(--viewer-ink); font: 600 .95rem/1 var(--font); cursor: pointer;
+}
+.viewer-more:hover { background: color-mix(in srgb, var(--viewer-ink) 12%, transparent); }
 .viewer-bar {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem 1.2rem;
   padding: .5rem 1rem calc(.9rem + env(safe-area-inset-bottom, 0px));
@@ -1229,6 +1239,8 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
   .viewer.has-title .viewer-caption { top: 3.6rem; }
   .viewer-name { font-size: 1rem; }
   .viewer-meta { font-size: .8rem; }
+  .viewer-curio { display: none; }
+  .viewer-more { pointer-events: auto; justify-self: start; min-height: 40px; padding-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .viewer, .viewer-lens.is-on, .viewer-zoom { animation: none; } .viewer-img, .viewer-frame.is-settling { transition: none; } }
 .reduce-motion .viewer, .reduce-motion .viewer-lens.is-on, .reduce-motion .viewer-zoom { animation: none; }

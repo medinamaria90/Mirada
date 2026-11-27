@@ -1,5 +1,5 @@
-// Colección agrupada por pintor y buscador con sugerencias: franjas, orden, invitados juntos, umbral del
-// buscador, coincidencia sin tildes por principio de palabra con una errata y marcas en negrita.
+// Colección en estanterías y buscador con sugerencias: «Lo último», una fila por época con los que esperan bloqueados
+// (sin obras), dónde se conoce a cada uno, coincidencia sin tildes por principio de palabra con una errata y marcas.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -7,7 +7,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
-import { collectionStrips, unlockedPainterCount, unlockedMovements, suggestPool, STRIP_THUMBS, SEARCH_MIN_PAINTERS } from '../app/js/engine/collection.js';
+import { isGuest, guestWorks } from '../app/js/engine/collection.js';
+import { seenWorksByRecent, recentWorks, eraShelves, searchPool, whereToMeet } from '../app/js/engine/collection-shelves.js';
+import { periodStart } from '../app/js/engine/movements.js';
 import { seenOf } from '../app/js/engine/painters.js';
 import { suggest, foldText, withinOne, matchToken, splitByMarks, SUGGEST_MAX } from '../app/js/engine/suggest.js';
 
@@ -19,51 +21,58 @@ function unlock(p, artistId, n, day = '2026-11-20') {
 }
 const first = real.path[0];
 
-test('colección: una franja por pintor con «n de m» y solo las 3 últimas a la vista', () => {
+test('colección: «Lo último» son las obras vistas más recientes primero (también las vistas en una ronda)', () => {
   const p = emptyProgress();
-  unlock(p, first.id, 5);
-  const [s] = collectionStrips(p, real);
-  assert.equal(s.id, first.id);
-  assert.equal(s.count, 5);
-  assert.equal(s.total, real.worksOf(first.id).length);
-  assert.equal(s.shown.length, STRIP_THUMBS);
-  const days = s.works.map((w) => p.collection[w.id]);
-  assert.deepEqual(days, [...days].sort().reverse(), 'las más recientes primero');
-  assert.deepEqual(s.shown, s.works.slice(0, STRIP_THUMBS));
+  unlock(p, first.id, 3, '2026-11-01');
+  unlock(p, real.path[1].id, 2, '2026-11-25');
+  const ronda = real.worksOf(real.path[2].id)[0];
+  p.artists[real.path[2].id] = { works: [ronda.id] };
+  const all = seenWorksByRecent(p, real);
+  assert.equal(all.length, 6);
+  assert.deepEqual(all.slice(0, 2).map((w) => w.artistId), [real.path[1].id, real.path[1].id], 'lo último, delante');
+  assert.equal(all[all.length - 1].id, ronda.id, 'lo visto en una ronda sin día, al final');
+  assert.equal(recentWorks(p, real, 4).length, 4);
 });
 
-test('colección: siempre por movimiento en orden cronológico, y se puede filtrar por movimiento', () => {
+test('colección: una fila por época en orden cronológico; conocidos primero y después los que esperan, en orden del camino', () => {
   const p = emptyProgress();
-  const early = real.path[0];
-  const late = real.path[real.path.length - 1];
-  unlock(p, late.id, 2, '2026-11-25');
-  unlock(p, early.id, 2, '2026-11-01');
-  assert.deepEqual(collectionStrips(p, real).map((s) => s.id), [early.id, late.id], 'lo último desbloqueado no cambia el orden');
-  const mov = collectionStrips(p, real, { movementId: late.movementId });
-  assert.ok(mov.length && mov.every((s) => s.movement.id === late.movementId));
+  unlock(p, real.path[3].id, 2);
+  const shelves = eraShelves(p, real);
+  const starts = shelves.map((s) => periodStart(s.movement.period) ?? 9999);
+  assert.deepEqual(starts, [...starts].sort((a, b) => a - b));
+  const ren = shelves.find((s) => s.movement.id === real.path[3].movementId);
+  assert.equal(ren.known, 1);
+  assert.equal(ren.painters[0].artist.id, real.path[3].id);
+  assert.equal(ren.painters[0].seen, 2);
+  const locked = ren.painters.slice(1);
+  assert.ok(locked.length && locked.every((r) => r.state === 'locked' && r.seen === 0 && r.cover === null), 'los bloqueados no llevan obra');
+  const onPath = locked.map((r) => real.pathIndex(r.artist.id)).filter((i) => i >= 0);
+  assert.deepEqual(onPath, [...onPath].sort((a, b) => a - b));
+  assert.equal(locked[0].artist.id, real.path[0].id, 'el primero que espera es el siguiente del camino');
+  assert.ok(shelves.every((s) => s.total === s.painters.length));
 });
 
-test('colección: los invitados van juntos en una sola franja por movimiento, al final de él', () => {
-  const p = emptyProgress();
-  const guests = real.artists.filter((a) => a.category === 'invitado' && a.movementId === 'barroco');
-  assert.ok(guests.length >= 2);
-  for (const g of guests.slice(0, 3)) unlock(p, g.id, 1);
-  unlock(p, real.stageArtists('barroco')[0].id, 1);
-  const strips = collectionStrips(p, real).filter((s) => s.movement.id === 'barroco');
-  assert.equal(strips.filter((s) => s.kind === 'guests').length, 1);
-  assert.equal(strips[strips.length - 1].kind, 'guests');
-  assert.equal(strips[strips.length - 1].name, 'Invitados');
-  assert.equal(strips[strips.length - 1].count, Math.min(3, guests.length));
+test('colección: sin nada visto todas las épocas salen enteras por descubrir', () => {
+  const shelves = eraShelves(emptyProgress(), real);
+  assert.ok(shelves.length >= 9);
+  assert.ok(shelves.every((s) => s.known === 0 && s.painters.every((r) => r.state === 'locked')));
 });
 
-test('colección: el buscador sale con 15 pintores o más con alguna obra desbloqueada', () => {
+test('colección: dominado / en marcha según el motor', () => {
   const p = emptyProgress();
-  const artists = real.artists.slice(0, SEARCH_MIN_PAINTERS);
-  artists.slice(0, SEARCH_MIN_PAINTERS - 1).forEach((a) => unlock(p, a.id, 1));
-  assert.equal(unlockedPainterCount(p, real), SEARCH_MIN_PAINTERS - 1);
-  unlock(p, artists[SEARCH_MIN_PAINTERS - 1].id, 1);
-  assert.equal(unlockedPainterCount(p, real), SEARCH_MIN_PAINTERS);
-  assert.ok(unlockedMovements(p, real).length >= 1);
+  const [a, b] = real.path;
+  p.artists[a.id] = { plays: 2, best: 0.9, mastered: true, works: real.levelWorks(a.id, 1).map((w) => w.id) };
+  unlock(p, b.id, 1);
+  const rows = eraShelves(p, real).flatMap((s) => s.painters);
+  assert.equal(rows.find((r) => r.artist.id === a.id).state, 'mastered');
+  assert.equal(rows.find((r) => r.artist.id === b.id).state, 'started');
+  assert.ok(rows.find((r) => r.artist.id === a.id).cover, 'un conocido lleva portada de lo visto');
+});
+
+test('colección: un pintor de rama sin ver se conoce en su rama; uno del camino, en el camino', () => {
+  const cimabue = real.artist('cimabue');
+  assert.deepEqual(whereToMeet(real, cimabue), { kind: 'branch', id: 'gotico', name: real.branch('gotico').name });
+  assert.deepEqual(whereToMeet(real, real.path[0]), { kind: 'path' });
 });
 
 const pool = {
@@ -102,24 +111,55 @@ test('sugerencias: pintores primero, luego títulos; como mucho 6; con las marca
   assert.deepEqual(splitByMarks(two.label, two.marks).filter((p) => p.hit).map((p) => p.text), ['van', 'Go']);
 });
 
-test('sugerencias: el conjunto sale solo de lo desbloqueado', () => {
+test('buscador: conocidos y sus obras vistas; los demás pintores salen como «por descubrir», sin obras', () => {
   const p = emptyProgress();
   unlock(p, 'goya', 2);
-  const pl = suggestPool(p, real);
+  const pl = searchPool(p, real);
   assert.deepEqual(pl.artists.map((a) => a.id), ['goya']);
   assert.equal(pl.works.length, 2);
-  assert.deepEqual(suggest(pl, 'velaz'), [], 'Velázquez no está desbloqueado');
-  assert.equal(suggest(pl, 'goy')[0].id, 'goya');
+  assert.ok(pl.works.every((w) => w.artistId === 'goya'));
+  assert.ok(pl.locked.some((a) => a.id === 'velazquez'));
+  const vel = suggest(pl, 'velaz');
+  assert.equal(vel[0].kind, 'locked');
+  assert.equal(vel[0].thumbId, null, 'sin miniatura: no se enseña ninguna obra suya');
+  assert.equal(suggest(pl, 'goy')[0].kind, 'artist');
 });
 
-test('colección: «desbloqueada» es lo visto (colección o rondas), igual que la ficha y la lista de pintores', () => {
+test('colección: «desbloqueada» es lo visto (colección o rondas), igual que la ficha', () => {
   const p = emptyProgress();
   const works = real.worksOf(first.id);
   p.collection[works[0].id] = '2026-11-20';
   p.artists[first.id] = { works: [works[1].id, works[2].id] };
-  const [s] = collectionStrips(p, real);
-  assert.equal(s.count, 3);
-  assert.equal(s.count, seenOf(p, real, first.id).length, 'la franja y la ficha cuentan lo mismo');
-  assert.equal(s.works.length, 3);
-  assert.equal(unlockedPainterCount(p, real), 1);
+  const row = eraShelves(p, real).flatMap((s) => s.painters).find((r) => r.artist.id === first.id);
+  assert.equal(row.seen, 3);
+  assert.equal(row.seen, seenOf(p, real, first.id).length, 'la tarjeta y la ficha cuentan lo mismo');
+});
+
+test('colección: los invitados de un movimiento, juntos y en orden cronológico', () => {
+  const p = emptyProgress();
+  const guests = real.artists.filter((a) => isGuest(a) && a.movementId === 'barroco');
+  for (const g of guests.slice(0, 3)) unlock(p, g.id, 1);
+  const out = guestWorks(p, real, 'barroco');
+  assert.equal(out.works.length, Math.min(3, guests.length));
+  const years = out.works.map((w) => w.yearSort || 0);
+  assert.deepEqual(years, [...years].sort((a, b) => a - b));
+  assert.equal(out.total, guests.reduce((n, g) => n + real.worksOf(g.id).length, 0));
+});
+
+test('colección: rutas; «Pintores» de antes abre la misma página y «Ver los n» todos tus cuadros', async () => {
+  const { parseRoute } = await import('../app/js/ui/router.js');
+  assert.deepEqual(parseRoute('#coleccion'), { name: 'collection' });
+  assert.deepEqual(parseRoute('#coleccion-pintores'), { name: 'collection' });
+  assert.deepEqual(parseRoute('#coleccion-cuadros'), { name: 'works', spec: { kind: 'all' } });
+});
+
+test('visor: «Ver más» solo donde se pide, con el dato curioso de la obra', async () => {
+  const { artFrame } = await import('../app/js/ui/art.js');
+  const { moreHtml } = await import('../app/js/ui/viewer-more.js');
+  const w = real.worksOf(first.id)[0];
+  assert.match(artFrame(w, { zoom: { group: 'g', more: true } }), /data-zoom-more="1"/);
+  assert.doesNotMatch(artFrame(w, { zoom: { group: 'g' } }), /data-zoom-more/, 'en una ronda, sin «Ver más»');
+  assert.match(moreHtml({ ...w, curio: { text: 'Un secreto <b>' } }), /Un secreto &lt;b&gt;/);
+  assert.doesNotMatch(moreHtml({ ...w, curio: undefined }), /viewer-curio/);
+  assert.match(moreHtml(w), /data-v="more"/);
 });

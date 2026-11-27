@@ -1095,21 +1095,19 @@ if (SMOKE) {
   await audit(page, '390 perfil');
   check((await page.locator('.pf-rank-name').innerText()).length > 0 && (await page.locator('.pf-layout').innerText()).includes('Logros'), 'perfil sin rango ni logros');
   check(await page.locator('button.pf-medal').count() >= 1, 'las medallas del perfil no son pulsables');
-  // Colección → «Pintores»: lista por épocas con buscador; la ficha se abre sobre la pantalla y solo enseña lo ya visto.
-  // 16 pintores conocidos: con tantos sale el buscador (con menos no hay nada que buscar).
+  // Colección: buscador siempre, «Lo último» y una fila por época; los que esperan, bloqueados y sin obras.
   const pintSeen = Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
   pintSeen[index.worksOf(index.path[0].id)[1].id] = '2026-11-21';
   await seed(page, seededState({ upTo: 3, extra: { collection: pintSeen } }), 'coleccion-pintores');
-  await page.waitForSelector('.pl-row');
-  check(await page.locator('.coll-tab[aria-current="page"]').innerText() === 'Pintores', 'la pestaña «Pintores» no está marcada');
-  await audit(page, '390 pintores');
-  const rows = await page.locator('.pl-row').count();
-  await page.fill('.pl-input', 'zzzz');
-  check(await page.locator('.pl-row').count() === 0 && await page.locator('.pl-empty').count() === 1, 'la búsqueda sin resultados no lo dice');
-  await page.fill('.pl-input', '');
-  check(await page.locator('.pl-row').count() === rows, 'al vaciar la búsqueda no vuelve la lista');
+  await page.waitForSelector('.cx-card');
+  await audit(page, '390 colección');
+  check(await page.locator('.cx-works .art-zoom').count() >= 1, 'no sale «Lo último»');
+  check(await page.locator('.cx-card.is-locked img').count() === 0, 'un pintor bloqueado enseña una obra');
+  await page.fill('.sg-input', 'zzzz');
+  check(await page.locator('.sg-empty:not([hidden])').count() === 1, 'la búsqueda sin resultados no lo dice');
+  await page.fill('.sg-input', '');
   const firstRowArtist = index.path[0].id;
-  const storyRow = page.locator(`.pl-row[data-artist="${firstRowArtist}"]`);
+  const storyRow = page.locator(`.cx-card[data-artist="${firstRowArtist}"]`);
   await storyRow.scrollIntoViewIfNeeded();
   const listY = await page.evaluate(() => window.scrollY);
   await storyRow.click();
@@ -1145,7 +1143,7 @@ if (SMOKE) {
   check(page.url() === storyUrl && await page.locator('.ap-name').count() === 1, `atrás con la historia abierta no deja en la ficha: ${page.url()}`);
   check(await page.locator('.ap-ring.is-seen').count() === 1, 'el anillo de la historia vista no es gris');
   await page.goBack();
-  await page.waitForSelector('.pl-row');
+  await page.waitForSelector('.cx-card');
   check(Math.abs((await page.evaluate(() => window.scrollY)) - listY) < 8, 'atrás no devuelve la lista donde estaba');
   // Historia al empezar el nivel: tarjetas (≤ 3) con barra de progreso, saltable, solo la primera vez.
   // Con movimiento reducido las tarjetas no avanzan solas: se pasa a mano (con él, avanzan al llenarse la barra).
@@ -1278,24 +1276,13 @@ if (SMOKE) {
     check(spg.url().endsWith(`#a-fondo-${stageStoryArtist.id}-2`), `historia de etapa «a fondo» (${how}): la ruta cambia a ${spg.url()}`);
     await sc.close();
   }
-  // Colección → «Cuadros»: franjas por pintor; el buscador con sugerencias solo con 15 pintores o más.
-  const fewColl = Object.fromEntries(index.path.slice(0, 3).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
-  await seed(page, seededState({ upTo: 3, extra: { collection: fewColl } }), 'coleccion');
-  await page.waitForSelector('.coll-strip');
-  check(await page.locator('.coll-strip').count() === 3 && await page.locator('.sg-input').count() === 0, 'con menos de 15 pintores aparece el buscador o faltan franjas');
-  const countText = (await page.locator('.coll-strip .coll-count').first().innerText()).trim();
-  check(/^1 de [0-9]+$/.test(countText), `la franja no dice «n de m»: ${countText}`);
-  // «Ver sus n cuadros» lleva a la galería del pintor: las desbloqueadas como miniaturas, el resto huecos sin imagen.
+  // Galería del pintor (desde su ficha, «Ver todos»): las desbloqueadas como miniaturas y lo que falta en una frase.
   const allArtist = index.path[0];
   const allWorks = index.worksOf(allArtist.id);
   const fourColl = Object.fromEntries(allWorks.slice(0, 4).map((w) => [w.id, '2026-11-20']));
-  await seed(page, seededState({ upTo: 3, extra: { collection: fourColl } }), 'coleccion');
-  await page.waitForSelector('.coll-strip');
-  check(/^4 de [0-9]+$/.test((await page.locator('.coll-strip .coll-count').first().innerText()).trim()), 'la franja no cuenta las 4 desbloqueadas');
-  check(/^Ver sus 4 cuadros$/.test((await page.locator('.coll-all').first().innerText()).trim()), 'el enlace de la franja no dice «Ver sus 4 cuadros»');
-  check(await page.locator('.coll-recent').count() === 0, 'sigue la casilla «Lo último primero»');
-  const stripY = await page.evaluate(() => window.scrollY);
-  await page.locator('.coll-all').first().click();
+  await seed(page, seededState({ upTo: 3, extra: { collection: fourColl } }), `pintor-${allArtist.id}`);
+  await page.waitForSelector('.ap-all');
+  await page.locator('.ap-all').click();
   await page.waitForSelector('.aw-grid');
   check(page.url().endsWith(`#obras-${allArtist.id}`), `«Ver sus 4 cuadros» no lleva a su galería: ${page.url()}`);
   const gal = await page.evaluate(() => {
@@ -1320,9 +1307,6 @@ if (SMOKE) {
   await page.waitForSelector('.ap-name');
   await page.locator('.ap-back').click();
   await page.waitForSelector('.aw-grid');
-  await page.locator('.ap-back').click();
-  await page.waitForSelector('.coll-strip');
-  check(Math.abs((await page.evaluate(() => window.scrollY)) - stripY) < 8 && page.url().endsWith('#coleccion'), `atrás no devuelve a la Colección donde estaba (${page.url()})`);
   const manyColl = Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
   await seed(page, seededState({ upTo: 3, extra: { collection: manyColl } }), 'coleccion');
   await page.waitForSelector('.sg-input');
@@ -1343,11 +1327,19 @@ if (SMOKE) {
   await page.waitForSelector('.ap-name');
   check(page.url().includes('#pintor-'), 'elegir un pintor no abre su ficha');
   await page.goBack();
-  await page.waitForSelector('.coll-strip');
-  await page.locator('.coll-name-btn').first().click();
+  await page.waitForSelector('.cx-card');
+  await page.locator('.cx-card[data-artist]').first().click();
   await page.waitForSelector('.ap-name');
   await page.goBack();
-  await page.waitForSelector('.coll-strip');
+  await page.waitForSelector('.cx-card');
+  // Un pintor por descubrir: su hoja dice quién es y dónde se conoce, sin ninguna obra suya.
+  await page.locator('.cx-card.is-locked').first().click();
+  await page.waitForSelector('.map-sheet[open] .ms-title');
+  check(await page.locator('.map-sheet[open] .art, .map-sheet[open] img:not(.av-bg)').count() === 0 && await page.locator('.map-sheet[open] .ms-lock').count() === 1, 'la hoja de un pintor por descubrir enseña obras o no dice dónde se conoce');
+  await shot(page, '14g-pintor-bloqueado');
+  await audit(page, '390 pintor por descubrir');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.map-sheet', { state: 'detached' });
   // Pintor sin ver (enlace directo): ficha sin cuadros nombrados ni historia; invitados con autor y huecos resumidos; texto al 200 %.
   await seed(page, seededState({ upTo: 0 }), 'pintor-goya');
   await page.waitForSelector('.ap-name');
@@ -1360,7 +1352,7 @@ if (SMOKE) {
   await seed(page, seededState({ upTo: 3, extra: { collection: { [index.worksOf(guestArtist.id)[0].id]: '2026-11-20' } } }), `obras-invitados-${guestArtist.movementId}`);
   await page.waitForSelector('.aw-grid');
   check(await page.locator('.aw-who').count() === 1 && /^y \d+ por descubrir$/.test((await page.locator('.aw-more').innerText()).trim()) && await page.locator('.ap-gap').count() === 0, 'la galería de invitados no pone el autor ni resume los huecos');
-  // La Colección entra por los ojos: con 16 pintores, buscador y filtro en una sola barra y el primer cuadro a la vista en 360×640.
+  // La Colección entra por los ojos: el primer cuadro de «Lo último» se ve entero en la primera pantalla de 360×640.
   const eyeCtx2 = await rawNewContext({ viewport: { width: 360, height: 640 } });
   const ep = await eyeCtx2.newPage();
   watch(ep, 'primer-cuadro');
@@ -1368,10 +1360,10 @@ if (SMOKE) {
   await ep.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: index.stepsOf(index.visibleMovements[0].id).length, extra: { collection: Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20'])) } }));
   await ep.goto(`${base}#coleccion`);
   await ep.reload();
-  await ep.waitForSelector('.coll-item');
+  await ep.waitForSelector('.cx-works .art');
   await ep.waitForTimeout(500);
-  const eye = await ep.evaluate(() => { const i = document.querySelector('.coll-item').getBoundingClientRect(); const bar = document.querySelector('.coll-bar'); return { top: i.top, bottom: i.bottom, vh: innerHeight, oneBar: Boolean(bar && bar.querySelector('.sg-input') && bar.querySelector('.coll-select')), chips: document.querySelectorAll('.chip-filter').length, salas: document.querySelectorAll('.coll-salas').length, subOneLine: (() => { const sub = document.querySelector('.coll-strip-sub'); return sub.getBoundingClientRect().height < 60; })() }; });
-  check(eye.bottom <= eye.vh - 64 && eye.oneBar && eye.chips === 0 && eye.salas === 1 && eye.subOneLine, `el primer cuadro no se ve en la primera pantalla de 360×640: ${JSON.stringify(eye)}`);
+  const eye = await ep.evaluate(() => { const i = document.querySelector('.cx-works .art').getBoundingClientRect(); return { bottom: i.bottom, vh: innerHeight, search: Boolean(document.querySelector('.sg-input')), salas: document.querySelectorAll('.cx-sala').length }; });
+  check(eye.bottom <= eye.vh - 64 && eye.search && eye.salas === 1, `el primer cuadro no se ve en la primera pantalla de 360×640: ${JSON.stringify(eye)}`);
   await shot(ep, '14n-coleccion-360');
   await audit(ep, '360 colección con buscador');
   await eyeCtx2.close();
@@ -1386,14 +1378,14 @@ if (SMOKE) {
   for (const r of ['coleccion', 'coleccion-pintores', `pintor-${index.path[0].id}`, `obras-${index.path[0].id}`]) {
     await bp.goto(`${base}#${r}`);
     await bp.reload();
-    await bp.waitForSelector('.coll-strip, .pl-row, .ap-name, .aw-grid');
+    await bp.waitForSelector('.cx-card, .ap-name, .aw-grid');
     await bp.waitForTimeout(300);
     const over = await bp.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     check(over <= 0, `texto al 200 % en 360 px: #${r} desborda ${over} px`);
     if (r === 'coleccion') {
-      // La cabecera de la franja salta de línea: el nombre se lee entero y «Ver sus n cuadros» tiene su línea.
-      const head = await bp.evaluate(() => [...document.querySelectorAll('.coll-strip-head')].slice(0, 6).map((h) => { const n = h.querySelector('.coll-name-btn, .coll-guests-name'); const a = h.querySelector('.coll-all'); return { w: n.getBoundingClientRect().width, clipped: n.scrollWidth > n.clientWidth + 1, ownLine: a.getBoundingClientRect().top >= n.getBoundingClientRect().bottom - 2 }; }));
-      check(head.every((h) => h.w >= 140 && !h.clipped && h.ownLine), `texto al 200 %: cabecera de franja ${JSON.stringify(head)}`);
+      // Con letra grande, el nombre de cada pintor se lee (dos líneas como mucho, sin cortar la palabra).
+      const names = await bp.evaluate(() => [...document.querySelectorAll('.cx-name')].slice(0, 6).map((n) => n.scrollWidth <= n.clientWidth + 1));
+      check(names.every(Boolean), `texto al 200 %: nombres de pintor cortados ${JSON.stringify(names)}`);
     }
     if (r.startsWith('obras-')) {
       // El título de la galería no se parte letra a letra: ancho útil y sin recortes; «Su ficha» en su fila.
@@ -1645,8 +1637,8 @@ await shot(page, '16-mapa-tras-jugar');
 
 // Colección y ficha
 await page.click('.nav-item[href="#coleccion"]');
-await page.waitForSelector('.coll-grid');
-await page.locator('.coll-item').first().click();
+await page.waitForSelector('.cx-works .art-zoom');
+await page.locator('.cx-works .art-zoom').first().click();
 await page.waitForSelector('.viewer[open]');
 await shot(page, '17-ficha');
 await audit(page, '390 visor desde la colección');
@@ -1668,7 +1660,7 @@ check((await page.locator('.chip-goal').getAttribute('aria-label')).includes('de
 check(await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.dailyGoal) === 100, 'meta no persistida');
 check(await page.locator('.pf-medal.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
 await page.goto(`${base}#coleccion`);
-await page.waitForSelector('.coll-grid');
+await page.waitForSelector('.cx-works');
 await page.waitForTimeout(500);
 await shot(page, '17b-coleccion');
 await audit(page, '390 coleccion');
@@ -2220,7 +2212,7 @@ await kpage.waitForSelector('.pf-hero');
 await shot(kpage, '37-oscuro-perfil', true);
 await audit(kpage, 'oscuro perfil');
 await kpage.goto(`${base}#coleccion`);
-await kpage.waitForSelector('.coll-grid');
+await kpage.waitForSelector('.cx-works');
 await audit(kpage, 'oscuro coleccion');
 await kpage.goto(`${base}#galeria-${index.visibleMovements[0].id}`);
 await kpage.waitForSelector('.gallery');
@@ -2298,7 +2290,7 @@ await playRound(wpage, {
 await wpage.waitForTimeout(1200);
 await shot(wpage, '41-escritorio-fin');
 await wpage.goto(`${base}#coleccion`);
-await wpage.waitForSelector('.coll-grid');
+await wpage.waitForSelector('.cx-works');
 await wpage.waitForTimeout(500);
 await shot(wpage, '42-escritorio-coleccion');
 
@@ -2385,11 +2377,11 @@ for (const scheme of ['light', 'dark']) {
       await p7.waitForTimeout(450);
       check(await p7.locator('.medal-dialog[open]').count() === 0, `[${tag}] Esc no cierra la hoja de medalla`);
       check(await p7.evaluate(() => document.activeElement?.textContent.includes('7 días')), `[${tag}] el foco no vuelve a la medalla`);
-      // «Ojo de…» ya no sale en las franjas de Colección (dos contadores contradictorios); queda en la etapa del pintor dominado.
+      // «Ojo de…» no sale en la Colección (dos contadores contradictorios); queda en la etapa del pintor dominado.
       await p7.goto(`${base}#coleccion`);
-      await p7.waitForSelector('.coll-strip');
+      await p7.waitForSelector('.cx-card');
       check(await p7.locator('.eye-line').count() === 0, `[${tag}] «Ojo de…» sigue en la Colección`);
-      check((await p7.locator('.section-sub').innerText()).includes('vistos'), `[${tag}] Colección sin «N de M vistos»`);
+      check((await p7.locator('.section-sub').innerText()).includes('cuadros'), `[${tag}] Colección sin «N cuadros»`);
       await audit(p7, `o7 ${tag} coleccion`);
       await p7.goto(`${base}#etapa-${eyeWho.id}`);
       await p7.waitForSelector('.learn');
@@ -2647,8 +2639,8 @@ for (const scheme of ['light', 'dark']) {
 
     // Colección: una miniatura abre el visor directamente.
     await p8.goto(`${base}#coleccion`);
-    await p8.waitForSelector('.coll-item');
-    await viewerCheck(p8, L('colección'), p8.locator('.coll-item').first(), { close: 'esc', touch: T, shotName: cfg.full ? 'visor-ficha-390-claro' : null });
+    await p8.waitForSelector('.cx-works .art-zoom');
+    await viewerCheck(p8, L('colección'), p8.locator('.cx-works .art-zoom').first(), { close: 'esc', touch: T, shotName: cfg.full ? 'visor-ficha-390-claro' : null });
 
     // Medallas: el sello de un pintor en su hoja.
     await p8.goto(`${base}#logros`);
@@ -2971,12 +2963,12 @@ for (const scheme of ['light', 'dark']) {
 
     // --- Colección: una miniatura abre el visor en esa obra y, al cerrarlo, el foco vuelve a ella.
     await p9.goto(`${base}#coleccion`);
-    await p9.waitForSelector('.coll-item');
-    await tap(p9.locator('.coll-item').first());
+    await p9.waitForSelector('.cx-works .art-zoom');
+    await tap(p9.locator('.cx-works .art-zoom').first());
     await p9.waitForSelector('.viewer[open]');
     await p9.keyboard.press('Escape');
     await p9.waitForSelector('.viewer', { state: 'detached' });
-    check(await p9.evaluate(() => document.activeElement?.classList.contains('coll-item')), L('colección: al cerrar el visor el foco no vuelve a la miniatura'));
+    check(await p9.evaluate(() => document.activeElement?.classList.contains('art-zoom')), L('colección: al cerrar el visor el foco no vuelve a la miniatura'));
     await audit(p9, L('colección'));
     await c9.close();
   }
@@ -2989,12 +2981,12 @@ for (const scheme of ['light', 'dark']) {
     await seed(pg, st9);
     await pg.waitForSelector('.path');
     await pg.goto(`${base}#coleccion`);
-    await pg.waitForSelector('.coll-item');
-    const wideId = (await pg.$$eval('.coll-item', (els) => els.map((e) => e.dataset.id))).find((id) => landscape9(art.get(id)));
-    const tallId = (await pg.$$eval('.coll-item', (els) => els.map((e) => e.dataset.id))).find((id) => portrait9(art.get(id)));
+    await pg.waitForSelector('.cx-works .art-zoom');
+    const wideId = (await pg.$$eval('.cx-works .art-zoom', (els) => els.map((e) => e.dataset.zoom))).find((id) => landscape9(art.get(id)));
+    const tallId = (await pg.$$eval('.cx-works .art-zoom', (els) => els.map((e) => e.dataset.zoom))).find((id) => portrait9(art.get(id)));
     for (const [id, nm] of [[wideId, 'apaisado'], [tallId, 'vertical']]) {
-      await pg.locator(`.coll-item[data-id="${id}"]`).scrollIntoViewIfNeeded();
-      await pg.locator(`.coll-item[data-id="${id}"]`).tap();
+      await pg.locator(`.cx-works .art-zoom[data-zoom="${id}"]`).scrollIntoViewIfNeeded();
+      await pg.locator(`.cx-works .art-zoom[data-zoom="${id}"]`).tap();
       await pg.waitForSelector('.viewer[open]');
       await waitBig(pg);
       const f = await frameInfo(pg);

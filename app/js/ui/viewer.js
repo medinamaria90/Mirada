@@ -18,6 +18,7 @@ import { artFrame, isBroken } from './art.js';
 import { icons } from './icons.js';
 import { attachZoom } from './viewer-gestures.js';
 import { formatZoom, isRest } from './viewer-zoom.js';
+import { moreHtml } from './viewer-more.js';
 
 const CLOSE = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const PREV = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>';
@@ -30,7 +31,8 @@ let current = null;
 // opts: { index, works: [artwork], start, reveal = true, label (nombre accesible), title (texto
 //         visible arriba, p. ej. la pregunta), pick: { label, onPick(i) } | null,
 //         opener: elemento al que vuelve el foco, onChange(pos): al pasar de cuadro,
-//         onClose(pos) → elemento al que volver (opcional) }
+//         onClose(pos) → elemento al que volver (opcional), more(workId, opener): «Ver más» bajo cada
+//         cuadro revelado (ui/viewer-more.js) }
 export function openViewer(opts) {
   if (current) current.close({ silent: true });
   const { index, works, start = 0, reveal = true, pick = null } = opts;
@@ -50,7 +52,7 @@ export function openViewer(opts) {
         <button type="button" class="viewer-btn viewer-close" data-v="close" aria-label="Cerrar">${CLOSE}</button>
       </div>
     </div>
-    <div class="viewer-track" aria-live="off">${works.map((w, i) => slideHtml(index, w, i, n, reveal, i === start)).join('')}</div>
+    <div class="viewer-track" aria-live="off">${works.map((w, i) => slideHtml(index, w, i, n, reveal, i === start, Boolean(opts.more))).join('')}</div>
     <div class="viewer-bar">
       ${n > 1 ? `<div class="viewer-nav" role="group" aria-label="Cuadros">
         <button type="button" class="viewer-btn" data-v="prev" aria-label="Cuadro anterior">${PREV}</button>
@@ -287,6 +289,7 @@ export function openViewer(opts) {
       if (v === 'loupe') return setLoupe(!loupeOn);
       if (v === 'prev') return goTo(pos - 1);
       if (v === 'next') return goTo(pos + 1);
+      if (v === 'more') { const id = works[pos].id; return close({ silent: true, then: () => opts.more(id, opener) }); }
       if (v === 'pick') {
         if (b.getAttribute('aria-disabled') === 'true') return;
         return choose(pos);
@@ -347,7 +350,8 @@ export function openViewer(opts) {
   }
 
   let closed = false;
-  function close({ fromPop = false, silent = false } = {}) {
+  // then: lo que se hace ya fuera del visor, con el historial de vuelta en su sitio (p. ej. abrir la página de la obra).
+  function close({ fromPop = false, silent = false, then = null } = {}) {
     if (closed) return;
     closed = true;
     current = null;
@@ -362,11 +366,14 @@ export function openViewer(opts) {
     dlg.remove();
     if (pushed && !fromPop) {
       // Ya de vuelta en la entrada anterior, se deja su modo como estaba.
-      const done = () => { window.removeEventListener('popstate', done); clearTimeout(timer); setTimeout(restoreScrollMode, 0); };
+      const done = () => { window.removeEventListener('popstate', done); clearTimeout(timer); setTimeout(restoreScrollMode, 0); if (then) then(); };
       const timer = setTimeout(done, 1000);
       window.addEventListener('popstate', done);
       try { history.back(); } catch { done(); }
-    } else setTimeout(restoreScrollMode, 0);
+    } else {
+      setTimeout(restoreScrollMode, 0);
+      if (then) then();
+    }
     // onClose puede devolver el elemento al que volver (p. ej. el cuadro donde te has quedado).
     let back = opener;
     if (opts.onClose) {
@@ -407,7 +414,7 @@ export function openViewer(opts) {
   return current;
 }
 
-function slideHtml(index, w, i, n, reveal, eager) {
+function slideHtml(index, w, i, n, reveal, eager, more) {
   const a = index.artist(w.artistId);
   // Autor de la obra: el del pintor o, en una parada conjunta (los Lorenzetti), el suyo propio (`by`).
   const who = w.by || a?.name;
@@ -420,7 +427,7 @@ function slideHtml(index, w, i, n, reveal, eager) {
   const big = broken ? '' : `<img class="viewer-img" data-src="${esc(w.img)}" alt="${esc(alt)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async"${eager ? ` src="${esc(w.img)}"` : ''}>`;
   return `<figure class="viewer-slide" role="group" aria-roledescription="cuadro" aria-label="${esc(slideLabel)}">
       <div class="viewer-stage"><div class="viewer-frame" style="--arw:${Math.max(1, w.w || 4)};--arh:${Math.max(1, w.h || 3)}">${thumb}${big}</div></div>
-      ${reveal ? `<figcaption class="viewer-caption"><span class="viewer-name">${esc(w.title)}</span><span class="viewer-meta">${esc(caption)}</span><span class="viewer-museum">${esc(museumLine(w))}</span></figcaption>` : ''}
+      ${reveal ? `<figcaption class="viewer-caption"><span class="viewer-name">${esc(w.title)}</span><span class="viewer-meta">${esc(caption)}</span><span class="viewer-museum">${esc(museumLine(w))}</span>${more ? moreHtml(w) : ''}</figcaption>` : ''}
     </figure>`;
 }
 
@@ -437,7 +444,7 @@ function loadBig(slide) {
 
 // Delegación global: cualquier elemento con data-zoom="<id de obra>" abre el visor (con pie).
 // data-zoom-group agrupa los cuadros de una misma pantalla para pasarlos deslizando.
-export function zoomFromElement(index, el) {
+export function zoomFromElement(index, el, { more = null } = {}) {
   const id = el.dataset.zoom;
   const group = el.dataset.zoomGroup;
   const scope = el.closest('dialog') || document;
@@ -451,5 +458,5 @@ export function zoomFromElement(index, el) {
     back.scrollIntoView({ block: 'center', behavior: 'auto' });
     return back;
   };
-  return openViewer({ index, works, start, reveal: true, opener: el, onClose });
+  return openViewer({ index, works, start, reveal: true, opener: el, onClose, more: el.dataset.zoomMore ? more : null });
 }
