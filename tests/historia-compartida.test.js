@@ -33,10 +33,10 @@ test('historia compartida: sin «Jugar» ni «Ver más», la última tarjeta no 
   assert.ok(copyHtml({ text: 'Hola' }, null, { last: true, play: true }).includes('data-st="more"'));
 });
 
-test('historia compartida: cada historia de nivel 1 tiene su página con el cuadro, la primera frase y el salto a la app', () => {
+test('historia compartida: cada historia de nivel 1 tiene su página con su imagen ligera, la primera frase y el salto a la app', () => {
   const index = json('data/historias/index.json');
   const works = new Map(json('data/catalog.json').artworks.map((w) => [w.id, w]));
-  const pages = new Set(readdirSync(join(app, 'h')));
+  const pages = new Set(readdirSync(join(app, 'h')).filter((f) => !f.startsWith('epoca-')));
   const expected = Object.keys(index).filter((id) => index[id].includes(SHARE_LEVEL));
   assert.equal(pages.size, expected.length, 'páginas de más o de menos: python3 -I tools/share_pages.py');
   for (const id of expected) {
@@ -44,7 +44,8 @@ test('historia compartida: cada historia de nivel 1 tiene su página con el cuad
     assert.ok(pages.has(name), `falta app/h/${name}`);
     const html = readFileSync(join(app, 'h', name), 'utf8');
     const card = levelStory(json(`data/historias/${id}.json`), SHARE_LEVEL).cards[0];
-    assert.ok(html.includes(`content="https://sfumato-arte.onrender.com/${works.get(card.artwork).img}"`), `${name}: imagen`);
+    assert.ok(works.has(card.artwork), `${name}: obra fuera del catálogo`);
+    assert.ok(html.includes(`content="https://sfumato.dibulios.com/img/og/${id}-${SHARE_LEVEL}.jpg"`), `${name}: imagen ligera`);
     assert.ok(html.includes(`location.replace('../#${storyRoute(id, SHARE_LEVEL)}')`), `${name}: salto`);
   }
 });

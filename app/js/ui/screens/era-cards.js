@@ -1,12 +1,13 @@
 // Tarjetas de una época (data/epocas/<movimiento>.json): en la presentación de la época se desliza a la derecha
 // para ver la época en ocho tarjetas (cuándo y dónde, por qué surge… y una curiosidad). Cada tarjeta, un cuadro de la
 // época (se abre en grande). Su fuente queda en los datos y se ve en «Fuentes y créditos». Sin tarjetas, la presentación
-// queda como estaba.
+// queda como estaba. Arriba, «Compartir» manda el enlace a la época en tarjetas (h/epoca-<id>.html, ui/story-share.js).
 
 import { esc, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
 import { loadCss } from '../lazy-css.js';
+import { eraUrl, shareLink, NOTES } from '../story-share.js';
 
 const cache = new Map();
 
@@ -61,6 +62,12 @@ export async function mountEraCards(ctx, root, movementId) {
   body.prepend(track);
   wireCards(ctx, body, track, total);
   root.classList.add('has-era-cards');
+  root.insertAdjacentHTML('beforeend', `<button type="button" class="icon-btn era-share" aria-label="Compartir">${icons.share(20)}</button>`);
+  $('.era-share', root).addEventListener('click', async () => {
+    ctx.audio.sfx('tap');
+    const note = NOTES[await shareLink({ url: eraUrl(movementId), title: ctx.index.movement(movementId)?.name || '' })];
+    if (note) ctx.toast(note);
+  });
 }
 
 // Puntos y paso de tarjeta: uno por diapositiva (el actual, alargado); «Descubre…» pasa a la segunda. scope: donde van

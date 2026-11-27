@@ -1,7 +1,7 @@
 /* Sfumato — hoja principal. Las variables (colores, letra, medidas) viven en brand.css. */
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; } /* sin el destello azul de Android al tocar: cada elemento pulsable ya tiene su respuesta propia */
 body {
   margin: 0;
   font-variant-numeric: lining-nums;

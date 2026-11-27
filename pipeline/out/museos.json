@@ -9387,5 +9387,37 @@
   "parent": "Q18448486",
   "country": "Italia",
   "isMuseum": true
+ },
+ "Q62274663": {
+  "name": "Samuel H. Kress Collection of the National Gallery of Art",
+  "types": [
+   "Q7328910"
+  ],
+  "adm": "Q61",
+  "loc": null,
+  "parent": "Q214867",
+  "country": "Estados Unidos",
+  "isMuseum": false
+ },
+ "Q3747266": {
+  "name": "Fondo Edifici di Culto",
+  "types": [],
+  "adm": null,
+  "loc": null,
+  "parent": null,
+  "country": null,
+  "isMuseum": false
+ },
+ "Q18448486": {
+  "name": "Centro histórico de Roma",
+  "types": [
+   "Q676050",
+   "Q702492"
+  ],
+  "adm": "Q220",
+  "loc": null,
+  "parent": null,
+  "country": "Ciudad del Vaticano",
+  "isMuseum": false
  }
 }

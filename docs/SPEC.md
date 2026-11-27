@@ -53,7 +53,7 @@ La app se publica como página con archivos propios. Reglas que el código DEBE 
 - Sin zoom de página (oleada 8): viewport con `maximum-scale=1, user-scalable=no`, `touch-action:
   pan-x pan-y` en todo (no se hereda) y, en Safari, freno de `gesture*` y de movimientos con dos
   dedos. El tamaño de texto del sistema sigue funcionando (estilos en rem).
-- Límite duro del artifact: 512 archivos por versión. Objetivo propio: **< 320 archivos en `app/`**
+- Límite duro del artifact: 512 archivos por versión (ya no aplica: la app se sirve desde Render; techo actual de 1000 en `tools/validate_catalog.py`). Objetivo propio (histórico): **< 320 archivos en `app/`**
   (imágenes ya optimizadas en `app/img/`, miniaturas agrupadas en hojas `app/img/s/`; lo comprueba
   `tools/validate_catalog.py`).
 
@@ -165,7 +165,7 @@ fallecidos antes de 1956 y obras anteriores a 1930. Movimientos previstos (ids):
 - **Dominar una etapa** (oleada 9): 70 % de aciertos a la primera (`progress.STAGE_MASTERY`; en rondas
   de 8, 6 aciertos) **y** al menos 2 de cada 3 preguntas sobre el propio pintor
   (`progress.stageRoundMastered` / `ownRoundMastered`; regla para los tests: `progress.stageRule`).
-  Rondas de 8 preguntas (`planner.STAGE_ROUND`; 7 con un solo pintor aprendido antes, Rafael, cuya
+  Rondas de 8 preguntas (`planner.STAGE_ROUND`; 7 con un solo pintor aprendido antes, en la segunda parada, cuya
   única «¿Quién?» propia es la segunda para que «la opción más repetida» no baste): calentamiento +
   hasta 2 no vistas, 2+ «¿Quién?» de repaso (con el de la etapa y otro pintor ya aprendido de
   distractores), una de movimiento si cabe y «¿Cuál es de X?» de repaso hasta completar.
@@ -225,7 +225,8 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   `invitado` | `rama`), `guest` (sin etapa en el camino común), `onPath`, `stages [{id, name, from, to, source, verificar?,
   provisional?}]` (niveles «a fondo» 2..n), `branches` (ids de rama), `hint`, `similarTo`. **Camino común (`onPath`)**: grandes
   maestros + maestros + invitados con alguna obra de fama 3 (19); solo grandes maestros y maestros (56) son paradas, en el orden
-  de `tools/camino.json` (abre Botticelli; Rafael 3.º, Leonardo 4.º); los invitados del camino salen intercalados en el repaso
+  de `tools/camino.json` (abre Botticelli, sigue Masaccio → Piero → Berruguete y el Alto Renacimiento va Leonardo → Miguel Ángel →
+  Rafael: el joven que aprende de los dos que acabas de ver); los invitados del camino salen intercalados en el repaso
   (`index.guestsAt`) y los demás invitados solo en las ramas «Descubre…». `order` y `section`: tramos de `tools/camino.json`.
 - **Movimiento**: además `branch: true` y `opensAt` en `gotico` (orden 0,5, se abre en el Renacimiento) y `ukiyo-e` (7,5,
   Impresionismo); no son paradas ni salas ni opción de «¿De qué movimiento es?» salvo como respuesta.
@@ -279,6 +280,14 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   `focus`, texto, fuente discreta), saltables, una vez por «pintor:nivel» (`state/stories-seen.js`, clave `sfumato.stories`) tras la
   presentación del movimiento y antes de «Conoce a»; la ficha del pintor tiene «Ver su historia». `playStory(ctx, artistId, level)`
   vale para los «a fondo». Sin historia no se muestra nada.
+- **Cronología sin años** (`engine/chrono.js`; propuesta `docs/eval/ux-cronologia.md`): A va antes que B si murió antes de que B
+  cumpliera 25 o nació ≥ 20 años antes; si no, a la vez. Siempre respecto a los pintores conocidos. El salto atrás en el camino lo
+  cuenta el texto de la historia (reglas de CLAUDE.md), sin tarjeta-pregunta. En los repasos (`planSrsReview`/`planReview5` con
+  `known`: pintores con alguna obra vista y además historia vista o nivel jugado, `metArtistIds`), «¿Quién fue antes?»
+  (`engine/question-before.js`) es rara: probabilidad 0,15, como mucho una por ronda y solo con ≥ 80 años entre nacimientos
+  (`isAskable`: un siglo sí, diez años no); nunca entre contemporáneos. La respuesta lleva una frase sacada de las fechas y la mini
+  cinta (`ui/chrono-ribbon.js`). No toca colección, repaso espaciado ni fallados. «Su tiempo» de la ficha (`ui/ficha-tiempo.js`,
+  `timeOf(index, progress, artistId)`): barras de vida sin años de él y hasta 3 conocidos cercanos, eje en siglos y una frase.
 - **Colección y ficha, ronda 3**: movimientos por su fecha de inicio (`engine/movements.js`, la estampa japonesa en su sitio); una sola regla de
   «invitado» (`category === 'invitado'`) y cuentas coherentes (todas las obras del catálogo arriba); franja con el nombre (→ ficha) y una única
   acción «Ver sus n cuadros», que salta de línea con letra grande; barra única de buscador + filtro por movimiento y salas en una fila, para que el

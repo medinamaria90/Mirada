@@ -10,6 +10,7 @@ import { loadCss } from '../lazy-css.js';
 import { playEra } from '../audio-bridge.js';
 import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
+import { knownArtists } from '../../engine/chrono.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
 import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
@@ -148,7 +149,11 @@ export function introWorks(index, movementId) {
   return picks;
 }
 
-// mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa.
+// Texto del botón de la presentación según cómo se llega a ella.
+const INTRO_ENTER = { first: 'Entrar', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
+
+// mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa; 'shared': desde un enlace
+// compartido (#epoca-<id>), sin tocar la partida; a quien aún no juega, el botón le invita a empezar.
 export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
   const { index } = ctx;
   const movement = index.movement(movementId);
@@ -157,6 +162,7 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
   const works = introWorks(index, movementId);
   const order = works.length === 3 ? [works[1], works[0], works[2]] : works;
   const wall = order.map((w, i) => `<span class="wall-item wall-${i}">${artFrame(w, { alt: '', eager: true, label: '', thumb: true, zoom: { group: 'intro' } })}</span>`).join('');
+  const guest = mode === 'shared' && !ctx.store.get().onboarded;
   playEra(movement.era);
   el.innerHTML = `<div class="welcome intro" style="${accentStyle(movement.accent)}">
     <main class="welcome-body" id="main">
@@ -164,7 +170,7 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
       <p class="kicker intro-kicker"><span class="intro-num">${ROMAN[n] || n + 1}</span>${esc(movement.period)}</p>
       <h1 class="welcome-title welcome-title-sm">${esc(movement.name)}</h1>
       <p class="welcome-line">${esc(movement.blurb)}</p>
-      <button class="btn btn-primary btn-wide" data-action="enter" data-primary>${mode === 'first' ? 'Entrar' : 'Volver al camino'}</button>
+      <button class="btn btn-primary btn-wide" data-action="enter" data-primary>${INTRO_ENTER[guest ? 'guest' : mode]}</button>
     </main>
   </div>`;
   focusHeading(el);
@@ -176,6 +182,10 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
       if (mode === 'first') {
         const today = ctx.today();
         ctx.store.update((s) => ({ ...s, progress: { ...s.progress, intros: { ...(s.progress.intros || {}), [movementId]: today } } }));
+      }
+      if (guest) {
+        ctx.audio.unlock();
+        ctx.store.update((s) => ({ ...s, onboarded: true }));
       }
       ctx.go('inicio');
     },
@@ -402,10 +412,17 @@ export function renderMovementReview(ctx, el, movementId) {
 
 // --- Repaso espaciado (completo o rápido de 3 preguntas desde el inicio) ----------------
 
+// Pintores para «¿Quién fue antes?» en los repasos: conocidos de verdad (historia vista o nivel jugado), como en las
+// preguntas por autor.
+function reviewKnown(ctx) {
+  const progress = ctx.store.get().progress;
+  return knownArtists(progress, ctx.index, '', metArtistIds(progress, ctx.index, (id) => storySeen(storyKey(id, 1))));
+}
+
 export function renderSrsReview(ctx, el, { quick = false } = {}) {
   const { index } = ctx;
   const due = dueKeys(ctx.store.get().progress.srs, ctx.today());
-  const plan = planSrsReview(index, due, randomSeed(), quick ? QUICK_REVIEW : undefined);
+  const plan = planSrsReview(index, due, randomSeed(), quick ? QUICK_REVIEW : undefined, { known: reviewKnown(ctx) });
   if (!plan.questions.length) return leave(ctx, 'Hoy no hay nada que repasar');
   playEra('menu');
   ctx.setCleanup(play(ctx, el, {
@@ -418,7 +435,7 @@ export function renderSrsReview(ctx, el, { quick = false } = {}) {
 
 export function renderReview5(ctx, el) {
   const ids = review5Works(ctx.store.get().progress, ctx.index, ctx.today());
-  const plan = planReview5(ctx.index, ids, randomSeed());
+  const plan = planReview5(ctx.index, ids, randomSeed(), { known: reviewKnown(ctx) });
   if (ids.length < REVIEW5_MIN || plan.questions.length < REVIEW5_MIN) return leave(ctx, 'Hoy no hay nada que repasar');
   playEra('menu');
   ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW5_NAME, kind: 'review5' }));

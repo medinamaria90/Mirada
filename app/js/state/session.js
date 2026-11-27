@@ -5,7 +5,9 @@
 export const SESSION_TTL = 12 * 60 * 60 * 1000;
 const ROUTE_RE = /^[a-z0-9-]{1,40}$/;
 const WEEK_RE = /^\d{4}-W\d{2}$/;
-const TYPES = new Set(['who', 'movement', 'which']);
+// 'before': «¿Quién fue antes?» (engine/question-before.js). Sin importar el motor: este módulo va en el arranque.
+const BEFORE = 'before';
+const TYPES = new Set(['who', 'movement', 'which', BEFORE]);
 const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'review5', 'daily', 'weekly', 'general', 'challenge']);
 
 // meta: { route, title, accent, kind, extra, friendScore, shareTopic, plan:{kind,seed,artistId,movementId,date} }
@@ -80,8 +82,29 @@ export function readSession(state, index, now) {
   }
 }
 
+// «¿Quién fue antes?»: dos pintores con un cuadro suyo cada uno; la respuesta es uno de ellos (el anterior, lo decidió el planificador).
+function cleanBefore(q, index) {
+  if (!Array.isArray(q.options) || q.options.length !== 2) throw new Error('opciones');
+  const options = q.options.map((o) => {
+    const artist = index.artist(o && o.id);
+    const work = index.artwork(o && o.artworkId);
+    if (!artist || !work || work.artistId !== artist.id) throw new Error('opción');
+    return { id: artist.id, label: artist.short || artist.name, artworkId: work.id };
+  });
+  const answer = options.find((o) => o.id === q.answerId);
+  const later = options.find((o) => o.id !== q.answerId);
+  if (!answer || !later || q.laterId !== later.id) throw new Error('respuesta');
+  const middle = index.artist(q.middleId);
+  const phase = typeof q.phase === 'string' ? q.phase.replace(/[^a-z]/g, '').slice(0, 12) : '';
+  return {
+    type: BEFORE, prompt: '¿Quién fue antes?', artistId: answer.id, laterId: later.id, artworkId: null, options, answerId: answer.id,
+    isNew: false, phase, ...(middle ? { middleId: middle.id } : {}),
+  };
+}
+
 function cleanQuestion(q, index) {
   if (!q || !TYPES.has(q.type)) throw new Error('tipo');
+  if (q.type === BEFORE) return cleanBefore(q, index);
   const artist = index.artist(q.artistId);
   if (!artist) throw new Error('pintor');
   if (!Array.isArray(q.options) || q.options.length < 2) throw new Error('opciones');

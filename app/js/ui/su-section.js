@@ -3,15 +3,18 @@
 import { SU_OPTIONS } from './su-options.js';
 import { isSuperOn, setSuper, SU_EVENT } from './su-mode.js';
 import { loadCss } from './lazy-css.js';
+import { setTrial } from './su-trial.js';
 
 const optionHtml = (ctx, o) => `<label class="setting">
     <span>${o.label}</span>
     <input type="checkbox" role="switch" class="switch" data-su="${o.id}" ${o.get(ctx) ? 'checked' : ''}>
   </label>`;
 
-export const superHtml = () => `<section class="su-section" aria-labelledby="su-title" hidden>
+// `extra`: acciones de la sección que no son interruptores (p. ej. «Empezar de cero», de profile-settings.js).
+export const superHtml = (extra = '') => `<section class="su-section" aria-labelledby="su-title" hidden>
     <h3 id="su-title" class="su-title">Superusuario</h3>
     <div class="su-options"></div>
+    ${extra}
     <button type="button" class="btn btn-quiet btn-wide" data-su-exit>Salir del modo superusuario</button>
   </section>`;
 
@@ -32,7 +35,11 @@ export function wireSuper(root, ctx, close) {
     opt.set(ctx, ev.target.checked);
     if (opt.leaves) close();
   });
-  section.querySelector('[data-su-exit]').addEventListener('click', () => setSuper(false));
+  // Al salir del modo, el modo prueba también se acaba: vuelve la partida real.
+  section.querySelector('[data-su-exit]').addEventListener('click', () => {
+    if (ctx.store.inTrial()) { close(); setTrial(ctx, false); }
+    setSuper(false);
+  });
   window.addEventListener(SU_EVENT, refresh);
   refresh();
 }

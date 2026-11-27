@@ -12,8 +12,14 @@ const { migrate, defaultState, normalizeName, normalizeArtworkId, graphemes, NAM
 const { rankFor, RANKS } = await import('../app/js/engine/ranks.js');
 const P = await import('../app/js/engine/profile.js');
 const { heroHtml } = await import('../app/js/ui/screens/profile-hero.js');
-const { welcomeHtml, testHtml, practiceHtml } = await import('../app/js/ui/screens/profile-parts.js');
-const { medalGroupsHtml } = await import('../app/js/ui/screens/profile-medals.js');
+const { welcomeHtml, practiceHtml } = await import('../app/js/ui/screens/profile-parts.js');
+const { medalRow, medalsHtml } = await import('../app/js/ui/screens/profile-medals.js');
+const { medalGroupsHtml } = await import('../app/js/ui/screens/achievements.js');
+const { rankCardHtml } = await import('../app/js/ui/screens/profile-rank.js');
+const { profileStats, statsHtml } = await import('../app/js/ui/screens/profile-stats.js');
+const { rankConditions, rankLadder, deepChoices } = await import('../app/js/engine/rank-goals.js');
+const { nearestMedal, medalProgress } = await import('../app/js/engine/medal-near.js');
+const { parseRoute } = await import('../app/js/ui/router.js');
 const { settingsHtml } = await import('../app/js/ui/screens/profile-settings.js');
 const { nameSheetHtml } = await import('../app/js/ui/screens/profile-name.js');
 const { lookSheetHtml } = await import('../app/js/ui/screens/profile-look.js');
@@ -65,22 +71,49 @@ test('migración 7 → 8: nombre, portada y avatar vacíos, conserva el resto; y
   assert.equal(defaultState().settings.name, '');
 });
 
-test('rango: la barra avanza con lo cumplido y dice lo que falta con frases humanas; el máximo no tiene siguiente', () => {
+test('rango: una fila por condición, cumplidas y pendientes (sin barra única que se quede vacía con el XP cumplido)', () => {
   const p = emptyProgress();
   let bar = P.rankProgress(rankFor(p, index));
   assert.equal(bar.next, 'Aficionado');
-  assert.equal(bar.fraction, 0);
+  assert.deepEqual(bar.conds.map((c) => [c.key, c.have, c.need, c.done]), [['xp', 0, 300, false]]);
   assert.deepEqual(bar.parts, ['Ganar 300 XP más']);
-  p.xp = 150;
+  p.xp = 1877;
+  p.rank = 1;
   bar = P.rankProgress(rankFor(p, index));
-  assert.equal(bar.fraction, 0.5);
-  assert.equal(bar.items[0].fraction, 0.5);
-  p.xp = 1300;
-  bar = P.rankProgress(rankFor(p, index));
-  assert.equal(bar.fraction, 0, 'con el XP cumplido pero el nivel «a fondo» sin empezar, la barra no marca nada');
   assert.equal(bar.next, 'Copista');
+  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1200 XP', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
+    'con el XP cumplido se ve cumplido, y lo que falta aparte');
   assert.match(bar.parts[0], /^Dominar 1 nivel «a fondo» más$/);
-  assert.deepEqual(P.rankProgress({ next: null, stats: {}, missing: [] }), { fraction: 1, next: null, parts: [], items: [] });
+  assert.equal('fraction' in bar, false, 'ya no hay barra del mínimo');
+  assert.deepEqual(P.rankProgress({ next: null, stats: {}, missing: [] }), { next: null, conds: [], parts: [] });
+  const ladder = rankLadder();
+  assert.equal(ladder.length, RANKS.length);
+  assert.deepEqual(ladder[0].conds, [], 'el primero no pide nada');
+  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3000 XP', '4 niveles «a fondo»', 'Un gran maestro hasta el nivel 2']);
+  assert.deepEqual(rankConditions(RANKS[6]).map((c) => c.key), ['xp', 'deep', 'eras', 'complete']);
+});
+
+test('rango: «Elegir» ofrece los pintores dominados con un nivel «a fondo» abierto; sin ninguno, la tarjeta manda a jugar', () => {
+  const p = { ...emptyProgress(), xp: 1500, rank: 1 };
+  const card = rankCardHtml(ctxFor(p));
+  assert.match(card, /Aficionado/);
+  assert.match(card, /Rango 2 de 8/);
+  assert.match(card, /Para ser <strong>Copista<\/strong>/);
+  assert.match(card, /pf-cond is-done[\s\S]*1200 XP[\s\S]*1500/);
+  assert.match(card, /Un nivel «a fondo» <span class="pf-cond-val">0\/1<\/span>/);
+  assert.match(card, /href="#inicio"[^>]*>Jugar</, 'sin pintores dominados, se juega el camino');
+  assert.equal((card.match(/class="pf-ladder/g) || []).length, 1);
+  assert.equal((card.match(/<li class="is-on"><\/li>/g) || []).length, 2);
+  assert.equal((card.match(/is-next/g) || []).length, 1);
+  assert.doesNotMatch(card, /role="progressbar"/);
+  const real = realIndex();
+  const withDeep = real.path.find((a) => real.deepLevels(a.id).length);
+  assert.ok(withDeep, 'el catálogo tiene niveles «a fondo»');
+  p.artists[withDeep.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
+  assert.deepEqual(deepChoices(p, real, 'deep', RANKS[2]), [{ artistId: withDeep.id, level: real.deepLevels(withDeep.id)[0].id }]);
+  assert.match(rankCardHtml({ ...ctxFor(p), index: real }), /data-action="rank-choose" data-key="deep"[^>]*>Elegir</);
+  assert.deepEqual(deepChoices(p, real, 'complete', RANKS[6]).length, withDeep.category === 'gran-maestro' ? 1 : 0);
+  assert.match(rankCardHtml(ctxFor({ ...emptyProgress(), xp: 30000, rank: 7 })), /El rango más alto/);
 });
 
 test('una sola escala: los niveles del test no se llaman como ningún rango, y el perfil da el rango de la escala', () => {
@@ -90,35 +123,39 @@ test('una sola escala: los niveles del test no se llaman como ningún rango, y e
   for (const xp of [0, 150, 300, 1500, 5200, 9300, 26000]) {
     const p = { ...emptyProgress(), xp };
     const rank = rankFor(p, index);
-    const line = { name: rank.name, pct: Math.round(P.rankProgress(rank).fraction * 100) };
-    const hero = heroHtml(ctxFor(p));
-    assert.ok(hero.includes(`<span>${line.name}</span>`), `el perfil no dice «${line.name}» con ${xp} XP`);
-    assert.ok(hero.includes(`aria-valuenow="${line.pct}"`), 'la barra del perfil no da el avance del rango');
+    const card = rankCardHtml(ctxFor(p));
+    assert.ok(card.includes(`id="pf-rank-h">${rank.name}</span>`), `el perfil no dice «${rank.name}» con ${xp} XP`);
+    assert.ok(card.includes(`Rango ${rank.index + 1} de ${RANKS.length}`));
   }
   assert.doesNotMatch(read('../app/js/ui/screens/result.js'), /levelFor|levelName|Nuevo nivel/, 'el resultado enseña la escala de niveles');
   assert.doesNotMatch(read('../app/js/engine/finish.js'), /levelup|levelFor/, 'queda código de la escala de niveles');
 });
 
-test('el perfil no repite lo que se ve en otro sitio: sin museo ni cifras de cuadros o pintores; solo los XP, junto al rango', () => {
+test('cuatro cifras pulsables: racha (su logro), pintores dominados, cuadros vistos y épocas completas; sin museo', () => {
   const p = emptyProgress();
   const ws = index.artworks.slice(0, 12);
   ws.forEach((w, i) => { p.collection[w.id] = `2026-11-${String(10 + i).padStart(2, '0')}`; });
-  p.xp = 3400;
   for (const a of index.path.slice(0, 3)) p.artists[a.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
-  const hero = heroHtml(ctxFor(p));
-  assert.match(hero, /pf-rank-xp">3400<span class="pf-rank-xp-unit"> XP/);
-  assert.doesNotMatch(hero, /cuadros? vistos?|pintores? dominados?/i);
+  p.artists['no-existe'] = { plays: 1, best: 1, mastered: true, last: TODAY };
+  const m = index.visibleMovements[0];
+  p.medals[`movement-${m.id}`] = TODAY;
+  p.streak = { current: 5, best: 5, last: TODAY, graceOn: null, graceDays: [], days: [] };
+  p.medals['streak-3'] = TODAY;
+  const ctx = ctxFor(p);
+  assert.deepEqual(profileStats(ctx), { streak: 5, painters: 3, works: 12, eras: 1, erasTotal: index.visibleMovements.length });
+  const html = statsHtml(ctx);
+  assert.match(html, /data-action="medal" data-id="streak-7"/, 'la racha abre el logro de racha que toca');
+  assert.match(html, /href="#coleccion-pintores"[^>]*aria-label="3 pintores dominados"/);
+  assert.match(html, /href="#coleccion"[^>]*aria-label="12 cuadros vistos"/);
+  assert.match(html, new RegExp(`href="#inicio"[^>]*aria-label="Épocas completas: 1 de ${index.visibleMovements.length}"`));
+  assert.equal((html.match(/class="pf-stat /g) || []).length, 4);
+  assert.match(statsHtml(ctxFor({ ...emptyProgress(), streak: { current: 1, best: 1, last: TODAY, graceDays: [], days: [] } })), /Día de racha/);
   assert.doesNotMatch(welcomeHtml(), /museo|reconozc|reconoc/i);
   assert.match(welcomeHtml(), /Colecci/);
   assert.equal(P.collectionIds(p, index).length, 12);
-  assert.equal(P.collectionWorks(p, index).length, 12);
   assert.equal(P.collectionWorks(p, index)[0].id, ws[11].id, 'lo último primero');
-  for (const f of ['profile.js', 'profile-parts.js', 'profile-hero.js']) {
-    const src = read(`../app/js/ui/screens/${f}`);
-    assert.doesNotMatch(src, /museumHtml|museumWorks|Mi museo|figuresHtml|pf-museum|pf-figs/, `${f} aún habla del museo o de las cifras`);
-  }
-  const css = read('../app/css/profile.css');
-  assert.doesNotMatch(css, /pf-museum|pf-tile-empty|pf-cta|pf-figs|pf-fig-|"museum|"figs/, 'CSS muerto del museo o de las cifras');
+  const css = read('../app/css/profile.css') + read('../app/css/profile-cards.css');
+  assert.doesNotMatch(css, /pf-museum|pf-tile-empty|pf-cta|pf-figs|pf-fig-|pf-bar|pf-needs|pf-test-|pf-more|pf-extra/, 'CSS muerto');
   assert.doesNotMatch(read('../app/js/engine/profile.js'), /museumWorks|MUSEUM_SIZE/);
 });
 
@@ -164,26 +201,27 @@ test('logros: oro, plata y bronce; reparto por clases; inicial (primera letra); 
   assert.deepEqual(cardLines({ correct: 24, asked: 40, level: lvl, percentile: 78 }), { level: lvl, score: '24 de 40', percentile: 'Sé más de pintura que el 78 % de la gente' }, 'la tarjeta habla en primera persona, como el texto que se comparte');
 });
 
-test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito, test cerca y reto semanal bloqueado con lo que falta', () => {
+test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito, test en «Practicar» y reto semanal bloqueado con lo que falta', () => {
   const ctx = ctxFor(emptyProgress());
   const hero = heroHtml(ctx);
   assert.match(hero, /<h1[^>]*>Perfil<\/h1>/);
   assert.match(hero, /Ponte un nombre/);
   assert.match(hero, /class="logo"/);
-  assert.match(hero, /Curioso/);
-  assert.match(hero, /role="progressbar"/);
-  assert.match(hero, /Ganar 300 XP más/);
+  assert.doesNotMatch(hero, /Curioso|role="progressbar"/, 'el rango va en su tarjeta');
   assert.match(hero, /pf-cover-cap/, 'portada de muestra con su pie');
   assert.doesNotMatch(hero, /pf-look/, 'sin cuadros no hay nada que elegir');
   assert.match(hero, /data-action="open-settings"[^>]*aria-label="Ajustes"/);
+  const card = rankCardHtml(ctx);
+  assert.match(card, /Curioso/);
+  assert.match(card, /Para ser <strong>Aficionado<\/strong>/);
+  assert.match(card, /300 XP/);
   const welcome = welcomeHtml();
   assert.match(welcome, /Tu perfil empieza aquí/);
   assert.match(welcome, /btn-primary[^>]*href="#inicio"/);
-  const test = testHtml(null, { primary: false });
-  assert.doesNotMatch(test, /btn-primary/, 'con «Ir al camino» como principal, el test no compite');
-  assert.match(test, /Hacer el test/);
-  assert.match(testHtml(null), /btn-primary[^>]*href="test\/"/);
   const practice = practiceHtml(ctx);
+  assert.match(practice, />Practicar</);
+  assert.match(practice, /href="test\/"[\s\S]*Test de pintura[\s\S]*Mide lo que sabes/);
+  assert.doesNotMatch(practice, /btn-primary|share-test/, 'el test ya no compite como botón principal');
   assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al dominar el camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
   assert.doesNotMatch(practice, /quedan \d+/);
   const started = emptyProgress();
@@ -193,14 +231,12 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.doesNotMatch(practice, /data-action="weekly"/);
 });
 
-test('el orden del DOM es el visual: identidad, logros, test, accesos; en escritorio, las mismas filas con áreas de rejilla', () => {
+test('el orden del DOM es el visual: identidad, rango, cifras, logros, practicar; en escritorio, las mismas filas con áreas de rejilla', () => {
   const src = read('../app/js/ui/screens/profile.js');
   const from = src.indexOf('pf-layout');
-  const order = ['heroHtml(ctx)', 'medalsHtml(ctx)', '${test}', 'practiceHtml(ctx)'].map((k) => src.indexOf(k, from));
+  const order = ['heroHtml(ctx)', 'rankCardHtml(ctx)', 'statsHtml(ctx)', 'medalsHtml(ctx)', 'practiceHtml(ctx, last)'].map((k) => src.indexOf(k, from));
   assert.ok(order.every((n) => n > 0) && order.every((n, i) => i === 0 || n > order[i - 1]), `orden: ${order}`);
-  const css = read('../app/css/profile.css');
-  assert.match(css, /grid-template-areas: "hero hero" "medals medals" "test practice"/);
-  assert.doesNotMatch(css, /display: contents/);
+  assert.match(read('../app/js/ui/screens/profile-look.js'), /aria-pressed', String\(!now\)/, '«Automática» marca cuándo está activa');
 });
 
 test('concordancia: 0, 1 y 2 en cifras, requisitos del rango y logros', () => {
@@ -227,9 +263,9 @@ test('los XP junto al rango: exactos hasta 9 999 y abreviados hacia abajo («31,
   assert.equal(P.compactNumber(999999), '999,9 mil');
   assert.equal(P.compactNumber(9999999), '9,9 M', '9 999 999 no es «10 M»');
   assert.equal(P.compactNumber(9876543), '9,8 M');
-  const html = heroHtml(ctxFor({ ...emptyProgress(), xp: 31290 }));
+  const html = rankCardHtml(ctxFor({ ...emptyProgress(), xp: 31290, rank: 6 }));
   assert.match(html, /<span aria-hidden="true">31,2 mil<\/span><span class="sr-only">31\.290<\/span>/);
-  assert.match(read('../app/css/profile.css').match(/\.pf-rank-xp \{[^}]*\}/)[0], /white-space: nowrap/);
+  assert.match(read('../app/css/profile-cards.css').match(/\.pf-cond-val \{[^}]*\}/)[0], /white-space: nowrap/);
 });
 
 test('texto al 200 %: el saludo no se recorta (sin line-clamp ni overflow oculto), baja bajo el avatar si no cabe y el avatar no come el ancho', () => {
@@ -244,7 +280,7 @@ test('texto al 200 %: el saludo no se recorta (sin line-clamp ni overflow oculto
 test('el móvil apaisado gana a las reglas de ancho (va después de ellas) y el escritorio va por filas del DOM', () => {
   const css = read('../app/css/profile.css');
   assert.ok(css.indexOf('max-height: 500px') > css.indexOf('min-width: 1024px'), 'el bloque apaisado debe ir al final');
-  assert.match(css, /grid-template-areas: "hero hero" "medals medals" "test practice"/);
+  assert.match(css, /grid-template-areas: "hero hero" "rank stats" "medals practice"/);
 });
 
 test('las pestañas Portada y Avatar siguen el patrón ARIA: flechas, Inicio y Fin, y solo la activa en el orden de Tab', () => {
@@ -252,10 +288,10 @@ test('las pestañas Portada y Avatar siguen el patrón ARIA: flechas, Inicio y F
   for (const key of ['ArrowRight', 'ArrowLeft', 'Home', 'End']) assert.match(src, new RegExp(key));
   assert.match(src, /tabs\[go\]\.focus\(\)/);
   assert.match(src, /b\.tabIndex = on \? 0 : -1/);
-  assert.match(src, /aria-pressed', String\(!now\)/, '«Automática» marca cuándo está activa');
+  assert.match(read('../app/js/ui/screens/profile-look.js'), /aria-pressed', String\(!now\)/, '«Automática» marca cuándo está activa');
 });
 
-test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de portada, test repetible con fecha; nombre escapado', () => {
+test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de portada, último test en su fila con «Compartir»; nombre escapado', () => {
   const p = emptyProgress();
   index.artworks.slice(0, 5).forEach((w, i) => { p.collection[w.id] = `2026-11-2${i}`; });
   const hero = heroHtml(ctxFor(p, { name: '<b>Ana</b>' }));
@@ -267,32 +303,50 @@ test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de port
   const withAvatar = heroHtml(ctxFor(p, { name: 'María', avatar: index.artworks[1].id }));
   assert.match(withAvatar, /pf-avatar has-art/);
   assert.doesNotMatch(withAvatar, /pf-initial/);
-  const t = testHtml({ correct: 24, asked: 40, level: TEST_LEVELS[2], percentile: 78, date: '2026-11-12', grid: '' });
-  assert.match(t, /24<\/strong> de 40/);
-  assert.match(t, /78&nbsp;%/);
-  assert.match(t, /Repetir el test/);
-  assert.match(t, /Hecho el .*noviembre/);
-  assert.match(t, /data-action="share-test"/);
-  assert.equal((t.match(/btn-primary/g) || []).length, 1);
+  const t = practiceHtml(ctxFor(p), { correct: 24, asked: 40, level: TEST_LEVELS[2], percentile: 78, date: '2026-11-12', grid: '' });
+  assert.match(t, new RegExp(`Test de pintura<span class="pf-go-sub">${TEST_LEVELS[2]} · 24 de 40`));
+  assert.match(t, /class="icon-btn pf-share" data-action="share-test" aria-label="Compartir el resultado del test"/);
 });
 
-test('logros: hoja con grupos y filtros, sin la etiqueta de metal repetida y con «dominado» en los pintores', () => {
+test('logros: pantalla con grupos y filtros, nombres cortos y, para lectores, «dominado» o «Domina a»', () => {
   const p = emptyProgress();
   p.medals[`artist-${index.path[0].id}`] = '2026-11-20';
   p.medals['streak-3'] = '2026-11-21';
   const ctx = ctxFor(p);
   const all = medalGroupsHtml(ctx, 'all');
   for (const g of ['Pintores', 'Movimientos', 'Rachas', 'Ojo de…', 'Retos y metas']) assert.match(all, new RegExp(g));
-  assert.match(all, /dominado/);
-  assert.match(all, /Domina a /, 'el pendiente es una meta, no un hecho');
-  assert.doesNotMatch(all, /is-missing[^>]*>[\s\S]{0,400}?[A-Za-zÁ-ú]+ dominado<\/span><\/button>/);
-  assert.match(all, /aria-label="[^"]*, (Bronce|Plata|Oro), conseguida"/);
-  assert.doesNotMatch(all, /aria-label="3 3 /);
+  assert.match(all, /aria-label="[^"]* dominado, Bronce, conseguida"/);
+  assert.match(all, /aria-label="Domina a [^"]*, pendiente"/, 'el pendiente es una meta, no un hecho');
+  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]* dominado</, 'el nombre de la casilla es corto');
+  assert.match(all, /aria-label="Racha de 3 días, Bronce, conseguida"/);
   assert.doesNotMatch(all, /pf-tier/);
   const got = medalGroupsHtml(ctx, 'got');
   assert.equal((got.match(/class="pf-medal /g) || []).length, 2);
   assert.doesNotMatch(got, /Movimientos/);
   assert.equal(medalGroupsHtml(ctx, 'missing').match(/is-got/g), null);
+  assert.deepEqual(parseRoute('#logros'), { name: 'medals' });
+  assert.deepEqual(parseRoute('#medallas'), { name: 'medals' }, 'los enlaces antiguos siguen valiendo');
+});
+
+test('logros del perfil: una fila de cuatro (tres últimas y la más cercana con su avance) y «N de M» que abre #logros', () => {
+  const p = emptyProgress();
+  const ids = index.path.slice(0, 4).map((a) => `artist-${a.id}`);
+  ids.forEach((id, i) => { p.medals[id] = `2026-11-1${i}`; });
+  p.streak = { current: 2, best: 2, last: TODAY, graceOn: null, graceDays: [], days: [] };
+  const ctx = ctxFor(p);
+  assert.deepEqual(medalProgress(p, index, 'streak-3', TODAY), { have: 2, need: 3 });
+  const near = nearestMedal(p, index, ['streak-3', 'streak-7', 'goal-1'], TODAY);
+  assert.deepEqual(near, { id: 'streak-3', have: 2, need: 3 });
+  const row = medalRow(ctx);
+  assert.equal((row.match(/<li>/g) || []).length, 4);
+  const order = [...row.matchAll(/data-id="([^"]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(order.slice(0, 3), [ids[3], ids[2], ids[1]], 'las tres últimas, la más reciente primero');
+  assert.match(row, /is-near[\s\S]*pf-arc[\s\S]*2 de 3/);
+  const sec = medalsHtml(ctx);
+  assert.match(sec, /href="#logros"[^>]*>4 de \d+/);
+  assert.doesNotMatch(sec, /Ver los/);
+  const fresh = medalRow(ctxFor(emptyProgress()));
+  assert.equal((fresh.match(/<li>/g) || []).length, 4, 'sin logros, cuatro pendientes');
 });
 
 test('hojas: ajustes con todo, nombre con contador y nota, portada y avatar en pestañas; sin «ayer» ni «mañana»', () => {
@@ -300,7 +354,9 @@ test('hojas: ajustes con todo, nombre con contador y nota, portada y avatar en p
   for (const k of ['music', 'sfx', 'volume', 'reducedMotion']) assert.match(html, new RegExp(`data-setting="${k}"`));
   assert.match(html, /data-action="theme"/);
   assert.match(html, /data-action="goal"/);
-  assert.match(html, /data-action="reset"/);
+  const su = html.indexOf('class="su-section"');
+  assert.ok(su > 0 && html.indexOf('data-action="ask-reset"') > su && html.indexOf('data-action="reset"') > su, '«Empezar de cero» solo en la sección «Superusuario»');
+  assert.ok(html.indexOf('data-action="reset"') < html.indexOf('</section>', su), 'y dentro de ella');
   const name = nameSheetHtml();
   assert.doesNotMatch(name, /maxlength/, 'el máximo se cuenta por caracteres en JavaScript, no por unidades de texto');
   assert.match(name, /Solo se guarda en este dispositivo/);
@@ -310,7 +366,7 @@ test('hojas: ajustes con todo, nombre con contador y nota, portada y avatar en p
   assert.match(look, /role="tablist"/);
   assert.match(look, /role="tab"[^>]*data-target="avatar"/);
   const ctx = ctxFor(emptyProgress());
-  for (const h of [html, name, look, heroHtml(ctx), welcomeHtml(), practiceHtml(ctx)]) assert.doesNotMatch(h, FORBIDDEN);
+  for (const h of [html, name, look, heroHtml(ctx), welcomeHtml(), practiceHtml(ctx), rankCardHtml(ctx), statsHtml(ctx), medalsHtml(ctx), medalGroupsHtml(ctx, 'all')]) assert.doesNotMatch(h, FORBIDDEN);
 });
 
 test('el foco se queda: las hojas repintan solo lo que cambia, no la cabecera entera ni la rejilla', () => {
@@ -341,7 +397,8 @@ test('compartir: el código de la tarjeta se pide al pulsar, con botón en esper
   assert.match(card, /work\.title/, 'la tarjeta dice qué cuadro es');
   assert.match(card, /drawGrid/, 'y lleva la cuadrícula del test');
   assert.doesNotMatch(card, /sfumato-arte\.onrender\.com/, 'el dominio sale de la página, no está escrito');
-  assert.match(read('../app/test/index.html'), /rel="canonical" href="https:\/\/sfumato-arte\.onrender\.com\/test\/"/);
+  assert.doesNotMatch(card, /sfumato\.dibulios\.com/);
+  assert.match(read('../app/test/index.html'), /rel="canonical" href="https:\/\/sfumato\.dibulios\.com\/test\/"/);
 });
 
 test('el perfil no carga el audio con la música apagada', () => {
@@ -400,16 +457,15 @@ test('último test: rechaza aciertos mayores que preguntas o negativos', () => {
   assert.ok(P.parseLastTest(`{"correct":12,"asked":12,"level":"${lvl}"}`));
 });
 
-test('el foco de la portada gana a main.css y va por encima de la imagen; las hojas y los logros extra se comportan como dicen', () => {
+test('el foco de la portada gana a main.css y va por encima de la imagen; las hojas se comportan como dicen', () => {
   const css = read('../app/css/profile.css');
   assert.match(css, /\.pf-cover \.pf-cover-art:focus-visible \{ outline: none; \}/);
   const ring = css.match(/\.pf-cover \.pf-cover-art:focus-visible::after \{[^}]*\}/)[0];
   assert.match(ring, /z-index: 3/);
   assert.match(ring, /border: 4px solid var\(--ink\)/);
-  assert.match(css, /\.pf-medals > li\.pf-extra \{ display: none; \}/, 'el extra pierde por especificidad frente a `.pf-medals > li`');
   assert.doesNotMatch(css.match(/\.look-panel \{[^}]*\}/)[0], /overflow|max-height/, 'un solo scroll: el de la hoja');
   assert.match(css, /\.look-body > \.btn \{ position: sticky; bottom: 0/);
-  assert.match(css, /\.pf-layout \{[^}]*\}[\s\S]*@media \(min-width: 720px\)[\s\S]*grid-template-areas: "hero hero" "medals medals" "test practice"/);
+  assert.match(css, /\.pf-layout \{[^}]*\}[\s\S]*@media \(min-width: 720px\)[\s\S]*grid-template-areas: "hero hero" "rank stats" "medals practice"/);
 });
 
 test('el repaso se ve siempre (bloqueado y con el motivo) y el logro pendiente no se da por hecho', () => {
