@@ -25,6 +25,7 @@ button.arch-band:active .arch-name { background: color-mix(in srgb, var(--map-st
   /* De noche la piedra se oscurece con el mapa (--day-night): las letras pasan a crema, la sombra a oscura y el hueco del
      ático se ahonda (un velo de noche tras las letras), para leerse con la luz baja. */
   background: color-mix(in srgb, var(--map-night) calc(var(--day-night, 0) * var(--inscr-night-recess)), transparent);
+  border-radius: var(--inscr-recess-r); box-shadow: 0 0 var(--inscr-recess-blur) var(--inscr-recess-blur) color-mix(in srgb, var(--map-night) calc(var(--day-night, 0) * var(--inscr-night-recess)), transparent);
   color: color-mix(in oklab, var(--map-sign-ink-2), var(--inscr-night-ink) calc(var(--day-night, 0) * 100%));
   text-shadow: 0 1px 0 color-mix(in oklab, color-mix(in srgb, var(--map-stone-top) 85%, transparent), var(--map-night) calc(var(--day-night, 0) * 100%));
 }

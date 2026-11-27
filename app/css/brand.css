@@ -86,6 +86,7 @@
   --map-stone-side: #c8b293;
   --map-stone-top: #f4ead9;
   --map-cobble: #c4ae8d;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
+  --plaza-stone-share: 78%;   /* piedra frente a suelo en el empedrado (en oscuro gana el suelo) */
   --map-window: #93806a;
   --map-tile: #d98f69;
   --map-tile-2: #b96f4f;
@@ -167,7 +168,6 @@
   --plaza-cobble-o: .6;
   --plaza-halo-o: .35;
   --plaza-soft-o: .94;
-  --plaza-stone-share: 78%;        /* piedra frente a suelo en el empedrado de las plazas */
   --map-ribbon: 3px;
   /* Inscripción de la época en el ático de su puerta (mapa-carteles.css) y mojón del tramo. */
   --font-inscription: "Cinzel", "Trajan Pro", Georgia, serif;
@@ -175,7 +175,9 @@
   --inscr-min: 10px;
   --inscr-night-ink: #fbf6ec;      /* letras de la inscripción de noche (crema sobre piedra en sombra) */
   --inscr-night-gold: #ecd079;
-  --inscr-night-recess: 55%;       /* cuánto se ahonda de noche el hueco de las letras */
+  --inscr-night-recess: 50%;       /* cuánto se ahonda de noche el hueco de las letras */
+  --inscr-recess-r: 3px;
+  --inscr-recess-blur: 2px;        /* bordes difuminados del hueco: grabado, no placa */
   --inscr-weight: 600;
   --inscr-line: 1.12;
   --inscr-track: .02em;
@@ -314,6 +316,7 @@
     --map-stone-side: #2d2823;
     --map-stone-top: #433c33;
     --map-cobble: #6a6052;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
+    --plaza-stone-share: 40%;   /* piedra frente a suelo en el empedrado (en oscuro gana el suelo) */
     --map-window: #8b7146;
     --map-tile: #5c4136;
     --map-tile-2: #4b342b;
@@ -408,6 +411,7 @@
   --map-stone-side: #2d2823;
   --map-stone-top: #433c33;
   --map-cobble: #6a6052;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
+  --plaza-stone-share: 40%;   /* piedra frente a suelo en el empedrado (en oscuro gana el suelo) */
   --map-window: #8b7146;
   --map-tile: #5c4136;
   --map-tile-2: #4b342b;
@@ -506,6 +510,7 @@
     --map-stone-side: #c8b293;
     --map-stone-top: #f4ead9;
     --map-cobble: #c4ae8d;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
+    --plaza-stone-share: 78%;   /* piedra frente a suelo en el empedrado (en oscuro gana el suelo) */
     --map-window: #93806a;
     --map-tile: #d98f69;
     --map-tile-2: #b96f4f;
