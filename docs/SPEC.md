@@ -279,7 +279,11 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
 1.315 obras (ids `w<QID>`), 162 pintores, 9 movimientos del camino + 2 ramas-movimiento, 14 ramas.
 
 - **Archivos** (`app/data/`): `catalog.json` (lo mínimo para pintar), `catalog-text.json` (versión 3: `look`, `looks`, `kind`,
-  `tags`, `traits`, `traitTags`, vocabulario) y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
+  `tags`, `genre`, `skipTraits`, `traits`, `traitTags`, `traitScope`, vocabulario). Un rasgo del pintor solo se enseña en una
+  obra donde se ve: `traitScope` (`contenido/rasgos.json`) dice de cada frase si es de «estilo» (vale en todas), de unos
+  géneros (`genre` de la obra: retrato, figuras, paisaje, bodegon, abstracto; Wikidata o `contenido/generos.json`) o de
+  «etiquetas» (solo si las de la obra lo confirman); `contenido/fijate.json` da «fíjate» propios y `skipTraits` (rasgos
+  excluidos en obras de juventud, copias o atípicas). Sin certeza, no hay línea y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
   `technique`, `dimensions`, `source {wikidata, file, license}`; se pide aparte por peso, `mergeCatalogFicha` la une a las obras).
 - **Obra**: `id, artistId, title, year, yearSort, img, thumb, w, h, role, fame, confidence, level, stage?, inSpain, spoiler?,
   attributed?, focus?`. `w`/`h` son los de la imagen empaquetada a 1200 px. `level`: 1 = básico, 2..n = «a fondo» (etapa

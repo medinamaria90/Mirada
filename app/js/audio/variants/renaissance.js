@@ -1,83 +1,11 @@
-// Renacimiento (también manierismo y norte): variantes con laúd, flauta dulce y viola. Las dos
-// primeras son variaciones de «Pavana del alba» (el tema principal, scores.js): su motivo de arranque
-// (la–re′–do′–re′) en re, como la pareja pavana–gallarda de las danzas del siglo XVI.
+// Renacimiento (también manierismo y norte): tres variantes con laúd, flauta dulce y viola.
 import { scalePcs } from '../theory.js';
 import { FORM4 } from '../scores.js';
 
 /** Primera mitad de la romanesca en la menor (III–VII–i–V–III–VII), compartida por el canto y su glosa. */
 const ROMANESCA_A = ['C', 'G', 'Am', 'E', 'C', 'G'];
 
-/** A (el tema solo) – A2 (se suma una contramelodía) – B – A2: 32 compases. */
-const FORM_VARIATION = [['A', 'open'], ['A2', 'close'], ['B'], ['A2', 'close']];
-const DYN_VARIATION = { A: 1, A2: 1.03, open: 1, close: 0.95, B: 1.07 };
-
-// Pavana en sombra: el motivo en re menor, reharmonizado (i–VI–iv–V), más lento y con la flauta.
-const SOMBRA_A = {
-  chords: ['Dm', 'Bb', 'Gm', 'A', 'Dm', 'Gm|A'],
-  mel: ['A4/1 D5/1.5 C5/.5 D5/1', 'F5/2 D5/1 Bb4/1', 'Bb4/1 G4/1 A4/1 Bb4/1',
-    'A4/2 C#5/1 E5/1', 'A4/1 D5/1 E5/1 F5/1', 'G5/1 F5/.5 E5/.5 E5/1 C#5/1'],
-};
-
-// Gallarda del alba: el mismo motivo en 3/4, glosado en corcheas, con la armonía original.
-const GALLARDA_A = {
-  chords: ['Dm', 'C', 'F', 'C', 'Dm', 'F|C'],
-  mel: ['A4/.5 D5/1 C5/.5 D5/1', 'E5/1 G5/.5 E5/.5 D5/.5 C5/.5', 'C5/.5 D5/.5 C5/.5 A4/.5 F4/.5 G4/.5',
-    'G4/1.5 A4/.5 G4/.5 E4/.5', 'A4/.5 D5/.5 E5/1 F5/1', 'F5/.5 E5/.5 D5/.5 E5/.5 D5/.5 C5/.5'],
-};
-
 export const RENAISSANCE = [
-  {
-    id: 'sombra',
-    name: 'Pavana en sombra',
-    label: 'Flauta dulce, laúd punteado y viola, 4/4, el motivo de la pavana en re menor',
-    character: 'íntimo, lento, melancólico',
-    piece: {
-      title: 'Pavana en sombra', key: 'Re menor', tonic: 2, mode: 'minor',
-      scale: scalePcs(2, 'minor', [1]), bpm: 58, beatsPerBar: 4, form: FORM_VARIATION, style: 'pavane',
-      voices: { mel: 'recorder', acc: 'lute', bass: 'lute', cnt: 'viola' },
-      vg: { mel: 0.9, acc: 0.85, bass: 0.9, cnt: 0.5 },
-      reverb: 0.42, level: 0.56, rubato: { amp: 0.018, ritard: 0.08 }, orn: { kind: 'turn', prob: 0.08 },
-      dyn: DYN_VARIATION,
-      sections: {
-        A: SOMBRA_A,
-        A2: { ...SOMBRA_A, cnt: ['F4/2 E4/2', 'D4/2 F4/2', 'G4/2 D4/2', 'E4/2 C#4/2', 'D4/1 E4/1 F4/2', 'G4/2 E4/2'] },
-        open: { chords: ['Bb|C', 'A'], mel: ['D5/1 Bb4/1 C5/1 E5/1', 'E5/2 A4/2'] },
-        close: { chords: ['Gm|A', 'Dm'], mel: ['Bb4/1 D5/1 C#5/1 E5/1', 'D5/3 A4/1'] },
-        B: {
-          chords: ['F', 'C', 'Dm', 'A', 'Bb', 'F', 'Gm|A', 'A'],
-          mel: ['C5/2 A4/1 C5/1', 'E5/2 G5/2', 'A5/1 G5/1 F5/1 D5/1', 'E5/1 C#5/1 A4/2',
-            'Bb4/1 D5/1 F5/2', 'F5/1.5 E5/.5 D5/1 C5/1', 'D5/1 Bb4/1 C#5/1 A4/1', 'E5/2 C#5/1 A4/1'],
-          cnt: ['A4/4', 'G4/4', 'F4/4', 'E4/2 C#4/2', 'D4/4', 'A3/2 C4/2', 'D4/2 E4/2', 'A3/4'],
-        },
-      },
-    },
-  },
-  {
-    id: 'gallarda',
-    name: 'Gallarda del alba',
-    label: 'Fídula, laúd y flauta dulce, 3/4, el motivo de la pavana glosado',
-    character: 'vivo, saltarín, cortesano',
-    piece: {
-      title: 'Gallarda del alba', key: 'Re dórico', tonic: 2, mode: 'dorian',
-      scale: scalePcs(2, 'dorian'), bpm: 108, beatsPerBar: 3, form: FORM_VARIATION, style: 'galliard',
-      voices: { mel: 'fiddle', acc: 'lute', bass: 'lute', pad: 'gamba', cnt: 'recorder' },
-      vg: { mel: 0.9, acc: 0.85, bass: 0.9, pad: 0.4, cnt: 0.55 },
-      reverb: 0.36, level: 0.74, rubato: { amp: 0.008, ritard: 0.05 }, orn: { kind: 'mordent', prob: 0.12 },
-      dyn: DYN_VARIATION,
-      sections: {
-        A: GALLARDA_A,
-        A2: { ...GALLARDA_A, cnt: ['F4/3', 'E4/1.5 G4/1.5', 'A3/1.5 C4/1.5', 'C4/1.5 E4/1.5', 'F4/1.5 A4/1.5', 'A4/1.5 G4/1.5'] },
-        open: { chords: ['F|G', 'A'], mel: ['C5/1 A4/.5 B4/1 G4/.5', 'E5/1 C#5/1 A4/1'] },
-        close: { chords: ['Am|G', 'Dm'], mel: ['C5/.5 E5/.5 D5/.5 B4/.5 G4/.5 B4/.5', 'A4/.5 E5/.5 D5/2'] },
-        B: {
-          chords: ['F', 'C', 'Am', 'G', 'F', 'C', 'Em|Am', 'G'],
-          mel: ['C5/1.5 A4/.5 C5/1', 'E5/1 G5/2', 'A5/.5 G5/.5 E5/1 C5/1', 'D5/1 B4/.5 A4/.5 G4/1',
-            'A4/.5 C5/.5 F5/2', 'E5/1 D5/.5 C5/.5 E5/1', 'G5/.5 E5/.5 B4/.5 C5/.5 E5/.5 A5/.5', 'D5/1.5 C5/.5 B4/1'],
-          cnt: ['F4/1.5 A4/1.5', 'G4/3', 'E4/1.5 A4/1.5', 'B4/1.5 G4/1.5', 'F4/3', 'G4/1.5 E4/1.5', 'E4/1.5 C5/1.5', 'B4/3'],
-        },
-      },
-    },
-  },
   {
     id: 'saltarello',
     name: 'Saltarello del jardín',

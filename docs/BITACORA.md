@@ -244,3 +244,16 @@ Murillo y Rembrandt), validado por `tools/sync_cuadro_dia.py` (nitidez del detal
 `h/cuadro-<n>.html` con el detalle como vista previa. 10 XP si acierta, 5 si no; cuenta para la racha general; medallas
 `daily-1` y `daily-perfect` renombradas. Estado v11. Fuera `planDaily` y la ronda diaria; `#reto-diario` y los enlaces `d…`
 llevan al Cuadro del día.
+
+## «Fíjate en» que encaja con la obra (27/11)
+
+María acertó «Los tormentos de San Antonio» y le salió «Fíjate en los cuerpos musculosos» (la pista genérica de Miguel
+Ángel, que rota con sus rasgos en `engine/feedback.js`). Ahora `contenido/fijate.json` da a una obra su propio «fíjate»
+(≤ 100 letras, con fuente) y/o excluye rasgos del pintor que en ella no se ven (`sin`: posiciones en [pista, *rasgos] o
+«todos»); llega como `looks` y `skipTraits` y el motor no enseña nunca un rasgo excluido (tampoco en la ficha del pintor).
+En obras etiquetadas, tampoco un rasgo cuyas etiquetas faltan. Mejor sin línea que una que no encaja. Auditoría: 192
+obras (juventud de El Greco, Velázquez sevillano, Caravaggio temprano, Van Gogh holandés, retratos de Tiziano…).
+Segundo caso («el llanto» de Van der Weyden en un retrato): el filtro pasa a ser seguro por defecto. Cada obra tiene
+género (Wikidata reducido a retrato, figuras, paisaje, bodegón o abstracto; 213 a mano en `contenido/generos.json`) y cada
+una de las ~600 frases de los 174 pintores declara su alcance en `contenido/rasgos.json` (estilo, géneros o etiquetas).
+Unas 265 obras se quedan sin «fíjate» genérico (antes enseñaban algo que quizá no se veía).

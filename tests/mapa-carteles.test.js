@@ -47,13 +47,13 @@ test('vuelta al mapa: solo se centra en la parada actual al abrir o con «Tu par
 test('carteles: tablilla de tramo (un solo objeto) sin contador; completa, dorada sin iconos; el dintel lleva la única cuenta', () => {
   const half = tramoSign({ name: 'Venecia', key: 'Venecia', sign: SIGN }, { got: 1, total: 3 }, 1000);
   assert.ok(half.includes('>Venecia</span>') && !/\d\/\d/.test(half) && !half.includes('is-done') && !half.includes('tramo-stone'), 'la tablilla a medias lleva cifra, va dorada o repite con un mojón');
-  assert.ok(half.includes('aria-label="Tramo Venecia: 1 de 3 dominados. Ver cartel"'));
+  assert.ok(half.includes('aria-label="Tramo Venecia: 1 de 3 pintores. Ver cartel"'));
   const done = tramoSign({ name: 'Venecia', key: 'Venecia', sign: SIGN }, { got: 3, total: 3 }, 1000);
   assert.ok(done.includes('sign-plate is-tramo is-done') && !done.includes('<svg') && !/\d\/\d/.test(done) && done.includes('Tramo Venecia: completo'), 'la completa no se dora o lleva un icono suelto');
   const arch = { x: 200, y: 900, top: 866, side: 'center', x0: 10, x1: 390 };
   const movement = { id: 'barroco', name: 'Barroco', period: 's. XVII' };
   const open = eraArch({ movement, status: 'available', sealed: false, done: 4, total: 9, prevName: 'Renacimiento', arch, h: 1000 });
-  assert.ok(open.includes('class="era-arch"') && open.includes('data-action="intro"') && open.includes('arch-progress') && open.includes('4 de 9 pintores dominados'));
+  assert.ok(open.includes('class="era-arch"') && open.includes('data-action="intro"') && open.includes('arch-progress') && open.includes('4 de 9 pintores'));
   assert.ok(!open.includes('4/9') && !open.includes('arch-meta'), 'cifra o siglos pegados al nombre');
   const sealed = eraArch({ movement, status: 'mastered', sealed: true, done: 9, total: 9, prevName: '', arch, h: 1000 });
   assert.ok(sealed.includes('arch-band is-done') && !sealed.includes('9/9') && sealed.includes('--p:1'), 'la completa lleva cifra');

@@ -32,7 +32,7 @@ export function renderGallery(ctx, el, movementId) {
     return ctx.go('inicio', { replace: true });
   }
   if (!isGalleryOpen(ctx.store.get().progress, index, movementId)) {
-    ctx.toast('Se abre al dominar el movimiento', { carry: true });
+    ctx.toast('Se abre al terminar la época', { carry: true });
     return ctx.go('inicio', { replace: true });
   }
   const works = galleryList(ctx, movementId);

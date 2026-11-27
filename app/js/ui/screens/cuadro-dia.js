@@ -72,7 +72,7 @@ function play(ctx, el, data, day) {
     </header>
     <main class="cdd-body" id="main">
       <h1 class="cdd-title" tabindex="-1">¿De quién es?</h1>
-      ${frameHtml(work, entry.focus, zoomFor(game), 'Ver el detalle en grande')}
+      ${frameHtml(work, entry.focus, zoomFor(game), 'Ver el detalle en grande', isOver(game) ? null : entry.veil)}
       <ul class="cdd-hints" aria-label="Pistas"></ul>
       <div class="cdd-options" role="group" aria-label="Pintores">
         ${entry.options.map((id) => `<button type="button" class="btn cdd-opt" data-action="pick" data-id="${esc(id)}">${esc(name(id))}</button>`).join('')}
@@ -84,7 +84,8 @@ function play(ctx, el, data, day) {
 
   const paint = () => {
     const step = revealStep(game);
-    setFrame(el, work, entry.focus, zoomFor(game));
+    // La firma se tapa hasta acabar (al acertar o fallar el último, el cuadro queda entero y limpio).
+    setFrame(el, work, entry.focus, zoomFor(game), isOver(game) ? null : entry.veil);
     const frame = el.querySelector('.cdd-frame');
     frame.setAttribute('aria-label', step === 1 || step === 2 ? 'Ver el detalle en grande' : 'Ver el cuadro en grande');
     el.querySelector('.cdd-hints').innerHTML = hintsFor(game).map((k) => `<li class="cdd-hint"><span class="cdd-hint-k">${HINT_LABEL[k]}</span><span class="cdd-hint-v">${esc(entry.hints[k])}</span></li>`).join('');
@@ -122,7 +123,7 @@ function play(ctx, el, data, day) {
 
   onAction(el, {
     quit: () => { ctx.audio.sfx('tap'); ctx.go('inicio'); },
-    zoom: (b) => { ctx.audio.sfx('tap'); openLarge(ctx, work, entry.focus, zoomFor(game), { opener: b }); },
+    zoom: (b) => { ctx.audio.sfx('tap'); openLarge(ctx, work, entry.focus, zoomFor(game), { opener: b, reveal: isOver(game), veil: isOver(game) ? null : entry.veil }); },
     pick: (b) => {
       const before = game;
       game = guess(game, entry, b.dataset.id);

@@ -38,7 +38,7 @@ export function statsHtml(ctx) {
     </${attrs.href ? 'a' : 'button'}></li>`;
   const tiles = [
     { tone: 'brand', icon: icons.flame(22), num: s.streak, label: s.streak === 1 ? 'Día de racha' : 'Días de racha', attrs: { 'data-action': 'medal', 'data-id': streakMedal(p), 'aria-haspopup': 'dialog' }, aria: `Racha: ${s.streak} ${s.streak === 1 ? 'día' : 'días'}` },
-    { tone: 'gold', icon: BRUSH, num: s.painters, label: s.painters === 1 ? 'Pintor dominado' : 'Pintores dominados', attrs: { href: '#coleccion-pintores' }, aria: `${s.painters} ${s.painters === 1 ? 'pintor dominado' : 'pintores dominados'}` },
+    { tone: 'gold', icon: BRUSH, num: s.painters, label: s.painters === 1 ? 'Pintor que reconoces' : 'Pintores que reconoces', attrs: { href: '#coleccion-pintores' }, aria: `${s.painters} ${s.painters === 1 ? 'pintor que reconoces' : 'pintores que reconoces'}` },
     { tone: 'ok', icon: icons.frames(22), num: s.works, label: s.works === 1 ? 'Cuadro visto' : 'Cuadros vistos', attrs: { href: '#coleccion' }, aria: `${s.works} ${s.works === 1 ? 'cuadro visto' : 'cuadros vistos'}` },
     { tone: 'accent', icon: COLUMNS, num: s.eras, total: s.erasTotal, label: 'Épocas', attrs: { href: '#inicio' }, aria: `Épocas completas: ${s.eras} de ${s.erasTotal}` },
   ];
