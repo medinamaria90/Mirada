@@ -114,7 +114,7 @@ function eraBlock(ctx, era, prevEra, keys) {
     // --room: parte del ancho que queda hacia donde cuelga el nombre (el rótulo nunca pasa del margen de 8 px).
     const state = node.key === keys.current ? ' is-current' : node.key === keys.next ? ' is-next' : '';
     const sec = era.sections.find((s) => s.at === i);
-    const head = sec ? tramoSign(sec, sectionInfo(ctx, era.id, sec), era.h, era.sections.indexOf(sec) + 1) : '';
+    const head = sec ? tramoSign(sec, sectionInfo(ctx, era.id, sec), era.h) : '';
     const spur = branches.filter((b) => b.spot.at === i).map((b) => branchSpot(b.spot, b.branch, b.st, index, era.h)).join('');
     return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
   }).join('');
