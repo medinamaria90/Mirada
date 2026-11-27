@@ -1,12 +1,14 @@
 // Siguiente paso recomendado al cerrar una sesión: un solo botón principal, sin arrancar nada solo ni cuentas atrás.
 // Gana la primera regla que se cumple:
 //   1. etapa o sala por debajo del 50 % → «Repetir»;
+//   1 bis. se entró a jugar desde una pantalla con un objetivo (el rango del Perfil, los logros) → «Volver al perfil»;
 //   2. esta sesión cumple la meta del día → «Por hoy, hecho», con «Volver al camino»;
 //   3. repaso que traía un pintor a medias (y sigue a medias) → «Volver a <pintor>»;
 //   4. 3 o más pintores a medias, o 5 o más fallados, sin repaso ni ahora ni en la sesión anterior → «Repasar»;
 //   5. nivel «a fondo» superado con el siguiente abierto, o rama con siguiente → «Siguiente: <etapa>» / «Siguiente en la rama»;
 //   6. una parada abierta y sin jugar → «Sigue: <pintor>» (con su miniatura);
-//   7. camino dominado → «Reto semanal» si está pendiente o, si no, «Repasar» (nunca dos repasos seguidos).
+//   7. camino dominado y reto semanal pendiente → «Reto semanal»; si no, el nivel que recomienda el rango del Perfil
+//      (rank-goals.js rankFocus: «Siguiente: <pintor> · nivel N») y, con el camino dominado, «Repasar» (nunca dos seguidos).
 // Si no, «Seguir» (al camino). Con 50-74 % no se recomienda repetir: eso va como acción secundaria (result-actions.js).
 // Devuelve { kind, to, label, artistId? }. Puro (las rutas son texto: ui/router.js no toca el DOM al importarse).
 
@@ -15,6 +17,8 @@ import { deepStatus } from './levels.js';
 import { branchAfterRound } from './branches.js';
 import { reviewSession, startedArtists, reviewFallados, REVIEW_MIN } from './review.js';
 import { isoWeek } from './dates.js';
+import { rankFor } from './ranks.js';
+import { rankConditions, rankFocus } from './rank-goals.js';
 import { deepRoute, stageRoute } from '../ui/router.js';
 
 export const REVIEW_ROUTE = 'repaso';
@@ -41,7 +45,10 @@ function canReview(progress, index, today, plan, prevKind) {
 
 const review = () => ({ kind: 'review', to: REVIEW_ROUTE, label: 'Repasar' });
 
-export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, branchId = '', week = '' } = {}) {
+// Vuelta a la pantalla con un objetivo desde la que se entró a jugar (ui/router.js GOAL_SCREENS).
+export const ORIGIN_LABEL = { perfil: 'Volver al perfil', logros: 'Volver a logros' };
+
+export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, branchId = '', week = '', origin = '' } = {}) {
   const kind = plan.kind;
   const isDeep = kind === 'stage' && plan.level >= 2;
   // 1. Ronda floja de una etapa o sala.
@@ -49,6 +56,8 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
     const to = kind === 'sala' ? `sala-${plan.movementId}` : isDeep ? deepRoute(plan.artistId, plan.level) : stageRoute(plan.artistId, branchId);
     return { kind: 'retry', to, label: 'Repetir' };
   }
+  // 1 bis. Vuelta al objetivo.
+  if (ORIGIN_LABEL[origin]) return { kind: 'origin', to: origin, label: ORIGIN_LABEL[origin] };
   // 2. Meta del día cumplida en esta sesión.
   if (goalJustMet) return { kind: 'done', to: HOME_ROUTE, label: BACK_LABEL };
   // 3. Repaso con un pintor a medias.
@@ -78,11 +87,17 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
     const name = open.type === 'sala' ? index.movement(open.id)?.name : index.artist(open.id) && shortName(index.artist(open.id));
     if (name) return { kind: 'stop', to: stepRoute(index, open), label: `Sigue: ${name}`, ...(open.type === 'artist' ? { artistId: open.id } : { movementId: open.id }) };
   }
-  // 7. Camino dominado.
-  if (isPathMastered(progress, index)) {
-    const key = week || isoWeek(today).key;
-    if (kind !== 'weekly' && !progress.weekly?.[key]) return { kind: 'weekly', to: 'reto-semanal', label: 'Reto semanal' };
-    if (canReview(progress, index, today, plan, prevKind)) return review();
+  // 7. Camino dominado: el reto semanal si está pendiente; si no (o sin camino dominado y nada abierto), lo que pide el
+  // rango (6 bis, lo mismo que recomienda su tarjeta del Perfil) y, al final, «Repasar».
+  const mastered = isPathMastered(progress, index);
+  if (mastered && kind !== 'weekly' && !progress.weekly?.[week || isoWeek(today).key]) return { kind: 'weekly', to: 'reto-semanal', label: 'Reto semanal' };
+  const rank = rankFor(progress, index);
+  const focus = rank.next ? rankFocus(progress, index, rank.next, rankConditions(rank.next, rank.stats)) : null;
+  const same = focus?.choice && plan.artistId === focus.choice.artistId && plan.level === focus.choice.level;
+  if (focus?.choice && !same && index.artist(focus.choice.artistId)) {
+    const a = index.artist(focus.choice.artistId);
+    return { kind: 'rank', to: deepRoute(a.id, focus.choice.level), label: `Siguiente: ${shortName(a)} · nivel ${focus.choice.level}`, artistId: a.id };
   }
+  if (mastered && canReview(progress, index, today, plan, prevKind)) return review();
   return { kind: 'path', to: HOME_ROUTE, label: 'Seguir' };
 }

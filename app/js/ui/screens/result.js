@@ -9,6 +9,7 @@ import { icons } from '../icons.js';
 import { mediumSrc, tinySrc, coverOf } from '../art.js';
 import { MASTERY, UNLOCK_MIN, isStepUnlocked, gateSteps } from '../../engine/progress.js';
 import { nextStep, DONE_TITLE } from '../../engine/next-step.js';
+import { RANKS } from '../../engine/ranks.js';
 import { isoWeek } from '../../engine/dates.js';
 import { pendingWorks } from '../../engine/levels.js';
 import { stageTitle, tierOf, isMasterTier, avatarCrop, avatarWork, seenOf } from '../../engine/painters.js';
@@ -92,6 +93,8 @@ const secondaryBtn = (b) => (b.iconOnly
   : `<button class="btn btn-secondary res-btn2" data-action="${b.action}"${b.to ? ` data-to="${esc(b.to)}"` : ''}>${b.icon ? icons[b.icon](20) : ''}<span>${esc(b.label)}</span></button>`);
 
 const STEP_ICON = { retry: 'repeat', review: 'repeat', weekly: 'target' };
+// Botón principal que vuelve a la pantalla de origen: al subir de rango, al llegar lo celebra con un aviso.
+const RANK_UP = (ev) => `¡Ya eres ${ev.name}!${RANKS[ev.index + 1] ? ` Ahora, a por ${RANKS[ev.index + 1].name}` : ''}`;
 
 // Botón principal: el siguiente paso. Al camino («Seguir», «Volver al camino») cierra como siempre; el resto va a su ruta.
 // «Sigue: <pintor>» lleva su miniatura.
@@ -147,7 +150,7 @@ export function renderResult(ctx, el, opts) {
   // El siguiente paso (engine/next-step.js); los duelos no llevan recomendación.
   const week = typeof ctx.dailyDay === 'function' ? isoWeek(ctx.dailyDay()).key : '';
   const next = duel ? { kind: 'path', to: 'inicio', label: 'Seguir' }
-    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week });
+    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '' });
   const blocked = next.kind === 'retry';
   const gated = Boolean(blocked && nextOf && !isStepUnlocked(p, index, nextOf));
   const toPath = next.kind === 'path' || next.kind === 'done';
@@ -181,7 +184,7 @@ export function renderResult(ctx, el, opts) {
       <div class="res-head">
         ${medalHtml(ctx, heroMedal, deepDone, work)}
         <p class="res-kicker">${esc(kicker)}</p>
-        <h1 class="res-title">${goalJustMet && !duel ? DONE_TITLE : headline(outcome.accuracy)}</h1>
+        <h1 class="res-title">${next.kind === 'done' ? DONE_TITLE : headline(outcome.accuracy)}</h1>
         ${lineHtml(ctx, { plan, outcome, low, gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry })}
       </div>
       <dl class="res-tally">
@@ -226,6 +229,8 @@ export function renderResult(ctx, el, opts) {
     },
     go: (b) => {
       ctx.audio.sfx('tap');
+      const rankUp = events.find((e) => e.type === 'rank');
+      if (rankUp && b.dataset.to === opts.origin) ctx.toast(RANK_UP(rankUp), { carry: true });
       if (b.dataset.to) ctx.go(b.dataset.to, { replace: true });
     },
     share: () => {

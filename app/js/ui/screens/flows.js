@@ -26,7 +26,7 @@ import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_NAME } from '../../en
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
-import { stageReturnTo } from '../router.js';
+import { stageReturnTo, isGoalScreen } from '../router.js';
 import { makeSession, withSession, clearSession } from '../../state/session.js';
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
@@ -100,6 +100,7 @@ function play(ctx, el, opts) {
       const goalJustMet = outcome.events.some((e) => e.type === 'goal');
       resultCss.then(() => renderResult(ctx, el, {
         plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before, prevKind, goalJustMet,
+        origin: isGoalScreen(returnTo) ? returnTo : '',
       }));
     },
   });
@@ -421,7 +422,7 @@ export function renderMovementReview(ctx, el, movementId) {
   const plan = planMovementReview(index, movementId, randomSeed());
   if (!plan.questions.length) return ctx.go('inicio');
   playEra(movement.era);
-  ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `Repaso de ${movement.name}`, kind: 'review', extra: { movementId }, shareTopic: movement.name }));
+  ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `Prueba de época · ${movement.name}`, kind: 'review', extra: { movementId }, shareTopic: movement.name }));
 }
 
 // --- Repasar: la sesión automática (fallados, pintor a medias, vencidos, apagado y relleno) -------------

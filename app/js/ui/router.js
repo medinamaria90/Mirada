@@ -44,8 +44,13 @@ export const branchRoute = (branchId) => `rama-${branchId}`;
 // aunque la pantalla anterior sea otra etapa de la misma rama); si no, a la ficha del pintor o su galería.
 export function stageReturnTo(branchId, prev) {
   if (branchId) return branchRoute(branchId);
+  if (GOAL_SCREENS.has(prev)) return prev;
   return /^(pintor|obras|rama)-[a-z0-9-]+$/.test(prev) ? prev : null;
 }
+
+// Pantallas con un objetivo (el rango del Perfil, los logros): si se entra a jugar desde ellas, el resultado vuelve ahí.
+export const GOAL_SCREENS = new Set([ROUTES.profile, ROUTES.medals]);
+export const isGoalScreen = (route) => GOAL_SCREENS.has(route);
 
 export function parseRoute(hash, opts = {}) {
   const name = String(hash || '').replace(/^#/, '');
