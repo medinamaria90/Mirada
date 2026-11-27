@@ -10,7 +10,7 @@ import { recallMap } from './map-memory.js';
 import { esc, accentStyle, plural, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { coverOf } from '../art.js';
-import { STATE_LABEL, DORMANT_TEXT, startedLabel, startedMeta, dotFor, nodeHtml } from './path-nodes.js';
+import { STATE_LABEL, DORMANT_TEXT, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import {
   artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered,
 } from '../../engine/progress.js';
@@ -189,7 +189,7 @@ function artistNode(ctx, artist, keys) {
     label: status === 'started' ? startedLabel(artist.name, p.artists[artist.id]?.best)
       : `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
     // Dormido: sin texto bajo el nombre (lo dice la etiqueta, para el lector).
-    name: quiet ? artist.short || artist.name : artist.name, meta: status === 'started' ? startedMeta(p.artists[artist.id]?.best) : '',
+    name: quiet ? artist.short || artist.name : artist.name, meta: '',
     dot: dotFor(status, coverOf(index, artist.id), artist.name),
   });
   return { type: 'artist', key, status, html };
@@ -207,7 +207,7 @@ function salaNode(ctx, movement, keys) {
     unlock: status === 'locked' && prev ? `${prev.type}:${prev.id}` : '',
     label: status === 'started' ? startedLabel(`Conoce el movimiento ${movement.name}`, p.salas?.[movement.id]?.best)
       : `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
-    name: 'Conoce el movimiento', meta: status === 'started' ? startedMeta(p.salas?.[movement.id]?.best) : '',
+    name: 'Conoce el movimiento', meta: '',
     dot: dotFor(status, salaCover(index, movement.id), movement.name),
   });
   return { type: 'sala', key, status, html };

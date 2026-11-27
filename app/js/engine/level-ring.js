@@ -60,7 +60,7 @@ export const NEED_TEXT = `hace falta un ${percent(MASTERY)}`;
 // A partir de aquí, «te falta poco».
 export const CLOSE_BEST = 0.65;
 
-// Bajo el nombre del nodo a medias: «Vas por el 50 %».
+// Lo que oye el lector de pantalla del nodo a medias: «Vas por el 50 %» (a la vista, solo el aro; la cifra va en su tarjeta).
 export const startedMeta = (best) => `Vas por el ${percent(Number(best) || 0)}`;
 
 // Lo que le falta a un pintor a medias, en una línea: «Has acertado el 50 %; hace falta un 75 %» (desde el 65 %, «Te falta
