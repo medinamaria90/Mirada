@@ -151,8 +151,7 @@ def year_info(dates, born, died):
 def main():
     painters = load(os.path.join(PIPE, "painters.json"))
     resolved = {r["id"]: r for r in load(os.path.join(OUT, "painters_resolved.json"), [])}
-    # Las claves de excluir.json pueden ser el QID o el id de obra de la app (w<número>): se pasan a QID.
-    excl = {re.sub(r"^w(?=\d+$)", "Q", k): v for k, v in load(os.path.join(PIPE, "excluir.json"), {}).items()}
+    excl = excluidas()
     adj = load(os.path.join(PIPE, "ajustes.json"), {})
     tit = load(os.path.join(PIPE, "titulos_es.json"), {})
     extra = load(os.path.join(PIPE, "extra.json"), {})  # pintor -> {QID: motivo} obras a forzar
@@ -323,7 +322,7 @@ def main():
             + " ".join(f"L{k}:{v}" for k, v in sorted(porNivel.items())) + "  | "
             + ", ".join(f"{k}:{v}" for k, v in sorted(why.items(), key=lambda kv: -kv[1])) + mark)
     # Con pintores sueltos, el resto de la selección anterior se conserva (y su fama, que decide quién va al camino).
-    previa = [s for s in load(os.path.join(CAT, "seleccion.json"), []) if s["pintorId"] not in solo] if solo else []
+    previa = [s for s in seleccion() if s["pintorId"] not in solo] if solo else []
     # fama 1-3 por cuantiles de sitelinks
     sls = sorted(s["sitelinks"] for s in sel + previa)
     if sls:

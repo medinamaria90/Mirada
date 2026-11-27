@@ -30,7 +30,7 @@ def cap(s):
 def main():
     painters = load(os.path.join(PIPE, "painters.json"))
     resolved = {r["id"]: r for r in load(os.path.join(OUT, "painters_resolved.json"), [])}
-    sel = load(os.path.join(CAT, "seleccion.json"), [])
+    sel = seleccion()  # sin las de excluir.json
     meta = load(os.path.join(CAT, "img_meta.json"), {})
     fichas = load(os.path.join(OUT, "fichas.json"), {})
     for q, fix in load(os.path.join(PIPE, "fichas_ajustes.json"), {}).items():  # correcciones a mano (fuente en el archivo)

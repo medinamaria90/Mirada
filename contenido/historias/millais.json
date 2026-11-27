@@ -18,16 +18,23 @@
     {
      "text": "Las lámparas que calentaban la bañera de Ofelia se apagaron un día. La modelo, Elizabeth Siddal, enfermó, y su padre le pasó a Millais la factura del médico.",
      "artwork": "w1065493",
-     "focus": [
-      0.5,
-      0.5,
-      1.6
+     "region": [
+      0.18,
+      0.3,
+      0.45,
+      0.85
      ],
      "source": "https://es.wikipedia.org/wiki/Ofelia_(Millais)"
     },
     {
      "text": "Fíjate en la orilla: cada planta y cada flor que flota está pintada al natural, junto a un río de Surrey, durante meses, antes de pintar a Ofelia.",
      "artwork": "w1065493",
+     "region": [
+      0.55,
+      0.0,
+      0.9,
+      0.75
+     ],
      "source": "https://es.wikipedia.org/wiki/Ofelia_(Millais)"
     }
    ]

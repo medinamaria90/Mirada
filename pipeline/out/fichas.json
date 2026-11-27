@@ -46315,5 +46315,23 @@
   "movement": "Renacimiento italiano",
   "source": "wikidata",
   "fetched": "2026-11-27"
+ },
+ "Q96471658": {
+  "museum": null,
+  "museumQid": null,
+  "city": null,
+  "country": null,
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": null,
+  "heightCm": null,
+  "widthCm": null,
+  "inception": "",
+  "depicts": [],
+  "genre": "ukiyo-e",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-27"
  }
 }
