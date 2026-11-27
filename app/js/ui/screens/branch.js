@@ -20,6 +20,7 @@ import { rememberMap, recallMap, forgetMap } from './map-memory.js';
 import { setMapFocus, takeBranchFocus, showLockNote, watchMapMode, watchLandscapes, levelCard, pathActions, frontSvg } from './path-map.js';
 import { startMapLife } from '../map-life.js';
 import { addLevelRings } from '../deep-badges.js';
+import { watchStoryPrefetch } from '../story-prefetch.js';
 import { loadCss } from '../lazy-css.js';
 
 const FOOT_H = 84;                  // alto de la franja bajo el mapa (.path-foot en main.css)
@@ -125,6 +126,7 @@ export async function renderBranch(ctx, el, branchId) {
   const back = recallMap(memo);
   const stops = [() => rememberMap(memo, map), watchMapMode(map), life.stop];
   addLevelRings(ctx, el);
+  stops.push(watchStoryPrefetch(el).stop);
   if (ctx.store.get().progress.roster?.fresh?.length) import('../new-painters.js').then((m) => m.tagNewStops(ctx, el)).catch((err) => console.error(err));
   // De vuelta (de una ronda, una ficha…): donde estaba la vista, con el foco en la parada jugada.
   const played = takeBranchFocus();

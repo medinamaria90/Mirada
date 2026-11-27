@@ -840,7 +840,7 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // El servidor de pruebas comprime como Render (tools/serve_local.py), así que los KB son los comprimidos.
 // 27/11: el mapa vivo, los carteles, las ramas y los niveles van en módulos pequeños, uno por responsabilidad (sin paso
 // de build): medidos 31 peticiones en la bienvenida (3 hojas del mapa que el HTML pide antes de saber la pantalla, roster,
-// encuadre) y 57 en el inicio (≈25 módulos del mapa). Por HTTP/2 y con el service worker eso cuesta poco; lo que manda
+// encuadre) y 58 en el inicio (≈25 módulos del mapa y la precarga de historias). Por HTTP/2 y con el service worker eso cuesta poco; lo que manda
 // es el peso, y ese presupuesto no cambia.
 const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 58, kb: 440 } };
 const boot = {};
@@ -1270,6 +1270,12 @@ if (SMOKE) {
   const deepUpTo = index.pathIndex(deepArtist.id) + 1;
   const deepLevel = index.deepLevels(deepArtist.id)[0];
   const deepSeen = (all) => ({ artists: { ...seededState({ upTo: deepUpTo }).progress.artists, [deepArtist.id]: { plays: 1, best: 1, mastered: true, works: [...index.worksOf(deepArtist.id)].filter((w) => w.level === 1 || all).map((w) => w.id) } } });
+  // La tarjeta se ve al instante aunque su historia tarde (docs/eval/rendimiento.md): se pinta y los círculos se
+  // completan con la historia al llegar. Se retrasa la historia de este pintor para comprobarlo.
+  const STORY_DELAY_MS = 2500;
+  const CARD_FAST_MS = 600;
+  const slowStory = `**/data/historias/${deepArtist.id}.json`;
+  await context.route(slowStory, async (route) => { await new Promise((r) => setTimeout(r, STORY_DELAY_MS)); await route.continue(); });
   await seed(page, seededState({ upTo: deepUpTo, extra: deepSeen(false) }), 'inicio');
   const deepNode = '.stage-spot[data-step="artist:' + deepArtist.id + '"] .stage';
   await page.waitForSelector(`${deepNode} .level-ring`);
@@ -1278,8 +1284,13 @@ if (SMOKE) {
   check(ring.arcs === rungs && ring.done === 1 && ring.next === 1 && ring.badge === '2' && ring.label.endsWith(`Nivel 2 de ${index.deepLevels(deepArtist.id).length + 1} por jugar`), `aro de niveles: ${JSON.stringify(ring)}`);
   await page.locator(deepNode).scrollIntoViewIfNeeded();
   await shot(page, '14h-mapa-aro-niveles');
+  const tapAt = Date.now();
   await page.locator(deepNode).click();
   await page.waitForSelector('.lc[open] .lc-card');
+  const cardMs = Date.now() - tapAt;
+  check(cardMs < CARD_FAST_MS && await page.locator('.lc .hl[data-story="1"]').count() === 0, `la tarjeta del nodo espera a la historia (${cardMs} ms)`);
+  await page.waitForSelector('.lc .hl[data-story="1"]', { timeout: STORY_DELAY_MS * 3 });
+  await context.unroute(slowStory);
   check(await page.locator('.lc .hl').count() === rungs && await page.locator('.lc .hl.is-next').count() === 1 && await page.locator('.lc .hl.is-locked').count() === rungs - 2, 'la tarjeta del nodo no enseña un círculo por nivel con su estado');
   check((await page.locator('.lc-play').innerText()).replace(/\s+/g, ' ').trim() === `Empezar · ${stageTitle(deepArtist, deepLevel)}`, `el botón de la tarjeta no es «Empezar · <nivel>»: ${await page.locator('.lc-play').innerText()}`);
   await page.locator('.lc .hl.is-locked').first().click();

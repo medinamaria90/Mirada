@@ -2,11 +2,13 @@
 // rama sale anclada con su pico al retrato, que sigue encendido sobre el velo. Arriba, «Pintor ›» (a su ficha) y «Nivel 3 de
 // 5»; en medio, un círculo por nivel (ui/level-row.js); abajo, un único botón «Empezar · <nivel>», que hace lo mismo que el
 // círculo resaltado («Repasar» con todo hecho). Solo la tienen los pintores con más de un nivel. Se carga al primer toque. Pulsar fuera, Esc, desplazar el mapa o cambiar de pantalla la cierran.
+// Se pinta al instante: si la historia del pintor aún no ha llegado (el mapa la precarga, ui/story-prefetch.js), los
+// círculos salen con una obra de cada nivel y se completan con la historia en cuanto llega.
 
 import { esc } from './dom.js';
 import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
-import { loadStory } from './story-data.js';
+import { loadStory, peekStory } from './story-data.js';
 import { modalSlot, mountSheet } from './modal-slot.js';
 import { levelRing } from '../engine/level-ring.js';
 import { rowLevels, rowHtml, wireRow, levelRoute } from './level-row.js';
@@ -74,9 +76,10 @@ export async function openLevelCard(ctx, button, branchId = '') {
   const ring = artist && levelRing(ctx.store.get().progress, index, artistId);
   if (!ring) return null;
   const turn = slot.begin();
-  const [story] = await Promise.all([loadStory(artistId), loadCss('css/niveles.css')]);
+  await loadCss('css/niveles.css');
   if (slot.stale(turn) || !button.isConnected) return null;
-  const levels = rowLevels(index, artistId, story, ring.levels);
+  const known = peekStory(artistId);
+  const levels = rowLevels(index, artistId, known ?? null, ring.levels);
   const dot = button.querySelector('.stage-dot');
   const dlg = document.createElement('dialog');
   dlg.className = 'lc';
@@ -113,5 +116,15 @@ export async function openLevelCard(ctx, button, branchId = '') {
     else go(levelRoute(artistId, ring.next || 1, branchId));
   });
   dlg.querySelector('.lc-play').focus({ preventScroll: true });
+  if (known === undefined) loadStory(artistId).then((story) => { if (story && dlg.open) fillStories(dlg, rowLevels(index, artistId, story, ring.levels)); });
   return handle;
+}
+
+// La historia llega con la tarjeta abierta: los círculos pasan a su portada y a «ver su historia», sin perder el foco.
+function fillStories(dlg, levels) {
+  const row = dlg.querySelector('.hl-row');
+  if (!row) return;
+  const focused = row.contains(document.activeElement) ? document.activeElement.dataset.hl : null;
+  row.outerHTML = rowHtml(levels);
+  if (focused) dlg.querySelector(`.hl[data-hl="${focused}"]`)?.focus({ preventScroll: true });
 }

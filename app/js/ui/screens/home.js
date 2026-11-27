@@ -14,6 +14,7 @@ import { dueKeys } from '../../engine/srs.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf } from '../../engine/dates.js';
 import { addLevelRings } from '../deep-badges.js';
+import { watchStoryPrefetch } from '../story-prefetch.js';
 import { coachSeen } from '../../state/store.js';
 
 export function renderHome(ctx, el) {
@@ -74,8 +75,11 @@ export function renderHome(ctx, el) {
   const news = ctx.store.get().progress.roster?.fresh?.length ? import('../new-painters.js') : null;
   const tagNew = () => news?.then((m) => m.tagNewStops(ctx, el)).catch((err) => console.error(err));
   // Al salir, se guarda dónde estaba la vista: se vuelve exactamente ahí (map-memory.js).
-  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); }), watchMapMode(map), life.stop, watchReturn(el)];
+  // Historias de la parada actual y de los pintores con niveles a la vista: su tarjeta se pinta sin esperar (story-prefetch.js).
+  let stories = null;
+  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, watchReturn(el), () => stories?.stop()];
   addLevelRings(ctx, el);
+  stories = watchStoryPrefetch(el);
   tagNew();
   news?.then((m) => m.tellNewPainters(ctx, el)).catch((err) => console.error(err));
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
