@@ -48,6 +48,9 @@ export function uniqueSources(list) {
 // Fuentes de una época: las de sus tarjetas (data/epocas/<movimiento>.json).
 export const eraSources = (cards) => uniqueSources((cards || []).map((c) => c && c.source));
 
+// Fuentes de los carteles del mapa (ramas y tramos): { clave: cartel } de cada tipo.
+export const signSources = (...maps) => uniqueSources(maps.flatMap((m) => Object.values(m || {}).map((sign) => sign && sign.source)));
+
 // Fuentes de los textos de un pintor: «por qué importa», fechas y país (Wikidata), sus historias y lo que se cuenta de sus cuadros.
 export function artistSources(artist, works, story) {
   const cards = (story?.levels || []).flatMap((l) => l.cards || []);

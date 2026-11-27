@@ -30,6 +30,13 @@ export function lookLine(cards, hint) {
 
 const validCard = (c) => c && typeof c.text === 'string' && c.text.length > 0 && c.text.length <= MAX_TEXT && typeof c.artwork === 'string';
 
+// Obras vistas que pueden abrir la primera tarjeta en su lugar: ninguna de las que salen en las tarjetas siguientes
+// (si no, la historia enseñaría dos veces el mismo cuadro).
+export function openingCandidates(seen, cards) {
+  const later = new Set((cards || []).slice(1).map((c) => c.artwork));
+  return (seen || []).filter((w) => !later.has(w.id));
+}
+
 // La historia de un nivel ({ title, stage?, cards }) o null si el pintor no la tiene. Se ignoran las tarjetas
 // mal formadas y las que pasan de MAX_CARDS.
 export function levelStory(story, level) {
@@ -52,7 +59,9 @@ export function cropOf(focus) {
 // entera). `frame` es la proporción del marco (ancho / alto). { mode, box? } con la caja de la imagen en % del marco.
 export const STORY_TARGET = [0.5, 0.4];
 const COVER_POINT = [0.5, 0.4]; // sin foco, un poco por encima de la mitad, donde suelen estar las caras
-export function frameFor(work, focus, frame = STORY_RATIO) {
+export function frameFor(work, focus, frame = STORY_RATIO, region = null) {
+  const part = regionOf(region);
+  if (part) return regionFrame(work, part, focus, frame);
   const ratio = ratioOf(work);
   const card = cropOf(focus);
   const point = card.whole ? focusOf(work) : [card.x / 100, card.y / 100];
@@ -61,6 +70,32 @@ export function frameFor(work, focus, frame = STORY_RATIO) {
   const limit = point ? LOSS_FOCUSED : LOSS_OK;
   if ((work?.whole && card.whole) || loss > limit) return { mode: 'fit' };
   return { mode: 'crop', box: coverBox(ratio, frame, point || COVER_POINT, zoom, STORY_TARGET) };
+}
+
+// Detalle intencionado de una tarjeta (`region`): [x0, y0, x1, y1], el rectángulo de la obra que se enseña (de 0 a 1), por
+// ejemplo un panel de un tríptico. Es una decisión mirando la imagen: siempre a sangre, con la región como si fuera la obra.
+// La proporción la vigilan tools/sync_historias.py y su prueba (que no pierda más de LOSS_FOCUSED). null si no es válida.
+export const REGION_MIN = 0.05;
+export function regionOf(region) {
+  if (!Array.isArray(region) || region.length !== 4) return null;
+  const [x0, y0, x1, y1] = region.map(Number);
+  const inside = [x0, y0, x1, y1].every((v) => Number.isFinite(v) && v >= 0 && v <= 1);
+  return inside && x1 - x0 >= REGION_MIN && y1 - y0 >= REGION_MIN ? { x0, y0, x1, y1 } : null;
+}
+
+// Proporción (ancho / alto) de la región dentro de la obra.
+export const regionRatio = (work, { x0, y0, x1, y1 }) => (ratioOf(work) * (x1 - x0)) / (y1 - y0);
+
+// La región a sangre: se encuadra como una obra suelta (con su punto [x, y] de la tarjeta, relativo a la región, o el centro)
+// y la caja se pasa a la imagen entera, que se sale del marco por los lados (lo recorta .story-art).
+function regionFrame(work, part, focus, frame) {
+  const card = cropOf(focus);
+  const point = card.whole ? [0.5, 0.5] : [card.x / 100, card.y / 100];
+  const b = coverBox(regionRatio(work, part), frame, point, card.whole ? 1 : card.zoom, STORY_TARGET);
+  const w = b.width / (part.x1 - part.x0);
+  const h = b.height / (part.y1 - part.y0);
+  const r1 = (v) => Math.round(v * 10) / 10;
+  return { mode: 'crop', box: { left: r1(b.left - part.x0 * w), top: r1(b.top - part.y0 * h), width: r1(w), height: r1(h) } };
 }
 
 // Posición siguiente al pasar de tarjeta: { pos } o { end: true } al pasar de la última; atrás se queda en la primera.

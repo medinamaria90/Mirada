@@ -1,5 +1,6 @@
 // Pantalla de una rama (#rama-<id>): su propio tramo de mapa, con su paisaje, su música y la luz de la hora. Sus
-// pintores son las paradas (mismos nodos que el camino común); los que también están en el camino común se ven como
+// pintores son las paradas (mismos nodos que el camino común), con el cartel de la rama a la entrada y uno por tramo.
+// Los que también están en el camino común se ven como
 // «En el camino» y llevan a su parada allí. Jugar usa las rutas de siempre (#etapa-<pintor>--<rama>). Arriba,
 // «Camino» vuelve al mapa centrado en el desvío. Se entra con un acercamiento desde el desvío (map-zoom.js).
 
@@ -11,15 +12,16 @@ import { stageRoute } from '../router.js';
 import { playEra } from '../audio-bridge.js';
 import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
-import { isExtraStep } from '../../engine/progress.js';
 import { MAP_W, branchLayout, branchLand, walkedD } from './path-layout.js';
-import { trailSvg, stepName, pct } from './path-signs.js';
+import { trailSvg, tramoSign, branchEntrySign, stepName, pct } from './path-signs.js';
 import { STATE_LABEL, metaFor, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
-import { setMapFocus, takeBranchFocus, showLockNote, watchMapMode, watchLandscapes, levelCard } from './path-map.js';
+import { setMapFocus, takeBranchFocus, showLockNote, watchMapMode, watchLandscapes, levelCard, pathActions, frontSvg } from './path-map.js';
 import { startMapLife } from '../map-life.js';
 import { addLevelRings } from '../deep-badges.js';
 import { loadCss } from '../lazy-css.js';
+
+const FOOT_H = 84;                  // alto de la franja bajo el mapa (.path-foot en main.css)
 
 // Música de la rama: su lista si la tiene; si no, la de su época.
 export function branchMusic(index, branch) {
@@ -35,20 +37,20 @@ function lockText(index, progress, row, branchId) {
   return 'Aún cerrado';
 }
 
-function node(ctx, branch, row, current, section) {
+function node(ctx, branch, row, current) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const a = index.artist(row.artistId);
   const dot = dotFor(row.status, coverOf(index, a.id), a.name);
   if (row.onPath) {
     return nodeHtml({
-      cls: 'is-onpath', action: 'path-stop', id: a.id, status: row.status, lock: '', section,
+      cls: 'is-onpath', action: 'path-stop', id: a.id, status: row.status, lock: '',
       label: `${a.name}: en el camino común, ${STATE_LABEL[row.status]}. Ir a su parada`, name: a.name, meta: 'En el camino', dot,
     });
   }
   const lock = row.status === 'locked' ? lockText(index, p, row, branch.id) : '';
   return nodeHtml({
-    cls: '', action: 'stage', id: a.id, status: row.status, lock, current, section,
+    cls: '', action: 'stage', id: a.id, status: row.status, lock, current,
     label: `${a.name}, ${STATE_LABEL[row.status]}${lock ? `. ${lock}` : ''}`,
     name: a.name, meta: metaFor(row.status, p.artists[a.id], current), dot,
   });
@@ -59,27 +61,34 @@ function mapHtml(ctx, branch) {
   const rows = branchStatus(ctx.store.get().progress, index, branch.id);
   const layout = branchLayout(index, branch);
   const at = rows.findIndex((r) => !r.onPath && (r.status === 'available' || r.status === 'started'));
-  const sectionAt = new Map(layout.sections.map((s) => {
-    // Las paradas extra (engine/roster.js) no cuentan en el tramo.
-    const group = rows.filter((r) => r.opensAt === s.movementId && !isExtraStep(ctx.store.get().progress, { type: 'artist', id: r.artistId }));
-    return [s.at, { name: s.name, total: group.length, got: group.filter((r) => r.status === 'mastered').length }];
-  }));
+  // Cartel de cada tramo (época en la que se abre un grupo de pintores), antes de su primera parada; cuenta los pintores
+  // propios de la rama, como su cartel de entrada y la cabecera (los «En el camino» cuentan en el camino común).
+  const tramo = (s) => {
+    const group = rows.filter((r) => r.opensAt === s.movementId && !r.onPath);
+    return tramoSign(s, { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, layout.h);
+  };
   const items = rows.map((row, i) => {
     const pt = layout.points[i];
     const side = pt.x < MAP_W / 2 ? 'left' : 'right';
-    const sec = sectionAt.get(i);
-    const head = sec ? `<li class="sr-only">Tramo ${esc(sec.name)}: ${sec.got} de ${sec.total} dominados</li>` : '';
-    const html = node(ctx, branch, row, i === at, sec);
+    const sec = layout.sections.find((s) => s.at === i);
+    const head = sec ? tramo(sec) : '';
+    const html = node(ctx, branch, row, i === at);
     return `${head}<li class="stage-spot is-${side}${i === at ? ' is-current' : ''}" data-step="artist:${esc(row.artistId)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, layout.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${html}</li>`;
   }).join('');
   const done = rows.every((r) => r.status === 'mastered');
+  const { mastered, total } = branchProgress(ctx.store.get().progress, index, branch.id);
+  const sign = branchEntrySign(branch, layout.sign, layout.h, mastered, total);
   const walked = at >= 0 ? walkedD(layout, at) : done ? walkedD(layout) : '';
   const land = branchLand(branch);
   const tint = `var(--map-tint-${esc(land)})`;
-  return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true"></li>
+  // Bajo la barra de abajo, el sendero sigue hasta el borde (no empieza cortado en seco).
+  const foot = `M${layout.start.x} 0V${FOOT_H}`;
+  return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true">${trailSvg(FOOT_H, foot, [], walked ? foot : '')}</li>
     <li class="path-era" data-era="${esc(branch.id)}" style="--era-tint:${tint};--era-prev:${tint};--era-h:${layout.h};aspect-ratio:${MAP_W}/calc(${layout.h} * var(--k, 1))">
       <img class="path-land" alt="" width="${MAP_W}" height="${layout.h}" decoding="async" data-src="img/mapa/rama-${esc(branch.id)}.svg">
       ${trailSvg(layout.h, layout.trail, [], walked)}
+      ${frontSvg(layout)}
+      ${sign}
       <ol class="stages">${items}</ol>
     </li>`;
 }
@@ -124,6 +133,7 @@ export async function renderBranch(ctx, el, branchId) {
   }
 
   onAction(el, {
+    cartel: pathActions(ctx).cartel,
     back: () => {
       ctx.audio.sfx('tap');
       if (ctx.prevRoute() === 'inicio') history.back();

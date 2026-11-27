@@ -17,7 +17,7 @@ import { avatarHtml } from './avatar.js';
 import { mediaHtml, copyHtml } from './story-card.js';
 import { shareButtonHtml, noteHtml, shareStory, flashNote } from './story-share.js';
 import { seenOf, avatarWork, openingWork, coverWork } from '../engine/painters.js';
-import { levelStory, step, storyKey, cardDuration, lookLine, isShareable } from '../engine/stories.js';
+import { levelStory, step, storyKey, cardDuration, lookLine, isShareable, openingCandidates } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
 const HOLD_MS = 180; // mantener el dedo así de rato pausa la historia
@@ -66,9 +66,11 @@ export async function playStory(ctx, artistId, level, opts = {}) {
   const mine = guest ? [] : seenOf(ctx.store.get().progress, index, artistId);
   // Su cara solo si el catálogo tiene un autorretrato suyo (mejor uno ya visto); nunca el retrato de otro.
   const face = avatarWork(mine, { selfOnly: true }) || avatarWork(index.worksOf(artistId), { selfOnly: true });
-  // La primera tarjeta del nivel básico abre con su autorretrato visto o con su obra más representativa de las vistas.
-  const ownFace = avatarWork(mine, { selfOnly: true });
-  const opening = ownFace ? ownFace.work : (mine.length ? openingWork(mine, null) : null);
+  // La primera tarjeta del nivel básico abre con su autorretrato visto o con su obra más representativa de las vistas,
+  // nunca con una que ya sale en otra tarjeta de la historia.
+  const pool = openingCandidates(mine, lv.cards);
+  const ownFace = avatarWork(pool, { selfOnly: true });
+  const opening = ownFace ? ownFace.work : (pool.length ? openingWork(pool, null) : null);
   const look = lookLine(lv.cards, opts.look);
   const more = opts.onMore || (() => ctx.go(`pintor-${artistId}`));
   const shareable = isShareable(level);
@@ -124,7 +126,8 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     const show = (manual) => {
       const card = lv.cards[pos];
       const last = pos === lv.cards.length - 1;
-      const override = level === 1 && pos === 0 ? opening : null;
+      // Una tarjeta con detalle intencionado (`region`) enseña siempre su obra: la portada propia no la sustituye.
+      const override = level === 1 && pos === 0 && !card.region ? opening : null;
       const work = override || index.artwork(card.artwork);
       if (work) shownIds.push(work.id);
       bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, playLabel: opts.playLabel, more: opts.onMore !== false });
@@ -132,7 +135,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const textH = bottom.offsetHeight - parseFloat(getComputedStyle(bottom).paddingTop || '0');
       media.style.setProperty('--story-text-h', `${Math.max(0, Math.round(textH))}px`);
       const frame = media.clientWidth && media.clientHeight ? media.clientWidth / media.clientHeight : undefined;
-      media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name, frame);
+      media.innerHTML = override ? mediaHtml(work, null, pos, name, frame) : mediaHtml(work, card.focus, pos, name, frame, card.region);
       dlg.classList.toggle('is-last', last);
       dlg.querySelector('.story-back').hidden = pos === 0;
       dlg.querySelector('.story-next').hidden = last;

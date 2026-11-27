@@ -67,7 +67,6 @@
      escribe en los SVG de app/img/mapa, con el bloque oscuro como media query). */
   --map-trail-edge: #d9cdb5;
   --map-trail: #f1e7d4;
-  --map-trail-step: #fcf9f3;
   --map-stone-far: #efe8dd;
   --map-stone-front: #e6ddcf;
   --map-stone-side: #dcd2c2;
@@ -95,9 +94,9 @@
   /* Mapa vivo: flores, sendero ya recorrido, luz del día (noche y arrebol, mezclados encima del paisaje) y
      farolillos de las casas. */
   --map-bloom: #e9bfb5;
-  --map-trail-done-edge: #d8c08e;
-  --map-trail-done: #efdfb4;
-  --map-trail-done-step: #fbf4e2;
+  --map-trail-done-edge: #d7bb7f;
+  --map-trail-done: #f0dba5;
+  --map-trail-thread: #c9973a;
   --map-night: #43507e;
   --map-night-max: .44;
   --map-dusk: #f2a46c;
@@ -122,7 +121,7 @@
   --map-tint-ukiyo-e: #efe7df;
   /* Pintor dormido (dominado y sin salir en una semana): anillo apagado y cuadro sin saturación. */
   --map-dormant: #cbbfae;
-  --map-dormant-saturate: .25;
+  --map-dormant-saturate: .6;
   /* Señalética del mapa: placas hueso sobre poste, nombres en placa translúcida y nodos cerrados suaves. */
   --map-sign: #fbf8f2;
   --map-sign-line: #e2d9cb;
@@ -134,6 +133,10 @@
   --map-label: color-mix(in srgb, var(--map-tag) 88%, transparent);
   --map-label-soft: color-mix(in srgb, var(--map-tag) 72%, transparent);
   --map-post-h: 24px;
+  --map-post-h-low: 14px;
+  --map-post-w: 4px;
+  --map-post-in: 12px;
+  --map-return-b: 5.6rem;
   --map-r: 8px;
   --map-seam: 80px;
   --map-line-x: 30px;
@@ -183,6 +186,7 @@
   --topbar-h: 65px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
   --dj-bar-h: 0px; /* barra de música del superusuario (0 si no está) */
   --trial-h: 0px; /* franja del modo prueba (0 si no está) */
   --dj-h: calc(var(--dj-bar-h) + var(--trial-h)); /* alto total de las barras de superusuario */
@@ -225,7 +229,6 @@
     --frame-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 8px 18px -8px rgba(0, 0, 0, .7);
     --map-trail-edge: #3a3129;
     --map-trail: #4a3f35;
-    --map-trail-step: #6b5d4e;
     --map-stone-far: #2c2721;
     --map-stone-front: #373129;
     --map-stone-side: #2d2823;
@@ -251,9 +254,9 @@
     --map-fruit: #8c6a44;
     --map-awning: #7a6236;
     --map-bloom: #7e5a52;
-    --map-trail-done-edge: #4a3d28;
-    --map-trail-done: #66553a;
-    --map-trail-done-step: #8c7750;
+    --map-trail-done-edge: #57472a;
+    --map-trail-done: #75603b;
+    --map-trail-thread: #d6a94f;
     --map-night: #10162a;
     --map-night-max: .42;
     --map-dusk: #c27a46;
@@ -277,7 +280,7 @@
     --map-tint-ukiyo-e: #28221f;
     --map-dormant: #5c5246;
     --ring-locked: #5a5046;
-    --map-dormant-saturate: .25;
+    --map-dormant-saturate: .6;
     --map-sign: #4a4239;
     --map-sign-line: #5e5348;
     --map-sign-ink: #f2ece2;
@@ -319,7 +322,6 @@
   --frame-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 8px 18px -8px rgba(0, 0, 0, .7);
   --map-trail-edge: #3a3129;
   --map-trail: #4a3f35;
-  --map-trail-step: #6b5d4e;
   --map-stone-far: #2c2721;
   --map-stone-front: #373129;
   --map-stone-side: #2d2823;
@@ -345,9 +347,9 @@
   --map-fruit: #8c6a44;
   --map-awning: #7a6236;
   --map-bloom: #7e5a52;
-  --map-trail-done-edge: #4a3d28;
-  --map-trail-done: #66553a;
-  --map-trail-done-step: #8c7750;
+  --map-trail-done-edge: #57472a;
+  --map-trail-done: #75603b;
+  --map-trail-thread: #d6a94f;
   --map-night: #10162a;
   --map-night-max: .42;
   --map-dusk: #c27a46;
@@ -371,7 +373,7 @@
   --map-tint-ukiyo-e: #28221f;
   --map-dormant: #5c5246;
   --ring-locked: #5a5046;
-  --map-dormant-saturate: .25;
+  --map-dormant-saturate: .6;
   --map-sign: #4a4239;
   --map-sign-line: #5e5348;
   --map-sign-ink: #f2ece2;

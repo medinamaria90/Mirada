@@ -6,6 +6,7 @@ import { page } from '../shell.js';
 import { artFrame } from '../art.js';
 import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode } from './path-map.js';
 import { liveArt } from '../map-land.js';
+import { watchReturn } from './map-return.js';
 import { startMapLife } from '../map-life.js';
 import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } from '../../engine/progress.js';
 import { dueKeys } from '../../engine/srs.js';
@@ -71,7 +72,7 @@ export function renderHome(ctx, el) {
   // Pintores nuevos de una actualización: etiqueta «Nuevo» y aviso (se carga solo si los hay).
   const news = ctx.store.get().progress.roster?.fresh?.length ? import('../new-painters.js') : null;
   const tagNew = () => news?.then((m) => m.tagNewStops(ctx, el)).catch((err) => console.error(err));
-  const stops = [fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); }), watchMapMode(map), life.stop];
+  const stops = [fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); }), watchMapMode(map), life.stop, watchReturn(el)];
   addLevelRings(ctx, el);
   tagNew();
   news?.then((m) => m.tellNewPainters(ctx, el)).catch((err) => console.error(err));
