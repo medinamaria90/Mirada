@@ -1,20 +1,12 @@
 #!/usr/bin/env bash
-# Comprueba desde GitHub Actions qué colecciones abiertas responden. Deja el resultado en pipeline/probe.txt
+# Consulta temporal (rama probe-giotto): QIDs de los frescos Scrovegni y datos de dos obras con marchante como museo.
 set -u
 out=pipeline/probe.txt
 : > "$out"
-probe() { code=$(curl -s -o /tmp/probe.body -w '%{http_code}' --max-time 30 -A 'MiradaBot/0.1 (educational; github.com/medinamaria90/mirada)' "$2"); echo "$1 $code $(head -c 300 /tmp/probe.body | tr '\n' ' ')" >> "$out"; echo >> "$out"; }
-probe met-search 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&artistOrCulture=true&q=Goya'
-probe met-object 'https://collectionapi.metmuseum.org/public/collection/v1/objects/436535'
-probe aic 'https://api.artic.edu/api/v1/artworks/search?q=monet&limit=2&fields=id,title,artist_title,is_public_domain,image_id,date_display'
-probe aic-iiif 'https://www.artic.edu/iiif/2/3c27b499-af56-f0d5-93b5-a7f2f1ad5813/full/200,/0/default.jpg'
-probe cleveland 'https://openaccess-api.clevelandart.org/api/artworks/?artists=Monet&type=Painting&has_image=1&cc0=1&limit=2'
-probe nga-csv 'https://raw.githubusercontent.com/NationalGalleryOfArt/opendata/main/data/published_images.csv'
-probe nga-iiif 'https://api.nga.gov/iiif/00007f61-4922-417b-8f27-893ea328206c/full/200,/0/default.jpg'
-probe rijks 'https://data.rijksmuseum.nl/search/collection?creator=Rembrandt%20van%20Rijn&type=painting'
-probe wikimedia 'https://commons.wikimedia.org/w/api.php?action=query&titles=File:Las_Meninas,_by_Diego_Vel%C3%A1zquez,_from_Prado_in_Google_Earth.jpg&prop=imageinfo&iiprop=url|extmetadata&format=json'
-probe wikidata 'https://www.wikidata.org/w/api.php?action=wbsearchentities&search=Las%20Meninas&language=es&format=json'
-probe wikimedia-thumb 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Las_Meninas%2C_by_Diego_Vel%C3%A1zquez%2C_from_Prado_in_Google_Earth.jpg/320px-Las_Meninas%2C_by_Diego_Vel%C3%A1zquez%2C_from_Prado_in_Google_Earth.jpg'
-probe smk 'https://api.smk.dk/api/v1/art/search/?keys=hammershoi&filters=[public_domain:true]&rows=1'
+UA='MiradaBot/0.1 (educational; github.com/medinamaria90/mirada)'
+q() { echo "== $1" >> "$out"; curl -s -G --max-time 60 -A "$UA" -H 'Accept: text/csv' 'https://query.wikidata.org/sparql' --data-urlencode "query=$2" >> "$out"; echo >> "$out"; }
+q giotto 'SELECT ?w ?le ?les ?sl ?loc ?locl ?img WHERE { ?w wdt:P170 wd:Q7814 . ?w wikibase:sitelinks ?sl . OPTIONAL{?w rdfs:label ?le FILTER(lang(?le)="en")} OPTIONAL{?w rdfs:label ?les FILTER(lang(?les)="es")} OPTIONAL{?w wdt:P276 ?loc . ?loc rdfs:label ?locl FILTER(lang(?locl)="en")} OPTIONAL{?w wdt:P18 ?img} FILTER(REGEX(LCASE(STR(?le)),"judas|lament|mourning|judg|kiss")) } ORDER BY DESC(?sl)'
+q scrovegni 'SELECT ?w ?le ?sl ?img WHERE { ?w wdt:P276|wdt:P195 wd:Q201017 . ?w wikibase:sitelinks ?sl . OPTIONAL{?w rdfs:label ?le FILTER(lang(?le)="en")} OPTIONAL{?w wdt:P18 ?img} } ORDER BY DESC(?sl) LIMIT 60'
+q obras 'SELECT ?w ?le ?p ?pl ?v ?vl WHERE { VALUES ?w {wd:Q4109849 wd:Q1523466} ?w ?p ?v . FILTER(?p IN (wdt:P195,wdt:P276,wdt:P127,wdt:P217,wdt:P1435)) OPTIONAL{?w rdfs:label ?le FILTER(lang(?le)="en")} OPTIONAL{?v rdfs:label ?vl FILTER(lang(?vl)="en")} }'
+q chapel 'SELECT ?c ?l WHERE { VALUES ?c {wd:Q201017} ?c rdfs:label ?l FILTER(lang(?l)="en") }'
 date -u >> "$out"
-# relanzado 10:19
