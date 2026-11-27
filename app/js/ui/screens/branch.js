@@ -14,7 +14,7 @@ import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { eraPlace } from './path-art.js';
-import { trailSvg, tramoSign, branchEntrySign, backSpot, branchShort, stepName, pct } from './path-signs.js';
+import { trailSvg, tramoSign, branchEntrySign, backSpot, branchShort, stepName, pct, FOOT_H } from './path-signs.js';
 import { STATE_LABEL, startedLabel, startedMeta, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
@@ -24,7 +24,6 @@ import { addLevelRings } from '../deep-badges.js';
 import { watchStoryPrefetch } from '../story-prefetch.js';
 import { loadCss } from '../lazy-css.js';
 
-const FOOT_H = 84;                  // alto de la franja bajo el mapa (.path-foot en main.css)
 
 // Música de la rama: su lista si la tiene; si no, la de su época.
 export function branchMusic(index, branch) {
@@ -92,7 +91,7 @@ function mapHtml(ctx, branch) {
   return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true">${trailSvg(FOOT_H, foot, [], walked ? foot : '')}</li>
     <li class="path-era has-gate" data-era="${esc(branch.id)}" style="--gate-y:${GATE_Y};--era-tint:${tint};--era-prev:${tint};--era-h:${layout.h};aspect-ratio:${MAP_W}/calc(${layout.h} * var(--k, 1))">
       <img class="path-land" alt="" width="${MAP_W}" height="${layout.h}" decoding="async" data-src="img/mapa/rama-${esc(branch.id)}.svg">
-      ${trailSvg(layout.h, layout.trail, [{ spur: layout.back.spur, open: true }], walked, place.plaza)}
+      ${trailSvg(layout.h, layout.trail, [{ spur: layout.back.spur, open: true }], walked)}
       ${frontSvg(layout)}
       ${sign}
       <ol class="stages">${backSpot(layout.back, index.movement(branch.opensAt)?.name || '', layout.h)}${items}</ol>

@@ -61,7 +61,7 @@ test('mapa: el DOM va en orden cronológico y, dentro de cada tramo, las paradas
   // El museo cierra el camino (último en el DOM = arriba del todo) y el CSS invierte con column-reverse.
   assert.ok(html.trimEnd().endsWith('</li>') && html.lastIndexOf('path-museum') > html.lastIndexOf('path-era'));
   // Delante, solo el suelo que rellena el hueco de la barra de abajo (path-foot).
-  assert.ok(html.trimStart().replace(/^<li class="path-foot"[^>]*><\/li>/, '').startsWith('<li class="path-start"') && html.includes('aria-label="Cómo se juega"'), 'sin hito de salida al principio');
+  assert.ok(html.trimStart().replace(/^<li class="path-foot"[^>]*>[\s\S]*?<\/li>/, '').startsWith('<li class="path-start"') && html.includes('aria-label="Cómo se juega"'), 'sin hito de salida al principio');
   assert.ok(html.includes('Tu museo') && html.includes(`${real.visibleMovements.length} épocas`));
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8');
   assert.ok(/\.path-map \{[^}]*flex-direction: column-reverse/.test(css), 'el CSS no invierte el camino');
@@ -74,7 +74,7 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
     assert.ok(html.includes(`--era-tint:var(--map-tint-${m.id})`), `${m.id}: sin tinte de terreno`);
   }
   assert.ok(!/<img class="path-land"[^>]* src=/.test(html), 'un paisaje se pide antes de tiempo');
-  assert.equal((html.match(/<svg class="path-trail"/g) || []).length, real.visibleMovements.length + 2, 'un sendero por tramo, el de la salida y el del museo');
+  assert.equal((html.match(/<svg class="path-trail"/g) || []).length, real.visibleMovements.length + 3, 'un sendero por tramo, el de la franja de abajo, el de la salida y el del museo');
   const firstEra = real.steps[0].movementId;
   const total = real.stepsOf(firstEra).length;
   assert.ok(html.includes(`2 de ${total} pintores: ver presentación`), 'la puerta no dice al lector cuántas van');
@@ -187,7 +187,7 @@ test('mapa: el repaso cerrado dice en claro cuánto falta; los nombres, en la no
 
 // Ningún cartel pisa el sendero: su borde junto al camino queda fuera de la franja del sendero (con aire) en
 // toda su altura, y le queda sitio. Cada tramo lleva su cartel, antes de su primera parada.
-test('mapa: puerta de ciudad de la época sobre el sendero, con su plaza; mojones de tramo al borde, antes de su primera parada', () => {
+test('mapa: puerta de ciudad de la época sobre el sendero (sin plaza); mojones de tramo al borde, antes de su primera parada', () => {
   const layout = pathLayout(real);
   const GAP = 8;
   const clear = (segs, y1, y2, box) => {
@@ -203,7 +203,7 @@ test('mapa: puerta de ciudad de la época sobre el sendero, con su plaza; mojone
       assert.ok(Math.abs(arch.x - roadX(era.segs, era.gate.y)) < 1, `${era.id}: la puerta no está en el sendero`);
       const place = eraPlace(era.gate.x, era.gate.y);
       assert.ok(place.box.x1 - place.box.x0 <= MAP_W / 2 && place.box.y === era.gate.y, `${era.id}: la puerta es más ancha que medio mapa o no está al pie del tramo`);
-      assert.ok(place.plaza.cy - place.plaza.ry > era.points[0].y + 36, `${era.id}: la plaza choca con la primera parada`);
+      assert.ok(place.box.top > era.points[0].y + 36, `${era.id}: la puerta choca con la primera parada`);
     }
     for (const s of era.sections) assert.ok(clear(era.segs, s.sign.top, s.sign.y, s.sign) && s.sign.room >= 110, `${era.id}/${s.name}: la tablilla del tramo pisa el sendero o no cabe`);
   }

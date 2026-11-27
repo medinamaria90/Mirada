@@ -225,16 +225,11 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 /* Caseta de «Información» junto a la puerta (dibujada en el paisaje): un botón transparente de 56 px la cubre. */
 .start-kiosk { position: absolute; z-index: 3; width: max(var(--kiosk-hit), var(--kiosk-share)); height: max(var(--kiosk-hit), var(--kiosk-share)); margin: 0; padding: 0; translate: -50% -50%; border: 0; border-radius: var(--radius-sm); background: none; cursor: pointer; }
 .start-kiosk:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
-/* Su tablilla, como las del camino: dice qué se abre (se ve pulsable). */
-.start-kiosk-text {
-  position: absolute; top: calc(100% - 6px); left: 50%; translate: -50% 0; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)); white-space: nowrap;
-  border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); color: var(--map-sign-ink); box-shadow: 0 2px 0 var(--map-sign-line);
-  font: 600 calc(.72 * var(--map-fs))/1.15 var(--font);
-}
-.start-kiosk:active .start-kiosk-text { translate: -50% 2px; box-shadow: none; }
+/* Sin rótulo en el mapa: la «i» dorada de la caseta lo dice (el nombre va en su aria-label). */
+.start-kiosk-text { display: none; }
 /* Camino en línea (sin dibujos): la caseta pasa a ser una placa con su nombre. */
 .path-map.is-linear .start-kiosk { position: static; translate: none; width: auto; height: auto; min-height: 48px; align-self: flex-start; padding: 0 var(--map-fs); border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); color: var(--map-sign-ink); font: 600 var(--map-fs)/1.2 var(--font); }
-.path-map.is-linear .start-kiosk-text { position: static; translate: none; padding: 0; border: 0; background: none; box-shadow: none; font: inherit; }
+.path-map.is-linear .start-kiosk-text { display: inline; }
 .trail-shade, .trail-rim, .trail-edge, .trail-fill, .trail-grain, .spur-edge, .spur-fill { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 /* Trazado estirado (letra grande): el trazo conserva su grosor. */
 .path-map.is-tall .path-trail path { vector-effect: non-scaling-stroke; }
@@ -247,17 +242,6 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .trail-rim.is-b { stroke-width: var(--trail-rim-w-b); stroke-dasharray: 0 var(--trail-rim-gap-b); stroke-dashoffset: var(--trail-rim-off); }
 .trail-grain { stroke: var(--map-trail-edge); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); opacity: var(--trail-grain-o); transform: translateX(calc(-1 * var(--trail-grain-x))); }
 .trail-grain.is-b { stroke-dasharray: 0 var(--trail-grain-gap-b); stroke-dashoffset: var(--trail-grain-off); transform: translateX(var(--trail-grain-x)); }
-/* Plaza de salida: el empedrado de piedra del que nace el sendero (borde bajo el sendero, suelo encima; sin punta). */
-.plaza-rim { fill: var(--map-stone-side); }
-/* Plaza de cada época al cruzar su puerta: a ras del sendero, que entra y sale de ella (path-art.js, eraPlace). */
-.plaza-fill { fill: var(--map-stone-top); }
-.plaza-stones.is-in { stroke-dasharray: var(--plaza-cobble-dash); stroke-width: var(--plaza-cobble-w); }
-.plaza-fill.is-halo { opacity: var(--plaza-halo-o); }
-/* Las plazas empedradas, del tono de la piedra mezclado con el suelo de su época: se funden con él (también en oscuro). */
-.plaza-fill.is-soft { opacity: var(--plaza-soft-o); }
-.plaza-cobbles.is-edge { opacity: calc(var(--plaza-cobble-o) * .55); }
-.plaza-cobbles { fill: none; stroke: var(--map-cobble); stroke-width: var(--plaza-cobble-dot); stroke-linecap: round; opacity: var(--plaza-cobble-o); }
-.plaza-stones { fill: none; stroke: var(--map-stone-side); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }
 /* Desvío de una rama: sendero estrecho; cerrado, más fino y apagado. */
 .spur-edge { stroke: var(--map-trail-edge); stroke-width: 15; }
 .spur-grain { fill: none; stroke: var(--map-trail-edge); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }
@@ -273,10 +257,6 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .land-top { fill: var(--map-stone-top); }
 .land-window { fill: var(--map-window); }
 .land-shade { fill: var(--map-shade); }
-.land-hay { fill: var(--map-hay); }
-.land-hay-2 { fill: var(--map-hay-2); }
-/* La fuente de la plaza, con su borde marcado sobre el empedrado. */
-.fountain-rim { stroke: var(--map-stone-side); stroke-width: var(--fountain-rim-w); }
 .land-leaf { fill: var(--map-leaf); }
 .land-leaf-2 { fill: var(--map-leaf-2); }
 

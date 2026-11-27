@@ -70,7 +70,8 @@ test('carteles: mojón de tramo (un solo objeto, sin caja ni cifra); completo, e
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8') + readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
   assert.ok(!css.includes('sign-check') && !css.includes('trail-thread') && !css.includes('proto-'), 'queda el sello suelto, la raya central o restos del prototipo');
   const brand = readFileSync(join(app, 'css', 'brand.css'), 'utf8');
-  assert.ok(brand.includes('cinzel-latin-600-normal.woff2') && /--font-inscription: "Cinzel"/.test(brand), 'la inscripción no usa su letra (Cinzel, servida desde la app)');
+  assert.ok(!/Cinzel/.test(brand) && /--inscr-weight: 600/.test(brand), 'la inscripción no va en la letra de la app en semibold');
+  assert.equal(inscription('Postimpresionismo'), 'Postimpresionismo', 'se parte una palabra con guion');
 });
 
 test('candados: un solo aviso a la vez, sin temporizador; se cierra al tocar fuera, al desplazar o con Esc', () => {

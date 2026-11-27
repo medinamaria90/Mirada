@@ -2,8 +2,6 @@
    Es el archivo de variables: ningún otro CSS ni el JS escribe colores a mano. */
 
 /* Outfit (OFL), variable en peso 300-600, subconjunto latino, servida con la app. */
-/* Capitales de inscripción (Cinzel, OFL, app/fonts/OFL-Cinzel.txt): solo los nombres grabados en las puertas del mapa. */
-@font-face { font-family: "Cinzel"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/cinzel-latin-600-normal.woff2") format("woff2"); }
 @font-face { font-family: "Outfit"; font-style: normal; font-weight: 300 600; font-display: swap; src: url("../fonts/outfit-latin-wght-normal.woff2") format("woff2"); }
 
 :root {
@@ -85,8 +83,6 @@
   --map-stone-front: #e8d8bf;
   --map-stone-side: #c8b293;
   --map-stone-top: #f4ead9;
-  --map-cobble: #c4ae8d;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
-  --plaza-stone-share: 78%;   /* piedra frente a suelo en el empedrado (en oscuro gana el suelo) */
   --map-window: #93806a;
   --map-tile: #d98f69;
   --map-tile-2: #b96f4f;
@@ -154,6 +150,7 @@
   --map-post-in: 12px;
   --map-return-b: 5.6rem;
   --map-return-size: 48px;
+  --map-guide-room: 24px;          /* aire extra bajo el mapa cuando está la guía */
   --map-r: 8px;
   --map-seam: 80px;
   /* Sistema de carteles (mapa-carteles.css): arco de época, tablillas de tramo y rama, tarjeta de la parada actual. */
@@ -161,18 +158,11 @@
   --you-lift: 20px;                /* marca «Tú» sobre la parada actual */
   --you-pad: 3px 10px 4px;
   --radius-pill: 999px;
-  --plaza-cobble-dash: 2 5;        /* adoquines de las hileras de dentro de la plaza */
-  --plaza-cobble-w: 1.2;
-  --fountain-rim-w: 1.6;
-  --plaza-cobble-dot: 2.2;          /* adoquines de la plaza de cada época */
-  --plaza-cobble-o: .6;
-  --plaza-halo-o: .35;
-  --plaza-soft-o: .94;
   --map-ribbon: 3px;
-  /* Inscripción de la época en el ático de su puerta (mapa-carteles.css) y mojón del tramo. */
-  --font-inscription: "Cinzel", "Trajan Pro", Georgia, serif;
-  --inscr-fs: clamp(calc(.72 * var(--map-fs, 1rem)), 3cqi, 20px);   /* 11,5 px a 360 y crece con la puerta; en capitales se lee como 14 px de minúsculas */
-  --inscr-min: 10px;
+  /* Inscripción de la época en el ático de su puerta (mapa-carteles.css), en la letra de la app: semibold, capitales y
+     espaciado, tinta oscura sobre la piedra; y mojón del tramo. */
+  --inscr-fs: clamp(calc(.75 * var(--map-fs, 1rem)), 3.2cqi, 20px);   /* 12 px a 360 y crece con la puerta */
+  --inscr-min: 10.5px;
   --inscr-night-ink: #fbf6ec;      /* letras de la inscripción de noche (crema sobre piedra en sombra) */
   --inscr-night-gold: #ecd079;
   --inscr-night-recess: 50%;       /* cuánto se ahonda de noche el hueco de las letras */
@@ -180,7 +170,7 @@
   --inscr-recess-blur: 2px;        /* bordes difuminados del hueco: grabado, no placa */
   --inscr-weight: 600;
   --inscr-line: 1.12;
-  --inscr-track: .02em;
+  --inscr-track: .06em;
   --milestone-w: 15px;
   --milestone-h: 25px;
   --milestone-gap: 6px;
@@ -315,8 +305,6 @@
     --map-stone-front: #373129;
     --map-stone-side: #2d2823;
     --map-stone-top: #433c33;
-    --map-cobble: #6a6052;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
-    --plaza-stone-share: 40%;   /* piedra frente a suelo en el empedrado (en oscuro gana el suelo) */
     --map-window: #8b7146;
     --map-tile: #5c4136;
     --map-tile-2: #4b342b;
@@ -410,8 +398,6 @@
   --map-stone-front: #373129;
   --map-stone-side: #2d2823;
   --map-stone-top: #433c33;
-  --map-cobble: #6a6052;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
-  --plaza-stone-share: 40%;   /* piedra frente a suelo en el empedrado (en oscuro gana el suelo) */
   --map-window: #8b7146;
   --map-tile: #5c4136;
   --map-tile-2: #4b342b;
@@ -509,8 +495,6 @@
     --map-stone-front: #e8d8bf;
     --map-stone-side: #c8b293;
     --map-stone-top: #f4ead9;
-    --map-cobble: #c4ae8d;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
-    --plaza-stone-share: 78%;   /* piedra frente a suelo en el empedrado (en oscuro gana el suelo) */
     --map-window: #93806a;
     --map-tile: #d98f69;
     --map-tile-2: #b96f4f;

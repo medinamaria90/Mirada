@@ -1,5 +1,5 @@
 // Dibujos propios del mapa (SVG en línea, coordenadas de diseño de ancho 390): la puerta de salida (muralla con
-// su puerta, plaza con fuente y tejados asomando) y «Tu museo» arriba. Los colores van por clases land-* (las
+// su puerta de ciudad y tejados asomando) y «Tu museo» arriba. Los colores van por clases land-* (las
 // variables --map-* de brand.css); los árboles llevan data-sway (se mecen con el viento) y las ventanas que se
 // encienden de noche, data-lamp (map-land.js las copia a la capa de luces).
 
@@ -20,10 +20,8 @@ const wall = (x0, x1, y, h) => {
   return `<path class="land-top" d="M${f(x0)} ${f(y - h)}H${f(x1)}L${f(x1 + d)} ${f(y - h - d * KY / KX)}H${f(x0 + d)}Z"/><rect class="land-front" x="${f(x0)}" y="${f(y - h)}" width="${f(x1 - x0)}" height="${f(h)}"/>${merlons}`;
 };
 const roof = (x, y, w, h) => `<rect class="land-front" x="${f(x)}" y="${f(y - h)}" width="${f(w)}" height="${f(h)}"/><path class="land-tile" d="M${f(x - 1)} ${f(y - h)}H${f(x + w + 1)}L${f(x + w - 2 + 6 * KX)} ${f(y - h - 9)}H${f(x + 2)}Z"/><rect class="land-window" data-lamp x="${f(x + w / 2 - 2)}" y="${f(y - h + 3)}" width="4" height="5" rx="1"/>`;
-const fountain = (cx, y) => `<ellipse class="land-shade" cx="${f(cx)}" cy="${f(y + 2)}" rx="20" ry="5"/><ellipse class="land-side" cx="${f(cx)}" cy="${f(y)}" rx="16" ry="4.6"/><ellipse class="land-front fountain-rim" cx="${f(cx)}" cy="${f(y - 3)}" rx="16" ry="4.6"/><ellipse class="land-water" cx="${f(cx)}" cy="${f(y - 3)}" rx="12.6" ry="3.2"/><ellipse class="land-water-2" data-flow cx="${f(cx - 3)}" cy="${f(y - 3.6)}" rx="4" ry="1"/><rect class="land-front" x="${f(cx - 2)}" y="${f(y - 17)}" width="4" height="14"/><ellipse class="land-front" cx="${f(cx)}" cy="${f(y - 17)}" rx="7" ry="2.2"/><ellipse class="land-water-2" data-jet cx="${f(cx)}" cy="${f(y - 21)}" rx="1.6" ry="3.4"/>`;
 
-// Caseta de «Información» en el borde de la plaza, a la derecha de la puerta (a la izquierda va la lápida de la primera
-// época), apartada del botón «Tú» de la esquina: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
+// Caseta de «Información» a la derecha de la puerta, apartada del botón «Tú» de la esquina: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
 // «Cómo se juega» (el botón transparente que la cubre lo pone path-signs.js con KIOSK).
 export const KIOSK = { x: 246, y: 136, w: 32, h: 22 };
 const kiosk = ({ x, y, w, h }) => {
@@ -43,12 +41,7 @@ const kiosk = ({ x, y, w, h }) => {
       <rect class="land-top" x="${f(x + w / 2 + d / 2 - .9)}" y="${f(top - 22.4)}" width="2" height="6" rx=".7"/>`;
 };
 
-const PX = START_PLAZA.x;
 const PY = START_PLAZA.y;
-// Empedrado de la plaza: el sendero nace de él (path-signs.js lo pinta con el sendero, encima de su arranque).
-export const START_PAVING = { cx: PX + 6, cy: PY + 6, rx: 92, ry: 18, rim: null, cobbles: true };
-// La fuente, dentro de la plaza, a la izquierda del arranque del sendero.
-const FOUNTAIN = { x: PX - 42, y: PY + 10 };
 const GATE = { left: 173, right: 231, y: 96, tower: 14, h: 38 };   // la puerta, donde el sendero va casi recto
 const START_BACK = `${cypress(28, 80, 30)}${cypress(112, 82, 24)}${roof(262, 80, 22, 10)}${roof(296, 79, 26, 12)}${roof(352, 80, 20, 9)}
       <rect class="land-front" x="326" y="44" width="12" height="36"/><path class="land-side" d="M338 80V44L344 40.4V76.4Z"/><path class="land-top" d="M326 44H338L344 40.4H332Z"/><path class="land-tile-2" d="M326 44H338L335 22Z"/><path class="land-tile" d="M338 44L344 40.4L335 22Z"/><path class="land-window" data-lamp d="M330 56V51a2 2 0 0 1 4 0V56Z"/>
@@ -56,10 +49,10 @@ const START_BACK = `${cypress(28, 80, 30)}${cypress(112, 82, 24)}${roof(262, 80,
       ${tree(30, PY + 6, 8)}${tree(122, PY + 2, 7)}${cypress(122, PY + 20, 22)}
       ${flowers(232, PY + 28)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${flowers(KIOSK.x + 50, KIOSK.y + 4)}`;
 // La primera época entra por la misma puerta de ciudad que las demás, abierta en la muralla (delante del sendero, con la
-// fuente y la caseta de la plaza de salida). Su plaza es la de salida: la puerta no lleva otra detrás.
+// caseta de «Información»); el sendero llega desde abajo y cruza su arco.
 const START_GATE = { x: (GATE.left + GATE.tower + GATE.right) / 2, y: GATE.y };
 export const startPlace = () => eraPlace(START_GATE.x, START_GATE.y).box;
-export const startArt = () => ({ back: START_BACK, front: `${fountain(FOUNTAIN.x, FOUNTAIN.y)}${kiosk(KIOSK)}${eraGate(START_GATE.x, START_GATE.y, { plaza: false })}` });
+export const startArt = () => ({ back: START_BACK, front: `${kiosk(KIOSK)}${eraGate(START_GATE.x, START_GATE.y)}` });
 
 // «Tu museo»: cúpula y columnas; sus ventanas se encienden de noche.
 export function museumArt() {
@@ -80,26 +73,20 @@ export function museumArt() {
 
 // Puerta de ciudad al entrar en cada época (la época es un lugar, docs/eval/plan-camino-r5.md): dos torreones de tejado
 // cónico, el sendero pasa por su arco y el nombre va grabado en el ático (path-signs.js, misma piedra entre dos
-// molduras). Mismo tamaño en todas las épocas. Al cruzar el arco, una plaza empedrada amplia (la pinta trailSvg, a ras
-// del sendero) con un pozo, balas de paja, sacos y un carro. Cerrada: portón de madera en el arco. x, y: centro del
-// paso, al pie.
-const CITY = { half: 64, body: 42, side: 7, arch: 15, tower: 17, towerH: 72, roof: 19, attic: 28 };
-const PLAZA = { up: 104, rx: 118, ry: 34, edge: 6 };   // centro de la plaza sobre el pie de la puerta, sus radios y su aire con el borde
+// molduras). Mismo tamaño en todas las épocas; el sendero cruza el arco. Cerrada: portón de madera en el arco. x, y:
+// centro del paso, al pie.
+const CITY = { half: 68, body: 42, side: 7, arch: 15, tower: 17, towerH: 72, roof: 19, attic: 28 };
 const CITY_W = (CITY.half + CITY.tower) * 2;
-const MAP_SIZE = 390;   // ancho de diseño (path-layout.js, MAP_W)
 // Nombre grabado en el ático: el de la época sin paréntesis, en una o dos líneas de capitales. Si no cabe, uno corto
 // fiel a lo que hay al cruzar la puerta (la época de Van Eyck empieza por el Renacimiento del Norte; «Manierismo» sigue
-// en su tramo y en la presentación). Las palabras muy largas se pueden partir con guion.
-const SHORT = { 'Manierismo y Renacimiento del Norte': 'Renacimiento del Norte', Postimpresionismo: 'Post\u00adimpresionismo' };
+// en su tramo y en la presentación). Nunca se parte una palabra: dos líneas por palabras enteras.
+const SHORT = { 'Manierismo y Renacimiento del Norte': 'Renacimiento del Norte' };
 export const inscription = (name) => SHORT[name] || String(name).replace(/\s*\(.*\)\s*$/, '');
-// Geometría del lugar: la plaza (para trailSvg) y la caja pulsable (toda la puerta), con el sitio del ático en ella.
+// Caja pulsable de la puerta (toda ella), con el sitio del ático en fracciones de la caja.
 export function eraPlace(x, y) {
   const top = y - CITY.towerH - CITY.roof;
   const hh = y - top;
-  // La plaza no se sale del mapa: si la puerta va cerca de un borde, se corre hacia dentro (el sendero la cruza igual).
-  const cx = Math.min(Math.max(x, PLAZA.rx + PLAZA.edge), MAP_SIZE - PLAZA.rx - PLAZA.edge);
   return {
-    plaza: { cx, cy: y - PLAZA.up, rx: PLAZA.rx, ry: PLAZA.ry, rim: null, cobbles: true },
     box: { x0: x - CITY.half - CITY.tower, x1: x + CITY.half + CITY.tower, y, top, atticAt: CITY.body / hh, atticH: CITY.attic / hh, atticW: (CITY.half * 2 - 6) / CITY_W },
   };
 }
@@ -110,22 +97,10 @@ const townTower = (x, y) => {
     <path class="land-side" d="M${f(x + w)} ${f(y)}V${f(y - h)}L${f(x + w + d)} ${f(y - h - d * .6)}V${f(y - d * .6)}Z"/><rect class="land-front" x="${f(x)}" y="${f(y - h)}" width="${w}" height="${h}"/>
     <path class="land-window" data-lamp d="M${f(x + w / 2 - 2)} ${f(y - h + 18)}V${f(y - h + 12)}a2 2 0 0 1 4 0V${f(y - h + 18)}Z"/>${cone(x, y - h, w + d * .6)}`;
 };
-// Vida de la plaza, a escala del mapa: un pozo, un carro con balas de paja al lado y unos sacos, cerca del sendero.
-const LIFE = 1.6;   // escala de las piezas de la plaza
-const life = (x, y, body) => `<g transform="translate(${f(x)} ${f(y)}) scale(${LIFE})">${body}</g>`;
-const well = () => `<ellipse class="land-shade" cx="1" cy="1" rx="8" ry="2.4"/><rect class="land-side" x="-6" y="-7" width="12" height="7"/><ellipse class="land-top" cx="0" cy="-7" rx="6" ry="2"/><rect class="land-side" x="-6" y="-17" width="1.4" height="10"/><rect class="land-side" x="4.6" y="-17" width="1.4" height="10"/><path class="land-tile" d="M-8 -16L0 -21L8 -16Z"/>`;
-const bale = (dx = 0, dy = 0) => `<ellipse class="land-shade" cx="${f(dx + 1)}" cy="${f(dy + .6)}" rx="6" ry="1.8"/><rect class="land-hay" x="${f(dx - 5)}" y="${f(dy - 5)}" width="10" height="5" rx="1"/><rect class="land-hay-2" x="${f(dx - 5)}" y="${f(dy - 3)}" width="10" height="1"/>`;
-const sacks = () => `<path class="land-top" d="M-6 0Q-7 -4 -4.5 -6H-1.5Q1 -4 0 0Z"/><path class="land-top" d="M0 .5Q-1 -3.5 1.5 -5.5H4.5Q7 -3.5 6 .5Z"/><rect class="land-side" x="-4.5" y="-6.6" width="3" height="1.2"/><rect class="land-side" x="1.5" y="-6.1" width="3" height="1.2"/>`;
-const cart = () => `<ellipse class="land-shade" cx="2" cy="1" rx="12" ry="2.4"/><rect class="land-side" x="-9" y="-8" width="16" height="5" rx="1"/><rect class="land-hay" x="-8" y="-11" width="14" height="3.4" rx="1.4"/><circle class="land-side" cx="-5" cy="-2.6" r="2.6"/><circle class="land-side" cx="4" cy="-2.6" r="2.6"/><rect class="land-side" x="7" y="-5" width="9" height="1.1" rx=".5"/>${bale(22, 2)}${bale(17, 6)}`;
-const plazaLife = (x, y) => {
-  const { plaza } = eraPlace(x, y);
-  const near = (dx) => plaza.cx + dx;
-  return `${life(near(-62), plaza.cy + 6, well())}${life(near(-30), plaza.cy - 14, sacks())}${life(near(40), plaza.cy + 4, cart())}`;
-};
-export function eraGate(x, y, { locked = false, plaza = true } = {}) {
+export function eraGate(x, y, { locked = false } = {}) {
   const { half, body, arch, attic, side: d } = CITY;
   const leaves = locked ? `<path class="land-side" d="M${f(x - arch)} ${f(y)}V${f(y - body + 18)}Q${f(x)} ${f(y - body + 4)} ${f(x + arch)} ${f(y - body + 18)}V${f(y)}Z"/><rect class="land-front" x="${f(x - .6)}" y="${f(y - body + 8)}" width="1.2" height="${f(body - 8)}"/>` : '';
-  return `${plaza ? plazaLife(x, y) : ''}
+  return `
     <path class="land-side" d="M${f(x + half)} ${f(y)}V${f(y - body - attic)}L${f(x + half + d)} ${f(y - body - attic - d * .6)}V${f(y - d * .6)}Z"/>
     <path class="land-front" d="M${f(x - half)} ${f(y)}V${f(y - body - attic)}H${f(x + half)}V${f(y)}H${f(x + arch)}V${f(y - body + 18)}Q${f(x)} ${f(y - body + 4)} ${f(x - arch)} ${f(y - body + 18)}V${f(y)}Z"/>
     <rect class="land-top" x="${f(x - half - 1)}" y="${f(y - body - 1.5)}" width="${f(half * 2 + 2)}" height="1.5"/>

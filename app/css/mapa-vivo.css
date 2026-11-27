@@ -165,18 +165,9 @@
 .trail-edge.is-done { stroke: var(--lit-trail-done-edge); }
 .trail-fill.is-done { stroke: var(--lit-trail-done); }
 .trail-rim.is-done, .trail-grain.is-done { stroke: var(--lit-trail-done-edge); }
-.plaza-stones { stroke: var(--lit-stone-side); }
-.plaza-cobbles { stroke: color-mix(in oklab, var(--map-cobble), var(--map-night) var(--night-pct-soft)); }
-.plaza-rim { fill: var(--lit-stone-side); }
-.fountain-rim { stroke: var(--lit-stone-side); }
-.plaza-fill { fill: var(--lit-stone-top); }
-.plaza-fill.is-soft { fill: color-mix(in oklab, var(--lit-stone-top) var(--plaza-stone-share), var(--lit-tint, var(--lit-stone-top))); }
-.plaza-fill.is-halo { fill: color-mix(in oklab, var(--lit-stone-top) calc(var(--plaza-stone-share) * .6), var(--lit-tint, var(--lit-stone-top))); }
 
 /* Piezas de los dibujos propios (puerta de salida, museo). */
 .land-tile { fill: var(--lit-tile); }
-.land-hay { fill: var(--lit-hay); }
-.land-hay-2 { fill: var(--lit-hay-2); }
 .land-tile-2 { fill: var(--lit-tile-2); }
 .land-water { fill: var(--lit-water); }
 .land-water-2 { fill: var(--lit-water-2); }

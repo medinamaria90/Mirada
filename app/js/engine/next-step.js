@@ -63,7 +63,7 @@ export function backDebt(progress, index, open) {
     const m = index.movement(id);
     if (!m || !hasMovementReview(index, id)) continue;
     if (isReviewUnlocked(progress, index, id)) {
-      if ((Number(progress.reviews?.[id]?.best) || 0) < MASTERY) return { kind: 'debt', to: `repaso-${id}`, label: `Prueba de época: ${m.name}`, movementId: id };
+      if ((Number(progress.reviews?.[id]?.best) || 0) < MASTERY) return { kind: 'debt', to: `repaso-${id}`, label: `Prueba del ${String(m.name).split(' y ')[0]}`, movementId: id };
       continue;
     }
     const pending = gateSteps(progress, index.stepsOf(id)).filter((s) => s.type === 'artist' && artistStatus(progress, index, s.id) !== 'mastered');

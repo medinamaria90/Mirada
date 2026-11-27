@@ -25,9 +25,9 @@ export const SIDE_X = { left: 42, right: MAP_W - 42 }; // margen estrecho: sala 
 export const ROAD_HALF = 13;         // medio ancho del sendero (borde incluido)
 const ROAD_GAP = 12;                 // aire entre el sendero y un cartel
 const EDGE = 10;                     // aire con el borde del mapa
-// Puerta de ciudad de la época con su plaza detrás (path-art.js): lift + h es lo que ocupan sobre el pie de la puerta
-// (torreones con su tejado y la plaza empedrada); gap: aire mínimo hasta lo siguiente.
-export const ARCH = { lift: 48, h: 100, gap: 30 };
+// Puerta de ciudad de la época (path-art.js): lift + h es lo que ocupa sobre su pie (torreones con su tejado); gap: aire
+// mínimo hasta lo siguiente.
+export const ARCH = { lift: 48, h: 50, gap: 30 };
 // Espaciado por elementos (docs/eval/plan-composicion-camino.md §3): el hueco entre dos paradas no es fijo, suma lo
 // que hay dentro, apilado de abajo arriba (puente → desvío de rama → mojón del tramo, siempre justo antes de su primer
 // pintor). node: medio nodo con su aire, a cada lado del hueco; el resto, el alto de cada pieza con su aire.
@@ -208,7 +208,7 @@ export const branchLand = (branch) => (branch.kind === 'epoca' ? branch.movement
 
 // Vuelta al camino desde la pantalla de una rama: una tablilla como la del desvío por el que se entró, junto a la puerta,
 // en el lado por el que queda el camino común (el contrario al que salió el desvío), con su vereda hacia el borde.
-const BACK = { foot: 8, spurUp: 22, out: 8, clear: 88 };   // clear: del paso al borde de la tablilla (fuera de la puerta de ciudad)
+const BACK = { foot: 8, spurUp: 22, out: 8, clear: 92 };   // clear: del paso al borde de la tablilla (fuera de la puerta de ciudad)
 function backSign(era, side) {
   const x = era.gate.x;
   const edge = side === 'left' ? x - BACK.clear : x + BACK.clear;
@@ -250,7 +250,8 @@ function museumLayout(xIn) {
 
 // Salida: la puerta de la muralla es también la entrada de la primera época; su rótulo va sobre ella.
 function startLayout() {
-  const segs = spline([{ ...START_PLAZA, v: true }, { x: START_OUT_X, y: 0, v: true }]);
+  // El sendero llega desde abajo (sigue bajo la barra de abajo, en la franja path-foot): sin arranque en punta.
+  const segs = spline([{ x: START_PLAZA.x, y: START_H, v: true, line: true }, { ...START_PLAZA, v: true }, { x: START_OUT_X, y: 0, v: true }]);
   return { h: START_H, segs, arch: archAt(START_ARCH.x, START_ARCH.y), trail: segmentsD(segs) };
 }
 
