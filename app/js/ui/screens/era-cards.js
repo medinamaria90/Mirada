@@ -11,20 +11,36 @@ import { eraUrl, shareLink, NOTES } from '../story-share.js';
 
 const cache = new Map();
 
-// Tarjetas de una época ([] si no tiene); también las usa «Fuentes y créditos» para listar sus fuentes.
+// Tarjetas válidas de unos datos, o null si no lo son (el archivo no es de esta época o no trae tarjetas).
+export function cardsOf(data, movementId) {
+  if (!data || data.movementId !== movementId || !Array.isArray(data.cards)) return null;
+  const cards = data.cards.filter((c) => c && typeof c.kicker === 'string' && typeof c.text === 'string');
+  return cards.length ? cards : null;
+}
+
+// Tarjetas de una época ([] si no tiene); también las usa «Fuentes y créditos» para listar sus fuentes. Solo se
+// recuerda lo que llega bien: un fallo (sin red, un 404 o una respuesta a medias durante un despliegue) no deja la
+// época sin tarjetas el resto de la sesión, que en la app instalada puede durar días; se reintenta la próxima vez.
 export function loadCards(movementId) {
   if (!cache.has(movementId)) {
-    const pending = fetch(new URL(`../../../data/epocas/${movementId}.json`, import.meta.url))
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => (data && Array.isArray(data.cards) ? data.cards : []))
+    const pending = fetch(new URL(`../../../data/epocas/${movementId}.json`, import.meta.url), { cache: 'no-cache' })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        const cards = cardsOf(data, movementId);
+        if (!cards) throw new Error('sin tarjetas');
+        return cards;
+      })
       .catch((err) => {
-        console.info('Tarjetas de época no disponibles:', err.message);
-        cache.set(movementId, null); // se reintenta la próxima vez
+        console.warn(`Tarjetas de ${movementId} no disponibles:`, err.message);
+        cache.delete(movementId);
         return [];
       });
     cache.set(movementId, pending);
   }
-  return cache.get(movementId) || loadCards(movementId);
+  return cache.get(movementId);
 }
 
 export function cardHtml(index, card, n, total) {
@@ -42,9 +58,11 @@ export function cardHtml(index, card, n, total) {
 export async function mountEraCards(ctx, root, movementId) {
   const [cards] = await Promise.all([loadCards(movementId), loadCss('css/epocas.css')]);
   const body = $('.welcome-body', root);
-  if (!cards.length || !body || !root.isConnected) return;
+  if (!cards.length || !body || !root.isConnected || $('.era-track', root)) return;
   const enter = $('[data-action="enter"]', body);
   const cover = [...body.children].filter((c) => c !== enter);
+  // Mover la portada al carrusel le quita el foco (el título lo tiene al abrir): se le devuelve, y Enter sigue entrando.
+  const focused = root.contains(document.activeElement) ? document.activeElement : null;
   const total = cards.length + 1;
   const track = document.createElement('div');
   track.className = 'era-track';
@@ -62,6 +80,7 @@ export async function mountEraCards(ctx, root, movementId) {
   body.prepend(track);
   wireCards(ctx, body, track, total);
   root.classList.add('has-era-cards');
+  if (focused && !focused.contains(document.activeElement)) focused.focus({ preventScroll: true });
   root.insertAdjacentHTML('beforeend', `<button type="button" class="icon-btn era-share" aria-label="Compartir">${icons.share(20)}</button>`);
   $('.era-share', root).addEventListener('click', async () => {
     ctx.audio.sfx('tap');

@@ -291,7 +291,7 @@ def resolve_museo(mq, museos, lugares):
 def main():
     limit = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else 10 ** 6
     force = os.environ.get("FORCE") == "1" or "--force" in sys.argv
-    sel = load(os.path.join(CAT, "seleccion.json"), [])
+    sel = seleccion()  # sin las de excluir.json
     fichas = {} if force else load(FICHAS, {})
     museos = {} if force else load(MUSEOS, {})
     lugares = Lugares()
