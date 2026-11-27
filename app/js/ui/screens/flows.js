@@ -6,6 +6,7 @@ import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
 import { runLesson } from './lesson.js';
 import { renderResult, copyText } from './result.js';
+import { loadCss } from '../lazy-css.js';
 import { playEra } from '../audio-bridge.js';
 import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
@@ -68,6 +69,8 @@ function play(ctx, el, opts) {
   const home = returnTo || 'inicio';
   const meta = { route: opts.route || currentRoute(), title, accent, kind, extra, friendScore, shareTopic, plan: planMeta(plan) };
   const questions = resume ? resume.round.queue.map((it) => it.q) : plan.questions;
+  // La hoja del resultado se pide al empezar: cuando acaba la ronda ya está (sin destello sin estilos).
+  const resultCss = loadCss('css/resultado.css');
   return runLesson(ctx, el, {
     questions,
     extras: resume ? [] : falladoExtras(ctx, kind, plan),
@@ -87,10 +90,10 @@ function play(ctx, el, opts) {
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
       // «Repasar más» tras el repaso rápido; las otras rondas (repasar lo aprendido, reto semanal) las ofrece el resultado.
       const moreReview = friendScore == null && typeof more === 'function' && more();
-      renderResult(ctx, el, {
+      resultCss.then(() => renderResult(ctx, el, {
         plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before,
         more: moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
-      });
+      }));
     },
   });
 }

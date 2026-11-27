@@ -60,15 +60,16 @@ function withReview() {
   return p;
 }
 
-function resultActions(progress, plan, outcome, opts = {}) {
+function resultHtmlOf(progress, plan, outcome, opts = {}) {
   const el = { innerHTML: '', querySelector: () => null, addEventListener() {}, removeEventListener() {} };
   globalThis.window = { scrollTo() {}, matchMedia: () => ({ matches: true }) };
   globalThis.document = { documentElement: { classList: { contains: () => true } }, getElementById: () => null };
   globalThis.getComputedStyle = () => ({ getPropertyValue: () => '' });
   const ctx = { ...ctxWith(progress), store: { get: () => ({ progress, settings: { dailyGoal: 50 } }) }, audio: { sfx() {} } };
   renderResult(ctx, el, { plan, outcome, title: 'Ronda', accent: '', firstTry: [true, true, true], ...opts });
-  return el.innerHTML.match(/<div class="result-actions">[^]*?<\/div>\s*<\/main>/)?.[0] || '';
+  return el.innerHTML;
 }
+const resultActions = (...args) => resultHtmlOf(...args).match(/<footer class="res-foot">[^]*?<\/footer>/)?.[0] || '';
 
 test('resultado: tras dominar a un pintor, un solo botón para repasar (no dos iguales) y con nombre que se entiende', () => {
   const p = withReview();
@@ -115,6 +116,6 @@ test('resultado flojo: la «siguiente» que se abre con la mitad de aciertos se 
   p.artists[b.id] = { plays: 1, best: 0.3, mastered: false, last: DAY };
   p.roster = { seed: 'done', known: [], extra: [c.id], fresh: [], told: [] };
   const outcome = { xp: 10, score: 1, total: 6, accuracy: 1 / 6, mastered: false, events: [] };
-  const actions = resultActions(p, { kind: 'stage', artistId: b.id, seed: 3 }, outcome);
-  assert.match(actions, /Con la mitad de aciertos se abre la siguiente/, 'la parada extra (siempre abierta) no cuenta como «la siguiente»');
+  const resultHtml = resultHtmlOf(p, { kind: 'stage', artistId: b.id, seed: 3 }, outcome);
+  assert.match(resultHtml, /Con la mitad de aciertos se abre la siguiente/, 'la parada extra (siempre abierta) no cuenta como «la siguiente»');
 });

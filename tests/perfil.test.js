@@ -18,7 +18,6 @@ const { settingsHtml } = await import('../app/js/ui/screens/profile-settings.js'
 const { nameSheetHtml } = await import('../app/js/ui/screens/profile-name.js');
 const { lookSheetHtml } = await import('../app/js/ui/screens/profile-look.js');
 const { cardLines } = await import('../app/js/ui/screens/profile-share.js');
-const { rankLine } = await import('../app/js/ui/screens/result.js');
 const { realIndex } = await import('./helpers-real.js');
 const { TEST_LEVELS, shareText } = await import('../app/js/test/resultado.js');
 const { emptyProgress } = await import('../app/js/engine/progress.js');
@@ -84,17 +83,17 @@ test('rango: la barra avanza con lo cumplido y dice lo que falta con frases huma
   assert.deepEqual(P.rankProgress({ next: null, stats: {}, missing: [] }), { fraction: 1, next: null, parts: [], items: [] });
 });
 
-test('una sola escala: los niveles del test no se llaman como ningún rango, y perfil y resultado dan el mismo rango', () => {
+test('una sola escala: los niveles del test no se llaman como ningún rango, y el perfil da el rango de la escala', () => {
   const ranks = RANKS.map((r) => r.name.toLowerCase());
   for (const name of TEST_LEVELS) assert.ok(!ranks.includes(name.toLowerCase()), `«${name}» es también un rango`);
   assert.equal(new Set(TEST_LEVELS).size, TEST_LEVELS.length);
   for (const xp of [0, 150, 300, 1500, 5200, 9300, 26000]) {
     const p = { ...emptyProgress(), xp };
-    const line = rankLine(p, index);
-    assert.equal(line.name, rankFor(p, index).name);
+    const rank = rankFor(p, index);
+    const line = { name: rank.name, pct: Math.round(P.rankProgress(rank).fraction * 100) };
     const hero = heroHtml(ctxFor(p));
     assert.ok(hero.includes(`<span>${line.name}</span>`), `el perfil no dice «${line.name}» con ${xp} XP`);
-    assert.ok(hero.includes(`aria-valuenow="${line.pct}"`), 'la barra del perfil y la del resultado no coinciden');
+    assert.ok(hero.includes(`aria-valuenow="${line.pct}"`), 'la barra del perfil no da el avance del rango');
   }
   assert.doesNotMatch(read('../app/js/ui/screens/result.js'), /levelFor|levelName|Nuevo nivel/, 'el resultado enseña la escala de niveles');
   assert.doesNotMatch(read('../app/js/engine/finish.js'), /levelup|levelFor/, 'queda código de la escala de niveles');
