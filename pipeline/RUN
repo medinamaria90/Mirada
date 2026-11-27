@@ -1,4 +1,3 @@
-# 27/11 (4.ª pasada) — el pack anterior falló por el tope de peticiones del GITHUB_TOKEN y el paquete no trae la obra nueva de
-# Kuniyoshi (w96471658): Render no puede pintar el atlas. pack reutiliza ahora el paquete anterior y baja solo lo que falta.
-pack 1200
-validate
+# 27/11 (5.ª pasada) — HD de los detalles de las historias (region o zoom grande): la subida anterior chocó con el límite de la API;
+# ahora reintenta. app-img-hd.zip a catalogo-img y catalogo/hd.json.
+hd
