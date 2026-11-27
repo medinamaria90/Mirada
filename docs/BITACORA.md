@@ -203,3 +203,14 @@ Los cuadros de la Colección, de «Ver los n» y de la ficha del pintor abren el
 «Ver más» que lleva a la página de la obra (al deslizar cambia el texto: lo que María pidió el 24/11). La página de la obra
 termina con «Más de <pintor>», sus otras obras vistas, para pasar de una a otra sin cerrarla. Dentro de una ronda, el visor
 sigue igual. Código: `ui/viewer-more.js` (`data-zoom-more` en `artFrame`), `ui/artwork-sheet.js`.
+
+## El mapa sigue la luz del día aunque el móvil vaya en oscuro (27/11)
+María entró a las 8:11 con el móvil en oscuro y el mapa se veía de noche. No era el reloj (a las 8:11 da día): el tema oscuro
+pintaba el paisaje con su paleta oscura. Ahora, con «Como el móvil», el mapa (`.path-map`) recupera los colores claros de todo
+lo que el oscuro cambia (bloque propio en `brand.css`, comprobado en `tests/mapa-tema.test.js`) y la luz la pone el reloj del
+juego: amanecer, día, atardecer y noche. Menús, barra de arriba y pestañas siguen oscuros. Si se fuerza un tema en Ajustes,
+manda el tema: «Oscuro» deja el mapa de noche (paleta oscura, estrellas y luces) y «Claro», de día (`mapLight` en
+`engine/daylight.js`). La música sigue al reloj en todos los casos.
+De paso, los edificios de día ganan contraste (encargo de María, 8:13): muros arena con el lado en sombra marcado, ventanas
+oscuras, tejados de terracota más vivos, pizarra más definida y sombras en el suelo algo más hondas. Los SVG de reserva de
+`app/img/mapa` se han regenerado con la paleta nueva.

@@ -15,7 +15,7 @@ from collections import Counter, defaultdict
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from atlas_layout import layout, packed_size  # noqa: E402
 
-FIRST_TRAMO = 4  # «Primer Renacimiento»: Botticelli, Masaccio, Piero y Berruguete
+FIRST_TRAMO = 4  # «Nace el Renacimiento»: Botticelli, Masaccio, Piero y Berruguete
 # Techo de archivos de app/ ya desplegada. El número original (512 por versión) era de cuando la app era un artifact; en Render
 # (sitio estático) no hay límite de archivos. Hoy es un techo de cordura: repo (~630) + 86 hojas del atlas + ~190 imágenes og
 # de compartir, generadas al desplegar, rondan los 900.
