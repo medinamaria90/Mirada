@@ -3,9 +3,8 @@
 
 import { esc, onAction, focusHeading } from '../dom.js';
 import { icons } from '../icons.js';
-import { avatarHtml } from '../avatar.js';
 import { avatarWork, avatarCrop, seenOf } from '../../engine/painters.js';
-import { coverOf } from '../art.js';
+import { coverOf, mediumSrc } from '../art.js';
 import { reviewIntroText, REVIEW_TITLE } from '../../engine/review.js';
 
 function faceHtml(ctx, artistId) {
@@ -14,7 +13,9 @@ function faceHtml(ctx, artistId) {
   // Su cara (un autorretrato visto) o, si no, un detalle de su cuadro más conocido: nunca solo las iniciales.
   const cover = coverOf(ctx.index, artist.id);
   const face = avatarWork(seenOf(ctx.store.get().progress, ctx.index, artist.id)) || (cover ? { work: cover, ...avatarCrop(cover) } : null);
-  return `<button type="button" class="ri-face" data-action="painter" aria-label="${esc(`${artist.name}: ver su ficha`)}">${avatarHtml(artist, face, 'ri-av')}</button>`;
+  // A este tamaño, la imagen mediana (la miniatura del atlas se vería pixelada).
+  const img = face ? `<img src="${esc(mediumSrc(face.work))}" alt="" decoding="async" style="object-position:${face.x}% ${face.y}%">` : '';
+  return `<button type="button" class="ri-face" data-action="painter" aria-label="${esc(`${artist.name}: ver su ficha`)}"><span class="ri-av">${img}</span></button>`;
 }
 
 // onStart: empieza la ronda. Devuelve cómo quitar los toques.

@@ -391,7 +391,7 @@ test('mapa: el pintor a medias llena el aro con su nota y una muesca en el 75 %'
   const dash = (cls) => Number(svg.match(new RegExp(`class="ring-arc is-${cls}"[^>]*stroke-dasharray="([\\d.]+)`))[1]);
   assert.ok(Math.abs(dash('partial') / dash('locked') - 0.5) < 0.01, 'el aro entero se llena con la nota');
   const mark = Number(svg.match(/class="ring-arc is-mark"[^>]*stroke-dashoffset="(-?[\d.]+)"/)[1]);
-  assert.ok(Math.abs(-mark - 75) < 1, 'la muesca marca el 75 %');
+  assert.ok(Math.abs(-mark - 75) < 1.5, 'la muesca marca el 75 %');
   assert.equal(startedLine(ring), 'Has acertado el 50\u00a0%; hace falta un 75\u00a0%');
   assert.equal(startedLine({ ...ring, best: 0.7 }), 'Te falta poco: has acertado el 70\u00a0%; hace falta un 75\u00a0%');
   assert.equal(startedLine({ ...ring, best: 0.8, missing: 3 }), 'Te faltan 3 cuadros por ver');

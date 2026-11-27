@@ -12,7 +12,7 @@ const ORDER = ['xp', 'deep', 'eras', 'grand', 'complete'];
 // su explicación al lado (los pintores más grandes del camino).
 export const GRAND_TEXT = 'un gran maestro (los más grandes, como Rafael)';
 const LABEL = {
-  xp: (n) => `${fmtXp(n)} XP`,
+  xp: (n) => `${fmtXp(n)} puntos`,
   deep: (n) => (n === 1 ? 'Un nivel «a fondo»' : `${n} niveles «a fondo»`),
   eras: (n) => `«A fondo» en ${n === 1 ? 'una época' : `${n} épocas`}`,
   grand: (n, upTo) => (n === 1 ? `El nivel ${upTo} de ${GRAND_TEXT}` : `El nivel ${upTo} de ${n} grandes maestros`),

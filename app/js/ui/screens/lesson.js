@@ -319,7 +319,7 @@ export function runLesson(ctx, el, config) {
     feedback.innerHTML = `<div class="fb-inner">
       <div class="fb-text">
         <div class="fb-head"><span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>
-        ${title}${gained ? `<span class="fb-xp">+${gained} XP</span>` : ''}</div>
+        ${title}${gained ? `<span class="fb-xp">+${gained} puntos</span>` : ''}</div>
         ${who}${lines}${beforeRibbonHtml(ctx, fb)}${caption}${curioHtml(subject, curioOpen)}
       </div>
       <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>

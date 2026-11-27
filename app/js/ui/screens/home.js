@@ -7,7 +7,8 @@ import { artFrame } from '../art.js';
 import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode, HOME_MAP } from './path-map.js';
 import { rememberMap } from './map-memory.js';
 import { liveArt } from '../map-land.js';
-import { watchReturn } from './map-return.js';
+import { watchReturn, guideButton } from './map-return.js';
+import { goToStep } from './path-actions.js';
 import { startMapLife } from '../map-life.js';
 import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } from '../../engine/progress.js';
 import { playEra } from '../audio-bridge.js';
@@ -75,14 +76,20 @@ export function renderHome(ctx, el) {
   let stories = null;
   // «Tú» (map-return.js) y, si lo que recomienda el juego es otra cosa (engine/next-step.js, cargado después de pintar: no
   // pesa en el arranque), el mismo botón pasa a ser esa acción.
-  let returnStop = watchReturn(el);
-  import('../../engine/next-step.js').then((m) => {
-    const guide = guideFor(ctx, el, m.mapGuide);
+  const returnStop = watchReturn(el);
+  let guideStop = () => {};
+  Promise.all([import('../../engine/next-step.js'), import('../last-step.js')]).then(([m, last]) => {
+    const guide = guideFor(ctx, el, m.mapGuide, last.lastStep());
     if (!guide || !el.isConnected) return;
-    returnStop();
-    returnStop = watchReturn(el, guide, (g) => { ctx.audio.sfx('tap'); ctx.go(g.to); });
+    guideStop = guideButton(el, guide, (g) => {
+      ctx.audio.sfx('tap');
+      const key = g.artistId ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
+      // Una parada del camino: el camino va hasta ella y se toca (su tarjeta o su ronda), como «Ir»; si no, la acción.
+      if (key && el.querySelector(`.stage-spot[data-step="${key}"]`)) return goToStep(key);
+      return ctx.go(g.to);
+    });
   }).catch((err) => console.error(err));
-  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, () => returnStop(), () => stories?.stop()];
+  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, () => returnStop(), () => guideStop(), () => stories?.stop()];
   addLevelRings(ctx, el);
   stories = watchStoryPrefetch(el);
   tagNew();
@@ -168,7 +175,7 @@ function sideNow(ctx) {
 export { scrollToCurrent };
 
 // Lo que recomienda el juego cuando no es la parada actual (engine/next-step.js): el botón «Tú» se convierte en él.
-function guideFor(ctx, el, mapGuide) {
+function guideFor(ctx, el, mapGuide, prevStep) {
   const current = el.querySelector('.stage-spot.is-current')?.dataset.step || '';
-  return mapGuide(ctx.store.get().progress, ctx.index, ctx.today(), { currentKey: current, week: isoWeek(ctx.dailyDay()).key });
+  return mapGuide(ctx.store.get().progress, ctx.index, ctx.today(), { currentKey: current, week: isoWeek(ctx.dailyDay()).key, prevStep });
 }
