@@ -164,7 +164,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .nav-item[aria-current="page"] .icon { stroke-width: 2; }
 .nav-item:hover { color: var(--ink); }
 /* Respuesta al dedo en cuanto se toca, aunque la pantalla siguiente tarde en llegar. */
-.nav-item:active, .coll-tab:active { transform: scale(var(--press-scale)); }
+.nav-item:active { transform: scale(var(--press-scale)); }
 
 .content { padding: 1rem 1.1rem 1.5rem; }
 
@@ -778,7 +778,6 @@ html.reduce-motion .ring-halo { animation: none; }
 .coll-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 168px)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
 .coll-item { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 10px; transition: transform .18s var(--ease); }
 .coll-item:hover { transform: translateY(-2px); }
-.coll-item:active { transform: scale(var(--press-scale)); }
 .art-thumb { aspect-ratio: 1; border-radius: 10px; }
 .empty { display: grid; justify-items: center; gap: 1rem; padding: 3rem 1rem; text-align: center; color: var(--ink-2); }
 .empty p { font: 400 1.1rem/1.4 var(--font); max-width: 24ch; }

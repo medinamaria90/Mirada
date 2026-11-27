@@ -25,7 +25,7 @@ export function modalSlot() {
 // El segundo toque de un doble toque (o uno impaciente con el móvil ocupado) cae en el fondo de la hoja recién abierta
 // o en la copia del nodo y la cerraba sola. Tocar fuera o en el nodo solo cierra pasado este margen desde que se abre;
 // los botones de cerrar, siempre.
-export const TAP_GRACE_MS = 450;
+export const TAP_GRACE_MS = 600;
 export function tapAfterOpen(downAt, openedAt) {
   return Number.isFinite(downAt) && downAt - openedAt >= TAP_GRACE_MS;
 }
