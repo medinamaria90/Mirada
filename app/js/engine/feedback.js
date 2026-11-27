@@ -61,10 +61,19 @@ export function skipsTrait(work, i) {
 // (`verified`). Sin alcance declarado no hay certeza: no. Un pintor sin `traitScope` (datos antiguos) no se filtra.
 export function scopeFits(artist, work, i, verified = false) {
   if (!Array.isArray(artist?.traitScope)) return true;
-  const scope = artist.traitScope[i];
+  return fits(artist.traitScope[i], work, verified);
+}
+
+function fits(scope, work, verified) {
   if (scope === SCOPE_STYLE) return true;
   if (scope === SCOPE_TAGS) return verified;
   return Array.isArray(scope) && Boolean(work?.genre) && scope.includes(work.genre);
+}
+
+// Versión general de la frase `i` (sin su detalle concreto) si encaja en `work`; '' si no hay o no encaja.
+export function generalLine(artist, work, i) {
+  const g = Array.isArray(artist?.traitGeneral) ? artist.traitGeneral[i] : null;
+  return g && fits(g.scope, work, false) ? sentence(g.text) : '';
 }
 
 // Frases del pintor que sirven para enseñar `work`, en orden de preferencia: primero las que
@@ -77,12 +86,16 @@ export function teachingLines(lines, artist, work, avoidWork = null) {
   const seen = tagsOf(work);
   const avoid = avoidWork ? tagsOf(avoidWork) : null;
   const verified = (t) => Boolean(t && t.length && seen.size && subset(t, seen));
-  const ranked = lines
-    .map((line, i) => ({ line, i, tags: tags[i], ok: verified(tags[i]) }))
-    .filter((r) => !skipsTrait(work, r.i) && scopeFits(artist, work, r.i, r.ok));
+  const all = lines.map((line, i) => ({ line, i, tags: tags[i], ok: verified(tags[i]) })).filter((r) => !skipsTrait(work, r.i));
+  const ranked = all.filter((r) => scopeFits(artist, work, r.i, r.ok));
   // Sin verificar: la frase sin etiquetas o el cuadro sin revisar (no se sabe; vale). Desmentida: no.
   const unknown = (r) => !r.ok && !(seen.size && r.tags && r.tags.length);
-  if (!avoid) return [...ranked.filter((r) => r.ok), ...ranked.filter(unknown)].map((r) => r.line);
+  if (!avoid) {
+    // La frase cuyo detalle no se ve aquí cede su sitio a su versión general (si la tiene y encaja).
+    const kept = new Set([...ranked.filter((r) => r.ok), ...ranked.filter(unknown)]);
+    const general = all.filter((r) => !kept.has(r)).map((r) => generalLine(artist, work, r.i)).filter(Boolean);
+    return [...new Set([...[...kept].map((r) => r.line), ...general])];
+  }
   const safe = ranked.filter((r) => r.tags && r.tags.length && disjoint(r.tags, avoid));
   // Sin etiquetas en el cuadro correcto no hay forma de verificar: vale con que no sea del otro.
   return safe.filter((r) => r.ok || !seen.size).map((r) => r.line);
