@@ -118,6 +118,18 @@ Aplicada la fase 1 de `docs/propuesta-pintores.md` con las decisiones de María 
 **Para la fase 2.** 68 etapas de fase 2 (resto de «a fondo» de maestros: 39; invitados: 29 provisionales); ampliar `candidates` (más de 80 con datos de imagen) para Goya, El Greco, Murillo, Sorolla, Monet, Cézanne, Munch, Renoir y Kandinsky; verificar las 29 etapas con `verificar` y las 33 con corte inferido (David, Fortuny, Renoir, Klimt, Munch, Gauguin… sin años en la propuesta); `seleccionar` con `FASE=2`. Las imágenes de las 1.180 obras de la selección antigua que ya no están siguen en las releases (huérfanas): `pack` solo empaqueta las de `obras.json`.
 **Para la migración de la app.** Leer `category`, `stages` y `branches` de `pintores.json`; `level` ya no es 1|2; las ramas (`gotico`, `ukiyo-e`) no entran en el camino común; el nivel 1 de grandes maestros y maestros tiene 7-9 obras (la propuesta daba 8 y 7) y el de invitados 3-4.
 
+### 27/11 — Fra Angelico, frescos Scrovegni y museos de marchante
+
+- Fra Angelico (invitado) pasa a 4 obras de nivel 1 (2 «learn», 2 «new»): entran la *Adoración de los Reyes Magos* y la *Anunciación de
+  Cortona*; la *Coronación de la Virgen* se fuerza para que las otras no la saquen del cupo. Fuera el *Retablo de San Marcos*: su imagen
+  en Wikidata mide 848 px (haría falta otro archivo de Commons con `archivoInfo` en `ajustes.json`).
+- Giotto, nivel «Padua»: entran *El beso de Judas* (Q3504778) y el *Llanto sobre Cristo muerto* (Q2067212). *El Juicio Final* (Q3769209)
+  queda fuera por lo mismo: imagen de 513 × 600 px en Wikidata.
+- Leyster (*Alegre compañía*, Q4109849) y Malévich (*Composición suprematista*, Q1523466): Wikidata daba un marchante como colección;
+  `fichas_ajustes.json` las deja en «Colección privada».
+- Ojo: `excluir.json` solo actúa al volver a ejecutar `seleccionar` de ese pintor. Una exclusión hecha a mano en `obras.json` vuelve con
+  el siguiente `build` si no se quita también de `catalogo/seleccion.json` (pasó con Kuniyoshi Q69729449; ya quitada).
+
 ## Plan de migración de la app al catálogo grande (sin tocar `app/` hasta que acabe la portada)
 
 Hoy la app vive de `tools/catalog_data.py` (datos a mano de 235 obras y 75 pintores, ids `a<N>`/`b<N>`,
