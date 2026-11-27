@@ -143,7 +143,7 @@
   --map-frontier-solid: 80%;
   --map-arch-crown: 2.4rem;
   --map-arch-band: 4px;
-  --map-tablet-hit: 7px;
+  --map-tablet-hit: 11px;          /* la tablilla mide unos 26 px: con esto, el toque llega a --hit */
   --map-current-dot: 70px;
   --map-halo-dur: 3.2s;
   --map-bob-dur: 2.8s;
@@ -154,6 +154,7 @@
   --ring-out: 12px;
   --ring-out-lg: 10px;
   --kiosk-hit: 56px;
+  --hit: 48px;                     /* objetivo táctil mínimo (Material 3) */
   --dur-zoom: 420ms;
   --zoom-scale: 1.6;
   --ring-w: 4.6;

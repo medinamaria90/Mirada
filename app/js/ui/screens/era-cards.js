@@ -89,16 +89,17 @@ export async function mountEraCards(ctx, root, movementId) {
   });
 }
 
-// Puntos y paso de tarjeta: uno por diapositiva (el actual, alargado); «Descubre…» pasa a la segunda. scope: donde van
-// los puntos (tras el carrusel) y se escuchan los toques.
+// Puntos y paso de tarjeta: uno por diapositiva (el actual, alargado), solo como indicador (nueve botones no caben con
+// toque de --hit; se pasa deslizando, con las flechas en el carrusel o con «Descubre…», que lleva a la segunda). scope:
+// donde van los puntos (tras el carrusel) y se escuchan los toques.
 export function wireCards(ctx, scope, track, total) {
-  const dots = `<div class="era-dots">${Array.from({ length: total }, (_, i) => `<button type="button" class="era-dot" data-era="go" data-i="${i}" aria-label="Tarjeta ${i + 1} de ${total}"><span></span></button>`).join('')}</div>`;
+  const dots = `<div class="era-dots" aria-hidden="true">${Array.from({ length: total }, () => '<span class="era-dot"><span></span></span>').join('')}</div>`;
   track.insertAdjacentHTML('afterend', dots);
   const slides = $$('.era-slide', track);
   const go = (i) => slides[Math.max(0, Math.min(total - 1, i))].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
   const sync = () => {
     const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
-    $$('.era-dot', scope).forEach((d, k) => d.setAttribute('aria-current', k === i ? 'true' : 'false'));
+    $$('.era-dot', scope).forEach((d, k) => d.classList.toggle('is-now', k === i));
   };
   sync();
   track.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
@@ -106,6 +107,6 @@ export function wireCards(ctx, scope, track, total) {
     const b = ev.target.closest('[data-era]');
     if (!b) return;
     ctx.audio.sfx('tap');
-    go(b.dataset.era === 'next' ? 1 : Number(b.dataset.i));
+    go(1);
   });
 }

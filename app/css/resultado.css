@@ -94,7 +94,7 @@
 .res-chip strong, .res-chip small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .res-chip strong { font: 600 .92rem/1.15 var(--font); }
 .res-chip small { color: var(--ink-2); font: 400 .76rem/1.15 var(--font); }
-.res-chip-more { padding: 0 .95rem; }
+.res-chip-more { justify-content: center; min-width: var(--res-chip-h); padding: 0 .95rem; }
 
 /* Acciones, fijas abajo, en la zona del pulgar: «Seguir» y como mucho dos secundarias encima, a media anchura. */
 .res-foot { position: relative; flex: none; display: grid; gap: .7rem; padding: .7rem var(--res-pad) calc(1rem + var(--safe-b)); background: var(--bg); }

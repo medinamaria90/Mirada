@@ -12,8 +12,8 @@
   --ap-twin-av: 48px;
   --ap-mini-h: 64px;
   --ap-mini-av: 36px;
-  --ap-mini-play-h: 44px;
-  --st-bar-h: 44px;            /* «Su tiempo»: alto de cada barra de vida */
+  --ap-mini-play-h: var(--hit);
+  --st-bar-h: var(--hit);            /* «Su tiempo»: alto de cada barra de vida */
   --st-gap: 10px;
   --st-av: 36px;
 }
@@ -64,10 +64,10 @@ button.ap-avatar:active .ap-ring { transform: scale(.96); }
 @media (min-width: 720px) { .ap-actions .btn-primary { flex: 0 1 auto; min-width: 12rem; } }
 
 .ap-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: .75rem; padding: 1.75rem var(--ap-pad) 0; }
-.ap-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-height: 44px; }
+.ap-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-height: var(--hit); }
 .ap-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .4rem; font: 600 1.18rem/1.15 var(--font); letter-spacing: -.02em; }
 .ap-count { font: 500 .9rem/1 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.ap-all { flex: none; display: inline-flex; align-items: center; gap: .1rem; min-height: 44px; padding: 0 0 0 .5rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; }
+.ap-all { flex: none; display: inline-flex; align-items: center; gap: .1rem; min-height: var(--hit); padding: 0 0 0 .5rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; }
 /* «Cómo reconocerlo»: cada rasgo, con un detalle recortado del cuadro que lo enseña. */
 .ap-traits { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; }
 .ap-trait { display: flex; align-items: center; gap: .9rem; width: 100%; min-height: calc(var(--ap-detail) + 1rem); padding: .5rem .9rem .5rem .5rem; border: 0; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-card); color: var(--ink); font: inherit; text-align: left; }
@@ -105,8 +105,8 @@ button.st-hit:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2
 @media (hover: hover) and (pointer: fine) { button.st-hit:hover .st-bar:not(.is-current) { background: var(--bg); } }
 /* Nombre fuera de la barra: a su derecha o a su izquierda, con el sitio que quede (si hace falta, en dos líneas). */
 .st-bar.is-name-right, .st-bar.is-name-left { overflow: visible; }
-.st-bar.is-name-right .st-name { position: absolute; left: calc(100% + .5rem); width: max-content; max-width: calc(var(--room) * 1cqw); overflow: visible; white-space: normal; text-overflow: clip; }
-.st-bar.is-name-left .st-name { position: absolute; right: calc(100% + .5rem); width: max-content; max-width: calc(var(--room) * 1cqw); overflow: visible; white-space: normal; text-overflow: clip; text-align: right; }
+.st-bar.is-name-right .st-name { position: absolute; left: calc(100% + .5rem); width: max-content; max-width: calc(var(--room) * 1cqw); overflow: visible; white-space: normal; text-overflow: clip; overflow-wrap: break-word; }
+.st-bar.is-name-left .st-name { position: absolute; right: calc(100% + .5rem); width: max-content; max-width: calc(var(--room) * 1cqw); overflow: visible; white-space: normal; text-overflow: clip; overflow-wrap: break-word; text-align: right; }
 .st-axis { position: relative; height: 1.6rem; border-top: 1px solid var(--line); }
 .st-tick { position: absolute; top: 0; left: var(--at); padding: .3rem 0 0 .5rem; border-left: 1px solid var(--line); color: var(--ink-2); font: 500 .85rem/1 var(--font); white-space: nowrap; }
 .st-tick.is-edge { border-left: 0; padding-left: 0; }
@@ -121,7 +121,7 @@ button.st-hit:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2
   transition: transform var(--dur-pop) var(--ease), opacity var(--dur-pop) var(--ease);
 }
 .ap-mini.is-on { transform: translate(-50%, 0); opacity: 1; }
-.ap-mini-back { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 999px; background: none; color: var(--ink); cursor: pointer; }
+.ap-mini-back { flex: none; display: grid; place-items: center; width: var(--hit); height: var(--hit); border: 0; border-radius: 999px; background: none; color: var(--ink); cursor: pointer; }
 .ap-mini-av { flex: none; width: var(--ap-mini-av); height: var(--ap-mini-av); overflow: hidden; border-radius: 999px; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--gold); }
 .ap-mini-av .av { width: 100%; height: 100%; }
 .ap-mini-name { flex: 1; min-width: 0; overflow: hidden; font: 600 1.08rem/1.2 var(--font); text-overflow: ellipsis; white-space: nowrap; }
@@ -169,7 +169,7 @@ html.reduce-motion .artist-sheet[open] { animation: none; }
 .aw-title { font: 500 1.4rem/1.1 var(--font); letter-spacing: var(--track); overflow-wrap: break-word; }
 .aw-sub { color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 /* «Su ficha» va en su propia fila, bajo el título: con letra grande no le quita ancho. */
-.aw-ficha { flex: 0 0 100%; display: inline-flex; align-items: center; justify-content: flex-start; gap: .2rem; min-height: 48px; margin-left: 58px; padding: 0 .3rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.aw-ficha { --aw-ficha-in: 58px; flex: 0 0 calc(100% - var(--aw-ficha-in)); display: inline-flex; align-items: center; justify-content: flex-start; gap: .2rem; min-height: var(--hit); margin-left: var(--aw-ficha-in); padding: 0 .3rem; border: 0; background: none; color: var(--brand-text); font: 600 .95rem/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 .aw-who { padding-inline: .5rem; }
 .aw .ap-missing { margin: 1rem .8rem 0; }
 .aw .ap-grid { margin-inline: .8rem; width: auto; }

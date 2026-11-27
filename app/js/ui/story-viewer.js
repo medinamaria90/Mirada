@@ -279,10 +279,11 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       if (ev.key !== 'Tab') return;
       const list = focusables();
       if (!list.length) return;
-      const first = list[0];
-      const lastEl = list[list.length - 1];
-      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); lastEl.focus(); }
-      else if (!ev.shiftKey && document.activeElement === lastEl) { ev.preventDefault(); first.focus(); }
+      // También desde el texto (tabindex -1, tras los botones): sin nada enfocable después (o antes), da la vuelta.
+      const at = document.activeElement;
+      const follows = (e) => Boolean(at.compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING);
+      if (ev.shiftKey && !list.some((e) => e !== at && !follows(e))) { ev.preventDefault(); list[list.length - 1].focus(); }
+      else if (!ev.shiftKey && !list.some((e) => e !== at && follows(e))) { ev.preventDefault(); list[0].focus(); }
     });
     const onDocKey = (ev) => {
       if (ev.defaultPrevented || dlg.contains(ev.target)) return;

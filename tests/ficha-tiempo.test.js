@@ -1,5 +1,5 @@
 // «Su tiempo»: cada barra de otro pintor es un botón que lleva a su ficha; la del propio pintor, no. Un nombre que no cabe
-// en su barra sale fuera (nunca cortado) y el CSS da 44 px de área táctil y foco visible.
+// en su barra sale fuera (nunca cortado) y el CSS da el área táctil mínima (--hit, 48 px) y foco visible.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -11,6 +11,7 @@ import { realIndex } from './helpers-real.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const css = readFileSync(join(here, '..', 'app', 'css', 'ficha.css'), 'utf8');
+const brand = readFileSync(join(here, '..', 'app', 'css', 'brand.css'), 'utf8');
 const index = realIndex();
 
 function ctxKnowing(ids) {
@@ -43,8 +44,9 @@ test('«Su tiempo»: un nombre que no cabe en su barra sale fuera, al lado con m
   }
 });
 
-test('«Su tiempo» y «No lo confundas con»: área táctil de 44 px, foco visible y sin destello', () => {
-  assert.match(css, /--st-bar-h: 44px/);
+test('«Su tiempo» y «No lo confundas con»: área táctil de 48 px, foco visible y sin destello', () => {
+  assert.match(brand, /--hit: 48px/);
+  assert.match(css, /--st-bar-h: var\(--hit\)/);
   assert.match(css, /button\.st-hit:focus-visible/);
   assert.match(css, /\.ap-twin:focus-visible/);
   assert.match(css, /\.st-hit \{[^}]*-webkit-tap-highlight-color: transparent/);

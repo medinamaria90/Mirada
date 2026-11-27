@@ -11,7 +11,7 @@
 .cx-era .cx-h::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: .55rem; border-radius: 999px; background: var(--accent); vertical-align: .08em; }
 .cx-count { margin-left: auto; color: var(--ink-2); font: 600 .85rem/1 var(--font); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
 .cx-all, .cx-sala {
-  display: inline-flex; align-items: center; gap: .25rem; min-height: 40px; padding: 0 .75rem; border-radius: 999px; color: var(--brand-text);
+  display: inline-flex; align-items: center; gap: .25rem; min-height: var(--hit); padding: 0 .75rem; border-radius: 999px; color: var(--brand-text);
   font: 600 .9rem/1 var(--font); text-decoration: none; white-space: nowrap;
 }
 .cx-all { margin-left: auto; padding-right: .35rem; }
@@ -57,7 +57,7 @@
 
 /* Bloqueado: la misma tarjeta, sin obra, con el monograma en hueco y un candado; suave, que invite sin gritar. */
 .cx-card.is-locked .cx-cover { background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line); }
-.cx-card.is-locked .cx-mono { color: color-mix(in srgb, var(--accent-ui) 70%, var(--ink-2)); opacity: .75; }
+.cx-card.is-locked .cx-mono { color: var(--ink-2); }
 .cx-card.is-locked .cx-name { color: var(--ink-2); }
 .cx-lock {
   position: absolute; right: .4rem; bottom: .4rem; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;

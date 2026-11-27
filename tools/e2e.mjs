@@ -559,6 +559,23 @@ async function toLearn(page) {
   await page.waitForSelector('.learn', { timeout: STEP_MS });
 }
 
+// El momento de dominar a un maestro se queda encima del resultado hasta cerrarlo: si sale, Esc lo cierra.
+async function closeMatchMoment(page) {
+  const SHOW_MS = 1500;
+  if (!(await page.waitForSelector('.match[open]', { timeout: SHOW_MS }).catch(() => null))) return;
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.match', { state: 'detached' });
+}
+
+// Hasta la ronda de un pintor: su historia sale siempre y «Jugar» empieza la ronda, sin «Conoce a» (decisión de María, 26/11).
+async function toRound(page) {
+  const STEP_MS = 15000;
+  await page.waitForSelector('.story[open] .story-next', { timeout: STEP_MS });
+  await skipStory(page);
+  await page.waitForSelector('.lesson .option', { timeout: STEP_MS });
+  check(await page.locator('.learn').count() === 0, `tras la historia sale «Conoce a» (${page.url()})`);
+}
+
 async function assertPracticeVisible(page, label) {
   const box = await page.locator('[data-action="practice"]').boundingBox();
   const vh = page.viewportSize().height;
@@ -686,11 +703,29 @@ async function contrastAudit(page, label) {
 
 // Objetivos táctiles: todo elemento interactivo visible mide al menos 48×48.
 async function targetAudit(page, label) {
-  const small = await page.evaluate(() => [...document.querySelectorAll('a[href], button, input, select, textarea, summary, [role="button"], [role="switch"], [tabindex]:not([tabindex="-1"])')]
+  const small = await page.evaluate(() => {
+    // Zona de toque real: la caja del elemento y, si la amplía, un ::before/::after posicionado que recibe toques (la
+    // técnica de agrandar el toque sin agrandar el dibujo, p. ej. las tablillas del mapa).
+    const hitRect = (e) => {
+      const b = e.getBoundingClientRect();
+      let { left, top, right, bottom } = b;
+      for (const pseudo of ['::before', '::after']) {
+        const cs = getComputedStyle(e, pseudo);
+        if (cs.content === 'none' || cs.display === 'none' || cs.position !== 'absolute' || cs.pointerEvents === 'none') continue;
+        const px = (v) => (v.endsWith('px') ? parseFloat(v) : 0);
+        left = Math.min(left, b.left + px(cs.left));
+        top = Math.min(top, b.top + px(cs.top));
+        right = Math.max(right, b.right - px(cs.right));
+        bottom = Math.max(bottom, b.bottom - px(cs.bottom));
+      }
+      return { left, top, right, bottom, width: right - left, height: bottom - top };
+    };
+    return [...document.querySelectorAll('a[href], button, input, select, textarea, summary, [role="button"], [role="switch"], [tabindex]:not([tabindex="-1"])')]
     .filter((e) => !e.closest('[hidden], .sr-only') && !e.disabled && (typeof e.checkVisibility !== 'function' || e.checkVisibility({ visibilityProperty: true })))
-    .map((e) => { const r = e.getBoundingClientRect(); return { r, t: (e.getAttribute('aria-label') || e.textContent || e.className || e.tagName).trim().slice(0, 30) }; })
+    .map((e) => ({ r: hitRect(e), t: (e.getAttribute('aria-label') || e.textContent || e.className || e.tagName).trim().slice(0, 30) }))
     .filter(({ r }) => r.width > 0 && r.height > 0 && r.right > 0 && r.left < innerWidth && (r.width < 47.5 || r.height < 47.5))
-    .map(({ r, t }) => `${t} ${Math.round(r.width)}×${Math.round(r.height)}`));
+    .map(({ r, t }) => `${t} ${Math.round(r.width)}×${Math.round(r.height)}`);
+  });
   audits.targets += 1;
   for (const f of small) problems.push(`[táctil ${label}] ${f}`);
 }
@@ -765,9 +800,15 @@ function seededState({ upTo = 0, mastered = true, xp = 900, extra = {} } = {}) {
     session: {},
   };
 }
+// Guarda una partida en el navegador cuando la app ya ha arrancado: al cargar el catálogo, la app concilia los pintores
+// nuevos y guarda su estado (main.js), lo que pisaría una partida escrita antes de tiempo.
+async function writeState(pg, state) {
+  await pg.waitForSelector('#app .screen > *');
+  await pg.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), state);
+}
 async function seed(pg, state, hash = 'inicio') {
   await pg.goto(base);
-  await pg.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), state);
+  await writeState(pg, state);
   await pg.goto(`${base}#${hash}`);
   await pg.reload();
 }
@@ -797,7 +838,11 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // La bienvenida gana 7 KB por las variables del mapa en brand.css (claro + dos copias del oscuro).
 // Catálogo grande: +1 petición en la bienvenida (state/legacy-ids.js, la tabla de la migración v7, que importa schema.js).
 // El servidor de pruebas comprime como Render (tools/serve_local.py), así que los KB son los comprimidos.
-const BOOT_BUDGET = { welcome: { requests: 25, kb: 410 }, home: { requests: 32, kb: 440 } };
+// 27/11: el mapa vivo, los carteles, las ramas y los niveles van en módulos pequeños, uno por responsabilidad (sin paso
+// de build): medidos 31 peticiones en la bienvenida (3 hojas del mapa que el HTML pide antes de saber la pantalla, roster,
+// encuadre) y 57 en el inicio (≈25 módulos del mapa). Por HTTP/2 y con el service worker eso cuesta poco; lo que manda
+// es el peso, y ese presupuesto no cambia.
+const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 58, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -899,26 +944,22 @@ await page.waitForTimeout(300);
 check(await page.locator('.lock-note.is-visible').count() === 1, 'pulsar una parada cerrada no explica por qué');
 await shot(page, '03-mapa-bloqueado');
 await page.evaluate(() => window.scrollTo(0, 0));
-// Primera etapa: intro del movimiento, conoce, práctica con un fallo y el botón atrás a mitad.
+// Primera etapa: presentación de la época («Entrar» deja en el camino), historia del pintor y ronda (tras la historia
+// no hay «Conoce a»), con un fallo y el botón atrás a mitad.
 await page.click('.stage-spot.is-current .stage');
 await page.waitForSelector('.intro');
 await shot(page, '04-intro');
 await audit(page, '390 intro');
-// Teclado: con el foco en el título, Enter pulsa el único botón principal («Entrar», «Practicar»).
-await page.keyboard.press('Enter');
-await toLearn(page);
-await shot(page, '05-conoce');
-await assertPracticeVisible(page, '390');
-await assertLearnLayout(page, '390 conoce');
-await audit(page, '390 conoce');
-// Visor: un cuadro del carrusel en grande (Esc lo cierra y el foco vuelve).
-await viewerCheck(page, '390 conoce (humo)', page.locator('.slide .art-zoom').first(), { group: await page.locator('.slide .art-zoom').count(), close: 'esc' });
-// Ampliar dentro del visor: pellizco y doble toque reales (CDP) sobre el cuadro, sin zoom de página.
-if (await page.locator('.slide .art-zoom').count() > 1) {
-  await page.locator('.slide .art-zoom').first().tap();
+// Visor: el cuadro central de la presentación en grande (Esc lo cierra y el foco vuelve); dentro, pellizco y doble
+// toque reales (CDP) sobre el cuadro, sin zoom de página.
+const introArt = page.locator('.intro .wall-1 .art-zoom');
+const introGroup = await page.locator('.intro .wall .art-zoom').count();
+await viewerCheck(page, '390 intro (humo)', introArt, { group: introGroup, close: 'esc' });
+if (introGroup > 1) {
+  await introArt.tap();
   await page.waitForSelector('.viewer[open]');
   await page.waitForTimeout(300);
-  await viewerZoomCheck(page, await context.newCDPSession(page), '390 conoce (humo)', page.locator('.slide .art-zoom').first());
+  await viewerZoomCheck(page, await context.newCDPSession(page), '390 intro (humo)', introArt);
   await shot(page, '05b-visor-ampliado-antes');
   await page.keyboard.press('+');
   await page.keyboard.press('+');
@@ -927,9 +968,18 @@ if (await page.locator('.slide .art-zoom').count() > 1) {
   await page.keyboard.press('Escape');
   await page.waitForSelector('.viewer', { state: 'detached' });
 }
-await page.locator('.learn h1').focus();
+// Teclado: con el foco en el título, Enter pulsa el único botón principal («Entrar»), que deja en el camino.
+await page.locator('.intro h1').focus();
 await page.keyboard.press('Enter');
-await page.waitForSelector('.lesson .option');
+await page.waitForSelector('.stage-spot.is-current .stage-you');
+check(page.url().endsWith('#inicio'), `«Entrar» no deja en el camino: ${page.url()}`);
+// La época ya está presentada: la parada abre la historia del pintor, no otra vez la presentación.
+await page.click('.stage-spot.is-current .stage');
+await page.waitForSelector('.intro, .story[open] .story-next');
+check(await page.locator('.intro').count() === 0, 'tras «Entrar», la parada vuelve a abrir la presentación de la época');
+await page.waitForTimeout(400);
+await shot(page, '05-historia');
+await toRound(page);
 const fbTexts = [];
 await playRound(page, {
   wrongAt: [1],
@@ -952,8 +1002,11 @@ await playRound(page, {
   },
 });
 check(fbTexts.every((t) => t.split('\n').length >= 3), 'feedback sin explicación');
-check(fbTexts.every((t) => !(t.includes('Mira') && t.includes('Fíjate'))), 'feedback con «Mira…» y «Fíjate…» a la vez');
-check(fbTexts.every((t) => t.split('\n').filter((l) => /^(Mira|Fíjate)/.test(l)).length <= 1), 'feedback con más de una frase de pista');
+const hintPart = (t) => t.split('Dato curioso')[0];
+const bothHints = fbTexts.map(hintPart).find((t) => t.includes('Mira') && t.includes('Fíjate'));
+check(!bothHints, `feedback con «Mira…» y «Fíjate…» a la vez: ${JSON.stringify(bothHints)}`);
+const twoHints = fbTexts.map(hintPart).find((t) => t.split('\n').filter((l) => /^(Mira|Fíjate)/.test(l)).length > 1);
+check(!twoHints, `feedback con más de una frase de pista: ${JSON.stringify(twoHints)}`);
 check(new Set(fbTexts).size === fbTexts.length, 'feedback repetido idéntico');
 await page.waitForSelector('.res');
 await page.keyboard.press('Escape'); // el momento de dominar a un maestro, si sale, se cierra antes
@@ -987,7 +1040,7 @@ if (SMOKE) {
   const branchNode = (id) => `.page-branch .stage-spot[data-step="artist:${id}"] .stage`;
   const openGotico = async () => {
     await page.click(goticoSign);
-    await page.waitForSelector('.page-branch .stage-spot');
+    await page.waitForSelector('.page-branch .stage-spot .stage');
   };
   // Entra en una rama desde el mapa: su cartel propio o, si va en «Ramas (n)», la fila de su hoja.
   const enterBranch = async (id) => {
@@ -996,7 +1049,7 @@ if (SMOKE) {
       await page.click(`.branch[data-members~="${id}"]`);
       await page.click(`dialog.map-sheet [data-ms="go"][data-id="${id}"]`);
     }
-    await page.waitForSelector('.page-branch .stage-spot');
+    await page.waitForSelector('.page-branch .stage-spot .stage');
   };
   await seed(page, seededState({ upTo: tramo1 }));
   await page.waitForSelector(`${goticoSign}.is-open`);
@@ -1004,16 +1057,15 @@ if (SMOKE) {
   check(page.url().endsWith('#rama-gotico'), `el desvío no entra en la pantalla de la rama: ${page.url()}`);
   check(await page.locator(`.page-branch .stage-spot.is-current[data-step="artist:${ownGotico[0]}"] .stage-you`).count() === 1, 'la rama no marca al primer pintor como parada actual');
   check(await page.locator(branchNode(ownGotico[1])).getAttribute('data-status') === 'locked', 'la rama deja jugar a un pintor aún cerrado');
-  check(await page.locator('.page-branch .path-land').count() === 1, 'la rama no tiene paisaje');
+  check(await page.locator('.page-branch .path-land:not(.path-movers)').count() === 1, 'la rama no tiene paisaje');
   await shot(page, '14e-rama-pantalla');
   await audit(page, '390 pantalla de rama');
   await page.click(branchNode(ownGotico[0]));
-  await toLearn(page);
-  await page.waitForSelector('.learn');
+  await toRound(page);
   check(page.url().endsWith(`#etapa-${ownGotico[0]}--gotico`), `la rama no lleva a la etapa con su rama: ${page.url()}`);
-  await page.click('[data-action="practice"]');
   await playRound(page);
   await page.waitForSelector('.res');
+  await closeMatchMoment(page);
   // Resultado de rama: su avance en la primera ficha (pulsable, a la rama) y «Siguiente en la rama» como acción principal.
   check(/Rama · \d+\/\d+/i.test(await page.locator('[data-chip="branch"]').innerText()), 'el resultado no enseña el avance de la rama');
   check(await page.locator('[data-chip="branch"][data-to="rama-gotico"]').count() === 1, 'el avance de la rama no lleva a su pantalla');
@@ -1021,11 +1073,11 @@ if (SMOKE) {
   check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}--gotico"]`).innerText() === 'Siguiente en la rama', 'la acción principal no es «Siguiente en la rama» del Gótico');
   await shot(page, '14f-rama-resultado', true);
   await audit(page, '390 resultado de rama');
+  check(await page.locator('[data-action="done"]').innerText() === 'Volver a la rama', 'el resultado de rama no ofrece «Volver a la rama»');
   await page.click('[data-action="done"]');
-  await page.waitForSelector(goticoSign);
+  await page.waitForSelector('.page-branch .stage-spot .stage');
   await page.waitForTimeout(400);
-  check(await page.evaluate((sel) => { const r = document.querySelector(sel).getBoundingClientRect(); return r.top > 0 && r.bottom < innerHeight; }, goticoSign), '«Volver al camino» no lleva a la rama');
-  await openGotico();
+  check(page.url().endsWith('#rama-gotico') && await page.evaluate((sel) => { const r = document.querySelector(sel).getBoundingClientRect(); return r.top > 0 && r.bottom < innerHeight; }, branchNode(ownGotico[0])), '«Volver a la rama» no vuelve a la rama, en la parada jugada');
   check(await page.locator(branchNode(ownGotico[1])).getAttribute('data-status') !== 'locked', 'tras la ronda no se abre el siguiente pintor de la rama');
   // «Camino» vuelve al mapa centrado en el desvío; atrás del móvil, igual.
   await page.click('.branch-back');
@@ -1039,9 +1091,7 @@ if (SMOKE) {
   // «Repetir» tras una ronda floja sigue en la rama (Duccio, del Gótico, todo fallado).
   await openGotico();
   await page.click(branchNode(ownGotico[1]));
-  await toLearn(page);
-  await page.waitForSelector('.learn');
-  await page.click('[data-action="practice"]');
+  await toRound(page);
   await playRound(page, { wrongAt: Array.from({ length: 30 }, (_, k) => k) });
   await page.waitForSelector('.res');
   check(await page.locator(`[data-primary][data-to="etapa-${ownGotico[1]}--gotico"]`).count() === 1, '«Repetir» tras una ronda de rama no sigue en la rama');
@@ -1064,7 +1114,7 @@ if (SMOKE) {
   await page.waitForSelector(goticoSign);
   await page.locator(goticoSign).dispatchEvent('click');
   await page.locator(goticoSign).dispatchEvent('click');
-  await page.waitForSelector('.page-branch .stage-spot');
+  await page.waitForSelector('.page-branch .stage-spot .stage');
   check((await openDialogs()).length === 0, `doble toque en un cartel: ${JSON.stringify(await openDialogs())}`);
   await page.goBack();
   await page.waitForSelector(goticoSign);
@@ -1082,14 +1132,16 @@ if (SMOKE) {
   check((await page.locator(`${branchNode('berruguete')} .stage-meta`).innerText()) === 'En el camino', 'Berruguete no se ve «En el camino» en Maestros españoles');
   await shot(page, '14g-rama-espanoles');
   await page.click(branchNode('berruguete'));
-  await page.waitForSelector('.path-map .stage-spot[data-step="artist:berruguete"]');
+  await page.waitForSelector('.path-map .stage-spot[data-step="artist:berruguete"] .stage');
   await page.waitForTimeout(400);
   check(page.url().endsWith('#inicio') && await page.evaluate(() => { const r = document.querySelector('.stage-spot[data-step="artist:berruguete"] .stage').getBoundingClientRect(); return r.top > 0 && r.bottom < innerHeight; }), 'Berruguete «En el camino» no lleva a su parada del camino');
-  // Una rama de un grupo «Ramas (n)» se entra desde su hoja y juega en ella (Giotto desde Descubre el Renacimiento).
+  // Una rama de un grupo «Ramas (n)» se entra desde su hoja y juega en ella (su primer pintor, desde Descubre el
+  // Renacimiento).
+  const firstDiscover = index.branch('descubre-renacimiento').artists[0];
   await enterBranch('descubre-renacimiento');
-  await page.click(branchNode('giotto'));
-  await page.waitForSelector('.learn, .intro');
-  check(page.url().endsWith('#etapa-giotto--descubre-renacimiento'), `la rama no juega en ella: ${page.url()}`);
+  await page.click(branchNode(firstDiscover));
+  await page.waitForSelector('.story[open] .story-next');
+  check(page.url().endsWith(`#etapa-${firstDiscover}--descubre-renacimiento`), `la rama no juega en ella: ${page.url()}`);
   await page.goto(`${base}#perfil`);
   await page.waitForSelector('.pf-hero');
   await audit(page, '390 perfil');
@@ -1116,8 +1168,10 @@ if (SMOKE) {
   check(page.url().endsWith(`#pintor-${firstRowArtist}`), `la ficha no es una pantalla con su ruta: ${page.url()}`);
   check((await page.locator('.ap-name').innerText()).length > 2, 'la ficha de pintor no tiene nombre');
   check(await page.locator('.ap-facts, .ap-stages, .ap-life').count() === 0, 'la ficha repite datos, etapas o «Quién fue»');
-  // Estilo Instagram: avatar con anillo de historia (de marca si no se ha visto) y portada con su cuadro más famoso visto.
-  check(await page.locator('button.ap-avatar .ap-ring.is-seen').count() === 1, 'el avatar no lleva el anillo de historia (gris, ya vista en este contexto)');
+  // Estilo Instagram: pintor dominado, avatar con el aro de niveles (tocarlo juega el siguiente) y portada con su cuadro
+  // más famoso visto.
+  check(await page.locator('button.ap-avatar[data-ap="deep"] .ap-ring.has-levels').count() === 1
+    && /^Jugar /.test(await page.locator('button.ap-avatar').getAttribute('aria-label')), 'el avatar del pintor dominado no lleva el aro de niveles con el siguiente nivel');
   check(await page.locator('.ap-cover img').count() === 1, 'la portada no enseña ningún cuadro visto');
   const galleryShown = await page.locator('.ap-gallery li:not(.ap-gap)').count();
   const galleryText = await page.locator('.ap-gallery .ap-count').innerText();
@@ -1125,7 +1179,8 @@ if (SMOKE) {
   check(await page.locator('.ap-gap img').count() === 0, 'un hueco enseña imagen');
   await shot(page, '14d-ficha-pintor');
   await audit(page, '390 ficha de pintor');
-  await page.locator('button.ap-avatar').click();
+  // Historia destacada del nivel hecho: vuelve a poner su historia.
+  await page.locator('.hl-row .hl[data-hl="1"][data-state="done"]').click();
   await page.waitForSelector('.story[open] .story-text');
   await page.waitForTimeout(300);
   check(await page.locator('.story-bar.is-now').count() === 1, 'la historia no avanza sola (barra de progreso)');
@@ -1141,7 +1196,6 @@ if (SMOKE) {
   await page.goBack();
   await page.waitForSelector('.story', { state: 'detached' });
   check(page.url() === storyUrl && await page.locator('.ap-name').count() === 1, `atrás con la historia abierta no deja en la ficha: ${page.url()}`);
-  check(await page.locator('.ap-ring.is-seen').count() === 1, 'el anillo de la historia vista no es gris');
   await page.goBack();
   await page.waitForSelector('.cx-card');
   check(Math.abs((await page.evaluate(() => window.scrollY)) - listY) < 8, 'atrás no devuelve la lista donde estaba');
@@ -1152,7 +1206,7 @@ if (SMOKE) {
   watch(sp, 'historia');
   await sp.goto(base);
   const storyArtist = index.path[0];
-  await sp.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 0, extra: { collection: { [index.worksOf(storyArtist.id)[0].id]: '2026-11-20' } } }));
+  await writeState(sp, seededState({ upTo: 0, extra: { collection: { [index.worksOf(storyArtist.id)[0].id]: '2026-11-20' } } }));
   // Sin ver la historia, el anillo del avatar es de marca; al verla, gris.
   await sp.goto(`${base}#pintor-${storyArtist.id}`);
   await sp.reload();
@@ -1161,10 +1215,17 @@ if (SMOKE) {
   await sp.goto(`${base}#etapa-${storyArtist.id}`);
   await sp.reload();
   await sp.waitForSelector('.intro, .story[open]');
-  if (await sp.locator('.intro').count()) await sp.click('.intro [data-action="enter"]');
+  // La primera vez sale la presentación de la época: «Entrar» deja en el camino y la parada abre la historia.
+  if (await sp.locator('.intro').count()) {
+    await sp.click('.intro [data-action="enter"]');
+    await sp.waitForSelector('.stage-spot.is-current .stage-you');
+    await sp.click('.stage-spot.is-current .stage');
+  }
   await sp.waitForSelector('.story[open] .story-text');
+  // De 1 a 5 tarjetas (decisión de María, 26/11).
+  const MAX_STORY_CARDS = 5;
   const nCards = await sp.locator('.story-bar').count();
-  check(nCards >= 1 && nCards <= 3, `la historia tiene ${nCards} tarjetas`);
+  check(nCards >= 1 && nCards <= MAX_STORY_CARDS, `la historia tiene ${nCards} tarjetas`);
   check(await sp.locator('.story-img').count() === 1 && await sp.locator('.story-text').innerText() !== '', 'la tarjeta no enseña cuadro y texto');
   await sp.waitForTimeout(400);
   await shot(sp, '14g-historia');
@@ -1182,15 +1243,23 @@ if (SMOKE) {
   }
   check(await sp.locator('.story-bar.is-done').count() === nCards && await sp.locator('.story-play').count() === 1 && await sp.locator('.story-more').count() === 1, 'la última tarjeta no ofrece «Jugar» y «Ver más»');
   check(await sp.locator('.story-caption').count() === 1, 'la tarjeta no lleva el pie con el título de la obra');
+  // «Jugar» empieza la ronda: sin «Conoce a» tras la historia.
   await sp.click('.story-play');
-  await sp.waitForSelector('.learn');
+  await sp.waitForSelector('.lesson .option');
   check(await sp.locator('.story').count() === 0, 'la historia no se cierra al terminar');
+  check(await sp.locator('.learn').count() === 0, 'tras la historia sale «Conoce a»');
+  // Sale de la ronda (si no, al volver a la parada se retoma la ronda guardada).
+  await sp.click('.lesson [data-action="quit"]');
+  if (await sp.locator('.quit-sheet:not([hidden])').count()) await sp.click('.quit-sheet [data-action="leave"]');
+  await sp.waitForSelector('.lesson', { state: 'detached' });
   await sp.goto(`${base}#pintor-${storyArtist.id}`);
+  await sp.reload();
   await sp.waitForSelector('.ap-name');
   check(await sp.locator('button.ap-avatar .ap-ring.is-seen').count() === 1, 'tras ver la historia el anillo no pasa a gris');
+  // La historia sale siempre al entrar en un pintor (decisión de María, 26/11).
   await sp.goto(`${base}#etapa-${storyArtist.id}`);
-  await sp.waitForSelector('.learn');
-  check(await sp.locator('.story').count() === 0, 'la historia vuelve a salir sola');
+  await sp.waitForSelector('.story[open] .story-text');
+  check(await sp.locator('.learn').count() === 0, 'al volver a la parada no sale la historia');
   await storyCtx.close();
   // Niveles «a fondo»: aro por tramos en el retrato del pintor dominado (un tramo por nivel, el 1 incluido); tocarlo abre su
   // tarjeta con un círculo por nivel y «Empezar · <nivel>»; ronda propia con su celebración (nivel superado) o, si faltan
@@ -1228,7 +1297,7 @@ if (SMOKE) {
   await page.locator(deepNode).click();
   await page.click('.lc-play');
   await page.waitForSelector('.story[open] .story-next');
-  await page.click('[data-st="skip"]');
+  await skipStory(page);
   await page.waitForSelector('.lesson');
   check(page.url().endsWith('#a-fondo-' + deepArtist.id + '-' + deepLevel.id), `la etapa no lleva a su ronda: ${page.url()}`);
   await playRound(page);
@@ -1237,6 +1306,8 @@ if (SMOKE) {
   check(await page.locator('.res-foot [data-to="a-fondo-' + deepArtist.id + '-' + deepLevel.id + '"]').count() === 1 || await page.locator('[data-chip="deep"]').count() === 1, 'sin «Repetir» en el nivel a fondo');
   await shot(page, '14j-resultado-a-fondo-faltan', true);
   await seed(page, seededState({ upTo: deepUpTo, extra: deepSeen(true) }), `a-fondo-${deepArtist.id}-${deepLevel.id}`);
+  await page.waitForSelector('.story[open] .story-next');
+  await skipStory(page);
   await page.waitForSelector('.lesson');
   await playRound(page);
   await page.waitForSelector('.res-title');
@@ -1245,8 +1316,9 @@ if (SMOKE) {
   await shot(page, '14k-resultado-a-fondo-superado', true);
   await audit(page, '390 resultado a fondo');
 
-  // La historia de una etapa «a fondo» precede a la ronda: al cerrarla (Saltar, Esc o hasta el final) la ronda empieza limpia,
-  // sin «¿Salir de la ronda?» (su entrada de historial llegaba cuando la ronda ya estaba montada).
+  // La historia de una etapa «a fondo» precede a la ronda: al pasarla («Jugar» o hasta el final) la ronda empieza limpia,
+  // sin «¿Salir de la ronda?» (su entrada de historial llegaba cuando la ronda ya estaba montada). Esc la cierra y
+  // vuelve al camino, sin ronda.
   const storyIndexJson = JSON.parse(readFileSync(new URL('../app/data/historias/index.json', import.meta.url), 'utf8'));
   const stageStoryArtist = index.path.find((a) => (storyIndexJson[a.id] || []).includes(2) && index.deepLevels(a.id).some((l) => l.id === 2));
   const stageStoryUpTo = index.pathIndex(stageStoryArtist.id) + 1;
@@ -1255,7 +1327,7 @@ if (SMOKE) {
     const spg = await sc.newPage();
     watch(spg, `historia-etapa-${how}`);
     await spg.goto(base);
-    await spg.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: stageStoryUpTo, extra: { collection: Object.fromEntries(index.levelWorks(stageStoryArtist.id, 1).map((w) => [w.id, '2026-11-20'])) } }));
+    await writeState(spg, seededState({ upTo: stageStoryUpTo, extra: { collection: Object.fromEntries(index.levelWorks(stageStoryArtist.id, 1).map((w) => [w.id, '2026-11-20'])) } }));
     if (how === 'desde la ficha') {
       // El camino real: ficha → etapa, sin recargar.
       await spg.goto(`${base}#pintor-${stageStoryArtist.id}-etapas`);
@@ -1267,9 +1339,26 @@ if (SMOKE) {
       await spg.reload();
     }
     await spg.waitForSelector('.story[open] .story-next');
-    if (how === 'saltar' || how === 'desde la ficha') await spg.click('[data-st="skip"]');
-    else if (how === 'esc') await spg.keyboard.press('Escape');
-    else for (let k = 0; k < 6 && await spg.locator('.story[open]').count(); k++) await spg.click('.story-next');
+    if (how === 'esc') {
+      await spg.keyboard.press('Escape');
+      await spg.waitForSelector('.story', { state: 'detached' });
+      await spg.waitForTimeout(800);
+      check(await spg.locator('.lesson').count() === 0 && !spg.url().includes('#a-fondo-'), `historia de etapa «a fondo» (esc): no vuelve al camino (${spg.url()})`);
+      await sc.close();
+      continue;
+    }
+    const MAX_CARDS = 8;
+    if (how === 'saltar' || how === 'desde la ficha') await skipStory(spg);
+    else {
+      // Tocando a la derecha de la tarjeta hasta la última, que no se cierra sola: allí, «Jugar».
+      const frame = spg.locator('.story[open] .story-frame');
+      const box = await frame.boundingBox();
+      for (let k = 0; k < MAX_CARDS && !(await spg.locator('.story[open] .story-play').count()); k++) {
+        await frame.click({ position: { x: box.width * 0.85, y: box.height * 0.3 } });
+        await spg.waitForTimeout(150);
+      }
+      await spg.click('.story[open] .story-play');
+    }
     await spg.waitForSelector('.lesson');
     await spg.waitForTimeout(800);
     check(await spg.locator('.quit-sheet:not([hidden])').count() === 0, `historia de etapa «a fondo» (${how}): sale «¿Salir de la ronda?» sobre la ronda recién empezada`);
@@ -1343,7 +1432,7 @@ if (SMOKE) {
   // Pintor sin ver (enlace directo): ficha sin cuadros nombrados ni historia; invitados con autor y huecos resumidos; texto al 200 %.
   await seed(page, seededState({ upTo: 0 }), 'pintor-goya');
   await page.waitForSelector('.ap-name');
-  const unseenBio = await page.locator('.ap-bio').innerText();
+  const unseenBio = await page.locator('#main').innerText();
   check(!/maja|brujas/i.test(unseenBio) && await page.locator('.ap-gallery').count() === 0 && await page.locator('button.ap-avatar').count() === 0, `la ficha de un pintor sin ver revela cuadros o historia: ${unseenBio.slice(0, 80)}`);
   await page.goto(`${base}#obras-goya`);
   await page.waitForSelector('.aw-empty');
@@ -1357,7 +1446,7 @@ if (SMOKE) {
   const ep = await eyeCtx2.newPage();
   watch(ep, 'primer-cuadro');
   await ep.goto(base);
-  await ep.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: index.stepsOf(index.visibleMovements[0].id).length, extra: { collection: Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20'])) } }));
+  await writeState(ep, seededState({ upTo: index.stepsOf(index.visibleMovements[0].id).length, extra: { collection: Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20'])) } }));
   await ep.goto(`${base}#coleccion`);
   await ep.reload();
   await ep.waitForSelector('.cx-works .art');
@@ -1374,7 +1463,7 @@ if (SMOKE) {
   const bigSeen = Object.fromEntries(index.artists.slice(0, 16).filter((a) => index.worksOf(a.id).length).map((a) => [index.worksOf(a.id)[0].id, '2026-11-20']));
   bigSeen[index.worksOf(index.path[0].id)[0].id] = '2026-11-20';
   await bp.goto(base);
-  await bp.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 3, extra: { collection: bigSeen } }));
+  await writeState(bp, seededState({ upTo: 3, extra: { collection: bigSeen } }));
   for (const r of ['coleccion', 'coleccion-pintores', `pintor-${index.path[0].id}`, `obras-${index.path[0].id}`]) {
     await bp.goto(`${base}#${r}`);
     await bp.reload();
@@ -1396,11 +1485,12 @@ if (SMOKE) {
   // La historia con letra grande: el texto se desplaza en su panel, «Siguiente» queda a la vista, el foco no sale y dura más.
   await bp.goto(`${base}#pintor-${index.path[0].id}`);
   await bp.reload();
-  await bp.waitForSelector('button.ap-avatar');
-  await bp.locator('button.ap-avatar').click();
+  // Pintor dominado: su historia, desde el círculo de su nivel hecho (el avatar juega el siguiente nivel).
+  await bp.waitForSelector('.hl-row .hl[data-hl="1"][data-state="done"]');
+  await bp.locator('.hl-row .hl[data-hl="1"][data-state="done"]').click();
   await bp.waitForSelector('.story[open] .story-next');
   await bp.waitForTimeout(300);
-  const st200 = await bp.evaluate(() => { const n = document.querySelector('.story-next').getBoundingClientRect(); const bar = document.querySelector('.story-bar.is-now'); return { nextBottom: n.bottom, vh: innerHeight, dur: bar ? parseFloat(bar.style.getPropertyValue('--dur')) : 0, headOverlap: document.querySelector('.story-head').getBoundingClientRect().bottom > document.querySelector('.story-media').getBoundingClientRect().top + 1 }; });
+  const st200 = await bp.evaluate(() => { const n = document.querySelector('.story-next').getBoundingClientRect(); const bar = document.querySelector('.story-bar.is-now'); return { nextBottom: n.bottom, vh: innerHeight, dur: bar ? parseFloat(bar.style.getPropertyValue('--dur')) : 0, headOverlap: document.querySelector('.story-head').getBoundingClientRect().bottom > document.querySelector('.story-copy').getBoundingClientRect().top + 1 }; });
   const stHead = await bp.evaluate(() => { const who = document.querySelector('.story-who-text, .story-who'); const w = who.getBoundingClientRect(); return [...document.querySelectorAll('.story-head button')].map((b) => { const r = b.getBoundingClientRect(); return r.width > 0 && r.left < w.right - 1 && r.right > w.left + 1 && r.top < w.bottom - 1 && r.bottom > w.top + 1; }); });
   check(!stHead.some(Boolean), `historia al 200 %: pausa o «Saltar» pisan el subtítulo ${JSON.stringify(stHead)}`);
   check(st200.nextBottom <= st200.vh && !st200.headOverlap, `historia al 200 %: ${JSON.stringify(st200)}`);
@@ -1416,7 +1506,7 @@ if (SMOKE) {
   const cp = await coachCtx.newPage();
   watch(cp, 'guía');
   await cp.goto(base);
-  await cp.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), seededState({ upTo: 0 }));
+  await writeState(cp, seededState({ upTo: 0 }));
   await cp.goto(`${base}#inicio`);
   await cp.reload();
   await cp.waitForSelector('.coach-card');

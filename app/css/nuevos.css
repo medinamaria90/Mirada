@@ -25,12 +25,12 @@
 .news-icon { flex: none; display: grid; color: var(--brand-text); }
 .news-text { flex: 1; min-width: 0; margin: 0; font-size: .95rem; line-height: 1.3; overflow-wrap: anywhere; }
 .news-see {
-  flex: none; min-height: 44px; padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
+  flex: none; min-height: var(--hit); padding: 0 1rem; border: 0; border-radius: var(--radius-btn);
   background: var(--brand-soft); color: var(--brand-text); font: 600 1rem/1 var(--font); cursor: pointer;
 }
 .news-see:hover { background: color-mix(in srgb, var(--brand-soft) 88%, var(--ink)); }
 .news-close {
-  flex: none; display: grid; place-items: center; width: 44px; height: 44px; margin-inline-start: -.3rem;
+  flex: none; display: grid; place-items: center; width: var(--hit); height: var(--hit); margin-inline-start: -.3rem;
   border: 0; border-radius: 999px; background: transparent; color: var(--ink-2); cursor: pointer;
 }
 .news-close:hover { color: var(--ink); }

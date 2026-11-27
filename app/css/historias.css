@@ -5,7 +5,8 @@
   --story-pan-dur: 6s;
   --story-gutter: 1.1rem;
   --story-avatar: 40px;
-  --story-step: 44px;
+  --story-who-min: 10rem;
+  --story-step: var(--hit);
   --story-shade: color-mix(in srgb, var(--viewer-bg) 82%, transparent);
   --story-shade-soft: color-mix(in srgb, var(--viewer-bg) 45%, transparent);
   --story-target-x: 50%; --story-target-y: 40%; /* STORY_TARGET de engine/stories.js: donde cae el punto de interés */
@@ -57,8 +58,9 @@
 .story-bar.is-now > span { animation: story-fill var(--dur, 6s) linear forwards; }
 .story.is-paused .story-bar.is-now > span { animation-play-state: paused; }
 @keyframes story-fill { from { width: 0; } to { width: 100%; } }
-.story-top { display: flex; align-items: center; gap: .2rem; padding-top: .45rem; }
-.story-who { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: .6rem; }
+/* Con letra grande, quién habla baja a su propia fila bajo los botones (wrap-reverse) en vez de partir el nombre letra a letra. */
+.story-top { display: flex; flex-wrap: wrap-reverse; justify-content: flex-end; align-items: center; gap: .2rem; padding-top: .45rem; }
+.story-who { flex: 1 1 var(--story-who-min); min-width: 0; display: flex; align-items: center; gap: .6rem; }
 .story-avatar { flex: none; width: var(--story-avatar); height: var(--story-avatar); border-radius: 999px; box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--viewer-ink) 70%, transparent); }
 .story-who-text { display: grid; min-width: 0; line-height: 1.15; }
 .story-name { font: 600 .95rem/1.15 var(--font); overflow-wrap: anywhere; }

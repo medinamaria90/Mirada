@@ -41,7 +41,7 @@ button.arch-band:active { transform: translateY(2px); box-shadow: inset 0 var(--
 .is-tramo .sign-plate::before, .sign-plate.branch::before { display: none; }
 .is-tramo .sign-name, .sign-plate.branch .sign-name { font: 600 calc(.76 * var(--map-fs))/1.15 var(--font); }
 .sign-plate.branch .sign-meta { font-size: calc(.75 * var(--map-fs)); }
-/* El toque abarca algo más que la tablilla (≥ 44 px de alto). */
+/* El toque abarca algo más que la tablilla (≥ --hit de alto). */
 .is-tramo .sign-plate::after, .sign-plate.branch::after { content: ""; position: absolute; inset: calc(-1 * var(--map-tablet-hit)) calc(-.5 * var(--map-tablet-hit)); }
 .sign-check { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 999px; background: var(--gold); color: var(--on-gold); }
 .sign-check .icon { stroke-width: 3; }
