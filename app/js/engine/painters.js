@@ -18,6 +18,12 @@ export function seenOf(progress, index, artistId) {
     .sort((a, b) => (a.yearSort || 0) - (b.yearSort || 0));
 }
 
+// Pintores que ya ha conocido: con algún nivel jugado o con la historia de su nivel 1 vista (`storySeen(id)`, que
+// guarda la interfaz). Solo a estos se pregunta por autor en el repaso de una etapa (planner.planStage, opts.met).
+export function metArtistIds(progress, index, storySeen = () => false) {
+  return index.artists.filter((a) => (progress.artists?.[a.id]?.plays || 0) > 0 || storySeen(a.id)).map((a) => a.id);
+}
+
 // Estado de un pintor: 'mastered' | 'started' | 'new'.
 // «Dominado» tiene UNA definición, la del motor: `progress.artists[id].mastered`, que se marca al superar una ronda de
 // su etapa habiendo visto todas sus obras de nivel 1 (engine/levels.js, engine/finish.js) y con ≥ 75 % de aciertos. Es la misma
