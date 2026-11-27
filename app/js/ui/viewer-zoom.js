@@ -24,6 +24,14 @@ export const TAP_GAP_MS = 320;
 export const TAP_RADIUS = 36;
 export const TAP_SLOP = 10; // moverse más que esto ya no es un toque
 
+// Deslizar hacia abajo a 1× cierra el visor con este recorrido (px) o esta velocidad (px/ms).
+export const DROP_DISTANCE = 110;
+export const DROP_SPEED = 0.6;
+
+export function isDropClose(dy, speedY) {
+  return dy >= DROP_DISTANCE || (dy > TAP_SLOP * 2 && speedY >= DROP_SPEED);
+}
+
 export function clampZoom(scale) {
   if (!Number.isFinite(scale)) return ZOOM_MIN;
   return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, scale));

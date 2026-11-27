@@ -4,6 +4,7 @@
 //  - un dedo (o el ratón) ampliado: desplaza el cuadro sin salirse de los bordes;
 //  - un dedo a 1×: desliza el carril entre cuadros (como el desplazamiento nativo, que el
 //    touch-action: none ya no deja hacer al navegador); ampliado, deslizar no cambia de cuadro;
+//  - un dedo hacia abajo a 1×: el cuadro baja con el dedo y, con recorrido o velocidad, cierra el visor;
 //  - Ctrl+rueda (o pellizco en el trackpad): amplía; rueda sola, ampliado: desplaza.
 // El teclado (+, −, 0 y flechas) lo manda el visor por la API devuelta. La aritmética y los límites
 // están en viewer-zoom.js. El navegador nunca amplía la página: el escenario tiene touch-action: none
@@ -12,7 +13,7 @@
 import { prefersReducedMotion } from './dom.js';
 import {
   REST, TAP_SLOP, isRest, panBy, pinchStep, settleZoom, stepZoom, swipeTarget, toggleZoom, transformOf,
-  zoomAbout, isDoubleTap,
+  zoomAbout, isDoubleTap, isDropClose,
 } from './viewer-zoom.js';
 
 const WHEEL_FACTOR = 0.0025; // deltaY de 100 (una muesca) ≈ ×0,78 o ×1,28
@@ -20,7 +21,7 @@ const SETTLE_MS = 260; // lo que dura la transición de vuelta (--viewer-zoom-du
 const KEY_PAN = 0.2; // flechas: fracción del escenario por pulsación
 
 // opts: { track, current() → { slide, stage, frame } | null, loupe(), moving(), slide() → { pos, n },
-//         snapTo(k), onZoom(state), onPinch() }
+//         snapTo(k), onZoom(state), onPinch(), onDrop() }
 export function attachZoom(dlg, opts) {
   const { track } = opts;
   let state = REST;
@@ -132,12 +133,17 @@ export function attachZoom(dlg, opts) {
         gesture.kind = 'swipe';
         gesture.pos0 = Math.round(gesture.left0 / Math.max(1, track.clientWidth));
         track.classList.add('is-dragging');
-      } else gesture.kind = 'none';
+      } else if (dy > Math.abs(dx) && !opts.moving()) gesture.kind = 'drop';
+      else gesture.kind = 'none';
     }
+    if (gesture.kind === 'drop') cur.frame.style.transform = `translateY(${Math.max(0, dy)}px)`;
     if (gesture.kind === 'pan') paint(panBy(state, ev.clientX - gesture.last.x, ev.clientY - gesture.last.y, boxOf(cur)), false);
     else if (gesture.kind === 'swipe') track.scrollLeft = gesture.left0 - dx;
     const dt = ev.timeStamp - gesture.last.t;
-    if (dt > 0) gesture.speed = (ev.clientX - gesture.last.x) / dt;
+    if (dt > 0) {
+      gesture.speed = (ev.clientX - gesture.last.x) / dt;
+      gesture.speedY = (ev.clientY - gesture.last.y) / dt;
+    }
     gesture.last = { x: ev.clientX, y: ev.clientY, t: ev.timeStamp };
   }
 
@@ -177,6 +183,10 @@ export function attachZoom(dlg, opts) {
       gesture = g;
       endSwipe(cur, ev.clientX - g.x0, ev.type === 'pointerup' ? g.speed : 0);
       gesture = null;
+    } else if (g.kind === 'drop') {
+      const up = ev.type === 'pointerup';
+      if (up && isDropClose(ev.clientY - g.y0, g.speedY || 0)) opts.onDrop();
+      else paint(REST, true); // vuelve a su sitio
     }
   }
 

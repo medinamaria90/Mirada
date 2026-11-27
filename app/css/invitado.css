@@ -11,7 +11,13 @@
 .guest-hero { --h: min(38svh, 380px); }
 .guest-caption { font-size: .85rem; line-height: 1.3; color: var(--ink-2); text-wrap: balance; }
 .guest-text { max-width: 34ch; font-size: 1.08rem; line-height: 1.45; color: var(--ink); text-wrap: pretty; }
-.guest-go { margin-top: auto; max-width: 420px; }
+.guest-go { margin-top: 1rem; max-width: 420px; }
+/* La presentación, centrada en el alto libre y «Seguir» abajo, como en el resto de la ronda (márgenes automáticos: si no
+   cabe, nada se corta por arriba). */
+.guest-kicker { margin-top: auto; }
+.guest-text { margin-bottom: auto; }
+/* En pantallas altas el cuadro gana espacio en vez de dejar un hueco antes de «Seguir». */
+@media (min-height: 860px) { .guest-hero { --h: min(46svh, 460px); } }
 
 @media (min-width: 900px) {
   .lesson-stage[data-type="guest"] { display: flex; }

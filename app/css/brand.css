@@ -200,7 +200,9 @@
   --cuadro-done-vh: 38vh;
   --cuadro-radius: 18px;
   --cuadro-gap: .5rem;
-  --cuadro-veil-blur: 7px; /* velo sobre la firma hasta acabar */
+  --cuadro-veil-blur: 6px; /* velo sobre la firma hasta acabar: desenfoque de la miniatura que pinta */
+  --cuadro-veil-grow: 1.35; /* y su ampliación, para que el borde borroso quede fuera del velo */
+  --cuadro-veil-radius: 4px;
   --chip-dot-at: 5px;
   --chip-dot-edge: 1px; /* en la esquina, cuando el botón lleva texto al lado */
   --ring-out: 12px;

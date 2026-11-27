@@ -3,6 +3,7 @@
 // cerrar, vuelve al botón que la abrió.
 
 import { prefersReducedMotion } from '../dom.js';
+import { guardGhostTaps } from '../tap-guard.js';
 
 const CLOSE_MS = 180; // lo que dura .is-closing en profile.css
 const KB_VAR = '--kb-inset'; // hueco que ocupa el teclado bajo la hoja (profile.css)
@@ -46,6 +47,7 @@ export function bindSheet(dialog) {
     setTimeout(finish, CLOSE_MS);
   };
   dialog.addEventListener('close', () => {
+    guardGhostTaps();
     stopKeyboard();
     if (opener && opener.isConnected) opener.focus({ preventScroll: true });
     opener = null;

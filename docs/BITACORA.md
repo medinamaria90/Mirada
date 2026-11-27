@@ -262,3 +262,15 @@ señala tiene que estar a la vista en ESE cuadro. Una frase con un detalle concr
 en `rasgos.json` como {donde, general, generalDonde}: entera solo donde se ve y, si no, su versión general sin el detalle
 («Fíjate en el volumen macizo, como de escultura, y en la luz que llega de un lado»). 49 pintores con versión general;
 San Andrés con «fíjate» propio (el manto y la luz lateral, sólido aunque sobre oro).
+Relleno (27/11): 173 obras que se habían quedado sin «fíjate» llevan uno propio en `contenido/fijate.json` (≤ 100 letras,
+con fuente, sin nombrar al autor ni el título: lo comprueba `validate_catalog.py`), empezando por la fama alta y por
+Goya, el Bosco, Géricault, El Greco y Degas; tres Caravaggio pasan a «figuras» en `generos.json`. Quedan 65 sin línea
+(61 de fama 1), donde no había certeza de qué señalar.
+
+## Tarjetas de época y de cartel: el cuadro entero (27/11)
+
+«La creación de Adán» salía en cuadrado y a Adán le faltaba la cabeza: la caja tenía alto fijo y recortaba toda obra más
+apaisada que ella. Ahora la caja toma la proporción de la obra (`--card-ar`, hasta `--era-art-h` de alto y el ancho de la
+tarjeta, con el hueco reservado): ninguna obra se recorta. Solo una tarjeta con `region` enseña un detalle a propósito
+(`cardFrame` en `engine/framing.js`); hoy ninguna lo necesita. Revisadas con capturas a 360 px las 81 tarjetas de época
+visibles y las de los 54 carteles. Prueba: `tests/epocas-encuadre.test.js`.
