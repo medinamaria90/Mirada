@@ -228,12 +228,12 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.match(practice, />Practicar</);
   assert.match(practice, /href="test\/"[\s\S]*Test de pintura[\s\S]*Mide lo que sabes/);
   assert.doesNotMatch(practice, /btn-primary|share-test/, 'el test ya no compite como botón principal');
-  assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al terminar el camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
+  assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al final del camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
   assert.doesNotMatch(practice, /quedan \d+/);
   const started = emptyProgress();
   const firstStep = index.steps[0];
   (firstStep.type === 'sala' ? started.salas : started.artists)[firstStep.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
-  assert.match(practiceHtml(ctxFor(started)), /Se abre al terminar el camino: te quedan \d+ paradas?/);
+  assert.match(practiceHtml(ctxFor(started)), /Se abre al final del camino \(te quedan \d+ paradas?\)/);
   assert.doesNotMatch(practice, /data-action="weekly"/);
 });
 
@@ -317,9 +317,9 @@ test('logros: pantalla con grupos y filtros, nombres cortos y, para lectores, «
   const ctx = ctxFor(p);
   const all = medalGroupsHtml(ctx, 'all');
   for (const g of ['Pintores', 'Movimientos', 'Rachas', 'Ojo de…', 'Retos y metas']) assert.match(all, new RegExp(g));
-  assert.match(all, /aria-label="[^"]*, ya lo reconoces, Bronce, conseguida"/);
-  assert.match(all, /aria-label="Reconocer a [^"]*, pendiente"/, 'el pendiente es una meta, no un hecho');
-  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]*, ya lo reconoces</, 'el nombre de la casilla es corto');
+  assert.match(all, /aria-label="[^"]*: ya reconoces sus cuadros, Bronce, conseguida"/);
+  assert.match(all, /aria-label="[^"]*: reconocer sus cuadros, pendiente"/, 'el pendiente es una meta, no un hecho');
+  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]*: ya reconoces sus cuadros</, 'el nombre de la casilla es corto');
   assert.match(all, /aria-label="Racha de 3 días, Bronce, conseguida"/);
   assert.doesNotMatch(all, /pf-tier/);
   const got = medalGroupsHtml(ctx, 'got');

@@ -179,3 +179,14 @@ export function reviewPending(progress, index, today) {
     return kind === 'art' ? pool.has(id) : kind === 'artist' && isKnownArtist(progress, index, id);
   });
 }
+
+// Entrada del repaso, en una frase: «Repasamos a Miguel Ángel y 5 cuadros más», «Repasamos a Miguel Ángel» o, sin pintor a
+// medias, «Repasamos 7 cuadros que ya has visto». session: la de reviewSession.
+export function reviewIntroText(session, index) {
+  const artist = session.started ? index.artist(session.started) : null;
+  if (!artist) return `Repasamos ${session.works.length} cuadros que ya has visto`;
+  const others = session.works.filter((id) => index.artwork(id)?.artistId !== artist.id).length;
+  const who = artist.short || artist.name;
+  if (!others) return `Repasamos a ${who}`;
+  return `Repasamos a ${who} y ${others === 1 ? 'un cuadro más' : `${others} cuadros más`}`;
+}

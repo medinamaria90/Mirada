@@ -437,7 +437,10 @@ export function renderReview(ctx, el) {
   const plan = planReviewSession(ctx.index, session, randomSeed(), { known: reviewKnown(ctx) });
   if (session.works.length < REVIEW_MIN || plan.questions.length < REVIEW_MIN) return leave(ctx, 'Aún no hay cuadros que repasar');
   playEra('menu');
-  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_TITLE, kind: 'srs' }));
+  // Antes, en una frase, qué se va a repasar (screens/review-intro.js).
+  import('./review-intro.js')
+    .then((m) => { if (el.isConnected) m.showReviewIntro(ctx, el, session, () => ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_TITLE, kind: 'srs' }))); })
+    .catch((err) => { console.error(err); ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_TITLE, kind: 'srs' })); });
 }
 
 // --- Reto semanal (camino dominado): 15 preguntas de todo el camino, iguales para todos ---------
