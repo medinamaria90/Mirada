@@ -1025,6 +1025,26 @@ if (SMOKE) {
   check(await page.locator('.stage-spot.is-current .stage-you').count() === 1 && await page.locator('.stage-spot.is-current .stage-meta').count() === 0, 'la parada nueva no lleva la marca «Tú» (o aún lleva botón)');
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
+  // Presentación de una época en un móvil lento: sale una sola vez, ya con sus tarjetas, sin saltos de maquetación
+  // (antes el carrusel se montaba sobre la portada ya pintada y todo se movía).
+  const eraCdp = await page.context().newCDPSession(page);
+  await eraCdp.send('Network.enable');
+  await eraCdp.send('Network.emulateNetworkConditions', { offline: false, latency: 150, downloadThroughput: 400 * 1024, uploadThroughput: 200 * 1024 });
+  await eraCdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  await page.evaluate(() => {
+    window.__eraShift = 0;
+    new PerformanceObserver((list) => { for (const e of list.getEntries()) window.__eraShift += e.value; }).observe({ type: 'layout-shift' });
+  });
+  await page.evaluate((id) => { location.hash = `movimiento-${id}`; }, index.visibleMovements[0].id);
+  await page.waitForSelector('.intro .era-track .era-card');
+  await page.waitForTimeout(1500);
+  const eraShift = await page.evaluate(() => window.__eraShift);
+  check(eraShift < 0.01, `la presentación de la época salta al abrirse (Layout Shift ${eraShift.toFixed(3)})`);
+  await eraCdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+  await eraCdp.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 });
+  await eraCdp.detach();
+  await page.goto(`${base}#inicio`);
+  await page.waitForSelector('.stage-spot.is-current .stage-you');
   // Rama jugable: cerrada el primer día (tocarla dice qué falta); con el primer tramo del Renacimiento dominado, el
   // desvío del Gótico entra en su pantalla (#rama-gotico): su paisaje, sus pintores como paradas y la marca «Tú» en el
   // primero propio. La ronda sabe que viene del Gótico (#etapa-<pintor>--gotico) y su resultado sigue en él.
