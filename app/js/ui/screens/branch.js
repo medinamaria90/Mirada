@@ -14,7 +14,7 @@ import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { trailSvg, tramoSign, branchEntrySign, backSpot, stepName, pct } from './path-signs.js';
-import { STATE_LABEL, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
+import { STATE_LABEL, startedLabel, startedMeta, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
 import { setMapFocus, takeBranchFocus, showLockNote, watchMapMode, watchLandscapes, levelCard, pathActions, frontSvg } from './path-map.js';
@@ -32,29 +32,31 @@ export function branchMusic(index, branch) {
 }
 
 // Por qué está cerrado un pintor de la rama, en una frase.
+// { text, unlock }: unlock, la parada que lo abre (para el «Ir» del aviso).
 function lockText(index, progress, row, branchId) {
   const why = branchLockReason(progress, index, row.artistId, branchId);
-  if (why?.pending.length) return `Se abre después de ${joinNames(why.pending.map((s) => stepName(index, s)))}`;
-  if (why?.before) return `Se abre al acertar la mitad en ${index.artist(why.before)?.short || index.artist(why.before)?.name}`;
-  return 'Aún cerrado';
+  if (why?.pending.length) return { text: `Se abre después de ${joinNames(why.pending.map((s) => stepName(index, s)))}`, unlock: `${why.pending[0].type}:${why.pending[0].id}` };
+  if (why?.before) return { text: `Antes, acierta la mitad con ${index.artist(why.before)?.short || index.artist(why.before)?.name}`, unlock: `artist:${why.before}` };
+  return { text: 'Aún cerrado', unlock: '' };
 }
 
 function node(ctx, branch, row, current) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const a = index.artist(row.artistId);
-  const dot = dotFor(row.status, coverOf(index, a.id), a.name, p.artists[a.id]?.best);
+  const dot = dotFor(row.status, coverOf(index, a.id), a.name);
   if (row.onPath) {
     return nodeHtml({
       cls: 'is-onpath', action: 'path-stop', id: a.id, status: row.status, lock: '',
       label: `${a.name}: en el camino común, ${STATE_LABEL[row.status]}. Ir a su parada`, name: a.name, meta: 'En el camino', dot,
     });
   }
-  const lock = row.status === 'locked' ? lockText(index, p, row, branch.id) : '';
+  const locked = row.status === 'locked' ? lockText(index, p, row, branch.id) : { text: '', unlock: '' };
+  const lock = locked.text;
   return nodeHtml({
-    cls: '', action: 'stage', id: a.id, status: row.status, lock, current,
+    cls: '', action: 'stage', id: a.id, status: row.status, lock, current, unlock: locked.unlock,
     label: row.status === 'started' ? startedLabel(a.name, p.artists[a.id]?.best) : `${a.name}, ${STATE_LABEL[row.status]}${lock ? `. ${lock}` : ''}`,
-    name: a.name, meta: '', dot,
+    name: a.name, meta: row.status === 'started' ? startedMeta(p.artists[a.id]?.best) : '', dot,
   });
 }
 

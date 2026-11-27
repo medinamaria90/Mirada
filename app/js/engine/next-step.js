@@ -3,16 +3,19 @@
 //   1. etapa o sala por debajo del 50 % → «Repetir»;
 //   1 bis. se entró a jugar desde una pantalla con un objetivo (el rango del Perfil, los logros) → «Volver al perfil»;
 //   2. esta sesión cumple la meta del día → «Por hoy, hecho», con «Volver al camino»;
-//   3. repaso que traía un pintor a medias (y sigue a medias) → «Volver a <pintor>»;
+//   3. repaso que traía un pintor a medias (y sigue a medias) → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»);
 //   4. 3 o más pintores a medias, o 5 o más fallados, sin repaso ni ahora ni en la sesión anterior → «Repasar»;
 //   5. nivel «a fondo» superado con el siguiente abierto, o rama con siguiente → «Siguiente: <etapa>» / «Siguiente en la rama»;
+//   5 bis. pendiente atrás: si la parada abierta ya es de una época posterior y en una anterior queda su Prueba de época
+//      abierta y sin superar, o un pintor a medias que es lo único que la tiene cerrada, se recomienda eso («Prueba de
+//      época: Renacimiento», «Sigue: Miguel Ángel»). No siempre: nunca dos veces seguidas (`prevStep`), para no frenar;
 //   6. una parada abierta y sin jugar → «Sigue: <pintor>» (con su miniatura);
 //   7. camino dominado y reto semanal pendiente → «Reto semanal»; si no, el nivel que recomienda el rango del Perfil
 //      (rank-goals.js rankFocus: «Siguiente: <pintor> · nivel N») y, con el camino dominado, «Repasar» (nunca dos seguidos).
-// Si no, «Seguir» (al camino). Con 50-74 % no se recomienda repetir: eso va como acción secundaria (result-actions.js).
+// Si no, «Volver al camino». El botón principal siempre avanza en el juego (empieza la ronda, sin pasar por el mapa). Con 50-74 % no se recomienda repetir: eso va como acción secundaria (result-actions.js).
 // Devuelve { kind, to, label, artistId? }. Puro (las rutas son texto: ui/router.js no toca el DOM al importarse).
 
-import { UNLOCK_MIN, gateSteps, stepStatus, isPathMastered, artistStatus } from './progress.js';
+import { UNLOCK_MIN, MASTERY, gateSteps, stepStatus, isPathMastered, artistStatus, hasMovementReview, isReviewUnlocked } from './progress.js';
 import { deepStatus } from './levels.js';
 import { branchAfterRound } from './branches.js';
 import { reviewSession, startedArtists, reviewFallados, REVIEW_MIN } from './review.js';
@@ -49,7 +52,30 @@ const review = () => ({ kind: 'review', to: REVIEW_ROUTE, label: 'Repasar' });
 // Vuelta a la pantalla con un objetivo desde la que se entró a jugar (ui/router.js GOAL_SCREENS).
 export const ORIGIN_LABEL = { perfil: 'Volver al perfil', logros: 'Volver a logros' };
 
-export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, branchId = '', week = '', origin = '' } = {}) {
+// Lo que queda atrás (regla 5 bis): la época más antigua, anterior a la de `open`, con su Prueba de época abierta y sin
+// superar o cerrada solo por pintores ya jugados (a medias). null si no hay nada.
+export function backDebt(progress, index, open) {
+  const era = open ? index.movementOf?.(open.id)?.id || (open.type === 'sala' ? open.id : null) : null;
+  const order = index.visibleMovements.map((m) => m.id);
+  const at = order.indexOf(era);
+  if (at <= 0) return null;
+  for (const id of order.slice(0, at)) {
+    const m = index.movement(id);
+    if (!m || !hasMovementReview(index, id)) continue;
+    if (isReviewUnlocked(progress, index, id)) {
+      if ((Number(progress.reviews?.[id]?.best) || 0) < MASTERY) return { kind: 'debt', to: `repaso-${id}`, label: `Prueba de época: ${m.name}`, movementId: id };
+      continue;
+    }
+    const pending = gateSteps(progress, index.stepsOf(id)).filter((s) => s.type === 'artist' && artistStatus(progress, index, s.id) !== 'mastered');
+    if (pending.length && pending.every((s) => artistStatus(progress, index, s.id) === 'started')) {
+      const a = index.artist(pending[0].id);
+      return { kind: 'debt', to: stageRoute(a.id), label: `Sigue: ${shortName(a)}`, artistId: a.id };
+    }
+  }
+  return null;
+}
+
+export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '' } = {}) {
   const kind = plan.kind;
   let reviewCount = null;
   const count = () => (reviewCount ??= reviewSession(progress, index, today).works.length);
@@ -65,7 +91,7 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   if (goalJustMet) return { kind: 'done', to: HOME_ROUTE, label: BACK_LABEL };
   // 3. Repaso con un pintor a medias.
   if (isReviewKind(kind) && plan.started && index.artist(plan.started) && artistStatus(progress, index, plan.started) === 'started') {
-    return { kind: 'painter', to: stageRoute(plan.started), label: `Volver a ${shortName(index.artist(plan.started))}`, artistId: plan.started };
+    return { kind: 'stop', to: stageRoute(plan.started), label: `Sigue: ${shortName(index.artist(plan.started))}`, artistId: plan.started };
   }
   // 4. Mucho pendiente.
   const many = startedArtists(progress, index).length >= STARTED_FOR_REVIEW || reviewFallados(progress, index).length >= FALLADOS_FOR_REVIEW;
@@ -84,8 +110,11 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
       return { kind: 'branch', to: stageRoute(inBranch.next, inBranch.branch.id), label: 'Siguiente en la rama', artistId: inBranch.next };
     }
   }
-  // 6. Parada abierta y sin jugar.
   const open = gateSteps(progress, index.steps).find((s) => stepStatus(progress, index, s) === 'available');
+  // 5 bis. Pendiente atrás, de vez en cuando (nunca dos veces seguidas).
+  const debt = prevStep === 'debt' ? null : backDebt(progress, index, open);
+  if (debt) return debt;
+  // 6. Parada abierta y sin jugar.
   if (open) {
     const name = open.type === 'sala' ? index.movement(open.id)?.name : index.artist(open.id) && shortName(index.artist(open.id));
     if (name) return { kind: 'stop', to: stepRoute(index, open), label: `Sigue: ${name}`, ...(open.type === 'artist' ? { artistId: open.id } : { movementId: open.id }) };
@@ -102,5 +131,15 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
     return { kind: 'rank', to: deepRoute(a.id, focus.choice.level), label: `Siguiente: ${shortName(a)} · nivel ${focus.choice.level}`, artistId: a.id };
   }
   if (mastered && canReview(count, plan, prevKind)) return review();
-  return { kind: 'path', to: HOME_ROUTE, label: 'Seguir' };
+  return { kind: 'path', to: HOME_ROUTE, label: BACK_LABEL };
+}
+
+// Lo que recomienda el mapa (el mismo criterio que el resultado, sin una ronda recién jugada): la parada abierta, «Repasar»
+// con mucho pendiente o lo que pide el rango. null si lo que toca es la parada actual («Tú») o nada.
+export function mapGuide(progress, index, today, { currentKey = '', prevKind = null, week = '' } = {}) {
+  const step = nextStep(progress, index, today, { plan: { kind: 'map' }, prevKind, week });
+  if (step.kind === 'path') return null;
+  const key = step.artistId ? `artist:${step.artistId}` : step.movementId ? `sala:${step.movementId}` : '';
+  if (step.kind === 'stop' && key === currentKey) return null;
+  return step;
 }

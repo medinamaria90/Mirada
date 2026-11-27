@@ -7,7 +7,6 @@ import { EARLY_STYLES } from './styles-early.js';
 const roll = (notes, o, dur, vel, voice, gap = 0.03) =>
   notes.map((midi, i) => ({ o: o + i * gap, dur, midi, vel, voice }));
 const fifthOf = (c, lo) => pcMidi((c.bass + 7) % 12, lo);
-const PAVANE_LO = 53; // arpegio de la pavana entre fa3 y fa4, por debajo de la flauta
 
 export const DANCE_STYLES = {
   ...EARLY_STYLES, // Gótico y Manierismo y Norte (styles-early.js)
@@ -178,16 +177,6 @@ export const DANCE_STYLES = {
       out.push({ o: i * 0.5, dur: i === 0 ? Math.min(2, len) : 0.9, midi: seq[i % 4], vel: vels[i % 4], voice: i === 0 ? 'bass' : 'acc' });
     }
     out.push(...voicing(c, 48, 2).map((midi) => ({ o: 0, dur: len, midi, vel: 0.18, voice: 'pad' })));
-    return out;
-  },
-
-  // Renacimiento, pavana lenta (4/4): laúd punteado, sin rasgueo. Bajo largo en el 1 y una nota del
-  // acorde en cada tiempo que sube y vuelve (fundamental, tercera, quinta, tercera), dejándolas sonar.
-  pavane({ chord: c, len }) {
-    const up = voicing(c, PAVANE_LO, 3);
-    const steps = [up[0], up[1], up[2] ?? up[0] + 12, up[1]];
-    const out = [{ o: 0, dur: len, midi: bassMidi(c, 38), vel: 0.72, voice: 'bass' }];
-    for (let k = 1; k < len - 0.01; k++) out.push({ o: k, dur: len - k, midi: steps[(k - 1) % steps.length], vel: 0.27, voice: 'acc' });
     return out;
   },
 

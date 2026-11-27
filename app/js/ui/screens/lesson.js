@@ -14,6 +14,9 @@ import { feedbackFor } from '../../engine/feedback.js';
 import { revealedTitle } from '../../engine/title-reveal.js';
 import { beforeQuestionHtml, beforeRibbonHtml } from '../before-question.js';
 import { loadRibbonCss } from '../chrono-ribbon.js';
+import { guestCardHtml, loadGuestCss } from '../guest-card.js';
+import { askableIds, introNeeded, knownOnly, guestIntro, roundWorkIds } from '../../engine/guest-intro.js';
+import { metArtistIds } from '../../engine/painters.js';
 
 const MAX_SUBSTITUTIONS = 3;
 const COMBO_SHOW = 3; // aciertos seguidos a partir de los que se ve el indicador
@@ -26,7 +29,20 @@ export function runLesson(ctx, el, config) {
   const { index } = ctx;
   const rng = createRng(`lesson:${config.seed}:${Date.now() % 100000}`);
   const resume = config.resume || null;
-  let round = resume ? resume.round : createRound(config.questions, config.extras || []);
+  // Pintores por los que se puede preguntar ahora: los jugados y los invitados ya presentados.
+  const progressNow = () => ctx.store?.get().progress || {};
+  const metNow = () => metArtistIds(progressNow(), index);
+  const askable = () => askableIds(metNow(), progressNow());
+  // Solo se pregunta por pintores conocidos, el de la ronda o un invitado (uno por ronda) que se presenta antes; las demás
+  // preguntas se cambian por otras de conocidos (engine/guest-intro.js knownOnly). Sin ninguna válida, la ronda tal cual.
+  function knownRound() {
+    const base = config.questions;
+    const extras = config.extras || [];
+    const checked = knownOnly(index, [...base, ...extras], askable(), rng);
+    const questions = checked.slice(0, base.length).filter(Boolean);
+    return questions.length ? createRound(questions, checked.slice(base.length).filter(Boolean)) : createRound(base, extras);
+  }
+  let round = resume ? resume.round : knownRound();
   const answers = resume ? resume.answers.slice() : [];
   let xpLive = resume ? resume.xpLive : 0;
   let answered = false;
@@ -67,6 +83,7 @@ export function runLesson(ctx, el, config) {
   </div>`;
 
   loadCurioCss();
+  if (round.queue.some((it) => introNeeded(index, it.q, askable()))) loadGuestCss();
   if (round.queue.some((it) => it.q.type === 'before')) loadRibbonCss();
   const stage = $('.lesson-stage', el);
   const feedback = $('.feedback', el);
@@ -100,6 +117,8 @@ export function runLesson(ctx, el, config) {
     const item = currentItem(round);
     if (!freshIntroShown && item.q.phase === 'fresh') return renderFreshIntro();
     ensureVisible(item);
+    const guestId = introNeeded(index, currentItem(round).q, askable());
+    if (guestId) return renderGuest(guestId);
     const q = currentItem(round).q;
     stage.innerHTML = questionHtml(q, item.retry);
     stage.dataset.type = q.type;
@@ -125,6 +144,43 @@ export function runLesson(ctx, el, config) {
     stage.classList.add('enter');
     // Foco en el botón (Enter o Espacio siguen); el lector lee también el título (aria-describedby).
     $('[data-action="continue"]', stage).focus({ preventScroll: true });
+  }
+
+  // Tarjeta del invitado antes de su primera pregunta: con el cuadro más famoso suyo que no sale en la ronda.
+  let guestShown = null;
+  function renderGuest(guestId) {
+    const host = round.queue.find((it) => it.q.host)?.q.host || '';
+    const intro = guestIntro(index, guestId, { hostId: host, met: metNow(), avoid: roundWorkIds(round.queue) });
+    guestShown = intro;
+    stage.innerHTML = guestCardHtml(intro);
+    stage.dataset.type = 'guest';
+    upgradeMarcos(stage);
+    stage.classList.remove('enter');
+    void stage.offsetWidth;
+    stage.classList.add('enter');
+    focusHeading(stage);
+  }
+
+  // «Seguir»: queda presentado (cuenta como conocido solo para preguntarle) y sale su pregunta.
+  function guestContinue() {
+    const id = guestShown?.artistId;
+    guestShown = null;
+    ctx.audio.sfx('tap');
+    if (id && ctx.store) {
+      const day = ctx.today ? ctx.today() : '';
+      ctx.store.update((s) => ({ ...s, progress: { ...s.progress, guests: { ...(s.progress.guests || {}), [id]: day } } }));
+    }
+    render();
+  }
+
+  function guestZoom(opener) {
+    const work = guestShown?.work;
+    if (!work) return;
+    ctx.audio.sfx('tap');
+    loadViewer().then((m) => {
+      if (cleaned || !guestShown) return;
+      m.openViewer({ index, works: [work], start: 0, reveal: true, opener, label: null, title: null, pick: null });
+    }).catch((err) => console.error(err));
   }
 
   function questionHtml(q, retry) {
@@ -331,6 +387,8 @@ export function runLesson(ctx, el, config) {
       ctx.audio.sfx('tap');
       render();
     },
+    'guest-continue': guestContinue,
+    'guest-zoom': (b) => guestZoom(b),
     curio: (b) => {
       ctx.audio.sfx('tap');
       curioOpen = toggleCurio(b);
