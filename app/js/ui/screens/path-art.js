@@ -107,15 +107,18 @@ const pillar = (x, y) => {
 // PROTOTIPO (rama proto-epoca-lugar): la época como lugar. Puerta de ciudad de tamaño fijo: dos torreones de tejado
 // cónico, el sendero pasa por su arco, el nombre corto grabado en el ático (misma piedra, entre dos molduras) y una
 // plaza empedrada con fuente justo al salir, por la que el sendero pasa a la vista. Cerrada: portón en el arco.
-const CITY = { half: 44, body: 42, side: 7, arch: 15, tower: 17, towerH: 66, roof: 19, attic: 16, plazaUp: 104, plazaRx: 58, plazaRy: 14 };
+const CITY = { half: 52, body: 42, side: 7, arch: 15, tower: 17, towerH: 72, roof: 19, attic: 26, plazaUp: 112, plazaRx: 58, plazaRy: 14 };
 export const CITY_W = (CITY.half + CITY.tower) * 2;
-export const inscription = (name) => String(name).split(' y ')[0].replace(/\s*\(.*\)\s*$/, '');
+// Nombre grabado: el de la época sin paréntesis, en una o dos líneas; si no cabe, uno corto fiel a lo que hay detrás
+// de la puerta (en orden: la época empieza por el Renacimiento del Norte, con Van Eyck).
+const SHORT = { 'Manierismo y Renacimiento del Norte': 'Norte y Manierismo' };
+export const inscription = (name) => SHORT[name] || String(name).replace(/\s*\(.*\)\s*$/, '');
 // Geometría del lugar: plaza (bajo el sendero) y caja pulsable (toda la puerta, con el sitio del ático).
 export function protoPlace(x, y) {
   const top = y - CITY.towerH - CITY.roof;
   const hh = y - top;
   return {
-    plaza: { cx: x, cy: y - CITY.plazaUp, rx: CITY.plazaRx, ry: CITY.plazaRy, under: true },
+    plaza: { cx: x, cy: y - CITY.plazaUp, rx: CITY.plazaRx, ry: CITY.plazaRy, rim: 1 },
     box: { x0: x - CITY.half - CITY.tower, x1: x + CITY.half + CITY.tower, y, top, atticAt: CITY.body / hh, atticH: CITY.attic / hh, atticW: (CITY.half * 2 - 6) / CITY_W },
   };
 }
@@ -136,6 +139,7 @@ export function eraGate(x, y, locked = false, plaza = true) {
     <path class="land-front" d="M${f(x - half)} ${f(y)}V${f(y - body - attic)}H${f(x + half)}V${f(y)}H${f(x + arch)}V${f(y - body + 18)}Q${f(x)} ${f(y - body + 4)} ${f(x - arch)} ${f(y - body + 18)}V${f(y)}Z"/>
     <rect class="land-top" x="${f(x - half - 1)}" y="${f(y - body - 1.5)}" width="${f(half * 2 + 2)}" height="1.5"/>
     <path class="land-top" d="M${f(x - half - 2)} ${f(y - body - attic)}H${f(x + half + 2)}L${f(x + half + 2 + d)} ${f(y - body - attic - d * .6)}H${f(x - half - 2 + d)}Z"/>
+    <path class="land-side" d="M${f(x + arch - 3.5)} ${f(y)}V${f(y - body + 18)}Q${f(x)} ${f(y - body + 6.5)} ${f(x - arch)} ${f(y - body + 18)}Q${f(x)} ${f(y - body + 4)} ${f(x + arch)} ${f(y - body + 18)}V${f(y)}Z"/>
     ${leaves}${townTower(x - half - CITY.tower, y)}${townTower(x + half, y)}`;
 }
 

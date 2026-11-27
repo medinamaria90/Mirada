@@ -46,7 +46,7 @@ const PLAZA_RINGS = [0, 0.22, 0.44, 0.66];
 export function trailSvg(h, d, spurs = [], done = '', plaza = null) {
   const walked = done ? `${dirt(done, ' is-done')}${grain(done, ' is-done')}` : '';
   const paving = plaza ? `${ellipse('plaza-fill', plaza)}${PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...plaza, rx: plaza.rx * (1 - k) - PLAZA_RIM, ry: plaza.ry * (1 - k) - PLAZA_RIM })).join('')}` : '';
-  const under = plaza ? `${ellipse('plaza-rim', plaza, PLAZA_RIM)}${plaza.under ? paving : ''}` : '';
+  const under = plaza ? `${ellipse('plaza-rim', plaza, plaza.rim ?? PLAZA_RIM)}${plaza.under ? paving : ''}` : '';
   const over = plaza && !plaza.under ? `${ellipse('plaza-fill', plaza)}${PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...plaza, rx: plaza.rx * (1 - k) - PLAZA_RIM, ry: plaza.ry * (1 - k) - PLAZA_RIM })).join('')}` : '';
   return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path class="trail-shade" d="${d}"/>${spurs.map(spurSvg).join('')}${under}${dirt(d)}${grain(d)}${walked}${over}</svg>`;
@@ -67,14 +67,17 @@ const archBox = (arch, h, tone = '') => `class="era-arch${arch.atticAt ? ' is-pl
 // que se va llenando con los pintores dominados (la única cuenta de la época; los siglos, para el lector y en su
 // presentación). Completa, letras y ranura de oro. Abierta, lleva a la presentación; cerrada, candado y una hoja con lo
 // que hay que hacer.
-const INSCR_CHARS = 12;   // letras que caben en el ático a tamaño completo (PROTOTIPO)
+const INSCR_CHARS = 15;   // letras por línea que caben en el ático a tamaño completo (PROTOTIPO)
+const INSCR_MIN = 0.86;   // nunca por debajo de ~9,5 px
 const groove = (share) => `<span class="arch-progress" aria-hidden="true"><span class="arch-progress-fill" style="--p:${f(share)}"></span></span>`;
 export function eraArch({ movement, status, sealed, done, total, prevName, arch, h, tone = '' }) {
   const locked = status === 'locked';
   const word = arch.atticAt ? inscription(movement.name) : movement.name;
   // PROTOTIPO: el nombre corto cabe siempre en el ático (la puerta no crece): los largos, algo más pequeños.
-  const fit = arch.atticAt ? ` style="--fit:${f(Math.min(1, INSCR_CHARS / (word.length + (locked ? 2 : 0))))}"` : '';
-  const name = `<span class="arch-name"${fit}>${locked ? `${icons.lock(10)} ` : ''}${esc(word)}</span>`;
+  const longest = Math.max(...word.split(' y ').map((w, i, all) => w.length + (i < all.length - 1 ? 2 : 0)));
+  const fit = arch.atticAt ? ` style="--fit:${f(Math.max(INSCR_MIN, Math.min(1, INSCR_CHARS / longest)))}"` : '';
+  // En el ático no hay candado: la cerrada lo dice con el portón.
+  const name = `<span class="arch-name"${fit}>${locked && !arch.atticAt ? `${icons.lock(10)} ` : ''}${esc(word)}</span>`;
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
   const count = `${done} de ${total} ${total === 1 ? 'pintor dominado' : 'pintores dominados'}`;
   const button = locked
