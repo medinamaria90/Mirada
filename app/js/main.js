@@ -92,7 +92,8 @@ function installPrimaryKeys() {
     if (ev.defaultPrevented || ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.repeat) return;
     if (ev.key !== 'Enter' && ev.key !== ' ') return;
     const active = document.activeElement;
-    if (active && active !== document.body && active.closest(INTERACTIVE)) return;
+    // Solo cuenta el propio elemento: un título dentro de un contenedor enfocable (el carrusel de la época) no es un botón.
+    if (active && active !== document.body && active.matches(INTERACTIVE)) return;
     if (document.querySelector('.sheet:not([hidden]), .feedback.is-open, .viewer')) return;
     const primary = [...root.querySelectorAll('[data-primary]')].filter((b) => !b.disabled && b.getClientRects().length);
     if (primary.length !== 1) return;

@@ -2,6 +2,8 @@
 // primera vez que se usan y no cuentan en el arranque.
 
 const loaded = new Map();
+// Si la hoja no avisa (ni carga ni error), la pantalla no se queda esperando: sigue sin ella y la hoja se aplica al llegar.
+export const CSS_WAIT_MS = 4000;
 
 export function loadCss(href) {
   if (!loaded.has(href)) {
@@ -12,6 +14,7 @@ export function loadCss(href) {
       link.addEventListener('load', () => resolve(true), { once: true });
       link.addEventListener('error', () => { loaded.delete(href); resolve(false); }, { once: true });
       document.head.appendChild(link);
+      setTimeout(() => resolve(false), CSS_WAIT_MS);
     }));
   }
   return loaded.get(href);
