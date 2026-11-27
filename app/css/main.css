@@ -112,8 +112,8 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   position: sticky; top: 0; z-index: 5; box-sizing: border-box; min-height: var(--topbar-h);
   display: flex; align-items: center; justify-content: space-between; gap: .5rem;
   padding: .5rem .6rem .5rem 1rem;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  /* Opaca: translúcida, un nodo del mapa que pasaba por debajo se veía como una mancha borrosa. */
+  background: var(--bg);
   border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
 }
 .brand { display: inline-flex; align-items: center; gap: .35rem; min-height: 48px; font: 500 1.4rem/1 var(--font); text-decoration: none; letter-spacing: var(--track); padding: 0 .1rem; border-radius: 10px; flex: none; }
@@ -124,6 +124,8 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .brand { min-width: 48px; justify-content: center; }
 .topbar-stats { flex-wrap: wrap; row-gap: .25rem; }
 @container (max-width: 20.5em) { .brand > span { display: none; } }
+/* Con el botón «Repasar» (cuatro chips), el nombre se oculta antes: a 360 px la cabecera sigue en una línea. */
+@container (max-width: 25em) { .topbar:has(.chip-review) .brand > span { display: none; } }
 /* Los chips van siempre en una línea: el de nivel toma el sitio que sobra (hasta su contenido) y, si
    falta, acorta el nombre con puntos suspensivos en vez de saltar la barra a dos líneas. */
 .topbar-stats { display: flex; align-items: center; gap: .1rem; margin-left: auto; justify-content: flex-end; flex: 1 1 0; min-width: 0; }
@@ -142,9 +144,11 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .chip-goal-text { font-size: .74rem; color: var(--ink-2); }
 /* Racha: el número con «día(s)» debajo, como el nivel lleva su barra: cabe en una línea de 390 px. */
 .chip-daily .chip-pill { position: relative; padding: 0 .5rem; gap: .25rem; }
+/* «Repasar» (shell.js): redondo con ↻, como el reto diario pendiente; el punto coral si hay algo pendiente. */
+.chip-review .chip-pill { position: relative; padding: 0 .5rem; }
 .chip-daily-text { font-size: .74rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 .chip-daily.is-done .icon { color: var(--ok); }
-.chip-dot { position: absolute; top: 5px; right: 5px; width: 9px; height: 9px; border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
+.chip-dot { position: absolute; top: var(--chip-dot-at); right: var(--chip-dot-at); width: var(--chip-dot); height: var(--chip-dot); border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
 .chip-streak .chip-pill { padding: 0 .5rem 0 .4rem; }
 .chip-stack { display: grid; justify-items: center; line-height: 1; }
 .chip-num { font-size: .95rem; }
@@ -309,6 +313,8 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .ring-arc { fill: none; stroke: var(--ring-locked); stroke-width: var(--ring-w); stroke-linecap: round; }
 .ring-arc.is-done { stroke: var(--gold); }
 .ring-arc.is-next { stroke: var(--brand); stroke-width: var(--ring-w-next); }
+/* A medias: la parte lograda del tramo del nivel 1, en coral, sobre el tramo apagado. */
+.ring-arc.is-partial { stroke: var(--brand); stroke-width: var(--ring-w-next); }
 .ring-halo { fill: var(--brand-soft); transform-origin: center; animation: ring-breathe var(--dur-breathe) var(--ease) infinite; }
 @keyframes ring-breathe { 50% { transform: scale(1.08); opacity: .55; } }
 @media (prefers-reduced-motion: reduce) { .ring-halo { animation: none; } }
@@ -334,7 +340,7 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage:active .stage-dot { transform: translateY(3px); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--line), 0 2px 0 5px var(--line-2); }
 .stage-thumb { position: absolute; inset: 0; border-radius: 999px; aspect-ratio: auto; box-shadow: none; }
 .stage-thumb.is-broken::after { font: 600 calc(1.15 * var(--map-fs))/1 var(--font); color: var(--ink); }
-/* Texto del nodo: etiquetas pequeñas apiladas (tramo, nombre, «Empezar»/«Repite»), sin placa común. */
+/* Texto del nodo: etiquetas pequeñas apiladas (tramo y nombre), sin placa común. */
 .stage-text { display: grid; gap: 5px; justify-items: start; min-width: 0; max-width: min(210px, 50vw); color: var(--ink); font: 500 calc(.86 * var(--map-fs))/1.15 var(--font); }
 .stage-spot.is-right .stage-text { justify-items: end; }
 .stage-name { max-width: 100%; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)) calc(.24 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-label); overflow-wrap: break-word; hyphens: auto; }
@@ -353,11 +359,6 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage.is-available .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--brand), 0 0 0 16px var(--brand-soft); }
 .stage.is-available:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--brand), 0 0 0 12px var(--brand-soft); }
 .stage.is-started .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--brand), 0 var(--relief-node) 0 6px var(--line-2); }
-/* Jugado pero no dominado: «Repite · n %» como botón suave, para que se vea qué hacer. */
-.stage.is-started .stage-meta {
-  padding: calc(.28 * var(--map-fs)) calc(.55 * var(--map-fs)); border-radius: var(--map-r); background: var(--brand-soft); color: var(--brand-text);
-  font: 600 calc(.78 * var(--map-fs))/1 var(--font); box-shadow: 0 2px 0 var(--brand-shadow);
-}
 /* Dominado: anillo de oro y sello con la marca de hecho. */
 .stage.is-mastered .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--gold), 0 var(--relief-node) 0 6px var(--line-2); }
 .stage-badge {
@@ -369,6 +370,9 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage.has-ring { gap: calc(.75 * var(--map-fs) + var(--ring-out)); }
 .stage.has-ring .stage-dot, .stage.is-mastered.is-dormant.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px var(--line-2); }
 .stage.has-ring:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 2px 0 3px var(--line-2); }
+.stage-badge.is-partial { background: var(--brand); color: var(--on-brand); }
+/* Parada actual a medias: el aro manda (sin el anillo coral entero encima), con su halo. */
+.stage-spot.is-current .stage.is-started.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 16px var(--brand-soft); }
 .stage-badge.is-next { min-width: 23px; width: auto; padding: 0 6px; background: var(--brand); color: var(--on-brand); font: 600 13px/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
 /* Dormido: dominado y sin salir en una semana. Se apaga (anillo y cuadro) sin perder el sello de hecho. */
 .stage.is-dormant .stage-thumb { filter: saturate(var(--map-dormant-saturate)); }

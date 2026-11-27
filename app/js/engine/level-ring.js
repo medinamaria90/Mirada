@@ -2,7 +2,8 @@
 // mismo en el mapa, en la tarjeta del nodo y en la ficha: los tramos del aro, los círculos de la fila y el «Nivel N de M»
 // cuentan lo mismo. El título corto de cada etapa (`short`) viene en el catálogo (tools/catalog_from_pipeline.py). Puro.
 
-import { deepStatus } from './levels.js';
+import { deepStatus, pendingWorks } from './levels.js';
+import { MASTERY } from './progress.js';
 
 export const FIRST_LEVEL_SHORT = 'Quién fue';
 
@@ -42,3 +43,25 @@ export function levelRing(progress, index, artistId) {
 
 // Lo que dice el aro al lector de pantalla: «Nivel 3 de 5 por jugar» o «Todos los niveles hechos».
 export const ringLabel = (ring) => (ring.done ? 'Todos los niveles hechos' : `Nivel ${ring.at} de ${ring.total} por jugar`);
+
+// Pintor a medias (jugado y sin dominar): el mismo aro, con el tramo del nivel 1 lleno en proporción a best / 75 % y el
+// resto cerrado. { levels (el 1 con state 'partial' y fill 0..1), total, best, missing (cuadros del nivel 1 por ver),
+// started: true, next: 1, at: 1, done: false } o null.
+export function startedRing(progress, index, artistId) {
+  const rec = progress.artists?.[artistId];
+  if (!rec?.plays || rec.mastered || !index.artist(artistId)) return null;
+  const best = Math.max(0, Math.min(1, Number(rec.best) || 0));
+  const fill = Math.min(1, best / MASTERY);
+  const levels = ringLevels(index, artistId).map((l, i) => (i === 0 ? { ...l, state: 'partial', fill } : { ...l, state: 'locked' }));
+  return { levels, total: levels.length, best, missing: pendingWorks(progress, index, artistId, 1).length, started: true, next: 1, at: 1, done: false };
+}
+
+export const percent = (k) => `${Math.round(k * 100)}\u00a0%`;
+export const MASTERY_TEXT = `dominas con ${percent(MASTERY)}`;
+
+// Lo que le falta a un pintor a medias, en una línea: «67 % · dominas con 75 %» o, si ya llega a la nota y le faltan
+// cuadros por ver, «Te faltan n cuadros por ver».
+export function startedLine(ring) {
+  if (ring.best >= MASTERY && ring.missing > 0) return ring.missing === 1 ? 'Te falta 1 cuadro por ver' : `Te faltan ${ring.missing} cuadros por ver`;
+  return `${percent(ring.best)} · ${MASTERY_TEXT}`;
+}

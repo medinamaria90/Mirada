@@ -12,6 +12,7 @@ import { tinySrc } from './art.js';
 import { levelStory, cropOf, regionOf } from '../engine/stories.js';
 import { focusOf } from '../engine/framing.js';
 import { deepRoute, stageRoute } from './router.js';
+import { nextStep } from '../engine/next-step.js';
 
 const LABEL = { done: 'hecho, volver a ver su historia', next: 'empezar', locked: 'cerrado' };
 const LABEL_BARE = { ...LABEL, done: 'hecho, repetir' };
@@ -52,10 +53,19 @@ export function rowHtml(levels, cls = '') {
 // Ruta que juega un nivel (su historia y después las preguntas).
 export const levelRoute = (artistId, level, branchId = '') => (level === 1 ? stageRoute(artistId, branchId) : deepRoute(artistId, level));
 
-// Vuelve a poner la historia de un nivel, sin ronda; con `replay`, su última tarjeta ofrece «Repetir nivel».
-export const watchStory = (ctx, artistId, level, replay = null) => import('./story-viewer.js')
-  .then((m) => m.playStory(ctx, artistId, level, { force: true, onPlay: replay ? () => replay(level) : false, playLabel: 'Repetir nivel' }))
-  .catch((err) => console.error(err));
+// Pasos que la última tarjeta de una historia repetida recomienda en lugar de «Repetir nivel» (engine/next-step.js).
+const STORY_STEPS = new Set(['review', 'stop', 'weekly', 'rank']);
+
+// Vuelve a poner la historia de un nivel, sin ronda; con `replay`, su última tarjeta ofrece el siguiente paso recomendado
+// (repasar, la parada abierta o el reto semanal) o, si no hay, «Repetir nivel».
+export function watchStory(ctx, artistId, level, replay = null) {
+  const step = replay ? nextStep(ctx.store.get().progress, ctx.index, ctx.today(), { plan: { kind: 'story' } }) : null;
+  const ahead = step && STORY_STEPS.has(step.kind) ? step : null;
+  const onPlay = ahead ? () => ctx.go(ahead.to) : replay ? () => replay(level) : false;
+  return import('./story-viewer.js')
+    .then((m) => m.playStory(ctx, artistId, level, { force: true, onPlay, playLabel: ahead ? ahead.label : 'Repetir nivel' }))
+    .catch((err) => console.error(err));
+}
 
 // Toques en la fila (y su nota, `more`). hooks: { play(level) } empieza el siguiente nivel (lo mismo que el botón grande);
 // { replay(level) } repite uno hecho (sin él —la ficha dentro de una ronda—, un nivel hecho solo pone su historia).

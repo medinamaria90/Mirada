@@ -402,6 +402,14 @@ Decisiones de la tarde del 24/11:
    públicos (sitelinks de Wikipedia, museo, enlaces) y entran primero las más representativas de cada
    pintor; las menos conocidas, al nivel 2. Antes de darla por buena, revisión obra a obra.
 
+### Un único repaso y el siguiente paso (27/11)
+
+Hecho y publicado (detalle en `docs/SPEC.md` §4 bis bis): botón ↻ «Repasar» con sesión automática de 7 cuadros
+(`engine/review.js reviewSession`), fuera «Repite» del mapa (aro a medias con insignia ↻), siguiente paso recomendado
+en los resultados (`engine/next-step.js`), tarjeta de rango con una sola acción que de verdad cuenta y vuelta al Perfil.
+Sitio del botón «Repasar»: lo decidió el evaluador independiente comparando cabecera y píldora en el mapa (ver
+`docs/eval/repaso-1.md`).
+
 ## 4. Marca: dónde quedó
 
 - Ronda 1 publicada: https://claude.ai/artifact/EQigNSbX1Az6yjM9FtdYsv (lienzo con tres rutas A «Museo

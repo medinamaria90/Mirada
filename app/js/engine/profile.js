@@ -56,7 +56,7 @@ const NEED_TEXT = {
   deep: (n) => `Dominar ${plural(n, 'nivel «a fondo»', 'niveles «a fondo»')} más`,
   eras: (n) => `«A fondo» en ${plural(n, 'época', 'épocas')} más`,
   complete: (n) => `Completar ${plural(n, 'gran maestro', 'grandes maestros')} más`,
-  grand: (n, grand) => `${plural(n, 'gran maestro', 'grandes maestros')} más hasta el nivel ${grand.upTo}`,
+  grand: (n, grand) => `El nivel ${grand.upTo} de ${plural(n, 'gran maestro', 'grandes maestros')} más`,
 };
 
 export function rankProgress(rank) {

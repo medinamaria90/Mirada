@@ -16,6 +16,7 @@
   --res-chip-t: 8.5rem;        /* un nombre más largo (una rama) se corta con «…» */
   --res-btn2-h: 48px;
   --res-max: 640px;
+  --res-art-grow: 1.7;         /* cuánto puede crecer el cuadro si sobra alto */
 }
 
 .res { position: relative; display: flex; flex-direction: column; height: var(--screen-h); overflow: hidden; background: var(--bg); color: var(--ink); }
@@ -25,11 +26,12 @@
 }
 
 /* Cuadro a sangre que se funde con el fondo (se abre en grande al tocarlo). */
-.res-art { position: relative; flex: none; align-self: stretch; height: var(--res-art-h); margin: 0 calc(-1 * var(--res-pad)); }
+/* Crece con el alto que sobra (sin un hueco vacío sobre los botones) hasta un tope. */
+.res-art { position: relative; flex: 1 0 var(--res-art-h); align-self: stretch; min-height: var(--res-art-h); max-height: calc(var(--res-art-h) * var(--res-art-grow)); margin: 0 calc(-1 * var(--res-pad)); }
 /* El cuadro se funde con el fondo con una máscara (sin filo al final). */
 .res-art .res-art-img img { -webkit-mask-image: linear-gradient(to bottom, var(--bg) 40%, transparent 98%); mask-image: linear-gradient(to bottom, var(--bg) 40%, transparent 98%); }
 .res-art .res-art-img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; cursor: zoom-in; }
-.no-art .res-art { height: calc(var(--res-art-h) * .5); background: linear-gradient(160deg, var(--accent-soft), var(--bg)); }
+.no-art .res-art { flex: none; min-height: 0; height: calc(var(--res-art-h) * .5); background: linear-gradient(160deg, var(--accent-soft), var(--bg)); }
 
 .res-head { position: relative; z-index: 1; display: grid; justify-items: center; width: 100%; margin-top: calc(-1 * var(--res-lift)); }
 .has-medal .res-head { margin-top: calc(-1 * var(--res-lift-medal)); }
@@ -109,3 +111,17 @@
 }
 @media (prefers-reduced-motion: reduce) { .res-title, .res-chip, .res-seal, .res-face, .res-medal-check { animation: none; } }
 html.reduce-motion .res-title, html.reduce-motion .res-chip, html.reduce-motion .res-seal, html.reduce-motion .res-face, html.reduce-motion .res-medal-check { animation: none; }
+
+/* Tres secundarias: compartir va solo con su icono (screens/result.js). */
+.res-row.has-icon { grid-template-columns: repeat(2, minmax(0, 1fr)) var(--res-btn2-h); }
+.res-btn2.is-icon { padding: 0; min-width: var(--res-btn2-h); }
+/* «Sigue: <pintor>»: su miniatura dentro del botón principal. */
+.res-next-art { flex: none; width: 28px; height: 28px; overflow: hidden; border-radius: 999px; box-shadow: 0 0 0 2px var(--on-brand); }
+.res-next-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Subida de rango (screens/result.js): la línea lleva la gema del rango. */
+.res-rank { display: inline-flex; align-items: center; gap: .4rem; color: var(--gold-text); font-weight: 600; }
+.res-rank .icon { flex: none; }
+
+/* El botón principal va primero en el orden de lectura y del foco, y se ve abajo, a mano del pulgar. */
+.res-foot > [data-primary] { order: 1; }

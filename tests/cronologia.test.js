@@ -93,7 +93,7 @@ test('«¿Quién fue antes?»: solo parejas de conocidos de otra época', () => 
   }
 });
 
-const { planSrsReview, planReview5 } = await import('../app/js/engine/planner.js');
+const { planSrsReview, planReviewSession } = await import('../app/js/engine/planner.js');
 const { makeBeforeQuestion, BEFORE_TYPE, BEFORE_SHARE } = await import('../app/js/engine/question-before.js');
 const { feedbackFor } = await import('../app/js/engine/feedback.js');
 const { retryQuestion, artworksInQuestion } = await import('../app/js/engine/questions.js');
@@ -124,7 +124,7 @@ test('repasos: «¿Quién fue antes?» como mucho una por ronda, no en todas y n
   assert.ok(withIt > 0 && withIt < SEEDS * (BEFORE_SHARE + 0.1), `${withIt} de ${SEEDS}`);
   // Con contemporáneos solamente, nunca (sería una trampa).
   for (let s = 1; s <= 30; s++) {
-    const plan = planReview5(real, real.worksOf('parmigianino').slice(0, 5).map((w) => w.id), s, { known: [A('parmigianino'), A('bronzino')] });
+    const plan = planReviewSession(real, { works: real.worksOf('parmigianino').slice(0, 5).map((w) => w.id), started: null }, s, { known: [A('parmigianino'), A('bronzino')] });
     assert.ok(!plan.questions.some((q) => q.type === BEFORE_TYPE));
   }
 });

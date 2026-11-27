@@ -7,8 +7,6 @@ export const ROUTES = {
   welcome: 'bienvenida',
   daily: 'reto-diario',
   srs: 'repaso',
-  quick: 'repaso-rapido',
-  review5: 'repaso5',
   collection: 'coleccion',
   painters: 'coleccion-pintores',
   allWorks: 'coleccion-cuadros',
@@ -22,6 +20,8 @@ export const ROUTES = {
 
 // Nombre antiguo de la pantalla de logros: los enlaces que ya lo usan siguen valiendo.
 const OLD_MEDALS = 'medallas';
+// Rutas antiguas del repaso: redirigen a la sesión única (#repaso).
+const OLD_REVIEWS = new Set(['repaso5', 'repaso-rapido']);
 
 // Ronda «a fondo» de un pintor: a-fondo-<pintor>-<nivel> (nivel 2 en adelante).
 export const deepRoute = (artistId, level) => `a-fondo-${artistId}-${level}`;
@@ -44,15 +44,19 @@ export const branchRoute = (branchId) => `rama-${branchId}`;
 // aunque la pantalla anterior sea otra etapa de la misma rama); si no, a la ficha del pintor o su galería.
 export function stageReturnTo(branchId, prev) {
   if (branchId) return branchRoute(branchId);
+  if (GOAL_SCREENS.has(prev)) return prev;
   return /^(pintor|obras|rama)-[a-z0-9-]+$/.test(prev) ? prev : null;
 }
+
+// Pantallas con un objetivo (el rango del Perfil, los logros): si se entra a jugar desde ellas, el resultado vuelve ahí.
+export const GOAL_SCREENS = new Set([ROUTES.profile, ROUTES.medals]);
+export const isGoalScreen = (route) => GOAL_SCREENS.has(route);
 
 export function parseRoute(hash, opts = {}) {
   const name = String(hash || '').replace(/^#/, '');
   if (name === '' || name === ROUTES.home) return { name: 'home' };
   if (!/^[a-z0-9-]*$/.test(name)) return { name: 'invalid' };
-  if (name === ROUTES.quick) return { name: 'quick' };
-  if (name === ROUTES.review5) return { name: 'review5' };
+  if (OLD_REVIEWS.has(name)) return { name: 'srs', redirect: ROUTES.srs };
   if (name === ROUTES.welcome) return { name: 'welcome' };
   if (name === ROUTES.daily) return { name: 'daily' };
   if (name === ROUTES.srs) return { name: 'srs' };
