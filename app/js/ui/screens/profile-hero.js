@@ -3,7 +3,7 @@
 
 import { esc, $ } from '../dom.js';
 import { icons, logoMark } from '../icons.js';
-import { tinyFrame, tinySrc, gentleWorks } from './profile-art.js';
+import { tinyFrame, tinySrc } from './profile-art.js';
 import { graphemes } from '../../state/schema.js';
 import { coverWork, sampleCover, avatarWork, focusPosition, initialOf, collectionIds } from '../../engine/profile.js';
 
@@ -41,7 +41,7 @@ export function heroHtml(ctx) {
   return `<header class="pf-hero">
     <h1 class="sr-only" id="pf-title" tabindex="-1">Perfil</h1>
     ${hasPictures ? `<button type="button" class="pf-look" data-action="open-look" aria-label="Cambiar portada y avatar" aria-haspopup="dialog">${icons.frames(22)}</button>` : ''}
-    ${cover(ctx, coverWork(p, index, coverId, gentleWorks()) || sampleCover(index, gentleWorks()))}
+    ${cover(ctx, coverWork(p, index, coverId) || sampleCover(index))}
     <button type="button" class="pf-gear" data-action="open-settings" aria-label="Ajustes" aria-haspopup="dialog">${icons.gear(24)}</button>
     <div class="pf-id">
       ${avatar(name, avatarWork(p, index, avatarId))}

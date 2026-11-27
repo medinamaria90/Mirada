@@ -43,7 +43,7 @@ def main():
     limit = 150
     if "--limit" in sys.argv:
         limit = int(sys.argv[sys.argv.index("--limit") + 1])
-    sel = load(os.path.join(CAT, "seleccion.json"), [])
+    sel = seleccion()  # sin las de excluir.json
     meta = load(os.path.join(CAT, "img_meta.json"), {})
     fails = load(os.path.join(OUT, "download_fails.json"), {})
     ids = {e["id"] for e in sel}
