@@ -18,6 +18,31 @@ MAX_TEXT = 180
 MAX_CARDS = 5
 SHORT_MAX = 12  # título corto de nivel (`stage`): cabe bajo su círculo en la fila de historias
 BASIC_LEVEL = 1
+# Detalle intencionado (`region`, engine/stories.js): siempre a sangre, así que su proporción no puede perder más que
+# LOSS_FOCUSED (engine/framing.js) ni en el marco del móvil típico ni en el más ancho (la columna 9:16).
+LOSS_FOCUSED = 0.45
+REGION_MIN = 0.05
+STORY_FRAMES = (412 / 915, 9 / 16)
+
+
+def region_error(region, work):
+    """Qué falla en la región [x0, y0, x1, y1] de una tarjeta sobre su obra, o None si vale."""
+    if not isinstance(region, list) or len(region) != 4 or not all(isinstance(v, (int, float)) and 0 <= v <= 1 for v in region):
+        return "región mal formada (se espera [x0, y0, x1, y1] de 0 a 1)"
+    x0, y0, x1, y1 = region
+    if x1 - x0 < REGION_MIN or y1 - y0 < REGION_MIN:
+        return "región demasiado pequeña"
+    if not work or not work.get("w") or not work.get("h"):
+        return None
+    ratio = work["w"] / work["h"] * (x1 - x0) / (y1 - y0)
+    loss = max(1 - min(ratio / f, f / ratio) for f in STORY_FRAMES)
+    return f"la región pierde un {loss:.0%} al encuadrarla" if loss > LOSS_FOCUSED else None
+
+
+def view_key(card):
+    """Lo que enseña una tarjeta: la obra y su encuadre (`region` y `focus`). Otro detalle de la misma obra es otra imagen."""
+    region = card.get("region")
+    return (card.get("artwork"), tuple(region) if isinstance(region, list) else (), tuple(card.get("focus") or ()))
 
 
 def check(story, name, artists, works):
@@ -40,6 +65,10 @@ def check(story, name, artists, works):
                 errors.append(f"{tag}: sin fuente")
             if works is not None and c.get("artwork") not in works:
                 errors.append(f"{tag}: obra {c.get('artwork')} fuera del catálogo")
+            if "region" in c:
+                problem = region_error(c["region"], (works or {}).get(c.get("artwork")))
+                if problem:
+                    errors.append(f"{tag}: {problem}")
     return errors
 
 
@@ -54,9 +83,9 @@ def repeats(story, name, works):
         level = lv.get("level")
         cards = lv.get("cards", [])
         ids = [c.get("artwork") for c in cards]
-        # Un detalle distinto de la misma obra (otro `focus`) no cuenta como repetición.
-        shots = [(c.get("artwork"), tuple(c.get("focus") or ())) for c in cards]
-        twice = sorted({a for a, f in shots if shots.count((a, f)) > 1})
+        # Un detalle distinto de la misma obra (otra `region` u otro `focus`) no cuenta como repetición.
+        shots = [view_key(c) for c in cards]
+        twice = sorted({v[0] for v in shots if shots.count(v) > 1})
         if not twice:
             continue
         free = sorted(w["id"] for w in works.values()
