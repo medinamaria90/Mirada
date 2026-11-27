@@ -13,7 +13,7 @@ import { planStage, planMovementReview, planReviewSession, planSala, salaLearnWo
 import { knownArtists } from '../../engine/chrono.js';
 import { planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, needsTramo, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
@@ -161,15 +161,16 @@ export function introWorks(index, movementId) {
 }
 
 // Texto del botón de la presentación según cómo se llega a ella.
-const INTRO_ENTER = { first: 'Entrar', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
+const INTRO_ENTER = { first: 'Seguir', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
 
 // Lo que la presentación espera a sus tarjetas antes de pintarse; con una red peor, sale sin ellas y llegan con fundido.
 const ERA_CARDS_WAIT_MS = 1200;
 const waitMs = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
-// mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa; 'shared': desde un enlace
-// compartido (#epoca-<id>), sin tocar la partida; a quien aún no juega, el botón le invita a empezar.
-export async function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
+// mode 'first': se ve al entrar por primera vez, como un paso del camino, y «Seguir» continúa a lo que se iba a jugar
+// (onEnter); 'again': desde el mapa; 'shared': desde un enlace compartido (#epoca-<id>), sin tocar la partida; a quien aún
+// no juega, el botón le invita a empezar.
+export async function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = null } = {}) {
   const { index } = ctx;
   const movement = index.movement(movementId);
   if (!movement || !index.visibleMovements.includes(movement)) return leave(ctx);
@@ -208,7 +209,8 @@ export async function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) 
         ctx.audio.unlock();
         ctx.store.update((s) => ({ ...s, onboarded: true }));
       }
-      ctx.go('inicio');
+      if (onEnter) return onEnter();
+      return ctx.go('inicio');
     },
   });
 }
@@ -303,14 +305,26 @@ function gap(track) {
   return parseFloat(getComputedStyle(track).columnGap) || 0;
 }
 
-// Si es la primera vez en el movimiento, se muestra su intro en lugar de la parada: «Entrar» deja en el camino, donde se
-// elige el pintor. Las ramas-movimiento (Gótico, Estampa japonesa) no tienen presentación propia: se entra directo.
+// La primera vez en el movimiento, su presentación sale como un paso más del camino, en lugar de la parada; «Seguir» la
+// cierra y continúa a la parada (venga de la guía, de «Siguiente» o del mapa). Las ramas-movimiento (Gótico, Estampa
+// japonesa) no tienen presentación propia: se entra directo.
 function withIntro(ctx, el, movementId, show) {
   const visible = ctx.index.visibleMovements.some((m) => m.id === movementId);
   if (visible && needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
-    return renderIntro(ctx, el, movementId, { mode: 'first' });
+    return renderIntro(ctx, el, movementId, { mode: 'first', onEnter: show });
   }
   return show();
+}
+
+// Igual con el tramo: la primera vez que se entra en uno, su cartel en tarjetas (sign-cards.js) antes del pintor;
+// «Saltar» (o «Seguir», al final) lo cierra y sigue al pintor. Salir de la pantalla (atrás) no continúa.
+function withTramo(ctx, el, artistId, show) {
+  if (!needsTramo(ctx.store.get().progress, ctx.index, artistId)) return show();
+  const key = ctx.index.artist(artistId).section;
+  return import('../sign-cards.js')
+    .then((m) => m.openSignCards(ctx, 'tramo', key, null, { title: key, onDone: () => { if (el.isConnected) show(); } }))
+    .then((handle) => { if (!handle && el.isConnected) show(); })
+    .catch((err) => { console.error(err); if (el.isConnected) show(); });
 }
 
 // La historia sale siempre al entrar en un pintor (decisión de María, 26/11) y el embudo es historia → preguntas:
@@ -341,7 +355,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx, branchId);
   const contextArtist = contextOf(returnTo, artistId);
-  withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
+  withIntro(ctx, el, movement.id, () => withTramo(ctx, el, artistId, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
@@ -366,7 +380,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
       carouselLabel: `Obras de ${artist.short || artist.name}`,
       onPractice: start,
     });
-  }, { look: artist.hint, returnTo }));
+  }, { look: artist.hint, returnTo })));
 }
 
 // --- Nivel «a fondo» de un pintor: la historia de su etapa y la ronda (no toca la parada del camino) ---
