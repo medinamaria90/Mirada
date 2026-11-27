@@ -17,8 +17,6 @@ import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
-import { storyKey } from '../../engine/stories.js';
-import { storySeen } from '../../state/stories-seen.js';
 import { avatarHtml } from '../avatar.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
@@ -339,7 +337,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
     // Tras la historia no hay «Conoce a»: lo recién visto son solo los cuadros de la historia.
-    const met = metArtistIds(ctx.store.get().progress, index, (id) => storySeen(storyKey(id, 1)));
+    const met = metArtistIds(ctx.store.get().progress, index);
     const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown, learnShown: !fromStory, branchId, met });
     playEra(movement.era);
     const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo }));
@@ -374,7 +372,7 @@ export function renderDeep(ctx, el, artistId, level) {
   const returnTo = cameFrom(ctx);
   withStory(ctx, el, artistId, level, (shown) => {
     const progress = ctx.store.get().progress;
-    const met = metArtistIds(progress, index, (id) => storySeen(storyKey(id, 1)));
+    const met = metArtistIds(progress, index);
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown, met });
     playEra(movement.era);
     ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
@@ -419,7 +417,7 @@ export function renderMovementReview(ctx, el, movementId) {
   const movement = index.movement(movementId);
   if (!movement) return leave(ctx);
   if (!isReviewUnlocked(ctx.store.get().progress, index, movementId)) return leave(ctx, 'Aún no está abierto');
-  const plan = planMovementReview(index, movementId, randomSeed());
+  const plan = planMovementReview(index, movementId, randomSeed(), { met: metArtistIds(ctx.store.get().progress, index) });
   if (!plan.questions.length) return ctx.go('inicio');
   playEra(movement.era);
   ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `Prueba de época · ${movement.name}`, kind: 'review', extra: { movementId }, shareTopic: movement.name }));
@@ -427,11 +425,11 @@ export function renderMovementReview(ctx, el, movementId) {
 
 // --- Repasar: la sesión automática (fallados, pintor a medias, vencidos, apagado y relleno) -------------
 
-// Pintores para «¿Quién fue antes?» en los repasos: conocidos de verdad (historia vista o nivel jugado), como en las
+// Pintores para «¿Quién fue antes?» en los repasos: conocidos de verdad (los ya jugados), como en las
 // preguntas por autor.
 function reviewKnown(ctx) {
   const progress = ctx.store.get().progress;
-  return knownArtists(progress, ctx.index, '', metArtistIds(progress, ctx.index, (id) => storySeen(storyKey(id, 1))));
+  return knownArtists(progress, ctx.index, '', metArtistIds(progress, ctx.index));
 }
 
 export function renderReview(ctx, el) {

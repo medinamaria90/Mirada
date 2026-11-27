@@ -16,9 +16,10 @@ export function resolveThumb(thumb, atlas) {
 }
 
 // Textos que llegan después de pintar (data/catalog-text.json): `look`/`looks` (pistas con
-// fuente), `kind` y `tags` de obra; `traits`, `traitTags` y `why` («por qué importa», con fuente) de pintor; `tagLabels` y `negableTags`
+// fuente), `kind` y `tags` de obra; `traits`, `traitTags`, `why` («por qué importa», con fuente) y `who` (quién era un invitado) de pintor; `tagLabels` y `negableTags`
 // del vocabulario visual. Se añaden a los objetos del índice; lo que no encaja se ignora.
 const MAX_TEXT = 140;
+const MAX_WHO = 110;
 // Dato curioso de una obra (hoja de feedback) y explicación larga (página de la obra).
 const MAX_CURIO = 240;
 const MAX_ABOUT_PARAS = 8;
@@ -70,6 +71,11 @@ export function mergeCatalogText(index, text) {
   for (const [id, why] of Object.entries(text.why || {})) {
     const a = index.artist(id);
     if (a && why && typeof why.text === 'string' && why.text.length <= MAX_TEXT) { a.why = { text: why.text, source: typeof why.source === 'string' ? why.source : '' }; n++; }
+  }
+  // Quién era un invitado del camino, en pocas palabras (tarjeta de presentación: engine/guest-intro.js).
+  for (const [id, who] of Object.entries(text.who || {})) {
+    const a = index.artist(id);
+    if (a && who && typeof who.text === 'string' && who.text.length <= MAX_WHO) { a.who = { text: who.text, source: typeof who.source === 'string' ? who.source : '' }; n++; }
   }
   for (const [id, tags] of Object.entries(text.traitTags || {})) {
     const a = index.artist(id);
