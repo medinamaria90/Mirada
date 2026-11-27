@@ -12,6 +12,8 @@ import { createRound, currentItem, answerRound, roundDone, roundProgress } from 
 import { xpForAnswer } from '../../engine/progress.js';
 import { feedbackFor } from '../../engine/feedback.js';
 import { revealedTitle } from '../../engine/title-reveal.js';
+import { beforeQuestionHtml, beforeRibbonHtml } from '../before-question.js';
+import { loadRibbonCss } from '../chrono-ribbon.js';
 
 const MAX_SUBSTITUTIONS = 3;
 const COMBO_SHOW = 3; // aciertos seguidos a partir de los que se ve el indicador
@@ -65,6 +67,7 @@ export function runLesson(ctx, el, config) {
   </div>`;
 
   loadCurioCss();
+  if (round.queue.some((it) => it.q.type === 'before')) loadRibbonCss();
   const stage = $('.lesson-stage', el);
   const feedback = $('.feedback', el);
   const bar = $('.progress', el);
@@ -127,6 +130,7 @@ export function runLesson(ctx, el, config) {
   function questionHtml(q, retry) {
     const tag = retry ? 'Otra vez' : q.isNew ? 'Cuadro nuevo' : '';
     const head = `${tag ? `<p class="q-tag">${tag}</p>` : ''}<h1 class="q-prompt">${esc(q.prompt)}</h1>`;
+    if (q.type === 'before') return beforeQuestionHtml(index, q, head);
     if (q.type === 'which') {
       // Pulsar una miniatura abre el visor con las 4 («Es este» responde); 1-4 responden directo.
       const opts = q.options.map((o, i) => `<button class="option option-art" data-action="pick" data-id="${esc(o.id)}" data-pos="${i}" aria-label="Opción ${i + 1}" aria-haspopup="dialog">
@@ -260,7 +264,7 @@ export function runLesson(ctx, el, config) {
       <div class="fb-text">
         <div class="fb-head"><span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>
         ${title}${gained ? `<span class="fb-xp">+${gained} XP</span>` : ''}</div>
-        ${who}${lines}${caption}${curioHtml(subject, curioOpen)}
+        ${who}${lines}${beforeRibbonHtml(ctx, fb)}${caption}${curioHtml(subject, curioOpen)}
       </div>
       <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>
     </div>`;

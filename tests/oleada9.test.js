@@ -18,8 +18,8 @@ const TODAY = '2026-11-24';
 
 test('Botticelli abre el camino: «Conoce a» enseña 4 obras de nivel 1; quedan 3 de nivel 1 sin ver para preguntar', () => {
   assert.equal(first.id, 'botticelli');
-  assert.equal(real.path[4].id, 'rafael');
-  assert.equal(real.path[5].id, 'leonardo');
+  assert.equal(real.path[4].id, 'leonardo');
+  assert.equal(real.path[6].id, 'rafael');
   const learn = real.learnWorks(first.id);
   assert.equal(learn.length, 4);
   assert.ok(learn.every((w) => w.level === 1));
