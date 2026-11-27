@@ -93,3 +93,11 @@ acento de cada época y nada estridente.
 - `despues-avanzado-d.jpg`: avanzado, oscuro, con salas.
 - `despues-bloqueado-d.jpg`: hoja de un pintor por descubrir.
 - `despues-buscar-l.jpg`: el buscador encuentra a Velázquez, aún sin conocer.
+- `despues-visor-d.jpg`: visor desde «Lo último», con el dato curioso y «Ver más».
+- `despues-obra-mas-de-l.jpg`: final de la página de la obra, con «Más de Tiziano».
+
+## Pendiente
+
+- Puerta de calidad con un evaluador independiente (no se pudo lanzar un agente nuevo en esta sesión).
+- El humo e2e se para antes de llegar a la Colección, en la entrada de la primera etapa (`toLearn`). Ya fallaba en main antes
+  de este cambio.
