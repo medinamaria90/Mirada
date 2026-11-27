@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 520" width="390" height="520" font-family="system-ui, sans-serif">
+  <title>Boceto 3 · Calle de pueblo con pendón</title>
+  <rect width="390" height="520" fill="#ecebe4"/>
+  <rect y="450" width="390" height="70" fill="#e3e6dc"/>
+  <path d="M0 450H390" stroke="#b9b8a6" stroke-width="7" stroke-dasharray="2 6" stroke-linecap="round"/>
+  <!-- la calle: el sendero se empiedra entre las casas -->
+  <path d="M196 520V40" stroke="#bfae90" stroke-width="28"/>
+  <path d="M196 520V40" stroke="#ddd2bb" stroke-width="22"/>
+  <rect x="176" y="190" width="40" height="230" fill="#e6dccb"/>
+  <!-- casas a los dos lados -->
+  <g fill="#f3f0e8" stroke="#9c9384">
+    <rect x="96" y="300" width="70" height="60"/><rect x="40" y="320" width="56" height="44"/><rect x="110" y="210" width="56" height="80"/>
+    <rect x="226" y="300" width="72" height="60"/><rect x="298" y="326" width="52" height="38"/><rect x="226" y="214" width="58" height="76"/>
+  </g>
+  <g fill="#c9b9a6"><path d="M92 300H170L160 286H102Z"/><path d="M106 210H170L160 196H116Z"/><path d="M222 300H302L292 286H232Z"/><path d="M222 214H288L278 200H232Z"/><path d="M36 320H100L90 308H46Z"/><path d="M294 326H354L344 314H304Z"/></g>
+  <g fill="#d9d3c6"><rect x="122" y="236" width="10" height="14"/><rect x="144" y="236" width="10" height="14"/><rect x="240" y="240" width="10" height="14"/><rect x="262" y="240" width="10" height="14"/><rect x="116" y="320" width="10" height="14"/><rect x="246" y="320" width="10" height="14"/></g>
+  <!-- pendón colgado de casa a casa, con banderines (uno por pintor) -->
+  <path d="M166 222Q196 230 226 222" fill="none" stroke="#6b655b"/>
+  <path d="M100 258Q196 274 292 258" fill="none" stroke="#6b655b"/>
+  <g>
+    <path d="M118 262l7 12l7-11Z" fill="#8a7f6c"/><path d="M140 265l7 12l7-11Z" fill="#8a7f6c"/><path d="M162 267l7 12l7-11Z" fill="#8a7f6c"/>
+    <path d="M206 267l7 12l7-11Z" fill="#e4dfd4"/><path d="M228 266l7 12l7-11Z" fill="#e4dfd4"/><path d="M250 264l7 12l7-11Z" fill="#e4dfd4"/><path d="M272 261l7 12l7-11Z" fill="#e4dfd4"/>
+  </g>
+  <rect x="120" y="150" width="152" height="54" rx="2" fill="#f8f6f0" stroke="#9c9384"/>
+  <path d="M120 204l12 10l12-10M248 204l12 10l12-10" fill="#f8f6f0" stroke="#9c9384"/>
+  <path d="M166 150V140M226 150V140" stroke="#6b655b"/>
+  <text x="196" y="176" text-anchor="middle" font-size="16" font-weight="600" fill="#3d3a35">Barroco</text>
+  <text x="196" y="193" text-anchor="middle" font-size="11" fill="#6b655b">s. XVII  ›</text>
+  <g font-size="9.5" fill="#8a8478">
+    <text x="8" y="132">pendón sobre la calle</text>
+    <text x="290" y="290">banderines =</text>
+    <text x="290" y="302">pintores dominados</text>
+    <text x="8" y="508">≈ 260 u · casas propias de cada época (más dibujo)</text>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 520" width="390" height="520" font-family="system-ui, sans-serif">
+  <title>Boceto 2 · Glorieta con templete</title>
+  <rect width="390" height="520" fill="#ecebe4"/>
+  <rect y="450" width="390" height="70" fill="#e3e6dc"/>
+  <path d="M0 450H390" stroke="#b9b8a6" stroke-width="7" stroke-dasharray="2 6" stroke-linecap="round"/>
+  <!-- el sendero se abre en anillo alrededor del templete y se vuelve a juntar -->
+  <path d="M196 520V362M196 158V40" stroke="#bfae90" stroke-width="28"/>
+  <path d="M196 520V362M196 158V40" stroke="#ddd2bb" stroke-width="22"/>
+  <ellipse cx="196" cy="260" rx="128" ry="104" fill="none" stroke="#bfae90" stroke-width="28"/>
+  <ellipse cx="196" cy="260" rx="128" ry="104" fill="none" stroke="#ddd2bb" stroke-width="22"/>
+  <ellipse cx="196" cy="260" rx="112" ry="88" fill="#e6e8dc"/>
+  <!-- templete redondo: cúpula y columnas -->
+  <ellipse cx="196" cy="262" rx="62" ry="14" fill="#cfc7b8"/>
+  <rect x="146" y="196" width="100" height="62" fill="#f3f0e8" stroke="#9c9384"/>
+  <g stroke="#9c9384" stroke-width="5"><path d="M156 200V256M176 200V256M196 200V256M216 200V256M236 200V256"/></g>
+  <rect x="140" y="188" width="112" height="10" fill="#e4dfd4" stroke="#9c9384"/>
+  <path d="M150 188C150 140 242 140 242 188Z" fill="#f3f0e8" stroke="#9c9384"/>
+  <rect x="192" y="138" width="8" height="10" fill="#9c9384"/>
+  <!-- placa en el zócalo, de cara al que llega -->
+  <rect x="120" y="282" width="152" height="44" rx="3" fill="#f8f6f0" stroke="#9c9384"/>
+  <text x="196" y="302" text-anchor="middle" font-size="16" font-weight="600" fill="#3d3a35">Barroco</text>
+  <text x="196" y="317" text-anchor="middle" font-size="11" fill="#6b655b">s. XVII  ›</text>
+  <rect x="146" y="321" width="100" height="3" rx="1.5" fill="#d9d3c6"/><rect x="146" y="321" width="38" height="3" rx="1.5" fill="#8a7f6c"/>
+  <g font-size="9.5" fill="#8a8478">
+    <text x="8" y="96">anillo: dos ramales del sendero</text>
+    <text x="8" y="110">(¿cuál está «andado»?)</text>
+    <text x="250" y="350">placa estrecha: 152 u</text>
+    <text x="250" y="364">nombres largos en 3 líneas</text>
+    <text x="8" y="508">≈ 230 u de alto · trazado con bifurcación</text>
+  </g>
+</svg>

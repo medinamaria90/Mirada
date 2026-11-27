@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 560" width="390" height="560" font-family="system-ui, sans-serif">
+  <title>Boceto 1 · La plaza con logia (recomendado)</title>
+  <!-- suelo: época anterior abajo, nueva arriba -->
+  <rect width="390" height="560" fill="#ecebe4"/>
+  <rect y="470" width="390" height="90" fill="#e3e6dc"/>
+  <path d="M0 470H390" stroke="#b9b8a6" stroke-width="7" stroke-dasharray="2 6" stroke-linecap="round"/>
+  <!-- sendero: sube, cruza la plaza y sale por el arco central de la logia -->
+  <path d="M196 560V330" stroke="#bfae90" stroke-width="28"/>
+  <path d="M196 560V330" stroke="#ddd2bb" stroke-width="22"/>
+  <path d="M196 262C196 200 120 190 120 120C120 80 160 60 196 40" fill="none" stroke="#bfae90" stroke-width="28"/>
+  <path d="M196 262C196 200 120 190 120 120C120 80 160 60 196 40" fill="none" stroke="#ddd2bb" stroke-width="22"/>
+  <!-- plaza empedrada (la misma pieza que la de salida) -->
+  <ellipse cx="196" cy="370" rx="150" ry="40" fill="#bfae90"/>
+  <ellipse cx="196" cy="370" rx="146" ry="37" fill="#e6dccb"/>
+  <ellipse cx="196" cy="370" rx="112" ry="27" fill="none" stroke="#d3c6ae" stroke-width="1.5"/>
+  <ellipse cx="196" cy="370" rx="76" ry="18" fill="none" stroke="#d3c6ae" stroke-width="1.5"/>
+  <!-- logia: arcada a lo ancho, el arco central sobre el sendero -->
+  <rect x="36" y="268" width="320" height="64" fill="#e6e0d3" stroke="#9c9384"/>
+  <g fill="#cfc7b8">
+    <path d="M52 332V300a16 16 0 0 1 32 0V332Z"/><path d="M98 332V300a16 16 0 0 1 32 0V332Z"/>
+    <path d="M262 332V300a16 16 0 0 1 32 0V332Z"/><path d="M308 332V300a16 16 0 0 1 32 0V332Z"/>
+  </g>
+  <path d="M174 332V296a22 22 0 0 1 44 0V332Z" fill="#ddd2bb" stroke="#9c9384"/>
+  <!-- friso: nombre grabado, siglos, chevron y ranura de progreso -->
+  <rect x="36" y="214" width="320" height="54" fill="#e6e0d3" stroke="#9c9384"/><path d="M36 268H356" stroke="#b5ab9a" stroke-width="2"/>
+  <path d="M30 214H362L356 206H36Z" fill="#d8d0c0" stroke="#9c9384"/><path d="M150 206L196 188L242 206Z" fill="#d8d0c0" stroke="#9c9384"/>
+  <text x="196" y="238" text-anchor="middle" font-size="19" font-weight="600" fill="#3d3a35" letter-spacing=".5">Barroco</text>
+  <text x="196" y="256" text-anchor="middle" font-size="12" fill="#6b655b">s. XVII  ›</text>
+  <rect x="120" y="262" width="152" height="3" rx="1.5" fill="#d9d3c6"/>
+  <rect x="120" y="262" width="58" height="3" rx="1.5" fill="#8a7f6c"/>
+  <!-- fuente y cipreses: detalles de lugar -->
+  <ellipse cx="96" cy="384" rx="20" ry="6" fill="#cfc7b8" stroke="#9c9384"/>
+  <rect x="94" y="366" width="4" height="16" fill="#9c9384"/>
+  <path d="M362 330c-7-10-7-40 0-56c7 16 7 46 0 56Z" fill="#a9b29a"/>
+  <path d="M24 330c-6-10-6-34 0-48c6 14 6 38 0 48Z" fill="#a9b29a"/>
+  <!-- mojón unificado (una sola pieza) y parada dormida, más arriba -->
+    <rect x="210" y="146" width="128" height="34" rx="4" fill="#f3f0e8" stroke="#9c9384"/>
+  <rect x="206" y="178" width="136" height="6" rx="2" fill="#d9d3c6"/>
+  <text x="274" y="168" text-anchor="middle" font-size="12" font-weight="600" fill="#3d3a35">Luz en la oscuridad</text>
+  <circle cx="196" cy="40" r="26" fill="#e9e5dc" stroke="#cbbfae" stroke-width="5"/>
+  <circle cx="216" cy="58" r="9" fill="#efeae0" stroke="#9c9384"/>
+  <path d="M212 58a4 4 0 1 1 1.2 2.9M212 58v-3h3" fill="none" stroke="#6b655b" stroke-width="1.4"/>
+  <text x="234" y="44" font-size="12" fill="#3d3a35">Caravaggio</text>
+  <!-- anotaciones -->
+  <g font-size="9.5" fill="#8a8478">
+    <text x="8" y="184">friso de piedra = botón (nombre + siglos + ›)</text>
+    <text x="230" y="414">plaza: el sendero la cruza</text>
+    <text x="8" y="462">seto: cambio de época</text>
+    <text x="236" y="136">mojón único: piedra con el nombre</text>
+    <text x="232" y="74">dormido: ↻ en vez de texto</text>
+    <text x="8" y="548">Medidas en u (ancho 390): plaza rx 150 ry 40 · logia 320×64 · friso 56 · total ≈ 170 u</text>
+  </g>
+</svg>
