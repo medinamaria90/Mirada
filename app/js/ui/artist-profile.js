@@ -1,5 +1,5 @@
 // Ficha de pintor, un perfil que se desplaza con un primer vistazo que se basta solo: portada, avatar con su aro, nombre,
-// sello, «por qué importa», la fila de círculos de sus niveles (ui/level-row.js) y «Jugar · <nivel>», con «Sus cuadros»
+// sello, «por qué importa», la fila de círculos de sus niveles (ui/level-row.js) y el botón de jugar, con «Sus cuadros»
 // asomando. Debajo, sus cuadros vistos, cómo reconocerlo (cada rasgo con un detalle de un cuadro) y con quién no
 // confundirlo. Solo obras y pintores ya vistos (sin spoilers). El contenido es común a la pantalla
 // (`#pintor-<id>`, con cabecera compacta al desplazarse: screens/artist-page.js) y al diálogo de dentro de una ronda
