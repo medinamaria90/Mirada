@@ -102,3 +102,9 @@ aviso w4009226 (rubens): título pendiente de traducir: A View of Het Steen in t
 aviso w3699475 (rubens): título pendiente de traducir: Last Supper
 65M	.git
 3.7M	catalogo
+== pack 1200 00:52:03
+pack 1200px: 1465 imágenes, 334.6 MB de JPEG (media 223 KB), zip 334.7 MB, sha256 ca0d5b0002efa855…
+obras del catálogo 1465; sin imagen 0; con fallo 0
+paquete app-img-1200 subido a catalogo-img (320M)
+65M	.git
+3.7M	catalogo
