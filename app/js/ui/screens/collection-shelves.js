@@ -33,7 +33,7 @@ function knownCard({ artist, state, seen, total, cover }) {
 function lockedCard({ artist }) {
   return `<li><button type="button" class="cx-card is-locked" data-locked="${esc(artist.id)}" aria-label="${esc(`${artist.name}, por descubrir`)}">
     <span class="cx-cover"><span class="cx-mono" aria-hidden="true">${esc(initials(artist.name))}</span><span class="cx-lock" aria-hidden="true">${icons.lock(14)}</span></span>
-    <span class="cx-name">${esc(artist.short || artist.name)}</span><span class="cx-sub">Por descubrir</span></button></li>`;
+    <span class="cx-name">${esc(artist.short || artist.name)}</span></button></li>`;
 }
 
 // Una época: título (a su presentación si ya la has visto), «n de m pintores», su sala si está abierta y la fila.

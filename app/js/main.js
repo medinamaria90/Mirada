@@ -22,6 +22,9 @@ const root = document.getElementById('app');
 const MOVE_HASH = '#mudanza=';
 const OLD_HOSTNAME = 'sfumato-arte.onrender.com';
 const MOVE_TOAST = 'Tu progreso ya está aquí';
+// Vuelta del acceso con Google (cloud/cloud.js): Supabase añade «?code=…» o, si no se completa, «?error=…».
+const SIGN_IN_RETURN = /[?&](code|error)=/;
+const SIGN_IN_FAILED = 'No se ha podido entrar';
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
@@ -171,6 +174,12 @@ async function boot() {
   // dirección; en la nueva, en local y en las pruebas no hace nada).
   if (location.hostname === OLD_HOSTNAME) {
     import('./ui/move-redirect.js').then((m) => m.moveToNewHome({ storage, stateKey: STORAGE_KEY })).catch(() => {});
+  }
+  // Vuelta de Google: se junta el progreso de la nube con el de aquí antes de crear el almacén; se vuelve al perfil.
+  let signedIn = '';
+  if (SIGN_IN_RETURN.test(location.search)) {
+    signedIn = await import('./cloud/cloud.js').then((m) => m.finishSignIn(storage, STORAGE_KEY)).catch(() => 'error');
+    if (signedIn) history.replaceState(null, '', `${location.pathname}#perfil`);
   }
   const store = createStore({ storage });
   document.documentElement.classList.toggle('reduce-motion', Boolean(store.get().settings.reducedMotion));
@@ -366,19 +375,35 @@ async function boot() {
   window.addEventListener('hashchange', render);
   installPrimaryKeys();
   replayToast();
-  if (moved === 'traido') toast(MOVE_TOAST, { carry: true });
+  if (moved === 'traido' || signedIn === 'traido') toast(MOVE_TOAST, { carry: true });
+  else if (signedIn === 'error') toast(SIGN_IN_FAILED, { carry: true });
   render();
   // Después de pintar: textos del catálogo, audio y las pantallas que vendrán.
   whenIdle(() => {
     ensureText();
     loadFlows().catch(() => {});
     import('./ui/dj-mode.js').then((m) => m.startDjIfOn()).catch(() => {}); // modo secreto «afinar música»
+    startCloudWhenReady(store, storage, () => {
+      // Progreso de otro dispositivo: se aplica su tema y se repinta (salvo en mitad de una ronda).
+      applyTheme(store.get().settings.theme);
+      document.documentElement.classList.toggle('reduce-motion', Boolean(store.get().settings.reducedMotion));
+      if (!FLOW_ROUTES.has(parseRoute(location.hash, { today: ctx.dailyDay() }).name)) render();
+      toast(MOVE_TOAST);
+    });
   });
   loadAudioWhenIdle();
   bindBackgroundPause();
   registerServiceWorker();
   // Contador de visitas sin cookies (vacío por defecto: no pide nada). En reposo, como el audio.
   setTimeout(() => import('./stats.js').then((m) => m.startStats({ store })).catch(() => {}), 3000);
+}
+
+// Cuenta y progreso en la nube (cloud/): solo si hay proyecto configurado; sin sesión no pide nada.
+function startCloudWhenReady(store, storage, refresh) {
+  import('./cloud/config.js')
+    .then((c) => (c.cloudReady() ? import('./cloud/cloud.js') : null))
+    .then((m) => m?.startCloud({ store, storage, stateKey: STORAGE_KEY, refresh }))
+    .catch(() => {});
 }
 
 // Instalable como app (sin barra de direcciones) y abre sin red lo ya visto. Solo en https o en local.

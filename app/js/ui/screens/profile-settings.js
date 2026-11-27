@@ -1,6 +1,6 @@
 // Ajustes del perfil, en una hoja aparte (botón ⚙ de la portada): meta del día, tema, música,
 // sonidos, volumen, reducir animaciones, la sección «Superusuario» (con «Empezar de cero» y su confirmación) y,
-// al final, los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
+// «Tu cuenta» (ui/account-section.js) y, al final, los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
 
 import { $, announce } from '../dom.js';
 import { icons } from '../icons.js';
@@ -11,6 +11,7 @@ import { themePicker, chooseTheme, markThemePicker } from '../theme.js';
 import { bindSheet } from './profile-sheet.js';
 import { bindDjTaps } from '../dj-sheet.js';
 import { superHtml, wireSuper } from '../su-section.js';
+import { accountHtml, wireAccount } from '../account-section.js';
 
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
 const RING = 56;
@@ -52,6 +53,7 @@ export function settingsHtml(ctx) {
         <input type="range" min="0" max="100" step="5" value="${Math.round(s.volume * 100)}" data-setting="volume" aria-label="Volumen">
       </label>
       ${toggle('reducedMotion', 'Reducir animaciones', s.reducedMotion)}
+      ${accountHtml()}
       ${superHtml(RESET_HTML)}
       <button type="button" class="settings-credits" data-action="about">Acerca de Sfumato</button>
       <button type="button" class="settings-credits" data-action="credits">Fuentes y créditos</button>
@@ -85,6 +87,7 @@ export function wireSettings(ctx, el) {
   bindDjTaps($('#settings-title', dialog));
   wireSuper(dialog, ctx, () => sheet.close());
   return {
+    ...wireAccount(ctx, dialog),
     'open-settings': (b) => { ctx.audio.sfx('tap'); sheet.open(b, '[data-action="close-sheet"]'); },
     goal: (b) => {
       ctx.audio.sfx('tap');
