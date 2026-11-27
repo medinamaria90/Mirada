@@ -45,7 +45,7 @@ export async function renderArtistWorks(ctx, el, spec) {
   const progress = ctx.store.get().progress;
   const missing = spec.kind === 'guests'
     ? (gaps > 0 ? `<p class="aw-more">y ${gaps} por descubrir</p>` : '')
-    : missingHtml(progress, ctx.index, spec.artistId, n, data.total, 'obras');
+    : missingHtml(progress, ctx.index, spec.artistId, n, data.total);
   const body = n
     ? `${worksGridHtml(ctx.index, `aw-${spec.kind === 'guests' ? spec.movementId : spec.artistId}`, data.works, { byAuthor: spec.kind === 'guests' })}${missing}`
     : `<div class="aw-empty"><p>Los cuadros que veas de ${esc(data.title)} se guardarán aquí.</p><a class="btn btn-primary" href="#inicio">Ir al camino</a></div>`;

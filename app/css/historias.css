@@ -80,3 +80,14 @@
 }
 html.reduce-motion .story[open], html.reduce-motion .story-pan { animation: none; }
 html.reduce-motion .story-bar.is-now > span { animation: none; width: 100%; }
+
+/* Compartir (ui/story-share.js): el aviso «Enlace copiado», bajo la cabecera. */
+.story-note { position: absolute; z-index: 4; top: calc(env(safe-area-inset-top, 0px) + 5.4rem); left: 50%; translate: -50% 0; margin: 0; padding: .5rem 1rem; border-radius: 999px; background: var(--story-shade); color: var(--viewer-ink); font: 500 .9rem/1.3 var(--font); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity var(--dur-pop) var(--ease); }
+.story-note.is-on { opacity: 1; }
+
+/* Invitación a jugar al terminar una historia compartida (ui/story-link.js): el último cuadro de fondo, quieto y en penumbra. */
+.story-invite .story-frame { cursor: default; touch-action: auto; }
+.story-invite .story-pan { animation: none; transform: scale(1.06); }
+.story-invite .story-media::after { content: ""; position: absolute; inset: 0; background: var(--story-shade-soft); }
+.story-invite .story-bottom { max-height: none; }
+.story-invite .story-ask { margin: 0; font: 700 1.6rem/1.2 var(--font); color: var(--viewer-ink); }

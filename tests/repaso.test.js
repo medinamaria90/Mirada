@@ -7,15 +7,13 @@ import assert from 'node:assert/strict';
 // accentStyle y compañía leen variables CSS del documento: lo mínimo para que no haga falta navegador.
 globalThis.document = { documentElement: {} };
 globalThis.getComputedStyle = () => ({ getPropertyValue: () => '#000000' });
-const { graceSavedText } = await import('../app/js/ui/screens/result.js');
+const { roundChips, chipsHtml, CHIPS_SHOWN } = await import('../app/js/ui/screens/result-chips.js');
 
-test('racha a salvo: textos del resultado coherentes con los días de gracia', () => {
-  assert.equal(graceSavedText(0), '');
-  assert.equal(graceSavedText(1), 'Racha a salvo: te quedaba un día de gracia');
-  assert.equal(graceSavedText(2), 'Racha a salvo: te quedaban dos días de gracia');
-  for (const t of [graceSavedText(1), graceSavedText(2)]) {
-    assert.doesNotMatch(t, /ayer|mañana/i);
-  }
+test('racha a salvo: la ficha de la racha lo dice, sin «ayer» ni «mañana»', () => {
+  const chip = (grace) => roundChips({ artist: () => null, movement: () => null, deepLevels: () => [] }, { events: [{ type: 'streak', value: 3, grace }] })[0];
+  assert.deepEqual([chip(0).title, chip(0).sub], ['3 días', 'Racha']);
+  assert.equal(chip(1).sub, 'Racha a salvo');
+  assert.doesNotMatch(JSON.stringify([chip(0), chip(2)]), /ayer|mañana/i);
 });
 
 // ---------------------------------------------------------------- 2. Errores que vuelven
@@ -244,7 +242,7 @@ test('repaso de 5: fallados, después vencidos y después los más antiguos, sol
 });
 
 // ---------------------------------------------------------------- 9. Cierre del día y botones del resultado
-const { daySummary, listNames } = await import('../app/js/engine/closure.js');
+const { newWorksCount } = await import('../app/js/engine/closure.js');
 const { renderResult } = await import('../app/js/ui/screens/result.js');
 
 function renderResultHtml(progress, outcome, plan, opts = {}) {
@@ -255,45 +253,55 @@ function renderResultHtml(progress, outcome, plan, opts = {}) {
   renderResult(ctx, el, { plan, outcome, title: 'Repaso de 5', accent: '', firstTry: [true, true, true], ...opts });
   return el.innerHTML;
 }
+const footOf = (html) => html.match(/<footer class="res-foot">[^]*?<\/footer>/)?.[0] || '';
 
-test('cierre del día: bloque «Hoy» con pintores y cuadros nuevos, «La próxima vez» y solo «Seguir»', () => {
-  const today = '2026-11-24';
-  const [a, b, c] = big.path;
-  const p = masteredProgress({ [a.id]: { on: '2026-11-20' }, [b.id]: { on: today } });
-  p.artists[b.id].since = today;
-  p.artists[c.id] = { plays: 1, best: 0.6, mastered: false, last: today, since: today };
-  p.collection = { [big.worksOf(a.id)[0].id]: '2026-11-20', [big.worksOf(b.id)[0].id]: today, [big.worksOf(c.id)[3].id]: today };
-  const sum = daySummary(p, big, today);
-  assert.deepEqual(sum.artists, [b.id, c.id]);
-  assert.equal(sum.works.length, 2);
-  assert.equal(sum.next.id, big.path[3].id, 'la próxima parada: la siguiente abierta del camino');
-  assert.equal(listNames(['A', 'B', 'C']), 'A, B y C');
-  const outcome = { xp: 60, score: 3, total: 3, accuracy: 1, mastered: true, events: [{ type: 'goal', goal: 50 }, { type: 'unlock', step: { type: 'artist', id: big.path[3].id }, artistId: big.path[3].id }] };
-  const html = renderResultHtml(p, outcome, { kind: 'stage', artistId: c.id, seed: 3 }, { more: { label: 'Repaso de 5', to: 'repaso5' } });
-  const hoy = html.match(/<section class="day-done"[^]*?<\/section>/)?.[0] || '';
-  assert.ok(hoy.includes('<h2 id="day-done-h" class="event-kicker">Hoy</h2>'));
-  // El pintor de la etapa ya sale en «Hoy has aprendido»: en «Hoy» solo los demás.
-  assert.ok(hoy.includes(`Has conocido a ${big.artist(b.id).short}</p>`), hoy);
-  assert.ok(hoy.includes('2 cuadros nuevos'));
-  assert.equal((hoy.match(/ day-done-thumb /g) || []).length, 2);
-  assert.ok(hoy.includes(`La próxima vez: <strong>${big.path[3].name}</strong>`));
-  assert.doesNotMatch(hoy, /<button(?![^>]*data-zoom)/, 'el bloque «Hoy» no lleva botones (solo los cuadros, que se amplían)');
-  assert.doesNotMatch(html, /ayer|mañana/i);
-  const actions = html.match(/<div class="result-actions">[^]*?<\/div>\s*<\/main>/)?.[0] || '';
-  assert.match(actions, /data-action="done"[^>]*>Seguir</);
-  assert.doesNotMatch(actions, /Repetir|Repaso de 5|Repasar más/, 'en el cierre, sin llamadas a seguir jugando');
-  assert.deepEqual([...actions.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['share', 'done'], 'solo compartir y, en la barra de abajo, «Seguir»');
-  assert.doesNotMatch(html, /Siguiente etapa/, 'sin llamada a la siguiente etapa: va en «La próxima vez»');
+test('cuadros nuevos: los que la ronda ha añadido a la colección', () => {
+  assert.equal(newWorksCount({ collection: { a: 'd' } }, { collection: { a: 'd', b: 'd', c: 'd' } }), 2);
+  assert.equal(newWorksCount(undefined, { collection: { a: 'd' } }), 1);
+  assert.equal(newWorksCount({ collection: {} }, {}), 0);
 });
 
-test('resultado sin meta cumplida: sin bloque «Hoy» y con una sola acción para practicar', () => {
+test('cierre del día: una pantalla con tres cifras (sin precisión), fichas de meta y racha y solo «Seguir» y compartir', () => {
+  const today = '2026-11-24';
+  const [a, b, c] = big.path;
+  const before = masteredProgress({ [a.id]: { on: '2026-11-20' }, [b.id]: { on: today } });
+  before.collection = { [big.worksOf(a.id)[0].id]: '2026-11-20' };
+  const p = structuredClone(before);
+  p.artists[c.id] = { plays: 1, best: 0.6, mastered: false, last: today, since: today };
+  p.collection = { ...before.collection, [big.worksOf(b.id)[0].id]: today, [big.worksOf(c.id)[3].id]: today };
+  const outcome = { xp: 60, score: 3, total: 3, accuracy: 1, mastered: true, events: [{ type: 'goal', goal: 50 }, { type: 'streak', value: 2, grace: 0 }, { type: 'unlock', step: { type: 'artist', id: big.path[3].id }, artistId: big.path[3].id }] };
+  const html = renderResultHtml(p, outcome, { kind: 'stage', artistId: c.id, seed: 3 }, { before, more: { label: 'Repaso de 5', to: 'repaso5' } });
+  assert.match(html, /<dt>Aciertos<\/dt><dd>3\/3<\/dd>/);
+  assert.match(html, /<dt>Cuadros nuevos<\/dt><dd>2<\/dd>/);
+  assert.doesNotMatch(html, /Precisión|day-done|level-line|class="week"/, 'sin precisión, bloque «Hoy», barra de rango ni semana');
+  assert.deepEqual([...html.matchAll(/data-chip="([a-z-]+)"/g)].map((m) => m[1]), ['goal', 'streak']);
+  assert.doesNotMatch(html, /Siguiente etapa|La próxima vez/, 'la parada siguiente la enseña el mapa al volver');
+  assert.doesNotMatch(html, /ayer|mañana/i);
+  const foot = footOf(html);
+  assert.match(foot, /data-action="done"[^>]*>Seguir</);
+  assert.doesNotMatch(foot, /Repetir|Repaso de 5|Repasar más/, 'en el cierre, sin llamadas a seguir jugando');
+  assert.deepEqual([...foot.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['share', 'done'], 'solo compartir y, abajo, «Seguir»');
+});
+
+test('resultado sin meta cumplida: una sola acción para practicar y la racha a salvo en su ficha', () => {
   const p = masteredProgress({ [big.path[0].id]: { on: '2026-11-20' } });
   const outcome = { xp: 30, score: 2, total: 3, accuracy: 0.67, mastered: false, events: [{ type: 'streak', value: 4, grace: 1 }] };
   const html = renderResultHtml(p, outcome, { kind: 'srs', seed: 3 }, { more: { label: 'Repasar más', to: 'repaso' } });
-  assert.doesNotMatch(html, /day-done/);
   assert.match(html, /data-to="repaso"[^>]*>[^]*?<span>Repasar más<\/span>/);
   assert.doesNotMatch(html, /data-to="repaso5"/, 'una sola acción secundaria para practicar');
-  assert.ok(html.includes('Racha a salvo: te quedaba un día de gracia'));
+  assert.match(html, /<strong>4 días<\/strong><small>Racha a salvo<\/small>/);
+});
+
+test('logros: como mucho tres a la vista; con más, dos y «+N» con el resto oculto en la misma fila', () => {
+  const events = [{ type: 'goal', goal: 50 }, { type: 'streak', value: 3 }, { type: 'rank', name: 'Aficionado' }];
+  const three = chipsHtml(roundChips(big, { events }));
+  assert.equal((three.match(/class="res-chip"/g) || []).length, CHIPS_SHOWN);
+  assert.doesNotMatch(three, / hidden>|data-chips="more"/);
+  const five = chipsHtml(roundChips(big, { events, otherMedals: [{ id: 'new-1' }, { id: 'challenge-1' }] }));
+  assert.equal((five.match(/ hidden>/g) || []).length, 3);
+  assert.match(five, /data-chips="more" aria-label="Ver 3 más"><strong>\+3<\/strong>/);
+  assert.match(five, /aria-label="Medalla nueva: Primer cuadro nuevo"/);
+  assert.ok([...five.matchAll(/<button[^>]*class="res-chip"[^>]*>/g)].every((m) => /data-to="[a-z-]+"/.test(m[0])), 'cada ficha lleva a su sitio');
 });
 
 test('cierre del día con menos de la mitad de aciertos en una etapa: manda «Repetir» y «Volver al camino»', () => {
@@ -301,8 +309,8 @@ test('cierre del día con menos de la mitad de aciertos en una etapa: manda «Re
   p.artists[big.path[1].id] = { plays: 1, best: 0.3, mastered: false, last: '2026-11-24' };
   const outcome = { xp: 55, score: 1, total: 6, accuracy: 1 / 6, mastered: false, events: [{ type: 'goal', goal: 50 }] };
   const html = renderResultHtml(p, outcome, { kind: 'stage', artistId: big.path[1].id, seed: 2 });
-  assert.match(html, /class="day-done"/);
-  const actions = html.match(/<div class="result-actions">[^]*?<\/div>\s*<\/main>/)?.[0] || '';
-  assert.match(actions, /btn-primary[^>]*data-action="go" data-to="etapa-[^"]+"[^>]*data-primary>[^]*?Repetir/);
-  assert.match(actions, /data-action="done">Volver al camino/);
+  assert.match(html, /a la segunda se ve más/);
+  const foot = footOf(html);
+  assert.match(foot, /btn-primary[^>]*data-action="go" data-to="etapa-[^"]+"[^>]*data-primary>[^]*?Repetir/);
+  assert.match(foot, /data-action="done"><span>Volver al camino/);
 });
