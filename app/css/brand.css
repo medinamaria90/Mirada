@@ -198,6 +198,7 @@
   --cuadro-radius: 18px;
   --cuadro-gap: .5rem;
   --chip-dot-at: 5px;
+  --chip-dot-edge: 1px; /* en la esquina, cuando el botón lleva texto al lado */
   --ring-out: 12px;
   --ring-out-lg: 10px;
   --kiosk-hit: 56px;

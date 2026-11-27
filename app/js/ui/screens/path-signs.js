@@ -71,7 +71,7 @@ export function eraArch({ movement, status, sealed, done, total, prevName, arch,
   const locked = status === 'locked';
   const name = `<span class="arch-name">${locked ? `${icons.lock(11)} ` : ''}${esc(movement.name)}</span>`;
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
-  const count = `${done} de ${total} ${total === 1 ? 'pintor dominado' : 'pintores dominados'}`;
+  const count = `${done} de ${total} ${total === 1 ? 'pintor' : 'pintores'}`;
   const button = locked
     ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${groove(0)}</button>`
     : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}${groove(sealed ? 1 : total ? done / total : 0)}</button>`;
@@ -96,7 +96,7 @@ export function museumBlock(museum, n, done = false) {
   const building = `<svg class="path-museum-art" viewBox="0 0 390 ${museum.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${museumArt()}</svg>`;
   const epochs = n === 1 ? 'Una época' : `${n} épocas`;
   const plate = done
-    ? `<button type="button" class="sign-plate is-done path-museum-head" data-action="collection" aria-label="Museo completo: ${epochs} dominadas. Ver tu colección"><span class="sign-seal" aria-hidden="true">${icons.laurel(16)}</span><span class="sign-name">Museo completo</span><span class="sign-meta"><span>${epochs} dominadas · Ver tu colección</span></span><span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button>`
+    ? `<button type="button" class="sign-plate is-done path-museum-head" data-action="collection" aria-label="Museo completo: ${epochs}, todas terminadas. Ver tu colección"><span class="sign-seal" aria-hidden="true">${icons.laurel(16)}</span><span class="sign-name">Museo completo</span><span class="sign-meta"><span>${epochs} · Ver tu colección</span></span><span class="sign-more" aria-hidden="true">${icons.next(14)}</span></button>`
     : `<p class="sign-plate is-static path-museum-head"><span class="sign-name">Tu museo</span><span class="sign-meta"><span>${epochs}, todos los pintores</span></span></p>`;
   return `<li class="path-museum${done ? ' is-done' : ''}" style="aspect-ratio:${MAP_W}/calc(${museum.h} * var(--k, 1))">
     ${building}${trailSvg(museum.h, museum.trail, [], done ? museum.trail : '')}
@@ -132,7 +132,7 @@ const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 
 // Qué abre una rama cerrada, en una frase: «se abre al dominar a Botticelli y Berruguete».
 export function branchWhy(index, st) {
-  return st.pending.length ? `se abre al dominar a ${joinNames(st.pending.map((p) => stepName(index, p)))}` : 'aún cerrada';
+  return st.pending.length ? `se abre después de ${joinNames(st.pending.map((p) => stepName(index, p)))}` : 'aún cerrada';
 }
 
 // Tablilla de una rama al final de su desvío (sobre dos postes): nombre y cifra (completa, con el sello de hecho);
@@ -146,8 +146,8 @@ export function branchSpot(spot, branch, st, index, h) {
   const allDone = spot.extra && st.total && st.mastered === st.total;
   const fresh = allDone ? `${st.mastered}/${st.total}` : `${st.fresh} ${st.fresh === 1 ? 'nuevo' : 'nuevos'}`;
   const label = spot.extra
-    ? `${branch.name}: ${allDone ? `${st.total} de ${st.total} dominados` : `${st.fresh === 1 ? 'un pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época`}${st.open ? '' : `, ${branchWhy(index, st)}`}`
-    : done ? `${branch.name}: rama completa, ${st.total} de ${st.total} dominados` : st.open ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} dominados` : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
+    ? `${branch.name}: ${allDone ? `${st.total} de ${st.total} pintores` : `${st.fresh === 1 ? 'un pintor nuevo' : `${st.fresh} pintores nuevos`} en esta época`}${st.open ? '' : `, ${branchWhy(index, st)}`}`
+    : done ? `${branch.name}: rama completa, ${st.total} de ${st.total} pintores` : st.open ? `${branch.name}: rama abierta, ${st.mastered} de ${st.total} pintores` : `${branch.name}: rama cerrada, ${branchWhy(index, st)}`;
   // Cerrada: tras quién se abre («tras Goya»; con varias paradas pendientes, cuántos pintores faltan).
   const line = !st.open ? `${icons.lock(11)} ${n === 1 ? `tras ${esc(stepName(index, st.pending[0]))}` : `faltan ${n} pintores`}` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li ${signBox(spot.sign, h, 'branch-spot')}>
@@ -174,7 +174,7 @@ export function backSpot(back, eraName, h) {
 // aunque sus pintores estén cerrados: abre su cartel en tarjetas (sign-cards.js).
 export function tramoSign(sec, info, h) {
   const done = info.total > 0 && info.got === info.total;
-  const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} dominados`}. Ver cartel`;
+  const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} pintores`}. Ver cartel`;
   return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo${done ? ' is-done' : ''}" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
       <span class="sign-name">${esc(sec.name)}</span></button></li>`;
 }
@@ -182,7 +182,7 @@ export function tramoSign(sec, info, h) {
 // Arco de la rama en su pantalla, a la entrada: solo el nombre (la cuenta ya está en la cabecera); abre el cartel de la
 // rama en tarjetas.
 export function branchEntrySign(branch, arch, h, mastered, total) {
-  const label = `${branch.name}, ${mastered} de ${total} dominados. Ver cartel`;
+  const label = `${branch.name}, ${mastered} de ${total} pintores. Ver cartel`;
   return `<h2 ${archBox(arch, h)}><button type="button" class="arch-band${total && mastered === total ? ' is-done' : ''}" data-action="cartel" data-kind="rama" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
       <span class="arch-name">${esc(branch.name)}</span></button></h2>`;
 }

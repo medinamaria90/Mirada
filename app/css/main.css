@@ -124,8 +124,6 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .brand { min-width: 48px; justify-content: center; }
 .topbar-stats { flex-wrap: wrap; row-gap: .25rem; }
 @container (max-width: 20.5em) { .brand > span { display: none; } }
-/* Con el botón «Repasar» (cuatro chips), el nombre se oculta antes: a 360 px la cabecera sigue en una línea. */
-@container (max-width: 25em) { .topbar:has(.chip-review) .brand > span { display: none; } }
 /* Los chips van siempre en una línea: el de nivel toma el sitio que sobra (hasta su contenido) y, si
    falta, acorta el nombre con puntos suspensivos en vez de saltar la barra a dos líneas. */
 .topbar-stats { display: flex; align-items: center; gap: .1rem; margin-left: auto; justify-content: flex-end; flex: 1 1 0; min-width: 0; }
@@ -140,8 +138,6 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .chip:hover .chip-pill { box-shadow: 0 2px 0 var(--line-2), inset 0 0 0 1px var(--line-2); }
 .chip:active .chip-pill { transform: translateY(2px); box-shadow: inset 0 0 0 1px var(--line); }
 .chip .icon { color: var(--brand-text); }
-.chip-goal .chip-pill { padding: 0 .4rem 0 .2rem; gap: .2rem; }
-.chip-goal-text { font-size: .74rem; color: var(--ink-2); }
 /* Racha: el número con «día(s)» debajo, como el nivel lleva su barra: cabe en una línea de 390 px. */
 /* Cuadro del día (shell.js): redondo; pendiente, el detalle de hoy en un círculo con el punto coral; hecho, la miniatura con ✓. */
 .chip-cuadro .chip-pill { position: relative; padding: 0; width: var(--cuadro-chip); min-height: var(--cuadro-chip); height: var(--cuadro-chip); justify-content: center; }
@@ -152,7 +148,20 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 /* «Repasar» (shell.js): redondo con ↻, como el Cuadro del día; el punto coral si hay algo pendiente. */
 .chip-review .chip-pill { position: relative; padding: 0 .5rem; }
 .chip-dot { position: absolute; top: var(--chip-dot-at); right: var(--chip-dot-at); width: var(--chip-dot); height: var(--chip-dot); border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
-.chip-streak .chip-pill { padding: 0 .5rem 0 .4rem; }
+.chip-streak { padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.chip-streak .chip-pill { padding: 0 .55rem 0 .2rem; }
+/* La llama dentro del aro de la meta de hoy; con la meta cumplida, el aro entero. */
+.ring-inner { display: grid; place-items: center; }
+.ring-inner .icon { color: var(--brand-text); }
+/* «Repasar» con su nombre al lado del ↻ cuando cabe (con la cabecera estrecha, solo el icono). */
+.chip-review-text { font-size: .9rem; padding-inline-end: .2rem; }
+.chip-review .chip-dot { top: var(--chip-dot-edge); right: var(--chip-dot-edge); }
+@container (max-width: 26em) { .topbar:has(.chip-streak) .chip-review-text { display: none; } }
+/* Explicación de una línea al tocar una pieza de la cabecera (shell.js installHeaderTips). */
+.chip-tip {
+  position: fixed; z-index: 30; max-width: min(20rem, calc(100vw - 24px)); margin: 0; padding: .6rem .8rem; border-radius: var(--radius-sm);
+  background: var(--ink); color: var(--bg); font: 500 .9rem/1.35 var(--font); box-shadow: var(--shadow-pop);
+}
 .chip-stack { display: grid; justify-items: center; line-height: 1; }
 .chip-num { font-size: .95rem; }
 .chip-unit { font-size: .66rem; font-weight: 500; color: var(--ink-2); letter-spacing: .01em; }
@@ -373,7 +382,7 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage.has-ring { gap: calc(.75 * var(--map-fs) + var(--ring-out)); }
 .stage.has-ring .stage-dot, .stage.is-mastered.is-dormant.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px var(--line-2); }
 .stage.has-ring:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 2px 0 3px var(--line-2); }
-.stage-badge.is-partial { background: var(--brand); color: var(--on-brand); }
+.stage-badge.is-partial { min-width: 23px; width: auto; padding: 0 5px; background: var(--brand); color: var(--on-brand); font: 600 12px/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
 /* Parada actual a medias: el aro manda (sin el anillo coral entero encima), con su halo. */
 .stage-spot.is-current .stage.is-started.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 16px var(--brand-soft); }
 .stage-badge.is-next { min-width: 23px; width: auto; padding: 0 6px; background: var(--brand); color: var(--on-brand); font: 600 13px/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
@@ -881,7 +890,6 @@ dialog { overscroll-behavior: contain; }
 .ring.is-met .ring-fill { stroke: var(--ok); }
 .ring-mark { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ok); }
 .ring-mark .icon { stroke-width: 2.4; }
-.chip-goal { padding: 0; }
 
 /* Feedback que enseña */
 .fb-who { font-weight: 600; color: var(--ink); }
