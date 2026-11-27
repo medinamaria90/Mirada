@@ -1,7 +1,7 @@
 """Comprueba los carteles del mapa: contenido/ramas.json (uno por rama) y contenido/tramos.json
 (uno por tramo con nombre del camino común y por grupo de época dentro de las ramas de escuela).
-Revisa claves válidas y completas, longitudes, palabras vetadas, fuente y que cada obra sea
-«learn» de un pintor del grupo."""
+Revisa claves válidas y completas, longitudes, palabras vetadas, fuente y que cada tarjeta lleve una obra
+distinta, «learn» de un pintor del grupo (sin cuadro, la presentación sale en blanco)."""
 import json
 import re
 import sys
@@ -62,13 +62,18 @@ def revisar_cartel(clave, cartel, pintores, obras, errores, es_rama):
             errores.append(f"{clave}: «Fíjate en» sin obra")
     elif not MIN_TARJETAS_TRAMO <= len(tarjetas) <= MAX_TARJETAS_TRAMO:
         errores.append(f"{clave}: {len(tarjetas)} tarjetas (de {MIN_TARJETAS_TRAMO} a {MAX_TARJETAS_TRAMO})")
+    vistas = set()
     for numero, tarjeta in enumerate(tarjetas, 1):
         donde = f"{clave} · tarjeta {numero}"
         revisar_texto(f"{donde} · kicker", tarjeta.get("kicker"), MAX_LEAD, errores)
         revisar_texto(donde, tarjeta.get("text"), MAX_TARJETA, errores)
         obra = tarjeta.get("artwork")
-        if obra is None:
+        if not obra:
+            errores.append(f"{donde}: sin obra (cada tarjeta enseña un cuadro)")
             continue
+        if obra in vistas:
+            errores.append(f"{donde}: repite la obra {obra}")
+        vistas.add(obra)
         datos = obras.get(obra)
         if not datos:
             errores.append(f"{donde}: obra {obra} desconocida")
