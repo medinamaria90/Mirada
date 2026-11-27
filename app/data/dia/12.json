@@ -23,19 +23,21 @@
   {
    "text": "Era Sorolla, el pintor valenciano de la luz del Mediterráneo. ¿Recuerdas el sombrero del principio? Pasean su mujer, Clotilde, y su hija María por la playa de Valencia.",
    "artwork": "w6065609",
-   "focus": [
-    0.66,
-    0.5,
-    2
+   "region": [
+    0.503,
+    0.25,
+    0.817,
+    0.75
    ]
   },
   {
    "text": "Fíjate en las sombras de los vestidos blancos: no son grises, son azules y moradas. Sorolla pintaba la luz que veía, no la que se suponía.",
    "artwork": "w6065609",
-   "focus": [
-    0.27,
-    0.5,
-    1.6
+   "region": [
+    0.074,
+    0.188,
+    0.466,
+    0.812
    ]
   },
   {

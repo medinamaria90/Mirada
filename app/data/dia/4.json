@@ -23,19 +23,21 @@
   {
    "text": "Era Goya, el pintor que contó la guerra sin adornos. ¿Recuerdas el farol del principio? Es la única luz de la noche y cae sobre el hombre de blanco que abre los brazos.",
    "artwork": "w1091086",
-   "focus": [
-    0.45,
-    0.55,
-    1.6
+   "region": [
+    0.302,
+    0.238,
+    0.598,
+    0.863
    ]
   },
   {
    "text": "Fíjate en los soldados franceses: de espaldas, en fila y sin cara. No parecen personas, sino una máquina de matar frente a gente corriente.",
    "artwork": "w1091086",
-   "focus": [
-    0.78,
-    0.5,
-    1.6
+   "region": [
+    0.632,
+    0.188,
+    0.928,
+    0.812
    ]
   },
   {

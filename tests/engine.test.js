@@ -9,7 +9,7 @@ import {
 } from '../app/js/engine/planner.js';
 import { recordAnswer, dueKeys } from '../app/js/engine/srs.js';
 import { daysBetween, addDays, weekOf, dayKey, expandDay } from '../app/js/engine/dates.js';
-import { planDaily, dailyGrid, DAILY_SIZE } from '../app/js/engine/daily.js';
+import { planWeekly, dailyGrid, WEEKLY_SIZE } from '../app/js/engine/daily.js';
 import { encodeChallenge, decodeChallenge, tokenForRound } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
 import { sampleIndex, bigIndex } from './helpers.js';
@@ -207,12 +207,12 @@ test('fechas locales: diferencias, semana y validación', () => {
   assert.equal(expandDay('20261332'), null);
 });
 
-test('reto diario determinista por fecha y distinto entre fechas', () => {
+test('reto semanal determinista por semana y distinto entre semanas', () => {
   const index = bigIndex();
-  const a = planDaily(index, '2026-11-23');
-  const b = planDaily(index, '2026-11-23');
-  const c = planDaily(index, '2026-11-24');
-  assert.equal(a.questions.length, DAILY_SIZE);
+  const a = planWeekly(index, '2026-W48');
+  const b = planWeekly(index, '2026-W48');
+  const c = planWeekly(index, '2026-W49');
+  assert.equal(a.questions.length, WEEKLY_SIZE);
   assert.deepEqual(a, b);
   assert.notDeepEqual(a.questions, c.questions);
   a.questions.forEach((q) => assertValidQuestion(index, q));
@@ -235,10 +235,14 @@ test('reto a un amigo: codificar y decodificar hash plano y reconstruir la misma
 
   const review = planMovementReview(index, 'mov2', 55);
   assert.deepEqual(planChallenge(index, decodeChallenge(encodeChallenge(tokenForRound(index, review), 3))).questions, review.questions);
-  const daily = planDaily(index, '2026-11-23');
-  const dd = decodeChallenge(encodeChallenge(tokenForRound(index, daily), DAILY_SIZE));
-  assert.equal(dd.date, '2026-11-23');
-  assert.deepEqual(planChallenge(index, dd).questions, daily.questions);
+  const weekly = planWeekly(index, '2026-W48');
+  const ww = decodeChallenge(encodeChallenge(tokenForRound(index, weekly), 5));
+  assert.equal(ww.week, '2026-W48');
+  assert.deepEqual(planChallenge(index, ww).questions, weekly.questions);
+  // Los enlaces del reto diario (ya no existe) se siguen leyendo, pero no rehacen ninguna ronda: llevan al Cuadro del día.
+  const dd = decodeChallenge('#reto-d20261123-4');
+  assert.equal(dd.kind, 'daily');
+  assert.equal(planChallenge(index, dd), null);
 
   for (const bad of ['', '#reto-', '#reto-diario', '#reto-zz-1', '#reto-s1x2-999', '#reto-d20261399-3', '#Reto-s1x2-3', '#reto-s1x2-3&x=1']) {
     assert.equal(decodeChallenge(bad), null, bad);

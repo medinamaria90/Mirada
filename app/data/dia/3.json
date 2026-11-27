@@ -23,19 +23,21 @@
   {
    "text": "Era Velázquez, el pintor del rey Felipe IV. ¿Recuerdas el espejo del principio? Refleja a los reyes: están justo donde estás tú, mirando la escena.",
    "artwork": "w208758",
-   "focus": [
-    0.42,
-    0.56,
-    2
+   "region": [
+    0.242,
+    0.31,
+    0.598,
+    0.81
    ]
   },
   {
    "text": "Fíjate en el propio Velázquez, a la izquierda, con el pincel en la mano: se retrató trabajando junto a la familia real, algo muy atrevido para un pintor.",
    "artwork": "w208758",
-   "focus": [
-    0.24,
-    0.6,
-    2
+   "region": [
+    0.062,
+    0.35,
+    0.418,
+    0.85
    ]
   },
   {

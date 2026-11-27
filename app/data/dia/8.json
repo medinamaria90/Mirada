@@ -23,19 +23,21 @@
   {
    "text": "Era El Greco, un pintor de Creta que se quedó en Toledo casi cuarenta años. ¿Recuerdas el detalle del principio? Eran la catedral y el Alcázar, en lo alto de la ciudad.",
    "artwork": "w883994",
-   "focus": [
-    0.72,
-    0.38,
-    2
+   "region": [
+    0.545,
+    0.13,
+    0.895,
+    0.63
    ]
   },
   {
    "text": "Fíjate en el cielo: negro y verde, con nubes rasgadas y la luz cayendo a trozos. La ciudad parece a punto de recibir un rayo.",
    "artwork": "w883994",
-   "focus": [
-    0.4,
-    0.2,
-    1.6
+   "region": [
+    0.181,
+    0.0,
+    0.619,
+    0.625
    ]
   },
   {

@@ -3,7 +3,6 @@
 import { esc } from './dom.js';
 import { icons, logoMark } from './icons.js';
 import { tinySrc, smallSrc } from './art.js';
-import { cropRect, tryLabel, CUADRO_ROUTE, DETAIL_ZOOM } from '../engine/cuadro-calendar.js';
 import { visibleStreak, todayXp, normalizeGoal } from '../engine/progress.js';
 import { hasReview, reviewPending } from '../engine/review.js';
 
@@ -33,16 +32,19 @@ export function streakChip(streak) {
 }
 
 // Cuadro del día: botón redondo. Pendiente, un círculo con el detalle de hoy (el mismo del paso 1) y el punto de aviso; hecho,
-// la miniatura del cuadro entero con ✓. `today`: { artwork, focus } de hoy (null mientras llega el calendario: solo el icono).
-// `record`: la partida de hoy si ya está hecha (engine/cuadro-dia.js). `work`: la obra del catálogo.
+// la miniatura del cuadro entero con ✓. `today`: lo de hoy de ui/cuadro-data.js ({ crop, labelFor… }; null mientras llega el
+// calendario: solo el icono). `record`: la partida de hoy si ya está hecha (engine/cuadro-dia.js). `work`: la obra del catálogo.
+// Sin importar nada del Cuadro del día: la cabecera va en todas las pantallas.
+const CUADRO_HREF = '#cuadro-del-dia'; // CUADRO_ROUTE de engine/cuadro-calendar.js
 export function cuadroChip(today, record, work) {
-  const href = `#${CUADRO_ROUTE}`;
+  const href = CUADRO_HREF;
   if (record && work) {
-    return `<a class="chip chip-cuadro is-done" href="${href}" aria-label="Cuadro del día, hecho: ${esc(tryLabel(record).toLowerCase())}"><span class="chip-pill"><span class="chip-cuadro-img" style="background-image:url('${esc(tinySrc(work))}')"></span><span class="chip-cuadro-ok" aria-hidden="true">${icons.check(12)}</span></span></a>`;
+    const how = today?.labelFor ? `: ${today.labelFor(record).toLowerCase()}` : '';
+    return `<a class="chip chip-cuadro is-done" href="${href}" aria-label="Cuadro del día, hecho${esc(how)}"><span class="chip-pill"><span class="chip-cuadro-img" style="background-image:url('${esc(tinySrc(work))}')"></span><span class="chip-cuadro-ok" aria-hidden="true">${icons.check(12)}</span></span></a>`;
   }
   const label = 'Cuadro del día, pendiente';
-  if (!today || !work) return `<a class="chip chip-cuadro" href="${href}" aria-label="${label}"><span class="chip-pill">${icons.frames(20)}<span class="chip-dot" aria-hidden="true"></span></span></a>`;
-  const [x0, y0, x1, y1] = cropRect(work, today.focus, DETAIL_ZOOM);
+  if (!today?.crop || !work) return `<a class="chip chip-cuadro" href="${href}" aria-label="${label}"><span class="chip-pill">${icons.frames(20)}<span class="chip-dot" aria-hidden="true"></span></span></a>`;
+  const [x0, y0, x1, y1] = today.crop;
   const w = x1 - x0;
   const h = y1 - y0;
   const pos = (v, size) => (size >= 1 ? 50 : (v / (1 - size)) * 100).toFixed(1);

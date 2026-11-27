@@ -23,19 +23,21 @@
   {
    "text": "Era Botticelli, el pintor de los Médici en Florencia. ¿Recuerdas el detalle del principio? Eran los vientos, soplando para empujar a Venus recién nacida hasta la orilla.",
    "artwork": "w151047",
-   "focus": [
-    0.32,
-    0.22,
-    2
+   "region": [
+    0.223,
+    0.0,
+    0.417,
+    0.5
    ]
   },
   {
    "text": "Fíjate en que nada pesa: Venus apenas apoya el pie en la concha y el mar son trazos en forma de uve. Botticelli no copia la realidad, busca una belleza ideal.",
    "artwork": "w151047",
-   "focus": [
-    0.5,
-    0.75,
-    1.8
+   "region": [
+    0.392,
+    0.444,
+    0.608,
+    1.0
    ]
   },
   {

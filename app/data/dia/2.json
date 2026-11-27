@@ -23,19 +23,21 @@
   {
    "text": "Era Van Eyck, el flamenco que llevó el óleo a un detalle nunca visto. ¿Recuerdas el detalle del principio? Ese perrito, pintado pelo a pelo, es un símbolo de fidelidad.",
    "artwork": "w220859",
-   "focus": [
+   "region": [
+    0.288,
     0.5,
-    0.86,
-    2
+    0.712,
+    1.0
    ]
   },
   {
    "text": "Fíjate en el espejo redondo del fondo: refleja la habitación entera y, en la puerta, a dos personas. Una podría ser el propio pintor.",
    "artwork": "w220859",
-   "focus": [
-    0.5,
-    0.29,
-    2.4
+   "region": [
+    0.323,
+    0.082,
+    0.677,
+    0.498
    ]
   },
   {

@@ -1,7 +1,7 @@
 // Datos del Cuadro del día (data/dia/, los genera tools/sync_cuadro_dia.py): el calendario (index.json, pequeño: se pide tras
 // el catálogo para pintar el detalle de hoy en la cabecera) y cada día (<n>.json: opciones, pistas e historia), al abrirlo.
 
-import { dayNumber, entryFor } from '../engine/cuadro-calendar.js';
+import { dayNumber, entryFor, cropRect, tryLabel, DETAIL_ZOOM } from '../engine/cuadro-calendar.js';
 
 let indexPromise = null;
 let calendar = null;
@@ -24,12 +24,15 @@ export function ensureCuadroIndex() {
   return indexPromise;
 }
 
-// Hoy, si el calendario ya ha llegado: { n (número del día), slot (su posición en el calendario), artwork, focus }; si no, null.
-export function cuadroToday(day) {
+// Hoy, si el calendario ya ha llegado: { n (número del día), slot (su posición en el calendario), artwork, focus, crop (el
+// recorte del detalle del paso 1 en `work`, para la cabecera), labelFor (record) → «A la segunda» }; si no, null. Así la
+// cabecera (ui/shell.js) no carga nada del Cuadro del día.
+export function cuadroToday(day, work = null) {
   if (!calendar) return null;
   const n = dayNumber(day, calendar.start);
   const e = entryFor(calendar.days, n);
-  return e ? { n, slot: e.n, artwork: e.artwork, focus: e.focus } : null;
+  if (!e) return null;
+  return { n, slot: e.n, artwork: e.artwork, focus: e.focus, crop: work ? cropRect(work, e.focus, DETAIL_ZOOM) : null, labelFor: tryLabel };
 }
 
 // Un día del calendario (por su posición), con caché.

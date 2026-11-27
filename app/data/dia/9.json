@@ -23,19 +23,21 @@
   {
    "text": "Era Monet, que quería pintar la luz de un instante. ¿Recuerdas la barca del principio? Cruza el puerto de Le Havre al amanecer, entre la bruma y el reflejo del sol.",
    "artwork": "w328523",
-   "focus": [
-    0.5,
-    0.68,
-    2
+   "region": [
+    0.38,
+    0.43,
+    0.62,
+    0.93
    ]
   },
   {
    "text": "Fíjate en el sol naranja: tiene la misma luminosidad que el cielo gris que lo rodea. Por eso parece temblar sobre el agua.",
    "artwork": "w328523",
-   "focus": [
-    0.6,
-    0.35,
-    1.8
+   "region": [
+    0.466,
+    0.072,
+    0.734,
+    0.628
    ]
   },
   {

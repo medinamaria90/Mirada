@@ -288,6 +288,12 @@ def main():
                 with Image.open(p) as im:
                     check(list(im.size) == atlas["size"][k], f"{src}: tamaño {im.size} ≠ {atlas['size'][k]}")
                     check(im.format == "JPEG" and not im.getexif(), f"{src}: no es JPEG limpio")
+    # --- Cuadro del día: el calendario sigue valiendo con este catálogo (tools/sync_cuadro_dia.py) ---
+    import sync_cuadro_dia as cdd  # noqa: E402
+    cal_errors, _rows = cdd.validate(cdd.read(cdd.SRC), cat, ficha["ficha"], cdd.read(cdd.EXPLAIN))
+    for e in cal_errors:
+        err(f"cuadro del día: {e}")
+
     app_files = sum(len(fs) for _, _, fs in os.walk(app))
     check(app_files < MAX_APP_FILES, f"{app_files} archivos en {app} (límite {MAX_APP_FILES})")
 

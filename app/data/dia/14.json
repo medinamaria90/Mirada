@@ -23,19 +23,21 @@
   {
    "text": "Era Rembrandt, el gran maestro holandés de la luz y la sombra. ¿Recuerdas a la niña del principio? Brilla en dorado entre los soldados y lleva un pollo colgado de la cintura.",
    "artwork": "w219831",
-   "focus": [
-    0.3,
-    0.65,
-    2
+   "region": [
+    0.174,
+    0.4,
+    0.426,
+    0.9
    ]
   },
   {
    "text": "Fíjate en la mano del capitán: su sombra cae sobre el traje amarillo del teniente. Nadie posa quieto; todos se mueven, como en una película.",
    "artwork": "w219831",
-   "focus": [
-    0.53,
-    0.62,
-    1.6
+   "region": [
+    0.372,
+    0.307,
+    0.688,
+    0.932
    ]
   },
   {

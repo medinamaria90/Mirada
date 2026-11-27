@@ -231,3 +231,16 @@ evaluadores independientes (`docs/eval/eval-camino-r1..r4.md`; aprueba la r4).
   «Cómo se juega». Desvíos tangentes con poste de flecha; en cada rama, «Volver al camino» del lado del camino común.
 - Candados: tiembla, vibra y un solo globo con cruz. «Tú»: círculo con flecha que sigue a la parada actual.
 - Luz: arrebol rosa al amanecer y ámbar al atardecer, encima de la noche; ningún edificio pisa un río.
+
+## Cuadro del día (27/11)
+
+Diseño aprobado por María: sustituye al reto diario de la cabecera. Un cuadro famoso al día, igual para todos (día de
+Madrid): «¿De quién es?», 6 pintores, 4 intentos; cada fallo apaga el nombre y enseña más (detalle ×3 → ×1,6 y época →
+entero y año → museo). Al acabar, una historia de 3 tarjetas (gancho que vuelve al detalle, «Fíjate en», anécdota) con el
+núcleo de las historias sacado de `story-viewer.js` (`ui/story-core.js`). Calendario curado de 14 días desde el 27/11
+(Botticelli, Van Eyck, Velázquez, Goya, Caravaggio, Leonardo, Vermeer, El Greco, Monet, el Bosco, Van Gogh, Sorolla,
+Murillo y Rembrandt), validado por `tools/sync_cuadro_dia.py` (nitidez del detalle con la HD que ahora pide también
+`pipeline/hd.py`, reparto, pistas sin destripes) con alarma desde el 08/12. Compartir con cuadritos y página
+`h/cuadro-<n>.html` con el detalle como vista previa. 10 XP si acierta, 5 si no; cuenta para la racha general; medallas
+`daily-1` y `daily-perfect` renombradas. Estado v11. Fuera `planDaily` y la ronda diaria; `#reto-diario` y los enlaces `d…`
+llevan al Cuadro del día.

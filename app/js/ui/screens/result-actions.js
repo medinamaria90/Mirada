@@ -13,7 +13,7 @@ import { cuadroNudge, CUADRO_ROUTE } from '../../engine/cuadro-dia.js';
 export function extraRounds(ctx, plan, { prevKind = null, weak = false } = {}) {
   const p = ctx.store.get().progress;
   const list = [];
-  if (cuadroNudge(p, ctx.dailyDay(), { weak })) list.push({ to: CUADRO_ROUTE, label: 'Cuadro del día', icon: 'frames' });
+  if (typeof ctx.dailyDay === 'function' && cuadroNudge(p, ctx.dailyDay(), { weak })) list.push({ to: CUADRO_ROUTE, label: 'Cuadro del día', icon: 'frames' });
   const reviewed = isReviewKind(plan.kind) || isReviewKind(prevKind);
   if (!reviewed && reviewSession(p, ctx.index, ctx.today()).works.length >= REVIEW_MIN) list.push({ to: 'repaso', label: REVIEW_NAME, icon: 'repeat' });
   if (plan.kind !== 'weekly' && isPathMastered(p, ctx.index) && !p.weekly?.[isoWeek(ctx.dailyDay()).key]) list.push({ to: 'reto-semanal', label: 'Reto semanal', icon: 'target' });

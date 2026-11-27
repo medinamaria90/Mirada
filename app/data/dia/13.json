@@ -23,19 +23,21 @@
   {
    "text": "Era Murillo, el pintor más querido de la Sevilla del siglo XVII. ¿Recuerdas los angelitos del principio? Juegan entre las nubes, a los pies de la Virgen.",
    "artwork": "w2456003",
-   "focus": [
-    0.38,
-    0.8,
-    2
+   "region": [
+    0.153,
+    0.5,
+    0.607,
+    1.0
    ]
   },
   {
    "text": "Fíjate en el manto azul, que parece moverse con el aire, y en la luna a sus pies. Es una Inmaculada (la Virgen concebida sin pecado), un tema que Sevilla adoraba.",
    "artwork": "w2456003",
-   "focus": [
-    0.5,
-    0.45,
-    1.6
+   "region": [
+    0.216,
+    0.138,
+    0.784,
+    0.762
    ]
   },
   {

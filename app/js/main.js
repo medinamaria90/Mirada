@@ -231,7 +231,7 @@ async function boot() {
       document.querySelectorAll('.chip-cuadro').forEach((el) => { el.outerHTML = html; });
     }).catch(() => {});
   };
-  loadCuadroData().then((m) => m.ensureCuadroIndex().then(() => { cuadroMod = m; refreshCuadroChip(); }))
+  const loadCuadroChip = () => loadCuadroData().then((m) => m.ensureCuadroIndex().then(() => { cuadroMod = m; refreshCuadroChip(); }))
     .catch((err) => console.info('Cuadro del día no disponible:', err.message));
 
   let cleanup = null;
@@ -247,7 +247,12 @@ async function boot() {
     // El Cuadro del día (y el reto semanal) van por el día de Madrid para que sean los mismos para todos.
     dailyDay: () => madridDayKey(new Date()),
     // El cuadro de hoy ({ n, slot, artwork, focus }) cuando ha llegado su calendario (ui/cuadro-data.js); si no, null.
-    cuadroToday: () => cuadroMod?.cuadroToday(madridDayKey(new Date())) || null,
+    cuadroToday: () => {
+      if (!cuadroMod) return null;
+      const day = madridDayKey(new Date());
+      const today = cuadroMod.cuadroToday(day);
+      return today && cuadroMod.cuadroToday(day, index.artwork(today.artwork));
+    },
     go,
     toast,
     ensureText,
@@ -346,7 +351,7 @@ async function boot() {
     if (route.redirect) return go(route.redirect, { replace: true });
     const welcome = () => lazy(token, screen, loadWelcome, (m) => m.renderWelcome(ctx, screen));
     // Un reto, una época o el Cuadro del día compartidos se pueden ver sin pasar por la bienvenida.
-    if (!onboarded && route.name !== 'challenge' && route.name !== 'era' && route.name !== 'cuadro') return welcome();
+    if (!onboarded && route.name !== 'challenge' && route.name !== 'cuadro' && route.name !== 'era') return welcome();
 
     // Ronda a medias: se retoma en su ruta y, al abrir la app en el inicio, se vuelve a ella.
     const session = readSession(store.get(), index, Date.now());
@@ -402,6 +407,7 @@ async function boot() {
   whenIdle(() => {
     ensureText();
     loadFlows().catch(() => {});
+    loadCuadroChip(); // el detalle de hoy en la cabecera (hasta entonces, el icono)
     import('./ui/dj-mode.js').then((m) => m.startDjIfOn()).catch(() => {}); // modo secreto «afinar música»
     import('./ui/warm-up.js').then((m) => m.warmUp()).catch((err) => console.info('Sin precarga:', err.message)); // lo que se toca después, sin esperar a la red
     startCloudWhenReady(store, storage, () => {

@@ -215,7 +215,7 @@ fallecidos antes de 1956 y obras anteriores a 1930. Movimientos previstos (ids):
   Nunca pintores sin jugar. `planner.planReviewSession`: preguntas del repaso espaciado (dificultad 0,6, reintento de lo
   fallado), `kind: 'srs'`; da XP, meta y racha y no cambia el dominio. El botón aparece desde 3 cuadros vistos
   (`hasReview`), nunca con candado, y lleva un punto coral sin número si hay fallados, vencidos o pintores a medias
-  (`reviewPending`). Va en la cabecera (`shell.js`, `REVIEW_PLACE`) entre la racha y el reto diario.
+  (`reviewPending`). Va en la cabecera (`shell.js`, `REVIEW_PLACE`) entre la racha y el Cuadro del día.
 - **Mapa:** sin «Repite». El pintor a medias llena el tramo del nivel 1 de su aro en proporción a `best / 0,75`
   (`level-ring.js startedRing`, `deep-badges.js`), con insignia ↻; aria-label «X, a medias, 67 %. Dominas con 75 %». Su
   tarjeta (`level-card.js`) dice «67 % · dominas con 75 %» o «Te faltan n cuadros por ver» y «Repetir». El nodo de época
@@ -232,6 +232,45 @@ fallecidos antes de 1956 y obras anteriores a 1930. Movimientos previstos (ids):
   (ordenados por cercanía); `rankFocus` elige una sola acción (el nivel que suma a más condiciones; «Jugar» si solo falta
   XP); el resto, filas discretas; si nada cuenta aún, `whyNoChoice` en una línea sin botón. Lo jugado desde el Perfil o
   los logros vuelve allí (`router.js GOAL_SCREENS`); al subir de rango, «¡Ya eres X! Ahora, a por Y».
+
+## 4 bis ter. Cuadro del día (27/11, diseño aprobado por María; sustituye al reto diario)
+
+- **Mecánica** (`engine/cuadro-dia.js`, puro): un cuadro famoso al día, el mismo para todos (día de Madrid,
+  `madridDayKey`). «¿De quién es?» con 6 pintores en 2 columnas y 4 intentos (`CUADRO_TRIES`). Cada fallo apaga el nombre
+  y enseña más (`CUADRO_STEPS`): paso 1, el detalle elegido a mano a ×3 (nunca la firma ni un texto); paso 2, ×1,6 y la
+  época; paso 3, el cuadro entero y el año; paso 4, el museo (`catalog-ficha.json` o `museum` a mano si su nombre delata al
+  pintor). Si falla los cuatro, «Era X». La imagen se abre en grande sin enseñar más de lo que permite el paso (lupa con
+  el mismo recorte en los pasos 1-2; visor sin título ni autor en los 3-4). La partida a medias se recuerda en el
+  navegador (`mirada.cuadro`).
+- **Al acabar** (`finishCuadro`, una vez al día): `progress.cuadros[día] = { n, guesses, won, tries }`, 10 XP si acierta y
+  5 si no, cuenta para la meta y la racha general (sin racha propia), medallas `daily-1` («Primer cuadro del día») y
+  `daily-perfect` («A la primera»). Pantalla de hecho (`ui/screens/cuadro-dia-hecho.js`): cuadro entero, «A la segunda» o
+  «Esta vez no», cuadritos, «Llevas n cuadros del día», «Compartir», «Ver la historia», «Conocer a X» (ficha) o «Lo
+  conocerás en el camino» (`ui/locked-painter-sheet.js`) y «El siguiente, en 6 h». Música de la portada.
+- **Historia**: 3 tarjetas (≤ 180 caracteres, una idea cada una): la respuesta y el gancho volviendo al detalle del paso 1
+  («¿Recuerdas…?»), «Fíjate en» con otro foco y la anécdota con la obra entera. Las abre `ui/story-core.js` (el núcleo
+  sacado de `story-viewer.js`, que acepta tarjetas sueltas). Las tarjetas con `[x, y, zoom]` se vuelcan como `region`.
+  Fuente en los datos, nunca en las tarjetas.
+- **Calendario curado** (`contenido/cuadro-del-dia/calendario.json` → `app/data/dia/index.json` + `<n>.json` con
+  `tools/sync_cuadro_dia.py`): el día de estreno (`start`) es el n.º 1 y cada día usa `calendario[(n - 1) % largo]`
+  (añadir obras al catálogo no mueve los días; si se acaba, vuelve a empezar). Requisitos que valida la herramienta (y
+  `validate_catalog.py`): fama 3 (o 2 si es español), explicaciones, 6 pintores distintos con la respuesta, nitidez del
+  detalle ≥ 1,5 px de imagen por px CSS en un marco de 420 px (HD de `pipeline/hd.py`, que lee el calendario), pistas
+  que no nombran al pintor y reparto contando la vuelta (mismo pintor, como mucho una vez cada 10 días; misma época, no
+  más de 2 días seguidos; un español en cada 4 días). **Alarma**: la herramienta (código 2) y `tests/cuadro-dia.test.js`
+  fallan cuando quedan menos de 3 días de calendario por delante. Los cuadros nuevos se añaden AL FINAL.
+- **Compartir**: «Sfumato · Cuadro del día 37 / 🖼️ 🟥🟥🟩⬛ / enlace», sin pintor, título ni año. El enlace es
+  `h/cuadro-<n>.html` (`tools/share_pages.py`, og:image = recorte del detalle del paso 1, pintado al desplegar ≤ 250 KB)
+  y abre siempre el cuadro de hoy (`#cuadro-del-dia`); quien no juega lo juega sin bienvenida y al final ve la
+  invitación de `ui/story-link.js` (`inviteToPlay`).
+- **Dónde vive**: chip `cuadroChip` de la cabecera (pendiente, círculo con el detalle y punto; hecho, miniatura con ✓). El
+  calendario se pide en reposo tras pintar (`ui/cuadro-data.js`); hasta entonces, el icono. `#reto-diario` y los enlaces
+  de reto `d<AAAAMMDD>` llevan aquí. La guía de «siguiente paso» lo propone como acción secundaria una vez al día
+  (`cuadroNudge`, `progress.cuadroNudge`), nunca tras una ronda floja (< 75 %). Estadística sin datos: `cuadro/termina`,
+  `cuadro/comparte`.
+- **Fuera el reto diario**: sin `planDaily`, `DAILY_SIZE`, `renderDaily` ni la rama `daily` de `finish.js`, `result.js` y
+  `state/session.js` (una ronda suya a medias se descarta). `dailyPool` sigue (ronda libre y reto semanal). Estado v11:
+  `progress.cuadros` y `progress.cuadroNudge`; `progress.daily` se conserva, solo de lectura.
 
 ## 4 ter. Catálogo grande (migración de 24/11, `catalog.json` versión 2)
 
