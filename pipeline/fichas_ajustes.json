@@ -10,5 +10,17 @@
   "city": "Londres",
   "country": "Reino Unido",
   "fuente": "Wikidata mantiene la National Gallery (la tuvo hasta pasarla a la Tate); hoy está en la Tate Britain (tate.org.uk, N01543)"
+ },
+ "Q4109849": {
+  "museum": "Colección privada",
+  "city": null,
+  "country": null,
+  "fuente": "Wikidata da como colección el marchante Kunsthandel P. de Boer; propietario: el coleccionista Eric Albada Jelgersma (P127)"
+ },
+ "Q1523466": {
+  "museum": "Colección privada",
+  "city": null,
+  "country": null,
+  "fuente": "Wikidata da como colección al marchante Brett Gorvy; vendida en subasta (Christie's, 2018) a un particular"
  }
 }
