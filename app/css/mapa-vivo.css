@@ -59,7 +59,10 @@
   --lit-trail-thread: color-mix(in oklab, color-mix(in oklab, var(--map-trail-thread), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
 }
 .path-era, .path-start, .path-museum, .path-foot { --lit-tint: color-mix(in oklab, color-mix(in oklab, var(--era-tint), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)); background: var(--lit-tint); }
-.path-era::before { background: linear-gradient(to top, color-mix(in oklab, color-mix(in oklab, var(--era-prev), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)), transparent); }
+.path-era { --lit-prev: color-mix(in oklab, color-mix(in oklab, var(--era-prev), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)); }
+.path-era::before { background: linear-gradient(to top, var(--lit-prev), transparent); }
+/* Frontera de la época (mapa-carteles.css): bajo el seto de su puerta sigue el suelo de la anterior, que se corta en él. */
+.path-era.has-gate::before { background: linear-gradient(to top, var(--lit-prev) 0 var(--map-frontier-solid), transparent); }
 
 /* Paisaje en línea: cada clase pinta su variable (tools/mapa_svg.py las nombra igual), ya con la luz del día. */
 .path-land .tint { fill: var(--lit-tint); }

@@ -139,6 +139,14 @@
   --map-return-b: 5.6rem;
   --map-r: 8px;
   --map-seam: 80px;
+  /* Sistema de carteles (mapa-carteles.css): arco de época, tablillas de tramo y rama, tarjeta de la parada actual. */
+  --map-frontier-solid: 80%;
+  --map-arch-crown: 2.4rem;
+  --map-arch-band: 4px;
+  --map-tablet-hit: 7px;
+  --map-current-dot: 70px;
+  --map-halo-dur: 3.2s;
+  --map-bob-dur: 2.8s;
   --map-line-x: 30px;
   --map-indent: 16px;
   /* Aro de niveles (ui/deep-badges.js): cuánto sale del retrato, grosor del tramo hecho y del siguiente (en la caja de 100 del

@@ -884,14 +884,14 @@ const mapV10 = await page.evaluate(() => {
     // El paisaje se mete en la página como SVG (map-land.js); si falla, queda como imagen.
     loaded: eras.filter((e) => land(e).tagName === 'svg' || land(e).getAttribute('src')).map((e) => e.dataset.era),
     currentLoaded: Boolean(cur) && (land(cur.closest('.path-era')).tagName === 'svg' || (land(cur.closest('.path-era')).complete && land(cur.closest('.path-era')).naturalWidth > 0)),
-    ringText: [...document.querySelectorAll('.stage-spot.is-current .stage-meta')].map((e) => e.textContent.trim()),
+    ringText: [...document.querySelectorAll('.stage-spot.is-current .stage-you')].map((e) => e.textContent.trim()),
   };
 });
 check(mapV10.bottomUp, 'el mapa no va de abajo arriba');
 check(mapV10.museumOnTop, '«Tu museo» no está arriba del todo');
 check(mapV10.extras === 0, 'quedan el personaje o los cofres en el mapa');
 check(mapV10.currentLoaded && mapV10.loaded.length <= 2, `paisajes cargados al abrir: ${mapV10.loaded.join(', ') || 'ninguno'}`);
-check(mapV10.ringText.join() === 'Empezar', `botón del nodo actual: ${mapV10.ringText.join()}`);
+check(mapV10.ringText.join() === 'Tú', `marca del nodo actual: ${mapV10.ringText.join()}`);
 const locked = page.locator('.stage.is-locked').first();
 await locked.scrollIntoViewIfNeeded();
 await locked.click();
@@ -967,13 +967,13 @@ check(!/Precisión/.test(await page.locator('.res-tally').innerText()), 'el resu
 check(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 1 && document.querySelector('.res-foot [data-primary]').getBoundingClientRect().bottom <= innerHeight), 'el resultado se desplaza o «Seguir» no queda a la vista');
 if (SMOKE) {
   await page.goto(`${base}#inicio`);
-  await page.waitForSelector('.stage-spot.is-current .stage-meta');
+  await page.waitForSelector('.stage-spot.is-current .stage-you');
   check(await page.locator('.path-character, .path-chest').count() === 0, '390 vuelta al mapa: quedan personaje o cofres');
-  check(await page.locator('.stage-spot.is-current .stage-meta').innerText() === 'Empezar', 'la parada nueva no dice «Empezar»');
+  check(await page.locator('.stage-spot.is-current .stage-you').count() === 1 && await page.locator('.stage-spot.is-current .stage-meta').count() === 0, 'la parada nueva no lleva la marca «Tú» (o aún lleva botón)');
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
   // Rama jugable: cerrada el primer día (tocarla dice qué falta); con el primer tramo del Renacimiento dominado, el
-  // desvío del Gótico entra en su pantalla (#rama-gotico): su paisaje, sus pintores como paradas y «Empezar» en el
+  // desvío del Gótico entra en su pantalla (#rama-gotico): su paisaje, sus pintores como paradas y la marca «Tú» en el
   // primero propio. La ronda sabe que viene del Gótico (#etapa-<pintor>--gotico) y su resultado sigue en él.
   const goticoSign = '.branch[data-id="gotico"]';
   check(await page.locator(`${goticoSign}.is-locked`).count() === 1, 'el Gótico está abierto el primer día');
@@ -1002,7 +1002,7 @@ if (SMOKE) {
   await page.waitForSelector(`${goticoSign}.is-open`);
   await openGotico();
   check(page.url().endsWith('#rama-gotico'), `el desvío no entra en la pantalla de la rama: ${page.url()}`);
-  check(await page.locator(`.page-branch .stage-spot.is-current[data-step="artist:${ownGotico[0]}"] .stage-meta`).innerText() === 'Empezar', 'la rama no ofrece «Empezar» al primer pintor');
+  check(await page.locator(`.page-branch .stage-spot.is-current[data-step="artist:${ownGotico[0]}"] .stage-you`).count() === 1, 'la rama no marca al primer pintor como parada actual');
   check(await page.locator(branchNode(ownGotico[1])).getAttribute('data-status') === 'locked', 'la rama deja jugar a un pintor aún cerrado');
   check(await page.locator('.page-branch .path-land').count() === 1, 'la rama no tiene paisaje');
   await shot(page, '14e-rama-pantalla');

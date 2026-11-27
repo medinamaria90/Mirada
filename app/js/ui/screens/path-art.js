@@ -83,24 +83,19 @@ export function museumArt() {
       ${cypress(108, 98, 50, 8)}${cypress(284, 98, 46, 8)}${flowers(150, 108)}${flowers(244, 110)}`;
 }
 
-// Puerta de piedra al entrar en cada época: dos pilares con su remate y un arco por el que pasa el sendero (va delante
-// del sendero; el seto que la flanquea lo pinta el paisaje). x, y: centro del paso, al pie.
-const GATE_ART = { half: 17, pillar: 10, h: 40, arch: 12, depth: 4 };
+// Puerta de piedra al entrar en cada época: dos pilares altos a los lados del sendero (van delante de él). El arco es el
+// rótulo de la época (path-signs.js), que se apoya en sus remates; el seto que la flanquea lo pinta el paisaje.
+// x, y: centro del paso, al pie. h: alto hasta el remate (el pie del rótulo queda en y - ARCH.lift, path-layout.js).
+const GATE_ART = { half: 17, pillar: 10, h: 48, depth: 4 };
 const pillar = (x, y) => {
   const { pillar: w, h, depth: d } = GATE_ART;
   return `<path class="land-side" d="M${f(x + w)} ${f(y)}V${f(y - h)}L${f(x + w + d)} ${f(y - h - d * KY / KX)}V${f(y - d * KY / KX)}Z"/>
       <rect class="land-front" x="${f(x)}" y="${f(y - h)}" width="${w}" height="${h}"/>
-      <rect class="land-top" x="${f(x - 1.5)}" y="${f(y - h - 4)}" width="${w + 3}" height="4"/>
-      <circle class="land-top" cx="${f(x + w / 2)}" cy="${f(y - h - 7)}" r="3.4"/>`;
+      <rect class="land-top" x="${f(x - 1.5)}" y="${f(y - h - 4)}" width="${w + 3}" height="4"/>`;
 };
 export function eraGate(x, y) {
-  const { half, pillar: w, h, arch, depth: d } = GATE_ART;
-  const l = x - half - w;
-  const r = x + half;
-  const top = y - h + 6;
-  return `<ellipse class="land-shade" cx="${f(x + 5)}" cy="${f(y + 2)}" rx="${half + w + 8}" ry="4"/>${pillar(l, y)}${pillar(r, y)}
-      <path class="land-top" d="M${f(x - half)} ${f(top)}H${f(r)}L${f(r + d)} ${f(top - d * KY / KX)}H${f(x - half + d)}Z"/>
-      <path class="land-front" d="M${f(x - half)} ${f(top)}H${f(r)}V${f(top + arch)}Q${f(x)} ${f(top + 1)} ${f(x - half)} ${f(top + arch)}Z"/>`;
+  const { half, pillar: w } = GATE_ART;
+  return `<ellipse class="land-shade" cx="${f(x + 5)}" cy="${f(y + 2)}" rx="${half + w + 8}" ry="4"/>${pillar(x - half - w, y)}${pillar(x + half, y)}`;
 }
 
 // Pretiles de un puente del sendero (delante del sendero, que pasa entre ellos; el tablero, el agua y la sombra los
