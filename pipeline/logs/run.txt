@@ -6,3 +6,9 @@ por país: Japón 8
 títulos por fuente: {'manual': 25, 'revisar-idioma': 1, 'traducir': 137, 'wikidata-es': 1107, 'traducido': 202}
 63M	.git
 3.7M	catalogo
+== fichas  01:27:34
+selección 1472, con ficha 1471, este lote 1
+ok lote 1: 1 fichas (1804 en total)
+fin: 1804 fichas; con museo 1746, con ciudad 1731, con técnica 1713, con medidas 1706, en España 371
+64M	.git
+3.7M	catalogo
