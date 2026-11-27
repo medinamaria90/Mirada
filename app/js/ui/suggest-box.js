@@ -3,6 +3,7 @@
 
 import { esc } from './dom.js';
 import { artFrame } from './art.js';
+import { icons } from './icons.js';
 import { suggest, splitByMarks } from '../engine/suggest.js';
 
 const CLOSE_DELAY = 120; // deja pasar el toque en una sugerencia antes de cerrar por perder el foco
@@ -18,12 +19,13 @@ export function suggestBoxHtml(label = 'Buscar pintor o cuadro') {
 }
 
 function optionHtml(index, item, i) {
-  const work = index.artwork(item.thumbId);
+  const work = item.thumbId ? index.artwork(item.thumbId) : null;
   const parts = splitByMarks(item.label, item.marks).map((p) => (p.hit ? `<strong>${esc(p.text)}</strong>` : esc(p.text))).join('');
   const art = item.kind === 'artist' ? null : index.artwork(item.id);
-  const sub = item.kind === 'artist' ? 'Pintor' : esc(art?.by || index.artist(art?.artistId)?.name || '');
-  return `<li class="sg-option" role="option" id="sg-o-${i}" aria-selected="false" data-kind="${item.kind}" data-id="${esc(item.id)}">
-    <span class="sg-thumb">${work ? artFrame(work, { alt: '', cls: 'art-thumb', label: '', tiny: true }) : ''}</span>
+  const sub = item.kind === 'artist' ? 'Pintor' : item.kind === 'locked' ? 'Por descubrir' : esc(art?.by || index.artist(art?.artistId)?.name || '');
+  const thumb = work ? artFrame(work, { alt: '', cls: 'art-thumb', label: '', tiny: true }) : item.kind === 'locked' ? icons.lock(18) : '';
+  return `<li class="sg-option${item.kind === 'locked' ? ' is-locked' : ''}" role="option" id="sg-o-${i}" aria-selected="false" data-kind="${item.kind}" data-id="${esc(item.id)}">
+    <span class="sg-thumb">${thumb}</span>
     <span class="sg-text"><span class="sg-label">${parts}</span><span class="sg-sub">${sub}</span></span></li>`;
 }
 

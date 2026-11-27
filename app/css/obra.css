@@ -36,5 +36,15 @@
 
 .ws-facts { display: grid; gap: 0; margin: 0; padding: 1.6rem 1.2rem 2rem; }
 .ws-facts div { display: grid; gap: .2rem; padding: .85rem 0; border-top: 1px solid var(--line); }
-.ws-facts dt { color: var(--ink-2); font: 600 .78rem/1.1 var(--font); letter-spacing: .06em; text-transform: uppercase; }
+.ws-facts dt { color: var(--ink-2); font: 500 .88rem/1.2 var(--font); }
 .ws-facts dd { margin: 0; font: 500 1.08rem/1.38 var(--font); overflow-wrap: break-word; }
+
+/* «Más de <pintor>»: fila deslizable de sus otras obras vistas, a la misma altura y en su proporción. */
+.ws-more { display: grid; gap: .7rem; padding: 0 0 2.2rem; }
+.ws-more .ap-h { padding: 0 1.2rem; }
+.ws-more-list { display: flex; gap: .6rem; margin: 0; padding: .2rem 1.2rem .4rem; list-style: none; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+.ws-more-list::-webkit-scrollbar { display: none; }
+.ws-more-list > li { flex: none; }
+.ws-more-item { display: block; padding: 0; border: 0; border-radius: var(--radius-sm); background: none; cursor: pointer; }
+.ws-more-art.art { display: block; height: 7.5rem; width: auto; aspect-ratio: var(--arw) / var(--arh); min-width: 4.5rem; max-width: 12rem; border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow-card); }
+.ws-more-art img { width: 100%; height: 100%; object-fit: cover; }
