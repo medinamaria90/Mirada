@@ -1,12 +1,12 @@
-// Perfil: quién eres (portada, avatar y nombre), tu rango y lo que pide el siguiente, cuatro cifras, una fila de
-// logros, «Practicar» y, aparte, las hojas de ajustes, nombre, portada, rangos y logro. Las piezas están en
+// Perfil: quién eres (avatar y nombre), tu rango y lo que pide el siguiente, cuatro cifras, una fila de
+// logros, «Practicar» y, aparte, las hojas de ajustes, nombre, avatar, rangos y logro. Las piezas están en
 // profile-*.js; la pantalla de todos los logros (#logros), en achievements.js.
 
 import { onAction, focusHeading } from '../dom.js';
 import { page } from '../shell.js';
 import { playEra } from '../audio-bridge.js';
 import { parseLastTest, shareCover, collectionIds } from '../../engine/profile.js';
-import { heroHtml, upgradeCover } from './profile-hero.js';
+import { heroHtml } from './profile-hero.js';
 import { welcomeHtml, practiceHtml } from './profile-parts.js';
 import { medalsHtml, medalSheetHtml, wireMedals } from './profile-medals.js';
 import { rankCardHtml, rankSheetsHtml, wireRank } from './profile-rank.js';
@@ -49,7 +49,7 @@ function readLastTest() {
 // Bloques grises con el tamaño del perfil (estilos en línea con variables: no dependen de profile.css).
 function skeletonHtml() {
   const block = (h, extra = '') => `<div style="height:${h};border-radius:var(--radius-sm);background:var(--surface-2);${extra}"></div>`;
-  return `<div aria-hidden="true">${block('128px', 'border-radius:0')}
+  return `<div aria-hidden="true">${block('5.5rem', 'width:5.5rem;border-radius:999px;margin:1rem 1.1rem 0')}
     <div style="display:grid;gap:1.1rem;padding:1.6rem 1.1rem">${block('2rem', 'width:60%')}${block('12px')}${block('5rem')}${block('9rem')}</div></div>`;
 }
 
@@ -79,7 +79,6 @@ export async function renderProfile(ctx, el) {
     ${lookSheetHtml()}
     ${rankSheetsHtml()}
     ${medalSheetHtml()}`);
-  upgradeCover(el);
   focusHeading(el);
   // Sin música no se carga el audio; con ella, cuando el navegador esté libre (componerla pesa).
   if (ctx.store.get().settings.music) (typeof requestIdleCallback === 'function' ? requestIdleCallback : setTimeout)(() => playEra('menu'));
@@ -109,8 +108,8 @@ async function shareLast(ctx, button, last) {
   try {
     const { shareTest } = await import('./profile-share.js');
     const st = ctx.store.get();
-    // La tarjeta sale de la lista blanca: la portada elegida solo viaja si es amable.
-    await shareTest(ctx, last, shareCover(st.progress, ctx.index, st.settings.cover));
+    // La tarjeta sale de la lista blanca: el cuadro del avatar solo viaja si es amable.
+    await shareTest(ctx, last, shareCover(st.progress, ctx.index, st.settings.avatar));
   } catch (err) {
     console.error(err);
     ctx.toast('No se ha podido compartir');

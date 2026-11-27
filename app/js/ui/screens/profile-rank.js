@@ -8,16 +8,15 @@ import { medalBadge } from './medals.js';
 import { bindSheet } from './profile-sheet.js';
 import { rankFor, RANKS } from '../../engine/ranks.js';
 import { rankProgress, compactNumber } from '../../engine/profile.js';
-import { rankLadder, deepChoices } from '../../engine/rank-goals.js';
+import { rankLadder, deepChoices, fmtXp } from '../../engine/rank-goals.js';
 
-const fmt = (n) => n.toLocaleString('es-ES');
 const CHOOSE = 'Elegir';
 const PLAY = 'Jugar';
 
 // Cifra de XP: abreviada desde 10 000 («31,2 mil», sin partirse); la exacta, para lectores de pantalla.
 function xpValue(xp) {
   const short = compactNumber(xp);
-  return short === String(xp) ? fmt(xp) : `<span aria-hidden="true">${short}</span><span class="sr-only">${fmt(xp)}</span>`;
+  return short === String(xp) ? fmtXp(xp) : `<span aria-hidden="true">${short}</span><span class="sr-only">${fmtXp(xp)}</span>`;
 }
 
 // Botón de una condición pendiente: el XP se gana jugando el camino; los «a fondo», eligiendo pintor (si aún
@@ -32,12 +31,12 @@ function goButton(ctx, rank, c) {
 
 function condRow(ctx, rank, c) {
   const value = c.key === 'xp' ? xpValue(c.have) : `${c.have}/${c.need}`;
+  // El XP, cumplido o no, como «1.932/1.200 XP» (lo que llevas delante de lo que pide); lo demás, «Un nivel «a fondo» 0/1».
+  const text = c.key === 'xp' ? `<span class="pf-cond-val">${value}</span>/${esc(c.label)}` : `${esc(c.label)} <span class="pf-cond-val">${value}</span>`;
   if (c.done) {
     return `<li class="pf-cond is-done"><span class="pf-cond-mark" aria-hidden="true">${icons.check(18)}</span>
-      <span class="pf-cond-label"><span class="sr-only">Hecho: </span>${esc(c.label)}</span>${c.key === 'xp' ? `<span class="pf-cond-val">${value}</span>` : ''}</li>`;
+      <span class="pf-cond-label"><span class="sr-only">Hecho: </span>${c.key === 'xp' ? text : esc(c.label)}</span></li>`;
   }
-  // Pendiente: el XP, como «12,4 mil/16.000 XP» (lo que llevas delante); lo demás, «Un nivel «a fondo» 0/1».
-  const text = c.key === 'xp' ? `<span class="pf-cond-val">${value}</span>/${esc(c.label)}` : `${esc(c.label)} <span class="pf-cond-val">${value}</span>`;
   return `<li class="pf-cond"><span class="pf-cond-mark" aria-hidden="true"></span>
     <span class="pf-cond-label"><span class="sr-only">Falta: </span>${text}</span>${goButton(ctx, rank, c)}</li>`;
 }

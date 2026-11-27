@@ -38,7 +38,7 @@ export function normalizeName(value) {
   return graphemes(clean).slice(0, NAME_MAX).join('').trim();
 }
 
-// Portada y avatar del perfil (settings.cover / settings.avatar): id de un cuadro de la colección o ''.
+// Avatar del perfil (settings.avatar): id de un cuadro de la colección o ''.
 export function normalizeArtworkId(value) {
   return typeof value === 'string' && /^w\d+$/.test(value) ? value : '';
 }
@@ -49,7 +49,7 @@ export function defaultState() {
     onboarded: false,
     // roster: pintores conocidos del camino y ramas (engine/roster.js); en una partida nueva, todos.
     progress: { ...emptyProgress(), roster: emptyRoster('new') },
-    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '', cover: '', avatar: '' },
+    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '', avatar: '' },
     // Ronda en curso para retomarla al volver ({} = ninguna). Ver state/session.js.
     session: {},
   };
@@ -202,7 +202,9 @@ export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, d
   // Lo que llegue sin pasar por la interfaz (estado importado o editado a mano) también se limpia.
   if (isPlain(out.settings)) {
     out.settings.name = normalizeName(out.settings.name);
-    out.settings.cover = normalizeArtworkId(out.settings.cover);
+    // La portada del perfil ya no existe (27/11): su elección guardada se descarta sin tocar nada más. Va aquí y no
+    // en una migración con versión nueva para que un móvil con la app en caché no rechace un estado «del futuro».
+    delete out.settings.cover;
     out.settings.avatar = normalizeArtworkId(out.settings.avatar);
   }
   return out;

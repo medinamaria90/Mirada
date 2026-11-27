@@ -16,7 +16,7 @@ const SHARE = '<svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill
 export function welcomeHtml() {
   return `<section class="pf-sec pf-welcome-sec" aria-labelledby="pf-welcome-h">
     <h2 id="pf-welcome-h">Tu perfil empieza aquí</h2>
-    <p class="pf-lead">Juega y cada cuadro que veas irá a tu Colección. Con ellos podrás elegir tu portada y tu avatar.</p>
+    <p class="pf-lead">Juega y cada cuadro que veas irá a tu Colección. Con ellos podrás elegir tu avatar.</p>
     <a class="btn btn-primary btn-wide" href="#inicio">Ir al camino</a>
   </section>`;
 }
