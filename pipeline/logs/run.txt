@@ -6,3 +6,6 @@ ok   w3842651    masaccio         659x1299 252KB  Virgen de la humildad
 lote: 4/4 bien; quedan 0
 subidas 4 imágenes a la release catalogo-img-2
 build: 1470 obras (1470 con imagen, 1466 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 20, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 6, ukiyo-e 5
+download rc=3
+79M	.git
+3.7M	catalogo
