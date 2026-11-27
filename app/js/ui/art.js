@@ -1,6 +1,7 @@
 // Cuadros: imagen con marcador de carga, tamaño reservado y alternativa digna si falla.
 
 import { esc } from './dom.js';
+import { focusOf } from '../engine/framing.js';
 
 const broken = new Set();
 const errorHandlers = new Set();
@@ -54,7 +55,9 @@ export function artFrame(artwork, opts = {}) {
   const label = opts.label ?? artwork.id;
   const t = opts.thumb && !opts.tiny && !opts.small ? artwork.thumb : null;
   const sheet = t && Number.isFinite(t.x) && t.sw > 0 && t.sh > 0;
-  const style = `--arw:${w};--arh:${h}${sheet ? `;${sheetVars(t)}` : ''}`;
+  // Donde el cuadro se recorta (casillas, miniaturas cuadradas), el recorte se centra en su foco revisado si lo tiene.
+  const f = focusOf(artwork);
+  const style = `--arw:${w};--arh:${h}${f ? `;--fx:${f[0]};--fy:${f[1]}` : ''}${sheet ? `;${sheetVars(t)}` : ''}`;
   const size = sheet ? `width="${t.sw}" height="${t.sh}"` : `width="${w}" height="${h}"`;
   const z = opts.zoom;
   const tag = z ? 'button' : 'span';

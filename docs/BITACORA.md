@@ -142,3 +142,7 @@ de cultura) y el fragmento original. Todo el catálogo jugado ocupa ~10 KB, lejo
 igual sin él. La nueva valida, migra, se queda con el más avanzado (a igualdad, el suyo), vuelve al fragmento original y
 dice «Tu progreso ya está aquí» si lo ha traído. Solo redirige la antigua: sin bucles. Código: `app/js/state/mudanza.js`,
 `app/js/ui/move-redirect.js`; pruebas en `tests/mudanza.test.js`. Las URL absolutas de `app/test/` apuntan ya a la nueva.
+
+## Encuadre sin cortes: historias y casillas (27/11)
+María vio la cabeza de Cristo fuera de la tarjeta de la Piedad Desplà y la Inmaculada de Murillo sin cabeza en una casilla de «¿Cuál es de…?». No eran las imágenes ni el atlas (vienen enteros): era el recorte de cada vista. Ahora es un sistema (`app/js/engine/framing.js`): una vista solo recorta sin más si pierde ≤ 15 % del cuadro; si pierde más, usa el foco revisado de la obra (`contenido/focos.json`, 408 obras revisadas mirando la imagen con cuadrícula, más los 33 focos del «Detalle del día»). En la historia, a sangre con el foco por encima del texto si pierde ≤ 45 %; si no (o si la obra está en «enteras»), entera sobre su fondo desenfocado, en el hueco entre la cabecera y el texto y con un zoom suave. El foco se aplica también en miniaturas, círculos de nivel y casillas. `node tools/recortes.mjs` lista las obras recortadas y `tests/recortes.test.js` falla si una obra nueva queda muy recortada sin foco.
+
