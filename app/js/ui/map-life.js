@@ -7,7 +7,7 @@
 // salir de la portada; con «Reducir animaciones» (o el ajuste del sistema), todo quieto, pero con la luz del día. Lo que
 // se mueve solo (agua, molinos, estrellas, luces) se anima únicamente en el tramo que se ve (.is-seen).
 
-import { gameLight } from '../engine/daylight.js';
+import { mapLight } from '../engine/daylight.js';
 import { clockMinute } from '../state/game-clock.js';
 import { prefersReducedMotion } from './dom.js';
 import { cartRide, crossBridge, driftLake, rowAcross, sailRiver, swim } from './map-critters.js';
@@ -66,8 +66,11 @@ function lightPart(el, night, dusk) {
 }
 
 // parts: los tramos a los que poner la luz (por omisión, todos; sin tramos, el mapa entero).
+// Tema forzado en Ajustes (data-theme en <html>, ui/theme.js) o null si va «como el móvil».
+const forcedTheme = () => document.documentElement.getAttribute('data-theme');
+
 export function applyDaylight(map, minute = clockMinute(), parts = null) {
-  const { night, dusk } = gameLight(minute);
+  const { night, dusk } = mapLight(minute, forcedTheme());
   const targets = parts || [...map.querySelectorAll(LIGHT_PARTS)];
   (targets.length ? targets : [map]).forEach((el) => lightPart(el, stepped(night), stepped(dusk)));
   // De día no titila lo que no se ve (estrellas, luces apagadas): sin estas clases no se animan.
@@ -115,7 +118,7 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
   };
   const scene = () => {
     if (alive() && playing < MAX_SCENES) {
-      const light = gameLight(clock());
+      const light = mapLight(clock(), forcedTheme());
       // Se prueba en los tramos a la vista, al azar, hasta que algo encaja.
       for (const li of shown().sort(() => Math.random() - 0.5)) {
         const sc = sceneOf(li);
@@ -127,7 +130,7 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
   };
   const meteor = () => {
     const li = pick(shown());
-    if (alive() && li && gameLight(clock()).night >= DEEP_NIGHT) {
+    if (alive() && li && mapLight(clock(), forcedTheme()).night >= DEEP_NIGHT) {
       const sc = sceneOf(li);
       if (sc) shootingStar(sc);
     }

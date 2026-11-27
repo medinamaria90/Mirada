@@ -176,8 +176,8 @@ test('vida de paso: CSS solo de transform y opacity con el mapa vivo, colores de
   assert.ok(!/#[0-9a-f]{3,8}\b|rgba?\(/i.test(css), 'colores escritos a mano en mapa-vida.css');
   assert.ok(/\.path-map\.is-linear \.path-stars, \.path-map\.is-linear \.map-critter \{ display: none; \}/.test(css), 'en línea quedan estrellas o figuras');
   const brand = readFileSync(join(app, 'css', 'brand.css'), 'utf8');
-  assert.equal((brand.match(/--map-star:/g) || []).length, 3, '--map-star sin tema claro y oscuro');
-  assert.equal((brand.match(/--map-cloud:/g) || []).length, 3, '--map-cloud sin tema claro y oscuro');
+  assert.equal((brand.match(/--map-star:/g) || []).length, 4, '--map-star sin tema claro, oscuro y mapa claro con el móvil en oscuro');
+  assert.equal((brand.match(/--map-cloud:/g) || []).length, 4, '--map-cloud sin tema claro, oscuro y mapa claro con el móvil en oscuro');
   assert.ok(readFileSync(join(app, 'index.html'), 'utf8').includes('href="css/mapa-vida.css"'));
 });
 
