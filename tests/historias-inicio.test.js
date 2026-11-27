@@ -5,7 +5,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { levelStory, cropOf, step, storyKey, MAX_CARDS, MAX_TEXT, sourceLabel, lookLine, openingCandidates, regionOf, regionRatio, frameFor } from '../app/js/engine/stories.js';
+import { levelStory, cropOf, step, storyKey, MAX_CARDS, MAX_TEXT, sourceLabel, lookLine, openingCandidates, regionOf, regionRatio, frameFor, storySrc } from '../app/js/engine/stories.js';
 import { coverLoss, LOSS_FOCUSED, STORY_RATIO } from '../app/js/engine/framing.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -137,4 +137,14 @@ test('historias: cada región de las historias cabe a sangre sin perder más de 
       }
     }
   }
+});
+
+test('historias: un detalle (`region` o zoom grande) usa la imagen HD de la obra si la hay; el resto, la normal', () => {
+  const work = { img: 'img/w1.jpg', w: 1600, h: 900, hd: { img: 'img/hd/w1.jpg', w: 3700, h: 2081 } };
+  assert.equal(storySrc(work, null, [0, 0, 0.25, 1]), 'img/hd/w1.jpg', 'región');
+  assert.equal(storySrc(work, [0.5, 0.3, 2], null), 'img/hd/w1.jpg', 'zoom grande');
+  assert.equal(storySrc(work, [0.5, 0.3], null), 'img/hd/w1.jpg', 'zoom por defecto (1,5)');
+  assert.equal(storySrc(work, [0.5, 0.3, 1.2], null), 'img/w1.jpg', 'zoom pequeño');
+  assert.equal(storySrc(work, null, null), 'img/w1.jpg', 'la obra entera');
+  assert.equal(storySrc({ img: 'img/w2.jpg' }, null, [0, 0, 0.25, 1]), 'img/w2.jpg', 'sin HD');
 });
