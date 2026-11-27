@@ -101,3 +101,9 @@ aviso w3731232 (rubens): título pendiente de traducir: Hercules and Omphale
 aviso w3636299 (rubens): título pendiente de traducir: The Battle of the Amazons
 64M	.git
 3.7M	catalogo
+== pack 1200 01:22:56
+pack 1200px: 1471 imágenes, 336.4 MB de JPEG (media 223 KB), zip 336.6 MB, sha256 e55a6c6a33e11b48…
+obras del catálogo 1471; sin imagen 0; con fallo 0
+paquete app-img-1200 subido a catalogo-img (321M)
+64M	.git
+3.7M	catalogo
