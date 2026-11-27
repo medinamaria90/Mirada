@@ -143,11 +143,14 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .chip-goal .chip-pill { padding: 0 .4rem 0 .2rem; gap: .2rem; }
 .chip-goal-text { font-size: .74rem; color: var(--ink-2); }
 /* Racha: el número con «día(s)» debajo, como el nivel lleva su barra: cabe en una línea de 390 px. */
-.chip-daily .chip-pill { position: relative; padding: 0 .5rem; gap: .25rem; }
-/* «Repasar» (shell.js): redondo con ↻, como el reto diario pendiente; el punto coral si hay algo pendiente. */
+/* Cuadro del día (shell.js): redondo; pendiente, el detalle de hoy en un círculo con el punto coral; hecho, la miniatura con ✓. */
+.chip-cuadro .chip-pill { position: relative; padding: 0; width: var(--cuadro-chip); min-height: var(--cuadro-chip); height: var(--cuadro-chip); justify-content: center; }
+.chip-cuadro-img { position: absolute; inset: var(--cuadro-chip-inset); border-radius: 999px; background-color: var(--surface-2); background-repeat: no-repeat; background-size: cover; background-position: center; }
+.chip-cuadro-ok { position: absolute; right: calc(var(--chip-dot-at) - 2px); bottom: calc(var(--chip-dot-at) - 2px); display: grid; place-items: center; width: var(--cuadro-chip-ok); height: var(--cuadro-chip-ok); border-radius: 999px; background: var(--ok); color: var(--on-ok); box-shadow: 0 0 0 2px var(--surface); }
+.chip-cuadro-ok .icon { color: inherit; }
+.chip-cuadro .chip-dot { z-index: 1; }
+/* «Repasar» (shell.js): redondo con ↻, como el Cuadro del día; el punto coral si hay algo pendiente. */
 .chip-review .chip-pill { position: relative; padding: 0 .5rem; }
-.chip-daily-text { font-size: .74rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.chip-daily.is-done .icon { color: var(--ok); }
 .chip-dot { position: absolute; top: var(--chip-dot-at); right: var(--chip-dot-at); width: var(--chip-dot); height: var(--chip-dot); border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
 .chip-streak .chip-pill { padding: 0 .5rem 0 .4rem; }
 .chip-stack { display: grid; justify-items: center; line-height: 1; }

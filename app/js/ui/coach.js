@@ -1,4 +1,4 @@
-// Guía de bienvenida: tres «coach marks» que señalan el nodo actual, el reto diario y la pestaña
+// Guía de bienvenida: tres «coach marks» que señalan el nodo actual, el Cuadro del día y la pestaña
 // Colección (el botón ↻ «Repasar» aún no está: aparece con 3 cuadros vistos). Solo la primera vez (marca propia en localStorage), saltable con «Saltar» o Esc, sin
 // tapar lo que señala y sin bloquear la pantalla.
 
@@ -9,7 +9,7 @@ import { coachSeen, markCoachSeen } from '../state/store.js';
 
 export const COACH_STEPS = [
   { target: '.stage-spot.is-current .stage, .stage-spot.is-current .stage-text', text: 'Aquí empieza tu camino. Toca el cuadro y conoce a tu primer pintor.' },
-  { target: '.chip-daily', text: 'Cada día, un reto de cinco preguntas.' },
+  { target: '.chip-cuadro', text: 'Cada día, un cuadro famoso: ¿de quién es?' },
   { target: '.bottomnav a[href="#coleccion"]', text: 'Cada cuadro que reconozcas se guarda en Colección.' },
 ];
 

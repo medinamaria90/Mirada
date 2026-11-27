@@ -1,0 +1,48 @@
+{
+ "n": 6,
+ "artwork": "w12418",
+ "artistId": "leonardo",
+ "focus": [
+  0.42,
+  0.8
+ ],
+ "options": [
+  "botticelli",
+  "miguel-angel",
+  "giorgione",
+  "rafael",
+  "tiziano",
+  "leonardo"
+ ],
+ "hints": {
+  "era": "Renacimiento · s. XV–XVI",
+  "year": "c. 1503",
+  "museum": "Museo del Louvre, París"
+ },
+ "cards": [
+  {
+   "text": "Era Leonardo da Vinci, el genio que quería entenderlo todo. ¿Recuerdas las manos del principio? Son las de Lisa Gherardini, la mujer de un comerciante de seda de Florencia.",
+   "artwork": "w12418",
+   "focus": [
+    0.42,
+    0.8,
+    2
+   ]
+  },
+  {
+   "text": "Fíjate en que no hay líneas: la cara pasa de la luz a la sombra como humo. Es el sfumato (contornos difuminados), y por eso su sonrisa parece cambiar.",
+   "artwork": "w12418",
+   "focus": [
+    0.44,
+    0.27,
+    2.2
+   ]
+  },
+  {
+   "text": "No era tan famosa hasta 1911, cuando un empleado italiano la robó del Louvre. La tuvo dos años en su casa, y su foto en los periódicos la volvió una estrella.",
+   "artwork": "w12418",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/La_Gioconda"
+}

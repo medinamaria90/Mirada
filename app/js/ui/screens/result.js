@@ -15,6 +15,7 @@ import { pendingWorks } from '../../engine/levels.js';
 import { stageTitle, tierOf, isMasterTier, avatarCrop, avatarWork, seenOf } from '../../engine/painters.js';
 import { deepRoute, stageRoute, branchRoute } from '../router.js';
 import { practiceAction } from './result-actions.js';
+import { markNudged, CUADRO_ROUTE } from '../../engine/cuadro-dia.js';
 import { roundChips, chipsHtml, wireChips } from './result-chips.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { encodeChallenge, tokenForRound } from '../../engine/challenge.js';
@@ -119,7 +120,7 @@ export function renderResult(ctx, el, opts) {
   const { outcome, plan } = opts;
   const p = ctx.store.get().progress;
   const token = tokenForRound(index, plan);
-  const isDaily = plan.kind === 'daily' || plan.kind === 'weekly';
+  const isDaily = plan.kind === 'weekly'; // el reto semanal comparte su cuadrícula (el diario ya no existe)
   const events = outcome.events;
   const medals = events.filter((e) => e.type === 'medal');
   const streak = events.find((e) => e.type === 'streak');
@@ -161,7 +162,9 @@ export function renderResult(ctx, el, opts) {
 
   // Secundarias: volver (si el principal no vuelve ya), una para practicar (nunca la misma que el principal; ninguna al
   // cerrar el día ni en un duelo) y compartir.
-  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to });
+  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to, weak: outcome.accuracy < MASTERY });
+  // La guía propone el Cuadro del día una sola vez al día.
+  if (practice?.to === CUADRO_ROUTE) ctx.store.update((s) => ({ ...s, progress: markNudged(s.progress, ctx.dailyDay()) }));
   const shareLabel = isDaily ? 'Copiar resultado' : duel ? 'Devolver el reto' : 'Retar';
   const backLabel = opts.branchId && plan.kind === 'stage' && !isDeep ? 'Volver a la rama' : 'Volver al camino';
   const secondary = [
@@ -241,7 +244,7 @@ export function renderResult(ctx, el, opts) {
       ctx.audio.sfx('tap');
       const url = `${location.href.split('#')[0]}#${encodeChallenge(token, outcome.score)}`;
       const text = isDaily
-        ? shareText({ title: plan.kind === 'weekly' ? `Sfumato · Reto semanal ${plan.week.slice(6)}` : `Sfumato · Reto diario ${plan.date.slice(8)}/${plan.date.slice(5, 7)}`, score: outcome.score, total: outcome.total, grid: dailyGrid(opts.firstTry), url })
+        ? shareText({ title: `Sfumato · Reto semanal ${plan.week.slice(6)}`, score: outcome.score, total: outcome.total, grid: dailyGrid(opts.firstTry), url })
         : `He acertado ${outcome.score} de ${outcome.total} en Sfumato${opts.shareTopic ? ` (${opts.shareTopic})` : ''}. ¿Me superas?\n${url}`;
       copyText(el, text);
     },

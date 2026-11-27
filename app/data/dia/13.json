@@ -1,0 +1,48 @@
+{
+ "n": 13,
+ "artwork": "w2456003",
+ "artistId": "murillo",
+ "focus": [
+  0.38,
+  0.8
+ ],
+ "options": [
+  "zurbaran",
+  "alonso-cano",
+  "velazquez",
+  "murillo",
+  "ribera",
+  "rubens"
+ ],
+ "hints": {
+  "era": "Barroco · s. XVII",
+  "year": "c. 1660",
+  "museum": "Museo del Prado, Madrid"
+ },
+ "cards": [
+  {
+   "text": "Era Murillo, el pintor más querido de la Sevilla del siglo XVII. ¿Recuerdas los angelitos del principio? Juegan entre las nubes, a los pies de la Virgen.",
+   "artwork": "w2456003",
+   "focus": [
+    0.38,
+    0.8,
+    2
+   ]
+  },
+  {
+   "text": "Fíjate en el manto azul, que parece moverse con el aire, y en la luna a sus pies. Es una Inmaculada (la Virgen concebida sin pecado), un tema que Sevilla adoraba.",
+   "artwork": "w2456003",
+   "focus": [
+    0.5,
+    0.45,
+    1.6
+   ]
+  },
+  {
+   "text": "En la guerra contra Napoleón, el mariscal francés Soult se la llevó a Francia. El Louvre la compró por un precio récord y volvió a España en 1941, en un canje.",
+   "artwork": "w2456003",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/Inmaculada_Concepci%C3%B3n_de_los_Venerables"
+}

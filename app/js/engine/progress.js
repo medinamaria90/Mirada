@@ -112,8 +112,12 @@ export function emptyProgress() {
     collection: {},
     medals: {},
     stats: { answered: 0, correct: 0, newCorrect: 0, rounds: 0 },
+    // Reto diario de antes (ya no existe): se conserva tal cual, solo de lectura.
     daily: {},
     weekly: {},
+    // Cuadro del día: { 'AAAA-MM-DD': { n, guesses, won, tries } } y el último día que la guía lo propuso (engine/cuadro-dia.js).
+    cuadros: {},
+    cuadroNudge: '',
     // Niveles «a fondo»: { 'pintor:nivel': { plays, best, mastered, last } } (engine/levels.js).
     deep: {},
     // Rango más alto alcanzado (índice en engine/ranks.js): nunca baja.

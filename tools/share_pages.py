@@ -1,4 +1,6 @@
-"""Páginas para compartir: app/h/<pintor>-1.html por historia de nivel 1 y app/h/epoca-<id>.html por época con tarjetas.
+"""Páginas para compartir: app/h/<pintor>-1.html por historia de nivel 1, app/h/epoca-<id>.html por época con tarjetas y
+app/h/cuadro-<n>.html por día del calendario del Cuadro del día (su imagen es el recorte del detalle del paso 1, sin título ni
+pintor; el enlace abre siempre el cuadro de hoy, #cuadro-del-dia).
 
 La app es una página sin servidor y WhatsApp (o Telegram, iMessage…) no ejecuta su código: para que el enlace enseñe el
 cuadro, el título y una frase, cada cosa que se comparte tiene su página estática con sus etiquetas og:, que nada más
@@ -54,6 +56,13 @@ PAGE = """<!DOCTYPE html>
 
 
 ERA_PREFIX = "epoca-"  # como eraRoute de app/js/ui/router.js
+CUADRO_PREFIX = "cuadro-"
+CUADRO_ROUTE = "cuadro-del-dia"  # como CUADRO_ROUTE de app/js/engine/cuadro-dia.js
+CUADRO_TITLE = "Cuadro del día"
+CUADRO_TEXT = "¿De quién es? Un detalle, seis pintores y cuatro intentos."
+CUADRO_ALT = "Detalle de un cuadro"
+CUADRO_ZOOM = 3  # el detalle del paso 1 (CUADRO_STEPS de app/js/engine/cuadro-dia.js)
+CUADRO_SIDE = 1080  # lado del recorte cuadrado para la vista previa
 
 
 def read_json(*parts):
@@ -108,6 +117,24 @@ def shared_items():
     return items
 
 
+def cuadro_items():
+    """[(nombre sin extensión, obra, foco del detalle)] de los días del calendario del Cuadro del día."""
+    path = os.path.join(APP, "data", "dia", "index.json")
+    if not os.path.isfile(path):
+        return []
+    works = {w["id"]: w for w in read_json(APP, "data", "catalog.json")["artworks"]}
+    return [(f"{CUADRO_PREFIX}{d['n']}", works[d["artwork"]], d["focus"]) for d in read_json(path)["days"] if d["artwork"] in works]
+
+
+def crop_rect(ratio, focus, zoom):
+    """Como cropRect de app/js/engine/cuadro-calendar.js en un marco cuadrado: [x0, y0, x1, y1] de 0 a 1."""
+    rw, rh = (1 / ratio, 1.0) if ratio > 1 else (1.0, ratio)
+    rw, rh = rw / zoom, rh / zoom
+    cx = min(max(focus[0], rw / 2), 1 - rw / 2)
+    cy = min(max(focus[1], rh / 2), 1 - rh / 2)
+    return cx - rw / 2, cy - rh / 2, cx + rw / 2, cy + rh / 2
+
+
 def build_pages():
     """{nombre de archivo: html} de todo lo que se comparte."""
     esc = lambda s: html.escape(str(s), quote=True)
@@ -123,15 +150,26 @@ def build_pages():
             alt=esc(f"{work['title']}, de {painter}"),
             route=route,
         )
+    for stem, _work, _focus in cuadro_items():
+        fname = f"{stem}.html"
+        pages[fname] = PAGE.format(
+            app=APP_NAME, title=esc(CUADRO_TITLE), text=esc(CUADRO_TEXT), url=esc(f"{SITE}/h/{fname}"),
+            image=esc(f"{SITE}/img/{OG_DIR}/{stem}.jpg"), alt=esc(CUADRO_ALT), route=CUADRO_ROUTE,
+        )
     return pages
 
 
-def save_light(src, dst):
-    """Copia ligera de src en dst: lado mayor de OG_MAX_SIDE px como mucho y menos de OG_MAX_BYTES. Devuelve los bytes."""
+def save_light(src, dst, crop=None):
+    """Copia ligera de src en dst: lado mayor de OG_MAX_SIDE px como mucho y menos de OG_MAX_BYTES. Devuelve los bytes.
+    crop: (x0, y0, x1, y1) de 0 a 1, el trozo de la imagen que se guarda (el detalle del Cuadro del día)."""
     from PIL import Image  # solo al desplegar (fetch_images.sh se asegura de que esté)
 
     with Image.open(src) as im:
         im = im.convert("RGB")
+        if crop:
+            W, H = im.size
+            im = im.crop((round(crop[0] * W), round(crop[1] * H), round(crop[2] * W), round(crop[3] * H)))
+            im = im.resize((CUADRO_SIDE, CUADRO_SIDE), Image.LANCZOS)
         side = OG_MAX_SIDE
         while True:
             im.thumbnail((side, side), Image.LANCZOS)
@@ -154,6 +192,15 @@ def make_images(img_dir):
             missing.append(work["id"])
             continue
         save_light(src, os.path.join(out, f"{stem}.jpg"))
+        made += 1
+    for stem, work, focus in cuadro_items():
+        name = os.path.basename(work["img"])
+        hd = os.path.join(img_dir, "hd", name)  # el detalle, de la HD si la hay (la de 1200 px se ve borrosa tan ampliada)
+        src = hd if os.path.isfile(hd) else os.path.join(img_dir, name)
+        if not os.path.isfile(src):
+            missing.append(work["id"])
+            continue
+        save_light(src, os.path.join(out, f"{stem}.jpg"), crop_rect(work["w"] / work["h"], focus, CUADRO_ZOOM))
         made += 1
     print(f"{made} imágenes para compartir -> {out}")
     if missing:

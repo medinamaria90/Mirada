@@ -12,8 +12,8 @@ export function medalInfo(id, index) {
   }
   if (id === 'weekly-1') return { title: 'Primer reto semanal', sub: 'Reto' };
   if (id === 'goal-1') return { title: 'Primera meta del día', sub: 'Meta diaria' };
-  if (id === 'daily-1') return { title: 'Primer reto diario', sub: 'Reto' };
-  if (id === 'daily-perfect') return { title: 'Reto diario perfecto', sub: 'Reto' };
+  if (id === 'daily-1') return { title: 'Primer cuadro del día', sub: 'Cuadro del día' };
+  if (id === 'daily-perfect') return { title: 'A la primera', sub: 'Cuadro del día' };
   if (id === 'challenge-1') return { title: 'Primer duelo', sub: 'Reto a un amigo' };
   if (id === 'new-1') return { title: 'Primer cuadro nuevo', sub: 'Lo has reconocido sin verlo antes' };
   return { title: id, sub: '' };

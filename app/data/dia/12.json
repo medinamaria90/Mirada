@@ -1,0 +1,48 @@
+{
+ "n": 12,
+ "artwork": "w6065609",
+ "artistId": "sorolla",
+ "focus": [
+  0.68,
+  0.55
+ ],
+ "options": [
+  "degas",
+  "morisot",
+  "sorolla",
+  "renoir",
+  "monet",
+  "fortuny"
+ ],
+ "hints": {
+  "era": "Impresionismo · 1860–1890",
+  "year": "1909",
+  "museum": "Una casa-museo de Madrid"
+ },
+ "cards": [
+  {
+   "text": "Era Sorolla, el pintor valenciano de la luz del Mediterráneo. ¿Recuerdas el sombrero del principio? Pasean su mujer, Clotilde, y su hija María por la playa de Valencia.",
+   "artwork": "w6065609",
+   "focus": [
+    0.66,
+    0.5,
+    2
+   ]
+  },
+  {
+   "text": "Fíjate en las sombras de los vestidos blancos: no son grises, son azules y moradas. Sorolla pintaba la luz que veía, no la que se suponía.",
+   "artwork": "w6065609",
+   "focus": [
+    0.27,
+    0.5,
+    1.6
+   ]
+  },
+  {
+   "text": "Pintaba al aire libre y muy deprisa, con lienzos enormes en plena playa, para atrapar la luz antes de que cambiara. Lo llamaban «el pintor de la luz».",
+   "artwork": "w6065609",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/Paseo_a_orillas_del_mar"
+}

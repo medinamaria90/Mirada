@@ -63,6 +63,19 @@ export function madridDayKey(date = new Date()) {
   }
 }
 
+// Hora y minuto en Madrid ({ h, m }): cuánto falta para el siguiente cuadro del día. Sin zonas horarias, la hora local.
+let madridClockFmt;
+export function madridClock(date = new Date()) {
+  try {
+    madridClockFmt = madridClockFmt || new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+    const parts = Object.fromEntries(madridClockFmt.formatToParts(date).map((p) => [p.type, p.value]));
+    const h = Number(parts.hour) % 24;
+    const m = Number(parts.minute);
+    if (Number.isFinite(h) && Number.isFinite(m)) return { h, m };
+  } catch { /* sin Intl con zonas: la hora local */ }
+  return { h: date.getHours(), m: date.getMinutes() };
+}
+
 // Semana ISO (lunes a domingo; la semana 1 es la que contiene el primer jueves del año).
 // Devuelve { year, week, key: 'AAAA-Wss', compact: 'wAAAAss' }.
 export function isoWeek(key) {

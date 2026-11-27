@@ -127,12 +127,18 @@ export function createStats({ code, win, storage, today }) {
   }
 
   // Escucha el estado de juego: al terminar una ronda (contador de rondas) envía ronda/termina y,
-  // si hoy cuenta para la racha, racha/<tramo> (una vez al día).
+  // si hoy cuenta para la racha, racha/<tramo> (una vez al día). Al acabar el Cuadro del día, cuadro/termina (sin saber cuál
+  // ni si acertó).
   function watchStore(store) {
     if (!enabled || !store?.subscribe) return () => {};
     const rounds = (s) => Number(s?.progress?.stats?.rounds) || 0;
+    const cuadros = (s) => Object.keys(s?.progress?.cuadros || {}).length;
     let before = rounds(store.get());
+    let cuadrosBefore = cuadros(store.get());
     return store.subscribe((s) => {
+      const played = cuadros(s);
+      if (played > cuadrosBefore) countEvent('cuadro/termina');
+      cuadrosBefore = played;
       const now = rounds(s);
       if (now <= before) { before = now; return; }
       before = now;

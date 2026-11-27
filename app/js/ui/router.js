@@ -5,7 +5,7 @@ import { decodeChallenge } from '../engine/challenge.js';
 export const ROUTES = {
   home: 'inicio',
   welcome: 'bienvenida',
-  daily: 'reto-diario',
+  cuadro: 'cuadro-del-dia',
   srs: 'repaso',
   collection: 'coleccion',
   painters: 'coleccion-pintores',
@@ -20,6 +20,8 @@ export const ROUTES = {
 
 // Nombre antiguo de la pantalla de logros: los enlaces que ya lo usan siguen valiendo.
 const OLD_MEDALS = 'medallas';
+// El reto diario ya no existe: su ruta y sus enlaces de reto (token d<AAAAMMDD>) llevan al Cuadro del día.
+const OLD_DAILY = 'reto-diario';
 // Rutas antiguas del repaso: redirigen a la sesión única (#repaso).
 const OLD_REVIEWS = new Set(['repaso5', 'repaso-rapido']);
 
@@ -58,7 +60,7 @@ export function parseRoute(hash, opts = {}) {
   if (!/^[a-z0-9-]*$/.test(name)) return { name: 'invalid' };
   if (OLD_REVIEWS.has(name)) return { name: 'srs', redirect: ROUTES.srs };
   if (name === ROUTES.welcome) return { name: 'welcome' };
-  if (name === ROUTES.daily) return { name: 'daily' };
+  if (name === ROUTES.cuadro || name === OLD_DAILY) return { name: 'cuadro' };
   if (name === ROUTES.srs) return { name: 'srs' };
   if (name === ROUTES.collection) return { name: 'collection' };
   if (name === ROUTES.painters) return { name: 'collection' };
@@ -96,7 +98,7 @@ export function parseRoute(hash, opts = {}) {
   m = /^movimiento-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'intro', movementId: m[1] };
   const challenge = decodeChallenge(name, opts);
-  if (challenge) return { name: 'challenge', challenge };
+  if (challenge) return challenge.kind === 'daily' ? { name: 'cuadro' } : { name: 'challenge', challenge };
   return { name: 'invalid' };
 }
 

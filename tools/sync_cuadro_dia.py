@@ -8,7 +8,8 @@ vez cada PAINTER_GAP días; la misma época, no más de ERA_RUN días seguidos; 
 Avisa (código 2) si quedan menos de ALARM_DAYS días de calendario por delante a partir de hoy (día de Madrid).
 Después regenera las páginas para compartir (tools/share_pages.py, app/h/cuadro-<n>.html).
 
-Uso: python3 -I tools/sync_cuadro_dia.py [--check] [--hoy AAAA-MM-DD]   (--check: solo valida, no escribe)
+Uso: python3 -I tools/sync_cuadro_dia.py [--check] [--hoy AAAA-MM-DD] [--sin-nitidez]
+(--check: solo valida, no escribe; --sin-nitidez: en local, mientras se hace la HD, el detalle borroso solo avisa)
 """
 import datetime
 import json
@@ -242,6 +243,10 @@ def main():
     cat = read(os.path.join(APP, "data", "catalog.json"))
     ficha = read(os.path.join(APP, "data", "catalog-ficha.json"))["ficha"]
     errors, rows = validate(cal, cat, ficha, read(EXPLAIN))
+    if "--sin-nitidez" in args:  # solo en local, mientras el proceso prepara la HD: el detalle borroso avisa sin parar
+        for e in [e for e in errors if "borroso" in e]:
+            print(f"AVISO {e}", file=sys.stderr)
+        errors = [e for e in errors if "borroso" not in e]
     for e in errors:
         print(f"ERROR {e}", file=sys.stderr)
     if errors:
