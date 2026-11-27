@@ -18,8 +18,6 @@ MAX_TEXT = 180
 MAX_CARDS = 5
 SHORT_MAX = 12  # título corto de nivel (`stage`): cabe bajo su círculo en la fila de historias
 BASIC_LEVEL = 1
-# Obras «learn» que no sirven de imagen de historia aunque estén libres (explícitas): no cuentan como alternativa.
-NOT_FOR_STORIES = {"w334138", "w2717022"}  # Courbet, El origen del mundo; Hokusai, El sueño de la esposa del pescador
 
 
 def check(story, name, artists, works):
@@ -63,7 +61,7 @@ def repeats(story, name, works):
             continue
         free = sorted(w["id"] for w in works.values()
                       if w["artistId"] == name and w.get("level") == level and w["id"] not in ids
-                      and w["id"] not in NOT_FOR_STORIES and (level != BASIC_LEVEL or w.get("role") == "learn"))
+                      and (level != BASIC_LEVEL or w.get("role") == "learn"))
         if free:
             errors.append(f"{name} nivel {level}: repite {', '.join(twice)}; sin usar: {', '.join(free)}")
     return errors
