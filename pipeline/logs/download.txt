@@ -1,9 +1,3 @@
-selección 1471, ya bajadas 1464, pendientes 7; este lote 7
-ok   w667202     duccio           1600x834 289KB  Maestà de la catedral de Siena
-ok   w4015930    duccio           1600x1501 773KB  The Calling of the Apostles Peter and Andrew
-ok   w3769209    giotto           1067x1600 299KB  El Juicio Final
-ok   w3119488    simone-martini   1600x637 268KB  Guidoriccio da Fogliano en el asedio de Montemassi
-ok   w3276413    simone-martini   1600x1230 661KB  Maestà del Palazzo Pubblico
-ok   w21614531   simone-martini   1000x1600 338KB  Descent from the Cross
-ok   w1215809    fra-angelico     1548x1600 780KB  Retablo de San Marcos
-lote: 7/7 bien; quedan 0
+selección 1472, ya bajadas 1471, pendientes 1; este lote 1
+ok   w96471658   kuniyoshi        1107x1600 294KB  Illustrations of Moral Conduct Compared with the Chapters of
+lote: 1/1 bien; quedan 0
