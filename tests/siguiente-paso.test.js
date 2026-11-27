@@ -177,3 +177,24 @@ test('rango: lo jugado desde el Perfil vuelve al Perfil (y desde logros, a logro
   assert.deepEqual([s.kind, s.to, s.label], ['origin', 'perfil', 'Volver al perfil']);
   assert.equal(step(p, { plan: { kind: 'stage', artistId: a.id, level: 2 }, outcome: outcome(0.3), origin: 'perfil' }).kind, 'retry', 'con menos del 50 %, primero repetir');
 });
+
+test('guía del mapa: lo de atrás, nunca dos veces seguidas (como el resultado), y el último paso se recuerda', async () => {
+  const { mapGuide } = await import('../app/js/engine/next-step.js');
+  const [m1, m2] = big.visibleMovements;
+  const own = big.stepsOf(m1.id).filter((st) => st.type === 'artist').map((st) => st.id);
+  const p = mastered(emptyProgress(), own.slice(0, -1));
+  p.artists[own.at(-1)] = { plays: 1, best: 0.6, mastered: false };
+  seenWorksOf(p, own[0]);
+  const current = `artist:${big.stepsOf(m2.id)[0].id}`;
+  assert.equal(mapGuide(p, big, TODAY, { currentKey: current })?.kind, 'debt');
+  assert.equal(mapGuide(p, big, TODAY, { currentKey: current, prevStep: 'debt' }), null, 'tras enseñarlo, lo que toca es la parada actual («Tú»)');
+  const store = {};
+  globalThis.window = { sessionStorage: { getItem: (k) => store[k] ?? null, setItem: (k, v) => { store[k] = v; }, removeItem: (k) => { delete store[k]; } } };
+  const { lastStep, rememberStep } = await import('../app/js/ui/last-step.js');
+  rememberStep('debt');
+  assert.equal(lastStep(), 'debt');
+  globalThis.window = { get sessionStorage() { throw new Error('bloqueado'); } };
+  rememberStep('stop');
+  assert.equal(lastStep(), 'stop', 'sin almacenamiento, en memoria');
+  delete globalThis.window;
+});
