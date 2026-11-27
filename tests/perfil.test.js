@@ -342,7 +342,8 @@ test('compartir: el código de la tarjeta se pide al pulsar, con botón en esper
   assert.match(card, /work\.title/, 'la tarjeta dice qué cuadro es');
   assert.match(card, /drawGrid/, 'y lleva la cuadrícula del test');
   assert.doesNotMatch(card, /sfumato-arte\.onrender\.com/, 'el dominio sale de la página, no está escrito');
-  assert.match(read('../app/test/index.html'), /rel="canonical" href="https:\/\/sfumato-arte\.onrender\.com\/test\/"/);
+  assert.doesNotMatch(card, /sfumato\.dibulios\.com/);
+  assert.match(read('../app/test/index.html'), /rel="canonical" href="https:\/\/sfumato\.dibulios\.com\/test\/"/);
 });
 
 test('el perfil no carga el audio con la música apagada', () => {

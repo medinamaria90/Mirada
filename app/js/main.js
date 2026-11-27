@@ -17,6 +17,11 @@ import { applyTheme } from './ui/theme.js';
 import { shouldAutoReload } from './ui/load-recovery.js';
 
 const root = document.getElementById('app');
+// Mudanza de dirección: fragmento con el progreso y dirección antigua, iguales que MOVE_PREFIX y OLD_HOST de
+// state/mudanza.js (módulo diferido, solo se pide si hace falta; lo comprueba tests/mudanza.test.js).
+const MOVE_HASH = '#mudanza=';
+const OLD_HOSTNAME = 'sfumato-arte.onrender.com';
+const MOVE_TOAST = 'Tu progreso ya está aquí';
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
@@ -144,6 +149,20 @@ async function boot() {
     const { importFromHash } = await import('./state/import-state.js');
     importFromHash(storage, STORAGE_KEY, location.hash);
     history.replaceState(null, '', `${location.pathname}${location.search}#inicio`);
+  }
+  // Progreso que llega de la dirección de antes al mudarse (ver state/mudanza.js); el fragmento se limpia.
+  // Vuelve al fragmento con el que se llegó a la dirección antigua (p. ej. un enlace compartido).
+  let moved = 'nada';
+  if ((location.hash || '').startsWith(MOVE_HASH)) {
+    const { receiveMove } = await import('./state/mudanza.js');
+    const got = await receiveMove(storage, STORAGE_KEY, location.hash).catch(() => ({ result: 'nada', route: '' }));
+    moved = got.result;
+    history.replaceState(null, '', `${location.pathname}${location.search}${got.route || '#inicio'}`);
+  }
+  // En la dirección antigua: si la nueva ya responde, se pasa sola a ella con lo guardado (el módulo comprueba la
+  // dirección; en la nueva, en local y en las pruebas no hace nada).
+  if (location.hostname === OLD_HOSTNAME) {
+    import('./ui/move-redirect.js').then((m) => m.moveToNewHome({ storage, stateKey: STORAGE_KEY })).catch(() => {});
   }
   const store = createStore({ storage });
   document.documentElement.classList.toggle('reduce-motion', Boolean(store.get().settings.reducedMotion));
@@ -328,6 +347,7 @@ async function boot() {
   window.addEventListener('hashchange', render);
   installPrimaryKeys();
   replayToast();
+  if (moved === 'traido') toast(MOVE_TOAST, { carry: true });
   render();
   // Después de pintar: textos del catálogo, audio y las pantallas que vendrán.
   whenIdle(() => {
