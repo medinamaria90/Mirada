@@ -82,10 +82,10 @@ test('regla 5 bis: lo pendiente atrás (Prueba de época o el pintor a medias qu
   const mid = step(p, { plan: { kind: 'stage', artistId: openStep.id }, outcome: outcome(0.8) });
   assert.equal(mid.kind, 'debt', JSON.stringify(mid));
   assert.equal(step(p, { plan: { kind: 'stage', artistId: openStep.id }, outcome: outcome(0.8), prevStep: 'debt' }).kind, 'stop');
-  // Época terminada y su Prueba sin hacer: «Prueba de época: <época>».
+  // Época terminada y su Prueba sin hacer: «Prueba del <época>» (corto: cabe entero en la guía).
   p.artists[late] = { plays: 2, best: 0.9, mastered: true };
   const test1 = step(p, { plan: { kind: 'stage', artistId: openStep.id }, outcome: outcome(0.8) });
-  assert.deepEqual([test1.kind, test1.label, test1.to], ['debt', `Prueba de época: ${m1.name}`, `repaso-${m1.id}`]);
+  assert.deepEqual([test1.kind, test1.label, test1.to], ['debt', `Prueba del ${m1.name.split(' y ')[0]}`, `repaso-${m1.id}`]);
   p.reviews = { [m1.id]: { best: 0.8 } };
   assert.notEqual(step(p, { plan: { kind: 'stage', artistId: openStep.id }, outcome: outcome(0.8) }).kind, 'debt', 'superada, ya no se recomienda');
 });

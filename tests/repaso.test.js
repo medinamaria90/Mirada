@@ -168,7 +168,7 @@ function stageButton(html, id) {
   return html.match(new RegExp(`<button class="stage [^"]*" data-action="stage" data-id="${id}"[^]*?</button>`))?.[0] || '';
 }
 
-test('pintor dormido: dominado y sin salir en 7 días se apaga y pregunta «¿Lo recuerdas?»; al jugarlo vuelve', () => {
+test('pintor dormido: dominado y sin salir en 7 días se apaga (sin texto en el mapa; «¿Lo recuerdas?» para el lector); al jugarlo vuelve', () => {
   const today = '2026-11-24';
   const [a, b, c] = big.path;
   const p = masteredProgress({ [a.id]: { on: '2026-11-17' }, [b.id]: { on: '2026-11-18' }, [c.id]: { on: '2026-11-10', seen: '2026-11-20' } });
@@ -180,7 +180,7 @@ test('pintor dormido: dominado y sin salir en 7 días se apaga y pregunta «¿Lo
   const btnA = stageButton(html, a.id);
   assert.match(btnA, /class="stage is-dormant is-mastered"/);
   assert.match(btnA, /data-status="mastered"/, 'sigue dominado (nunca se bloquea)');
-  assert.ok(btnA.includes(`<span class="stage-meta">${DORMANT_TEXT}</span>`));
+  assert.ok(btnA.includes(`. ${DORMANT_TEXT}"`) && !btnA.includes(`<span class="stage-meta">${DORMANT_TEXT}</span>`), 'el dormido lo dice al lector, no con texto bajo el nombre');
   assert.ok(btnA.includes('stage-badge'), 'conserva el sello de dominado');
   assert.doesNotMatch(stageButton(html, b.id), /is-dormant|Lo recuerdas/);
   // Al jugar su ronda (aunque falle), vuelve a su estado y sigue dominado.
