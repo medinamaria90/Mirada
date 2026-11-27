@@ -14,10 +14,11 @@ export function seenOf(progress, index, artistId) {
     .sort((a, b) => (a.yearSort || 0) - (b.yearSort || 0));
 }
 
-// Pintores que ya ha conocido: con algún nivel jugado o con la historia de su nivel 1 vista (`storySeen(id)`, que
-// guarda la interfaz). Solo a estos se pregunta por autor en el repaso de una etapa (planner.planStage, opts.met).
-export function metArtistIds(progress, index, storySeen = () => false) {
-  return index.artists.filter((a) => (progress.artists?.[a.id]?.plays || 0) > 0 || storySeen(a.id)).map((a) => a.id);
+// Pintores que ya ha conocido: los que ha jugado (algún nivel). Ver su historia o tener parada en el camino no basta
+// (decisión de María, 27/11: «no sé nada de él porque no lo he jugado»). Solo a estos (y a los invitados presentados,
+// engine/guest-intro.js) se pregunta por autor: etapas (planner.planStage, opts.met), repasos y pruebas de época.
+export function metArtistIds(progress, index) {
+  return index.artists.filter((a) => (progress.artists?.[a.id]?.plays || 0) > 0).map((a) => a.id);
 }
 
 // Estado de un pintor: 'mastered' | 'started' | 'new'.
