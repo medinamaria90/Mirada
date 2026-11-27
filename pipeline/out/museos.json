@@ -9419,5 +9419,31 @@
   "parent": null,
   "country": "Ciudad del Vaticano",
   "isMuseum": false
+ },
+ "Q1190961": {
+  "name": "Palacio Comunal de Siena",
+  "types": [
+   "Q2651004",
+   "Q25550691"
+  ],
+  "adm": "Q2751",
+  "loc": null,
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": false
+ },
+ "Q1705125": {
+  "name": "Palazzo Pubblico",
+  "types": [
+   "Q16560",
+   "Q33506",
+   "Q7138926",
+   "Q25550691"
+  ],
+  "adm": "Q1848",
+  "loc": "Q25053403",
+  "parent": null,
+  "country": "San Marino",
+  "isMuseum": true
  }
 }

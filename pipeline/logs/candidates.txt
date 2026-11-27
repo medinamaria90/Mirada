@@ -1,4 +1,6 @@
-repito giotto             faltan datos de forzadas: Q2067212 Q3504778 Q3769209
-ok     giotto             Q7814        57 candidatas; de las 80 primeras, 30 con imagen >=1200px
+ya     duccio             62 candidatas
+ya     giotto             57 candidatas
+repito simone-martini     faltan datos de forzadas: Q3119488 Q3276413
+ok     simone-martini     Q221043      43 candidatas; de las 80 primeras, 37 con imagen >=1200px
 ya     fra-angelico       194 candidatas
-fin 2026-11-27 00:51:33
+fin 2026-11-27 01:22:28

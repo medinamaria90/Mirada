@@ -6,28 +6,41 @@
    "title": "Quién fue El Bosco",
    "cards": [
     {
-     "text": "Monstruos con patas de pájaro, fresas gigantes, gente metida en conchas... El Bosco pintaba sueños y pesadillas hace más de 500 años. De su vida no sabemos casi nada.",
+     "text": "Hace más de 500 años, El Bosco abrió este tríptico con el paraíso. Pintó una jirafa y, tras Adán, un drago, el árbol de Canarias. Seguramente nunca vio ninguno de los dos.",
      "artwork": "w321303",
-     "source": "https://es.wikipedia.org/wiki/El_Bosco"
+     "region": [
+      0.008,
+      0.012,
+      0.233,
+      0.99
+     ],
+     "source": "https://es.wikipedia.org/wiki/El_jard%C3%ADn_de_las_delicias"
     },
     {
-     "text": "Nadie antes había inventado tantos seres imposibles; siglos después, los surrealistas lo tomaron por abuelo. Felipe II lo coleccionó: por eso lo mejor del Bosco está en el Prado.",
+     "text": "En el centro, el jardín: cientos de desnudos, fresas gigantes, pájaros enormes, parejas metidas en burbujas. ¿Elogio del placer o aviso de lo que viene? Aún se discute.",
      "artwork": "w321303",
-     "focus": [
-      0.5,
-      0.5,
-      1.2
+     "region": [
+      0.37,
+      0.012,
+      0.63,
+      0.99
+     ],
+     "source": "https://es.wikipedia.org/wiki/El_jard%C3%ADn_de_las_delicias"
+    },
+    {
+     "text": "A la derecha, el infierno: un hombre-árbol, un pájaro que devora pecadores... Nadie había inventado tantos seres imposibles; siglos después, los surrealistas lo hicieron su abuelo.",
+     "artwork": "w321303",
+     "region": [
+      0.768,
+      0.012,
+      0.993,
+      0.99
      ],
      "source": "https://es.wikipedia.org/wiki/El_Bosco"
     },
     {
-     "text": "Fíjate en el paraíso, a la izquierda: hay una jirafa copiada de un libro italiano y, detrás de Adán, un drago, el árbol de Canarias. Seguramente nunca vio ninguno de los dos.",
-     "artwork": "w321303",
-     "focus": [
-      0.13,
-      0.5,
-      2.2
-     ],
+     "text": "Felipe II coleccionó sus cuadros con pasión y se los llevó a El Escorial. Por eso lo mejor del Bosco no está en su tierra, en los Países Bajos, sino en el Prado.",
+     "artwork": "w2304870",
      "source": "https://es.wikipedia.org/wiki/El_Bosco"
     }
    ]

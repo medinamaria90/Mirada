@@ -29,7 +29,7 @@
   "order": 2,
   "section": null,
   "qid": "Q15792",
-  "works": 6,
+  "works": 8,
   "category": "rama",
   "branches": [
    "gotico"
@@ -44,7 +44,7 @@
     "provisional": true
    }
   ],
-  "level1": 2
+  "level1": 4
  },
  {
   "id": "giotto",
@@ -57,7 +57,7 @@
   "order": 3,
   "section": null,
   "qid": "Q7814",
-  "works": 20,
+  "works": 21,
   "category": "gran-maestro",
   "branches": [
    "gotico"
@@ -117,7 +117,7 @@
   "order": 5,
   "section": null,
   "qid": "Q221043",
-  "works": 5,
+  "works": 8,
   "category": "rama",
   "branches": [
    "gotico"
@@ -132,7 +132,7 @@
     "provisional": true
    }
   ],
-  "level1": 2
+  "level1": 4
  },
  {
   "id": "ambrogio-lorenzetti",
@@ -190,11 +190,11 @@
   "order": 1,
   "section": null,
   "qid": "Q5664",
-  "works": 4,
+  "works": 5,
   "category": "invitado",
   "branches": [],
   "stages": [],
-  "level1": 4
+  "level1": 5
  },
  {
   "id": "uccello",
@@ -2330,7 +2330,7 @@
   "order": 5,
   "section": null,
   "qid": "Q317736",
-  "works": 8,
+  "works": 7,
   "category": "rama",
   "branches": [
    "ukiyo-e"
@@ -2345,7 +2345,7 @@
     "provisional": true
    }
   ],
-  "level1": 4
+  "level1": 3
  },
  {
   "id": "hiroshige",

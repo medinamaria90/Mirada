@@ -21,9 +21,7 @@ FIRST_TRAMO = 4  # «Primer Renacimiento»: Botticelli, Masaccio, Piero y Berrug
 # de compartir, generadas al desplegar, rondan los 900.
 MAX_APP_FILES = 1000
 # Pintores invitados con menos de 3 obras por falta de imágenes: aviso (no error) hasta traerlas con el pipeline.
-PENDING_WORKS = {
-    "fra-angelico": "faltan obras «new»; candidatas en pipeline/extra.json (Q3531531, Q2376881, Q1215809) y pipeline/NOTAS.md",
-}
+PENDING_WORKS = {}
 LOOK_MAX = 100
 MIN_PATH_LEVEL1 = 4          # obras de nivel 1 sin spoiler de un pintor con etapa
 STAGE_CATEGORIES = ("gran-maestro", "maestro")

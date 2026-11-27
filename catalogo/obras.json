@@ -122,7 +122,7 @@
    "order": 2,
    "section": null,
    "qid": "Q15792",
-   "works": 6,
+   "works": 8,
    "category": "rama",
    "branches": [
     "gotico"
@@ -137,7 +137,7 @@
      "provisional": true
     }
    ],
-   "level1": 2
+   "level1": 4
   },
   {
    "id": "giotto",
@@ -150,7 +150,7 @@
    "order": 3,
    "section": null,
    "qid": "Q7814",
-   "works": 20,
+   "works": 21,
    "category": "gran-maestro",
    "branches": [
     "gotico"
@@ -210,7 +210,7 @@
    "order": 5,
    "section": null,
    "qid": "Q221043",
-   "works": 5,
+   "works": 8,
    "category": "rama",
    "branches": [
     "gotico"
@@ -225,7 +225,7 @@
      "provisional": true
     }
    ],
-   "level1": 2
+   "level1": 4
   },
   {
    "id": "ambrogio-lorenzetti",
@@ -283,11 +283,11 @@
    "order": 1,
    "section": null,
    "qid": "Q5664",
-   "works": 4,
+   "works": 5,
    "category": "invitado",
    "branches": [],
    "stages": [],
-   "level1": 4
+   "level1": 5
   },
   {
    "id": "uccello",
@@ -2423,7 +2423,7 @@
    "order": 5,
    "section": null,
    "qid": "Q317736",
-   "works": 8,
+   "works": 7,
    "category": "rama",
    "branches": [
     "ukiyo-e"
@@ -2438,7 +2438,7 @@
      "provisional": true
     }
    ],
-   "level1": 4
+   "level1": 3
   },
   {
    "id": "hiroshige",
@@ -4325,6 +4325,52 @@
    "warnings": []
   },
   {
+   "id": "w667202",
+   "artistId": "duccio",
+   "title": "Maestà de la catedral de Siena",
+   "titleSource": "wikidata-es",
+   "year": "1308",
+   "yearSort": 1308,
+   "yearQuality": "exact",
+   "level": 1,
+   "stage": null,
+   "fame": 2,
+   "sitelinks": 20,
+   "img": "img/w667202.jpg",
+   "w": 1600,
+   "h": 834,
+   "downloaded": true,
+   "museum": "Catedral de Siena",
+   "city": "Siena",
+   "country": "Italia",
+   "inSpain": false,
+   "technique": "Temple sobre tabla",
+   "dimensions": "211 × 426 cm",
+   "inception": "1308",
+   "depicts": [
+    "Maestà",
+    "Niño Jesús",
+    "The Annunciation",
+    "niño",
+    "resurrección de Lázaro",
+    "ángel"
+   ],
+   "genre": "pintura religiosa",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q667202",
+    "commons": "https://commons.wikimedia.org/wiki/File:Siena_Museo_dell'Opera_del_Duomo_Maestà_1.jpg",
+    "file": "Siena Museo dell'Opera del Duomo Maestà 1.jpg",
+    "license": "CC0",
+    "credit": "Own work",
+    "ficha": "wikidata",
+    "fetched": "2026-11-24"
+   },
+   "confidence": "high",
+   "warnings": []
+  },
+  {
    "id": "w948745",
    "artistId": "duccio",
    "title": "Madonna Rucellai",
@@ -4422,8 +4468,8 @@
    "year": "1283",
    "yearSort": 1283,
    "yearQuality": "exact",
-   "level": 2,
-   "stage": "Más obras",
+   "level": 1,
+   "stage": null,
    "fame": 1,
    "sitelinks": 7,
    "img": "img/w3842715.jpg",
@@ -4578,6 +4624,50 @@
     "credit": "Google Arts &amp; Culture  — VwFhxyyiHc20QA",
     "ficha": "wikidata",
     "fetched": "2026-11-24"
+   },
+   "confidence": "medium",
+   "warnings": []
+  },
+  {
+   "id": "w4015930",
+   "artistId": "duccio",
+   "title": "The Calling of the Apostles Peter and Andrew",
+   "titleSource": "traducir",
+   "year": "1308",
+   "yearSort": 1308,
+   "yearQuality": "exact",
+   "level": 2,
+   "stage": "Más obras",
+   "fame": 1,
+   "sitelinks": 3,
+   "img": "img/w4015930.jpg",
+   "w": 1600,
+   "h": 1501,
+   "downloaded": true,
+   "museum": "Galería Nacional de Arte",
+   "city": "Washington",
+   "country": "Estados Unidos",
+   "inSpain": false,
+   "technique": "Óleo",
+   "dimensions": "43,5 × 46 cm",
+   "inception": "1308",
+   "depicts": [
+    "Andrés el Apóstol",
+    "Jesús de Nazaret",
+    "Pedro",
+    "Vocación de los apóstoles"
+   ],
+   "genre": "arte religioso",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q4015930",
+    "commons": "https://commons.wikimedia.org/wiki/File:Duccio_di_Buoninsegna_036.jpg",
+    "file": "Duccio di Buoninsegna 036.jpg",
+    "license": "Public domain",
+    "credit": "The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202.",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
    },
    "confidence": "medium",
    "warnings": []
@@ -5258,6 +5348,49 @@
    ]
   },
   {
+   "id": "w3769209",
+   "artistId": "giotto",
+   "title": "El Juicio Final",
+   "titleSource": "wikidata-es",
+   "year": "1306",
+   "yearSort": 1306,
+   "yearQuality": "exact",
+   "level": 3,
+   "stage": "Padua y la capilla Scrovegni",
+   "fame": 1,
+   "sitelinks": 6,
+   "img": "img/w3769209.jpg",
+   "w": 1067,
+   "h": 1600,
+   "downloaded": true,
+   "museum": "Capilla de los Scrovegni",
+   "city": "Padua",
+   "country": "Italia",
+   "inSpain": false,
+   "technique": "Fresco",
+   "dimensions": "1000 × 840 cm",
+   "inception": "1306",
+   "depicts": [
+    "Juicio Final"
+   ],
+   "genre": null,
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q3769209",
+    "commons": "https://commons.wikimedia.org/wiki/File:Last_Judgement_-_Capella_degli_Scrovegni_-_Padua_2016_(2).jpg",
+    "file": "Last Judgement - Capella degli Scrovegni - Padua 2016 (2).jpg",
+    "license": "CC BY-SA 4.0",
+    "credit": "Own work",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
+   },
+   "confidence": "medium",
+   "warnings": [
+    "proporcion"
+   ]
+  },
+  {
    "id": "w61989282",
    "artistId": "giotto",
    "title": "La Virgen de la Anunciación",
@@ -5689,6 +5822,98 @@
    "warnings": []
   },
   {
+   "id": "w3119488",
+   "artistId": "simone-martini",
+   "title": "Guidoriccio da Fogliano en el asedio de Montemassi",
+   "titleSource": "manual",
+   "year": "c. 1328–1330",
+   "yearSort": 1328,
+   "yearQuality": "circa",
+   "level": 1,
+   "stage": null,
+   "fame": 1,
+   "sitelinks": 6,
+   "img": "img/w3119488.jpg",
+   "w": 1600,
+   "h": 637,
+   "downloaded": true,
+   "museum": "Palazzo Pubblico",
+   "city": "San Marino",
+   "country": "San Marino",
+   "inSpain": false,
+   "technique": "Fresco",
+   "dimensions": "340 × 968 cm",
+   "inception": "1328–1330",
+   "depicts": [
+    "Guidoriccio da Fogliano",
+    "Montemassi",
+    "caballo",
+    "equitación"
+   ],
+   "genre": "retrato ecuestre",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q3119488",
+    "commons": "https://commons.wikimedia.org/wiki/File:Simone_Martini_-_Guidoriccio_da_Fogliano_-_Google_Art_Project.jpg",
+    "file": "Simone Martini - Guidoriccio da Fogliano - Google Art Project.jpg",
+    "license": "Public domain",
+    "credit": "Google Arts & Culture",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
+   },
+   "confidence": "medium",
+   "warnings": [
+    "proporcion"
+   ]
+  },
+  {
+   "id": "w3276413",
+   "artistId": "simone-martini",
+   "title": "Maestà del Palazzo Pubblico",
+   "titleSource": "manual",
+   "year": "1315",
+   "yearSort": 1315,
+   "yearQuality": "exact",
+   "level": 1,
+   "stage": null,
+   "fame": 1,
+   "sitelinks": 6,
+   "img": "img/w3276413.jpg",
+   "w": 1600,
+   "h": 1230,
+   "downloaded": true,
+   "museum": "Palacio Comunal de Siena",
+   "city": "Siena",
+   "country": "Italia",
+   "inSpain": false,
+   "technique": "Fresco",
+   "dimensions": "763 × 9708 cm",
+   "inception": "1315",
+   "depicts": [
+    "Niño Jesús",
+    "Virgen María",
+    "mujer",
+    "niño"
+   ],
+   "genre": "arte religioso",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q3276413",
+    "commons": "https://commons.wikimedia.org/wiki/File:Simone_Martini_-_Maestà_-_Google_Art_Project.jpg",
+    "file": "Simone Martini - Maestà - Google Art Project.jpg",
+    "license": "Public domain",
+    "credit": "Google Arts & Culture",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
+   },
+   "confidence": "medium",
+   "warnings": [
+    "proporcion"
+   ]
+  },
+  {
    "id": "w3907529",
    "artistId": "simone-martini",
    "title": "Políptico de Santa Catalina",
@@ -5860,6 +6085,47 @@
     "credit": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"s/simone/6annunci/a_angel\" https://artsandculture.google.com/asset/the-angel-of-the-annunciation-simone-martini/ugHDOL-vk0oeBw",
     "ficha": "wikidata",
     "fetched": "2026-11-24"
+   },
+   "confidence": "medium",
+   "warnings": []
+  },
+  {
+   "id": "w21614531",
+   "artistId": "simone-martini",
+   "title": "Descent from the Cross",
+   "titleSource": "traducir",
+   "year": "1333",
+   "yearSort": 1333,
+   "yearQuality": "exact",
+   "level": 2,
+   "stage": "Más obras",
+   "fame": 1,
+   "sitelinks": 1,
+   "img": "img/w21614531.jpg",
+   "w": 1000,
+   "h": 1600,
+   "downloaded": true,
+   "museum": "Museo Real de Bellas Artes de Amberes",
+   "city": "Amberes",
+   "country": "Bélgica",
+   "inSpain": false,
+   "technique": "Temple sobre tabla",
+   "dimensions": "24,5 × 15,5 cm",
+   "inception": "1333",
+   "depicts": [
+    "Jesús de Nazaret"
+   ],
+   "genre": "arte religioso",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q21614531",
+    "commons": "https://commons.wikimedia.org/wiki/File:Simone_Martini_065.jpg",
+    "file": "Simone Martini 065.jpg",
+    "license": "Public domain",
+    "credit": "The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202.",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
    },
    "confidence": "medium",
    "warnings": []
@@ -6810,6 +7076,51 @@
    "confidence": "medium",
    "warnings": [
     "proporcion"
+   ]
+  },
+  {
+   "id": "w1215809",
+   "artistId": "fra-angelico",
+   "title": "Retablo de San Marcos",
+   "titleSource": "wikidata-es",
+   "year": "s. XV",
+   "yearSort": 1425,
+   "yearQuality": "century",
+   "level": 1,
+   "stage": null,
+   "fame": 2,
+   "sitelinks": 12,
+   "img": "img/w1215809.jpg",
+   "w": 1548,
+   "h": 1600,
+   "downloaded": true,
+   "museum": "Museo Nacional de San Marcos",
+   "city": "Florencia",
+   "country": "Italia",
+   "inSpain": false,
+   "technique": "Temple sobre tabla",
+   "dimensions": "220 × 227 cm",
+   "inception": "",
+   "depicts": [
+    "Marcos el Evangelista",
+    "Niño Jesús",
+    "Virgen María"
+   ],
+   "genre": "arte religioso",
+   "about": "",
+   "look": "",
+   "source": {
+    "wikidata": "Q1215809",
+    "commons": "https://commons.wikimedia.org/wiki/File:Fra_Angelico_—_San_Marco_Altarpiece.jpg",
+    "file": "Fra Angelico — San Marco Altarpiece.jpg",
+    "license": "Public domain",
+    "credit": "Own work",
+    "ficha": "wikidata",
+    "fetched": "2026-11-27"
+   },
+   "confidence": "medium",
+   "warnings": [
+    "archivo-sospechoso"
    ]
   },
   {
@@ -44590,45 +44901,6 @@
    "warnings": [
     "proporcion"
    ]
-  },
-  {
-   "id": "w69729449",
-   "artistId": "kuniyoshi",
-   "title": "Honchō suikoden gōyū 800 nin hitori",
-   "titleSource": "traducir",
-   "year": "c. 1830",
-   "yearSort": 1830,
-   "yearQuality": "circa",
-   "level": 1,
-   "stage": null,
-   "fame": 1,
-   "sitelinks": 2,
-   "img": "img/w69729449.jpg",
-   "w": 617,
-   "h": 1600,
-   "downloaded": true,
-   "museum": null,
-   "city": null,
-   "country": null,
-   "inSpain": false,
-   "technique": "",
-   "dimensions": "",
-   "inception": "1830",
-   "depicts": [],
-   "genre": "ukiyo-e",
-   "about": "",
-   "look": "",
-   "source": {
-    "wikidata": "Q69729449",
-    "commons": "https://commons.wikimedia.org/wiki/File:Honcho_Suikoden_Goketsu_(BM_1973,0723,0.29_76).jpg",
-    "file": "Honcho Suikoden Goketsu (BM 1973,0723,0.29 76).jpg",
-    "license": "Public domain",
-    "credit": "https://www.britishmuseum.org/collection/object/A_1973-0723-0-29",
-    "ficha": "wikidata",
-    "fetched": "2026-11-24"
-   },
-   "confidence": "medium",
-   "warnings": []
   },
   {
    "id": "w70738658",

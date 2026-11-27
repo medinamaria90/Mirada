@@ -16,8 +16,14 @@
      "source": "https://es.wikipedia.org/wiki/Paolo_Uccello"
     },
     {
-     "text": "Fíjate en el dragón: la princesa lo lleva atado con su cinturón, como un perrito. Y arriba, una nube que gira en espiral.",
+     "text": "Fíjate en el dragón: la princesa lo lleva atado con su cinturón, como si fuera un perrito. San Jorge ya lo ha herido con su lanza.",
      "artwork": "w780466",
+     "region": [
+      0.05,
+      0.25,
+      0.45,
+      0.95
+     ],
      "source": "https://es.wikipedia.org/wiki/Paolo_Uccello"
     }
    ]

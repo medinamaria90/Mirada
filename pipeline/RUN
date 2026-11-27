@@ -1,9 +1,8 @@
-# 27/11 — Fra Angelico: entran las forzadas de extra.json (Adoración de los Reyes Magos, Anunciación de Cortona; la Coronación
-# se fuerza para no perderla; el Retablo de San Marcos queda fuera: imagen de 848 px). Giotto: tres frescos más de los Scrovegni
-# (El beso de Judas, Llanto sobre Cristo muerto, El Juicio Final) en su nivel «Padua». Leyster y Malévich: «Colección privada»
-# en vez del marchante (fichas_ajustes.json, se aplica en build).
-candidates giotto fra-angelico
-seleccionar giotto fra-angelico
+# 27/11 (2.ª pasada) — Archivos de Commons alternativos (ajustes.json) para El Juicio Final de Giotto, el Retablo de San Marcos
+# de Fra Angelico y la Maestà de Duccio; Simone Martini con la Maestà del Palazzo Pubblico y Guidoriccio forzadas. Duccio y
+# Simone Martini llegan a 4 obras de nivel 1. seleccionar.py ya respeta las claves w<número> de excluir.json.
+candidates giotto fra-angelico duccio simone-martini
+seleccionar giotto fra-angelico duccio simone-martini
 fichas
 reconciliar
 download 1 150
