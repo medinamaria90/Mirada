@@ -46333,5 +46333,97 @@
   "movement": null,
   "source": "wikidata",
   "fetched": "2026-11-27"
+ },
+ "Q3933568": {
+  "museum": "Capilla Brancacci",
+  "museumQid": "Q1996075",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "230 × 599 cm",
+  "heightCm": 230.0,
+  "widthCm": 599.0,
+  "inception": "1427",
+  "depicts": [
+   "Pedro"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q3999132": {
+  "museum": "Masaccio Museum",
+  "museumQid": "Q3867618",
+  "city": "Reggello",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "110 × 65 cm",
+  "heightCm": 110.0,
+  "widthCm": 65.0,
+  "inception": "1422",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q3850304": {
+  "museum": "Gemäldegalerie de Berlín",
+  "museumQid": "Q165631",
+  "city": "Berlín",
+  "country": "Alemania",
+  "inSpain": false,
+  "technique": "",
+  "materials": [],
+  "dimensions": "30,5 × 21 cm",
+  "heightCm": 30.5,
+  "widthCm": 21.0,
+  "inception": "1426",
+  "depicts": [
+   "Juan el Bautista"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q3842651": {
+  "museum": "Galería Nacional de Arte",
+  "museumQid": "Q214867",
+  "city": "Washington",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "105,6 × 54,1 cm",
+  "heightCm": 105.6,
+  "widthCm": 54.1,
+  "inception": "1424",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "madre",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
  }
 }

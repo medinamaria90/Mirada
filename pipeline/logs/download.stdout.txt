@@ -1,3 +1,6 @@
-selección 1472, ya bajadas 1471, pendientes 1; este lote 1
-ok   w96471658   kuniyoshi        1107x1600 294KB  Illustrations of Moral Conduct Compared with the Chapters of
-lote: 1/1 bien; quedan 0
+selección 1470, ya bajadas 1466, pendientes 4; este lote 4
+ok   w3933568    masaccio         1600x655 182KB  La resurrección del hijo de Teófilo y san Pedro en su cátedr
+ok   w3999132    masaccio         1600x1150 357KB  Tríptico de San Juvenal
+ok   w3850304    masaccio         1600x1248 435KB  Martirio de san Juan Bautista
+ok   w3842651    masaccio         659x1299 252KB  Virgen de la humildad
+lote: 4/4 bien; quedan 0
