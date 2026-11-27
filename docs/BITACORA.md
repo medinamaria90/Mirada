@@ -136,3 +136,16 @@ Reloj del juego (petición de María, que juega casi siempre de noche): la luz d
 ## Encuadre sin cortes: historias y casillas (27/11)
 María vio la cabeza de Cristo fuera de la tarjeta de la Piedad Desplà y la Inmaculada de Murillo sin cabeza en una casilla de «¿Cuál es de…?». No eran las imágenes ni el atlas (vienen enteros): era el recorte de cada vista. Ahora es un sistema (`app/js/engine/framing.js`): una vista solo recorta sin más si pierde ≤ 15 % del cuadro; si pierde más, usa el foco revisado de la obra (`contenido/focos.json`, 408 obras revisadas mirando la imagen con cuadrícula, más los 33 focos del «Detalle del día»). En la historia, a sangre con el foco por encima del texto si pierde ≤ 45 %; si no (o si la obra está en «enteras»), entera sobre su fondo desenfocado, en el hueco entre la cabecera y el texto y con un zoom suave. El foco se aplica también en miniaturas, círculos de nivel y casillas. `node tools/recortes.mjs` lista las obras recortadas y `tests/recortes.test.js` falla si una obra nueva queda muy recortada sin foco.
 
+
+## Camino nuevo: sendero de tierra, puentes alineados y carteles de dos postes (27/11)
+Propuesta del experto (`docs/eval/camino-experto.md`), aprobada por María. El sendero es de tierra, sin raya, con
+curvas amplias (puntos de paso suavizados en `path-curve.js`), unas cuatro paradas por pantalla y una puerta en el seto
+al entrar en cada época. Lo recorrido va en tierra dorada con un hilo de oro hasta la parada actual; lo pendiente ya no
+se desatura a gris (los dominados por repasar, menos apagados). Puentes: el trazado (`path-layout.js`) los pone donde el
+sendero va recto entre dos paradas del mismo lado, y `tools/mapa_agua.py` hace nacer el río del puente, de borde a borde
+y más allá (sale de la pantalla, nunca se corta), con el tablero alineado; `mapa_svg.py` falla si el sendero o un desvío
+cruzan agua sin puente. Los desvíos de rama nunca salen de un puente ni van encima de uno. Todos los carteles (época,
+tramo, rama) son una placa sobre dos postes; los de rama, bajo su parada en el margen, y al tocarlos se entra en la rama
+(se quita la hoja «Ramas»). Carteles de tramo y de rama con sus textos (`contenido/ramas.json`, `tramos.json`, copiados a
+`app/data/carteles/` con `tools/sync_carteles.py`) en tarjetas como las de época. Botón flotante para volver a la parada
+actual. Hitos del paisaje (molino, castillo…) que caen bajo un rótulo se corren a un hueco libre en vez de perderse.

@@ -1,27 +1,43 @@
-// Trazado del mapa del camino (puro, sin DOM): alto de cada tramo, nodos, sendero, carteles al borde del
-// camino y desvíos de las ramas, en coordenadas de diseño (ancho 390; en pantalla todo va en porcentajes y
+// Trazado del mapa del camino (puro, sin DOM): alto de cada tramo, nodos, sendero, puentes, puerta de época, carteles al
+// borde del camino y desvíos de las ramas, en coordenadas de diseño (ancho 390; en pantalla todo va en porcentajes y
 // escala con la columna). tools/mapa_svg.py pinta los paisajes con este mismo trazado (lo lee por
-// tools/mapa-layout.mjs), así que nada del paisaje cae bajo un cartel.
+// tools/mapa-layout.mjs): el agua sale de los puentes que fija este archivo y nada del paisaje cae bajo un cartel.
+// Forma (docs/eval/camino-experto.md): un sendero de tierra que deriva despacio de un lado a otro, unas cuatro paradas
+// por pantalla, recto donde cruza un puente y por la puerta de cada época.
 
 import { hasMovementReview } from '../../engine/progress.js';
+import { spline, segmentsD, roadX, f } from './path-curve.js';
 
+export { segmentsD, roadX, f };
 export const MAP_W = 390;
-export const STEP = 124;             // distancia vertical entre paradas
-const PAD_BOTTOM = 196;              // entrada del tramo: tramo recto del sendero y el cartel de la época al lado
-const RUN = 134;                     // el sendero entra recto (vertical) este alto: el cartel cabe a su lado
+export const STEP = 172;             // distancia vertical entre paradas (unas cuatro por pantalla)
+const ENTRY = { pad: 232, run: 64, gate: true };   // entrada de la época: recta por la puerta, con el cartel al lado
+// El primer tramo arranca justo tras la puerta de salida: sin puerta propia y con una recta más corta.
+const FIRST_ENTRY = { pad: 172, run: 64, gate: false };
 const PAD_TOP = 28;                  // salida del tramo
-// El primer tramo arranca justo tras la puerta de salida: entrada más corta (sin un largo trecho vacío).
-const FIRST_ENTRY = { pad: 124, run: 72 };
-const XS = [128, 262, 136, 266, 126, 264, 134, 260];   // zigzag de los nodos
-export const SIDE_X = { left: 42, right: MAP_W - 42 }; // margen estrecho: sala de la época y ramas (lejos del nodo)
-export const ROAD_HALF = 15;         // medio ancho del sendero (borde incluido)
+export const GATE_Y = 44;            // la puerta de la época, sobre la recta de entrada
+// Deriva lenta: el sendero cambia de lado cada tres o cuatro paradas (nunca en cada una).
+const XS = [148, 162, 248, 262, 240, 152, 142, 158];
+const FIRST_PHASE = 2;               // el primer tramo empieza del lado por el que sale el sendero de la puerta
+export const SIDE_X = { left: 42, right: MAP_W - 42 }; // margen estrecho: sala de la época
+export const ROAD_HALF = 13;         // medio ancho del sendero (borde incluido)
 const ROAD_GAP = 12;                 // aire entre el sendero y un cartel
+const GATE_GAP = 30;                 // el cartel de la época, fuera de los pilares de la puerta
 const EDGE = 10;                     // aire con el borde del mapa
-const SIGN_BOX = { top: 130, bottom: 14 };  // cartel de época: entre h-96 y h-14
-const BRANCH_LIFT = 14;               // el hito de la rama, algo por encima de su parada (aire con el nodo)
+const SIGN_BOX = { top: 134, bottom: 14 };  // cartel de época (o de rama, en su pantalla): entre h-134 y h-14
+const TRAMO_BOX = { top: 52, bottom: 112 }; // cartel de tramo: bajo su primera parada, en el lado ancho
+// Puentes: el sendero va recto BRIDGE_HALF por encima y por debajo del centro (el tablero no se curva) y solo se
+// tiende donde dos paradas seguidas quedan del mismo lado (el camino llega derecho, sin giros forzados).
+export const BRIDGE_HALF = 35;
+const BRIDGE_MAX_DX = 30;
+// Ríos por paisaje (época o rama temática): cuántos cruza el sendero, cada uno con su puente.
+const RIVERS = { renacimiento: 1, 'manierismo-y-norte': 1, impresionismo: 1, gotico: 1, 'escuela-rusa': 2 };
+const BRANCH_BELOW = 118;            // pie del cartel de la rama, bajo su parada (la placa queda bajo el nodo)
+const BRANCH_SIGN_H = 66;            // alto del cartel de una rama, postes incluidos
+const BRANCH_SIGN_X = 58;            // el desvío acaba bajo el cartel de la rama, a esta distancia del borde
 const TAIL_OUT = 6;                  // tras el cartel, el desvío sigue hasta salir del mapa…
 const TAIL_DROP = 26;                // …bajando un poco
-const SPUR_DROP = 46;                // el desvío de una rama sale del sendero algo por debajo de su nodo
+const SPUR_DROP = 6;                 // el desvío sale del sendero algo por debajo del pie del cartel
 // Salida (abajo del todo) y «Tu museo» (arriba): bloques propios con su dibujo.
 export const START_H = 150;
 export const START_PLAZA = { x: MAP_W / 2, y: 118 };
@@ -30,99 +46,102 @@ const START_ARCH_LEFT = 140;         // la placa de salida no tapa la puerta de 
 export const MUSEUM_H = 280;
 export const MUSEUM_DOOR = { x: MAP_W / 2, y: 112 };
 
-export const f = (n) => String(Math.round(n * 100) / 100);
-
-// Curva con tangentes verticales en los extremos (así el sendero entra y sale de cada nodo en vertical).
-const curve = (a, b) => ({ a, b, c1: { x: a.x, y: (a.y + b.y) / 2 }, c2: { x: b.x, y: (a.y + b.y) / 2 } });
-const line = (a, b) => ({ a, b, c1: a, c2: b });
-const bez = (p0, p1, p2, p3, t) => {
-  const u = 1 - t;
-  return u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3;
-};
-const at = (s, t) => ({ x: bez(s.a.x, s.c1.x, s.c2.x, s.b.x, t), y: bez(s.a.y, s.c1.y, s.c2.y, s.b.y, t) });
-
-export function segmentsD(segs) {
-  if (!segs.length) return '';
-  return segs.reduce((d, s) => `${d}C${f(s.c1.x)} ${f(s.c1.y)} ${f(s.c2.x)} ${f(s.c2.y)} ${f(s.b.x)} ${f(s.b.y)}`, `M${f(segs[0].a.x)} ${f(segs[0].a.y)}`);
-}
-
-// Sendero recorrido de un tramo hasta su parada i (incluida la entrada); i = null, el tramo entero.
-export function walkedD(era, i = null) {
-  return i === null ? era.trail : segmentsD(era.segs.slice(0, i + 2));
-}
-
-// x del sendero a la altura y (los tramos siempre suben: y decrece a lo largo de cada segmento).
-export function roadX(segs, y) {
-  const s = segs.find((g) => y <= g.a.y && y >= g.b.y) || (y > segs[0].a.y ? segs[0] : segs[segs.length - 1]);
-  let lo = 0;
-  let hi = 1;
-  for (let i = 0; i < 24; i++) {
-    const mid = (lo + hi) / 2;
-    if (at(s, mid).y > y) lo = mid; else hi = mid;
-  }
-  return at(s, (lo + hi) / 2).x;
-}
-
-// Hueco libre a un lado del sendero entre y1 y y2: { side, edge (borde del cartel junto al camino), room }.
-export function besideRoad(segs, y1, y2, prefer) {
-  const xs = Array.from({ length: 9 }, (_, i) => roadX(segs, y1 + ((y2 - y1) * i) / 8));
-  const left = Math.min(...xs) - ROAD_HALF - ROAD_GAP;
-  const right = Math.max(...xs) + ROAD_HALF + ROAD_GAP;
-  const rooms = { left: left - EDGE, right: MAP_W - EDGE - right };
-  const side = rooms[prefer] >= rooms[prefer === 'left' ? 'right' : 'left'] * 0.6 ? prefer : (prefer === 'left' ? 'right' : 'left');
-  return { side, edge: side === 'left' ? left : right, room: Math.max(0, Math.round(rooms[side])) };
-}
-
 const sideOf = (x) => (x < MAP_W / 2 ? 'left' : 'right');
 const other = (side) => (side === 'left' ? 'right' : 'left');
 
-// Tramo de una época con n paradas. phase: paradas anteriores (mantiene el zigzag entre épocas); xIn: x por la
-// que llega el sendero (la última parada de la época anterior o la salida).
-// entry: alto de la entrada y de su tramo recto (el primer tramo, más corto).
-export function eraLayout(nodeCount, phase = 0, xIn = null, entry = { pad: PAD_BOTTOM, run: RUN }) {
+// Sendero recorrido de un tramo hasta su parada i (incluida la entrada); i = null, el tramo entero.
+export function walkedD(era, i = null) {
+  return i === null ? era.trail : segmentsD(era.segs.slice(0, era.nodeSeg[i] + 1));
+}
+
+// Hueco libre a un lado del sendero entre y1 y y2: { side, edge (borde del cartel junto al camino), room }.
+export function besideRoad(segs, y1, y2, prefer, gap = ROAD_GAP) {
+  const xs = Array.from({ length: 9 }, (_, i) => roadX(segs, y1 + ((y2 - y1) * i) / 8));
+  const left = Math.min(...xs) - ROAD_HALF - gap;
+  const right = Math.max(...xs) + ROAD_HALF + gap;
+  const rooms = { left: left - EDGE, right: MAP_W - EDGE - right };
+  const side = rooms[prefer] >= rooms[other(prefer)] * 0.6 ? prefer : other(prefer);
+  return { side, edge: side === 'left' ? left : right, room: Math.max(0, Math.round(rooms[side])) };
+}
+
+// Dónde cruza el sendero sus ríos: entre dos paradas del mismo lado, repartidos por el tramo (k: la parada de abajo).
+export function bridgeSlots(points, count) {
+  const fits = points.slice(0, -1).map((p, k) => k).filter((k) => Math.abs(points[k].x - points[k + 1].x) <= BRIDGE_MAX_DX);
+  const out = [];
+  for (let j = 0; j < count; j++) {
+    const target = ((j + 1) * (points.length - 1)) / (count + 1);
+    const pick = fits.filter((k) => out.every((o) => Math.abs(o - k) >= 2)).sort((a, b) => Math.abs(a - target) - Math.abs(b - target))[0];
+    if (pick !== undefined) out.push(pick);
+  }
+  return out.sort((a, b) => a - b);
+}
+
+// Tramo de una época (o rama) con n paradas. phase: paradas anteriores (sigue la deriva entre épocas); xIn: x por la
+// que llega el sendero; entry: alto de la entrada, de su recta y si lleva puerta; rivers: ríos que cruza.
+export function eraLayout(nodeCount, phase = 0, xIn = null, entry = ENTRY, rivers = 0) {
   const h = entry.pad + nodeCount * STEP + PAD_TOP;
   const points = Array.from({ length: nodeCount }, (_, i) => ({ x: XS[(phase + i) % XS.length], y: h - entry.pad - STEP / 2 - i * STEP }));
   const start = { x: xIn ?? points[0].x, y: h };
-  const runTop = { x: start.x, y: h - entry.run };
-  const last = points[points.length - 1];
-  const segs = [line(start, runTop), curve(runTop, points[0])];
-  points.slice(1).forEach((p, i) => segs.push(curve(points[i], p)));
-  segs.push(line(last, { x: last.x, y: 0 }));
-  // Cartel de la época: al lado del tramo recto de entrada, en el lado de la primera parada.
-  const sign = { y: h - SIGN_BOX.bottom, top: h - SIGN_BOX.top, ...besideRoad(segs, h - SIGN_BOX.top, h - SIGN_BOX.bottom, other(sideOf(start.x))) };
-  return { h, points, start, segs, sign, trail: segmentsD(segs) };
+  const bridges = bridgeSlots(points, rivers).map((k) => ({
+    at: k, x: (points[k].x + points[k + 1].x) / 2, y: (points[k].y + points[k + 1].y) / 2, len: BRIDGE_HALF * 2,
+  }));
+  const way = [{ ...start, v: true, line: true }, { x: start.x, y: h - entry.run, v: true }];
+  const nodeAt = [];
+  points.forEach((p, i) => {
+    nodeAt.push(way.length);
+    way.push({ ...p });
+    const b = bridges.find((x) => x.at === i);
+    if (b) way.push({ x: b.x, y: b.y + BRIDGE_HALF, v: true, line: true }, { x: b.x, y: b.y - BRIDGE_HALF, v: true });
+  });
+  way.push({ x: points[points.length - 1].x, y: 0, v: true });
+  const segs = spline(way);
+  const gate = entry.gate ? { x: start.x, y: h - GATE_Y } : null;
+  // Cartel de la época: al lado de la recta de entrada, en el lado contrario al de la primera parada.
+  const sign = { y: h - SIGN_BOX.bottom, top: h - SIGN_BOX.top, ...besideRoad(segs, h - SIGN_BOX.top, h - SIGN_BOX.bottom, other(sideOf(start.x)), gate ? GATE_GAP : ROAD_GAP) };
+  return { h, points, start, segs, nodeSeg: nodeAt.map((w) => w - 1), bridges, gate, sign, trail: segmentsD(segs) };
+}
+
+// Cartel de un tramo (unidad de pintores) que empieza en la parada i: bajo ella, en el lado ancho (el de su nombre).
+export function tramoSign(era, i) {
+  const p = era.points[i];
+  const y1 = p.y + TRAMO_BOX.top;
+  const y2 = p.y + TRAMO_BOX.bottom;
+  return { at: i, y: y2, top: y1, ...besideRoad(era.segs, y1, y2, other(sideOf(p.x))) };
 }
 
 // Paradas que llevan una rama a su lado: repartidas por el tramo, ni la primera ni la última (ahí va la sala)
-// si hay sitio. Su cartel ocupa el margen estrecho por encima de la parada y su desvío, el de debajo; el
-// rótulo de tramo va en el lado ancho, junto al nombre, así que no chocan.
-export function branchSlots(n, k) {
+// si hay sitio, y evitando las vetadas (justo encima de un puente o de un cambio de lado). Su cartel ocupa el margen estrecho bajo la parada (el nombre va al otro lado).
+export function branchSlots(n, k, banned = []) {
   if (!k || n < 2) return [];
   const slots = new Set();
+  const cost = (i, target) => Math.abs(i - target) + (i === 0 ? 2 : 0) + (banned.includes(i) ? n : 0);
   for (let j = 0; j < k; j++) {
     const target = Math.round(((j + 1) * (n - 1)) / (k + 1));
-    const order = Array.from({ length: n - 1 }, (_, i) => i)
-      .sort((x, y) => (Math.abs(x - target) + (x === 0 ? 2 : 0)) - (Math.abs(y - target) + (y === 0 ? 2 : 0)));
+    const order = Array.from({ length: n - 1 }, (_, i) => i).sort((x, y) => cost(x, target) - cost(y, target));
     const pick = order.find((i) => !slots.has(i));
     if (pick !== undefined) slots.add(pick);
   }
   return [...slots].sort((x, y) => x - y);
 }
 
-// Desvío de una rama: del sendero (algo por debajo de su parada) al margen estrecho, donde está su cartel.
+// Desvío de una rama: del sendero al margen estrecho, bajo su parada (el cartel de dos postes queda por debajo del
+// nodo, así puede crecer hasta el sendero sin tocarlo); tras el cartel, el desvío sigue y se pierde por el borde.
 function branchSpot(era, i) {
   const p = era.points[i];
   const side = sideOf(p.x);
-  const end = { x: SIDE_X[side], y: p.y - BRANCH_LIFT };
-  const from = { x: roadX(era.segs, p.y + SPUR_DROP), y: p.y + SPUR_DROP };
-  const spur = `M${f(from.x)} ${f(from.y)}C${f((from.x + end.x) / 2)} ${f(from.y)} ${f(end.x)} ${f(from.y - 10)} ${f(end.x)} ${f(end.y)}`;
+  const y = p.y + BRANCH_BELOW;
+  const xs = Array.from({ length: 9 }, (_, k) => roadX(era.segs, y - BRANCH_SIGN_H + (BRANCH_SIGN_H * k) / 8));
+  const edge = side === 'left' ? Math.min(...xs) - ROAD_HALF - ROAD_GAP : Math.max(...xs) + ROAD_HALF + ROAD_GAP;
+  const end = { x: side === 'left' ? BRANCH_SIGN_X : MAP_W - BRANCH_SIGN_X, y };
+  const from = { x: roadX(era.segs, y + SPUR_DROP), y: y + SPUR_DROP };
+  const spur = `M${f(from.x)} ${f(from.y)}C${f((from.x + end.x) / 2)} ${f(from.y)} ${f(end.x)} ${f(from.y)} ${f(end.x)} ${f(end.y)}`;
   const out = side === 'left' ? -TAIL_OUT : MAP_W + TAIL_OUT;
   const tail = `M${f(end.x)} ${f(end.y)}C${f(end.x)} ${f(end.y + TAIL_DROP)} ${f((end.x + out) / 2)} ${f(end.y + TAIL_DROP)} ${f(out)} ${f(end.y + TAIL_DROP / 2)}`;
-  return { at: i, side, x: end.x, y: end.y, spur, tail };
+  const sign = { side, edge, y, room: Math.round(side === 'left' ? edge - EDGE : MAP_W - EDGE - edge) };
+  return { at: i, side, x: end.x, y, from, spur, tail, sign };
 }
 
 const KIND_ORDER = { rama: 0, epoca: 1, escuela: 2 };
-export const MAX_BRANCH_SIGNS = 2;
 
 // Ramas de cada época: las que empiezan en ella (medieval/estampa, época, escuela) y, como señal aparte (extra),
 // las escuelas que abren en ella un tramo nuevo con pintores propios.
@@ -134,36 +153,34 @@ export function branchesAt(index, movementId) {
   return [...starts.map((b) => ({ branch: b, extra: false })), ...extras.map((b) => ({ branch: b, extra: true }))];
 }
 
-// Pantalla de una rama: su propio tramo con sus pintores como paradas (mismo trazado que una época). Entra por
-// abajo (desde el desvío, con el cartel de la rama al lado) y sale por arriba, perdiéndose en el paisaje. Rótulos
-// de tramo (escuelas y «Descubre…»): la época en la que se abre cada grupo de pintores, si hay más de uno. Las
-// temáticas (Gótico, Estampa japonesa) no llevan: una época ajena dentro de ellas confunde.
 // Paisaje de una rama: las de época, el de su época; las temáticas (escuelas, gótico, estampa), el suyo.
 export const branchLand = (branch) => (branch.kind === 'epoca' ? branch.movementId : branch.id);
+
+// Pantalla de una rama: su propio tramo con sus pintores como paradas (mismo trazado que una época). Entra por abajo
+// con el cartel de la rama al lado y sale por arriba, perdiéndose en el paisaje. Carteles de tramo (escuelas): uno por
+// época en la que se abre un grupo de pintores, si hay más de uno. Las temáticas (Gótico, Estampa japonesa) no llevan.
 export function branchLayout(index, branch) {
   const n = branch.artists.length;
   const opens = new Map(branch.tramos.flatMap((t) => t.artists.map((id) => [id, t.opensAt])));
   const eraOf = (id) => opens.get(id) || branch.opensAt;
-  const era = eraLayout(n, 0, MAP_W / 2, FIRST_ENTRY);
+  const era = eraLayout(n, 0, MAP_W / 2, FIRST_ENTRY, RIVERS[branchLand(branch)] || 0);
   const groups = new Set(branch.artists.map(eraOf)).size;
   // Cada época, una vez: en su primer pintor (el orden es cronológico y alguna época vuelve a salir más arriba).
   const sections = groups < 2 || branch.kind === 'rama' ? [] : branch.artists.map((id, i) => (branch.artists.findIndex((x) => eraOf(x) === eraOf(id)) === i
-    ? { at: i, movementId: eraOf(id), name: String(index.movement(eraOf(id))?.name || '').split(' y ')[0] } : null)).filter(Boolean);
+    ? { at: i, movementId: eraOf(id), key: `${branch.id}/${eraOf(id)}`, name: String(index.movement(eraOf(id))?.name || '').split(' y ')[0], sign: tramoSign(era, i) } : null)).filter(Boolean);
   return { id: branch.id, ...era, sections };
 }
 
 // «Tu museo»: el sendero entra recto (su placa va al lado, bajo el edificio) y sube hasta la puerta.
 const MUSEUM_RUN = 124;
 function museumLayout(xIn) {
-  const start = { x: xIn, y: MUSEUM_H };
-  const runTop = { x: xIn, y: MUSEUM_H - MUSEUM_RUN };
-  const segs = [line(start, runTop), curve(runTop, MUSEUM_DOOR)];
+  const segs = spline([{ x: xIn, y: MUSEUM_H, v: true, line: true }, { x: xIn, y: MUSEUM_H - MUSEUM_RUN, v: true }, { ...MUSEUM_DOOR, v: true }]);
   const sign = { y: MUSEUM_H - 14, top: MUSEUM_H - MUSEUM_RUN + 4, ...besideRoad(segs, MUSEUM_H - MUSEUM_RUN + 4, MUSEUM_H - 14, other(sideOf(xIn))) };
   return { h: MUSEUM_H, segs, sign, trail: segmentsD(segs) };
 }
 
 function startLayout() {
-  const segs = [curve(START_PLAZA, { x: START_OUT_X, y: 0 })];
+  const segs = spline([{ ...START_PLAZA, v: true }, { x: START_OUT_X, y: 0, v: true }]);
   // La placa de salida, a la izquierda del arco (sus pilares quedan en x 158-236).
   const beside = besideRoad(segs, START_H - 78, START_H - 22, 'left');
   const edge = Math.min(beside.edge, START_ARCH_LEFT);
@@ -171,29 +188,24 @@ function startLayout() {
   return { h: START_H, segs, sign, trail: segmentsD(segs) };
 }
 
-// Trazado de todo el camino: salida, época a época (con dónde empieza cada tramo y dónde salen las ramas) y
-// el museo al final.
+// Trazado de todo el camino: salida, época a época (con su puerta, sus puentes, sus carteles de tramo y un desvío con
+// cartel por cada rama) y el museo al final.
 export function pathLayout(index) {
   const eras = [];
-  let phase = 0;
+  let phase = FIRST_PHASE;
   let xIn = START_OUT_X;
   for (const m of index.visibleMovements) {
     const artists = index.isSala(m.id) ? [] : index.stageArtists(m.id);
     const n = index.stepsOf(m.id).length + (hasMovementReview(index, m.id) ? 1 : 0);
     if (!n) continue;
-    const era = eraLayout(n, phase, xIn, eras.length ? undefined : FIRST_ENTRY);
+    const era = eraLayout(n, phase, xIn, eras.length ? ENTRY : FIRST_ENTRY, RIVERS[m.id] || 0);
+    const sections = artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? { at: i, name: a.section, key: a.section, sign: tramoSign(era, i) } : null)).filter(Boolean);
     const branches = branchesAt(index, m.id);
-    // Las ramas temáticas (Gótico, Estampa japonesa) llevan siempre su cartel; si con las demás pasan de
-    // MAX_BRANCH_SIGNS carteles, las demás van juntas en uno solo («Ramas (n)»), que abre una hoja con todas.
-    const themed = branches.filter((b) => b.branch.kind === 'rama' && !b.extra);
-    const rest = branches.filter((b) => !themed.includes(b));
-    const grouped = branches.length > MAX_BRANCH_SIGNS && rest.length > 1;
-    const slots = branchSlots(n, themed.length + (grouped ? 1 : rest.length));
-    const sections = artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? { at: i, name: a.section } : null)).filter(Boolean);
-    const signs = [...themed, ...(grouped ? [{ group: rest }] : rest)];
-    const spots = signs.map((b, k) => (b.group
-      ? { id: `era-${m.id}`, group: true, members: b.group.map((x) => ({ id: x.branch.id, extra: x.extra })), extra: false, ...branchSpot(era, slots[k]) }
-      : { id: b.branch.id, extra: b.extra, ...branchSpot(era, slots[k]) }));
+    // Ninguna rama sobre un puente (su cartel y su desvío caerían en el río) ni donde el sendero acaba de cambiar de
+    // lado (su cartel caería en el hito del paisaje de la parada anterior).
+    const turns = era.points.map((pt, i) => i).filter((i) => i > 0 && sideOf(era.points[i - 1].x) !== sideOf(era.points[i].x));
+    const slots = branchSlots(n, branches.length, [...era.bridges.map((b) => b.at + 1), ...turns]);
+    const spots = branches.map((b, k) => ({ id: b.branch.id, extra: b.extra, ...branchSpot(era, slots[k]) }));
     eras.push({ id: m.id, ...era, sections, branches: spots });
     phase += n;
     xIn = era.points[n - 1].x;
