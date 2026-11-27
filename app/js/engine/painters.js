@@ -55,16 +55,6 @@ export function painterGroups(progress, index, query = '') {
   return groups;
 }
 
-// Datos clave de la ficha (el relato es de la historia): cuántos cuadros hay, cuántos se han visto y cuántas etapas «a fondo» tiene
-// (las mismas que se listan). Son contadores de la app: no llevan fuente. [{ label, value }]
-export function factsOf(index, artist, seenCount) {
-  const facts = [{ label: 'Cuadros', value: index.worksOf(artist.id).length }];
-  if (seenCount > 0) facts.push({ label: 'Vistos', value: seenCount });
-  const deep = index.deepLevels(artist.id).length;
-  if (deep > 0) facts.push({ label: 'A fondo', value: deep });
-  return facts;
-}
-
 // Fuente de las fechas y el país del pintor (curados y comprobados con Wikidata): enlace a su ficha de Wikidata, o ''.
 export const wikidataUrl = (artist) => (artist.qid ? `https://www.wikidata.org/wiki/${artist.qid}` : '');
 

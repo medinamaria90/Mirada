@@ -8,7 +8,9 @@ import { dirname, join } from 'node:path';
 import { buildIndex, mergeCatalogFicha } from '../app/js/engine/catalog.js';
 import { emptyProgress, artistStatus } from '../app/js/engine/progress.js';
 import { pendingWorks } from '../app/js/engine/levels.js';
-import { painterGroups, painterState, seenOf, playTargets, stageList, fold, isMastered, factsOf, wikidataUrl } from '../app/js/engine/painters.js';
+import { painterGroups, painterState, seenOf, playTargets, stageList, fold, isMastered, wikidataUrl } from '../app/js/engine/painters.js';
+import { traitDetails, lookAlikes } from '../app/js/engine/ficha.js';
+import { realIndex } from './helpers-real.js';
 import { periodStart } from '../app/js/engine/movements.js';
 import { museumLine } from '../app/js/ui/ficha-data.js';
 import { initials } from '../app/js/ui/artist-profile.js';
@@ -107,22 +109,39 @@ test('ficha: solo las obras ya vistas (colección o rondas), nunca las demás', 
   assert.deepEqual(ids, [works[0].id, works[1].id].sort());
 });
 
-test('ficha: datos clave que coinciden con lo que se lista (cuadros, vistos, a fondo); la fuente va aparte', () => {
-  const goya = real.artist('goya');
-  const f = factsOf(real, goya, 4);
-  assert.deepEqual(f.map((x) => x.label), ['Cuadros', 'Vistos', 'A fondo']);
-  assert.equal(f[0].value, real.worksOf('goya').length);
-  assert.equal(f[1].value, 4);
-  assert.equal(f[2].value, real.deepLevels('goya').length, '«A fondo» = las etapas que se listan');
-  assert.deepEqual(factsOf(real, goya, 0).map((x) => x.label), ['Cuadros', 'A fondo'], 'sin vistos no se enseña «Vistos»');
-  const sinFondo = real.artists.find((a) => !real.deepLevels(a.id).length);
-  assert.ok(!factsOf(real, sinFondo, 1).some((x) => x.label === 'A fondo'));
-  assert.match(wikidataUrl(goya), /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
+test('ficha: la fuente de fechas y país es su ficha de Wikidata', () => {
+  assert.match(wikidataUrl(real.artist('goya')), /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
   assert.equal(wikidataUrl({}), '');
-  // La ficha no repite ninguna tarjeta de la historia.
-  const story = readJson(join(app, 'data', 'historias', 'goya.json'));
-  const text = JSON.stringify(f);
-  for (const c of story.levels[0].cards) assert.ok(!text.includes(c.text.slice(0, 30)));
+});
+
+test('cómo reconocerlo: cada rasgo con el cuadro visto que lo enseña (sus etiquetas) y, si no hay, la portada en otro punto', () => {
+  const real = realIndex();
+  const velazquez = real.artist('velazquez');
+  const works = real.worksOf('velazquez');
+  const meninas = works.find((w) => w.id === 'w208758');
+  const level1 = works.filter((w) => (w.level || 1) === 1);
+  // Sin Las Meninas vista, ningún cuadro visto lleva las etiquetas: la portada, recortada en puntos distintos.
+  const plain = traitDetails(velazquez, level1);
+  assert.equal(plain.length, velazquez.traits.length);
+  assert.ok(plain.every((r) => r.work && level1.includes(r.work)), 'solo obras vistas');
+  assert.equal(new Set(plain.map((r) => `${r.x},${r.y}`)).size, plain.length, 'tres rasgos, tres recortes distintos');
+  assert.ok(plain.every((r) => r.x >= 15 && r.x <= 85 && r.y >= 15 && r.y <= 85), 'el recorte no se pega al marco');
+  // Con Las Meninas (gris, suelta) vista, el rasgo de los grises sale de ella, recortada en su punto de interés.
+  const tagged = traitDetails(velazquez, [...level1, meninas]);
+  const grey = tagged.findIndex((r) => /gris/i.test(r.text));
+  assert.equal(tagged[grey].work, meninas);
+  assert.deepEqual([tagged[grey].x, tagged[grey].y], [45, 62], 'el detalle va a su punto de interés revisado');
+  assert.deepEqual(traitDetails(velazquez, []).map((r) => r.work), velazquez.traits.map(() => null), 'sin obras vistas, sin detalle');
+});
+
+test('no lo confundas con: solo los parecidos ya conocidos (sin spoilers)', () => {
+  const velazquez = real.artist('velazquez');
+  const p = emptyProgress();
+  assert.deepEqual(lookAlikes(p, real, velazquez), []);
+  p.collection[real.worksOf('rembrandt')[0].id] = '2026-11-20';
+  assert.deepEqual(lookAlikes(p, real, velazquez), ['rembrandt']);
+  p.artists.murillo = { plays: 1, best: 1, mastered: true };
+  assert.deepEqual(lookAlikes(p, real, velazquez), velazquez.similarTo.filter((id) => ['rembrandt', 'murillo'].includes(id)));
 });
 
 test('ficha: jugar solo si es parada abierta del camino; etapas solo con niveles «a fondo»', () => {
