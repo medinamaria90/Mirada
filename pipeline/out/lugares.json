@@ -6274,5 +6274,14 @@
   "up": null,
   "country": "San Marino",
   "isCity": false
+ },
+ "Q82810": {
+  "label": "Reggello",
+  "types": [
+   "Q747074"
+  ],
+  "up": "Q18288148",
+  "country": "Italia",
+  "isCity": true
  }
 }

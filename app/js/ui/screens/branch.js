@@ -13,7 +13,7 @@ import { playEra } from '../audio-bridge.js';
 import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
-import { trailSvg, tramoSign, branchEntrySign, stepName, pct } from './path-signs.js';
+import { trailSvg, tramoSign, branchEntrySign, backSpot, stepName, pct } from './path-signs.js';
 import { STATE_LABEL, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
@@ -35,7 +35,7 @@ export function branchMusic(index, branch) {
 function lockText(index, progress, row, branchId) {
   const why = branchLockReason(progress, index, row.artistId, branchId);
   if (why?.pending.length) return `Se abre al dominar a ${joinNames(why.pending.map((s) => stepName(index, s)))}`;
-  if (why?.before) return `Se abre con la mitad de aciertos en ${index.artist(why.before)?.short || index.artist(why.before)?.name}`;
+  if (why?.before) return `Se abre al acertar la mitad en ${index.artist(why.before)?.short || index.artist(why.before)?.name}`;
   return 'Aún cerrado';
 }
 
@@ -67,7 +67,7 @@ function mapHtml(ctx, branch) {
   // propios de la rama, como su cartel de entrada y la cabecera (los «En el camino» cuentan en el camino común).
   const tramo = (s) => {
     const group = rows.filter((r) => r.opensAt === s.movementId && !r.onPath);
-    return tramoSign(s, { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, layout.h);
+    return tramoSign(s, { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, layout.h, layout.sections.indexOf(s) + 1);
   };
   const items = rows.map((row, i) => {
     const pt = layout.points[i];
@@ -88,11 +88,19 @@ function mapHtml(ctx, branch) {
   return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true">${trailSvg(FOOT_H, foot, [], walked ? foot : '')}</li>
     <li class="path-era has-gate" data-era="${esc(branch.id)}" style="--gate-y:${GATE_Y};--era-tint:${tint};--era-prev:${tint};--era-h:${layout.h};aspect-ratio:${MAP_W}/calc(${layout.h} * var(--k, 1))">
       <img class="path-land" alt="" width="${MAP_W}" height="${layout.h}" decoding="async" data-src="img/mapa/rama-${esc(branch.id)}.svg">
-      ${trailSvg(layout.h, layout.trail, [], walked)}
+      ${trailSvg(layout.h, layout.trail, [{ spur: layout.back.spur, open: true }], walked)}
       ${frontSvg(layout)}
       ${sign}
-      <ol class="stages">${items}</ol>
+      <ol class="stages">${backSpot(layout.back, index.movement(branch.opensAt)?.name || '', layout.h)}${items}</ol>
     </li>`;
+}
+
+// Vuelta al camino: atrás si se vino de él (la vista, donde estaba); fork: además, centrada en el desvío de esa rama.
+export function returnToMap(ctx, fork = '') {
+  ctx.audio.sfx('tap');
+  if (fork) setMapFocus(fork, '', true);
+  if (ctx.prevRoute() === 'inicio') history.back();
+  else ctx.go('inicio');
 }
 
 export async function renderBranch(ctx, el, branchId) {
@@ -142,11 +150,9 @@ export async function renderBranch(ctx, el, branchId) {
 
   onAction(el, {
     cartel: pathActions(ctx).cartel,
-    back: () => {
-      ctx.audio.sfx('tap');
-      if (ctx.prevRoute() === 'inicio') history.back();
-      else ctx.go('inicio');
-    },
+    back: () => returnToMap(ctx),
+    // Tablilla «Volver al camino»: siempre al desvío de esta rama (aunque se llegara a ella por otro sitio).
+    'back-to-fork': () => returnToMap(ctx, branch.id),
     stage: (b) => {
       if (b.dataset.card) return levelCard(ctx, b, branch.id);
       ctx.audio.sfx('tap');

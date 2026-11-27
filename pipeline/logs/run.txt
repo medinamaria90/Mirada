@@ -1,138 +1,94 @@
-inicio Fri Nov 27 02:56:05 UTC 2026
-== hd  02:56:05
-obras con detalle que piden HD: 128
-ok   w1055111    filippo-lippi  pide 2300 px -> 1568x2300 q82 684 KB
-ok   w1065493    millais        pide 3840 px -> 3840x2612 q74 2381 KB
-ok   w106839951  alonso-cano    pide 3700 px -> 2828x3700 q82 2426 KB
-ok   w1070896    aivazovski     pide 3840 px -> 3840x2580 q82 1076 KB
-ok   w107308907  pinazo         pide 3840 px -> 3840x1535 q82 1273 KB
-ok   w1091086    goya           pide 3051 px -> 3051x2328 q82 870 KB
-ok   w1115403    velazquez      pide 3051 px -> 2325x3051 q82 1353 KB
-ok   w1115613    bellini        pide 3400 px -> 3400x2632 q82 1721 KB
-ok   w1133420    velazquez      pide 3051 px -> 3051x2516 q82 1710 KB
-ok   w116432553  tropinin       pide 2048 px -> 1637x2048 q82 395 KB
-ok   w11917835   nonell         pide 3100 px -> 3100x3095 q78 2384 KB
-ok   w11931061   rusinol        pide 3600 px -> 3600x2668 q70 3260 KB
-ok   w11945404   vicente-lopez  pide 3840 px -> 2919x3840 q82 2177 KB
-ok   w12110766   borovikovski   pide 1636 px -> 1500x1636 q82 378 KB
-ok   w1213453    delaroche      pide 3200 px -> 3200x2673 q82 824 KB
-ok   w1219751    zorn           pide 1902 px -> 1338x1902 q82 677 KB
-ok   w1240092    velazquez      pide 3700 px -> 3085x3700 q74 2391 KB
-ok   w12418      leonardo       pide 3300 px -> 2214x3300 q82 2256 KB
-ok   w125359587  juan-de-juanes pide 2288 px -> 2143x2288 q82 395 KB
-ok   w1452762    caillebotte    pide 2898 px -> 2898x2250 q82 1128 KB
-ok   w15130000   cassatt        pide 3400 px -> 2467x3400 q82 1092 KB
-ok   w1569622    cimabue        pide 3596 px -> 2008x3596 q82 1176 KB
-ok   w1585399    goya           pide 3700 px -> 2446x3700 q82 1368 KB
-ok   w16038461   zuloaga        pide 3200 px -> 3200x2316 q82 1812 KB
-ok   w1619527    gainsborough   pide 3200 px -> 3200x1875 q82 1206 KB
-ok   w16518912   perov          pide 2048 px -> 2048x1496 q82 475 KB
-ok   w167605     vermeer        pide 3000 px -> 2675x3000 q82 1689 KB
-ok   w17021187   arcimboldo     pide 3500 px -> 1920x2652 q82 900 KB
-ok   w17342250   steen          pide 3840 px -> 3840x2990 q70 2210 KB
-ok   w17994180   sanchez-coello pide 3744 px -> 1840x3744 q82 625 KB
-ok   w18085208   kroyer         pide 3600 px -> 3600x2343 q82 926 KB
-ok   w18177816   corot          pide 2560 px -> 2560x1810 q82 496 KB
-ok   w18210019   utamaro        pide 3840 px -> 2622x3840 q82 1377 KB
-ok   w18683079   venetsianov    pide 3800 px -> 3800x3056 q82 2361 KB
-ok   w18684020   claudio-coello pide 3840 px -> 2759x3840 q78 2210 KB
-ok   w18688145   paret          pide 3840 px -> 3840x2604 q82 1755 KB
-ok   w18688347   fedotov        pide 2900 px -> 2544x2900 q82 1379 KB
-ok   w18688560   raimundo-madrazo pide 3840 px -> 2622x3840 q82 1328 KB
-ok   w18744757   signac         pide 2201 px -> 2201x1748 q82 1831 KB
-ok   w18888002   leyster        pide 3700 px -> 3239x3700 q82 2021 KB
-ok   w19660427   canaletto      pide 3200 px -> 3200x2183 q82 1916 KB
-ok   w19912613   martin-rico    pide 1955 px -> 1955x1472 q82 539 KB
-ok   w19915289   gisbert        pide 3051 px -> 3051x1988 q82 889 KB
-ok   w1993685    savrasov       pide 3400 px -> 2597x3400 q82 1790 KB
-ok   w2046100    tiziano        pide 3840 px -> 2880x3840 q82 2064 KB
-ok   w208758     velazquez      pide 3300 px -> 2867x3300 q82 1484 KB
-ok   w21127606   hiroshige      pide 3000 px -> 2041x3000 q82 1518 KB
-ok   w21204021   sofonisba      pide 3045 px -> 2349x3045 q82 1886 KB
-ok   w21595802   makovski       pide 3840 px -> 3840x2308 q82 2165 KB
-ok   w219831     rembrandt      pide 3600 px -> 3600x2929 q82 2095 KB
-ok   w2273890    tintoretto     pide 3800 px -> 3800x2964 q70 2300 KB
-ok   w23500160   mir            pide 3300 px -> 3300x2622 q70 3047 KB
-ok   w2354080    kramskoi       pide 2700 px -> 2700x2367 q82 1057 KB
-ok   w2366825    constable      pide 2800 px -> 2800x1931 q82 1376 KB
-ok   w2378567    fra-angelico   pide 3100 px -> 3100x2480 q82 1454 KB
-ok   w2388965    durero         pide 3000 px -> 2376x3000 q82 1329 KB
-ok   w23936176   regoyos        pide 3840 px -> 3840x2785 q70 3138 KB
-ok   w23936265   beruete        pide 3840 px -> 3840x2498 q70 2078 KB
-ok   w2438357    schiele        pide 2800 px -> 2800x2369 q82 2048 KB
-ok   w2456003    murillo        pide 2952 px -> 2012x2952 q82 815 KB
-ok   w2521909    briullov       pide 3840 px -> 3840x2696 q82 1908 KB
-ok   w252485     hokusai        pide 3840 px -> 3840x2708 q82 2435 KB
-ok   w2535563    rafael         pide 2952 px -> 2267x2952 q82 718 KB
-ok   w2537138    goya           pide 3051 px -> 3051x2114 q82 1052 KB
-ok   w2546309    durero         pide 3000 px -> 2128x3000 q82 736 KB
-ok   w27699409   maino          pide 3051 px -> 1667x3051 q82 1199 KB
-ok   w27700100   ribalta        pide 2900 px -> 2044x2900 q82 904 KB
-ok   w2786992    bazille        pide 2300 px -> 1433x2300 q82 691 KB
-ok   w28220571   valdes-leal    pide 1518 px -> 1500x1518 q82 411 KB
-ok   w2872725    rembrandt      pide 3700 px -> 3070x3700 q82 1412 KB
-ok   w2983399    goya           pide 3051 px -> 3051x2359 q82 1607 KB
-ok   w3038406    pradilla       pide 3051 px -> 3051x2088 q82 1239 KB
-ok   w3205872    kuindzhi       pide 2400 px -> 2400x1742 q82 299 KB
-ok   w3210253    la-tour        pide 1478 px -> 1055x1478 q82 234 KB
-ok   w3212142    chardin        pide 3400 px -> 3400x2653 q82 1364 KB
-ok   w321303     bosco          pide 3700 px -> 3700x2086 q82 2150 KB
-ok   w3224308    perugino       pide 3327 px -> 2562x3327 q82 818 KB
-ok   w3235872    cranach        pide 3700 px -> 2479x3700 q82 1005 KB
-ok   w328523     monet          pide 3840 px -> 3840x2979 q74 2398 KB
-ok   w3556817    boucher        pide 3700 px -> 3700x2842 q82 2264 KB
-ok   w3607621    pontormo       pide 3840 px -> 2916x3840 q82 1530 KB
-ok   w3630735    van-gogh       pide 3300 px -> 2714x3300 q82 1819 KB
-ok   w3630751    rembrandt      pide 3300 px -> 2766x3300 q82 818 KB
-ok   w3664358    pontormo       pide 3840 px -> 2832x3840 q70 2431 KB
-ok   w377810     poussin        pide 3124 px -> 3124x2235 q82 853 KB
-ok   w3818663    moreau         pide 3840 px -> 2602x3840 q82 1617 KB
-ok   w3937621    vigee-le-brun  pide 3840 px -> 2999x3840 q82 2001 KB
-ok   w3964096    pereda         pide 3300 px -> 3300x2335 q82 1026 KB
-ok   w40432      bonheur        pide 3840 px -> 3840x1819 q82 1406 KB
-ok   w4062416    modigliani     pide 3840 px -> 1921x3840 q82 2324 KB
-ok   w4089068    vereshchagin   pide 2048 px -> 1298x2048 q82 418 KB
-ok   w4110588    nesterov       pide 2048 px -> 2048x1534 q82 822 KB
-ok   w4112530    vasnetsov      pide 3700 px -> 3700x2081 q82 1211 KB
-ok   w4156438    serov          pide 3840 px -> 3413x3840 q82 1836 KB
-ok   w4247398    petrov-vodkin  pide 1672 px -> 1672x1471 q82 439 KB
-ok   w4304117    polenov        pide 3500 px -> 3500x2886 q78 2239 KB
-ok   w4388208    greuze         pide 3638 px -> 2908x3638 q82 1191 KB
-ok   w4396378    shishkin       pide 3840 px -> 3840x2164 q82 1741 KB
-ok   w445627     liotard        pide 3840 px -> 2375x3840 q82 1941 KB
-ok   w4458429    levitan        pide 2000 px -> 2000x1601 q82 614 KB
-ok   w4478998    surikov        pide 3767 px -> 3767x2157 q82 1727 KB
-ok   w4503153    vrubel         pide 2048 px -> 1346x2048 q82 515 KB
-ok   w4536026    ivanov         pide 2800 px -> 2800x1953 q82 1148 KB
-ok   w45585      van-gogh       pide 3840 px -> 3840x3041 q70 2937 KB
-ok   w4717953    velazquez      pide 3840 px -> 3304x3840 q82 1926 KB
-ok   w4884666    bermejo        pide 3700 px -> 2831x3700 q82 2361 KB
-ok   w4889277    casas          pide 3840 px -> 3840x2684 q82 2004 KB
-ok   w4936154    rossetti       pide 2367 px -> 2012x2367 q82 767 KB
-ok   w4960357    homer          pide 3840 px -> 3840x2417 q74 2183 KB
-ok   w563727     leonardo       pide 3300 px -> 2495x3300 q82 1595 KB
-ok   w5640196    chardin        pide 3277 px -> 3277x2864 q82 1326 KB
-ok   w5731138    sanchez-cotan  pide 3000 px -> 3000x2320 q82 1421 KB
-ok   w5794826    reynolds       pide 3700 px -> 2930x3700 q82 1836 KB
-ok   w58411216   hammershoi     pide 2700 px -> 2415x2700 q82 1178 KB
-ok   w5916308    tiepolo        pide 3700 px -> 2013x3700 q82 1013 KB
-ok   w604761     gainsborough   pide 2000 px -> 1375x2000 q82 323 KB
-ok   w6163544    morales        pide 1920 px -> 1452x1920 q82 243 KB
-ok   w644106     sargent        pide 2026 px -> 2020x2026 q82 491 KB
-ok   w701035     memling        pide 3543 px -> 3543x2359 q82 2151 KB
-ok   w7731855    claudio-de-lorena pide 3500 px -> 3500x2661 q82 2253 KB
-ok   w780466     uccello        pide 3500 px -> 3500x2639 q82 2299 KB
-ok   w9295442    waterhouse     pide 3840 px -> 3840x2306 q74 2434 KB
-ok   w930137     giorgione      pide 3696 px -> 3329x3696 q82 2438 KB
-ok   w939962     correggio      pide 3100 px -> 1346x3100 q82 1005 KB
-ok   w948745     duccio         pide 3840 px -> 2350x3840 q82 1360 KB
-ok   w949323     el-greco       pide 3300 px -> 2538x3300 q82 1778 KB
-ok   w96471562   kuniyoshi      pide 1497 px -> 1190x1497 q82 367 KB
-ok   w965822     mantegna       pide 3840 px -> 2249x3840 q78 2170 KB
-hd: 128 imágenes, 194.0 MB, fallos 0, sha256 ff3081cbaa499b2e…
-movidas 2 imágenes de catalogo-img a catalogo-img-2 para hacer sitio al paquete
-paquete app-img-hd subido a catalogo-img (185M)
-65M	.git
+inicio Fri Nov 27 09:19:28 UTC 2026
+== download 1 50 09:19:28
+ok   w3999132    masaccio         1600x1150 357KB  Tríptico de San Juvenal
+ok   w3850304    masaccio         1600x1248 435KB  Martirio de san Juan Bautista
+ok   w3842651    masaccio         659x1299 252KB  Virgen de la humildad
+lote: 4/4 bien; quedan 0
+subidas 4 imágenes a la release catalogo-img-2
+build: 1470 obras (1470 con imagen, 1466 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 20, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 6, ukiyo-e 5
+download rc=3
+79M	.git
 3.7M	catalogo
-fin Fri Nov 27 02:59:17 UTC 2026
-estado del job: success Fri Nov 27 02:59:19 UTC 2026
+== fichas  09:19:40
+selección 1470, con ficha 1466, este lote 4
+ok lote 1: 4 fichas (1808 en total)
+fin: 1808 fichas; con museo 1750, con ciudad 1735, con técnica 1715, con medidas 1710, en España 371
+79M	.git
+3.7M	catalogo
+== build  09:19:43
+build: 1470 obras (1470 con imagen, 1470 con ficha), 175 pintores, 40 españoles; por movimiento: renacimiento 20, manierismo-y-norte 16, barroco 24, rococo-neoclasicismo 18, romanticismo 14, realismo 26, impresionismo 19, postimpresionismo 8, simbolismo-modernismo 19, gotico 6, ukiyo-e 5
+79M	.git
+3.7M	catalogo
+== validate --parcial 09:19:44
+validate: 1470 obras (1470 con imagen), 175 pintores, imágenes 0.0 MB; 0 errores, 333 avisos
+aviso duccio: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso giotto: nivel 2 «Formación y Asís» con 3 obras (< 5: faltan candidatas)
+aviso giotto: nivel 4 «Florencia y el campanile» con 4 obras (< 5: faltan candidatas)
+aviso simone-martini: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso berruguete: nivel 2 «Etapa castellana» con 3 obras (< 5: faltan candidatas)
+aviso leonardo: nivel 2 «Primeras obras en Florencia» con 3 obras (< 5: faltan candidatas)
+aviso durero: nivel 2 «Aprendizaje y 1.er viaje a Italia» con 4 obras (< 5: faltan candidatas)
+aviso utamaro: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso sharaku: nivel 2 «Más obras» con 2 obras (< 5: faltan candidatas)
+aviso kuniyoshi: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso fortuny: nivel 2 «Roma y Marruecos» con 3 obras (< 5: faltan candidatas)
+aviso w15974342 (cimabue): título pendiente de traducir: The Virgin and Child with Two Angels
+aviso w3842715 (duccio): título pendiente de traducir: Madonna di Crevole
+aviso w6728425 (duccio): título pendiente de traducir: Madonna with Child and six Angels
+aviso w3873252 (duccio): título pendiente de traducir: The Nativity with the Prophets Isaiah and Ezekiel
+aviso w4015930 (duccio): título pendiente de traducir: The Calling of the Apostles Peter and Andrew
+aviso w3276168 (giotto): ficha sin technique
+aviso w3395777 (giotto): ficha sin technique
+aviso w3276180 (giotto): ficha sin technique
+aviso w3642142 (giotto): ficha sin technique
+aviso w141270724 (giotto): ficha sin dimensions
+aviso w27016037 (giotto): ficha sin technique
+aviso w118495235 (giotto): ficha sin dimensions
+aviso w3873247 (pietro-lorenzetti): título pendiente de traducir: Nativity of the Virgin
+aviso w3948917 (pietro-lorenzetti): título pendiente de traducir: Saint Margaret or Agatha
+aviso w3842761 (pietro-lorenzetti): título pendiente de traducir: Madonna and Child Enthroned with Eight Angels
+aviso w3843026 (pietro-lorenzetti): título pendiente de traducir: Cortone Maesta
+aviso w3225814 (simone-martini): título pendiente de traducir: The Carrying of the Cross
+aviso w20173074 (simone-martini): título pendiente de traducir: The Angel of the Annunciation
+aviso w21614531 (simone-martini): título pendiente de traducir: Descent from the Cross
+aviso w3618171 (ambrogio-lorenzetti): título pendiente de traducir: Annunciation
+aviso w3842740 (ambrogio-lorenzetti): título pendiente de traducir: Madonna with child
+aviso w3843028 (ambrogio-lorenzetti): título pendiente de traducir: Madonna and child with saints and angels
+aviso w18572975 (ambrogio-lorenzetti): título pendiente de traducir: The Charity of St. Nicholas of Bari
+aviso w3637223 (uccello): ficha sin technique
+aviso w15965547 (uccello): ficha sin museum
+aviso w16596981 (uccello): ficha sin technique
+aviso w3948700 (masaccio): ficha sin technique
+aviso w3949351 (masaccio): ficha sin technique
+aviso w3999132 (masaccio): ficha sin technique
+aviso w3850304 (masaccio): ficha sin technique
+aviso w3889196 (filippo-lippi): ficha sin dimensions
+aviso w2247307 (piero): ficha sin technique
+aviso w2551625 (botticelli): ficha sin dimensions
+aviso w11947062 (berruguete): ficha sin technique
+aviso w2276130 (bosco): ficha sin dimensions
+aviso w3685113 (durero): título pendiente de traducir: Lamentation of Christ
+aviso w3707697 (miguel-angel): ficha sin dimensions
+aviso w23922 (tiziano): título pendiente de traducir: Woman with a Mirror
+aviso w3842778 (tiziano): título pendiente de traducir: The Gypsy Madonna
+aviso w3937673 (tiziano): título pendiente de traducir: Portrait of Vincenzo Mosti
+aviso w125359587 (juan-de-juanes): ficha sin technique
+aviso w15074981 (veronese): título pendiente de traducir: The Feast in the House of Simon the Pharisee
+aviso w3849979 (veronese): título pendiente de traducir: Mars and Venus with Cupid and a Dog
+aviso w17994180 (sanchez-coello): ficha sin dimensions
+aviso w3078569 (el-greco): ficha sin technique
+aviso w126956583 (sanchez-cotan): ficha sin museum
+aviso w2338417 (caravaggio): ficha sin dimensions
+aviso w3731232 (rubens): título pendiente de traducir: Hercules and Omphale
+aviso w3636299 (rubens): título pendiente de traducir: The Battle of the Amazons
+79M	.git
+3.7M	catalogo
+== pack 1200 09:19:46
+pack: 4 originales que bajar
+pack 1200px: 1470 imágenes, 336.2 MB de JPEG (media 223 KB), zip 336.3 MB, sha256 a93c7729aa15bbe6…
+obras del catálogo 1470; reutilizadas del paquete anterior 1466; sin imagen 0; con fallo 0
+paquete app-img-1200 subido a catalogo-img (321M)
+79M	.git
+3.7M	catalogo
+fin Fri Nov 27 09:20:13 UTC 2026
+estado del job: success Fri Nov 27 09:20:14 UTC 2026

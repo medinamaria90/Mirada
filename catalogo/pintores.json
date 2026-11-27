@@ -259,11 +259,20 @@
   "order": 3,
   "section": null,
   "qid": "Q5811",
-  "works": 8,
+  "works": 12,
   "category": "maestro",
   "branches": [],
-  "stages": [],
-  "level1": 8
+  "stages": [
+   {
+    "nivel": 2,
+    "nombre": "Más obras",
+    "desde": null,
+    "hasta": null,
+    "fuente": "https://es.wikipedia.org/wiki/Masaccio",
+    "provisional": true
+   }
+  ],
+  "level1": 7
  },
  {
   "id": "filippo-lippi",

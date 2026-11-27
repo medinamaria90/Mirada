@@ -116,7 +116,7 @@ function eraBlock(ctx, era, prevEra, keys) {
     // --room: parte del ancho que queda hacia donde cuelga el nombre (el rótulo nunca pasa del margen de 8 px).
     const state = node.key === keys.current ? ' is-current' : node.key === keys.next ? ' is-next' : '';
     const sec = era.sections.find((s) => s.at === i);
-    const head = sec ? tramoSign(sec, sectionInfo(ctx, era.id, sec), era.h) : '';
+    const head = sec ? tramoSign(sec, sectionInfo(ctx, era.id, sec), era.h, era.sections.indexOf(sec) + 1) : '';
     const spur = branches.filter((b) => b.spot.at === i).map((b) => branchSpot(b.spot, b.branch, b.st, index, era.h)).join('');
     return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
   }).join('');
@@ -179,7 +179,7 @@ function artistNode(ctx, artist, keys) {
   const key = `artist:${artist.id}`;
   const prevStep = index.steps[index.stepIndex('artist', artist.id) - 1];
   const dormant = status === 'mastered' && isDormant(p, artist.id, ctx.today ? ctx.today() : null);
-  const lock = prevStep ? `Se abre con la mitad de aciertos en ${stepName(index, prevStep)}` : '';
+  const lock = prevStep ? `Se abre al acertar la mitad en ${stepName(index, prevStep)}` : '';
   // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
   const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
@@ -198,7 +198,7 @@ function salaNode(ctx, movement, keys) {
   const status = salaStatus(p, index, movement.id);
   const key = `sala:${movement.id}`;
   const prev = index.steps[index.stepIndex('sala', movement.id) - 1];
-  const lock = prev ? `Se abre con la mitad de aciertos en ${stepName(index, prev)}` : '';
+  const lock = prev ? `Se abre al acertar la mitad en ${stepName(index, prev)}` : '';
   const html = nodeHtml({
     cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current,
     label: status === 'started' ? startedLabel(`Conoce el movimiento ${movement.name}`, p.salas?.[movement.id]?.best)

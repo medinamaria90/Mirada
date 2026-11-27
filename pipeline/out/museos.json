@@ -9445,5 +9445,36 @@
   "parent": null,
   "country": "San Marino",
   "isMuseum": true
+ },
+ "Q1996075": {
+  "name": "Capilla Brancacci",
+  "types": [
+   "Q33506",
+   "Q108325",
+   "Q207694",
+   "Q92755865",
+   "Q124830213"
+  ],
+  "adm": "Q2044",
+  "loc": "Q1015257",
+  "parent": "Q1042634",
+  "country": "Italia",
+  "isMuseum": true
+ },
+ "Q3867618": {
+  "name": "Masaccio Museum",
+  "types": [
+   "Q207694",
+   "Q614316",
+   "Q3868199",
+   "Q16735822",
+   "Q92755865",
+   "Q94701721"
+  ],
+  "adm": "Q82810",
+  "loc": "Q3904456",
+  "parent": null,
+  "country": "Italia",
+  "isMuseum": true
  }
 }
