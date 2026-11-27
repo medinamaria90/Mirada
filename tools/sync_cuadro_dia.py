@@ -1,6 +1,6 @@
 """Cuadro del día: valida contenido/cuadro-del-dia/calendario.json y lo vuelca a app/data/dia/ (index.json + <n>.json).
 
-Comprueba cada día (obra del catálogo con fama 3, o 2 si el pintor es español; explicaciones en contenido/explicaciones.json;
+Comprueba cada día (firma tapada fuera de los recortes de los pasos 1 y 2; obra del catálogo con fama 3, o 2 si el pintor es español; explicaciones en contenido/explicaciones.json;
 6 pintores distintos con la respuesta entre ellos; 3 tarjetas de hasta 180 caracteres, una idea por tarjeta, sin «ayer» ni
 «mañana»; fuente; pistas que no nombran al pintor; nitidez del detalle del paso 1 ≥ MIN_DENSITY píxeles de imagen por píxel
 CSS con la imagen HD si la hay) y el reparto del calendario, contando la vuelta al principio (el mismo pintor como mucho una
@@ -58,6 +58,11 @@ def crop_rect(ratio, focus, zoom, frame=1.0):
     cx = min(max(focus[0], rw / 2), 1 - rw / 2)
     cy = min(max(focus[1], rh / 2), 1 - rh / 2)
     return [cx - rw / 2, cy - rh / 2, cx + rw / 2, cy + rh / 2]
+
+
+def overlaps(a, b):
+    """¿Se tocan dos rectángulos [x0, y0, x1, y1]?"""
+    return a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]
 
 
 def density(w, h, focus, zoom):
@@ -123,6 +128,15 @@ def validate(cal, cat, ficha, explain):
         dens = density(sw, sh, f, ZOOM_STEPS[0])
         if dens < MIN_DENSITY:
             err(f"{tag}: detalle borroso ({dens:.2f} px por px CSS con {int(sw)}×{int(sh)}; falta la HD: pipeline/hd.py)")
+        sig = d.get("signature")
+        if sig is not None:
+            ok = isinstance(sig, list) and len(sig) == 4 and all(isinstance(v, (int, float)) and 0 <= v <= 1 for v in sig) and sig[0] < sig[2] and sig[1] < sig[3]
+            if not ok:
+                err(f"{tag}: signature debe ser [x0, y0, x1, y1] de 0 a 1")
+            else:
+                for z in ZOOM_STEPS:
+                    if overlaps(crop_rect(w["w"] / w["h"], f, z), sig):
+                        err(f"{tag}: el recorte del paso con zoom ×{z} enseña la firma")
         opts = d.get("options") or []
         names = [w["artistId"], *opts]
         if len(opts) != OPTIONS - 1 or len(set(names)) != OPTIONS:
@@ -231,6 +245,8 @@ def build(cal, rows):
             "options": options_order(n, r["artist"]["id"], d["options"]),
             "hints": r["hints"], "cards": cards, "source": d["source"],
         }
+        if d.get("signature"):
+            files[f"{n}.json"]["veil"] = d["signature"]
     return index, files
 
 
