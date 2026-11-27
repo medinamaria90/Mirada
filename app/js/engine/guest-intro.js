@@ -14,6 +14,7 @@ export const ONE_GENERATION = 45;
 export const TWO_GENERATIONS = 75;
 
 const AUTHOR_TYPES = new Set(['who', 'which']);
+const NBSP = '\u00a0';
 
 // Gentilicio por país del catálogo (masculino; las invitadas del camino, si llegan, con `female`).
 const DEMONYMS = {
@@ -88,12 +89,12 @@ export function relationHost(index, guest, hostId, met = []) {
 const shortName = (a) => a.short || a.name;
 const demonym = (a) => (DEMONYMS[a.country] || [])[a.female ? 1 : 0] || '';
 
-// «Una generación más joven que Van Eyck, pero italiano.» Sin fechas o sin país, lo que se pueda; '' si nada.
+// «Una generación más joven que Van Eyck, italiano.» Sin fechas o sin país, lo que se pueda; '' si nada.
 export function relationLine(guest, host) {
   if (!host || !guest.born || !host.born) return '';
   const d = guest.born - host.born;
   const gap = Math.abs(d);
-  const h = shortName(host);
+  const h = shortName(host).replace(/ /g, NBSP); // «Van Eyck» no se parte en dos líneas
   let when;
   if (gap <= SAME_GENERATION) when = `De la generación de ${h}`;
   else {
@@ -102,7 +103,7 @@ export function relationLine(guest, host) {
   }
   const g = demonym(guest);
   if (!g) return `${when}.`;
-  return `${when}, ${guest.country === host.country ? 'también' : 'pero'} ${g}.`;
+  return `${when}, ${guest.country === host.country ? 'también ' : ''}${g}.`;
 }
 
 // Cuadro de la tarjeta: el más famoso del invitado que no sale en la ronda (mejor uno de «Conoce a», que nunca se
