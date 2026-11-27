@@ -141,8 +141,8 @@ def parrafos_con_fuente(v):
 
 
 def titulos_cortos(pid):
-    """{nivel: título corto} de las etapas con historia: el `stage` de contenido/historias/<pid>.json (único origen; sin
-    historia no hay título ni tramo en el aro de niveles)."""
+    """{nivel: título corto} de las etapas con historia: el `stage` de contenido/historias/<pid>.json (único origen; las que no
+    tienen historia lo toman de D.STAGE_SHORT o de su nombre)."""
     story = contenido_opcional(os.path.join("historias", f"{pid}.json"))
     return {lv["level"]: lv["stage"] for lv in story.get("levels", []) if lv.get("level", 0) >= 2 and lv.get("stage")}
 
@@ -298,8 +298,8 @@ def main(app):
         shorts = titulos_cortos(pid)
         for s in p["stages"]:
             st = dict(id=s["nivel"], name=s["nombre"], **{"from": s.get("desde"), "to": s.get("hasta"), "source": s.get("fuente")})
-            if s["nivel"] in shorts:
-                st["short"] = shorts[s["nivel"]]
+            st["short"] = shorts.get(s["nivel"]) or D.STAGE_SHORT.get((pid, s["nivel"])) or s["nombre"]
+            assert len(st["short"]) <= D.STAGE_SHORT_MAX, f"{pid}: etapa {s['nivel']} sin título corto (STAGE_SHORT)"
             if s.get("verificar"):
                 st["verificar"] = True
             if s.get("provisional"):
