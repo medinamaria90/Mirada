@@ -473,6 +473,12 @@ Decisiones de la tarde del 24/11:
 
 ## 6. Avisos
 
+- **Estadísticas en Superusuario** (`app/js/ui/su-stats.js`): fila que abre el panel de GoatCounter
+  (`https://<código>.goatcounter.com`, código en `app/js/stats-config.js`; sin código no hay fila). Para que
+  salga «Visitantes esta semana: N», María debe activar en GoatCounter → Settings la casilla **«Allow adding
+  visitor counts on your website»** (el JSON público `/counter/TOTAL.json`). Sin eso, solo se ve el enlace.
+  Nunca se mete un token de API en el código.
+
 - La **música** la han validado pruebas automáticas (no satura, armonía correcta) pero nadie la ha
   escuchado: pídele opinión a María.
 - No se ha probado en **móvil real, Safari/iOS ni lector de pantalla**. El bloqueo del pellizco en iPhone
