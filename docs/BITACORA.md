@@ -262,3 +262,7 @@ señala tiene que estar a la vista en ESE cuadro. Una frase con un detalle concr
 en `rasgos.json` como {donde, general, generalDonde}: entera solo donde se ve y, si no, su versión general sin el detalle
 («Fíjate en el volumen macizo, como de escultura, y en la luz que llega de un lado»). 49 pintores con versión general;
 San Andrés con «fíjate» propio (el manto y la luz lateral, sólido aunque sobre oro).
+Relleno (27/11): 173 obras que se habían quedado sin «fíjate» llevan uno propio en `contenido/fijate.json` (≤ 100 letras,
+con fuente, sin nombrar al autor ni el título: lo comprueba `validate_catalog.py`), empezando por la fama alta y por
+Goya, el Bosco, Géricault, El Greco y Degas; tres Caravaggio pasan a «figuras» en `generos.json`. Quedan 65 sin línea
+(61 de fama 1), donde no había certeza de qué señalar.

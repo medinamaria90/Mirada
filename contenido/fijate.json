@@ -13,11 +13,15 @@
  },
  "w972196": {
   "sin": "todos",
-  "por": "sin terminar: solo el dibujo y la primera capa parda"
+  "por": "sin terminar: solo el dibujo y la primera capa parda",
+  "text": "Fíjate en el cuerpo flaco del santo, estudiado como por un anatomista, y en el león apenas esbozado.",
+  "source": "Museos Vaticanos, «San Jerónimo»"
  },
  "w1638622": {
   "sin": "todos",
-  "por": "sin terminar: solo el dibujo y la primera capa parda"
+  "por": "sin terminar: solo el dibujo y la primera capa parda",
+  "text": "Fíjate en el corro de caras asombradas alrededor de la Virgen, que salen de la sombra sin contorno.",
+  "source": "Galería Uffizi, «Adoración de los Magos»"
  },
  "w186953": {
   "sin": [
@@ -135,7 +139,9 @@
  },
  "w1759759": {
   "sin": "todos",
-  "por": "retrato sobre fondo liso, sin paisaje"
+  "por": "retrato sobre fondo liso, sin paisaje",
+  "text": "Fíjate en el damasco del manto, que brilla como metal, y en el fondo azul liso, sin paisaje.",
+  "source": "National Gallery de Londres, «El dux Leonardo Loredan»"
  },
  "w3399411": {
   "sin": [
@@ -181,27 +187,39 @@
  },
  "w2276130": {
   "sin": "todos",
-  "por": "sin criaturas imposibles ni desnudos diminutos"
+  "por": "sin criaturas imposibles ni desnudos diminutos",
+  "text": "Fíjate en el paisaje del fondo, lleno de escenas pequeñas, y en la cabaña en ruinas tras la Virgen.",
+  "source": "Museo del Prado, «Adoración de los Magos»"
  },
  "w2733729": {
   "sin": "todos",
-  "por": "sin criaturas imposibles ni desnudos diminutos"
+  "por": "sin criaturas imposibles ni desnudos diminutos",
+  "text": "Fíjate en los cinco verdugos de caras brutales, muy de cerca, alrededor de un Cristo sereno.",
+  "source": "National Gallery de Londres, «La coronación de espinas»"
  },
  "w680128": {
   "sin": "todos",
-  "por": "sin criaturas imposibles ni desnudos diminutos"
+  "por": "sin criaturas imposibles ni desnudos diminutos",
+  "text": "Fíjate en las caras grotescas que llenan todo el cuadro alrededor del rostro sereno de Cristo.",
+  "source": "Museo de Bellas Artes de Gante, «Cristo con la Cruz a cuestas»"
  },
  "w2270768": {
   "sin": "todos",
-  "por": "sin criaturas imposibles ni desnudos diminutos"
+  "por": "sin criaturas imposibles ni desnudos diminutos",
+  "text": "Fíjate en el embudo del cirujano y el libro en la cabeza de la monja: burla de los charlatanes.",
+  "source": "Museo del Prado, «Extracción de la piedra de la locura»"
  },
  "w2400652": {
   "sin": "todos",
-  "por": "sin criaturas imposibles ni desnudos diminutos"
+  "por": "sin criaturas imposibles ni desnudos diminutos",
+  "text": "Fíjate en la taberna destartalada del fondo, llena de escenas pequeñas de mala vida.",
+  "source": "Museo Boymans Van Beuningen, «El vendedor ambulante»"
  },
  "w430069": {
   "sin": "todos",
-  "por": "sin criaturas imposibles ni desnudos diminutos"
+  "por": "sin criaturas imposibles ni desnudos diminutos",
+  "text": "Fíjate en el gentío de caras feas y grotescas que grita bajo Cristo: así se pinta aquí el mal.",
+  "source": "Museo Städel, «Ecce Homo»"
  },
  "w699388": {
   "sin": [
@@ -225,7 +243,9 @@
  },
  "w4310527": {
   "sin": "todos",
-  "por": "no es un retrato"
+  "por": "no es un retrato",
+  "text": "Fíjate en el cuerpo tendido en un nicho estrechísimo, pintado con precisión, sin ninguna gloria.",
+  "source": "Museo de Arte de Basilea, «El cuerpo de Cristo en la tumba»"
  },
  "w9144767": {
   "sin": "todos",
@@ -244,18 +264,24 @@
    0,
    2
   ],
-  "por": "retablo con donantes, sin fondo liso"
+  "por": "retablo con donantes, sin fondo liso",
+  "text": "Fíjate en los retratos exactos de la familia que reza, cada cara con su propio carácter.",
+  "source": "Johanniterkirche, «Virgen del burgomaestre Meyer»"
  },
  "w594406": {
   "sin": "todos",
-  "por": "caída de ángeles y monstruos: no hay campesinos ni paisaje"
+  "por": "caída de ángeles y monstruos: no hay campesinos ni paisaje",
+  "text": "Fíjate en los monstruos a lo Bosco: peces con alas, sapos y bichos que caen en cascada.",
+  "source": "Museos Reales de Bellas Artes de Bélgica, «Caída de los ángeles rebeldes»"
  },
  "w80869": {
   "sin": [
    0,
    1
   ],
-  "por": "un infierno de monstruos, sin campesinos"
+  "por": "un infierno de monstruos, sin campesinos",
+  "text": "Fíjate en la mujer con armadura que avanza hacia la boca del infierno, entre monstruos.",
+  "source": "Museum Mayer van den Bergh te Antwerpen, «Dulle Griet»"
  },
  "w699319": {
   "sin": [
@@ -282,7 +308,9 @@
  },
  "w3078569": {
   "sin": "todos",
-  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo"
+  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo",
+  "text": "Fíjate en el oro y las figuras quietas, como en un icono: así pintaba en Creta, antes de Italia.",
+  "source": "Syros, Agios Nikolaos in Ermoupolis, «Tránsito de la Virgen»"
  },
  "w15711253": {
   "sin": "todos",
@@ -298,11 +326,15 @@
  },
  "w3937561": {
   "sin": "todos",
-  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+  "por": "retrato: sin cuerpos estirados ni colores ácidos",
+  "text": "Fíjate en el libro abierto que nos muestra y en el paisaje de tormenta de la ventana.",
+  "source": "Museo Nacional de Capodimonte, «Retrato de Giulio Clovio»"
  },
  "w6402081": {
   "sin": "todos",
-  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+  "por": "retrato: sin cuerpos estirados ni colores ácidos",
+  "text": "Fíjate en la cara alargada y pálida y en la mano abierta sobre el pecho, de dedos finos.",
+  "source": "Museo del Prado, «El caballero de la mano en el pecho»"
  },
  "w5712837": {
   "sin": "todos",
@@ -310,19 +342,27 @@
  },
  "w6106760": {
   "sin": "todos",
-  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+  "por": "retrato: sin cuerpos estirados ni colores ácidos",
+  "text": "Fíjate en la paleta y los pinceles del hijo del pintor, de cara alargada, sobre fondo oscuro.",
+  "source": "Museo de Bellas Artes de Sevilla, «Retrato de Jorge Manuel Theotocópuli»"
  },
  "w949323": {
   "sin": "todos",
-  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+  "por": "retrato: sin cuerpos estirados ni colores ácidos",
+  "text": "Fíjate en el hábito blanco y negro y en la cara alargada y pálida, a pinceladas sueltas.",
+  "source": "Museo de Bellas Artes de Boston, «Retrato de Fray Hortensio Paravicino»"
  },
  "w5966793": {
   "sin": "todos",
-  "por": "escena a la luz de una brasa, cálida y sin alargar"
+  "por": "escena a la luz de una brasa, cálida y sin alargar",
+  "text": "Fíjate en la brasa que ilumina las caras desde abajo, en la oscuridad: la luz nace del fuego.",
+  "source": "Museo del Prado, «La fábula»"
  },
  "w2293905": {
   "sin": "todos",
-  "por": "una cabeza pintada sobre un escudo: sin fondo negro ni gente de la calle"
+  "por": "una cabeza pintada sobre un escudo: sin fondo negro ni gente de la calle",
+  "text": "Fíjate en la boca abierta en un grito y en la sangre que salta: pintado en el instante mismo.",
+  "source": "Galería Uffizi, «Cabeza de Medusa»"
  },
  "w2011510": {
   "sin": [
@@ -366,39 +406,57 @@
  },
  "w2270291": {
   "sin": "todos",
-  "por": "bodegón de fondo claro, sin gente"
+  "por": "bodegón de fondo claro, sin gente",
+  "text": "Fíjate en el cesto, que asoma por el borde de la mesa a la altura de tus ojos, sobre un fondo claro.",
+  "source": "Pinacoteca Ambrosiana, «Cesto con frutas»"
  },
  "w1087226": {
   "sin": "todos",
-  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
+  "text": "Fíjate en los ajos, los huevos y el pescado, con luz dura sobre fondo oscuro.",
+  "source": "National Gallery de Londres, «Cristo en casa de Marta y María»"
  },
  "w2627810": {
   "sin": "todos",
-  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
+  "text": "Fíjate en el cántaro enorme y en la luz que cae de lado, con fondo oscuro: la Sevilla de 1620.",
+  "source": "Apsley House, «El aguador de Sevilla»"
  },
  "w2471800": {
   "sin": "todos",
-  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
+  "text": "Fíjate en la luz dura que cae de la izquierda sobre la mujer y los cacharros, con el fondo negro.",
+  "source": "Galerías nacionales de Escocia, «Vieja friendo huevos»"
  },
  "w3075292": {
   "sin": "todos",
-  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
+  "text": "Fíjate en las manos curtidas y la luz dura de lado: un santo con cara de vecino de Sevilla.",
+  "source": "Museo Nacional de Arte de Cataluña, «San Pablo»"
  },
  "w389198": {
   "sin": "todos",
-  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
+  "text": "Fíjate en la luz dura sobre caras y manos, con el fondo oscuro: pintura de Sevilla, de juventud.",
+  "source": "Gemäldegalerie de Berlín, «Tres músicos»"
  },
  "w4274886": {
   "sin": "todos",
-  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
+  "text": "Fíjate en los cacharros de la mesa, con luz dura y fondo oscuro: el bodegón sevillano.",
+  "source": "Instituto de Arte de Chicago, «La mulata»"
  },
  "w7917255": {
   "sin": "todos",
-  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
+  "text": "Fíjate en la cara arrugada y la mirada firme, con el crucifijo empuñado: realismo sin adornos.",
+  "source": "Museo del Prado, «La venerable madre Jerónima de la Fuente»"
  },
  "w2528741": {
   "sin": "todos",
-  "por": "cuerpo liso sobre fondo negro: sin grises ni manchas"
+  "por": "cuerpo liso sobre fondo negro: sin grises ni manchas",
+  "text": "Fíjate en el cuerpo sereno sobre el fondo negro, sin paisaje: cuatro clavos y los pies apoyados.",
+  "source": "Museo del Prado, «Cristo crucificado»"
  },
  "w1240092": {
   "sin": [
@@ -465,7 +523,9 @@
  },
  "w1243299": {
   "sin": "todos",
-  "por": "paisaje claro con agua: sin penumbra dorada"
+  "por": "paisaje claro con agua: sin penumbra dorada",
+  "text": "Fíjate en el brillo de las sedas en la orilla y en la ciudad dorada del fondo.",
+  "source": "Museo J. Paul Getty, «El rapto de Europa»"
  },
  "w2246489": {
   "sin": [
@@ -473,7 +533,9 @@
    2,
    3
   ],
-  "por": "marina de verdes y azules, de pintura lisa"
+  "por": "marina de verdes y azules, de pintura lisa",
+  "text": "Fíjate en la luz que entra por la izquierda y deja medio barco en penumbra, como un foco.",
+  "source": "Museo Isabella Stewart Gardner, «La tormenta en el mar de Galilea»"
  },
  "w63692": {
   "sin": [
@@ -496,27 +558,39 @@
    0,
    1
   ],
-  "por": "retrato ecuestre vestido"
+  "por": "retrato ecuestre vestido",
+  "text": "Fíjate en el caballo que avanza de frente hacia ti, con el duque y una batalla al fondo.",
+  "source": "Museo del Prado, «Retrato ecuestre del duque de Lerma»"
  },
  "w3399422": {
   "sin": "todos",
-  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales",
+  "text": "Fíjate en el enorme cuello de encaje y el brillo de la seda: un retrato de lujo de juventud.",
+  "source": "Galería Nacional de Arte, «Retrato de la Marquesa Brígida Spinola-Doria»"
  },
  "w571416": {
   "sin": "todos",
-  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales",
+  "text": "Fíjate en las sedas y encajes y en las manos unidas de la pareja, bajo la madreselva.",
+  "source": "Colecciones de Pinturas del Estado de Baviera, «Autorretrato con Isabel Brant»"
  },
  "w3228387": {
   "sin": "todos",
-  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales",
+  "text": "Fíjate en la luz del cielo que ilumina la cara bajo el ala del sombrero, y en la piel nacarada.",
+  "source": "National Gallery de Londres, «Retrato de Susanna Lunden»"
  },
  "w2894005": {
   "sin": "todos",
-  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales",
+  "text": "Fíjate en el busto de Séneca y los tulipanes junto a los cuatro hombres vestidos de negro.",
+  "source": "Galería Palatina, «Los cuatro filósofos»"
  },
  "w4009226": {
   "sin": "todos",
-  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales",
+  "text": "Fíjate en el campo flamenco al amanecer, visto desde lo alto, con el castillo a la izquierda.",
+  "source": "National Gallery de Londres, «A View of Het Steen in the Early Morning»"
  },
  "w7617092": {
   "sin": [
@@ -609,7 +683,9 @@
    1,
    3
   ],
-  "por": "cartón para tapiz: colores claros y alegres"
+  "por": "cartón para tapiz: colores claros y alegres",
+  "text": "Fíjate en los colores claros y alegres: es un cartón, el modelo para un tapiz de palacio.",
+  "source": "Museo del Prado, «La gallina ciega»"
  },
  "w3788057": {
   "sin": [
@@ -617,7 +693,9 @@
    1,
    3
   ],
-  "por": "cartón para tapiz: colores claros y alegres"
+  "por": "cartón para tapiz: colores claros y alegres",
+  "text": "Fíjate en Madrid al fondo y en el gentío diminuto de fiesta, en colores claros: un boceto de tapiz.",
+  "source": "Museo del Prado, «La pradera de San Isidro»"
  },
  "w952796": {
   "sin": [
@@ -625,7 +703,9 @@
    1,
    3
   ],
-  "por": "cartón para tapiz: colores claros y alegres"
+  "por": "cartón para tapiz: colores claros y alegres",
+  "text": "Fíjate en el muñeco de trapo por el aire y en las cuatro jóvenes que lo mantean, en colores claros.",
+  "source": "Museo del Prado, «El pelele»"
  },
  "w3543898": {
   "sin": [
@@ -633,7 +713,9 @@
    1,
    3
   ],
-  "por": "obra académica de pintura lisa"
+  "por": "obra académica de pintura lisa",
+  "text": "Fíjate en el cuerpo pálido y liso sobre el fondo negro: una obra aún académica, de juventud.",
+  "source": "Museo del Prado, «Cristo crucificado»"
  },
  "w3825362": {
   "sin": [
@@ -659,7 +741,9 @@
  },
  "w22977128": {
   "sin": "todos",
-  "por": "obra de juventud, oscura y sin bruma dorada"
+  "por": "obra de juventud, oscura y sin bruma dorada",
+  "text": "Fíjate en la torre oscura contra el cielo y en la niebla que llena el valle.",
+  "source": "Biblioteca Nacional de Gales, «Castillo Dolbadarn»"
  },
  "w7733769": {
   "sin": [
@@ -716,7 +800,9 @@
  },
  "w829572": {
   "sin": "todos",
-  "por": "retrato de cuerpo entero, oscuro y acabado"
+  "por": "retrato de cuerpo entero, oscuro y acabado",
+  "text": "Fíjate en la seda verde y negra del vestido, que brilla al girarse: aún antes del impresionismo.",
+  "source": "Galería de arte de Bremen, «Camille»"
  },
  "w681876": {
   "sin": [
@@ -872,11 +958,15 @@
  },
  "w107534436": {
   "sin": "todos",
-  "por": "obra de juventud, antes del oro"
+  "por": "obra de juventud, antes del oro",
+  "text": "Fíjate en los cientos de caras diminutas del público, cada una un retrato: aún es pintura académica.",
+  "source": "Museo de Viena, «Auditorium of the old Burgtheater»"
  },
  "w107598562": {
   "sin": "todos",
-  "por": "obra de juventud, antes del oro"
+  "por": "obra de juventud, antes del oro",
+  "text": "Fíjate en la luz de las velas sobre los vestidos, en manchas suaves y sin nada de oro.",
+  "source": "Museo Leopold, «Schubert at the Piano I»"
  },
  "w114573173": {
   "sin": "todos",
@@ -908,7 +998,9 @@
  },
  "w2933825": {
   "sin": "todos",
-  "por": "obra temprana: aún se reconocen las cosas"
+  "por": "obra temprana: aún se reconocen las cosas",
+  "text": "Fíjate en las manchas de color puro que casi borran la iglesia: pronto dejará de pintar cosas.",
+  "source": "Van Abbemuseum, «Church at Murnau»"
  },
  "w3606261": {
   "sin": "todos",
@@ -930,7 +1022,9 @@
  },
  "w3965263": {
   "sin": "todos",
-  "por": "antes de los puntitos"
+  "por": "antes de los puntitos",
+  "text": "Fíjate en los troncos verticales y en los toques de color cruzados: aún no son puntitos.",
+  "source": "Museo Metropolitano de Arte, «The Forest at Pontaubert»"
  },
  "w2656755": {
   "sin": [
@@ -966,27 +1060,39 @@
  },
  "w4528214": {
   "sin": "todos",
-  "por": "antes de Bretaña y Tahití: sin colores planos"
+  "por": "antes de Bretaña y Tahití: sin colores planos",
+  "text": "Fíjate en la piel con pliegues y sombras, sin idealizar: antes de Tahití, su pintura era realista.",
+  "source": "Gliptoteca Ny Carlsberg, «Estudio de un desnudo»"
  },
  "w7617093": {
   "sin": "todos",
-  "por": "antes de Bretaña y Tahití: sin colores planos"
+  "por": "antes de Bretaña y Tahití: sin colores planos",
+  "text": "Fíjate en el perfil cortado de Laval a la derecha, a lo Degas, y en la fruta sobre la mesa.",
+  "source": "Museo de Arte de Indianápolis, «Naturaleza muerta con perfil de Laval»"
  },
  "w7617094": {
   "sin": "todos",
-  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos"
+  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos",
+  "text": "Fíjate en los tonos oscuros y terrosos: uno de sus primeros óleos, aún sin color ni remolinos.",
+  "source": "Museo Kröller-Müller, «Still Life with Straw Hat»"
  },
  "w5179827": {
   "sin": "todos",
-  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos"
+  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos",
+  "text": "Fíjate en los tonos oscuros de tierra: su etapa holandesa, antes del color.",
+  "source": "Museo Soumaya, «Prado con vacas»"
  },
  "w26220165": {
   "sin": "todos",
-  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos"
+  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos",
+  "text": "Fíjate en los marrones y verdes apagados: así pintaba en Holanda, antes del color.",
+  "source": "Groninger Museum, «Jardín rectoral en Nuenen en primavera»"
  },
  "w7536969": {
   "sin": "todos",
-  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos"
+  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos",
+  "text": "Fíjate en el fondo oscuro y el dibujo de academia: aún no hay remolinos ni colores vivos.",
+  "source": "Museo van Gogh, «Cráneo con cigarrillo en llamas»"
  },
  "w4110564": {
   "sin": [
@@ -1002,7 +1108,9 @@
    1,
    3
   ],
-  "por": "campos en franjas de color plano"
+  "por": "campos en franjas de color plano",
+  "text": "Fíjate en las franjas de rojo y amarillo: sus primeras manchas de color, aún sin remolinos.",
+  "source": "Galería Nacional de Arte, «Bulb Fields»"
  },
  "w17511613": {
   "sin": [
@@ -1063,7 +1171,9 @@
  },
  "w2717022": {
   "sin": "todos",
-  "por": "estampa erótica, sin olas ni montes"
+  "por": "estampa erótica, sin olas ni montes",
+  "text": "Fíjate en el texto escrito que rodea a las figuras: es un shunga (estampa erótica) para leer.",
+  "source": "Wikipedia ES, «El sueño de la esposa del pescador»"
  },
  "w3565037": {
   "sin": [
@@ -1073,7 +1183,9 @@
  },
  "w20186732": {
   "sin": "todos",
-  "por": "retrato de juventud, sin campesinos"
+  "por": "retrato de juventud, sin campesinos",
+  "text": "Fíjate en el retrato oscuro de un poeta joven: antes de los campesinos, vivía de retratos.",
+  "source": "Galería Nacional de Arte, «Leconte de Lisle»"
  },
  "w18346889": {
   "sin": "todos",
@@ -1103,7 +1215,9 @@
    0,
    1
   ],
-  "por": "retrato de niños"
+  "por": "retrato de niños",
+  "text": "Fíjate en el gato que acecha al pájaro de la jaula: el retrato esconde una historia.",
+  "source": "National Gallery de Londres, «Retrato de los niños Graham»"
  },
  "w4164272": {
   "sin": [
@@ -1111,19 +1225,27 @@
    1,
    2
   ],
-  "por": "una cara sola"
+  "por": "una cara sola",
+  "text": "Fíjate en la cara sonriente y en los pocos brochazos rápidos con que está hecha.",
+  "source": "National Gallery de Londres, «La vendedora de camarones»"
  },
  "w5712840": {
   "sin": "todos",
-  "por": "retrato serio"
+  "por": "retrato serio",
+  "text": "Fíjate en el perro carlino, que se parece a su dueño, y en la línea curva de la paleta.",
+  "source": "National Gallery de Londres, «Autorretrato»"
  },
  "w5722643": {
   "sin": "todos",
-  "por": "retrato serio"
+  "por": "retrato serio",
+  "text": "Fíjate en las seis caras de los criados, cada una con su carácter, pintadas con cariño.",
+  "source": "National Gallery de Londres, «Los servidores del pintor»"
  },
  "w1619527": {
   "sin": "todos",
-  "por": "retrato en el campo, sin pelucas altas"
+  "por": "retrato en el campo, sin pelucas altas",
+  "text": "Fíjate en el campo amplio a un lado y la pareja al otro, bajo un roble.",
+  "source": "National Gallery de Londres, «El Señor y la Señora Andrews»"
  },
  "w17429571": {
   "sin": [
@@ -1192,5 +1314,565 @@
    1
   ],
   "por": "figura sola de medio cuerpo sobre oro: nadie pisa nada y no hay «figuras»"
+ },
+ "w2304870": {
+  "text": "Fíjate en el gran ojo del centro, con Cristo en la pupila, y las escenitas de pecados alrededor.",
+  "source": "Museo del Prado, «Mesa de los pecados capitales»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w321303": {
+  "text": "Fíjate en los cientos de desnudos diminutos entre frutas gigantes, pájaros y seres imposibles.",
+  "source": "Museo del Prado, «El jardín de las delicias»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1217288": {
+  "text": "Fíjate en los seres imposibles que rodean al santo: peces que vuelan, barcos con patas y demonios.",
+  "source": "Museo Nacional de Arte Antiguo, «Tríptico de las Tentaciones de san Antonio»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2213811": {
+  "text": "Fíjate en el gentío diminuto que se pelea por el heno mientras unos demonios arrastran el carro.",
+  "source": "Museo del Prado, «El carro de heno»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w644856": {
+  "text": "Fíjate en el ejército de esqueletos que arrasa un paisaje enorme, con cientos de figuras diminutas.",
+  "source": "Museo del Prado, «El triunfo de la muerte»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w603751": {
+  "text": "Fíjate en los dos campesinos que reparten los platos sobre una puerta arrancada, usada de bandeja.",
+  "source": "Museo de Historia del Arte de Viena, «La boda campesina»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1122842": {
+  "text": "Fíjate en el valle enorme visto desde lo alto, con campesinos diminutos que bailan junto a la horca.",
+  "source": "Museo estatal de Hesse, «La urraca sobre el cadalso»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2983399": {
+  "text": "Fíjate en los brochazos rápidos y en la furia: caballos que caen, navajas y caras desencajadas.",
+  "source": "Museo del Prado, «El dos de mayo de 1808 en Madrid»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1445107": {
+  "text": "Fíjate en la lluvia de oro y los círculos decorativos de la tela, junto a una piel muy real.",
+  "source": "Museo Leopold, «Dánae»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3630745": {
+  "text": "Fíjate en el brazo en tensión y la luz dura que cae sobre ella: la pintora en plena acción.",
+  "source": "Royal Collection, «Autorretrato como alegoría de la pintura»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w23010133": {
+  "text": "Fíjate en la mirada de reojo y en la luz que modela la cara sobre el fondo oscuro.",
+  "source": "Wadsworth Atheneum, «Autorretrato como tañedora de laúd»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w55429769": {
+  "text": "Fíjate en la rueda rota de pinchos y en la luz que le cae de lado sobre el fondo oscuro.",
+  "source": "National Gallery de Londres, «Autorretrato como Santa Catalina de Alejandría»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1115613": {
+  "text": "Fíjate en el paisaje sereno detrás de la Virgen, bañado en una luz suave y tranquila.",
+  "source": "National Gallery de Londres, «Virgen del prado»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w15008032": {
+  "text": "Fíjate en la luz suave y tranquila que baña a los dioses, tumbados en el prado.",
+  "source": "Galería Nacional de Arte, «El festín de los dioses»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2203011": {
+  "text": "Fíjate en el demonio que asoma bajo la cortina con la bolsa de dinero y la Muerte en la puerta.",
+  "source": "Galería Nacional de Arte, «La muerte de un avaro»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w18783512": {
+  "text": "Fíjate en los rosas y azules suaves de las sábanas y en la piel nacarada de la joven.",
+  "source": "Museo del Louvre, «La odalisca morena»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w18552705": {
+  "text": "Fíjate en los lazos y las rosas del vestido de seda, todo en tonos suaves.",
+  "source": "Colección Wallace, «Retrato de Madame de Pompadour»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w689236": {
+  "text": "Fíjate en la plaza vista desde lo alto, llena de cientos de figuras ocupadas en algo.",
+  "source": "Museo de Historia del Arte de Viena, «El combate entre don carnaval y doña cuaresma»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w697332": {
+  "text": "Fíjate en la plaza vista desde arriba, con cientos de niños diminutos, cada uno en su juego.",
+  "source": "Museo de Historia del Arte de Viena, «Juego de niños»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w686107": {
+  "text": "Fíjate en la multitud diminuta que cruza el paisaje: Cristo, caído en el centro, casi no se ve.",
+  "source": "Museo de Historia del Arte de Viena, «La Procesión al Calvario»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3640080": {
+  "text": "Fíjate en la niña repantigada, vista desde arriba, y en los sillones azules que llenan el suelo.",
+  "source": "Galería Nacional de Arte, «Niña en un sillón azul»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w15130000": {
+  "text": "Fíjate en el espejo de detrás, con los palcos dorados, y en la luz cálida sobre la cara.",
+  "source": "Museo de Arte de Filadelfia, «Mujer con collar de perlas en un palco»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3172226": {
+  "text": "Fíjate en la madre y la niña vistas desde arriba, con líneas claras y telas a rayas.",
+  "source": "Instituto de Arte de Chicago, «El baño»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w12859910": {
+  "text": "Fíjate en el vestido rosa y la pincelada rápida: la taza y el sillón son apenas unos toques.",
+  "source": "Museo Metropolitano de Arte, «La taza de té»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w7731855": {
+  "text": "Fíjate en el sol bajo, de frente, que dora el agua del puerto entre palacios clásicos.",
+  "source": "National Gallery de Londres, «Puerto con el embarque de la Reina de Saba»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3235872": {
+  "text": "Fíjate en los cuerpos pálidos y esbeltos sobre fondo negro, con collares y un sombrero.",
+  "source": "Museo del Louvre, «Las Tres Gracias»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w20828882": {
+  "text": "Fíjate en los cuerpos pálidos y esbeltos que salen jóvenes de la fuente, hacia la fiesta.",
+  "source": "Gemäldegalerie de Berlín, «La fuente de eterna juventud»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2622172": {
+  "text": "Fíjate en la familia partida: el padre de espaldas, la madre lejos y el perro cortado por el borde.",
+  "source": "Museo de Orsay, «La familia Bellelli»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w6046671": {
+  "text": "Fíjate en la lámpara que ilumina la habitación y en la pareja separada, cada uno en un extremo.",
+  "source": "Museo de Arte de Filadelfia, «Interior»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1016012": {
+  "text": "Fíjate en el encuadre cortado, como una foto: figuras que se salen del borde en una plaza vacía.",
+  "source": "Kunsthaus Zürich, «El Conde Lepic y sus hijas»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3842349": {
+  "text": "Fíjate en el encuadre desde abajo: la acróbata colgada de la cuerda, cortada por la cúpula.",
+  "source": "National Gallery de Londres, «Miss La La en el Circo Fernando»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2912117": {
+  "text": "Fíjate en la vista desde arriba y en la mesa del borde, que corta el cuadro como una foto.",
+  "source": "Museo de Orsay, «La tina»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w4025363": {
+  "text": "Fíjate en el lienzo cortado a la derecha: Manet recortó a su mujer y solo queda un trozo.",
+  "source": "Kitakyushu Municipal Museum of Art, «Édouard Manet y su mujer»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w7476471": {
+  "text": "Fíjate en las bailarinas que esperan, de lado, en un ensayo, y en el suelo que se va al fondo.",
+  "source": "Museo Metropolitano de Arte, «La clase de danza»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3794660": {
+  "text": "Fíjate en la oficina vista en diagonal, con cada hombre a lo suyo, como una foto tomada al vuelo.",
+  "source": "Museo de Bellas Artes de Pau, «Oficina de algodón en Nueva Orleans»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1224572": {
+  "text": "Fíjate en el acabado pulido y el detalle: la mula cansada, la nieve y el abrigo empapado.",
+  "source": "Museo del Louvre, «Bonaparte cruzando los Alpes»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1055111": {
+  "text": "Fíjate en la Virgen joven y cercana, con un velo transparente, y en el ángel que nos sonríe.",
+  "source": "Galería Uffizi, «Virgen con el Niño y dos ángeles»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1214313": {
+  "text": "Fíjate en las figuras de espaldas en la orilla, ante el mar al atardecer y los barcos.",
+  "source": "Museo de Bellas Artes de Leipzig, «Las etapas de la vida»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2459266": {
+  "text": "Fíjate en los ojos perdidos y la cara descuidada: un enfermo real, pintado sin juzgarlo.",
+  "source": "Museo de Bellas Artes de Gante, «El cleptómano»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w429753": {
+  "text": "Fíjate en los caballos que vuelan con las patas estiradas y en el cielo de tormenta.",
+  "source": "Museo del Louvre, «Derbi en Epsom»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w15728649": {
+  "text": "Fíjate en el fondo negro y las figuras claras que salen de él: brujos que vuelan con un hombre.",
+  "source": "Museo del Prado, «Vuelo de brujas»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2837807": {
+  "text": "Fíjate en la Verdad desnuda y luminosa, que sale de la sombra junto al Tiempo con alas.",
+  "source": "Museo Nacional de Estocolmo, «La Verdad, el Tiempo y la Historia»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w11793036": {
+  "text": "Fíjate en la joven vista desde abajo, contra un cielo claro, pintada a brochazos.",
+  "source": "Museo de Bellas Artes de Budapest, «La aguadora»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w8341785": {
+  "text": "Fíjate en la luz de la ventana alta y en los cuerpos desnudos del patio, a brochazos.",
+  "source": "Real Academia de Bellas Artes de San Fernando, «Casa de locos»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w920041": {
+  "text": "Fíjate en el estandarte con la máscara sonriente y la gente que baila, a pinceladas rápidas.",
+  "source": "Real Academia de Bellas Artes de San Fernando, «El entierro de la sardina»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3543882": {
+  "text": "Fíjate en los colores sucios y oscuros: una de las Pinturas negras, pintadas en su casa.",
+  "source": "Museo del Prado, «Átropos o Las Parcas»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1747282": {
+  "text": "Fíjate en los dos hombres solos en un paisaje inmenso, pintados con brochazos rápidos.",
+  "source": "Museo del Prado, «Duelo a garrotazos»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2528477": {
+  "text": "Fíjate en el macho cabrío negro, a contraluz, y en las caras deformes de las brujas.",
+  "source": "Museo del Prado, «El aquelarre»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w500936": {
+  "text": "Fíjate en el vacío: casi todo es una pared ocre, y solo asoma la cabeza del perro.",
+  "source": "Museo del Prado, «Perro semihundido»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3829156": {
+  "text": "Fíjate en los círculos y motivos dorados que envuelven a la madre y al bebé.",
+  "source": "Galería Nacional de Arte Moderno, «Las tres edades de la mujer»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w17001535": {
+  "text": "Fíjate en la túnica de la Muerte, llena de cruces, y en los cuerpos envueltos en telas de colores.",
+  "source": "Museo Leopold, «Muerte y Vida»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w5967091": {
+  "text": "Fíjate en la maraña de cuerpos dormidos y telas estampadas, en colores vivos.",
+  "source": "Galería Nacional de Praga, «La joven»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2354080": {
+  "text": "Fíjate en Cristo solo entre piedras grises, con la luz fría del amanecer.",
+  "source": "Galería Tretiakov, «Cristo en el desierto»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3224378": {
+  "text": "Fíjate en las figuras de estatua clásica, como en un friso, delante de edificios romanos.",
+  "source": "Museo Condé, «La masacre de los inocentes»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w377810": {
+  "text": "Fíjate en el baile en corro, como un friso clásico, ante un paisaje ordenado.",
+  "source": "National Gallery de Londres, «La adoración del becerro de oro»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w2425901": {
+  "text": "Fíjate en el blanco que lo llena todo y en la Virgen encogida, con el lirio delante.",
+  "source": "National Gallery de Londres, «Ecce Ancilla Domini»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w977777": {
+  "text": "Fíjate en la melena, los labios rojos y la granada mordida, sobre un fondo verde oscuro.",
+  "source": "Tate Britain, «Proserpina»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w780466": {
+  "text": "Fíjate en la cueva y el dragón de cuento, y en la lanza en diagonal hacia su ojo.",
+  "source": "National Gallery de Londres, «San Jorge y el dragón»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w609576": {
+  "text": "Fíjate en la elegancia de las telas y en el gesto sereno de Cristo entre los soldados.",
+  "source": "Museo del Prado, «La coronación de espinas»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3614563": {
+  "text": "Fíjate en las telas que flotan y en los tonos suaves de las pieles: un mito elegante.",
+  "source": "Royal Collection, «Cupido y Psique»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w4068125": {
+  "text": "Fíjate en la montaña de calaveras bajo un sol implacable, con cuervos y una ciudad en ruinas.",
+  "source": "Galería Tretiakov, «La apoteosis de la guerra»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3947695": {
+  "text": "Fíjate en la armadura dorada que brilla al detalle, y en el demonio monstruoso a sus pies.",
+  "source": "National Gallery de Londres, «San Miguel derrota al demonio»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w29018377": {
+  "text": "Fíjate en el cielo de tormenta sobre un paisaje inmenso y en el detalle flamenco de cada arruga.",
+  "source": "Catedral de Santa Eulalia de Barcelona, «La Piedad del canónigo Desplá»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w14915747": {
+  "text": "Fíjate en la mujer de negro que mira con prismáticos y, al fondo, el hombre que la mira a ella.",
+  "source": "Museo de Bellas Artes de Boston, «En el palco»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w18688169": {
+  "text": "Fíjate en el encuadre cortado: el caballo apenas asoma por el borde, como en una foto.",
+  "source": "Museo de Arte de Filadelfia, «Una mujer y una niña conduciendo»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3633620": {
+  "text": "Fíjate en la niña en camisón, con colores claros y pinceladas rápidas.",
+  "source": "Galería Nacional de Arte, «Niña arreglándose el pelo»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w15876324": {
+  "text": "Fíjate en el encuadre desde arriba, a la japonesa: el remero de espaldas y la madre con el niño.",
+  "source": "Galería Nacional de Arte, «El paseo en barca»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w4803790": {
+  "text": "Fíjate en los árboles altísimos y la luz suave del atardecer sobre las ruinas clásicas.",
+  "source": "Museo Ashmolean, «Paisaje con Ascanio asaeteando el ciervo de Silvia»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3819661": {
+  "text": "Fíjate en las bailarinas cortadas por el borde de arriba: solo se ven faldas y piernas.",
+  "source": "Museo de Orsay, «La orquesta de la Ópera»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3837030": {
+  "text": "Fíjate en el padre del pintor, absorto detrás del guitarrista, como en una foto robada.",
+  "source": "Museo de Orsay, «Lorenzo Pagans y Auguste de Gas»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w1056007": {
+  "text": "Fíjate en la Virgen joven y cercana, de velo fino, y en el jarrón con lirios.",
+  "source": "National Gallery de Londres, «Anunciación»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w291189": {
+  "text": "Fíjate en la Virgen joven arrodillada en un bosque oscuro, con velos transparentes.",
+  "source": "Gemäldegalerie de Berlín, «Adoración en el bosque»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3797764": {
+  "text": "Fíjate en la multitud de ángeles con cara de niño y en el autorretrato del fraile a un lado.",
+  "source": "Galería Uffizi, «Coronación de la Virgen»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w27780865": {
+  "text": "Fíjate en la luz de sol intensa y en las pinceladas rápidas: un apunte sin terminar.",
+  "source": "Museo del Prado, «Jardín de la casa de Fortuny»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3349704": {
+  "text": "Fíjate en el caballo encabritado en diagonal y en el jinete que se gira en plena carga.",
+  "source": "Museo del Louvre, «Oficial de cazadores a la carga»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3006832": {
+  "text": "Fíjate en el soldado herido que baja con su caballo nervioso bajo un cielo de tormenta.",
+  "source": "Museo del Louvre, «Coracero herido»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3210764": {
+  "text": "Fíjate en los ojos enrojecidos y la boca apretada: una enferma real, retratada sin burla.",
+  "source": "Museo de Bellas Artes de Lyon, «Mujer demente»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w18599152": {
+  "text": "Fíjate en la luz dura sobre las cabezas apoyadas en una sábana: la muerte sin adornos.",
+  "source": "Museo Nacional de Estocolmo, «Las cabezas cortadas»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w26708040": {
+  "text": "Fíjate en el caballo nervioso, de músculos tensos, ante un cielo oscuro cruzado por un rayo.",
+  "source": "National Gallery de Londres, «Caballo asustado por un rayo»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w106701973": {
+  "text": "Fíjate en el caballo que se encabrita, con los músculos tensos y una mantilla roja.",
+  "source": "Museo de Bellas Artes de Ruan, «Caballo encabritado con mantilla roja»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w8049268": {
+  "text": "Fíjate en el patio cerrado, con luz dura desde arriba y los locos en penumbra, a brochazos.",
+  "source": "Museo Meadows, «Corral de locos»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w20354158": {
+  "text": "Fíjate en la plaza vacía y gris, sin una sola persona: un silencio casi inquietante.",
+  "source": "Galería Nacional de Dinamarca, «Plaza de Amelienborg»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w17491674": {
+  "text": "Fíjate en la mujer de espaldas, con la nuca a la vista, en una habitación gris y quieta.",
+  "source": "Museo de Orsay, «Descanso»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w58411216": {
+  "text": "Fíjate en la habitación vacía y gris, con la luz suave de la ventana y solo un caballete.",
+  "source": "Museo J. Paul Getty, «Interior con caballete, Bredgade 25»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w5967685": {
+  "text": "Fíjate en la habitación llena de gente en desorden: un capítulo de una historia moral.",
+  "source": "Museo Soane, «La orgía»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3944145": {
+  "text": "Fíjate en la pareja aburrida tras la fiesta y en los detalles que cuentan la historia.",
+  "source": "National Gallery de Londres, «Casamiento a la moda II»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w6772906": {
+  "text": "Fíjate en la habitación llena de detalles y en el padre que le quita el anillo a la moribunda.",
+  "source": "National Gallery de Londres, «Casamiento a la moda VI: la muerte de la condesa»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w5234041": {
+  "text": "Fíjate en el gesto exagerado de terror del actor, que despierta de una pesadilla.",
+  "source": "Walker Art Gallery, «David Garrick como Ricardo III»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w20171155": {
+  "text": "Fíjate en los dos niños con la cesta en la playa, a pleno sol.",
+  "source": "Museo Metropolitano de Arte, «Una cesta de almejas»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w4960357": {
+  "text": "Fíjate en la barca escorada por el viento, que corta las olas con los chicos a bordo.",
+  "source": "Galería Nacional de Arte, «Viento fresco»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w12162390": {
+  "text": "Fíjate en el pescador solo en su bote, entre olas altas, y en la niebla que se acerca.",
+  "source": "Museo de Bellas Artes de Boston, «Aviso de niebla»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w4400244": {
+  "text": "Fíjate en las figuras pálidas bajo la luz de la luna, junto al río de noche.",
+  "source": "Galería Tretiakov, «Las sirenas»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w7678417": {
+  "text": "Fíjate en el esqueleto gigante que asoma por la cortina, mucho más grande que los guerreros.",
+  "source": "Wikipedia EN, «Takiyasha the Witch and the Skeleton Spectre»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w70738658": {
+  "text": "Fíjate en el héroe tatuado en plena lucha, que se retuerce y llena toda la estampa.",
+  "source": "Wikipedia ES, «Utagawa Kuniyoshi»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w96471562": {
+  "text": "Fíjate en los gatos con cara de actor: así se burlaba la censura.",
+  "source": "Museo Británico, «Michiyuki Nekoyanagi Sakari no Tsukikage»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3873247": {
+  "text": "Fíjate en las columnas del marco, que siguen dentro, como si la habitación continuara detrás.",
+  "source": "Museo dell'Opera Metropolitana del Duomo, «Nativity of the Virgin»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3910903": {
+  "text": "Fíjate en el templo gótico visto por dentro, con bóvedas y columnas que se van al fondo.",
+  "source": "Galería Uffizi, «Presentación del Niño en el Templo»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3618171": {
+  "text": "Fíjate en las baldosas del suelo, que se juntan en un punto: perspectiva antes del Renacimiento.",
+  "source": "Pinacoteca Nacional de Siena, «Annunciation»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w18572975": {
+  "text": "Fíjate en la casa abierta como una casa de muñecas, con las tres hermanas dentro.",
+  "source": "Museo del Louvre, «The Charity of St. Nicholas of Bari»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w11788444": {
+  "text": "Fíjate en la procesión que avanza por un paisaje inmenso, con un niño solo delante de todos.",
+  "source": "Galería Tretiakov, «En Rusia. El alma del pueblo»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w18688145": {
+  "text": "Fíjate en las figuritas diminutas y elegantes del muelle, junto a los barcos de la ría.",
+  "source": "Museo de Bellas Artes de Bilbao, «Vista de El Arenal de Bilbao»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3964096": {
+  "text": "Fíjate en la mesa con calavera, joyas, monedas y una vela apagada: todo pasa.",
+  "source": "Real Academia de Bellas Artes de San Fernando, «El sueño del caballero»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w18689412": {
+  "text": "Fíjate en las manos cruzadas sobre la rodilla y la mirada perdida: un retrato sin adornos.",
+  "source": "Galería Tretiakov, «Retrato de Fiódor Dostoyevski»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w11931061": {
+  "text": "Fíjate en el rincón humilde y vacío, sin gente, con la luz gris de París.",
+  "source": "Museo Nacional de Arte de Cataluña, «Las cocinas del Moulin de la Galette»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w5967388": {
+  "text": "Fíjate en la mujer que se retuerce en la cama, en una luz blanca y tenue.",
+  "source": "Museo Cau Ferrat, «La morfina»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w4373329": {
+  "text": "Fíjate en el cuerpo anguloso y las líneas simplificadas, casi un dibujo, sobre un fondo liso.",
+  "source": "Museo Estatal Ruso, «Retrato de Ida Rubinstein»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3119488": {
+  "text": "Fíjate en el caballero y su caballo, cubiertos con la misma tela de rombos, en un paisaje desierto.",
+  "source": "Palazzo Pubblico, «Guidoriccio da Fogliano en el asedio de Montemassi»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w4242050": {
+  "text": "Fíjate en la mirada viva de la mujer, que levanta los ojos de su labor y te sonríe.",
+  "source": "Galería Tretiakov, «La encajera»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3649296": {
+  "text": "Fíjate en cazadores y perros que corren hacia un mismo punto del fondo del bosque, en perspectiva.",
+  "source": "Museo Ashmolean, «La caza en el bosque»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w3948607": {
+  "text": "Fíjate en las sedas brillantes de Dalila y en la luz sobre la espalda de Sansón.",
+  "source": "Museo de Historia del Arte de Viena, «Sansón y Dalila»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w18683079": {
+  "text": "Fíjate en la luz que entra desde el campo abierto y en los campesinos tranquilos.",
+  "source": "Museo Estatal Ruso, «La era»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w4424346": {
+  "text": "Fíjate en el soldado que corre con la mano en el pecho, sin heroísmo, entre el humo.",
+  "source": "Galería Tretiakov, «Herido de muerte»",
+  "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
  }
 }
