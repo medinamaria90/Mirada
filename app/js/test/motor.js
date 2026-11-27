@@ -6,8 +6,8 @@
 //   · 2 aciertos      → repite tramo (las 4 siguientes; si el tramo está agotado, sube);
 //   · 0 o 1           → se para (acertar al tuntún con 4 opciones es 1 de 4) y muestra el resultado.
 // También se para al agotar el banco (en el último tramo se siguen jugando sus bloques mientras
-// queden). A partir de la pregunta PAUSE_FROM, al cerrar cada bloque hay una pausa («Llevas 20 y
-// vas muy bien») con «Ver mi resultado» y «Seguir». «Ver mi resultado» vale en cualquier momento.
+// queden). Sin pausas: el test sigue solo mientras se acierte (como mucho MAX_QUESTIONS). «Ver mi
+// resultado» vale en cualquier momento.
 //
 // Puntuación acumulada: cada acierto suma los puntos de su tramo (1, 2, 3, 4, 5), así quien llega
 // más lejos y ve más preguntas suma más. El máximo honesto (todo acierto) es perfectScore(bank).
@@ -23,7 +23,6 @@ export const PER_TIER = 8;
 export const BLOCK = 4;
 export const UP_FROM = 3; // aciertos del bloque para subir de tramo
 export const STOP_BELOW = 2; // con menos aciertos que esto, se para
-export const PAUSE_FROM = 20; // desde esta pregunta, pausa al cerrar cada bloque
 export const MAX_QUESTIONS = TIERS.length * PER_TIER;
 export const KINDS = ['who', 'movement', 'which'];
 export const OPTIONS_PER_QUESTION = 4;
@@ -70,7 +69,7 @@ export function isAnswered(state) {
   return Boolean(state.current) && state.answers.some((a) => a.id === state.current.id);
 }
 
-// Tras el feedback: siguiente pregunta, pausa o fin según la regla del bloque.
+// Tras el feedback: siguiente pregunta o fin según la regla del bloque.
 export function advance(state) {
   if (state.status !== 'playing' || !isAnswered(state)) return state;
   if (state.block.length < BLOCK) return nextQuestion(state);
@@ -80,14 +79,7 @@ export function advance(state) {
   const wanted = Math.min(hits >= UP_FROM ? state.tier + 1 : state.tier, TIERS[TIERS.length - 1].id);
   const tier = TIERS.map((t) => t.id).find((id) => id >= wanted && pending(state, id));
   if (!tier) return finish(state, 'bank');
-  const next = { ...state, tier, block: [] };
-  if (state.answers.length >= PAUSE_FROM) return { ...next, status: 'pause', current: null };
-  return nextQuestion(next);
-}
-
-// «Seguir» desde la pausa.
-export function resume(state) {
-  return state.status === 'pause' ? nextQuestion(state) : state;
+  return nextQuestion({ ...state, tier, block: [] });
 }
 
 // «Ver mi resultado» (en cualquier momento) o fin por regla. reason: 'stop' | 'bank' | 'user'.
@@ -116,24 +108,16 @@ export function summary(state) {
 }
 
 // Juega el test entero con una política decide(question) → true si acierta. Devuelve el estado
-// final y las preguntas vistas en cada pausa (para las pruebas). Si la política devuelve el id de
-// una opción, se usa tal cual.
-export function simulate(bank, decide, { stopAtPause = false } = {}) {
+// final (para las pruebas). Si la política devuelve el id de una opción, se usa tal cual.
+export function simulate(bank, decide) {
   let state = createTest(bank);
-  const pauses = [];
   while (state.status !== 'done') {
-    if (state.status === 'pause') {
-      pauses.push(state.answers.length);
-      if (stopAtPause) { state = finish(state); break; }
-      state = resume(state);
-      continue;
-    }
     const q = state.current;
     const r = decide(q);
     const pick = typeof r === 'string' ? r : r ? q.answer : q.options.find((o) => o !== q.answer);
     state = advance(answer(state, pick));
   }
-  return { state, pauses };
+  return { state };
 }
 
 // Puntos del jugador que lo acierta todo (sube de tramo con cada bloque y apura el último).

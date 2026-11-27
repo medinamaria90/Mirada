@@ -11,29 +11,26 @@
 .test-intro { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: .9rem; padding-block: 1.5rem 2rem; }
 .test-title { font: 500 2.4rem/1.05 var(--font); letter-spacing: var(--track); max-width: 14ch; margin-bottom: .3rem; }
 .test-lead { font-size: 1.05rem; line-height: 1.45; color: var(--ink); max-width: 36ch; }
+.test-note { font-size: .95rem; line-height: 1.4; color: var(--ink-2); max-width: 36ch; }
 .test-last { font-size: .95rem; font-weight: 600; color: var(--brand-text); }
 .test-start { margin-top: .8rem; max-width: 360px; }
 .test-start[aria-disabled="true"] { opacity: .7; cursor: progress; }
 
 /* ---------- Barra: un segmento por tramo y «Ver mi resultado» siempre a mano ---------- */
-.test-bar { padding-left: .9rem; gap: .9rem; }
+.test-bar { gap: .9rem; }
 .tiers { flex: 1; display: flex; gap: 4px; align-items: center; }
 .tier-seg { flex: 1; height: 10px; border-radius: 10px; background: var(--surface-2); box-shadow: inset 0 2px 0 var(--line-2); overflow: hidden; }
 .tier-seg > span { display: block; height: 100%; background: var(--brand); box-shadow: inset 0 -3px 0 var(--brand-shadow); border-radius: inherit; transition: width .45s var(--ease); }
 .tier-seg.is-current { box-shadow: inset 0 0 0 1.5px var(--brand-shadow); }
+.q-cheer { color: var(--brand-text); }
 .test-finish { min-height: 48px; padding: 0 .4rem; font-size: .95rem; font-weight: 600; white-space: nowrap; }
-
-/* ---------- Pausa entre bloques ---------- */
-.test-pause { padding-bottom: 6vh; }
-.pause-actions { display: grid; gap: .7rem; width: 100%; max-width: 320px; }
-.pause-actions .btn { max-width: none; }
 
 /* ---------- Resultado ---------- */
 .test-result .brand { justify-content: center; align-self: center; }
 .result-score { text-align: center; font: 400 1.25rem/1.3 var(--font); }
 .result-score strong { font-weight: 600; }
 .result-pct { text-align: center; font: 400 1.1rem/1.4 var(--font); color: var(--ink); max-width: 30ch; margin-inline: auto; }
-.result-pct strong { font-weight: 600; color: var(--brand-text); }
+.result-big { display: block; font: 500 3.4rem/1 var(--font); letter-spacing: var(--track); color: var(--brand-text); margin-bottom: .25rem; }
 .result-src { text-align: center; font-size: .8rem; line-height: 1.35; color: var(--ink-2); max-width: 34ch; margin: -.4rem auto 0; }
 /* Desglose por tramo: una columna por tramo jugado (hasta 5 en 390 px), en una sola fila. */
 .test-result .tally { grid-auto-flow: row; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); }

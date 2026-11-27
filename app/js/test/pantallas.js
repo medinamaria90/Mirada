@@ -11,8 +11,8 @@ import { PERCENTILE_SOURCES } from './resultado.js';
 
 const ALT_WORK = 'Cuadro para identificar';
 
-// Barra superior: un segmento por tramo (se rellena con las preguntas jugadas de ese tramo) y
-// «Ver mi resultado», disponible siempre.
+// Barra superior: el aspa (pide confirmación, salida.js), un segmento por tramo (se rellena con las preguntas
+// jugadas de ese tramo) y «Ver mi resultado», disponible siempre.
 export function barHtml(state) {
   const segments = TIERS.map((t) => {
     const used = state.used[t.id] || 0;
@@ -21,13 +21,17 @@ export function barHtml(state) {
   }).join('');
   const current = TIERS.find((t) => t.id === state.tier);
   return `<div class="lesson-bar test-bar">
+    <button class="icon-btn" data-action="leave-ask" aria-label="Dejar el test" aria-haspopup="dialog">${icons.close(22)}</button>
     <div class="tiers" role="progressbar" aria-label="Tramo ${esc(current.name)}, pregunta ${state.answers.length + 1}" aria-valuemin="0" aria-valuemax="${TIERS.length}" aria-valuenow="${state.tier}">${segments}</div>
     <button class="btn btn-ghost test-finish" data-action="finish">Ver mi resultado</button>
   </div>`;
 }
 
-export function questionHtml(view, number) {
-  const head = `<p class="q-tag">Pregunta ${number}</p><h1 class="q-prompt">${esc(view.prompt)}</h1>`;
+// `cheer`: aviso breve al subir de tramo («Sube la dificultad»), en la misma línea; no para el juego.
+export const CHEER_UP = 'Sube la dificultad';
+export function questionHtml(view, number, { cheer = '' } = {}) {
+  const tag = cheer ? `Pregunta ${number} · <span class="q-cheer">${esc(cheer)}</span>` : `Pregunta ${number}`;
+  const head = `<p class="q-tag">${tag}</p><h1 class="q-prompt">${esc(view.prompt)}</h1>`;
   if (view.kind === 'which') {
     // Como en la ronda de la app: tocar una miniatura NO responde, abre el visor con las 4 («Es este»
     // responde desde dentro); las teclas 1-4 responden directo.
@@ -43,7 +47,7 @@ export function questionHtml(view, number) {
 }
 
 export function feedbackHtml(view, correct) {
-  const title = correct ? '¡Eso es!' : 'No era esa';
+  const title = correct ? '¡Eso es!' : 'Esta vez no';
   const who = correct ? '' : `<p class="fb-who">Era ${esc(view.answerText)}</p>`;
   return `<div class="fb-inner">
     <div class="fb-text">
@@ -55,16 +59,6 @@ export function feedbackHtml(view, correct) {
   </div>`;
 }
 
-export function pauseHtml(answered) {
-  return `<div class="interlude test-pause">
-    <h1 id="pause-title" tabindex="-1">Llevas ${answered} y vas muy bien</h1>
-    <div class="pause-actions">
-      <button class="btn btn-secondary btn-wide" data-action="finish">Ver mi resultado</button>
-      <button class="btn btn-primary btn-wide" data-action="resume" aria-describedby="pause-title">Seguir</button>
-    </div>
-  </div>`;
-}
-
 export function resultHtml(result, { last = false } = {}) {
   const tally = result.tiers.map((t) => `<div><dt>${esc(t.name)}</dt><dd>${t.correct}<span class="tally-of">/${t.asked}</span></dd></div>`).join('');
   return `<section class="result test-result">
@@ -72,15 +66,14 @@ export function resultHtml(result, { last = false } = {}) {
       <a class="brand" href="../#inicio" aria-label="Sfumato, inicio">${logoMark(28)}Sfumato</a>
       <p class="result-kicker">${last ? 'Tu último resultado' : 'Tu resultado'}</p>
       <h1 class="result-title" tabindex="-1">${esc(result.level)}</h1>
-      <p class="result-score">Has acertado <strong>${result.correct} de ${result.asked}</strong></p>
-      <p class="result-pct">Sabes más de pintura que el <strong>${result.percentile} %</strong> de la gente</p>
+      <p class="result-pct"><strong class="result-big">${result.percentile} %</strong>de la gente sabe menos pintura que tú</p>
       <p class="result-src">${esc(PERCENTILE_SOURCES)}</p>
-      <p class="result-note">${esc(result.topLabel)}</p>
+      <p class="result-score">Has acertado <strong>${result.correct} de ${result.asked}</strong></p>
       <dl class="tally" style="--n:${result.tiers.length}">${tally}</dl>
       <p class="result-cheer">${esc(result.phrase)}</p>
       <div class="result-actions">
         <button class="btn btn-primary btn-wide" data-action="share">${icons.copy(20)}Compartir</button>
-        <a class="btn btn-secondary btn-wide" href="../#inicio">Sigue aprendiendo en Sfumato</a>
+        <a class="btn btn-secondary btn-wide" href="../#inicio">Aprende a mirar en Sfumato</a>
         <button class="btn btn-ghost" data-action="restart">Repetir el test</button>
         <p class="copy-status" role="status" aria-live="polite"></p>
         <textarea class="copy-fallback" aria-label="Texto para compartir" readonly hidden></textarea>
@@ -91,8 +84,8 @@ export function resultHtml(result, { last = false } = {}) {
 
 export function errorHtml() {
   return `<section class="result test-result"><div class="result-body result-compact">
-    <h1 class="result-title">No se ha podido cargar el test</h1>
-    <p class="result-note">Comprueba la conexión y vuelve a intentarlo.</p>
+    <h1 class="result-title">No ha cargado el test</h1>
+    <p class="result-note">Revisa la conexión.</p>
     <div class="result-actions"><a class="btn btn-primary btn-wide" href="">Reintentar</a></div>
   </div></section>`;
 }

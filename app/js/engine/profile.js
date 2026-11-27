@@ -3,7 +3,7 @@
 
 import { artKey } from './srs.js';
 import { STREAK_MEDALS } from './progress.js';
-import { TEST_LEVELS } from '../test/resultado.js';
+import { testLevelName } from '../test/resultado.js';
 import { rankConditions, fmtXp } from './rank-goals.js';
 
 // Metal de cada logro (oro, plata o bronce) según lo difícil que es.
@@ -125,7 +125,8 @@ export function initialOf(name) {
 }
 
 // Último resultado del test de cultura (localStorage['mirada.test.last']): null si no hay o no vale. El
-// nombre del nivel solo se da por bueno si es uno de los del test (resultados antiguos usaban los de los rangos).
+// nombre del nivel solo se da por bueno si es uno de los del test (los de antes se traducen al nombre nuevo; los
+// resultados más antiguos usaban los de los rangos y no se enseñan).
 export function parseLastTest(raw) {
   let v = null;
   try { v = JSON.parse(raw); } catch { return null; }
@@ -133,5 +134,5 @@ export function parseLastTest(raw) {
   const pct = Number.isFinite(v.percentile) && v.percentile >= 1 && v.percentile <= 99 ? Math.round(v.percentile) : null;
   const date = typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) ? v.date : '';
   const grid = typeof v.grid === 'string' && /^[🟩🟨⬜]{1,8}$/u.test(v.grid) ? v.grid : '';
-  return { correct: v.correct, asked: v.asked, level: TEST_LEVELS.includes(v.level) ? v.level : '', percentile: pct, date, grid };
+  return { correct: v.correct, asked: v.asked, level: testLevelName(v.level), percentile: pct, date, grid };
 }

@@ -1661,17 +1661,23 @@ if (SMOKE) {
     watch(tp, `test-${scheme}`);
     await tp.goto(`${base}test/`);
     await tp.waitForFunction(() => document.fonts.status === 'loaded');
-    check(/¿Cuánta pintura reconoces\?/.test(await tp.title()), L(`título «${await tp.title()}»`));
+    check(/¿Distinguirías un Velázquez de un Murillo\?/.test(await tp.title()), L(`título «${await tp.title()}»`));
     const meta = await tp.evaluate(() => Object.fromEntries([...document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], link[rel="canonical"]')].map((m) => [m.getAttribute('property') || m.getAttribute('name') || m.getAttribute('rel'), m.getAttribute('content') || m.getAttribute('href')])));
     for (const k of ['og:title', 'og:description', 'og:image', 'og:url', 'twitter:card', 'description', 'canonical']) check(Boolean(meta[k]), L(`falta la meta ${k}`));
     check(/\/test\/portada\.jpg$/.test(meta['og:image'] || ''), L(`og:image ${meta['og:image']}`));
     const cover = await tp.request.get(`${base}test/portada.jpg`);
     check(cover.ok() && (await cover.body()).length <= 150 * 1024, L('portada.jpg no se sirve o pesa más de 150 KB'));
-    check(/Entre 8 y 40 preguntas/.test(await tp.locator('.test-home').innerText()), L('la portada no dice cuántas preguntas'));
+    check(/o a las 40 preguntas/.test(await tp.locator('.test-home').innerText()), L('la portada no dice cuántas preguntas'));
     await audit(tp, L('portada'));
     if (scheme === 'light') await shot(tp, '15-test-portada');
     await tp.click('[data-action="start"]');
     await tp.waitForSelector('.lesson-stage .option');
+    // «Atrás» (gesto de Android o botón del navegador) a mitad de test pide confirmación y no sale; «Seguir jugando» vuelve.
+    await tp.evaluate(() => history.back());
+    await tp.waitForSelector('#test-leave:not([hidden])');
+    check(await tp.locator('.lesson-stage .option').count() > 0 && new URL(tp.url()).pathname.endsWith('/test/'), L('«atrás» saca del test sin preguntar'));
+    await tp.locator('#test-leave [data-action="leave-stay"]').tap();
+    await tp.waitForSelector('#test-leave', { state: 'hidden' });
     // La pregunta en pantalla: mecánica, opciones y, del catálogo, la respuesta.
     const questionOnScreen = async () => {
       const kind = await tp.locator('.lesson-stage').getAttribute('data-type');
@@ -1735,7 +1741,7 @@ if (SMOKE) {
       await tp.waitForSelector('.feedback.is-open');
       await tp.waitForTimeout(400);
       const fb = await tp.locator('.feedback').innerText();
-      check(i === 0 ? /No era esa/.test(fb) && /Era /.test(fb) : /¡Eso es!/.test(fb), L(`feedback ${i + 1}: «${fb.replace(/\s+/g, ' ').slice(0, 60)}»`));
+      check(i === 0 ? /Esta vez no/.test(fb) && /Era /.test(fb) : /¡Eso es!/.test(fb), L(`feedback ${i + 1}: «${fb.replace(/\s+/g, ' ').slice(0, 60)}»`));
       const line = (await tp.locator('.feedback .fb-line').innerText()).trim();
       check(line && hintsFor(q).some((h) => h.trim() === line), L(`feedback ${i + 1}: pista «${line}» que no es de la obra ni del pintor`));
       await assertAnswersVisible(tp, L(`feedback ${i + 1}`));
@@ -1758,15 +1764,14 @@ if (SMOKE) {
     await tp.waitForTimeout(500);
     const rt = await tp.locator('.test-result').innerText();
     check(/Has acertado 3 de 4/.test(rt), L(`resultado sin «n de 4»: «${rt.replace(/\s+/g, ' ').slice(0, 80)}»`));
-    check(/Sabes más de pintura que el \d+ % de la gente/.test(rt) && /estimación/.test(rt), L('resultado sin percentil estimado'));
-    check(/Has llegado al tramo fácil/.test(rt), L('resultado sin el tramo'));
-    check(await tp.locator('.test-result a[href="../#inicio"]').count() >= 1, L('falta «Sigue aprendiendo en Sfumato»'));
+    check(/\d+ %\s*de la gente sabe menos pintura que tú/.test(rt) && /aproximado/.test(rt), L('resultado sin percentil estimado'));
+    check(await tp.locator('.test-result a[href="../#inicio"]').count() >= 1, L('falta «Aprende a mirar en Sfumato»'));
     await audit(tp, L('resultado'));
     if (scheme === 'light') await shot(tp, '15-test-resultado', true);
     await tp.locator('[data-action="share"]').tap();
     await tp.waitForTimeout(400);
     const shared = await tp.evaluate(() => navigator.clipboard.readText());
-    check(/^He acertado 3 de 4 en el test de Sfumato · /.test(shared) && /\nSé más de pintura que el \d+ % de la gente/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
+    check(/^Sfumato · (Sé más de pintura que el \d+ % de la gente|He acertado 3 de 4 en el test de pintura)\. ¿Y tú\?\n/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
     check(/Copiado/.test(await tp.locator('.copy-status').innerText()), L('no avisa de que se ha copiado'));
     // El último resultado se recuerda en la portada.
     await tp.goto(`${base}test/`);

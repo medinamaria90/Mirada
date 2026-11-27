@@ -274,3 +274,13 @@ apaisada que ella. Ahora la caja toma la proporción de la obra (`--card-ar`, ha
 tarjeta, con el hueco reservado): ninguna obra se recorta. Solo una tarjeta con `region` enseña un detalle a propósito
 (`cardFrame` en `engine/framing.js`); hoy ninguna lo necesita. Revisadas con capturas a 360 px las 81 tarjetas de época
 visibles y las de los 54 carteles. Prueba: `tests/epocas-encuadre.test.js`.
+
+## Test de pintura depurado (27/11)
+Portada con gancho («¿Distinguirías un Velázquez de un Murillo?») y una línea práctica; fuera «Cuadros de verdad» y
+«Sin registro». Sin pausa a mitad: sigue mientras aciertes (máx. 40) y avisa «Sube la dificultad» sin parar. Niveles
+nuevos («Primera visita al museo» … «Ojo clínico»; los guardados con el nombre de antes se traducen). Resultado con la
+cifra grande del percentil (estimación de `docs/eval/reconocimiento-fuentes.md`, sin cambios) y texto para compartir
+con reto («Sfumato · Sé más de pintura que el 78 % de la gente. ¿Y tú?»; por debajo del 40 %, los aciertos). Salir a
+medias (aspa, Esc o «atrás») pide confirmación con hoja propia (`app/js/test/salida.js`). Efectos de sonido de la app
+con el ajuste «Sonidos» (`app/js/test/sonido.js`). Los pintores rusos ya no salen en el tramo fácil ni en el medio
+(`LOCAL_FAME` en `bolsa.js`). Vista previa (`app/test/portada.jpg`) rehecha con la marca Sfumato.
