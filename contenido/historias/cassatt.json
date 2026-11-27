@@ -13,6 +13,12 @@
     {
      "text": "Degas vio su obra y la invitó a exponer con los impresionistas. Ella, a cambio, convenció a coleccionistas americanos para comprarles cuadros.",
      "artwork": "w15130000",
+     "region": [
+      0.0,
+      0.05,
+      0.6,
+      0.6
+     ],
      "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
     },
     {

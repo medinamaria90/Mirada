@@ -13,6 +13,12 @@
     {
      "text": "El duque de Mantua le pidió los amores de Júpiter, que se transforma para seducir. Aquí, convertido en águila, rapta al joven Ganimedes. La serie acabó en manos de Felipe II.",
      "artwork": "w939962",
+     "region": [
+      0.05,
+      0.0,
+      0.95,
+      0.6
+     ],
      "source": "https://en.wikipedia.org/wiki/Jupiter_and_Io"
     },
     {

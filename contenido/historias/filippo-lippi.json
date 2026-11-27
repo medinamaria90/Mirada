@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en la Virgen de perfil, con su velo transparente, y en el angelito que mira hacia fuera y sonríe, travieso como un niño de la calle.",
      "artwork": "w1055111",
+     "region": [
+      0.35,
+      0.1,
+      0.95,
+      0.92
+     ],
      "source": "https://es.wikipedia.org/wiki/Filippo_Lippi"
     }
    ]

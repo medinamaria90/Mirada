@@ -1,6 +1,8 @@
 pintor             categ  cand aptas elegidas/obj  nivel 1 y «a fondo»  | motivos de descarte
-giotto             gran-    57    25   20/26  n1=8 L2:3 L3:5 L4:4  | sin imagen apta:19, varios autores:5, proporción ≠ medidas:3, palabra:2, sin título:2, excluida:1  <-- corto
-fra-angelico       invit   194    42    4/3   n1=4   | sin datos de imagen:92, palabra:37, sin imagen apta:11, varios autores:7, proporción ≠ medidas:5, duplicado/versión:5
-TOTAL 24 obras de 175 pintores
-por país: Italia 24
-títulos por fuente: {'revisar-idioma': 1, 'traducido': 202, 'wikidata-es': 1104, 'traducir': 135, 'manual': 23}
+duccio             rama     62    42    8/8   n1=4 L2:4  | sin imagen apta:8, palabra:4, fecha fuera de vida:3, proporción ≠ medidas:2, duplicado/versión:2, excluida:1, varios autores:1, sin título:1
+giotto             gran-    57    26   21/26  n1=8 L2:3 L3:6 L4:4  | sin imagen apta:18, varios autores:5, proporción ≠ medidas:3, palabra:2, sin título:2, excluida:1  <-- corto
+simone-martini     rama     43    26    8/8   n1=4 L2:4  | proporción ≠ medidas:5, sin imagen apta:5, excluida:3, duplicado/versión:3, varios autores:2, autoría no preferente:1, sin título:1
+fra-angelico       invit   194    42    5/3   n1=5   | sin datos de imagen:92, palabra:37, sin imagen apta:10, varios autores:7, proporción ≠ medidas:5, duplicado/versión:4, excluida:1
+TOTAL 42 obras de 175 pintores
+por país: Italia 42
+títulos por fuente: {'traducir': 136, 'revisar-idioma': 1, 'wikidata-es': 1107, 'manual': 25, 'traducido': 202}
