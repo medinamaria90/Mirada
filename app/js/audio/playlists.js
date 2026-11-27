@@ -38,6 +38,8 @@ export const PLAYLISTS = {
   'escuela-rusa': { main: 'balalaica', alt: ['neva'] },
   'pintura-britanica': { main: 'campina', alt: ['colina'] },
   'ukiyo-e': { main: 'koto', alt: ['lluvia'] },
+  // Test de cultura pictórica (app/test/): «Sala de entrada» en piano de puntillas. Pendiente del sí de María.
+  test: { main: 'reto', alt: [] },
 };
 
 /** Máximo de secundarios por sitio. */

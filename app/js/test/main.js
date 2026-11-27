@@ -29,6 +29,8 @@ const ALT_WORK = 'Cuadro para identificar';
 // Contador de visitas sin cookies (js/stats.js; vacío por defecto: no pide nada). En diferido.
 const stats = (path) => import('../stats.js').then((m) => m.countEvent(path)).catch(() => {});
 setTimeout(() => import('../stats.js').then((m) => m.startStats()).catch(() => {}), 3000);
+// Música propia del test (test/musica.js): suena tras el primer toque si está encendida en la app.
+import('./musica.js').then((m) => m.startTestMusic()).catch(() => {});
 
 // Mudanza de dirección (state/mudanza.js, ui/move-redirect.js), como en la app: llegada con lo guardado (el test de
 // cultura incluido) y, en la dirección antigua, paso a la nueva. Mismos valores que MOVE_PREFIX y OLD_HOST.

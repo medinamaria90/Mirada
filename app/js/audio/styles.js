@@ -8,6 +8,8 @@ import { BRANCH_STYLES } from './styles-ramas.js';
 const VIHUELA_BASS_LO = 41; // fa grave: la romanesca baja Sib–Fa y sube a Sol y Re sin saltar de octava
 const VIHUELA_INNER_LO = 53; // díada interior entre fa3 y fa4, por debajo de la melodía
 const VIHUELA_PAD_LO = 50; // la viola, si la hay, entre re3 y do#4
+const TIPTOE_BASS = 0.6; // tiempos que suena el bajo de puntillas (corto, sin pedal)
+const TIPTOE_CHORD = 0.4; // y su acorde picado
 
 const roll = (notes, o, dur, vel, voice, gap = 0.04) =>
   notes.map((midi, i) => ({ o: o + i * gap, dur, midi, vel, voice }));
@@ -143,6 +145,17 @@ export const STYLES = {
     if (len >= 4) {
       out.push({ o: 3, dur: 1.5, midi: up[2] ?? up[1], vel: 0.3, voice: 'acc' });
       out.push({ o: 3.5, dur: 1.5, midi: up[0], vel: 0.24, voice: 'acc' });
+    }
+    return out;
+  },
+
+  // Test: de puntillas. Bajo corto en 1 y 3 (fundamental y quinta) y acorde picado en 2 y 4, suave.
+  tiptoe({ chord: c, len }) {
+    const tri = voicing(c, 55, 3);
+    const out = [];
+    for (let k = 0; k < len - 0.01; k += 2) {
+      out.push({ o: k, dur: TIPTOE_BASS, midi: k === 0 ? bassMidi(c, 40) : pcMidi((c.bass + 7) % 12, 40), vel: k === 0 ? 0.5 : 0.4, voice: 'bass' });
+      if (k + 1 < len - 0.01) out.push(...roll(tri, k + 1, TIPTOE_CHORD, k === 0 ? 0.3 : 0.26, 'acc', 0.012));
     }
     return out;
   },
