@@ -140,3 +140,4 @@ paquete app-img-hd subido a catalogo-img (188M)
 65M	.git
 3.7M	catalogo
 fin Fri Nov 27 02:33:42 UTC 2026
+estado del job: success Fri Nov 27 02:33:43 UTC 2026
