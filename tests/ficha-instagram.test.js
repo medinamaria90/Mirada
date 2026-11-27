@@ -114,14 +114,19 @@ test('galería del pintor: todas las vistas por orden cronológico y el total; i
   assert.equal(worksSpec(ctx, { kind: 'guests', movementId: 'gotico-sin-invitados' }), null);
 });
 
-test('historia: cómo se enseña cada obra (a sangre con punto de interés; muy altas o sin punto de interés, enteras sobre fondo desenfocado)', () => {
+test('historia: a sangre solo si se pierde poco (o, con foco revisado, hasta LOSS_FOCUSED); si no, entera', () => {
   const W = (w, h, extra = {}) => ({ w, h, ...extra });
-  assert.equal(frameFor(W(902, 1600), [0.5, 0.3, 1.8]).mode, 'fit', 'Felipe IV (0,56): un recorte corta la cabeza');
-  assert.equal(frameFor(W(1377, 1600), [0.5, 0.3, 2.2]).mode, 'crop');
-  assert.equal(frameFor(W(1600, 833, { focus: [0.5, 0.52] })).mode, 'crop', 'La Última Cena: con el punto de interés de la obra');
-  assert.equal(frameFor(W(1600, 903)).mode, 'fit', 'El jardín de las delicias sin punto de interés: entero');
-  assert.deepEqual(frameFor(W(1566, 1600)), { mode: 'crop', whole: false, x: 50, y: 40, zoom: 1 }, 'Virgen de la silla (casi cuadrada) sin punto de interés: a sangre');
-  assert.deepEqual([frameFor(W(1600, 833, { focus: [0.5, 0.52] })).x, frameFor(W(1600, 833, { focus: [0.5, 0.52] })).zoom], [50, 1.5]);
+  const phone = 412 / 915;
+  assert.equal(frameFor(W(1566, 1600), null, phone).mode, 'fit', 'Piedad Desplà o Virgen de la silla (casi cuadradas): un recorte deja figuras fuera');
+  assert.equal(frameFor(W(902, 1600), [0.5, 0.3, 1.8], phone).mode, 'fit', 'Felipe IV con zoom 1,8: el detalle perdería demasiado');
+  assert.equal(frameFor(W(1600, 833, { focus: [0.5, 0.52] }), null, phone).mode, 'fit', 'La Última Cena: ni con foco cabe en vertical');
+  assert.equal(frameFor(W(760, 1600), null, phone).mode, 'crop', 'muy alta, casi como la pantalla: a sangre por el centro');
+  assert.equal(frameFor(W(1120, 1600), null, phone).mode, 'fit', 'retrato 0,7 sin foco revisado: entero');
+  const f = frameFor(W(1120, 1600, { focus: [0.3, 0.2] }), null, phone);
+  assert.equal(f.mode, 'crop', 'retrato 0,7 con foco revisado: a sangre');
+  assert.equal(f.box.top, 0);
+  assert.ok(f.box.left <= 0 && f.box.left + f.box.width >= 100, 'la imagen cubre el marco sin huecos');
+  assert.equal(frameFor(W(1120, 1600, { focus: [0.3, 0.2], whole: true }), null, phone).mode, 'fit', 'marcada «entera»');
 });
 
 test('historia: abre con la obra más famosa vista y enmarcable, no con el retrato de otra persona ni con una muy alta o apaisada', () => {
