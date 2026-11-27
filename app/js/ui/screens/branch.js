@@ -67,7 +67,7 @@ function mapHtml(ctx, branch) {
   // propios de la rama, como su cartel de entrada y la cabecera (los «En el camino» cuentan en el camino común).
   const tramo = (s) => {
     const group = rows.filter((r) => r.opensAt === s.movementId && !r.onPath);
-    return tramoSign(s, { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, layout.h);
+    return tramoSign(s, { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, layout.h, layout.sections.indexOf(s) + 1);
   };
   const items = rows.map((row, i) => {
     const pt = layout.points[i];
@@ -93,6 +93,14 @@ function mapHtml(ctx, branch) {
       ${sign}
       <ol class="stages">${backSpot(layout.back, index.movement(branch.opensAt)?.name || '', layout.h)}${items}</ol>
     </li>`;
+}
+
+// Vuelta al camino: atrás si se vino de él (la vista, donde estaba); fork: además, centrada en el desvío de esa rama.
+export function returnToMap(ctx, fork = '') {
+  ctx.audio.sfx('tap');
+  if (fork) setMapFocus(fork, '', true);
+  if (ctx.prevRoute() === 'inicio') history.back();
+  else ctx.go('inicio');
 }
 
 export async function renderBranch(ctx, el, branchId) {
@@ -142,18 +150,9 @@ export async function renderBranch(ctx, el, branchId) {
 
   onAction(el, {
     cartel: pathActions(ctx).cartel,
-    back: () => {
-      ctx.audio.sfx('tap');
-      if (ctx.prevRoute() === 'inicio') history.back();
-      else ctx.go('inicio');
-    },
+    back: () => returnToMap(ctx),
     // Tablilla «Volver al camino»: siempre al desvío de esta rama (aunque se llegara a ella por otro sitio).
-    'back-to-fork': () => {
-      ctx.audio.sfx('tap');
-      setMapFocus(branch.id, '', true);
-      if (ctx.prevRoute() === 'inicio') history.back();
-      else ctx.go('inicio');
-    },
+    'back-to-fork': () => returnToMap(ctx, branch.id),
     stage: (b) => {
       if (b.dataset.card) return levelCard(ctx, b, branch.id);
       ctx.audio.sfx('tap');

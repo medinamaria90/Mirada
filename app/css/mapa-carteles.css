@@ -42,10 +42,8 @@
 button.arch-band:active { transform: translateY(2px); }
 .arch-band:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 5px; }
 .arch-name { display: block; max-width: 100%; font: 600 calc(.95 * var(--map-fs))/1.2 var(--font); letter-spacing: var(--map-lapida-track); text-wrap: balance; hyphens: manual; }
-.arch-meta { display: flex; align-items: center; gap: calc(.3 * var(--map-fs)); font: 500 calc(.76 * var(--map-fs))/1.2 var(--font); color: var(--map-sign-ink-2); letter-spacing: .02em; font-variant-numeric: lining-nums tabular-nums; }
-.arch-meta .icon { flex: none; }
-.arch-band.is-locked .arch-meta { display: block; text-wrap: balance; }
-.arch-band.is-locked .arch-meta .icon { display: inline-block; vertical-align: -1px; }
+.arch-meta { display: block; text-wrap: balance; font: 500 calc(.76 * var(--map-fs))/1.2 var(--font); color: var(--map-sign-ink-2); letter-spacing: .02em; font-variant-numeric: lining-nums tabular-nums; }
+.arch-meta .icon { display: inline-block; vertical-align: -1px; margin-right: calc(.2 * var(--map-fs)); }
 /* Ranura grabada del progreso: se llena con el color de la época; completa, de oro. */
 .arch-progress { display: block; width: 62%; height: var(--map-lapida-groove); margin-top: 2px; overflow: hidden; border-radius: 999px; background: var(--map-sign-line); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--map-sign-ink) 14%, transparent); }
 .arch-progress-fill { display: block; width: calc(var(--p) * 100%); height: 100%; border-radius: inherit; background: var(--arch-tone); }
@@ -75,27 +73,24 @@ button.arch-band:active { transform: translateY(2px); }
 .road-sign.is-tramo.is-left::before, .road-sign.is-tramo.is-left::after { right: calc(var(--tramo-stone-room) + var(--map-post-in)); }
 .road-sign.is-tramo.is-right::before, .road-sign.is-tramo.is-right::after { left: calc(var(--tramo-stone-room) + var(--map-post-in)); }
 .tramo-stone {
-  position: absolute; bottom: calc(-1 * var(--map-post-h)); width: var(--tramo-stone-w); height: var(--tramo-stone-h);
-  border-radius: var(--tramo-stone-r) var(--tramo-stone-r) 2px 2px;
-  /* Mojón de piedra: remate (capitel) más oscuro arriba, cara iluminada y canto en sombra. */
-  background: linear-gradient(var(--map-stone-side) 0 16%, transparent 16%), linear-gradient(to right, var(--map-stone-top) 0 62%, var(--map-stone-side) 62%);
-  box-shadow: inset 0 0 0 1px var(--map-sign-line), 0 3px 0 var(--map-stone-side), 0 calc(.6 * var(--tramo-stone-shadow)) var(--tramo-stone-shadow) calc(-.2 * var(--tramo-stone-shadow)) var(--map-shade);
+  position: absolute; bottom: calc(-1 * var(--map-post-h)); box-sizing: border-box; width: var(--tramo-stone-w); height: var(--tramo-stone-h); padding-right: calc(.2 * var(--tramo-stone-w)); text-align: center;
+  border-radius: 50% 50% 2px 2px / 35% 35% 2px 2px;
+  /* Mojón de piedra: cara iluminada y canto estrecho en sombra; el número del tramo, grabado. */
+  background: linear-gradient(to right, var(--map-stone-top) 0 80%, var(--map-stone-side) 80%);
+  box-shadow: inset 0 0 0 1px var(--map-sign-line), 0 calc(.6 * var(--tramo-stone-shadow)) var(--tramo-stone-shadow) calc(-.2 * var(--tramo-stone-shadow)) var(--map-shade);
+  color: var(--map-sign-ink-2); font: 700 calc(.7 * var(--map-fs))/var(--tramo-stone-line) var(--font); letter-spacing: .04em;
 }
+/* Zócalo algo más ancho que el fuste. */
+.tramo-stone::before { content: ""; position: absolute; left: calc(-1 * var(--tramo-plinth-out)); right: calc(-1 * var(--tramo-plinth-out)); bottom: calc(-1 * var(--tramo-plinth)); height: var(--tramo-plinth); border-radius: 1px; background: var(--map-stone-side); }
 .is-left .tramo-stone { right: calc(-1 * var(--tramo-stone-room) + var(--tramo-stone-gap)); }
 .is-right .tramo-stone { left: calc(-1 * var(--tramo-stone-room) + var(--tramo-stone-gap)); }
-/* Inscripción del mojón: tres renglones grabados (como las letras de un hito de camino); completo, de oro. */
-.tramo-stone::after {
-  --ink-cut: var(--map-sign-line);
-  content: ""; position: absolute; left: 24%; right: 24%; top: 36%; height: 13px;
-  background: linear-gradient(var(--ink-cut) 0 2px, transparent 2px 5.5px, var(--ink-cut) 5.5px 7.5px, transparent 7.5px 11px, var(--ink-cut) 11px 13px);
-}
+.sign-plate.is-tramo.is-done .tramo-stone { color: var(--gold-text); }
 /* Completo: la tablilla se dora (cara de pan de oro, marco y cinta de oro en el canto) y el mojón, inscrito en oro. */
 .sign-plate.is-tramo.is-done, .sign-plate.branch.is-mastered {
   border-color: var(--gold); background: color-mix(in srgb, var(--gold) 20%, var(--map-sign)); outline-color: color-mix(in srgb, var(--gold) 55%, var(--map-sign));
   box-shadow: inset 0 calc(-1 * var(--map-ribbon)) 0 var(--gold), 0 2px 0 var(--map-sign-line);
 }
 .sign-plate.is-tramo.is-done .sign-name, .sign-plate.branch.is-mastered .sign-name { color: var(--gold-text); }
-.sign-plate.is-tramo.is-done .tramo-stone::after { --ink-cut: var(--gold); }
 @media (hover: hover) { button.sign-plate.is-tramo.is-done:hover, button.sign-plate.branch.is-mastered:hover { background: color-mix(in srgb, var(--gold) 26%, var(--map-sign)); } }
 
 /* ---------- 3. Etiquetas de las paradas ---------- */

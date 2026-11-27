@@ -98,3 +98,9 @@ test('volver a tu parada: círculo con flecha y «Tú» (sin cuadro volando); lo
   assert.ok(!/#[0-9a-f]{3,8}\b|rgba?\(/i.test(css), 'colores escritos a mano en mapa-carteles.css');
   assert.ok(readFileSync(join(app, 'index.html'), 'utf8').includes('href="css/mapa-carteles.css"'));
 });
+
+test('vuelta desde una rama: la tablilla «Volver al camino» fija el foco del mapa en el desvío de ESA rama', () => {
+  const branch = readFileSync(join(app, 'js', 'ui', 'screens', 'branch.js'), 'utf8');
+  assert.ok(/'back-to-fork': \(\) => returnToMap\(ctx, branch\.id\)/.test(branch), 'la tablilla no vuelve al desvío de su rama');
+  assert.ok(/if \(fork\) setMapFocus\(fork, '', true\);/.test(branch), 'la vuelta no centra el mapa en el desvío');
+});

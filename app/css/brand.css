@@ -111,8 +111,8 @@
   --map-night: #2f3a63;
   --map-night-max: .54;
   --map-dusk: #f2a46c;
-  --map-dawn: #e7b8c6;
-  --map-dusk-max: .3;
+  --map-dawn: #efa9c0;
+  --map-dusk-max: .4;
   --map-lamp: #ffd88a;
   --map-star: #fff3d6;
   --map-cloud: rgba(60, 70, 90, .07);
@@ -160,18 +160,24 @@
   --map-lapida-r: 3px;
   --map-lapida-cornice: 5px;
   --map-lapida-cornice-out: 7px;
-  --map-lapida-groove: 4px;
+  --map-lapida-groove: 4px;        /* ranura del progreso */
   --map-lapida-plinth: 7px;        /* zócalo de la estela */
-  --map-lapida-shadow: 6px;        /* ranura del progreso */
+  --map-lapida-shadow: 6px;        /* sombra del zócalo en el suelo */
   --map-lapida-track: .02em;       /* letras de inscripción */
   --tramo-stone-w: 22px;           /* mojón del tramo */
   --tramo-stone-h: 32px;
   --tramo-stone-r: 6px;
-  --tramo-stone-room: 30px;
+  --tramo-stone-room: 30px;        /* sitio del mojón junto a su tablilla */
   --tramo-stone-shadow: 6px;
+  --tramo-plinth: 4px;             /* zócalo del mojón */
+  --tramo-stone-line: 36px;        /* el número, algo por debajo del centro del mojón */
+  --tramo-plinth-out: 3px;
   --you-lift: 20px;                /* marca «Tú» sobre la parada actual */
   --you-pad: 3px 10px 4px;
-  --radius-pill: 999px;        /* sitio de la estela junto a la tablilla */
+  --radius-pill: 999px;
+  --plaza-cobble-dash: 2 5;        /* adoquines de las hileras de dentro de la plaza */
+  --plaza-cobble-w: 1.2;
+  --fountain-rim-w: 1.6;
   --tramo-stone-gap: 1px;
   --map-ribbon: 3px;
   --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
@@ -190,6 +196,7 @@
   --ring-out: 12px;
   --ring-out-lg: 10px;
   --kiosk-hit: 56px;
+  --kiosk-share: 12cqi;            /* la caseta crece con el mapa en pantallas anchas */
   --hit: 48px;                     /* objetivo táctil mínimo (Material 3) */
   --dur-zoom: 420ms;
   --zoom-scale: 1.6;
@@ -279,7 +286,7 @@
     --frame-gold: #86703f;
     --frame-gold-2: #7a6538;
     --frame-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 8px 18px -8px rgba(0, 0, 0, .7);
-    --map-trail-edge: #3a3129;
+    --map-trail-edge: #4a4036;
     --map-trail: #4a3f35;
     --map-stone-far: #2c2721;
     --map-stone-front: #373129;
@@ -311,8 +318,8 @@
     --map-night: #1f2a4a;
     --map-night-max: .34;
     --map-dusk: #c27a46;
-    --map-dawn: #9a7183;
-    --map-dusk-max: .22;
+    --map-dawn: #a86f86;
+    --map-dusk-max: .3;
     --map-lamp: #f2c46c;
     --map-star: #f6e7c4;
     --map-cloud: rgba(0, 0, 0, .14);
@@ -372,7 +379,7 @@
   --frame-gold: #86703f;
   --frame-gold-2: #7a6538;
   --frame-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 8px 18px -8px rgba(0, 0, 0, .7);
-  --map-trail-edge: #3a3129;
+  --map-trail-edge: #4a4036;
   --map-trail: #4a3f35;
   --map-stone-far: #2c2721;
   --map-stone-front: #373129;
@@ -404,8 +411,8 @@
   --map-night: #1f2a4a;
   --map-night-max: .34;
   --map-dusk: #c27a46;
-  --map-dawn: #9a7183;
-  --map-dusk-max: .22;
+  --map-dawn: #a86f86;
+  --map-dusk-max: .3;
   --map-lamp: #f2c46c;
   --map-star: #f6e7c4;
   --map-cloud: rgba(0, 0, 0, .14);
@@ -501,8 +508,8 @@
     --map-night: #2f3a63;
     --map-night-max: .54;
     --map-dusk: #f2a46c;
-    --map-dawn: #e7b8c6;
-    --map-dusk-max: .3;
+    --map-dawn: #efa9c0;
+    --map-dusk-max: .4;
     --map-lamp: #ffd88a;
     --map-star: #fff3d6;
     --map-cloud: rgba(60, 70, 90, .07);

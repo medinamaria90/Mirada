@@ -45,6 +45,9 @@ export function gameLight(min) {
 
 export const isNight = (min) => gameLight(min).night >= NIGHT_AT;
 
+// Color del arrebol: 1, cálido (atardecer); 0, frío (amanecer y el resto del día).
+export const glowWarmth = (min) => (gamePhase(min).name === 'dusk' ? 1 : 0);
+
 // Luz del mapa según el tema de Ajustes: «Como el móvil» (sin tema forzado) sigue al reloj aunque el móvil vaya en
 // oscuro (el paisaje no se pinta con el tema, brand.css); forzar «Oscuro» deja el mapa de noche y «Claro», de día.
 const FORCED_LIGHT = { dark: { night: 1, dusk: 0 }, light: { night: 0, dusk: 0 } };

@@ -43,3 +43,11 @@ test('mapa y tema: con el móvil en oscuro, el mapa recupera los colores claros 
   const life = readFileSync(join(here, '..', 'app', 'js', 'ui', 'map-life.js'), 'utf8');
   assert.ok(/mapLight\(minute, forcedTheme\(\)\)/.test(life) && !/gameLight\(/.test(life), 'el mapa vivo no mira el tema forzado');
 });
+
+test('arrebol: cálido al atardecer y frío al amanecer (y de noche y de día, frío)', async () => {
+  const { glowWarmth, minuteAtHour } = await import('../app/js/engine/daylight.js');
+  assert.equal(glowWarmth(minuteAtHour(19)), 1, 'el atardecer no es cálido');
+  assert.equal(glowWarmth(minuteAtHour(7)), 0, 'el amanecer no es frío');
+  assert.equal(glowWarmth(minuteAtHour(12)), 0);
+  assert.equal(glowWarmth(minuteAtHour(23)), 0);
+});

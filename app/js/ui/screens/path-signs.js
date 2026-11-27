@@ -171,14 +171,17 @@ export function backSpot(back, eraName, h) {
 }
 
 // Mojón de un tramo (unidad de pintores), en su hueco justo antes de su primer pintor: una estela de piedra al borde
-// del sendero y, a su lado, la tablilla con el nombre (la cuenta va en la lápida de la época). Completo, la tablilla
+// del sendero, con el número romano del tramo grabado, y a su lado la tablilla con el nombre (la cuenta va en la lápida
+// de la época). Completo, la tablilla
 // se dora y la estela lleva su inscripción de oro, sin iconos sueltos. Se lee siempre, aunque sus pintores estén
 // cerrados: abre su cartel en tarjetas (sign-cards.js).
-export function tramoSign(sec, info, h) {
+// Números romanos del mojón (el orden del tramo en su época; pocos tramos por época).
+const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+export function tramoSign(sec, info, h, n = 0) {
   const done = info.total > 0 && info.got === info.total;
   const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} dominados`}. Ver cartel`;
   return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo${done ? ' is-done' : ''}" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="tramo-stone" aria-hidden="true"></span><span class="sign-name">${esc(sec.name)}</span></button></li>`;
+      <span class="tramo-stone" aria-hidden="true">${ROMAN[n] || ''}</span><span class="sign-name">${esc(sec.name)}</span></button></li>`;
 }
 
 // Arco de la rama en su pantalla, a la entrada: solo el nombre (la cuenta ya está en la cabecera); abre el cartel de la
