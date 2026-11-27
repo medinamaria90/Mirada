@@ -9,7 +9,7 @@ import { mediumSrc, coverOf } from '../art.js';
 import { MASTERY, UNLOCK_MIN, isStepUnlocked, gateSteps } from '../../engine/progress.js';
 import { pendingWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, tierOf, isMasterTier, avatarCrop, avatarWork, seenOf } from '../../engine/painters.js';
-import { deepRoute, stageRoute } from '../router.js';
+import { deepRoute, stageRoute, branchRoute } from '../router.js';
 import { practiceAction } from './result-actions.js';
 import { roundChips, chipsHtml, wireChips } from './result-chips.js';
 import { mainTrait } from '../../engine/feedback.js';
@@ -19,7 +19,7 @@ import { medalBadge } from './medals.js';
 import { medalInfo } from '../../engine/medal-info.js';
 import { newWorksCount } from '../../engine/closure.js';
 import { branchAfterRound } from '../../engine/branches.js';
-import { setMapFocus } from './path-map.js';
+import { setMapFocus, setBranchFocus } from './path-map.js';
 
 export { extraRounds } from './result-actions.js';
 
@@ -140,7 +140,7 @@ export function renderResult(ctx, el, opts) {
   const practice = blocked ? null : practiceAction(ctx, plan, { retry, more: opts.more, closing: Boolean(goal), duel: opts.friendScore != null });
   const shareLabel = isDaily ? 'Copiar resultado' : opts.friendScore != null ? 'Devolver el reto' : 'Retar';
   const secondary = [
-    blocked || branchNext || deepTo ? { action: 'done', label: 'Volver al camino' } : null,
+    blocked || branchNext || deepTo ? { action: 'done', label: opts.branchId && !deepTo ? 'Volver a la rama' : 'Volver al camino' } : null,
     practice ? { action: 'go', to: practice.to, label: practice.label, icon: practice.icon } : null,
     token && !blocked ? { action: 'share', label: shareLabel, icon: isDaily ? 'copy' : 'duel' } : null,
   ].filter(Boolean).slice(0, 2);
@@ -200,6 +200,11 @@ export function renderResult(ctx, el, opts) {
     done: () => {
       ctx.audio.sfx('tap');
       if (opts.onDone) return opts.onDone();
+      // Ronda jugada desde la pantalla de una rama: de vuelta a ella, en la parada jugada.
+      if (opts.branchId && plan.kind === 'stage' && !isDeep && plan.artistId) {
+        setBranchFocus(`artist:${plan.artistId}`);
+        return ctx.go(branchRoute(opts.branchId), { replace: true });
+      }
       // De vuelta al mapa, en la parada recién jugada (la rama ya se marcó arriba).
       if (!inBranch && plan.kind === 'stage' && plan.artistId) setMapFocus('', `artist:${plan.artistId}`);
       else if (plan.kind === 'sala') setMapFocus('', `sala:${plan.movementId}`);

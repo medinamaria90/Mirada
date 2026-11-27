@@ -1,7 +1,7 @@
 """Copia las historias de contenido/historias/ a app/data/historias/ (lo que sirve la app) y escribe su índice.
 
 Valida cada una (formato de contenido/historias/README.md): como mucho 5 tarjetas, texto de hasta 180 caracteres, fuente,
-título corto en cada etapa y, si hay catálogo en app/data/catalog.json, que el pintor y las obras existan. Uso: python3 -I tools/sync_historias.py
+título corto en cada etapa y, si hay catálogo en app/data/catalog.json, que el pintor y las obras existan y que una historia no repita obra si el pintor tiene otra de ese nivel. Uso: python3 -I tools/sync_historias.py
 El índice (`index.json`) dice qué niveles tiene cada pintor: así la app no pide archivos que no existen.
 """
 import json
@@ -17,6 +17,9 @@ DST = os.path.join(ROOT, "app", "data", "historias")
 MAX_TEXT = 180
 MAX_CARDS = 5
 SHORT_MAX = 12  # título corto de nivel (`stage`): cabe bajo su círculo en la fila de historias
+BASIC_LEVEL = 1
+# Obras «learn» que no sirven de imagen de historia aunque estén libres (explícitas): no cuentan como alternativa.
+NOT_FOR_STORIES = {"w334138", "w2717022"}  # Courbet, El origen del mundo; Hokusai, El sueño de la esposa del pescador
 # Detalle intencionado (`region`, engine/stories.js): siempre a sangre, así que su proporción no puede perder más que
 # LOSS_FOCUSED (engine/framing.js) ni en el marco del móvil típico ni en el más ancho (la columna 9:16).
 LOSS_FOCUSED = 0.45
@@ -39,8 +42,9 @@ def region_error(region, work):
 
 
 def view_key(card):
-    """Lo que enseña una tarjeta: la obra y, si la tiene, su región. Dos regiones distintas de una obra son imágenes distintas."""
-    return (card.get("artwork"), tuple(card["region"]) if isinstance(card.get("region"), list) else None)
+    """Lo que enseña una tarjeta: la obra y su encuadre (`region` y `focus`). Otro detalle de la misma obra es otra imagen."""
+    region = card.get("region")
+    return (card.get("artwork"), tuple(region) if isinstance(region, list) else (), tuple(card.get("focus") or ()))
 
 
 def check(story, name, artists, works):
@@ -55,10 +59,6 @@ def check(story, name, artists, works):
         cards = lv.get("cards", [])
         if not 1 <= len(cards) <= MAX_CARDS:
             errors.append(f"{name} nivel {lv.get('level')}: {len(cards)} tarjetas")
-        # Las regiones existen para enseñar partes distintas de una obra: repetir la misma no tiene sentido.
-        views = [view_key(c) for c in cards if "region" in c]
-        if len(views) != len(set(views)):
-            errors.append(f"{name} nivel {lv.get('level')}: dos tarjetas con la misma región de la misma obra")
         for i, c in enumerate(cards):
             tag = f"{name} nivel {lv.get('level')} tarjeta {i + 1}"
             if not c.get("text") or len(c["text"]) > MAX_TEXT:
@@ -71,6 +71,30 @@ def check(story, name, artists, works):
                 problem = region_error(c["region"], (works or {}).get(c.get("artwork")))
                 if problem:
                     errors.append(f"{tag}: {problem}")
+    return errors
+
+
+def repeats(story, name, works):
+    """Obras repetidas (misma obra y mismo encuadre) entre tarjetas de una historia cuando el pintor tiene alternativa.
+
+    Alternativa: una obra del pintor y del nivel de la historia (en el básico, solo las «learn») que la historia no usa.
+    `works`: {id: obra del catálogo}. Sin alternativa, la repetición es inevitable y no cuenta.
+    """
+    errors = []
+    for lv in story.get("levels", []):
+        level = lv.get("level")
+        cards = lv.get("cards", [])
+        ids = [c.get("artwork") for c in cards]
+        # Un detalle distinto de la misma obra (otra `region` u otro `focus`) no cuenta como repetición.
+        shots = [view_key(c) for c in cards]
+        twice = sorted({v[0] for v in shots if shots.count(v) > 1})
+        if not twice:
+            continue
+        free = sorted(w["id"] for w in works.values()
+                      if w["artistId"] == name and w.get("level") == level and w["id"] not in ids
+                      and w["id"] not in NOT_FOR_STORIES and (level != BASIC_LEVEL or w.get("role") == "learn"))
+        if free:
+            errors.append(f"{name} nivel {level}: repite {', '.join(twice)}; sin usar: {', '.join(free)}")
     return errors
 
 
@@ -93,6 +117,8 @@ def main():
         with open(os.path.join(SRC, fname), encoding="utf8") as f:
             story = json.load(f)
         errors += check(story, name, artists, works)
+        if works is not None:
+            errors += repeats(story, name, works)
         with open(os.path.join(DST, fname), "w", encoding="utf8") as f:
             json.dump(story, f, ensure_ascii=False, separators=(",", ":"))
         index[name] = [lv["level"] for lv in story.get("levels", [])]

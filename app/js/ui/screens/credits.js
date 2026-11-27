@@ -1,5 +1,6 @@
-// «Fuentes y créditos» (`#fuentes`, desde Perfil → Ajustes): las fuentes de los textos por época y por pintor, el crédito de
-// cada imagen (archivo de Commons y licencia) y el agradecimiento a museos y Wikimedia. Todo sale de los datos; cada apartado
+// «Fuentes y créditos» (`#fuentes`, desde Perfil → Ajustes): las fuentes de los textos por época (con los carteles del
+// camino) y por pintor, el crédito de cada imagen (archivo de Commons y licencia) y el agradecimiento a museos y
+// Wikimedia. Todo sale de los datos; cada apartado
 // se rellena al abrirlo (las historias y las tarjetas de época se piden entonces).
 
 import { esc, focusHeading } from '../dom.js';
@@ -10,7 +11,8 @@ import { playEra } from '../audio-bridge.js';
 import { loadStory } from '../story-data.js';
 import { loadCards } from './era-cards.js';
 import { backButton } from './artist-page.js';
-import { eraSources, artistSources, imageCredits, licenseSummary } from '../../engine/credits.js';
+import { loadSigns } from '../sign-cards.js';
+import { eraSources, signSources, artistSources, imageCredits, licenseSummary } from '../../engine/credits.js';
 
 const THANKS = 'Gracias a los museos que comparten sus colecciones y a Wikimedia (Wikipedia, Wikidata y Commons), que lo hacen posible.';
 const fmt = new Intl.NumberFormat('es-ES');
@@ -30,6 +32,11 @@ async function eraBody(movementId) {
   return sources.length ? listHtml(sources, sourceItem) : emptyHtml;
 }
 
+async function signsBody() {
+  const sources = signSources(...await Promise.all([loadSigns('rama'), loadSigns('tramo')]));
+  return sources.length ? listHtml(sources, sourceItem) : emptyHtml;
+}
+
 async function artistBody(ctx, artistId) {
   const artist = ctx.index.artist(artistId);
   const works = ctx.index.worksOf(artistId);
@@ -45,7 +52,7 @@ async function fill(ctx, details) {
   const body = details.querySelector('.cr-body');
   const { kind, id } = details.dataset;
   try {
-    body.innerHTML = kind === 'era' ? await eraBody(id) : await artistBody(ctx, id);
+    body.innerHTML = kind === 'era' ? await eraBody(id) : kind === 'signs' ? await signsBody() : await artistBody(ctx, id);
   } catch (err) {
     delete details.dataset.filled; // se reintenta al volver a abrirlo
     body.innerHTML = '<p class="cr-empty">No se ha podido cargar. Prueba otra vez.</p>';
@@ -69,7 +76,7 @@ export async function renderCredits(ctx, el) {
     <header class="aw-head">${backButton()}<div class="aw-titles"><h1 class="aw-title">Fuentes y créditos</h1></div></header>
     <p class="cr-thanks">${esc(THANKS)}</p>
     <section class="cr-section" aria-labelledby="cr-eras"><h2 id="cr-eras" class="cr-h">Épocas</h2>
-      <div class="cr-groups">${index.movements.map((m) => group('era', m.id, m.name)).join('')}</div></section>
+      <div class="cr-groups">${index.movements.map((m) => group('era', m.id, m.name)).join('')}${group('signs', 'mapa', 'Carteles del camino')}</div></section>
     <section class="cr-section" aria-labelledby="cr-artists"><h2 id="cr-artists" class="cr-h">Pintores</h2>
       <div class="cr-groups">${artists.map((a) => group('artist', a.id, a.name)).join('')}</div></section>
     ${licenses.length ? `<section class="cr-section" aria-labelledby="cr-images"><h2 id="cr-images" class="cr-h">Imágenes</h2>

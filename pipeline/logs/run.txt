@@ -102,3 +102,77 @@ aviso w4009226 (rubens): título pendiente de traducir: A View of Het Steen in t
 aviso w3699475 (rubens): título pendiente de traducir: Last Supper
 65M	.git
 3.7M	catalogo
+== pack 1200 00:52:03
+pack 1200px: 1465 imágenes, 334.6 MB de JPEG (media 223 KB), zip 334.7 MB, sha256 ca0d5b0002efa855…
+obras del catálogo 1465; sin imagen 0; con fallo 0
+paquete app-img-1200 subido a catalogo-img (320M)
+65M	.git
+3.7M	catalogo
+== validate  00:56:03
+validate: 1465 obras (1465 con imagen), 175 pintores, imágenes 0.0 MB; 2 errores, 333 avisos
+ERROR duccio: 2 obras de nivel 1 (rama: entre 4 y 6)
+ERROR simone-martini: 2 obras de nivel 1 (rama: entre 4 y 6)
+aviso duccio: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso giotto: nivel 2 «Formación y Asís» con 3 obras (< 5: faltan candidatas)
+aviso giotto: nivel 4 «Florencia y el campanile» con 4 obras (< 5: faltan candidatas)
+aviso simone-martini: nivel 2 «Más obras» con 3 obras (< 5: faltan candidatas)
+aviso berruguete: nivel 2 «Etapa castellana» con 3 obras (< 5: faltan candidatas)
+aviso leonardo: nivel 2 «Primeras obras en Florencia» con 3 obras (< 5: faltan candidatas)
+aviso durero: nivel 2 «Aprendizaje y 1.er viaje a Italia» con 4 obras (< 5: faltan candidatas)
+aviso utamaro: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso sharaku: nivel 2 «Más obras» con 2 obras (< 5: faltan candidatas)
+aviso kuniyoshi: nivel 2 «Más obras» con 4 obras (< 5: faltan candidatas)
+aviso fortuny: nivel 2 «Roma y Marruecos» con 4 obras (< 5: faltan candidatas)
+aviso w15974342 (cimabue): título pendiente de traducir: The Virgin and Child with Two Angels
+aviso w3842715 (duccio): título pendiente de traducir: Madonna di Crevole
+aviso w6728425 (duccio): título pendiente de traducir: Madonna with Child and six Angels
+aviso w3873252 (duccio): título pendiente de traducir: The Nativity with the Prophets Isaiah and Ezekiel
+aviso w3276168 (giotto): ficha sin technique
+aviso w3395777 (giotto): ficha sin technique
+aviso w3276180 (giotto): ficha sin technique
+aviso w3642142 (giotto): ficha sin technique
+aviso w141270724 (giotto): ficha sin dimensions
+aviso w27016037 (giotto): ficha sin technique
+aviso w118495235 (giotto): ficha sin dimensions
+aviso w3873247 (pietro-lorenzetti): título pendiente de traducir: Nativity of the Virgin
+aviso w3948917 (pietro-lorenzetti): título pendiente de traducir: Saint Margaret or Agatha
+aviso w3842761 (pietro-lorenzetti): título pendiente de traducir: Madonna and Child Enthroned with Eight Angels
+aviso w3843026 (pietro-lorenzetti): título pendiente de traducir: Cortone Maesta
+aviso w3225814 (simone-martini): título pendiente de traducir: The Carrying of the Cross
+aviso w20173074 (simone-martini): título pendiente de traducir: The Angel of the Annunciation
+aviso w3618171 (ambrogio-lorenzetti): título pendiente de traducir: Annunciation
+aviso w3842740 (ambrogio-lorenzetti): título pendiente de traducir: Madonna with child
+aviso w3843028 (ambrogio-lorenzetti): título pendiente de traducir: Madonna and child with saints and angels
+aviso w18572975 (ambrogio-lorenzetti): título pendiente de traducir: The Charity of St. Nicholas of Bari
+aviso w3637223 (uccello): ficha sin technique
+aviso w15965547 (uccello): ficha sin museum
+aviso w16596981 (uccello): ficha sin technique
+aviso w3948700 (masaccio): ficha sin technique
+aviso w3949351 (masaccio): ficha sin technique
+aviso w3899272 (masaccio): ficha sin technique
+aviso w3899272 (masaccio): ficha sin dimensions
+aviso w3889196 (filippo-lippi): ficha sin dimensions
+aviso w2247307 (piero): ficha sin technique
+aviso w2551625 (botticelli): ficha sin dimensions
+aviso w11947062 (berruguete): ficha sin technique
+aviso w2276130 (bosco): ficha sin dimensions
+aviso w3685113 (durero): título pendiente de traducir: Lamentation of Christ
+aviso w3707697 (miguel-angel): ficha sin dimensions
+aviso w23922 (tiziano): título pendiente de traducir: Woman with a Mirror
+aviso w3842778 (tiziano): título pendiente de traducir: The Gypsy Madonna
+aviso w3937673 (tiziano): título pendiente de traducir: Portrait of Vincenzo Mosti
+aviso w125359587 (juan-de-juanes): ficha sin technique
+aviso w15074981 (veronese): título pendiente de traducir: The Feast in the House of Simon the Pharisee
+aviso w3849979 (veronese): título pendiente de traducir: Mars and Venus with Cupid and a Dog
+aviso w17994180 (sanchez-coello): ficha sin dimensions
+aviso w3078569 (el-greco): ficha sin technique
+aviso w126956583 (sanchez-cotan): ficha sin museum
+aviso w2338417 (caravaggio): ficha sin dimensions
+aviso w3731232 (rubens): título pendiente de traducir: Hercules and Omphale
+aviso w3636299 (rubens): título pendiente de traducir: The Battle of the Amazons
+aviso w4009226 (rubens): título pendiente de traducir: A View of Het Steen in the Early Morning
+aviso w3699475 (rubens): título pendiente de traducir: Last Supper
+66M	.git
+3.7M	catalogo
+fin Fri Nov 27 00:56:04 UTC 2026
+estado del job: success Fri Nov 27 00:56:06 UTC 2026

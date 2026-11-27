@@ -30,6 +30,13 @@ export function lookLine(cards, hint) {
 
 const validCard = (c) => c && typeof c.text === 'string' && c.text.length > 0 && c.text.length <= MAX_TEXT && typeof c.artwork === 'string';
 
+// Obras vistas que pueden abrir la primera tarjeta en su lugar: ninguna de las que salen en las tarjetas siguientes
+// (si no, la historia enseñaría dos veces el mismo cuadro).
+export function openingCandidates(seen, cards) {
+  const later = new Set((cards || []).slice(1).map((c) => c.artwork));
+  return (seen || []).filter((w) => !later.has(w.id));
+}
+
 // La historia de un nivel ({ title, stage?, cards }) o null si el pintor no la tiene. Se ignoran las tarjetas
 // mal formadas y las que pasan de MAX_CARDS.
 export function levelStory(story, level) {

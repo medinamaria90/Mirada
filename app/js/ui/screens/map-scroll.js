@@ -29,7 +29,7 @@ export function placeMap(el, { branchId = '', step = '' } = {}) {
   const map = $('.path-map', el);
   const current = () => $('.stage-spot.is-current .stage', el) || $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
   const from = () => (step && $(`.stage-spot[data-step="${step}"] .stage`, el))
-    || (branchId && $(`.branch[data-id="${branchId}"], .branch[data-members~="${branchId}"]`, el)) || null;
+    || (branchId && $(`.branch[data-id="${branchId}"]`, el)) || null;
   let anchor = () => { const f = from(); return f ? [f, 0.5] : current() ? [current(), CURRENT_AT] : null; };
   let user = false;
   let timers = [];

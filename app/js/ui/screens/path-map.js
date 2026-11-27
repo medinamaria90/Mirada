@@ -6,22 +6,24 @@
 // camino en el orden del juego. Trazado en path-layout.js; carteles y desvíos en path-signs.js.
 
 import { placeMap } from './map-scroll.js';
-import { esc, accentStyle, announce, plural, joinNames, $ } from '../dom.js';
+import { esc, accentStyle, plural, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { coverOf } from '../art.js';
-import { branchRoute } from '../router.js';
-import { zoomInto } from '../map-zoom.js';
 import { STATE_LABEL, DORMANT_TEXT, metaFor, dotFor, nodeHtml } from './path-nodes.js';
 import {
-  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered, isExtraStep,
+  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered,
 } from '../../engine/progress.js';
 import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
 import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, pathLayout, eraLayout, walkedD } from './path-layout.js';
-import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, branchGroupSpot, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
+import { trailSvg, eraSign, startBlock, museumBlock, branchSpot, tramoSign, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
+import { eraGate, bridgeRails } from './path-art.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout, DORMANT_TEXT };
+import { pathActions, showLockNote, levelCard } from './path-actions.js';
+
+export { pathActions, showLockNote, levelCard };
 export { watchLandscapes } from '../map-land.js';
 
 // ---------- HTML ----------
@@ -44,6 +46,10 @@ const NEAR_ERAS = 0;
 let focusBranch = '';
 let focusStep = '';
 export const setMapFocus = (branchId, step = '') => { focusBranch = branchId || ''; focusStep = step; };
+// Pantalla de una rama: la parada recién jugada («artist:<id>»), para volver centrada en ella y subir a la siguiente.
+let branchStep = '';
+export const setBranchFocus = (step = '') => { branchStep = step; };
+export const takeBranchFocus = () => { const s = branchStep; branchStep = ''; return s; };
 export function renderPathMap(ctx, { lazy = false } = {}) {
   const { index } = ctx;
   const layout = pathLayout(index);
@@ -51,7 +57,7 @@ export function renderPathMap(ctx, { lazy = false } = {}) {
   const here = Math.max(0, layout.eras.findIndex((e) => e.id === keys.era));
   const stepEra = focusStep.startsWith('artist:') ? index.movementOf(focusStep.slice(7))?.id : focusStep.startsWith('sala:') ? focusStep.slice(5) : '';
   const focus = stepEra ? layout.eras.findIndex((e) => e.id === stepEra)
-    : focusBranch ? layout.eras.findIndex((e) => e.branches.some((b) => b.id === focusBranch || b.members?.some((x) => x.id === focusBranch))) : -1;
+    : focusBranch ? layout.eras.findIndex((e) => e.branches.some((b) => b.id === focusBranch)) : -1;
   const html = layout.eras.map((era, i) => (!lazy || Math.abs(i - here) <= NEAR_ERAS || i === focus
     ? eraBlock(ctx, era, layout.eras[i - 1], keys)
     : `<li class="path-era is-pending" data-era="${esc(era.id)}" style="--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))"></li>`)).join('');
@@ -90,24 +96,20 @@ function eraBlock(ctx, era, prevEra, keys) {
   const status = movementStatus(p, index, era.id);
   const sala = index.isSala(era.id);
   const sealed = Boolean(p.medals[`movement-${era.id}`]);
-  const sectionAt = new Map(era.sections.map((s) => [s.at, sectionInfo(ctx, era.id, s)]));
-  const nodes = sala ? [salaNode(ctx, movement, keys)] : index.stageArtists(movement.id).map((a, i) => artistNode(ctx, a, keys, sectionAt.get(i)));
+  const nodes = sala ? [salaNode(ctx, movement, keys)] : index.stageArtists(movement.id).map((a) => artistNode(ctx, a, keys));
   if (!sala && hasMovementReview(index, era.id)) nodes.push(reviewNode(ctx, movement, status === 'locked'));
-  const stOf = (id, extra) => (extra ? tramoState(p, index, index.branch(id), era.id) : branchState(p, index, index.branch(id)));
-  const branches = era.branches.map((b) => (b.group
-    ? { spot: b, group: b.members.filter((x) => index.branch(x.id)).map((x) => stOf(x.id, x.extra)) }
-    : { spot: b, branch: index.branch(b.id) })).filter((b) => b.group || b.branch)
-    .map((b) => (b.group ? { ...b, st: { open: b.group.some((x) => x.open) } } : { ...b, st: stOf(b.spot.id, b.spot.extra) }));
-  // Orden del DOM = orden de lectura y de tabulación: por cada parada, el rótulo de su tramo (para el lector),
-  // la parada y, si sale de ella, el desvío de su rama; la sala, al final.
+  const branches = era.branches.map((b) => ({ spot: b, branch: index.branch(b.id) })).filter((b) => b.branch)
+    .map((b) => ({ ...b, st: b.spot.extra ? tramoState(p, index, b.branch, era.id) : branchState(p, index, b.branch) }));
+  // Orden del DOM = orden de lectura y de tabulación: por cada parada, el cartel de su tramo si empieza en ella, la
+  // parada y, si sale de ella, el desvío de su rama; la sala, al final.
   const items = nodes.map((node, i) => {
     const pt = era.points[i];
     const side = pt.x < MAP_W / 2 ? 'left' : 'right';
     // --room: parte del ancho que queda hacia donde cuelga el nombre (el rótulo nunca pasa del margen de 8 px).
     const state = node.key === keys.current ? ' is-current' : node.key === keys.next ? ' is-next' : '';
-    const sec = sectionAt.get(i);
-    const head = sec ? `<li class="sr-only">Tramo ${esc(sec.name)}: ${sec.got} de ${sec.total} dominados</li>` : '';
-    const spur = branches.filter((b) => b.spot.at === i).map((b) => (b.group ? branchGroupSpot(b.spot, b.group, era.id, era.h) : branchSpot(b.spot, b.branch, b.st, index, era.h))).join('');
+    const sec = era.sections.find((s) => s.at === i);
+    const head = sec ? tramoSign(sec, sectionInfo(ctx, era.id, sec), era.h) : '';
+    const spur = branches.filter((b) => b.spot.at === i).map((b) => branchSpot(b.spot, b.branch, b.st, index, era.h)).join('');
     return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
   }).join('');
   const last = era.points[era.points.length - 1];
@@ -122,9 +124,16 @@ function eraBlock(ctx, era, prevEra, keys) {
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
     ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, tail: b.spot.tail, open: b.st.open })), walked(index, era, nodes, keys))}
+    ${frontSvg(era)}
     ${sign}
     <ol class="stages">${items}${gallery}</ol>
   </li>`;
+}
+
+// Delante del sendero: la puerta de la época (el arco pasa por encima) y los pretiles de sus puentes.
+export function frontSvg(era) {
+  const art = `${era.gate ? eraGate(era.gate.x, era.gate.y) : ''}${era.bridges.map(bridgeRails).join('')}`;
+  return art ? `<svg class="path-gate" viewBox="0 0 ${MAP_W} ${era.h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">${art}</svg>` : '';
 }
 
 // Sendero ya recorrido del tramo (como en Duolingo): entero en las épocas pasadas, hasta la parada actual en la
@@ -138,15 +147,15 @@ function walked(index, era, nodes, keys) {
   return at < 0 ? '' : walkedD(era, at);
 }
 
-// Tramo de la época: nombre y dominados. Se ve como un rótulo pequeño sobre el nombre de su primera parada
-// (lado ancho, nunca sobre el sendero) y el lector lo oye antes de sus paradas. Las paradas extra (engine/roster.js) no cuentan.
-function sectionInfo(ctx, movementId, s) {
+// Tramo de la época: nombre y dominados, para su cartel. Cuenta todas sus paradas, también las extra (engine/roster.js):
+// la cifra casa con las paradas que se ven en el camino y con el cartel de la época.
+export function sectionInfo(ctx, movementId, s) {
   const p = ctx.store.get().progress;
-  const group = ctx.index.stageArtists(movementId).filter((a) => a.section === s.name && !isExtraStep(p, { type: 'artist', id: a.id }));
+  const group = ctx.index.stageArtists(movementId).filter((a) => a.section === s.name);
   return { name: s.name, total: group.length, got: group.filter((a) => artistStatus(p, ctx.index, a.id) === 'mastered').length };
 }
 
-function artistNode(ctx, artist, keys, section) {
+function artistNode(ctx, artist, keys) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const status = artistStatus(p, index, artist.id);
@@ -157,7 +166,7 @@ function artistNode(ctx, artist, keys, section) {
   // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
   const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
-    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, section, current: key === keys.current,
+    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, current: key === keys.current,
     label: `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
     name: quiet ? artist.short || artist.name : artist.name, meta: dormant ? DORMANT_TEXT : metaFor(status, p.artists[artist.id], key === keys.current),
     dot: dotFor(status, coverOf(index, artist.id), artist.name),
@@ -232,78 +241,6 @@ export function salaCover(index, movementId) {
 }
 
 // ---------- comportamiento (necesita DOM) ----------
-
-// La hoja del mapa (época cerrada, rama) se carga al primer toque: no cuenta en el arranque.
-const sheet = (ctx, fn, b) => {
-  ctx.audio.sfx('tap');
-  import('../map-sheet.js').then((m) => m[fn](ctx, b.dataset.id, b)).catch((err) => console.error(err));
-};
-
-// La tarjeta del nodo de un pintor con niveles se carga al primer toque. branchId: rama desde la que se abre.
-export const levelCard = (ctx, b, branchId = '') => {
-  ctx.audio.sfx('tap');
-  import('../level-card.js').then((m) => m.openLevelCard(ctx, b, branchId)).catch((err) => console.error(err));
-};
-
-// Acciones de las paradas, para onAction en la portada.
-export function pathActions(ctx) {
-  const guarded = (route) => (b) => {
-    ctx.audio.sfx('tap');
-    if (b.dataset.status === 'locked') return showLockNote(b);
-    return ctx.go(`${route}-${b.dataset.id}`);
-  };
-  return {
-    // Dominado con niveles (aro): su tarjeta, con sus historias y «Jugar».
-    stage: (b, ev) => (b.dataset.card ? levelCard(ctx, b) : guarded('etapa')(b, ev)),
-    sala: guarded('sala'),
-    review: guarded('repaso'),
-    intro: (b) => {
-      ctx.audio.sfx('tap');
-      ctx.go(`movimiento-${b.dataset.id}`);
-    },
-    gallery: (b) => {
-      ctx.audio.sfx('tap');
-      ctx.go(`galeria-${b.dataset.id}`);
-    },
-    'era-lock': (b) => sheet(ctx, 'openEraSheet', b),
-    start: (b) => sheet(ctx, 'openIntroSheet', b),
-    'goto-current': (_, ev) => {
-      ev.preventDefault();
-      const target = $('.stage-spot.is-current .stage') || $('.stage.is-available, .stage.is-started');
-      if (!target) return;
-      target.scrollIntoView({ block: 'center' });
-      target.focus({ preventScroll: true });
-    },
-    // Rama abierta: se entra en su pantalla con un acercamiento; cerrada, una nota con lo que falta.
-    branch: (b) => {
-      ctx.audio.sfx('tap');
-      if (b.dataset.status === 'locked') return showLockNote(b);
-      return zoomInto(b, () => ctx.go(branchRoute(b.dataset.id)));
-    },
-    branches: (b) => sheet(ctx, 'openEraBranchesSheet', b),
-  };
-}
-
-const NOTE_MS = 4500;   // da tiempo a leerla con la letra grande
-export function showLockNote(button) {
-  let note = button.parentElement.querySelector('.lock-note');
-  if (!note) {
-    note = document.createElement('p');
-    note.className = 'lock-note';
-    note.setAttribute('aria-hidden', 'true');
-    button.after(note);
-  }
-  note.textContent = button.dataset.lock || 'Aún bloqueado';
-  note.style.translate = '';
-  note.classList.add('is-visible');
-  // Dentro de la pantalla: si asoma por un lado, se corre.
-  const r = note.getBoundingClientRect();
-  const shift = r.left < 8 ? 8 - r.left : r.right > window.innerWidth - 8 ? window.innerWidth - 8 - r.right : 0;
-  if (shift) note.style.translate = `${Math.round(shift)}px 0`;
-  announce(note.textContent);
-  clearTimeout(note._t);
-  note._t = setTimeout(() => note.classList.remove('is-visible'), NOTE_MS);
-}
 
 // Modo del mapa: ilustrado hasta el 150 % de letra; por encima (o en una ventana de menos de 300 px, como un zoom
 // del 200 %), el camino en línea. Sigue a la letra y a la ventana mientras la pantalla está abierta. Devuelve cómo
