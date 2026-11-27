@@ -50,7 +50,7 @@ test('camino común: onPath = grandes maestros + maestros + invitados con alguna
   assert.deepEqual([count('gran-maestro'), count('maestro'), count('invitado')], [14, 50, 16]);
   // Solo los grandes maestros y los maestros son paradas; los invitados del camino van intercalados.
   assert.equal(real.path.length, 64);
-  assert.deepEqual(real.path.map((a) => a.id).slice(0, 6), ['botticelli', 'masaccio', 'piero', 'berruguete', 'rafael', 'leonardo']);
+  assert.deepEqual(real.path.map((a) => a.id).slice(0, 7), ['botticelli', 'masaccio', 'piero', 'berruguete', 'leonardo', 'miguel-angel', 'rafael']);
   assert.ok(real.path.every((a) => a.onPath && !a.guest));
   const hosted = real.path.flatMap((p) => real.guestsAt(p.id));
   assert.equal(hosted.length, 16, 'cada invitado del camino tiene su pintor con etapa al lado');

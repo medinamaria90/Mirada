@@ -164,8 +164,8 @@ def main():
         check(len(os_) == len(set(os_)), f"order repetido en movimiento {mid}")
     path = sorted((a for a in cat["artists"] if a["category"] in STAGE_CATEGORIES and a["onPath"]), key=lambda a: (mov[a["movementId"]]["order"], a["order"]))
     ids = [a["id"] for a in path]
-    check(ids[:1] == ["botticelli"] and ids[FIRST_TRAMO:FIRST_TRAMO + 2] == ["rafael", "leonardo"],
-          f"el camino abre con Botticelli; Rafael y Leonardo justo después del primer tramo ({FIRST_TRAMO} paradas)")
+    check(ids[:1] == ["botticelli"] and ids[FIRST_TRAMO:FIRST_TRAMO + 3] == ["leonardo", "miguel-angel", "rafael"],
+          f"el camino abre con Botticelli; Leonardo, Miguel Ángel y Rafael justo después del primer tramo ({FIRST_TRAMO} paradas)")
     # Los tramos de un movimiento son contiguos en el orden del camino.
     for mid in mids:
         stage = [a for a in path if a["movementId"] == mid]
