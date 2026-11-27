@@ -227,7 +227,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .start-kiosk:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 /* Su tablilla, como las del camino: dice qué se abre (se ve pulsable). */
 .start-kiosk-text {
-  position: absolute; bottom: calc(100% - 4px); left: 50%; translate: -50% 0; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)); white-space: nowrap;
+  position: absolute; top: calc(100% - 6px); left: 50%; translate: -50% 0; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)); white-space: nowrap;
   border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); color: var(--map-sign-ink); box-shadow: 0 2px 0 var(--map-sign-line);
   font: 600 calc(.72 * var(--map-fs))/1.15 var(--font);
 }
@@ -249,6 +249,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .trail-grain.is-b { stroke-dasharray: 0 var(--trail-grain-gap-b); stroke-dashoffset: var(--trail-grain-off); transform: translateX(var(--trail-grain-x)); }
 /* Plaza de salida: el empedrado de piedra del que nace el sendero (borde bajo el sendero, suelo encima; sin punta). */
 .plaza-rim { fill: var(--map-stone-side); }
+/* PROTOTIPO: la plaza de una época, a ras del sendero (lo tapa: el sendero entra y sale de ella). */
 .plaza-fill { fill: var(--map-stone-top); }
 .plaza-stones.is-in { stroke-dasharray: var(--plaza-cobble-dash); stroke-width: var(--plaza-cobble-w); }
 .plaza-stones { fill: none; stroke: var(--map-stone-side); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }

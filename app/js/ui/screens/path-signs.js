@@ -5,7 +5,7 @@
 import { esc, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { MAP_W, f } from './path-layout.js';
-import { startArt, museumArt, KIOSK, START_PAVING } from './path-art.js';
+import { startArt, museumArt, KIOSK, START_PAVING, inscription } from './path-art.js';
 import { branchProgress, branchStatus, tramoOpen, tramoPending } from '../../engine/branches.js';
 
 const KIOSK_SIGN = 8;      // el botón de la caseta abarca también su letrero
@@ -45,8 +45,9 @@ export const PLAZA_RIM = 3;
 const PLAZA_RINGS = [0, 0.22, 0.44, 0.66];
 export function trailSvg(h, d, spurs = [], done = '', plaza = null) {
   const walked = done ? `${dirt(done, ' is-done')}${grain(done, ' is-done')}` : '';
-  const under = plaza ? ellipse('plaza-rim', plaza, PLAZA_RIM) : '';
-  const over = plaza ? `${ellipse('plaza-fill', plaza)}${PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...plaza, rx: plaza.rx * (1 - k) - PLAZA_RIM, ry: plaza.ry * (1 - k) - PLAZA_RIM })).join('')}` : '';
+  const paving = plaza ? `${ellipse('plaza-fill', plaza)}${PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...plaza, rx: plaza.rx * (1 - k) - PLAZA_RIM, ry: plaza.ry * (1 - k) - PLAZA_RIM })).join('')}` : '';
+  const under = plaza ? `${ellipse('plaza-rim', plaza, plaza.rim ?? PLAZA_RIM)}${plaza.under ? paving : ''}` : '';
+  const over = plaza && !plaza.under ? `${ellipse('plaza-fill', plaza)}${PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...plaza, rx: plaza.rx * (1 - k) - PLAZA_RIM, ry: plaza.ry * (1 - k) - PLAZA_RIM })).join('')}` : '';
   return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path class="trail-shade" d="${d}"/>${spurs.map(spurSvg).join('')}${under}${dirt(d)}${grain(d)}${walked}${over}</svg>`;
 }
@@ -60,21 +61,28 @@ export function signBox(sign, h, extra = '') {
 
 // Dintel (época o rama): su caja, simétrica respecto al sendero, con el pie sobre los pilares de la puerta.
 // tone: estilo del acento de la época (el arco de la primera va en la salida, fuera de su tramo).
-const archBox = (arch, h, tone = '') => `class="era-arch" style="left:${pct(arch.x0, MAP_W)};right:${pct(MAP_W - arch.x1, MAP_W)};bottom:${pct(h - arch.y, h)}${tone ? `;${tone}` : ''}"`;
+const archBox = (arch, h, tone = '') => `class="era-arch${arch.atticAt ? ' is-place' : ''}" style="left:${pct(arch.x0, MAP_W)};right:${pct(MAP_W - arch.x1, MAP_W)};bottom:${pct(h - arch.y, h)}${arch.atticAt ? `;top:${pct(arch.top, h)};--attic-at:${f(arch.atticAt * 100)}%;--attic-h:${f(arch.atticH * 100)}%;--attic-w:${f(arch.atticW * 100)}%` : ''}${tone ? `;${tone}` : ''}"`;
 
 // Dintel de una época: su nombre grabado en la losa de piedra sobre los pilares de su puerta y, debajo, una ranura fina
 // que se va llenando con los pintores dominados (la única cuenta de la época; los siglos, para el lector y en su
 // presentación). Completa, letras y ranura de oro. Abierta, lleva a la presentación; cerrada, candado y una hoja con lo
 // que hay que hacer.
+const INSCR_CHARS = 15;   // letras por línea que caben en el ático a tamaño completo (PROTOTIPO)
+const INSCR_MIN = 0.86;   // nunca por debajo de ~9,5 px
 const groove = (share) => `<span class="arch-progress" aria-hidden="true"><span class="arch-progress-fill" style="--p:${f(share)}"></span></span>`;
 export function eraArch({ movement, status, sealed, done, total, prevName, arch, h, tone = '' }) {
   const locked = status === 'locked';
-  const name = `<span class="arch-name">${locked ? `${icons.lock(11)} ` : ''}${esc(movement.name)}</span>`;
+  const word = arch.atticAt ? inscription(movement.name) : movement.name;
+  // PROTOTIPO: el nombre corto cabe siempre en el ático (la puerta no crece): los largos, algo más pequeños.
+  const longest = Math.max(...word.split(' y ').map((w, i, all) => w.length + (i < all.length - 1 ? 2 : 0)));
+  const fit = arch.atticAt ? ` style="--fit:${f(Math.max(INSCR_MIN, Math.min(1, INSCR_CHARS / longest)))}"` : '';
+  // En el ático no hay candado: la cerrada lo dice con el portón.
+  const name = `<span class="arch-name"${fit}>${locked && !arch.atticAt ? `${icons.lock(10)} ` : ''}${esc(word)}</span>`;
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
   const count = `${done} de ${total} ${total === 1 ? 'pintor' : 'pintores'}`;
   const button = locked
-    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${groove(0)}</button>`
-    : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}${groove(sealed ? 1 : total ? done / total : 0)}</button>`;
+    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}${arch.atticAt ? '' : groove(0)}</button>`
+    : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}${arch.atticAt ? '' : groove(sealed ? 1 : total ? done / total : 0)}</button>`;
   return `<h2 ${archBox(arch, h, tone)}>${button}</h2>`;
 }
 
@@ -176,7 +184,7 @@ export function tramoSign(sec, info, h) {
   const done = info.total > 0 && info.got === info.total;
   const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} pintores`}. Ver cartel`;
   return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo${done ? ' is-done' : ''}" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="sign-name">${esc(sec.name)}</span></button></li>`;
+      <span class="tramo-stone" aria-hidden="true"></span><span class="sign-name">${esc(sec.name)}</span></button></li>`;
 }
 
 // Arco de la rama en su pantalla, a la entrada: solo el nombre (la cuenta ya está en la cabecera); abre el cartel de la

@@ -168,6 +168,12 @@
   --map-lintel-gap: 4px;
   --map-lintel-min: 72px;
   --map-lintel-track: .08em;
+  --proto-inscr-fs: .7rem;        /* PROTOTIPO: inscripción de la época y piedra del tramo */
+  --proto-inscr-track: .02em;
+  --proto-stone-pad: 5px 11px 4px;
+  --proto-stone-r: 45% 40% 6px 8px / 70% 60% 6px 6px;
+  --proto-stone-edge: 3px;
+  --proto-stone-fs: .75rem;
   --you-lift: 20px;                /* marca «Tú» sobre la parada actual */
   --you-pad: 3px 10px 4px;
   --radius-pill: 999px;
