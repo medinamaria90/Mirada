@@ -46,5 +46,11 @@
    "whole": true
   }
  ],
- "source": "https://es.wikipedia.org/wiki/Impresi%C3%B3n,_sol_naciente"
+ "source": "https://es.wikipedia.org/wiki/Impresi%C3%B3n,_sol_naciente",
+ "veil": [
+  0.03,
+  0.91,
+  0.26,
+  0.975
+ ]
 }

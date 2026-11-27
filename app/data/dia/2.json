@@ -46,5 +46,11 @@
    "whole": true
   }
  ],
- "source": "https://es.wikipedia.org/wiki/Retrato_de_Giovanni_Arnolfini_y_su_esposa"
+ "source": "https://es.wikipedia.org/wiki/Retrato_de_Giovanni_Arnolfini_y_su_esposa",
+ "veil": [
+  0.4,
+  0.18,
+  0.58,
+  0.245
+ ]
 }
