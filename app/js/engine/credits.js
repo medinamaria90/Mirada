@@ -55,7 +55,7 @@ export const signSources = (...maps) => uniqueSources(maps.flatMap((m) => Object
 export function artistSources(artist, works, story) {
   const cards = (story?.levels || []).flatMap((l) => l.cards || []);
   const fromWorks = (works || []).flatMap((w) => [w.curio?.source, w.about?.source, ...(w.looks || []).map((l) => l.source)]);
-  return uniqueSources([artist?.why?.source, wikidataUrl(artist || {}), ...cards.map((c) => c && c.source), ...fromWorks]);
+  return uniqueSources([artist?.why?.source, artist?.who?.source, wikidataUrl(artist || {}), ...cards.map((c) => c && c.source), ...fromWorks]);
 }
 
 export const commonsUrl = (file) => (file ? `${COMMONS_FILE}${encodeURIComponent(String(file).replace(/ /g, '_'))}` : '');

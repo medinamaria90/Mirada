@@ -427,6 +427,8 @@ def main(app):
     # «Por qué importa» de cada pintor (contenido/importancia.json, con fuente): lo primero de su ficha.
     with open(os.path.join(ROOT, "contenido", "importancia.json"), encoding="utf-8") as f:
         why = {pid: dict(text=v["text"], source=v["source"]) for pid, v in json.load(f).items() if pid in pintores}
+    # Quién era cada invitado del camino, en pocas palabras (contenido/invitados.json, con fuente): su tarjeta de presentación.
+    who = {pid: dict(text=v["text"], source=v["source"]) for pid, v in contenido_opcional("invitados.json").items() if pid in pintores}
     # Dato curioso de cada obra (contenido/curiosidades.json, ≤ 220 letras): se lee en la hoja de feedback de la ronda.
     # Explicación larga (contenido/explicaciones.json, párrafos): solo en la página de la obra, así que va en la ficha.
     curio = {wid: v for wid, v in ((k, texto_con_fuente(v)) for k, v in contenido_opcional("curiosidades.json").items()) if v}
@@ -447,7 +449,7 @@ def main(app):
     if os.path.exists(hd_path):
         with open(hd_path, encoding="utf-8") as f:
             hd = json.load(f)
-    text = dict(version=3, look={}, looks={}, kind={}, tags={}, skipTraits={}, genre={}, traitScope=trait_scope, traitGeneral=trait_general, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why,
+    text = dict(version=3, look={}, looks={}, kind={}, tags={}, skipTraits={}, genre={}, traitScope=trait_scope, traitGeneral=trait_general, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why, who=who,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
         o = w["_old"]
