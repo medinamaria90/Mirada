@@ -3,7 +3,6 @@
 // opciones con su periodo, obras a mostrar, respuesta correcta en claro).
 
 import { isSpoiler, noAuthorQuestion } from '../engine/catalog.js';
-import { revealedTitle } from '../engine/title-reveal.js';
 import { KINDS, TIERS, PER_TIER, OPTIONS_PER_QUESTION } from './motor.js';
 
 export { OPTIONS_PER_QUESTION };
@@ -71,7 +70,7 @@ export function viewOf(index, q) {
   const movementOf = (w) => index.movement(index.artist(w.artistId).movementId);
   if (q.kind === 'who') {
     return {
-      kind: q.kind, prompt: '¿Quién lo pintó?', artwork: work, title: revealedTitle(index, work, q.kind), hint: q.hint, answer: q.answer,
+      kind: q.kind, prompt: '¿Quién lo pintó?', artwork: work, hint: q.hint, answer: q.answer,
       options: q.options.map((id) => ({ id, ...nameOf(index.artist(id)) })),
       answerText: artist.name,
       caption: `${work.title} · ${artist.name}${work.year ? ` · ${work.year}` : ''}`,
@@ -80,7 +79,7 @@ export function viewOf(index, q) {
   if (q.kind === 'movement') {
     const m = movementOf(work);
     return {
-      kind: q.kind, prompt: '¿De qué movimiento es?', artwork: work, title: revealedTitle(index, work, q.kind), hint: q.hint, answer: q.answer,
+      kind: q.kind, prompt: '¿De qué movimiento es?', artwork: work, hint: q.hint, answer: q.answer,
       options: q.options.map((id) => ({ id, ...movementLabel(index.movement(id)) })),
       answerText: `${m.name} · ${m.period}`,
       caption: `${work.title} · ${artist.name}${work.year ? ` · ${work.year}` : ''}`,

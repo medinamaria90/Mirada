@@ -15,6 +15,7 @@ import { buildResult, shareText, testLevelName } from './resultado.js';
 import { validateBank, viewOf, prefixImages } from './preguntas.js';
 import { buildBolsa } from './bolsa.js';
 import { drawGame, startHistory, markSeen } from './sorteo.js';
+import { revealTitle } from '../ui/title-slot.js';
 import { barHtml, questionHtml, feedbackHtml, resultHtml, errorHtml, CHEER_UP } from './pantallas.js';
 import { setupSound, play } from './sonido.js';
 import { createLeaveGuard } from './salida.js';
@@ -227,6 +228,7 @@ function choose(optionId) {
     }
     if (b.dataset.id === optionId) b.classList.add('is-picked');
   }
+  if (view.kind !== 'which') revealTitle(root, view.artwork.title);
   play(correct ? 'correct' : 'wrong');
   const feedback = $('.feedback', root);
   feedback.innerHTML = feedbackHtml(view, correct);

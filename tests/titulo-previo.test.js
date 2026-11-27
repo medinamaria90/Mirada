@@ -1,77 +1,48 @@
-// El título bajo el cuadro antes de responder: solo en «¿Quién?» y «¿Movimiento?», y solo si no delata.
+// El título del cuadro no se ve antes de responder (delataría autor, época o movimiento):
+// ni en el DOM visible ni en ningún aria-label. Se escribe en su hueco reservado tras responder.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { titleGivesAway, revealedTitle, TITLE_GIVES_AWAY } from '../app/js/engine/title-reveal.js';
 import { questionHtml } from '../app/js/test/pantallas.js';
+import { viewOf } from '../app/js/test/preguntas.js';
+import { titleSlotHtml, revealTitle } from '../app/js/ui/title-slot.js';
 
+const TITLE = 'Madonna con el Niño';
 const catalog = {
   version: 2,
-  movements: [
-    { id: 'impresionismo', name: 'Impresionismo', period: 's. XIX', order: 8, era: 'modern', blurb: '', accent: '#666666' },
-    { id: 'barroco', name: 'Barroco', period: 's. XVII', order: 4, era: 'baroque', blurb: '', accent: '#666666' },
-  ],
+  movements: [{ id: 'renacimiento', name: 'Renacimiento', period: 's. XV', order: 1, era: 'renaissance', blurb: '', accent: '#666666' }],
   artists: [
-    { id: 'rembrandt', name: 'Rembrandt van Rijn', short: 'Rembrandt', movementId: 'barroco', order: 1, hint: '', traits: [], similarTo: [] },
-    { id: 'velazquez', name: 'Diego Velázquez', short: 'Velázquez', movementId: 'barroco', order: 2, hint: '', traits: [], similarTo: [] },
-    { id: 'monet', name: 'Claude Monet', short: 'Monet', movementId: 'impresionismo', order: 3, hint: '', traits: [], similarTo: [] },
+    { id: 'a', name: 'Pintor A', short: 'A', movementId: 'renacimiento', order: 1, hint: '', traits: [], similarTo: [] },
+    { id: 'b', name: 'Pintor B', short: 'B', movementId: 'renacimiento', order: 2, hint: '', traits: [], similarTo: [] },
   ],
-  artworks: [
-    ['w1', 'rembrandt', 'La ronda de noche'],
-    ['w2', 'rembrandt', 'Autorretrato con gorro'],
-    ['w3', 'velazquez', 'Retrato de Velázquez joven'],
-    ['w4', 'velazquez', 'Las meninas'],
-    ['w5', 'monet', 'Impresión, sol naciente'],
-    ['w6', 'monet', 'Un jardín impresionista'],
-    ['w7', 'monet', 'Mujer con sombrilla'],
-    ['w8', 'monet', 'Los nenúfares de Monet'],
-  ].map(([id, artistId, title]) => ({ id, artistId, title, year: '1900', yearSort: 1900, img: `img/${id}.jpg`, w: 100, h: 100, role: 'learn', fame: 1, confidence: 'high' })),
+  artworks: [{ id: 'w1', artistId: 'a', title: TITLE, year: '1450', yearSort: 1450, img: 'img/w1.jpg', w: 100, h: 100, role: 'learn', fame: 1, confidence: 'high' }],
 };
 const index = buildIndex(catalog);
-const work = (id) => index.artwork(id);
 
-test('título neutro: no delata', () => {
-  assert.equal(titleGivesAway(index, work('w1'), 'who'), false);
-  assert.equal(titleGivesAway(index, work('w4'), 'movement'), false);
-  assert.equal(titleGivesAway(index, work('w7'), 'movement'), false);
+for (const kind of ['who', 'movement']) {
+  test(`«${kind}»: antes de responder el título no está en el HTML ni en un aria-label`, () => {
+    const q = { id: 'q', tier: 'a', kind, artwork: 'w1', answer: kind === 'who' ? 'a' : 'renacimiento', options: kind === 'who' ? ['a', 'b'] : ['renacimiento'], hint: 'Pista' };
+    const view = viewOf(index, q);
+    const html = questionHtml(view, 1);
+    assert.equal(html.includes(TITLE), false);
+    assert.match(html, /data-title-slot/);
+    assert.doesNotMatch(html, /aria-label="[^"]*Madonna/);
+  });
+}
+
+test('el hueco va vacío y oculto a lectores de pantalla hasta responder', () => {
+  assert.match(titleSlotHtml(), /aria-hidden="true"><\/p>/);
 });
 
-test('el nombre o el apellido del pintor delatan (sin tildes ni mayúsculas)', () => {
-  assert.equal(titleGivesAway(index, work('w3'), 'who'), true);
-  assert.equal(titleGivesAway(index, work('w8'), 'who'), true);
-});
-
-test('«Autorretrato» delata', () => {
-  assert.equal(titleGivesAway(index, work('w2'), 'who'), true);
-});
-
-test('el movimiento o su palabra clave delatan solo en «¿Movimiento?»', () => {
-  assert.equal(titleGivesAway(index, work('w5'), 'movement'), true, 'Impresión → Impresionismo');
-  assert.equal(titleGivesAway(index, work('w5'), 'who'), false);
-  assert.equal(titleGivesAway(index, work('w6'), 'movement'), true);
-  assert.equal(titleGivesAway(index, work('w6'), 'who'), false);
-});
-
-test('«¿Cuál es de X?» nunca enseña el título', () => {
-  assert.equal(titleGivesAway(index, work('w1'), 'which'), true);
-  assert.equal(revealedTitle(index, work('w1'), 'which'), '');
-});
-
-test('la lista manual delata aunque la regla no lo vea', () => {
-  TITLE_GIVES_AWAY.push('w4');
-  try {
-    assert.equal(titleGivesAway(index, work('w4'), 'who'), true);
-  } finally {
-    TITLE_GIVES_AWAY.pop();
-  }
-  assert.equal(titleGivesAway(index, work('w4'), 'who'), false);
-});
-
-test('el HTML de la pregunta lleva el título solo si no delata', () => {
-  const view = (id, kind) => ({ kind, prompt: 'P', artwork: work(id), title: revealedTitle(index, work(id), kind), options: [{ id: 'a', label: 'A', detail: '' }] });
-  assert.match(questionHtml(view('w1', 'who'), 1), /<p class="q-title">La ronda de noche<\/p>/);
-  assert.doesNotMatch(questionHtml(view('w3', 'who'), 1), /q-title/);
-  assert.doesNotMatch(questionHtml(view('w5', 'movement'), 1), /q-title/);
-  const which = { kind: 'which', prompt: 'P', artwork: null, options: [{ id: 'w1', artwork: work('w1') }] };
-  assert.doesNotMatch(questionHtml(which, 1), /La ronda de noche/);
+test('revealTitle rellena el hueco y lo hace accesible', () => {
+  const attrs = new Map([['aria-hidden', 'true']]);
+  const classes = new Set();
+  const slot = { textContent: '', removeAttribute: (n) => attrs.delete(n), classList: { add: (c) => classes.add(c) } };
+  const root = { querySelector: (s) => (s === '[data-title-slot]' ? slot : null) };
+  globalThis.requestAnimationFrame = (f) => f();
+  revealTitle(root, TITLE);
+  assert.equal(slot.textContent, TITLE);
+  assert.equal(attrs.has('aria-hidden'), false);
+  assert.ok(classes.has('is-on'));
+  delete globalThis.requestAnimationFrame;
 });

@@ -11,7 +11,7 @@ import { isCorrect, questionAlt, optionText, makeQuestion, makeWhichQuestion, ar
 import { createRound, currentItem, answerRound, roundDone, roundProgress } from '../../engine/planner.js';
 import { xpForAnswer } from '../../engine/progress.js';
 import { feedbackFor } from '../../engine/feedback.js';
-import { revealedTitle } from '../../engine/title-reveal.js';
+import { titleSlotHtml, revealTitle } from '../title-slot.js';
 import { beforeQuestionHtml, beforeRibbonHtml } from '../before-question.js';
 import { loadRibbonCss } from '../chrono-ribbon.js';
 import { guestCardHtml, loadGuestCss } from '../guest-card.js';
@@ -190,7 +190,7 @@ export function runLesson(ctx, el, config) {
     if (q.type === 'which') {
       // Pulsar una miniatura abre el visor con las 4 («Es este» responde); 1-4 responden directo.
       const opts = q.options.map((o, i) => `<button class="option option-art" data-action="pick" data-id="${esc(o.id)}" data-pos="${i}" aria-label="Opción ${i + 1}" aria-haspopup="dialog">
-          ${marcoHtml(index.artwork(o.artworkId), { alt: '', eager: true, label: o.artworkId })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
+          ${marcoHtml(index.artwork(o.artworkId), { alt: '', eager: true, label: `Opción ${i + 1}` })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
       return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>`;
     }
     const art = index.artwork(q.artworkId);
@@ -201,9 +201,8 @@ export function runLesson(ctx, el, config) {
     };
     const opts = q.options.map((o, i) => `<button class="option" data-action="answer" data-id="${esc(o.id)}"><span class="key" aria-hidden="true">${i + 1}</span>${optText(o)}</button>`).join('');
     // En escritorio, el cuadro a la izquierda y la pregunta con las opciones a la derecha.
-    // El título va bajo el cuadro antes de responder, salvo que delate la respuesta.
-    const title = revealedTitle(index, art, q.type);
-    const titleLine = title ? `<p class="q-title">${esc(title)}</p>` : '';
+    // El título (hueco reservado) se escribe tras responder: antes delataría autor, época o movimiento.
+    const titleLine = titleSlotHtml();
     return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}${titleLine}</div>
       <div class="options options-list" role="group" aria-label="Respuestas">${opts}</div>`;
   }
@@ -289,6 +288,7 @@ export function runLesson(ctx, el, config) {
     });
     if (!correct) button.classList.add('is-wrong');
     else button.classList.add('is-picked');
+    if (q.type !== 'which') revealTitle(stage, index.artwork(q.artworkId)?.title);
 
     // Combo: cada 3 seguidas suena la pequeña fanfarria ascendente en lugar del acierto.
     const milestone = correct && round.combo >= COMBO_SHOW && round.combo % COMBO_SHOW === 0;
