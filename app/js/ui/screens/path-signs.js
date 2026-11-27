@@ -67,10 +67,14 @@ const archBox = (arch, h, tone = '') => `class="era-arch${arch.atticAt ? ' is-pl
 // que se va llenando con los pintores dominados (la única cuenta de la época; los siglos, para el lector y en su
 // presentación). Completa, letras y ranura de oro. Abierta, lleva a la presentación; cerrada, candado y una hoja con lo
 // que hay que hacer.
+const INSCR_CHARS = 12;   // letras que caben en el ático a tamaño completo (PROTOTIPO)
 const groove = (share) => `<span class="arch-progress" aria-hidden="true"><span class="arch-progress-fill" style="--p:${f(share)}"></span></span>`;
 export function eraArch({ movement, status, sealed, done, total, prevName, arch, h, tone = '' }) {
   const locked = status === 'locked';
-  const name = `<span class="arch-name">${locked ? `${icons.lock(11)} ` : ''}${esc(arch.atticAt ? inscription(movement.name) : movement.name)}</span>`;
+  const word = arch.atticAt ? inscription(movement.name) : movement.name;
+  // PROTOTIPO: el nombre corto cabe siempre en el ático (la puerta no crece): los largos, algo más pequeños.
+  const fit = arch.atticAt ? ` style="--fit:${f(Math.min(1, INSCR_CHARS / (word.length + (locked ? 2 : 0))))}"` : '';
+  const name = `<span class="arch-name"${fit}>${locked ? `${icons.lock(10)} ` : ''}${esc(word)}</span>`;
   const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
   const count = `${done} de ${total} ${total === 1 ? 'pintor dominado' : 'pintores dominados'}`;
   const button = locked
@@ -177,7 +181,7 @@ export function tramoSign(sec, info, h) {
   const done = info.total > 0 && info.got === info.total;
   const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} dominados`}. Ver cartel`;
   return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo${done ? ' is-done' : ''}" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="sign-name">${esc(sec.name)}</span></button></li>`;
+      <span class="tramo-stone" aria-hidden="true"></span><span class="sign-name">${esc(sec.name)}</span></button></li>`;
 }
 
 // Arco de la rama en su pantalla, a la entrada: solo el nombre (la cuenta ya está en la cabecera); abre el cartel de la

@@ -215,7 +215,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .start-kiosk:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 /* Su tablilla, como las del camino: dice qué se abre (se ve pulsable). */
 .start-kiosk-text {
-  position: absolute; bottom: calc(100% - 4px); left: 50%; translate: -50% 0; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)); white-space: nowrap;
+  position: absolute; top: calc(100% - 6px); left: 50%; translate: -50% 0; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)); white-space: nowrap;
   border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); color: var(--map-sign-ink); box-shadow: 0 2px 0 var(--map-sign-line);
   font: 600 calc(.72 * var(--map-fs))/1.15 var(--font);
 }

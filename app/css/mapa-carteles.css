@@ -117,20 +117,26 @@ html.reduce-motion .stage-you, html.reduce-motion .stage-spot.is-current .stage 
 .era-arch.is-place .arch-name {
   position: absolute; left: 50%; bottom: var(--attic-at); translate: -50% 0; width: var(--attic-w); height: var(--attic-h);
   display: flex; align-items: center; justify-content: center; gap: 3px; overflow: hidden; white-space: nowrap;
-  text-transform: none; font: 600 var(--proto-inscr-fs)/1 var(--font); letter-spacing: var(--proto-inscr-track); color: var(--map-sign-ink-2);
+  text-transform: none; font: 600 calc(var(--proto-inscr-fs) * var(--fit, 1))/1 var(--font); letter-spacing: var(--proto-inscr-track); color: var(--map-sign-ink-2);
   text-shadow: 0 1px 0 color-mix(in srgb, var(--map-stone-top) 85%, transparent);
 }
 .era-arch.is-place button.arch-band:active { transform: translateY(2px); }
 .era-arch.is-place .arch-band.is-done .arch-name { color: var(--gold-text); }
 @media (hover: hover) { .era-arch.is-place button.arch-band:hover { background: none; } .era-arch.is-place button.arch-band:hover .arch-name { color: var(--map-sign-ink); } }
-/* Tramo: un mojón bajo de piedra al borde del sendero, con el nombre grabado (sin tablilla ni postes). */
+/* Tramo: un mojón de piedra (alto y estrecho, cabeza redonda, cara y canto) al borde del sendero, con el nombre al lado
+   en dos líneas, sin caja. */
 .road-sign.is-tramo { padding-bottom: 0; }
-.road-sign.is-tramo::before { display: none; }
-.road-sign.is-tramo::after { left: -2px; right: -2px; bottom: -4px; height: 8px; }
+.road-sign.is-tramo::before, .road-sign.is-tramo::after { display: none; }
 .is-tramo .sign-plate, .sign-plate.is-tramo.is-done {
-  min-height: 0; padding: var(--proto-stone-pad); border: 0; outline: 0; border-radius: var(--proto-stone-r);
-  background: var(--map-stone-side); color: var(--map-sign-ink);
-  box-shadow: inset calc(-1 * var(--proto-stone-edge)) calc(-1 * var(--proto-stone-edge)) 0 color-mix(in srgb, var(--map-sign-ink) 10%, transparent), inset 0 2px 0 var(--map-stone-top);
+  display: flex; align-items: flex-end; gap: 6px; min-height: var(--hit); max-width: 9.5rem; padding: 0; border: 0; outline: 0; border-radius: 0; background: none; box-shadow: none;
 }
-.is-tramo .sign-name { font: 600 var(--proto-stone-fs)/1.1 var(--font); letter-spacing: var(--proto-inscr-track); text-shadow: 0 1px 0 var(--map-stone-top); }
+.is-left .sign-plate.is-tramo { flex-direction: row-reverse; text-align: right; }
+.is-tramo .sign-name { font: 600 .75rem/1.15 var(--font); color: var(--map-sign-ink); text-shadow: 0 0 3px var(--map-tag), 0 0 6px var(--map-tag); text-wrap: balance; padding-bottom: 2px; }
 .sign-plate.is-tramo.is-done .sign-name { color: var(--gold-text); }
+.tramo-stone {
+  position: relative; flex: none; width: 16px; height: 26px; border-radius: 8px 8px 2px 2px;
+  background: linear-gradient(to right, var(--map-stone-top) 0 64%, var(--map-stone-side) 64%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--map-sign-ink) 10%, transparent);
+}
+.tramo-stone::after { content: ""; position: absolute; left: -4px; right: -6px; bottom: -3px; height: 6px; border-radius: 50%; background: var(--map-shade); z-index: -1; }
+.sign-plate.is-tramo.is-done .tramo-stone { background: linear-gradient(to right, color-mix(in srgb, var(--gold) 45%, var(--map-stone-top)) 0 64%, color-mix(in srgb, var(--gold) 45%, var(--map-stone-side)) 64%); }
