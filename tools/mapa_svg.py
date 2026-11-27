@@ -90,7 +90,7 @@ def tinte(h, tint_class):
 # (nombre, lado ancho) y de los carteles.
 LIBRE = {'ramas': set(), 'rotulos': [], 'road': None}
 # Lo ya pintado en la época (base de cada pieza y ríos), para que el esparcido no se le monte encima.
-OCUPADO = {'piezas': [], 'rios': [], 'agua': []}
+OCUPADO = {'piezas': [], 'rios': [], 'agua': [], 'edificios': []}
 # Puentes del tramo que se está pintando (los da el trazado) y errores de agua de todos los tramos.
 PUENTES = []
 ERRORES = []
@@ -147,6 +147,39 @@ def _libre(nombre):
         return res
     return envuelta
 
+
+# ---- edificios fuera del agua -----------------------------------------------------------------------------------
+# Ningún edificio toca un río (las barcas lo recorren de lado a lado por su centro y pasarían por encima de él): si su
+# caja cae en la banda del río (con su onda), se corre a la orilla más cercana. Su caja: de la base (y) al tejado.
+RIO_MEDIO = 27       # medio ancho de la banda de un río: medio cauce, la onda y algo de aire
+ORILLA = 3           # aire entre la orilla y el edificio que se corre
+ALTO_EDIFICIO = {
+    'caja': lambda a: a[3] + a[4] * .5, 'casa': lambda a: a[3] + a[2] * .6 + a[4] * .5, 'casa_larga': lambda a: a[3] + a[2] * .4 + a[4] * .5,
+    'arcada': lambda a: a[3] + a[4] * .5, 'torre': lambda a: a[3] + a[2] * 1.6, 'molino': lambda a: (a[3] if len(a) > 3 else 30) + 22,
+}
+
+
+def _fuera_del_agua(nombre):
+    pieza = getattr(M, nombre)
+
+    def envuelta(*a, **k):
+        if len(a) < 2 or (nombre != 'molino' and len(a) < 4):
+            return pieza(*a, **k)
+        x, y = a[0], a[1]
+        alto = ALTO_EDIFICIO[nombre](a)
+        for b in PUENTES:
+            arriba, abajo = b['y'] - RIO_MEDIO, b['y'] + RIO_MEDIO
+            if y - alto < abajo and y > arriba:
+                y = arriba - ORILLA if (y - alto / 2) < b['y'] else abajo + alto + ORILLA
+        res = pieza(x, y, *a[2:], **k)
+        if res[1]:
+            OCUPADO['edificios'].append((nombre, x, y - alto, y))
+        return res
+    return envuelta
+
+
+for _n in ALTO_EDIFICIO:
+    setattr(M, _n, _fuera_del_agua(_n))
 
 for _n in SOBRE_ROTULO:
     setattr(M, _n, _libre(_n))
@@ -721,13 +754,16 @@ def build(era, light, dark):
     LIBRE['ramas'] = set(era.get('branchAt', []))
     LIBRE['rotulos'] = era.get('labels', [])
     LIBRE['road'] = lambda y: A.x_en(era, y)
-    OCUPADO['piezas'], OCUPADO['rios'], OCUPADO['agua'] = [], [], []
+    OCUPADO['piezas'], OCUPADO['rios'], OCUPADO['agua'], OCUPADO['edificios'] = [], [], [], []
     PUENTES[:] = era.get('bridges', [])
     deco = era.get('deco', era['id'])
     # Las viñetas de cada parada, entre ella y la siguiente (el hueco sin rótulos), no a su altura: así no las tapa su nombre.
     vinetas = [(x, y - VINETA_SUBE) for x, y in pts]
     pieces = [tinte(era['h'], CLASS['tint'])] + DECO[deco](vinetas, era['h']) + A.seto(M, W, era.get('gate'))
     ERRORES.extend(A.comprobar(era, OCUPADO['agua']))
+    # Las barcas recorren cada río por su centro: ningún edificio en su banda.
+    ERRORES.extend(f'{era["id"]}: {n} en el río de y={b["y"]:.0f} (barcas encima)' for n, x, top, foot in OCUPADO['edificios']
+                   for b in PUENTES if top < b['y'] + RIO_MEDIO and foot > b['y'] - RIO_MEDIO)
     pieces += esparcir(era)
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))

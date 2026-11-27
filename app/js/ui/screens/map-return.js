@@ -1,34 +1,46 @@
-// Botón flotante «Tu parada» (píldora: su cuadro en pequeño, el texto y una flecha hacia donde queda, arriba o abajo,
-// calculada al moverse): solo aparece cuando la parada actual sale de la vista. Al tocarlo, el camino vuelve a ella y el
+// Botón «Tú» para volver a la parada actual (como el de Duolingo): un círculo pequeño con una flecha hacia donde queda,
+// arriba o abajo (calculada al moverse), y «Tú», la misma marca que se mece sobre la parada actual. Solo aparece cuando
+// la parada actual sale de la vista. Al tocarlo, el camino vuelve a ella y el
 // foco pasa a su nodo; es, con abrir la app, lo único que centra el mapa en la parada actual. Devuelve cómo quitarlo.
 
 import { $, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
 
 const VIEW_MARGIN = '-96px 0px -96px 0px';   // la cabecera y la barra de abajo tapan esa franja
-export const RETURN_TEXT = 'Tu parada';
+
+// La parada queda por encima del centro de la pantalla: la flecha apunta arriba. Se calcula con cada desplazamiento
+// (no solo cuando la parada entra o sale de la vista: un salto largo nunca la cruza).
+export const pointsUp = (dotTop, viewH) => dotTop < viewH / 2;
+export const RETURN_TEXT = 'Tú';
 
 export function watchReturn(el) {
   const dot = $('.stage-spot.is-current .stage-dot', el);
   if (!dot || typeof IntersectionObserver !== 'function') return () => {};
-  const thumb = $('.stage-thumb', dot)?.cloneNode(true);
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'map-return';
   button.hidden = true;
   button.setAttribute('aria-label', 'Ir a tu parada');
-  button.innerHTML = `<span class="map-return-art" aria-hidden="true"></span><span class="map-return-text">${RETURN_TEXT}</span><span class="map-return-arrow" aria-hidden="true">${icons.next(18)}</span>`;
-  if (thumb) $('.map-return-art', button).append(thumb);
+  button.innerHTML = `<span class="map-return-arrow" aria-hidden="true">${icons.next(18)}</span><span class="map-return-text" aria-hidden="true">${RETURN_TEXT}</span>`;
   el.append(button);
   button.addEventListener('click', () => {
     const stage = dot.closest('.stage');
     stage.scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
     stage.focus({ preventScroll: true });
   });
-  const io = new IntersectionObserver(([entry]) => {
-    button.hidden = entry.isIntersecting;
-    button.classList.toggle('is-up', entry.boundingClientRect.top < 0);
-  }, { rootMargin: VIEW_MARGIN });
+  let away = false;
+  let frame = 0;
+  // Mientras está la tarjeta de pintores nuevos (abajo, en el mismo sitio), el botón se aparta.
+  const update = () => {
+    frame = 0;
+    button.hidden = !away || Boolean(el.querySelector('.news-card:not(.is-leaving)'));
+    button.classList.toggle('is-up', pointsUp(dot.getBoundingClientRect().top, window.innerHeight));
+  };
+  const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+  const io = new IntersectionObserver(([entry]) => { away = !entry.isIntersecting; update(); }, { rootMargin: VIEW_MARGIN });
   io.observe(dot);
-  return () => { io.disconnect(); button.remove(); };
+  const news = new MutationObserver(onScroll);
+  news.observe(el, { childList: true, subtree: false });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return () => { io.disconnect(); news.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(frame); button.remove(); };
 }

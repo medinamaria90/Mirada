@@ -28,41 +28,44 @@
    textos no se tocan (su contraste es el de siempre). La luz se pone tramo a tramo, solo en el que se ve (map-life.js):
    cambiarla en todo el mapa recalculaba los estilos de miles de piezas de una vez. */
 .path-map, .path-era, .path-start, .path-museum, .path-foot {
+  /* Arrebol: rosa frío al amanecer y ámbar cálido al atardecer (--day-warm, map-life.js); va encima de la noche, que no lo lave. */
+  --map-glow: color-mix(in oklab, var(--map-dawn), var(--map-dusk) calc(var(--day-warm, 0) * 100%));
   --dusk-pct: calc(var(--day-dusk) * var(--map-dusk-max) * 100%);
   --night-pct: calc(var(--day-night) * var(--map-night-max) * 100%);
-  --lit-stone-far: color-mix(in oklab, color-mix(in oklab, var(--map-stone-far), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-stone-front: color-mix(in oklab, color-mix(in oklab, var(--map-stone-front), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-stone-side: color-mix(in oklab, color-mix(in oklab, var(--map-stone-side), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-stone-top: color-mix(in oklab, color-mix(in oklab, var(--map-stone-top), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-window: color-mix(in oklab, color-mix(in oklab, var(--map-window), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-tile: color-mix(in oklab, color-mix(in oklab, var(--map-tile), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-tile-2: color-mix(in oklab, color-mix(in oklab, var(--map-tile-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-slate: color-mix(in oklab, color-mix(in oklab, var(--map-slate), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-slate-2: color-mix(in oklab, color-mix(in oklab, var(--map-slate-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-leaf: color-mix(in oklab, color-mix(in oklab, var(--map-leaf), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-leaf-2: color-mix(in oklab, color-mix(in oklab, var(--map-leaf-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-water: color-mix(in oklab, color-mix(in oklab, var(--map-water), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-water-2: color-mix(in oklab, color-mix(in oklab, var(--map-water-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-fruit: color-mix(in oklab, color-mix(in oklab, var(--map-fruit), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-hay: color-mix(in oklab, color-mix(in oklab, var(--map-hay), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-hay-2: color-mix(in oklab, color-mix(in oklab, var(--map-hay-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-field: color-mix(in oklab, color-mix(in oklab, var(--map-field), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-field-2: color-mix(in oklab, color-mix(in oklab, var(--map-field-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-crop: color-mix(in oklab, color-mix(in oklab, var(--map-crop), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-crop-2: color-mix(in oklab, color-mix(in oklab, var(--map-crop-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-gold: color-mix(in oklab, color-mix(in oklab, var(--map-gold), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-gold-2: color-mix(in oklab, color-mix(in oklab, var(--map-gold-2), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-awning: color-mix(in oklab, color-mix(in oklab, var(--map-awning), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-bloom: color-mix(in oklab, color-mix(in oklab, var(--map-bloom), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-post: color-mix(in oklab, color-mix(in oklab, var(--map-post), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-trail-edge: color-mix(in oklab, color-mix(in oklab, var(--map-trail-edge), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-trail: color-mix(in oklab, color-mix(in oklab, var(--map-trail), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-trail-done-edge: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done-edge), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-trail-done: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
-  --lit-trail-thread: color-mix(in oklab, color-mix(in oklab, var(--map-trail-thread), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct));
+  /* Lo andado del sendero guarda su oro de noche (como las ventanas, que se encienden): la mitad de noche. */
+  --night-pct-soft: calc(var(--night-pct) / 2);
+  --lit-stone-far: color-mix(in oklab, color-mix(in oklab, var(--map-stone-far), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-stone-front: color-mix(in oklab, color-mix(in oklab, var(--map-stone-front), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-stone-side: color-mix(in oklab, color-mix(in oklab, var(--map-stone-side), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-stone-top: color-mix(in oklab, color-mix(in oklab, var(--map-stone-top), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-window: color-mix(in oklab, color-mix(in oklab, var(--map-window), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-tile: color-mix(in oklab, color-mix(in oklab, var(--map-tile), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-tile-2: color-mix(in oklab, color-mix(in oklab, var(--map-tile-2), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-slate: color-mix(in oklab, color-mix(in oklab, var(--map-slate), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-slate-2: color-mix(in oklab, color-mix(in oklab, var(--map-slate-2), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-leaf: color-mix(in oklab, color-mix(in oklab, var(--map-leaf), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-leaf-2: color-mix(in oklab, color-mix(in oklab, var(--map-leaf-2), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-water: color-mix(in oklab, color-mix(in oklab, var(--map-water), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-water-2: color-mix(in oklab, color-mix(in oklab, var(--map-water-2), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-fruit: color-mix(in oklab, color-mix(in oklab, var(--map-fruit), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-hay: color-mix(in oklab, color-mix(in oklab, var(--map-hay), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-hay-2: color-mix(in oklab, color-mix(in oklab, var(--map-hay-2), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-field: color-mix(in oklab, color-mix(in oklab, var(--map-field), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-field-2: color-mix(in oklab, color-mix(in oklab, var(--map-field-2), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-crop: color-mix(in oklab, color-mix(in oklab, var(--map-crop), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-crop-2: color-mix(in oklab, color-mix(in oklab, var(--map-crop-2), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-gold: color-mix(in oklab, color-mix(in oklab, var(--map-gold), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-gold-2: color-mix(in oklab, color-mix(in oklab, var(--map-gold-2), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-awning: color-mix(in oklab, color-mix(in oklab, var(--map-awning), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-bloom: color-mix(in oklab, color-mix(in oklab, var(--map-bloom), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-post: color-mix(in oklab, color-mix(in oklab, var(--map-post), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-trail-edge: color-mix(in oklab, color-mix(in oklab, var(--map-trail-edge), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-trail: color-mix(in oklab, color-mix(in oklab, var(--map-trail), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct));
+  --lit-trail-done-edge: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done-edge), var(--map-night) var(--night-pct-soft)), var(--map-glow) var(--dusk-pct));
+  --lit-trail-done: color-mix(in oklab, color-mix(in oklab, var(--map-trail-done), var(--map-night) var(--night-pct-soft)), var(--map-glow) var(--dusk-pct));
 }
-.path-era, .path-start, .path-museum, .path-foot { --lit-tint: color-mix(in oklab, color-mix(in oklab, var(--era-tint), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)); background: var(--lit-tint); }
-.path-era { --lit-prev: color-mix(in oklab, color-mix(in oklab, var(--era-prev), var(--map-dusk) var(--dusk-pct)), var(--map-night) var(--night-pct)); }
+.path-era, .path-start, .path-museum, .path-foot { --lit-tint: color-mix(in oklab, color-mix(in oklab, var(--era-tint), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct)); background: var(--lit-tint); }
+.path-era { --lit-prev: color-mix(in oklab, color-mix(in oklab, var(--era-prev), var(--map-night) var(--night-pct)), var(--map-glow) var(--dusk-pct)); }
 .path-era::before { background: linear-gradient(to top, var(--lit-prev), transparent); }
 /* Frontera de la época (mapa-carteles.css): bajo el seto de su puerta sigue el suelo de la anterior, que se corta en él. */
 .path-era.has-gate::before { background: linear-gradient(to top, var(--lit-prev) 0 var(--map-frontier-solid), transparent); }
@@ -94,7 +97,7 @@
 .path-land .k-gold-2 { fill: var(--lit-gold-2); } .path-land .s-k-gold-2 { stroke: var(--lit-gold-2); }
 .path-land .k-awning { fill: var(--lit-awning); } .path-land .s-k-awning { stroke: var(--lit-awning); }
 .path-land .k-bloom { fill: var(--lit-bloom); } .path-land .s-k-bloom { stroke: var(--lit-bloom); }
-.trail-edge, .spur-edge { stroke: var(--lit-trail-edge); }
+.trail-edge, .trail-rim, .trail-grain, .spur-edge, .spur-grain { stroke: var(--lit-trail-edge); }
 .trail-fill, .spur-fill { stroke: var(--lit-trail); }
 .land-far { fill: var(--lit-stone-far); }
 .land-front { fill: var(--lit-stone-front); }
@@ -161,7 +164,11 @@
 /* Sendero recorrido: de otro color hasta la parada actual. */
 .trail-edge.is-done { stroke: var(--lit-trail-done-edge); }
 .trail-fill.is-done { stroke: var(--lit-trail-done); }
-.trail-thread { stroke: var(--lit-trail-thread); }
+.trail-rim.is-done, .trail-grain.is-done { stroke: var(--lit-trail-done-edge); }
+.plaza-stones { stroke: var(--lit-stone-side); }
+.plaza-rim { fill: var(--lit-stone-side); }
+.fountain-rim { stroke: var(--lit-stone-side); }
+.plaza-fill { fill: var(--lit-stone-top); }
 
 /* Piezas de los dibujos propios (puerta de salida, museo). */
 .land-tile { fill: var(--lit-tile); }
