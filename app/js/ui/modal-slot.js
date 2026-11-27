@@ -1,3 +1,5 @@
+import { guardGhostTaps } from './tap-guard.js';
+
 // Hueco para un diálogo modal que se abre tras una carga asíncrona (hojas del mapa y del pintor): solo hay uno a la
 // vez. Con dos toques seguidos, el último gana y el anterior no llega a abrirse (antes se abrían los dos y el primero
 // quedaba huérfano, sin forma de cerrarlo). Cerrar siempre cierra ESE diálogo, sea o no el actual.
@@ -43,6 +45,7 @@ export function mountSheet(dlg, { slot, handle, opener, closeSelector }) {
     window.removeEventListener('hashchange', onHash);
     if (dlg.open) dlg.close();
     dlg.remove();
+    guardGhostTaps();
     if (!silent && opener && opener.isConnected) opener.focus({ preventScroll: true });
   };
   const onHash = () => close({ silent: true });
