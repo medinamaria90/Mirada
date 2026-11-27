@@ -1026,6 +1026,26 @@ if (SMOKE) {
   check(await page.locator('.stage-spot.is-current .stage-you').count() === 1 && await page.locator('.stage-spot.is-current .stage-meta').count() === 0, 'la parada nueva no lleva la marca «Tú» (o aún lleva botón)');
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
+  // Presentación de una época en un móvil lento: sale una sola vez, ya con sus tarjetas, sin saltos de maquetación
+  // (antes el carrusel se montaba sobre la portada ya pintada y todo se movía).
+  const eraCdp = await page.context().newCDPSession(page);
+  await eraCdp.send('Network.enable');
+  await eraCdp.send('Network.emulateNetworkConditions', { offline: false, latency: 150, downloadThroughput: 400 * 1024, uploadThroughput: 200 * 1024 });
+  await eraCdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  await page.evaluate(() => {
+    window.__eraShift = 0;
+    new PerformanceObserver((list) => { for (const e of list.getEntries()) window.__eraShift += e.value; }).observe({ type: 'layout-shift' });
+  });
+  await page.evaluate((id) => { location.hash = `movimiento-${id}`; }, index.visibleMovements[0].id);
+  await page.waitForSelector('.intro .era-track .era-card');
+  await page.waitForTimeout(1500);
+  const eraShift = await page.evaluate(() => window.__eraShift);
+  check(eraShift < 0.01, `la presentación de la época salta al abrirse (Layout Shift ${eraShift.toFixed(3)})`);
+  await eraCdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+  await eraCdp.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 });
+  await eraCdp.detach();
+  await page.goto(`${base}#inicio`);
+  await page.waitForSelector('.stage-spot.is-current .stage-you');
   // Rama jugable: cerrada el primer día (tocarla dice qué falta); con el primer tramo del Renacimiento dominado, el
   // desvío del Gótico entra en su pantalla (#rama-gotico): su paisaje, sus pintores como paradas y la marca «Tú» en el
   // primero propio. La ronda sabe que viene del Gótico (#etapa-<pintor>--gotico) y su resultado sigue en él.
@@ -1820,7 +1840,7 @@ check(savedName.length <= 24 && savedName.startsWith('María'), `nombre guardado
 check((await page.locator('.pf-greeting').innerText()).includes('Hola, María'), 'el saludo no usa el nombre');
 check((await page.locator('.pf-initial').innerText()) === 'M', 'el avatar no muestra la inicial');
 await noHorizontalScroll(page, 'perfil con nombre largo');
-// Perfil: pestañas Portada/Avatar con teclado, texto al 200 % sin recortes y móvil apaisado.
+// Perfil: cabecera sin portada (avatar, saludo y engranaje en una fila), hoja del avatar, texto al 200 % y móvil apaisado.
 {
   const collection = Object.fromEntries(index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).map((w) => [w.id, '2026-11-20']));
   const st = seededState({ upTo: 3, extra: { collection } });
@@ -1828,32 +1848,21 @@ await noHorizontalScroll(page, 'perfil con nombre largo');
   const pctx = await browser.newContext(ctxOpts);
   const pp = await pctx.newPage();
   await seed(pp, st, 'perfil');
-  await pp.waitForSelector('.pf-look');
-  await pp.click('.pf-look');
+  await pp.waitForSelector('.pf-avatar-btn');
+  const row = await pp.evaluate(() => {
+    const r = (s) => document.querySelector(s).getBoundingClientRect();
+    const av = r('.pf-avatar'); const gear = r('.pf-gear'); const name = r('.pf-name-btn');
+    return { cover: document.querySelectorAll('.pf-cover, .pf-look').length, gearRight: gear.left > name.left, sameRow: Math.abs((gear.top + gear.bottom) / 2 - (av.top + av.bottom) / 2) < 12 };
+  });
+  check(row.cover === 0 && row.gearRight && row.sameRow, `cabecera del perfil: ${JSON.stringify(row)}`);
+  await pp.click('.pf-avatar-btn');
   await pp.waitForSelector('.look-dialog[open]');
-  await pp.focus('#look-tab-cover');
-  const tab = () => pp.evaluate(() => ({ id: document.activeElement.id, sel: document.querySelector('[role="tab"][aria-selected="true"]')?.id, idx: [...document.querySelectorAll('[role="tab"]')].map((t) => t.tabIndex) }));
-  await pp.keyboard.press('ArrowRight');
-  let t = await tab();
-  check(t.id === 'look-tab-avatar' && t.sel === 'look-tab-avatar' && t.idx.join() === '-1,0', `→ no pasa a «Avatar»: ${JSON.stringify(t)}`);
-  await pp.keyboard.press('ArrowRight');
-  check((await tab()).id === 'look-tab-cover', '→ en la última pestaña no da la vuelta');
-  await pp.keyboard.press('End');
-  check((await tab()).id === 'look-tab-avatar', 'Fin no va a la última pestaña');
-  await pp.keyboard.press('Home');
-  check((await tab()).id === 'look-tab-cover', 'Inicio no va a la primera pestaña');
-  await pp.keyboard.press('ArrowLeft');
-  check((await tab()).id === 'look-tab-avatar', '← en la primera pestaña no da la vuelta');
+  check(await pp.locator('.look-dialog [role="tab"]').count() === 0, 'la hoja del avatar aún tiene pestañas');
+  await pp.locator('.look-dialog .pf-pick').first().click();
+  check(await pp.evaluate(() => Boolean(JSON.parse(localStorage.getItem('mirada.state')).settings.avatar)), 'elegir un cuadro no guarda el avatar');
+  check(await pp.locator('.pf-avatar.has-art').count() === 1, 'el avatar elegido no se ve en la cabecera');
   await pp.keyboard.press('Escape');
   await pp.waitForTimeout(450);
-  // Foco de la portada: el anillo existe de verdad (pseudoelemento por encima de la imagen), no el de main.css, que se recortaba.
-  const ring = await pp.evaluate(() => {
-    const a = document.querySelector('.pf-cover-art');
-    a.focus();
-    const after = getComputedStyle(a, '::after');
-    return { visible: a.matches(':focus-visible'), outline: getComputedStyle(a).outlineStyle, border: after.borderTopWidth, style: after.borderTopStyle, z: after.zIndex, pos: after.position };
-  });
-  check(ring.visible && ring.outline === 'none' && ring.border === '4px' && ring.style === 'solid' && ring.z === '3' && ring.pos === 'absolute', `foco de la portada sin anillo propio: ${JSON.stringify(ring)}`);
   // Texto al 200 %: el nombre se ve entero (sin recorte ni puntos suspensivos) y sin desplazamiento horizontal.
   await pp.addStyleTag({ content: 'html{font-size:200%}' });
   await pp.waitForTimeout(300);
@@ -1864,23 +1873,23 @@ await noHorizontalScroll(page, 'perfil con nombre largo');
   });
   check(clip.w <= 1 && clip.h <= 1 && !clip.ellipsis && !clip.clamp && clip.boxW >= 150, `al 200 % el nombre se recorta: ${JSON.stringify(clip)}`);
   await noHorizontalScroll(pp, 'perfil al 200 %');
-  await pp.click('.pf-look');
+  await pp.click('.pf-avatar-btn');
   await pp.waitForSelector('.look-dialog[open]');
   const look200 = await pp.evaluate(() => ({ reset: document.querySelector('[data-action="look-reset"]').getBoundingClientRect().bottom, vh: innerHeight, inner: document.querySelector('.look-panel').scrollHeight - document.querySelector('.look-panel').clientHeight }));
-  check(look200.reset <= look200.vh + 1 && look200.inner <= 1, `hoja de portada al 200 %: botón fuera de vista o segundo scroll ${JSON.stringify(look200)}`);
+  check(look200.reset <= look200.vh + 1 && look200.inner <= 1, `hoja del avatar al 200 %: botón fuera de vista o segundo scroll ${JSON.stringify(look200)}`);
   await pp.keyboard.press('Escape');
   await pctx.close();
-  // Móvil apaisado: la portada y el avatar no se comen la pantalla.
+  // Móvil apaisado: el avatar no se come la pantalla.
   const lctx = await browser.newContext({ ...ctxOpts, viewport: { width: 844, height: 390 } });
   const lp = await lctx.newPage();
   await seed(lp, st, 'perfil');
   await lp.waitForSelector('.pf-hero');
-  const land = await lp.evaluate(() => ({ cover: Math.round(document.querySelector('.pf-cover').getBoundingClientRect().height), avatar: Math.round(document.querySelector('.pf-avatar').getBoundingClientRect().width) }));
-  check(land.cover <= 120 && land.avatar <= 80, `perfil apaisado con portada de ${land.cover} px y avatar de ${land.avatar} px`);
-  await lp.click('.pf-look');
+  const land = await lp.evaluate(() => Math.round(document.querySelector('.pf-avatar').getBoundingClientRect().width));
+  check(land <= 64, `perfil apaisado con avatar de ${land} px`);
+  await lp.click('.pf-avatar-btn');
   await lp.waitForSelector('.look-dialog[open]');
   const landLook = await lp.evaluate(() => ({ reset: document.querySelector('[data-action="look-reset"]').getBoundingClientRect().bottom, vh: innerHeight, cols: getComputedStyle(document.querySelector('.look-grid')).gridTemplateColumns.split(' ').length }));
-  check(landLook.reset <= landLook.vh + 1 && landLook.cols >= 5, `hoja de portada apaisada: ${JSON.stringify(landLook)}`);
+  check(landLook.reset <= landLook.vh + 1 && landLook.cols >= 5, `hoja del avatar apaisada: ${JSON.stringify(landLook)}`);
   await lctx.close();
   // Tableta: dos columnas desde 720 px.
   const tctx = await browser.newContext({ ...ctxOpts, viewport: { width: 768, height: 1024 } });

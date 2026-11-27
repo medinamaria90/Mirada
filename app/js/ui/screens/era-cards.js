@@ -54,9 +54,16 @@ export function cardHtml(index, card, n, total) {
   </section>`;
 }
 
-// root: el .welcome de la presentación. La portada (cuadros, título, frase) pasa a ser la primera diapositiva.
-export async function mountEraCards(ctx, root, movementId) {
+// Tarjetas listas para montar: los datos y su hoja de estilo. La presentación espera a ambos antes de pintarse, para
+// salir ya en su forma final (montar el carrusel sobre una portada ya pintada la hacía saltar).
+export async function prepareEraCards(movementId) {
   const [cards] = await Promise.all([loadCards(movementId), loadCss('css/epocas.css')]);
+  return cards;
+}
+
+// root: el .welcome de la presentación. La portada (cuadros, título, frase) pasa a ser la primera diapositiva. Se llama
+// antes de que la pantalla se pinte (sin salto); si llega tarde (red muy lenta), late la monta con un fundido suave.
+export function mountEraCards(ctx, root, movementId, cards, { late = false } = {}) {
   const body = $('.welcome-body', root);
   if (!cards.length || !body || !root.isConnected || $('.era-track', root)) return;
   const enter = $('[data-action="enter"]', body);
@@ -80,6 +87,7 @@ export async function mountEraCards(ctx, root, movementId) {
   body.prepend(track);
   wireCards(ctx, body, track, total);
   root.classList.add('has-era-cards');
+  if (late) root.classList.add('era-late');
   if (focused && !focused.contains(document.activeElement)) focused.focus({ preventScroll: true });
   root.insertAdjacentHTML('beforeend', `<button type="button" class="icon-btn era-share" aria-label="Compartir">${icons.share(20)}</button>`);
   $('.era-share', root).addEventListener('click', async () => {

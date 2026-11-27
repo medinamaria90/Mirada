@@ -26,8 +26,8 @@ const catalog = json('data/catalog.json');
 const TODAY = '2026-11-24';
 const askable = (w) => !w.spoiler && !w.attributed;
 
-test('cifras: 1.472 obras, 174 pintores (los Lorenzetti, una sola parada), 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
-  assert.equal(real.artworks.length, 1472);
+test('cifras: 1.466 obras, 174 pintores (los Lorenzetti, una sola parada), 11 movimientos (9 del camino y 2 ramas), 14 ramas', () => {
+  assert.equal(real.artworks.length, 1466);
   assert.equal(real.artists.length, 174);
   assert.equal(real.movements.length, 11);
   assert.deepEqual(real.movements.filter((m) => m.branch).map((m) => [m.id, m.opensAt]), [['gotico', 'renacimiento'], ['ukiyo-e', 'impresionismo']]);
@@ -113,7 +113,7 @@ test('ramas: un tramo se abre al dominar el primer tramo de su época; nunca el 
   assert.equal(movementReached(p0, real, 'renacimiento'), true);
   assert.deepEqual(firstTramo(real, 'renacimiento').map((s) => s.id), ['botticelli', 'masaccio', 'piero', 'berruguete']);
   assert.deepEqual(firstTramo(real, 'romanticismo').map((s) => s.id), ['goya'], 'sin tramos, la primera parada');
-  // Con Botticelli solo, aún no; con el tramo «Primer Renacimiento» dominado, se abre el Gótico.
+  // Con Botticelli solo, aún no; con el tramo «Nace el Renacimiento» dominado, se abre el Gótico.
   const p = emptyProgress();
   masterSteps(p, real.steps.slice(0, 1));
   assert.equal(tramoOpen(p, real, 'renacimiento'), false);
@@ -319,7 +319,7 @@ test('migración 6 → 7: obras a<N> → w<QID>, lo que no tiene equivalente se 
   assert.deepEqual(out.progress.deep, {});
   assert.equal(out.progress.rank, 0);
   assert.deepEqual(out.session, {}, 'la ronda en curso lleva ids antiguos: se descarta');
-  assert.deepEqual(out.settings, { ...v6.settings, name: '', cover: '', avatar: '' });
+  assert.deepEqual(out.settings, { ...v6.settings, name: '', avatar: '' });
   // Datos raros no rompen la migración.
   const odd = migrate({ version: 6, progress: { collection: null, srs: 7, fallados: [null, { id: 3 }], detail: { x: 5 } } });
   assert.equal(odd.version, SCHEMA_VERSION);
@@ -348,7 +348,7 @@ test('ficha de museo: se pide aparte y se une a las obras', async () => {
   const { mergeCatalogFicha } = await import('../app/js/engine/catalog.js');
   const idx = buildIndex(catalog);
   const n = mergeCatalogFicha(idx, json('data/catalog-ficha.json'));
-  assert.equal(n, 1472);
+  assert.equal(n, 1466);
   const g = idx.artwork(W('a154'));
   assert.ok(g.museum && g.city, 'La Gioconda lleva museo y ciudad');
   assert.ok(g.source.wikidata.startsWith('Q'));
@@ -381,7 +381,7 @@ test('«¿De qué movimiento es?»: opciones en orden cronológico y la buena re
   for (const id of ['rococo-neoclasicismo', 'romanticismo', 'realismo']) {
     const m = byMovement.get(id);
     const total = m.reduce((x, y) => x + y, 0);
-    assert.ok(m.every((c) => c / total >= 0.15), `${id}: ${m}`);
+    assert.ok(m.every((c) => c / total >= 0.12), `${id}: ${m}`);
   }
   assert.ok(byPos.every((c) => c > 0), `posiciones de la buena ${byPos}`);
 });

@@ -1,11 +1,10 @@
-/* Perfil: portada e identidad, secciones, «Practicar» y hojas (ajustes, nombre, portada y avatar, logro). El
+/* Perfil: identidad, secciones, «Practicar» y hojas (ajustes, nombre, avatar, logro). El
    rango, las cifras y los logros (también la pantalla #logros) están en profile-cards.css. Se carga solo al abrir el perfil (ui/screens/profile.js). Los colores vienen
    de brand.css. */
 
 .page-profile {
   --pf-gutter: 1.1rem;
-  --pf-avatar: min(5.5rem, 22vw);
-  --pf-cover-h: 128px;
+  --pf-avatar: min(4.5rem, 20vw);
   --pf-gap: 1.9rem;
   --pf-tile-gap: .5rem;
   --pf-ring: 4px;
@@ -15,75 +14,49 @@
 
 /* Una columna en móvil, en el orden del DOM (identidad, rango, cifras, logros, practicar); desde 720 px, las
    mismas filas con áreas de rejilla (de dos en dos). */
-.pf-layout { display: grid; gap: var(--pf-gap); }
+.pf-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--pf-gap); }
 .pf-layout > .pf-sec { padding-inline: var(--pf-gutter); min-width: 0; }
 .pf-layout > .pf-hero { min-width: 0; }
 
-/* ---------- Identidad ---------- */
-.pf-hero { position: relative; }
-.pf-cover {
-  position: relative; height: var(--pf-cover-h); overflow: hidden;
-  background: linear-gradient(135deg, var(--brand-soft), var(--surface-2));
-}
-.pf-cover.is-empty { display: grid; place-items: center; color: var(--brand-text); }
-.pf-cover.is-empty .icon { opacity: .35; stroke-width: 1.2; }
-.pf-cover::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to bottom, transparent 30%, color-mix(in srgb, var(--bg) 70%, transparent) 68%, var(--bg) 100%);
-}
-.pf-cover-art {
-  position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border: 0; padding: 0;
-  border-radius: 0; box-shadow: none; cursor: pointer; background: transparent;
-}
-.pf-cover-art .zoom-badge { right: .7rem; bottom: .7rem; }
-/* Foco de la portada: anillo doble por dentro y POR ENCIMA de la imagen y del velo (z-index). Lleva más
-   especificidad que `button.art:focus-visible` de main.css, que lo sacaba fuera y lo recortaba el overflow. */
-.pf-cover .pf-cover-art:focus-visible { outline: none; }
-.pf-cover .pf-cover-art:focus-visible::after {
-  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  border: 4px solid var(--ink); box-shadow: inset 0 0 0 4px var(--bg);
-}
-.pf-cover-art img, .pf-cover-full { object-position: var(--focus, 50% 30%); }
-/* La imagen entera entra por encima de la miniatura cuando llega; el clic pasa al cuadro de debajo. */
-.pf-cover-full {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none;
-  transition: opacity .4s var(--ease); z-index: 0; object-position: var(--focus, 50% 30%);
-}
-.pf-cover-full.is-on { opacity: 1; }
-.pf-cover-art .zoom-badge, .pf-cover-cap { z-index: 1; }
-.pf-cover-cap {
-  position: absolute; left: 64px; right: 64px; top: .9rem; z-index: 1; pointer-events: none; margin-inline: auto;
-  padding: .2rem .7rem; background: color-mix(in srgb, var(--surface) 86%, transparent); color: var(--ink);
-  border-radius: 14px; font-size: .78rem; line-height: 1.35; width: fit-content; max-width: calc(100% - 128px);
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
-}
-.pf-cover.cap-bottom .pf-cover-cap { top: auto; bottom: .75rem; left: auto; right: 52px; max-width: min(60%, calc(100% - 140px)); margin-inline: 0; }
-.pf-gear, .pf-look {
-  position: absolute; top: .6rem; z-index: 2; display: grid; place-items: center; width: 48px; height: 48px;
-  border: 0; border-radius: 999px; cursor: pointer; color: var(--ink);
-  background: color-mix(in srgb, var(--surface) 88%, transparent); box-shadow: var(--shadow-card);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  transition: transform .15s var(--ease), background-color .2s;
-}
-.pf-gear { right: .6rem; }
-.pf-look { left: .6rem; }
-.pf-gear:hover, .pf-look:hover { background: var(--surface); }
-.pf-gear:active, .pf-look:active { transform: scale(.94); }
-
+/* ---------- Identidad: avatar, saludo y engranaje en una fila ---------- */
+/* Si el saludo no tiene ni unos 11 caracteres de ancho (texto muy grande o pantalla diminuta), baja a su propia
+   fila bajo el avatar y el engranaje. La consulta va en em del contenedor: crece con el tamaño de letra. */
+.pf-hero { container: pf-hero / inline-size; }
 .pf-id {
-  position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: flex-end; gap: .4rem .9rem;
-  padding-inline: var(--pf-gutter); margin-top: calc(var(--pf-avatar) / -2);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "avatar name gear";
+  align-items: center; gap: .6rem .9rem; padding: 1.2rem var(--pf-gutter) 0;
 }
+@container pf-hero (max-width: 20em) {
+  .pf-id { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "avatar gear" "name name"; }
+}
+.pf-avatar-slot { grid-area: avatar; position: relative; display: block; border-radius: 999px; }
+.pf-avatar-btn { padding: 0; border: 0; background: none; color: inherit; cursor: pointer; transition: transform .12s var(--ease); }
+.pf-avatar-btn:active { transform: scale(.96); }
+.pf-avatar-btn:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
 .pf-avatar {
-  display: grid; place-items: center; flex: none; width: var(--pf-avatar); height: var(--pf-avatar); border-radius: 999px; overflow: hidden;
+  display: grid; place-items: center; width: var(--pf-avatar); height: var(--pf-avatar); border-radius: 999px; overflow: hidden;
   background: var(--brand-soft); color: var(--brand);
-  box-shadow: 0 0 0 4px var(--bg), var(--shadow-card);
+  box-shadow: 0 0 0 1px var(--line), var(--shadow-card);
 }
 .pf-avatar.has-initial { background: var(--brand); color: var(--on-brand); }
 .pf-avatar.has-art { background: var(--surface-2); }
 .pf-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.pf-initial { font: 500 2.5rem/1 var(--font); }
-.pf-greeting { flex: 1 1 11rem; min-width: 0; margin: 0; padding-bottom: .15rem; font: 500 1.6rem/1.1 var(--font); letter-spacing: var(--track); }
+/* Chapita del avatar elegible: dice que se puede cambiar sin texto de ayuda. */
+.pf-avatar-badge {
+  position: absolute; right: -2px; bottom: -2px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;
+  background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line-2), 0 0 0 2px var(--bg), var(--shadow-card);
+}
+.pf-gear {
+  grid-area: gear; justify-self: end; display: grid; place-items: center; width: 48px; height: 48px; margin-right: -.2rem;
+  border: 0; border-radius: 999px; cursor: pointer; color: var(--ink);
+  background: var(--surface); box-shadow: var(--lift-sm);
+  transition: transform .12s var(--ease), box-shadow .12s var(--ease);
+}
+.pf-gear:hover { box-shadow: 0 var(--relief-sm) 0 var(--line-2), inset 0 0 0 1.5px var(--line-2); }
+.pf-gear:active { transform: translateY(var(--relief-sm)); box-shadow: var(--lift-down); }
+.pf-gear:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+.pf-initial { font: 500 2.1rem/1 var(--font); }
+.pf-greeting { grid-area: name; min-width: 0; margin: 0; font: 500 1.6rem/1.1 var(--font); letter-spacing: var(--track); }
 .pf-name-btn {
   display: inline-flex; align-items: center; gap: .45rem; max-width: 100%; min-height: 48px; padding: 0 .6rem 0 0;
   border: 0; border-radius: 999px; background: none; color: var(--ink); font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer;
@@ -141,7 +114,7 @@
 .pf-go-pair > .pf-go { flex: 1; min-width: 0; }
 .pf-share { flex: none; background: var(--surface); box-shadow: var(--lift-sm); color: var(--brand-text); }
 
-/* ---------- Hojas (ajustes, nombre, portada y avatar, logro): las cuatro iguales ---------- */
+/* ---------- Hojas (ajustes, nombre, avatar, logro): las cuatro iguales ---------- */
 .sheet-dialog {
   width: min(100vw, 560px); max-width: 100vw; margin: auto auto var(--kb-inset, 0px); max-height: calc(100dvh - var(--kb-inset, 0px)); overflow-y: auto;
   border-radius: 22px 22px 0 0; padding-bottom: var(--safe-b);
@@ -163,13 +136,9 @@
 .pf-note { display: flex; justify-content: space-between; gap: .6rem; font-size: .85rem; color: var(--ink-2); }
 .pf-counter { font-variant-numeric: lining-nums tabular-nums; }
 .look-body { gap: .8rem; }
-.look-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); flex: none; gap: 0; border-bottom: 1px solid var(--line-2); }
-.look-tabs .seg { min-height: 48px; border-radius: 0; box-shadow: none; background: none; border-bottom: 3px solid transparent; margin-bottom: -1px; }
-.look-tabs .seg:hover { background: var(--surface-2); box-shadow: none; }
-.look-tabs .seg:active { transform: none; }
-.look-tabs .seg.is-on { background: none; box-shadow: none; border-bottom-color: var(--brand-text); }
-.look-tabs .seg.is-on .seg-num { color: var(--brand-text); }
 .look-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: var(--pf-tile-gap); padding: 6px; }
+/* Casillas cuadradas (el avatar es redondo): sin huecos bajo los cuadros apaisados; el recorte sigue el foco del cuadro. */
+.look-grid .pf-tile { aspect-ratio: 1; }
 .pf-pick { display: block; width: 100%; padding: 0; border: 0; border-radius: var(--radius-sm); background: none; cursor: pointer; box-shadow: 0 0 0 0 var(--brand-text); transition: box-shadow .15s var(--ease); }
 .pf-pick[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--brand-text); }
 
@@ -234,7 +203,7 @@
   /* La columna de la app (560 px hasta 1024) se queda corta para dos columnas: el perfil la ensancha. */
   #app:has(.page-profile) { max-width: min(100%, 980px); }
   .page-profile .content { max-width: 980px; margin-inline: auto; }
-  .page-profile { --pf-gutter: 1.6rem; --pf-cover-h: 180px; --pf-avatar: 104px; --pf-tile-gap: .7rem; }
+  .page-profile { --pf-gutter: 1.6rem; --pf-avatar: 88px; --pf-tile-gap: .7rem; }
   .pf-greeting { font-size: 1.9rem; }
   .pf-initial { font-size: 3rem; }
   .sheet-dialog { margin: auto; border-radius: 22px; }
@@ -251,17 +220,12 @@
   .pf-layout > .pf-welcome-sec { grid-area: welcome; }
   .pf-layout > .pf-medals-sec { grid-area: medals; }
   .pf-layout > .pf-practice-sec { grid-area: practice; }
-  .pf-hero .pf-cover { border-radius: 0 0 var(--radius) var(--radius); }
-}
-@media (min-width: 1024px) {
-  .page-profile { --pf-cover-h: 220px; }
 }
 
-/* ---------- Móvil apaisado (poca altura): portada baja y avatar pequeño. Va al final para ganar a las
+/* ---------- Móvil apaisado (poca altura): avatar pequeño. Va al final para ganar a las
    reglas de ancho: un móvil apaisado mide más de 720 px de ancho. ---------- */
 @media (max-height: 500px) and (orientation: landscape) {
-  .page-profile { --pf-cover-h: 96px; --pf-avatar: 64px; --pf-gap: 1.3rem; }
+  .page-profile { --pf-avatar: 56px; --pf-gap: 1.3rem; }
   .pf-initial { font-size: 1.8rem; }
   .pf-greeting { font-size: 1.3rem; }
-  .pf-cover-cap { display: none; }
 }
