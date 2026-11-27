@@ -5,7 +5,8 @@
 //
 // Avanza sola al llenarse la barra (salvo con movimiento reducido) y se para en la última; tiene botón de pausa, Espacio pausa o
 // reanuda, mantener el dedo pausa y usar el teclado (Tab) también. Para el teclado y el lector hay botones «anterior» y
-// «siguiente» que solo se ven con el foco. Atrás cierra la historia (entra en el historial, como el visor).
+// «siguiente» que solo se ven con el foco. Atrás cierra la historia (entra en el historial, como el visor). Las del nivel 1
+// llevan «Compartir» en la cabecera (ui/story-share.js).
 
 import { esc, accentStyle, prefersReducedMotion } from './dom.js';
 import { icons } from './icons.js';
@@ -14,8 +15,9 @@ import { sealHtml, loadSealCss } from './seal.js';
 import { loadStory } from './story-data.js';
 import { avatarHtml } from './avatar.js';
 import { mediaHtml, copyHtml } from './story-card.js';
+import { shareButtonHtml, noteHtml, shareStory, flashNote } from './story-share.js';
 import { seenOf, avatarWork, openingWork, coverWork } from '../engine/painters.js';
-import { levelStory, step, storyKey, cardDuration, lookLine } from '../engine/stories.js';
+import { levelStory, step, storyKey, cardDuration, lookLine, isShareable } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
 const HOLD_MS = 180; // mantener el dedo así de rato pausa la historia
@@ -41,25 +43,27 @@ export const STORY_END = Object.freeze({
 // Muestra la historia del nivel y devuelve una promesa que se cumple al cerrarla con { shown, ended }: los cuadros que ha
 // enseñado y cómo se cerró (STORY_END). opts: { force } vuelve a mostrarla aunque ya se haya visto; { history: false } cuando va
 // seguida de una ronda: no entra en el historial (su «atrás» llegaría cuando la ronda ya está montada); { onPlay } lo que hace
-// «Jugar» tras cerrar (sin él, solo cerrar: lo que sigue lo decide quien llama) o false si no hay nada que jugar; { onMore } lo que
-// hace «Ver más» (sin él, abre la ficha); { look } la pista «Fíjate en…» del pintor, que la última tarjeta añade si la historia
-// no lo dice ya.
+// «Jugar» tras cerrar (sin él, solo cerrar: lo que sigue lo decide quien llama) o false si no hay nada que jugar, y { playLabel }
+// otro texto para ese botón («Repetir nivel»); { onMore } lo que hace «Ver más» (sin él, abre la ficha) o false para no ofrecerlo;
+// { look } la pista «Fíjate en…» del pintor, que la última tarjeta añade si la historia no lo dice ya; { guest } la abre un enlace
+// compartido: no se marca como vista ni usa lo que ha visto quien la abre (no toca su partida).
 export async function playStory(ctx, artistId, level, opts = {}) {
   const key = storyKey(artistId, level);
   const none = { shown: [], ended: STORY_END.NONE };
+  const guest = Boolean(opts.guest);
   if (!opts.force && storySeen(key)) return none;
   const [story] = await Promise.all([loadStory(artistId), loadCss('css/historias.css'), loadSealCss()]);
   const lv = levelStory(story, level);
   if (!lv) return none;
   const { index } = ctx;
   if (current) current.close();
-  markStorySeen(key);
+  if (!guest) markStorySeen(key);
   const artist = index.artist(artistId);
   const name = artist?.name || '';
   const opener = document.activeElement;
   const auto = !prefersReducedMotion();
   const useHistory = opts.history !== false;
-  const mine = seenOf(ctx.store.get().progress, index, artistId);
+  const mine = guest ? [] : seenOf(ctx.store.get().progress, index, artistId);
   // Su cara solo si el catálogo tiene un autorretrato suyo (mejor uno ya visto); nunca el retrato de otro.
   const face = avatarWork(mine, { selfOnly: true }) || avatarWork(index.worksOf(artistId), { selfOnly: true });
   // La primera tarjeta del nivel básico abre con su autorretrato visto o con su obra más representativa de las vistas.
@@ -67,6 +71,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
   const opening = ownFace ? ownFace.work : (mine.length ? openingWork(mine, null) : null);
   const look = lookLine(lv.cards, opts.look);
   const more = opts.onMore || (() => ctx.go(`pintor-${artistId}`));
+  const shareable = isShareable(level);
 
   return new Promise((resolve) => {
     const dlg = document.createElement('dialog');
@@ -81,12 +86,14 @@ export async function playStory(ctx, artistId, level, opts = {}) {
           <span class="story-who"><span class="story-avatar" aria-hidden="true">${avatarHtml(artist, face, '', { texture: coverWork(mine) })}</span>
             <span class="story-who-text"><span class="story-name-line"><span class="story-name">${esc(artist?.short || name)}</span>${sealHtml(artist, 'sm')}</span><span class="story-title">${esc(lv.stage || lv.title)}</span></span></span>
           ${auto ? `<button type="button" class="story-icon" data-st="pause" aria-pressed="false" aria-label="Pausar">${icons.pause(20)}</button>` : ''}
+          ${shareable ? shareButtonHtml() : ''}
           <button type="button" class="story-icon story-close" data-st="close" aria-label="Cerrar">${icons.close(24)}</button>
         </div>
       </div>
       <button type="button" class="story-step story-back" data-st="prev" aria-label="Anterior">${icons.prev(22)}</button>
       <button type="button" class="story-step story-next" data-st="next" aria-label="Siguiente">${icons.next(22)}</button>
       <div class="story-bottom"></div>
+      ${shareable ? noteHtml() : ''}
       <p class="sr-only" data-live role="status" aria-live="polite"></p>
     </div>`;
     document.body.appendChild(dlg);
@@ -107,14 +114,25 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       }
     };
     const togglePause = () => { if (auto) { userPaused = !userPaused; setPaused(userPaused); } };
+    // Mientras se elige con quién compartir, la historia espera; luego sigue como estaba.
+    const share = async () => {
+      const wasPaused = userPaused;
+      if (auto) { userPaused = true; setPaused(true); }
+      flashNote(dlg, await shareStory({ artistId, level, title: lv.title || name }));
+      if (auto && !wasPaused && !closed) { userPaused = false; setPaused(false); }
+    };
     const show = (manual) => {
       const card = lv.cards[pos];
       const last = pos === lv.cards.length - 1;
       const override = level === 1 && pos === 0 ? opening : null;
       const work = override || index.artwork(card.artwork);
       if (work) shownIds.push(work.id);
-      media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name);
-      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false });
+      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, playLabel: opts.playLabel, more: opts.onMore !== false });
+      // La obra entera se coloca en el hueco que deja el texto (sin su degradado de arriba): el texto no tapa nada.
+      const textH = bottom.offsetHeight - parseFloat(getComputedStyle(bottom).paddingTop || '0');
+      media.style.setProperty('--story-text-h', `${Math.max(0, Math.round(textH))}px`);
+      const frame = media.clientWidth && media.clientHeight ? media.clientWidth / media.clientHeight : undefined;
+      media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name, frame);
       dlg.classList.toggle('is-last', last);
       dlg.querySelector('.story-back').hidden = pos === 0;
       dlg.querySelector('.story-next').hidden = last;
@@ -179,23 +197,26 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const b = ev.target.closest('[data-st]');
       if (b) {
         const what = b.dataset.st;
-        if (what !== 'pause') ctx.audio.sfx('tap');
+        if (what !== 'pause' && what !== 'share') ctx.audio.sfx('tap');
         if (what === 'close') finish();
         else if (what === 'pause') togglePause();
+        else if (what === 'share') share();
         else if (what === 'play') finish(STORY_END.PLAY, typeof opts.onPlay === 'function' ? opts.onPlay : null);
         else if (what === 'more') finish(STORY_END.MORE, more);
         else go(what === 'next' ? 1 : -1);
         return;
       }
       if (ev.target.closest('a, button, .story-actions')) return;
-      // Tocar la historia: el tercio izquierdo vuelve, el resto avanza (como en Instagram); en la última no se cierra sola.
+      // Tocar la historia: el tercio izquierdo vuelve, el resto avanza (como en Instagram); en la última no se cierra sola, salvo
+      // la compartida, que no tiene botones al final.
       const r = dlg.querySelector('.story-frame').getBoundingClientRect();
       const back = ev.clientX - r.left < r.width * ZONE_BACK;
-      if (back || pos < lv.cards.length - 1) go(back ? -1 : 1);
+      if (back || guest || pos < lv.cards.length - 1) go(back ? -1 : 1);
     });
-    // La barra activa llena y pasa a la siguiente tarjeta (sin anunciarla: no la ha pedido); en la última se queda.
+    // La barra activa llena y pasa a la siguiente tarjeta (sin anunciarla: no la ha pedido); en la última se queda, salvo en la
+    // compartida, que termina.
     dlg.addEventListener('animationend', (ev) => {
-      if (ev.target.parentElement?.classList.contains('is-now') && pos < lv.cards.length - 1) go(1, false);
+      if (ev.target.parentElement?.classList.contains('is-now') && (guest || pos < lv.cards.length - 1)) go(1, false);
     });
     // Mantener el dedo pausa (para leer con calma: el texto sigue a la vista); al soltar sigue. Arrastrar a un lado pasa de tarjeta y hacia abajo la cierra.
     let holdTimer = null;

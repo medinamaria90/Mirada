@@ -9,6 +9,9 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import share_pages  # noqa: E402
+
 SRC = os.path.join(ROOT, "contenido", "historias")
 DST = os.path.join(ROOT, "app", "data", "historias")
 MAX_TEXT = 180
@@ -64,6 +67,8 @@ def main():
     with open(os.path.join(DST, "index.json"), "w", encoding="utf8") as f:
         json.dump(index, f, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
     print(f"{len(index)} pintores con historia -> app/data/historias/")
+    if os.path.isfile(catalog):
+        share_pages.main()  # sus páginas para compartir (vista previa en WhatsApp)
     if errors:
         print("\n".join(errors), file=sys.stderr)
         sys.exit(1)

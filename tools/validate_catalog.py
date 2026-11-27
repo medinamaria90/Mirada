@@ -61,20 +61,20 @@ def check_look(wid, look, kind, title, artist):
 
 
 def check_level_ring(app, artist, ws):
-    """Aro de niveles (engine/level-ring.js): un tramo por nivel con historia. El título corto de cada etapa (`short`) sale
-    del `stage` de su historia (único origen); sin historia no hay tramo, y los tramos van seguidos desde el nivel 1 (el aro
-    no se salta un nivel que hay que jugar)."""
+    """Aro de niveles (engine/level-ring.js): un tramo y un círculo por nivel, tenga o no historia. Cada etapa lleva su título
+    corto (`short`, ≤ 12 letras, distinto en cada nivel): el `stage` de su historia si la tiene (único origen) y, si no, el de
+    tools/catalog_data.py STAGE_SHORT o su nombre. Una historia de nivel «a fondo» tiene su etapa."""
     path = f"{app}/data/historias/{artist['id']}.json"
     story = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
     told = {lv["level"]: lv.get("stage", "") for lv in story.get("levels", [])}
-    deep = sorted((s for s in artist["stages"] if any(w["level"] == s["id"] for w in ws)), key=lambda s: s["id"])
+    deep = [s for s in artist["stages"] if any(w["level"] == s["id"] for w in ws)]
     for s in artist["stages"]:
-        check(s.get("short", "") == told.get(s["id"], "") if s["id"] in told else "short" not in s,
-              f"{artist['id']}: etapa {s['id']} con título corto distinto del de su historia (o sin historia)")
-    check(all(lv == 1 or any(s["id"] == lv for s in deep) for lv in told), f"{artist['id']}: historia de un nivel sin etapa (sin tramo)")
-    ring = [s["id"] for s in deep if "short" in s]
-    check(ring == [s["id"] for s in deep][:len(ring)], f"{artist['id']}: tramos del aro con huecos {ring}")
-    check(not ring or 1 in told, f"{artist['id']}: aro sin historia de nivel 1")
+        short = s.get("short", "")
+        check(0 < len(short) <= 12, f"{artist['id']}: etapa {s['id']} sin título corto de ≤ 12 letras ({short!r})")
+        check(s["id"] not in told or short == told[s["id"]], f"{artist['id']}: etapa {s['id']} con título corto distinto del de su historia")
+    shorts = [s.get("short") for s in deep]
+    check(len(shorts) == len(set(shorts)), f"{artist['id']}: dos niveles con el mismo título corto {shorts}")
+    check(all(lv == 1 or any(s["id"] == lv for s in deep) for lv in told), f"{artist['id']}: historia de un nivel sin etapa")
 
 
 def main():
