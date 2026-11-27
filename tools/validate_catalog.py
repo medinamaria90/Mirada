@@ -21,9 +21,7 @@ FIRST_TRAMO = 4  # «Primer Renacimiento»: Botticelli, Masaccio, Piero y Berrug
 # de compartir, generadas al desplegar, rondan los 900.
 MAX_APP_FILES = 1000
 # Pintores invitados con menos de 3 obras por falta de imágenes: aviso (no error) hasta traerlas con el pipeline.
-PENDING_WORKS = {
-    "fra-angelico": "faltan obras «new»; candidatas en pipeline/extra.json (Q3531531, Q2376881, Q1215809) y pipeline/NOTAS.md",
-}
+PENDING_WORKS = {}
 LOOK_MAX = 100
 MIN_PATH_LEVEL1 = 4          # obras de nivel 1 sin spoiler de un pintor con etapa
 STAGE_CATEGORIES = ("gran-maestro", "maestro")
@@ -96,6 +94,11 @@ def main():
         check(not any(k in w for w in cat["artworks"]), f"catalog.json no debe llevar {k} (va en catalog-text.json)")
     for k in ("traits", "traitTags"):
         check(not any(k in a for a in cat["artists"]), f"catalog.json no debe llevar {k} de pintor")
+    # Ninguna obra de pipeline/excluir.json (claves QID o w<número>) puede llegar al catálogo de la app.
+    excl_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "pipeline", "excluir.json")
+    excluded = {re.sub(r"^Q(?=\d+$)", "w", k) for k in json.load(open(excl_path, encoding="utf-8"))}
+    for w in cat["artworks"]:
+        check(w["id"] not in excluded, f"{w['id']}: está en pipeline/excluir.json y no debe estar en el catálogo")
     labels = text.get("tagLabels", {})
     check(isinstance(labels, dict) and labels, "catalog-text: falta tagLabels")
     check(set(text.get("negableTags", [])) <= set(labels), "catalog-text: negableTags fuera del vocabulario")
@@ -267,6 +270,14 @@ def main():
             with Image.open(path_) as im:
                 check(im.size == packed_size(w["w"], w["h"]), f"{w['id']}: mide {im.size}, el catálogo espera {packed_size(w['w'], w['h'])}")
                 check(not im.getexif(), f"{w['id']}: lleva EXIF")
+            hd = w.get("hd")
+            if hd:  # HD de los detalles de las historias (paso «hd» del proceso): en <imgs>/hd/
+                hd_path = f"{imgs}/hd/{w['id']}.jpg"
+                if not os.path.isfile(hd_path):
+                    err(f"{w['id']}: falta {hd_path}")
+                    continue
+                with Image.open(hd_path) as im:
+                    check(list(im.size) == [hd["w"], hd["h"]], f"{w['id']}: la HD mide {im.size}, el catálogo espera {hd['w']}x{hd['h']}")
         for k, src in enumerate(atlas["sheets"]):
             p = f"{app}/{src}"
             if os.path.isfile(p):

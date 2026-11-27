@@ -13,6 +13,7 @@ que se lanza al hacer push de `pipeline/RUN` (una línea por paso) y hace commit
 6. `build` / `validate [--parcial]` — `catalogo/obras.json` (esquema de la app + ficha), `catalogo/pintores.json`, `CREDITS.md` y comprobaciones.
 7. `pack [lado] [--parcial]` (por defecto 1200) — `pipeline/pack.py`: toma las imágenes sueltas de las releases (y las de `catalogo/img/` si las hay), deja solo las de `catalogo/obras.json` a lado mayor 1200 px (JPEG 82, progresivo, sin metadatos; Pillow las abre como no confiables: solo JPEG, tope de píxeles y de bytes), y sube **un único recurso** `app-img-1200.zip` (+ `app-img-1200.sha256`) a la release `catalogo-img`, sustituyendo el anterior. Si faltan imágenes no sube nada salvo con `--parcial`. Peso e imágenes quedan en `pipeline/logs/pack.txt`.
 8. `reconciliar` — quita de `catalogo/img_meta.json` lo que no está en ninguna release (para que `download` lo vuelva a bajar).
+9. `hd` — `pipeline/hd.py`: imágenes HD de las obras que las historias enseñan en detalle (`region`, o `focus` con zoom ≥ 1,5). Con `tools/nitidez.py` calcula los píxeles de imagen por píxel CSS en el móvil típico (412 × 915); si con la de 1200 px no llega a 1,5, baja de Commons la miniatura que da 2 (lado mayor hasta 3840 px, ≤ 2,5 MB) y sube `app-img-hd.zip` (+ `.sha256`) a `catalogo-img`. Escribe `catalogo/hd.json`; `tools/catalog_from_pipeline.py` pone `hd` en esas obras y `tools/fetch_images.sh` las deja en `app/img/hd/`. Relanzarlo (`hd` en `pipeline/RUN`) cuando una historia nueva use `region` o zoom: `tools/sync_historias.py` avisa del detalle borroso.
 
 ## Bitácora
 
@@ -117,6 +118,18 @@ Aplicada la fase 1 de `docs/propuesta-pintores.md` con las decisiones de María 
 
 **Para la fase 2.** 68 etapas de fase 2 (resto de «a fondo» de maestros: 39; invitados: 29 provisionales); ampliar `candidates` (más de 80 con datos de imagen) para Goya, El Greco, Murillo, Sorolla, Monet, Cézanne, Munch, Renoir y Kandinsky; verificar las 29 etapas con `verificar` y las 33 con corte inferido (David, Fortuny, Renoir, Klimt, Munch, Gauguin… sin años en la propuesta); `seleccionar` con `FASE=2`. Las imágenes de las 1.180 obras de la selección antigua que ya no están siguen en las releases (huérfanas): `pack` solo empaqueta las de `obras.json`.
 **Para la migración de la app.** Leer `category`, `stages` y `branches` de `pintores.json`; `level` ya no es 1|2; las ramas (`gotico`, `ukiyo-e`) no entran en el camino común; el nivel 1 de grandes maestros y maestros tiene 7-9 obras (la propuesta daba 8 y 7) y el de invitados 3-4.
+
+### 27/11 — Fra Angelico, frescos Scrovegni y museos de marchante
+
+- Fra Angelico (invitado) pasa a 4 obras de nivel 1 (2 «learn», 2 «new»): entran la *Adoración de los Reyes Magos* y la *Anunciación de
+  Cortona*; la *Coronación de la Virgen* se fuerza para que las otras no la saquen del cupo. Fuera el *Retablo de San Marcos*: su imagen
+  en Wikidata mide 848 px (haría falta otro archivo de Commons con `archivoInfo` en `ajustes.json`).
+- Giotto, nivel «Padua»: entran *El beso de Judas* (Q3504778) y el *Llanto sobre Cristo muerto* (Q2067212). *El Juicio Final* (Q3769209)
+  queda fuera por lo mismo: imagen de 513 × 600 px en Wikidata.
+- Leyster (*Alegre compañía*, Q4109849) y Malévich (*Composición suprematista*, Q1523466): Wikidata daba un marchante como colección;
+  `fichas_ajustes.json` las deja en «Colección privada».
+- Ojo: `excluir.json` solo actúa al volver a ejecutar `seleccionar` de ese pintor. Una exclusión hecha a mano en `obras.json` vuelve con
+  el siguiente `build` si no se quita también de `catalogo/seleccion.json` (pasó con Kuniyoshi Q69729449; ya quitada).
 
 ## Plan de migración de la app al catálogo grande (sin tocar `app/` hasta que acabe la portada)
 

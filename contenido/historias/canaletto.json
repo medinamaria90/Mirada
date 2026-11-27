@@ -8,6 +8,12 @@
     {
      "text": "Canaletto empezó pintando decorados de teatro con su padre. Luego convirtió Venecia en su escenario: sus vistas eran la postal que todo viajero inglés quería llevarse.",
      "artwork": "w19660427",
+     "region": [
+      0.0,
+      0.1,
+      0.42,
+      0.95
+     ],
      "source": "https://es.wikipedia.org/wiki/Canaletto"
     },
     {

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Baja las imágenes de la app (app-img-1200.zip) de la release pública «catalogo-img» y las deja en <carpeta_destino>.
+# También las HD de las obras que las historias enseñan en detalle (app-img-hd.zip, paso «hd» del proceso) en <carpeta_destino>/hd.
 # Pensado para el comando de construcción de Render:  bash tools/fetch_images.sh app/img
 # Después pinta las hojas del atlas de miniaturas (<carpeta_destino>/s) con tools/make_atlas.py a partir de esas imágenes y
 # de app/data/catalog.json (las coordenadas de las miniaturas salen del catálogo: hojas y catálogo van siempre a juego) y las
@@ -23,19 +24,32 @@ command -v curl >/dev/null || fallo "falta curl"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-echo "fetch_images: descargando $BASE/$ZIP"
-curl -fsSL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o "$TMP/$ZIP" "$BASE/$ZIP" \
-  || fallo "no se pudo descargar $BASE/$ZIP (¿existe el recurso en la release catalogo-img? lo sube el paso «pack» del proceso)"
-curl -fsSL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o "$TMP/$SHA" "$BASE/$SHA" \
-  || fallo "no se pudo descargar $BASE/$SHA"
+sha_de() {
+  if command -v sha256sum >/dev/null; then sha256sum "$1" | awk '{print $1}'
+  elif command -v shasum >/dev/null; then shasum -a 256 "$1" | awk '{print $1}'
+  else python3 -c "import hashlib,sys;print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" "$1"
+  fi
+}
+baja() { curl -fsSL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o "$2" "$1"; }
 
-esperado="$(awk '{print tolower($1)}' "$TMP/$SHA" | head -n 1)"
-[[ "$esperado" =~ ^[0-9a-f]{64}$ ]] || fallo "el fichero $SHA no contiene un sha256 válido"
-if command -v sha256sum >/dev/null; then real="$(sha256sum "$TMP/$ZIP" | awk '{print $1}')"
-elif command -v shasum >/dev/null; then real="$(shasum -a 256 "$TMP/$ZIP" | awk '{print $1}')"
-else real="$(python3 -c "import hashlib,sys;print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" "$TMP/$ZIP")"
-fi
-[ "$real" = "$esperado" ] || fallo "sha256 no coincide: esperado $esperado, obtenido $real (descarga corrupta o zip a medio subir; reintenta)"
+# El paso «pack» del proceso sube el zip con «gh release upload --clobber», que borra el recurso antes de subir el nuevo:
+# durante unos minutos la descarga da 404 o el zip no casa con su .sha256. Se reintenta el par entero con margen amplio.
+INTENTOS="${MIRADA_FETCH_TRIES:-12}"
+ESPERA="${MIRADA_FETCH_WAIT:-30}"
+ok=0
+for i in $(seq 1 "$INTENTOS"); do
+  echo "fetch_images: descargando $BASE/$ZIP (intento $i/$INTENTOS)"
+  if baja "$BASE/$ZIP" "$TMP/$ZIP" && baja "$BASE/$SHA" "$TMP/$SHA"; then
+    esperado="$(awk '{print tolower($1)}' "$TMP/$SHA" | head -n 1)"
+    real="$(sha_de "$TMP/$ZIP")"
+    if [[ "$esperado" =~ ^[0-9a-f]{64}$ ]] && [ "$real" = "$esperado" ]; then ok=1; break; fi
+    echo "fetch_images: aviso: el sha256 no coincide (esperado ${esperado:-?}, obtenido $real); quizá se está subiendo un paquete nuevo" >&2
+  else
+    echo "fetch_images: aviso: no se pudo descargar el paquete; quizá se está subiendo uno nuevo" >&2
+  fi
+  [ "$i" -lt "$INTENTOS" ] && sleep "$ESPERA"
+done
+[ "$ok" = 1 ] || fallo "no se pudo bajar un $ZIP íntegro de $BASE tras $INTENTOS intentos (¿existe en la release catalogo-img? lo sube el paso «pack» del proceso)"
 echo "fetch_images: sha256 correcto ($real)"
 
 # Nombres seguros: solo <id>.jpg planos, sin rutas ni «..» (el zip lo genera pipeline/pack.py)
@@ -53,6 +67,35 @@ n="$(find "$DEST" -maxdepth 1 -name 'w*.jpg' | wc -l | tr -d ' ')"
 [ "$n" -ge "$MIN_IMG" ] || fallo "solo hay $n imágenes en $DEST (se esperaban al menos $MIN_IMG)"
 echo "fetch_images: $n imágenes en $DEST ($(du -sh "$DEST" | cut -f1))"
 
+# HD de los detalles de las historias: obligatoria si el catálogo de la app las pide («"hd":» en app/data/catalog.json).
+HD_ZIP="app-img-hd.zip"
+HD_SHA="app-img-hd.sha256"
+repo_cat="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/app/data/catalog.json"
+if curl -fsSL --retry 5 --retry-delay 5 --connect-timeout 30 -o "$TMP/$HD_ZIP" "$BASE/$HD_ZIP" \
+   && curl -fsSL --retry 5 --retry-delay 5 --connect-timeout 30 -o "$TMP/$HD_SHA" "$BASE/$HD_SHA"; then
+  esperado="$(awk '{print tolower($1)}' "$TMP/$HD_SHA" | head -n 1)"
+  if command -v sha256sum >/dev/null; then real="$(sha256sum "$TMP/$HD_ZIP" | awk '{print $1}')"
+  elif command -v shasum >/dev/null; then real="$(shasum -a 256 "$TMP/$HD_ZIP" | awk '{print $1}')"
+  else real="$(python3 -c "import hashlib,sys;print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" "$TMP/$HD_ZIP")"
+  fi
+  [ "$real" = "$esperado" ] || fallo "sha256 de $HD_ZIP no coincide (esperado $esperado, obtenido $real)"
+  if command -v unzip >/dev/null; then lista="$(unzip -Z1 "$TMP/$HD_ZIP" || true)"
+  else lista="$(python3 -m zipfile -l "$TMP/$HD_ZIP" | awk 'NR>1{print $1}')"
+  fi
+  [ -z "$lista" ] || ! echo "$lista" | grep -qvE '^w[0-9]+\.jpg$' || fallo "$HD_ZIP contiene nombres inesperados"
+  mkdir -p "$DEST/hd"
+  if [ -n "$lista" ]; then
+    if command -v unzip >/dev/null; then unzip -q -o "$TMP/$HD_ZIP" -d "$DEST/hd"
+    else python3 -m zipfile -e "$TMP/$HD_ZIP" "$DEST/hd"
+    fi
+  fi
+  echo "fetch_images: $(find "$DEST/hd" -maxdepth 1 -name 'w*.jpg' | wc -l | tr -d ' ') imágenes HD en $DEST/hd"
+elif [ -f "$repo_cat" ] && grep -q '"hd":' "$repo_cat"; then
+  fallo "el catálogo pide imágenes HD y no se pudo descargar $BASE/$HD_ZIP (lo sube el paso «hd» del proceso)"
+else
+  echo "fetch_images: sin paquete HD (el catálogo no lo pide)"
+fi
+
 if [ "${MIRADA_SKIP_ATLAS:-0}" != "1" ]; then
   here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   app="$(cd "$DEST/.." && pwd)"
@@ -62,5 +105,7 @@ if [ "${MIRADA_SKIP_ATLAS:-0}" != "1" ]; then
   "$PY" -c "import PIL" 2>/dev/null || "$PY" -m pip install --quiet pillow || fallo "no se pudo instalar Pillow para pintar el atlas"
   "$PY" -I "$here/make_atlas.py" "$app" "$DEST" || fallo "no se pudo pintar el atlas de miniaturas"
   # Imagen ligera de cada historia compartida para la vista previa de WhatsApp (<carpeta_destino>/og, páginas app/h/).
-  "$PY" -I "$here/share_pages.py" --images "$DEST" || fallo "no se pudieron pintar las imágenes para compartir"
+  # Es opcional: si falla, se avisa y el despliegue sigue (las historias se comparten sin imagen propia).
+  "$PY" -I "$here/share_pages.py" --images "$DEST" \
+    || echo "fetch_images: aviso: no se pudieron pintar las imágenes para compartir (app/img/og); sigo sin ellas" >&2
 fi

@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en el gato que asoma tras la silla y mira fijo al pájaro de la jaula. Los niños Graham, sonrientes, no se dan cuenta.",
      "artwork": "w3451328",
+     "region": [
+      0.6,
+      0.05,
+      0.95,
+      0.6
+     ],
      "source": "https://es.wikipedia.org/wiki/William_Hogarth"
     }
    ]

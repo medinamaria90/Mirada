@@ -13,6 +13,12 @@
     {
      "text": "En Roma había visto a Caravaggio, y se nota: luz clara, colores intensos y gente de carne y hueso. Esta Adoración la pintó para un convento de Toledo.",
      "artwork": "w27699409",
+     "region": [
+      0.0,
+      0.3,
+      0.6,
+      0.8
+     ],
      "source": "https://en.wikipedia.org/wiki/Adoration_of_the_Magi_(Maino)"
     },
     {

@@ -37,6 +37,9 @@ def main():
     qids = [o["source"]["wikidata"] for o in obras]
     if len(qids) != len(set(qids)):
         err.append("QID repetidos")
+    fuera = sorted(set(qids) & excluidas())
+    if fuera:
+        err.append("obras de excluir.json en obras.json: %s" % fuera)
     files = [o["source"]["file"] for o in obras]
     if len(files) != len(set(files)):
         err.append("archivo de Commons repetido")

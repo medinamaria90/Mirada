@@ -1,13 +1,2 @@
-# 27/11 — Fra Angelico: entran las forzadas de extra.json (Adoración de los Reyes Magos, Anunciación de Cortona; la Coronación
-# se fuerza para no perderla; el Retablo de San Marcos queda fuera: imagen de 848 px). Giotto: tres frescos más de los Scrovegni
-# (El beso de Judas, Llanto sobre Cristo muerto, El Juicio Final) en su nivel «Padua». Leyster y Malévich: «Colección privada»
-# en vez del marchante (fichas_ajustes.json, se aplica en build).
-candidates giotto fra-angelico
-seleccionar giotto fra-angelico
-fichas
-reconciliar
-download 1 150
-build
-validate --parcial
-pack 1200
-validate
+# 27/11 — HD de los detalles de las historias (region o zoom grande): app-img-hd.zip a catalogo-img y catalogo/hd.json.
+hd

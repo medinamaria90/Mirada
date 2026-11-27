@@ -88,3 +88,16 @@ def save(path, obj, compact=False):
             json.dump(obj, f, ensure_ascii=False, indent=1)
         f.write("\n")
     os.replace(tmp, path)
+
+
+def excluidas():
+    """QIDs de pipeline/excluir.json. Las claves pueden ser el QID o el id de obra de la app (w<número>)."""
+    import re
+    return {re.sub(r"^w(?=\d+$)", "Q", k) for k in load(os.path.join(PIPE, "excluir.json"), {})}
+
+
+def seleccion():
+    """catalogo/seleccion.json sin las obras de excluir.json: todos los pasos leen la selección por aquí, para que una
+    exclusión se respete aunque la selección guardada sea anterior a ella (antes solo la aplicaba seleccionar.py)."""
+    excl = excluidas()
+    return [s for s in load(os.path.join(CAT, "seleccion.json"), []) if s["qid"] not in excl]

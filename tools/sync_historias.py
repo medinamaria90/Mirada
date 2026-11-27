@@ -10,6 +10,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import nitidez  # noqa: E402
 import share_pages  # noqa: E402
 
 SRC = os.path.join(ROOT, "contenido", "historias")
@@ -18,8 +19,6 @@ MAX_TEXT = 180
 MAX_CARDS = 5
 SHORT_MAX = 12  # título corto de nivel (`stage`): cabe bajo su círculo en la fila de historias
 BASIC_LEVEL = 1
-# Obras «learn» que no sirven de imagen de historia aunque estén libres (explícitas): no cuentan como alternativa.
-NOT_FOR_STORIES = {"w334138", "w2717022"}  # Courbet, El origen del mundo; Hokusai, El sueño de la esposa del pescador
 # Detalle intencionado (`region`, engine/stories.js): siempre a sangre, así que su proporción no puede perder más que
 # LOSS_FOCUSED (engine/framing.js) ni en el marco del móvil típico ni en el más ancho (la columna 9:16).
 LOSS_FOCUSED = 0.45
@@ -39,6 +38,20 @@ def region_error(region, work):
     ratio = work["w"] / work["h"] * (x1 - x0) / (y1 - y0)
     loss = max(1 - min(ratio / f, f / ratio) for f in STORY_FRAMES)
     return f"la región pierde un {loss:.0%} al encuadrarla" if loss > LOSS_FOCUSED else None
+
+
+def blur_warning(card, work):
+    """Aviso si el detalle de la tarjeta (`region` o `focus` con zoom grande) se verá borroso en el móvil típico: menos de
+    nitidez.MIN_DENSITY píxeles de imagen por píxel CSS con la imagen que le toca (la HD si la obra la tiene). None si no."""
+    if not work or not work.get("w") or not work.get("h") or not nitidez.is_detail(card):
+        return None
+    hd = work.get("hd")
+    size = (hd["w"], hd["h"]) if hd else nitidez.served(work["w"], work["h"])
+    d = nitidez.density(card, *size)
+    if d >= nitidez.MIN_DENSITY:
+        return None
+    fix = "falta su HD: relanza el paso «hd» del proceso" if not hd else "ni su HD llega: elige un trozo más grande"
+    return f"detalle borroso de {card.get('artwork')} ({d:.2f} px de imagen por px CSS; {fix})"
 
 
 def view_key(card):
@@ -92,7 +105,7 @@ def repeats(story, name, works):
             continue
         free = sorted(w["id"] for w in works.values()
                       if w["artistId"] == name and w.get("level") == level and w["id"] not in ids
-                      and w["id"] not in NOT_FOR_STORIES and (level != BASIC_LEVEL or w.get("role") == "learn"))
+                      and (level != BASIC_LEVEL or w.get("role") == "learn"))
         if free:
             errors.append(f"{name} nivel {level}: repite {', '.join(twice)}; sin usar: {', '.join(free)}")
     return errors
@@ -109,7 +122,7 @@ def main():
     os.makedirs(DST, exist_ok=True)
     for old in os.listdir(DST):
         os.remove(os.path.join(DST, old))
-    index, errors = {}, []
+    index, errors, warnings = {}, [], []
     for fname in sorted(os.listdir(SRC)):
         if not fname.endswith(".json"):
             continue
@@ -117,6 +130,9 @@ def main():
         with open(os.path.join(SRC, fname), encoding="utf8") as f:
             story = json.load(f)
         errors += check(story, name, artists, works)
+        if works is not None:
+            warnings += [f"{name} nivel {lv.get('level')} tarjeta {i + 1}: {w}" for lv in story.get("levels", [])
+                         for i, c in enumerate(lv.get("cards", [])) if (w := blur_warning(c, works.get(c.get("artwork"))))]
         if works is not None:
             errors += repeats(story, name, works)
         with open(os.path.join(DST, fname), "w", encoding="utf8") as f:
@@ -127,6 +143,8 @@ def main():
     print(f"{len(index)} pintores con historia -> app/data/historias/")
     if os.path.isfile(catalog):
         share_pages.main()  # sus páginas para compartir (vista previa en WhatsApp)
+    if warnings:
+        print("AVISO\n" + "\n".join(warnings), file=sys.stderr)
     if errors:
         print("\n".join(errors), file=sys.stderr)
         sys.exit(1)
