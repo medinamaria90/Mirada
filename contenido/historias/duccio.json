@@ -13,6 +13,12 @@
     {
      "text": "Con él nació la escuela de Siena: el oro de los iconos bizantinos, pero con caras más humanas y tiernas. Florencia también lo quiso: esta Virgen es la tabla más grande de su siglo.",
      "artwork": "w948745",
+     "region": [
+      0.25,
+      0.1,
+      0.8,
+      0.55
+     ],
      "source": "https://www.uffizi.it/en/artworks/virgin-and-child-enthroned-surrounded-by-angels-known-as-the-rucellai-madonna"
     },
     {
