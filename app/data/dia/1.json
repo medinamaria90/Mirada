@@ -1,0 +1,50 @@
+{
+ "n": 1,
+ "artwork": "w151047",
+ "artistId": "botticelli",
+ "focus": [
+  0.32,
+  0.2
+ ],
+ "options": [
+  "filippo-lippi",
+  "leonardo",
+  "tiziano",
+  "botticelli",
+  "piero",
+  "rafael"
+ ],
+ "hints": {
+  "era": "Renacimiento · s. XV–XVI",
+  "year": "c. 1478–1485",
+  "museum": "Galería Uffizi, Florencia"
+ },
+ "cards": [
+  {
+   "text": "Era Botticelli, el pintor de los Médici en Florencia. ¿Recuerdas el detalle del principio? Eran los vientos, soplando para empujar a Venus recién nacida hasta la orilla.",
+   "artwork": "w151047",
+   "region": [
+    0.223,
+    0.0,
+    0.417,
+    0.5
+   ]
+  },
+  {
+   "text": "Fíjate en que nada pesa: Venus apenas apoya el pie en la concha y el mar son trazos en forma de uve. Botticelli no copia la realidad, busca una belleza ideal.",
+   "artwork": "w151047",
+   "region": [
+    0.392,
+    0.444,
+    0.608,
+    1.0
+   ]
+  },
+  {
+   "text": "Una diosa desnuda tan grande no se pintaba desde la Antigüedad. Hoy la llevas en el bolsillo: sale en la moneda italiana de diez céntimos.",
+   "artwork": "w151047",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/El_nacimiento_de_Venus_(Botticelli)"
+}

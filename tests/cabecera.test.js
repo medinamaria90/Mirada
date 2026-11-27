@@ -9,7 +9,8 @@ import { dirname, join } from 'node:path';
 import { defaultState } from '../app/js/state/schema.js';
 import { emptyProgress, DEFAULT_GOAL } from '../app/js/engine/progress.js';
 import { icons } from '../app/js/ui/icons.js';
-import { topBar, streakGoalChip, streakTip, dailyChip, HEADER_STYLE } from '../app/js/ui/shell.js';
+import { topBar, streakGoalChip, streakTip, cuadroChip, HEADER_STYLE } from '../app/js/ui/shell.js';
+import { cropRect, tryLabel } from '../app/js/engine/cuadro-calendar.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const app = join(here, '..', 'app');
@@ -42,16 +43,24 @@ test('cabecera: meta y racha en una sola pieza (la llama dentro del aro de la me
   for (const f of files(join(app, 'js'))) assert.ok(!readFileSync(f, 'utf8').includes('icons.sun'), `${f} usa icons.sun`);
 });
 
-test('cabecera: el reto diario está en la cabecera (sin chip de rango): pendiente o hecho con «4/5», hacia el reto', () => {
-  const pending = topBar(ctxWith());
-  assert.ok(pending.includes('class="chip chip-daily"') && pending.includes('href="#reto-diario"') && pending.includes('aria-label="Reto diario, pendiente"'));
-  assert.ok(!pending.includes('chip-level') && !pending.includes('minibar'), 'el chip del rango sigue en la cabecera');
-  const done = dailyChip({ score: 4, total: 5 });
-  assert.ok(done.includes('is-done') && done.includes('>4/5<') && done.includes('aria-label="Reto diario, hecho: 4 de 5"') && done.includes(icons.calendar(18)));
-  const ctx = ctxWith();
-  const state = ctx.store.get();
-  state.progress.daily = { [TODAY]: { score: 5, total: 5 } };
-  assert.ok(topBar(ctx).includes('>5/5<'));
+test('cabecera: el Cuadro del día está en la cabecera: pendiente con su detalle y el punto; hecho, la miniatura con ✓', () => {
+  const work = { id: 'w1', w: 1000, h: 500 };
+  const early = topBar(ctxWith());
+  assert.ok(early.includes('class="chip chip-cuadro"') && early.includes('href="#cuadro-del-dia"') && early.includes('aria-label="Cuadro del día, pendiente"') && early.includes('chip-dot'),
+    'sin calendario aún: el icono con el punto');
+  assert.ok(!early.includes('chip-level') && !early.includes('chip-daily'), 'ni rango ni reto diario');
+  const today = { artwork: 'w1', focus: [0.5, 0.5], crop: cropRect(work, [0.5, 0.5], 3), labelFor: tryLabel };
+  const pending = cuadroChip(today, null, work);
+  assert.ok(pending.includes('img/g/w1.jpg') && pending.includes('background-size:600.0% 300.0%') && pending.includes('chip-dot'), 'el detalle del paso 1 (×3) en el círculo');
+  const done = cuadroChip(today, { n: 3, guesses: ['a', 'b'], won: true, tries: 2 }, work);
+  assert.ok(done.includes('is-done') && done.includes('img/t/w1.jpg') && done.includes('chip-cuadro-ok') && !done.includes('chip-dot'));
+  assert.ok(done.includes('aria-label="Cuadro del día, hecho: a la segunda"'));
+  const lost = cuadroChip(today, { n: 3, guesses: ['a', 'b', 'c', 'd'], won: false, tries: 4 }, work);
+  assert.ok(lost.includes('aria-label="Cuadro del día, hecho: esta vez no"'));
+  assert.ok(cuadroChip(null, { n: 3, guesses: ['a'], won: true, tries: 1 }, work).includes('aria-label="Cuadro del día, hecho"'), 'sin calendario aún');
+  const ctx = { ...ctxWith(), index: { artwork: () => work }, cuadroToday: () => ({ ...today, n: 3, slot: 3 }) };
+  ctx.store.get().progress.cuadros = { [TODAY]: { n: 3, guesses: ['a'], won: true, tries: 1 } };
+  assert.ok(topBar(ctx).includes('hecho: a la primera'));
 });
 
 test('cabecera: «Repasar» (↻) lleva a #repaso, aparece desde 3 cuadros vistos, sin candado, y el punto solo con algo pendiente', async () => {
@@ -74,5 +83,5 @@ test('cabecera: «Repasar» (↻) lleva a #repaso, aparece desde 3 cuadros visto
   const due = reviewChip(reviewState(ctx));
   assert.ok(due.includes('chip-dot') && due.includes('hay cuadros pendientes') && !/\d/.test(due.replace(/<svg[^]*?<\/svg>/g, '').replace(/\d+(px|em)/g, '')), 'punto sin número');
   const html = bar(ctx);
-  assert.ok(html.indexOf('chip-streak') < html.indexOf('chip-review') && html.indexOf('chip-review') < html.indexOf('chip-daily'), 'entre la racha y el reto diario');
+  assert.ok(html.indexOf('chip-streak') < html.indexOf('chip-review') && html.indexOf('chip-review') < html.indexOf('chip-cuadro'), 'entre la racha y el Cuadro del día');
 });

@@ -285,7 +285,7 @@ test('rangos: XP + niveles «a fondo»; sin uno de los dos no se sube y nunca se
 // --- Migración de esquema v7 -------------------------------------------------------------------------
 
 test('migración 6 → 7: obras a<N> → w<QID>, lo que no tiene equivalente se pierde sin romper; pintores intactos', () => {
-  assert.equal(SCHEMA_VERSION, 10);
+  assert.equal(SCHEMA_VERSION, 11);
   const gioconda = W('a154');
   const v6 = {
     version: 6, onboarded: true,

@@ -1,0 +1,50 @@
+{
+ "n": 2,
+ "artwork": "w220859",
+ "artistId": "van-eyck",
+ "focus": [
+  0.5,
+  0.86
+ ],
+ "options": [
+  "memling",
+  "van-eyck",
+  "durero",
+  "holbein",
+  "bosco",
+  "van-der-weyden"
+ ],
+ "hints": {
+  "era": "Manierismo y Renacimiento del Norte · s. XV–XVII",
+  "year": "1434",
+  "museum": "National Gallery de Londres, Londres"
+ },
+ "cards": [
+  {
+   "text": "Era Van Eyck, el flamenco que llevó el óleo a un detalle nunca visto. ¿Recuerdas el detalle del principio? Ese perrito, pintado pelo a pelo, es un símbolo de fidelidad.",
+   "artwork": "w220859",
+   "region": [
+    0.288,
+    0.5,
+    0.712,
+    1.0
+   ]
+  },
+  {
+   "text": "Fíjate en el espejo redondo del fondo: refleja la habitación entera y, en la puerta, a dos personas. Una podría ser el propio pintor.",
+   "artwork": "w220859",
+   "region": [
+    0.323,
+    0.082,
+    0.677,
+    0.498
+   ]
+  },
+  {
+   "text": "Encima del espejo firmó como quien deja una pintada en la pared: «Jan van Eyck estuvo aquí», en latín, y el año, 1434.",
+   "artwork": "w220859",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/Retrato_de_Giovanni_Arnolfini_y_su_esposa"
+}

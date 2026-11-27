@@ -3,14 +3,14 @@
 //   s<idx>x<seed>  etapa del pintor nº idx del camino
 //   m<idx>x<seed>  repaso del movimiento nº idx
 //   r<idx>x<seed>  sala del movimiento nº idx (movimiento sin pintores con etapa)
-//   d<AAAAMMDD>    reto diario de esa fecha
+//   d<AAAAMMDD>    reto diario de esa fecha (ya no existe: el enrutado lo lleva al Cuadro del día)
 //   w<AAAAss>      reto semanal de esa semana ISO
 //   g<seed>        ronda general
 // idx y seed van en base 36. Solo letras minúsculas, dígitos y guiones.
 
 // La ronda de un reto se reconstruye con planChallenge (engine/daily.js); este módulo solo
 // codifica y valida el enlace (lo usa el enrutado al arrancar, sin cargar el planificador).
-import { compactDay, expandDay, expandWeek, isoWeek } from './dates.js';
+import { expandDay, expandWeek, isoWeek } from './dates.js';
 
 const HASH_RE = /^reto-([a-z0-9]{2,24})-(\d{1,2})$/;
 
@@ -25,7 +25,6 @@ export function tokenForRound(index, round) {
     const i = index.movements.findIndex((m) => m.id === round.movementId);
     return i < 0 ? null : `r${i.toString(36)}x${seed}`;
   }
-  if (round.kind === 'daily') return `d${compactDay(round.date)}`;
   if (round.kind === 'weekly') return `w${round.week.replace('-W', '')}`;
   if (round.kind === 'general') return `g${seed}`;
   return null;

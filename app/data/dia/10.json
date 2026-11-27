@@ -1,0 +1,50 @@
+{
+ "n": 10,
+ "artwork": "w321303",
+ "artistId": "bosco",
+ "focus": [
+  0.87,
+  0.35
+ ],
+ "options": [
+  "arcimboldo",
+  "bosco",
+  "bruegel",
+  "memling",
+  "van-eyck",
+  "durero"
+ ],
+ "hints": {
+  "era": "Manierismo y Renacimiento del Norte · s. XV–XVII",
+  "year": "c. 1490–1500",
+  "museum": "Museo del Prado, Madrid"
+ },
+ "cards": [
+  {
+   "text": "Era el Bosco, el pintor de los sueños y las pesadillas. ¿Recuerdas el detalle del principio? Es el hombre árbol del infierno, que nos mira desde su cuerpo hueco.",
+   "artwork": "w321303",
+   "region": [
+    0.783,
+    0.1,
+    0.957,
+    0.6
+   ]
+  },
+  {
+   "text": "Fíjate en el centro: cientos de personas desnudas entre fresas gigantes, burbujas y pájaros enormes. Un paraíso de placeres a un paso del infierno.",
+   "artwork": "w321303",
+   "region": [
+    0.403,
+    0.322,
+    0.597,
+    0.878
+   ]
+  },
+  {
+   "text": "En el infierno, un condenado lleva una partitura pintada en el trasero, y se ha llegado a tocar. El tríptico acabó en España con Felipe II, que adoraba al Bosco.",
+   "artwork": "w321303",
+   "whole": true
+  }
+ ],
+ "source": "https://www.museodelprado.es/coleccion/obra-de-arte/el-jardin-de-las-delicias/02388242-6d6a-4e9e-a992-e1311eab3609"
+}

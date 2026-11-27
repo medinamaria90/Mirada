@@ -86,12 +86,12 @@ test('racha: cada día perdido gasta la gracia de su propia semana', () => {
   assert.equal(graceLeft(kept.streak, '2026-11-09'), 2, 'la semana nueva empieza con los dos');
 });
 
-test('racha por una ronda cualquiera (etapa, repaso, reto diario, repaso) aunque no se llegue a la meta', () => {
+test('racha por una ronda cualquiera (etapa, repaso, reto semanal, repaso) aunque no se llegue a la meta', () => {
   const index = bigIndex();
   const kinds = [
     { kind: 'stage', artistId: index.path[0].id, plan: planStage(index, index.path[0].id, 1) },
     { kind: 'review', movementId: index.visibleMovements[0].id, plan: planMovementReview(index, index.visibleMovements[0].id, 1) },
-    { kind: 'daily', date: '2026-11-03', plan: planStage(index, index.path[0].id, 2) },
+    { kind: 'weekly', week: '2026-W45', plan: planStage(index, index.path[0].id, 2) },
     { kind: 'srs', plan: planStage(index, index.path[0].id, 4) },
   ];
   for (const { plan, ...extra } of kinds) {
@@ -153,15 +153,13 @@ test('fin de ronda: XP, colección, SRS, medallas y subida de nivel', () => {
   assert.ok(rv.progress.medals['movement-mov1']);
 });
 
-test('reto diario se registra una sola vez y da medallas', () => {
+test('una ronda con kind «daily» (reto diario de antes) ya no toca el diario ni da sus medallas', () => {
   const index = bigIndex();
   const plan = planStage(index, 'p11', 1);
   const answers = plan.questions.map((q) => ({ q, correct: true, retry: false, combo: 1 }));
-  const res = { kind: 'daily', date: '2026-11-23', answers, firstTry: answers.map(() => true) };
-  const r1 = finishRound(emptyProgress(), index, res, '2026-11-23');
-  assert.ok(r1.progress.medals['daily-1'] && r1.progress.medals['daily-perfect']);
-  const r2 = finishRound(r1.progress, index, { ...res, firstTry: answers.map(() => false) }, '2026-11-23');
-  assert.equal(r2.progress.daily['2026-11-23'].score, answers.length, 'el primer resultado se conserva');
+  const r1 = finishRound(emptyProgress(), index, { kind: 'daily', date: '2026-11-23', answers, firstTry: answers.map(() => true) }, '2026-11-23');
+  assert.deepEqual(r1.progress.daily, {});
+  assert.ok(!r1.progress.medals['daily-1'] && !r1.progress.medals['daily-perfect']);
 });
 
 test('racha de 3 días concede medalla', () => {

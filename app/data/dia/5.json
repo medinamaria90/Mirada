@@ -1,0 +1,50 @@
+{
+ "n": 5,
+ "artwork": "w969377",
+ "artistId": "caravaggio",
+ "focus": [
+  0.72,
+  0.45
+ ],
+ "options": [
+  "artemisia",
+  "velazquez",
+  "ribera",
+  "rembrandt",
+  "zurbaran",
+  "caravaggio"
+ ],
+ "hints": {
+  "era": "Barroco · s. XVII",
+  "year": "1600",
+  "museum": "Iglesia de San Luis de los Franceses, Roma"
+ },
+ "cards": [
+  {
+   "text": "Era Caravaggio, el rebelde que pintaba con luz de sótano. ¿Recuerdas la mano del principio? Es la de Cristo, que entra a llamar a Mateo, un odiado cobrador de impuestos.",
+   "artwork": "w969377",
+   "region": [
+    0.574,
+    0.22,
+    0.866,
+    0.72
+   ]
+  },
+  {
+   "text": "Fíjate en la luz: entra en diagonal sobre la mano de Cristo y cae justo en la mesa. Esa mano copia la de Adán que Miguel Ángel pintó en la Capilla Sixtina.",
+   "artwork": "w969377",
+   "region": [
+    0.267,
+    0.188,
+    0.633,
+    0.812
+   ]
+  },
+  {
+   "text": "Fue su primer gran encargo para una iglesia y lo hizo famoso de golpe. Sigue en la misma capilla de Roma: si echas una moneda, se enciende una luz unos minutos.",
+   "artwork": "w969377",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/La_vocaci%C3%B3n_de_San_Mateo"
+}

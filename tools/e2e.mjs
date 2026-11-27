@@ -806,6 +806,25 @@ async function writeState(pg, state) {
   await pg.waitForSelector('#app .screen > *');
   await pg.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), state);
 }
+// Cuadro del día en pantalla: falla `misses` veces (comprueba que el nombre se apaga) y acierta; espera a la historia.
+async function playCuadro(pg, misses = 1) {
+  const { answer } = await pg.evaluate(async () => {
+    const data = await import('./js/ui/cuadro-data.js');
+    const dates = await import('./js/engine/dates.js');
+    await data.ensureCuadroIndex();
+    const today = data.cuadroToday(dates.madridDayKey(new Date()));
+    return { answer: (await data.loadCuadroDay(today.slot)).artistId };
+  });
+  const wrong = (await pg.$$eval('.cdd-opt', (bs) => bs.map((b) => b.dataset.id))).filter((id) => id !== answer);
+  for (let k = 0; k < misses; k++) {
+    await pg.click(`.cdd-opt[data-id="${wrong[k]}"]`);
+    await pg.waitForTimeout(250);
+    check(await pg.locator(`.cdd-opt.is-off[data-id="${wrong[k]}"]`).count() === 1, 'el nombre fallado no se apaga');
+    check(await pg.locator('.cdd-hint').count() === k + 1, `tras ${k + 1} fallos no hay ${k + 1} pistas`);
+  }
+  await pg.click(`.cdd-opt[data-id="${answer}"]`);
+  await pg.waitForSelector('.story[open] .story-text');
+}
 async function seed(pg, state, hash = 'inicio') {
   await pg.goto(base);
   await writeState(pg, state);
@@ -887,8 +906,8 @@ await page.waitForSelector('.path');
 await shot(page, '02-mapa');
 await audit(page, '390 mapa');
 check(await page.locator('.today-strip, .lupa-dialog').count() === 0, 'quedan la franja «Hoy» o la lupa del día');
-check(await page.locator('.topbar .chip-daily').count() === 1 && await page.locator('.chip-level').count() === 0, 'la cabecera lleva el reto diario y ya no el rango');
-check((await page.locator('.chip-daily').getAttribute('aria-label')) === 'Reto diario, pendiente', 'el reto diario de la cabecera no dice «pendiente»');
+check(await page.locator('.topbar .chip-cuadro').count() === 1 && await page.locator('.chip-level, .chip-daily').count() === 0, 'la cabecera lleva el Cuadro del día (y ni rango ni reto diario)');
+check((await page.locator('.chip-cuadro').getAttribute('aria-label')) === 'Cuadro del día, pendiente', 'el Cuadro del día de la cabecera no dice «pendiente»');
 check(await page.locator('.overall-bar, .card-daily, .card-continue, .card-review, .today-block').count() === 0, 'quedan tarjetas de arriba del camino');
 // Cabecera: objetivos táctiles ≥ 48 px
 for (const box of await page.$$eval('.topbar a', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return { w: r.width, h: r.height, t: e.getAttribute('aria-label') }; }))) {
@@ -1564,24 +1583,34 @@ if (SMOKE) {
   await cp.waitForTimeout(600);
   check(await cp.locator('.coach-card').count() === 0, 'la guía vuelve a salir');
   await coachCtx.close();
-  // Reto diario en la cabecera: hecho con «n/5» y verde; pendiente, solo el icono. Lleva al reto de 5 preguntas.
-  const dayKeyNow = madridDayKey(new Date());
-  await seed(page, seededState({ upTo: 0, extra: { daily: { [dayKeyNow]: { score: 4, total: 5 } } } }));
-  await page.waitForSelector('.path');
-  const doneChip = await page.locator('.chip-daily').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), w: a.getBoundingClientRect().width, h: a.getBoundingClientRect().height }));
-  check(doneChip.label === 'Reto diario, hecho: 4 de 5' && doneChip.text === '4/5', `reto diario hecho en la cabecera: ${JSON.stringify(doneChip)}`);
-  check(doneChip.w >= 48 && doneChip.h >= 48, `el reto diario de la cabecera mide ${Math.round(doneChip.w)}×${Math.round(doneChip.h)}`);
-  check((await page.locator('.topbar').boundingBox()).height < 80, 'la cabecera salta a dos líneas con el reto diario');
-  await shot(page, '14b-cabecera-reto-hecho');
-  await audit(page, '390 cabecera reto hecho');
+  // Cuadro del día desde la cabecera: abrir, fallar una vez (el nombre se apaga, sale la época), acertar, ver la historia de
+  // 3 tarjetas, cerrarla y comprobar la pantalla de hecho y el chip hecho (miniatura con ✓).
   await seed(page, seededState({ upTo: 0 }));
   await page.waitForSelector('.path');
-  await page.locator('.chip-daily').click();
-  await page.waitForSelector('.lesson, .result');
-  check(page.url().endsWith('#reto-diario'), `el reto de la cabecera lleva a ${page.url()}`);
-  const dailySteps = await playRound(page);
-  check(dailySteps === 5, `el reto diario no es de 5 preguntas: ${dailySteps}`);
-  check(await page.locator('.grid-row .sq').count() === 5, 'el reto diario no muestra 5 casillas');
+  await page.waitForSelector('.chip-cuadro .chip-cuadro-img');
+  await page.locator('.chip-cuadro').click();
+  await page.waitForSelector('.cdd-opt');
+  check(page.url().endsWith('#cuadro-del-dia'), `el Cuadro del día de la cabecera lleva a ${page.url()}`);
+  check(await page.locator('.cdd-opt').count() === 6, 'el Cuadro del día no ofrece 6 pintores');
+  await shot(page, '14b-cuadro-paso1');
+  await audit(page, '390 cuadro del día');
+  await playCuadro(page, 1);
+  check(await page.locator('.story .story-bar').count() === 3, 'la historia del Cuadro del día no lleva 3 tarjetas');
+  check(/Recuerdas/.test(await page.locator('.story-text').innerText()), 'la primera tarjeta no vuelve al detalle');
+  await shot(page, '14b-cuadro-historia');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.cdd-done');
+  check(/A la segunda/.test(await page.locator('.cdd-done .cdd-title').innerText()), 'el hecho no dice «A la segunda»');
+  check(/Llevas 1 cuadro del día/.test(await page.locator('.cdd-count').innerText()), 'el hecho no cuenta los cuadros');
+  check(await page.locator('.cdd-done [data-action="story"]').count() === 1 && await page.locator('.cdd-done [data-action="meet"]').count() === 1, 'faltan «Ver la historia» o «Conocer…»');
+  await audit(page, '390 cuadro del día hecho');
+  const cuadroChipDone = await page.locator('.chip-cuadro').evaluate((a) => ({ label: a.getAttribute('aria-label'), done: a.classList.contains('is-done'), ok: Boolean(a.querySelector('.chip-cuadro-ok')), w: a.getBoundingClientRect().width, h: a.getBoundingClientRect().height }));
+  check(cuadroChipDone.done && cuadroChipDone.ok && cuadroChipDone.label === 'Cuadro del día, hecho: a la segunda', `Cuadro del día hecho en la cabecera: ${JSON.stringify(cuadroChipDone)}`);
+  check(cuadroChipDone.w >= 48 && cuadroChipDone.h >= 48, `el Cuadro del día de la cabecera mide ${Math.round(cuadroChipDone.w)}×${Math.round(cuadroChipDone.h)}`);
+  await shot(page, '14b-cuadro-hecho');
+  // #reto-diario (los enlaces antiguos) lleva al mismo sitio.
+  await page.goto(`${base}#reto-diario`);
+  await page.waitForSelector('.cdd-done');
   await page.goto(`${base}#inicio`);
   await page.waitForSelector('.path');
 
@@ -1753,14 +1782,19 @@ await playRound(page);
 await page.goBack();
 await page.waitForSelector('.path');
 
-// Reto diario
-await page.click('.chip-daily');
-await playRound(page, { wrongAt: [3, 7] });
-await shot(page, '15-reto-diario-fin', true);
+// Cuadro del día (fallando dos veces) y su texto para compartir
+await page.click('.chip-cuadro');
+await page.waitForSelector('.cdd-opt');
+await playCuadro(page, 2);
+await page.keyboard.press('Escape');
+await page.waitForSelector('.cdd-done');
+await shot(page, '15-cuadro-del-dia-fin', true);
+await page.evaluate(() => { navigator.share = undefined; });
 await page.click('[data-action="share"]');
 await page.waitForTimeout(300);
 dailyText = await page.evaluate(() => navigator.clipboard.readText());
-await page.click('[data-action="done"]');
+check(/^Sfumato · Cuadro del día \d+\n🖼️ 🟥🟥🟩⬛\nhttp/.test(dailyText), `texto del Cuadro del día «${dailyText}»`);
+await page.goto(`${base}#inicio`);
 await page.waitForSelector('.path');
 await shot(page, '16-mapa-tras-jugar');
 
@@ -2445,9 +2479,9 @@ for (const scheme of ['light', 'dark']) {
       const c7 = await browser.newContext({ ...ctxOpts, viewport: { width, height: width === 390 ? 844 : 640 }, colorScheme: scheme });
       const p7 = await c7.newPage();
       watch(p7, `o7-${tag}`);
-      // Inicio avanzado: reto diario en la cabecera y el mapa asomando.
+      // Inicio avanzado: Cuadro del día en la cabecera y el mapa asomando.
       await seed(p7, st7);
-      await p7.waitForSelector('.chip-daily');
+      await p7.waitForSelector('.chip-cuadro');
       if (width === 390) {
         const top = await p7.evaluate(() => ({ t: document.querySelector('.path').getBoundingClientRect().top, n: document.querySelector('.bottomnav').getBoundingClientRect().top }));
         check(top.t < top.n - 40, `[${tag}] el mapa no asoma (${Math.round(top.t)} / ${Math.round(top.n)})`);

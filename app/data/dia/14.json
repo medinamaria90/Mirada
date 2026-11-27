@@ -1,0 +1,50 @@
+{
+ "n": 14,
+ "artwork": "w219831",
+ "artistId": "rembrandt",
+ "focus": [
+  0.3,
+  0.65
+ ],
+ "options": [
+  "vermeer",
+  "rembrandt",
+  "rubens",
+  "velazquez",
+  "caravaggio",
+  "hals"
+ ],
+ "hints": {
+  "era": "Barroco · s. XVII",
+  "year": "1642",
+  "museum": "Rijksmuseum, Ámsterdam"
+ },
+ "cards": [
+  {
+   "text": "Era Rembrandt, el gran maestro holandés de la luz y la sombra. ¿Recuerdas a la niña del principio? Brilla en dorado entre los soldados y lleva un pollo colgado de la cintura.",
+   "artwork": "w219831",
+   "region": [
+    0.174,
+    0.4,
+    0.426,
+    0.9
+   ]
+  },
+  {
+   "text": "Fíjate en la mano del capitán: su sombra cae sobre el traje amarillo del teniente. Nadie posa quieto; todos se mueven, como en una película.",
+   "artwork": "w219831",
+   "region": [
+    0.372,
+    0.307,
+    0.688,
+    0.932
+   ]
+  },
+  {
+   "text": "No es de noche: el barniz se oscureció con los siglos y le dio ese nombre. En 1715 la recortaron por los lados para que cupiera en una pared del ayuntamiento.",
+   "artwork": "w219831",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/La_ronda_de_noche"
+}

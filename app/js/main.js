@@ -55,6 +55,8 @@ const loadArtistPage = () => import('./ui/screens/artist-page.js');
 const loadArtistWorks = () => import('./ui/screens/artist-works.js');
 const loadCredits = () => import('./ui/screens/credits.js');
 const loadAbout = () => import('./ui/screens/about.js');
+const loadCuadro = () => import('./ui/screens/cuadro-dia.js');
+const loadCuadroData = () => import('./ui/cuadro-data.js');
 
 async function loadJson(path) {
   const res = await fetch(path, { cache: 'no-cache' });
@@ -219,6 +221,19 @@ async function boot() {
     return textPromise;
   };
 
+  // Calendario del Cuadro del día: llega tras el catálogo y pinta el detalle de hoy en la cabecera (sin él, el icono).
+  let cuadroMod = null;
+  const refreshCuadroChip = () => {
+    if (!document.querySelector('.chip-cuadro')) return;
+    import('./ui/shell.js').then((shell) => {
+      const today = ctx.cuadroToday();
+      const html = shell.cuadroChip(today, store.get().progress.cuadros?.[ctx.dailyDay()], today ? index.artwork(today.artwork) : null);
+      document.querySelectorAll('.chip-cuadro').forEach((el) => { el.outerHTML = html; });
+    }).catch(() => {});
+  };
+  const loadCuadroChip = () => loadCuadroData().then((m) => m.ensureCuadroIndex().then(() => { cuadroMod = m; refreshCuadroChip(); }))
+    .catch((err) => console.info('Cuadro del día no disponible:', err.message));
+
   let cleanup = null;
   // Ruta de la pantalla anterior (p. ej. para que «Volver» de una sala lleve a Colección).
   let prevRoute = '';
@@ -229,8 +244,15 @@ async function boot() {
     store,
     audio,
     today: () => dayKey(new Date()),
-    // El reto diario va por el día de Madrid para que sea el mismo para todos.
+    // El Cuadro del día (y el reto semanal) van por el día de Madrid para que sean los mismos para todos.
     dailyDay: () => madridDayKey(new Date()),
+    // El cuadro de hoy ({ n, slot, artwork, focus }) cuando ha llegado su calendario (ui/cuadro-data.js); si no, null.
+    cuadroToday: () => {
+      if (!cuadroMod) return null;
+      const day = madridDayKey(new Date());
+      const today = cuadroMod.cuadroToday(day);
+      return today && cuadroMod.cuadroToday(day, index.artwork(today.artwork));
+    },
     go,
     toast,
     ensureText,
@@ -250,7 +272,7 @@ async function boot() {
   window.addEventListener('pointerup', unlockOnce, true);
   window.addEventListener('keydown', unlockOnce, true);
 
-  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'daily', 'weekly', 'challenge', 'free']);
+  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'weekly', 'challenge', 'free']);
   let firstRender = true;
   let renderToken = 0;
 
@@ -328,7 +350,8 @@ async function boot() {
     // Rutas antiguas del repaso (#repaso5, #repaso-rapido): a la sesión única, #repaso.
     if (route.redirect) return go(route.redirect, { replace: true });
     const welcome = () => lazy(token, screen, loadWelcome, (m) => m.renderWelcome(ctx, screen));
-    if (!onboarded && route.name !== 'challenge' && route.name !== 'era') return welcome();
+    // Un reto, una época o el Cuadro del día compartidos se pueden ver sin pasar por la bienvenida.
+    if (!onboarded && route.name !== 'challenge' && route.name !== 'cuadro' && route.name !== 'era') return welcome();
 
     // Ronda a medias: se retoma en su ruta y, al abrir la app en el inicio, se vuelve a ella.
     const session = readSession(store.get(), index, Date.now());
@@ -353,7 +376,7 @@ async function boot() {
       case 'era': return flow((m) => m.renderIntro(ctx, screen, route.movementId, { mode: 'shared' }));
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));
       case 'srs': return flow((m) => m.renderReview(ctx, screen));
-      case 'daily': return flow((m) => m.renderDaily(ctx, screen));
+      case 'cuadro': return lazy(token, screen, loadCuadro, (m) => m.renderCuadro(ctx, screen), true);
       case 'weekly': return flow((m) => m.renderWeekly(ctx, screen));
       case 'artist': return lazy(token, screen, loadArtistPage, (m) => m.renderArtistPage(ctx, screen, route.artistId, { focus: route.focus }), true);
       case 'works': return lazy(token, screen, loadArtistWorks, (m) => m.renderArtistWorks(ctx, screen, route.spec), true);
@@ -384,6 +407,7 @@ async function boot() {
   whenIdle(() => {
     ensureText();
     loadFlows().catch(() => {});
+    loadCuadroChip(); // el detalle de hoy en la cabecera (hasta entonces, el icono)
     import('./ui/dj-mode.js').then((m) => m.startDjIfOn()).catch(() => {}); // modo secreto «afinar música»
     import('./ui/warm-up.js').then((m) => m.warmUp()).catch((err) => console.info('Sin precarga:', err.message)); // lo que se toca después, sin esperar a la red
     startCloudWhenReady(store, storage, () => {

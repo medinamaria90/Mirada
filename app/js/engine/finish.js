@@ -108,11 +108,6 @@ export function finishRound(progress, index, result, today, opts = {}) {
     p.reviews[result.movementId] = { best: Math.max(prev.best, accuracy), last: today };
     if (accuracy >= MASTERY) award(`movement-${result.movementId}`);
   }
-  if (result.kind === 'daily' && result.date && !p.daily[result.date]) {
-    p.daily[result.date] = { score, total, firstTry: result.firstTry.slice() };
-    award('daily-1');
-    if (total && score === total) award('daily-perfect');
-  }
   if (result.kind === 'weekly' && result.week && !p.weekly?.[result.week]) {
     p.weekly = { ...(p.weekly || {}), [result.week]: { score, total, firstTry: result.firstTry.slice() } };
     award('weekly-1');

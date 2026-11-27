@@ -10,7 +10,7 @@ import { makeWhoQuestion, makeWhichQuestion, makeMovementQuestion, makeQuestion,
 import {
   planStage, planSala, planMovementReview, planSrsReview, planGeneral, salaLearnWorks, createRound, answerRound,
 } from '../app/js/engine/planner.js';
-import { planDaily, dailyPool } from '../app/js/engine/daily.js';
+import { planWeekly, dailyPool } from '../app/js/engine/daily.js';
 import { tokenForRound, encodeChallenge, decodeChallenge } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
 import { emptyProgress, salaStatus, artistStatus, movementStatus, isReviewUnlocked, nextStep, needsIntro, MASTERY } from '../app/js/engine/progress.js';
@@ -215,8 +215,8 @@ test('reto a un amigo: semilla de sala r<idx>x<seed> reconstruye la misma ronda;
   assert.equal(planChallenge(salas, { kind: 'sala', idx: 0, seed: 1 }), null);
   const stage = planStage(real, real.path.at(-1).id, 99);
   assert.deepEqual(planChallenge(real, decodeChallenge(encodeChallenge(tokenForRound(real, stage), 4))).questions, stage.questions);
-  const daily = planDaily(real, '2026-11-23');
-  assert.deepEqual(planChallenge(real, decodeChallenge(encodeChallenge(tokenForRound(real, daily), 4))).questions, daily.questions);
+  const weekly = planWeekly(real, '2026-W48');
+  assert.deepEqual(planChallenge(real, decodeChallenge(encodeChallenge(tokenForRound(real, weekly), 4))).questions, weekly.questions);
   const stage2 = planStage(salas, 'p22', 99);
   assert.deepEqual(planChallenge(salas, decodeChallenge(encodeChallenge(tokenForRound(salas, stage2), 4))).questions, stage2.questions);
 });

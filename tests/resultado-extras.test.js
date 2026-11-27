@@ -7,16 +7,27 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
-import { planDaily, DAILY_SIZE, dailyGrid } from '../app/js/engine/daily.js';
+import { dailyGrid } from '../app/js/engine/daily.js';
 import { extraRounds } from '../app/js/ui/screens/result.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const real = buildIndex(JSON.parse(readFileSync(join(here, '..', 'app', 'data', 'catalog.json'), 'utf8')));
 const DAY = '2026-11-24';
 
-function ctxWith(progress) {
-  return { index: real, store: { get: () => ({ progress }) }, today: () => DAY, dailyDay: () => DAY };
+// Por defecto, la guía ya propuso hoy el Cuadro del día (así no se cuela en las pruebas de las otras rondas).
+function ctxWith(progress, { cuadro = false } = {}) {
+  if (!cuadro && !progress.cuadroNudge) progress.cuadroNudge = DAY;
+  return { index: real, store: { get: () => ({ progress }), update() {} }, today: () => DAY, dailyDay: () => DAY };
 }
+
+test('resultado: el Cuadro del día, pendiente, se propone como acción secundaria una vez al día y nunca tras una ronda floja', () => {
+  const p = emptyProgress();
+  assert.deepEqual(extraRounds(ctxWith(p, { cuadro: true }), { kind: 'stage' }).map((r) => r.to), ['cuadro-del-dia']);
+  assert.deepEqual(extraRounds(ctxWith(p, { cuadro: true }), { kind: 'stage' }, { weak: true }), []);
+  p.cuadros = { [DAY]: { n: 1, guesses: ['x'], won: true, tries: 1 } };
+  assert.deepEqual(extraRounds(ctxWith(p, { cuadro: true }), { kind: 'stage' }), [], 'ya hecho');
+  assert.equal(extraRounds(ctxWith(emptyProgress(), { cuadro: true }), { kind: 'stage' }).find((r) => r.to !== 'inicio').to, 'cuadro-del-dia');
+});
 
 function masteredAll() {
   const p = emptyProgress();
@@ -38,11 +49,8 @@ test('resultado: con el camino dominado se ofrece el reto semanal, salvo si ya e
   assert.ok(!ids({ kind: 'stage' }).includes('reto-semanal'));
 });
 
-test('reto diario: 5 preguntas y 5 casillas al compartir', () => {
-  assert.equal(DAILY_SIZE, 5);
-  const plan = planDaily(real, DAY);
-  assert.equal(plan.questions.length, 5);
-  assert.equal(dailyGrid(plan.questions.map(() => true)), '🟩🟩🟩🟩🟩');
+test('reto semanal: una casilla por pregunta al compartir', () => {
+  assert.equal(dailyGrid([true, false, true, true, true]), '🟩⬜🟩🟩🟩');
 });
 
 // ---------------------------------------------------------------- Acciones del resultado sin duplicados

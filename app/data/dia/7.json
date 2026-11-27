@@ -1,0 +1,50 @@
+{
+ "n": 7,
+ "artwork": "w185372",
+ "artistId": "vermeer",
+ "focus": [
+  0.64,
+  0.58
+ ],
+ "options": [
+  "steen",
+  "rembrandt",
+  "velazquez",
+  "vermeer",
+  "rubens",
+  "hals"
+ ],
+ "hints": {
+  "era": "Barroco · s. XVII",
+  "year": "c. 1665",
+  "museum": "Mauritshuis, La Haya"
+ },
+ "cards": [
+  {
+   "text": "Era Vermeer, el pintor de la luz tranquila de Delft. ¿Recuerdas el detalle del principio? Esa perla son solo dos toques de blanco: un brillo arriba y un reflejo abajo.",
+   "artwork": "w185372",
+   "region": [
+    0.436,
+    0.3,
+    0.804,
+    0.8
+   ]
+  },
+  {
+   "text": "Fíjate en el azul del turbante: es lapislázuli, una piedra molida más cara que el oro. Vermeer lo usaba aunque vivía lleno de deudas.",
+   "artwork": "w185372",
+   "region": [
+    0.346,
+    0.0,
+    0.754,
+    0.556
+   ]
+  },
+  {
+   "text": "No es un retrato: es un «tronie», el estudio de una cara con un traje exótico. Nadie sabe quién posó. La llaman «la Mona Lisa del norte».",
+   "artwork": "w185372",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/La_joven_de_la_perla"
+}

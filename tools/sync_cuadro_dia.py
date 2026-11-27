@@ -8,7 +8,8 @@ vez cada PAINTER_GAP días; la misma época, no más de ERA_RUN días seguidos; 
 Avisa (código 2) si quedan menos de ALARM_DAYS días de calendario por delante a partir de hoy (día de Madrid).
 Después regenera las páginas para compartir (tools/share_pages.py, app/h/cuadro-<n>.html).
 
-Uso: python3 -I tools/sync_cuadro_dia.py [--check] [--hoy AAAA-MM-DD]   (--check: solo valida, no escribe)
+Uso: python3 -I tools/sync_cuadro_dia.py [--check] [--hoy AAAA-MM-DD] [--sin-nitidez]
+(--check: solo valida, no escribe; --sin-nitidez: en local, mientras se hace la HD, el detalle borroso solo avisa)
 """
 import datetime
 import json
@@ -189,6 +190,21 @@ def check_spread(rows):
     return errors
 
 
+STORY_ASPECT = 0.62  # proporción (ancho / alto) del trozo que enseña una tarjeta con detalle: algo más ancho que la pantalla
+
+
+def story_region(ratio, focus):
+    """Una tarjeta con [x, y, zoom] se vuelca como `region` (app/js/engine/stories.js): el trozo de alto 1/zoom alrededor del
+    punto, con proporción STORY_ASPECT, siempre a sangre (si no, en un cuadro apaisado la historia lo enseñaría entero)."""
+    rh = 1 / focus[2]
+    rw = STORY_ASPECT * rh / ratio
+    if rw > 1:
+        rw, rh = 1.0, min(1.0, ratio / STORY_ASPECT)
+    cx = min(max(focus[0], rw / 2), 1 - rw / 2)
+    cy = min(max(focus[1], rh / 2), 1 - rh / 2)
+    return [round(v, 3) for v in (cx - rw / 2, cy - rh / 2, cx + rw / 2, cy + rh / 2)]
+
+
 def options_order(n, answer, options):
     """Orden fijo de los 6 nombres de un día (el mismo para todos), barajado con el número del día."""
     names = [answer, *options]
@@ -208,7 +224,7 @@ def build(cal, rows):
             if c.get("whole"):
                 card["whole"] = True
             else:
-                card["focus"] = c["focus"]
+                card["region"] = story_region(r["work"]["w"] / r["work"]["h"], c["focus"])
             cards.append(card)
         files[f"{n}.json"] = {
             "n": n, "artwork": r["work"]["id"], "artistId": r["artist"]["id"], "focus": d["focus"],
@@ -242,6 +258,10 @@ def main():
     cat = read(os.path.join(APP, "data", "catalog.json"))
     ficha = read(os.path.join(APP, "data", "catalog-ficha.json"))["ficha"]
     errors, rows = validate(cal, cat, ficha, read(EXPLAIN))
+    if "--sin-nitidez" in args:  # solo en local, mientras el proceso prepara la HD: el detalle borroso avisa sin parar
+        for e in [e for e in errors if "borroso" in e]:
+            print(f"AVISO {e}", file=sys.stderr)
+        errors = [e for e in errors if "borroso" not in e]
     for e in errors:
         print(f"ERROR {e}", file=sys.stderr)
     if errors:

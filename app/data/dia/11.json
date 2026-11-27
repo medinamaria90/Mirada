@@ -1,0 +1,50 @@
+{
+ "n": 11,
+ "artwork": "w45585",
+ "artistId": "van-gogh",
+ "focus": [
+  0.6,
+  0.85
+ ],
+ "options": [
+  "monet",
+  "gauguin",
+  "cezanne",
+  "seurat",
+  "munch",
+  "van-gogh"
+ ],
+ "hints": {
+  "era": "Postimpresionismo · 1880–1905",
+  "year": "1889",
+  "museum": "Museo de Arte Moderno, Nueva York"
+ },
+ "cards": [
+  {
+   "text": "Era Van Gogh, que pintaba con colores puros y pinceladas que se retuercen. ¿Recuerdas el pueblo del principio? Es inventado, con un campanario que recuerda a los de Holanda.",
+   "artwork": "w45585",
+   "region": [
+    0.477,
+    0.5,
+    0.723,
+    1.0
+   ]
+  },
+  {
+   "text": "Fíjate en el cielo: remolinos, estrellas enormes y una luna con halo. Y el ciprés de la izquierda sube como una llama negra que une la tierra con el cielo.",
+   "artwork": "w45585",
+   "region": [
+    0.297,
+    0.037,
+    0.603,
+    0.662
+   ]
+  },
+  {
+   "text": "La pintó en un sanatorio del sur de Francia, de memoria, recordando lo que veía desde su ventana. Él la creía un fracaso; hoy es de los cuadros más famosos del mundo.",
+   "artwork": "w45585",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/La_noche_estrellada"
+}

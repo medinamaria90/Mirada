@@ -5,7 +5,7 @@ import { addDays, isDayKey } from '../engine/dates.js';
 import { LEGACY_IDS } from './legacy-ids.js';
 import { emptyRoster } from '../engine/roster.js';
 
-export const SCHEMA_VERSION = 10;
+export const SCHEMA_VERSION = 11;
 
 // Pintores que pasan a ser una sola parada (8 → 9): id antiguo → id de la parada conjunta.
 export const MERGED_ARTISTS = { 'pietro-lorenzetti': 'lorenzetti', 'ambrogio-lorenzetti': 'lorenzetti' };
@@ -158,6 +158,13 @@ export const MIGRATIONS = {
   9: (old) => ({
     ...old,
     progress: { ...(isPlain(old.progress) ? old.progress : {}), roster: emptyRoster('legacy') },
+  }),
+  // 10 → 11 (Cuadro del día): sus partidas y el último día que la guía lo propuso. El reto diario de antes (progress.daily)
+  // se conserva tal cual; una ronda suya a medias se descarta. Lo demás se conserva.
+  10: (old) => ({
+    ...old,
+    session: isPlain(old.session) && old.session.kind === 'daily' ? {} : old.session,
+    progress: { ...(isPlain(old.progress) ? old.progress : {}), cuadros: {}, cuadroNudge: '' },
   }),
 };
 

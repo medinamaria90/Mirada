@@ -1,0 +1,50 @@
+{
+ "n": 8,
+ "artwork": "w883994",
+ "artistId": "el-greco",
+ "focus": [
+  0.72,
+  0.38
+ ],
+ "options": [
+  "bronzino",
+  "durero",
+  "el-greco",
+  "parmigianino",
+  "bruegel",
+  "tintoretto"
+ ],
+ "hints": {
+  "era": "Manierismo y Renacimiento del Norte · s. XV–XVII",
+  "year": "1596",
+  "museum": "Museo Metropolitano de Arte, Nueva York"
+ },
+ "cards": [
+  {
+   "text": "Era El Greco, un pintor de Creta que se quedó en Toledo casi cuarenta años. ¿Recuerdas el detalle del principio? Eran la catedral y el Alcázar, en lo alto de la ciudad.",
+   "artwork": "w883994",
+   "region": [
+    0.545,
+    0.13,
+    0.895,
+    0.63
+   ]
+  },
+  {
+   "text": "Fíjate en el cielo: negro y verde, con nubes rasgadas y la luz cayendo a trozos. La ciudad parece a punto de recibir un rayo.",
+   "artwork": "w883994",
+   "region": [
+    0.181,
+    0.0,
+    0.619,
+    0.625
+   ]
+  },
+  {
+   "text": "Es de los primeros paisajes españoles sin santos ni personajes: solo la ciudad. Y no es un mapa: se tomó libertades con los edificios para enseñar mejor Toledo.",
+   "artwork": "w883994",
+   "whole": true
+  }
+ ],
+ "source": "https://www.metmuseum.org/art/collection/search/436575"
+}

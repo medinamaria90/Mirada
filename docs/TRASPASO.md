@@ -4,12 +4,22 @@ Documento para el agente que continúa el proyecto en Claude Code. Las reglas pe
 `CLAUDE.md`; aquí va el estado, lo decidido y lo pendiente. El detalle cronológico está en
 `docs/BITACORA.md`.
 
+## 0. Cuadro del día: el calendario se acaba (léelo primero)
+
+- El **Cuadro del día** (sustituye al reto diario, 27/11; SPEC §4 bis ter) se estrenó el **27/11/2026** con **14 días** en
+  `contenido/cuadro-del-dia/calendario.json` (decisión de María: pocos al principio). **El último cuadro nuevo es el del
+  10/12/2026**; desde el 11/12 la lista vuelve a empezar (nunca hay un día vacío, pero se repiten).
+- **Alarma:** desde el **08/12/2026** (quedan menos de 3 días por delante) fallan `tests/cuadro-dia.test.js` y
+  `tools/sync_cuadro_dia.py` (código 2). Antes de esa fecha hay que añadir cuadros AL FINAL del calendario (fama 3, o 2 si
+  es español; con explicaciones; detalle elegido mirando la imagen; 3 tarjetas con fuente), lanzar el paso `hd` del
+  proceso si piden HD (`pipeline/RUN`), regenerar el catálogo y pasar `python3 -I tools/sync_cuadro_dia.py`.
+
 ## 1. Qué es y dónde está
 
 - **Producto:** web app para aprender a mirar pintura clásica jugando. Cada pintor es una etapa:
   «Conoce a» (cuadros + rasgo «Fíjate en…») → ronda de preguntas (¿Quién lo pintó? / ¿De qué movimiento
-  es? / ¿Cuál es de X?) mezclando pintores ya aprendidos. Racha, meta diaria, niveles, medallas, reto
-  diario y semanal, reto a un amigo por enlace, colección, salas por movimiento, detalle del día,
+  es? / ¿Cuál es de X?) mezclando pintores ya aprendidos. Racha, meta diaria, niveles, medallas, Cuadro
+  del día, reto semanal, reto a un amigo por enlace, colección, salas por movimiento, detalle del día,
   repaso espaciado, música sintetizada por época.
 - **Dónde se ve:** https://mirada.onrender.com (Render, sitio estático que sirve `app/` desde `main`).
   El sitio se creó por URL pública sin conectar la cuenta de GitHub, así que **el push no dispara el

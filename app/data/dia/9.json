@@ -1,0 +1,50 @@
+{
+ "n": 9,
+ "artwork": "w328523",
+ "artistId": "monet",
+ "focus": [
+  0.53,
+  0.68
+ ],
+ "options": [
+  "monet",
+  "renoir",
+  "turner",
+  "pissarro",
+  "manet",
+  "sisley"
+ ],
+ "hints": {
+  "era": "Impresionismo · 1860–1890",
+  "year": "1872",
+  "museum": "Un museo de París"
+ },
+ "cards": [
+  {
+   "text": "Era Monet, que quería pintar la luz de un instante. ¿Recuerdas la barca del principio? Cruza el puerto de Le Havre al amanecer, entre la bruma y el reflejo del sol.",
+   "artwork": "w328523",
+   "region": [
+    0.38,
+    0.43,
+    0.62,
+    0.93
+   ]
+  },
+  {
+   "text": "Fíjate en el sol naranja: tiene la misma luminosidad que el cielo gris que lo rodea. Por eso parece temblar sobre el agua.",
+   "artwork": "w328523",
+   "region": [
+    0.466,
+    0.072,
+    0.734,
+    0.628
+   ]
+  },
+  {
+   "text": "En 1874, para una exposición, le pidieron un título y dijo: «Pon Impresión». Un crítico se burló llamando «impresionistas» al grupo, y se quedaron con el nombre.",
+   "artwork": "w328523",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/Impresi%C3%B3n,_sol_naciente"
+}

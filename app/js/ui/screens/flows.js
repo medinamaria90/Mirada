@@ -1,5 +1,5 @@
 // Flujos de juego: etapa de pintor, sala de movimiento, intro de movimiento, repasos,
-// reto diario, reto de un amigo y ronda retomada.
+// reto semanal, reto de un amigo y ronda retomada (el Cuadro del día va en ui/screens/cuadro-dia.js).
 
 import { esc, onAction, accentStyle, defaultAccent, focusHeading, announce, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
@@ -11,7 +11,7 @@ import { playEra } from '../audio-bridge.js';
 import { randomSeed } from '../../engine/rng.js';
 import { planStage, planMovementReview, planReviewSession, planSala, salaLearnWorks } from '../../engine/planner.js';
 import { knownArtists } from '../../engine/chrono.js';
-import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
+import { planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
 import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
@@ -442,19 +442,6 @@ export function renderReview(ctx, el) {
   ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_TITLE, kind: 'srs' }));
 }
 
-// --- Reto diario ------------------------------------------------------------
-
-export function renderDaily(ctx, el) {
-  const { index } = ctx;
-  const today = ctx.dailyDay();
-  const plan = planDaily(index, today);
-  const done = ctx.store.get().progress.daily[today];
-  playEra('menu');
-  if (done) return renderDailyDone(ctx, el, plan, done);
-  if (plan.questions.length < 4) return ctx.go('inicio');
-  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Reto diario', kind: 'daily', extra: { date: today } }));
-}
-
 // --- Reto semanal (camino dominado): 15 preguntas de todo el camino, iguales para todos ---------
 
 export function weekKey(ctx) {
@@ -468,26 +455,24 @@ export function renderWeekly(ctx, el) {
   const plan = planWeekly(index, week);
   const done = ctx.store.get().progress.weekly?.[week];
   playEra('menu');
-  if (done) return renderDailyDone(ctx, el, plan, done);
+  if (done) return renderWeeklyDone(ctx, el, plan, done);
   if (plan.questions.length < 4) return ctx.go('inicio');
   ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Reto semanal', kind: 'weekly', extra: { week } }));
 }
 
 export function gridTitle(plan) {
-  if (plan.kind === 'weekly') return `Sfumato · Reto semanal ${plan.week.slice(6)}`;
-  return `Sfumato · Reto diario ${plan.date.slice(8)}/${plan.date.slice(5, 7)}`;
+  return `Sfumato · Reto semanal ${plan.week.slice(6)}`;
 }
 
-function renderDailyDone(ctx, el, plan, done) {
+function renderWeeklyDone(ctx, el, plan, done) {
   const firstTry = done.firstTry || [];
-  const weekly = plan.kind === 'weekly';
   el.innerHTML = `<div class="result">
     <main class="result-body" id="main">
-      <p class="result-kicker">${weekly ? 'Reto semanal' : 'Reto diario'}</p>
-      <h1 class="result-title">${weekly ? 'Hecho esta semana' : 'Hecho por hoy'}</h1>
+      <p class="result-kicker">Reto semanal</p>
+      <h1 class="result-title">Hecho esta semana</h1>
       <dl class="tally"><div><dt>Aciertos</dt><dd>${done.score}/${done.total}</dd></div></dl>
       <div class="grid-row" role="img" aria-label="${done.score} aciertos de ${done.total}">${firstTry.map((ok) => `<span class="sq ${ok ? 'is-ok' : ''}"></span>`).join('')}</div>
-      <p class="result-note">${weekly ? 'Hay uno nuevo cada lunes.' : 'Hay uno nuevo cada día.'}</p>
+      <p class="result-note">Hay uno nuevo cada lunes.</p>
       <div class="result-actions">
         <button class="btn btn-primary btn-wide" data-action="share">${icons.copy(20)}<span>Copiar resultado</span></button>
         <button class="btn btn-secondary btn-wide" data-action="home">Volver al camino</button>
@@ -501,7 +486,7 @@ function renderDailyDone(ctx, el, plan, done) {
     home: () => { ctx.audio.sfx('tap'); ctx.go('inicio'); },
     share: () => {
       ctx.audio.sfx('tap');
-      const token = weekly ? `w${plan.week.replace('-W', '')}` : `d${plan.date.replace(/-/g, '')}`;
+      const token = `w${plan.week.replace('-W', '')}`;
       const url = `${location.href.split('#')[0]}#${encodeChallenge(token, done.score)}`;
       copyText(el, shareText({ title: gridTitle(plan), score: done.score, total: done.total, grid: dailyGrid(firstTry), url }));
     },
@@ -520,13 +505,13 @@ export function renderChallenge(ctx, el, challenge) {
   const total = plan.questions.length;
   const topic = plan.kind === 'stage' ? index.artist(plan.artistId).name
     : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).name
-      : plan.kind === 'daily' ? 'Reto diario' : plan.kind === 'weekly' ? 'Reto semanal' : 'Ronda variada';
+      : plan.kind === 'weekly' ? 'Reto semanal' : 'Ronda variada';
   const accent = plan.kind === 'stage' ? index.movementOf(plan.artistId).accent
     : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).accent : defaultAccent();
   const friendScore = Math.min(challenge.score, total);
   // Reto de todo el camino con pintores que aún no ha visto: se avisa (sin bloquear) y esas preguntas
   // no cuentan para su precisión.
-  const unseen = ['daily', 'weekly', 'general'].includes(plan.kind)
+  const unseen = ['weekly', 'general'].includes(plan.kind)
     && unseenArtists(ctx.store.get().progress, index, plan.questions).length > 0;
   el.innerHTML = `<div class="welcome welcome-duel" style="${accentStyle(accent)}">
     <main class="welcome-body" id="main">
@@ -555,11 +540,10 @@ export function renderChallenge(ctx, el, challenge) {
       const era = plan.kind === 'stage' ? index.movementOf(plan.artistId).era : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).era : 'menu';
       playEra(era);
       const prog = ctx.store.get().progress;
-      const isTodayDaily = plan.kind === 'daily' && plan.date === ctx.dailyDay() && !prog.daily[plan.date];
       // El semanal de esta semana cuenta como propio si el camino está dominado y aún no se ha jugado.
       const isThisWeekly = plan.kind === 'weekly' && plan.week === weekKey(ctx) && !prog.weekly?.[plan.week] && isPathMastered(prog, index);
-      const kind = isTodayDaily ? 'daily' : isThisWeekly ? 'weekly' : 'challenge';
-      const extra = { ...(isTodayDaily ? { date: plan.date } : isThisWeekly ? { week: plan.week } : {}), ...(unseen ? { unseen: true } : {}) };
+      const kind = isThisWeekly ? 'weekly' : 'challenge';
+      const extra = { ...(isThisWeekly ? { week: plan.week } : {}), ...(unseen ? { unseen: true } : {}) };
       const start = () => ctx.setCleanup(play(ctx, el, {
         plan, accent, title: `Reto · ${topic}`, kind, extra, friendScore, shareTopic: topic,
       }));
