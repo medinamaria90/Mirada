@@ -1,6 +1,6 @@
 # Tarjetas de época
 
-Ocho tarjetas didácticas por movimiento, que la app enseña deslizando desde la pantalla de presentación de la época (la última lleva un botón para empezar a jugar). Tratan de **la época**, no de un pintor: quien quiera biografías tiene las historias. Un archivo por movimiento, `contenido/epocas/<movementId>.json` (el id es el de `movements` en `app/data/catalog.json`):
+Ocho tarjetas didácticas por movimiento (nueve si hace falta una extra), que la app enseña deslizando desde la pantalla de presentación de la época (la última lleva un botón para empezar a jugar). Tratan de **la época**, no de un pintor: quien quiera biografías tiene las historias. Un archivo por movimiento, `contenido/epocas/<movementId>.json` (el id es el de `movements` en `app/data/catalog.json`):
 
 ```json
 { "movementId": "renacimiento", "cards": [
@@ -19,6 +19,8 @@ Siempre estas ocho tarjetas, en este orden:
 6. **Sus grandes temas**.
 7. **Qué nos dejó**: lo que hoy damos por hecho gracias a ella.
 8. **Curiosidad**: una anécdota sorprendente sobre la época, nunca una biografía.
+
+Como mucho, una **tarjeta extra** con su propio «kicker», en el sitio que pida el relato, cuando la época necesita contar dos caminos a la vez (en manierismo y norte, «Mientras, en el sur», tras «Por qué surge»).
 
 - `text`: como mucho 180 caracteres, una sola idea, frases cortas, lenguaje humano, tono «museo vivo». Nunca «ayer» ni «mañana».
 - `artwork`: obra con `role` «learn» del mismo movimiento; a ser posible, una distinta en cada tarjeta.

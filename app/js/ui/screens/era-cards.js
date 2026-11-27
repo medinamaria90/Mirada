@@ -1,5 +1,5 @@
 // Tarjetas de una época (data/epocas/<movimiento>.json): en la presentación de la época se desliza a la derecha
-// para ver la época en ocho tarjetas (cuándo y dónde, por qué surge… y una curiosidad). Cada tarjeta, un cuadro de la
+// para ver la época en ocho tarjetas (o nueve, con una extra) (cuándo y dónde, por qué surge… y una curiosidad). Cada tarjeta, un cuadro de la
 // época (se abre en grande). Su fuente queda en los datos y se ve en «Fuentes y créditos». Sin tarjetas, la presentación
 // queda como estaba. Arriba, «Compartir» manda el enlace a la época en tarjetas (h/epoca-<id>.html, ui/story-share.js).
 

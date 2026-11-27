@@ -27,6 +27,7 @@ import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
 import { dueKeys } from '../../engine/srs.js';
+import { stageReturnTo } from '../router.js';
 import { makeSession, withSession, clearSession } from '../../state/session.js';
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
@@ -103,9 +104,8 @@ function play(ctx, el, opts) {
 
 // Si la ronda se lanzó desde la ficha de un pintor (o su galería) o desde la pantalla de una rama, atrás y «Salir»
 // vuelven a ella y no al camino.
-function cameFrom(ctx) {
-  const prev = ctx.prevRoute();
-  return /^(pintor|obras|rama)-[a-z0-9-]+$/.test(prev) ? prev : null;
+function cameFrom(ctx, branchId = '') {
+  return stageReturnTo(branchId, ctx.prevRoute());
 }
 
 // --- Ronda retomada -----------------------------------------------------------
@@ -125,6 +125,7 @@ export function resumeSession(ctx, el, session) {
     extra: session.extra,
     friendScore: session.friendScore,
     shareTopic: session.shareTopic,
+    returnTo: stageReturnTo(session.extra?.branchId, ''),
     resume: { round: session.round, answers: session.answers, xpLive: session.xpLive, freshIntroShown: session.freshIntroShown },
   }));
   announce('Seguimos donde lo dejaste');
@@ -318,7 +319,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   if (!status) return leave(ctx);
   if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
-  const returnTo = cameFrom(ctx);
+  const returnTo = cameFrom(ctx, branchId);
   withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
