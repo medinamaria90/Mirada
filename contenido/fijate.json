@@ -1,0 +1,1187 @@
+{
+ "_nota": "«Fíjate en…» propio de una obra (text ≤ 100 letras, con source) y rasgos del pintor que no se ven en ella (sin: posiciones en [pista, *rasgos], 0 es la pista, o «todos»). Con text y sin «sin», no se enseña ningún rasgo genérico. «por»: el motivo, solo para quien edita. Lo lee tools/catalog_from_pipeline.py.",
+ "w2327759": {
+  "text": "Fíjate en los demonios que zarandean a san Antonio en el aire: escamas, púas, alas y plumas.",
+  "source": "Kimbell Art Museum, «The Torment of Saint Anthony»",
+  "por": "obra de juventud copiada de un grabado de Schongauer: no hay cuerpos de escultor"
+ },
+ "w1142058": {
+  "sin": [
+   2
+  ],
+  "por": "la ventana no da a un paisaje azulado"
+ },
+ "w972196": {
+  "sin": "todos",
+  "por": "sin terminar: solo el dibujo y la primera capa parda"
+ },
+ "w1638622": {
+  "sin": "todos",
+  "por": "sin terminar: solo el dibujo y la primera capa parda"
+ },
+ "w186953": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "una multitud bajo bóvedas: ni triángulo ni caras ovaladas"
+ },
+ "w2344437": {
+  "sin": [
+   0,
+   3
+  ],
+  "por": "abajo, gente agitada en penumbra: nada de calma"
+ },
+ "w1848811": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "retrato de negro sobre fondo oscuro: ni rojos ni cielo"
+ },
+ "w19798137": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "retrato de negro sobre fondo oscuro: ni rojos ni cielo"
+ },
+ "w3784247": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "vestido azul y fondo oscuro"
+ },
+ "w3853901": {
+  "sin": [
+   3
+  ],
+  "por": "retrato sobre fondo oscuro, sin cielo"
+ },
+ "w698993": {
+  "sin": [
+   3
+  ],
+  "por": "retrato sobre fondo oscuro, sin cielo"
+ },
+ "w3937673": {
+  "sin": [
+   3
+  ],
+  "por": "retrato sobre fondo oscuro, sin cielo"
+ },
+ "w1633898": {
+  "sin": [
+   3
+  ],
+  "por": "retrato sobre fondo oscuro, sin cielo"
+ },
+ "w23922": {
+  "sin": [
+   3
+  ],
+  "por": "retrato sobre fondo oscuro, sin cielo"
+ },
+ "w180632": {
+  "sin": [
+   3
+  ],
+  "por": "retrato sobre fondo oscuro, sin cielo"
+ },
+ "w1103170": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "una o dos figuras, sin escenario de columnas ni banquete"
+ },
+ "w1988152": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "una o dos figuras, sin escenario de columnas ni banquete"
+ },
+ "w3849979": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "una o dos figuras, sin escenario de columnas ni banquete"
+ },
+ "w961661": {
+  "sin": [
+   0,
+   2
+  ],
+  "por": "alegoría de dos figuras, sin banquete"
+ },
+ "w1237250": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "batalla naval y cielo con santos"
+ },
+ "w1759759": {
+  "sin": "todos",
+  "por": "retrato sobre fondo liso, sin paisaje"
+ },
+ "w3399411": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "retrato o Virgen serena: no hay llanto"
+ },
+ "w2439462": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "retrato o Virgen serena: no hay llanto"
+ },
+ "w3399428": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "retrato o Virgen serena: no hay llanto"
+ },
+ "w5316837": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "retrato o Virgen serena: no hay llanto"
+ },
+ "w3276176": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "retrato o Virgen serena: no hay llanto"
+ },
+ "w3999110": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "retrato o Virgen serena: no hay llanto"
+ },
+ "w2276130": {
+  "sin": "todos",
+  "por": "sin criaturas imposibles ni desnudos diminutos"
+ },
+ "w2733729": {
+  "sin": "todos",
+  "por": "sin criaturas imposibles ni desnudos diminutos"
+ },
+ "w680128": {
+  "sin": "todos",
+  "por": "sin criaturas imposibles ni desnudos diminutos"
+ },
+ "w2270768": {
+  "sin": "todos",
+  "por": "sin criaturas imposibles ni desnudos diminutos"
+ },
+ "w2400652": {
+  "sin": "todos",
+  "por": "sin criaturas imposibles ni desnudos diminutos"
+ },
+ "w430069": {
+  "sin": "todos",
+  "por": "sin criaturas imposibles ni desnudos diminutos"
+ },
+ "w699388": {
+  "sin": [
+   3
+  ],
+  "por": "un animal o unas plantas, sin figuras"
+ },
+ "w254794": {
+  "sin": [
+   1,
+   3
+  ],
+  "por": "unas plantas o un ala, sin pelo ni figuras"
+ },
+ "w21151884": {
+  "sin": [
+   1,
+   3
+  ],
+  "por": "unas plantas o un ala, sin pelo ni figuras"
+ },
+ "w4310527": {
+  "sin": "todos",
+  "por": "no es un retrato"
+ },
+ "w9144767": {
+  "sin": "todos",
+  "por": "no es un retrato"
+ },
+ "w1661697": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "una Virgen, no un retrato de fondo liso"
+ },
+ "w455319": {
+  "sin": [
+   0,
+   2
+  ],
+  "por": "retablo con donantes, sin fondo liso"
+ },
+ "w594406": {
+  "sin": "todos",
+  "por": "caída de ángeles y monstruos: no hay campesinos ni paisaje"
+ },
+ "w80869": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "un infierno de monstruos, sin campesinos"
+ },
+ "w699319": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "autorretrato en espejo convexo: lo que se alarga es la mano"
+ },
+ "w1430990": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "alegoría de desnudos, no un retrato"
+ },
+ "w1131476": {
+  "sin": [
+   0,
+   3
+  ],
+  "por": "escena religiosa, no un retrato"
+ },
+ "w3078569": {
+  "sin": "todos",
+  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo"
+ },
+ "w15711253": {
+  "sin": "todos",
+  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo"
+ },
+ "w3208041": {
+  "sin": "todos",
+  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo"
+ },
+ "w9026835": {
+  "sin": "todos",
+  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo"
+ },
+ "w3937561": {
+  "sin": "todos",
+  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+ },
+ "w6402081": {
+  "sin": "todos",
+  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+ },
+ "w5712837": {
+  "sin": "todos",
+  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+ },
+ "w6106760": {
+  "sin": "todos",
+  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+ },
+ "w949323": {
+  "sin": "todos",
+  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+ },
+ "w5966793": {
+  "sin": "todos",
+  "por": "escena a la luz de una brasa, cálida y sin alargar"
+ },
+ "w2293905": {
+  "sin": "todos",
+  "por": "una cabeza pintada sobre un escudo: sin fondo negro ni gente de la calle"
+ },
+ "w2011510": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra de juventud: fondo claro, sin foco dramático"
+ },
+ "w2610936": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra de juventud: fondo claro, sin foco dramático"
+ },
+ "w2610675": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra de juventud: fondo claro, sin foco dramático"
+ },
+ "w655705": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra de juventud: fondo claro, sin foco dramático"
+ },
+ "w663133": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra de juventud: fondo claro, sin foco dramático"
+ },
+ "w2270291": {
+  "sin": "todos",
+  "por": "bodegón de fondo claro, sin gente"
+ },
+ "w1087226": {
+  "sin": "todos",
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+ },
+ "w2627810": {
+  "sin": "todos",
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+ },
+ "w2471800": {
+  "sin": "todos",
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+ },
+ "w3075292": {
+  "sin": "todos",
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+ },
+ "w389198": {
+  "sin": "todos",
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+ },
+ "w4274886": {
+  "sin": "todos",
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+ },
+ "w7917255": {
+  "sin": "todos",
+  "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas"
+ },
+ "w2528741": {
+  "sin": "todos",
+  "por": "cuerpo liso sobre fondo negro: sin grises ni manchas"
+ },
+ "w1240092": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "un retrato en rojos, no en grises"
+ },
+ "w5971284": {
+  "sin": [
+   0,
+   2
+  ],
+  "por": "retrato de grupo serio: nadie sonríe"
+ },
+ "w2646680": {
+  "sin": [
+   3
+  ],
+  "por": "obra de juventud, de pintura lisa"
+ },
+ "w2488726": {
+  "sin": [
+   3
+  ],
+  "por": "obra de juventud, de pintura lisa"
+ },
+ "w3905873": {
+  "sin": [
+   3
+  ],
+  "por": "obra de juventud, de pintura lisa"
+ },
+ "w1130734": {
+  "sin": [
+   3
+  ],
+  "por": "obra de juventud, de pintura lisa"
+ },
+ "w7759351": {
+  "sin": [
+   3
+  ],
+  "por": "obra de juventud, de pintura lisa"
+ },
+ "w661378": {
+  "sin": [
+   3
+  ],
+  "por": "obra de juventud, de pintura lisa"
+ },
+ "w17343012": {
+  "sin": [
+   3
+  ],
+  "por": "obra de juventud, de pintura lisa"
+ },
+ "w2225699": {
+  "sin": [
+   3
+  ],
+  "por": "obra de juventud, de pintura lisa"
+ },
+ "w1243299": {
+  "sin": "todos",
+  "por": "paisaje claro con agua: sin penumbra dorada"
+ },
+ "w2246489": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "marina de verdes y azules, de pintura lisa"
+ },
+ "w63692": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "sin ventana a la izquierda ni azul y amarillo"
+ },
+ "w586035": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "sin ventana a la izquierda ni azul y amarillo"
+ },
+ "w16038514": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "retrato ecuestre vestido"
+ },
+ "w3399422": {
+  "sin": "todos",
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+ },
+ "w571416": {
+  "sin": "todos",
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+ },
+ "w3228387": {
+  "sin": "todos",
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+ },
+ "w2894005": {
+  "sin": "todos",
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+ },
+ "w4009226": {
+  "sin": "todos",
+  "por": "retrato o paisaje: sin cuerpos carnosos ni espirales"
+ },
+ "w7617092": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "bodegón o escena sin hábitos blancos"
+ },
+ "w6038780": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "bodegón o escena sin hábitos blancos"
+ },
+ "w5906548": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "bodegón o escena sin hábitos blancos"
+ },
+ "w5906551": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "bodegón o escena sin hábitos blancos"
+ },
+ "w5801323": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "batalla al aire libre"
+ },
+ "w4693305": {
+  "sin": [
+   0
+  ],
+  "por": "un cordero, no un hábito"
+ },
+ "w3464529": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "santas con vestidos de colores, no hábitos blancos"
+ },
+ "w3464453": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "santas con vestidos de colores, no hábitos blancos"
+ },
+ "w21711372": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "santas con vestidos de colores, no hábitos blancos"
+ },
+ "w15943274": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "santas con vestidos de colores, no hábitos blancos"
+ },
+ "w6034540": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "santas con vestidos de colores, no hábitos blancos"
+ },
+ "w2537138": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "cartón para tapiz: colores claros y alegres"
+ },
+ "w3825327": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "cartón para tapiz: colores claros y alegres"
+ },
+ "w3788057": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "cartón para tapiz: colores claros y alegres"
+ },
+ "w952796": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "cartón para tapiz: colores claros y alegres"
+ },
+ "w3543898": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "obra académica de pintura lisa"
+ },
+ "w3825362": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "obra académica de pintura lisa"
+ },
+ "w884782": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "paisaje sin figuras"
+ },
+ "w1652361": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "paisaje sin figuras"
+ },
+ "w22977128": {
+  "sin": "todos",
+  "por": "obra de juventud, oscura y sin bruma dorada"
+ },
+ "w7733769": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "tormenta oscura, sin bruma dorada"
+ },
+ "w3119110": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "retrato tranquilo, sin rojos ni caos"
+ },
+ "w1212737": {
+  "sin": [
+   0,
+   3
+  ],
+  "por": "escena tranquila, sin caos"
+ },
+ "w6727098": {
+  "sin": [
+   0,
+   3
+  ],
+  "por": "escena tranquila, sin caos"
+ },
+ "w22965178": {
+  "sin": [
+   0,
+   3
+  ],
+  "por": "escena tranquila, sin caos"
+ },
+ "w2734892": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "figuras grandes y sólidas, sin agua"
+ },
+ "w10322900": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "figuras grandes y sólidas, sin agua"
+ },
+ "w829572": {
+  "sin": "todos",
+  "por": "retrato de cuerpo entero, oscuro y acabado"
+ },
+ "w681876": {
+  "sin": [
+   2
+  ],
+  "por": "un jardín, sin agua"
+ },
+ "w7581196": {
+  "sin": [
+   2
+  ],
+  "por": "un jardín, sin agua"
+ },
+ "w18922918": {
+  "sin": [
+   2
+  ],
+  "por": "un jardín, sin agua"
+ },
+ "w3089617": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "retrato de un pintor trabajando, en grises"
+ },
+ "w16984993": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "ciudad o puerto, sin campos ni campesinos"
+ },
+ "w4949655": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "ciudad o puerto, sin campos ni campesinos"
+ },
+ "w21191272": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "ciudad o puerto, sin campos ni campesinos"
+ },
+ "w278722": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "ciudad o puerto, sin campos ni campesinos"
+ },
+ "w19905366": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "ciudad o puerto, sin campos ni campesinos"
+ },
+ "w20014451": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w19266848": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w104023609": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w16560298": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w16644191": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w19905355": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w20872006": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w59314264": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w21045432": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "interior, retrato o escena oscura, sin sol de playa"
+ },
+ "w6169435": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "interior de una barca o de una casa, sin playa"
+ },
+ "w16596719": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "interior de una barca o de una casa, sin playa"
+ },
+ "w107534436": {
+  "sin": "todos",
+  "por": "obra de juventud, antes del oro"
+ },
+ "w107598562": {
+  "sin": "todos",
+  "por": "obra de juventud, antes del oro"
+ },
+ "w114573173": {
+  "sin": "todos",
+  "por": "obra de juventud, antes del oro"
+ },
+ "w18748731": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra temprana, sin líneas ondulantes ni angustia"
+ },
+ "w18753113": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra temprana, sin líneas ondulantes ni angustia"
+ },
+ "w18890744": {
+  "sin": "todos",
+  "por": "calle a lo impresionista"
+ },
+ "w18705476": {
+  "sin": "todos",
+  "por": "obra temprana: aún se reconocen las cosas"
+ },
+ "w2933825": {
+  "sin": "todos",
+  "por": "obra temprana: aún se reconocen las cosas"
+ },
+ "w3606261": {
+  "sin": "todos",
+  "por": "obra temprana: aún se reconocen las cosas"
+ },
+ "w75387404": {
+  "text": "Fíjate en los toques de color, como piedras de mosaico, que forman una pareja a caballo de cuento.",
+  "source": "Lenbachhaus, «Reitendes Paar»",
+  "por": "obra temprana, figurativa"
+ },
+ "w3867419": {
+  "text": "Fíjate en el tren que pasa bajo el castillo, en manchas de color puro: aquí aún se reconoce todo.",
+  "source": "Lenbachhaus, «Murnau – Aussicht mit Eisenbahn und Schloss»",
+  "por": "obra temprana, figurativa"
+ },
+ "w3899880": {
+  "sin": "todos",
+  "por": "antes de los puntitos"
+ },
+ "w3965263": {
+  "sin": "todos",
+  "por": "antes de los puntitos"
+ },
+ "w2656755": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques"
+ },
+ "w31702677": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques"
+ },
+ "w3929306": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques"
+ },
+ "w50643443": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques"
+ },
+ "w4528214": {
+  "sin": "todos",
+  "por": "antes de Bretaña y Tahití: sin colores planos"
+ },
+ "w7617093": {
+  "sin": "todos",
+  "por": "antes de Bretaña y Tahití: sin colores planos"
+ },
+ "w7617094": {
+  "sin": "todos",
+  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos"
+ },
+ "w5179827": {
+  "sin": "todos",
+  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos"
+ },
+ "w26220165": {
+  "sin": "todos",
+  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos"
+ },
+ "w7536969": {
+  "sin": "todos",
+  "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos"
+ },
+ "w4110564": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "marina gris de su etapa holandesa"
+ },
+ "w4987244": {
+  "sin": [
+   0,
+   1,
+   3
+  ],
+  "por": "campos en franjas de color plano"
+ },
+ "w17511613": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "un cangrejo rojo sobre verde"
+ },
+ "w2269047": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "sin remolinos"
+ },
+ "w2278818": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "sin remolinos"
+ },
+ "w262360": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "sin remolinos"
+ },
+ "w4110565": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "sin remolinos"
+ },
+ "w18713070": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "sin remolinos"
+ },
+ "w1432536": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "sin remolinos"
+ },
+ "w1132723": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "sin remolinos"
+ },
+ "w2717022": {
+  "sin": "todos",
+  "por": "estampa erótica, sin olas ni montes"
+ },
+ "w3565037": {
+  "sin": [
+   3
+  ],
+  "por": "solo la montaña, sin gente"
+ },
+ "w20186732": {
+  "sin": "todos",
+  "por": "retrato de juventud, sin campesinos"
+ },
+ "w18346889": {
+  "sin": "todos",
+  "por": "retrato de juventud, sin campesinos"
+ },
+ "w20182178": {
+  "sin": "todos",
+  "por": "retrato de juventud, sin campesinos"
+ },
+ "w12142547": {
+  "sin": "todos",
+  "por": "retrato de juventud, sin campesinos"
+ },
+ "w115862328": {
+  "sin": "todos",
+  "por": "retrato de juventud, sin campesinos"
+ },
+ "w3387944": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "una sola figura de pie, sin parejas en el parque"
+ },
+ "w3451328": {
+  "sin": [
+   0,
+   1
+  ],
+  "por": "retrato de niños"
+ },
+ "w4164272": {
+  "sin": [
+   0,
+   1,
+   2
+  ],
+  "por": "una cara sola"
+ },
+ "w5712840": {
+  "sin": "todos",
+  "por": "retrato serio"
+ },
+ "w5722643": {
+  "sin": "todos",
+  "por": "retrato serio"
+ },
+ "w1619527": {
+  "sin": "todos",
+  "por": "retrato en el campo, sin pelucas altas"
+ },
+ "w17429571": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "retrato de día, sin luz de cabaré"
+ },
+ "w3630732": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "retrato de día, sin luz de cabaré"
+ },
+ "w27954929": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "retrato de día, sin luz de cabaré"
+ },
+ "w12015473": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "retrato de día, sin luz de cabaré"
+ },
+ "w2445555": {
+  "sin": [
+   0,
+   2,
+   3
+  ],
+  "por": "una ciudad, sin cuerpos"
+ },
+ "w28941252": {
+  "sin": [
+   0,
+   2
+  ],
+  "por": "escena con muchas mujeres de cuerpo entero"
+ },
+ "w2755121": {
+  "sin": [
+   3
+  ],
+  "por": "retrato, sin arquitectura"
+ },
+ "w1227359": {
+  "sin": [
+   3
+  ],
+  "por": "retrato, sin arquitectura"
+ }
+}

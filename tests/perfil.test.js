@@ -81,7 +81,7 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   assert.equal(bar.next, 'Copista');
   assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1.200 XP', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
     'con el XP cumplido se ve cumplido, y lo que falta aparte');
-  assert.match(bar.parts[0], /^Dominar 1 nivel «a fondo» más$/);
+  assert.match(bar.parts[0], /^Superar 1 nivel «a fondo» más$/);
   assert.equal('fraction' in bar, false, 'ya no hay barra del mínimo');
   assert.deepEqual(P.rankProgress({ next: null, stats: {}, missing: [] }), { next: null, conds: [], parts: [] });
   const ladder = rankLadder();
@@ -100,7 +100,7 @@ test('rango: una sola acción recomendada (el nivel que cuenta, a lo ancho); sin
   assert.match(card, /pf-cond is-done[\s\S]*<span class="pf-cond-val">1\.500<\/span>\/1\.200 XP/, 'el XP cumplido se lee como «1.500/1.200 XP», no «1200 XP … 1500»');
   assert.match(card, /Un nivel «a fondo» <span class="pf-cond-val">0\/1<\/span>/);
   assert.doesNotMatch(card, />Jugar<|>Elegir</, 'sin nada que cuente, ningún botón que no cumpliría');
-  assert.match(card, /class="pf-cond-why">Se abre al dominar a un pintor del camino</);
+  assert.match(card, /class="pf-cond-why">Termina una parada del camino y se abre su nivel 2</);
   assert.equal((card.match(/class="pf-ladder/g) || []).length, 1);
   assert.equal((card.match(/<li class="is-on"><\/li>/g) || []).length, 2);
   assert.equal((card.match(/is-next/g) || []).length, 1);
@@ -151,7 +151,7 @@ test('cuatro cifras pulsables: racha (su logro), pintores dominados, cuadros vis
   assert.deepEqual(profileStats(ctx), { streak: 5, painters: 3, works: 12, eras: 1, erasTotal: index.visibleMovements.length });
   const html = statsHtml(ctx);
   assert.match(html, /data-action="medal" data-id="streak-7"/, 'la racha abre el logro de racha que toca');
-  assert.match(html, /href="#coleccion-pintores"[^>]*aria-label="3 pintores dominados"/);
+  assert.match(html, /href="#coleccion-pintores"[^>]*aria-label="3 pintores que reconoces"/);
   assert.match(html, /href="#coleccion"[^>]*aria-label="12 cuadros vistos"/);
   assert.match(html, new RegExp(`href="#inicio"[^>]*aria-label="Épocas completas: 1 de ${index.visibleMovements.length}"`));
   assert.equal((html.match(/class="pf-stat /g) || []).length, 4);
@@ -228,12 +228,12 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.match(practice, />Practicar</);
   assert.match(practice, /href="test\/"[\s\S]*Test de pintura[\s\S]*Mide lo que sabes/);
   assert.doesNotMatch(practice, /btn-primary|share-test/, 'el test ya no compite como botón principal');
-  assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al dominar el camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
+  assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al terminar el camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
   assert.doesNotMatch(practice, /quedan \d+/);
   const started = emptyProgress();
   const firstStep = index.steps[0];
   (firstStep.type === 'sala' ? started.salas : started.artists)[firstStep.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
-  assert.match(practiceHtml(ctxFor(started)), /Domina el camino: te quedan \d+ paradas?/);
+  assert.match(practiceHtml(ctxFor(started)), /Se abre al terminar el camino: te quedan \d+ paradas?/);
   assert.doesNotMatch(practice, /data-action="weekly"/);
 });
 
@@ -317,9 +317,9 @@ test('logros: pantalla con grupos y filtros, nombres cortos y, para lectores, «
   const ctx = ctxFor(p);
   const all = medalGroupsHtml(ctx, 'all');
   for (const g of ['Pintores', 'Movimientos', 'Rachas', 'Ojo de…', 'Retos y metas']) assert.match(all, new RegExp(g));
-  assert.match(all, /aria-label="[^"]* dominado, Bronce, conseguida"/);
-  assert.match(all, /aria-label="Domina a [^"]*, pendiente"/, 'el pendiente es una meta, no un hecho');
-  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]* dominado</, 'el nombre de la casilla es corto');
+  assert.match(all, /aria-label="[^"]*, ya lo reconoces, Bronce, conseguida"/);
+  assert.match(all, /aria-label="Reconocer a [^"]*, pendiente"/, 'el pendiente es una meta, no un hecho');
+  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]*, ya lo reconoces</, 'el nombre de la casilla es corto');
   assert.match(all, /aria-label="Racha de 3 días, Bronce, conseguida"/);
   assert.doesNotMatch(all, /pf-tier/);
   const got = medalGroupsHtml(ctx, 'got');

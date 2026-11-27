@@ -4,7 +4,7 @@
 
 import { $, announce } from '../dom.js';
 import { icons } from '../icons.js';
-import { goalRing, goalChip } from '../shell.js';
+import { goalRing, headerStreakChip } from '../shell.js';
 import { todayXp, normalizeGoal, GOAL_OPTIONS } from '../../engine/progress.js';
 import { applyAudioSettings, playEra } from '../audio-bridge.js';
 import { themePicker, chooseTheme, markThemePicker } from '../theme.js';
@@ -101,8 +101,8 @@ export function wireSettings(ctx, el) {
       });
       $('.goal-row .ring', dialog).outerHTML = goalRing(done, g, RING);
       $('.goal-aside', dialog).textContent = `${Math.min(done, g)}/${g} XP`;
-      const chip = $('.chip-goal', el);
-      if (chip) chip.outerHTML = goalChip(done, g);
+      const chip = $('.chip-streak', el);
+      if (chip) chip.outerHTML = headerStreakChip(ctx);
     },
     theme: (b) => {
       ctx.audio.sfx('tap');

@@ -53,7 +53,7 @@ export function compactNumber(n) {
 export const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const NEED_TEXT = {
   xp: (n) => `Ganar ${fmtXp(n)} XP más`,
-  deep: (n) => `Dominar ${plural(n, 'nivel «a fondo»', 'niveles «a fondo»')} más`,
+  deep: (n) => `Superar ${plural(n, 'nivel «a fondo»', 'niveles «a fondo»')} más`,
   eras: (n) => `«A fondo» en ${plural(n, 'época', 'épocas')} más`,
   complete: (n) => `Completar ${plural(n, 'gran maestro', 'grandes maestros')} más`,
   grand: (n, grand) => `El nivel ${grand.upTo} de ${plural(n, 'gran maestro', 'grandes maestros')} más`,

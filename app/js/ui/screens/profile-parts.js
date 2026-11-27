@@ -45,7 +45,7 @@ export function practiceHtml(ctx, last = null) {
     const pp = pathProgress(p, index);
     const left = pp.total - pp.mastered;
     // Sin ninguna parada dominada, una cifra grande desanima: solo se dice cómo se abre.
-    const sub = pp.mastered === 0 ? 'Se abre al dominar el camino' : `Domina el camino: te ${left === 1 ? 'queda' : 'quedan'} ${plural(left, 'parada', 'paradas')}`;
+    const sub = pp.mastered === 0 ? 'Se abre al terminar el camino' : `Se abre al terminar el camino: te ${left === 1 ? 'queda' : 'quedan'} ${plural(left, 'parada', 'paradas')}`;
     items.push({ locked: true, name: 'Reto semanal', sub });
   }
   return `<section class="pf-sec pf-practice-sec" aria-labelledby="pf-practice-h">
