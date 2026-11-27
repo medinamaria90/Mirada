@@ -33,7 +33,7 @@ const HOME_MODULES = [
   'ui/icons.js', 'ui/map-actor.js', 'ui/map-critters.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-scene.js', 'ui/map-sky.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-memory.js',
   'ui/screens/map-return.js',
   'ui/screens/map-scroll.js', 'ui/screens/path-actions.js', 'ui/screens/path-art.js', 'ui/screens/path-curve.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js', 'ui/screens/path-nodes.js',
-  'ui/screens/path-signs.js', 'ui/shell.js', 'ui/story-prefetch.js',
+  'ui/screens/path-signs.js', 'ui/screens/review-pill.js', 'ui/shell.js', 'ui/story-prefetch.js',
 ];
 function preloadModules(list) {
   for (const path of list) {
@@ -250,7 +250,7 @@ async function boot() {
   window.addEventListener('pointerup', unlockOnce, true);
   window.addEventListener('keydown', unlockOnce, true);
 
-  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'quick', 'review5', 'daily', 'weekly', 'challenge', 'free']);
+  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'daily', 'weekly', 'challenge', 'free']);
   let firstRender = true;
   let renderToken = 0;
 
@@ -325,6 +325,8 @@ async function boot() {
       toast('Ese enlace no vale', { carry: true });
       return go('inicio', { replace: true });
     }
+    // Rutas antiguas del repaso (#repaso5, #repaso-rapido): a la sesión única, #repaso.
+    if (route.redirect) return go(route.redirect, { replace: true });
     const welcome = () => lazy(token, screen, loadWelcome, (m) => m.renderWelcome(ctx, screen));
     if (!onboarded && route.name !== 'challenge' && route.name !== 'era') return welcome();
 
@@ -350,9 +352,7 @@ async function boot() {
       case 'intro': return flow((m) => m.renderIntro(ctx, screen, route.movementId));
       case 'era': return flow((m) => m.renderIntro(ctx, screen, route.movementId, { mode: 'shared' }));
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));
-      case 'srs': return flow((m) => m.renderSrsReview(ctx, screen));
-      case 'quick': return flow((m) => m.renderSrsReview(ctx, screen, { quick: true }));
-      case 'review5': return flow((m) => m.renderReview5(ctx, screen));
+      case 'srs': return flow((m) => m.renderReview(ctx, screen));
       case 'daily': return flow((m) => m.renderDaily(ctx, screen));
       case 'weekly': return flow((m) => m.renderWeekly(ctx, screen));
       case 'artist': return lazy(token, screen, loadArtistPage, (m) => m.renderArtistPage(ctx, screen, route.artistId, { focus: route.focus }), true);

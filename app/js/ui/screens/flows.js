@@ -9,7 +9,7 @@ import { renderResult, copyText } from './result.js';
 import { loadCss } from '../lazy-css.js';
 import { playEra } from '../audio-bridge.js';
 import { randomSeed } from '../../engine/rng.js';
-import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
+import { planStage, planMovementReview, planReviewSession, planSala, salaLearnWorks } from '../../engine/planner.js';
 import { knownArtists } from '../../engine/chrono.js';
 import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
@@ -22,11 +22,10 @@ import { storySeen } from '../../state/stories-seen.js';
 import { avatarHtml } from '../avatar.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
-import { contrabandWork, review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
+import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
-import { dueKeys } from '../../engine/srs.js';
 import { stageReturnTo } from '../router.js';
 import { makeSession, withSession, clearSession } from '../../state/session.js';
 
@@ -53,12 +52,16 @@ function complete(ctx, result) {
 }
 
 function planMeta(plan) {
-  return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week, level: plan.level };
+  return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week, level: plan.level, started: plan.started };
 }
 
 // Rondas que no llevan al final un cuadro fallado antes: los retos con un amigo y el semanal (iguales
-// para todos) y el repaso de 5 (ya lleva los fallados entre sus preguntas).
-const NO_EXTRA = new Set(['challenge', 'weekly', 'review5']);
+// para todos) y el repaso (ya lleva los fallados entre sus preguntas).
+const NO_EXTRA = new Set(['challenge', 'weekly', 'srs', 'review5']);
+
+// Tipo de la sesión anterior terminada (en memoria, sin tocar el estado): el siguiente paso nunca propone dos repasos
+// seguidos (engine/next-step.js).
+let lastKind = null;
 
 function falladoExtras(ctx, kind, plan) {
   if (NO_EXTRA.has(kind)) return [];
@@ -69,7 +72,7 @@ function falladoExtras(ctx, kind, plan) {
 
 // Ejecuta una ronda y la guarda tras cada respuesta para poder retomarla (state/session.js).
 function play(ctx, el, opts) {
-  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, more = null, returnTo = null } = opts;
+  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, returnTo = null } = opts;
   const home = returnTo || 'inicio';
   const meta = { route: opts.route || currentRoute(), title, accent, kind, extra, friendScore, shareTopic, plan: planMeta(plan) };
   const questions = resume ? resume.round.queue.map((it) => it.q) : plan.questions;
@@ -92,11 +95,11 @@ function play(ctx, el, opts) {
     onDone: (summary) => {
       const before = ctx.store.get().progress;
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
-      // «Repasar más» tras el repaso rápido; las otras rondas (repasar lo aprendido, reto semanal) las ofrece el resultado.
-      const moreReview = friendScore == null && typeof more === 'function' && more();
+      const prevKind = lastKind;
+      lastKind = kind;
+      const goalJustMet = outcome.events.some((e) => e.type === 'goal');
       resultCss.then(() => renderResult(ctx, el, {
-        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before,
-        more: moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
+        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before, prevKind, goalJustMet,
       }));
     },
   });
@@ -411,7 +414,7 @@ export function renderMovementReview(ctx, el, movementId) {
   ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `Repaso de ${movement.name}`, kind: 'review', extra: { movementId }, shareTopic: movement.name }));
 }
 
-// --- Repaso espaciado (completo o rápido de 3 preguntas desde el inicio) ----------------
+// --- Repasar: la sesión automática (fallados, pintor a medias, vencidos, apagado y relleno) -------------
 
 // Pintores para «¿Quién fue antes?» en los repasos: conocidos de verdad (historia vista o nivel jugado), como en las
 // preguntas por autor.
@@ -420,26 +423,12 @@ function reviewKnown(ctx) {
   return knownArtists(progress, ctx.index, '', metArtistIds(progress, ctx.index, (id) => storySeen(storyKey(id, 1))));
 }
 
-export function renderSrsReview(ctx, el, { quick = false } = {}) {
-  const { index } = ctx;
-  const due = dueKeys(ctx.store.get().progress.srs, ctx.today());
-  const plan = planSrsReview(index, due, randomSeed(), quick ? QUICK_REVIEW : undefined, { known: reviewKnown(ctx) });
-  if (!plan.questions.length) return leave(ctx, 'Hoy no hay nada que repasar');
+export function renderReview(ctx, el) {
+  const session = reviewSession(ctx.store.get().progress, ctx.index, ctx.today());
+  const plan = planReviewSession(ctx.index, session, randomSeed(), { known: reviewKnown(ctx) });
+  if (session.works.length < REVIEW_MIN || plan.questions.length < REVIEW_MIN) return leave(ctx, 'Aún no hay cuadros que repasar');
   playEra('menu');
-  ctx.setCleanup(play(ctx, el, {
-    plan, accent: defaultAccent(), title: quick ? 'Repaso rápido' : 'Repaso', kind: 'srs',
-    more: quick ? () => dueKeys(ctx.store.get().progress.srs, ctx.today()).length > 0 : null,
-  }));
-}
-
-// --- Repaso de 5: cuadros fallados, vencidos y antiguos de pintores dominados ------------------
-
-export function renderReview5(ctx, el) {
-  const ids = review5Works(ctx.store.get().progress, ctx.index, ctx.today());
-  const plan = planReview5(ctx.index, ids, randomSeed(), { known: reviewKnown(ctx) });
-  if (ids.length < REVIEW5_MIN || plan.questions.length < REVIEW5_MIN) return leave(ctx, 'Hoy no hay nada que repasar');
-  playEra('menu');
-  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW5_NAME, kind: 'review5' }));
+  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_NAME, kind: 'srs' }));
 }
 
 // --- Reto diario ------------------------------------------------------------

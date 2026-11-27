@@ -4,13 +4,14 @@
 //    del de dominio más antiguo; el cuadro lo elige el repaso espaciado (el que más tiempo lleva vencido).
 //  · Pintor dormido: dominado y sin salir en DORMANT_DAYS días; el mapa lo pinta apagado y pregunta
 //    «¿Lo recuerdas?». Nunca bloquea ni quita el dominado; al jugarlo vuelve a su estado.
-//  · «Repasar lo aprendido» (antes «Repaso de 5»): ronda corta y opcional de cuadros ya vistos de pintores dominados: los fallados que
-//    vuelven (el más antiguo primero), los vencidos hoy en el repaso espaciado y, después, los que
-//    llevan más tiempo sin repasarse. Da XP y cuenta para meta y racha; no toca dominio ni anti-trampa.
+//  · «Repasar» (botón ↻, ruta #repaso): la única sesión de repaso a mano, automática (reviewSession). Da XP y cuenta
+//    para meta y racha; no toca el dominio ni el anti-trampa.
 
 import { daysBetween } from './dates.js';
 import { noAuthorQuestion } from './catalog.js';
-import { artKey } from './srs.js';
+import { artKey, dueKeys } from './srs.js';
+import { artistStatus, isKnownArtist } from './progress.js';
+import { seenWorks } from './levels.js';
 
 export const CONTRABAND_DAYS = 5;
 export const DORMANT_DAYS = 7;
@@ -65,48 +66,113 @@ export function contrabandWork(progress, index, artistId, today) {
   return a ? worksBySrs(progress, index, a.id)[0].id : null;
 }
 
-// ---------------------------------------------------------------- Repaso de 5
+// ---------------------------------------------------------------- Repasar (sesión automática)
 
-// Nombre de la ronda (título y perfil) y, si entre sus cuadros hay fallados, el del botón que la ofrece.
-export const REVIEW5_NAME = 'Repasar lo aprendido';
-export const REVIEW5_MISSED = 'Repasar los que fallaste';
-export const REVIEW5_SIZE = 5;
-// Con menos cuadros elegibles no se ofrece.
-export const REVIEW5_MIN = 3;
+export const REVIEW_NAME = 'Repasar';
+export const REVIEW_SIZE = 7;
+// Cuadros vistos a partir de los que existe el repaso (el botón ↻ aparece y la sesión nunca sale vacía).
+export const REVIEW_MIN = 3;
+export const REVIEW_FALLADOS_MAX = 3;
+export const REVIEW_STARTED_WORKS = 2;
 
-function eligible(progress, index) {
+const byDate = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+const fallList = (progress) => (Array.isArray(progress.fallados) ? progress.fallados : []).filter((f) => f && typeof f.id === 'string');
+
+// Cuadros ya vistos que se pueden preguntar, de pintores ya jugados (nunca de uno sin jugar): los que están en el repaso
+// espaciado, en la colección o entre los vistos de su pintor.
+export function reviewPool(progress, index) {
   const srs = progress.srs || {};
   const owned = progress.collection || {};
-  return index.path
-    .filter((a) => progress.artists?.[a.id]?.mastered)
-    .flatMap((a) => index.worksOf(a.id))
-    .filter((w) => !noAuthorQuestion(w) && (srs[artKey(w.id)] || owned[w.id]));
+  const ids = new Set([
+    ...Object.keys(srs).filter((k) => k.startsWith('art:')).map((k) => k.slice(4)),
+    ...Object.keys(owned),
+    ...Object.keys(progress.artists || {}).flatMap((id) => [...seenWorks(progress, id)]),
+    ...fallList(progress).map((f) => f.id),
+  ]);
+  const known = new Map();
+  const isKnown = (id) => {
+    if (!known.has(id)) known.set(id, isKnownArtist(progress, index, id));
+    return known.get(id);
+  };
+  return [...ids].map((id) => index.artwork(id)).filter((w) => w && !noAuthorQuestion(w) && isKnown(w.artistId));
 }
 
-// Ids de los cuadros del repaso (hasta REVIEW5_SIZE), en orden de prioridad.
-export function review5Works(progress, index, today) {
-  const pool = eligible(progress, index);
+// Pintores jugados y aún sin dominar (a medias), del peor al mejor resultado.
+export function startedArtists(progress, index) {
+  return index.path.filter((a) => artistStatus(progress, index, a.id) === 'started')
+    .sort((a, b) => (Number(progress.artists[a.id]?.best) || 0) - (Number(progress.artists[b.id]?.best) || 0));
+}
+
+// Fallados en la cola que se pueden repasar (de pintores jugados, dominados o no).
+export function reviewFallados(progress, index) {
+  return fallList(progress).filter((f) => {
+    const w = index.artwork(f.id);
+    return w && !noAuthorQuestion(w) && isKnownArtist(progress, index, w.artistId);
+  });
+}
+
+// La sesión «Repasar»: hasta REVIEW_SIZE cuadros distintos, en este orden: fallados (los más antiguos, como mucho 3),
+// 2 vistos del pintor a medias con peor resultado, vencidos del repaso espaciado (caja más baja primero), 1 de un pintor
+// apagado y, de relleno, lo que lleva más tiempo sin salir. { works: [ids], started: id del pintor a medias o null }.
+export function reviewSession(progress, index, today) {
+  const pool = reviewPool(progress, index);
   const inPool = new Map(pool.map((w) => [w.id, w]));
   const srs = progress.srs || {};
-  const out = [];
-  const add = (id) => { if (inPool.has(id) && !out.includes(id) && out.length < REVIEW5_SIZE) out.push(id); };
-  const fallados = (Array.isArray(progress.fallados) ? progress.fallados : []).slice()
-    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
-  fallados.forEach((f) => add(f.id));
-  // Sin fecha de repaso (raro: solo en la colección), al final.
+  const works = [];
+  const add = (id) => {
+    if (!inPool.has(id) || works.includes(id) || works.length >= REVIEW_SIZE) return false;
+    works.push(id);
+    return true;
+  };
+  // Lo que lleva más tiempo sin salir: la fecha de repaso más antigua (y la caja más baja); sin fecha, al final.
   const due = (w) => srs[artKey(w.id)]?.due || '9999-12-31';
-  const byAge = pool.slice().sort((a, b) => (due(a) < due(b) ? -1 : due(a) > due(b) ? 1 : (srs[artKey(a.id)]?.box || 0) - (srs[artKey(b.id)]?.box || 0)));
-  byAge.filter((w) => due(w) <= today).forEach((w) => add(w.id));
-  byAge.forEach((w) => add(w.id));
-  return out;
+  const byAge = (list) => list.slice().sort((a, b) => (due(a) < due(b) ? -1 : due(a) > due(b) ? 1 : (srs[artKey(a.id)]?.box || 0) - (srs[artKey(b.id)]?.box || 0)));
+  // 1. Fallados.
+  let n = 0;
+  for (const f of reviewFallados(progress, index).slice().sort(byDate)) if (n < REVIEW_FALLADOS_MAX && add(f.id)) n += 1;
+  // 2. El pintor a medias con peor resultado: 2 cuadros ya vistos suyos.
+  const worst = startedArtists(progress, index)[0] || null;
+  let started = null;
+  if (worst) {
+    const seen = seenWorks(progress, worst.id);
+    const own = byAge(pool.filter((w) => w.artistId === worst.id && (seen.has(w.id) || srs[artKey(w.id)] || progress.collection?.[w.id])));
+    let k = 0;
+    for (const w of own) if (k < REVIEW_STARTED_WORKS && add(w.id)) k += 1;
+    if (k || works.some((id) => inPool.get(id).artistId === worst.id)) started = worst.id;
+  }
+  // 3. Vencidos del repaso espaciado (dueKeys ya ordena por caja).
+  for (const key of dueKeys(srs, today)) {
+    const [kind, id] = key.split(':');
+    if (kind === 'art') add(id);
+    else if (kind === 'artist') {
+      const w = byAge(pool.filter((x) => x.artistId === id)).find((x) => !works.includes(x.id));
+      if (w) add(w.id);
+    }
+  }
+  // 4. Un cuadro de un pintor apagado.
+  const dormant = index.path.find((a) => isDormant(progress, a.id, today) && pool.some((w) => w.artistId === a.id && !works.includes(w.id)));
+  if (dormant) {
+    const w = worksBySrs(progress, index, dormant.id).find((x) => inPool.has(x.id) && !works.includes(x.id));
+    if (w) add(w.id);
+  }
+  // 5. Relleno.
+  byAge(pool).forEach((w) => add(w.id));
+  return { works, started };
 }
 
-// Rótulo del botón: dice lo que trae la ronda (ids: los de review5Works).
-export function review5Label(progress, ids) {
-  const missed = new Set((Array.isArray(progress.fallados) ? progress.fallados : []).map((f) => f.id));
-  return ids.some((id) => missed.has(id)) ? REVIEW5_MISSED : REVIEW5_NAME;
+// ¿Existe el repaso? Desde REVIEW_MIN cuadros vistos (antes, el botón no aparece).
+export function hasReview(progress, index) {
+  return reviewPool(progress, index).length >= REVIEW_MIN;
 }
 
-export function hasReview5(progress, index, today) {
-  return review5Works(progress, index, today).length >= REVIEW5_MIN;
+// ¿Hay algo pendiente (el punto del botón)? Fallados, vencidos del repaso espaciado o pintores a medias.
+export function reviewPending(progress, index, today) {
+  if (!hasReview(progress, index)) return false;
+  if (startedArtists(progress, index).length) return true;
+  if (reviewFallados(progress, index).length) return true;
+  const pool = new Set(reviewPool(progress, index).map((w) => w.id));
+  return dueKeys(progress.srs || {}, today).some((key) => {
+    const [kind, id] = key.split(':');
+    return kind === 'art' ? pool.has(id) : kind === 'artist' && isKnownArtist(progress, index, id);
+  });
 }

@@ -141,7 +141,7 @@ function cleanQuestion(q, index) {
 function pickPlan(p) {
   const out = { kind: KINDS.has(p.kind) ? p.kind : 'general' };
   if (Number.isFinite(p.seed)) out.seed = p.seed;
-  for (const k of ['artistId', 'movementId', 'date']) if (typeof p[k] === 'string' && ROUTE_RE.test(p[k])) out[k] = p[k];
+  for (const k of ['artistId', 'movementId', 'date', 'started']) if (typeof p[k] === 'string' && ROUTE_RE.test(p[k])) out[k] = p[k];
   if (typeof p.week === 'string' && WEEK_RE.test(p.week)) out.week = p.week;
   if (Number.isInteger(p.level) && p.level >= 2 && p.level <= 9) out.level = p.level;
   return out;
