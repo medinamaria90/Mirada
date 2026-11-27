@@ -183,7 +183,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .path-map.is-linear { --map-fs: 1rem; }
 .map-probe { position: absolute; width: 1rem; height: 1px; visibility: hidden; pointer-events: none; }
 /* Suelo bajo el inicio: ocupa el hueco de la barra de abajo para que el mapa llegue hasta el borde. */
-.path-foot { height: calc(84px + var(--safe-b)); background: var(--era-tint); }
+.path-foot { position: relative; height: calc(84px + var(--safe-b)); background: var(--era-tint); }
 .page-home:has(.path-foot) { padding-bottom: 0; }
 .path-era, .path-museum, .path-start { position: relative; width: 100%; min-width: 0; background: var(--era-tint); }
 .path-era, .path-museum { margin-bottom: -1px; }
@@ -191,11 +191,13 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .path-era { content-visibility: auto; contain-intrinsic-size: auto 390px auto 900px; }
 /* Costura suave con la época anterior (abajo): su tinte se funde en el de esta. */
 .path-era::before { content: ""; position: absolute; inset: auto 0 0; z-index: 1; height: var(--map-seam); background: linear-gradient(to top, var(--era-prev), transparent); pointer-events: none; }
-.path-land, .path-trail, .path-museum-art, .path-start-art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.path-land, .path-trail, .path-gate, .path-museum-art, .path-start-art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
 .path-land { z-index: 0; object-fit: fill; }
 .path-trail { z-index: 1; }
+/* El sendero solapa 1 px con el tramo vecino: sin raya fina en la costura entre épocas. */
+.path-era > .path-trail { top: -1px; height: calc(100% + 2px); }
 .path-museum-art, .path-start-art { z-index: 0; }
-.path-start-art.is-front { z-index: 2; }
+.path-start-art.is-front, .path-gate { z-index: 2; }
 /* Caseta de «Información» junto a la puerta (dibujada en el paisaje): un botón transparente de 56 px la cubre. */
 .start-kiosk { position: absolute; z-index: 3; width: var(--kiosk-hit); height: var(--kiosk-hit); margin: 0; padding: 0; translate: -50% -50%; border: 0; border-radius: var(--radius-sm); background: none; cursor: pointer; }
 .start-kiosk:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
@@ -203,22 +205,25 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 /* Camino en línea (sin dibujos): la caseta pasa a ser una placa con su nombre. */
 .path-map.is-linear .start-kiosk { position: static; translate: none; width: auto; height: auto; min-height: 48px; align-self: flex-start; padding: 0 var(--map-fs); border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); color: var(--map-sign-ink); font: 600 var(--map-fs)/1.2 var(--font); }
 .path-map.is-linear .start-kiosk-text { display: inline; }
-.trail-edge, .trail-fill, .trail-steps, .spur-edge, .spur-fill { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.trail-shade, .trail-edge, .trail-fill, .trail-thread, .spur-edge, .spur-fill { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 /* Trazado estirado (letra grande): el trazo conserva su grosor. */
 .path-map.is-tall .path-trail path { vector-effect: non-scaling-stroke; }
-.trail-edge { stroke: var(--map-trail-edge); stroke-width: 30; }
-.trail-fill { stroke: var(--map-trail); stroke-width: 24; }
-.trail-steps { stroke: var(--map-trail-step); stroke-width: 3; stroke-dasharray: 3 9; }
-/* Desvío de una rama: sendero estrecho; cerrado, solo una hilera de piedras. */
+/* Sendero de tierra (sin raya): sombra suave hacia abajo a la derecha, borde y firme; lo recorrido, con un hilo de oro. */
+.trail-shade { stroke: var(--map-shade); stroke-width: 28; transform: translate(2px, 3px); }
+.trail-edge { stroke: var(--map-trail-edge); stroke-width: 26; }
+.trail-fill { stroke: var(--map-trail); stroke-width: 20; }
+.trail-thread { stroke: var(--map-trail-thread); stroke-width: 3; }
+/* Desvío de una rama: sendero estrecho; cerrado, más fino y apagado. */
 .spur-edge { stroke: var(--map-trail-edge); stroke-width: 15; }
 .spur-fill { stroke: var(--map-trail); stroke-width: 10; }
-.spur-edge.is-locked { stroke-width: 6; stroke-dasharray: 0 10; }
-.spur-fill.is-locked { display: none; }
-/* Tras el cartel, el desvío se pierde en el paisaje: piedras que se apagan hacia el borde. */
-.spur-tail { fill: none; stroke: var(--map-trail-edge); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 0 11; opacity: .7; }
+.spur-edge.is-locked { stroke-width: 9; opacity: .75; }
+.spur-fill.is-locked { stroke-width: 5; opacity: .75; }
+/* Tras el cartel, el desvío se pierde en el paisaje: una vereda más fina y tenue hasta el borde. */
+.spur-tail { fill: none; stroke: var(--map-trail-edge); stroke-width: 7; stroke-linecap: round; opacity: .55; }
 .land-far { fill: var(--map-stone-far); }
 .land-front { fill: var(--map-stone-front); }
 .land-side { fill: var(--map-stone-side); }
+.bridge-rail { stroke: var(--map-trail-edge); stroke-width: 1; }
 .land-top { fill: var(--map-stone-top); }
 .land-window { fill: var(--map-window); }
 .land-shade { fill: var(--map-shade); }
@@ -232,12 +237,20 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 }
 .road-sign.is-left { align-items: flex-end; }
 .road-sign.is-right { align-items: flex-start; }
-.road-sign::before { content: ""; position: absolute; bottom: 3px; width: 4px; height: calc(var(--map-post-h) + 12px); border-radius: 2px; background: var(--map-post); }
-.road-sign::after { content: ""; position: absolute; bottom: 0; width: 18px; height: 6px; border-radius: 50%; background: var(--map-shade); }
-.road-sign.is-left::before { right: 16px; }
-.road-sign.is-right::before { left: 16px; }
-.road-sign.is-left::after { right: 9px; }
-.road-sign.is-right::after { left: 9px; }
+/* Dos postes de madera bajo la placa, como un letrero de camino, con su sombra en el suelo. */
+.road-sign::before {
+  content: ""; position: absolute; bottom: 3px; left: var(--map-post-in); right: var(--map-post-in); height: calc(var(--map-post-h) + 12px);
+  background: linear-gradient(to right, var(--map-post) 0 var(--map-post-w), transparent var(--map-post-w) calc(100% - var(--map-post-w)), var(--map-post) calc(100% - var(--map-post-w)));
+}
+.road-sign::after { content: ""; position: absolute; bottom: 0; left: calc(var(--map-post-in) - 6px); right: calc(var(--map-post-in) - 6px); height: 6px; border-radius: 50%; background: var(--map-shade); }
+/* Carteles de tramo y de rama: más pequeños y bajos que el de la época. */
+.road-sign.is-tramo, .road-sign.branch-spot { --map-post-h: var(--map-post-h-low); }
+.road-sign.branch-spot { z-index: 2; }
+.is-tramo .sign-plate, .sign-plate.branch { min-height: 44px; padding: calc(.4 * var(--map-fs)) calc(.65 * var(--map-fs)); }
+.is-tramo .sign-plate:has(.sign-more) { padding-right: calc(1.4 * var(--map-fs)); }
+.is-tramo .sign-name, .sign-plate.branch .sign-name { font-size: calc(.82 * var(--map-fs)); }
+.sign-plate.is-static { cursor: default; }
+.sign-plate.branch.is-mastered::before { background: var(--gold); }
 .sign-plate {
   position: relative; z-index: 1; display: grid; gap: 3px; justify-items: start; min-width: 0; max-width: min(100%, calc(15 * var(--map-fs))); min-height: 48px;
   margin: 0; padding: calc(.6 * var(--map-fs)) calc(.85 * var(--map-fs)); border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); color: var(--map-sign-ink);
@@ -257,7 +270,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .sign-meta .icon { vertical-align: -1px; }
 .sign-plate.is-locked .sign-name { color: var(--map-sign-ink-2); font-weight: 500; }
 /* Cerrada: placa apagada (en oscuro, más cerca del fondo que las abiertas). */
-.sign-plate.is-locked, .branch.is-locked .branch-plate { background: color-mix(in srgb, var(--map-sign) 55%, var(--map-tag)); }
+.sign-plate.is-locked { background: color-mix(in srgb, var(--map-sign) 55%, var(--map-tag)); }
 .sign-more { position: absolute; right: calc(.4 * var(--map-fs)); top: 50%; display: grid; place-items: center; transform: translateY(-50%); color: var(--map-sign-ink-2); }
 .sign-seal {
   position: absolute; top: -13px; right: 6px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px;
@@ -284,18 +297,9 @@ html.reduce-motion .ring-halo { animation: none; }
 }
 .stage-spot.is-right .stage { left: auto; right: calc(var(--dot) / -2); flex-direction: row-reverse; text-align: right; }
 .stage-spot.is-current .stage { --dot: 64px; }
-/* Con rótulo de tramo el texto es más alto: se aparta más del nodo para no tocar el sendero, que sale en diagonal. */
-.stage.has-kicker { gap: calc(var(--map-fs) * 1.25); }
-.stage-spot.is-current .stage.has-kicker, .stage.has-kicker.is-started { gap: calc(var(--map-fs) * 1.25 + 16px); }
-/* Letra grande: el rótulo de tramo puede ir en dos líneas; todo bloque con rótulo se aparta como los altos. */
-.path-map.is-tall .stage.has-kicker { gap: calc(var(--map-fs) * 1.25 + 22px); }
 .path-map.is-tall .stage.is-started, .path-map.is-tall .stage-spot.is-current .stage { gap: calc(var(--map-fs) * .75 + 10px); }
 /* …y el texto, como mucho hasta el borde de la pantalla (el rótulo pasa a dos líneas si no cabe). */
 .path-map.is-tall .stage-text { max-width: min(calc(64vw - 40px - 1.25em - 22px), calc(var(--room, 1) * 100cqi - var(--dot) / 2 - .75 * var(--map-fs) - 10px)); }
-.path-map.is-tall .stage-kicker { white-space: normal; text-wrap: balance; padding-inline: calc(.3 * var(--map-fs)); }
-.path-map.is-tall .stage-spot.is-current .stage.has-kicker, .path-map.is-tall .stage.has-kicker.is-started { gap: calc(var(--map-fs) * 1.25 + 28px); }
-.stage-spot.is-current .stage.has-kicker .stage-kicker, .stage.has-kicker.is-started .stage-kicker { padding-block: calc(.1 * var(--map-fs)) calc(.14 * var(--map-fs)); }
-.stage-spot.is-current .stage.has-kicker .stage-text, .stage.has-kicker.is-started .stage-text { translate: 0 -9px; }
 .stage.is-locked { --dot: 40px; }
 .stage-spot.is-next .stage.is-locked { --dot: 46px; }
 /* Nodo redondo con el cuadro dentro, anillo blanco de 3 px siempre y relieve. */
@@ -311,12 +315,10 @@ html.reduce-motion .ring-halo { animation: none; }
 /* Texto del nodo: etiquetas pequeñas apiladas (tramo, nombre, «Empezar»/«Repite»), sin placa común. */
 .stage-text { display: grid; gap: 5px; justify-items: start; min-width: 0; max-width: min(210px, 50vw); color: var(--ink); font: 500 calc(.86 * var(--map-fs))/1.15 var(--font); }
 .stage-spot.is-right .stage-text { justify-items: end; }
-.stage-name, .stage-kicker { max-width: 100%; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)) calc(.24 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-label); overflow-wrap: break-word; hyphens: auto; }
-.stage-kicker { font: 600 calc(.75 * var(--map-fs))/1.2 var(--font); letter-spacing: .01em; color: var(--accent-ui); white-space: nowrap; }
+.stage-name { max-width: 100%; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)) calc(.24 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-label); overflow-wrap: break-word; hyphens: auto; }
 /* El tramo y el botón, algo apartados del nodo: el sendero sale de él en diagonal por ese lado. */
-.stage-kicker, .stage-text > .stage-meta { margin-inline-start: var(--map-indent); max-width: calc(100% - var(--map-indent)); }
-.stage-spot.is-right .stage-kicker, .stage-spot.is-right .stage-text > .stage-meta { margin-inline: 0 var(--map-indent); }
-.stage-kicker-count { margin-left: calc(.2 * var(--map-fs)); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.stage-text > .stage-meta { margin-inline-start: var(--map-indent); max-width: calc(100% - var(--map-indent)); }
+.stage-spot.is-right .stage-text > .stage-meta { margin-inline: 0 var(--map-indent); }
 .stage-meta { font-size: calc(.76 * var(--map-fs)); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
 /* Cerrado: más pequeño, sin relieve ni cuadro; nombre corto y etiqueta más transparente. */
 .stage.is-locked .stage-dot { background: var(--map-locked); color: var(--ink-2); box-shadow: 0 0 0 2px var(--map-sign-line); }
@@ -388,39 +390,21 @@ html.reduce-motion .ring-halo { animation: none; }
   font-size: calc(.8 * var(--map-fs)); line-height: 1.25; color: var(--ink); text-align: center; opacity: 0; pointer-events: none;
   transition: opacity .25s;
 }
-.stage-spot.is-right .lock-note, .branch-spot.is-right .lock-note { left: auto; right: 44px; }
+.stage-spot.is-right .lock-note { left: auto; right: 44px; }
 .lock-note.is-visible { opacity: 1; }
 
-/* Rama: el desvío acaba en el margen, en su cartel (placa hueso) sobre un hito redondo. La placa nace del borde del
-   mapa hacia dentro (nunca se corta por el lado) y es lo bastante ancha para no partir palabras; el hito y el contador
-   quedan justo donde llega el desvío (--branch-x desde el borde: SIDE_X de path-layout.js). */
-.path-map { --branch-x: calc(100cqi * 42 / 390); --branch-edge: 8px; --branch-dot: 40px; }
-.branch-spot { position: absolute; z-index: 2; width: 0; height: 0; }
-.branch {
-  --dot-in: calc(var(--branch-x) - var(--branch-edge) - var(--branch-dot) / 2);
-  position: absolute; left: calc(var(--branch-edge) - var(--branch-x)); top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: max-content; max-width: calc(100cqi * 112 / 390);
-  padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer;
-  transform: translateY(calc(-100% + var(--branch-dot) / 2));
+/* Volver a tu parada (screens/map-return.js): botón redondo flotante con el cuadro de la parada y la flecha hacia ella. */
+.map-return {
+  position: fixed; right: max(16px, calc(50% - var(--col) / 2 + 16px)); bottom: calc(var(--map-return-b) + var(--safe-b)); z-index: 5;
+  display: grid; place-items: center; width: 56px; height: 56px; padding: 0; border: 0; border-radius: 999px;
+  background: var(--surface); color: var(--accent-ui); box-shadow: var(--shadow-pop), 0 0 0 3px var(--surface), 0 0 0 5px var(--accent-ui); cursor: pointer;
 }
-.branch-spot.is-right .branch { left: auto; right: calc(var(--branch-edge) - var(--branch-x)); align-items: flex-end; text-align: right; }
-.branch-plate {
-  display: grid; gap: 2px; min-width: min-content; max-width: 100%; padding: calc(.28 * var(--map-fs)) calc(.45 * var(--map-fs)) calc(.32 * var(--map-fs)); border: 1px solid var(--map-sign-line); border-radius: var(--map-r);
-  background: var(--map-sign); box-shadow: 0 1.5px 0 var(--map-sign-line);
-}
-.branch-name { font: 600 calc(.75 * var(--map-fs))/1.15 var(--font); color: var(--map-sign-ink); text-wrap: balance; overflow-wrap: normal; hyphens: none; }
-/* El contador: entre la placa y el hito, centrado sobre el hito (cuelga sobre su borde de arriba sin tapar el icono). */
-.branch-count { position: relative; z-index: 1; display: block; min-width: var(--branch-dot); margin: -1px 0 -9px; margin-inline-start: var(--dot-in); padding: 0 3px; border-radius: var(--map-r); background: var(--map-label); text-align: center; font: 600 calc(.75 * var(--map-fs))/1.05 var(--font); color: var(--ink-2); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
-.branch-spot.is-right .branch-count, .branch-spot.is-right .branch-dot { margin-inline: 0 var(--dot-in); }
-.branch-dot {
-  display: grid; place-items: center; width: var(--branch-dot); height: var(--branch-dot); margin-inline-start: var(--dot-in); border-radius: 999px; background: var(--map-tag); color: var(--accent-ui);
-  box-shadow: 0 0 0 2px var(--accent-ui), 0 3px 0 2px var(--map-sign-line); transition: transform .15s var(--ease);
-}
-.branch:active .branch-dot { transform: translateY(2px); }
-.branch.is-mastered .branch-dot { color: var(--gold-text); box-shadow: 0 0 0 2px var(--gold), 0 3px 0 2px var(--map-sign-line); }
-.branch.is-locked { --branch-dot: 32px; }
-.branch.is-locked .branch-dot { background: var(--map-locked); color: var(--ink-2); box-shadow: 0 0 0 2px var(--map-sign-line); }
-.branch.is-locked .branch-plate { box-shadow: none; }
-.branch.is-locked .branch-name { color: var(--map-sign-ink-2); font-weight: 500; }
+.map-return[hidden] { display: none; }
+.map-return:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 6px; }
+.map-return-art { position: absolute; inset: 0; overflow: hidden; border-radius: 999px; }
+.map-return-art .stage-thumb { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-return-arrow { position: absolute; right: -6px; bottom: -6px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 999px; background: var(--accent-ui); color: var(--on-accent); rotate: 90deg; }
+.map-return.is-up .map-return-arrow { rotate: -90deg; }
 
 /* Camino en línea (.is-linear, lo pone path-map.js → watchMapMode): con letra de más del 150 % o una ventana de
    menos de 300 px (zoom del 200 %). Se apila: carteles de época a todo el ancho y en el flujo (nunca encima de
@@ -429,32 +413,20 @@ html.reduce-motion .ring-halo { animation: none; }
    proporción (--k), con el paisaje y el sendero estirados (preserveAspectRatio="none"; el trazo, sin deformarse). */
 .path-map.is-linear .path-era { content-visibility: visible; }
 .path-map.is-linear .path-era, .path-map.is-linear .path-start, .path-map.is-linear .path-museum { aspect-ratio: auto !important; display: flex; flex-direction: column-reverse; gap: calc(.9 * var(--map-fs)); padding: var(--map-fs) calc(.9 * var(--map-fs)); }
-.path-map.is-linear .path-era::before, .path-map.is-linear .path-land, .path-map.is-linear .path-trail, .path-map.is-linear .path-museum-art, .path-map.is-linear .path-start-art { display: none; }
+.path-map.is-linear .path-era::before, .path-map.is-linear .path-land, .path-map.is-linear .path-trail, .path-map.is-linear .path-gate, .path-map.is-linear .path-museum-art, .path-map.is-linear .path-start-art { display: none; }
 .path-map.is-linear .road-sign { position: static; max-width: none !important; padding-bottom: 0; align-items: stretch; }
 .path-map.is-linear .road-sign::before, .path-map.is-linear .road-sign::after { display: none; }
 .path-map.is-linear .sign-plate { max-width: none; width: 100%; }
 .path-map.is-linear .sign-name { display: block; -webkit-line-clamp: none; overflow: visible; font-size: var(--map-fs); }
 .path-map.is-linear .stages { position: relative; inset: auto; display: flex; flex-direction: column-reverse; gap: var(--map-fs); }
 .path-map.is-linear .stages::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--map-line-x) - 4px); width: 8px; border-radius: 4px; background: var(--map-trail-edge); }
-.path-map.is-linear .stage-spot, .path-map.is-linear .branch-spot { position: relative; left: auto !important; top: auto !important; width: auto; height: auto; }
-.path-map.is-linear .stage, .path-map.is-linear .stage-spot.is-right .stage, .path-map.is-linear .stage-spot-aside .stage, .path-map.is-linear .stage-spot-aside.is-left .stage, .path-map.is-linear .stage-spot-aside.is-right .stage {
+.path-map.is-linear .stage-spot, .path-map.is-linear .stage, .path-map.is-linear .stage-spot.is-right .stage, .path-map.is-linear .stage-spot-aside .stage, .path-map.is-linear .stage-spot-aside.is-left .stage, .path-map.is-linear .stage-spot-aside.is-right .stage {
     position: relative; top: auto; left: auto; right: auto; flex-direction: row; align-items: center; text-align: left;
     width: calc(100% - var(--map-line-x) + var(--dot) / 2); margin-left: calc(var(--map-line-x) - var(--dot) / 2);
   }
 .path-map.is-linear .stage-spot.is-current { margin-block: 14px; }
-.path-map.is-linear .stage.has-kicker, .path-map.is-linear .stage-spot.is-current .stage.has-kicker, .path-map.is-linear .stage.has-kicker.is-started { gap: 12px; }
-.path-map.is-linear .stage-spot.is-current .stage.has-kicker .stage-text, .path-map.is-linear .stage.has-kicker.is-started .stage-text { translate: none; }
 .path-map.is-linear .stage-text, .path-map.is-linear .stage-spot.is-right .stage-text, .path-map.is-linear .stage-spot-aside .stage-text { flex: 1; max-width: none; justify-items: start; }
-.path-map.is-linear .stage-kicker { white-space: normal; }
-.path-map.is-linear .branch, .path-map.is-linear .branch.is-locked { position: relative; transform: none; flex-direction: row-reverse; justify-content: flex-end; width: calc(100% - var(--map-line-x) + 20px); max-width: none; margin-left: calc(var(--map-line-x) - 20px); gap: 10px; }
-.path-map.is-linear .branch-plate { justify-items: start; text-align: left; }
-.path-map.is-linear .branch, .path-map.is-linear .branch.is-locked { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; row-gap: 2px; justify-items: start; }
-.path-map.is-linear .branch-dot { grid-column: 1; grid-row: 1 / span 2; margin: 0; }
-.path-map.is-linear .branch-spot .branch { left: auto; right: auto; text-align: left; }
-.path-map.is-linear .branch-plate { grid-column: 2; grid-row: 1; align-self: end; }
-.path-map.is-linear .branch-count { grid-column: 2; grid-row: 2; align-self: start; margin: 0; padding: 0; background: none; text-align: left; }
-.path-map.is-linear .branch { min-height: 48px; align-items: center; }
-.path-map.is-linear .stage-kicker, .path-map.is-linear .stage-text > .stage-meta, .path-map.is-linear .stage-spot.is-right .stage-kicker, .path-map.is-linear .stage-spot.is-right .stage-text > .stage-meta { margin-inline: 0; }
+.path-map.is-linear .stage-text > .stage-meta, .path-map.is-linear .stage-spot.is-right .stage-text > .stage-meta { margin-inline: 0; }
 .path-map.is-linear .lock-note { position: static; transform: none; width: auto; max-width: none; margin: calc(.4 * var(--map-fs)) 0 0 calc(var(--map-line-x) + 30px); }
 .path-map.is-linear .lock-note:not(.is-visible) { display: none; }
 
@@ -463,7 +435,6 @@ html.reduce-motion .ring-halo { animation: none; }
   .stage:hover .stage-dot { filter: brightness(1.05); outline: 6px solid color-mix(in srgb, var(--ink) 10%, transparent); outline-offset: 3px; }
   .stage:hover .stage-name { background: color-mix(in srgb, var(--map-tag) 92%, var(--ink)); }
   button.sign-plate:hover { background: color-mix(in srgb, var(--map-sign) 92%, var(--ink)); }
-  .branch:hover .branch-plate, .branch:hover .branch-dot { background: color-mix(in srgb, var(--map-sign) 92%, var(--ink)); }
 }
 /* Meta alcanzada: «Museo completo», con el filete y el sello de oro. */
 .sign-plate.is-done::before { background: var(--gold); }

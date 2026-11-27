@@ -248,7 +248,7 @@ def deco_rusia(p, h):
         lambda x, y, i: [abeto_nevado(x - 20, y + 16, 30), abeto_nevado(x, y + 22, 24), abeto_nevado(x + 20, y + 14, 28), nieve(x, y + 30, 64)],
     ]
     relleno = lambda x, y, i: abedul(x, y, 22 + (i % 2) * 4) if i % 2 else abeto_nevado(x, y, 20)
-    return _por_parada(p, h, vinetas, relleno, lambda m, i: [M.rio(m[1], 20, onda=6)] if i % 4 == 2 else [])
+    return _por_parada(p, h, vinetas, relleno) + S.agua(20, 6)
 
 
 def deco_japon(p, h):
@@ -282,7 +282,7 @@ def deco_gotico(p, h):
                          M.arbol_desnudo(x + 26, y + 20, 26), M.arbol(x + 44, y + 26, 7)],
     ]
     relleno = lambda x, y, i: M.arbol_desnudo(x, y, 22) if i % 2 else M.arbol(x, y, 7)
-    return _por_parada(p, h, vinetas, relleno, lambda m, i: [M.rio(m[1], 20, onda=6), M.puente(m[0], m[1], 46, 2)] if i == 2 else [])
+    return _por_parada(p, h, vinetas, relleno) + S.agua(20, 6)
 
 
 def registrar(mod):
