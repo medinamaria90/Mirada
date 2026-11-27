@@ -45,25 +45,29 @@ export const PLAZA_RIM = 3;
 const PLAZA_RINGS = [0, 0.22, 0.44, 0.66];
 // Adoquines de la plaza de una época: puntos y trazos cortos repartidos por el óvalo (siempre los mismos para la misma
 // plaza: un generador pseudoaleatorio con semilla en su centro). Textura de suelo, no anillos.
-const COBBLES = { n: 150, dash: 2.6 };
+// Sin contorno: el suelo muere hacia la hierba (un halo más claro alrededor y adoquines cada vez más ralos y tenues).
+const COBBLES = { n: 170, dash: 2.6, core: 0.62, halo: 1.12 };
 function cobbles(e) {
   let seed = Math.round(e.cx * 7 + e.cy * 13) || 1;
   const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-  let d = '';
+  const paths = { core: '', edge: '' };
   for (let i = 0; i < COBBLES.n; i++) {
     const a = rnd() * Math.PI * 2;
-    const r = Math.sqrt(rnd()) * 0.92;
-    const x = e.cx + Math.cos(a) * e.rx * r;
-    const y = e.cy + Math.sin(a) * e.ry * r;
-    d += `M${f(x)} ${f(y)}h${i % 3 ? '0' : f(COBBLES.dash)}`;
+    const r = Math.sqrt(rnd());
+    if (r > COBBLES.core && rnd() < (r - COBBLES.core) * 1.6) continue;   // más ralos hacia el borde
+    const x = e.cx + Math.cos(a) * e.rx * r * 0.95;
+    const y = e.cy + Math.sin(a) * e.ry * r * 0.95;
+    paths[r > COBBLES.core ? 'edge' : 'core'] += `M${f(x)} ${f(y)}h${i % 3 ? '0' : f(COBBLES.dash)}`;
   }
-  return `<path class="plaza-cobbles" d="${d}"/>`;
+  return `<path class="plaza-cobbles" d="${paths.core}"/><path class="plaza-cobbles is-edge" d="${paths.edge}"/>`;
 }
 export function trailSvg(h, d, spurs = [], done = '', plaza = null) {
   const walked = done ? `${dirt(done, ' is-done')}${grain(done, ' is-done')}` : '';
   const stones = (e) => (e.cobbles ? cobbles(e) : PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...e, rx: e.rx * (1 - k) - PLAZA_RIM, ry: e.ry * (1 - k) - PLAZA_RIM })).join(''));
-  const paving = plaza ? `${ellipse('plaza-fill', plaza)}${stones(plaza)}` : '';
-  const under = plaza ? `${ellipse('plaza-rim', plaza, plaza.rim ?? PLAZA_RIM)}${plaza.under ? paving : ''}` : '';
+  const halo = plaza?.cobbles ? ellipse('plaza-fill is-halo', { ...plaza, rx: plaza.rx * COBBLES.halo, ry: plaza.ry * COBBLES.halo }) : '';
+  const paving = plaza ? `${halo}${ellipse('plaza-fill', plaza)}${stones(plaza)}` : '';
+  const rim = plaza && plaza.rim !== null ? ellipse('plaza-rim', plaza, plaza.rim ?? PLAZA_RIM) : '';
+  const under = plaza ? `${rim}${plaza.under ? paving : ''}` : '';
   const over = plaza && !plaza.under ? paving : '';
   return `<svg class="path-trail" viewBox="0 0 ${MAP_W} ${h}" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path class="trail-shade" d="${d}"/>${spurs.map(spurSvg).join('')}${under}${dirt(d)}${grain(d)}${walked}${over}</svg>`;

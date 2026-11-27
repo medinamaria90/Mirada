@@ -85,7 +85,7 @@ export function museumArt() {
 // molduras). Mismo tamaño en todas las épocas. Al cruzar el arco, una plaza empedrada amplia (la pinta trailSvg, a ras
 // del sendero) con un pozo, balas de paja, sacos y un carro. Cerrada: portón de madera en el arco. x, y: centro del
 // paso, al pie.
-const CITY = { half: 60, body: 42, side: 7, arch: 15, tower: 17, towerH: 72, roof: 19, attic: 28 };
+const CITY = { half: 64, body: 42, side: 7, arch: 15, tower: 17, towerH: 72, roof: 19, attic: 28 };
 const PLAZA = { up: 104, rx: 118, ry: 34, edge: 6 };   // centro de la plaza sobre el pie de la puerta, sus radios y su aire con el borde
 const CITY_W = (CITY.half + CITY.tower) * 2;
 const MAP_SIZE = 390;   // ancho de diseño (path-layout.js, MAP_W)
@@ -101,7 +101,7 @@ export function eraPlace(x, y) {
   // La plaza no se sale del mapa: si la puerta va cerca de un borde, se corre hacia dentro (el sendero la cruza igual).
   const cx = Math.min(Math.max(x, PLAZA.rx + PLAZA.edge), MAP_SIZE - PLAZA.rx - PLAZA.edge);
   return {
-    plaza: { cx, cy: y - PLAZA.up, rx: PLAZA.rx, ry: PLAZA.ry, rim: 1, cobbles: true },
+    plaza: { cx, cy: y - PLAZA.up, rx: PLAZA.rx, ry: PLAZA.ry, rim: null, cobbles: true },
     box: { x0: x - CITY.half - CITY.tower, x1: x + CITY.half + CITY.tower, y, top, atticAt: CITY.body / hh, atticH: CITY.attic / hh, atticW: (CITY.half * 2 - 6) / CITY_W },
   };
 }

@@ -85,6 +85,7 @@
   --map-stone-front: #e8d8bf;
   --map-stone-side: #c8b293;
   --map-stone-top: #f4ead9;
+  --map-cobble: #c4ae8d;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
   --map-window: #93806a;
   --map-tile: #d98f69;
   --map-tile-2: #b96f4f;
@@ -164,6 +165,7 @@
   --fountain-rim-w: 1.6;
   --plaza-cobble-dot: 2.2;          /* adoquines de la plaza de cada época */
   --plaza-cobble-o: .6;
+  --plaza-halo-o: .45;
   --map-ribbon: 3px;
   /* Inscripción de la época en el ático de su puerta (mapa-carteles.css) y mojón del tramo. */
   --font-inscription: "Cinzel", "Trajan Pro", Georgia, serif;
@@ -303,6 +305,7 @@
     --map-stone-front: #373129;
     --map-stone-side: #2d2823;
     --map-stone-top: #433c33;
+    --map-cobble: #6a6052;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
     --map-window: #8b7146;
     --map-tile: #5c4136;
     --map-tile-2: #4b342b;
@@ -396,6 +399,7 @@
   --map-stone-front: #373129;
   --map-stone-side: #2d2823;
   --map-stone-top: #433c33;
+  --map-cobble: #6a6052;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
   --map-window: #8b7146;
   --map-tile: #5c4136;
   --map-tile-2: #4b342b;
@@ -493,6 +497,7 @@
     --map-stone-front: #e8d8bf;
     --map-stone-side: #c8b293;
     --map-stone-top: #f4ead9;
+    --map-cobble: #c4ae8d;   /* adoquines de las plazas de época (en oscuro, más claros que el suelo) */
     --map-window: #93806a;
     --map-tile: #d98f69;
     --map-tile-2: #b96f4f;

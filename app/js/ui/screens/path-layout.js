@@ -208,7 +208,7 @@ export const branchLand = (branch) => (branch.kind === 'epoca' ? branch.movement
 
 // Vuelta al camino desde la pantalla de una rama: una tablilla como la del desvío por el que se entró, junto a la puerta,
 // en el lado por el que queda el camino común (el contrario al que salió el desvío), con su vereda hacia el borde.
-const BACK = { foot: 8, spurUp: 22, out: 8, clear: 84 };   // clear: del paso al borde de la tablilla (fuera de la puerta de ciudad)
+const BACK = { foot: 8, spurUp: 22, out: 8, clear: 88 };   // clear: del paso al borde de la tablilla (fuera de la puerta de ciudad)
 function backSign(era, side) {
   const x = era.gate.x;
   const edge = side === 'left' ? x - BACK.clear : x + BACK.clear;

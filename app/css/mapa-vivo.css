@@ -165,7 +165,8 @@
 .trail-edge.is-done { stroke: var(--lit-trail-done-edge); }
 .trail-fill.is-done { stroke: var(--lit-trail-done); }
 .trail-rim.is-done, .trail-grain.is-done { stroke: var(--lit-trail-done-edge); }
-.plaza-stones, .plaza-cobbles { stroke: var(--lit-stone-side); }
+.plaza-stones { stroke: var(--lit-stone-side); }
+.plaza-cobbles { stroke: color-mix(in oklab, var(--map-cobble), var(--map-night) var(--night-pct-soft)); }
 .plaza-rim { fill: var(--lit-stone-side); }
 .fountain-rim { stroke: var(--lit-stone-side); }
 .plaza-fill { fill: var(--lit-stone-top); }
