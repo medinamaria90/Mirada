@@ -5,3 +5,10 @@ ya     fra-angelico       194 candidatas
 fin 2026-11-27 01:22:28
 63M	.git
 3.7M	catalogo
+== seleccionar giotto fra-angelico duccio simone-martini 01:22:30
+fra-angelico       invit   194    42    5/3   n1=5   | sin datos de imagen:92, palabra:37, sin imagen apta:10, varios autores:7, proporción ≠ medidas:5, duplicado/versión:4, excluida:1
+TOTAL 42 obras de 175 pintores
+por país: Italia 42
+títulos por fuente: {'traducir': 136, 'revisar-idioma': 1, 'wikidata-es': 1107, 'manual': 25, 'traducido': 202}
+63M	.git
+3.7M	catalogo
