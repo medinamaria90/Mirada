@@ -419,7 +419,7 @@ html.reduce-motion .ring-halo { animation: none; }
   transition: opacity .2s, visibility 0s .2s;
 }
 .lock-note-text { margin: 0; padding-block: calc(.4 * var(--map-fs)); font-size: calc(.8 * var(--map-fs)); line-height: 1.25; text-align: left; }
-.lock-note-go { flex: none; min-height: var(--hit); margin: calc(-.25 * var(--map-fs)) 0 calc(-.25 * var(--map-fs)) calc(.4 * var(--map-fs)); padding: 0 calc(.7 * var(--map-fs)); border: 0; border-radius: var(--map-r); background: var(--brand); color: var(--on-brand); font: 600 calc(.8 * var(--map-fs))/1 var(--font); cursor: pointer; }
+.lock-note-go { flex: none; min-width: var(--hit); min-height: var(--hit); margin: calc(-.25 * var(--map-fs)) 0 calc(-.25 * var(--map-fs)) calc(.4 * var(--map-fs)); padding: 0 calc(.7 * var(--map-fs)); border: 0; border-radius: var(--map-r); background: var(--brand); color: var(--on-brand); font: 600 calc(.8 * var(--map-fs))/1 var(--font); cursor: pointer; }
 .lock-note-go[hidden] { display: none; }
 .lock-note-go:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 .lock-note-close { display: grid; flex: none; place-items: center; width: var(--hit); height: var(--hit); margin: calc(-.25 * var(--map-fs)) 0; padding: 0; border: 0; border-radius: var(--map-r); background: none; color: var(--ink-2); cursor: pointer; }
