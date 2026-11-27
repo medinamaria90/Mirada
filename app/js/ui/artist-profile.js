@@ -20,7 +20,7 @@ import { levelStory, storyKey } from '../engine/stories.js';
 import { storySeen } from '../state/stories-seen.js';
 import { sealHtml } from './seal.js';
 import { traitDetails, lookAlikes } from '../engine/ficha.js';
-import { timeHtml } from './ficha-tiempo.js';
+import { timeHtml, fitTimeNames } from './ficha-tiempo.js';
 import { lifeSpan, seenOf, playTargets, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
 
 // La tira de cuadros enseña unos cuantos; el resto, en su galería.
@@ -171,6 +171,7 @@ export function wireProfile(ctx, root, artistId, hooks = {}) {
       replay: (level) => go(levelRoute(artistId, level)),
     });
   }
+  fitTimeNames(root);
   root.addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-ap]');
     if (!b) return;

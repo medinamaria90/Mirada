@@ -6,11 +6,11 @@ import { esc } from './dom.js';
 import { avatarHtml } from './avatar.js';
 import { timeOf } from '../engine/chrono.js';
 
-// Ancho de referencia de la tarjeta (px) y lo que ocupa un nombre dentro de su barra: cara, huecos y unos px por letra.
-// Si la barra no da para el nombre entero, este sale fuera de ella, al lado con más sitio (nunca cortado).
-const CARD_PX = 300;
-const BAR_CHROME_PX = 52;
-const CHAR_PX = 8.6;
+// El nombre va dentro de su barra siempre que quepa. Si no cabe (se mide ya pintado, con la letra real y el ancho real),
+// sale fuera, al lado con más sitio, unido a su barra por una rayita (antes se prueba apretando la barra) (nunca cortado ni con la barra vacía): fitTimeNames.
+const OUT_LEFT = 'is-name-left';
+const OUT_RIGHT = 'is-name-right';
+const TIGHT = 'is-tight';
 // Margen (en % de la tarjeta) que se deja entre el nombre de fuera y el borde.
 const ROOM_GAP = 2;
 // Dos siglos del eje a menos de esto (en %) no caben: se queda el que marca la frontera de siglo.
@@ -36,11 +36,9 @@ export function timeHtml(ctx, artistId, face, link = false) {
   const rows = t.neighbours.slice().sort((a, b) => a.born - b.born);
   const bar = (r) => {
     const width = Math.max(r.to - r.from, 0);
-    const fits = (width / 100) * CARD_PX >= BAR_CHROME_PX + r.name.length * CHAR_PX;
     const left = r.from > 100 - r.to;
-    const out = fits ? '' : left ? ' is-name-left' : ' is-name-right';
     const room = Math.max(Math.floor(left ? r.from : 100 - r.to) - ROOM_GAP, 0);
-    const inner = `<span class="st-bar${r.current ? ' is-current' : ''}${out}" style="--from:${r.from}%;--width:${width}%;--room:${room}">${avatarHtml(ctx.index.artist(r.id), face(r.id), 'st-av')}<span class="st-name">${esc(r.name)}</span></span>`;
+    const inner = `<span class="st-bar${r.current ? ' is-current' : ''}" data-side="${left ? 'left' : 'right'}" style="--from:${r.from}%;--width:${width}%;--room:${room}">${avatarHtml(ctx.index.artist(r.id), face(r.id), 'st-av')}<span class="st-name">${esc(r.name)}</span></span>`;
     if (r.current) return `<li class="st-row"><span class="st-hit" aria-current="true">${inner}</span></li>`;
     return `<li class="st-row">${link
       ? `<button type="button" class="st-hit" data-ap="artist" data-id="${esc(r.id)}">${inner}</button>`
@@ -53,4 +51,28 @@ export function timeHtml(ctx, artistId, face, link = false) {
     <div class="st-axis" aria-hidden="true">${axis}</div>
     ${t.phrase ? `<p class="st-phrase">${esc(t.phrase)}</p>` : ''}
   </div></section>`;
+}
+
+// Saca fuera de su barra solo los nombres que, ya pintados, no caben dentro. Se repite al cargar la letra y al cambiar
+// el ancho o el tamaño del texto. Devuelve la función que deja de observar.
+export function fitTimeNames(root) {
+  const card = root.querySelector('.st-card');
+  if (!card) return () => {};
+  const fit = () => {
+    const bars = [...card.querySelectorAll('.st-bar')];
+    for (const bar of bars) bar.classList.remove(OUT_LEFT, OUT_RIGHT, TIGHT);
+    for (const bar of bars) {
+      const name = bar.querySelector('.st-name');
+      const clipped = () => name.scrollWidth > name.clientWidth;
+      // Primero se prueba con la barra apretada (letra y huecos algo menores); si aun así no cabe, el nombre sale fuera.
+      if (clipped()) bar.classList.add(TIGHT);
+      if (clipped()) bar.classList.replace(TIGHT, bar.dataset.side === 'left' ? OUT_LEFT : OUT_RIGHT);
+    }
+  };
+  fit();
+  globalThis.document?.fonts?.ready?.then(fit);
+  if (typeof ResizeObserver !== 'function') return () => {};
+  const ro = new ResizeObserver(fit);
+  ro.observe(card);
+  return () => ro.disconnect();
 }

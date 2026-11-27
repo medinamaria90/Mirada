@@ -35,13 +35,45 @@ test('«Su tiempo»: sin navegación (dentro de una ronda) no hay botones', () =
   assert.ok(!html.includes('<button'));
 });
 
-test('«Su tiempo»: un nombre que no cabe en su barra sale fuera, al lado con más sitio', () => {
+test('«Su tiempo»: el HTML pone todos los nombres dentro de su barra (sin adivinar anchos) y apunta el lado por si hay que sacarlos', () => {
   const html = timeHtml(ctxKnowing(ids), 'veronese', () => null, true);
-  const out = [...html.matchAll(/class="st-bar[^"]*is-name-(left|right)[^"]*" style="--from:([\d.]+)%;--width:([\d.]+)%;--room:(\d+)"/g)];
-  for (const [, side, from, width, room] of out) {
+  assert.ok(!/is-name-(left|right)/.test(html), 'fuera solo lo decide la medida real, ya pintado');
+  const bars = [...html.matchAll(/class="st-bar[^"]*" data-side="(left|right)" style="--from:([\d.]+)%;--width:([\d.]+)%;--room:(\d+)"/g)];
+  assert.ok(bars.length >= 2);
+  for (const [, side, from, width, room] of bars) {
     const space = side === 'left' ? Number(from) : 100 - Number(from) - Number(width);
-    assert.ok(Number(room) <= space, 'el nombre cabe en el sitio que se le da');
+    assert.ok(Number(room) <= space, 'el nombre de fuera cabe en el sitio que se le da');
   }
+});
+
+test('«Su tiempo»: fitTimeNames saca fuera solo el nombre que se corta y vuelve a dentro si ya cabe', async () => {
+  const { fitTimeNames } = await import('../app/js/ui/ficha-tiempo.js');
+  const mk = (side, clipped) => {
+    const cls = new Set();
+    const name = { scrollWidth: clipped ? 90 : 40, clientWidth: 60 };
+    return { cls, name, dataset: { side }, classList: { add: (c) => cls.add(c), remove: (...c) => c.forEach((x) => cls.delete(x)) }, querySelector: () => name };
+  };
+  const a = mk('right', true); const b = mk('left', true); const c = mk('right', false);
+  const t = mk('right', true); // solo se corta por poco: apretándola, cabe
+  t.classList.add = (x) => { t.cls.add(x); if (x === 'is-tight') t.name.scrollWidth = 40; };
+  t.classList.replace = (x, y) => { t.cls.delete(x); t.cls.add(y); };
+  for (const m of [a, b]) m.classList.replace = (x, y) => { m.cls.delete(x); m.cls.add(y); };
+  const card = { querySelectorAll: () => [a, b, c, t] };
+  const stop = fitTimeNames({ querySelector: () => card });
+  assert.deepEqual([...a.cls], ['is-name-right']);
+  assert.deepEqual([...b.cls], ['is-name-left']);
+  assert.deepEqual([...c.cls], []);
+  assert.deepEqual([...t.cls], ['is-tight']);
+  a.name.scrollWidth = 40; // con más sitio (o la letra ya cargada) cabe: no queda fuera
+  card.querySelectorAll = () => [a];
+  fitTimeNames({ querySelector: () => card });
+  assert.deepEqual([...a.cls], []);
+  stop();
+});
+
+test('«Su tiempo»: el nombre de fuera va unido a su barra por una rayita', () => {
+  assert.match(css, /\.st-bar\.is-name-right \.st-name::before/);
+  assert.match(css, /\.st-bar\.is-name-left \.st-name::before/);
 });
 
 test('«Su tiempo» y «No lo confundas con»: área táctil de 48 px, foco visible y sin destello', () => {

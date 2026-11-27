@@ -319,7 +319,7 @@ test('migración 6 → 7: obras a<N> → w<QID>, lo que no tiene equivalente se 
   assert.deepEqual(out.progress.deep, {});
   assert.equal(out.progress.rank, 0);
   assert.deepEqual(out.session, {}, 'la ronda en curso lleva ids antiguos: se descarta');
-  assert.deepEqual(out.settings, { ...v6.settings, name: '', cover: '', avatar: '' });
+  assert.deepEqual(out.settings, { ...v6.settings, name: '', avatar: '' });
   // Datos raros no rompen la migración.
   const odd = migrate({ version: 6, progress: { collection: null, srs: 7, fallados: [null, { id: 3 }], detail: { x: 5 } } });
   assert.equal(odd.version, SCHEMA_VERSION);
