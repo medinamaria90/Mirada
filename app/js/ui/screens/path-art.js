@@ -47,8 +47,8 @@ const GATE = { left: 173, right: 231, y: 96, tower: 14, h: 38 };   // la puerta,
 const START_BACK = `${cypress(28, 80, 30)}${cypress(112, 82, 24)}${roof(262, 80, 22, 10)}${roof(296, 79, 26, 12)}${roof(352, 80, 20, 9)}
       <rect class="land-front" x="326" y="44" width="12" height="36"/><path class="land-side" d="M338 80V44L344 40.4V76.4Z"/><path class="land-top" d="M326 44H338L344 40.4H332Z"/><path class="land-tile-2" d="M326 44H338L335 22Z"/><path class="land-tile" d="M338 44L344 40.4L335 22Z"/><path class="land-window" data-lamp d="M330 56V51a2 2 0 0 1 4 0V56Z"/>
       ${wall(-10, GATE.left, GATE.y, 18)}${wall(GATE.right + GATE.tower, 400, GATE.y, 18)}
-      ${tree(30, PY + 6, 8)}${tree(122, PY + 2, 7)}${cypress(122, PY + 20, 22)}
-      ${flowers(232, PY + 28)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${flowers(KIOSK.x + 50, KIOSK.y + 4)}`;
+      ${tree(30, PY + 6, 8)}${tree(134, PY + 2, 7)}${cypress(132, PY + 20, 22)}
+      ${flowers(232, PY + 28)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${flowers(KIOSK.x + 62, KIOSK.y + 6)}`;
 // La primera época entra por la misma puerta de ciudad que las demás, abierta en la muralla (delante del sendero, con la
 // caseta de «Información»); el sendero llega desde abajo y cruza su arco.
 const START_GATE = { x: START_GATE_X, y: GATE.y };

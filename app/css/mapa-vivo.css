@@ -173,6 +173,8 @@
 .land-water-2 { fill: var(--lit-water-2); }
 .land-bloom { fill: var(--lit-bloom); }
 .land-gold { fill: var(--lit-gold-2); }
+/* La «i» de la caseta de información guarda su oro de noche: es la única pista de que se pulsa. */
+.path-start-art .land-gold { fill: var(--map-gold-2); }
 
 /* Camino en línea (letra grande): sin paisaje, sin luces ni carruaje. */
 .path-map.is-linear .path-lamps, .path-map.is-linear .map-cart { display: none; }
