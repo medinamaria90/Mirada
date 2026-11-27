@@ -26,11 +26,11 @@ test('regla 2: la sesión cumple la meta → «Volver al camino» (el cierre dic
   assert.deepEqual([s.kind, s.label, s.to], ['done', 'Volver al camino', 'inicio']);
 });
 
-test('regla 3: repaso que traía un pintor a medias → «Volver a <pintor>»', () => {
+test('regla 3: repaso que traía un pintor a medias → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»)', () => {
   const p = base();
   p.artists[c.id] = { plays: 1, best: 0.6, mastered: false };
   const s = step(p, { plan: { kind: 'srs', started: c.id }, outcome: outcome(0.9) });
-  assert.deepEqual([s.kind, s.label, s.to], ['painter', `Volver a ${c.short || c.name}`, `etapa-${c.id}`]);
+  assert.deepEqual([s.kind, s.label, s.to], ['stop', `Sigue: ${c.short || c.name}`, `etapa-${c.id}`]);
 });
 
 test('regla 4: 3 pintores a medias o 5 fallados, sin repaso antes → «Repasar»; nunca dos repasos seguidos', () => {
@@ -65,10 +65,36 @@ test('regla 5: rama con siguiente → «Siguiente en la rama»; nivel «a fondo�
   assert.equal(s.label, 'Siguiente: Últimos años');
 });
 
+test('regla 5 bis: lo pendiente atrás (Prueba de época o el pintor a medias que la cierra), de vez en cuando', () => {
+  const [m1, m2] = big.visibleMovements;
+  const own = big.stepsOf(m1.id).filter((st) => st.type === 'artist').map((st) => st.id);
+  const p = mastered(emptyProgress(), own.slice(0, -1));
+  const late = own.at(-1);
+  p.artists[late] = { plays: 1, best: 0.6, mastered: false };
+  for (const st of big.stepsOf(m1.id).filter((x) => x.type === 'sala')) p.salas[st.id] = { plays: 1, best: 0.9, mastered: true };
+  seenWorksOf(p, own[0]);
+  const s = step(p, { plan: { kind: 'stage', artistId: late }, outcome: outcome(0.6) });
+  const openStep = big.stepsOf(m2.id)[0];
+  if (s.kind === 'debt') assert.deepEqual([s.label, s.to], [`Sigue: ${big.artist(late).short || big.artist(late).name}`, `etapa-${late}`]);
+  else assert.equal(s.kind, 'stop', 'si la siguiente parada aún es de la misma época, no hay nada atrás');
+  // Ya en la época siguiente: lo de atrás sale, pero nunca dos veces seguidas.
+  p.artists[openStep.id] = undefined;
+  const mid = step(p, { plan: { kind: 'stage', artistId: openStep.id }, outcome: outcome(0.8) });
+  assert.equal(mid.kind, 'debt', JSON.stringify(mid));
+  assert.equal(step(p, { plan: { kind: 'stage', artistId: openStep.id }, outcome: outcome(0.8), prevStep: 'debt' }).kind, 'stop');
+  // Época terminada y su Prueba sin hacer: «Prueba de época: <época>».
+  p.artists[late] = { plays: 2, best: 0.9, mastered: true };
+  const test1 = step(p, { plan: { kind: 'stage', artistId: openStep.id }, outcome: outcome(0.8) });
+  assert.deepEqual([test1.kind, test1.label, test1.to], ['debt', `Prueba de época: ${m1.name}`, `repaso-${m1.id}`]);
+  p.reviews = { [m1.id]: { best: 0.8 } };
+  assert.notEqual(step(p, { plan: { kind: 'stage', artistId: openStep.id }, outcome: outcome(0.8) }).kind, 'debt', 'superada, ya no se recomienda');
+});
+
 test('regla 6: parada abierta y sin jugar → «Sigue: <pintor>», con 50-74 % no se recomienda repetir', () => {
   const p = base();
   p.artists[c.id] = { plays: 1, best: 0.6, mastered: false };
-  const s = step(p, { plan: { kind: 'stage', artistId: c.id }, outcome: outcome(0.6) });
+  // (prevStep 'debt': lo pendiente atrás, la regla 5 bis, acaba de salir.)
+  const s = step(p, { plan: { kind: 'stage', artistId: c.id }, outcome: outcome(0.6), prevStep: 'debt' });
   assert.deepEqual([s.kind, s.label, s.artistId], ['stop', `Sigue: ${d.short || d.name}`, d.id]);
 });
 

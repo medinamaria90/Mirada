@@ -2,7 +2,7 @@
 
 import { $, announce, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
-import { branchRoute } from '../router.js';
+import { branchRoute, stageRoute, go } from '../router.js';
 import { zoomInto } from '../map-zoom.js';
 
 // La hoja del mapa (época cerrada, cómo se juega) se carga al primer toque: no cuenta en el arranque.
@@ -61,7 +61,8 @@ export function pathActions(ctx) {
 }
 
 // Aviso de lo cerrado: al tocar un candado, la parada tiembla como un cofre cerrado (y el móvil vibra un instante, si
-// puede) y sale UN globo pequeño con lo que falta y su cruz. Nunca hay dos: el nuevo sustituye al anterior. Se cierra
+// puede) y sale UN globo pequeño con lo que falta, «Ir» (a la parada que lo abre: data-unlock) y su cruz. «Ir» lleva el
+// camino hasta esa parada y la toca (su tarjeta o su ronda); si no está en esta pantalla, va a jugarla. Nunca hay dos: el nuevo sustituye al anterior. Se cierra
 // con la cruz, al tocar fuera, al desplazar el mapa, con Esc o al cambiar de pantalla. Sin temporizador.
 
 const SHAKE_MS = 420;       // lo que dura el temblor (como --dur-lock-shake)
@@ -94,7 +95,7 @@ function noteFor(button) {
   if (!note) {
     note = document.createElement('div');
     note.className = 'lock-note';
-    note.innerHTML = `<p class="lock-note-text"></p><button type="button" class="lock-note-close" aria-label="Cerrar">${icons.close(16)}</button>`;
+    note.innerHTML = `<p class="lock-note-text"></p><button type="button" class="lock-note-go" hidden>Ir</button><button type="button" class="lock-note-close" aria-label="Cerrar">${icons.close(16)}</button>`;
     button.after(note);
   }
   return note;
@@ -106,6 +107,10 @@ export function showLockNote(button) {
   const note = noteFor(button);
   const text = button.dataset.lock || 'Aún cerrada';
   note.querySelector('.lock-note-text').textContent = text;
+  const goBtn = note.querySelector('.lock-note-go');
+  const unlock = button.dataset.unlock || '';
+  goBtn.hidden = !unlock;
+  if (unlock) goBtn.setAttribute('aria-label', `Ir: ${text}`);
   note.style.translate = '';
   note.classList.add('is-visible');
   // Dentro de la pantalla: si asoma por un lado, se corre.
@@ -123,7 +128,13 @@ export function showLockNote(button) {
   document.addEventListener('scroll', onScroll, { capture: true, passive: true });
   document.addEventListener('keydown', onKey);
   window.addEventListener('hashchange', closeLockNote);
+  const onGo = (e) => {
+    e.stopPropagation();
+    closeLockNote();
+    goToStep(unlock);
+  };
   closer.addEventListener('click', onClose);
+  goBtn.addEventListener('click', onGo);
   open = {
     note,
     off: () => {
@@ -132,6 +143,20 @@ export function showLockNote(button) {
       document.removeEventListener('keydown', onKey);
       window.removeEventListener('hashchange', closeLockNote);
       closer.removeEventListener('click', onClose);
+      goBtn.removeEventListener('click', onGo);
     },
   };
+}
+
+const GO_SETTLE_MS = 450;   // lo que tarda el camino en llegar a la parada antes de tocarla
+
+// A la parada que abre lo cerrado: en esta pantalla, el camino baja (o sube) hasta ella y se toca; si no está, a jugarla.
+function goToStep(key) {
+  const [type, id] = key.split(':');
+  const target = document.querySelector(`.stage-spot[data-step="${CSS.escape(key)}"] .stage`);
+  if (!target) return go(type === 'sala' ? `sala-${id}` : stageRoute(id));
+  const reduce = prefersReducedMotion();
+  target.scrollIntoView({ block: 'center', behavior: reduce ? 'instant' : 'smooth' });
+  target.focus({ preventScroll: true });
+  return setTimeout(() => { if (target.isConnected) target.click(); }, reduce ? 0 : GO_SETTLE_MS);
 }

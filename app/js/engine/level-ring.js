@@ -44,27 +44,29 @@ export function levelRing(progress, index, artistId) {
 // Lo que dice el aro al lector de pantalla: «Nivel 3 de 5 por jugar» o «Todos los niveles hechos».
 export const ringLabel = (ring) => (ring.done ? 'Todos los niveles hechos' : `Nivel ${ring.at} de ${ring.total} por jugar`);
 
-// Pintor a medias (jugado y sin dominar): el mismo aro, con el tramo del nivel 1 lleno en proporción a best / 75 % y el
-// resto cerrado. { levels (el 1 con state 'partial' y fill 0..1), total, best, missing (cuadros del nivel 1 por ver),
-// started: true, next: 1, at: 1, done: false } o null.
+// Pintor a medias (jugado y sin terminar): el aro entero se llena con su mejor nota y lleva una muesca en el 75 % (lo que hace
+// falta). { levels (para la fila de la tarjeta: el 1 'partial', el resto cerrados), total, best, missing (cuadros del nivel 1
+// por ver), started: true, next: 1, at: 1, done: false } o null.
 export function startedRing(progress, index, artistId) {
   const rec = progress.artists?.[artistId];
   if (!rec?.plays || rec.mastered || !index.artist(artistId)) return null;
   const best = Math.max(0, Math.min(1, Number(rec.best) || 0));
-  const fill = Math.min(1, best / MASTERY);
-  const levels = ringLevels(index, artistId).map((l, i) => (i === 0 ? { ...l, state: 'partial', fill } : { ...l, state: 'locked' }));
+  const levels = ringLevels(index, artistId).map((l, i) => (i === 0 ? { ...l, state: 'partial' } : { ...l, state: 'locked' }));
   return { levels, total: levels.length, best, missing: pendingWorks(progress, index, artistId, 1).length, started: true, next: 1, at: 1, done: false };
 }
 
 export const percent = (k) => `${Math.round(k * 100)}\u00a0%`;
-export const MASTERY_TEXT = `de ${percent(MASTERY)}`;
+export const NEED_TEXT = `hace falta un ${percent(MASTERY)}`;
 // A partir de aquí, «te falta poco».
-export const CLOSE_BEST = 0.5;
+export const CLOSE_BEST = 0.65;
 
-// Lo que le falta a un pintor a medias, en una línea: «Te falta poco: 67 % de 75 %» (o «40 % de 75 %») o, si ya llega a la
-// nota y le faltan cuadros por ver, «Te faltan n cuadros por ver».
+// Bajo el nombre del nodo a medias: «Vas por el 50 %».
+export const startedMeta = (best) => `Vas por el ${percent(Number(best) || 0)}`;
+
+// Lo que le falta a un pintor a medias, en una línea: «Has acertado el 50 %; hace falta un 75 %» (desde el 65 %, «Te falta
+// poco: …») o, si ya llega a la nota y le faltan cuadros por ver, «Te faltan n cuadros por ver».
 export function startedLine(ring) {
   if (ring.best >= MASTERY && ring.missing > 0) return ring.missing === 1 ? 'Te falta 1 cuadro por ver' : `Te faltan ${ring.missing} cuadros por ver`;
-  const score = `${percent(ring.best)} ${MASTERY_TEXT}`;
-  return ring.best >= CLOSE_BEST ? `Te falta poco: ${score}` : score;
+  const score = `has acertado el ${percent(ring.best)}; ${NEED_TEXT}`;
+  return ring.best >= CLOSE_BEST ? `Te falta poco: ${score}` : `${score.charAt(0).toUpperCase()}${score.slice(1)}`;
 }

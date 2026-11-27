@@ -54,7 +54,7 @@ export function rowHtml(levels, cls = '') {
 export const levelRoute = (artistId, level, branchId = '') => (level === 1 ? stageRoute(artistId, branchId) : deepRoute(artistId, level));
 
 // Pasos que la última tarjeta de una historia repetida recomienda en lugar de «Repetir nivel» (engine/next-step.js).
-const STORY_STEPS = new Set(['review', 'stop', 'weekly', 'rank']);
+const STORY_STEPS = new Set(['review', 'stop', 'weekly', 'rank', 'debt']);
 
 // Vuelve a poner la historia de un nivel, sin ronda; con `replay`, su última tarjeta ofrece el siguiente paso recomendado
 // (repasar, la parada abierta o el reto semanal) o, si no hay, «Repetir nivel».
