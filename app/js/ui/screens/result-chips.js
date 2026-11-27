@@ -39,11 +39,18 @@ export function roundChips(index, r) {
   if (streak) out.push({ key: 'streak', icon: 'flame', tone: 'brand', title: streak.value === 1 ? '1 día' : `${streak.value} días`, sub: streak.grace ? 'Racha a salvo' : 'Racha', to: 'perfil' });
   const rank = find('rank');
   if (rank) out.push({ key: 'rank', icon: 'gem', tone: 'gold', title: rank.name, sub: 'Rango', to: 'perfil' });
-  // El nombre de la medalla suele ser largo: la ficha dice «Medalla · Nueva» y el nombre va en su etiqueta.
-  for (const m of otherMedals) out.push({ key: `medal-${m.id}`, icon: 'medal', tone: 'gold', title: 'Medalla', sub: 'Nueva', label: `Medalla nueva: ${medalInfo(m.id, index).title}`, to: 'medallas' });
+  // El nombre de la medalla suele ser largo: la ficha dice «Medalla · Nueva» y el nombre va en su etiqueta. Varias, en una
+  // sola ficha («2 medallas · Nuevas»): fichas iguales en fila no dicen nada.
+  if (otherMedals.length === 1) {
+    const [m] = otherMedals;
+    out.push({ key: `medal-${m.id}`, icon: 'medal', tone: 'gold', title: 'Medalla', sub: 'Nueva', label: `Medalla nueva: ${medalInfo(m.id, index).title}`, to: 'medallas' });
+  } else if (otherMedals.length > 1) {
+    const names = otherMedals.map((m) => medalInfo(m.id, index).title).join(', ');
+    out.push({ key: 'medals', icon: 'medal', tone: 'gold', title: `${otherMedals.length} medallas`, sub: 'Nuevas', label: `${otherMedals.length} medallas nuevas: ${names}`, to: 'medallas' });
+  }
   const review = find('review-unlock');
   const reviewed = review && !find('goal') && index.movement(review.movementId);
-  if (reviewed) out.push({ key: 'review', icon: 'repeat', tone: 'brand', title: reviewed.name, sub: 'Repaso', to: `repaso-${review.movementId}` });
+  if (reviewed) out.push({ key: 'review', icon: 'repeat', tone: 'brand', title: reviewed.name, sub: 'Prueba de época', to: `repaso-${review.movementId}` });
   return out;
 }
 

@@ -8,7 +8,7 @@ const WEEK_RE = /^\d{4}-W\d{2}$/;
 // 'before': «¿Quién fue antes?» (engine/question-before.js). Sin importar el motor: este módulo va en el arranque.
 const BEFORE = 'before';
 const TYPES = new Set(['who', 'movement', 'which', BEFORE]);
-const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'review5', 'daily', 'weekly', 'general', 'challenge']);
+const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'daily', 'weekly', 'general', 'challenge']);
 
 // meta: { route, title, accent, kind, extra, friendScore, shareTopic, plan:{kind,seed,artistId,movementId,date} }
 // lesson: { round, answers, xpLive, freshIntroShown }
@@ -141,7 +141,7 @@ function cleanQuestion(q, index) {
 function pickPlan(p) {
   const out = { kind: KINDS.has(p.kind) ? p.kind : 'general' };
   if (Number.isFinite(p.seed)) out.seed = p.seed;
-  for (const k of ['artistId', 'movementId', 'date']) if (typeof p[k] === 'string' && ROUTE_RE.test(p[k])) out[k] = p[k];
+  for (const k of ['artistId', 'movementId', 'date', 'started']) if (typeof p[k] === 'string' && ROUTE_RE.test(p[k])) out[k] = p[k];
   if (typeof p.week === 'string' && WEEK_RE.test(p.week)) out.week = p.week;
   if (Number.isInteger(p.level) && p.level >= 2 && p.level <= 9) out.level = p.level;
   return out;

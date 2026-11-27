@@ -86,13 +86,12 @@ test('racha: cada día perdido gasta la gracia de su propia semana', () => {
   assert.equal(graceLeft(kept.streak, '2026-11-09'), 2, 'la semana nueva empieza con los dos');
 });
 
-test('racha por una ronda cualquiera (etapa, repaso, reto diario, repaso de 5) aunque no se llegue a la meta', () => {
+test('racha por una ronda cualquiera (etapa, repaso, reto diario, repaso) aunque no se llegue a la meta', () => {
   const index = bigIndex();
   const kinds = [
     { kind: 'stage', artistId: index.path[0].id, plan: planStage(index, index.path[0].id, 1) },
     { kind: 'review', movementId: index.visibleMovements[0].id, plan: planMovementReview(index, index.visibleMovements[0].id, 1) },
     { kind: 'daily', date: '2026-11-03', plan: planStage(index, index.path[0].id, 2) },
-    { kind: 'review5', plan: planStage(index, index.path[0].id, 3) },
     { kind: 'srs', plan: planStage(index, index.path[0].id, 4) },
   ];
   for (const { plan, ...extra } of kinds) {

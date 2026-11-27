@@ -214,3 +214,20 @@ manda el tema: «Oscuro» deja el mapa de noche (paleta oscura, estrellas y luce
 De paso, los edificios de día ganan contraste (encargo de María, 8:13): muros arena con el lado en sombra marcado, ventanas
 oscuras, tejados de terracota más vivos, pizarra más definida y sombras en el suelo algo más hondas. Los SVG de reserva de
 `app/img/mapa` se han regenerado con la paleta nueva.
+
+## Camino rediseñado: lápida, mojones, sendero de tierra, salida y ramas (27/11)
+
+Encargo de María («horrible el cartel de renacimientos», «lengua de autopista», tablilla con una V suelta, amontonamiento
+en Leonardo, avisos de candado apilados, «Tu parada» poco claro, ramas sin vuelta natural). Plan de un planificador de UX
+(`docs/eval/plan-composicion-camino.md`, con el estudio de cómo lo resuelven Duolingo, Candy Crush, Two Dots…) y cuatro
+evaluadores independientes (`docs/eval/eval-camino-r1..r4.md`; aprueba la r4).
+- Antes de todo: el mapa salía sin estilos en el móvil de María (un index.html viejo en caché sin `mapa-carteles.css`):
+  `main.js` pide las hojas del arranque que falten (`ui/lazy-css.js`) y la página va sin caché.
+- La época es una lápida de piedra junto a su puerta (nunca sobre el sendero), con nombre, siglos y una ranura que se
+  llena; completa, se dora. El tramo es un mojón (piedra con su número romano y tablilla) en un hueco propio antes de sus
+  pintores; completo, la tablilla se dora. Época y tramo no son paradas: en el camino solo hay lo que se juega.
+- Espaciado por elementos (`GAP` en `path-layout.js`): el hueco entre paradas suma lo que lleva (puente, rama, mojón).
+- Sendero de tierra sin raya, con borde irregular y piedrecitas; nace de una plaza empedrada con fuente, arco y la caseta
+  «Cómo se juega». Desvíos tangentes con poste de flecha; en cada rama, «Volver al camino» del lado del camino común.
+- Candados: tiembla, vibra y un solo globo con cruz. «Tú»: círculo con flecha que sigue a la parada actual.
+- Luz: arrebol rosa al amanecer y ámbar al atardecer, encima de la noche; ningún edificio pisa un río.

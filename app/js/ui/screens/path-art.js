@@ -26,11 +26,12 @@ const tower = (x, y, w, h) => {
   const merlons = [0, 1, 2].map((i) => `<rect class="land-front" x="${f(x + i * (w / 2.5))}" y="${f(y - h - 5)}" width="${f(w / 5)}" height="5"/>`).join('');
   return `<path class="land-top" d="M${f(x)} ${f(y - h)}H${f(x + w)}L${f(x + w + dx)} ${f(y - h - dy)}H${f(x + dx)}Z"/><path class="land-side" d="M${f(x + w)} ${f(y)}V${f(y - h)}L${f(x + w + dx)} ${f(y - h - dy)}V${f(y - dy)}Z"/><rect class="land-front" x="${f(x)}" y="${f(y - h)}" width="${f(w)}" height="${f(h)}"/>${merlons}<path class="land-window" data-lamp d="M${f(x + w / 2 - 2)} ${f(y - h + 16)}V${f(y - h + 11)}a2 2 0 0 1 4 0V${f(y - h + 16)}Z"/>`;
 };
-const fountain = (cx, y) => `<ellipse class="land-shade" cx="${f(cx)}" cy="${f(y + 2)}" rx="20" ry="5"/><ellipse class="land-side" cx="${f(cx)}" cy="${f(y)}" rx="16" ry="4.6"/><ellipse class="land-front" cx="${f(cx)}" cy="${f(y - 3)}" rx="16" ry="4.6"/><ellipse class="land-water" cx="${f(cx)}" cy="${f(y - 3)}" rx="12.6" ry="3.2"/><ellipse class="land-water-2" data-flow cx="${f(cx - 3)}" cy="${f(y - 3.6)}" rx="4" ry="1"/><rect class="land-front" x="${f(cx - 2)}" y="${f(y - 17)}" width="4" height="14"/><ellipse class="land-front" cx="${f(cx)}" cy="${f(y - 17)}" rx="7" ry="2.2"/><ellipse class="land-water-2" data-jet cx="${f(cx)}" cy="${f(y - 21)}" rx="1.6" ry="3.4"/>`;
+const fountain = (cx, y) => `<ellipse class="land-shade" cx="${f(cx)}" cy="${f(y + 2)}" rx="20" ry="5"/><ellipse class="land-side" cx="${f(cx)}" cy="${f(y)}" rx="16" ry="4.6"/><ellipse class="land-front fountain-rim" cx="${f(cx)}" cy="${f(y - 3)}" rx="16" ry="4.6"/><ellipse class="land-water" cx="${f(cx)}" cy="${f(y - 3)}" rx="12.6" ry="3.2"/><ellipse class="land-water-2" data-flow cx="${f(cx - 3)}" cy="${f(y - 3.6)}" rx="4" ry="1"/><rect class="land-front" x="${f(cx - 2)}" y="${f(y - 17)}" width="4" height="14"/><ellipse class="land-front" cx="${f(cx)}" cy="${f(y - 17)}" rx="7" ry="2.2"/><ellipse class="land-water-2" data-jet cx="${f(cx)}" cy="${f(y - 21)}" rx="1.6" ry="3.4"/>`;
 
-// Caseta de «Información» junto a la muralla: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
+// Caseta de «Información» en el borde de la plaza, a la derecha de la puerta (a la izquierda va la lápida de la primera
+// época), apartada del botón «Tú» de la esquina: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
 // «Cómo se juega» (el botón transparente que la cubre lo pone path-signs.js con KIOSK).
-export const KIOSK = { x: 68, y: 134, w: 32, h: 22 };
+export const KIOSK = { x: 268, y: 136, w: 32, h: 22 };
 const kiosk = ({ x, y, w, h }) => {
   const d = 10 * KX;
   const top = y - h;
@@ -50,19 +51,24 @@ const kiosk = ({ x, y, w, h }) => {
 
 const PX = START_PLAZA.x;
 const PY = START_PLAZA.y;
+// Empedrado de la plaza: el sendero nace de él (path-signs.js lo pinta con el sendero, encima de su arranque).
+export const START_PAVING = { cx: PX + 6, cy: PY + 6, rx: 84, ry: 15 };
+// La fuente, dentro de la plaza, a la izquierda del arranque del sendero.
+const FOUNTAIN = { x: PX - 42, y: PY + 10 };
 const GATE = { left: 173, right: 231, y: 96, tower: 14, h: 38 };   // la puerta, donde el sendero va casi recto
 const START_BACK = `<ellipse class="land-shade" cx="${PX + 28}" cy="${PY + 9}" rx="112" ry="16"/>
       <ellipse class="land-top" cx="${PX + 28}" cy="${PY + 2}" rx="102" ry="13"/>
       ${cypress(28, 80, 30)}${cypress(112, 82, 24)}${roof(262, 80, 22, 10)}${roof(296, 79, 26, 12)}${roof(352, 80, 20, 9)}
       <rect class="land-front" x="326" y="44" width="12" height="36"/><path class="land-side" d="M338 80V44L344 40.4V76.4Z"/><path class="land-top" d="M326 44H338L344 40.4H332Z"/><path class="land-tile-2" d="M326 44H338L335 22Z"/><path class="land-tile" d="M338 44L344 40.4L335 22Z"/><path class="land-window" data-lamp d="M330 56V51a2 2 0 0 1 4 0V56Z"/>
       ${wall(-10, GATE.left, GATE.y, 18)}${wall(GATE.right + GATE.tower, 400, GATE.y, 18)}
-      ${fountain(298, PY + 10)}${tree(366, PY + 6, 8)}${cypress(152, PY + 18, 22)}
-      ${flowers(260, PY + 22)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${kiosk(KIOSK)}${flowers(KIOSK.x - 14, KIOSK.y + 4)}`;
-// Delante del sendero: las dos torres de la puerta y el arco por el que pasa.
-const START_FRONT = `${tower(GATE.left, GATE.y, GATE.tower, GATE.h)}${tower(GATE.right, GATE.y, GATE.tower, GATE.h)}
-      <path class="land-top" d="M${GATE.left + GATE.tower} 68H${GATE.right}L${GATE.right + 4} 65.6H${GATE.left + GATE.tower + 4}Z"/>
-      <path class="land-front" d="M${GATE.left + GATE.tower} 68H${GATE.right}V82Q${(GATE.left + GATE.tower + GATE.right) / 2} 70 ${GATE.left + GATE.tower} 82Z"/>
-      ${[0, 1, 2, 3].map((i) => `<rect class="land-front" x="${GATE.left + GATE.tower + 2 + i * 11}" y="64" width="5" height="4"/>`).join('')}`;
+      ${tree(30, PY + 6, 8)}${tree(122, PY + 2, 7)}${cypress(122, PY + 20, 22)}
+      ${flowers(232, PY + 28)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${flowers(KIOSK.x + 50, KIOSK.y + 4)}`;
+// Delante del sendero (y de la plaza): las dos torres de la puerta, el arco por el que pasa y la caseta.
+const START_FRONT = `${fountain(FOUNTAIN.x, FOUNTAIN.y)}${kiosk(KIOSK)}${tower(GATE.left, GATE.y, GATE.tower, GATE.h)}${tower(GATE.right, GATE.y, GATE.tower, GATE.h)}
+      <path class="land-top" d="M${GATE.left + GATE.tower} 66H${GATE.right}L${GATE.right + 4} 63.6H${GATE.left + GATE.tower + 4}Z"/>
+      <path class="land-front" d="M${GATE.left + GATE.tower} 66H${GATE.right}V88Q${(GATE.left + GATE.tower + GATE.right) / 2} 70 ${GATE.left + GATE.tower} 88Z"/>
+      <path class="land-side" d="M${GATE.left + GATE.tower} 88Q${(GATE.left + GATE.tower + GATE.right) / 2} 70 ${GATE.right} 88L${GATE.right} 85.5Q${(GATE.left + GATE.tower + GATE.right) / 2} 67.5 ${GATE.left + GATE.tower} 85.5Z"/>
+      ${[0, 1, 2, 3].map((i) => `<rect class="land-front" x="${GATE.left + GATE.tower + 2 + i * 11}" y="62" width="5" height="4"/>`).join('')}`;
 
 export const startArt = () => ({ back: START_BACK, front: START_FRONT });
 

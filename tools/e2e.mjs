@@ -842,7 +842,9 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // de build): medidos 31 peticiones en la bienvenida (3 hojas del mapa que el HTML pide antes de saber la pantalla, roster,
 // encuadre) y 58 en el inicio (≈25 módulos del mapa y la precarga de historias). Por HTTP/2 y con el service worker eso cuesta poco; lo que manda
 // es el peso, y ese presupuesto no cambia.
-const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 58, kb: 440 } };
+// Inicio +1: ui/lazy-css.js en la cadena estática (pide las hojas del arranque si un index.html viejo no las enlaza).
+// 27/11 (tarde): main sin cambios ya medía 59 en el inicio (oscila con el orden de carga): 60 de margen; los KB no cambian.
+const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 60, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -1071,7 +1073,10 @@ if (SMOKE) {
     }
     await page.waitForSelector('.page-branch .stage-spot .stage');
   };
-  await seed(page, seededState({ upTo: tramo1 }));
+  // Meta alta: si la ronda cumpliera la meta, el siguiente paso sería «Por hoy, hecho» (engine/next-step.js, regla 2).
+  const branchState = seededState({ upTo: tramo1 });
+  branchState.settings.dailyGoal = 200;
+  await seed(page, branchState);
   await page.waitForSelector(`${goticoSign}.is-open`);
   await openGotico();
   check(page.url().endsWith('#rama-gotico'), `el desvío no entra en la pantalla de la rama: ${page.url()}`);
@@ -1125,7 +1130,7 @@ if (SMOKE) {
   check(await page.locator(branchNode('giotto')).getAttribute('data-status') === 'locked', 'la rama no marca a Giotto cerrado');
   await page.click(branchNode('giotto'));
   await page.waitForSelector('.page-branch .lock-note.is-visible');
-  check(/mitad de aciertos en duccio/i.test(await page.locator('.page-branch .lock-note.is-visible').innerText()), 'la parada de Giotto en el Gótico no dice qué falta');
+  check(/acertar la mitad en duccio/i.test(await page.locator('.page-branch .lock-note.is-visible').innerText()), 'la parada de Giotto en el Gótico no dice qué falta');
   check(page.url().endsWith('#rama-gotico'), 'tocar un pintor cerrado de la rama cambia de pantalla');
   await audit(page, '390 parada cerrada en la rama');
   // Doble toque (muy habitual en el móvil) en un cartel: una sola entrada en el historial y ninguna hoja.
@@ -1734,7 +1739,8 @@ challengeText = await page.evaluate(() => navigator.clipboard.readText());
 const second = index.steps[1];
 check(await page.locator('[data-chip="goal"]').count() === 1, 'el cierre del día no dice que la meta está cumplida');
 check(!/Siguiente etapa|La próxima vez/.test(await page.locator('.res').innerText()), 'el cierre del día lleva la siguiente etapa');
-check(!/Repetir|Repaso de 5|Repasar más/.test(await page.locator('.res-foot').innerText()), 'el cierre del día lleva llamadas a seguir jugando');
+check(!/Repetir|Repasar|Sigue:/.test(await page.locator('.res-foot').innerText()), 'el cierre del día lleva llamadas a seguir jugando');
+check(/Por hoy, hecho/.test(await page.locator('.res-title').innerText()), 'el cierre del día no dice «Por hoy, hecho»');
 await page.goto(`${base}#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`);
 await page.waitForSelector('.learn, .intro, .story[open]');
 check(page.url().endsWith(`#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`), `la tarjeta lleva a ${page.url()}`);
@@ -2083,8 +2089,8 @@ watch(epage, 'ojo');
   const works = index.worksOf(who.id).filter((w) => !w.spoiler && !w.attributed);
   const srsEye = Object.fromEntries(works.map((w, i) => [`art:${w.id}`, i === 0 ? { box: 3, due: '2026-11-01' } : { box: i % 2 ? 4 : 5, due: '2027-01-30' }]));
   await seed(epage, seededState({ upTo: 8, extra: { srs: srsEye } }));
-  // Con pintores dominados, el repaso de la portada es el «Repaso de 5» (v12).
-  await epage.goto(`${base}#repaso5`);
+  // Con pintores dominados y un cuadro vencido, el repaso (botón ↻) lo trae.
+  await epage.goto(`${base}#repaso`);
   await playRound(epage);
   await epage.waitForTimeout(900);
   const eyeCard = epage.locator(`[data-chip="medal-eye-${who.id}"]`);
@@ -2250,42 +2256,26 @@ check(bpage.url().endsWith('#inicio'), 'reto con 99 aciertos aceptado');
 await bpage.goto(`${base}#etapa-${index.path.at(-1).id}`);
 await toastOk(bpage, 'etapa cerrada', 'Aún no');
 
-// ---------------------------------------------------------------- Repaso rápido (SRS vencido)
-const quickCtx = await browser.newContext(ctxOpts);
-const kq = await quickCtx.newPage();
-watch(kq, 'repaso-rapido');
+// ---------------------------------------------------------------- Repasar (botón ↻, sesión automática)
+// Las rutas antiguas redirigen a #repaso; 7 preguntas como mucho; cuenta para meta y racha y, al cumplir la meta, cierra
+// con «Por hoy, hecho».
 const dueWorks = index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).filter((w) => !w.spoiler).slice(0, 6);
 const srs = Object.fromEntries(dueWorks.map((w) => [`art:${w.id}`, { box: 1, due: '2026-11-01' }]));
-// Sin pintores dominados (si no, sale el «Repaso de 5») y con meta de 200 (si no, el cierre del día
-// quita «Repasar más»).
-const quickState = seededState({ upTo: 4, mastered: false, extra: { srs } });
-quickState.settings.dailyGoal = 200;
-await seed(kq, quickState);
-await kq.waitForSelector('.path');
-await kq.goto(`${base}#repaso-rapido`);
-await kq.waitForSelector('.lesson .option');
-const qSteps = await playRound(kq);
-check(qSteps === 3, `el repaso rápido tiene ${qSteps} preguntas`);
-await kq.waitForTimeout(900);
-check(/1 día/.test(await kq.locator('[data-chip="streak"]').innerText()), 'el repaso rápido no cuenta para la racha');
-check(Number((await kq.locator('.countup').getAttribute('data-to')) || 0) > 0, 'el repaso rápido no da XP para la meta');
-check(await kq.locator('.res-foot [data-to="repaso"]').count() === 1, 'falta «Repasar más» con cuadros pendientes');
-await shot(kq, '39-repaso-rapido-fin', true);
-// Repaso de 5 (v12): con pintores dominados y cuadros vistos, en la portada; cuenta para meta y racha
-// y, al cumplir la meta, cierra con el bloque «Hoy».
 const r5Ctx = await browser.newContext(ctxOpts);
 const r5 = await r5Ctx.newPage();
-watch(r5, 'repaso-5');
+watch(r5, 'repasar');
 await seed(r5, seededState({ upTo: 4, extra: { srs } }));
 await r5.waitForSelector('.path');
+check(await r5.locator('.chip-review .chip-dot').count() === 1, 'el botón «Repasar» no lleva el punto con cuadros vencidos');
 await r5.goto(`${base}#repaso5`);
 await r5.waitForSelector('.lesson .option');
-check(await playRound(r5) === 5, 'el repaso de 5 no tiene 5 preguntas');
+check(r5.url().endsWith('#repaso'), `#repaso5 no redirige a #repaso: ${r5.url()}`);
+const rSteps = await playRound(r5);
+check(rSteps >= 3 && rSteps <= 7, `el repaso tiene ${rSteps} preguntas`);
 await r5.waitForTimeout(900);
-check(r5.url().endsWith('#repaso5'), `el repaso de 5 no va en su ruta: ${r5.url()}`);
-check(/1 día/.test(await r5.locator('[data-chip="streak"]').innerText()), 'el repaso de 5 no cuenta para la racha');
-check(await r5.locator('[data-chip="goal"]').count() === 1, 'el repaso de 5 no cumple la meta');
-await shot(r5, '39c-repaso-5-fin', true);
+check(/1 día/.test(await r5.locator('[data-chip="streak"]').innerText()), 'el repaso no cuenta para la racha');
+check(await r5.locator('[data-chip="goal"]').count() === 1, 'el repaso no cumple la meta');
+await shot(r5, '39c-repaso-fin', true);
 await audit(r5, '390 cierre del día');
 await r5Ctx.close();
 
