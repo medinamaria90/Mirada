@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en la bandeja de La bella chocolatera: la taza de chocolate y el vaso de agua, donde se refleja la ventana. Y todo está hecho al pastel.",
      "artwork": "w445627",
+     "region": [
+      0.4,
+      0.15,
+      0.95,
+      0.6
+     ],
      "source": "https://es.wikipedia.org/wiki/La_bella_chocolatera"
     }
    ]

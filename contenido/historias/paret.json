@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en los paseantes diminutos bajo los árboles, junto a la ría llena de barcos. Cada figura está pintada con mimo de miniaturista.",
      "artwork": "w18688145",
+     "region": [
+      0.5,
+      0.35,
+      0.8,
+      1.0
+     ],
      "source": "https://es.wikipedia.org/wiki/Luis_Paret_y_Alc%C3%A1zar"
     }
    ]

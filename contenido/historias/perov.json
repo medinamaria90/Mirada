@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en La troika (1866): no son caballos, sino tres niños aprendices que arrastran el agua en pleno invierno. Le dio fama y el título de académico.",
      "artwork": "w16518912",
+     "region": [
+      0.25,
+      0.3,
+      0.6,
+      0.97
+     ],
      "source": "https://artchive.ru/en/vasilyperov/biography"
     }
    ]

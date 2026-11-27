@@ -18,6 +18,12 @@
     {
      "text": "Fíjate en el hombre que huye con una caja de pinturas sobre la cabeza, a la izquierda: es el propio Briulov, metido en la catástrofe.",
      "artwork": "w2521909",
+     "region": [
+      0.1,
+      0.2,
+      0.4,
+      0.85
+     ],
      "source": "https://es.wikipedia.org/wiki/El_%C3%BAltimo_d%C3%ADa_de_Pompeya"
     }
    ]

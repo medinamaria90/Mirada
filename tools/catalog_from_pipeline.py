@@ -337,6 +337,12 @@ def main(app):
     # Foco revisado de las obras que alguna vista recorta mucho y las que la historia enseña enteras (contenido/focos.json;
     # el «Detalle del día» de tools/catalog_data.py manda donde lo hay). Pendientes: node tools/recortes.mjs.
     focos = {"focos": {}, "enteras": [], **contenido_opcional("focos.json")}
+    # Imagen HD de las obras que las historias enseñan en detalle (paso «hd» del proceso, catalogo/hd.json; tools/nitidez.py).
+    hd_path = os.path.join(ROOT, "catalogo", "hd.json")
+    hd = {}
+    if os.path.exists(hd_path):
+        with open(hd_path, encoding="utf-8") as f:
+            hd = json.load(f)
     text = dict(version=3, look={}, looks={}, kind={}, tags={}, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
@@ -358,6 +364,8 @@ def main(app):
             item["focus"] = [round(float(v), 3) for v in focos["focos"][w["id"]]]
         if w["id"] in focos["enteras"]:
             item["whole"] = True
+        if w["id"] in hd:
+            item["hd"] = dict(img=f"img/hd/{w['id']}.jpg", w=hd[w["id"]]["w"], h=hd[w["id"]]["h"])
         if o in D.LOOK:
             text["look"][w["id"]] = D.LOOK[o]
             if o in D.LOOK2 or o in D.LOOK_SOURCE:

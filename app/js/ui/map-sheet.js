@@ -9,7 +9,7 @@ import { modalSlot, mountSheet } from './modal-slot.js';
 
 const slot = modalSlot();
 
-async function open(ctx, opener, accent, body) {
+export async function openSheet(ctx, opener, accent, body) {
   const turn = slot.begin();
   await loadCss('css/mapa-hoja.css');
   if (slot.stale(turn)) return null; // otro toque ha pedido otra hoja mientras cargaba esta
@@ -36,7 +36,7 @@ export function openIntroSheet(ctx, _id, opener) {
   const body = `<header class="ms-head"><p class="ms-kicker">El camino</p><h2 class="ms-title" id="ms-title">Cómo se juega</h2></header>
     <ul class="ms-how">${HOW.map(([icon, text]) => `<li><span class="ms-mark is-available" aria-hidden="true">${icons[icon](14)}</span><span>${esc(text)}</span></li>`).join('')}</ul>
     <button type="button" class="btn btn-primary btn-wide ms-ok" data-ms="close">Vamos</button>`;
-  return open(ctx, opener, ctx.index.visibleMovements[0]?.accent, body);
+  return openSheet(ctx, opener, ctx.index.visibleMovements[0]?.accent, body);
 }
 
 // Época cerrada: cuándo se abre, de qué va y quién espera.
@@ -52,5 +52,5 @@ export function openEraSheet(ctx, movementId, opener) {
     ${movement.blurb ? `<p class="ms-about">${esc(movement.blurb)}</p>` : ''}
     ${painters.length ? `<p class="ms-wait"><span class="ms-label">Te esperan</span>${esc(joinNames(painters))}</p>` : ''}
     <button type="button" class="btn btn-primary btn-wide ms-ok" data-ms="close">Entendido</button>`;
-  return open(ctx, opener, movement.accent, body);
+  return openSheet(ctx, opener, movement.accent, body);
 }

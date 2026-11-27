@@ -1,13 +1,9 @@
-// Pintores como lista y como ficha: épocas visibles, búsqueda, estado, obras ya vistas (sin spoilers),
+// Pintores en la Colección y en la ficha: estado, obras ya vistas (sin spoilers),
 // líneas de vida y qué se puede jugar. Puro: no toca el DOM.
 
 import { seenWorks, deepStatus } from './levels.js';
 import { playStatusFrom } from './branches.js';
-import { movementsChrono } from './movements.js';
 
-
-// Sin tildes ni mayúsculas, para buscar «el greco» o «durero».
-export const fold = (text) => String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
 
 // Obras de un pintor que ya se han visto: en la colección o en alguna ronda (`progress.artists[id].works`).
 export function seenOf(progress, index, artistId) {
@@ -37,28 +33,6 @@ export function isMastered(progress, artistId) {
 export function painterState(progress, index, artistId) {
   if (isMastered(progress, artistId)) return 'mastered';
   return seenOf(progress, index, artistId).length ? 'started' : 'new';
-}
-
-// Lista por movimientos (cronológica): solo pintores con alguna obra vista (o dominados), con el encabezado
-// «n de m pintores» (m = los del movimiento) y cuántos faltan por descubrir (sin decir quiénes). Un movimiento
-// sin ningún pintor conocido no sale. `query` filtra por nombre solo entre los conocidos.
-// [{ movement, known, total, hidden, artists: [{ artist, state, seen, total }] }]
-export function painterGroups(progress, index, query = '') {
-  const q = fold(query);
-  const groups = [];
-  for (const movement of movementsChrono(index)) {
-    const all = index.artistsOf(movement.id).filter((a) => index.worksOf(a.id).length > 0)
-      .sort((a, b) => (a.born || 0) - (b.born || 0) || a.order - b.order)
-      .map((artist) => {
-        const seen = seenOf(progress, index, artist.id);
-        return { artist, state: painterState(progress, index, artist.id), seen: seen.length, total: index.worksOf(artist.id).length, avatar: avatarWork(seen), cover: coverWork(seen) };
-      });
-    const known = all.filter((row) => row.state !== 'new');
-    if (!known.length) continue;
-    const artists = known.filter((row) => !q || fold(row.artist.name).includes(q) || fold(row.artist.short).includes(q));
-    if (artists.length) groups.push({ movement, known: known.length, total: all.length, hidden: all.length - known.length, artists });
-  }
-  return groups;
 }
 
 // Fuente de las fechas y el país del pintor (curados y comprobados con Wikidata): enlace a su ficha de Wikidata, o ''.

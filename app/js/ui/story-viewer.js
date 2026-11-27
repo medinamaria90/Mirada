@@ -17,7 +17,7 @@ import { avatarHtml } from './avatar.js';
 import { mediaHtml, copyHtml } from './story-card.js';
 import { shareButtonHtml, noteHtml, shareStory, flashNote } from './story-share.js';
 import { seenOf, avatarWork, openingWork, coverWork } from '../engine/painters.js';
-import { levelStory, step, storyKey, cardDuration, lookLine, isShareable, openingCandidates } from '../engine/stories.js';
+import { levelStory, step, storyKey, cardDuration, lookLine, isShareable, openingCandidates, storySrc } from '../engine/stories.js';
 import { storySeen, markStorySeen } from '../state/stories-seen.js';
 
 const HOLD_MS = 180; // mantener el dedo así de rato pausa la historia
@@ -159,7 +159,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       if (manual || pos === 0) copy.focus({ preventScroll: true });
       const nextCard = lv.cards[pos + 1];
       const nextWork = nextCard && index.artwork(nextCard.artwork);
-      if (nextWork) new Image().src = nextWork.img;
+      if (nextWork) new Image().src = storySrc(nextWork, nextCard.focus, nextCard.region);
     };
 
     // Entra en el historial: atrás cierra la historia y deja en la ficha (o donde se estuviera).

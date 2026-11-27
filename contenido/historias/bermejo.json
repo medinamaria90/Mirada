@@ -13,6 +13,12 @@
     {
      "text": "Pintaba al óleo con el detalle de los flamencos cuando en España casi nadie lo hacía. Hoy se le tiene por uno de los grandes del siglo XV europeo.",
      "artwork": "w4884666",
+     "region": [
+      0.5,
+      0.5,
+      1.0,
+      1.0
+     ],
      "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Bermejo"
     },
     {
