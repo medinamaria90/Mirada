@@ -4,13 +4,16 @@
 import { esc, onAction, focusHeading } from '../dom.js';
 import { icons } from '../icons.js';
 import { avatarHtml } from '../avatar.js';
-import { avatarWork, seenOf } from '../../engine/painters.js';
+import { avatarWork, avatarCrop, seenOf } from '../../engine/painters.js';
+import { coverOf } from '../art.js';
 import { reviewIntroText, REVIEW_TITLE } from '../../engine/review.js';
 
 function faceHtml(ctx, artistId) {
   const artist = artistId ? ctx.index.artist(artistId) : null;
   if (!artist) return `<span class="ri-icon" aria-hidden="true">${icons.repeat(34)}</span>`;
-  const face = avatarWork(seenOf(ctx.store.get().progress, ctx.index, artist.id));
+  // Su cara (un autorretrato visto) o, si no, un detalle de su cuadro más conocido: nunca solo las iniciales.
+  const cover = coverOf(ctx.index, artist.id);
+  const face = avatarWork(seenOf(ctx.store.get().progress, ctx.index, artist.id)) || (cover ? { work: cover, ...avatarCrop(cover) } : null);
   return `<button type="button" class="ri-face" data-action="painter" aria-label="${esc(`${artist.name}: ver su ficha`)}">${avatarHtml(artist, face, 'ri-av')}</button>`;
 }
 
