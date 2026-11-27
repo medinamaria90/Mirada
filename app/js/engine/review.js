@@ -189,5 +189,5 @@ export function reviewIntroText(session, index) {
   // El nombre no se parte entre dos líneas (espacios duros).
   const who = (artist.short || artist.name).replace(/ /g, '\u00a0');
   if (!others) return `Repasamos a ${who}`;
-  return `Repasamos a ${who} y ${others === 1 ? 'un cuadro que ya has visto' : `${others} cuadros que ya has visto`}`;
+  return `Repasamos a ${who} y ${others === 1 ? 'un cuadro que ya has visto' : `${others}\u00a0cuadros que ya has visto`}`;
 }

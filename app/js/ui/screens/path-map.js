@@ -219,7 +219,9 @@ const PENDING_NAMES_MAX = 2;
 function pendingSteps(ctx, progress, movementId) {
   return ctx.index.stepsOf(movementId).filter((s) => s.type === 'artist' && artistStatus(progress, ctx.index, s.id) !== 'mastered');
 }
-export function pendingNames(names) {
+// Los nombres no se parten entre dos líneas (espacios duros).
+export function pendingNames(list) {
+  const names = list.map((n) => n.replace(/ /g, '\u00a0'));
   if (names.length <= PENDING_NAMES_MAX) return joinNames(names);
   return joinNames([...names.slice(0, PENDING_NAMES_MAX), `${names.length - PENDING_NAMES_MAX} más`]);
 }

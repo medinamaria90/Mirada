@@ -1288,6 +1288,7 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 
 /* Entrada del repaso (screens/review-intro.js): la cara del pintor a medias (o el ↻), «Repaso» y la frase. */
 .review-intro { position: relative; }
+.review-intro h1 { text-wrap: balance; }
 .ri-bar { position: absolute; top: 0; left: 0; right: 0; }
 .ri-face { padding: 0; border: 0; background: none; border-radius: 999px; cursor: pointer; }
 .ri-face:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }

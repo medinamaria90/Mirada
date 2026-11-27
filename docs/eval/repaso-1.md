@@ -33,4 +33,40 @@ ella); las medidas del punto de aviso van en variables; la cabecera calcula los 
 tarjeta de rango, la otra condición que avanza con el mismo nivel lleva su marca en coral. No se aplicó: que el punto de
 «Repasar» ignore a los pintores a medias, porque el diseño aprobado por María lo pide así.
 
-Iteraciones: 2.
+
+## Ronda 3: NO APRUEBA (tras el feedback de María en producción)
+
+| Material 3 | UX | Accesibilidad | Rendimiento | Adaptativo | Pulido | Originalidad | Calidad técnica |
+|---|---|---|---|---|---|---|---|
+| 8 | 7 | 8 | 9 | 8 | 7 | 8 | 8 |
+
+**Cabecera: variante B** (nombre + la llama de la racha dentro del aro de la meta de hoy, que se explica al tocarla +
+«Repasar» + Cuadro del día) frente a A (sin meta ni racha): la racha a la vista es lo que más motiva a volver y la llama
+se entiende sola. Mejoras: frases neutras para pintoras, aro del pintor a medias con la nota real y la muesca del 75 %
+(sin insignia con cifra) y «Vas por el 67 %» bajo el nombre, textos de desbloqueo naturales, «puntos» en vez de «XP» en la
+cabecera, un solo punto rojo a la vez, fuera el código de la variante A.
+
+## Ronda 4: NO APRUEBA
+
+| Material 3 | UX | Accesibilidad | Rendimiento | Adaptativo | Pulido | Originalidad | Calidad técnica |
+|---|---|---|---|---|---|---|---|
+| 8 | 7 | 8 | 8 | 8 | 7 | 8 | 8 |
+
+Evaluó la guía nueva (entrada del repaso, botón principal que siempre avanza, candados con «Ir», guía en el mapa y la
+regla de lo pendiente atrás, que le pareció buena: «guía sin frenar»). Mejoras: la guía va junto al «Tú» y lleva el camino
+a la parada; el último paso se guarda durante la visita y lo usa también el mapa; la muesca es un corte dentro del trazo;
+«puntos» en toda la app; píldora más estrecha; la entrada del repaso dice «… y 4 cuadros que ya has visto» con la cara en
+buena resolución.
+
+## Ronda 5: APRUEBA
+
+| Material 3 | UX | Accesibilidad | Rendimiento | Adaptativo | Pulido | Originalidad | Calidad técnica |
+|---|---|---|---|---|---|---|---|
+| 8 | 8 | 8 | 8 | 8 | 8 | 8 | 8 |
+
+Sin fallos graves. Aplicado después (menores): número y palabra unidos en la entrada del repaso y título equilibrado;
+los nombres de la nota del candado no se parten; lo que enseña la guía del mapa cuenta como último paso; pruebas de
+`mapGuide` con `prevStep` y de `ui/last-step.js`. Se dejan: la píldora de guía puede pasar sobre un letrero de época (es
+flotante, como «Tú») y las esquinas blancas del Tondo Doni (es la propia imagen del cuadro).
+
+Iteraciones: 5 (dos para el repaso único y el siguiente paso; tres más tras el feedback de María en producción).
