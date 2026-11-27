@@ -108,7 +108,14 @@ while read -r step args <&3; do
     hd)  # imágenes HD de las obras que las historias enseñan en detalle (pipeline/hd.py): app-img-hd.zip a catalogo-img
       out=$(mktemp -d)
       if python3 pipeline/hd.py --out "$out" >> pipeline/logs/run.txt 2>&1; then
-        liberar_hueco && gh release upload catalogo-img "$out/app-img-hd.zip" "$out/app-img-hd.sha256" --clobber >> pipeline/logs/run.txt 2>&1 \
+        subir_hd() {  # reintenta: si otros pasos han agotado el límite de la API de GitHub, se recupera en menos de una hora
+          for i in 1 2 3 4 5; do
+            liberar_hueco && gh release upload catalogo-img "$out/app-img-hd.zip" "$out/app-img-hd.sha256" --clobber >> pipeline/logs/run.txt 2>&1 && return 0
+            [ $i -lt 5 ] && sleep 900
+          done
+          return 1
+        }
+        subir_hd \
           && echo "paquete app-img-hd subido a catalogo-img ($(du -h "$out/app-img-hd.zip" | cut -f1))" >> pipeline/logs/run.txt \
           || { echo "NO SE PUDO SUBIR EL PAQUETE HD" >> pipeline/logs/run.txt; git checkout -- catalogo/hd.json 2>/dev/null || rm -f catalogo/hd.json; }
       else
