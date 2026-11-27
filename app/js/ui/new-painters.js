@@ -33,10 +33,13 @@ function namesOf(ctx, ids) {
   return names.length <= NAMES_MAX ? joinNames(names) : joinNames([...names.slice(0, NAMES_MAX - 1), `${names.length - NAMES_MAX + 1} más`]);
 }
 
+// Cartel de una rama en el mapa (cada rama lleva el suyo, al final de su desvío).
+export const branchSignSelector = (branchId) => `.sign-plate.branch[data-id="${branchId}"]`;
+
 // Dónde está en el mapa: su parada o, si solo es de rama, el desvío de su rama.
 function spotOf(ctx, root, id) {
   return root.querySelector(`.stage-spot[data-step="artist:${id}"] .stage`)
-    || ctx.index.branchesOf(id).map((b) => root.querySelector(`.branch[data-id="${b.id}"]`)).find(Boolean)
+    || ctx.index.branchesOf(id).map((b) => root.querySelector(branchSignSelector(b.id))).find(Boolean)
     || null;
 }
 
