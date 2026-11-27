@@ -163,6 +163,8 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .nav-item[aria-current="page"] { color: var(--brand-text); background: var(--brand-soft); font-weight: 600; }
 .nav-item[aria-current="page"] .icon { stroke-width: 2; }
 .nav-item:hover { color: var(--ink); }
+/* Respuesta al dedo en cuanto se toca, aunque la pantalla siguiente tarde en llegar. */
+.nav-item:active, .coll-tab:active { transform: scale(var(--press-scale)); }
 
 .content { padding: 1rem 1.1rem 1.5rem; }
 
@@ -197,7 +199,8 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 /* El sendero solapa 1 px con el tramo vecino: sin raya fina en la costura entre épocas. */
 .path-era > .path-trail { top: -1px; height: calc(100% + 2px); }
 .path-museum-art, .path-start-art { z-index: 0; }
-.path-start-art.is-front, .path-gate { z-index: 2; }
+.path-start-art.is-front, .path-movers.is-front, .path-gate { z-index: 2; }
+.path-movers .path-bit { position: absolute; display: block; overflow: visible; }
 /* Caseta de «Información» junto a la puerta (dibujada en el paisaje): un botón transparente de 56 px la cubre. */
 .start-kiosk { position: absolute; z-index: 3; width: var(--kiosk-hit); height: var(--kiosk-hit); margin: 0; padding: 0; translate: -50% -50%; border: 0; border-radius: var(--radius-sm); background: none; cursor: pointer; }
 .start-kiosk:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
@@ -286,7 +289,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .ring-arc { fill: none; stroke: var(--ring-locked); stroke-width: var(--ring-w); stroke-linecap: round; }
 .ring-arc.is-done { stroke: var(--gold); }
 .ring-arc.is-next { stroke: var(--brand); stroke-width: var(--ring-w-next); }
-.ring-halo { fill: var(--brand-soft); transform-box: fill-box; transform-origin: center; animation: ring-breathe var(--dur-breathe) var(--ease) infinite; }
+.ring-halo { fill: var(--brand-soft); transform-origin: center; animation: ring-breathe var(--dur-breathe) var(--ease) infinite; }
 @keyframes ring-breathe { 50% { transform: scale(1.08); opacity: .55; } }
 @media (prefers-reduced-motion: reduce) { .ring-halo { animation: none; } }
 html.reduce-motion .ring-halo { animation: none; }
@@ -799,6 +802,7 @@ html.reduce-motion .ring-halo { animation: none; }
 .coll-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 168px)); gap: .7rem; margin: 0; padding: 0; list-style: none; }
 .coll-item { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 10px; transition: transform .18s var(--ease); }
 .coll-item:hover { transform: translateY(-2px); }
+.coll-item:active { transform: scale(var(--press-scale)); }
 .art-thumb { aspect-ratio: 1; border-radius: 10px; }
 .empty { display: grid; justify-items: center; gap: 1rem; padding: 3rem 1rem; text-align: center; color: var(--ink-2); }
 .empty p { font: 400 1.1rem/1.4 var(--font); max-width: 24ch; }

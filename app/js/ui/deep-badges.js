@@ -15,8 +15,12 @@ const HALO_R = 45;
 export function ringSvg(levels, cls = 'level-ring') {
   const step = RING_LEN / levels.length;
   const arcs = levels.map((l, i) => `<circle class="ring-arc is-${l.state}" cx="50" cy="50" r="${RING_R}" pathLength="${RING_LEN}" stroke-dasharray="${(step - RING_GAP).toFixed(2)} ${(RING_LEN - step + RING_GAP).toFixed(2)}" stroke-dashoffset="${(-i * step - RING_GAP / 2).toFixed(2)}"/>`).join('');
-  const halo = levels.some((l) => l.state === 'next') ? `<circle class="ring-halo" cx="50" cy="50" r="${HALO_R}"/>` : '';
-  return `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">${halo}${arcs}</svg>`;
+  // El halo que respira va en su propio SVG, debajo: así su animación la hace la tarjeta gráfica y no obliga a repintar el aro
+  // en cada fotograma (docs/eval/rendimiento.md).
+  const halo = levels.some((l) => l.state === 'next')
+    ? `<svg class="${cls} ring-halo" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle cx="50" cy="50" r="${HALO_R}"/></svg>`
+    : '';
+  return `${halo}<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">${arcs}</svg>`;
 }
 
 export function addLevelRings(ctx, root) {

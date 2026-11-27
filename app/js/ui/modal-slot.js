@@ -22,10 +22,20 @@ export function modalSlot() {
   };
 }
 
+// El segundo toque de un doble toque (o uno impaciente con el móvil ocupado) cae en el fondo de la hoja recién abierta
+// o en la copia del nodo y la cerraba sola. Tocar fuera o en el nodo solo cierra pasado este margen desde que se abre;
+// los botones de cerrar, siempre.
+export const TAP_GRACE_MS = 450;
+export function tapAfterOpen(downAt, openedAt) {
+  return Number.isFinite(downAt) && downAt - openedAt >= TAP_GRACE_MS;
+}
+
 // Montaje común de la hoja: pulsar fuera o Esc la cierra, y cambiar de pantalla (el botón «atrás» del móvil) también,
 // sin devolver el foco a un botón que ya no está. Devuelve la función de cierre.
 export function mountSheet(dlg, { slot, handle, opener, closeSelector }) {
   let closed = false;
+  const openedAt = performance.now();
+  let downAt = -Infinity;
   const close = ({ silent = false } = {}) => {
     if (closed) return;
     closed = true;
@@ -38,8 +48,12 @@ export function mountSheet(dlg, { slot, handle, opener, closeSelector }) {
   const onHash = () => close({ silent: true });
   handle.close = close;
   slot.take(handle);
+  dlg.addEventListener('pointerdown', (ev) => { downAt = ev.timeStamp; }, { passive: true });
   dlg.addEventListener('click', (ev) => {
-    if (ev.target === dlg || ev.target.closest(closeSelector)) close();
+    const hit = ev.target === dlg ? dlg : ev.target.closest(closeSelector);
+    if (!hit) return;
+    // Con teclado (detail 0) no hay toque previo; un botón de cerrar se ha buscado a propósito.
+    if (ev.detail === 0 || hit.tagName === 'BUTTON' || tapAfterOpen(downAt, openedAt)) close();
   });
   dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); close(); });
   window.addEventListener('hashchange', onHash);

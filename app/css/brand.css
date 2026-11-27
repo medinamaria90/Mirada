@@ -158,6 +158,7 @@
   --hl-photo-lg: 58px;
   --radius-pop: 24px;
   --dur-pop: 220ms;
+  --press-scale: .96;             /* lo que se encoge al tocarlo lo que no tiene relieve propio */
   --dur-shake: 360ms;
   /* Tramo cerrado del aro y círculo cerrado de la fila de historias. */
   --ring-locked: #d3c9ba;

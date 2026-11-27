@@ -369,6 +369,7 @@ async function boot() {
     ensureText();
     loadFlows().catch(() => {});
     import('./ui/dj-mode.js').then((m) => m.startDjIfOn()).catch(() => {}); // modo secreto «afinar música»
+    import('./ui/warm-up.js').then((m) => m.warmUp()).catch((err) => console.info('Sin precarga:', err.message)); // lo que se toca después, sin esperar a la red
   });
   loadAudioWhenIdle();
   bindBackgroundPause();

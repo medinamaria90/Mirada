@@ -4,7 +4,8 @@
 // unos pájaros se posan, una mariposa revolotea, pasa la sombra de una nube y, de noche, cae una estrella fugaz
 // (map-critters.js, map-sky.js). Pocas cosas a la vez y con pausas largas al azar. Todo son animaciones de
 // transform y opacity (CSS o Web Animations API): ningún bucle por fotograma. Se para con la pestaña oculta o al
-// salir de la portada; con «Reducir animaciones» (o el ajuste del sistema), todo quieto, pero con la luz del día.
+// salir de la portada; con «Reducir animaciones» (o el ajuste del sistema), todo quieto, pero con la luz del día. Lo que
+// se mueve solo (agua, molinos, estrellas, luces) se anima únicamente en el tramo que se ve (.is-seen).
 
 import { gameLight } from '../engine/daylight.js';
 import { clockMinute } from '../state/game-clock.js';
@@ -24,7 +25,11 @@ const METEOR_GAP_MS = [50000, 150000];       // estrella fugaz: muy de vez en cu
 const NIGHT_AT = 0.5;                        // a partir de aquí es de noche para la vida (no hay pájaros ni mariposas)
 const DEEP_NIGHT = 0.8;                      // y aquí ya se ven estrellas fugaces
 const DUSK_AT = 0.5;
+const STARS_AT = 0.6;                        // las estrellas asoman (mapa-vida.css: .path-stars) y titilan
+const LAMPS_AT = 0.35;                       // la primera tanda de luces se enciende (mapa-vivo.css: .lamp-0)
 const VISIBLE_MARGIN = '0px';
+// Tramos que se vigilan: solo el que se ve se anima (.is-seen; agua, molinos, humo, estrellas, luces y aros).
+const LIVE_PARTS = '.path-era, .path-start, .path-museum';
 
 // Qué puede pasar y con qué peso, según la luz y lo que se ve del tramo.
 function sceneChoices(scene, { night, dusk }) {
@@ -45,11 +50,26 @@ function sceneChoices(scene, { night, dusk }) {
   return list.filter(([,, ok]) => ok).flatMap(([w, fn]) => Array(w).fill(fn));
 }
 
-export function applyDaylight(map, minute = clockMinute()) {
+// La luz va tramo a tramo (variables --day-night y --day-dusk en cada tramo): cambiarla en el mapa entero recalculaba
+// los estilos de miles de piezas de golpe (un parón de un quinto de segundo en un móvil medio cada pocos segundos del
+// atardecer). Se pone en los tramos que se ven y en el que entra en pantalla; y en pasos de LIGHT_STEP, que el ojo no
+// distingue, para cambiar menos veces.
+const LIGHT_STEP = 0.05;
+const LIGHT_PARTS = `${LIVE_PARTS}, .path-foot`;
+const stepped = (v) => (Math.round(v / LIGHT_STEP) * LIGHT_STEP).toFixed(2);
+function lightPart(el, night, dusk) {
+  if (el.style.getPropertyValue('--day-night') !== night) el.style.setProperty('--day-night', night);
+  if (el.style.getPropertyValue('--day-dusk') !== dusk) el.style.setProperty('--day-dusk', dusk);
+}
+
+// parts: los tramos a los que poner la luz (por omisión, todos; sin tramos, el mapa entero).
+export function applyDaylight(map, minute = clockMinute(), parts = null) {
   const { night, dusk } = gameLight(minute);
-  // Solo si cambia (de día y de noche, casi siempre igual): así no se recalculan los estilos del mapa en balde.
-  if (map.style.getPropertyValue('--day-night') !== String(night)) map.style.setProperty('--day-night', String(night));
-  if (map.style.getPropertyValue('--day-dusk') !== String(dusk)) map.style.setProperty('--day-dusk', String(dusk));
+  const targets = parts || [...map.querySelectorAll(LIGHT_PARTS)];
+  (targets.length ? targets : [map]).forEach((el) => lightPart(el, stepped(night), stepped(dusk)));
+  // De día no titila lo que no se ve (estrellas, luces apagadas): sin estas clases no se animan.
+  if (map.classList.contains('is-night') !== night >= STARS_AT) map.classList.toggle('is-night', night >= STARS_AT);
+  if (map.classList.contains('is-lit') !== night >= LAMPS_AT) map.classList.toggle('is-lit', night >= LAMPS_AT);
   return { night, dusk };
 }
 
@@ -63,8 +83,10 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
     timers.add(t);
   };
   const alive = () => !document.hidden && !prefersReducedMotion() && !map.classList.contains('is-linear');
+  // Tramos que aún no tienen luz (recién pintados) y los que se ven; los demás la reciben al entrar en pantalla.
+  const litNow = () => (io ? [...map.querySelectorAll(LIGHT_PARTS)].filter((el) => el.classList.contains('is-seen') || !el.style.getPropertyValue('--day-night')) : null);
   const refresh = () => {
-    applyDaylight(map, clock());
+    applyDaylight(map, clock(), litNow());
     map.classList.toggle('is-alive', alive());
   };
   const gust = () => {
@@ -75,7 +97,7 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
     later(gust, between(GUST_GAP_MS));
   };
   let playing = 0;
-  const shown = () => [...visible].filter((li) => li.isConnected && li.querySelector('svg.path-land'));
+  const shown = () => [...visible].filter((li) => li.isConnected && li.matches('.path-era') && li.querySelector('svg.path-land'));
   const run = (promise) => {
     if (!promise) return false;
     playing += 1;
@@ -105,10 +127,14 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
   let io = null;
   const watchEras = () => {
     if (!io) return;
-    map.querySelectorAll('.path-era:not([data-life])').forEach((li) => { li.dataset.life = '1'; io.observe(li); });
+    map.querySelectorAll(`:is(${LIVE_PARTS}):not([data-life])`).forEach((li) => { li.dataset.life = '1'; io.observe(li); });
   };
   if (typeof IntersectionObserver === 'function') {
-    io = new IntersectionObserver((entries) => entries.forEach((e) => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target))), { rootMargin: VISIBLE_MARGIN });
+    io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target);
+      e.target.classList.toggle('is-seen', e.isIntersecting);
+      if (e.isIntersecting) applyDaylight(map, clock(), [e.target]);
+    }), { rootMargin: VISIBLE_MARGIN });
   }
   refresh();
   watchEras();
@@ -127,6 +153,7 @@ export function startMapLife(map, { clock = clockMinute } = {}) {
       io?.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
       map.classList.remove('is-alive', 'is-gust');
+      map.querySelectorAll('.is-seen').forEach((li) => li.classList.remove('is-seen'));
       map.querySelectorAll('.map-critter').forEach((c) => c.remove());
     },
   };

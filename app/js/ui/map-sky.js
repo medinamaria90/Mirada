@@ -57,19 +57,28 @@ export function starPoints(free, glints) {
   return stars.concat(glints.map(([x, y], i) => ({ x, y, sparkle: false, r: GLINT_R, group: (i + 1) % TWINKLE_GROUPS, glint: true })));
 }
 
+// Una capa por tanda de titileo dentro de .path-stars: titila la capa entera (opacidad de un SVG suelto, que la hace la
+// tarjeta gráfica) en vez de cada estrella (en el SVG en línea, estilos y geometría en el hilo principal a cada fotograma).
 export function addStars(svg) {
   if (svg.nextElementSibling?.classList.contains('path-stars')) return null;
   const pts = starPoints(pairsOf(svg.dataset.free), pairsOf(svg.dataset.glints));
   if (!pts.length) return null;
-  const layer = document.createElementNS(SVG_NS, 'svg');
-  layer.setAttribute('class', 'path-stars');
-  layer.setAttribute('viewBox', svg.getAttribute('viewBox'));
-  layer.setAttribute('preserveAspectRatio', 'none');
+  const layer = document.createElement('div');
+  layer.className = 'path-stars';
   layer.setAttribute('aria-hidden', 'true');
-  layer.setAttribute('focusable', 'false');
-  layer.innerHTML = pts.map((p) => (p.sparkle
-    ? `<path class="star tw-${p.group}" d="${sparkle(p.x, p.y, SPARKLE_R)}"/>`
-    : `<circle class="star tw-${p.group}${p.glint ? ' is-glint' : ''}" cx="${p.x}" cy="${p.y}" r="${p.r.toFixed(2)}"/>`)).join('');
+  for (let g = 0; g < TWINKLE_GROUPS; g++) {
+    const group = pts.filter((p) => p.group === g);
+    if (!group.length) continue;
+    const sky = document.createElementNS(SVG_NS, 'svg');
+    sky.setAttribute('class', `stars-tw tw-${g}`);
+    sky.setAttribute('viewBox', svg.getAttribute('viewBox'));
+    sky.setAttribute('preserveAspectRatio', 'none');
+    sky.setAttribute('focusable', 'false');
+    sky.innerHTML = group.map((p) => (p.sparkle
+      ? `<path class="star" d="${sparkle(p.x, p.y, SPARKLE_R)}"/>`
+      : `<circle class="star${p.glint ? ' is-glint' : ''}" cx="${p.x}" cy="${p.y}" r="${p.r.toFixed(2)}"/>`)).join('');
+    layer.append(sky);
+  }
   svg.after(layer);
   return layer;
 }

@@ -9,7 +9,7 @@ import { artFrame } from './art.js';
 import { avatarHtml } from './avatar.js';
 import { loadCss } from './lazy-css.js';
 import { ensureFicha, museumLine } from './ficha-data.js';
-import { modalSlot } from './modal-slot.js';
+import { modalSlot, tapAfterOpen } from './modal-slot.js';
 import { avatarWork, lifeSpan, seenOf } from '../engine/painters.js';
 
 const slot = modalSlot();
@@ -92,7 +92,13 @@ export async function openArtworkSheet(ctx, workId, opts = {}) {
   const onHash = () => close({ silent: true });
   handle.close = close;
   slot.take(handle);
-  dlg.addEventListener('click', (ev) => { if (ev.target === dlg || ev.target.closest('[data-ws="close"]')) close(); });
+  // Tocar fuera recién abierta (el segundo toque de un doble toque) no la cierra (modal-slot.js); el aspa, siempre.
+  const openedAt = performance.now();
+  let downAt = -Infinity;
+  dlg.addEventListener('pointerdown', (ev) => { downAt = ev.timeStamp; }, { passive: true });
+  dlg.addEventListener('click', (ev) => {
+    if (ev.target.closest('[data-ws="close"]') || (ev.target === dlg && (ev.detail === 0 || tapAfterOpen(downAt, openedAt)))) close();
+  });
   // Esc cierra la página y no llega a la ronda (que lo tomaría por «salir»).
   dlg.addEventListener('keydown', (ev) => {
     if (ev.key !== 'Escape') return;

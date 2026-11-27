@@ -16,6 +16,7 @@ const EDGE = 16;        // margen de la tarjeta con los bordes de la ventana
 const TIP = 14;         // del aro al cuerpo de la tarjeta (sitio para el pico)
 const CARD_MAX = 420;   // ancho máximo de la tarjeta (escritorio)
 const TOP_ROOM = 0.18;  // si no cabe ni arriba ni abajo, el retrato sube a esta altura de la ventana
+const MOVE_CLOSE_PX = 40; // el mapa se ha movido bajo la tarjeta: se cierra (menos es un resto del desplazamiento)
 
 const px = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
 
@@ -85,14 +86,21 @@ export async function openLevelCard(ctx, button, branchId = '') {
   const handle = { dlg };
   const close = mountSheet(dlg, { slot, handle, opener: button, closeSelector: '.lc-lit' });
   place(dlg, dot);
-  const onMove = () => close({ silent: true });
+  // Se cierra si el mapa se mueve de verdad bajo ella o gira la pantalla; no por un resto de desplazamiento que llega
+  // tarde con el móvil ocupado, ni por la barra del sistema o del navegador que cambia el alto (antes se abría y se
+  // cerraba sola).
+  let y0 = window.scrollY;
+  const w0 = window.innerWidth;
+  const onMove = () => { if (Math.abs(window.scrollY - y0) > MOVE_CLOSE_PX) close({ silent: true }); };
+  const onResize = () => { if (window.innerWidth !== w0) close({ silent: true }); };
   requestAnimationFrame(() => {
-    window.addEventListener('scroll', onMove, { passive: true, once: true });
-    window.addEventListener('resize', onMove, { once: true });
+    y0 = window.scrollY;
+    window.addEventListener('scroll', onMove, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
   });
   dlg.addEventListener('close', () => {
     window.removeEventListener('scroll', onMove);
-    window.removeEventListener('resize', onMove);
+    window.removeEventListener('resize', onResize);
   });
   const go = (route) => { close({ silent: true }); ctx.go(route); };
   const play = (level) => go(levelRoute(artistId, level, branchId));

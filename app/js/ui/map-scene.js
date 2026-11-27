@@ -49,19 +49,14 @@ export function trailCrossing(samples, x, yTop, yBottom) {
   return best && best.length > 1 ? best : null;
 }
 
-export function sceneOf(li) {
-  const svg = li?.querySelector('svg.path-land');
-  if (!svg || !svg.viewBox?.baseVal) return null;
-  const vb = svg.viewBox.baseVal;
-  const box = li.getBoundingClientRect();
-  if (!box.width || !box.height) return null;
-  const sx = box.width / vb.width;
-  const sy = box.height / vb.height;
-  const view = {
-    top: Math.max(0, (VIEW_PAD_PX - box.top) / sy),
-    bottom: Math.min(vb.height, (window.innerHeight - VIEW_PAD_PX - box.top) / sy),
-  };
-  const inView = (y, pad = 0) => y >= view.top + pad && y <= view.bottom - pad;
+// Lo que no cambia de un tramo (en unidades del SVG): ríos, lagos, sendero, puentes, árboles y huecos. Se mide una vez por
+// paisaje: muestrear el sendero y medir cada árbol fuerza al navegador a calcular la geometría y era lo que más costaba de
+// cada escena (un parón visible en un móvil medio).
+const fixedParts = new WeakMap();
+function fixedOf(li, svg) {
+  const trailPath = li.querySelector('.path-trail .trail-fill:not(.is-done)');
+  const hit = fixedParts.get(svg);
+  if (hit && hit.trailPath === trailPath) return hit;
   const rivers = [...svg.querySelectorAll('[data-river]')].map((g) => {
     const [x0, x1, y, h, wave] = nums(g.dataset.river);
     return { x0, x1, y, h, wave };
@@ -70,7 +65,7 @@ export function sceneOf(li) {
     const [cx, y, rx, ry] = nums(g.dataset.lake);
     return { cx, y, rx, ry };
   });
-  const trail = trailSamples(li.querySelector('.path-trail .trail-fill:not(.is-done)'));
+  const trail = trailSamples(trailPath);
   // Puentes con agua debajo: los del sendero se cruzan por el sendero; los sueltos, de lado a lado del tablero.
   const bridges = [...svg.querySelectorAll('[data-bridge]')].map((g) => {
     const [cx, y, w] = nums(g.dataset.bridge);
@@ -86,9 +81,27 @@ export function sceneOf(li) {
     const b = g.getBBox();
     return { x: b.x + b.width / 2, y: b.y + Math.min(3, b.height * 0.12), h: b.height };
   }).filter((t) => t.h >= BIG_TREE);
+  const fixed = { trailPath, rivers, lakes, trail, bridges, trees, free: pairs(svg.dataset.free).map(([x, y]) => ({ x, y })) };
+  fixedParts.set(svg, fixed);
+  return fixed;
+}
+
+export function sceneOf(li) {
+  const svg = li?.querySelector('svg.path-land');
+  if (!svg || !svg.viewBox?.baseVal) return null;
+  const vb = svg.viewBox.baseVal;
+  const box = li.getBoundingClientRect();
+  if (!box.width || !box.height) return null;
+  const sx = box.width / vb.width;
+  const sy = box.height / vb.height;
+  const view = {
+    top: Math.max(0, (VIEW_PAD_PX - box.top) / sy),
+    bottom: Math.min(vb.height, (window.innerHeight - VIEW_PAD_PX - box.top) / sy),
+  };
+  const inView = (y, pad = 0) => y >= view.top + pad && y <= view.bottom - pad;
+  const { rivers, lakes, bridges, trees, trail, free } = fixedOf(li, svg);
   return {
-    li, svg, box, sx, sy, w: vb.width, h: vb.height, view, inView, rivers, lakes, bridges, trees, trail,
-    free: pairs(svg.dataset.free).map(([x, y]) => ({ x, y })),
+    li, svg, box, sx, sy, w: vb.width, h: vb.height, view, inView, rivers, lakes, bridges, trees, trail, free,
     // De unidades del SVG a píxeles del tramo.
     px: (x, y) => [x * sx, y * sy],
   };
