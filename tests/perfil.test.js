@@ -87,11 +87,11 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   const ladder = rankLadder();
   assert.equal(ladder.length, RANKS.length);
   assert.deepEqual(ladder[0].conds, [], 'el primero no pide nada');
-  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3.000 XP', '4 niveles «a fondo»', 'Un gran maestro hasta el nivel 2']);
+  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3.000 XP', '4 niveles «a fondo»', 'El nivel 2 de un gran maestro (los más grandes, como Rafael)']);
   assert.deepEqual(rankConditions(RANKS[6]).map((c) => c.key), ['xp', 'deep', 'eras', 'complete']);
 });
 
-test('rango: «Elegir» ofrece los pintores dominados con un nivel «a fondo» abierto; sin ninguno, la tarjeta manda a jugar', () => {
+test('rango: una sola acción recomendada (el nivel que cuenta, a lo ancho); sin ninguno que cuente, por qué y sin botón', () => {
   const p = { ...emptyProgress(), xp: 1500, rank: 1 };
   const card = rankCardHtml(ctxFor(p));
   assert.match(card, /Aficionado/);
@@ -99,7 +99,8 @@ test('rango: «Elegir» ofrece los pintores dominados con un nivel «a fondo» a
   assert.match(card, /Para ser <strong>Copista<\/strong>/);
   assert.match(card, /pf-cond is-done[\s\S]*<span class="pf-cond-val">1\.500<\/span>\/1\.200 XP/, 'el XP cumplido se lee como «1.500/1.200 XP», no «1200 XP … 1500»');
   assert.match(card, /Un nivel «a fondo» <span class="pf-cond-val">0\/1<\/span>/);
-  assert.match(card, /href="#inicio"[^>]*>Jugar</, 'sin pintores dominados, se juega el camino');
+  assert.doesNotMatch(card, />Jugar<|>Elegir</, 'sin nada que cuente, ningún botón que no cumpliría');
+  assert.match(card, /class="pf-cond-why">Se abre al dominar a un pintor del camino</);
   assert.equal((card.match(/class="pf-ladder/g) || []).length, 1);
   assert.equal((card.match(/<li class="is-on"><\/li>/g) || []).length, 2);
   assert.equal((card.match(/is-next/g) || []).length, 1);
@@ -108,8 +109,15 @@ test('rango: «Elegir» ofrece los pintores dominados con un nivel «a fondo» a
   const withDeep = real.path.find((a) => real.deepLevels(a.id).length);
   assert.ok(withDeep, 'el catálogo tiene niveles «a fondo»');
   p.artists[withDeep.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
-  assert.deepEqual(deepChoices(p, real, 'deep', RANKS[2]), [{ artistId: withDeep.id, level: real.deepLevels(withDeep.id)[0].id }]);
-  assert.match(rankCardHtml({ ...ctxFor(p), index: real }), /data-action="rank-choose" data-key="deep"[^>]*>Elegir</);
+  assert.deepEqual(deepChoices(p, real, 'deep', RANKS[2]).map((c) => [c.artistId, c.level]), [[withDeep.id, real.deepLevels(withDeep.id)[0].id]]);
+  const one = rankCardHtml({ ...ctxFor(p), index: real });
+  assert.match(one, new RegExp(`data-action="rank-play" data-artist="${withDeep.id}" data-level="${real.deepLevels(withDeep.id)[0].id}"`));
+  assert.equal((one.match(/btn-primary/g) || []).length, 1, 'un solo botón principal');
+  // Con varias condiciones pendientes, una sola acción grande y el resto en filas discretas.
+  const many = { ...p, xp: 2325, rank: 2 };
+  const card3 = rankCardHtml({ ...ctxFor(many), index: real });
+  assert.equal((card3.match(/btn-primary/g) || []).length, 1, card3);
+  assert.ok((card3.match(/pf-cond is-quiet/g) || []).length >= 1);
   assert.deepEqual(deepChoices(p, real, 'complete', RANKS[6]).length, withDeep.category === 'gran-maestro' ? 1 : 0);
   assert.match(rankCardHtml(ctxFor({ ...emptyProgress(), xp: 30000, rank: 7 })), /El rango más alto/);
 });
@@ -245,8 +253,8 @@ test('concordancia: 0, 1 y 2 en cifras, requisitos del rango y logros', () => {
   assert.match(need('eras', 2, { eras: 2 }), /en 2 épocas más/);
   assert.match(need('complete', 1, { complete: 1 }), /1 gran maestro más/);
   assert.match(need('complete', 2, { complete: 2 }), /2 grandes maestros más/);
-  assert.match(need('grand', 1, { grand: { count: 1, upTo: 2 } }), /1 gran maestro más hasta/);
-  assert.match(need('grand', 2, { grand: { count: 2, upTo: 2 } }), /2 grandes maestros más hasta/);
+  assert.match(need('grand', 1, { grand: { count: 1, upTo: 2 } }), /^El nivel 2 de 1 gran maestro más$/);
+  assert.match(need('grand', 2, { grand: { count: 2, upTo: 2 } }), /^El nivel 2 de 2 grandes maestros más$/);
   assert.equal(P.plural(0, 'cuadro', 'cuadros'), '0 cuadros');
   assert.equal(P.plural(1, 'cuadro', 'cuadros'), '1 cuadro');
   assert.equal(P.plural(2, 'cuadro', 'cuadros'), '2 cuadros');

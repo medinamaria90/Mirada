@@ -55,7 +55,24 @@
 .pf-cond.is-done .pf-cond-label { color: var(--ink-2); }
 .pf-cond-val { font-weight: 600; color: var(--brand-text); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
 .pf-cond.is-done .pf-cond-val { font-weight: 500; color: var(--ink-2); }
-.pf-cond-go { flex: none; min-height: 48px; padding-inline: 1.1rem; }
+/* La acción recomendada: su condición y, debajo, un solo botón a lo ancho. */
+.pf-cond.is-focus { flex-wrap: wrap; row-gap: .5rem; padding-block: .2rem .3rem; }
+.pf-cond.is-focus .pf-cond-mark { box-shadow: inset 0 0 0 2px var(--brand); }
+.pf-cond-play { flex: 1 0 100%; min-height: 48px; }
+/* Las demás pendientes, discretas: una fila que se toca, sin botón grande. */
+.pf-cond.is-quiet { min-height: 44px; }
+.pf-cond.is-quiet .pf-cond-mark { width: 22px; height: 22px; margin-inline: 3px; box-shadow: inset 0 0 0 1.5px var(--ink-2); }
+.pf-cond.is-quiet .pf-cond-label { color: var(--ink-2); font-size: .95rem; }
+.pf-cond.is-quiet .pf-cond-val { color: var(--ink-2); }
+.pf-cond-row {
+  display: flex; align-items: center; gap: .7rem; width: 100%; min-height: 48px; padding: 0; border: 0; background: none;
+  color: inherit; font: inherit; text-align: left; text-decoration: none; cursor: pointer;
+}
+.pf-cond-row .pf-chev { flex: none; color: var(--ink-2); }
+.pf-cond-row:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; border-radius: var(--radius-sm); }
+/* Sin ningún nivel que cuente aún: por qué, en una línea bajo la condición (sin botón que no cumpliría). */
+.pf-cond:has(.pf-cond-why) { flex-wrap: wrap; row-gap: .2rem; }
+.pf-cond-why { flex: 1 0 100%; padding-inline-start: calc(28px + .7rem); color: var(--ink-2); font-size: .9rem; line-height: 1.3; }
 
 /* Hoja de los rangos. */
 .pf-rank-list { display: grid; gap: .2rem; }
