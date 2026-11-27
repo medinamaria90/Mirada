@@ -16,7 +16,7 @@ export function resolveThumb(thumb, atlas) {
 }
 
 // Textos que llegan después de pintar (data/catalog-text.json): `look`/`looks` (pistas con
-// fuente), `kind`, `tags`, `genre` y `skipTraits` de obra; `traits`, `traitTags`, `traitScope`, `why` («por qué importa», con fuente) y `who` (quién era un invitado) de pintor; `tagLabels` y `negableTags`
+// fuente), `kind`, `tags`, `genre` y `skipTraits` de obra; `traits`, `traitTags`, `traitScope`, `traitGeneral`, `why` («por qué importa», con fuente) y `who` (quién era un invitado) de pintor; `tagLabels` y `negableTags`
 // del vocabulario visual. Se añaden a los objetos del índice; lo que no encaja se ignora.
 const MAX_TEXT = 140;
 const MAX_WHO = 110;
@@ -104,6 +104,16 @@ export function mergeCatalogText(index, text) {
   for (const [id, scopes] of Object.entries(text.traitScope || {})) {
     const a = index.artist(id);
     if (a && Array.isArray(scopes)) { a.traitScope = scopes.slice(0, MAX_LINES).map(scopeOf); n++; }
+  }
+  // Versión general de una frase con un detalle concreto: { text, scope } (sin etiquetas) o null, alineada igual.
+  for (const [id, generals] of Object.entries(text.traitGeneral || {})) {
+    const a = index.artist(id);
+    if (!a || !Array.isArray(generals)) continue;
+    a.traitGeneral = generals.slice(0, MAX_LINES).map((g) => {
+      const scope = g && scopeOf(g.scope);
+      return scope && scope !== SCOPE_TAGS && typeof g.text === 'string' && g.text.length <= MAX_TEXT ? { text: g.text, scope } : null;
+    });
+    n++;
   }
   for (const [id, tags] of Object.entries(text.traitTags || {})) {
     const a = index.artist(id);

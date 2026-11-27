@@ -193,20 +193,41 @@ def genero_de(w, manual):
     return next((g for g, names in GENERO_WIKIDATA.items() if w.get("genre") in names), None)
 
 
+GENERAL_MAX = 110
+
+
+def alcance_valido(sc):
+    return sc in (ALCANCE_ESTILO, ALCANCE_ETIQUETAS) or (isinstance(sc, list) and bool(sc) and all(g in GENEROS for g in sc))
+
+
 def leer_alcances(data, lines_of):
-    """contenido/rasgos.json → {pintor: [alcance por frase]}: «estilo», «etiquetas» o lista de géneros, alineado con
-    [pista, *rasgos]. Todo pintor con frases lo declara (sin certeza de dónde se ve una frase, no se enseña)."""
-    out = {}
+    """contenido/rasgos.json → ({pintor: [alcance por frase]}, {pintor: [versión general o None]}), alineado con
+    [pista, *rasgos]. Cada frase: su alcance («estilo», «etiquetas» o lista de géneros) o {donde, general, generalDonde}:
+    una frase con un detalle concreto (de pie, paisaje, ruinas, llanto…) solo sale donde se ve (donde) y, si no, su
+    versión general, sin el detalle (en generalDonde, por defecto en cualquier obra). Todo pintor con frases lo declara
+    (sin certeza de dónde se ve una frase, no se enseña)."""
+    scopes_of, general_of = {}, {}
     for pid, n in lines_of.items():
         if not n:
             continue
-        scopes = data.get(pid)
-        assert isinstance(scopes, list) and len(scopes) == n, f"rasgos.json: {pid} necesita {n} alcances"
-        for sc in scopes:
-            ok = sc in (ALCANCE_ESTILO, ALCANCE_ETIQUETAS) or (isinstance(sc, list) and sc and all(g in GENEROS for g in sc))
-            assert ok, f"rasgos.json: {pid} con alcance desconocido {sc!r}"
-        out[pid] = scopes
-    return out
+        entries = data.get(pid)
+        assert isinstance(entries, list) and len(entries) == n, f"rasgos.json: {pid} necesita {n} alcances"
+        scopes, generals = [], []
+        for e in entries:
+            if isinstance(e, dict):
+                sc, text, where = e.get("donde"), (e.get("general") or "").strip(), e.get("generalDonde", ALCANCE_ESTILO)
+                assert text and len(text) <= GENERAL_MAX, f"rasgos.json: {pid}, versión general vacía o larga: {text!r}"
+                assert alcance_valido(where) and where != ALCANCE_ETIQUETAS, f"rasgos.json: {pid}, generalDonde {where!r}"
+                generals.append(dict(text=text, scope=where))
+            else:
+                sc = e
+                generals.append(None)
+            assert alcance_valido(sc), f"rasgos.json: {pid} con alcance desconocido {sc!r}"
+            scopes.append(sc)
+        scopes_of[pid] = scopes
+        if any(generals):
+            general_of[pid] = generals
+    return scopes_of, general_of
 
 
 def parrafos_con_fuente(v):
@@ -418,7 +439,7 @@ def main(app):
     # «Fíjate en…» propio de una obra y rasgos del pintor que NO se ven en ella (contenido/fijate.json): la excepción
     # a la pista genérica del pintor, para obras de juventud, copias, retratos o atípicas. Véase leer_fijate.
     lines_of = {pid: (1 if (D.A.get(pid) or {}).get("hint") else 0) + len(text_traits.get(pid, [])) for pid in pintores}
-    trait_scope = leer_alcances(contenido_opcional("rasgos.json"), lines_of)
+    trait_scope, trait_general = leer_alcances(contenido_opcional("rasgos.json"), lines_of)
     generos = {k: v for k, v in contenido_opcional("generos.json").items() if not k.startswith("_")}
     assert all(v in GENEROS for v in generos.values()), "generos.json: género desconocido"
     fijate = leer_fijate(contenido_opcional("fijate.json"), {w["id"]: w["artistId"] for w in works}, text_traits, pintores)
@@ -428,7 +449,7 @@ def main(app):
     if os.path.exists(hd_path):
         with open(hd_path, encoding="utf-8") as f:
             hd = json.load(f)
-    text = dict(version=3, look={}, looks={}, kind={}, tags={}, skipTraits={}, genre={}, traitScope=trait_scope, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why, who=who,
+    text = dict(version=3, look={}, looks={}, kind={}, tags={}, skipTraits={}, genre={}, traitScope=trait_scope, traitGeneral=trait_general, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why, who=who,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
         o = w["_old"]

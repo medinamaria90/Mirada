@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { realIndex, realCatalogJson, realTextJson, W } from './helpers-real.js';
-import { feedbackFor, artistLines, looksOf, tagsOf, teachingLines, absentTrait } from '../app/js/engine/feedback.js';
+import { feedbackFor, artistLines, looksOf, tagsOf, teachingLines, absentTrait, generalLine } from '../app/js/engine/feedback.js';
 import { noAuthorQuestion, optionText, makeMovementQuestion } from '../app/js/engine/questions.js';
 import { buildIndex, mergeCatalogText } from '../app/js/engine/catalog.js';
 import { createRng } from '../app/js/engine/rng.js';
@@ -175,7 +175,9 @@ test('rotación de pistas: primera, segunda (con fuente = verificada) y después
   assert.equal(first.source, 'Museo de prueba');
   assert.equal(second.lines[0], 'Mira dos.');
   assert.equal(second.source, '');
-  assert.ok(artistLines(real.artist(base.artistId)).includes(third.lines[0]));
+  const artist = real.artist(base.artistId);
+  const own = [...artistLines(artist), ...artistLines(artist).map((_, i) => generalLine(artist, base, i))];
+  assert.ok(!third.lines.length || own.includes(third.lines[0]), 'después, una frase del pintor (o su versión general) o nada');
   // Compatibilidad: una obra con solo `look` (texto) se comporta como antes.
   assert.deepEqual(looksOf({ look: 'Mira algo' }), [{ text: 'Mira algo', source: '', verified: false }]);
   assert.deepEqual(looksOf({}), []);
