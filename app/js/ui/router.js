@@ -30,6 +30,9 @@ export const stageRoute = (artistId, branchId = '') => `etapa-${artistId}${branc
 // Historia compartida (ui/story-link.js): la ve cualquiera, juegue o no, sin tocar su progreso.
 export const storyRoute = (artistId, level) => `historia-${artistId}-${level}`;
 
+// Época compartida (tarjetas «Descubre la época», h/epoca-<id>.html): la ve cualquiera, juegue o no, sin tocar su progreso.
+export const eraRoute = (movementId) => `epoca-${movementId}`;
+
 // Pantalla de una rama (su propio paisaje y sus pintores): rama-<id>.
 export const branchRoute = (branchId) => `rama-${branchId}`;
 
@@ -71,6 +74,8 @@ export function parseRoute(hash, opts = {}) {
   if (m) return { name: 'stage', artistId: m[1], branchId: m[2] || '' };
   m = /^historia-([a-z0-9-]+)-([1-9])$/.exec(name);
   if (m) return { name: 'story', artistId: m[1], level: Number(m[2]) };
+  m = /^epoca-([a-z0-9-]+)$/.exec(name);
+  if (m) return { name: 'era', movementId: m[1] };
   m = /^rama-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'branch', branchId: m[1] };
   m = /^repaso-([a-z0-9-]+)$/.exec(name);

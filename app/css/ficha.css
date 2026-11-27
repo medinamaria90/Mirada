@@ -13,6 +13,9 @@
   --ap-mini-h: 64px;
   --ap-mini-av: 36px;
   --ap-mini-play-h: 44px;
+  --st-bar-h: 36px;            /* «Su tiempo»: alto de cada barra de vida */
+  --st-gap: 10px;
+  --st-av: 30px;
 }
 
 .ap { position: relative; color: var(--ink); }
@@ -80,6 +83,26 @@ li.ap-trait { padding-left: .9rem; }
 .ap-twin:active { transform: translateY(var(--relief-sm)); box-shadow: var(--lift-down); }
 @media (hover: hover) and (pointer: fine) { .ap-twin:hover { background: var(--bg); } }
 .ap-twin-av { flex: none; width: var(--ap-twin-av); height: var(--ap-twin-av); }
+
+/* «Su tiempo»: barras de vida alineadas (sin años) y una frase. */
+.st-card { display: grid; gap: .6rem; padding: 1rem 1rem 1.1rem; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-card); }
+.st-h { margin: 0; color: var(--ink-2); font: 600 .78rem/1.2 var(--font); letter-spacing: .1em; text-transform: uppercase; }
+.st-rows { display: grid; gap: var(--st-gap); margin: .2rem 0 0; padding: 0; list-style: none; }
+.st-row { position: relative; height: var(--st-bar-h); }
+.st-bar {
+  position: absolute; top: 0; bottom: 0; left: var(--from); width: max(var(--width), var(--st-bar-h)); display: flex; align-items: center; gap: .45rem;
+  padding: 0 .7rem 0 3px; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2);
+}
+.st-bar.is-current { background: var(--brand-soft); box-shadow: inset 0 0 0 2px var(--brand); }
+.st-av { flex: none; width: var(--st-av); height: var(--st-av); }
+.st-name { min-width: 0; overflow: hidden; font: 600 .95rem/1.1 var(--font); text-overflow: ellipsis; white-space: nowrap; }
+.st-bar.is-name-right .st-name { position: absolute; left: calc(100% + .5rem); overflow: visible; }
+.st-bar.is-name-left .st-name { position: absolute; right: calc(100% + .5rem); overflow: visible; }
+.st-axis { position: relative; height: 1.6rem; border-top: 1px solid var(--line); }
+.st-tick { position: absolute; top: 0; left: var(--at); padding: .3rem 0 0 .5rem; border-left: 1px solid var(--line); color: var(--ink-2); font: 500 .85rem/1 var(--font); white-space: nowrap; }
+.st-tick.is-edge { border-left: 0; padding-left: 0; }
+.st-tick.is-end { padding: .3rem .5rem 0 0; border-left: 0; border-right: 1px solid var(--line); transform: translateX(-100%); }
+.st-phrase { margin: .2rem 0 0; font: 400 1.02rem/1.4 var(--font); text-wrap: pretty; }
 
 /* Cabecera compacta: aparece al desplazarse, con «Jugar» siempre a mano. */
 .ap-mini {

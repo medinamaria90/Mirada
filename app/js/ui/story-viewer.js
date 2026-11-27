@@ -127,8 +127,12 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const override = level === 1 && pos === 0 ? opening : null;
       const work = override || index.artwork(card.artwork);
       if (work) shownIds.push(work.id);
-      media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name);
       bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, playLabel: opts.playLabel, more: opts.onMore !== false });
+      // La obra entera se coloca en el hueco que deja el texto (sin su degradado de arriba): el texto no tapa nada.
+      const textH = bottom.offsetHeight - parseFloat(getComputedStyle(bottom).paddingTop || '0');
+      media.style.setProperty('--story-text-h', `${Math.max(0, Math.round(textH))}px`);
+      const frame = media.clientWidth && media.clientHeight ? media.clientWidth / media.clientHeight : undefined;
+      media.innerHTML = mediaHtml(work, override ? null : card.focus, pos, name, frame);
       dlg.classList.toggle('is-last', last);
       dlg.querySelector('.story-back').hidden = pos === 0;
       dlg.querySelector('.story-next').hidden = last;
