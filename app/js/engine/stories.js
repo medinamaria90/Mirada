@@ -98,6 +98,16 @@ function regionFrame(work, part, focus, frame) {
   return { mode: 'crop', box: { left: r1(b.left - part.x0 * w), top: r1(b.top - part.y0 * h), width: r1(w), height: r1(h) } };
 }
 
+// Imagen de una tarjeta: la HD de la obra (`hd`, catálogo; paso «hd» del proceso) si la tarjeta enseña un trozo, una `region` o
+// un `focus` con zoom de HD_ZOOM_MIN o más, porque la de 1200 px se vería borrosa; si no, la normal (pesa menos). Mismo criterio
+// que tools/nitidez.py.
+export const HD_ZOOM_MIN = 1.5;
+export function storySrc(work, focus = null, region = null) {
+  const crop = cropOf(focus);
+  const detail = Boolean(regionOf(region)) || (!crop.whole && crop.zoom >= HD_ZOOM_MIN);
+  return detail && work?.hd?.img ? work.hd.img : work?.img;
+}
+
 // Posición siguiente al pasar de tarjeta: { pos } o { end: true } al pasar de la última; atrás se queda en la primera.
 export function step(pos, count, delta) {
   const next = pos + delta;

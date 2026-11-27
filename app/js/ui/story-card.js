@@ -4,7 +4,7 @@
 import { esc } from './dom.js';
 import { icons } from './icons.js';
 import { tinySrc } from './art.js';
-import { frameFor, captionOf } from '../engine/stories.js';
+import { frameFor, captionOf, storySrc } from '../engine/stories.js';
 
 const PAN_KINDS = 3; // barridos a sangre (acercarse, deslizar a un lado y al otro), uno por tarjeta
 const FIT_KINDS = 2; // con la obra entera, solo un zoom suave (acercarse o alejarse): no se pierde nada de los bordes
@@ -17,7 +17,7 @@ export function mediaHtml(work, focus, pos, artistName, frame, region = null) {
   const f = frameFor(work, focus, frame, region);
   const crop = f.mode === 'crop';
   const alt = `${work.title}, de ${artistName}`;
-  const img = `<img class="story-img" src="${esc(work.img)}" alt="${esc(alt)}" width="${work.w || 4}" height="${work.h || 3}" decoding="async" fetchpriority="high" draggable="false">`;
+  const img = `<img class="story-img" src="${esc(storySrc(work, focus, region))}" alt="${esc(alt)}" width="${work.w || 4}" height="${work.h || 3}" decoding="async" fetchpriority="high" draggable="false">`;
   const backdrop = crop ? '' : `<img class="story-bg" src="${esc(tinySrc(work))}" alt="" aria-hidden="true" draggable="false">`;
   const box = crop ? ` style="--bl:${f.box.left}%;--bt:${f.box.top}%;--bw:${f.box.width}%;--bh:${f.box.height}%"` : '';
   const pan = crop ? `pan-${pos % PAN_KINDS}` : `fit-${pos % FIT_KINDS}`;
