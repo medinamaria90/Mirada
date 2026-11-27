@@ -189,3 +189,10 @@ Sustituye al plan de arriba (que queda como historia). Qué se hizo y dónde est
   (`tools/serve_local.py` monta las imágenes sin copiarlas a `app/img/`).
 - **Pendiente de revisión visual**: las obras nuevas no tienen marcado `spoiler` (firma visible) ni `attributed`; solo lo heredan
   las 9 ya revisadas. Pasar hojas de contacto antes de subir el nivel de confianza.
+
+### 27/11 — Fra Angelico necesita obras
+
+Solo tiene 2 obras en el catálogo (las 2 «learn»); como invitado necesita ≥ 3 (2 «learn» + ≥ 1 «new»).
+`pipeline/out/candidates/fra-angelico.json` trae 30 candidatas. Se han forzado en `extra.json` la *Adoración de los Reyes
+Magos* (Q3531531), la *Anunciación de Cortona* (Q2376881) y el *Retablo de San Marcos* (Q1215809). Próximo pipeline: `candidates`
+→ `seleccionar` → `download` → `pack`, y quitar `fra-angelico` de `PENDING_WORKS` en `tools/validate_catalog.py`.
