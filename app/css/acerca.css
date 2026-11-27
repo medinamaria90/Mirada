@@ -1,0 +1,7 @@
+/* «Acerca de Sfumato» (ui/screens/about.js): texto sobrio y legible en el móvil. Se carga solo al abrir la página. */
+.page-about .content.ab { max-width: 720px; margin-inline: auto; padding: 0 0 calc(var(--safe-b) + 5.5rem); }
+.ab-section { display: grid; gap: .5rem; padding: 1.8rem 1.2rem 0; }
+.ab-h { color: var(--ink-2); font: 600 .78rem/1.2 var(--font); letter-spacing: .06em; text-transform: uppercase; }
+.ab-text { margin: 0; color: var(--ink); font: 400 1.05rem/1.55 var(--font); text-wrap: pretty; }
+.ab-link { color: var(--brand-text); text-decoration: underline; text-underline-offset: 3px; }
+.ab-link:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; border-radius: var(--radius-sm); }

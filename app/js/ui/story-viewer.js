@@ -41,7 +41,8 @@ export const STORY_END = Object.freeze({
 // Muestra la historia del nivel y devuelve una promesa que se cumple al cerrarla con { shown, ended }: los cuadros que ha
 // enseñado y cómo se cerró (STORY_END). opts: { force } vuelve a mostrarla aunque ya se haya visto; { history: false } cuando va
 // seguida de una ronda: no entra en el historial (su «atrás» llegaría cuando la ronda ya está montada); { onPlay } lo que hace
-// «Jugar» tras cerrar (sin él, solo cerrar: lo que sigue lo decide quien llama) o false si no hay nada que jugar; { onMore } lo que
+// «Jugar» tras cerrar (sin él, solo cerrar: lo que sigue lo decide quien llama) o false si no hay nada que jugar, y { playLabel }
+// otro texto para ese botón («Repetir nivel»); { onMore } lo que
 // hace «Ver más» (sin él, abre la ficha); { look } la pista «Fíjate en…» del pintor, que la última tarjeta añade si la historia
 // no lo dice ya.
 export async function playStory(ctx, artistId, level, opts = {}) {
@@ -113,7 +114,7 @@ export async function playStory(ctx, artistId, level, opts = {}) {
       const override = level === 1 && pos === 0 ? opening : null;
       const work = override || index.artwork(card.artwork);
       if (work) shownIds.push(work.id);
-      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false });
+      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, playLabel: opts.playLabel });
       // La obra entera se coloca en el hueco que deja el texto (sin su degradado de arriba): el texto no tapa nada.
       const textH = bottom.offsetHeight - parseFloat(getComputedStyle(bottom).paddingTop || '0');
       media.style.setProperty('--story-text-h', `${Math.max(0, Math.round(textH))}px`);

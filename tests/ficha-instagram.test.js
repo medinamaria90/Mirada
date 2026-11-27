@@ -65,12 +65,11 @@ test('lo que falta: una frase («Te faltan 24 · se desbloquean en sus etapas»)
   assert.equal(missingNote(p, real, 'goya', 32, 33).text.startsWith('Te falta 1 '), true);
 });
 
-test('etapas: un nombre con sentido; «Más obras» pasa a «<Pintor> a fondo · n»', () => {
+test('etapas: su nombre es el título corto del catálogo (el del aro); sin él, el de los datos', () => {
   const a = real.artist('hals');
-  assert.equal(stageTitle(a, { id: 2, name: 'Más obras' }), 'Hals a fondo · 1');
-  assert.equal(stageTitle(a, { id: 3, name: 'Más obras' }), 'Hals a fondo · 2');
+  assert.equal(stageTitle(a, real.deepLevels('hals')[0]), 'Más obras');
+  assert.equal(stageTitle(real.artist('berruguete'), real.deepLevels('berruguete')[0]), 'Castilla');
   assert.equal(stageTitle(real.artist('goya'), { id: 2, name: 'Formación y cartones' }), 'Formación y cartones');
-  assert.equal(stageTitle(a, { id: 2, name: 'Más obras', from: 1610, to: 1625 }), 'Hals (1610–1625)', 'con años, menos genérico');
 });
 
 test('movimientos: por su fecha de inicio, no por el orden del camino (la estampa japonesa en su sitio)', () => {

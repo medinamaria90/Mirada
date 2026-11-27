@@ -1,20 +1,21 @@
-// Aro de niveles (engine/level-ring.js y ui/deep-badges.js): un tramo por nivel con historia, el 1 incluido; sin historia no
-// hay tramo; el título corto sale de la historia (único origen) y es el mismo en el catálogo y en la ronda.
+// Aro de niveles (engine/level-ring.js y ui/deep-badges.js): un tramo y un círculo por nivel, tenga o no historia, el 1
+// incluido; el título corto sale de la historia si la hay (único origen) y es el mismo en el catálogo, la tarjeta y la ronda.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
-import { ringLevels, levelStates, levelRing, levelPlan, levelShort, ringLabel, FIRST_LEVEL_SHORT } from '../app/js/engine/level-ring.js';
+import { ringLevels, levelStates, levelRing, levelShort, ringLabel, FIRST_LEVEL_SHORT } from '../app/js/engine/level-ring.js';
 import { stageTitle } from '../app/js/engine/painters.js';
 import { ringSvg } from '../app/js/ui/deep-badges.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const data = join(here, '..', 'app', 'data');
 const real = buildIndex(JSON.parse(readFileSync(join(data, 'catalog.json'), 'utf8')));
-const story = (id) => JSON.parse(readFileSync(join(data, 'historias', `${id}.json`), 'utf8'));
+const storyPath = (id) => join(data, 'historias', `${id}.json`);
+const story = (id) => (existsSync(storyPath(id)) ? JSON.parse(readFileSync(storyPath(id), 'utf8')) : { levels: [] });
 const masterAll = (p, id) => { for (const l of real.deepLevels(id)) p.deep[`${id}:${l.id}`] = { plays: 1, best: 1, mastered: true }; };
 
 test('niveles del aro: el 1 («Quién fue») y las etapas con historia, con el título corto de su historia', () => {
@@ -26,17 +27,24 @@ test('niveles del aro: el 1 («Quién fue») y las etapas con historia, con el t
   assert.equal(stageTitle(real.artist('velazquez'), real.deepLevels('velazquez')[1]), 'La corte', 'la ronda usa el mismo título');
 });
 
-test('sin historia no hay tramo: un «Más obras» sin historia no suma al aro', () => {
-  assert.ok(real.deepLevels('botticelli').length > 0, 'Botticelli tiene un nivel «a fondo»');
-  assert.deepEqual(ringLevels(real, 'botticelli').map((l) => l.level), [1]);
+test('un nivel sin historia también es tramo y círculo, con su título corto (Berruguete, Botticelli)', () => {
+  assert.equal(story('berruguete').levels.some((l) => l.level === 2), false, 'el nivel 2 de Berruguete no tiene historia');
+  assert.deepEqual(ringLevels(real, 'berruguete').map((l) => [l.level, l.short]), [[1, FIRST_LEVEL_SHORT], [2, 'Castilla']]);
+  assert.deepEqual(ringLevels(real, 'botticelli').map((l) => l.short), [FIRST_LEVEL_SHORT, 'Más obras']);
   const p = emptyProgress();
-  p.artists.botticelli = { plays: 1, mastered: true };
-  assert.equal(levelRing(p, real, 'botticelli'), null, 'un solo nivel con historia: sin aro');
-  // …pero tocarlo abre la tarjeta (nunca la ficha), con su «a fondo» por jugar.
-  const plan = levelPlan(p, real, 'botticelli');
-  assert.deepEqual([plan.at, plan.total, plan.next, plan.done], [2, 2, real.deepLevels('botticelli')[0].id, false]);
-  assert.deepEqual(plan.levels.map((l) => l.state), ['done']);
-  assert.equal(levelPlan(emptyProgress(), real, 'botticelli'), null, 'sin dominar, el toque entra directo');
+  assert.equal(levelRing(p, real, 'berruguete'), null, 'sin dominar, el toque entra directo');
+  p.artists.berruguete = { plays: 1, mastered: true };
+  const ring = levelRing(p, real, 'berruguete');
+  assert.deepEqual([ring.at, ring.total, ring.next, ring.done], [2, 2, 2, false], '«Nivel 2 de 2» cuenta los dos círculos');
+  assert.deepEqual(ring.levels.map((l) => l.state), ['done', 'next']);
+  assert.equal(stageTitle(real.artist('berruguete'), real.deepLevels('berruguete')[0]), 'Castilla', 'la ronda usa el mismo título');
+});
+
+test('un pintor con un solo nivel no tiene aro ni tarjeta: entra directo', () => {
+  const one = real.artists.find((a) => !a.guest && real.deepLevels(a.id).length === 0);
+  const p = emptyProgress();
+  p.artists[one.id] = { plays: 1, mastered: true };
+  assert.equal(levelRing(p, real, one.id), null);
 });
 
 test('estados: oro lo hecho, uno solo «siguiente» y el resto cerrado; con todo hecho, completo', () => {
@@ -64,12 +72,15 @@ test('SVG del aro: un tramo por nivel con su estado y halo solo si hay siguiente
   assert.doesNotMatch(ringSvg([{ state: 'done' }, { state: 'done' }]), /ring-halo/);
 });
 
-test('todos los pintores: los tramos del aro tienen historia y van seguidos desde el nivel 1', () => {
+test('todos los pintores: un tramo por nivel, con título corto de ≤ 12 letras distinto en cada uno y el de su historia si la hay', () => {
   for (const a of real.artists) {
     const levels = ringLevels(real, a.id);
-    if (levels.length < 2) continue;
+    assert.equal(levels.length, real.deepLevels(a.id).length + 1, `${a.id}: un tramo por nivel`);
     const told = new Map(story(a.id).levels.map((l) => [l.level, l.stage || '']));
-    for (const l of levels) assert.ok(told.has(l.level), `${a.id}: tramo ${l.level} sin historia`);
-    for (const l of levels.slice(1)) assert.ok(l.short.length <= 12 && l.short === told.get(l.level), `${a.id}: título corto ${l.short}`);
+    for (const l of levels.slice(1)) {
+      assert.ok(l.short && l.short.length <= 12, `${a.id}: título corto ${l.short}`);
+      if (told.has(l.level)) assert.equal(l.short, told.get(l.level), `${a.id}: título corto distinto del de su historia`);
+    }
+    assert.equal(new Set(levels.map((l) => l.short)).size, levels.length, `${a.id}: títulos cortos repetidos`);
   }
 });

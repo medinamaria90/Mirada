@@ -75,7 +75,7 @@ html.reduce-motion .lc[open] .lc-card { animation: none; }
   flex: none; padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, var(--gold) 16%, transparent); color: var(--gold-text);
   font: 500 .95rem/1.25 var(--font); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap;
 }
-.lc-card .hl-row { justify-content: space-between; margin: 12px -12px 2px; padding: 0 4px; }
+.lc-card .hl-row { gap: 12px; margin: 12px -12px 2px; padding: 0 4px; }
 .lc-play { margin-top: 14px; font-size: 1.125rem; }
 .lc-play small { font-size: 1rem; font-weight: 400; opacity: .8; }
 @media (hover: hover) { .lc-name:hover { text-decoration: underline; text-underline-offset: 4px; } }
@@ -88,15 +88,5 @@ html.reduce-motion .lc[open] .lc-card { animation: none; }
 .ap-ring.has-levels .level-ring { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; rotate: -90deg; overflow: visible; }
 .ap-ring.has-levels .ap-photo { position: relative; z-index: 1; }
 .ap-ring.has-levels .ring-halo { display: none; }
-/* Nivel hecho: elegir entre volver a ver su historia y repetir el nivel. */
-.hl[aria-expanded="true"] .hl-c { transform: scale(1.06); }
-.hl-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.hl-pick-btn {
-  flex: 1 1 8rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 12px; border: 0;
-  border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); font: 600 .95rem/1.2 var(--font); cursor: pointer;
-}
-.hl-pick-btn:active { transform: translateY(1px); }
-@media (hover: hover) { .hl-pick-btn:hover { background: color-mix(in srgb, var(--surface-2) 90%, var(--ink)); } }
 .ap .hl-more { padding: 0 1.2rem; }
-.ap .hl-pick { margin-top: .8rem; }
 .hl-more[hidden] { display: none; }
