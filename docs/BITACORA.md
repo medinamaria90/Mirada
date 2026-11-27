@@ -149,3 +149,6 @@ María vio la cabeza de Cristo fuera de la tarjeta de la Piedad Desplà y la Inm
 
 ## Compartir épocas y vista previa ligera (27/11)
 Petición de María: las tarjetas «Descubre la época» se comparten como las historias, con un botón discreto arriba a la derecha. El enlace (h/epoca-<id>.html, con og:, generado por tools/share_pages.py) abre la época en tarjetas para cualquiera (#epoca-<id>) sin tocar su partida; a quien no juega, el botón de abajo dice «Empezar a jugar». Las vistas previas usan imágenes ligeras (img/og/, ≤1200 px y <250 KB) que se pintan al desplegar, porque WhatsApp no enseña las pesadas.
+
+## Validador: límite de archivos y Fra Angelico (27/11)
+El límite de 600 archivos venía del tope de 512 del artifact; en Render no hay límite, así que sube a 1000 (repo ~630 + atlas 86 + og generadas ~190 ≈ 900) y queda como techo de cordura. Fra Angelico (2 obras) pasa a aviso en `PENDING_WORKS` hasta que el próximo pipeline traiga más (candidatas forzadas en `pipeline/extra.json`); no se rebaja el mínimo de 3 porque hace falta una obra «new» para los retos.

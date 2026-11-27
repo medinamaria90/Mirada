@@ -1,7 +1,7 @@
 """Copia las tarjetas de época de contenido/epocas/ a app/data/epocas/ (lo que sirve la app) y escribe su índice.
 
-Valida cada archivo (formato de contenido/epocas/README.md): exactamente 8 tarjetas con los ocho «kickers» en orden,
-texto de hasta 180 caracteres, fuente con URL y, si hay catálogo en app/data/catalog.json, que el movimiento exista y que
+Valida cada archivo (formato de contenido/epocas/README.md): las 8 tarjetas con los ocho «kickers» en orden y, como
+mucho, una tarjeta extra con «kicker» propio en cualquier sitio (p. ej. «Mientras, en el sur»), texto de hasta 180 caracteres, fuente con URL y, si hay catálogo en app/data/catalog.json, que el movimiento exista y que
 cada obra exista, sea «learn» y pertenezca al movimiento. Uso: python3 -I tools/sync_epocas.py
 El índice (`index.json`) es la lista de ids de movimiento con tarjetas: así la app no pide archivos que no existen.
 """
@@ -17,6 +17,7 @@ KICKERS = [
     "Cuándo y dónde", "Por qué surge", "Qué cambia", "Cómo se pintaba",
     "Fíjate en", "Sus grandes temas", "Qué nos dejó", "Curiosidad",
 ]
+MAX_EXTRA = 1  # tarjetas de más, con su propio «kicker», para épocas que necesitan contar dos caminos
 FORBIDDEN_WORDS = ("ayer", "mañana")
 
 
@@ -39,12 +40,17 @@ def check(data, name, movements, works):
     if movements is not None and name not in movements:
         errors.append(f"{name}: movimiento desconocido")
     cards = data.get("cards", [])
-    if len(cards) != len(KICKERS):
-        errors.append(f"{name}: {len(cards)} tarjetas, deben ser {len(KICKERS)}")
+    if not len(KICKERS) <= len(cards) <= len(KICKERS) + MAX_EXTRA:
+        errors.append(f"{name}: {len(cards)} tarjetas, deben ser {len(KICKERS)} (+{MAX_EXTRA} extra como mucho)")
+    expected = 0
     for i, c in enumerate(cards):
         tag = f"{name} tarjeta {i + 1}"
-        if i < len(KICKERS) and c.get("kicker") != KICKERS[i]:
-            errors.append(f"{tag}: kicker «{c.get('kicker')}», debía ser «{KICKERS[i]}»")
+        kicker = (c.get("kicker") or "").strip()
+        if expected < len(KICKERS) and kicker == KICKERS[expected]:
+            expected += 1
+        elif not kicker or kicker in KICKERS:
+            want = KICKERS[expected] if expected < len(KICKERS) else "una extra"
+            errors.append(f"{tag}: kicker «{c.get('kicker')}», debía ser «{want}» o uno propio de tarjeta extra")
         text = c.get("text") or ""
         if not text or len(text) > MAX_TEXT:
             errors.append(f"{tag}: texto vacío o de más de {MAX_TEXT} caracteres")
@@ -63,6 +69,8 @@ def check(data, name, movements, works):
                     errors.append(f"{tag}: obra {c['artwork']} es de «{mov}», no de «{name}»")
                 if role != "learn":
                     errors.append(f"{tag}: obra {c['artwork']} no es «learn» (es «{role}»)")
+    if expected < len(KICKERS):
+        errors.append(f"{name}: falta la tarjeta «{KICKERS[expected]}» (los ocho kickers, en orden)")
     return errors
 
 
