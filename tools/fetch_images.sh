@@ -23,19 +23,32 @@ command -v curl >/dev/null || fallo "falta curl"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-echo "fetch_images: descargando $BASE/$ZIP"
-curl -fsSL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o "$TMP/$ZIP" "$BASE/$ZIP" \
-  || fallo "no se pudo descargar $BASE/$ZIP (¿existe el recurso en la release catalogo-img? lo sube el paso «pack» del proceso)"
-curl -fsSL --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o "$TMP/$SHA" "$BASE/$SHA" \
-  || fallo "no se pudo descargar $BASE/$SHA"
+sha_de() {
+  if command -v sha256sum >/dev/null; then sha256sum "$1" | awk '{print $1}'
+  elif command -v shasum >/dev/null; then shasum -a 256 "$1" | awk '{print $1}'
+  else python3 -c "import hashlib,sys;print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" "$1"
+  fi
+}
+baja() { curl -fsSL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 30 -o "$2" "$1"; }
 
-esperado="$(awk '{print tolower($1)}' "$TMP/$SHA" | head -n 1)"
-[[ "$esperado" =~ ^[0-9a-f]{64}$ ]] || fallo "el fichero $SHA no contiene un sha256 válido"
-if command -v sha256sum >/dev/null; then real="$(sha256sum "$TMP/$ZIP" | awk '{print $1}')"
-elif command -v shasum >/dev/null; then real="$(shasum -a 256 "$TMP/$ZIP" | awk '{print $1}')"
-else real="$(python3 -c "import hashlib,sys;print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" "$TMP/$ZIP")"
-fi
-[ "$real" = "$esperado" ] || fallo "sha256 no coincide: esperado $esperado, obtenido $real (descarga corrupta o zip a medio subir; reintenta)"
+# El paso «pack» del proceso sube el zip con «gh release upload --clobber», que borra el recurso antes de subir el nuevo:
+# durante unos minutos la descarga da 404 o el zip no casa con su .sha256. Se reintenta el par entero con margen amplio.
+INTENTOS="${MIRADA_FETCH_TRIES:-12}"
+ESPERA="${MIRADA_FETCH_WAIT:-30}"
+ok=0
+for i in $(seq 1 "$INTENTOS"); do
+  echo "fetch_images: descargando $BASE/$ZIP (intento $i/$INTENTOS)"
+  if baja "$BASE/$ZIP" "$TMP/$ZIP" && baja "$BASE/$SHA" "$TMP/$SHA"; then
+    esperado="$(awk '{print tolower($1)}' "$TMP/$SHA" | head -n 1)"
+    real="$(sha_de "$TMP/$ZIP")"
+    if [[ "$esperado" =~ ^[0-9a-f]{64}$ ]] && [ "$real" = "$esperado" ]; then ok=1; break; fi
+    echo "fetch_images: aviso: el sha256 no coincide (esperado ${esperado:-?}, obtenido $real); quizá se está subiendo un paquete nuevo" >&2
+  else
+    echo "fetch_images: aviso: no se pudo descargar el paquete; quizá se está subiendo uno nuevo" >&2
+  fi
+  [ "$i" -lt "$INTENTOS" ] && sleep "$ESPERA"
+done
+[ "$ok" = 1 ] || fallo "no se pudo bajar un $ZIP íntegro de $BASE tras $INTENTOS intentos (¿existe en la release catalogo-img? lo sube el paso «pack» del proceso)"
 echo "fetch_images: sha256 correcto ($real)"
 
 # Nombres seguros: solo <id>.jpg planos, sin rutas ni «..» (el zip lo genera pipeline/pack.py)
@@ -62,5 +75,7 @@ if [ "${MIRADA_SKIP_ATLAS:-0}" != "1" ]; then
   "$PY" -c "import PIL" 2>/dev/null || "$PY" -m pip install --quiet pillow || fallo "no se pudo instalar Pillow para pintar el atlas"
   "$PY" -I "$here/make_atlas.py" "$app" "$DEST" || fallo "no se pudo pintar el atlas de miniaturas"
   # Imagen ligera de cada historia compartida para la vista previa de WhatsApp (<carpeta_destino>/og, páginas app/h/).
-  "$PY" -I "$here/share_pages.py" --images "$DEST" || fallo "no se pudieron pintar las imágenes para compartir"
+  # Es opcional: si falla, se avisa y el despliegue sigue (las historias se comparten sin imagen propia).
+  "$PY" -I "$here/share_pages.py" --images "$DEST" \
+    || echo "fetch_images: aviso: no se pudieron pintar las imágenes para compartir (app/img/og); sigo sin ellas" >&2
 fi

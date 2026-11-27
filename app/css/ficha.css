@@ -13,9 +13,9 @@
   --ap-mini-h: 64px;
   --ap-mini-av: 36px;
   --ap-mini-play-h: 44px;
-  --st-bar-h: 36px;            /* «Su tiempo»: alto de cada barra de vida */
+  --st-bar-h: 44px;            /* «Su tiempo»: alto de cada barra de vida */
   --st-gap: 10px;
-  --st-av: 30px;
+  --st-av: 36px;
 }
 
 .ap { position: relative; color: var(--ink); }
@@ -80,6 +80,8 @@ li.ap-trait { padding-left: .9rem; }
 /* «No lo confundas con»: fichas a la ficha de cada parecido. */
 .ap-twins { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); gap: .6rem; margin: 0; padding: 0; list-style: none; }
 .ap-twin { display: flex; align-items: center; gap: .6rem; width: 100%; min-height: 64px; padding: .5rem .8rem .5rem .5rem; border: 0; border-radius: var(--radius); background: var(--surface); box-shadow: var(--lift-sm); color: var(--ink); font: 600 .98rem/1.15 var(--font); text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.ap-twin { -webkit-tap-highlight-color: transparent; }
+.ap-twin:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 .ap-twin:active { transform: translateY(var(--relief-sm)); box-shadow: var(--lift-down); }
 @media (hover: hover) and (pointer: fine) { .ap-twin:hover { background: var(--bg); } }
 .ap-twin-av { flex: none; width: var(--ap-twin-av); height: var(--ap-twin-av); }
@@ -88,7 +90,7 @@ li.ap-trait { padding-left: .9rem; }
 .st-card { display: grid; gap: .6rem; padding: 1rem 1rem 1.1rem; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-card); }
 .st-h { margin: 0; color: var(--ink-2); font: 600 .78rem/1.2 var(--font); letter-spacing: .1em; text-transform: uppercase; }
 .st-rows { display: grid; gap: var(--st-gap); margin: .2rem 0 0; padding: 0; list-style: none; }
-.st-row { position: relative; height: var(--st-bar-h); }
+.st-row { position: relative; height: var(--st-bar-h); container-type: inline-size; }
 .st-bar {
   position: absolute; top: 0; bottom: 0; left: var(--from); width: max(var(--width), var(--st-bar-h)); display: flex; align-items: center; gap: .45rem;
   padding: 0 .7rem 0 3px; border-radius: 999px; background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--line-2);
@@ -96,8 +98,15 @@ li.ap-trait { padding-left: .9rem; }
 .st-bar.is-current { background: var(--brand-soft); box-shadow: inset 0 0 0 2px var(--brand); }
 .st-av { flex: none; width: var(--st-av); height: var(--st-av); }
 .st-name { min-width: 0; overflow: hidden; font: 600 .95rem/1.1 var(--font); text-overflow: ellipsis; white-space: nowrap; }
-.st-bar.is-name-right .st-name { position: absolute; left: calc(100% + .5rem); overflow: visible; }
-.st-bar.is-name-left .st-name { position: absolute; right: calc(100% + .5rem); overflow: visible; }
+.st-hit { position: absolute; inset: 0; display: block; width: 100%; padding: 0; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; -webkit-tap-highlight-color: transparent; }
+button.st-hit { cursor: pointer; }
+button.st-hit:active .st-bar { transform: translateY(var(--relief-sm)); }
+button.st-hit:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; border-radius: var(--radius-sm); }
+@media (hover: hover) and (pointer: fine) { button.st-hit:hover .st-bar:not(.is-current) { background: var(--bg); } }
+/* Nombre fuera de la barra: a su derecha o a su izquierda, con el sitio que quede (si hace falta, en dos líneas). */
+.st-bar.is-name-right, .st-bar.is-name-left { overflow: visible; }
+.st-bar.is-name-right .st-name { position: absolute; left: calc(100% + .5rem); width: max-content; max-width: calc(var(--room) * 1cqw); overflow: visible; white-space: normal; text-overflow: clip; }
+.st-bar.is-name-left .st-name { position: absolute; right: calc(100% + .5rem); width: max-content; max-width: calc(var(--room) * 1cqw); overflow: visible; white-space: normal; text-overflow: clip; text-align: right; }
 .st-axis { position: relative; height: 1.6rem; border-top: 1px solid var(--line); }
 .st-tick { position: absolute; top: 0; left: var(--at); padding: .3rem 0 0 .5rem; border-left: 1px solid var(--line); color: var(--ink-2); font: 500 .85rem/1 var(--font); white-space: nowrap; }
 .st-tick.is-edge { border-left: 0; padding-left: 0; }

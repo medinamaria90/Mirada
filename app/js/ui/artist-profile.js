@@ -151,7 +151,7 @@ export async function profileHtml(ctx, artistId, opts) {
     ${lock}${actions}
     ${galleryHtml(artist, seen, total, opts.navigate)}
     ${lookHtml(artist, seen)}
-    ${known ? timeHtml(ctx, artistId, (id) => faceOf(progress, index, id)) : ''}
+    ${known ? timeHtml(ctx, artistId, (id) => faceOf(progress, index, id), Boolean(opts.navigate)) : ''}
     ${known ? twinsHtml(progress, index, artist, opts.navigate) : ''}`;
 }
 
