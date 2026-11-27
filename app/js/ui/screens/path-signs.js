@@ -65,7 +65,7 @@ export function trailSvg(h, d, spurs = [], done = '', plaza = null) {
   const walked = done ? `${dirt(done, ' is-done')}${grain(done, ' is-done')}` : '';
   const stones = (e) => (e.cobbles ? cobbles(e) : PLAZA_RINGS.map((k) => ellipse(`plaza-stones${k ? ' is-in' : ''}`, { ...e, rx: e.rx * (1 - k) - PLAZA_RIM, ry: e.ry * (1 - k) - PLAZA_RIM })).join(''));
   const halo = plaza?.cobbles ? ellipse('plaza-fill is-halo', { ...plaza, rx: plaza.rx * COBBLES.halo, ry: plaza.ry * COBBLES.halo }) : '';
-  const paving = plaza ? `${halo}${ellipse('plaza-fill', plaza)}${stones(plaza)}` : '';
+  const paving = plaza ? `${halo}${ellipse(plaza.cobbles ? 'plaza-fill is-soft' : 'plaza-fill', plaza)}${stones(plaza)}` : '';
   const rim = plaza && plaza.rim !== null ? ellipse('plaza-rim', plaza, plaza.rim ?? PLAZA_RIM) : '';
   const under = plaza ? `${rim}${plaza.under ? paving : ''}` : '';
   const over = plaza && !plaza.under ? paving : '';

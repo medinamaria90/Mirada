@@ -165,12 +165,15 @@
   --fountain-rim-w: 1.6;
   --plaza-cobble-dot: 2.2;          /* adoquines de la plaza de cada época */
   --plaza-cobble-o: .6;
-  --plaza-halo-o: .45;
+  --plaza-halo-o: .35;
+  --plaza-soft-o: .94;
   --map-ribbon: 3px;
   /* Inscripción de la época en el ático de su puerta (mapa-carteles.css) y mojón del tramo. */
   --font-inscription: "Cinzel", "Trajan Pro", Georgia, serif;
   --inscr-fs: clamp(calc(.72 * var(--map-fs, 1rem)), 3cqi, 20px);   /* 11,5 px a 360 y crece con la puerta; en capitales se lee como 14 px de minúsculas */
   --inscr-min: 10px;
+  --inscr-night-ink: #f3ead8;      /* letras de la inscripción de noche (crema sobre piedra en sombra) */
+  --inscr-night-gold: #ecd079;
   --inscr-weight: 600;
   --inscr-line: 1.12;
   --inscr-track: .02em;

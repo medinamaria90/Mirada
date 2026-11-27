@@ -46,13 +46,11 @@ const kiosk = ({ x, y, w, h }) => {
 const PX = START_PLAZA.x;
 const PY = START_PLAZA.y;
 // Empedrado de la plaza: el sendero nace de él (path-signs.js lo pinta con el sendero, encima de su arranque).
-export const START_PAVING = { cx: PX + 6, cy: PY + 6, rx: 84, ry: 15 };
+export const START_PAVING = { cx: PX + 6, cy: PY + 6, rx: 92, ry: 18, rim: null, cobbles: true };
 // La fuente, dentro de la plaza, a la izquierda del arranque del sendero.
 const FOUNTAIN = { x: PX - 42, y: PY + 10 };
 const GATE = { left: 173, right: 231, y: 96, tower: 14, h: 38 };   // la puerta, donde el sendero va casi recto
-const START_BACK = `<ellipse class="land-shade" cx="${PX + 28}" cy="${PY + 9}" rx="112" ry="16"/>
-      <ellipse class="land-top" cx="${PX + 28}" cy="${PY + 2}" rx="102" ry="13"/>
-      ${cypress(28, 80, 30)}${cypress(112, 82, 24)}${roof(262, 80, 22, 10)}${roof(296, 79, 26, 12)}${roof(352, 80, 20, 9)}
+const START_BACK = `${cypress(28, 80, 30)}${cypress(112, 82, 24)}${roof(262, 80, 22, 10)}${roof(296, 79, 26, 12)}${roof(352, 80, 20, 9)}
       <rect class="land-front" x="326" y="44" width="12" height="36"/><path class="land-side" d="M338 80V44L344 40.4V76.4Z"/><path class="land-top" d="M326 44H338L344 40.4H332Z"/><path class="land-tile-2" d="M326 44H338L335 22Z"/><path class="land-tile" d="M338 44L344 40.4L335 22Z"/><path class="land-window" data-lamp d="M330 56V51a2 2 0 0 1 4 0V56Z"/>
       ${wall(-10, GATE.left, GATE.y, 18)}${wall(GATE.right + GATE.tower, 400, GATE.y, 18)}
       ${tree(30, PY + 6, 8)}${tree(122, PY + 2, 7)}${cypress(122, PY + 20, 22)}

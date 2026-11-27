@@ -22,9 +22,11 @@ button.arch-band:active .arch-name { background: color-mix(in srgb, var(--map-st
   position: absolute; left: 50%; bottom: var(--attic-at); translate: -50% 0; width: var(--attic-w); height: var(--attic-h);
   display: flex; align-items: center; justify-content: center; overflow: hidden; padding-inline: 5%; text-align: center; text-wrap: balance; hyphens: manual;
   font: var(--inscr-weight) max(var(--inscr-min), calc(var(--inscr-fs) * var(--fit, 1)))/var(--inscr-line) var(--font-inscription); letter-spacing: calc(var(--inscr-track) * var(--track-on, 1)); text-transform: uppercase;
-  text-shadow: 0 1px 0 color-mix(in srgb, var(--map-stone-top) 85%, transparent);
+  /* De noche la piedra se oscurece con el mapa (--day-night): las letras pasan a crema y la sombra, a oscura. */
+  color: color-mix(in oklab, var(--map-sign-ink-2), var(--inscr-night-ink) calc(var(--day-night, 0) * 100%));
+  text-shadow: 0 1px 0 color-mix(in oklab, color-mix(in srgb, var(--map-stone-top) 85%, transparent), var(--map-night) calc(var(--day-night, 0) * 100%));
 }
-.arch-band.is-done .arch-name { color: var(--gold-text); }
+.arch-band.is-done .arch-name { color: color-mix(in oklab, var(--gold-text), var(--inscr-night-gold) calc(var(--day-night, 0) * 100%)); }
 @media (hover: hover) { button.arch-band:hover .arch-name { color: var(--map-sign-ink); } }
 
 /* Frontera: bajo el seto de la puerta, el suelo de la época anterior se corta en él (color en mapa-vivo.css). */

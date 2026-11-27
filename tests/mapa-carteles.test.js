@@ -110,3 +110,10 @@ test('vuelta desde una rama: la tablilla «Volver al camino» fija el foco del m
   assert.ok(/'back-to-fork': \(\) => returnToMap\(ctx, branch\.id\)/.test(branch), 'la tablilla no vuelve al desvío de su rama');
   assert.ok(/if \(fork\) setMapFocus\(fork, '', true\);/.test(branch), 'la vuelta no centra el mapa en el desvío');
 });
+
+test('inscripción de la época: de noche, letras claras sobre la piedra en sombra (se lee con el mapa oscurecido)', () => {
+  const css = readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
+  const at = css.indexOf('\n.arch-name {');
+  const rule = css.slice(at, css.indexOf('}', at));
+  assert.ok(/--inscr-night-ink\) calc\(var\(--day-night, 0\) \* 100%\)/.test(rule), 'el color de la inscripción no sigue a la noche del mapa');
+});
