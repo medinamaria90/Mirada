@@ -698,6 +698,19 @@ artist("whistler", "James McNeill Whistler", "Whistler", "impresionismo", 1834, 
 STAGE_RUSSIANS = {"aivazovski", "shishkin", "repin", "levitan"}
 MIN_STAGE_WORKS = 3
 
+# Título corto (≤ 12 letras) de las etapas «a fondo» sin historia y con nombre largo: es el nombre de su círculo en la fila de
+# niveles, el del botón «Jugar · …» y el de la ronda. Único origen: las etapas con historia lo toman del `stage` de su historia
+# (contenido/historias) y las de nombre corto («Más obras», «Florencia»), de su nombre (tools/catalog_from_pipeline.py).
+STAGE_SHORT_MAX = 12
+STAGE_SHORT = {
+    ("giotto", 2): "Asís", ("giotto", 3): "Padua", ("giotto", 4): "Florencia",
+    ("berruguete", 2): "Castilla", ("durero", 2): "Aprendizaje", ("bruegel", 2): "Comienzos",
+    ("van-dyck", 2): "Amberes", ("vermeer", 2): "Comienzos", ("david", 2): "Comienzos",
+    ("delacroix", 2): "Juventud", ("millet", 2): "París", ("courbet", 2): "Inicios", ("fortuny", 2): "Roma",
+    ("cezanne", 2): "Época oscura", ("gauguin", 2): "Bretaña", ("klimt", 2): "Secesión",
+    ("romero-de-torres", 2): "Comienzos",
+}
+
 
 def is_guest(artist_id, n_works):
     """Sin etapa propia: menos de 3 obras, o pintor ruso fuera de STAGE_RUSSIANS."""
