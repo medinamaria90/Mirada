@@ -70,11 +70,11 @@ test('retos por enlace: fechas reales, no futuras, desde 2026 y puntuación dent
   assert.equal(planChallenge(real, decodeChallenge('reto-szzx1-2')), null, 'etapa que no existe');
 });
 
-test('rutas: nombres válidos, repaso rápido y enlaces que no valen', () => {
+test('rutas: nombres válidos, el repaso rápido redirige a #repaso y enlaces que no valen', () => {
   const today = '2026-11-24';
   assert.deepEqual(parseRoute('', { today }), { name: 'home' });
   assert.deepEqual(parseRoute('#inicio', { today }), { name: 'home' });
-  assert.deepEqual(parseRoute('#repaso-rapido', { today }), { name: 'quick' });
+  assert.deepEqual(parseRoute('#repaso-rapido', { today }), { name: 'srs', redirect: 'repaso' });
   assert.deepEqual(parseRoute('#repaso', { today }), { name: 'srs' });
   assert.equal(parseRoute('#repaso-barroco', { today }).name, 'review');
   assert.equal(parseRoute('#etapa-leonardo', { today }).name, 'stage');

@@ -90,7 +90,6 @@ export async function renderProfile(ctx, el) {
     ...wireSettings(ctx, el),
     ...wireName(ctx, el),
     ...wireLook(ctx, el),
-    review5: go('repaso5'),
     weekly: go('reto-semanal'),
     'share-test': (b) => shareLast(ctx, b, last),
   });

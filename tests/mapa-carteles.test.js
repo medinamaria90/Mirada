@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { anchorOf, scrollForAnchor } from '../app/js/ui/screens/map-memory.js';
 import { tramoSign, eraArch, branchEntrySign } from '../app/js/ui/screens/path-signs.js';
-import { metaFor, nodeHtml } from '../app/js/ui/screens/path-nodes.js';
+import { nodeHtml } from '../app/js/ui/screens/path-nodes.js';
 import { pointsUp } from '../app/js/ui/screens/map-return.js';
 
 const app = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
@@ -74,8 +74,6 @@ test('candados: un solo aviso a la vez, sin temporizador; se cierra al tocar fue
 });
 
 test('parada actual: sin botón «Empezar»; marca «Tú» y se toca el propio nodo', () => {
-  assert.equal(metaFor('available', null), '');
-  assert.equal(metaFor('started', { best: 0.5 }), 'Repite · 50 %');
   const html = nodeHtml({ cls: '', action: 'stage', id: 'x', status: 'available', lock: '', label: 'X', name: 'X', meta: '', dot: '', current: true });
   assert.ok(html.includes('class="stage-you" aria-hidden="true">Tú<') && html.includes('aria-current="step"') && html.includes('data-action="stage"'));
   assert.ok(!nodeHtml({ cls: '', action: 'stage', id: 'x', status: 'available', lock: '', label: 'X', name: 'X', meta: '', dot: '' }).includes('stage-you'));

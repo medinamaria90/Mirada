@@ -197,48 +197,89 @@ test('pintor dormido: dominado y sin salir en 7 días se apaga y pregunta «¿Lo
   assert.match(readFileSync(new URL('../app/css/main.css', import.meta.url), 'utf8'), /\.stage\.is-mastered\.is-dormant \.stage-dot \{[^}]*var\(--map-dormant\)/);
 });
 
-// ---------------------------------------------------------------- 6. Repaso de 5
-const { review5Works, hasReview5, REVIEW5_MIN, REVIEW5_NAME } = await import('../app/js/engine/review.js');
-const { planReview5 } = await import('../app/js/engine/planner.js');
+// ---------------------------------------------------------------- 6. Repasar: la sesión automática
+const { reviewSession, hasReview, reviewPending, REVIEW_SIZE, REVIEW_MIN, REVIEW_NAME } = await import('../app/js/engine/review.js');
+const { planReviewSession } = await import('../app/js/engine/planner.js');
 const { parseRoute } = await import('../app/js/ui/router.js');
 
-test('repaso de 5: fallados, después vencidos y después los más antiguos, solo de pintores dominados', () => {
+// a, b dominados (b apagado), c y d a medias (c con peor resultado), e sin jugar.
+function sessionProgress(today) {
+  const [a, b, c, d] = big.path;
+  const p = masteredProgress({ [a.id]: { on: '2026-11-20', seen: '2026-11-23' }, [b.id]: { on: '2026-11-01', seen: '2026-11-02' } });
+  p.artists[c.id] = { plays: 1, best: 0.5, mastered: false, last: '2026-11-22', works: big.worksOf(c.id).slice(0, 4).map((w) => w.id) };
+  p.artists[d.id] = { plays: 1, best: 0.6, mastered: false, last: '2026-11-22', works: big.worksOf(d.id).slice(0, 4).map((w) => w.id) };
+  for (const x of [a, b]) big.worksOf(x.id).slice(0, 4).forEach((w, i) => { p.srs[`art:${w.id}`] = { box: 2 + (i % 2), due: '2026-12-10' }; });
+  return { p, a, b, c, d };
+}
+
+test('repasar: 7 cuadros sin repetir y en orden (fallados, pintor a medias, vencidos, apagado, relleno)', () => {
   const today = '2026-11-24';
-  const [a, b, c] = big.path;
-  const p = masteredProgress({ [a.id]: { on: '2026-11-01' }, [b.id]: { on: '2026-11-02' } });
-  p.artists[c.id] = { plays: 1, best: 0.5, mastered: false, last: '2026-11-20' };
-  const wa = big.worksOf(a.id);
-  const wb = big.worksOf(b.id);
-  const wc = big.worksOf(c.id);
-  assert.deepEqual(review5Works(p, big, today), [], 'sin cuadros vistos no hay repaso');
-  assert.equal(hasReview5(p, big, today), false);
-  p.srs[`art:${wa[0].id}`] = { box: 3, due: '2026-12-01' };
-  p.srs[`art:${wa[1].id}`] = { box: 2, due: '2026-11-30' };
-  assert.equal(hasReview5(p, big, today), false, `con menos de ${REVIEW5_MIN} no se ofrece`);
-  p.srs[`art:${wb[0].id}`] = { box: 1, due: '2026-11-22' };
-  p.srs[`art:${wb[1].id}`] = { box: 4, due: '2026-12-20' };
-  p.srs[`art:${wc[0].id}`] = { box: 1, due: '2026-11-01' }; // pintor sin dominar: fuera
-  p.srs[`art:${wa[2].id}`] = { box: 1, due: '2026-11-24' };
-  p.fallados = [{ id: wb[1].id, date: '2026-11-23', times: 1, hits: 0 }, { id: wc[0].id, date: '2026-11-01', times: 1, hits: 0 }];
-  const ids = review5Works(p, big, today);
-  assert.deepEqual(ids, [wb[1].id, wb[0].id, wa[2].id, wa[1].id, wa[0].id]);
-  assert.equal(hasReview5(p, big, today), true);
-  const plan = planReview5(big, ids, 9);
-  assert.equal(plan.kind, 'review5');
-  assert.equal(plan.questions.length, 5);
-  assert.deepEqual(plan.questions.map(subjectOf).sort(), ids.slice().sort());
-  assert.deepEqual(parseRoute('#repaso5'), { name: 'review5' });
-  assert.equal(REVIEW5_NAME, 'Repasar lo aprendido');
-  // Da XP y cuenta para meta y racha, sin tocar el dominio de nadie.
+  const { p, a, b, c, d } = sessionProgress(today);
+  const fa = big.worksOf(d.id)[3];
+  const fb = big.worksOf(a.id)[1];
+  const fOld = big.worksOf(a.id)[2];
+  const fNew = big.worksOf(a.id)[3];
+  p.fallados = [{ id: fb.id, date: '2026-11-20', times: 1, hits: 0 }, { id: fa.id, date: '2026-11-10', times: 1, hits: 0 }, { id: fOld.id, date: '2026-11-15', times: 1, hits: 0 }, { id: fNew.id, date: '2026-11-23', times: 1, hits: 0 }];
+  const dueA = big.worksOf(a.id)[0];
+  p.srs[`art:${dueA.id}`] = { box: 1, due: '2026-11-23' };
+  const s = reviewSession(p, big, today);
+  assert.equal(s.works.length, REVIEW_SIZE);
+  assert.equal(new Set(s.works).size, REVIEW_SIZE, 'sin repetir cuadro');
+  assert.deepEqual(s.works.slice(0, 3), [fa.id, fOld.id, fb.id], 'fallados primero, los más antiguos, como mucho 3 (entra el de un pintor no dominado)');
+  assert.ok(!s.works.slice(0, 3).includes(fNew.id));
+  assert.deepEqual(s.works.slice(3, 5).map((id) => big.artwork(id).artistId), [c.id, c.id], 'después, 2 del pintor a medias con peor resultado');
+  assert.equal(s.started, c.id);
+  assert.equal(s.works[5], dueA.id, 'después, lo vencido del repaso espaciado');
+  assert.equal(big.artwork(s.works[6]).artistId, b.id, 'y uno del pintor apagado');
+});
+
+test('repasar: nunca pintores sin jugar, nunca vacía con 3 o más vistos y no toca el dominio', () => {
+  const today = '2026-11-24';
+  const { p } = sessionProgress(today);
+  const unplayed = big.path.slice(4).map((x) => x.id);
+  p.fallados = [{ id: big.worksOf(unplayed[0])[0].id, date: '2026-11-01', times: 1, hits: 0 }];
+  p.srs[`art:${big.worksOf(unplayed[1])[0].id}`] = { box: 1, due: '2026-11-01' };
+  const s = reviewSession(p, big, today);
+  assert.ok(s.works.every((id) => !unplayed.includes(big.artwork(id).artistId)), 'sale un pintor sin jugar');
+  // Con solo 3 cuadros vistos ya hay sesión (y botón); con 2, no.
+  const few = emptyProgress();
+  const x = big.path[0];
+  few.artists[x.id] = { plays: 1, best: 0.8, mastered: true, last: '2026-11-20' };
+  big.worksOf(x.id).slice(0, 2).forEach((w) => { few.collection[w.id] = '2026-11-20'; });
+  assert.equal(hasReview(few, big), false);
+  assert.equal(reviewSession(few, big, today).works.length, 2);
+  few.collection[big.worksOf(x.id)[2].id] = '2026-11-20';
+  assert.equal(hasReview(few, big), true);
+  assert.ok(reviewSession(few, big, today).works.length >= REVIEW_MIN, 'con 3 vistos no sale vacía');
+  // La ronda: preguntas del repaso espaciado, kind «srs», a lo sumo 7; da XP, meta y racha, y no cambia el dominio.
+  const plan = planReviewSession(big, s, 9);
+  assert.equal(plan.kind, 'srs');
+  assert.ok(plan.questions.length <= REVIEW_SIZE && plan.questions.length >= REVIEW_SIZE - 1);
+  assert.equal(plan.started, s.started);
   const answers = plan.questions.map((q) => ({ q, correct: true, retry: false, combo: 1 }));
-  const out = finishRound(p, big, { kind: 'review5', answers, firstTry: answers.map(() => true) }, today, { goal: 50 });
+  const out = finishRound(p, big, { kind: 'srs', answers, firstTry: answers.map(() => true) }, today, { goal: 50 });
   assert.ok(out.xp > 0 && out.events.some((e) => e.type === 'goal') && out.events.some((e) => e.type === 'streak'));
-  assert.deepEqual(out.progress.artists, p.artists);
-  assert.equal(out.progress.fallados.find((f) => f.id === wb[1].id).hits, 1, 'el acierto cuenta para sacar el fallado');
-  // La ronda a medias del repaso de 5 se puede retomar.
-  const session = makeSession({ route: 'repaso5', title: REVIEW5_NAME, kind: 'review5', plan: { kind: 'review5', seed: 9 } },
-    { round: createRound(plan.questions), answers: [], xpLive: 0 }, 1000);
-  assert.equal(readSession({ session }, big, 2000)?.kind, 'review5');
+  for (const [id, rec] of Object.entries(p.artists)) assert.equal(out.progress.artists[id].mastered, rec.mastered, `cambia el dominio de ${id}`);
+  assert.equal(REVIEW_NAME, 'Repasar');
+});
+
+test('repasar: el punto solo con algo pendiente', () => {
+  const today = '2026-11-24';
+  const p = emptyProgress();
+  const x = big.path[0];
+  p.artists[x.id] = { plays: 1, best: 0.9, mastered: true, last: '2026-11-23' };
+  big.worksOf(x.id).slice(0, 4).forEach((w) => { p.srs[`art:${w.id}`] = { box: 3, due: '2026-12-10' }; });
+  assert.equal(reviewPending(p, big, today), false, 'nada vencido, ni fallados ni a medias');
+  assert.equal(reviewPending({ ...p, fallados: [{ id: big.worksOf(x.id)[0].id, date: '2026-11-20', times: 1, hits: 0 }] }, big, today), true);
+  assert.equal(reviewPending({ ...p, srs: { ...p.srs, [`art:${big.worksOf(x.id)[1].id}`]: { box: 1, due: today } } }, big, today), true);
+  const y = big.path[1];
+  assert.equal(reviewPending({ ...p, artists: { ...p.artists, [y.id]: { plays: 1, best: 0.6, mastered: false } } }, big, today), true);
+});
+
+test('router: #repaso5 y #repaso-rapido redirigen a #repaso', () => {
+  assert.deepEqual(parseRoute('#repaso'), { name: 'srs' });
+  assert.deepEqual(parseRoute('#repaso5'), { name: 'srs', redirect: 'repaso' });
+  assert.deepEqual(parseRoute('#repaso-rapido'), { name: 'srs', redirect: 'repaso' });
 });
 
 // ---------------------------------------------------------------- 9. Cierre del día y botones del resultado
@@ -261,7 +302,7 @@ test('cuadros nuevos: los que la ronda ha añadido a la colección', () => {
   assert.equal(newWorksCount({ collection: {} }, {}), 0);
 });
 
-test('cierre del día: una pantalla con tres cifras (sin precisión), fichas de meta y racha y solo «Seguir» y compartir', () => {
+test('cierre del día: «Por hoy, hecho», tres cifras (sin precisión), fichas de meta y racha y solo «Volver al camino» y compartir', () => {
   const today = '2026-11-24';
   const [a, b, c] = big.path;
   const before = masteredProgress({ [a.id]: { on: '2026-11-20' }, [b.id]: { on: today } });
@@ -270,7 +311,7 @@ test('cierre del día: una pantalla con tres cifras (sin precisión), fichas de 
   p.artists[c.id] = { plays: 1, best: 0.6, mastered: false, last: today, since: today };
   p.collection = { ...before.collection, [big.worksOf(b.id)[0].id]: today, [big.worksOf(c.id)[3].id]: today };
   const outcome = { xp: 60, score: 3, total: 3, accuracy: 1, mastered: true, events: [{ type: 'goal', goal: 50 }, { type: 'streak', value: 2, grace: 0 }, { type: 'unlock', step: { type: 'artist', id: big.path[3].id }, artistId: big.path[3].id }] };
-  const html = renderResultHtml(p, outcome, { kind: 'stage', artistId: c.id, seed: 3 }, { before, more: { label: 'Repaso de 5', to: 'repaso5' } });
+  const html = renderResultHtml(p, outcome, { kind: 'stage', artistId: c.id, seed: 3 }, { before });
   assert.match(html, /<dt>Aciertos<\/dt><dd>3\/3<\/dd>/);
   assert.match(html, /<dt>Cuadros nuevos<\/dt><dd>2<\/dd>/);
   assert.doesNotMatch(html, /Precisión|day-done|level-line|class="week"/, 'sin precisión, bloque «Hoy», barra de rango ni semana');
@@ -278,17 +319,17 @@ test('cierre del día: una pantalla con tres cifras (sin precisión), fichas de 
   assert.doesNotMatch(html, /Siguiente etapa|La próxima vez/, 'la parada siguiente la enseña el mapa al volver');
   assert.doesNotMatch(html, /ayer|mañana/i);
   const foot = footOf(html);
-  assert.match(foot, /data-action="done"[^>]*>Seguir</);
-  assert.doesNotMatch(foot, /Repetir|Repaso de 5|Repasar más/, 'en el cierre, sin llamadas a seguir jugando');
-  assert.deepEqual([...foot.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['share', 'done'], 'solo compartir y, abajo, «Seguir»');
+  assert.match(html, /<h1 class="res-title">Por hoy, hecho<\/h1>/);
+  assert.match(foot, /data-action="done"[^>]*>Volver al camino</);
+  assert.doesNotMatch(foot, /Repetir|Repasar|Sigue:/, 'en el cierre, sin llamadas a seguir jugando');
+  assert.deepEqual([...foot.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['done', 'share'], 'solo «Volver al camino» (primero al leer, abajo al verse) y compartir');
 });
 
 test('resultado sin meta cumplida: una sola acción para practicar y la racha a salvo en su ficha', () => {
   const p = masteredProgress({ [big.path[0].id]: { on: '2026-11-20' } });
   const outcome = { xp: 30, score: 2, total: 3, accuracy: 0.67, mastered: false, events: [{ type: 'streak', value: 4, grace: 1 }] };
-  const html = renderResultHtml(p, outcome, { kind: 'srs', seed: 3 }, { more: { label: 'Repasar más', to: 'repaso' } });
-  assert.match(html, /data-to="repaso"[^>]*>[^]*?<span>Repasar más<\/span>/);
-  assert.doesNotMatch(html, /data-to="repaso5"/, 'una sola acción secundaria para practicar');
+  const html = renderResultHtml(p, outcome, { kind: 'srs', seed: 3 });
+  assert.doesNotMatch(html, /data-to="repaso"/, 'tras un repaso no se ofrece otro');
   assert.match(html, /<strong>4 días<\/strong><small>Racha a salvo<\/small>/);
 });
 
@@ -298,9 +339,11 @@ test('logros: como mucho tres a la vista; con más, dos y «+N» con el resto oc
   assert.equal((three.match(/class="res-chip"/g) || []).length, CHIPS_SHOWN);
   assert.doesNotMatch(three, / hidden>|data-chips="more"/);
   const five = chipsHtml(roundChips(big, { events, otherMedals: [{ id: 'new-1' }, { id: 'challenge-1' }] }));
-  assert.equal((five.match(/ hidden>/g) || []).length, 3);
-  assert.match(five, /data-chips="more" aria-label="Ver 3 más"><strong>\+3<\/strong>/);
-  assert.match(five, /aria-label="Medalla nueva: Primer cuadro nuevo"/);
+  assert.equal((five.match(/ hidden>/g) || []).length, 2, 'dos medallas van en una sola ficha');
+  assert.match(five, /data-chips="more" aria-label="Ver 2 más"><strong>\+2<\/strong>/);
+  assert.match(five, /aria-label="2 medallas nuevas: Primer cuadro nuevo, [^"]+"/);
+  const one = chipsHtml(roundChips(big, { events: [], otherMedals: [{ id: 'new-1' }] }));
+  assert.match(one, /aria-label="Medalla nueva: Primer cuadro nuevo"/);
   assert.ok([...five.matchAll(/<button[^>]*class="res-chip"[^>]*>/g)].every((m) => /data-to="[a-z-]+"/.test(m[0])), 'cada ficha lleva a su sitio');
 });
 

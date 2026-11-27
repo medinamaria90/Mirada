@@ -4,7 +4,7 @@
 import { createRng } from './rng.js';
 import { makeQuestion, makeWhoQuestion, makeMovementQuestion, isSpoiler, noAuthorQuestion } from './questions.js';
 import { salaLearnWorks, SALA_LEARN, levelOf, RELAX_MAX } from './catalog.js';
-import { REVIEW5_SIZE } from './review.js';
+import { REVIEW_SIZE } from './review.js';
 import { withBeforeQuestion } from './question-before.js';
 
 // Ejecución de una ronda (cola, reintentos y puntuación): engine/round.js.
@@ -537,9 +537,19 @@ export function planSrsReview(index, dueKeys, seed, max = SRS_MAX, opts = {}) {
   return { kind: 'srs', seed, questions: all };
 }
 
-// «Repaso de 5» (engine/review.js elige los cuadros): las mismas preguntas que el repaso espaciado.
-export function planReview5(index, workIds, seed, opts = {}) {
-  return { ...planSrsReview(index, workIds.map((id) => `art:${id}`), seed, REVIEW5_SIZE, opts), kind: 'review5' };
+// «Repasar» (engine/review.js reviewSession elige los cuadros, por prioridad): las preguntas del repaso espaciado,
+// REVIEW_SIZE en total (si entra un «¿Quién fue antes?», sale el cuadro de menos prioridad). `started`: el pintor a medias
+// que trae la sesión (el resultado ofrece volver a él).
+export function planReviewSession(index, session, seed, opts = {}) {
+  const ids = session.works.slice(0, REVIEW_SIZE);
+  const plan = planSrsReview(index, ids.map((id) => `art:${id}`), seed, REVIEW_SIZE, opts);
+  let questions = plan.questions;
+  if (questions.length > REVIEW_SIZE) {
+    const drop = ids[ids.length - 1];
+    const at = questions.findIndex((q) => q.type !== 'before' && subjectOf(q) === drop);
+    questions = questions.filter((_, i) => i !== (at < 0 ? questions.length - 1 : at));
+  }
+  return { ...plan, questions, started: session.started || null };
 }
 
 // Ronda general de 10 preguntas sobre un conjunto de obras (reto diario y retos).

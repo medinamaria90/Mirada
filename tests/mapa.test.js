@@ -111,7 +111,9 @@ test('mapa: el nodo actual se distingue por el nodo y la marca «Tú», sin bot�
   p.artists[real.steps[1].id] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
   html = renderPathMap(ctxWith(real, p));
   assert.ok(html.includes(`is-current" data-step="artist:${real.steps[2].id}"`));
-  assert.ok(html.includes('Repite · 50 %'), 'lo jugado a medias no invita a repetir con su mejor resultado (con espacio duro)');
+  assert.ok(!html.includes('Repite'), 'ningún nodo lleva «Repite»: el único repaso es el botón ↻');
+  assert.ok(html.includes(`aria-label="${real.steps[1].name || real.artist(real.steps[1].id).name}, a medias, 50 %. Dominas con 75 %"`), 'el nodo a medias dice su nota y con cuánto se domina');
+  assert.ok(html.includes('class="stage-badge is-partial"'), 'el nodo a medias lleva su insignia');
   assert.ok(/class="stage [^"]*is-mastered"/.test(html) && html.includes('class="stage-badge"'), 'lo dominado no lleva sello');
   // Camino jugado entero pero no dominado: el actual es el primero por repasar e invita a repetir, como los demás.
   const q = emptyProgress();
@@ -125,7 +127,7 @@ test('mapa: repaso al final de cada época con ≥ 3 pintores, sala junto a la �
   const html = renderPathMap(ctxWith(real));
   const reviews = real.visibleMovements.filter((m) => hasMovementReview(real, m.id));
   assert.equal((html.match(/class="stage stage-review is-/g) || []).length, reviews.length);
-  assert.ok(html.includes(`aria-label="Repaso del ${reviews[0].name}, bloqueado`));
+  assert.ok(html.includes(`aria-label="Prueba de época del ${reviews[0].name}, bloqueado`));
   for (const era of pathLayout(real).eras) assert.equal(era.points.length, real.stepsOf(era.id).length + (hasMovementReview(real, era.id) ? 1 : 0));
   const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
   assert.equal((all.match(/class="stage stage-gallery is-mastered"/g) || []).length, real.visibleMovements.length, 'sin salas con todo dominado');
@@ -172,7 +174,7 @@ test('mapa: el repaso cerrado dice en claro cuánto falta; los nombres, en la no
   const last = real.artist(artists[artists.length - 1].id);
   const html = renderPathMap(ctxWith(real, progress));
   const who = last.short || last.name;
-  assert.ok(html.includes('<span class="stage-name">Repaso</span><span class="stage-meta">Domina 1 pintor más</span>'), 'el repaso cerrado no dice cuánto falta');
+  assert.ok(html.includes('<span class="stage-name">Prueba de época</span><span class="stage-meta">Domina 1 pintor más</span>'), 'el repaso cerrado no dice cuánto falta');
   assert.ok(html.includes(`data-lock="Domina a ${who} para abrirlo"`), 'la nota al pulsar no nombra al pintor');
   assert.ok(html.includes(`bloqueado. Para abrirlo, domina a ${who}"`), 'el lector no oye a quién falta dominar');
   const none = renderPathMap(ctxWith(real, emptyProgress()));
@@ -373,4 +375,22 @@ test('pantalla de rama: ruta propia, sus pintores como paradas, cada época rotu
     const want = PLAYLISTS[b.id] ? b.id : real.movement(b.movementId || b.opensAt).era;
     assert.equal(branchMusic(real, b), want, `${b.id}: su lista o, sin lista propia, la de su época`);
   }
+});
+
+test('mapa: el pintor a medias llena el tramo del nivel 1 de su aro en proporción a su nota / 75 %', async () => {
+  const { startedRing, startedLine } = await import('../app/js/engine/level-ring.js');
+  const { ringSvg } = await import('../app/js/ui/deep-badges.js');
+  const id = real.path[1].id;
+  const p = masterFirst(real, 1);
+  p.artists[id] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
+  const ring = startedRing(p, real, id);
+  assert.equal(ring.levels[0].state, 'partial');
+  assert.ok(Math.abs(ring.levels[0].fill - 0.5 / 0.75) < 1e-9, 'tramo proporcional a best / 0,75');
+  assert.ok(ring.levels.slice(1).every((l) => l.state === 'locked'));
+  const svg = ringSvg(ring.levels);
+  const dash = (cls) => Number(svg.match(new RegExp(`class="ring-arc is-${cls}"[^>]*stroke-dasharray="([\\d.]+)`))[1]);
+  assert.ok(Math.abs(dash('partial') / dash('locked') - 0.5 / 0.75) < 0.01, 'la parte coral mide lo que lleva');
+  assert.equal(startedLine(ring), '50 % · dominas con 75 %');
+  assert.equal(startedLine({ ...ring, best: 0.8, missing: 3 }), 'Te faltan 3 cuadros por ver');
+  assert.equal(startedRing(masterFirst(real, 2), real, id), null, 'dominado: sin aro a medias');
 });
