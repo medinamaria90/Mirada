@@ -1,0 +1,37 @@
+/* Cinta del tiempo sin años (ui/chrono-ribbon.js): una línea fina y los pintores encima, a distancia proporcional, con su
+   miniatura y su nombre. El actual, más grande y con aro de la marca. Los colores los pone quien la usa (--cinta-ink,
+   --cinta-ink-2, --cinta-gap): en la ronda, los del tema. */
+.cinta {
+  --cinta-dot: 44px;
+  --cinta-dot-now: 52px;
+  --cinta-name-w: 5.6rem;
+  --cinta-ring: 2px;
+  position: relative; height: calc(var(--cinta-dot-now) + 2.6rem); margin: .2rem 0 0;
+}
+.cinta::before {
+  content: ""; position: absolute; left: 0; right: 0; top: calc(var(--cinta-dot-now) / 2 - 1px); height: 2px; border-radius: 2px;
+  background: linear-gradient(to right, transparent, color-mix(in srgb, var(--cinta-ink) 38%, transparent) 8%, color-mix(in srgb, var(--cinta-ink) 38%, transparent) 92%, transparent);
+}
+.cinta-p {
+  position: absolute; top: calc((var(--cinta-dot-now) - var(--cinta-dot)) / 2); left: var(--at); translate: -50% 0;
+  display: grid; justify-items: center; gap: .35rem; width: var(--cinta-name-w);
+}
+.cinta-dot {
+  display: block; width: var(--cinta-dot); height: var(--cinta-dot); border-radius: 999px;
+  box-shadow: 0 0 0 var(--cinta-ring) var(--cinta-gap), 0 0 0 calc(var(--cinta-ring) * 1.75) color-mix(in srgb, var(--cinta-ink) 55%, transparent);
+}
+.cinta-name { font: 500 .8rem/1.15 var(--font); color: var(--cinta-ink-2); text-align: center; text-wrap: balance; overflow-wrap: anywhere; }
+.cinta-p.is-current { top: 0; animation: cinta-in var(--dur-pop) var(--ease) both; }
+.cinta-p.is-current .cinta-dot { width: var(--cinta-dot-now); height: var(--cinta-dot-now); box-shadow: 0 0 0 var(--cinta-ring) var(--cinta-gap), 0 0 0 calc(var(--cinta-ring) * 2.25) var(--brand); }
+.cinta-p.is-current .cinta-name { color: var(--cinta-ink); font-weight: 600; }
+@keyframes cinta-in { from { opacity: 0; scale: .7; } to { opacity: 1; scale: 1; } }
+@media (prefers-reduced-motion: reduce) { .cinta-p { animation: none; } }
+html.reduce-motion .cinta-p { animation: none; }
+
+/* «¿Quién fue antes?» en la ronda (ui/before-question.js): dos tarjetas con cuadro y nombre, y la cinta en la respuesta. */
+.options-before { grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: 0; align-items: start; }
+.option-before { display: grid; gap: .55rem; padding: .55rem .55rem .7rem; justify-items: stretch; text-align: center; }
+.before-art { aspect-ratio: 3 / 4; border-radius: var(--radius-sm); box-shadow: none; }
+.before-art img { width: 100%; height: 100%; object-fit: cover; }
+.before-name { display: flex; align-items: center; justify-content: center; gap: .5rem; font-weight: 600; overflow-wrap: anywhere; }
+.feedback .cinta { --cinta-ink: var(--ink); --cinta-ink-2: var(--ink-2); --cinta-gap: var(--surface); margin-top: .5rem; }

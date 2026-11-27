@@ -39,8 +39,10 @@ test('pintores nuevos: Masaccio y Piero, en un tramo superado, son paradas extra
   assert.deepEqual(tramoPending(p, real, 'renacimiento'), []);
   assert.ok(branchProgress(p, real, 'gotico').open);
   assert.ok(branchStatus(p, real, 'gotico').some((r) => !r.onPath && r.status === 'available'));
-  // Rafael sigue abierto y la siguiente parada es Leonardo (no se vuelve atrás a las extra).
-  assert.ok(isStepUnlocked(p, real, { type: 'artist', id: 'rafael' }));
+  // Rafael sigue dominado (el orden del Alto Renacimiento cambió: va tras Miguel Ángel) y la siguiente parada es Leonardo (no
+  // se vuelve atrás a las extra).
+  assert.equal(artistStatus(p, real, 'rafael'), 'mastered');
+  assert.ok(isStepUnlocked(p, real, { type: 'artist', id: 'leonardo' }));
   assert.equal(nextStep(p, real)?.id, 'leonardo');
 });
 
@@ -74,8 +76,8 @@ test('pintores nuevos: «Nuevo» hasta jugarlo o abrir su ficha; el aviso, una v
   assert.ok(!isFresh(p, 'masaccio'));
   p.artists.piero = { plays: 1, best: 0.3, mastered: false, last: DAY };
   assert.ok(!isFresh(p, 'piero'), 'jugado: sin etiqueta');
-  // Y Piero sigue siendo extra aunque no esté dominado: no frena a Rafael.
-  assert.ok(isStepUnlocked(p, real, { type: 'artist', id: 'rafael' }));
+  // Y Piero sigue siendo extra aunque no esté dominado: no frena a Leonardo.
+  assert.ok(isStepUnlocked(p, real, { type: 'artist', id: 'leonardo' }));
 });
 
 test('pintores nuevos: partida nueva conoce a todos (sin avisos ni extra) y la próxima actualización sí avisa', () => {
