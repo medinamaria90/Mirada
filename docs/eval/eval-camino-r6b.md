@@ -1,5 +1,4 @@
 # Evaluación independiente · la época como puerta de ciudad, ronda 6b (rama `camino-r6b`)
-
 Evaluador y director de arte nuevo; no he construido nada ni toco código. Playwright (Chromium, `isMobile`, `hasTouch`),
 360, 412 y 768 px; claro, oscuro y «Como el móvil» de noche (Date a las 23 h, sin `sfumato.clock`); con 9 pintores del
 Renacimiento dominados y sin progreso. 1.469 miniaturas reales. Comparado con `origin/main` en otro puerto (zoom ×3 de la
