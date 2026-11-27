@@ -1,7 +1,7 @@
 """Copia las historias de contenido/historias/ a app/data/historias/ (lo que sirve la app) y escribe su índice.
 
 Valida cada una (formato de contenido/historias/README.md): como mucho 5 tarjetas, texto de hasta 180 caracteres, fuente,
-título corto en cada etapa y, si hay catálogo en app/data/catalog.json, que el pintor y las obras existan. Uso: python3 -I tools/sync_historias.py
+título corto en cada etapa y, si hay catálogo en app/data/catalog.json, que el pintor y las obras existan y que una historia no repita obra si el pintor tiene otra de ese nivel. Uso: python3 -I tools/sync_historias.py
 El índice (`index.json`) dice qué niveles tiene cada pintor: así la app no pide archivos que no existen.
 """
 import json
@@ -17,6 +17,9 @@ DST = os.path.join(ROOT, "app", "data", "historias")
 MAX_TEXT = 180
 MAX_CARDS = 5
 SHORT_MAX = 12  # título corto de nivel (`stage`): cabe bajo su círculo en la fila de historias
+BASIC_LEVEL = 1
+# Obras «learn» que no sirven de imagen de historia aunque estén libres (explícitas): no cuentan como alternativa.
+NOT_FOR_STORIES = {"w334138", "w2717022"}  # Courbet, El origen del mundo; Hokusai, El sueño de la esposa del pescador
 
 
 def check(story, name, artists, works):
@@ -42,6 +45,30 @@ def check(story, name, artists, works):
     return errors
 
 
+def repeats(story, name, works):
+    """Obras repetidas (misma obra y mismo encuadre) entre tarjetas de una historia cuando el pintor tiene alternativa.
+
+    Alternativa: una obra del pintor y del nivel de la historia (en el básico, solo las «learn») que la historia no usa.
+    `works`: {id: obra del catálogo}. Sin alternativa, la repetición es inevitable y no cuenta.
+    """
+    errors = []
+    for lv in story.get("levels", []):
+        level = lv.get("level")
+        cards = lv.get("cards", [])
+        ids = [c.get("artwork") for c in cards]
+        # Un detalle distinto de la misma obra (otro `focus`) no cuenta como repetición.
+        shots = [(c.get("artwork"), tuple(c.get("focus") or ())) for c in cards]
+        twice = sorted({a for a, f in shots if shots.count((a, f)) > 1})
+        if not twice:
+            continue
+        free = sorted(w["id"] for w in works.values()
+                      if w["artistId"] == name and w.get("level") == level and w["id"] not in ids
+                      and w["id"] not in NOT_FOR_STORIES and (level != BASIC_LEVEL or w.get("role") == "learn"))
+        if free:
+            errors.append(f"{name} nivel {level}: repite {', '.join(twice)}; sin usar: {', '.join(free)}")
+    return errors
+
+
 def main():
     catalog = os.path.join(ROOT, "app", "data", "catalog.json")
     artists = works = None
@@ -49,7 +76,7 @@ def main():
         with open(catalog, encoding="utf8") as f:
             cat = json.load(f)
         artists = {a["id"] for a in cat["artists"]}
-        works = {w["id"] for w in cat["artworks"]}
+        works = {w["id"]: w for w in cat["artworks"]}
     os.makedirs(DST, exist_ok=True)
     for old in os.listdir(DST):
         os.remove(os.path.join(DST, old))
@@ -61,6 +88,8 @@ def main():
         with open(os.path.join(SRC, fname), encoding="utf8") as f:
             story = json.load(f)
         errors += check(story, name, artists, works)
+        if works is not None:
+            errors += repeats(story, name, works)
         with open(os.path.join(DST, fname), "w", encoding="utf8") as f:
             json.dump(story, f, ensure_ascii=False, separators=(",", ":"))
         index[name] = [lv["level"] for lv in story.get("levels", [])]
