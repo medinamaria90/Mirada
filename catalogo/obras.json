@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated": "2026-11-26",
+ "generated": "2026-11-27",
  "movements": [
   {
    "id": "renacimiento",
@@ -2423,7 +2423,7 @@
    "order": 5,
    "section": null,
    "qid": "Q317736",
-   "works": 8,
+   "works": 7,
    "category": "rama",
    "branches": [
     "ukiyo-e"
@@ -2438,7 +2438,7 @@
      "provisional": true
     }
    ],
-   "level1": 4
+   "level1": 3
   },
   {
    "id": "hiroshige",
@@ -44407,45 +44407,6 @@
    "warnings": [
     "proporcion"
    ]
-  },
-  {
-   "id": "w69729449",
-   "artistId": "kuniyoshi",
-   "title": "Honchō suikoden gōyū 800 nin hitori",
-   "titleSource": "traducir",
-   "year": "c. 1830",
-   "yearSort": 1830,
-   "yearQuality": "circa",
-   "level": 1,
-   "stage": null,
-   "fame": 1,
-   "sitelinks": 2,
-   "img": "img/w69729449.jpg",
-   "w": 617,
-   "h": 1600,
-   "downloaded": true,
-   "museum": null,
-   "city": null,
-   "country": null,
-   "inSpain": false,
-   "technique": "",
-   "dimensions": "",
-   "inception": "1830",
-   "depicts": [],
-   "genre": "ukiyo-e",
-   "about": "",
-   "look": "",
-   "source": {
-    "wikidata": "Q69729449",
-    "commons": "https://commons.wikimedia.org/wiki/File:Honcho_Suikoden_Goketsu_(BM_1973,0723,0.29_76).jpg",
-    "file": "Honcho Suikoden Goketsu (BM 1973,0723,0.29 76).jpg",
-    "license": "Public domain",
-    "credit": "https://www.britishmuseum.org/collection/object/A_1973-0723-0-29",
-    "ficha": "wikidata",
-    "fetched": "2026-11-24"
-   },
-   "confidence": "medium",
-   "warnings": []
   },
   {
    "id": "w70738658",
