@@ -17,6 +17,7 @@ import { buildBolsa } from './bolsa.js';
 import { drawGame, startHistory, markSeen } from './sorteo.js';
 import { barHtml, questionHtml, feedbackHtml, pauseHtml, resultHtml, errorHtml } from './pantallas.js';
 import { revealAnswers, resetReveal } from './revelar.js';
+import { STORAGE_KEY } from '../state/store.js';
 
 const LAST_KEY = 'mirada.test.last';
 const RECENT_KEY = 'mirada.test.recent';
@@ -28,6 +29,19 @@ const ALT_WORK = 'Cuadro para identificar';
 // Contador de visitas sin cookies (js/stats.js; vacío por defecto: no pide nada). En diferido.
 const stats = (path) => import('../stats.js').then((m) => m.countEvent(path)).catch(() => {});
 setTimeout(() => import('../stats.js').then((m) => m.startStats()).catch(() => {}), 3000);
+
+// Mudanza de dirección (state/mudanza.js, ui/move-redirect.js), como en la app: llegada con lo guardado (el test de
+// cultura incluido) y, en la dirección antigua, paso a la nueva. Mismos valores que MOVE_PREFIX y OLD_HOST.
+const MOVE_HASH = '#mudanza=';
+const OLD_HOSTNAME = 'sfumato-arte.onrender.com';
+const localStore = (() => { try { return window.localStorage; } catch { return null; } })();
+if ((location.hash || '').startsWith(MOVE_HASH)) {
+  const { receiveMove } = await import('../state/mudanza.js');
+  const got = await receiveMove(localStore, STORAGE_KEY, location.hash).catch(() => ({ route: '' }));
+  history.replaceState(null, '', `${location.pathname}${location.search}${got.route}`);
+} else if (location.hostname === OLD_HOSTNAME) {
+  import('../ui/move-redirect.js').then((m) => m.moveToNewHome({ storage: localStore, stateKey: STORAGE_KEY })).catch(() => {});
+}
 
 const root = document.getElementById('test');
 const home = $('.test-home');
