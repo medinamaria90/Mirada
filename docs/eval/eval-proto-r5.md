@@ -1,10 +1,8 @@
 # Evaluación de dirección de arte — prototipo «la época como lugar» (r5)
-
 Evaluador independiente (no ha construido nada, no toca código). Rama `proto-epoca-lugar` (5a12e9b).
 Capturas de `docs/eval/proto-r5/` (360 px, día, claro) y lectura de `path-art.js` (`cityGate`, `loggia`, `protoPlace`).
 
 ## Veredicto corto
-
 **Ninguna se enseña tal cual.** Las dos fallan en lo que María ya rechazó: el nombre vive en una **caja beige
 grande con letrero**, no en un edificio. Enseñar **A rehecha**; **descartar B**.
 La idea de A es la buena (el sendero cruza la puerta justo en el seto que separa épocas: umbral real). La de B es
@@ -12,7 +10,6 @@ errónea de base: el edificio queda al lado y, para que el sendero «pase», hay
 marcadores para lo mismo (justo el «duplicado» vetado).
 
 ## Notas de gusto y composición (0–10)
-
 | Pieza | A (puerta) | B (logia) |
 |---|---|---|
 | Edificio de época | 4 | 3 |
@@ -29,7 +26,6 @@ derecha) ya es un **lugar** de 8: tejas terracota, torres que suben, fuente sobr
 alcanzar, y está en el mismo mapa.
 
 ## A — Puerta de ciudad
-
 - **Parece una caja sobre dos patas, no una puerta.** El ático (104 de ancho × 46 de alto) es más ancho que toda la
   puerta (80) y casi tan alto como el cuerpo (62): pesa demasiado arriba. Los torreones no asoman por encima, así que
   no se leen torres; las almenas son una sierra fina sobre un rectángulo. Sin tejado ni terracota, frente a las casas
@@ -43,7 +39,6 @@ alcanzar, y está en el mismo mapa.
 - Bien: el sendero sí cruza el arco; centrado sobre el sendero; ancho (~28 %) dentro de la mitad máxima.
 
 ## B — Logia
-
 - **Es la «logia con nombre enorme» ya rechazada, en pequeño.** El friso ocupa casi la altura de los arcos; es una
   franja crema con texto encima de tres agujeros. Caja con letrero.
 - **Plaza desmesurada:** 68 % del ancho, sobresale por ambos lados del sendero, la logia no se apoya en ella (queda
@@ -54,7 +49,6 @@ alcanzar, y está en el mismo mapa.
 - Lo único salvable: la línea de teja terracota del tejado armoniza con las casas.
 
 ## Piedra del tramo («El óleo en Flandes», «Luz en la oscuridad»)
-
 **Es una etiqueta, no una piedra.** Píldora beige con sombra plana idéntica a «Nace el Renacimiento»: se lee como
 botón o chip. Flota en el prado sin relación con el sendero (ni junto al borde, ni con base en el suelo), y su
 anchura la marca el texto, no la piedra. Una piedra real: forma irregular de mojón bajo, cara gris piedra
@@ -62,18 +56,15 @@ más oscura que el camino, base apoyada con sombra elíptica, texto pequeño gra
 sendero a la altura donde empieza el tramo.
 
 ## Salida (primera época)
-
 Aceptable de composición (muralla, puerta, plaza con fuente: ¡esta plaza sí es plaza!), pero «Renacimiento» flota
 sobre las almenas sin soporte y algo descentrado respecto al arco. Debe grabarse en una tablilla del propio arco.
 
 ## ¿Se entiende que es pulsable?
-
 Poco, en ambas. En el mapa de Duolingo lo pulsable es un objeto con volumen y estado; aquí el edificio es decorado
 SVG y solo el rótulo HTML encima recibe el toque. Toda la silueta del edificio debe ser zona de toque y tener
 respuesta al pulsar (hundirse 2 px, como los nodos).
 
 ## Cambios imprescindibles antes de enseñar A (rehacer, no retocar)
-
 1. **Invertir proporciones de la puerta:** torreones más altos que el cuerpo, con tejadillo cónico terracota
    (como la iglesia de referencia); ático **más estrecho que la puerta** y de ≤ 18 px de alto.
 2. **Inscripción real:** nombre en una línea, cuerpo pequeño (≈ 11–12 px), tono hundido sobre la piedra, sin caja
