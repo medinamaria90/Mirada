@@ -1,2 +1,12 @@
-# 27/11 — HD de los detalles de las historias (region o zoom grande): app-img-hd.zip a catalogo-img y catalogo/hd.json.
-hd
+# 27/11 (2.ª pasada) — Archivos de Commons alternativos (ajustes.json) para El Juicio Final de Giotto, el Retablo de San Marcos
+# de Fra Angelico y la Maestà de Duccio; Simone Martini con la Maestà del Palazzo Pubblico y Guidoriccio forzadas. Duccio y
+# Simone Martini llegan a 4 obras de nivel 1. seleccionar.py ya respeta las claves w<número> de excluir.json.
+candidates giotto fra-angelico duccio simone-martini
+seleccionar giotto fra-angelico duccio simone-martini
+fichas
+reconciliar
+download 1 150
+build
+validate --parcial
+pack 1200
+validate

@@ -26532,35 +26532,6 @@
   "fama": 1
  },
  {
-  "id": "w69729449",
-  "pintorId": "kuniyoshi",
-  "qid": "Q69729449",
-  "titulo": "Honchō suikoden gōyū 800 nin hitori",
-  "tituloFuente": "traducir",
-  "level": 1,
-  "etapa": null,
-  "forzada": false,
-  "anio": "c. 1830",
-  "anioSort": 1830,
-  "anioCalidad": "circa",
-  "coleccion": null,
-  "tipo": [
-   "print"
-  ],
-  "archivo": "Honcho Suikoden Goketsu (BM 1973,0723,0.29 76).jpg",
-  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Honcho_Suikoden_Goketsu_(BM_1973,0723,0.29_76).jpg",
-  "srcW": 617,
-  "srcH": 1600,
-  "mime": "image/jpeg",
-  "licencia": "Public domain",
-  "autorArchivo": "Print artist: Utagawa Kuniyoshi (歌川国芳)\n\nPrint artist: Utagawa Kunisada (歌川国貞 Toyokuni III)",
-  "creditoArchivo": "https://www.britishmuseum.org/collection/object/A_1973-0723-0-29",
-  "sitelinks": 2,
-  "confianza": "medium",
-  "avisos": [],
-  "fama": 1
- },
- {
   "id": "w70738658",
   "pintorId": "kuniyoshi",
   "qid": "Q70738658",
