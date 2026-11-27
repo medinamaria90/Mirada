@@ -4,7 +4,7 @@
 // así que añadir obras al catálogo no mueve ningún día y, si se acaba la lista, vuelve a empezar. Puro.
 
 import { isDayKey } from './dates.js';
-import { dayNumber, entryFor, slotFor, daysLeft, calendarAlarm, cropRect, tryLabel, CUADRO_ALARM_DAYS, CUADRO_ROUTE, DETAIL_ZOOM, LOST_LABEL } from './cuadro-calendar.js';
+import { dayNumber, entryFor, slotFor, daysLeft, calendarAlarm, cropRect, tryLabel, CUADRO_ALARM_DAYS, CUADRO_ROUTE, DETAIL_ZOOM, WIDE_ZOOM, LOST_LABEL } from './cuadro-calendar.js';
 import { normalizeGoal, touchStreak, STREAK_MEDALS } from './progress.js';
 import { rankFor, RANKS } from './ranks.js';
 
@@ -16,7 +16,7 @@ export const CUADRO_OPTIONS = 6;
 // Lo que enseña cada paso (paso = fallos + 1): zoom sobre el detalle elegido y qué pista se suma.
 export const CUADRO_STEPS = Object.freeze([
   { zoom: DETAIL_ZOOM, hint: null },
-  { zoom: 1.6, hint: 'era' },
+  { zoom: WIDE_ZOOM, hint: 'era' },
   { zoom: 1, hint: 'year' },
   { zoom: 1, hint: 'museum' },
 ]);

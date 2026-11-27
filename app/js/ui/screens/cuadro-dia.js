@@ -9,7 +9,7 @@ import { icons } from '../icons.js';
 import { loadCss } from '../lazy-css.js';
 import { playEra } from '../audio-bridge.js';
 import { ensureCuadroIndex, cuadroToday, loadCuadroDay } from '../cuadro-data.js';
-import { frameHtml, setFrame, wireFrame, openLarge } from '../cuadro-frame.js';
+import { frameHtml, setFrame, wireFrame, openLarge, detailOf } from '../cuadro-frame.js';
 import {
   newGame, guess, isOver, revealStep, hintsFor, zoomFor, misses, finishCuadro, cuadroOf, CUADRO_TRIES,
 } from '../../engine/cuadro-dia.js';
@@ -17,6 +17,7 @@ import {
 const PARTIAL_KEY = 'mirada.cuadro'; // partida a medias de hoy: { day, guesses } (solo en este navegador)
 const HINT_LABEL = { era: 'Época', year: 'Año', museum: 'Dónde está' };
 const REVEAL_MS = 900; // tras el último intento, el cuadro entero un momento antes de pasar a la pantalla de hecho
+const BUZZ_MS = 30; // vibración corta al fallar (si el móvil la tiene)
 
 function readPartial(day) {
   try {
@@ -63,6 +64,8 @@ function play(ctx, el, data, day) {
   for (const id of readPartial(day)) game = guess(game, entry, id);
   const accent = index.movement(data.artist.movementId)?.accent || defaultAccent();
   const name = (id) => index.artist(id).short || index.artist(id).name;
+  const detail = detailOf(work, entry.focus, today.slot);
+  const veil = () => (isOver(game) ? null : entry.veil);
 
   el.innerHTML = `<div class="cdd" style="${accentStyle(accent)}">
     <header class="cdd-bar">
@@ -72,12 +75,12 @@ function play(ctx, el, data, day) {
     </header>
     <main class="cdd-body" id="main">
       <h1 class="cdd-title" tabindex="-1">¿De quién es?</h1>
-      ${frameHtml(work, entry.focus, zoomFor(game), 'Ver el detalle en grande', isOver(game) ? null : entry.veil)}
+      ${frameHtml(work, entry.focus, zoomFor(game), 'Ver el detalle en grande', veil(), detail)}
       <ul class="cdd-hints" aria-label="Pistas"></ul>
       <div class="cdd-options" role="group" aria-label="Pintores">
         ${entry.options.map((id) => `<button type="button" class="btn cdd-opt" data-action="pick" data-id="${esc(id)}">${esc(name(id))}</button>`).join('')}
       </div>
-      <p class="cdd-left" aria-live="polite"></p>
+      <p class="cdd-left"></p>
     </main>
   </div>`;
   wireFrame(el);
@@ -85,7 +88,7 @@ function play(ctx, el, data, day) {
   const paint = () => {
     const step = revealStep(game);
     // La firma se tapa hasta acabar (al acertar o fallar el último, el cuadro queda entero y limpio).
-    setFrame(el, work, entry.focus, zoomFor(game), isOver(game) ? null : entry.veil);
+    setFrame(el, work, entry.focus, zoomFor(game), veil(), detail);
     const frame = el.querySelector('.cdd-frame');
     frame.setAttribute('aria-label', step === 1 || step === 2 ? 'Ver el detalle en grande' : 'Ver el cuadro en grande');
     el.querySelector('.cdd-hints').innerHTML = hintsFor(game).map((k) => `<li class="cdd-hint"><span class="cdd-hint-k">${HINT_LABEL[k]}</span><span class="cdd-hint-v">${esc(entry.hints[k])}</span></li>`).join('');
@@ -122,8 +125,9 @@ function play(ctx, el, data, day) {
   };
 
   onAction(el, {
-    quit: () => { ctx.audio.sfx('tap'); ctx.go('inicio'); },
-    zoom: (b) => { ctx.audio.sfx('tap'); openLarge(ctx, work, entry.focus, zoomFor(game), { opener: b, reveal: isOver(game), veil: isOver(game) ? null : entry.veil }); },
+    // Si se vino del camino, atrás: el mapa vuelve a donde estaba.
+    quit: () => { ctx.audio.sfx('tap'); if (ctx.prevRoute() === 'inicio') history.back(); else ctx.go('inicio'); },
+    zoom: (b) => { ctx.audio.sfx('tap'); openLarge(ctx, work, entry.focus, zoomFor(game), { opener: b, reveal: isOver(game), veil: veil(), detail }); },
     pick: (b) => {
       const before = game;
       game = guess(game, entry, b.dataset.id);
@@ -135,9 +139,15 @@ function play(ctx, el, data, day) {
         return finish();
       }
       ctx.audio.sfx('wrong');
+      // El fallo también se siente: el botón tiembla (sin movimiento reducido, lo para el CSS) y el móvil vibra un instante.
+      b.classList.remove('is-shake');
+      void b.offsetWidth;
+      b.classList.add('is-shake');
+      try { navigator.vibrate?.(BUZZ_MS); } catch { /* sin vibración */ }
       const hint = hintsFor(game).slice(-1)[0];
       const added = revealStep(game) === 3 ? 'Ahora, el cuadro entero' : '';
-      announce([`No es de ${name(b.dataset.id)}.`, added, hint ? `${HINT_LABEL[hint]}: ${entry.hints[hint]}.` : ''].filter(Boolean).join(' '));
+      const left = el.querySelector('.cdd-left').textContent;
+      announce([`No es de ${name(b.dataset.id)}.`, added, hint ? `${HINT_LABEL[hint]}: ${entry.hints[hint]}.` : '', left ? `${left}.` : ''].filter(Boolean).join(' '));
       el.querySelector('.cdd-title').focus({ preventScroll: true });
     },
   });

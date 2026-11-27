@@ -12,19 +12,26 @@ import { copyText } from './result.js';
 import { madridClock } from '../../engine/dates.js';
 import { isKnownArtist } from '../../engine/progress.js';
 import { cuadroGrid, cuadroShareText, cuadroCount, tryLabel, nextInLabel, CUADRO_TRIES } from '../../engine/cuadro-dia.js';
+import { gainsHtml } from '../cuadro-gains.js';
 import { countEvent } from '../../stats.js';
 
 const SHARE_PAGE = (slot) => `h/cuadro-${slot}.html`; // tools/share_pages.py: abre siempre el cuadro de hoy
+const STORY_DELAY_MS = 1600; // recién acabado, el resultado se disfruta un momento antes de que se abra la historia
+
+// El marco del cuadro entero toma su proporción (entre DONE_RATIO_MIN y DONE_RATIO_MAX): sin bandas vacías, cabe todo en el móvil.
+const DONE_RATIO_MIN = 0.75;
+const DONE_RATIO_MAX = 1.6;
+const doneRatio = (work) => Math.min(DONE_RATIO_MAX, Math.max(DONE_RATIO_MIN, work.w > 0 && work.h > 0 ? work.w / work.h : 1));
 
 const countLine = (k) => `Llevas ${k} ${k === 1 ? 'cuadro del día' : 'cuadros del día'}`;
 
 function squaresHtml(record) {
   const marks = [...cuadroGrid(record)];
   const label = record.won ? `Acertado en ${record.tries} de ${CUADRO_TRIES} intentos` : `Sin acertar en ${CUADRO_TRIES} intentos`;
-  return `<div class="cdd-squares" role="img" aria-label="${label}">${marks.map((m) => `<span class="cdd-sq ${m === '🟩' ? 'is-hit' : m === '🟥' ? 'is-miss' : ''}"></span>`).join('')}</div>`;
+  return `<div class="cdd-squares is-in" role="img" aria-label="${label}">${marks.map((m) => `<span class="cdd-sq ${m === '🟩' ? 'is-hit' : m === '🟥' ? 'is-miss' : ''}"></span>`).join('')}</div>`;
 }
 
-export async function renderCuadroDone(ctx, el, data, record, { fresh = false } = {}) {
+export async function renderCuadroDone(ctx, el, data, record, { fresh = false, events = [] } = {}) {
   await loadCss('css/cuadro-dia.css');
   const { index } = ctx;
   const { today, entry, work, artist } = data;
@@ -38,10 +45,10 @@ export async function renderCuadroDone(ctx, el, data, record, { fresh = false } 
       <p class="cdd-kicker">Cuadro del día ${today.n}</p>
       <h1 class="cdd-title" tabindex="-1">${esc(tryLabel(record))}</h1>
       <p class="cdd-answer">${record.won ? 'Es de' : 'Era'} <strong>${esc(short)}</strong></p>
-      ${frameHtml(work, entry.focus, 1, `${work.title}, en grande`)}
+      ${frameHtml(work, entry.focus, 1, `${work.title}, en grande`, null, null, doneRatio(work))}
       <p class="cdd-caption">${esc(work.title)} · ${esc(work.year)}</p>
-      ${squaresHtml(record)}
-      <p class="cdd-count">${esc(countLine(cuadroCount(p)))}</p>
+      <div class="cdd-tally">${squaresHtml(record)}${fresh ? gainsHtml(ctx.index, record, events) : ''}</div>
+      <p class="cdd-count">${esc(countLine(cuadroCount(p)))}<span class="cdd-next">${icons.calendar(16)}<span>El siguiente, en ${esc(nextInLabel(madridClock(new Date())))}</span></span></p>
       <div class="cdd-actions">
         <button type="button" class="btn btn-primary btn-wide" data-action="share">${icons.share(20)}<span>Compartir</span></button>
         <div class="cdd-row">
@@ -51,7 +58,6 @@ export async function renderCuadroDone(ctx, el, data, record, { fresh = false } 
         <p class="copy-status" role="status"></p>
         <textarea class="copy-fallback" readonly hidden aria-label="Texto para compartir" rows="3"></textarea>
       </div>
-      <p class="cdd-next">${icons.calendar(16)}<span>El siguiente, en ${esc(nextInLabel(madridClock(new Date())))}</span></p>
     </section>`;
   el.innerHTML = onboarded ? page(ctx, 'home', body) : `<div class="cdd-guest"><main class="content" id="main">${body}</main></div>`;
   wireFrame(el);
@@ -79,7 +85,9 @@ export async function renderCuadroDone(ctx, el, data, record, { fresh = false } 
   });
   if (fresh) {
     announce(`${tryLabel(record)}. ${record.won ? 'Es de' : 'Era'} ${short}.`);
-    story();
+    const hash = location.hash;
+    const timer = setTimeout(() => { if (el.isConnected && location.hash === hash && !document.querySelector('dialog[open]')) story(); }, STORY_DELAY_MS);
+    ctx.setCleanup(() => clearTimeout(timer));
   }
 }
 

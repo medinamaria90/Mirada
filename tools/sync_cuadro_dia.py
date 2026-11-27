@@ -41,8 +41,7 @@ SPANISH_WINDOW = 4
 ALARM_DAYS = 3            # como CUADRO_ALARM_DAYS de app/js/engine/cuadro-dia.js
 SPAIN = "España"
 BANNED = re.compile(r"\b(ayer|mañana)\b", re.I)
-FIRST_CUE = re.compile(r"recuerdas", re.I)
-LOOK_CUE = re.compile(r"^f[ií]jate", re.I)
+LOOK_CUE = re.compile(r"^(f[ií]jate|mira|¿ves|el |la )", re.I)
 
 
 def read(path):
@@ -160,10 +159,10 @@ def validate(cal, cat, ficha, explain):
                 err(f"{tag}, tarjeta {k}: focus [x, y, zoom] (zoom de 1 a 3) o whole")
         if len(cards) == CARDS:
             short = a.get("short") or a["name"]
-            if short.split()[-1].lower() not in cards[0]["text"].lower() or not FIRST_CUE.search(cards[0]["text"]):
-                err(f"{tag}: la primera tarjeta dice quién es ({short}) y vuelve al detalle («¿Recuerdas…?»)")
+            if f"era {short.lower()}" not in cards[0]["text"].lower():
+                err(f"{tag}: la primera tarjeta dice quién es («Era {short}…»)")
             if not LOOK_CUE.search(cards[1]["text"]):
-                err(f"{tag}: la segunda tarjeta empieza por «Fíjate en»")
+                err(f"{tag}: la segunda tarjeta invita a mirar («Fíjate en», «Mira», «¿Ves…?» o lo que se mira)")
             if not cards[2].get("whole"):
                 err(f"{tag}: la tercera tarjeta enseña la obra entera (whole)")
         if not str(d.get("source", "")).startswith("https://"):
@@ -171,7 +170,7 @@ def validate(cal, cat, ficha, explain):
         fi = (ficha.get(w["id"]) or {})
         museum = d.get("museum") or ", ".join(x for x in (fi.get("museum"), fi.get("city")) if x)
         mov = movements[a["movementId"]]
-        hints = {"era": f"{mov['name']} · {mov['period']}", "year": w["year"], "museum": museum}
+        hints = {"era": d.get("era") or f"{mov['name']} · {mov['period']}", "year": w["year"], "museum": museum}
         if not museum:
             err(f"{tag}: sin museo en catalog-ficha.json (ponlo en «museum»)")
         tokens = name_tokens(a)

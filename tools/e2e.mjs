@@ -100,9 +100,25 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
   let step = 0;
   let answered = 0;
   const seenTypes = new Set();
+  const guestCards = []; // invitados presentados en esta ronda (artistId); el siguiente paso debe preguntar por el último
+  let pendingGuest = null;
   while (step < maxSteps) {
     await page.waitForTimeout(110);
     if (await page.locator('.res').count()) return step;
+    // «Te presentamos a…»: tarjeta de invitado antes de su primera pregunta. No es pregunta ni puntúa: se pulsa «Seguir».
+    const guestCard = page.locator('.guest-card');
+    if (await guestCard.count()) {
+      const title = (await guestCard.locator('.guest-title').innerText()).replace(/\s+/g, ' ').trim();
+      const name = (await guestCard.locator('.guest-name').innerText()).trim();
+      const who = [...artist.values()].find((a) => a.name === name);
+      check(title === `Te presentamos a ${name}`, `tarjeta de invitado con título raro: ${title}`);
+      check(Boolean(who) && (who.guest || who.category === 'invitado'), `la tarjeta presenta a alguien que no es invitado: ${name}`);
+      check(who && !guestCards.includes(who.id), `la tarjeta de ${name} sale dos veces en la ronda`);
+      check(await guestCard.locator('[data-action="guest-continue"][data-primary]').innerText() === 'Seguir', 'la tarjeta de invitado no tiene «Seguir»');
+      if (who) { guestCards.push(who.id); pendingGuest = who; }
+      await guestCard.locator('[data-action="guest-continue"]').click();
+      continue;
+    }
     const look = page.locator('.look-first [data-action="go"]');
     if (await look.count()) { await look.click(); continue; }
     const interlude = page.locator('.interlude [data-action="continue"]');
@@ -151,6 +167,13 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
           check(m && text.startsWith(m.name) && text.endsWith(m.period), `opción de movimiento sin periodo: ${text}`);
         }
       }
+    }
+    if (pendingGuest) {
+      // La tarjeta sale justo antes de la primera pregunta sobre ese invitado.
+      const asked = type === 'which' ? target != null && art.get(await options.nth(target).locator('.art').getAttribute('data-art')).artistId
+        : artist.get(art.get(await page.locator('.q-art .art').getAttribute('data-art')).artistId).id;
+      check(asked === pendingGuest.id, `tras la tarjeta de ${pendingGuest.name} la pregunta no es sobre él: ${prompt}`);
+      pendingGuest = null;
     }
     const key = `q-${type}`;
     if (shotsFor[key] && !seenTypes.has(type)) { seenTypes.add(type); await shot(page, shotsFor[key]); }
@@ -1599,7 +1622,7 @@ if (SMOKE) {
   await audit(page, '390 cuadro del día');
   await playCuadro(page, 1);
   check(await page.locator('.story .story-bar').count() === 3, 'la historia del Cuadro del día no lleva 3 tarjetas');
-  check(/Recuerdas/.test(await page.locator('.story-text').innerText()), 'la primera tarjeta no vuelve al detalle');
+  check(/^Era |\. Era /.test(await page.locator('.story-text').innerText()), 'la primera tarjeta no dice de quién era');
   await shot(page, '14b-cuadro-historia');
   await page.keyboard.press('Escape');
   await page.waitForSelector('.cdd-done');

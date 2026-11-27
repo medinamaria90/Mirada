@@ -8,6 +8,8 @@ export const CUADRO_ALARM_DAYS = 3;
 export const CUADRO_ROUTE = 'cuadro-del-dia';
 // Zoom del detalle del paso 1 (tools/sync_cuadro_dia.py comprueba su nitidez con el mismo valor).
 export const DETAIL_ZOOM = 3;
+// Zoom del paso 2: su recorte contiene el del paso 1 y es el detalle que se pinta al desplegar (tools/share_pages.py, img/dia/).
+export const WIDE_ZOOM = 1.6;
 const TRY_LABELS = ['A la primera', 'A la segunda', 'A la tercera', 'A la cuarta'];
 export const LOST_LABEL = 'Esta vez no';
 // «A la segunda» o «Esta vez no» para una partida guardada ({ won, tries }).

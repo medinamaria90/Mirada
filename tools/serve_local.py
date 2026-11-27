@@ -13,7 +13,7 @@ import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-WORK_IMG = re.compile(r"^/img/((?:hd/)?w\d+\.jpg)$")  # también las HD de los detalles (img/hd/)
+WORK_IMG = re.compile(r"^/img/((?:hd/)?w\d+\.jpg|dia/\d+\.jpg|og/[a-z0-9-]+\.jpg)$")  # también las HD (img/hd/), los detalles del Cuadro del día (img/dia/) y las vistas previas (img/og/)
 COMPRESSIBLE = (".json", ".js", ".mjs", ".css", ".html", ".svg", ".md")
 
 

@@ -1,165 +1,553 @@
 {
-  "_doc": "Calendario del «Cuadro del día» (docs/SPEC.md §Cuadro del día). El día de estreno es el n.º 1 y cada día usa calendario[(n - 1) % largo]: añadir obras al catálogo no mueve los días; las nuevas se añaden AL FINAL. focus: centro [x, y] (de 0 a 1) del detalle del paso 1 (zoom ×3), elegido mirando la imagen: nunca la firma ni un texto. options: los 5 pintores de relleno (misma época o parecidos). museum: solo si el nombre del museo delata al pintor. signature: [x0, y0, x1, y1] de la firma o inscripción legible, que se tapa con un velo hasta acabar (y que no puede caer en los recortes de los pasos 1 y 2). cards: la historia al acabar (3 tarjetas de hasta 180 caracteres; focus [x, y, zoom] o whole). Lo valida y lo vuelca a app/data/dia/ tools/sync_cuadro_dia.py.",
+  "_doc": "Calendario del «Cuadro del día» (docs/SPEC.md §Cuadro del día). El día de estreno es el n.º 1 y cada día usa calendario[(n - 1) % largo]: añadir obras al catálogo no mueve los días; las nuevas se añaden AL FINAL. focus: centro [x, y] (de 0 a 1) del detalle del paso 1 (zoom ×3), elegido mirando la imagen: nunca la firma ni un texto. options: los 5 pintores de relleno (misma época o parecidos). era: solo si el nombre de la época del camino confunde para ese cuadro. museum: solo si el nombre del museo delata al pintor. signature: [x0, y0, x1, y1] de la firma o inscripción legible, que se tapa con un velo hasta acabar (y que no puede caer en los recortes de los pasos 1 y 2). cards: la historia al acabar (3 tarjetas de hasta 180 caracteres; focus [x, y, zoom] o whole). Lo valida y lo vuelca a app/data/dia/ tools/sync_cuadro_dia.py.",
   "start": "2026-11-27",
   "days": [
     {
       "artwork": "w151047",
-      "focus": [0.32, 0.2],
-      "options": ["leonardo", "rafael", "piero", "filippo-lippi", "tiziano"],
+      "focus": [
+        0.32,
+        0.2
+      ],
+      "options": [
+        "leonardo",
+        "rafael",
+        "piero",
+        "filippo-lippi",
+        "tiziano"
+      ],
       "source": "https://es.wikipedia.org/wiki/El_nacimiento_de_Venus_(Botticelli)",
       "cards": [
-        { "text": "Era Botticelli, el pintor de los Médici en Florencia. ¿Recuerdas el detalle del principio? Eran los vientos, soplando para empujar a Venus recién nacida hasta la orilla.", "focus": [0.32, 0.22, 2] },
-        { "text": "Fíjate en que nada pesa: Venus apenas apoya el pie en la concha y el mar son trazos en forma de uve. Botticelli no copia la realidad, busca una belleza ideal.", "focus": [0.5, 0.75, 1.8] },
-        { "text": "Una diosa desnuda tan grande no se pintaba desde la Antigüedad. Hoy la llevas en el bolsillo: sale en la moneda italiana de diez céntimos.", "whole": true }
+        {
+          "text": "Esos dos que soplan son los vientos, empujando a Venus recién nacida hacia la orilla. Era Botticelli, el pintor de los Médici (la familia que mandaba en Florencia).",
+          "focus": [
+            0.32,
+            0.22,
+            2
+          ]
+        },
+        {
+          "text": "Fíjate en que nada pesa: Venus apenas apoya el pie en la concha y el mar son trazos en forma de uve. Botticelli no copia la realidad, busca una belleza ideal.",
+          "focus": [
+            0.5,
+            0.75,
+            1.8
+          ]
+        },
+        {
+          "text": "Hoy la llevas en el bolsillo sin saberlo: esta Venus sale en la cara de la moneda italiana de diez céntimos.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w220859",
-      "signature": [0.4, 0.18, 0.58, 0.245],
-      "focus": [0.5, 0.86],
-      "options": ["van-der-weyden", "memling", "durero", "holbein", "bosco"],
+      "signature": [
+        0.4,
+        0.18,
+        0.58,
+        0.245
+      ],
+      "focus": [
+        0.5,
+        0.86
+      ],
+      "options": [
+        "van-der-weyden",
+        "memling",
+        "durero",
+        "holbein",
+        "bosco"
+      ],
       "source": "https://es.wikipedia.org/wiki/Retrato_de_Giovanni_Arnolfini_y_su_esposa",
       "cards": [
-        { "text": "Era Van Eyck, el flamenco que llevó el óleo a un detalle nunca visto. ¿Recuerdas el detalle del principio? Ese perrito, pintado pelo a pelo, es un símbolo de fidelidad.", "focus": [0.5, 0.86, 2] },
-        { "text": "Fíjate en el espejo redondo del fondo: refleja la habitación entera y, en la puerta, a dos personas. Una podría ser el propio pintor.", "focus": [0.5, 0.29, 2.4] },
-        { "text": "Encima del espejo firmó como quien deja una pintada en la pared: «Jan van Eyck estuvo aquí», en latín, y el año, 1434.", "whole": true }
-      ]
+        {
+          "text": "El perrito del principio está pintado pelo a pelo: se suele leer como símbolo de fidelidad. Era Van Eyck, pintor flamenco (de Flandes, la actual Bélgica).",
+          "focus": [
+            0.5,
+            0.86,
+            2
+          ]
+        },
+        {
+          "text": "Fíjate en el espejo redondo del fondo: refleja la habitación entera y, en la puerta, a dos personas. Una podría ser el propio pintor.",
+          "focus": [
+            0.5,
+            0.29,
+            2.4
+          ]
+        },
+        {
+          "text": "Encima del espejo firmó como quien deja una pintada en la pared: «Jan van Eyck estuvo aquí», en latín, y el año, 1434.",
+          "whole": true
+        }
+      ],
+      "era": "Pintura flamenca · s. XV"
     },
     {
       "artwork": "w208758",
-      "focus": [0.46, 0.53],
-      "options": ["murillo", "zurbaran", "ribera", "rembrandt", "goya"],
+      "focus": [
+        0.46,
+        0.53
+      ],
+      "options": [
+        "murillo",
+        "zurbaran",
+        "ribera",
+        "rembrandt",
+        "goya"
+      ],
       "source": "https://es.wikipedia.org/wiki/Las_meninas",
       "cards": [
-        { "text": "Era Velázquez, el pintor del rey Felipe IV. ¿Recuerdas el espejo del principio? Refleja a los reyes: están justo donde estás tú, mirando la escena.", "focus": [0.42, 0.56, 2] },
-        { "text": "Fíjate en el propio Velázquez, a la izquierda, con el pincel en la mano: se retrató trabajando junto a la familia real, algo muy atrevido para un pintor.", "focus": [0.24, 0.6, 2] },
-        { "text": "La cruz roja de su pecho se pintó años después, cuando lo nombraron caballero de Santiago, un gran honor. Picasso hizo 58 versiones de este cuadro.", "whole": true }
+        {
+          "text": "Era Velázquez, el pintor del rey Felipe IV. ¿Y el espejo del principio? Refleja a los reyes: están justo donde estás tú, mirando la escena.",
+          "focus": [
+            0.42,
+            0.56,
+            2
+          ]
+        },
+        {
+          "text": "Fíjate en el propio Velázquez, a la izquierda, con el pincel en la mano: se retrató trabajando junto a la familia real, algo muy atrevido para un pintor.",
+          "focus": [
+            0.24,
+            0.6,
+            2
+          ]
+        },
+        {
+          "text": "Tres siglos después, Picasso, el gran pintor del siglo XX, hizo 58 versiones de este cuadro en un solo año. No podía dejar de mirarlo.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w1091086",
-      "focus": [0.62, 0.7],
-      "options": ["velazquez", "delacroix", "gericault", "manet", "madrazo"],
+      "focus": [
+        0.62,
+        0.7
+      ],
+      "options": [
+        "velazquez",
+        "delacroix",
+        "gericault",
+        "manet",
+        "madrazo"
+      ],
       "source": "https://es.wikipedia.org/wiki/El_3_de_mayo_en_Madrid",
       "cards": [
-        { "text": "Era Goya, el pintor que contó la guerra sin adornos. ¿Recuerdas el farol del principio? Es la única luz de la noche y cae sobre el hombre de blanco que abre los brazos.", "focus": [0.45, 0.55, 1.6] },
-        { "text": "Fíjate en los soldados franceses: de espaldas, en fila y sin cara. No parecen personas, sino una máquina de matar frente a gente corriente.", "focus": [0.78, 0.5, 1.6] },
-        { "text": "Lo pintó en 1814, ya acabada la guerra contra Napoleón. Es el primer gran cuadro moderno sobre la guerra, y Picasso lo tuvo muy presente al pintar el Guernica.", "whole": true }
+        {
+          "text": "Ese farol del suelo es la única luz de la noche, y cae sobre el hombre de blanco que abre los brazos. Era Goya, el pintor que contó la guerra sin adornos.",
+          "focus": [
+            0.45,
+            0.55,
+            1.6
+          ]
+        },
+        {
+          "text": "Fíjate en los soldados franceses: de espaldas, en fila y sin cara. No parecen personas, sino una máquina de matar frente a gente corriente.",
+          "focus": [
+            0.78,
+            0.5,
+            1.6
+          ]
+        },
+        {
+          "text": "Picasso, siglo y medio después, retomó esta escena en su Masacre en Corea, de 1951: los fusiles a un lado y la gente indefensa al otro.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w969377",
-      "focus": [0.72, 0.45],
-      "options": ["ribera", "artemisia", "rembrandt", "velazquez", "zurbaran"],
+      "focus": [
+        0.72,
+        0.45
+      ],
+      "options": [
+        "ribera",
+        "artemisia",
+        "rembrandt",
+        "velazquez",
+        "zurbaran"
+      ],
       "source": "https://es.wikipedia.org/wiki/La_vocaci%C3%B3n_de_San_Mateo",
       "cards": [
-        { "text": "Era Caravaggio, el rebelde que pintaba con luz de sótano. ¿Recuerdas la mano del principio? Es la de Cristo, que entra a llamar a Mateo, un odiado cobrador de impuestos.", "focus": [0.72, 0.47, 2] },
-        { "text": "Fíjate en la luz: entra en diagonal sobre la mano de Cristo y cae justo en la mesa. Esa mano copia la de Adán que Miguel Ángel pintó en la Capilla Sixtina.", "focus": [0.45, 0.5, 1.6] },
-        { "text": "Fue su primer gran encargo para una iglesia y lo hizo famoso de golpe. Sigue en la misma capilla de Roma: si echas una moneda, se enciende una luz unos minutos.", "whole": true }
+        {
+          "text": "La mano del principio copia la de Adán que pintó el gran Miguel Ángel en la Capilla Sixtina (la del Papa, en Roma). Era Caravaggio, el rebelde de la luz y la sombra.",
+          "focus": [
+            0.72,
+            0.47,
+            2
+          ]
+        },
+        {
+          "text": "Mira la luz: entra en diagonal desde arriba, como el foco de un teatro, y cae sobre la mesa de Mateo, el cobrador de impuestos, y sus ayudantes.",
+          "focus": [
+            0.45,
+            0.5,
+            1.6
+          ]
+        },
+        {
+          "text": "Fue su primer gran encargo para una iglesia y lo hizo famoso de golpe. Sigue en la misma capilla de Roma: si echas una moneda, se enciende una luz unos minutos.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w12418",
-      "focus": [0.42, 0.8],
-      "options": ["rafael", "botticelli", "tiziano", "giorgione", "miguel-angel"],
+      "focus": [
+        0.42,
+        0.8
+      ],
+      "options": [
+        "rafael",
+        "botticelli",
+        "tiziano",
+        "giorgione",
+        "miguel-angel"
+      ],
       "source": "https://es.wikipedia.org/wiki/La_Gioconda",
       "cards": [
-        { "text": "Era Leonardo da Vinci, el genio que quería entenderlo todo. ¿Recuerdas las manos del principio? Son las de Lisa Gherardini, la mujer de un comerciante de seda de Florencia.", "focus": [0.42, 0.8, 2] },
-        { "text": "Fíjate en que no hay líneas: la cara pasa de la luz a la sombra como humo. Es el sfumato (contornos difuminados), y por eso su sonrisa parece cambiar.", "focus": [0.44, 0.27, 2.2] },
-        { "text": "No era tan famosa hasta 1911, cuando un empleado italiano la robó del Louvre. La tuvo dos años en su casa, y su foto en los periódicos la volvió una estrella.", "whole": true }
+        {
+          "text": "Esas manos tranquilas son las de Lisa Gherardini, la mujer de un comerciante de seda de Florencia. Era Leonardo da Vinci, el genio que quería entenderlo todo.",
+          "focus": [
+            0.42,
+            0.8,
+            2
+          ]
+        },
+        {
+          "text": "Fíjate en que no hay líneas: la cara pasa de la luz a la sombra como humo. Es el sfumato (contornos difuminados), y por eso su sonrisa parece cambiar.",
+          "focus": [
+            0.44,
+            0.27,
+            2.2
+          ]
+        },
+        {
+          "text": "No era tan famosa hasta 1911, cuando la robó un vidriero italiano que había trabajado en el Louvre. Su foto en todos los periódicos la volvió una estrella.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w185372",
-      "focus": [0.64, 0.58],
-      "options": ["rembrandt", "hals", "steen", "velazquez", "rubens"],
+      "focus": [
+        0.64,
+        0.58
+      ],
+      "options": [
+        "rembrandt",
+        "hals",
+        "steen",
+        "velazquez",
+        "rubens"
+      ],
       "source": "https://es.wikipedia.org/wiki/La_joven_de_la_perla",
       "cards": [
-        { "text": "Era Vermeer, el pintor de la luz tranquila de Delft. ¿Recuerdas el detalle del principio? Esa perla son solo dos toques de blanco: un brillo arriba y un reflejo abajo.", "focus": [0.62, 0.55, 2] },
-        { "text": "Fíjate en el azul del turbante: es lapislázuli, una piedra molida más cara que el oro. Vermeer lo usaba aunque vivía lleno de deudas.", "focus": [0.55, 0.27, 1.8] },
-        { "text": "No es un retrato: es un «tronie», el estudio de una cara con un traje exótico. Nadie sabe quién posó. La llaman «la Mona Lisa del norte».", "whole": true }
+        {
+          "text": "¿Y esa perla? Solo son dos toques de blanco: un brillo arriba y un reflejo abajo. Era Vermeer, el pintor de la luz tranquila de Delft, en Holanda.",
+          "focus": [
+            0.62,
+            0.55,
+            2
+          ]
+        },
+        {
+          "text": "El azul del turbante es lapislázuli, una piedra molida más cara que el oro. Vermeer lo usaba aunque vivía lleno de deudas.",
+          "focus": [
+            0.55,
+            0.27,
+            1.8
+          ]
+        },
+        {
+          "text": "No es un retrato: es un «tronie», el estudio de una cara con un traje exótico. Por eso nadie sabe quién posó.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w883994",
-      "signature": [0.77, 0.89, 0.9, 0.95],
-      "focus": [0.72, 0.38],
-      "options": ["tintoretto", "bruegel", "durero", "parmigianino", "bronzino"],
+      "signature": [
+        0.77,
+        0.89,
+        0.9,
+        0.95
+      ],
+      "focus": [
+        0.72,
+        0.38
+      ],
+      "options": [
+        "tintoretto",
+        "bruegel",
+        "durero",
+        "parmigianino",
+        "bronzino"
+      ],
       "source": "https://www.metmuseum.org/art/collection/search/436575",
       "cards": [
-        { "text": "Era El Greco, un pintor de Creta que se quedó en Toledo casi cuarenta años. ¿Recuerdas el detalle del principio? Eran la catedral y el Alcázar, en lo alto de la ciudad.", "focus": [0.72, 0.38, 2] },
-        { "text": "Fíjate en el cielo: negro y verde, con nubes rasgadas y la luz cayendo a trozos. La ciudad parece a punto de recibir un rayo.", "focus": [0.4, 0.2, 1.6] },
-        { "text": "Es de los primeros paisajes españoles sin santos ni personajes: solo la ciudad. Y no es un mapa: se tomó libertades con los edificios para enseñar mejor Toledo.", "whole": true }
-      ]
+        {
+          "text": "En el detalle del principio estaban la catedral y el Alcázar (la fortaleza), en lo alto de Toledo. Era El Greco, un pintor de Creta que vivió allí casi cuarenta años.",
+          "focus": [
+            0.72,
+            0.38,
+            2
+          ]
+        },
+        {
+          "text": "Fíjate en el cielo: negro y verde, con nubes rasgadas y la luz cayendo a trozos. La ciudad parece a punto de recibir un rayo.",
+          "focus": [
+            0.4,
+            0.2,
+            1.6
+          ]
+        },
+        {
+          "text": "Es de los primeros paisajes españoles sin escena religiosa: la protagonista es la ciudad. Y no es un mapa: se tomó libertades con los edificios.",
+          "whole": true
+        }
+      ],
+      "era": "Manierismo · s. XVI"
     },
     {
       "artwork": "w328523",
-      "signature": [0.03, 0.91, 0.26, 0.975],
-      "focus": [0.53, 0.68],
-      "options": ["renoir", "sisley", "pissarro", "manet", "turner"],
+      "signature": [
+        0.03,
+        0.91,
+        0.26,
+        0.975
+      ],
+      "focus": [
+        0.53,
+        0.68
+      ],
+      "options": [
+        "renoir",
+        "sisley",
+        "pissarro",
+        "manet",
+        "turner"
+      ],
       "museum": "Un museo de París",
       "source": "https://es.wikipedia.org/wiki/Impresi%C3%B3n,_sol_naciente",
       "cards": [
-        { "text": "Era Monet, que quería pintar la luz de un instante. ¿Recuerdas la barca del principio? Cruza el puerto de Le Havre al amanecer, entre la bruma y el reflejo del sol.", "focus": [0.5, 0.68, 2] },
-        { "text": "Fíjate en el sol naranja: tiene la misma luminosidad que el cielo gris que lo rodea. Por eso parece temblar sobre el agua.", "focus": [0.6, 0.35, 1.8] },
-        { "text": "En 1874, para una exposición, le pidieron un título y dijo: «Pon Impresión». Un crítico se burló llamando «impresionistas» al grupo, y se quedaron con el nombre.", "whole": true }
+        {
+          "text": "Era Monet, que quería pintar la luz de un instante. La barca del principio cruza el puerto de Le Havre al amanecer, entre la bruma y el reflejo del sol.",
+          "focus": [
+            0.5,
+            0.68,
+            2
+          ]
+        },
+        {
+          "text": "Fíjate en el sol naranja: tiene la misma luminosidad que el cielo gris que lo rodea. Por eso parece temblar sobre el agua.",
+          "focus": [
+            0.6,
+            0.35,
+            1.8
+          ]
+        },
+        {
+          "text": "En 1874, para una exposición, le pidieron un título y dijo: «Pon Impresión». Un crítico se burló llamando «impresionistas» al grupo, y se quedaron con el nombre.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w321303",
-      "focus": [0.87, 0.35],
-      "options": ["bruegel", "van-eyck", "durero", "memling", "arcimboldo"],
+      "focus": [
+        0.87,
+        0.35
+      ],
+      "options": [
+        "bruegel",
+        "van-eyck",
+        "durero",
+        "memling",
+        "arcimboldo"
+      ],
       "source": "https://www.museodelprado.es/coleccion/obra-de-arte/el-jardin-de-las-delicias/02388242-6d6a-4e9e-a992-e1311eab3609",
       "cards": [
-        { "text": "Era el Bosco, el pintor de los sueños y las pesadillas. ¿Recuerdas el detalle del principio? Es el hombre árbol del infierno, que nos mira desde su cuerpo hueco.", "focus": [0.87, 0.35, 2] },
-        { "text": "Fíjate en el centro: cientos de personas desnudas entre fresas gigantes, burbujas y pájaros enormes. Un paraíso de placeres a un paso del infierno.", "focus": [0.5, 0.6, 1.8] },
-        { "text": "En el infierno, un condenado lleva una partitura pintada en el trasero, y se ha llegado a tocar. El tríptico acabó en España con Felipe II, que adoraba al Bosco.", "whole": true }
-      ]
+        {
+          "text": "Ese hombre árbol del principio vive en el infierno y nos mira desde su cuerpo hueco. Era el Bosco, el pintor de los sueños y las pesadillas.",
+          "focus": [
+            0.87,
+            0.35,
+            2
+          ]
+        },
+        {
+          "text": "¿Ves el centro? Cientos de personas desnudas entre fresas gigantes, burbujas y pájaros enormes. Un paraíso de placeres a un paso del infierno.",
+          "focus": [
+            0.5,
+            0.6,
+            1.8
+          ]
+        },
+        {
+          "text": "Mira el infierno de cerca: un condenado lleva una partitura pintada en el trasero. Alguien la pasó a notas y hoy se puede escuchar.",
+          "whole": true
+        }
+      ],
+      "era": "Pintura del norte de Europa · hacia 1500"
     },
     {
       "artwork": "w45585",
-      "focus": [0.6, 0.85],
-      "options": ["gauguin", "cezanne", "monet", "seurat", "munch"],
+      "focus": [
+        0.6,
+        0.85
+      ],
+      "options": [
+        "gauguin",
+        "cezanne",
+        "monet",
+        "seurat",
+        "munch"
+      ],
       "source": "https://es.wikipedia.org/wiki/La_noche_estrellada",
       "cards": [
-        { "text": "Era Van Gogh, que pintaba con colores puros y pinceladas que se retuercen. ¿Recuerdas el pueblo del principio? Es inventado, con un campanario que recuerda a los de Holanda.", "focus": [0.6, 0.82, 2] },
-        { "text": "Fíjate en el cielo: remolinos, estrellas enormes y una luna con halo. Y el ciprés de la izquierda sube como una llama negra que une la tierra con el cielo.", "focus": [0.45, 0.35, 1.6] },
-        { "text": "La pintó en un sanatorio del sur de Francia, de memoria, recordando lo que veía desde su ventana. Él la creía un fracaso; hoy es de los cuadros más famosos del mundo.", "whole": true }
+        {
+          "text": "Era Van Gogh, que pintaba con colores puros y pinceladas que se retuercen. El pueblo del principio es inventado, con un campanario como los de su Holanda natal.",
+          "focus": [
+            0.6,
+            0.82,
+            2
+          ]
+        },
+        {
+          "text": "Mira el cielo: remolinos, estrellas enormes y una luna con halo. No es una noche tranquila: es una noche que se mueve.",
+          "focus": [
+            0.45,
+            0.35,
+            1.6
+          ]
+        },
+        {
+          "text": "La pintó en un sanatorio del sur de Francia, de memoria, recordando lo que veía desde su ventana. Él la creía un fracaso; hoy es de los cuadros más famosos del mundo.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w6065609",
-      "signature": [0.0, 0.94, 0.16, 1.0],
-      "focus": [0.68, 0.55],
-      "options": ["monet", "renoir", "fortuny", "degas", "morisot"],
+      "signature": [
+        0.0,
+        0.94,
+        0.16,
+        1.0
+      ],
+      "focus": [
+        0.68,
+        0.55
+      ],
+      "options": [
+        "monet",
+        "renoir",
+        "fortuny",
+        "degas",
+        "morisot"
+      ],
       "museum": "Una casa-museo de Madrid",
       "source": "https://es.wikipedia.org/wiki/Paseo_a_orillas_del_mar",
       "cards": [
-        { "text": "Era Sorolla, el pintor valenciano de la luz del Mediterráneo. ¿Recuerdas el sombrero del principio? Pasean su mujer, Clotilde, y su hija María por la playa de Valencia.", "focus": [0.66, 0.5, 2] },
-        { "text": "Fíjate en las sombras de los vestidos blancos: no son grises, son azules y moradas. Sorolla pintaba la luz que veía, no la que se suponía.", "focus": [0.27, 0.5, 1.6] },
-        { "text": "Pintaba al aire libre y muy deprisa, con lienzos enormes en plena playa, para atrapar la luz antes de que cambiara. Lo llamaban «el pintor de la luz».", "whole": true }
-      ]
+        {
+          "text": "Ese sombrero del principio es de una de las dos paseantes, la mujer y la hija del pintor, en la playa de Valencia. Era Sorolla, el gran pintor valenciano.",
+          "focus": [
+            0.66,
+            0.5,
+            2
+          ]
+        },
+        {
+          "text": "¿Ves las sombras de los vestidos blancos? No son grises, son azules y moradas. Sorolla pintaba la luz que veía, no la que se suponía.",
+          "focus": [
+            0.27,
+            0.5,
+            1.6
+          ]
+        },
+        {
+          "text": "Pintaba al aire libre y muy deprisa, con lienzos enormes en plena playa, para atrapar la luz antes de que cambiara. Lo llamaban «el pintor de la luz».",
+          "whole": true
+        }
+      ],
+      "era": "Pintura española · hacia 1900"
     },
     {
       "artwork": "w2456003",
-      "focus": [0.38, 0.8],
-      "options": ["velazquez", "zurbaran", "ribera", "alonso-cano", "rubens"],
+      "focus": [
+        0.38,
+        0.8
+      ],
+      "options": [
+        "velazquez",
+        "zurbaran",
+        "ribera",
+        "alonso-cano",
+        "rubens"
+      ],
       "source": "https://es.wikipedia.org/wiki/Inmaculada_Concepci%C3%B3n_de_los_Venerables",
       "cards": [
-        { "text": "Era Murillo, el pintor más querido de la Sevilla del siglo XVII. ¿Recuerdas los angelitos del principio? Juegan entre las nubes, a los pies de la Virgen.", "focus": [0.38, 0.8, 2] },
-        { "text": "Fíjate en el manto azul, que parece moverse con el aire, y en la luna a sus pies. Es una Inmaculada (la Virgen concebida sin pecado), un tema que Sevilla adoraba.", "focus": [0.5, 0.45, 1.6] },
-        { "text": "En la guerra contra Napoleón, el mariscal francés Soult se la llevó a Francia. El Louvre la compró por un precio récord y volvió a España en 1941, en un canje.", "whole": true }
+        {
+          "text": "Esos angelitos del principio juegan entre las nubes, a los pies de la Virgen. Era Murillo, el pintor más querido de la Sevilla del siglo XVII.",
+          "focus": [
+            0.38,
+            0.8,
+            2
+          ]
+        },
+        {
+          "text": "Fíjate en el manto azul, que parece moverse con el aire, y en la luna a sus pies. Es una Inmaculada (la Virgen concebida sin pecado), un tema que Sevilla adoraba.",
+          "focus": [
+            0.5,
+            0.45,
+            1.6
+          ]
+        },
+        {
+          "text": "En la guerra contra Napoleón, el mariscal francés Soult se la llevó a Francia. El Louvre la compró por un precio récord y volvió a España en 1941, en un canje.",
+          "whole": true
+        }
       ]
     },
     {
       "artwork": "w219831",
-      "focus": [0.3, 0.65],
-      "options": ["vermeer", "hals", "caravaggio", "rubens", "velazquez"],
+      "focus": [
+        0.3,
+        0.65
+      ],
+      "options": [
+        "vermeer",
+        "hals",
+        "caravaggio",
+        "rubens",
+        "velazquez"
+      ],
       "source": "https://es.wikipedia.org/wiki/La_ronda_de_noche",
       "cards": [
-        { "text": "Era Rembrandt, el gran maestro holandés de la luz y la sombra. ¿Recuerdas a la niña del principio? Brilla en dorado entre los soldados y lleva un pollo colgado de la cintura.", "focus": [0.3, 0.65, 2] },
-        { "text": "Fíjate en la mano del capitán: su sombra cae sobre el traje amarillo del teniente. Nadie posa quieto; todos se mueven, como en una película.", "focus": [0.53, 0.62, 1.6] },
-        { "text": "No es de noche: el barniz se oscureció con los siglos y le dio ese nombre. En 1715 la recortaron por los lados para que cupiera en una pared del ayuntamiento.", "whole": true }
+        {
+          "text": "La niña del principio brilla en dorado entre los soldados y lleva un pollo colgado de la cintura. Era Rembrandt, el gran maestro holandés de la luz y la sombra.",
+          "focus": [
+            0.3,
+            0.65,
+            2
+          ]
+        },
+        {
+          "text": "Mira la mano del capitán: su sombra cae sobre el traje amarillo del teniente. Nadie posa quieto; todos se mueven, como en una película.",
+          "focus": [
+            0.53,
+            0.62,
+            1.6
+          ]
+        },
+        {
+          "text": "No es de noche: el barniz se oscureció con los siglos y la gente empezó a llamarla así. En realidad, la escena pasa a plena luz del día.",
+          "whole": true
+        }
       ]
     }
   ]

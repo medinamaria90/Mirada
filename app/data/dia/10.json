@@ -15,13 +15,13 @@
   "durero"
  ],
  "hints": {
-  "era": "Manierismo y Renacimiento del Norte · s. XV–XVII",
+  "era": "Pintura del norte de Europa · hacia 1500",
   "year": "c. 1490–1500",
   "museum": "Museo del Prado, Madrid"
  },
  "cards": [
   {
-   "text": "Era el Bosco, el pintor de los sueños y las pesadillas. ¿Recuerdas el detalle del principio? Es el hombre árbol del infierno, que nos mira desde su cuerpo hueco.",
+   "text": "Ese hombre árbol del principio vive en el infierno y nos mira desde su cuerpo hueco. Era el Bosco, el pintor de los sueños y las pesadillas.",
    "artwork": "w321303",
    "region": [
     0.783,
@@ -31,7 +31,7 @@
    ]
   },
   {
-   "text": "Fíjate en el centro: cientos de personas desnudas entre fresas gigantes, burbujas y pájaros enormes. Un paraíso de placeres a un paso del infierno.",
+   "text": "¿Ves el centro? Cientos de personas desnudas entre fresas gigantes, burbujas y pájaros enormes. Un paraíso de placeres a un paso del infierno.",
    "artwork": "w321303",
    "region": [
     0.403,
@@ -41,7 +41,7 @@
    ]
   },
   {
-   "text": "En el infierno, un condenado lleva una partitura pintada en el trasero, y se ha llegado a tocar. El tríptico acabó en España con Felipe II, que adoraba al Bosco.",
+   "text": "Mira el infierno de cerca: un condenado lleva una partitura pintada en el trasero. Alguien la pasó a notas y hoy se puede escuchar.",
    "artwork": "w321303",
    "whole": true
   }
