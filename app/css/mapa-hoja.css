@@ -1,4 +1,4 @@
-/* Hoja del mapa (ui/map-sheet.js): sube desde abajo al tocar el cartel de una época cerrada o de una rama.
+/* Hoja del mapa (ui/map-sheet.js): sube desde abajo al tocar el cartel de una época cerrada o la caseta de información.
    Se carga al primer toque. Todo color sale de las variables de brand.css; el acento, de la época. */
 .map-sheet {
   box-sizing: border-box; position: fixed; inset: auto 0 0; width: min(100%, 560px); max-width: 100%; max-height: 86dvh; margin: 0 auto;
@@ -26,23 +26,8 @@
 .ms-how { display: grid; gap: .8rem; margin: 0; padding: 0; list-style: none; }
 .ms-how li { display: flex; align-items: flex-start; gap: .7rem; margin: 0; color: var(--ink); font: 400 1rem/1.45 var(--font); }
 .ms-how .ms-mark { margin-top: .15rem; }
-.ms-list { display: grid; margin: 0; padding: 0; list-style: none; }
-.ms-item { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
-.ms-row {
-  box-sizing: border-box; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .7rem; flex: 1 1 12rem; min-width: 0; min-height: 52px;
-  padding: .35rem .3rem; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--ink); font: inherit; text-align: left;
-}
-button.ms-row { cursor: pointer; }
-button.ms-row:hover { background: var(--surface-2); }
-.ms-row.is-locked { color: var(--ink-2); }
 .ms-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); }
-.ms-mark.is-mastered { background: var(--gold); color: var(--on-gold); }
-.ms-mark.is-started, .ms-mark.is-available { background: var(--accent-soft); color: var(--accent-ui); }
-.ms-who { display: grid; min-width: 0; }
-.ms-name { overflow-wrap: break-word; hyphens: auto; font: 500 1rem/1.2 var(--font); }
-.ms-years { font: 400 .82rem/1.2 var(--font); color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.ms-mark.is-available { background: var(--accent-soft); color: var(--accent-ui); }
 @media (min-width: 900px) {
   .map-sheet { inset: 0; margin: auto; max-height: 80dvh; border-radius: var(--radius); }
 }
-.ms-row:has(.ms-go) { grid-template-columns: auto minmax(0, 1fr) auto; }
-.ms-go { display: grid; place-items: center; color: var(--ink-2); }

@@ -27,7 +27,7 @@ export function loadCards(movementId) {
   return cache.get(movementId) || loadCards(movementId);
 }
 
-function cardHtml(index, card, n, total) {
+export function cardHtml(index, card, n, total) {
   const w = index.artwork(card.artwork);
   const who = w ? index.artist(w.artistId) : null;
   return `<section class="era-slide era-card" role="group" aria-roledescription="tarjeta" aria-label="${n} de ${total}: ${esc(card.kicker)}">
@@ -59,9 +59,8 @@ export async function mountEraCards(ctx, root, movementId) {
   first.insertAdjacentHTML('beforeend', `<button type="button" class="era-more" data-era="next">Descubre la época${icons.next(16)}</button>`);
   track.append(first);
   track.insertAdjacentHTML('beforeend', cards.map((c, i) => cardHtml(ctx.index, c, i + 2, total)).join(''));
-  const dots = `<div class="era-dots">${Array.from({ length: total }, (_, i) => `<button type="button" class="era-dot" data-era="go" data-i="${i}" aria-label="Tarjeta ${i + 1} de ${total}"><span></span></button>`).join('')}</div>`;
   body.prepend(track);
-  track.insertAdjacentHTML('afterend', dots);
+  wireCards(ctx, body, track, total);
   root.classList.add('has-era-cards');
   root.insertAdjacentHTML('beforeend', `<button type="button" class="icon-btn era-share" aria-label="Compartir">${icons.share(20)}</button>`);
   $('.era-share', root).addEventListener('click', async () => {
@@ -69,16 +68,22 @@ export async function mountEraCards(ctx, root, movementId) {
     const note = NOTES[await shareLink({ url: eraUrl(movementId), title: ctx.index.movement(movementId)?.name || '' })];
     if (note) ctx.toast(note);
   });
+}
 
+// Puntos y paso de tarjeta: uno por diapositiva (el actual, alargado); «Descubre…» pasa a la segunda. scope: donde van
+// los puntos (tras el carrusel) y se escuchan los toques.
+export function wireCards(ctx, scope, track, total) {
+  const dots = `<div class="era-dots">${Array.from({ length: total }, (_, i) => `<button type="button" class="era-dot" data-era="go" data-i="${i}" aria-label="Tarjeta ${i + 1} de ${total}"><span></span></button>`).join('')}</div>`;
+  track.insertAdjacentHTML('afterend', dots);
   const slides = $$('.era-slide', track);
   const go = (i) => slides[Math.max(0, Math.min(total - 1, i))].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
   const sync = () => {
     const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
-    $$('.era-dot', body).forEach((d, k) => d.setAttribute('aria-current', k === i ? 'true' : 'false'));
+    $$('.era-dot', scope).forEach((d, k) => d.setAttribute('aria-current', k === i ? 'true' : 'false'));
   };
   sync();
   track.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
-  body.addEventListener('click', (ev) => {
+  scope.addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-era]');
     if (!b) return;
     ctx.audio.sfx('tap');
