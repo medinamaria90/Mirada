@@ -13,6 +13,12 @@
     {
      "text": "Vivió más de noventa años. Ya anciana y casi ciega, en Palermo, la visitó el joven Van Dyck, que la dibujó y anotó sus consejos de pintura.",
      "artwork": "w21204021",
+     "region": [
+      0.3,
+      0.0,
+      0.75,
+      0.55
+     ],
      "source": "https://www.britannica.com/print/article/1525226"
     },
     {

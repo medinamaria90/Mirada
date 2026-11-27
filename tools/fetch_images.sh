@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Baja las imágenes de la app (app-img-1200.zip) de la release pública «catalogo-img» y las deja en <carpeta_destino>.
+# También las HD de las obras que las historias enseñan en detalle (app-img-hd.zip, paso «hd» del proceso) en <carpeta_destino>/hd.
 # Pensado para el comando de construcción de Render:  bash tools/fetch_images.sh app/img
 # Después pinta las hojas del atlas de miniaturas (<carpeta_destino>/s) con tools/make_atlas.py a partir de esas imágenes y
 # de app/data/catalog.json (las coordenadas de las miniaturas salen del catálogo: hojas y catálogo van siempre a juego) y las
@@ -65,6 +66,35 @@ fi
 n="$(find "$DEST" -maxdepth 1 -name 'w*.jpg' | wc -l | tr -d ' ')"
 [ "$n" -ge "$MIN_IMG" ] || fallo "solo hay $n imágenes en $DEST (se esperaban al menos $MIN_IMG)"
 echo "fetch_images: $n imágenes en $DEST ($(du -sh "$DEST" | cut -f1))"
+
+# HD de los detalles de las historias: obligatoria si el catálogo de la app las pide («"hd":» en app/data/catalog.json).
+HD_ZIP="app-img-hd.zip"
+HD_SHA="app-img-hd.sha256"
+repo_cat="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/app/data/catalog.json"
+if curl -fsSL --retry 5 --retry-delay 5 --connect-timeout 30 -o "$TMP/$HD_ZIP" "$BASE/$HD_ZIP" \
+   && curl -fsSL --retry 5 --retry-delay 5 --connect-timeout 30 -o "$TMP/$HD_SHA" "$BASE/$HD_SHA"; then
+  esperado="$(awk '{print tolower($1)}' "$TMP/$HD_SHA" | head -n 1)"
+  if command -v sha256sum >/dev/null; then real="$(sha256sum "$TMP/$HD_ZIP" | awk '{print $1}')"
+  elif command -v shasum >/dev/null; then real="$(shasum -a 256 "$TMP/$HD_ZIP" | awk '{print $1}')"
+  else real="$(python3 -c "import hashlib,sys;print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" "$TMP/$HD_ZIP")"
+  fi
+  [ "$real" = "$esperado" ] || fallo "sha256 de $HD_ZIP no coincide (esperado $esperado, obtenido $real)"
+  if command -v unzip >/dev/null; then lista="$(unzip -Z1 "$TMP/$HD_ZIP" || true)"
+  else lista="$(python3 -m zipfile -l "$TMP/$HD_ZIP" | awk 'NR>1{print $1}')"
+  fi
+  [ -z "$lista" ] || ! echo "$lista" | grep -qvE '^w[0-9]+\.jpg$' || fallo "$HD_ZIP contiene nombres inesperados"
+  mkdir -p "$DEST/hd"
+  if [ -n "$lista" ]; then
+    if command -v unzip >/dev/null; then unzip -q -o "$TMP/$HD_ZIP" -d "$DEST/hd"
+    else python3 -m zipfile -e "$TMP/$HD_ZIP" "$DEST/hd"
+    fi
+  fi
+  echo "fetch_images: $(find "$DEST/hd" -maxdepth 1 -name 'w*.jpg' | wc -l | tr -d ' ') imágenes HD en $DEST/hd"
+elif [ -f "$repo_cat" ] && grep -q '"hd":' "$repo_cat"; then
+  fallo "el catálogo pide imágenes HD y no se pudo descargar $BASE/$HD_ZIP (lo sube el paso «hd» del proceso)"
+else
+  echo "fetch_images: sin paquete HD (el catálogo no lo pide)"
+fi
 
 if [ "${MIRADA_SKIP_ATLAS:-0}" != "1" ]; then
   here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

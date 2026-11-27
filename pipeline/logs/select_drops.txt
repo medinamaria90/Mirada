@@ -1,8 +1,0 @@
-duccio           Q6728394   sl=  9 excluida                   La Virgen y el Niño                           | 2807x3722 image/jpeg Public domain
-simone-martini   Q3947520   sl= 10 excluida                   San Luis de Tolosa coronando a Roberto de Anj | 823x1200 image/jpeg Public domain
-simone-martini   Q14790751  sl=  8 proporción ≠ medidas       Orsini Polyptych                              | 6646x2313 image/jpeg CC0
-fra-angelico     Q2529591   sl= 11 varios autores             Descendimiento de la Cruz                     | 3216x3496 image/jpeg CC BY-SA 4.0
-fra-angelico     Q61588     sl= 10 varios autores             Retablo de Fiesole                            | 1700x1274 image/jpeg Public domain
-fra-angelico     Q3223807   sl=  9 palabra                    El Juicio Final                               | 8864x4664 image/jpeg Public domain
-fra-angelico     Q4009968   sl=  9 excluida                   Madonna and Child                             | 1206x1255 image/jpeg Public domain
-fra-angelico     Q3539582   sl=  8 palabra                    San Pietro Martire Triptych                   | 3882x3456 image/jpeg CC BY-SA 4.0
