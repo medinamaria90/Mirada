@@ -160,9 +160,10 @@
 /* Sendero recorrido: de otro color hasta la parada actual. */
 .trail-edge.is-done { stroke: var(--lit-trail-done-edge); }
 .trail-fill.is-done { stroke: var(--lit-trail-done); }
-.trail-rim.is-done, .trail-grain.is-done, .plaza-stones { stroke: var(--lit-trail-done-edge); }
-.plaza-rim { fill: var(--lit-trail-done-edge); }
-.plaza-fill { fill: var(--lit-trail-done); }
+.trail-rim.is-done, .trail-grain.is-done { stroke: var(--lit-trail-done-edge); }
+.plaza-stones { stroke: var(--lit-stone-side); }
+.plaza-rim { fill: var(--lit-stone-side); }
+.plaza-fill { fill: var(--lit-stone-top); }
 
 /* Piezas de los dibujos propios (puerta de salida, museo). */
 .land-tile { fill: var(--lit-tile); }

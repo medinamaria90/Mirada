@@ -842,7 +842,8 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // de build): medidos 31 peticiones en la bienvenida (3 hojas del mapa que el HTML pide antes de saber la pantalla, roster,
 // encuadre) y 58 en el inicio (≈25 módulos del mapa y la precarga de historias). Por HTTP/2 y con el service worker eso cuesta poco; lo que manda
 // es el peso, y ese presupuesto no cambia.
-const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 58, kb: 440 } };
+// Inicio +1: ui/lazy-css.js en la cadena estática (pide las hojas del arranque si un index.html viejo no las enlaza).
+const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 59, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });

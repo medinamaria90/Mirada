@@ -51,7 +51,7 @@ const kiosk = ({ x, y, w, h }) => {
 const PX = START_PLAZA.x;
 const PY = START_PLAZA.y;
 // Empedrado de la plaza: el sendero nace de él (path-signs.js lo pinta con el sendero, encima de su arranque).
-export const START_PAVING = { cx: PX + 12, cy: PY + 3, rx: 62, ry: 11 };
+export const START_PAVING = { cx: PX + 14, cy: PY + 4, rx: 74, ry: 13 };
 const GATE = { left: 173, right: 231, y: 96, tower: 14, h: 38 };   // la puerta, donde el sendero va casi recto
 const START_BACK = `<ellipse class="land-shade" cx="${PX + 28}" cy="${PY + 9}" rx="112" ry="16"/>
       <ellipse class="land-top" cx="${PX + 28}" cy="${PY + 2}" rx="102" ry="13"/>

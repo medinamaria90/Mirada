@@ -65,7 +65,7 @@ test('carteles: mojÃ³n de tramo sin contador; completo, dorado sin iconos; la lÃ
 });
 
 test('candados: un solo aviso a la vez, sin temporizador; se cierra al tocar fuera, al desplazar o con Esc', () => {
-  const js = readFileSync(join(app, 'js', 'ui', 'screens', 'lock-note.js'), 'utf8');
+  const js = readFileSync(join(app, 'js', 'ui', 'screens', 'path-actions.js'), 'utf8');
   assert.ok(/export function showLockNote\(button\) \{\s*closeLockNote\(\);/.test(js), 'un aviso nuevo no cierra el anterior');
   assert.ok(!/setTimeout\(\(\) => note/.test(js), 'el aviso se va solo mientras se lee');
   assert.ok(js.includes("'pointerdown'") && js.includes("'scroll'") && js.includes("'Escape'") && js.includes('lock-note-close'), 'falta una forma de cerrarlo');

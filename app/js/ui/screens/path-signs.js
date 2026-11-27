@@ -85,7 +85,7 @@ export function startBlock(start, tint, archHtml = '') {
   // path-foot: el suelo sigue bajo la barra de abajo (sin franja oscura al llegar al final del mapa).
   return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true"></li><li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
     ${art('path-start-art', startArt().back)}${trailSvg(start.h, start.trail, [], start.trail, START_PAVING)}${art('path-start-art is-front', startArt().front)}
-    ${archHtml}<button type="button" class="start-kiosk" data-action="start" style="left:${pct(KIOSK.x + KIOSK.w / 2, MAP_W)};top:${pct(KIOSK.y - KIOSK.h / 2 - KIOSK_SIGN, start.h)}" aria-haspopup="dialog" aria-label="Información: cómo se juega"><span class="start-kiosk-text">Información</span></button>
+    ${archHtml}<button type="button" class="start-kiosk" data-action="start" style="left:${pct(KIOSK.x + KIOSK.w / 2, MAP_W)};top:${pct(KIOSK.y - KIOSK.h / 2 - KIOSK_SIGN, start.h)}" aria-haspopup="dialog" aria-label="Cómo se juega"><span class="start-kiosk-text">Cómo se juega</span></button>
   </li>`;
 }
 
