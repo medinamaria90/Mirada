@@ -90,3 +90,4 @@ obras del catálogo 1470; reutilizadas del paquete anterior 1466; sin imagen 0; 
 paquete app-img-1200 subido a catalogo-img (321M)
 79M	.git
 3.7M	catalogo
+fin Fri Nov 27 09:20:13 UTC 2026
