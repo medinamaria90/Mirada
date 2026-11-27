@@ -42,6 +42,9 @@ export function wireSuper(root, ctx, close) {
     if (ctx.store.inTrial()) { close(); setTrial(ctx, false); }
     setSuper(false);
   });
-  window.addEventListener(SU_EVENT, refresh);
+  // Se deja de escuchar al cambiar de pantalla: si no, cada visita a Ajustes dejaba su pantalla entera retenida en memoria.
+  const stop = new AbortController();
+  window.addEventListener(SU_EVENT, refresh, { signal: stop.signal });
+  window.addEventListener('hashchange', () => stop.abort(), { once: true, signal: stop.signal });
   refresh();
 }
