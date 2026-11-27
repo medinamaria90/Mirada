@@ -18,18 +18,17 @@ salida en los tres temas). 0 px de desborde y 0 errores de consola en las 15 vis
 | Calidad técnica | 8 | | | |
 
 **Veredicto: APRUEBA.** Todo ≥ 8 y **ningún fallo grave**. Los dos fallos que tumbaron la ronda 6 están arreglados y
-comprobados en captura, no solo en el código.
+comprobados en captura.
 
 ## Comprobación de la ronda anterior
 
 1. **«i» de la caseta, oculta tras la muralla → arreglado.** La caseta está ahora a la izquierda de la puerta, delante del
    muro, y la «i» dorada se ve entera con su aro claro en todas las anchuras (`1`). El botón «Cómo se juega» (aria-label
-   intacto, 56 × 56 px; 66 px a 768) cubre la caseta y abre el diálogo correcto. Queda a 240 px del botón «Tú» a 360: no
+   intacto, 56 × 56 px; 66 px a 768) cubre la caseta y abre el diálogo correcto. Queda a unos 240 px del botón «Tú» a 360: no
    se confunden. Sin progreso también se ve, sobre la barra de abajo (`3`).
 2. **Sendero que no entraba por el arco → arreglado.** Sube recto por el centro del arco y sale por encima del ático
    hacia el primer tramo; la falsa 3D se entiende (cruza la puerta y, ya dentro, tuerce). Igual en la rama (`3`).
-3. Hueco oscuro de la inscripción de noche: sin cambios; decisión de María, no puntúa.
-4. Guía «Prueba del Renacimiento»: entera (213 px), no tapa la salida. En main sigue cortada («Prueba de época: Ren…») y
+3. Guía «Prueba del Renacimiento»: entera (213 px), no tapa la salida. En main sigue cortada («Prueba de época: Ren…») y
    tapa «Cómo se juega» hasta el punto de que Playwright no puede pulsarlo (`1`, derecha).
 
 ## Problemas que quedan (ninguno bloquea), con arreglo
@@ -41,8 +40,6 @@ comprobados en captura, no solo en el código.
    tramo (se nota a 768, `1`). *Arreglo*: subir `START_GATE_TOP` 6–8 px, para que la curva empiece por detrás del ático.
 3. **Caseta algo apretada**: el ciprés y el árbol redondo de su derecha casi tocan el tejadillo, y el macizo de flores cae
    a sus pies (`1`). Apartarlos 8–10 px a la derecha da aire a la caseta.
-4. Ajeno a la rama y como en main: el letrero «Gótico · faltan 4 pintores» es una cajita clara arriba a la derecha; es el
-   mojón de rama validado, no un cartel grande.
 
 ## ¿Empeora algo respecto a main?
 
@@ -58,7 +55,6 @@ mejor que la «i» gris (punto 1); el rótulo se quitó por decisión de María.
   adarve), sin «lengua» ni raya central. Alineación: el sendero ya va al eje del arco; solo queda el codo (punto 2).
 
 ## Capturas (`eval-camino-r6b/`)
-
 1. Salida en claro, zoom ×3 a 360: r6b (izquierda) y main (derecha).
 2. Salida de noche («Como el móvil») y en tema oscuro, r6b: la «i» gris de noche.
 3. Salida sin progreso (claro, 360) y rama «Más del Renacimiento» de noche (412).
