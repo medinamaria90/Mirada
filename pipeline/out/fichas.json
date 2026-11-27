@@ -46170,5 +46170,150 @@
   "movement": "Renacimiento italiano",
   "source": "wikidata",
   "fetched": "2026-11-27"
+ },
+ "Q4015930": {
+  "museum": "Galería Nacional de Arte",
+  "museumQid": "Q214867",
+  "city": "Washington",
+  "country": "Estados Unidos",
+  "inSpain": false,
+  "technique": "Óleo",
+  "materials": [
+   "óleo"
+  ],
+  "dimensions": "43,5 × 46 cm",
+  "heightCm": 43.5,
+  "widthCm": 46.0,
+  "inception": "1308",
+  "depicts": [
+   "Andrés el Apóstol",
+   "Jesús de Nazaret",
+   "Pedro",
+   "Vocación de los apóstoles"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q3769209": {
+  "museum": "capilla de los Scrovegni",
+  "museumQid": "Q963954",
+  "city": "Padua",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "1000 × 840 cm",
+  "heightCm": 1000.0,
+  "widthCm": 840.0,
+  "inception": "1306",
+  "depicts": [
+   "Juicio Final"
+  ],
+  "genre": null,
+  "movement": "Prerrenacimiento",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q3119488": {
+  "museum": "Palazzo Pubblico",
+  "museumQid": "Q1705125",
+  "city": "San Marino",
+  "country": "San Marino",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "340 × 968 cm",
+  "heightCm": 340.0,
+  "widthCm": 968.0,
+  "inception": "1328–1330",
+  "depicts": [
+   "Guidoriccio da Fogliano",
+   "Montemassi",
+   "caballo",
+   "equitación"
+  ],
+  "genre": "retrato ecuestre",
+  "movement": "Gótico internacional",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q3276413": {
+  "museum": "Palacio Comunal de Siena",
+  "museumQid": "Q1190961",
+  "city": "Siena",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Fresco",
+  "materials": [
+   "fresco"
+  ],
+  "dimensions": "763 × 9708 cm",
+  "heightCm": 763.0,
+  "widthCm": 9708.0,
+  "inception": "1315",
+  "depicts": [
+   "Niño Jesús",
+   "Virgen María",
+   "mujer",
+   "niño"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q21614531": {
+  "museum": "Museo Real de Bellas Artes de Amberes",
+  "museumQid": "Q1471477",
+  "city": "Amberes",
+  "country": "Bélgica",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "24,5 × 15,5 cm",
+  "heightCm": 24.5,
+  "widthCm": 15.5,
+  "inception": "1333",
+  "depicts": [
+   "Jesús de Nazaret"
+  ],
+  "genre": "arte religioso",
+  "movement": null,
+  "source": "wikidata",
+  "fetched": "2026-11-27"
+ },
+ "Q1215809": {
+  "museum": "Museo Nacional de San Marcos",
+  "museumQid": "Q13453137",
+  "city": "Florencia",
+  "country": "Italia",
+  "inSpain": false,
+  "technique": "Temple sobre tabla",
+  "materials": [
+   "tabla",
+   "témpera"
+  ],
+  "dimensions": "220 × 227 cm",
+  "heightCm": 220.0,
+  "widthCm": 227.0,
+  "inception": "",
+  "depicts": [
+   "Marcos el Evangelista",
+   "Niño Jesús",
+   "Virgen María"
+  ],
+  "genre": "arte religioso",
+  "movement": "Renacimiento italiano",
+  "source": "wikidata",
+  "fetched": "2026-11-27"
  }
 }
