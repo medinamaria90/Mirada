@@ -470,6 +470,12 @@ Decisiones de la tarde del 24/11:
 9. **Mapa en árbol con ramas y escenario de época** (Gemini o vectorial).
 10. Más adelante: obras animadas como premio, duelo en tiempo real con un amigo, versión de música clásica
     con el mismo motor.
+11. **Preguntas de concepto en los repasos** (idea aprobada por María, 27/11; no se construye aún):
+    intercalar, como mucho 1 o 2 por ronda, preguntas tipo test sobre lo que el jugador ya ha leído en
+    historias y tarjetas de época (p. ej. «Este cuadro rompe con lo anterior. ¿Por qué?»). Siempre con
+    imagen; nada de fechas sueltas ni datos de enciclopedia. Las opciones incorrectas deben ser verosímiles
+    y difíciles, nunca absurdas ni fuera de tema. Antes de construir, que un experto diseñe y pruebe los
+    tipos de pregunta.
 
 ## 6. Avisos
 
