@@ -1,26 +1,167 @@
-== giotto
-w,le,les,sl,loc,locl,img
-http://www.wikidata.org/entity/Q2067212,Lamentation,Lamentación sobre Cristo muerto,13,http://www.wikidata.org/entity/Q963954,Scrovegni Chapel,http://commons.wikimedia.org/wiki/Special:FilePath/Compianto%20sul%20Cristo%20morto.jpg
-http://www.wikidata.org/entity/Q3504778,Kiss of Judas,El beso de Judas,9,http://www.wikidata.org/entity/Q963954,Scrovegni Chapel,http://commons.wikimedia.org/wiki/Special:FilePath/Giotto%20di%20Bondone%20-%20No.%2031%20Scenes%20from%20the%20Life%20of%20Christ%20-%2015.%20The%20Arrest%20of%20Christ%20%28Kiss%20of%20Judas%29%20-%20WGA09216.jpg
-http://www.wikidata.org/entity/Q3769209,Last Judgment,El Juicio Final,6,http://www.wikidata.org/entity/Q963954,Scrovegni Chapel,http://commons.wikimedia.org/wiki/Special:FilePath/LastJudgmentGiotto.jpg
-http://www.wikidata.org/entity/Q3997179,Judas' Betrayal,,4,http://www.wikidata.org/entity/Q963954,Scrovegni Chapel,http://commons.wikimedia.org/wiki/Special:FilePath/Giotto%20di%20Bondone%20-%20No.%2028%20Scenes%20from%20the%20Life%20of%20Christ%20-%2012.%20Judas%27%20Betrayal%20-%20WGA09213.jpg
-http://www.wikidata.org/entity/Q3044873,Scenes from the New Testament: Lamentation,,4,http://www.wikidata.org/entity/Q3635787,Upper Basilica of San Francesco d'Assisi,http://commons.wikimedia.org/wiki/Special:FilePath/Giotto%20di%20Bondone%20-%20Scenes%20from%20the%20New%20Testament%20-%20Lamentation%20-%20WGA09159.jpg
-http://www.wikidata.org/entity/Q3842744,Virgin Mourning,,2,http://www.wikidata.org/entity/Q131813266,Room 2,http://commons.wikimedia.org/wiki/Special:FilePath/Giotto%2C%20madonna%20dolente%2C%201305-10%20ca.%2C%2001.jpg
-http://www.wikidata.org/entity/Q111822255,Wedding at Cana (top) and Lamentation (bottom),,0,,,http://commons.wikimedia.org/wiki/Special:FilePath/Giotto%20di%20Bondone%20042.jpg
+== commons juicio
+Giotto di Bondone - Last Judgment (detail) - WGA09229.jpg	744	913	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09231.jpg	941	1001	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"/g/giotto/padova/4
+Giotto di Bondone - Last Judgment (detail) - WGA09232.jpg	950	993	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09234.jpg	800	1089	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09235.jpg	850	1090	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09236.jpg	801	1068	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09237.jpg	801	1078	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09239.jpg	859	1001	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"/g/giotto/padova/4
+Giotto di Bondone - Last Judgment (detail) - WGA09240.jpg	933	901	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09241.jpg	1019	901	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09245.jpg	815	1001	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09246.jpg	770	967	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment - WGA09228.jpg	850	1160	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Last-judgment-scrovegni-chapel-giotto-1306.jpg	2500	2327	image/jpeg	Public domain	Giotto	Scanned from Giotto and the Arena Chapel: Art, Architecture &amp; Experience
+LastJudgmentGiotto.jpg	513	600	image/jpeg	Public domain	Giotto	http://www.aug.edu/augusta/iconography/lastJudgment.html
+== commons juicio2
+Capella degli Scrovegni (Padova) jm56640.jpg	6399	11726	image/jpeg	CC BY-SA 3.0	joergens.mi	Own work
+Giotto di Bondone - Last Judgment (detail) - WGA09229.jpg	744	913	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09231.jpg	941	1001	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"/g/giotto/padova/4
+Giotto di Bondone - Last Judgment (detail) - WGA09232.jpg	950	993	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09234.jpg	800	1089	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09236.jpg	801	1068	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09239.jpg	859	1001	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"/g/giotto/padova/4
+Giotto di Bondone - Last Judgment (detail) - WGA09240.jpg	933	901	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment (detail) - WGA09241.jpg	1019	901	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto di Bondone - Last Judgment - WGA09228.jpg	850	1160	image/jpeg	Public domain	Giotto	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"g/giotto/padova/4l
+Giotto scrovegni, giudizio universale.jpg	1220	920	image/jpeg	Public domain	Giotto	~
+Last-judgment-scrovegni-chapel-giotto-1306.jpg	2500	2327	image/jpeg	Public domain	Giotto	Scanned from Giotto and the Arena Chapel: Art, Architecture &amp; Experience
+LastJudgmentGiotto.jpg	513	600	image/jpeg	Public domain	Giotto	http://www.aug.edu/augusta/iconography/lastJudgment.html
+Last Judgement - Capella degli Scrovegni - Padua 2016 (2).jpg	2048	3072	image/jpeg	CC BY-SA 4.0	José Luiz	Own work
+Padova Cappella degli Scrovegni Innen Fresko Das Jüngste Gericht 1.jpg	4295	3421	image/jpeg	CC BY-SA 4.0	Zairon	Own work
+== commons sanmarco
+Angelico, predella dei santi cosma e damiano da pala di san marco, crocefissione.jpg	990	774	image/jpeg	Public domain	Fra Angelico	www.wga.hu
+Angelico, predella dei santi cosma e damiano da pala di san marco, guarigione di palladia.jpg	1004	776	image/jpeg	Public domain	Fra Angelico	www.wga.hu
+Angelico, predella dei santi cosma e damiano da pala di san marco, salvataggio.jpg	1040	758	image/jpeg	Public domain	Fra Angelico	www.wga.hu
+Angelico, predella dei santi cosma e damiano da pala di san marco, sepoltura.jpg	996	780	image/jpeg	Public domain	Fra Angelico	www.wga.hu
+Angelico, san Romualdo dalla pala di san marco, Minneapolis.jpg	476	1400	image/jpeg	Public domain	Fra Angelico	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"a/angelico/07/pane
+Angelico, san bernardo dalla pala di san marco.jpg	468	1400	image/jpeg	Public domain	Fra Angelico	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"a/angelico/07/pane
+Beato angelico, guarigione di palladia da parte dei santi cosma e damiano, dalla predella della pala di san marco, 1438-1440 circa.JPG	2352	1896	image/jpeg	CC BY-SA 3.0	Sailko	Own work
+Bourg-Saint-Bernard - ÉgliseSaint-Bernard -Exterieur.jpg	6389	5121	image/jpeg	CC BY-SA 4.0	Didier Descouens	Own work
+Due santi, angelico.jpg	500	1263	image/jpeg	Public domain		http://bioephemera.com/2007/04/02/
+Due santi, angelico 2.jpg	500	1231	image/jpeg	Public domain	Fra Angelico	http://bioephemera.com/2007/04/02/home-decorating-with-lost-masterpieces/
+Fra Angelico - San Marco Altarpiece (detail) - WGA00510.jpg	907	900	image/jpeg	Public domain		Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"a/angelico/07/alta
+Fra Angelico - San Marco Altarpiece - WGA00509.jpg	1145	1100	image/jpeg	Public domain	Fra Angelico	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"a/angelico/07/alta
+Fra Angelico - San Marco Altarpiece - WGA00509 02.jpg	1145	1100	image/jpeg	Public domain	Fra Angelico	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"a/angelico/07/alta
+Fra Angelico — San Marco Altarpiece.jpg	4971	5139	image/jpeg	Public domain	Gsimonov	Own work
+Fra Angelico — San Marco Altarpiece — Predella — The Healing of Deacon Justinian by Saints Cosmas and Damian.jpg	4100	3012	image/jpeg	Public domain	Gsimonov	Own work
+== commons sanmarco2
+Angelico, san Romualdo dalla pala di san marco, Minneapolis.jpg	476	1400	image/jpeg	Public domain	Fra Angelico	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"a/angelico/07/pane
+Angelico, san girolamo dalla pala di san marco.jpg	473	1400	image/jpeg	Public domain	Fra Angelico	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"a/angelico/07/pane
+Beato angelico, pala di san marco, 1438-41, 01.jpg	3984	3252	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 02.jpg	4088	3272	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 03 ss. lorenzo, giovanni evangelista e marco.jpg	4716	3648	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 04 cosma.jpg	4836	3648	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 05 madonna col bambino.jpg	3168	4976	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 06 crocifissione e tappeto.jpg	5472	2958	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 07 tappeto del caucaso.jpg	5472	3648	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 08 domenico, francesco e pietro martire.jpg	4852	3648	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 09 damiano.jpg	3648	4600	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, 10 tappeto.jpg	5124	3496	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, pilastrini, beato domenicano.jpg	1984	4632	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Beato angelico, pala di san marco, 1438-41, pilastrini, san vincenzo ferrer.jpg	1912	4536	image/jpeg	CC BY-SA 4.0	Francesco Bini	Own work
+Pala San Marco - central - Museo nazionale di San Maco, Florence.jpg	750	728	image/jpeg	Public domain		https://museodisanmarco.blog/2022/04/29/la-pala-di-san-marco-del-beato-angelico-
+== commons maesta
+Duccio Maestà.jpg	1540	784	image/jpeg	Public domain	Duccio di Buoninsegna	http://gallery.euroweb.hu/html/d/duccio/buoninse/maesta/maest_01.html
+Duccio di Buoninsegna - Conjectural reconstrruction of the Maestà (front) - WGA06740.jpg	1041	1000	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06743.jpg	701	941	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06744.jpg	661	800	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06745.jpg	715	1000	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06746.jpg	634	780	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06747.jpg	606	894	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06748.jpg	717	1000	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06749.jpg	641	780	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06750.jpg	950	572	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio di Buoninsegna - Maestà (detail) - WGA06751.jpg	950	565	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"d/duccio/maesta/ma
+Duccio maesta1021.jpg	2029	1000	image/jpeg	Public domain	Duccio di Buoninsegna	Self-scanned
+Maest 0 duccio 1308-11 siena duomo.jpg	1902	1800	image/jpeg	Public domain	Duccio di Buoninsegna	Web Gallery of Art
+Siena Museo dell'Opera del Duomo Maestà 1.jpg	4803	2504	image/jpeg	CC0	Zairon	Own work
+Siena Museo dell'Opera del Duomo Maestà 2.jpg	5034	3637	image/jpeg	CC0	Zairon	Own work
+== commons maesta2
+Catalogo delle opere antiche d'intaglio e intarsio in legno - esposte nel 1885 a Roma - preceduto da brevi cenni sulla storia di quelle due arti in Italia dal XIII al XVI secolo (IA catalogodelleope00ercu).pdf	883	1356	application/pdf	Public domain	Raffaele Erculei	Internet Archive identifier: catalogodelleope00ercu https://archive.org/download
+Catalogo delle opere di Donatello e bibliografia degli autori che ne hanno scritto (IA catalogodelleope00mila).pdf	1056	1572	application/pdf	Public domain	Gaetano Milanesi	Internet Archive identifier: catalogodelleope00mila https://archive.org/download
+Guasti - Sigilli pratesi.djvu	2167	3000	image/vnd.djvu	Public domain	Cesare Guasti	Internet Archive identifier: GuastiSigilliPratesi
+Guido Carocci I dintorni di Firenze 02.djvu	3096	4838	image/vnd.djvu	Public domain	Guido Carocci	Internet Archive identifier: 
+I dintorni di Firenze (IA idintornidifiren02caro).pdf	712	1114	application/pdf	Public domain	 Carocci, Guido, 1851-	Internet Archive identifier: idintornidifiren02caro https://archive.org/download
+L'arte senese nel quattrocento - conferenza tenuta il 4 marzo, 1899 (IA lartesenesenelqu00ross).pdf	1000	1585	application/pdf	Public domain	 Rossi, Pietro, 1871-	Internet Archive identifier: lartesenesenelqu00ross https://archive.org/download
+Notizie storiche sull'origine e progressi dei lavori di commesso in pietre dure chi si eseguiscono nell'I. e R. stabilimento di Firenze (IA notiziestoriches00zobi).pdf	652	908	application/pdf	Public domain	 Zobi, Antonio	Internet Archive identifier: notiziestoriches00zobi https://archive.org/download
+Osservazioni critiche dell' abate Luigi de Angelis, conservatore della Biblioteca pubblica, e del gabinetto delle Belle-Arti di Siena (IA osservazionicrit00more).pdf	810	1252	application/pdf	Public domain	 Moreni, Domenico, 1763-1835 De Angelis, Luigi, abate	Internet Archive identifier: osservazionicrit00more https://archive.org/download
+Rassegna d'arte senese - bullettino della Società degli amici dei monumenti (IA rassegnadartesen1219soci).pdf	850	1425	application/pdf	Public domain	 Società senese degli amici dei monumenti Federazione artistica Senese-Grossetan	Internet Archive identifier: rassegnadartesen1219soci https://archive.org/downlo
+Rassegna d'arte senese - bullettino della Società degli amici dei monumenti (IA rassegnadartesen57soci).pdf	864	1379	application/pdf	Public domain	 Società senese degli amici dei monumenti Federazione artistica Senese-Grossetan	Internet Archive identifier: rassegnadartesen57soci https://archive.org/download
+Repertorium für kunstwissenschaft (IA gri 33125006116079).pdf	1158	1591	application/pdf	Public domain		Internet Archive identifier: gri_33125006116079 https://archive.org/download/gri
+S. Marco, convento dei Padri predicatori in Firenze (IA gri 33125016447977).pdf	1143	1500	application/pdf	Public domain	 Marchese, Vincenzo Fortunato	Internet Archive identifier: gri_33125016447977 https://archive.org/download/gri
+Storia dell'arte italiana (IA storiadellarteit05vent).pdf	1037	1652	application/pdf	Public domain	 Venturi, Adolfo, 1856-1941	Internet Archive identifier: storiadellarteit05vent https://archive.org/download
+Storia della pittura in Italia dal secolo II al secolo XVI (IA gri 33125003146442).pdf	975	1387	application/pdf	Public domain	 Crowe, J. A. (Joseph Archer), 1825-1896 Cavalcaselle, G. B. (Giovanni Battista)	Internet Archive identifier: gri_33125003146442 https://archive.org/download/gri
+Zur Kunstgeschichte des Auslandes 051 Sienesische Meister des Trecento in der Gemäldegalerie zu Siena (IA sienesischemeist00jaco).pdf	1179	1752	application/pdf	Public domain	Emil Jacobsen	Internet Archive identifier: sienesischemeist00jaco https://archive.org/download
+== commons smmaesta
+Maestà Martini 01.JPG	5184	3456	image/jpeg	CC BY-SA 4.0	Miguel Hermoso Cuesta	Own work
+Maestà Martini 02.JPG	5184	3456	image/jpeg	CC BY-SA 4.0	Miguel Hermoso Cuesta	Own work
+Maestà Martini 03.JPG	5184	3456	image/jpeg	CC BY-SA 4.0	Miguel Hermoso Cuesta	Own work
+Maestà Martini 04.JPG	3456	5184	image/jpeg	CC BY-SA 4.0	Miguel Hermoso Cuesta	Own work
+Maestà Martini 05.JPG	5184	3456	image/jpeg	CC BY-SA 4.0	Miguel Hermoso Cuesta	Own work
+Maestà by Simone Martini - Palazzo Pubblico - Siena 2016.jpg	3827	2897	image/jpeg	CC BY-SA 4.0	José Luiz	Own work
+Maestà de Simone Martini, Palau Públic de Siena.JPG	3370	2663	image/jpeg	CC BY-SA 3.0	Joanbanjo	Own work
+Maestà di simone martini, siena palazzo pubblico 1315-1321.jpg	1020	717	image/jpeg	Public domain	Simone Martini	Simone Martini
+Siena Palazzo Pubblico8.jpg	1024	682	image/jpeg	CC BY-SA 4.0	Calvin Kramer	Own work
+Siena Palazzo Pubblico Interno Sala del Mappamondo Affresco 08.jpg	4765	3753	image/jpeg	CC BY 4.0	Zairon	Own work
+Siena Palazzo Pubblico Interno Sala del Mappamondo Affresco 09.jpg	4786	3843	image/jpeg	CC BY 4.0	Zairon	Own work
+Simone Martini, Maestà, dettaglio, Siena - Palazzo Pubblico - 2023-09-11 19-20-30 001.JPG	6000	4000	image/jpeg	CC BY-SA 4.0	Nicola Quirico	Own work
+Simone Martini - Maestà (Madonna with Angels and Saints) - WGA21346.jpg	885	674	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"s/simone/2maesta/m
+Simone Martini - Maestà - Google Art Project.jpg	4135	3179	image/jpeg	Public domain	Simone Martini	Google Arts &amp; Culture  — zwF3haL1RjxMeg
+Simone Martini Maesta.jpg	1248	850	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"s/simone/2maesta/m
+== commons guido
+Guidoriccio Siena 03.JPG	5184	3456	image/jpeg	CC BY-SA 4.0	Miguel Hermoso Cuesta	Own work
+Guidoriccio Siena 04.JPG	5184	3456	image/jpeg	CC BY-SA 4.0	Miguel Hermoso Cuesta	Own work
+Guidoriccio da Fogliano all'assedio di Montemassi, Palau Públic de Siena.JPG	3664	2420	image/jpeg	CC BY-SA 3.0	Joanbanjo	Own work
+Guidoriccio da Fogliano all'assedio di Montemassi, Palazzo Pubblico de Siena.JPG	3082	2588	image/jpeg	CC BY-SA 3.0	Joanbanjo	Own work
+Guidoriccio mangonel.jpg	471	565	image/jpeg	Public domain	Simone Martini	
+Simone Martini - Equestrian portrait of Guidoriccio da Fogliano - WGA21430.jpg	955	720	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"/s/simone/5foglian
+Simone Martini - Equestrian portrait of Guidoriccio da Fogliano - WGA21430 (cropped1).jpg	358	230	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"s/simone/5foglian/
+Simone Martini - Equestrian portrait of Guidoriccio da Fogliano - WGA21431.jpg	1465	473	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"s/simone/5foglian/
+Simone Martini - Guidoriccio da Fogliano (detail) - WGA21432.jpg	858	720	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"s/simone/5foglian/
+Simone Martini - Guidoriccio da Fogliano (detail) - WGA21433.jpg	817	700	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"s/simone/5foglian/
+Simone Martini - Guidoriccio da Fogliano (detail) - WGA21434.jpg	950	625	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"s/simone/5foglian/
+Simone Martini - Guidoriccio da Fogliano (detail) - WGA21435.jpg	739	700	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"s/simone/5foglian/
+Simone Martini - Guidoriccio da Fogliano - Google Art Project.jpg	6967	2772	image/jpeg	Public domain	Simone Martini	KwGsAiYoIN09ww at Google Cultural Institute maximum zoom level
+Simone Martini - Guidoriccio da Fogliano - Google Art Project crop.jpg	1163	903	image/jpeg	Public domain	Simone Martini	KwGsAiYoIN09ww at Google Cultural Institute maximum zoom level
+Simone Martini 017.jpg	2024	2465	image/jpeg	Public domain	Simone Martini	The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distri
+== commons ludovico
+Simone Martini. St. Louis of Toulouse Altarpiece. 1317. Mus.Capodimonte, Naples..jpg	1484	2200	image/jpeg	Public domain	Simone Martini	Self-scanned
+Simone Martini - Altar of St Louis of Toulouse (detail) - WGA21403.jpg	672	820	image/jpeg	Public domain	Simone Martini	Web Gallery of Art:   Image  Info about artworkwga QS:P11807,"/s/simone/4altars/
+Simone Martini 013.jpg	823	1200	image/jpeg	Public domain	Simone Martini	The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distri
+Simone Martini 013 detail.jpg	1873	2488	image/jpeg	Public domain	Simone Martini	The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distri
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 01.JPG	1854	2622	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 02.JPG	2336	2632	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 03.JPG	3648	2736	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 04.JPG	3648	2736	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 05.JPG	3648	2736	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 06.JPG	2736	3648	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 07.JPG	2180	2072	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 08.JPG	2384	1980	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 09.JPG	2432	2004	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 10.JPG	2340	2072	image/jpeg	CC BY 3.0	Sailko	Own work
+Simone martini, s. ludovico di tolosa incorona il fratello, 1317, Q34, 11.JPG	2164	2072	image/jpeg	CC BY 3.0	Sailko	Own work
+== duccio
+w,le,les,sl,img
+http://www.wikidata.org/entity/Q667202,Maestà,Maestà de la catedral de Siena,20,http://commons.wikimedia.org/wiki/Special:FilePath/Maest%200%20duccio%201308-11%20siena%20duomo.jpg
+http://www.wikidata.org/entity/Q948745,Rucellai Madonna,Madonna Rucellai,14,http://commons.wikimedia.org/wiki/Special:FilePath/Duccio%20-%20Maest%C3%A0%20-%20Google%20Art%20Project.jpg
+http://www.wikidata.org/entity/Q6728394,Madonna and Child,La Virgen y el Niño,9,http://commons.wikimedia.org/wiki/Special:FilePath/Duccio%20Di%20Buoninsegna%20-%20Madonna%20col%20Bambino.jpg
+http://www.wikidata.org/entity/Q644734,Gualino Madonna,Madonna Gualino,8,http://commons.wikimedia.org/wiki/Special:FilePath/Madone%20Gualino.jpg
+http://www.wikidata.org/entity/Q3842715,Madonna di Crevole,,7,http://commons.wikimedia.org/wiki/Special:FilePath/Duccio%20%E2%80%94%20Crevole%20Madonna.jpg
+http://www.wikidata.org/entity/Q18684720,Christ and the Samaritan Woman,Cristo y la samaritana,5,http://commons.wikimedia.org/wiki/Special:FilePath/Duccio%20di%20Buoninsegna%20-%20Christ%20and%20the%20Samaritan%20Woman%20-%20Google%20Art%20Project.jpg
+http://www.wikidata.org/entity/Q6728425,Madonna with Child and six Angels,,5,http://commons.wikimedia.org/wiki/Special:FilePath/Duccio%20di%20Buoninsegna%20008.jpg
+http://www.wikidata.org/entity/Q9068317,The Raising of Lazarus,Resurrección de Lázaro,4,http://commons.wikimedia.org/wiki/Special:FilePath/%27The%20Raising%20of%20Lazarus%27%2C%20tempera%20and%20gold%20on%20panel%20by%20Duccio%20di%20Buoninsegna%2C%201310%E2%80%9311%2C%20Kimbell%20Art%20Museum.jpg
 
-== scrovegni
-w,le,sl,img
+== simone
+w,le,les,sl,img
+http://www.wikidata.org/entity/Q979440,Annunciation with Saints Maxima and Ansanus,Anunciación entre los santos Ansano y Margarita,19,http://commons.wikimedia.org/wiki/Special:FilePath/Simone%20Martini%20%E2%80%94%20Annunciation%20with%20St.%20Margaret%20and%20St.%20Ansanus.jpg
+http://www.wikidata.org/entity/Q3947520,Saint Louis of Toulouse crowns Robert of Anjou,"San Luis de Tolosa coronando a Roberto de Anjou, rey de Nápoles",10,http://commons.wikimedia.org/wiki/Special:FilePath/Simone%20Martini%20013.jpg
+http://www.wikidata.org/entity/Q14790751,Orsini Polyptych,,8,http://commons.wikimedia.org/wiki/Special:FilePath/Orsini%20Polyptiek%2C%20Simone%20Martini%2C%2014de%20eeuw%2C%20Koninklijk%20Museum%20voor%20Schone%20Kunsten%20Antwerpen%2C%20257-260.jpg
+http://www.wikidata.org/entity/Q3119488,Commemoration of Guidoriccio Da Fogliano at the Siege of Montemassi,,6,http://commons.wikimedia.org/wiki/Special:FilePath/1western-wall-in-palazzo-publico-siena-235.jpg
+http://www.wikidata.org/entity/Q3276413,Maestà,,6,http://commons.wikimedia.org/wiki/Special:FilePath/Maest%C3%A0%20di%20simone%20martini%2C%20siena%20palazzo%20pubblico%201315-1321.jpg
+http://www.wikidata.org/entity/Q3539577,Triptych of Saint Augustine,,5,http://commons.wikimedia.org/wiki/Special:FilePath/Simone%20Martini%20073.jpg
+http://www.wikidata.org/entity/Q1105819,Codex Ambrosianus (Petrarca),Codex Ambrosianus (Petrarca),5,http://commons.wikimedia.org/wiki/Special:FilePath/Simone%20Martini%20001.jpg
+http://www.wikidata.org/entity/Q3907529,Saint Catherine of Alexandria Polyptych,Políptico de Santa Catalina,5,http://commons.wikimedia.org/wiki/Special:FilePath/Simone%20Martini%20012.jpg
 
-== obras
-w,le,p,pl,v,vl
-http://www.wikidata.org/entity/Q4109849,Merry Trio,http://www.wikidata.org/prop/direct/P127,,http://www.wikidata.org/entity/Q2694823,Eric Albada Jelgersma
-http://www.wikidata.org/entity/Q4109849,Merry Trio,http://www.wikidata.org/prop/direct/P127,,http://www.wikidata.org/entity/Q19040751,George Donaldson
-http://www.wikidata.org/entity/Q1523466,Suprematist Composition,http://www.wikidata.org/prop/direct/P195,,http://www.wikidata.org/entity/Q28777335,Brett Gorvy
-http://www.wikidata.org/entity/Q4109849,Merry Trio,http://www.wikidata.org/prop/direct/P195,,http://www.wikidata.org/entity/Q28872849,Kunsthandel P. de Boer
-http://www.wikidata.org/entity/Q4109849,Merry Trio,http://www.wikidata.org/prop/direct/P195,,http://www.wikidata.org/.well-known/genid/6e0345e566775028f147ef6c8f716a5e,
-
-== chapel
-c,l
-http://www.wikidata.org/entity/Q201017,Bona Espero
-
-Fri Nov 27 00:49:28 UTC 2026
+Fri Nov 27 01:20:55 UTC 2026
