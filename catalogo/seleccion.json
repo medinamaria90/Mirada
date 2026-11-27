@@ -145,6 +145,35 @@
   "fama": 1
  },
  {
+  "id": "w667202",
+  "pintorId": "duccio",
+  "qid": "Q667202",
+  "titulo": "Maestà de la catedral de Siena",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "1308",
+  "anioSort": 1308,
+  "anioCalidad": "exact",
+  "coleccion": null,
+  "tipo": [
+   "polyptych"
+  ],
+  "archivo": "Siena Museo dell'Opera del Duomo Maestà 1.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Siena_Museo_dell'Opera_del_Duomo_Maestà_1.jpg",
+  "srcW": 4803,
+  "srcH": 2504,
+  "mime": "image/jpeg",
+  "licencia": "CC0",
+  "autorArchivo": "Zairon",
+  "creditoArchivo": "Own work",
+  "sitelinks": 20,
+  "confianza": "high",
+  "avisos": [],
+  "fama": 2
+ },
+ {
   "id": "w948745",
   "pintorId": "duccio",
   "qid": "Q948745",
@@ -208,8 +237,8 @@
   "qid": "Q3842715",
   "titulo": "Madonna di Crevole",
   "tituloFuente": "traducir",
-  "level": 2,
-  "etapa": "Más obras",
+  "level": 1,
+  "etapa": null,
   "forzada": false,
   "anio": "1283",
   "anioSort": 1283,
@@ -313,6 +342,35 @@
   "licencia": "Public domain",
   "autorArchivo": "Duccio di Buoninsegna",
   "creditoArchivo": "Google Arts &amp; Culture  — VwFhxyyiHc20QA",
+  "sitelinks": 3,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w4015930",
+  "pintorId": "duccio",
+  "qid": "Q4015930",
+  "titulo": "The Calling of the Apostles Peter and Andrew",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1308",
+  "anioSort": 1308,
+  "anioCalidad": "exact",
+  "coleccion": "Samuel H. Kress Collection",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Duccio di Buoninsegna 036.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Duccio_di_Buoninsegna_036.jpg",
+  "srcW": 2730,
+  "srcH": 2561,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Duccio di Buoninsegna",
+  "creditoArchivo": "The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202.",
   "sitelinks": 3,
   "confianza": "medium",
   "avisos": [],
@@ -765,6 +823,37 @@
   "fama": 1
  },
  {
+  "id": "w3769209",
+  "pintorId": "giotto",
+  "qid": "Q3769209",
+  "titulo": "El Juicio Final",
+  "tituloFuente": "wikidata-es",
+  "level": 3,
+  "etapa": "Padua y la capilla Scrovegni",
+  "forzada": true,
+  "anio": "1306",
+  "anioSort": 1306,
+  "anioCalidad": "exact",
+  "coleccion": "capilla de los Scrovegni",
+  "tipo": [
+   "?"
+  ],
+  "archivo": "Last Judgement - Capella degli Scrovegni - Padua 2016 (2).jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Last_Judgement_-_Capella_degli_Scrovegni_-_Padua_2016_(2).jpg",
+  "srcW": 2048,
+  "srcH": 3072,
+  "mime": "image/jpeg",
+  "licencia": "CC BY-SA 4.0",
+  "autorArchivo": "José Luiz",
+  "creditoArchivo": "Own work",
+  "sitelinks": 6,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 1
+ },
+ {
   "id": "w61989282",
   "pintorId": "giotto",
   "qid": "Q61989282",
@@ -1061,6 +1150,68 @@
   "fama": 2
  },
  {
+  "id": "w3119488",
+  "pintorId": "simone-martini",
+  "qid": "Q3119488",
+  "titulo": "Guidoriccio da Fogliano en el asedio de Montemassi",
+  "tituloFuente": "manual",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "c. 1328–1330",
+  "anioSort": 1328,
+  "anioCalidad": "circa",
+  "coleccion": "Palacio Comunal de Siena",
+  "tipo": [
+   "?"
+  ],
+  "archivo": "Simone Martini - Guidoriccio da Fogliano - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_-_Guidoriccio_da_Fogliano_-_Google_Art_Project.jpg",
+  "srcW": 6967,
+  "srcH": 2772,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "Google Arts & Culture",
+  "sitelinks": 6,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 1
+ },
+ {
+  "id": "w3276413",
+  "pintorId": "simone-martini",
+  "qid": "Q3276413",
+  "titulo": "Maestà del Palazzo Pubblico",
+  "tituloFuente": "manual",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "1315",
+  "anioSort": 1315,
+  "anioCalidad": "exact",
+  "coleccion": "Palacio Comunal de Siena",
+  "tipo": [
+   "?"
+  ],
+  "archivo": "Simone Martini - Maestà - Google Art Project.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_-_Maestà_-_Google_Art_Project.jpg",
+  "srcW": 4135,
+  "srcH": 3179,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "Google Arts & Culture",
+  "sitelinks": 6,
+  "confianza": "medium",
+  "avisos": [
+   "proporcion"
+  ],
+  "fama": 1
+ },
+ {
   "id": "w3907529",
   "pintorId": "simone-martini",
   "qid": "Q3907529",
@@ -1176,6 +1327,35 @@
   "licencia": "Public domain",
   "autorArchivo": "Simone Martini",
   "creditoArchivo": "Web Gallery of Art:   Image  Info about artworkwga QS:P11807,\"s/simone/6annunci/a_angel\" https://artsandculture.google.com/asset/the-angel-of-the-annunciation-simone-martini/ugHDOL-vk0oeBw",
+  "sitelinks": 1,
+  "confianza": "medium",
+  "avisos": [],
+  "fama": 1
+ },
+ {
+  "id": "w21614531",
+  "pintorId": "simone-martini",
+  "qid": "Q21614531",
+  "titulo": "Descent from the Cross",
+  "tituloFuente": "traducir",
+  "level": 2,
+  "etapa": "Más obras",
+  "forzada": false,
+  "anio": "1333",
+  "anioSort": 1333,
+  "anioCalidad": "exact",
+  "coleccion": "Museo Real de Bellas Artes de Amberes",
+  "tipo": [
+   "painting"
+  ],
+  "archivo": "Simone Martini 065.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Simone_Martini_065.jpg",
+  "srcW": 1576,
+  "srcH": 2522,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Simone Martini",
+  "creditoArchivo": "The Yorck Project (2002)       10.000 Meisterwerke der Malerei (DVD-ROM), distributed by DIRECTMEDIA Publishing GmbH.  ISBN:  3936122202.",
   "sitelinks": 1,
   "confianza": "medium",
   "avisos": [],
@@ -1794,6 +1974,38 @@
   "confianza": "medium",
   "avisos": [
    "proporcion"
+  ],
+  "fama": 2
+ },
+ {
+  "id": "w1215809",
+  "pintorId": "fra-angelico",
+  "qid": "Q1215809",
+  "titulo": "Retablo de San Marcos",
+  "tituloFuente": "wikidata-es",
+  "level": 1,
+  "etapa": null,
+  "forzada": true,
+  "anio": "s. XV",
+  "anioSort": 1425,
+  "anioCalidad": "century",
+  "coleccion": "Museo Nacional de San Marcos",
+  "tipo": [
+   "painting",
+   "polyptych"
+  ],
+  "archivo": "Fra Angelico — San Marco Altarpiece.jpg",
+  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Fra_Angelico_—_San_Marco_Altarpiece.jpg",
+  "srcW": 4971,
+  "srcH": 5139,
+  "mime": "image/jpeg",
+  "licencia": "Public domain",
+  "autorArchivo": "Gsimonov",
+  "creditoArchivo": "Own work",
+  "sitelinks": 12,
+  "confianza": "medium",
+  "avisos": [
+   "archivo-sospechoso"
   ],
   "fama": 2
  },
@@ -26529,35 +26741,6 @@
   "avisos": [
    "proporcion"
   ],
-  "fama": 1
- },
- {
-  "id": "w69729449",
-  "pintorId": "kuniyoshi",
-  "qid": "Q69729449",
-  "titulo": "Honchō suikoden gōyū 800 nin hitori",
-  "tituloFuente": "traducir",
-  "level": 1,
-  "etapa": null,
-  "forzada": false,
-  "anio": "c. 1830",
-  "anioSort": 1830,
-  "anioCalidad": "circa",
-  "coleccion": null,
-  "tipo": [
-   "print"
-  ],
-  "archivo": "Honcho Suikoden Goketsu (BM 1973,0723,0.29 76).jpg",
-  "archivoUrl": "https://commons.wikimedia.org/wiki/File:Honcho_Suikoden_Goketsu_(BM_1973,0723,0.29_76).jpg",
-  "srcW": 617,
-  "srcH": 1600,
-  "mime": "image/jpeg",
-  "licencia": "Public domain",
-  "autorArchivo": "Print artist: Utagawa Kuniyoshi (歌川国芳)\n\nPrint artist: Utagawa Kunisada (歌川国貞 Toyokuni III)",
-  "creditoArchivo": "https://www.britishmuseum.org/collection/object/A_1973-0723-0-29",
-  "sitelinks": 2,
-  "confianza": "medium",
-  "avisos": [],
   "fama": 1
  },
  {
