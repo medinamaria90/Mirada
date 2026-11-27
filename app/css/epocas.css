@@ -30,8 +30,11 @@
 .era-more:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
 
 .era-card { text-align: left; justify-items: stretch; }
-.era-card-art { display: grid; place-items: center; height: var(--era-art-h); }
-.era-card-art .art { max-height: 100%; max-width: 100%; width: auto; height: 100%; aspect-ratio: var(--arw) / var(--arh); border-radius: var(--radius-sm); box-shadow: var(--frame-shadow); }
+/* El cuadro entero, con su proporción (--card-ar, de era-cards.js): la caja se adapta a la obra hasta --era-art-h de alto
+   y el ancho de la tarjeta, sin recortar nada. Con un detalle a propósito (.is-region), la imagen se sale por los lados. */
+.era-card-art { display: grid; place-items: center; }
+.era-card-art .art { width: min(100%, calc(var(--era-art-h) * var(--card-ar))); height: auto; aspect-ratio: var(--card-ar); border-radius: var(--radius-sm); box-shadow: var(--frame-shadow); }
+.era-card-art.is-region .art img { inset: auto; left: var(--rl); top: var(--rt); width: var(--rw); height: var(--rh); max-width: none; object-fit: fill; }
 .era-card-work { margin: -.3rem 0 0; color: var(--ink-2); font: 400 .9rem/1.3 var(--font); text-align: center; }
 .era-chip {
   justify-self: start; margin: .2rem 0 0; padding: .3rem .7rem; border-radius: 999px; background: var(--accent-soft);

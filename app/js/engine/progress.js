@@ -128,6 +128,9 @@ export function emptyProgress() {
     fallados: [],
     // Último día en que salió cada pintor en una pregunta: { artistId: 'AAAA-MM-DD' } (engine/review.js).
     seen: {},
+    // Invitados ya presentados con su tarjeta: { artistId: 'AAAA-MM-DD' } (engine/guest-intro.js). Solo valen para
+    // preguntar por ellos, no para el camino. Un estado anterior lo recibe vacío (state/schema.js mergeDefaults).
+    guests: {},
   };
 }
 

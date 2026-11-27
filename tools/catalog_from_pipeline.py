@@ -133,6 +133,103 @@ def texto_con_fuente(v):
     return dict(text=text.strip(), source=source if isinstance(source, str) else "")
 
 
+FIJATE_MAX = 100
+FIJATE_TODOS = "todos"
+
+
+def leer_fijate(data, artist_of, traits, pintores):
+    """contenido/fijate.json → {obra: {text, source, skip}}. Cada entrada: «text» (el «Fíjate en…» de esa obra, ≤ 100
+    letras, con «source») y/o «sin»: los rasgos del pintor que no se ven en ella, por posición en [pista, *rasgos] (0 es
+    la pista) o «todos». Con «text» y sin «sin», no se enseña ningún rasgo genérico (la obra ya dice lo suyo); «sin»: []
+    los deja todos.
+    skip: «todos» o lista de posiciones. Falla si una entrada no encaja (obra que no existe, texto largo, posición fuera)."""
+    out = {}
+    for wid, v in data.items():
+        if wid.startswith("_"):
+            continue
+        assert wid in artist_of, f"fijate.json: la obra {wid} no está en el catálogo"
+        pid = artist_of[wid]
+        hint = (D.A.get(pid) or {}).get("hint", "")
+        count = (1 if hint else 0) + len(traits.get(pid, []))
+        entry = {}
+        text = (v.get("text") or "").strip()
+        if text:
+            assert len(text) <= FIJATE_MAX, f"fijate.json: {wid} pasa de {FIJATE_MAX} letras ({len(text)})"
+            assert (v.get("source") or "").strip(), f"fijate.json: {wid} sin fuente"
+            entry.update(text=text, source=v["source"].strip())
+        sin = v.get("sin", FIJATE_TODOS if text else None)
+        if sin == FIJATE_TODOS:
+            entry["skip"] = FIJATE_TODOS
+        elif sin:
+            assert isinstance(sin, list) and all(isinstance(i, int) and 0 <= i < count for i in sin), \
+                f"fijate.json: {wid} ({pintores[pid]['name']}) con «sin» fuera de [0, {count})"
+            entry["skip"] = sorted(set(sin))
+        assert entry, f"fijate.json: {wid} sin «text» ni «sin»"
+        out[wid] = entry
+    return out
+
+
+# Género de cada obra (para saber qué rasgos del pintor se ven en ella): el de Wikidata reducido a cinco, o el de
+# contenido/generos.json donde Wikidata no lo trae o se equivoca.
+GENEROS = ("retrato", "figuras", "paisaje", "bodegon", "abstracto")
+GENERO_WIKIDATA = {
+    "retrato": {"retrato", "autorretrato", "retrato ecuestre", "retrato grupal", "retrato de familia", "retrato doble", "Tronie",
+                "portrait historié", "retrato de donador", "pintura de personaje", "schutterstuk"},
+    "paisaje": {"pintura del paisaje", "marinas", "paisaje urbano", "vedutismo", "pintura arquitectónica", "nocturno",
+                "vista interior"},
+    "bodegon": {"bodegón", "vanitas", "pintura floral"},
+    "abstracto": {"arte abstracto"},
+    "figuras": {"arte religioso", "escena de género", "desnudo", "pintura mitológica", "pintura de historia", "alegoría",
+                "pintura religiosa", "pintura de batalla", "Fête galante", "pastoral", "arte erótico", "pintura artúrica",
+                "capricho", "animalística"},
+}
+ALCANCE_ESTILO = "estilo"
+ALCANCE_ETIQUETAS = "etiquetas"
+
+
+def genero_de(w, manual):
+    if w["id"] in manual:
+        return manual[w["id"]]
+    return next((g for g, names in GENERO_WIKIDATA.items() if w.get("genre") in names), None)
+
+
+GENERAL_MAX = 110
+
+
+def alcance_valido(sc):
+    return sc in (ALCANCE_ESTILO, ALCANCE_ETIQUETAS) or (isinstance(sc, list) and bool(sc) and all(g in GENEROS for g in sc))
+
+
+def leer_alcances(data, lines_of):
+    """contenido/rasgos.json → ({pintor: [alcance por frase]}, {pintor: [versión general o None]}), alineado con
+    [pista, *rasgos]. Cada frase: su alcance («estilo», «etiquetas» o lista de géneros) o {donde, general, generalDonde}:
+    una frase con un detalle concreto (de pie, paisaje, ruinas, llanto…) solo sale donde se ve (donde) y, si no, su
+    versión general, sin el detalle (en generalDonde, por defecto en cualquier obra). Todo pintor con frases lo declara
+    (sin certeza de dónde se ve una frase, no se enseña)."""
+    scopes_of, general_of = {}, {}
+    for pid, n in lines_of.items():
+        if not n:
+            continue
+        entries = data.get(pid)
+        assert isinstance(entries, list) and len(entries) == n, f"rasgos.json: {pid} necesita {n} alcances"
+        scopes, generals = [], []
+        for e in entries:
+            if isinstance(e, dict):
+                sc, text, where = e.get("donde"), (e.get("general") or "").strip(), e.get("generalDonde", ALCANCE_ESTILO)
+                assert text and len(text) <= GENERAL_MAX, f"rasgos.json: {pid}, versión general vacía o larga: {text!r}"
+                assert alcance_valido(where) and where != ALCANCE_ETIQUETAS, f"rasgos.json: {pid}, generalDonde {where!r}"
+                generals.append(dict(text=text, scope=where))
+            else:
+                sc = e
+                generals.append(None)
+            assert alcance_valido(sc), f"rasgos.json: {pid} con alcance desconocido {sc!r}"
+            scopes.append(sc)
+        scopes_of[pid] = scopes
+        if any(generals):
+            general_of[pid] = generals
+    return scopes_of, general_of
+
+
 def parrafos_con_fuente(v):
     """[párrafos] o {text: [párrafos], source} → {text: [...], source} (o None si no vale)."""
     paras, source = (v, "") if isinstance(v, list) else (v.get("text"), v.get("source", "")) if isinstance(v, dict) else (None, "")
@@ -330,6 +427,8 @@ def main(app):
     # «Por qué importa» de cada pintor (contenido/importancia.json, con fuente): lo primero de su ficha.
     with open(os.path.join(ROOT, "contenido", "importancia.json"), encoding="utf-8") as f:
         why = {pid: dict(text=v["text"], source=v["source"]) for pid, v in json.load(f).items() if pid in pintores}
+    # Quién era cada invitado del camino, en pocas palabras (contenido/invitados.json, con fuente): su tarjeta de presentación.
+    who = {pid: dict(text=v["text"], source=v["source"]) for pid, v in contenido_opcional("invitados.json").items() if pid in pintores}
     # Dato curioso de cada obra (contenido/curiosidades.json, ≤ 220 letras): se lee en la hoja de feedback de la ronda.
     # Explicación larga (contenido/explicaciones.json, párrafos): solo en la página de la obra, así que va en la ficha.
     curio = {wid: v for wid, v in ((k, texto_con_fuente(v)) for k, v in contenido_opcional("curiosidades.json").items()) if v}
@@ -337,13 +436,20 @@ def main(app):
     # Foco revisado de las obras que alguna vista recorta mucho y las que la historia enseña enteras (contenido/focos.json;
     # el «Detalle del día» de tools/catalog_data.py manda donde lo hay). Pendientes: node tools/recortes.mjs.
     focos = {"focos": {}, "enteras": [], **contenido_opcional("focos.json")}
+    # «Fíjate en…» propio de una obra y rasgos del pintor que NO se ven en ella (contenido/fijate.json): la excepción
+    # a la pista genérica del pintor, para obras de juventud, copias, retratos o atípicas. Véase leer_fijate.
+    lines_of = {pid: (1 if (D.A.get(pid) or {}).get("hint") else 0) + len(text_traits.get(pid, [])) for pid in pintores}
+    trait_scope, trait_general = leer_alcances(contenido_opcional("rasgos.json"), lines_of)
+    generos = {k: v for k, v in contenido_opcional("generos.json").items() if not k.startswith("_")}
+    assert all(v in GENEROS for v in generos.values()), "generos.json: género desconocido"
+    fijate = leer_fijate(contenido_opcional("fijate.json"), {w["id"]: w["artistId"] for w in works}, text_traits, pintores)
     # Imagen HD de las obras que las historias enseñan en detalle (paso «hd» del proceso, catalogo/hd.json; tools/nitidez.py).
     hd_path = os.path.join(ROOT, "catalogo", "hd.json")
     hd = {}
     if os.path.exists(hd_path):
         with open(hd_path, encoding="utf-8") as f:
             hd = json.load(f)
-    text = dict(version=3, look={}, looks={}, kind={}, tags={}, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why,
+    text = dict(version=3, look={}, looks={}, kind={}, tags={}, skipTraits={}, genre={}, traitScope=trait_scope, traitGeneral=trait_general, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why, who=who,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
         o = w["_old"]
@@ -366,13 +472,26 @@ def main(app):
             item["whole"] = True
         if w["id"] in hd:
             item["hd"] = dict(img=f"img/hd/{w['id']}.jpg", w=hd[w["id"]]["w"], h=hd[w["id"]]["h"])
-        if o in D.LOOK:
+        own = fijate.get(w["id"], {})
+        if own.get("text"):
+            # El «fíjate» propio va primero (con su fuente); la pista de catalog_data, si la hay, queda de segunda.
+            looks = [dict(text=own["text"], source=own["source"])]
+            if o in D.LOOK:
+                looks.append(dict(text=D.LOOK[o], source=D.LOOK_SOURCE.get(o, "")))
+            text["look"][w["id"]] = own["text"]
+            text["looks"][w["id"]] = looks
+        elif o in D.LOOK:
             text["look"][w["id"]] = D.LOOK[o]
             if o in D.LOOK2 or o in D.LOOK_SOURCE:
                 looks = [dict(text=D.LOOK[o], source=D.LOOK_SOURCE.get(o, ""))]
                 if o in D.LOOK2:
                     looks.append(dict(text=D.LOOK2[o][0], source=D.LOOK2[o][1]))
                 text["looks"][w["id"]] = looks
+        genre = genero_de(w, generos)
+        assert genre, f"{w['id']} ({w['title']}): sin género; añádelo a contenido/generos.json"
+        text["genre"][w["id"]] = genre
+        if "skip" in own:
+            text["skipTraits"][w["id"]] = own["skip"]
         if o in D.KIND:
             text["kind"][w["id"]] = D.KIND[o]
         if w["id"] in curio:

@@ -155,7 +155,7 @@ export function tramoState(progress, index, branch, movementId) {
 
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 
-// Qué abre una rama cerrada, en una frase: «se abre al dominar a Botticelli y Berruguete».
+// Qué abre una rama cerrada, en una frase: «se abre después de Botticelli y Berruguete».
 export function branchWhy(index, st) {
   return st.pending.length ? `se abre después de ${joinNames(st.pending.map((p) => stepName(index, p)))}` : 'aún cerrada';
 }
@@ -176,7 +176,7 @@ export function branchSpot(spot, branch, st, index, h) {
   // Cerrada: tras quién se abre («tras Goya»; con varias paradas pendientes, cuántos pintores faltan).
   const line = !st.open ? `${icons.lock(11)} ${n === 1 ? `tras ${esc(stepName(index, st.pending[0]))}` : `faltan ${n} pintores`}` : spot.extra ? fresh : `${st.mastered}/${st.total}`;
   return `<li ${signBox(spot.sign, h, 'branch-spot')}>
-      <button type="button" class="sign-plate branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}" aria-label="${esc(label)}">
+      <button type="button" class="sign-plate branch ${cls}" data-action="branch" data-id="${esc(branch.id)}" data-status="${st.open ? 'open' : 'locked'}" data-lock="${st.open ? '' : esc(cap(branchWhy(index, st)))}"${!st.open && st.pending[0] ? ` data-unlock="${esc(`${st.pending[0].type}:${st.pending[0].id}`)}"` : ''} aria-label="${esc(label)}">
         <span class="sign-name">${esc(branchShort(branch, index))}</span>${st.open ? metaRow(spot.sign.side, `<span>${line}</span>`) : `<span class="sign-meta"><span>${line}</span></span>`}
       </button></li>`;
 }

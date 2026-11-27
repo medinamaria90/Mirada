@@ -917,10 +917,10 @@ for (const box of await page.$$eval('.topbar a', (els) => els.map((e) => { const
 }
 // Meta y racha en una pieza: la llama dentro del aro de la meta y «n día(s)»; al tocarla, su explicación en una línea.
 const streakChip = await page.locator('.chip-streak').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), icon: Boolean(a.querySelector('.ring .icon')) }));
-check(/^Racha: \d+ días?\. Meta de hoy: 0 de 50 XP$/.test(streakChip.label) && streakChip.icon, `pieza de racha y meta: ${JSON.stringify(streakChip)}`);
+check(/^Racha: \d+ días?\. Meta de hoy: 0 de 50 puntos$/.test(streakChip.label) && streakChip.icon, `pieza de racha y meta: ${JSON.stringify(streakChip)}`);
 check(/\d+\s*días?$/.test(streakChip.text), `racha sin «n día(s)»: ${streakChip.text}`);
 await page.locator('.chip-streak').click();
-check(/meta de hoy: 0 de 50 XP/.test(await page.locator('.chip-tip').innerText()), 'la racha no se explica al tocarla');
+check(/meta de hoy: 0 de 50 puntos/.test(await page.locator('.chip-tip').innerText()), 'la racha no se explica al tocarla');
 await page.mouse.click(5, 400);
 check(await page.locator('.chip-tip').count() === 0, 'la explicación de la racha no se cierra al tocar fuera');
 check(await page.locator('.brand > span').isVisible(), 'la cabecera no lleva el nombre «Sfumato» a 390 px');
@@ -1153,7 +1153,7 @@ if (SMOKE) {
   check(await page.locator(branchNode('giotto')).getAttribute('data-status') === 'locked', 'la rama no marca a Giotto cerrado');
   await page.click(branchNode('giotto'));
   await page.waitForSelector('.page-branch .lock-note.is-visible');
-  check(/acertar la mitad en duccio/i.test(await page.locator('.page-branch .lock-note.is-visible').innerText()), 'la parada de Giotto en el Gótico no dice qué falta');
+  check(/acierta la mitad con duccio/i.test(await page.locator('.page-branch .lock-note.is-visible').innerText()), 'la parada de Giotto en el Gótico no dice qué falta');
   check(page.url().endsWith('#rama-gotico'), 'tocar un pintor cerrado de la rama cambia de pantalla');
   await audit(page, '390 parada cerrada en la rama');
   // Doble toque (muy habitual en el móvil) en un cartel: una sola entrada en el historial y ninguna hoja.
@@ -1294,6 +1294,7 @@ if (SMOKE) {
   // «Jugar» empieza la ronda: sin «Conoce a» tras la historia.
   await sp.click('.story-play');
   await sp.waitForSelector('.lesson .option');
+  await sp.waitForTimeout(500); // pasado el margen contra toques fantasma al cerrar la historia (ui/tap-guard.js)
   check(await sp.locator('.story').count() === 0, 'la historia no se cierra al terminar');
   check(await sp.locator('.learn').count() === 0, 'tras la historia sale «Conoce a»');
   // Sale de la ronda (si no, al volver a la parada se retoma la ronda guardada).
@@ -1821,7 +1822,7 @@ await page.waitForSelector('.settings-dialog[open]');
 const range = await page.locator('[data-setting="volume"]').boundingBox();
 check(range.height >= 48, `deslizador de volumen de ${Math.round(range.height)} px`);
 await page.click('[data-action="goal"][data-goal="100"]');
-check((await page.locator('.chip-streak').getAttribute('aria-label')).includes('de 100 XP'), 'la cabecera no refleja la nueva meta');
+check((await page.locator('.chip-streak').getAttribute('aria-label')).includes('de 100 puntos'), 'la cabecera no refleja la nueva meta');
 check(await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.dailyGoal) === 100, 'meta no persistida');
 check(await page.locator('.pf-medal.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
 await page.goto(`${base}#coleccion`);
@@ -2129,6 +2130,7 @@ watch(epage, 'ojo');
   await seed(epage, seededState({ upTo: 8, extra: { srs: srsEye } }));
   // Con pintores dominados y un cuadro vencido, el repaso (botón ↻) lo trae.
   await epage.goto(`${base}#repaso`);
+  await epage.click('.review-intro [data-action="start"]');
   await playRound(epage);
   await epage.waitForTimeout(900);
   const eyeCard = epage.locator(`[data-chip="medal-eye-${who.id}"]`);
@@ -2304,10 +2306,14 @@ const r5 = await r5Ctx.newPage();
 watch(r5, 'repasar');
 await seed(r5, seededState({ upTo: 4, extra: { srs } }));
 await r5.waitForSelector('.path');
-check(await r5.locator('.chip-review .chip-dot').count() === 1, 'el botón «Repasar» no lleva el punto con cuadros vencidos');
+check(/pendientes/.test(await r5.locator('.chip-review').getAttribute('aria-label')), 'el botón «Repasar» no avisa de cuadros vencidos');
 await r5.goto(`${base}#repaso5`);
-await r5.waitForSelector('.lesson .option');
+await r5.waitForSelector('.review-intro');
 check(r5.url().endsWith('#repaso'), `#repaso5 no redirige a #repaso: ${r5.url()}`);
+check(/^Repasamos /.test(await r5.locator('.review-intro h1').innerText()), 'la entrada del repaso no dice qué se repasa');
+await audit(r5, '390 entrada del repaso');
+await r5.click('.review-intro [data-action="start"]');
+await r5.waitForSelector('.lesson .option');
 const rSteps = await playRound(r5);
 check(rSteps >= 3 && rSteps <= 7, `el repaso tiene ${rSteps} preguntas`);
 await r5.waitForTimeout(900);

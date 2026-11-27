@@ -3,7 +3,7 @@
 // la parada actual sale de la vista. Al tocarlo, el camino vuelve a ella y el
 // foco pasa a su nodo; es, con abrir la app, lo único que centra el mapa en la parada actual. Devuelve cómo quitarlo.
 
-import { $, prefersReducedMotion } from '../dom.js';
+import { $, esc, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
 
 const VIEW_MARGIN = '-96px 0px -96px 0px';   // la cabecera y la barra de abajo tapan esa franja
@@ -43,4 +43,17 @@ export function watchReturn(el) {
   news.observe(el, { childList: true, subtree: false });
   window.addEventListener('scroll', onScroll, { passive: true });
   return () => { io.disconnect(); news.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(frame); button.remove(); };
+}
+
+// Guía (engine/next-step.js mapGuide): lo que recomienda el juego cuando no es la parada actual, en una píldora junto al
+// «Tú» y siempre a la vista («▷ Sigue: Miguel Ángel», «▷ Repasar»). onGuide la cumple. Devuelve cómo quitarla.
+export function guideButton(el, guide, onGuide) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'map-guide';
+  button.setAttribute('aria-label', guide.label);
+  button.innerHTML = `<span class="map-guide-icon" aria-hidden="true">${icons.play(16)}</span><span class="map-guide-label">${esc(guide.label)}</span>`;
+  button.addEventListener('click', () => onGuide(guide));
+  el.append(button);
+  return () => button.remove();
 }

@@ -1,5 +1,5 @@
 {
-  "_doc": "Calendario del «Cuadro del día» (docs/SPEC.md §Cuadro del día). El día de estreno es el n.º 1 y cada día usa calendario[(n - 1) % largo]: añadir obras al catálogo no mueve los días; las nuevas se añaden AL FINAL. focus: centro [x, y] (de 0 a 1) del detalle del paso 1 (zoom ×3), elegido mirando la imagen: nunca la firma ni un texto. options: los 5 pintores de relleno (misma época o parecidos). museum: solo si el nombre del museo delata al pintor. cards: la historia al acabar (3 tarjetas de hasta 180 caracteres; focus [x, y, zoom] o whole). Lo valida y lo vuelca a app/data/dia/ tools/sync_cuadro_dia.py.",
+  "_doc": "Calendario del «Cuadro del día» (docs/SPEC.md §Cuadro del día). El día de estreno es el n.º 1 y cada día usa calendario[(n - 1) % largo]: añadir obras al catálogo no mueve los días; las nuevas se añaden AL FINAL. focus: centro [x, y] (de 0 a 1) del detalle del paso 1 (zoom ×3), elegido mirando la imagen: nunca la firma ni un texto. options: los 5 pintores de relleno (misma época o parecidos). museum: solo si el nombre del museo delata al pintor. signature: [x0, y0, x1, y1] de la firma o inscripción legible, que se tapa con un velo hasta acabar (y que no puede caer en los recortes de los pasos 1 y 2). cards: la historia al acabar (3 tarjetas de hasta 180 caracteres; focus [x, y, zoom] o whole). Lo valida y lo vuelca a app/data/dia/ tools/sync_cuadro_dia.py.",
   "start": "2026-11-27",
   "days": [
     {
@@ -15,6 +15,7 @@
     },
     {
       "artwork": "w220859",
+      "signature": [0.4, 0.18, 0.58, 0.245],
       "focus": [0.5, 0.86],
       "options": ["van-der-weyden", "memling", "durero", "holbein", "bosco"],
       "source": "https://es.wikipedia.org/wiki/Retrato_de_Giovanni_Arnolfini_y_su_esposa",
@@ -81,6 +82,7 @@
     },
     {
       "artwork": "w883994",
+      "signature": [0.77, 0.89, 0.9, 0.95],
       "focus": [0.72, 0.38],
       "options": ["tintoretto", "bruegel", "durero", "parmigianino", "bronzino"],
       "source": "https://www.metmuseum.org/art/collection/search/436575",
@@ -92,6 +94,7 @@
     },
     {
       "artwork": "w328523",
+      "signature": [0.03, 0.91, 0.26, 0.975],
       "focus": [0.53, 0.68],
       "options": ["renoir", "sisley", "pissarro", "manet", "turner"],
       "museum": "Un museo de París",
@@ -126,6 +129,7 @@
     },
     {
       "artwork": "w6065609",
+      "signature": [0.0, 0.94, 0.16, 1.0],
       "focus": [0.68, 0.55],
       "options": ["monet", "renoir", "fortuny", "degas", "morisot"],
       "museum": "Una casa-museo de Madrid",

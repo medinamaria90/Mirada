@@ -12,6 +12,7 @@ import { icons } from './icons.js';
 import { mediaHtml, copyHtml } from './story-card.js';
 import { shareButtonHtml, noteHtml, flashNote } from './story-share.js';
 import { step, cardDuration, storySrc } from '../engine/stories.js';
+import { guardGhostTaps } from './tap-guard.js';
 
 const HOLD_MS = 180; // mantener el dedo así de rato pausa la historia
 const SWIPE_MIN = 50; // px de arrastre horizontal para pasar de tarjeta
@@ -151,6 +152,7 @@ export function runStory(ctx, opts) {
       document.removeEventListener('keydown', onDocKey);
       if (dlg.open) dlg.close();
       dlg.remove();
+      guardGhostTaps();
       const after = () => { resolve({ shown: shownIds, ended }); if (then) then(); };
       if (pushed && !fromPop) {
         window.addEventListener('popstate', after, { once: true });

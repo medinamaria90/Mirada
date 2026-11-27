@@ -19,22 +19,18 @@ export function goalRing(done, goal, size = 30, inner = '') {
     </svg>${inner ? `<span class="ring-mark ring-inner">${inner}</span>` : met ? `<span class="ring-mark">${icons.check(Math.round(size * 0.5))}</span>` : ''}</span>`;
 }
 
-// Cómo es la cabecera: 'merged' (B: meta y racha en un solo icono, la llama dentro del aro de la meta) o 'minimal' (A: solo
-// «Repasar» y el reto diario; la meta y la racha, en el resultado y el Perfil). Lo decide la puerta de calidad.
-export const HEADER_STYLE = 'merged';
-
 // Lo que dice la llama al tocarla, en una línea.
 export function streakTip(streak, done, goal) {
   const shown = Math.min(done, goal);
-  const days = streak > 1 ? `Llevas ${streak} días seguidos jugando` : streak === 1 ? 'Llevas 1 día jugando' : 'Juega hoy y empieza tu racha';
-  return `${days}. El aro se llena con tu meta de hoy: ${shown} de ${goal} XP.`;
+  const days = streak > 1 ? `Llevas ${streak} días seguidos jugando` : streak === 1 ? 'Hoy empieza tu racha' : 'Juega hoy y empieza tu racha';
+  return `${days}. El aro se llena con tu meta de hoy: ${shown} de ${goal} puntos.`;
 }
 
 // Meta y racha en una pieza: la llama dentro del aro de la meta de hoy y los días al lado. Al tocarla, su explicación.
 export function streakGoalChip(streak, done, goal) {
   const shown = Math.min(done, goal);
   const unit = streak === 1 ? 'día' : 'días';
-  return `<button type="button" class="chip chip-streak" data-tip="${esc(streakTip(streak, done, goal))}" aria-expanded="false" aria-label="Racha: ${streak} ${unit}. Meta de hoy: ${shown} de ${goal} XP"><span class="chip-pill">${goalRing(done, goal, 32, icons.flame(16))}<span class="chip-stack"><span class="chip-num">${streak}</span><span class="chip-unit">${unit}</span></span></span></button>`;
+  return `<button type="button" class="chip chip-streak" data-tip="${esc(streakTip(streak, done, goal))}" aria-expanded="false" aria-label="Racha: ${streak} ${unit}. Meta de hoy: ${shown} de ${goal} puntos"><span class="chip-pill">${goalRing(done, goal, 32, icons.flame(16))}<span class="chip-stack"><span class="chip-num">${streak}</span><span class="chip-unit">${unit}</span></span></span></button>`;
 }
 
 // La pieza de meta y racha con el estado actual (para repintarla al cambiar la meta en Ajustes).
@@ -76,9 +72,10 @@ export function reviewState(ctx) {
 // «Repasar»: en la cabecera de todas las pantallas, entre la racha y el Cuadro del día (la puerta de calidad lo prefirió a una
 // píldora en el mapa: el mismo sitio en todas, pareja del Cuadro del día y sin tapar el camino). Botón redondo con ↻, como el
 // del Cuadro del día; con algo pendiente, el punto coral (sin número).
-export function reviewChip(review) {
+// showDot: false cuando ya hay otro punto en la cabecera (el del Cuadro del día pendiente): un solo aviso a la vez.
+export function reviewChip(review, showDot = true) {
   if (!review) return '';
-  return `<a class="chip chip-review" href="#repaso" aria-label="Repasar${review.pending ? ', hay cuadros pendientes' : ''}"><span class="chip-pill">${icons.repeat(20)}<span class="chip-review-text" aria-hidden="true">Repasar</span>${review.pending ? '<span class="chip-dot" aria-hidden="true"></span>' : ''}</span></a>`;
+  return `<a class="chip chip-review" href="#repaso" aria-label="Repasar${review.pending ? ', hay cuadros pendientes' : ''}"><span class="chip-pill">${icons.repeat(20)}<span class="chip-review-text" aria-hidden="true">Repasar</span>${review.pending && showDot ? '<span class="chip-dot" aria-hidden="true"></span>' : ''}</span></a>`;
 }
 
 // Cuadro de hoy (main.js lo sabe cuando ha llegado data/dia/index.json).
@@ -87,12 +84,12 @@ const today0 = (ctx) => (typeof ctx.cuadroToday === 'function' ? ctx.cuadroToday
 export function topBar(ctx) {
   const state = ctx.store.get();
   const p = state.progress;
-  const today = ctx.today();
+  const cuadroDone = Boolean(p.cuadros?.[ctx.dailyDay()]);
   return `<header class="topbar">
     <a class="brand" href="#inicio" aria-label="Sfumato, inicio">${logoMark(30)}<span>Sfumato</span></a>
     <div class="topbar-stats">
-      ${HEADER_STYLE === 'merged' ? headerStreakChip(ctx) : ''}
-      ${reviewChip(reviewState(ctx))}
+      ${headerStreakChip(ctx)}
+      ${reviewChip(reviewState(ctx), cuadroDone)}
       ${cuadroChip(today0(ctx), p.cuadros?.[ctx.dailyDay()], ctx.index && today0(ctx) ? ctx.index.artwork(today0(ctx).artwork) : null)}
     </div>
   </header>`;

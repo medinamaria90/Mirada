@@ -74,12 +74,12 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   let bar = P.rankProgress(rankFor(p, index));
   assert.equal(bar.next, 'Aficionado');
   assert.deepEqual(bar.conds.map((c) => [c.key, c.have, c.need, c.done]), [['xp', 0, 300, false]]);
-  assert.deepEqual(bar.parts, ['Ganar 300 XP más']);
+  assert.deepEqual(bar.parts, ['Ganar 300 puntos más']);
   p.xp = 1877;
   p.rank = 1;
   bar = P.rankProgress(rankFor(p, index));
   assert.equal(bar.next, 'Copista');
-  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1.200 XP', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
+  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1.200 puntos', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
     'con el XP cumplido se ve cumplido, y lo que falta aparte');
   assert.match(bar.parts[0], /^Superar 1 nivel «a fondo» más$/);
   assert.equal('fraction' in bar, false, 'ya no hay barra del mínimo');
@@ -87,7 +87,7 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   const ladder = rankLadder();
   assert.equal(ladder.length, RANKS.length);
   assert.deepEqual(ladder[0].conds, [], 'el primero no pide nada');
-  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3.000 XP', '4 niveles «a fondo»', 'El nivel 2 de un gran maestro (los más grandes, como Rafael)']);
+  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3.000 puntos', '4 niveles «a fondo»', 'El nivel 2 de un gran maestro (los más grandes, como Rafael)']);
   assert.deepEqual(rankConditions(RANKS[6]).map((c) => c.key), ['xp', 'deep', 'eras', 'complete']);
 });
 
@@ -97,7 +97,7 @@ test('rango: una sola acción recomendada (el nivel que cuenta, a lo ancho); sin
   assert.match(card, /Aficionado/);
   assert.match(card, /Rango 2 de 8/);
   assert.match(card, /Para ser <strong>Copista<\/strong>/);
-  assert.match(card, /pf-cond is-done[\s\S]*<span class="pf-cond-val">1\.500<\/span>\/1\.200 XP/, 'el XP cumplido se lee como «1.500/1.200 XP», no «1200 XP … 1500»');
+  assert.match(card, /pf-cond is-done[\s\S]*<span class="pf-cond-val">1\.500<\/span>\/1\.200 puntos/, 'el XP cumplido se lee como «1.500/1.200 XP», no «1200 XP … 1500»');
   assert.match(card, /Un nivel «a fondo» <span class="pf-cond-val">0\/1<\/span>/);
   assert.doesNotMatch(card, />Jugar<|>Elegir</, 'sin nada que cuente, ningún botón que no cumpliría');
   assert.match(card, /class="pf-cond-why">Termina una parada del camino y se abre su nivel 2</);
@@ -220,7 +220,7 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   const card = rankCardHtml(ctx);
   assert.match(card, /Curioso/);
   assert.match(card, /Para ser <strong>Aficionado<\/strong>/);
-  assert.match(card, /300 XP/);
+  assert.match(card, /300 puntos/);
   const welcome = welcomeHtml();
   assert.match(welcome, /Tu perfil empieza aquí/);
   assert.match(welcome, /btn-primary[^>]*href="#inicio"/);
@@ -228,12 +228,12 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.match(practice, />Practicar</);
   assert.match(practice, /href="test\/"[\s\S]*Test de pintura[\s\S]*Mide lo que sabes/);
   assert.doesNotMatch(practice, /btn-primary|share-test/, 'el test ya no compite como botón principal');
-  assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al terminar el camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
+  assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al final del camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
   assert.doesNotMatch(practice, /quedan \d+/);
   const started = emptyProgress();
   const firstStep = index.steps[0];
   (firstStep.type === 'sala' ? started.salas : started.artists)[firstStep.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
-  assert.match(practiceHtml(ctxFor(started)), /Se abre al terminar el camino: te quedan \d+ paradas?/);
+  assert.match(practiceHtml(ctxFor(started)), /Se abre al final del camino \(te quedan \d+ paradas?\)/);
   assert.doesNotMatch(practice, /data-action="weekly"/);
 });
 
@@ -317,9 +317,9 @@ test('logros: pantalla con grupos y filtros, nombres cortos y, para lectores, «
   const ctx = ctxFor(p);
   const all = medalGroupsHtml(ctx, 'all');
   for (const g of ['Pintores', 'Movimientos', 'Rachas', 'Ojo de…', 'Retos y metas']) assert.match(all, new RegExp(g));
-  assert.match(all, /aria-label="[^"]*, ya lo reconoces, Bronce, conseguida"/);
-  assert.match(all, /aria-label="Reconocer a [^"]*, pendiente"/, 'el pendiente es una meta, no un hecho');
-  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]*, ya lo reconoces</, 'el nombre de la casilla es corto');
+  assert.match(all, /aria-label="[^"]*: ya reconoces sus cuadros, Bronce, conseguida"/);
+  assert.match(all, /aria-label="[^"]*: reconocer sus cuadros, pendiente"/, 'el pendiente es una meta, no un hecho');
+  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]*: ya reconoces sus cuadros</, 'el nombre de la casilla es corto');
   assert.match(all, /aria-label="Racha de 3 días, Bronce, conseguida"/);
   assert.doesNotMatch(all, /pf-tier/);
   const got = medalGroupsHtml(ctx, 'got');

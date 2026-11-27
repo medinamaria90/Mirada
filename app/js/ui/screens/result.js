@@ -25,6 +25,7 @@ import { medalInfo } from '../../engine/medal-info.js';
 import { newWorksCount } from '../../engine/closure.js';
 import { branchAfterRound } from '../../engine/branches.js';
 import { setMapFocus, setBranchFocus } from './path-map.js';
+import { lastStep, rememberStep } from '../last-step.js';
 
 export { extraRounds } from './result-actions.js';
 
@@ -101,13 +102,14 @@ const secondaryBtn = (b) => (b.iconOnly
 // ↻ solo para «Repasar»; «Repetir» va sin icono.
 const STEP_ICON = { review: 'repeat', weekly: 'target' };
 
+
 // Botón principal: el siguiente paso. Al camino («Seguir», «Volver al camino») cierra como siempre; el resto va a su ruta.
 // «Sigue: <pintor>» lleva su miniatura.
 function mainButtonHtml(ctx, step, primaryText) {
   if (step.kind === 'path' || step.kind === 'done') {
     return `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(step.kind === 'path' ? primaryText || step.label : step.label)}</button>`;
   }
-  const work = step.kind === 'stop' && step.artistId ? coverOf(ctx.index, step.artistId) : null;
+  const work = (step.kind === 'stop' || step.kind === 'debt') && step.artistId ? coverOf(ctx.index, step.artistId) : null;
   const lead = work ? `<span class="res-next-art" aria-hidden="true"><img src="${esc(tinySrc(work))}" alt="" decoding="async"></span>`
     : STEP_ICON[step.kind] ? icons[STEP_ICON[step.kind]](20) : '';
   return `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(step.to)}" data-primary>${lead}<span>${esc(step.label)}</span></button>`;
@@ -154,8 +156,9 @@ export function renderResult(ctx, el, opts) {
   const goalJustMet = opts.goalJustMet ?? Boolean(goal);
   // El siguiente paso (engine/next-step.js); los duelos no llevan recomendación.
   const week = typeof ctx.dailyDay === 'function' ? isoWeek(ctx.dailyDay()).key : '';
-  const next = duel ? { kind: 'path', to: 'inicio', label: 'Seguir' }
-    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '' });
+  const next = duel ? { kind: 'path', to: 'inicio', label: 'Volver al camino' }
+    : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '', prevStep: lastStep() });
+  if (!duel) rememberStep(next.kind);
   const blocked = next.kind === 'retry';
   const gated = Boolean(blocked && nextOf && !isStepUnlocked(p, index, nextOf));
   const toPath = next.kind === 'path' || next.kind === 'done';
@@ -178,7 +181,7 @@ export function renderResult(ctx, el, opts) {
 
   const master = heroMedal?.id.startsWith('artist-') ? index.artist(heroMedal.id.slice('artist-'.length)) : null;
   const deepStage = deepDone && index.deepLevels(deepDone.artistId).find((l) => l.id === deepDone.level);
-  const kicker = master ? `${master.short || master.name} · Ya lo reconoces`
+  const kicker = master ? `${master.short || master.name} · Ya reconoces sus cuadros`
     : heroMedal ? `${medalInfo(heroMedal.id, index).title} · Completo`
       : deepStage ? `${stageTitle(index.artist(deepDone.artistId), deepStage)} · Superado` : opts.title;
   const work = heroWork(index, plan);
@@ -196,7 +199,7 @@ export function renderResult(ctx, el, opts) {
       </div>
       <dl class="res-tally">
         <div><dt>Aciertos</dt><dd>${outcome.score}/${outcome.total}</dd></div>
-        <div><dt>Experiencia</dt><dd>+<span class="countup" data-to="${outcome.xp}">${reduce ? outcome.xp : 0}</span></dd></div>
+        <div><dt>Puntos</dt><dd>+<span class="countup" data-to="${outcome.xp}">${reduce ? outcome.xp : 0}</span></dd></div>
         <div><dt>Cuadros nuevos</dt><dd>${fresh}</dd></div>
       </dl>
       ${chipsHtml(chips)}

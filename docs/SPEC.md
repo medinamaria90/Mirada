@@ -272,6 +272,23 @@ fallecidos antes de 1956 y obras anteriores a 1930. Movimientos previstos (ids):
   `state/session.js` (una ronda suya a medias se descarta). `dailyPool` sigue (ronda libre y reto semanal). Estado v11:
   `progress.cuadros` y `progress.cuadroNudge`; `progress.daily` se conserva, solo de lectura.
 
+- **Ajustes posteriores (27/11, tras probarlo María):**
+  - Entrada del repaso (`screens/review-intro.js`): «Repasamos a Miguel Ángel y 4 cuadros más» con su cara (o un detalle
+    de su cuadro; al tocarla, su ficha) y «Empezar».
+  - El botón principal del resultado siempre avanza: la regla 3 es «Sigue: <pintor>» (su ronda), y lo que no tiene a
+    dónde avanzar es «Volver al camino». Regla 5 bis, «lo pendiente atrás»: si la parada abierta ya es de una época
+    posterior y en una anterior queda su Prueba de época abierta sin superar, o un pintor a medias que es lo único que la
+    cierra, se recomienda eso, nunca dos veces seguidas (`backDebt`, `prevStep` en memoria).
+  - Mapa: el botón «Tú» se convierte en la acción recomendada cuando no es la parada actual (`mapGuide`, cargado tras
+    pintar). Los candados dicen qué falta («Te falta Miguel Ángel») y llevan «Ir» a la parada que lo abre (`data-unlock`).
+  - Pintor a medias: el aro entero se llena con su nota, con una muesca en el 75 %, y «Vas por el 67 %» bajo el nombre;
+    su tarjeta, «Has acertado el 50 %; hace falta un 75 %» («Te falta poco» desde el 65 %).
+  - Cabecera: «Sfumato», la llama de la racha dentro del aro de la meta de hoy (al tocarla, una línea: «Llevas 4 días
+    seguidos jugando. El aro se llena con tu meta de hoy: 20 de 50 puntos.»), «Repasar» y el Cuadro del día; un solo
+    punto rojo a la vez.
+  - Vocabulario: nada de «dominar»; frases como se habla («Pintores que reconoces», «Faltan 2 pintores», «Se abre
+    después de Leonardo», «Ya reconoces sus cuadros», neutra para pintoras). Lo vigila `tests/vocabulario.test.js`.
+
 ## 4 ter. Catálogo grande (migración de 24/11, `catalog.json` versión 2)
 
 Lo genera `tools/catalog_from_pipeline.py` desde `catalogo/obras.json` + `catalogo/pintores.json` (proceso `pipeline/`),
@@ -279,7 +296,12 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
 1.315 obras (ids `w<QID>`), 162 pintores, 9 movimientos del camino + 2 ramas-movimiento, 14 ramas.
 
 - **Archivos** (`app/data/`): `catalog.json` (lo mínimo para pintar), `catalog-text.json` (versión 3: `look`, `looks`, `kind`,
-  `tags`, `traits`, `traitTags`, vocabulario) y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
+  `tags`, `genre`, `skipTraits`, `traits`, `traitTags`, `traitScope`, vocabulario). Un rasgo del pintor solo se enseña en una
+  obra donde se ve: `traitScope` (`contenido/rasgos.json`) dice de cada frase si es de «estilo» (vale en todas), de unos
+  géneros (`genre` de la obra: retrato, figuras, paisaje, bodegon, abstracto; Wikidata o `contenido/generos.json`) o de
+  «etiquetas» (solo si las de la obra lo confirman), y una frase con un detalle concreto puede traer su versión general
+  (`traitGeneral`) para las obras donde el detalle no se ve; `contenido/fijate.json` da «fíjate» propios y `skipTraits` (rasgos
+  excluidos en obras de juventud, copias o atípicas). Sin certeza, no hay línea y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
   `technique`, `dimensions`, `source {wikidata, file, license}`; se pide aparte por peso, `mergeCatalogFicha` la une a las obras).
 - **Obra**: `id, artistId, title, year, yearSort, img, thumb, w, h, role, fame, confidence, level, stage?, inSpain, spoiler?,
   attributed?, focus?`. `w`/`h` son los de la imagen empaquetada a 1200 px. `level`: 1 = básico, 2..n = «a fondo» (etapa

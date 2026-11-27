@@ -54,3 +54,16 @@ export function needsFocus(work, { inStory = false } = {}) {
   if (loss.pregunta > LOSS_OK) return true;
   return inStory && !work.whole && loss.historia > LOSS_OK && loss.historia <= LOSS_FOCUSED;
 }
+
+// Tarjetas de época y de cartel (ui/screens/era-cards.js): el cuadro entero, con su proporción; la caja se adapta a la obra.
+// Solo un detalle intencionado de la tarjeta (`part`: la región ya validada, { x0, y0, x1, y1 } de 0 a 1) recorta: entonces
+// la caja toma la proporción de la región y `box` dice dónde va la imagen entera (en % de la caja), que se sale por los lados.
+export function cardFrame(work, part = null) {
+  if (!part) return { ratio: ratioOf(work), box: null };
+  const w = 1 / (part.x1 - part.x0);
+  const h = 1 / (part.y1 - part.y0);
+  return {
+    ratio: (ratioOf(work) * (part.x1 - part.x0)) / (part.y1 - part.y0),
+    box: { left: round1(-part.x0 * w * 100) || 0, top: round1(-part.y0 * h * 100) || 0, width: round1(w * 100), height: round1(h * 100) },
+  };
+}

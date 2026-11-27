@@ -16,9 +16,10 @@ export function resolveThumb(thumb, atlas) {
 }
 
 // Textos que llegan después de pintar (data/catalog-text.json): `look`/`looks` (pistas con
-// fuente), `kind` y `tags` de obra; `traits`, `traitTags` y `why` («por qué importa», con fuente) de pintor; `tagLabels` y `negableTags`
+// fuente), `kind`, `tags`, `genre` y `skipTraits` de obra; `traits`, `traitTags`, `traitScope`, `traitGeneral`, `why` («por qué importa», con fuente) y `who` (quién era un invitado) de pintor; `tagLabels` y `negableTags`
 // del vocabulario visual. Se añaden a los objetos del índice; lo que no encaja se ignora.
 const MAX_TEXT = 140;
+const MAX_WHO = 110;
 // Dato curioso de una obra (hoja de feedback) y explicación larga (página de la obra).
 const MAX_CURIO = 240;
 const MAX_ABOUT_PARAS = 8;
@@ -27,6 +28,17 @@ const MAX_TAGS = 12;
 const MAX_NEGABLE = 60;
 const MAX_LOOKS = 2;
 const KINDS = ['tipico', 'atipico', 'memoria'];
+const SKIP_ALL = 'todos';
+export const GENRES = ['retrato', 'figuras', 'paisaje', 'bodegon', 'abstracto'];
+export const SCOPE_STYLE = 'estilo';
+export const SCOPE_TAGS = 'etiquetas';
+const scopeOf = (v) => {
+  if (v === SCOPE_STYLE || v === SCOPE_TAGS) return v;
+  const list = Array.isArray(v) ? v.filter((g) => GENRES.includes(g)) : [];
+  return list.length ? list : null;
+};
+// Frases de un pintor: la pista y hasta seis rasgos.
+const MAX_LINES = 7;
 const SAFE_TAG = /^[a-z-]{2,24}$/;
 // Etiquetas: lista o cadena separada por espacios (así viaja en el archivo); '' = sin etiquetas.
 const tagList = (v) => {
@@ -59,6 +71,18 @@ export function mergeCatalogText(index, text) {
     const list = tagList(tags);
     if (w && list) { w.tags = list; n++; }
   }
+  // Rasgos del pintor que no se ven en esa obra: «todos» o posiciones en [pista, ...rasgos] (contenido/fijate.json).
+  for (const [id, skip] of Object.entries(text.skipTraits || {})) {
+    const w = index.artwork(id);
+    if (!w) continue;
+    if (skip === SKIP_ALL) { w.skipTraits = true; n++; continue; }
+    const list = Array.isArray(skip) ? skip.filter((i) => Number.isInteger(i) && i >= 0 && i < MAX_LINES) : [];
+    if (list.length) { w.skipTraits = list; n++; }
+  }
+  for (const [id, genre] of Object.entries(text.genre || {})) {
+    const w = index.artwork(id);
+    if (w && GENRES.includes(genre)) { w.genre = genre; n++; }
+  }
   for (const [id, curio] of Object.entries(text.curio || {})) {
     const w = index.artwork(id);
     if (w && curio && typeof curio.text === 'string' && curio.text.length <= MAX_CURIO) { w.curio = { text: curio.text, source: typeof curio.source === 'string' ? curio.source : '' }; n++; }
@@ -70,6 +94,26 @@ export function mergeCatalogText(index, text) {
   for (const [id, why] of Object.entries(text.why || {})) {
     const a = index.artist(id);
     if (a && why && typeof why.text === 'string' && why.text.length <= MAX_TEXT) { a.why = { text: why.text, source: typeof why.source === 'string' ? why.source : '' }; n++; }
+  }
+  // Quién era un invitado del camino, en pocas palabras (tarjeta de presentación: engine/guest-intro.js).
+  for (const [id, who] of Object.entries(text.who || {})) {
+    const a = index.artist(id);
+    if (a && who && typeof who.text === 'string' && who.text.length <= MAX_WHO) { a.who = { text: who.text, source: typeof who.source === 'string' ? who.source : '' }; n++; }
+  }
+  // Dónde se ve cada frase del pintor: «estilo», «etiquetas» o lista de géneros (lo que no encaja: null, no se enseña).
+  for (const [id, scopes] of Object.entries(text.traitScope || {})) {
+    const a = index.artist(id);
+    if (a && Array.isArray(scopes)) { a.traitScope = scopes.slice(0, MAX_LINES).map(scopeOf); n++; }
+  }
+  // Versión general de una frase con un detalle concreto: { text, scope } (sin etiquetas) o null, alineada igual.
+  for (const [id, generals] of Object.entries(text.traitGeneral || {})) {
+    const a = index.artist(id);
+    if (!a || !Array.isArray(generals)) continue;
+    a.traitGeneral = generals.slice(0, MAX_LINES).map((g) => {
+      const scope = g && scopeOf(g.scope);
+      return scope && scope !== SCOPE_TAGS && typeof g.text === 'string' && g.text.length <= MAX_TEXT ? { text: g.text, scope } : null;
+    });
+    n++;
   }
   for (const [id, tags] of Object.entries(text.traitTags || {})) {
     const a = index.artist(id);

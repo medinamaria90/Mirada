@@ -276,6 +276,18 @@ test('repasar: el punto solo con algo pendiente', () => {
   assert.equal(reviewPending({ ...p, artists: { ...p.artists, [y.id]: { plays: 1, best: 0.6, mastered: false } } }, big, today), true);
 });
 
+test('repasar: la entrada dice qué se repasa, con el pintor a medias si lo hay', async () => {
+  const { reviewIntroText } = await import('../app/js/engine/review.js');
+  const [a, b] = big.path;
+  const name = (x) => (x.short || x.name).replace(/ /g, '\u00a0');
+  const ownA = big.worksOf(a.id).slice(0, 2).map((w) => w.id);
+  const ownB = big.worksOf(b.id).slice(0, 5).map((w) => w.id);
+  assert.equal(reviewIntroText({ works: [...ownA, ...ownB], started: a.id }, big), `Repasamos a ${name(a)} y 5 cuadros que ya has visto`);
+  assert.equal(reviewIntroText({ works: [...ownA, ownB[0]], started: a.id }, big), `Repasamos a ${name(a)} y un cuadro que ya has visto`);
+  assert.equal(reviewIntroText({ works: ownA, started: a.id }, big), `Repasamos a ${name(a)}`);
+  assert.equal(reviewIntroText({ works: ownB, started: null }, big), 'Repasamos 5 cuadros que ya has visto');
+});
+
 test('router: #repaso5 y #repaso-rapido redirigen a #repaso', () => {
   assert.deepEqual(parseRoute('#repaso'), { name: 'srs' });
   assert.deepEqual(parseRoute('#repaso5'), { name: 'srs', redirect: 'repaso' });

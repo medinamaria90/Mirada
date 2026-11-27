@@ -10,7 +10,7 @@ import { recallMap } from './map-memory.js';
 import { esc, accentStyle, plural, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { coverOf } from '../art.js';
-import { STATE_LABEL, DORMANT_TEXT, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
+import { STATE_LABEL, DORMANT_TEXT, startedLabel, startedMeta, dotFor, nodeHtml } from './path-nodes.js';
 import {
   artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered,
 } from '../../engine/progress.js';
@@ -180,15 +180,17 @@ function artistNode(ctx, artist, keys) {
   const key = `artist:${artist.id}`;
   const prevStep = index.steps[index.stepIndex('artist', artist.id) - 1];
   const dormant = status === 'mastered' && isDormant(p, artist.id, ctx.today ? ctx.today() : null);
-  const lock = prevStep ? `Se abre al acertar la mitad en ${stepName(index, prevStep)}` : '';
+  const lock = prevStep ? `Antes, acierta la mitad con ${stepName(index, prevStep)}` : '';
   // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
   const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
     cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, current: key === keys.current,
+    unlock: status === 'locked' && prevStep ? `${prevStep.type}:${prevStep.id}` : '',
     label: status === 'started' ? startedLabel(artist.name, p.artists[artist.id]?.best)
       : `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
-    name: quiet ? artist.short || artist.name : artist.name, meta: '',   // dormido: sin texto bajo el nombre (lo dice la etiqueta)
-    dot: dotFor(status, coverOf(index, artist.id), artist.name, p.artists[artist.id]?.best),
+    // Dormido: sin texto bajo el nombre (lo dice la etiqueta, para el lector).
+    name: quiet ? artist.short || artist.name : artist.name, meta: status === 'started' ? startedMeta(p.artists[artist.id]?.best) : '',
+    dot: dotFor(status, coverOf(index, artist.id), artist.name),
   });
   return { type: 'artist', key, status, html };
 }
@@ -199,13 +201,14 @@ function salaNode(ctx, movement, keys) {
   const status = salaStatus(p, index, movement.id);
   const key = `sala:${movement.id}`;
   const prev = index.steps[index.stepIndex('sala', movement.id) - 1];
-  const lock = prev ? `Se abre al acertar la mitad en ${stepName(index, prev)}` : '';
+  const lock = prev ? `Antes, acierta la mitad con ${stepName(index, prev)}` : '';
   const html = nodeHtml({
     cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current,
+    unlock: status === 'locked' && prev ? `${prev.type}:${prev.id}` : '',
     label: status === 'started' ? startedLabel(`Conoce el movimiento ${movement.name}`, p.salas?.[movement.id]?.best)
       : `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
-    name: 'Conoce el movimiento', meta: '',
-    dot: dotFor(status, salaCover(index, movement.id), movement.name, p.salas?.[movement.id]?.best),
+    name: 'Conoce el movimiento', meta: status === 'started' ? startedMeta(p.salas?.[movement.id]?.best) : '',
+    dot: dotFor(status, salaCover(index, movement.id), movement.name),
   });
   return { type: 'sala', key, status, html };
 }
@@ -213,10 +216,8 @@ function salaNode(ctx, movement, keys) {
 // Pintores de la época aún sin dominar: todos (para el lector) y en corto para la nota al tocar
 // («Leonardo y Veronés», «Botticelli, Rafael y 4 más»).
 const PENDING_NAMES_MAX = 2;
-function pendingOf(ctx, progress, movementId) {
-  return ctx.index.stepsOf(movementId)
-    .filter((s) => s.type === 'artist' && artistStatus(progress, ctx.index, s.id) !== 'mastered')
-    .map((s) => stepName(ctx.index, s));
+function pendingSteps(ctx, progress, movementId) {
+  return ctx.index.stepsOf(movementId).filter((s) => s.type === 'artist' && artistStatus(progress, ctx.index, s.id) !== 'mastered');
 }
 export function pendingNames(names) {
   if (names.length <= PENDING_NAMES_MAX) return joinNames(names);
@@ -230,16 +231,19 @@ function reviewNode(ctx, movement, quiet = false) {
   const best = p.reviews[movement.id]?.best;
   const medal = (best || 0) >= 0.75;
   const status = medal ? 'mastered' : open ? 'available' : 'locked';
-  const pending = open ? [] : pendingOf(ctx, p, movement.id);
-  const lock = pending.length ? `Se abre después de ${pendingNames(pending)}` : 'Se abre al terminar la época';
-  // Cerrado: lo que falta, dicho en claro bajo la etiqueta («Domina 1 pintor más»).
+  const steps = open ? [] : pendingSteps(ctx, p, movement.id);
+  const pending = steps.map((s) => stepName(ctx.index, s));
+  // Cerrada: quién falta, con «Ir» a la primera parada que falta (path-actions.js).
+  const lock = pending.length ? `${pending.length === 1 ? 'Te falta' : 'Te faltan'} ${pendingNames(pending)}` : 'Se abre al terminar la época';
+  const unlock = steps.length ? `${steps[0].type}:${steps[0].id}` : '';
+  // Cerrado: lo que falta, dicho en claro bajo la etiqueta («Falta 1 pintor»).
   const missing = pending.length && !quiet ? (pending.length === 1 ? 'Falta 1 pintor' : `Faltan ${pending.length} pintores`) : '';
   const name = REVIEW_NODE_NAME;
   const meta = best ? `Mejor: ${Math.round(best * 100)}\u00a0%` : missing;
   const icon = medal ? icons.medal(22) : icons.arch(open ? 24 : 18);
   const label = `${REVIEW_NODE_NAME} ${ofEra(movement.name)}${open ? '' : `, cerrada. Se abre después de ${joinNames(pending)}`}`;
   const html = `<button class="stage stage-review is-${status}" data-action="review" data-id="${esc(movement.id)}" data-status="${open ? 'open' : 'locked'}"
-        aria-label="${esc(label)}" data-lock="${esc(lock)}">
+        aria-label="${esc(label)}" data-lock="${esc(lock)}"${unlock ? ` data-unlock="${esc(unlock)}"` : ''}>
         <span class="stage-dot">${icon}${open ? '' : `<span class="stage-lock">${icons.lock(10)}</span>`}</span>
         <span class="stage-text"><span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
       </button>`;

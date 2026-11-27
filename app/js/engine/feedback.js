@@ -5,6 +5,7 @@
 // obra, `traitTags` de pintor, `tagLabels` y `negableTags`), que llegan con data/catalog-text.json.
 
 import { BEFORE_TYPE, beforeFeedback } from './question-before.js';
+import { SCOPE_STYLE, SCOPE_TAGS } from './catalog.js';
 
 // --- Elección de la pista ---------------------------------------------------------------
 // Tipos de cuadro: el típico enseña el rasgo del autor; el atípico se reconoce por otra cosa
@@ -48,16 +49,53 @@ export function traitTagsOf(artist, count) {
 const disjoint = (tags, set) => tags.every((t) => !set.has(t));
 const subset = (tags, set) => tags.every((t) => set.has(t));
 
+// ¿La frase `i` del pintor ([pista, ...rasgos]) está excluida para esta obra? (contenido/fijate.json:
+// obras de juventud, copias, retratos… donde ese rasgo no se ve). `skipTraits`: true (todos) o posiciones.
+export function skipsTrait(work, i) {
+  const skip = work?.skipTraits;
+  return skip === true || (Array.isArray(skip) && skip.includes(i));
+}
+
+// ¿La frase `i` del pintor puede verse en `work` según su alcance (`traitScope`, contenido/rasgos.json)? «estilo»: en
+// cualquier obra suya; lista de géneros: solo en obras de ese género; «etiquetas»: solo si las etiquetas lo confirman
+// (`verified`). Sin alcance declarado no hay certeza: no. Un pintor sin `traitScope` (datos antiguos) no se filtra.
+export function scopeFits(artist, work, i, verified = false) {
+  if (!Array.isArray(artist?.traitScope)) return true;
+  return fits(artist.traitScope[i], work, verified);
+}
+
+function fits(scope, work, verified) {
+  if (scope === SCOPE_STYLE) return true;
+  if (scope === SCOPE_TAGS) return verified;
+  return Array.isArray(scope) && Boolean(work?.genre) && scope.includes(work.genre);
+}
+
+// Versión general de la frase `i` (sin su detalle concreto) si encaja en `work`; '' si no hay o no encaja.
+export function generalLine(artist, work, i) {
+  const g = Array.isArray(artist?.traitGeneral) ? artist.traitGeneral[i] : null;
+  return g && fits(g.scope, work, false) ? sentence(g.text) : '';
+}
+
 // Frases del pintor que sirven para enseñar `work`, en orden de preferencia: primero las que
 // se ven seguro en ese cuadro; con `avoidWork` (el cuadro elegido por error) solo las que no
-// comparte ese cuadro, y de esas, las verificadas en el correcto. Puede devolver [].
+// comparte ese cuadro, y de esas, las verificadas en el correcto. Nunca las que no encajan con la obra
+// (alcance, exclusiones de contenido/fijate.json) ni, si el cuadro está etiquetado, las que piden algo que no
+// tiene. Puede devolver [].
 export function teachingLines(lines, artist, work, avoidWork = null) {
   const tags = traitTagsOf(artist, lines.length);
   const seen = tagsOf(work);
   const avoid = avoidWork ? tagsOf(avoidWork) : null;
   const verified = (t) => Boolean(t && t.length && seen.size && subset(t, seen));
-  const ranked = lines.map((line, i) => ({ line, tags: tags[i], ok: verified(tags[i]) }));
-  if (!avoid) return [...ranked.filter((r) => r.ok), ...ranked.filter((r) => !r.ok)].map((r) => r.line);
+  const all = lines.map((line, i) => ({ line, i, tags: tags[i], ok: verified(tags[i]) })).filter((r) => !skipsTrait(work, r.i));
+  const ranked = all.filter((r) => scopeFits(artist, work, r.i, r.ok));
+  // Sin verificar: la frase sin etiquetas o el cuadro sin revisar (no se sabe; vale). Desmentida: no.
+  const unknown = (r) => !r.ok && !(seen.size && r.tags && r.tags.length);
+  if (!avoid) {
+    // La frase cuyo detalle no se ve aquí cede su sitio a su versión general (si la tiene y encaja).
+    const kept = new Set([...ranked.filter((r) => r.ok), ...ranked.filter(unknown)]);
+    const general = all.filter((r) => !kept.has(r)).map((r) => generalLine(artist, work, r.i)).filter(Boolean);
+    return [...new Set([...[...kept].map((r) => r.line), ...general])];
+  }
   const safe = ranked.filter((r) => r.tags && r.tags.length && disjoint(r.tags, avoid));
   // Sin etiquetas en el cuadro correcto no hay forma de verificar: vale con que no sea del otro.
   return safe.filter((r) => r.ok || !seen.size).map((r) => r.line);

@@ -5,6 +5,7 @@
 import { esc, accentStyle } from './dom.js';
 import { mediaHtml } from './story-card.js';
 import { isShareable } from '../engine/stories.js';
+import { guardGhostTaps } from './tap-guard.js';
 
 const INVITE = Object.freeze({ PLAY: 'play', LATER: 'later' });
 
@@ -41,6 +42,7 @@ function invite(ctx, artist, work) {
       window.removeEventListener('popstate', onPop);
       if (dlg.open) dlg.close();
       dlg.remove();
+      guardGhostTaps();
       if (pushed && !fromPop) {
         window.addEventListener('popstate', () => resolve(choice), { once: true });
         history.back();

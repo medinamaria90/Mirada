@@ -3,7 +3,7 @@
 export function medalInfo(id, index) {
   const [kind, ...rest] = id.split('-');
   const ref = rest.join('-');
-  if (kind === 'artist') return { title: index.artist(ref)?.name || ref, sub: 'Ya lo reconoces' };
+  if (kind === 'artist') return { title: index.artist(ref)?.name || ref, sub: 'Ya reconoces sus cuadros' };
   if (kind === 'movement') return { title: index.movement(ref)?.name || ref, sub: 'Época completa' };
   if (kind === 'streak') return { title: `${ref} días`, sub: 'Racha' };
   if (kind === 'eye') {
