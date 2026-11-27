@@ -13,6 +13,12 @@
     {
      "text": "Pintando en los acantilados de Sa Calobra cayó por un barranco. Pasó una temporada ingresado, pero siguió pintando el paisaje como nadie.",
      "artwork": "w23500160",
+     "region": [
+      0.55,
+      0.3,
+      0.95,
+      1.0
+     ],
      "source": "https://es.wikipedia.org/wiki/Joaquim_Mir"
     },
     {

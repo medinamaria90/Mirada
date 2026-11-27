@@ -13,6 +13,12 @@
     {
      "text": "Sus cuadros son casi silencio: grises, puertas, luz de ventana y, a veces, su mujer, Ida, de espaldas. Lo llamaron el pintor de la quietud.",
      "artwork": "w58411216",
+     "region": [
+      0.45,
+      0.15,
+      0.9,
+      0.85
+     ],
      "source": "https://es.wikipedia.org/wiki/Vilhelm_Hammersh%C3%B8i"
     },
     {
