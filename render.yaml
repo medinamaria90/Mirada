@@ -10,6 +10,9 @@ services:
     buildCommand: bash tools/fetch_images.sh app/img
     staticPublishPath: ./app
     autoDeploy: false
+    # Dominio propio (el registro DNS se pone en el registrador de dibulios.com).
+    domains:
+      - sfumato.dibulios.com
     # Código, estilos y datos siempre revalidados: sin mezclar módulos de dos versiones tras un despliegue.
     headers:
       - path: /js/*
