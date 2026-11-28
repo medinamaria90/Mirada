@@ -422,3 +422,21 @@ Berruguete y Degas.
 Alternancia (28/11): con la memoria de sesión de `lesson.js`, el «fíjate» de la obra ya no sale siempre primero: si lo
 último visto de ese pintor fue otra pista propia, o se le parece (comparación de palabras clave, `similar`), toca una frase
 de estilo, y viceversa. Más variedad en los «fíjate» de Rafael, Rembrandt y Tiziano y 9 que solo describían la escena.
+
+## 28/11 · Niveles «a fondo» por importancia
+
+- **Decisión de María:** los niveles de un pintor se ordenan por importancia, no por etapa. Lo imprescindible es el nivel 2
+  (las pinturas negras de Goya pasan del 6 al 2; Las Meninas, del 5 al 2) y, si hay varios, los siguientes; después, lo de
+  más fama; el resto por fama media. El nivel 1 no cambia y las obras de cada nivel siguen juntas: solo cambia el número.
+- 13 pintores cambian de orden (Caravaggio ya estaba bien). Fuente: `pipeline/etapas.json` (el `nivel` es la importancia;
+  la lista sigue en orden cronológico para el corte por `hasta`, y `seleccionar.py` ya no la ordena por nivel),
+  `ajustes.json` (`etapa`), `seleccion.json`, historias, títulos cortos e `imprescindibles.json`. Volver a seleccionar con
+  `seleccionar.py` da exactamente el mismo reparto.
+- Sin atajo: un imprescindible ya no se abre saltándose los niveles anteriores (no hace falta: es el nivel 2, y los de
+  nivel 3 o 4 van detrás de los anteriores de su pintor, también en el orden de «Te falta conocer…»).
+- Cada historia movida dice en su primera tarjeta en qué momento de la vida estamos («Ya anciano y sordo…»,
+  «Retrocedemos a sus primeros años en Sevilla…»).
+- **Progreso:** `state/level-order.js` traduce al cargar (en `schema.migrate`, sin versión nueva para no romper móviles con
+  la app en caché) los niveles hechos (`progress.deep`), la rotación de «Profundiza» y las historias vistas; marca
+  `progress.levelOrder` (y `@orden:1` en la lista de historias) para hacerlo una sola vez. Una ronda «a fondo» a medias de
+  esos pintores se descarta. Pruebas en `tests/niveles-importancia.test.js`.

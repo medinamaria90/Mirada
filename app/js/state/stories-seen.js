@@ -1,14 +1,18 @@
 // Historias de inicio de nivel ya vistas (clave propia en localStorage: lista de «pintor:nivel»). Sin almacenamiento
 // vale la de la sesión. Cada historia sale sola la primera vez; después se vuelve a ver desde la ficha del pintor.
 
+import { migrateStoryKeys } from './level-order.js';
+
 export const STORIES_KEY = 'sfumato.stories';
 
 const session = new Set();
 
+// Las claves guardadas con la numeración antigua de niveles se traducen una vez (state/level-order.js).
 function read() {
   try {
-    const list = JSON.parse(window.localStorage.getItem(STORIES_KEY) || '[]');
-    return new Set(Array.isArray(list) ? list.filter((k) => typeof k === 'string') : []);
+    const { keys, changed } = migrateStoryKeys(JSON.parse(window.localStorage.getItem(STORIES_KEY) || '[]'));
+    if (changed) window.localStorage.setItem(STORIES_KEY, JSON.stringify(keys));
+    return new Set(keys);
   } catch { return new Set(); }
 }
 

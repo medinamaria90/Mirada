@@ -703,7 +703,7 @@ MIN_STAGE_WORKS = 3
 # (contenido/historias) y las de nombre corto («Más obras», «Florencia»), de su nombre (tools/catalog_from_pipeline.py).
 STAGE_SHORT_MAX = 12
 STAGE_SHORT = {
-    ("giotto", 2): "Asís", ("giotto", 3): "Padua", ("giotto", 4): "Florencia",
+    ("giotto", 3): "Asís", ("giotto", 2): "Padua", ("giotto", 4): "Florencia",
     ("berruguete", 2): "Castilla", ("durero", 2): "Aprendizaje", ("bruegel", 2): "Comienzos",
     ("van-dyck", 2): "Amberes", ("vermeer", 2): "Comienzos", ("david", 2): "Comienzos",
     ("delacroix", 2): "Juventud", ("millet", 2): "París", ("courbet", 2): "Inicios", ("fortuny", 2): "Roma",

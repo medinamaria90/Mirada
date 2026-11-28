@@ -275,7 +275,7 @@ def main():
             seen_keys.add(o["key"]); seen_files.add(o["file"])
             pool.append(o)
         cat = p["categoria"]
-        etapas = sorted(etapas_all.get(p["id"]) or [], key=lambda e: e["nivel"])
+        etapas = list(etapas_all.get(p["id"]) or [])  # en orden cronológico (el de etapas.json); el nivel es la importancia
         if cat == "rama" and not etapas and cupo_fondo(p):  # ramas (gótico, ukiyo-e): un solo «a fondo» con las siguientes más famosas
             etapas = [dict(nivel=2, nombre="Más obras", desde=None, hasta=None, fuente=None, fase=1, provisional=True)]
         # Nivel 1 (básico): las icónicas forzadas (extra.json) y las fijadas a mano (ajustes.json level=1) siempre entran,

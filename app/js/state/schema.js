@@ -4,6 +4,7 @@ import { emptyProgress, DEFAULT_GOAL } from '../engine/progress.js';
 import { addDays, isDayKey } from '../engine/dates.js';
 import { LEGACY_IDS } from './legacy-ids.js';
 import { emptyRoster } from '../engine/roster.js';
+import { migrateLevelOrder, LEVEL_ORDER } from './level-order.js';
 
 export const SCHEMA_VERSION = 11;
 
@@ -48,7 +49,8 @@ export function defaultState() {
     version: SCHEMA_VERSION,
     onboarded: false,
     // roster: pintores conocidos del camino y ramas (engine/roster.js); en una partida nueva, todos.
-    progress: { ...emptyProgress(), roster: emptyRoster('new') },
+    // levelOrder: niveles «a fondo» ya numerados por importancia (state/level-order.js).
+    progress: { ...emptyProgress(), roster: emptyRoster('new'), levelOrder: LEVEL_ORDER },
     settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '', avatar: '' },
     // Ronda en curso para retomarla al volver ({} = ninguna). Ver state/session.js.
     session: {},
@@ -205,7 +207,9 @@ export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, d
     v += 1;
     data.version = v;
   }
-  const out = mergeDefaults(defaults, data);
+  // Niveles por importancia (28/11): se traduce antes de completar con los valores por defecto, que ya traen la marca.
+  // Sin versión nueva, por lo mismo que la portada de abajo.
+  const out = mergeDefaults(defaults, migrateLevelOrder(data));
   // Lo que llegue sin pasar por la interfaz (estado importado o editado a mano) también se limpia.
   if (isPlain(out.settings)) {
     out.settings.name = normalizeName(out.settings.name);
