@@ -393,3 +393,8 @@ salgan después las frases del pintor (`sin: []`). Unos 45 pintores menores con 
 Segunda revisión independiente (una vuelta; 7,5/10 los «fíjate» por obra, 7/10 los refuerzos): corregidos 9 «fíjate»
 (datos dudosos como la «piel tostada» de la mujer en las olas o el cielo «casi de noche» de la casa amarilla, y títulos casi
 literales) y 24 refuerzos que eran de un tema o una etapa y no de toda la obra, o que sonaban genéricos.
+«Fíjate en» = rasgo del pintor (28/11). Muchos «fíjate» por obra eran curiosidades (la calavera de Los embajadores, el
+guante de Los jugadores de cartas), que ya están en la curiosidad de cada obra. Criterio nuevo: el «Fíjate en…» enseña
+siempre a reconocer al pintor con un rasgo de su estilo que se ve en ese cuadro. De los 629 de obras del camino, 124 ya lo
+hacían (109 antiguos de catalog_data y 15 propios) y 505 se reescribieron. Las curiosidades que contenían ya estaban en la
+curiosidad de su obra (de ahí se habían sacado), así que no se ha perdido ninguna.
