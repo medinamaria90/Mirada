@@ -316,3 +316,15 @@ Pedido de María: la puerta y el tramo se leían como decoración. Ahora son par
 - **Fuera la caseta** de información de la salida: «Cómo se juega» pasa a Perfil → Ajustes, junto a «Acerca de Sfumato»
   (nunca salía sola; la guía de bienvenida sigue igual).
 - De paso, el camino en línea (letra muy grande o ventana estrecha) ya no amontona las paradas.
+
+## «Fíjate en…»: variedad y ninguna obra sin pista (28/11)
+
+María veía casi siempre la misma frase tras fallar con un pintor. Ahora cada uno de los 174 pintores tiene 4-5 refuerzos
+de estilo en `contenido/pistas.json` (760 en total: color, pincelada, luz, rostros, composición, temas), sin nombrar al
+pintor ni títulos para poder usarlos algún día como pistas antes de responder. Llevan alcance (estilo, géneros o
+etiquetas) y, cuando se puede, etiquetas visuales para servir también tras un fallo en «¿Cuál es de X?». `feedbackFor`
+da primero el «fíjate» propio de la obra y luego rota entre frases y refuerzos sin repetir el último visto de ese pintor
+(`recent`, que dura toda la sesión en `lesson.js`). Las obras atípicas excluyen los refuerzos que no les cuadran
+(`sinPistas` en `fijate.json`). El 100 % de las 1.469 obras tiene al menos una línea aplicable (prueba en
+`tests/fijate.test.js`). La individualización por cuadro sí funciona (sale primero en las 290 obras que la tienen, también
+tras fallar); si se nota poco es porque solo el 22 % de las obras del camino tiene «fíjate» propio.

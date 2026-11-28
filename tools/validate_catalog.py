@@ -63,7 +63,7 @@ def check_look(wid, look, kind, title, artist):
         bad = [t for t in name_tokens(artist) if (t in words if " " not in t else t in low)]
         check(not bad, f"{wid}: el look nombra al autor ({bad})")
     t = re.sub(r"\s*\(.*?\)", "", title).strip().lower()
-    check(t not in low, f"{wid}: el look nombra el título")
+    check(not t or t not in low, f"{wid}: el look nombra el título")
 
 
 def check_level_ring(app, artist, ws):
@@ -259,6 +259,19 @@ def main():
     for wid, look in text.get("look", {}).items():
         w = work_by_id[wid]
         check_look(wid, look, text.get("kind", {}).get(wid), w["title"], by_id.get(w["artistId"]))
+    # Pistas de estilo de cada pintor (contenido/pistas.json): las mismas reglas que un look (sin autor ni título de sus obras).
+    titles_of = {}
+    for w in cat["artworks"]:
+        titles_of.setdefault(w["artistId"], []).append(w["title"])
+    for aid, hints in text.get("styleHints", {}).items():
+        check(aid in by_id, f"styleHints: pintor desconocido {aid}")
+        check(4 <= len(hints) <= 6, f"{aid}: entre 4 y 6 pistas de estilo ({len(hints)})")
+        for i, h in enumerate(hints):
+            check_look(f"{aid}#{i}", h["text"], None, "", by_id.get(aid))
+            for title in titles_of.get(aid, []):
+                tl = re.sub(r"\s*\(.*?\)", "", title).strip().lower()
+                check(len(tl) < 6 or tl not in h["text"].lower(), f"{aid}#{i}: la pista nombra el título «{title}»")
+            check(all(t in labels for t in h.get("tags", [])), f"{aid}#{i}: tags fuera del vocabulario")
     for wid, kind in text.get("kind", {}).items():
         check(kind in ("tipico", "atipico", "memoria"), f"{wid}: kind desconocido")
     for wid, looks in text.get("looks", {}).items():

@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { realIndex, realCatalogJson, realTextJson, W } from './helpers-real.js';
-import { feedbackFor, artistLines, looksOf, tagsOf, teachingLines, absentTrait, generalLine } from '../app/js/engine/feedback.js';
+import { feedbackFor, artistLines, looksOf, tagsOf, teachingLines, absentTrait, generalLine, styleLines } from '../app/js/engine/feedback.js';
 import { noAuthorQuestion, optionText, makeMovementQuestion } from '../app/js/engine/questions.js';
 import { buildIndex, mergeCatalogText } from '../app/js/engine/catalog.js';
 import { createRng } from '../app/js/engine/rng.js';
@@ -40,8 +40,10 @@ function checkTraitLine(fb, artist, work, chosenWork, counters) {
   counters.trait++;
   const lines = artistLines(artist);
   const i = lines.indexOf(fb.lines[0]);
-  assert.ok(i >= 0, `la frase no es del pintor: ${fb.lines[0]}`);
-  const tags = artist.traitTags[i];
+  // Un refuerzo de estilo (contenido/pistas.json) cumple lo mismo con sus propias etiquetas.
+  const hint = (artist.styleHints || []).find((h) => fb.lines[0] === `${h.text.replace(/[.!?…]$/, '')}.` || fb.lines[0] === h.text);
+  assert.ok(i >= 0 || hint, `la frase no es del pintor: ${fb.lines[0]}`);
+  const tags = i >= 0 ? artist.traitTags[i] : hint.tags;
   assert.ok(Array.isArray(tags) && tags.length, `${artist.id}: frase sin etiquetas usada tras un fallo`);
   const avoid = tagsOf(chosenWork);
   for (const t of tags) assert.ok(!avoid.has(t), `${work.id}/${chosenWork.id}: «${fb.lines[0]}» también se cumple en el elegido (${t})`);
@@ -176,7 +178,7 @@ test('rotación de pistas: primera, segunda (con fuente = verificada) y después
   assert.equal(second.lines[0], 'Mira dos.');
   assert.equal(second.source, '');
   const artist = real.artist(base.artistId);
-  const own = [...artistLines(artist), ...artistLines(artist).map((_, i) => generalLine(artist, base, i))];
+  const own = [...artistLines(artist), ...artistLines(artist).map((_, i) => generalLine(artist, base, i)), ...styleLines(artist, base)];
   assert.ok(!third.lines.length || own.includes(third.lines[0]), 'después, una frase del pintor (o su versión general) o nada');
   // Compatibilidad: una obra con solo `look` (texto) se comporta como antes.
   assert.deepEqual(looksOf({ look: 'Mira algo' }), [{ text: 'Mira algo', source: '', verified: false }]);
