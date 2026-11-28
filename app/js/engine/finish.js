@@ -5,7 +5,7 @@ import { recordAnswer, artKey, artistKey, updateFallados } from './srs.js';
 import { logAnswers, finishRecall, noteRound, roundKeys } from './recall.js';
 import { rankFor, RANKS } from './ranks.js';
 import { settleOffer } from './deepen.js';
-import { seenAfterRound, levelCovered, deepKey, LEVELS_MASTERY } from './levels.js';
+import { seenAfterRound, markPendingSeen, deepKey, LEVELS_MASTERY } from './levels.js';
 import { xpForAnswer, unseenArtists, MASTERY, STAGE_MASTERY, XP, stageRoundMastered, movementStatus, isReviewUnlocked, hasEye, normalizeGoal, touchStreak, STREAK_MEDALS, isStepUnlocked, isExtraStep } from './progress.js';
 
 function subjectArtwork(q) {
@@ -47,6 +47,7 @@ export function finishRound(progress, index, result, today, opts = {}) {
 
   p.fallados = updateFallados(p.fallados, result.answers, today, (a) => unseen.has(a.q.artistId));
   p.seen = markSeen(p.seen, index, result.answers, today, unseen);
+  if (index.hasLevels) p.artists = markPendingSeen(p, index, result.answers.filter((a) => !unseen.has(a.q?.artistId)));
   // «Repasar a…»: la sesión terminada pone a cero la cuenta de su pintor o época; las demás rondas apuntan sus respuestas.
   if (result.kind === 'recall' && (result.artistId || result.movementId)) {
     Object.assign(p, finishRecall(p, result.recallType, result.artistId || result.movementId, today));
@@ -64,7 +65,6 @@ export function finishRound(progress, index, result, today, opts = {}) {
   let ownShort = false;
   xp += XP.complete + (total && score === total ? XP.perfect : 0);
 
-  let coverShort = false;
   const inBranch = result.kind === 'stage' && result.artistId && index.pathIndex(result.artistId) < 0 && index.branchesOf(result.artistId).length > 0;
   if (result.kind === 'stage' && result.artistId && (index.pathIndex(result.artistId) >= 0 || inBranch)) {
     const id = result.artistId;
@@ -74,14 +74,12 @@ export function finishRound(progress, index, result, today, opts = {}) {
     const unlockCheck = onPath && level === 1 ? watchNextStep(p, index, step) : () => {};
     const prev = p.artists[id] || { plays: 0, best: 0, mastered: false };
     const first = index.pathIndex(id) === 0;
-    // Catálogo con niveles: se domina viendo todas las obras del nivel y con el 75 % de la ronda.
+    // Catálogo con niveles: aprobar la ronda (75 %) supera el nivel y abre el siguiente, aunque falten obras por ver
+    // (decisión de María, 28/11; engine/levels.js).
     const mastery = index.hasLevels ? LEVELS_MASTERY : STAGE_MASTERY;
-    const base = stageRoundMastered(result.answers, id, accuracy, { first, mastery });
+    roundMastered = stageRoundMastered(result.answers, id, accuracy, { first, mastery });
     const works = index.hasLevels ? seenAfterRound(p, index, id, level, result.answers) : prev.works;
-    const covered = !index.hasLevels || levelCovered(works || [], index, id, level);
-    roundMastered = base && covered;
-    coverShort = base && !covered;
-    ownShort = accuracy >= mastery && !base;
+    ownShort = accuracy >= mastery && !roundMastered;
     const keep = works ? { works } : {};
     if (level === 1) {
       const mastered = prev.mastered || roundMastered;
@@ -156,7 +154,7 @@ export function finishRound(progress, index, result, today, opts = {}) {
   }
 
   // La propuesta de profundizar a la vista: aceptada si era esta ronda; saltada si se ha jugado otra cosa (engine/deepen.js).
-  return { progress: settleOffer(p, result, today), events, xp, score, total, accuracy, mastered: roundMastered, ownShort, coverShort };
+  return { progress: settleOffer(p, result, today), events, xp, score, total, accuracy, mastered: roundMastered, ownShort };
 }
 
 // Último día en que salió cada pintor con etapa en una pregunta (sin reintentos ni pintores aún no

@@ -15,7 +15,7 @@ import { planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../..
 import { encodeChallenge } from '../../engine/challenge.js';
 import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist, nextStep, movementStatus } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
-import { seenWorks, deepStatus } from '../../engine/levels.js';
+import { seenWorks, deepStatus, approvedPending } from '../../engine/levels.js';
 import { pendingLore } from '../../engine/lore.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
 import { avatarHtml } from '../avatar.js';
@@ -466,7 +466,8 @@ export function renderDeep(ctx, el, artistId, level) {
   withLore(ctx, el, { type: 'artist', id: artistId }, () => withStory(ctx, el, artistId, level, (shown) => {
     const progress = ctx.store.get().progress;
     const met = metArtistIds(progress, index);
-    const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown, met });
+    const pending = approvedPending(progress, index, artistId, level).map((w) => w.id);
+    const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], pending, shown, met });
     playEra(movement.era);
     ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo, contextArtist }));
   }, { returnTo })); // sin la pista del nivel 1: cada «a fondo» trae su «Fíjate en…»

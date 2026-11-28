@@ -11,7 +11,7 @@ import { daysBetween } from './dates.js';
 import { noAuthorQuestion } from './catalog.js';
 import { artKey, dueKeys } from './srs.js';
 import { artistStatus, isKnownArtist } from './progress.js';
-import { seenWorks } from './levels.js';
+import { seenWorks, approvedPending } from './levels.js';
 
 export const CONTRABAND_DAYS = 5;
 export const DORMANT_DAYS = 7;
@@ -76,6 +76,8 @@ export const REVIEW_SIZE = 7;
 export const REVIEW_MIN = 3;
 export const REVIEW_FALLADOS_MAX = 3;
 export const REVIEW_STARTED_WORKS = 2;
+// Cuadros aún sin ver de niveles ya superados que entran en cada «Repasar» (para que acaben saliendo).
+export const REVIEW_PENDING_MAX = 1;
 
 const byDate = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
 const fallList = (progress) => (Array.isArray(progress.fallados) ? progress.fallados : []).filter((f) => f && typeof f.id === 'string');
@@ -113,7 +115,14 @@ export function reviewFallados(progress, index) {
   });
 }
 
-// La sesión «Repasar»: hasta REVIEW_SIZE cuadros distintos, en este orden: fallados (los más antiguos, como mucho 3),
+// Cuadros sin ver de los niveles superados de los pintores jugados, del pintor que lleva más tiempo sin salir al que menos.
+export function pendingOfPassed(progress, index) {
+  const ids = Object.keys(progress.artists || {}).filter((id) => index.artist(id) && isKnownArtist(progress, index, id));
+  const since = (id) => lastSeen(progress, id) || '';
+  return ids.sort((a, b) => (since(a) < since(b) ? -1 : since(a) > since(b) ? 1 : 0)).flatMap((id) => approvedPending(progress, index, id));
+}
+
+// La sesión «Repasar»: hasta REVIEW_SIZE cuadros distintos, en este orden: fallados (los más antiguos, como mucho 3), 1 sin ver de un nivel superado,
 // 2 vistos del pintor a medias con peor resultado, vencidos del repaso espaciado (caja más baja primero), 1 de un pintor
 // apagado y, de relleno, lo que lleva más tiempo sin salir. { works: [ids], started: id del pintor a medias o null }.
 export function reviewSession(progress, index, today) {
@@ -132,6 +141,11 @@ export function reviewSession(progress, index, today) {
   // 1. Fallados.
   let n = 0;
   for (const f of reviewFallados(progress, index).slice().sort(byDate)) if (n < REVIEW_FALLADOS_MAX && add(f.id)) n += 1;
+  // 1 bis. Un cuadro sin ver de un nivel ya superado (del pintor que lleva más tiempo sin salir).
+  for (const w of pendingOfPassed(progress, index).slice(0, REVIEW_PENDING_MAX)) {
+    inPool.set(w.id, w);
+    add(w.id);
+  }
   // 2. El pintor a medias con peor resultado: 2 cuadros ya vistos suyos.
   const worst = startedArtists(progress, index)[0] || null;
   let started = null;

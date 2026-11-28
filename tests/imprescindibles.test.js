@@ -98,8 +98,11 @@ function midway() {
   const p = masterEras(emptyProgress(), upTo);
   masterEssentials(p, upTo.slice(0, -1));
   for (const id of upTo) p.reviews[id] = { best: 1 }; // Pruebas de época superadas: nada pendiente atrás
-  // Sin atajos, solo el nivel 2 de Goya estaría abierto: los otros dos imprescindibles, ya empezados (siguen abiertos).
-  for (const lv of [3, 4]) p.deep[`goya:${lv}`] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
+  // Imprescindibles abiertos, los dos de una época ya cruzada (que no cierra hacia atrás): el 2 de Caravaggio (peso 3) y el 3
+  // de Velázquez (peso 2). Los de Goya, hechos. (Lo empezado y sin abrir sigue cerrado: una sola regla, levels.js levelOpen.)
+  masterEssentials(p, ['romanticismo']);
+  delete p.deep['caravaggio:2'];
+  delete p.deep['velazquez:3'];
   return p;
 }
 

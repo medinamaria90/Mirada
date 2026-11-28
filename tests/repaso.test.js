@@ -209,6 +209,8 @@ function sessionProgress(today) {
   p.artists[c.id] = { plays: 1, best: 0.5, mastered: false, last: '2026-11-22', works: big.worksOf(c.id).slice(0, 4).map((w) => w.id) };
   p.artists[d.id] = { plays: 1, best: 0.6, mastered: false, last: '2026-11-22', works: big.worksOf(d.id).slice(0, 4).map((w) => w.id) };
   for (const x of [a, b]) big.worksOf(x.id).slice(0, 4).forEach((w, i) => { p.srs[`art:${w.id}`] = { box: 2 + (i % 2), due: '2026-12-10' }; });
+  // Dominados con todo su nivel 1 visto: sin cuadros pendientes que se cuelen en el repaso (eso va en aprobar-abre.test.js).
+  for (const x of [a, b]) p.artists[x.id] = { ...p.artists[x.id], works: big.levelWorks(x.id, 1).map((w) => w.id) };
   return { p, a, b, c, d };
 }
 
