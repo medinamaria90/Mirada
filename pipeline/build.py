@@ -70,7 +70,7 @@ def main():
         row = dict(id=p["id"], name=p["nombre"], short=p["corto"], born=p["nacimiento"] or r.get("nacimiento"),
                    died=p["muerte"] or r.get("muerte"), country=p["pais"], movementId=p["movimiento"], order=None,
                    section=None, qid=p.get("qid") or r.get("qid"), works=n, category=p.get("categoria"), branches=[b for b in [p["movimiento"] if p["movimiento"] in RAMAS else None, p.get("rama")] if b],
-                   stages=[{k: v for k, v in e.items() if k not in ("fase",)} for e in etapas_all.get(p["id"], [])
+                   stages=[{k: v for k, v in e.items() if k not in ("fase",)} for e in sorted(etapas_all.get(p["id"], []), key=lambda e: e["nivel"])
                            if any(o["artistId"] == p["id"] and o["level"] == e["nivel"] for o in obras)],
                    level1=sum(1 for o in obras if o["artistId"] == p["id"] and o["level"] == 1))
         pintores.append(row)

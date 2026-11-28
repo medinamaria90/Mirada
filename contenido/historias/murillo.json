@@ -29,27 +29,27 @@
   },
   {
    "level": 2,
-   "stage": "La peste",
-   "title": "Primeros encargos y la peste",
+   "stage": "Encargos",
+   "title": "Los grandes encargos",
    "cards": [
     {
-     "text": "En 1645 se casa y recibe su primer gran encargo: once lienzos para el claustro del convento de San Francisco de Sevilla. Uno es La cocina de los ángeles, sobre la vida de oración.",
-     "artwork": "w9397467",
-     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#Primeros_encargos"
+     "text": "En plena madurez, entre 1665 y 1669, pinta 16 lienzos para los capuchinos de Sevilla. San Francisco abrazando a Cristo armoniza el hábito pardo con fondos verdosos.",
+     "artwork": "w3947097",
+     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#Pinturas_para_la_iglesia_de_los_capuchinos_de_Sevilla"
     },
     {
-     "text": "Tras la peste de 1649, muchas imágenes de devoción, entre sus obras más populares, de humanidad delicada e íntima. Una es La Sagrada Familia del pajarito.",
-     "artwork": "w16627776",
-     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#De_1649_a_1655%3A_el_impacto_de_la_peste"
+     "text": "Creó imágenes muy imitadas, como el Buen Pastor en figura infantil: Jesús niño con su rebaño. Su sensibilidad, a veces, anticipa el rococó.",
+     "artwork": "w11694421",
+     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
     },
     {
-     "text": "El Joven mendigo es la primera muestra de su atención a los temas populares con niños. Un pequeño esportillero se espulga en soledad: se ha visto en él una nota de melancolía.",
-     "artwork": "w5659824",
-     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#De_1649_a_1655%3A_el_impacto_de_la_peste"
+     "text": "Sus escenas de género de niños las encargaban sobre todo comerciantes flamencos de Sevilla, para el mercado del norte de Europa. Aquí, unos niños vendedores de fruta.",
+     "artwork": "w11772156",
+     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#La_pintura_de_g%C3%A9nero"
     },
     {
-     "text": "Fíjate en la vieja con gafas y en la joven que se levanta el velo para mirarnos: Murillo nos hace cómplices de una escena de la calle que nadie sabe explicar.",
-     "artwork": "w9199638",
+     "text": "Fíjate en el Niño, que parece salir del cuadro hacia ti. Según la leyenda, Murillo lo pintó sobre una servilleta para el cocinero de los capuchinos.",
+     "artwork": "w2880218",
      "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
     }
    ]
@@ -60,7 +60,7 @@
    "title": "Pleno barroco y plenitud",
    "cards": [
     {
-     "text": "En 1655 llega a Sevilla Herrera el Mozo con figuras a contraluz y pincelada fluida. Murillo asimila enseguida este pleno barroco: más color, más movimiento.",
+     "text": "Retrocedemos a 1655, cuando llega a Sevilla el pintor Herrera el Mozo, con figuras a contraluz y pincelada fluida. Murillo lo asimila enseguida: más color, más movimiento.",
      "artwork": "w27749754",
      "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#La_llegada_de_Herrera_el_Mozo_a_Sevilla_y_la_recepci%C3%B3n_del_pleno_barroco"
     },
@@ -83,27 +83,27 @@
   },
   {
    "level": 4,
-   "stage": "Encargos",
-   "title": "Los grandes encargos",
+   "stage": "La peste",
+   "title": "Primeros encargos y la peste",
    "cards": [
     {
-     "text": "Entre 1665 y 1669 pinta 16 lienzos para los capuchinos de Sevilla. San Francisco abrazando a Cristo, uno de sus más populares, armoniza el hábito pardo con fondos verdosos.",
-     "artwork": "w3947097",
-     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#Pinturas_para_la_iglesia_de_los_capuchinos_de_Sevilla"
+     "text": "Volvemos a sus comienzos: en 1645 se casa y recibe su primer gran encargo, once lienzos para un claustro de Sevilla. Uno es La cocina de los ángeles, sobre la vida de oración.",
+     "artwork": "w9397467",
+     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#Primeros_encargos"
     },
     {
-     "text": "Creó imágenes muy imitadas, como el Buen Pastor en figura infantil: Jesús niño con su rebaño. Su sensibilidad, a veces, anticipa el rococó.",
-     "artwork": "w11694421",
-     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
+     "text": "Tras la peste de 1649, muchas imágenes de devoción, entre sus obras más populares, de humanidad delicada e íntima. Una es La Sagrada Familia del pajarito.",
+     "artwork": "w16627776",
+     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#De_1649_a_1655%3A_el_impacto_de_la_peste"
     },
     {
-     "text": "Sus escenas de género de niños las encargaban sobre todo comerciantes flamencos de Sevilla, para el mercado del norte de Europa. Aquí, unos niños vendedores de fruta.",
-     "artwork": "w11772156",
-     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#La_pintura_de_g%C3%A9nero"
+     "text": "El Joven mendigo es la primera muestra de su atención a los temas populares con niños. Un pequeño esportillero se espulga en soledad: se ha visto en él una nota de melancolía.",
+     "artwork": "w5659824",
+     "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#De_1649_a_1655%3A_el_impacto_de_la_peste"
     },
     {
-     "text": "Fíjate en el Niño, que parece salir del cuadro hacia ti. Según la leyenda, Murillo lo pintó sobre una servilleta para el cocinero de los capuchinos.",
-     "artwork": "w2880218",
+     "text": "Fíjate en la vieja con gafas y en la joven que se levanta el velo para mirarnos: Murillo nos hace cómplices de una escena de la calle que nadie sabe explicar.",
+     "artwork": "w9199638",
      "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
     }
    ]
@@ -114,7 +114,7 @@
    "title": "Últimos trabajos",
    "cards": [
     {
-     "text": "Tras el Hospital de la Caridad, ya no recibe encargos tan grandes: hambruna en 1678, terremoto en 1680. Aun así trabaja gracias a viejos amigos y comerciantes extranjeros.",
+     "text": "Sus últimos años: tras el Hospital de la Caridad ya no hay encargos tan grandes, con hambruna en 1678 y terremoto en 1680. Sigue gracias a amigos y comerciantes extranjeros.",
      "artwork": "w9191556",
      "source": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo#%C3%9Altimos_trabajos_y_muerte"
     },

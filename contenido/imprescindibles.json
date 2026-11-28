@@ -1,19 +1,19 @@
 {
- "_doc": "Niveles «a fondo» imprescindibles por época (decisión de María, 28/11): obras capitales que nadie debería saltarse. Cruzar a la época siguiente exige los de su época y el final del camino, todos; se abren en cuanto se domina el nivel 1 del pintor (sin pasar por los niveles anteriores). peso: 1-3 (más peso, más a menudo en «Profundiza»). titulo: lo que se lee en la app tras «Te falta conocer…». motivo y fuente no salen en las tarjetas. Lo copia tools/catalog_from_pipeline.py al catálogo (essentials).",
+ "_doc": "Niveles «a fondo» imprescindibles por época (decisión de María, 28/11): obras capitales que nadie debería saltarse. Cruzar a la época siguiente exige los de su época y el final del camino, todos; van primero en el orden del pintor: los niveles se ordenan por importancia (decisión de María, 28/11), así que un imprescindible es su nivel 2 o, si el pintor tiene varios, los siguientes. peso: 1-3 (más peso, más a menudo en «Profundiza»). titulo: lo que se lee en la app tras «Te falta conocer…». motivo y fuente no salen en las tarjetas. Lo copia tools/catalog_from_pipeline.py al catálogo (essentials).",
  "renacimiento": [
   {"pintor": "leonardo", "nivel": 2, "peso": 3, "titulo": "las primeras obras de Leonardo", "motivo": "Ginebra de Benci, la Virgen del clavel y San Jerónimo: de Leonardo quedan muy pocos cuadros y estos son de los mejores.", "fuente": "https://es.wikipedia.org/wiki/Leonardo_da_Vinci"},
-  {"pintor": "rafael", "nivel": 3, "peso": 2, "titulo": "las Vírgenes florentinas de Rafael", "motivo": "La Virgen del jilguero y La bella jardinera: las madonas que hicieron famoso a Rafael.", "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio"},
-  {"pintor": "tiziano", "nivel": 5, "peso": 1, "titulo": "los últimos cuadros de Tiziano", "motivo": "Venus y Adonis, Diana y Calisto: la pincelada suelta que admirarían Velázquez y Rubens.", "fuente": "https://es.wikipedia.org/wiki/Tiziano"}
+  {"pintor": "rafael", "nivel": 2, "peso": 2, "titulo": "las Vírgenes florentinas de Rafael", "motivo": "La Virgen del jilguero y La bella jardinera: las madonas que hicieron famoso a Rafael.", "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio"},
+  {"pintor": "tiziano", "nivel": 2, "peso": 1, "titulo": "los últimos cuadros de Tiziano", "motivo": "Venus y Adonis, Diana y Calisto: la pincelada suelta que admirarían Velázquez y Rubens.", "fuente": "https://es.wikipedia.org/wiki/Tiziano"}
  ],
  "manierismo-y-norte": [
   {"pintor": "bosco", "nivel": 2, "peso": 3, "titulo": "El carro de heno del Bosco", "motivo": "Su otro gran tríptico del Prado, con la Extracción de la piedra de la locura.", "fuente": "https://es.wikipedia.org/wiki/El_Bosco"},
   {"pintor": "bruegel", "nivel": 2, "peso": 2, "titulo": "los juegos y fiestas de Bruegel", "motivo": "Juego de niños y El combate entre don Carnaval y doña Cuaresma: un pueblo entero en un solo cuadro.", "fuente": "https://es.wikipedia.org/wiki/Pieter_Brueghel_el_Viejo"},
-  {"pintor": "el-greco", "nivel": 4, "peso": 2, "titulo": "el último Greco", "motivo": "San Martín y el mendigo, la Adoración de los pastores: figuras alargadas como llamas.", "fuente": "https://es.wikipedia.org/wiki/El_Greco"}
+  {"pintor": "el-greco", "nivel": 2, "peso": 2, "titulo": "el último Greco", "motivo": "San Martín y el mendigo, la Adoración de los pastores: figuras alargadas como llamas.", "fuente": "https://es.wikipedia.org/wiki/El_Greco"}
  ],
  "barroco": [
-  {"pintor": "velazquez", "nivel": 5, "peso": 3, "titulo": "Las Meninas de Velázquez", "motivo": "Las Meninas y el Retrato de Inocencio X: la cumbre de Velázquez.", "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"},
+  {"pintor": "velazquez", "nivel": 2, "peso": 3, "titulo": "Las Meninas de Velázquez", "motivo": "Las Meninas y el Retrato de Inocencio X: la cumbre de Velázquez.", "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"},
   {"pintor": "caravaggio", "nivel": 2, "peso": 3, "titulo": "el Caravaggio de Roma", "motivo": "Judit y Holofernes, La buenaventura, El martirio de san Mateo: el claroscuro que cambió la pintura.", "fuente": "https://es.wikipedia.org/wiki/Caravaggio"},
-  {"pintor": "velazquez", "nivel": 4, "peso": 2, "titulo": "La rendición de Breda de Velázquez", "motivo": "Las lanzas y la Venus del espejo, de su madurez en Madrid.", "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"},
+  {"pintor": "velazquez", "nivel": 3, "peso": 2, "titulo": "La rendición de Breda de Velázquez", "motivo": "Las lanzas y la Venus del espejo, de su madurez en Madrid.", "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"},
   {"pintor": "vermeer", "nivel": 2, "peso": 2, "titulo": "las mujeres junto a la ventana de Vermeer", "motivo": "Muchacha leyendo una carta y Mujer con una jarra: la luz de Vermeer en los pocos cuadros que pintó.", "fuente": "https://es.wikipedia.org/wiki/Johannes_Vermeer"}
  ],
  "rococo-neoclasicismo": [
@@ -21,8 +21,8 @@
   {"pintor": "ingres", "nivel": 2, "peso": 1, "titulo": "los retratos de Ingres", "motivo": "Monsieur Bertin y la condesa de Haussonville: el dibujo más fino de su siglo.", "fuente": "https://es.wikipedia.org/wiki/Jean-Auguste-Dominique_Ingres"}
  ],
  "romanticismo": [
-  {"pintor": "goya", "nivel": 6, "peso": 3, "titulo": "las pinturas negras de Goya", "motivo": "Saturno, Duelo a garrotazos, El aquelarre: pintadas en las paredes de su casa, la Quinta del Sordo.", "fuente": "https://es.wikipedia.org/wiki/Pinturas_negras"},
-  {"pintor": "goya", "nivel": 5, "peso": 3, "titulo": "El tres de mayo de Goya", "motivo": "El dos y el tres de mayo de 1808: la guerra contada desde las víctimas.", "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"},
+  {"pintor": "goya", "nivel": 2, "peso": 3, "titulo": "las pinturas negras de Goya", "motivo": "Saturno, Duelo a garrotazos, El aquelarre: pintadas en las paredes de su casa, la Quinta del Sordo.", "fuente": "https://es.wikipedia.org/wiki/Pinturas_negras"},
+  {"pintor": "goya", "nivel": 3, "peso": 3, "titulo": "El tres de mayo de Goya", "motivo": "El dos y el tres de mayo de 1808: la guerra contada desde las víctimas.", "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"},
   {"pintor": "goya", "nivel": 4, "peso": 2, "titulo": "La familia de Carlos IV de Goya", "motivo": "La maja vestida y La familia de Carlos IV: Goya, pintor de la corte.", "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"}
  ],
  "realismo": [
@@ -31,13 +31,13 @@
  ],
  "impresionismo": [
   {"pintor": "manet", "nivel": 2, "peso": 2, "titulo": "La música en las Tullerías de Manet", "motivo": "La vida moderna de París al aire libre, antes del impresionismo.", "fuente": "https://es.wikipedia.org/wiki/%C3%89douard_Manet"},
-  {"pintor": "monet", "nivel": 3, "peso": 2, "titulo": "el Monet de las amapolas", "motivo": "Campo de amapolas y Regatas en Argenteuil: los años de las exposiciones impresionistas.", "fuente": "https://es.wikipedia.org/wiki/Claude_Monet"},
-  {"pintor": "sorolla", "nivel": 3, "peso": 2, "titulo": "El baño del caballo de Sorolla", "motivo": "El baño del caballo y El pescador: la luz del Mediterráneo en su plenitud.", "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla"}
+  {"pintor": "monet", "nivel": 2, "peso": 2, "titulo": "el Monet de las amapolas", "motivo": "Campo de amapolas y Regatas en Argenteuil: los años de las exposiciones impresionistas.", "fuente": "https://es.wikipedia.org/wiki/Claude_Monet"},
+  {"pintor": "sorolla", "nivel": 2, "peso": 2, "titulo": "El baño del caballo de Sorolla", "motivo": "El baño del caballo y El pescador: la luz del Mediterráneo en su plenitud.", "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla"}
  ],
  "postimpresionismo": [
-  {"pintor": "van-gogh", "nivel": 4, "peso": 3, "titulo": "el Van Gogh de Arlés", "motivo": "Terraza de café por la noche, El café de noche, La casa amarilla: sus colores más intensos.", "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"},
-  {"pintor": "van-gogh", "nivel": 5, "peso": 3, "titulo": "el Van Gogh de Saint-Rémy", "motivo": "Camino con ciprés y estrella, En la puerta de la eternidad: su año en el hospital.", "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"},
-  {"pintor": "van-gogh", "nivel": 6, "peso": 2, "titulo": "Trigal con cuervos de Van Gogh", "motivo": "Sus últimos meses, en Auvers: Trigal con cuervos y La iglesia de Auvers.", "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"}
+  {"pintor": "van-gogh", "nivel": 2, "peso": 3, "titulo": "el Van Gogh de Arlés", "motivo": "Terraza de café por la noche, El café de noche, La casa amarilla: sus colores más intensos.", "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"},
+  {"pintor": "van-gogh", "nivel": 3, "peso": 3, "titulo": "el Van Gogh de Saint-Rémy", "motivo": "Camino con ciprés y estrella, En la puerta de la eternidad: su año en el hospital.", "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"},
+  {"pintor": "van-gogh", "nivel": 4, "peso": 2, "titulo": "Trigal con cuervos de Van Gogh", "motivo": "Sus últimos meses, en Auvers: Trigal con cuervos y La iglesia de Auvers.", "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"}
  ],
  "simbolismo-modernismo": [
   {"pintor": "munch", "nivel": 2, "peso": 1, "titulo": "los primeros cuadros de Munch", "motivo": "Tarde en la calle Karl Johan: la angustia de El grito antes de El grito.", "fuente": "https://es.wikipedia.org/wiki/Edvard_Munch"},
