@@ -422,7 +422,7 @@
   {
    "id": "bellini",
    "name": "Giovanni Bellini",
-   "short": "Bellini",
+   "short": "Giovanni Bellini",
    "born": 1430,
    "died": 1516,
    "country": "Italia",
@@ -936,7 +936,7 @@
   {
    "id": "morales",
    "name": "Luis de Morales",
-   "short": "Morales",
+   "short": "Luis de Morales",
    "born": 1510,
    "died": 1586,
    "country": "España",
@@ -1261,7 +1261,7 @@
   {
    "id": "hals",
    "name": "Frans Hals",
-   "short": "Hals",
+   "short": "Frans Hals",
    "born": 1582,
    "died": 1666,
    "country": "Países Bajos",
@@ -1583,7 +1583,7 @@
   {
    "id": "pereda",
    "name": "Antonio de Pereda",
-   "short": "Pereda",
+   "short": "Antonio de Pereda",
    "born": 1611,
    "died": 1678,
    "country": "España",
@@ -1681,7 +1681,7 @@
   {
    "id": "steen",
    "name": "Jan Steen",
-   "short": "Steen",
+   "short": "Jan Steen",
    "born": 1626,
    "died": 1679,
    "country": "Países Bajos",
@@ -2037,7 +2037,7 @@
   {
    "id": "paret",
    "name": "Luis Paret y Alcázar",
-   "short": "Paret",
+   "short": "Luis Paret",
    "born": 1746,
    "died": 1799,
    "country": "España",
@@ -2054,7 +2054,7 @@
   {
    "id": "david",
    "name": "Jacques-Louis David",
-   "short": "David",
+   "short": "Jacques-Louis David",
    "born": 1748,
    "died": 1825,
    "country": "Francia",
@@ -2515,7 +2515,7 @@
   {
    "id": "ivanov",
    "name": "Alexander Ivánov",
-   "short": "Ivánov",
+   "short": "Alexander Ivánov",
    "born": 1806,
    "died": 1858,
    "country": "Rusia",
@@ -2559,7 +2559,7 @@
   {
    "id": "madrazo",
    "name": "Federico de Madrazo",
-   "short": "Madrazo",
+   "short": "Federico de Madrazo",
    "born": 1815,
    "died": 1894,
    "country": "España",
@@ -2912,7 +2912,7 @@
   {
    "id": "rosales",
    "name": "Eduardo Rosales",
-   "short": "Rosales",
+   "short": "Eduardo Rosales",
    "born": 1836,
    "died": 1873,
    "country": "España",
@@ -2938,7 +2938,7 @@
   {
    "id": "homer",
    "name": "Winslow Homer",
-   "short": "Homer",
+   "short": "Winslow Homer",
    "born": 1836,
    "died": 1910,
    "country": "Estados Unidos",
@@ -3237,7 +3237,7 @@
   {
    "id": "rousseau",
    "name": "Henri Rousseau",
-   "short": "Rousseau",
+   "short": "Henri Rousseau",
    "born": 1844,
    "died": 1910,
    "country": "Francia",
@@ -3862,7 +3862,7 @@
   {
    "id": "casas",
    "name": "Ramón Casas",
-   "short": "Casas",
+   "short": "Ramón Casas",
    "born": 1866,
    "died": 1932,
    "country": "España",
@@ -3967,7 +3967,7 @@
   {
    "id": "mir",
    "name": "Joaquín Mir",
-   "short": "Mir",
+   "short": "Joaquín Mir",
    "born": 1873,
    "died": 1940,
    "country": "España",
@@ -29766,7 +29766,7 @@
    "source": {
     "wikidata": "Q3937485",
     "commons": "https://commons.wikimedia.org/wiki/File:Portrait_de_Charles_1er,_roi_d'Angleterre,_à_la_chasse_-_Antoon_van_Dyck_-_Musée_du_Louvre_Peintures_INV_1236_;_MR_666.jpg",
-    "file": "Portrait de Charles 1er, roi d'Angleterre, à la chasse - Anton van Dyck - Musée du Louvre Peintures INV 1236 ; MR 666.jpg",
+    "file": "Portrait de Charles 1er, roi d'Angleterre, à la chasse - Antoon van Dyck - Musée du Louvre Peintures INV 1236 ; MR 666.jpg",
     "license": "Public domain",
     "credit": "Self-photographed by Shonagon. Taken on 13 December 2024.",
     "ficha": "wikidata",
@@ -46992,7 +46992,7 @@
    "source": {
     "wikidata": "Q23499014",
     "commons": "https://commons.wikimedia.org/wiki/File:Federico_de_Madrazo_-_Portrait_of_Marià_Fortuny_-_Google_Art_Project.jpg",
-    "file": "Federico de Madrazo - Portrait of Mariano Fortuny - Google Art Project.jpg",
+    "file": "Federico de Madrazo - Portrait of Marià Fortuny - Google Art Project.jpg",
     "license": "Public domain",
     "credit": "uwFLy0ICxkKHtw at Google Cultural Institute maximum zoom level",
     "ficha": "wikidata",
@@ -52193,7 +52193,7 @@
    "source": {
     "wikidata": "Q2814164",
     "commons": "https://commons.wikimedia.org/wiki/File:(Barcelona)_La_batalla_de_Tetuan_-_Marià_Fortuny_Marsal_-_MNAC.jpg",
-    "file": "(Barcelona) La batalla de Tetuan - Mariano Fortuny Marsal - MNAC.jpg",
+    "file": "(Barcelona) La batalla de Tetuan - Marià Fortuny Marsal - MNAC.jpg",
     "license": "Public domain",
     "credit": "Own work",
     "ficha": "wikidata",
@@ -52240,7 +52240,7 @@
    "source": {
     "wikidata": "Q9093618",
     "commons": "https://commons.wikimedia.org/wiki/File:Vieillard_nu_au_soleil,_par_Marià_Fortuny.jpg",
-    "file": "Vieillard nu au soleil, par Mariano Fortuny.jpg",
+    "file": "Vieillard nu au soleil, par Marià Fortuny.jpg",
     "license": "Public domain",
     "credit": "https://www.museodelprado.es/imagenes/Documentos/imgsem/a5/a514/a514ab87-4e8a-4083-b48d-9cf0338bcbe2/762602f5-6834-4b0d-b1a5-f533e7928b07.jpg",
     "ficha": "wikidata",
@@ -52279,7 +52279,7 @@
    "source": {
     "wikidata": "Q27941459",
     "commons": "https://commons.wikimedia.org/wiki/File:(Barcelona)_Carmen_Bastián_-_Marià_Fortuny_-_Museu_Nacional_d'Art_de_Catalunya.jpg",
-    "file": "(Barcelona) Carmen Bastián - Mariano Fortuny - Museu Nacional d'Art de Catalunya.jpg",
+    "file": "(Barcelona) Carmen Bastián - Marià Fortuny - Museu Nacional d'Art de Catalunya.jpg",
     "license": "Public domain",
     "credit": "Own work",
     "ficha": "wikidata",
@@ -52403,7 +52403,7 @@
    "source": {
     "wikidata": "Q23936259",
     "commons": "https://commons.wikimedia.org/wiki/File:(Barcelona)_Marià_Fortuny_-_Autoretrat_-_Museu_Nacional_d'Art_de_Catalunya.jpg",
-    "file": "(Barcelona) Mariano Fortuny - Autoretrat - Museu Nacional d'Art de Catalunya.jpg",
+    "file": "(Barcelona) Marià Fortuny - Autoretrat - Museu Nacional d'Art de Catalunya.jpg",
     "license": "Public domain",
     "credit": "Own work",
     "ficha": "wikidata",
@@ -65864,7 +65864,7 @@
    "source": {
     "wikidata": "Q9019132",
     "commons": "https://commons.wikimedia.org/wiki/File:Ramon_Casas_Charge.jpg",
-    "file": "Ramón Casas Charge.jpg",
+    "file": "Ramon Casas Charge.jpg",
     "license": "Public domain",
     "credit": "Transferred from en.wikipedia to Commons by Off2riorob using CommonsHelper. Original uploader was Jmabel at en.wikipedia",
     "ficha": "wikidata",
@@ -67123,9 +67123,9 @@
    "source": {
     "wikidata": "Q893162",
     "commons": "https://commons.wikimedia.org/wiki/File:Isidre_Nonell_1904_--_La_Paloma.jpg",
-    "file": "Isidro Nonell 1904 -- La Paloma.jpg",
+    "file": "Isidre Nonell 1904 -- La Paloma.jpg",
     "license": "Public domain",
-    "credit": "Isidro Nonell (1872–1911). Editorial MNAC, Barcelona, i Fundación Cultural Mapfre, Madrid, 2000.",
+    "credit": "Isidre Nonell (1872–1911). Editorial MNAC, Barcelona, i Fundación Cultural Mapfre, Madrid, 2000.",
     "ficha": "wikidata",
     "fetched": "2026-11-24"
    },
@@ -67162,7 +67162,7 @@
    "source": {
     "wikidata": "Q11917835",
     "commons": "https://commons.wikimedia.org/wiki/File:(Barcelona)_Dues_gitanes_-_Isidre_Nonell_-_Museu_Nacional_d'Art_de_Catalunya.jpg",
-    "file": "(Barcelona) Dues gitanes - Isidro Nonell - Museu Nacional d'Art de Catalunya.jpg",
+    "file": "(Barcelona) Dues gitanes - Isidre Nonell - Museu Nacional d'Art de Catalunya.jpg",
     "license": "Public domain",
     "credit": "Own work",
     "ficha": "wikidata",
@@ -67201,7 +67201,7 @@
    "source": {
     "wikidata": "Q23935121",
     "commons": "https://commons.wikimedia.org/wiki/File:(Barcelona)_Dolores_-_Isidre_Nonell_-_Museu_Nacional_d'Art_de_Catalunya.jpg",
-    "file": "(Barcelona) Dolores - Isidro Nonell - Museu Nacional d'Art de Catalunya.jpg",
+    "file": "(Barcelona) Dolores - Isidre Nonell - Museu Nacional d'Art de Catalunya.jpg",
     "license": "Public domain",
     "credit": "Own work",
     "ficha": "wikidata",
@@ -67240,7 +67240,7 @@
    "source": {
     "wikidata": "Q23936494",
     "commons": "https://commons.wikimedia.org/wiki/File:(Barcelona)_Consuelo_-_Isidre_Nonell_-_Museu_Nacional_d'Art_de_Catalunya.jpg",
-    "file": "(Barcelona) Consuelo - Isidro Nonell - Museu Nacional d'Art de Catalunya.jpg",
+    "file": "(Barcelona) Consuelo - Isidre Nonell - Museu Nacional d'Art de Catalunya.jpg",
     "license": "Public domain",
     "credit": "Own work",
     "ficha": "wikidata",
@@ -67279,7 +67279,7 @@
    "source": {
     "wikidata": "Q23500160",
     "commons": "https://commons.wikimedia.org/wiki/File:(Barcelona)_El_roc_de_l'estany_-_Joaquim_Mir_-_Museu_Nacional_d'Art_de_Catalunya.jpg",
-    "file": "(Barcelona) El roc de l'estany - Joaquín Mir - Museu Nacional d'Art de Catalunya.jpg",
+    "file": "(Barcelona) El roc de l'estany - Joaquim Mir - Museu Nacional d'Art de Catalunya.jpg",
     "license": "Public domain",
     "credit": "Own work",
     "ficha": "wikidata",
@@ -67318,7 +67318,7 @@
    "source": {
     "wikidata": "Q27574036",
     "commons": "https://commons.wikimedia.org/wiki/File:(Barcelona)_Or_i_atzur_-_Joaquim_Mir_-_Museu_Nacional_d'Art_de_Catalunya.jpg",
-    "file": "(Barcelona) Or i atzur - Joaquín Mir - Museu Nacional d'Art de Catalunya.jpg",
+    "file": "(Barcelona) Or i atzur - Joaquim Mir - Museu Nacional d'Art de Catalunya.jpg",
     "license": "Public domain",
     "credit": "Own work",
     "ficha": "wikidata",
@@ -67398,7 +67398,7 @@
    "source": {
     "wikidata": "Q23933561",
     "commons": "https://commons.wikimedia.org/wiki/File:Joaquim_Mir_-_The_Rector's_Orchard_-_Google_Art_Project.jpg",
-    "file": "Joaquín Mir - The Rector's Orchard - Google Art Project.jpg",
+    "file": "Joaquim Mir - The Rector's Orchard - Google Art Project.jpg",
     "license": "Public domain",
     "credit": "Google Arts &amp; Culture:  Home page – Image Maximum resolution.",
     "ficha": "wikidata",

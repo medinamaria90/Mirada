@@ -329,7 +329,7 @@
  {
   "id": "bellini",
   "name": "Giovanni Bellini",
-  "short": "Bellini",
+  "short": "Giovanni Bellini",
   "born": 1430,
   "died": 1516,
   "country": "Italia",
@@ -843,7 +843,7 @@
  {
   "id": "morales",
   "name": "Luis de Morales",
-  "short": "Morales",
+  "short": "Luis de Morales",
   "born": 1510,
   "died": 1586,
   "country": "España",
@@ -1168,7 +1168,7 @@
  {
   "id": "hals",
   "name": "Frans Hals",
-  "short": "Hals",
+  "short": "Frans Hals",
   "born": 1582,
   "died": 1666,
   "country": "Países Bajos",
@@ -1490,7 +1490,7 @@
  {
   "id": "pereda",
   "name": "Antonio de Pereda",
-  "short": "Pereda",
+  "short": "Antonio de Pereda",
   "born": 1611,
   "died": 1678,
   "country": "España",
@@ -1588,7 +1588,7 @@
  {
   "id": "steen",
   "name": "Jan Steen",
-  "short": "Steen",
+  "short": "Jan Steen",
   "born": 1626,
   "died": 1679,
   "country": "Países Bajos",
@@ -1944,7 +1944,7 @@
  {
   "id": "paret",
   "name": "Luis Paret y Alcázar",
-  "short": "Paret",
+  "short": "Luis Paret",
   "born": 1746,
   "died": 1799,
   "country": "España",
@@ -1961,7 +1961,7 @@
  {
   "id": "david",
   "name": "Jacques-Louis David",
-  "short": "David",
+  "short": "Jacques-Louis David",
   "born": 1748,
   "died": 1825,
   "country": "Francia",
@@ -2422,7 +2422,7 @@
  {
   "id": "ivanov",
   "name": "Alexander Ivánov",
-  "short": "Ivánov",
+  "short": "Alexander Ivánov",
   "born": 1806,
   "died": 1858,
   "country": "Rusia",
@@ -2466,7 +2466,7 @@
  {
   "id": "madrazo",
   "name": "Federico de Madrazo",
-  "short": "Madrazo",
+  "short": "Federico de Madrazo",
   "born": 1815,
   "died": 1894,
   "country": "España",
@@ -2819,7 +2819,7 @@
  {
   "id": "rosales",
   "name": "Eduardo Rosales",
-  "short": "Rosales",
+  "short": "Eduardo Rosales",
   "born": 1836,
   "died": 1873,
   "country": "España",
@@ -2845,7 +2845,7 @@
  {
   "id": "homer",
   "name": "Winslow Homer",
-  "short": "Homer",
+  "short": "Winslow Homer",
   "born": 1836,
   "died": 1910,
   "country": "Estados Unidos",
@@ -3144,7 +3144,7 @@
  {
   "id": "rousseau",
   "name": "Henri Rousseau",
-  "short": "Rousseau",
+  "short": "Henri Rousseau",
   "born": 1844,
   "died": 1910,
   "country": "Francia",
@@ -3769,7 +3769,7 @@
  {
   "id": "casas",
   "name": "Ramón Casas",
-  "short": "Casas",
+  "short": "Ramón Casas",
   "born": 1866,
   "died": 1932,
   "country": "España",
@@ -3874,7 +3874,7 @@
  {
   "id": "mir",
   "name": "Joaquín Mir",
-  "short": "Mir",
+  "short": "Joaquín Mir",
   "born": 1873,
   "died": 1940,
   "country": "España",

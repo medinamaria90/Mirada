@@ -171,7 +171,7 @@
  {
   "id": "bellini",
   "nombre": "Giovanni Bellini",
-  "corto": "Bellini",
+  "corto": "Giovanni Bellini",
   "en": "Giovanni Bellini",
   "qid": "Q17169",
   "nacimiento": 1430,
@@ -457,7 +457,7 @@
  {
   "id": "morales",
   "nombre": "Luis de Morales",
-  "corto": "Morales",
+  "corto": "Luis de Morales",
   "en": "Luis de Morales",
   "qid": "Q703250",
   "nacimiento": 1510,
@@ -626,7 +626,7 @@
  {
   "id": "hals",
   "nombre": "Frans Hals",
-  "corto": "Hals",
+  "corto": "Frans Hals",
   "en": "Frans Hals",
   "qid": "Q167654",
   "nacimiento": 1582,
@@ -716,7 +716,7 @@
  },
  {
   "id": "van-dyck",
-  "nombre": "Antoon van Dyck",
+  "nombre": "Anton van Dyck",
   "corto": "Van Dyck",
   "en": "Anthony van Dyck",
   "qid": "Q150679",
@@ -782,7 +782,7 @@
  {
   "id": "pereda",
   "nombre": "Antonio de Pereda",
-  "corto": "Pereda",
+  "corto": "Antonio de Pereda",
   "en": "Antonio de Pereda",
   "qid": "Q604088",
   "nacimiento": 1611,
@@ -834,7 +834,7 @@
  {
   "id": "steen",
   "nombre": "Jan Steen",
-  "corto": "Steen",
+  "corto": "Jan Steen",
   "en": "Jan Steen",
   "qid": "Q205863",
   "nacimiento": 1626,
@@ -1042,7 +1042,7 @@
  {
   "id": "paret",
   "nombre": "Luis Paret y Alcázar",
-  "corto": "Paret",
+  "corto": "Luis Paret",
   "en": "Luis Paret y Alcázar",
   "qid": "Q283412",
   "nacimiento": 1746,
@@ -1055,7 +1055,7 @@
  {
   "id": "david",
   "nombre": "Jacques-Louis David",
-  "corto": "David",
+  "corto": "Jacques-Louis David",
   "en": "Jacques-Louis David",
   "qid": "Q83155",
   "nacimiento": 1748,
@@ -1340,7 +1340,7 @@
  {
   "id": "ivanov",
   "nombre": "Alexander Ivánov",
-  "corto": "Ivánov",
+  "corto": "Alexander Ivánov",
   "en": "Alexander Andreyevich Ivanov",
   "qid": null,
   "nacimiento": 1806,
@@ -1366,7 +1366,7 @@
  {
   "id": "madrazo",
   "nombre": "Federico de Madrazo",
-  "corto": "Madrazo",
+  "corto": "Federico de Madrazo",
   "en": "Federico de Madrazo",
   "qid": "Q1345186",
   "nacimiento": 1815,
@@ -1600,7 +1600,7 @@
  {
   "id": "rosales",
   "nombre": "Eduardo Rosales",
-  "corto": "Rosales",
+  "corto": "Eduardo Rosales",
   "en": "Eduardo Rosales",
   "qid": "Q615701",
   "nacimiento": 1836,
@@ -1613,7 +1613,7 @@
  {
   "id": "homer",
   "nombre": "Winslow Homer",
-  "corto": "Homer",
+  "corto": "Winslow Homer",
   "en": "Winslow Homer",
   "qid": "Q344838",
   "nacimiento": 1836,
@@ -1638,7 +1638,7 @@
  },
  {
   "id": "fortuny",
-  "nombre": "Marià Fortuny",
+  "nombre": "Mariano Fortuny",
   "corto": "Fortuny",
   "en": "Marià Fortuny",
   "qid": "Q380052",
@@ -1782,7 +1782,7 @@
  {
   "id": "rousseau",
   "nombre": "Henri Rousseau",
-  "corto": "Rousseau",
+  "corto": "Henri Rousseau",
   "en": "Henri Rousseau",
   "qid": "Q156386",
   "nacimiento": 1844,
@@ -2158,8 +2158,8 @@
  },
  {
   "id": "casas",
-  "nombre": "Ramon Casas",
-  "corto": "Casas",
+  "nombre": "Ramón Casas",
+  "corto": "Ramón Casas",
   "en": "Ramon Casas",
   "qid": "Q725681",
   "nacimiento": 1866,
@@ -2210,7 +2210,7 @@
  },
  {
   "id": "nonell",
-  "nombre": "Isidre Nonell",
+  "nombre": "Isidro Nonell",
   "corto": "Nonell",
   "en": "Isidre Nonell",
   "qid": "Q1393742",
@@ -2223,8 +2223,8 @@
  },
  {
   "id": "mir",
-  "nombre": "Joaquim Mir",
-  "corto": "Mir",
+  "nombre": "Joaquín Mir",
+  "corto": "Joaquín Mir",
   "en": "Joaquim Mir",
   "qid": "Q1357729",
   "nacimiento": 1873,
