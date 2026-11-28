@@ -69,21 +69,26 @@ export function actionsHtml({ secondary = null, primary }) {
 }
 
 // Pie de los carruseles (época y cartel): anterior/siguiente para el teclado y los dos botones; wireDeck pone sus textos.
+// Con preguntas (época y tramo), en la última el principal es «Ir a las preguntas» y otro botón hace lo de siempre (deck-end).
 export const deckFootHtml = () =>
-  `${stepButtonsHtml()}${actionsHtml({ secondary: { label: '', action: 'skip' }, primary: { label: DECK_LABEL.next, action: 'primary' } })}`;
+  `${stepButtonsHtml()}${actionsHtml({ secondary: { label: '', action: 'skip' }, primary: { label: DECK_LABEL.next, action: 'primary' } })
+    .replace('<button type="button" class="btn btn-primary', '<button type="button" class="btn deck-secondary deck-end" data-deck="end" hidden></button>\n      <button type="button" class="btn btn-primary')}`;
 
 // Carrusel de tarjetas (época y cartel): se desliza con el dedo (scroll-snap) y, como la historia, se avanza tocando a la
 // derecha, se vuelve tocando a la izquierda y con los botones del pie. scope: donde están la cabecera, el carrusel y el pie
 // (deckFootHtml). endLabel: el principal en la última tarjeta; onEnd, lo que hace. onSkip: «Saltar» mientras quedan tarjetas
 // (si lo hay). more: { label, go } el secundario «Más sobre…» de la última (si lo hay). onClose: la X (si no la cierra otro,
-// como mountSheet); onShare: compartir.
-export function wireDeck(ctx, { scope, track, endLabel, onEnd, onSkip = null, more = null, onClose = null, onShare = null }) {
+// como mountSheet); onShare: compartir. questions: { ready, go } (preguntas de concepto, ui/concept-quiz.js): con ready, en la
+// última tarjeta el principal es «Ir a las preguntas» (go) y el botón deck-end lleva endLabel (onEnd); como ready llega
+// tarde (se mira si hay preguntas), wireDeck le pone questions.refresh para repintar los botones.
+export function wireDeck(ctx, { scope, track, endLabel, onEnd, onSkip = null, more = null, onClose = null, onShare = null, questions = null }) {
   const slides = [...track.children];
   const total = slides.length;
   const primary = scope.querySelector('.deck-primary');
   const secondary = scope.querySelector('.deck-secondary');
   const back = scope.querySelector('.deck-back');
   const fwd = scope.querySelector('.deck-next');
+  const end = scope.querySelector('.deck-end');
   let pos = 0;
   const go = (i) => {
     const k = Math.max(0, Math.min(total - 1, i));
@@ -94,8 +99,11 @@ export function wireDeck(ctx, { scope, track, endLabel, onEnd, onSkip = null, mo
   const sync = () => {
     pos = Math.max(0, Math.min(total - 1, Math.round(track.scrollLeft / Math.max(1, track.clientWidth))));
     const last = pos === total - 1;
+    const ask = last && Boolean(questions?.ready) && Boolean(end);
     setBars(scope, pos);
-    primary.textContent = last ? endLabel : DECK_LABEL.next;
+    primary.textContent = ask ? DECK_LABEL.questions : last ? endLabel : DECK_LABEL.next;
+    if (end) { end.hidden = !ask; end.textContent = endLabel; }
+    primary.parentElement.classList.toggle('has-questions', ask);
     secondary.dataset.deck = last ? 'more' : 'skip';
     secondary.textContent = last ? more?.label || '' : DECK_LABEL.skip;
     secondary.hidden = last ? !more : !onSkip;
@@ -103,6 +111,7 @@ export function wireDeck(ctx, { scope, track, endLabel, onEnd, onSkip = null, mo
     fwd.hidden = last;
   };
   sync();
+  if (questions) questions.refresh = sync;
   track.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
   scope.addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-deck]');
@@ -113,7 +122,12 @@ export function wireDeck(ctx, { scope, track, endLabel, onEnd, onSkip = null, mo
       if (what === 'close') onClose?.();
       else if (what === 'skip') onSkip?.();
       else if (what === 'more') more?.go();
-      else if (what === 'primary') { if (pos === total - 1) onEnd(); else go(pos + 1); }
+      else if (what === 'end') onEnd();
+      else if (what === 'primary') {
+        if (pos !== total - 1) go(pos + 1);
+        else if (questions?.ready && end) questions.go();
+        else onEnd();
+      }
       else go(pos + (what === 'next' ? 1 : -1));
       return;
     }

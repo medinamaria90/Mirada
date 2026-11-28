@@ -91,7 +91,8 @@ export function eraMore(ctx, movementId, label = '') {
 // última tarjeta, el botón de la presentación (Seguir, Volver al camino, Empezar…), que hace lo que hacía. skip: como paso
 // del camino, «Saltar» va directo a lo siguiente. Se llama antes de que la pantalla se pinte (sin salto); si llega tarde (red
 // muy lenta), late la monta con un fundido suave.
-export function mountEraCards(ctx, root, movementId, cards, { late = false, skip = false } = {}) {
+// questions: { ready, go } de las preguntas de concepto (deck-nav.js wireDeck), o null.
+export function mountEraCards(ctx, root, movementId, cards, { late = false, skip = false, questions = null } = {}) {
   const body = $('.welcome-body', root);
   if (!body || !root.isConnected || $('.era-track', root)) return;
   const enter = $('[data-action="enter"]', body);
@@ -128,6 +129,7 @@ export function mountEraCards(ctx, root, movementId, cards, { late = false, skip
     onEnd: () => enter.click(),
     onSkip: skip ? () => enter.click() : null,
     more: eraMore(ctx, movementId),
+    questions,
     onClose: () => ctx.go('inicio'),
     onShare: async () => {
       ctx.audio.sfx('tap');

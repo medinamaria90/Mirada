@@ -22,7 +22,8 @@ export const CONFUSION_MIN = 2;
 
 export const ARTIST = 'artist';
 export const MOVEMENT = 'movement';
-const TYPE_OF_QUESTION = { who: ARTIST, which: ARTIST, movement: MOVEMENT };
+// Las de concepto (engine/concepts.js) cuentan para la época por la que preguntan.
+const TYPE_OF_QUESTION = { who: ARTIST, which: ARTIST, movement: MOVEMENT, concept: MOVEMENT };
 const CODE = { [ARTIST]: 'a', [MOVEMENT]: 'm' };
 
 export const recallKey = (type, id) => `${type}:${id}`;
@@ -38,6 +39,8 @@ export function cleanSlips(list) {
 // De quién (pintor) o de qué época era lo elegido; null si no se sabe.
 function chosenOf(index, q, chosen) {
   if (!chosen || chosen === q.answerId) return null;
+  // En las de concepto, solo las opciones con cuadro dicen de qué época era lo elegido.
+  if (q.type === 'concept') return (q.options || []).find((o) => o.id === chosen)?.movementId || null;
   if (q.type === 'which') {
     const option = (q.options || []).find((o) => o.id === chosen);
     const work = option ? index.artwork(option.artworkId || option.id) : null;
@@ -55,7 +58,7 @@ export function logAnswers(list, answers, index, today, { skip = () => false, ro
     const q = ans?.q;
     const type = q && TYPE_OF_QUESTION[q.type];
     if (!type || ans.retry || skip(ans)) continue;
-    const subject = type === ARTIST ? q.artistId : q.answerId;
+    const subject = type === ARTIST ? q.artistId : q.type === 'concept' ? q.movementId : q.answerId;
     if (!subject) continue;
     const own = type === ARTIST ? round.artistId : round.movementId;
     const entry = { t: CODE[type], a: subject, d: today, ok: ans.correct ? 1 : 0, w: q.type === 'which' ? q.targetArtworkId : q.artworkId };
