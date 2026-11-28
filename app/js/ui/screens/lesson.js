@@ -13,6 +13,7 @@ import { xpForAnswer } from '../../engine/progress.js';
 import { feedbackFor } from '../../engine/feedback.js';
 import { titleSlotHtml, revealTitle } from '../title-slot.js';
 import { veilsHtml, unveil } from '../signature-veil.js';
+import { tagWrongArt, chosenSpeech } from '../wrong-tag.js';
 import { beforeQuestionHtml, beforeRibbonHtml } from '../before-question.js';
 import { loadRibbonCss } from '../chrono-ribbon.js';
 import { guestCardHtml, loadGuestCss } from '../guest-card.js';
@@ -23,6 +24,8 @@ import { avatarHtml } from '../avatar.js';
 const MAX_SUBSTITUTIONS = 3;
 const COMBO_SHOW = 3; // aciertos seguidos a partir de los que se ve el indicador
 const DUNNO_LABEL = 'No lo sé';
+// Último refuerzo «Fíjate en…» visto de cada pintor, para no repetirlo en la ronda siguiente (dura la sesión).
+const recentHints = new Map();
 
 // config: { questions, extras?, accent, seed, kind, label, interlude?, dunno?, onDone(summary), onQuit(), resume?, onSave? }
 // dunno: true pone «No lo sé» bajo las opciones (modo aprender; nunca en retos ni en el test): enseña la respuesta sin sonido
@@ -314,27 +317,23 @@ export function runLesson(ctx, el, config) {
 
   function showFeedback(q, correct, gained, retry, chosenId, dunno = false) {
     const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
-    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId });
+    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId, recent: recentHints });
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
     // El nombre del pintor abre su ficha: la línea «quién» o, en «Es de X», el propio título.
     const who = fb.who ? `<p class="fb-who">${artistLink(fb.artistId, fb.who)}</p>` : '';
     const titleLinked = !fb.who && fb.artistId && /^Es de /.test(fb.title);
     const title = titleLinked ? artistLink(fb.artistId, fb.title, 'fb-title') : `<p class="fb-title">${esc(fb.title)}</p>`;
-    // Tras un fallo de autor: de quién era lo elegido («No es de X…» / «El que has elegido es de X · título»).
-    const chosen = fb.chosen ? `<p class="fb-line-2">${artistLink(fb.chosen.artistId, fb.chosen.line)}</p>` : '';
-    const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('') + chosen;
-    // En «¿Cuál es de X?», la miniatura elegida por error lleva el nombre de su pintor.
-    const wrongArt = fb.chosen && fb.chosen.artworkId ? $('.option-art.is-wrong', stage) : null;
-    if (wrongArt) {
-      ($('.marco', wrongArt) || wrongArt).insertAdjacentHTML('beforeend', `<span class="option-tag">${esc(fb.chosen.name)}</span>`);
-      wrongArt.setAttribute('aria-label', `${wrongArt.getAttribute('aria-label')}, de ${fb.chosen.name}`);
-    }
+    const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('');
+    // Tras un fallo de autor, lo elegido se marca en su propia opción (sin línea aparte en la hoja);
+    // el lector de pantalla lo oye en la hoja. En «¿Cuál es de X?», la miniatura lleva el pintor.
+    const chosenSr = fb.chosen ? `<p class="sr-only fb-chosen">${esc(chosenSpeech(fb.chosen))}</p>` : '';
+    if (fb.chosen && fb.chosen.artworkId) tagWrongArt(stage, fb.chosen.name);
     // El texto se desplaza dentro de la hoja si no cabe (zoom de texto); «Seguir» siempre a la vista.
     feedback.innerHTML = `<div class="fb-inner">
       <div class="fb-text">
         <div class="fb-head">${dunno ? dunnoMark(q) : `<span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>`}
         ${title}${gained ? `<span class="fb-xp">+${gained} puntos</span>` : ''}</div>
-        ${who}${lines}${beforeRibbonHtml(ctx, fb)}${caption}${curioHtml(subject, curioOpen)}
+        ${who}${chosenSr}${lines}${beforeRibbonHtml(ctx, fb)}${caption}${curioHtml(subject, curioOpen)}
       </div>
       <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>
     </div>`;

@@ -317,6 +317,35 @@ Pedido de María: la puerta y el tramo se leían como decoración. Ahora son par
   (nunca salía sola; la guía de bienvenida sigue igual).
 - De paso, el camino en línea (letra muy grande o ventana estrecha) ya no amontona las paradas.
 
+## «Fíjate en…»: variedad y ninguna obra sin pista (28/11)
+
+María veía casi siempre la misma frase tras fallar con un pintor. Ahora cada uno de los 174 pintores tiene 4-5 refuerzos
+de estilo en `contenido/pistas.json` (760 en total: color, pincelada, luz, rostros, composición, temas), sin nombrar al
+pintor ni títulos para poder usarlos algún día como pistas antes de responder. Llevan alcance (estilo, géneros o
+etiquetas) y, cuando se puede, etiquetas visuales para servir también tras un fallo en «¿Cuál es de X?». `feedbackFor`
+da primero el «fíjate» propio de la obra y luego rota entre frases y refuerzos sin repetir el último visto de ese pintor
+(`recent`, que dura toda la sesión en `lesson.js`). Las obras atípicas excluyen los refuerzos que no les cuadran
+(`sinPistas` en `fijate.json`). El 100 % de las 1.469 obras tiene al menos una línea aplicable (prueba en
+`tests/fijate.test.js`). La individualización por cuadro sí funciona (sale primero en las 290 obras que la tienen, también
+tras fallar); si se nota poco es porque solo el 22 % de las obras del camino tiene «fíjate» propio.
+Revisión independiente (una vuelta, 6,5/10): reescritos unos 60 refuerzos (frases genéricas, ángulos repetidos dentro de un
+pintor o entre Degas, Lautrec y Cassatt, rasgos de «estilo» que no valían en toda la obra, términos sin explicar). Ahora:
+757 refuerzos; mediana de 6 líneas aplicables por obra; 1.469 de 1.469 obras con al menos una.
+
+## Cierre de época: capítulo terminado (28/11)
+
+- **Cuándo:** una época del camino se cierra al ganar su medalla (todas sus paradas dominadas; la Prueba de época se abre
+  justo entonces y no es requisito); una rama, al dominar todos sus pintores propios. `engine/era-end.js`.
+- **Pantalla** `#cierre-<época>` / `#cierre-rama-<id>` (`ui/screens/era-end.js`, `css/cierre.css`): «Has terminado el
+  Renacimiento», la medalla, los pintores en un mosaico de retratos (llevan a su ficha), cuadros vistos y acertados, la frase
+  puente y «Cruzar al <época>» (medallón y presentación; si ya entró, su parada abierta) o «Volver al camino». Tras la última
+  época, «Ver tu colección». Compartir manda `h/epoca-<id>.html` con «He terminado el Renacimiento en Sfumato». Sonido
+  `complete` + `medal` y un brillo breve que no sale con «reducir animaciones».
+- **Guía:** regla 1 ter de `nextStep` («Cerrar el Renacimiento»), en el resultado y en el mapa, hasta que se ve. Sale una vez.
+- **Frases puente** en `data/cierres.json` (8 transiciones del camino, el final y las 14 ramas), ≤ 180 caracteres, con fuente
+  (solo en «Fuentes y créditos», grupo «Carteles y cierres del camino»).
+- **Estado:** `progress.closures = { seeded, seen }`, sin subir la versión. Quien ya traía épocas cerradas se siembra al cargar:
+  cuentan como vistas salvo la última si aún no ha cruzado a la siguiente. Pruebas en `tests/cierre-epoca.test.js`.
 ## «Repasar a…»: lo que se olvida vuelve con contexto, y «No lo sé» (28/11)
 
 Pedido de María: con muchos pintores aprendidos, al jugar a uno nuevo le preguntaban por los antiguos y ya no se acordaba;

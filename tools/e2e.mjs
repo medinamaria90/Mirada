@@ -205,29 +205,38 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
   throw new Error('La ronda no terminó');
 }
 
-// Tras un fallo de autor, la hoja dice de quién era lo elegido («No es de X…» en «¿Quién?»; «El que
-// has elegido es de X · título» en «¿Cuál?», donde además la miniatura elegida lleva su pintor).
-// En las de movimiento no hay línea del elegido.
+// Tras un fallo de autor, lo elegido se marca en su propia opción, sin línea aparte en la hoja
+// (ni «El que has elegido es de X» ni «No es de X»); el lector de pantalla oye «Elegiste…». En
+// «¿Cuál?», la miniatura elegida lleva solo el nombre de su pintor y, abierta en el visor tras
+// responder, enseña pintor y título.
 async function assertChosenFeedback(page, type, label) {
-  const line = page.locator('.feedback .fb-line-2');
+  const sheet = (await page.locator('.feedback .fb-inner').innerText()).trim();
+  check(!/has elegido|^No es de/m.test(sheet) && await page.locator('.feedback .fb-line-2').count() === 0, `${label}: la hoja aún tiene la línea del elegido`);
+  const sr = page.locator('.feedback .fb-chosen');
   if (type === 'movement') {
-    check(await line.count() === 0, `${label}: línea del elegido en una pregunta de movimiento`);
+    check(await sr.count() === 0, `${label}: «Elegiste…» en una pregunta de movimiento`);
     return;
   }
-  check(await line.count() === 1, `${label}: falta la línea de quién era lo elegido`);
-  const text = (await line.innerText()).trim();
   const wrongOpt = page.locator('.lesson-stage .option.is-wrong');
+  const speech = (await sr.textContent() || '').trim();
   if (type === 'which') {
     const id = await wrongOpt.locator('.art').getAttribute('data-art');
     const w = art.get(id);
     const a = artist.get(w.artistId);
     const name = a.short || a.name;
-    check(text === `El que has elegido es de ${name} · ${w.title}`, `${label}: la línea no nombra al pintor del cuadro elegido: ${text}`);
+    check(speech === `Elegiste un cuadro de ${name}.`, `${label}: el lector no oye de quién es el cuadro elegido: ${speech}`);
     const tag = wrongOpt.locator('.option-tag');
     check(await tag.count() === 1 && (await tag.innerText()).trim() === name, `${label}: la miniatura elegida no lleva su pintor`);
+    // El visor, tras responder, enseña pintor y título de la elegida.
+    await wrongOpt.click();
+    await page.waitForSelector('.viewer .viewer-caption', { timeout: 3000 }).catch(() => {});
+    const caption = (await page.locator('.viewer .viewer-caption').allTextContents()).join(' | ');
+    check(caption.includes(w.title) && caption.includes(w.by || a.name), `${label}: el visor no enseña pintor y título tras responder: ${caption}`);
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('.viewer', { state: 'detached', timeout: 3000 }).catch(() => {});
   } else {
     const a = artist.get(await wrongOpt.getAttribute('data-id'));
-    check(Boolean(a) && text.startsWith(`No es de ${a.short || a.name}`), `${label}: la línea no nombra al pintor elegido: ${text}`);
+    check(Boolean(a) && speech === `Elegiste a ${a.short || a.name}.`, `${label}: el lector no oye a quién se eligió: ${speech}`);
   }
 }
 

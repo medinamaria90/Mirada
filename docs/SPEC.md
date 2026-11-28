@@ -301,12 +301,13 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
 1.315 obras (ids `w<QID>`), 162 pintores, 9 movimientos del camino + 2 ramas-movimiento, 14 ramas.
 
 - **Archivos** (`app/data/`): `catalog.json` (lo mínimo para pintar), `catalog-text.json` (versión 3: `look`, `looks`, `kind`,
-  `tags`, `genre`, `skipTraits`, `traits`, `traitTags`, `traitScope`, vocabulario). Un rasgo del pintor solo se enseña en una
+  `tags`, `genre`, `skipTraits`, `skipHints`, `traits`, `traitTags`, `traitScope`, `traitGeneral`, `styleHints`, vocabulario). Un rasgo del pintor solo se enseña en una
   obra donde se ve: `traitScope` (`contenido/rasgos.json`) dice de cada frase si es de «estilo» (vale en todas), de unos
   géneros (`genre` de la obra: retrato, figuras, paisaje, bodegon, abstracto; Wikidata o `contenido/generos.json`) o de
   «etiquetas» (solo si las de la obra lo confirman), y una frase con un detalle concreto puede traer su versión general
   (`traitGeneral`) para las obras donde el detalle no se ve; `contenido/fijate.json` da «fíjate» propios y `skipTraits` (rasgos
-  excluidos en obras de juventud, copias o atípicas). Sin certeza, no hay línea y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
+  excluidos en obras de juventud, copias o atípicas). Además, cada pintor tiene 4-6 refuerzos de estilo (`styleHints`,
+  `contenido/pistas.json`) que rotan sin repetir el último visto; `sinPistas` (→ `skipHints`) los excluye en una obra. Sin certeza, no hay línea y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
   `technique`, `dimensions`, `source {wikidata, file, license}`; se pide aparte por peso, `mergeCatalogFicha` la une a las obras).
 - **Obra**: `id, artistId, title, year, yearSort, img, thumb, w, h, role, fame, confidence, level, stage?, inSpain, spoiler?,
   attributed?, focus?`. `w`/`h` son los de la imagen empaquetada a 1200 px. `level`: 1 = básico, 2..n = «a fondo» (etapa
@@ -350,7 +351,9 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   todas sus obras desbloqueadas (abren el visor) y huecos discretos «n de m». Atrás devuelve a donde estabas, con su desplazamiento
   (`main.js`: número en `history.state`). Colección tiene dos rutas, `#coleccion` (Cuadros) y `#coleccion-pintores`.
   **Historias servidas desde la app**: `tools/sync_historias.py` copia y valida `contenido/historias/` en `app/data/historias/`
-  (con `index.json`); `tests/ficha-pintor.test.js` falla si la copia se desfasa. Museo y ciudad (`catalog-ficha.json`, diferido,
+  (con `index.json`); `tests/ficha-pintor.test.js` falla si la copia se desfasa. Todo pintor con niveles «a fondo» tiene historia en cada uno, nueva y
+  sin repetir el nivel 1 (decisión de María, 28/11; `tests/historias-ampliacion.test.js`, con una lista `PENDING` de excepciones
+  justificadas que debe quedar vacía). Museo y ciudad (`catalog-ficha.json`, diferido,
   `ui/ficha-data.js`) salen bajo el cuadro en el visor solo con la obra revelada.
 - **Obras desbloqueadas** = vistas (colección o enseñadas en rondas, `engine/collection.js` `unlockedMap`): una sola definición para las franjas
   de Colección, la ficha (galería completa: miniaturas que abren el visor y huecos discretos «n de m» sin imagen ni título) y la lista de

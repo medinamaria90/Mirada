@@ -44,6 +44,33 @@
      "source": "https://es.wikipedia.org/wiki/El_Bosco"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Pecados",
+   "title": "El Bosco se ríe del pecado",
+   "cards": [
+    {
+     "text": "Se llamaba Jheronimus van Aken, pero firmaba con el nombre de su ciudad, 's-Hertogenbosch, «el bosque del duque». De ahí viene El Bosco, como le llamamos en España.",
+     "artwork": "w430069",
+     "source": "https://es.wikipedia.org/wiki/El_Bosco"
+    },
+    {
+     "text": "Un falso médico con un embudo por sombrero le «saca» a un bobo la piedra de la locura. Era un timo de feria, y El Bosco se ríe a la vez del curandero y del que se deja engañar.",
+     "artwork": "w2270768",
+     "source": "https://es.wikipedia.org/wiki/Extracci%C3%B3n_de_la_piedra_de_la_locura"
+    },
+    {
+     "text": "Todos se pelean por subirse al carro mientras unos demonios tiran de él hacia el infierno. Un refrán flamenco decía que el mundo es un carro de heno: cada cual coge lo que puede.",
+     "artwork": "w2213811",
+     "source": "https://es.wikipedia.org/wiki/El_carro_de_heno"
+    },
+    {
+     "text": "Fíjate en el moribundo: un ángel le señala la luz de un crucifijo y un demonio le tiende una bolsa de oro. Hasta el último momento, el avaro alarga la mano hacia el dinero.",
+     "artwork": "w2203011",
+     "source": "https://en.wikipedia.org/wiki/Death_and_the_Miser"
+    }
+   ]
   }
  ]
 }

@@ -17,6 +17,7 @@ import { buildBolsa } from './bolsa.js';
 import { drawGame, startHistory, markSeen } from './sorteo.js';
 import { revealTitle } from '../ui/title-slot.js';
 import { unveil } from '../ui/signature-veil.js';
+import { tagWrongArt, chosenSpeech } from '../ui/wrong-tag.js';
 import { barHtml, questionHtml, feedbackHtml, resultHtml, errorHtml, CHEER_UP } from './pantallas.js';
 import { setupSound, play } from './sonido.js';
 import { createLeaveGuard } from './salida.js';
@@ -225,7 +226,7 @@ function choose(optionId) {
     if (b.dataset.id === view.answer) b.classList.add('is-correct');
     else if (b.dataset.id === optionId) {
       b.classList.add('is-wrong');
-      if (view.kind === 'which') b.insertAdjacentHTML('beforeend', `<span class="option-tag">${view.artistOf(optionId)}</span>`);
+      if (view.kind === 'which') tagWrongArt(root, view.artistOf(optionId), b);
     }
     if (b.dataset.id === optionId) b.classList.add('is-picked');
   }
@@ -235,9 +236,18 @@ function choose(optionId) {
   const feedback = $('.feedback', root);
   feedback.innerHTML = feedbackHtml(view, correct);
   feedback.classList.add('is-open', correct ? 'is-correct' : 'is-wrong');
-  announce(`${correct ? 'Acierto' : 'Fallo'}. ${correct ? '' : `Era ${view.answerText}. `}${view.hint}`);
+  const picked = correct ? '' : pickedSpeech(optionId);
+  announce(`${correct ? 'Acierto' : 'Fallo'}. ${picked}${correct ? '' : `Era ${view.answerText}. `}${view.hint}`);
   requestAnimationFrame(() => revealAnswers(root));
   setTimeout(() => $('[data-action="continue"]', feedback)?.focus({ preventScroll: true }), FEEDBACK_FOCUS_MS);
+}
+
+// Lo elegido por error, para el lector de pantalla (en las de movimiento no hace falta).
+function pickedSpeech(optionId) {
+  if (view.kind === 'which') return `${chosenSpeech({ name: view.artistOf(optionId), artworkId: optionId })} `;
+  if (view.kind !== 'who') return '';
+  const label = view.options.find((o) => o.id === optionId)?.label;
+  return label ? `${chosenSpeech({ name: label, artworkId: null })} ` : '';
 }
 
 function next() {

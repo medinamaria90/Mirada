@@ -1,0 +1,99 @@
+/* Cierre de época o de rama (ui/screens/era-end.js): medalla, título, los pintores en un mosaico de retratos, dos cifras y la
+   frase puente; abajo, fijos, «Cruzar al <época>» y «Volver al camino» con compartir. Un brillo breve al entrar (nada con
+   «reducir animaciones»). Todo color sale de brand.css. */
+
+:root {
+  --ce-pad: 1.25rem;
+  --ce-max: 640px;
+  --ce-face: 52px;
+  --ce-face-many: 40px;
+  --ce-face-gap: .6rem;
+  --ce-medal: 76px;
+  --ce-spark: 9px;
+  --ce-spark-fall: 46vh;
+  --ce-spark-dur: 1.9s;
+  --ce-spark-step: 70ms;
+  --ce-glow-h: 46%;
+  --ce-btn2-h: 48px;
+}
+
+.ce { position: relative; display: flex; flex-direction: column; height: var(--screen-h); overflow: hidden; background: var(--bg); color: var(--ink); }
+.ce::before {
+  content: ""; position: absolute; inset: 0 0 auto; height: var(--ce-glow-h); pointer-events: none;
+  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%);
+}
+.ce-body {
+  position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; padding: 1.1rem var(--ce-pad) .8rem;
+  overflow-y: auto; overflow-x: clip; overscroll-behavior: contain; text-align: center;
+}
+.ce-medal { margin-bottom: .6rem; }
+.ce-medal .medal-lg { width: var(--ce-medal); height: var(--ce-medal); }
+.ce-medal .medal-lg { box-shadow: 0 0 0 4px var(--bg), var(--shadow-frame); animation: ce-stamp .7s var(--ease) .25s both; }
+@keyframes ce-stamp { 0% { transform: scale(2) rotate(-12deg); opacity: 0; } 60% { transform: scale(.92) rotate(3deg); opacity: 1; } 100% { transform: none; } }
+
+.ce-kicker { margin: 0; color: var(--ink-2); font: 600 .74rem/1.3 var(--font); letter-spacing: .1em; text-transform: uppercase; }
+.ce-title { max-width: 22rem; margin: .3rem 0 0; font: 600 min(2rem, 10vw)/1.08 var(--font); letter-spacing: -.03em; text-wrap: balance; overflow-wrap: break-word; animation: rise .5s var(--ease) both; }
+
+/* Mosaico de retratos: cada uno lleva a la ficha del pintor. */
+.ce-faces {
+  --ce-item: calc(var(--ce-face) + 1rem);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ce-face-gap);
+  max-width: calc(var(--cols, 4) * var(--ce-item) + (var(--cols, 4) - 1) * var(--ce-face-gap)); margin: 1rem 0 0; padding: 0; list-style: none;
+}
+.ce-face {
+  display: grid; justify-items: center; gap: .3rem; width: var(--ce-item); min-height: 48px; padding: 0; border: 0; background: none;
+  color: var(--ink-2); font: inherit; cursor: pointer; animation: rise .45s var(--ease) both; animation-delay: calc(.3s + var(--n, 0) * 40ms);
+}
+.ce-face .av { width: var(--ce-face); height: var(--ce-face); box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px color-mix(in srgb, var(--gold) 70%, transparent), var(--shadow-card); }
+.ce-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 .7rem/1.2 var(--font); }
+.ce-face:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; border-radius: var(--radius-sm); }
+.is-many .ce-faces { --ce-item: calc(var(--ce-face-many) + .3rem); --ce-face-gap: .4rem; }
+.is-many .ce-face { gap: 0; }
+.is-many .ce-face .av { width: var(--ce-face-many); height: var(--ce-face-many); }
+.is-many .ce-name { display: none; }
+
+.ce-tally {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, 20rem); margin: 1rem 0 0; padding: .55rem 0;
+  border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-card);
+}
+.ce-tally > div { display: flex; flex-direction: column-reverse; gap: 2px; min-width: 0; padding: 0 .3rem; }
+.ce-tally > div + div { box-shadow: -1px 0 0 var(--line); }
+.ce-tally dt { color: var(--ink-2); font: 400 .78rem/1.2 var(--font); }
+.ce-tally dd { margin: 0; font: 600 1.45rem/1.1 var(--font); letter-spacing: -.02em; font-variant-numeric: lining-nums tabular-nums; }
+
+/* La frase puente: lo que da ganas de cruzar la puerta. */
+.ce-bridge {
+  max-width: 24rem; margin: 1rem 0 0; color: var(--ink); font: italic 400 1rem/1.42 var(--font);
+  text-wrap: pretty; animation: rise .5s var(--ease) .5s both;
+}
+
+.ce-foot { position: relative; flex: none; z-index: 1; display: grid; gap: .7rem; padding: .7rem var(--ce-pad) calc(1rem + var(--safe-b)); background: var(--bg); }
+.ce-foot .btn svg { flex: none; }
+.ce-row { display: grid; grid-template-columns: minmax(0, 1fr) var(--ce-btn2-h); gap: .6rem; }
+.ce-row.is-one { grid-template-columns: minmax(0, 1fr); }
+.ce-row .btn { min-height: var(--ce-btn2-h); box-shadow: var(--lift-sm); }
+.ce-share { padding: 0; }
+.ce-row.is-one .ce-share { padding: .4rem .7rem; }
+.ce-foot .copy-status { position: absolute; left: 0; right: 0; bottom: 100%; margin: 0; padding: .3rem var(--ce-pad); pointer-events: none; }
+
+/* Brillo: rombos pequeños que caen y se apagan, una sola vez. */
+.ce-sparks { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+.ce-sparks span {
+  position: absolute; top: 0; left: calc(4% + var(--i) * 6.6%); width: var(--ce-spark); height: var(--ce-spark); border-radius: 2px;
+  background: var(--gold); opacity: 0; transform: rotate(45deg);
+  animation: ce-spark var(--ce-spark-dur) var(--ease) both; animation-delay: calc(var(--i) * var(--ce-spark-step));
+}
+.ce-sparks span:nth-child(3n + 1) { background: var(--accent); }
+.ce-sparks span:nth-child(3n + 2) { background: var(--brand); }
+.ce-sparks span:nth-child(even) { --ce-spark-fall: 34vh; width: calc(var(--ce-spark) * .7); height: calc(var(--ce-spark) * .7); }
+@keyframes ce-spark {
+  0% { opacity: 0; transform: translateY(-2vh) rotate(45deg) scale(.4); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(var(--ce-spark-fall)) rotate(225deg) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { .ce-sparks { display: none; } }
+html.reduce-motion .ce-sparks { display: none; }
+
+@media (min-width: 720px) {
+  .ce { max-width: var(--ce-max); margin-inline: auto; }
+}

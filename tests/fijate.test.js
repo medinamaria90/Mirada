@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { realIndex, realTextJson } from './helpers-real.js';
-import { feedbackFor, looksOf, artistLines, teachingLines, skipsTrait, scopeFits, tagsOf, generalLine } from '../app/js/engine/feedback.js';
+import { feedbackFor, looksOf, artistLines, teachingLines, skipsTrait, scopeFits, tagsOf, generalLine, styleLines, skipsHint } from '../app/js/engine/feedback.js';
 import { traitDetails } from '../app/js/engine/ficha.js';
 import { buildIndex, mergeCatalogText, GENRES } from '../app/js/engine/catalog.js';
 
@@ -97,7 +97,12 @@ test('catálogo real: ninguna obra enseña un rasgo excluido para ella', () => {
     const all = artistLines(real.artist(work.artistId));
     const banned = all.filter((_, i) => skipsTrait(work, i));
     assert.ok(banned.length, `${id}: excluye rasgos que el pintor no tiene`);
-    for (const line of linesOver(real, work)) assert.ok(!banned.includes(line), `${id} (${work.title}): «${line}»`);
+    for (const line of linesOver(real, work)) {
+      assert.ok(!banned.includes(line), `${id} (${work.title}): «${line}»`);
+      const hints = real.artist(work.artistId).styleHints || [];
+      const k = hints.findIndex((h) => line.startsWith(h.text.replace(/[.!?…]$/, '')));
+      assert.ok(k < 0 || !skipsHint(work, k), `${id}: refuerzo excluido «${line}»`);
+    }
   }
 });
 
@@ -152,6 +157,7 @@ test('catálogo real: ningún rasgo de un género sale en una obra de otro, ni u
     const tags = tagsOf(w);
     for (const line of new Set(linesOver(real, w, all.length + 2))) {
       if (!line || looksOf(w).some((l) => line.startsWith(l.text))) continue;
+      if (styleLines(a, w).includes(line)) continue;
       if (!all.includes(line)) {
         // Versión general de una frase: tiene que ser de ese pintor y encajar en la obra.
         const i = all.findIndex((_, k) => generalLine(a, w, k) === line);
@@ -198,4 +204,44 @@ test('Masaccio, «San Andrés»: una figura sola sobre oro, con su propio «fíj
   const lines = linesOver(real, real.artwork(MASACCIO_ANDRES));
   assert.match(lines[0], /manto/);
   assert.ok(lines.every((l) => !/pisan|figuras/i.test(l)), lines.join(' | '));
+});
+
+test('ninguna obra sin «Fíjate en…»: el 100 % tiene su propio fíjate o un refuerzo que encaja', () => {
+  const real = realIndex();
+  const missing = [];
+  for (const w of real.artworks) {
+    const a = real.artist(w.artistId);
+    const own = looksOf(w).length;
+    const generic = w.kind && w.kind !== 'tipico' ? 0 : teachingLines(artistLines(a), a, w).length + styleLines(a, w).length;
+    if (!own && !generic) missing.push(`${w.id} ${a.id} «${w.title}»`);
+  }
+  assert.deepEqual(missing, [], `${missing.length} obras sin pista`);
+});
+
+test('refuerzos de estilo: 4-6 por pintor y rotan sin repetir el último visto, también entre rondas', () => {
+  const real = realIndex();
+  for (const a of real.artists) {
+    if (!a.styleHints) continue;
+    assert.ok(a.styleHints.length >= 4 && a.styleHints.length <= 6, `${a.id}: ${a.styleHints.length}`);
+  }
+  const work = real.worksOf('vermeer').find((w) => !looksOf(w).length) || real.worksOf('velazquez').find((w) => !looksOf(w).length && !w.skipHints);
+  const recent = new Map();
+  let prev = '';
+  for (let round = 0; round < 6; round++) {
+    const line = feedbackFor(real, whoQ(work), true, new Map(), null, { recent }).lines[0];
+    assert.ok(line && line !== prev, `ronda ${round}: «${line}» repite la anterior`);
+    prev = line;
+  }
+});
+
+test('el «fíjate» propio de la obra sale primero también tras un fallo, en todas las obras que lo tienen', () => {
+  const real = realIndex();
+  const others = real.artworks.slice(0, 40);
+  for (const w of real.artworks.filter((x) => looksOf(x).length)) {
+    const other = others.find((o) => o.artistId !== w.artistId);
+    const q = { type: 'which', prompt: '', artistId: w.artistId, targetArtworkId: w.id, artworkId: null,
+      options: [w, other].map((o) => ({ id: o.id, artworkId: o.id, label: '' })), answerId: w.id, isNew: false };
+    const fb = feedbackFor(real, q, false, new Map(), null, { chosenId: other.id });
+    assert.ok(fb.lines[0]?.startsWith(looksOf(w)[0].text), `${w.id}: «${fb.lines[0]}»`);
+  }
 });

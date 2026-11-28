@@ -580,12 +580,30 @@ html.reduce-motion .is-shaking { animation: none; }
 .option .opt-text { display: grid; gap: .1rem; min-width: 0; }
 .option .opt-sub { font-size: .8rem; font-weight: 400; line-height: 1.2; color: var(--ink-2); }
 .option.is-correct .opt-sub, .option.is-wrong .opt-sub { color: inherit; }
-/* Miniatura elegida por error en «¿Cuál es de X?»: etiqueta con el nombre de su pintor. */
+/* Miniatura elegida por error en «¿Cuál es de X?»: etiqueta con el nombre de su pintor (solo el nombre). */
 .option-tag {
   position: absolute; left: 10px; bottom: 10px; z-index: 2; max-width: calc(100% - 20px);
   padding: .15rem .55rem; border-radius: 999px; background: var(--bad); color: var(--surface);
   font-size: .74rem; font-weight: 600; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* Entra cayendo con un pequeño rebote y el marco tiembla al recibirla (ui/wrong-tag.js), para que se
+   vea; con «reducir animaciones», solo un fundido (gana a la regla general por especificidad). */
+.option-tag { animation: tag-drop var(--dur-tag-in) var(--ease) both; }
+.option-art.is-tagged .marco { animation: tag-nudge var(--dur-tag-in) ease both; }
+@keyframes tag-drop {
+  0% { opacity: 0; transform: translateY(var(--tag-drop)); }
+  55% { opacity: 1; transform: translateY(12%); }
+  78% { transform: translateY(-6%); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes tag-nudge { 50% { transform: rotate(-1.2deg); } 70% { transform: rotate(.9deg); } 88% { transform: rotate(-.4deg); } }
+@keyframes tag-fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .option-tag { animation: tag-fade var(--dur-tag-in) ease both !important; }
+  .option-art.is-tagged .marco { animation: none !important; }
+}
+html.reduce-motion .option-tag { animation: tag-fade var(--dur-tag-in) ease both !important; }
+html.reduce-motion .option-art.is-tagged .marco { animation: none !important; }
 @keyframes pop { 40% { transform: scale(1.03); } }
 @keyframes nudge { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 

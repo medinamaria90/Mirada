@@ -164,6 +164,13 @@ def leer_fijate(data, artist_of, traits, pintores):
             assert isinstance(sin, list) and all(isinstance(i, int) and 0 <= i < count for i in sin), \
                 f"fijate.json: {wid} ({pintores[pid]['name']}) con «sin» fuera de [0, {count})"
             entry["skip"] = sorted(set(sin))
+        sin_pistas = v.get("sinPistas")
+        if sin_pistas == FIJATE_TODOS:
+            entry["skipHints"] = FIJATE_TODOS
+        elif sin_pistas:
+            assert isinstance(sin_pistas, list) and all(isinstance(i, int) and 0 <= i < PISTAS_MAX for i in sin_pistas), \
+                f"fijate.json: {wid} con «sinPistas» fuera de rango"
+            entry["skipHints"] = sorted(set(sin_pistas))
         assert entry, f"fijate.json: {wid} sin «text» ni «sin»"
         out[wid] = entry
     return out
@@ -228,6 +235,35 @@ def leer_alcances(data, lines_of):
         if any(generals):
             general_of[pid] = generals
     return scopes_of, general_of
+
+
+PISTA_MAX = 100
+PISTAS_MIN, PISTAS_MAX = 4, 6
+
+
+def leer_pistas(data, pintores, why, labels):
+    """contenido/pistas.json → {pintor: [{text, tags, scope}]}: 4-6 refuerzos «Fíjate en…» de estilo por pintor, cada
+    uno con un ángulo (color, pincelada, luz, rostros, composición, temas). «donde» como en rasgos.json (por defecto,
+    estilo: vale en cualquier obra suya). Fuente: la de su «por qué importa» (contenido/importancia.json), que ya sale
+    en «Fuentes y créditos»."""
+    out = {}
+    for pid, v in data.items():
+        if pid.startswith("_"):
+            continue
+        assert pid in pintores, f"pistas.json: pintor desconocido {pid}"
+        hints = v.get("pistas", [])
+        assert PISTAS_MIN <= len(hints) <= PISTAS_MAX, f"pistas.json: {pid} con {len(hints)} pistas"
+        assert (why.get(pid) or {}).get("source"), f"pistas.json: {pid} sin fuente en importancia.json"
+        rows = []
+        for h in hints:
+            text, tags, where = h["text"].strip(), h.get("tags", []), h.get("donde", ALCANCE_ESTILO)
+            assert text.startswith("Fíjate") and len(text) <= PISTA_MAX, f"pistas.json: {pid}: {text!r}"
+            assert all(t in labels for t in tags), f"pistas.json: {pid}: etiqueta desconocida en {tags}"
+            assert alcance_valido(where), f"pistas.json: {pid}: alcance {where!r}"
+            assert where != ALCANCE_ETIQUETAS or tags, f"pistas.json: {pid}: «etiquetas» sin etiquetas en {text!r}"
+            rows.append(dict(text=text, tags=tags, scope=where))
+        out[pid] = rows
+    return out
 
 
 def parrafos_con_fuente(v):
@@ -443,6 +479,7 @@ def main(app):
     trait_scope, trait_general = leer_alcances(contenido_opcional("rasgos.json"), lines_of)
     generos = {k: v for k, v in contenido_opcional("generos.json").items() if not k.startswith("_")}
     assert all(v in GENEROS for v in generos.values()), "generos.json: género desconocido"
+    style_hints = leer_pistas(contenido_opcional("pistas.json"), pintores, why, D.TAG_LABELS)
     fijate = leer_fijate(contenido_opcional("fijate.json"), {w["id"]: w["artistId"] for w in works}, text_traits, pintores)
     # Imagen HD de las obras que las historias enseñan en detalle (paso «hd» del proceso, catalogo/hd.json; tools/nitidez.py).
     hd_path = os.path.join(ROOT, "catalogo", "hd.json")
@@ -450,7 +487,7 @@ def main(app):
     if os.path.exists(hd_path):
         with open(hd_path, encoding="utf-8") as f:
             hd = json.load(f)
-    text = dict(version=3, look={}, looks={}, kind={}, tags={}, skipTraits={}, genre={}, traitScope=trait_scope, traitGeneral=trait_general, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why, who=who,
+    text = dict(version=3, look={}, looks={}, kind={}, tags={}, skipTraits={}, genre={}, traitScope=trait_scope, traitGeneral=trait_general, styleHints=style_hints, skipHints={}, curio={}, traits=text_traits, traitTags=text_trait_tags, why=why, who=who,
                 tagLabels=dict(D.TAG_LABELS), negableTags=list(D.NEGABLE_TAGS))
     for w in sorted(works, key=lambda w: (rank[w["artistId"]], w["level"], w["yearSort"], w["id"])):
         o = w["_old"]
@@ -493,6 +530,8 @@ def main(app):
         genre = genero_de(w, generos)
         assert genre, f"{w['id']} ({w['title']}): sin género; añádelo a contenido/generos.json"
         text["genre"][w["id"]] = genre
+        if "skipHints" in own:
+            text["skipHints"][w["id"]] = own["skipHints"]
         if "skip" in own:
             text["skipTraits"][w["id"]] = own["skip"]
         if o in D.KIND:

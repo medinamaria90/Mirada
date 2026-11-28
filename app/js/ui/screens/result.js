@@ -100,7 +100,7 @@ const secondaryBtn = (b) => (b.iconOnly
   : `<button class="btn btn-secondary res-btn2" data-action="${b.action}"${b.to ? ` data-to="${esc(b.to)}"` : ''}>${b.icon ? icons[b.icon](20) : ''}<span>${esc(b.label)}</span></button>`);
 
 // ↻ solo para «Repasar»; «Repetir» va sin icono.
-const STEP_ICON = { review: 'repeat', weekly: 'target', recall: 'repeat' };
+const STEP_ICON = { review: 'repeat', weekly: 'target', closure: 'laurel', recall: 'repeat' };
 
 
 // Botón principal: el siguiente paso. Al camino («Seguir», «Volver al camino») cierra como siempre; el resto va a su ruta.
