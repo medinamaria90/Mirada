@@ -204,7 +204,7 @@ test('sincronización: cada cambio se sube con espera; si la nube tenía más, s
   assert.equal(store.get().progress.xp, 500);
 });
 
-test('sincronización: «Empezar de cero» (el XP baja) se sube forzado', async () => {
+test('sincronización: «Borrar progreso» (el XP baja) se sube forzado', async () => {
   const { store, sync, cloud } = setup(state(400), pack(state(400)));
   await sync.start();
   store.reset();

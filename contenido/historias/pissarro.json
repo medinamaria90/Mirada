@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Los_tejados_rojos"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Pontoise",
+   "title": "Pissarro, de la guerra a la ventana",
+   "cards": [
+    {
+     "text": "En 1870 huyó de la guerra a Londres. Los soldados prusianos ocuparon su casa y destrozaron cientos de cuadros suyos: de sus primeros años quedan muy pocos.",
+     "artwork": "w19938741",
+     "source": "https://es.wikipedia.org/wiki/Camille_Pissarro"
+    },
+    {
+     "text": "Fíjate: aquí no hay vista bonita. Los árboles tapan el pueblo y las casas se esconden entre los troncos. Pissarro pintaba el campo tal cual era.",
+     "artwork": "w7728560",
+     "source": "https://es.wikipedia.org/wiki/Camille_Pissarro"
+    },
+    {
+     "text": "De mayor, una infección en los ojos le impedía pintar al aire libre, así que pintaba París desde ventanas de hotel. Esta calle bajo la lluvia está en el Thyssen de Madrid.",
+     "artwork": "w21191272",
+     "source": "https://es.wikipedia.org/wiki/Camille_Pissarro"
+    }
+   ]
   }
  ]
 }

@@ -26,6 +26,7 @@ import { newWorksCount } from '../../engine/closure.js';
 import { branchAfterRound } from '../../engine/branches.js';
 import { setMapFocus, setBranchFocus } from './path-map.js';
 import { lastStep, rememberStep } from '../last-step.js';
+import { noteOffer, skipOffer } from '../../engine/deepen.js';
 
 export { extraRounds } from './result-actions.js';
 
@@ -109,7 +110,7 @@ function mainButtonHtml(ctx, step, primaryText) {
   if (step.kind === 'path' || step.kind === 'done') {
     return `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(step.kind === 'path' ? primaryText || step.label : step.label)}</button>`;
   }
-  const work = ['stop', 'debt', 'practice', 'deep', 'recall'].includes(step.kind) && step.artistId ? coverOf(ctx.index, step.artistId) : null;
+  const work = ['stop', 'debt', 'practice', 'deep', 'recall', 'deepen', 'essential'].includes(step.kind) && step.artistId ? coverOf(ctx.index, step.artistId) : null;
   const lead = work ? `<span class="res-next-art" aria-hidden="true"><img src="${esc(tinySrc(work))}" alt="" decoding="async"></span>`
     : STEP_ICON[step.kind] ? icons[STEP_ICON[step.kind]](20) : '';
   return `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(step.to)}" data-primary>${lead}<span>${esc(step.label)}</span></button>`;
@@ -159,6 +160,8 @@ export function renderResult(ctx, el, opts) {
   const next = duel ? { kind: 'path', to: 'inicio', label: 'Volver al camino' }
     : nextStep(p, index, ctx.today(), { plan, outcome, goalJustMet, prevKind: opts.prevKind, branchId: inBranch?.branch.id || opts.branchId || '', week, origin: opts.origin || '', prevStep: lastStep() });
   if (!duel) rememberStep(next.kind);
+  // «Profundiza en…» a la vista: cuenta para la rotación; «Ahora no» o jugar otra cosa la saltan (engine/deepen.js).
+  if (next.kind === 'deepen') ctx.store.update((s) => ({ ...s, progress: noteOffer(s.progress, index, next.offer) }));
   const blocked = next.kind === 'retry';
   const gated = Boolean(blocked && nextOf && !isStepUnlocked(p, index, nextOf));
   const toPath = next.kind === 'path' || next.kind === 'done';
@@ -174,7 +177,7 @@ export function renderResult(ctx, el, opts) {
   const shareLabel = isDaily ? 'Copiar resultado' : duel ? 'Devolver el reto' : 'Retar';
   const backLabel = opts.branchId && plan.kind === 'stage' && !isDeep ? 'Volver a la rama' : 'Volver al camino';
   const secondary = [
-    toPath ? null : { action: 'done', label: backLabel },
+    toPath ? null : next.kind === 'deepen' ? { action: 'not-now', label: 'Ahora no' } : { action: 'done', label: backLabel },
     practice ? { action: 'go', to: practice.to, label: practice.label, icon: practice.icon } : null,
     token && !blocked ? { action: 'share', label: shareLabel, icon: isDaily ? 'copy' : 'duel' } : null,
   ].filter(Boolean);
@@ -226,7 +229,11 @@ export function renderResult(ctx, el, opts) {
   const momentText = moment ? ` ${tierOf(moment).label}: ${moment.name}.${moment.why ? ` ${moment.why.text}` : ''}` : '';
   announce(`${headline(outcome.accuracy)}. ${outcome.score} de ${outcome.total}.${goal ? ' Meta del día cumplida.' : ''}${momentText}`);
 
-  onAction(el, {
+  const actions = {
+    'not-now': () => {
+      ctx.store.update((s) => ({ ...s, progress: skipOffer(s.progress, ctx.today()) }));
+      return actions.done();
+    },
     done: () => {
       ctx.audio.sfx('tap');
       if (opts.onDone) return opts.onDone();
@@ -254,7 +261,8 @@ export function renderResult(ctx, el, opts) {
         : `He acertado ${outcome.score} de ${outcome.total} en Sfumato${opts.shareTopic ? ` (${opts.shareTopic})` : ''}. ¿Me superas?\n${url}`;
       copyText(el, text);
     },
-  });
+  };
+  onAction(el, actions);
 }
 
 export async function copyText(el, text) {

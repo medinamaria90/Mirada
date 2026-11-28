@@ -16,6 +16,11 @@ import { weekOf, isoWeek } from '../../engine/dates.js';
 import { addLevelRings } from '../deep-badges.js';
 import { watchStoryPrefetch } from '../story-prefetch.js';
 import { coachSeen } from '../../state/store.js';
+import { allMissingEssentials, essentialNeed, essentialOpen } from '../../engine/essentials.js';
+import { deepRoute, stageRoute } from '../router.js';
+
+// Guías que van a su ruta directamente (engine/next-step.js), no a la parada del pintor: «Repasar a…» y los niveles «a fondo».
+const DIRECT_GUIDES = ['recall', 'deepen', 'essential'];
 
 export function renderHome(ctx, el) {
   const { index } = ctx;
@@ -23,7 +28,9 @@ export function renderHome(ctx, el) {
   const p = state.progress;
   const complete = isPathComplete(p, index);
   // «Camino completo» solo con todo dominado; si quedan paradas por repasar, se dice cuántas.
-  const mastered = isPathMastered(p, index);
+  // El final del camino pide, además, todos los imprescindibles (engine/essentials.js): si falta alguno, se dice cuál.
+  const must = isPathMastered(p, index) ? allMissingEssentials(p, index) : [];
+  const mastered = isPathMastered(p, index) && !must.length;
   const pending = complete && !mastered ? stepsToMaster(p, index) : [];
 
   // Los cuadros vistos: los mismos que cuentan Colección y el perfil (una sola palabra y una sola cifra).
@@ -37,6 +44,14 @@ export function renderHome(ctx, el) {
       <div class="finale-actions">
         <button class="btn btn-primary btn-wide" data-action="free">${icons.shuffle(20)}<span>Ronda libre</span></button>
         <button class="btn btn-secondary btn-wide" data-action="weekly">${icons.target(20)}<span>Reto semanal</span></button>
+      </div>
+    </section>`;
+  } else if (must.length) {
+    finale = `<section class="finale" aria-label="Por terminar">
+      <span class="finale-icon">${icons.lock(26)}</span>
+      <h2 class="finale-title">${esc(essentialNeed(must[0]))}</h2>
+      <div class="finale-actions">
+        <button class="btn btn-primary btn-wide" data-action="essential" data-to="${esc(essentialOpen(p, index, must[0]) ? deepRoute(must[0].artistId, must[0].level) : stageRoute(must[0].artistId))}">Ir</button>
       </div>
     </section>`;
   } else if (pending.length) {
@@ -78,15 +93,17 @@ export function renderHome(ctx, el) {
   // pesa en el arranque), el mismo botón pasa a ser esa acción.
   const returnStop = watchReturn(el);
   let guideStop = () => {};
-  Promise.all([import('../../engine/next-step.js'), import('../last-step.js')]).then(([m, last]) => {
+  Promise.all([import('../../engine/next-step.js'), import('../last-step.js'), import('../../engine/deepen.js')]).then(([m, last, deepen]) => {
     const guide = guideFor(ctx, el, m.mapGuide, last.lastStep());
     if (!guide || !el.isConnected) return;
     // Lo que enseña el mapa cuenta como recomendado: lo de atrás no sale justo después en el resultado.
     last.rememberStep(guide.kind);
+    // «Profundiza en…» a la vista: cuenta para la rotación (jugar otra cosa la salta: engine/deepen.js).
+    if (guide.kind === 'deepen') ctx.store.update((s) => ({ ...s, progress: deepen.noteOffer(s.progress, ctx.index, guide.offer) }));
     guideStop = guideButton(el, guide, guide.kind === 'recall' && guide.artistId ? guideFace(ctx, guide.artistId) : '', (g) => {
       ctx.audio.sfx('tap');
-      // «Repasar a…» (y la Prueba de época) van a su ruta, no a la parada del pintor o la sala.
-      const key = g.kind === 'recall' ? '' : g.artistId ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
+      // «Repasar a…», los niveles «a fondo» (y la Prueba de época) van a su ruta, no a la parada del pintor o la sala.
+      const key = DIRECT_GUIDES.includes(g.kind) ? '' : g.artistId ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
       // Una parada del camino: el camino va hasta ella y se toca (su tarjeta o su ronda), como «Ir»; si no, la acción.
       if (key && el.querySelector(`.stage-spot[data-step="${key}"]`)) return goToStep(key);
       return ctx.go(g.to);
@@ -116,6 +133,10 @@ export function renderHome(ctx, el) {
     collection: () => {
       ctx.audio.sfx('tap');
       ctx.go('coleccion');
+    },
+    essential: (b) => {
+      ctx.audio.sfx('tap');
+      ctx.go(b.dataset.to);
     },
     free: () => {
       ctx.audio.sfx('tap');

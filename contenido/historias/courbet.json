@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Entierro_en_Ornans"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Inicios",
+   "title": "El joven Courbet se mira al espejo",
+   "cards": [
+    {
+     "text": "Fíjate en el joven Courbet de El desesperado: ojos desorbitados, las manos en el pelo, a un palmo de nosotros. De joven se pintó una y otra vez, con mil gestos distintos.",
+     "artwork": "w3222585",
+     "source": "https://es.wikipedia.org/wiki/Gustave_Courbet"
+    },
+    {
+     "text": "Aquí se pinta mejilla con mejilla con una joven, quizá Virginie Binet, la que sería madre de su hijo. Un amor feliz y juvenil, pintado como un baile.",
+     "artwork": "w23199068",
+     "source": "https://en.wikipedia.org/wiki/Gustave_Courbet"
+    },
+    {
+     "text": "Su amigo el poeta Baudelaire lee absorto en este retrato. Courbet lo volvió a pintar, leyendo igual, entre los amigos de su gran cuadro El taller del pintor.",
+     "artwork": "w20899941",
+     "source": "https://es.wikipedia.org/wiki/Gustave_Courbet"
+    }
+   ]
   }
  ]
 }

@@ -55,6 +55,8 @@ export function deepStatus(progress, index, artistId, level) {
   if (rec?.mastered) return 'mastered';
   if (rec?.plays) return 'started';
   if (!progress.artists?.[artistId]?.mastered) return 'locked';
+  // Un imprescindible se abre con el nivel 1 dominado, sin pasar por los anteriores (engine/essentials.js).
+  if (index.essential?.(artistId, level)) return 'available';
   const prev = index.deepLevels(artistId).filter((l) => l.id < level).pop();
   return !prev || deepRecord(progress, artistId, prev.id)?.mastered ? 'available' : 'locked';
 }

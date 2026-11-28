@@ -2,7 +2,7 @@
 
 import { $, announce, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
-import { branchRoute, stageRoute, go } from '../router.js';
+import { branchRoute, stageRoute, deepRoute, go } from '../router.js';
 import { zoomInto } from '../map-zoom.js';
 
 // La hoja del mapa (época cerrada) se carga al primer toque: no cuenta en el arranque.
@@ -157,7 +157,9 @@ const GO_SETTLE_MS = 450;   // lo que tarda el camino en llegar a la parada ante
 
 // A la parada que abre lo cerrado: en esta pantalla, el camino baja (o sube) hasta ella y se toca; si no está, a jugarla.
 export function goToStep(key) {
-  const [type, id] = key.split(':');
+  const [type, id, level] = key.split(':');
+  // Un nivel «a fondo» (el imprescindible que falta en una puerta de época): a su ronda.
+  if (type === 'deep') return go(deepRoute(id, Number(level)));
   const target = document.querySelector(`.stage-spot[data-step="${CSS.escape(key)}"] .stage`);
   if (!target) return go(type === 'sala' ? `sala-${id}` : stageRoute(id));
   const reduce = prefersReducedMotion();

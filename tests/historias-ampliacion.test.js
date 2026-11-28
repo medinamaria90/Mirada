@@ -14,19 +14,8 @@ const index = buildIndex(JSON.parse(readFileSync(join(here, '..', 'app', 'data',
 const told = JSON.parse(readFileSync(join(dataDir, 'index.json'), 'utf8'));
 const story = (id) => (existsSync(join(dataDir, `${id}.json`)) ? JSON.parse(readFileSync(join(dataDir, `${id}.json`), 'utf8')) : null);
 
-// Pintores con niveles de ampliación que aún no tienen su historia, con el motivo. Se vacía por tandas.
-const PENDING = {
-  // Tanda 2 (barroco a romanticismo, en el camino)
-  ...Object.fromEntries(['artemisia', 'ribera', 'van-dyck', 'hals', 'vermeer', 'watteau', 'fragonard', 'melendez', 'david',
-    'ingres', 'friedrich', 'turner', 'gericault', 'delacroix', 'madrazo'].map((id) => [id, 'tanda 2'])),
-  // Tanda 3 (realismo a vanguardias, en el camino)
-  ...Object.fromEntries(['millet', 'courbet', 'rosales', 'fortuny', 'repin', 'manet', 'degas', 'renoir', 'pissarro', 'morisot',
-    'sisley', 'cezanne', 'seurat', 'gauguin', 'lautrec', 'klimt', 'munch', 'romero-de-torres', 'matisse', 'kandinsky',
-    'juan-gris'].map((id) => [id, 'tanda 3'])),
-  // Tanda 4 (ramas e invitados fuera del camino)
-  ...Object.fromEntries(['duccio', 'simone-martini', 'uccello', 'filippo-lippi', 'perugino', 'pontormo', 'arcimboldo', 'hogarth',
-    'vigee-le-brun', 'cassatt', 'utamaro', 'hokusai', 'sharaku', 'hiroshige', 'kuniyoshi'].map((id) => [id, 'tanda 4'])),
-};
+// Excepciones justificadas ({ pintor: motivo }) de pintores con niveles de ampliación sin historia. Hoy, ninguna.
+const PENDING = {};
 
 const words = (t) => new Set(String(t).toLowerCase().match(/\p{L}{4,}/gu) || []);
 const overlap = (a, b) => {

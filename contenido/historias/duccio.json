@@ -27,6 +27,28 @@
      "source": "https://smarthistory.org/duccio-the-rucellai-madonna"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Maestà",
+   "title": "La Maestà por detrás",
+   "cards": [
+    {
+     "text": "La Maestà era un retablo gigante pintado por las dos caras: delante, la Virgen; detrás, la Pasión de Cristo en 26 escenas. En 1771 lo serraron en piezas.",
+     "artwork": "w3873252",
+     "source": "https://es.wikipedia.org/wiki/Maest%C3%A0_(Duccio)"
+    },
+    {
+     "text": "Fíjate: Cristo llama desde la orilla a dos pescadores, Pedro y Andrés. El mar es una franja verde bajo un cielo de oro: Duccio cuenta con gestos, no con paisaje.",
+     "artwork": "w4015930",
+     "source": "https://es.wikipedia.org/wiki/Duccio"
+    },
+    {
+     "text": "Al serrarla, la Maestà se dispersó: esta samaritana (la mujer que da agua a Cristo en el pozo) está en el Thyssen de Madrid; otras escenas, en Washington y Londres.",
+     "artwork": "w18684720",
+     "source": "https://es.wikipedia.org/wiki/Maest%C3%A0_(Duccio)"
+    }
+   ]
   }
  ]
 }

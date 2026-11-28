@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Juventud",
+   "title": "Renoir y sus amigos",
+   "cards": [
+    {
+     "text": "Lise Tréhot fue su modelo y compañera durante años. Con este retrato, de blanco y con sombrilla, triunfó en el Salón (la exposición oficial de París) de 1868.",
+     "artwork": "w2783729",
+     "source": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir"
+    },
+    {
+     "text": "Fíjate en su amigo Bazille, pintando en el taller que compartían: era rico y le prestaba sitio y pinturas. Murió en la guerra de 1870, con 28 años.",
+     "artwork": "w3089617",
+     "source": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir"
+    },
+    {
+     "text": "Se cree que son su amigo Alfred Sisley, otro joven impresionista, y su compañera: ella se apoya en él, sin pose rígida. Renoir pintaba a sus amigos como a la familia.",
+     "artwork": "w3177703",
+     "source": "https://es.wikipedia.org/wiki/Pierre-Auguste_Renoir"
+    }
+   ]
   }
  ]
 }

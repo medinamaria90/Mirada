@@ -312,6 +312,10 @@ export function buildIndex(catalog) {
   };
 
   const families = buildFamilies(catalog, artistById, worksByArtist);
+  const essentials = (Array.isArray(catalog.essentials) ? catalog.essentials : [])
+    .filter((e) => artistById.has(e.artistId) && Number.isInteger(e.level))
+    .map((e) => ({ ...e, movementId: artistById.get(e.artistId).movementId }));
+  const essentialByKey = new Map(essentials.map((e) => [`${e.artistId}:${e.level}`, e]));
 
   return {
     movements,
@@ -336,6 +340,9 @@ export function buildIndex(catalog) {
       .map((s) => ({ ...s, works: (worksByArtist.get(artistId) || []).filter((w) => levelOf(w) === s.id) }))
       .filter((s) => s.id >= 2 && s.works.length)
       .sort((a, b) => a.id - b.id),
+    // Niveles «a fondo» imprescindibles (contenido/imprescindibles.json): [{ artistId, level, weight, title, movementId }].
+    essentials,
+    essential: (artistId, level) => essentialByKey.get(`${artistId}:${level}`) || null,
     branches,
     branch: (id) => branchById.get(id),
     branchesOf: (artistId) => branches.filter((b) => b.artists.includes(artistId)),

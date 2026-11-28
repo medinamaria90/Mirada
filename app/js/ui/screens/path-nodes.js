@@ -5,6 +5,9 @@ import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { artFrame } from '../art.js';
 import { NEED_TEXT, startedMeta } from '../../engine/level-ring.js';
+import { stepPassed } from '../../engine/progress.js';
+import { gateEssentials, essentialLock, essentialOpen } from '../../engine/essentials.js';
+import { stepName } from './path-signs.js';
 
 export const STATE_LABEL = { locked: 'bloqueado', available: 'disponible', started: 'a medias', mastered: 'ya reconoces sus cuadros' };
 // Pintor dormido (engine/review.js): terminado y sin salir en una semana.
@@ -37,4 +40,14 @@ export function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot
 
 export function initials(name) {
   return String(name).split(/\s+/).filter((w) => /^[A-ZÁÉÍÓÚÑ]/.test(w)).slice(0, 2).map((w) => w[0]).join('');
+}
+
+// Candado de una parada cerrada: en una puerta de época con la parada anterior ya superada, el imprescindible que falta
+// («Te falta conocer las pinturas negras de Goya (nivel 6)», con «Ir» a su nivel o, si su pintor está a medias, a él); si
+// no, la parada anterior. { text, unlock } (unlock: «artist:<id>», «sala:<id>» o «deep:<id>:<nivel>», path-actions.js).
+export function lockOf(progress, index, step, prev) {
+  if (!prev) return { text: '', unlock: '' };
+  const must = stepPassed(progress, prev) ? gateEssentials(progress, index, step, prev)[0] : null;
+  if (!must) return { text: `Antes, acierta la mitad con ${stepName(index, prev)}`, unlock: `${prev.type}:${prev.id}` };
+  return { text: essentialLock(must), unlock: essentialOpen(progress, index, must) ? `deep:${must.artistId}:${must.level}` : `artist:${must.artistId}` };
 }

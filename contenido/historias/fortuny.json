@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/La_vicar%C3%ADa"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Marruecos",
+   "title": "Fortuny descubre África",
+   "cards": [
+    {
+     "text": "Con 18 años ganó una beca de la Diputación de Barcelona para estudiar en Roma. Este autorretrato es de entonces: un chico de Reus que se sabe bueno.",
+     "artwork": "w23936259",
+     "source": "https://es.wikipedia.org/wiki/Mariano_Fortuny"
+    },
+    {
+     "text": "En 1860 siguió al ejército en Marruecos con papel y lápiz. Esta batalla, la de Wad-Ras, la dibujó sobre el terreno; el cuadro lo pintó después en el taller.",
+     "artwork": "w27780686",
+     "source": "https://es.wikipedia.org/wiki/Mariano_Fortuny"
+    },
+    {
+     "text": "Fíjate en este paisaje: tierra, cielo y un hilo de agua azul, sin una sola figura. Marruecos le enseñó a pintar la luz con manchas sueltas.",
+     "artwork": "w124173526",
+     "source": "https://es.wikipedia.org/wiki/Mariano_Fortuny"
+    }
+   ]
   }
  ]
 }

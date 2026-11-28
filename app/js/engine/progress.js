@@ -4,6 +4,7 @@
 import { artKey } from './srs.js';
 import { noAuthorQuestion } from './catalog.js';
 import { daysBetween, addDays, weekOf } from './dates.js';
+import { gateEssentials } from './essentials.js';
 
 // Niveles con nombres del mundo del arte. Tras el último, la curva sigue: «Gran maestro II»,
 // «III»… cada LEVEL_STEP_AFTER puntos, para que nunca se agote.
@@ -122,6 +123,9 @@ export function emptyProgress() {
     cuadroNudge: '',
     // Niveles «a fondo»: { 'pintor:nivel': { plays, best, mastered, last } } (engine/levels.js).
     deep: {},
+    // Propuestas de profundizar (engine/deepen.js): pintores del camino jugados en la última, las últimas ofrecidas, la que
+    // está a la vista y los saltos de cada nivel con su día (rotación y enfriamiento).
+    deepen: { at: 0, count: 0, recent: [], pending: '', skips: {} },
     // Rango más alto alcanzado (índice en engine/ranks.js): nunca baja.
     rank: 0,
     challenges: { played: 0 },
@@ -293,7 +297,9 @@ export function isStepUnlocked(progress, index, step) {
   if (i < 0) return false;
   if (isExtraStep(progress, step)) return true;
   const gate = gateBefore(progress, index, step);
-  return !gate || stepPassed(progress, gate);
+  if (!gate) return true;
+  // Puerta de época: además, los imprescindibles de la época que se deja (engine/essentials.js).
+  return stepPassed(progress, gate) && !gateEssentials(progress, index, step, gate).length;
 }
 
 export function stepStatus(progress, index, step) {

@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/En_el_Moulin_Rouge"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Montmartre",
+   "title": "Lautrec y sus vecinas de Montmartre",
+   "cards": [
+    {
+     "text": "Suzanne Valadon se llamaba Marie-Clémentine y empezó de acróbata de circo. Se dice que Lautrec la rebautizó Suzanne, como la Susana de la Biblia. Luego fue una gran pintora.",
+     "artwork": "w27954929",
+     "source": "https://es.wikipedia.org/wiki/Henri_de_Toulouse-Lautrec"
+    },
+    {
+     "text": "Fíjate en La resaca (el malestar tras beber de más): Suzanne, sola en un café ante una botella, con la cara en la mano y la mirada perdida. Casi todo es dibujo.",
+     "artwork": "w12899487",
+     "source": "https://es.wikipedia.org/wiki/Henri_de_Toulouse-Lautrec"
+    },
+    {
+     "text": "Pasó largas temporadas en burdeles de París y retrató a las mujeres que trabajaban allí en sus ratos de descanso: charlando, comiendo o juntas en la cama.",
+     "artwork": "w12015473",
+     "source": "https://es.wikipedia.org/wiki/Henri_de_Toulouse-Lautrec"
+    }
+   ]
   }
  ]
 }

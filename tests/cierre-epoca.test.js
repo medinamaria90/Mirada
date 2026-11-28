@@ -59,7 +59,13 @@ test('cierre y nextStep: el resultado lleva al cierre («Cerrar el Renacimiento�
   assert.deepEqual([s.kind, s.to, s.label], ['closure', 'cierre-renacimiento', 'Cerrar el Renacimiento']);
   assert.deepEqual(parseRoute('#cierre-renacimiento'), { name: 'closure', key: 'renacimiento' });
   assert.equal(mapGuide(p, real, TODAY).kind, 'closure', 'el mapa también lo propone mientras no se vea');
-  const seen = markClosureSeen(p, real, 'renacimiento', TODAY);
+  const closed = markClosureSeen(p, real, 'renacimiento', TODAY);
+  // Sin los imprescindibles del Renacimiento, la puerta sigue cerrada y la guía lleva a ellos (engine/essentials.js).
+  assert.equal(nextStep(closed, real, TODAY, { plan, outcome: out, prevStep: 'debt' }).kind, 'essential');
+  assert.equal(crossRoute(closed, real, 'manierismo-y-norte', stepTo), null);
+  // (y con «Profundiza en…» recién propuesto, para que no toque otro: engine/deepen.js)
+  const seen = { ...closed, deep: { ...closed.deep }, deepen: { ...closed.deepen, at: Infinity } };
+  for (const e of real.essentials.filter((x) => x.movementId === 'renacimiento')) seen.deep[`${e.artistId}:${e.level}`] = { plays: 1, best: 1, mastered: true, last: TODAY };
   const after = nextStep(seen, real, TODAY, { plan, outcome: out });
   assert.notEqual(after.kind, 'closure');
   const next = eraAfter(real, 'renacimiento');
