@@ -416,6 +416,5 @@ test('mapa: el pintor a medias llena el aro con su nota y una muesca en el 75 %'
   assert.ok(Math.abs(-mark - 75) < 1.5, 'la muesca marca el 75 %');
   assert.equal(startedLine(ring), 'Has acertado el 50\u00a0%; hace falta un 75\u00a0%');
   assert.equal(startedLine({ ...ring, best: 0.7 }), 'Te falta poco: has acertado el 70\u00a0%; hace falta un 75\u00a0%');
-  assert.equal(startedLine({ ...ring, best: 0.8, missing: 3 }), 'Te faltan 3 cuadros por ver');
   assert.equal(startedRing(masterFirst(real, 2), real, id), null, 'dominado: sin aro a medias');
 });

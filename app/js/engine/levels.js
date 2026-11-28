@@ -4,8 +4,9 @@
 // (contenido/imprescindibles.json) son el nivel 2 y, si el pintor tiene varios, los siguientes; cada historia dice en
 // qué momento de su vida estamos.
 //
-// Regla de dominio (decisión de María): un nivel se domina viendo TODAS sus obras (las de «Conoce a»,
-// al jugar, y las preguntadas en las rondas) y con ≥ 75 % de aciertos en la ronda.
+// Regla de apertura (decisión de María, 28/11, como en Duolingo): aprobar la ronda de un nivel (≥ 75 % de aciertos) lo da
+// por superado (`mastered`) y abre el siguiente. Ver todas sus obras ya no es requisito: es el logro de nivel «completo»
+// (levelCovered), y las que falten salen primero en las rondas siguientes de ese pintor y en «Repasar» (approvedPending).
 
 import { levelOf, noAuthorQuestion } from './catalog.js';
 
@@ -43,6 +44,34 @@ export function seenAfterRound(progress, index, artistId, level, answers) {
   return [...seen].slice(-MAX_SEEN);
 }
 
+// ¿Superado (aprobado)? El 1 con el pintor dominado; los «a fondo», con su registro.
+export function levelPassed(progress, artistId, level) {
+  return level === 1 ? Boolean(progress.artists?.[artistId]?.mastered) : Boolean(progress.deep?.[deepKey(artistId, level)]?.mastered);
+}
+
+// Obras aún sin ver de los niveles ya superados (por debajo de `below`), que se puedan preguntar, del nivel más bajo al
+// más alto: tienen prioridad en las rondas siguientes del pintor y en «Repasar», para que acaben saliendo.
+export function approvedPending(progress, index, artistId, below = Infinity) {
+  const levels = [1, ...index.deepLevels(artistId).map((l) => l.id)].filter((l) => l < below && levelPassed(progress, artistId, l));
+  return levels.flatMap((l) => pendingWorks(progress, index, artistId, l)).filter((w) => !noAuthorQuestion(w));
+}
+
+// Las obras pendientes de niveles superados que han salido en cualquier ronda (Repasar, otro pintor…) cuentan ya como
+// vistas: así dejan de tener prioridad. Devuelve progress.artists actualizado (el mismo objeto si no cambia nada).
+export function markPendingSeen(progress, index, answers) {
+  let artists = progress.artists || {};
+  for (const a of answers) {
+    if (!a || a.retry || !a.q) continue;
+    const id = a.q.type === 'which' ? a.q.targetArtworkId : a.q.artworkId;
+    const artistId = index.artwork(id)?.artistId;
+    const rec = artistId && artists[artistId];
+    if (!rec || !approvedPending(progress, index, artistId).some((w) => w.id === id)) continue;
+    artists = { ...artists, [artistId]: { ...rec, works: [...seenWorks({ artists }, artistId).add(id)].slice(-MAX_SEEN) } };
+  }
+  return artists;
+}
+
+// Nivel «completo» (logro, no requisito): todas sus obras vistas.
 export function levelCovered(seenIds, index, artistId, level) {
   const seen = new Set(seenIds);
   return requiredWorks(index, artistId, level).every((w) => seen.has(w.id));

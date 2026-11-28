@@ -24,6 +24,7 @@ export const STAGE_ROUND_LEVELS = 9;
 export const OWN_NEW = 3;
 export const GUEST_SHARE = 0.35; // probabilidad de que una pregunta de repaso «nueva» sea de un invitado del camino
 export const OWN_DEEP_MAX = 6; // preguntas propias de una ronda «a fondo» (todas las obras de su nivel)
+export const PENDING_FIRST_MAX = 2; // de ellas, como mucho estas son obras sin ver de niveles ya superados (opts.pending)
 
 // Curva de dificultad del camino: 0,05 en la primera parada → 0,75 en la última, lineal por
 // parada (pintores y salas). Dentro de cada ronda sube ROUND_SPAN de forma continua.
@@ -101,7 +102,8 @@ export function planStage(index, artistId, seed, opts = {}) {
     ? index.path.slice(0, index.pathIndex(artistId))
     : index.branchBefore(artistId, opts.branchId)), opts.met);
   const onlyWhich = !allowsOtherQuestions(knownPainters(before, artistId));
-  const own = ownSelection(index, artist, learn, rng, { level, seen, first: onlyWhich });
+  const pending = (opts.pending || []).map((id) => index.artwork(id)).filter((w) => w && w.artistId === artistId && !noAuthorQuestion(w));
+  const own = ownSelection(index, artist, learn, rng, { level, seen, first: onlyWhich, pending });
   const planned = !onlyWhich
     ? stageSlots(index, artist, learn, before, rng, opts.review || [], own)
     : firstStageSlots(index, artist, learn, rng, own);
@@ -176,12 +178,13 @@ export function pickOwnWorks(index, artistId, learn, rng, fresh = OWN_FRESH) {
 
 // Selección de obras propias de una ronda. Sin niveles (catálogos pequeños): pickOwnWorks. Con niveles:
 //  · nivel 1: calentamiento (una de «Conoce a») + OWN_NEW obras no enseñadas (nivel 1 no vistas, después nivel 2+);
-//  · «a fondo» (level ≥ 2): las obras de ese nivel, primero las no vistas (hasta OWN_DEEP_MAX).
-function ownSelection(index, artist, learn, rng, { level, seen, first: noBefore }) {
+//  · «a fondo» (level ≥ 2): las obras de ese nivel, primero las no vistas (hasta OWN_DEEP_MAX); delante, hasta
+//    PENDING_FIRST_MAX obras sin ver de niveles ya superados (`pending`), para que acaben saliendo.
+function ownSelection(index, artist, learn, rng, { level, seen, first: noBefore, pending = [] }) {
   if (!index.hasLevels) return pickOwnWorks(index, artist.id, learn, rng);
   const unseenFirst = (list) => [...rng.shuffle(list.filter((w) => !seen.has(w.id))), ...rng.shuffle(list.filter((w) => seen.has(w.id)))];
   if (level >= 2) {
-    const pool = unseenFirst(clean(index.levelWorks(artist.id, level)));
+    const pool = [...pending.slice(0, PENDING_FIRST_MAX), ...unseenFirst(clean(index.levelWorks(artist.id, level)))];
     return { warm: [], fresh: pool.slice(0, OWN_DEEP_MAX), reserve: pool[OWN_DEEP_MAX] || clean(learn)[0] || null };
   }
   const warm = clean(learn).slice(0, 1);

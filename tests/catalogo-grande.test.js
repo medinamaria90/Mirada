@@ -1,15 +1,15 @@
 // Catálogo grande (1.297 obras, 162 pintores): datos generados, camino común, ramas, niveles «a fondo»,
-// dominio con todas las obras de nivel 1 vistas, rangos y migración del estado a la v7.
+// aprobar abre el siguiente nivel, rangos y migración del estado a la v7.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { planStage } from '../app/js/engine/planner.js';
+import { planStage, PENDING_FIRST_MAX } from '../app/js/engine/planner.js';
 import { emptyProgress, stageRule, stepStatus } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
-import { seenWorks, pendingWorks, deepStatus, deepProgress } from '../app/js/engine/levels.js';
+import { seenWorks, pendingWorks, deepStatus, deepProgress, approvedPending } from '../app/js/engine/levels.js';
 import { branchStatus, branchProgress, movementReached, firstTramo, tramoOpen, tramoPending, playStatus, canPlay, branchAfterRound, branchOfRound } from '../app/js/engine/branches.js';
 import { playTargets } from '../app/js/engine/painters.js';
 import { RANKS, rankFor, rankStats } from '../app/js/engine/ranks.js';
@@ -175,19 +175,24 @@ function playPerfect(p, artistId, seed, level = 1) {
   return { plan, out: finishRound(p, real, { kind: 'stage', artistId, ...(level > 1 ? { level } : {}), answers, firstTry: answers.map(() => true) }, TODAY) };
 }
 
-test('dominado exige haber visto TODAS las obras de nivel 1 (y el 75 % de la ronda): Velázquez, con 9, necesita 2 rondas', () => {
+test('aprobar la ronda supera el nivel y abre el siguiente aunque falten obras por ver (Velázquez, con 9)', () => {
   assert.equal(real.levelWorks('velazquez', 1).length, 9);
   const r1 = playPerfect(emptyProgress(), 'velazquez', 1);
-  assert.equal(r1.out.mastered, false, 'una ronda perfecta no basta: faltan obras de nivel 1');
-  assert.equal(r1.out.coverShort, true);
+  assert.equal(r1.out.mastered, true, 'aprobar basta, como en Duolingo');
   const p = r1.out.progress;
   const pending = pendingWorks(p, real, 'velazquez', 1);
   assert.ok(pending.length >= 1 && pending.length <= 2, `${pending.length} sin ver`);
-  assert.equal(p.artists.velazquez.mastered, false);
-  const r2 = playPerfect(p, 'velazquez', 2);
-  assert.equal(pendingWorks(r2.out.progress, real, 'velazquez', 1).length, 0);
-  assert.equal(r2.out.mastered, true);
-  assert.equal(r2.out.progress.artists.velazquez.mastered, true);
+  assert.equal(p.artists.velazquez.mastered, true);
+  assert.equal(deepStatus(p, real, 'velazquez', real.deepLevels('velazquez')[0].id), 'available');
+  // Las que faltan salen primero en el nivel siguiente y, al salir, cuentan como vistas.
+  const next = real.deepLevels('velazquez')[0].id;
+  const left = approvedPending(p, real, 'velazquez', next).map((w) => w.id);
+  const plan = planStage(real, 'velazquez', 9, { level: next, seen: [...seenWorks(p, 'velazquez')], pending: left });
+  const asked = plan.questions.map((q) => (q.type === 'which' ? q.targetArtworkId : q.artworkId));
+  assert.ok(left.slice(0, PENDING_FIRST_MAX).every((id) => asked.includes(id)), 'los cuadros sin ver del nivel aprobado salen en el siguiente');
+  const answers = plan.questions.map((q) => ({ q, correct: true, retry: false, combo: 1 }));
+  const after = finishRound(p, real, { kind: 'stage', artistId: 'velazquez', level: next, answers, firstTry: answers.map(() => true) }, TODAY).progress;
+  assert.equal(approvedPending(after, real, 'velazquez').filter((w) => left.includes(w.id)).length, Math.max(0, left.length - PENDING_FIRST_MAX));
 });
 
 test('con menos de un 75 % no se domina aunque se hayan visto todas', () => {

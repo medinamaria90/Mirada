@@ -31,9 +31,8 @@ function focusAction(ctx, rank, c, focus) {
   return `<span class="pf-cond-why">${esc(whyNoChoice(c.key, rank.next))}</span>`;
 }
 
-// Lo que dice cada elección: el nivel y, si ya se jugó, cuánto le falta.
+// Lo que dice cada elección: el nivel y, si ya se jugó, su mejor nota.
 function choiceSub(c) {
-  if (c.best > 0 && c.pending > 0) return `Nivel ${c.level} · ${c.pending === 1 ? 'te falta 1 cuadro' : `te faltan ${c.pending} cuadros`}`;
   if (c.best > 0) return `Nivel ${c.level} · ${Math.round(c.best * 100)}\u00a0%`;
   return `Nivel ${c.level}`;
 }

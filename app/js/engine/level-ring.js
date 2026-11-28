@@ -2,7 +2,7 @@
 // mismo en el mapa, en la tarjeta del nodo y en la ficha: los tramos del aro, los círculos de la fila y el «Nivel N de M»
 // cuentan lo mismo. El título corto de cada etapa (`short`) viene en el catálogo (tools/catalog_from_pipeline.py). Puro.
 
-import { deepStatus, pendingWorks } from './levels.js';
+import { deepStatus } from './levels.js';
 import { MASTERY } from './progress.js';
 
 export const FIRST_LEVEL_SHORT = 'Quién fue';
@@ -45,14 +45,14 @@ export function levelRing(progress, index, artistId) {
 export const ringLabel = (ring) => (ring.done ? 'Todos los niveles hechos' : `Nivel ${ring.at} de ${ring.total} por jugar`);
 
 // Pintor a medias (jugado y sin terminar): el aro entero se llena con su mejor nota y lleva una muesca en el 75 % (lo que hace
-// falta). { levels (para la fila de la tarjeta: el 1 'partial', el resto cerrados), total, best, missing (cuadros del nivel 1
-// por ver), started: true, next: 1, at: 1, done: false } o null.
+// falta). { levels (para la fila de la tarjeta: el 1 'partial', el resto cerrados), total, best, started: true, next: 1, at: 1,
+// done: false } o null.
 export function startedRing(progress, index, artistId) {
   const rec = progress.artists?.[artistId];
   if (!rec?.plays || rec.mastered || !index.artist(artistId)) return null;
   const best = Math.max(0, Math.min(1, Number(rec.best) || 0));
   const levels = ringLevels(index, artistId).map((l, i) => (i === 0 ? { ...l, state: 'partial' } : { ...l, state: 'locked' }));
-  return { levels, total: levels.length, best, missing: pendingWorks(progress, index, artistId, 1).length, started: true, next: 1, at: 1, done: false };
+  return { levels, total: levels.length, best, started: true, next: 1, at: 1, done: false };
 }
 
 export const percent = (k) => `${Math.round(k * 100)}\u00a0%`;
@@ -64,9 +64,8 @@ export const CLOSE_BEST = 0.65;
 export const startedMeta = (best) => `Vas por el ${percent(Number(best) || 0)}`;
 
 // Lo que le falta a un pintor a medias, en una línea: «Has acertado el 50 %; hace falta un 75 %» (desde el 65 %, «Te falta
-// poco: …») o, si ya llega a la nota y le faltan cuadros por ver, «Te faltan n cuadros por ver».
+// poco: …»). Los cuadros sin ver no cuentan: aprobar basta (engine/levels.js).
 export function startedLine(ring) {
-  if (ring.best >= MASTERY && ring.missing > 0) return ring.missing === 1 ? 'Te falta 1 cuadro por ver' : `Te faltan ${ring.missing} cuadros por ver`;
   const score = `has acertado el ${percent(ring.best)}; ${NEED_TEXT}`;
   return ring.best >= CLOSE_BEST ? `Te falta poco: ${score}` : `${score.charAt(0).toUpperCase()}${score.slice(1)}`;
 }

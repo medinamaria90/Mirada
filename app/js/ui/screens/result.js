@@ -6,13 +6,12 @@
 
 import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotion, $ } from '../dom.js';
 import { icons } from '../icons.js';
-import { levelLabel, missingLine, fichaLabel, fichaRoute } from '../../engine/result-labels.js';
+import { levelLabel, fichaLabel, fichaRoute } from '../../engine/result-labels.js';
 import { mediumSrc, tinySrc, coverOf } from '../art.js';
 import { MASTERY, UNLOCK_MIN, isStepUnlocked, gateSteps } from '../../engine/progress.js';
 import { nextStep, DONE_TITLE } from '../../engine/next-step.js';
 import { RANKS } from '../../engine/ranks.js';
 import { isoWeek } from '../../engine/dates.js';
-import { pendingWorks } from '../../engine/levels.js';
 import { tierOf, isMasterTier, avatarCrop, avatarWork, seenOf } from '../../engine/painters.js';
 import { deepRoute, stageRoute, branchRoute } from '../router.js';
 import { practiceAction } from './result-actions.js';
@@ -77,8 +76,6 @@ function lineHtml(ctx, r) {
   const artist = plan.artistId ? index.artist(plan.artistId) : null;
   const who = artist ? artist.short || artist.name : '';
   if (outcome.ownShort && artist) return `<p class="res-line">Acierta más cuadros de ${esc(who)} y ganas su medalla</p>`;
-  const missing = outcome.coverShort && artist ? pendingWorks(ctx.store.get().progress, index, artist.id, plan.level || 1).length : 0;
-  if (missing) return `<p class="res-line">${missingLine(missing, r.mainIsRetry)}</p>`;
   const trait = plan.kind === 'stage' && artist ? mainTrait(artist) : '';
   return trait ? `<p class="res-line">${esc(trait)}</p>` : '';
 }
@@ -208,7 +205,7 @@ export function renderResult(ctx, el, opts) {
         ${fichaButton(ficha, medalHtml(ctx, heroMedal, deepDone, work), 'res-ficha-medal')}
         <p class="res-kicker">${ficha ? `<button type="button" class="res-ficha" data-action="ficha" aria-label="${esc(fichaLabel(ficha))}"><span>${esc(kicker)}</span><span class="res-ficha-go" aria-hidden="true">›</span></button>` : esc(kicker)}</p>
         <h1 class="res-title">${goalJustMet && !duel && next.kind !== 'retry' ? DONE_TITLE : headline(outcome.accuracy)}</h1>
-        ${lineHtml(ctx, { plan, outcome, low, mainIsRetry: next.kind === 'retry' || (Boolean(plan.artistId) && next.artistId === plan.artistId), gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry, rankUp: events.find((e) => e.type === 'rank') })}
+        ${lineHtml(ctx, { plan, outcome, low, gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry, rankUp: events.find((e) => e.type === 'rank') })}
       </div>
       <dl class="res-tally">
         <div><dt>Aciertos</dt><dd>${outcome.score}/${outcome.total}</dd></div>
