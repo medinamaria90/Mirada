@@ -144,6 +144,8 @@ export function emptyProgress() {
     // época recordados. Un estado anterior los recibe vacíos (state/schema.js mergeDefaults), sin perder nada.
     slips: [],
     recall: { last: '', date: '' },
+    // Claves de las últimas rondas jugadas (engine/recall.js RECALL_WAIT_ROUNDS): lo recién visto no se propone repasar.
+    recent: [],
   };
 }
 

@@ -1,8 +1,8 @@
 // «Repasar a Vermeer» / «Repasar el Barroco» (#repasar-<pintor>, #repasar-epoca-<movimiento>): la sesión única para repasar a un
 // pintor o una época, la misma desde la ruta (cuando se le está olvidando, engine/recall.js) y desde la ficha.
-// Empieza siempre por la primera tarjeta de su historia de nivel 1 (época: sus tarjetas clave) con «Seguir» destacado e «Ir a
-// las preguntas» al lado; al final, una sugerencia de otra historia suya, «Cómo reconocer a…» (rasgos y cuadros) y, si lo
-// confunde con alguien, el contraste. Desde cualquiera se puede ir a las preguntas, y después vienen las preguntas
+// Pintor: sin historia (ya la conoce), directo a «Cómo reconocer a…» (sus «Fíjate en…», sus cuadros y con quién no
+// confundirlo), con «Ficha de…» (la ficha en una hoja, sin perder el repaso) e «Ir a las preguntas». Época: sus tarjetas clave
+// con «Seguir» e «Ir a las preguntas» y, si la confunde con otra, el contraste. Después, las preguntas
 // (engine/recall-session.js). Al terminar la ronda, el resultado normal; su cuenta de fallos vuelve a cero (engine/finish.js).
 
 import { esc, onAction, accentStyle, defaultAccent, focusHeading } from '../dom.js';
@@ -11,19 +11,19 @@ import { artFrame, coverOf } from '../art.js';
 import { avatarHtml } from '../avatar.js';
 import { loadCss } from '../lazy-css.js';
 import { playEra } from '../audio-bridge.js';
-import { loadStory } from '../story-data.js';
+import { openArtistSheet } from '../artist-sheet.js';
 import { DECK_LABEL } from '../deck-nav.js';
 import { randomSeed } from '../../engine/rng.js';
 import { seenOf, avatarWork, avatarCrop, lifeSpan } from '../../engine/painters.js';
-import { storyKey } from '../../engine/stories.js';
-import { storySeen } from '../../state/stories-seen.js';
 import { forgottenSubject, isLearned, recallLabel, movementLabel, ARTIST, MOVEMENT } from '../../engine/recall.js';
-import { recallParts, planRecall, suggestedStory, firstStoryLevel, eraKeyCards, shortName } from '../../engine/recall-session.js';
+import { recallParts, planRecall, eraKeyCards, shortName } from '../../engine/recall-session.js';
 
 // Los mismos textos que los visores de tarjetas (deck-nav.js): en cada tarjeta, «Ir a las preguntas» además de «Seguir».
 const NEXT_LABEL = DECK_LABEL.next;
 const QUESTIONS_LABEL = DECK_LABEL.questions;
 const STEPS = { questions: QUESTIONS_LABEL };
+// «Ver ficha» (a 360 px, «Ficha de Botticelli» parte el botón en dos líneas); el lector de pantalla oye de quién.
+const FICHA_LABEL = 'Ver ficha';
 // La ronda necesita al menos estas preguntas; si no llega, la sesión termina en lo enseñado.
 const MIN_QUESTIONS = 3;
 // Cómo se cerró una historia (ui/story-core.js STORY_END), sin cargarla antes de tiempo.
@@ -33,7 +33,7 @@ function faceOf(ctx, artistId) {
   const artist = ctx.index.artist(artistId);
   const cover = coverOf(ctx.index, artistId);
   const face = avatarWork(seenOf(ctx.store.get().progress, ctx.index, artistId)) || (cover ? { work: cover, ...avatarCrop(cover) } : null);
-  return avatarHtml(artist, face, 'recall-av');
+  return avatarHtml(artist, face, 'recall-twin-av');
 }
 
 // ¿Se le está olvidando? El sujeto con su confusión (de los fallos) o null.
@@ -58,7 +58,7 @@ export async function renderRecall(ctx, el, type, id, { play, leave }) {
   const title = recallLabel(index, type, id);
   const accent = movement.accent || defaultAccent();
   const plan = planRecall(p, index, parts, randomSeed(), { seen });
-  const steps = ['story', type === ARTIST && (parts.traits.length || parts.works.length) ? 'look' : '', parts.contrast ? 'contrast' : ''].filter(Boolean);
+  const steps = type === ARTIST ? [parts.traits.length || parts.works.length ? 'look' : ''].filter(Boolean) : ['story', parts.contrast ? 'contrast' : ''].filter(Boolean);
   playEra(movement.era);
   let at = 0;
   let off = () => {};
@@ -70,25 +70,29 @@ export async function renderRecall(ctx, el, type, id, { play, leave }) {
     ctx.setCleanup(play(ctx, el, { plan, accent, title, kind: 'recall', extra, shareTopic: '' }));
   };
   const next = () => { at += 1; return at < steps.length ? show() : startRound(); };
+  if (!steps.length) return startRound();
 
   function show() {
     off();
     const step = steps[at];
     const last = at === steps.length - 1;
-    const body = step === 'look' ? lookHtml(artist, movement, parts)
+    const body = step === 'look' ? lookHtml(ctx, artist, movement, parts)
       : step === 'contrast' ? contrastHtml(ctx, type, id, parts)
-        : launcherHtml(ctx, type, id, movement, Boolean(subject));
-    // En la historia, sus botones van en cada tarjeta; detrás queda quién es, por si se cierra o no llega.
-    const actions = step === 'story' ? '' : last
-      ? `<button class="btn btn-primary btn-wide" data-action="questions" data-primary>${QUESTIONS_LABEL}</button>`
-      : `<div class="recall-actions"><button class="btn btn-secondary" data-action="questions">${QUESTIONS_LABEL}</button>
+        : launcherHtml(movement);
+    // En la historia de la época, sus botones van en cada tarjeta; detrás queda cuál es, por si se cierra o no llega.
+    const actions = step === 'story' ? ''
+      : step === 'look' ? `<div class="recall-actions"><button class="btn btn-secondary" data-action="ficha" aria-label="${esc(`Ficha de ${shortName(artist)}`)}">${FICHA_LABEL}</button>
+          <button class="btn btn-primary" data-action="questions" data-primary>${QUESTIONS_LABEL}</button></div>`
+        : last ? `<button class="btn btn-primary btn-wide" data-action="questions" data-primary>${QUESTIONS_LABEL}</button>`
+          : `<div class="recall-actions"><button class="btn btn-secondary" data-action="questions">${QUESTIONS_LABEL}</button>
           <button class="btn btn-primary" data-action="next" data-primary>${NEXT_LABEL}</button></div>`;
-    el.innerHTML = `<div class="recall" style="${accentStyle(accent)}">
+    el.innerHTML = `<div class="recall${step === 'look' ? ' recall-look' : ''}" style="${accentStyle(accent)}">
       <div class="lesson-bar recall-bar">
         <button class="icon-btn" data-action="leave" aria-label="Salir">${icons.close(22)}</button>
-        <span class="lesson-bar-title">${esc(title)}</span>
+        <span class="recall-bar-title">${esc(title)}</span>
       </div>
-      <main class="recall-body" id="main">${body}${actions}</main>
+      <main class="recall-body" id="main">${body}</main>
+      ${actions ? `<div class="recall-foot">${actions}</div>` : ''}
     </div>`;
     window.scrollTo(0, 0);
     focusHeading(el);
@@ -96,13 +100,16 @@ export async function renderRecall(ctx, el, type, id, { play, leave }) {
       leave: () => { ctx.audio.sfx('tap'); exit(); },
       next: () => { ctx.audio.sfx('tap'); next(); },
       questions: () => { ctx.audio.sfx('tap'); startRound(); },
+      // La ficha va en una hoja encima: al cerrarla se vuelve a esta tarjeta, con el repaso intacto.
+      ficha: (btn) => { ctx.audio.sfx('tap'); openArtistSheet(ctx, id, { opener: btn, playable: false }); },
+      twin: (btn) => { ctx.audio.sfx('tap'); openArtistSheet(ctx, btn.dataset.id, { opener: btn, playable: false }); },
     });
     if (step === 'story') tell();
   }
 
-  // La historia (o las tarjetas de la época): «Seguir» pasa a lo siguiente, «Ir a las preguntas» salta a la ronda y la X sale.
+  // Las tarjetas de la época: «Seguir» pasa a lo siguiente, «Ir a las preguntas» salta a la ronda y la X sale.
   async function tell() {
-    const ended = await (artist ? openStory(ctx, artist, parts) : openEraCards(ctx, movement));
+    const ended = await openEraCards(ctx, movement);
     if (!el.isConnected || ended === ENDED.BACK) return;
     if (ended === ENDED.CLOSE) return exit();
     if (ended === ENDED.QUESTIONS) return startRound();
@@ -111,26 +118,26 @@ export async function renderRecall(ctx, el, type, id, { play, leave }) {
   show();
 }
 
-// Lo que queda bajo la historia: quién es y de qué época.
-function launcherHtml(ctx, type, id, movement, isForgotten) {
-  if (type === MOVEMENT) {
-    return `<p class="kicker">${esc(movement.period || '')}</p><h1 class="recall-title">${esc(movement.name)}</h1>
-      <p class="recall-line">${esc(movement.blurb || '')}</p>`;
-  }
-  const artist = ctx.index.artist(id);
-  return `<span class="recall-face">${faceOf(ctx, id)}</span>
-    <p class="kicker">${esc([movement.name, lifeSpan(artist)].filter(Boolean).join(' · '))}</p>
-    <h1 class="recall-title">${esc(artist.name)}</h1>
-    ${isForgotten ? '<p class="recall-line">Se te está escapando un poco</p>' : ''}`;
+// Lo que queda bajo las tarjetas de la época: cuál es.
+function launcherHtml(movement) {
+  return `<p class="kicker">${esc(movement.period || '')}</p><h1 class="recall-title">${esc(movement.name)}</h1>
+    <p class="recall-line">${esc(movement.blurb || '')}</p>`;
 }
 
-function lookHtml(artist, movement, parts) {
+// «Renacimiento · vivió 1445–1510»: las fechas son las de su vida, no las de la época.
+const eraAndLife = (movement, artist) => [movement.name, lifeSpan(artist) && `vivió ${lifeSpan(artist)}`].filter(Boolean).join(' · ');
+
+// «Cómo reconocer a…»: sus «Fíjate en…», sus cuadros (se abren en el visor) y con quién no confundirlo (cada uno abre su ficha).
+function lookHtml(ctx, artist, movement, parts) {
   const traits = parts.traits.map((t) => `<li>${esc(t)}</li>`).join('');
-  const works = parts.works.map((w) => `<figure class="recall-work">${artFrame(w, { alt: '', cls: 'recall-art', label: w.title, zoom: { group: 'recall-look' } })}<figcaption>${esc(w.title)}</figcaption></figure>`).join('');
-  return `<p class="kicker">${esc([movement.name, lifeSpan(artist)].filter(Boolean).join(' · '))}</p>
+  const works = parts.works.map((w) => `<figure class="recall-work">${artFrame(w, { alt: '', cls: 'recall-art', label: w.title, small: true, zoom: { group: 'recall-look' } })}<figcaption>${esc(w.title)}</figcaption></figure>`).join('');
+  const twins = parts.twins.map((tid) => `<li><button type="button" class="recall-twin" data-action="twin" data-id="${esc(tid)}">${faceOf(ctx, tid)}<span>${esc(shortName(ctx.index.artist(tid)))}</span></button></li>`).join('');
+  return `<p class="kicker recall-life">${esc(eraAndLife(movement, artist))}</p>
     <h1 class="recall-title">Cómo reconocer a ${esc(shortName(artist))}</h1>
     ${traits ? `<ul class="recall-traits">${traits}</ul>` : ''}
-    ${works ? `<div class="recall-works">${works}</div>` : ''}`;
+    ${works ? `<div class="recall-works">${works}</div>` : ''}
+    ${twins ? `<section class="recall-twins" aria-labelledby="recall-twins-h"><h2 class="recall-h" id="recall-twins-h">No lo confundas con</h2>
+      <ul>${twins}</ul>${parts.contrast ? `<p class="recall-note">${esc(parts.contrast.text)}</p>` : ''}</section>` : ''}`;
 }
 
 function contrastHtml(ctx, type, id, parts) {
@@ -141,22 +148,6 @@ function contrastHtml(ctx, type, id, parts) {
     <h1 class="recall-title">${esc(names[0])} o ${esc(names[1])}</h1>
     <div class="recall-works recall-pair">${pair}</div>
     <p class="recall-line">${esc(parts.contrast.text)}</p>`;
-}
-
-// Su historia de nivel 1 (o la del nivel donde se concentran sus fallos) y, tras la de nivel 1, una sola sugerencia de otra
-// suya («Más de Velázquez: La corte ›»). Devuelve cómo acabó.
-async function openStory(ctx, artist, parts) {
-  const [{ playStory, STORY_END }, story] = await Promise.all([import('../story-viewer.js'), loadStory(artist.id)]);
-  const levels = (story?.levels || []).map((l) => l.level);
-  const failedLevels = parts.failedWorks.map((w) => ctx.index.artwork(w)?.level).filter(Number.isInteger);
-  const start = firstStoryLevel(levels, failedLevels);
-  const more = start === 1 ? suggestedStory(levels, failedLevels, (l) => storySeen(storyKey(artist.id, l))) : null;
-  const stage = more ? story.levels.find((l) => l.level === more) : null;
-  const base = { force: true, history: false, steps: STEPS, onPlay: () => {}, look: artist.hint };
-  const first = await playStory(ctx, artist.id, start, { ...base, onMore: stage ? () => {} : false, moreLabel: stage ? `Más de ${shortName(artist)}: ${stage.stage || stage.title} ›` : undefined });
-  if (first.ended === STORY_END.MORE && stage) return (await playStory(ctx, artist.id, more, { ...base, onMore: false })).ended;
-  // Sin historia, se sigue con lo demás.
-  return first.ended === STORY_END.NONE ? ENDED.PLAY : first.ended;
 }
 
 // Las tarjetas clave de la época, como una historia, con su antetítulo («Fíjate en»). Devuelve cómo acabó.

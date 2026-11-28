@@ -93,8 +93,8 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
   assert.equal((html.match(/<h2 class="era-arch"/g) || []).length, real.visibleMovements.length, 'un dintel por época');
   assert.ok(!html.includes('class="road-sign is-left"><button type="button" class="sign-plate" data-action="intro"'), 'queda la placa de época antigua');
   const locked = real.visibleMovements[2];
-  assert.ok(html.includes(`data-action="lore-lock" data-status="locked" data-lock="Se abre al cruzar la puerta del Manierismo y el Renacimiento del Norte"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el medallón cerrado no avisa como un pintor cerrado');
-  assert.ok(html.includes('Cerrada: Se abre al cruzar la puerta del Manierismo y el Renacimiento del Norte'), 'una época cerrada no dice cómo se abre (con su artículo)');
+  assert.ok(html.includes(`data-action="lore-lock" data-status="locked" data-lock="Se abre al llegar aquí"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el medallón cerrado no avisa como un pintor cerrado');
+  assert.ok(html.includes('Cerrada: Se abre al llegar aquí'), 'una época cerrada no dice cómo se abre');
   assert.ok(!html.includes('Termina ') && !html.includes('movement-head'), 'queda la cartela antigua');
 });
 

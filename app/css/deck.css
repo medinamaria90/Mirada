@@ -31,5 +31,7 @@
 .deck-actions .btn { flex: 3 1 auto; min-width: 0; }
 .deck-actions .deck-secondary { flex: 1 1 auto; }
 .deck-actions [hidden] { display: none; }
+/* Última tarjeta con preguntas de concepto: «Ir a las preguntas» arriba, a todo lo ancho, y debajo «Más sobre…» y «Seguir». */
+.deck-actions.has-questions .deck-primary { order: -1; flex-basis: 100%; }
 .deck-secondary { --btn-shadow: transparent; background: color-mix(in srgb, var(--deck-ink) 10%, transparent); color: var(--deck-ink); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--deck-ink) 30%, transparent); }
 .deck-secondary:hover { background: color-mix(in srgb, var(--deck-ink) 18%, transparent); }

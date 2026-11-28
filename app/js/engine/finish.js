@@ -2,7 +2,7 @@
 // día visto, dominio de etapas y salas, medallas, meta diaria, racha y nivel. Puro.
 
 import { recordAnswer, artKey, artistKey, updateFallados } from './srs.js';
-import { logAnswers, finishRecall } from './recall.js';
+import { logAnswers, finishRecall, noteRound, roundKeys } from './recall.js';
 import { rankFor, RANKS } from './ranks.js';
 import { settleOffer } from './deepen.js';
 import { seenAfterRound, markPendingSeen, deepKey, LEVELS_MASTERY } from './levels.js';
@@ -55,6 +55,8 @@ export function finishRound(progress, index, result, today, opts = {}) {
     const round = { artistId: result.kind === 'stage' ? result.artistId : '', movementId: result.kind === 'sala' ? result.movementId : '' };
     p.slips = logAnswers(p.slips, result.answers, index, today, { skip: (a) => unseen.has(a.q.artistId), round });
   }
+  // Lo recién jugado espera unas rondas antes de proponerse «Repasar a…».
+  p.recent = noteRound(p.recent, roundKeys(index, result));
 
   const total = result.firstTry.length;
   const score = result.firstTry.filter((v) => v === true).length;

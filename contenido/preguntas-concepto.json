@@ -1,0 +1,2864 @@
+{
+ "version": 1,
+ "note": "Banco de preguntas de concepto por época (medallón) y por tramo (rombo). Diseño didáctico: cada distractor es de una época vecina o un rasgo parecido, con su porqué (≤180). Se sincroniza a app/data con tools/sync_preguntas.py.",
+ "questions": [
+  {
+   "id": "renacimiento-cual",
+   "scope": "epoca",
+   "movementId": "renacimiento",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es del Renacimiento?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w549847",
+     "why": "Sí: dioses antiguos en un jardín ordenado y figuras con volumen y perfiles claros. Botticelli lo pintó en la Florencia de los Médici."
+    },
+    {
+     "id": "b",
+     "work": "w1430990",
+     "why": "Es manierismo, la generación que vino después de Rafael: piel fría como porcelana, cuerpos retorcidos en poses imposibles y un espacio apretado."
+    },
+    {
+     "id": "c",
+     "work": "w1283024",
+     "why": "Es del siglo XIX: un pintor académico que imitaba a los clásicos. Fíjate en la piel lisa, casi de fotografía, y en la luz suave de estudio."
+    },
+    {
+     "id": "d",
+     "work": "w15974342",
+     "why": "Es gótico: fondo de oro, un trono que no acaba de asentarse en el espacio y pliegues trazados con líneas doradas. El Renacimiento cambiará el oro por espacio real."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_del_Renacimiento"
+  },
+  {
+   "id": "renacimiento-cambia",
+   "scope": "epoca",
+   "movementId": "renacimiento",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w15974342",
+    "w128910"
+   ],
+   "labels": [
+    "Gótico",
+    "Renacimiento"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Del fondo de oro a un espacio con profundidad",
+     "why": "Eso es: en la Última Cena las líneas del techo y las paredes se juntan en la cabeza de Cristo. Es la perspectiva, la gran conquista del siglo XV."
+    },
+    {
+     "id": "b",
+     "text": "Se pierde la simetría y todo se descoloca",
+     "why": "No: Leonardo pone a Cristo en el centro exacto y reparte a los apóstoles en cuatro grupos de tres. Lo nuevo es el espacio que se aleja."
+    },
+    {
+     "id": "c",
+     "text": "La luz sale de un foco fuerte en la oscuridad",
+     "why": "Eso llegará con Caravaggio, ya en el Barroco. La luz del Renacimiento es clara y pareja, para que se vea bien el espacio."
+    },
+    {
+     "id": "d",
+     "text": "Se pinta al aire libre, del natural, sin taller",
+     "why": "Aún no: estas obras se pensaban en el taller, con dibujos y geometría. Salir a pintar al aire libre será cosa del siglo XIX."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Perspectiva_(gráfica)"
+  },
+  {
+   "id": "renacimiento-comun",
+   "scope": "epoca",
+   "movementId": "renacimiento",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w186953",
+    "w2378567"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Arquitecturas que abren un espacio profundo",
+     "why": "Eso es: arcos y columnas que se alejan con reglas de geometría. Las figuras ya no flotan: viven dentro de un espacio medido."
+    },
+    {
+     "id": "b",
+     "text": "Escenas de la vida de cada día en la ciudad",
+     "why": "No: una Anunciación y una reunión de sabios de la Antigüedad. Lo que comparten es el espacio en perspectiva, no lo cotidiano."
+    },
+    {
+     "id": "c",
+     "text": "Pincelada suelta que se ve a simple vista",
+     "why": "Aquí la superficie es lisa y manda el dibujo. La pincelada que se ve llegará con los venecianos y, sobre todo, en el siglo XIX."
+    },
+    {
+     "id": "d",
+     "text": "Figuras alargadas como llamas, muy estilizadas",
+     "why": "Eso es el manierismo, de El Greco por ejemplo. Aquí los cuerpos tienen proporciones naturales y equilibrio."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_del_Renacimiento"
+  },
+  {
+   "id": "renacimiento-rompe",
+   "scope": "epoca",
+   "movementId": "renacimiento",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w151047"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Un mito antiguo pintado en grande y en serio",
+     "why": "Eso es: una diosa pagana a un tamaño que hasta entonces se reservaba a los temas religiosos. Casi no se veía algo así desde la Antigüedad."
+    },
+    {
+     "id": "b",
+     "text": "Copia una estatua antigua tal cual, sin cambios",
+     "why": "Botticelli toma la pose de las Venus de mármol antiguas, pero la convierte en otra cosa: una diosa ligera, casi sin peso, que llega flotando."
+    },
+    {
+     "id": "c",
+     "text": "Estrena el óleo sobre lienzo en Florencia",
+     "why": "No: está pintado al temple (color mezclado con huevo) sobre lienzo. El óleo lo llevaban lejos los pintores flamencos, como Jan van Eyck."
+    },
+    {
+     "id": "d",
+     "text": "Convierte el paisaje en el protagonista",
+     "why": "El mar y la orilla son un decorado sencillo; el paisaje como tema propio tardará siglos. Aquí manda la diosa."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/El_nacimiento_de_Venus_(Botticelli)"
+  },
+  {
+   "id": "manierismo-cual",
+   "scope": "epoca",
+   "movementId": "manierismo-y-norte",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es manierista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w94802",
+     "why": "Sí: arriba, cuerpos que se estiran como llamas y una luz irreal. El Greco aprendió el manierismo en Italia y lo llevó a Toledo."
+    },
+    {
+     "id": "b",
+     "work": "w328079",
+     "why": "Es del Renacimiento: Rafael busca equilibrio y proporción perfecta. El manierismo vendrá justo después, estirando esa perfección."
+    },
+    {
+     "id": "c",
+     "work": "w2653851",
+     "why": "Es barroco: cuerpos musculosos en diagonal, esfuerzo y peso real. El manierismo estira las figuras; Rubens las llena de fuerza."
+    },
+    {
+     "id": "d",
+     "work": "w1978815",
+     "why": "Trampa: a esa espalda también le sobran vértebras, pero es Ingres, neoclásico del siglo XIX. Línea limpia y fría, sin cielos agitados."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Manierismo"
+  },
+  {
+   "id": "manierismo-cambia",
+   "scope": "epoca",
+   "movementId": "manierismo-y-norte",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w186953",
+    "w867403"
+   ],
+   "labels": [
+    "Renacimiento",
+    "Manierismo"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Los cuerpos se alargan y se vuelven raros",
+     "why": "Eso es: tras la armonía de Rafael, Parmigianino estira el cuello, los dedos y hasta al Niño. Belleza llevada a lo raro, a propósito."
+    },
+    {
+     "id": "b",
+     "text": "Vuelve el fondo de oro de los iconos",
+     "why": "No vuelve el oro: hay espacio, pero no encaja; al fondo, una columna y un profeta diminuto."
+    },
+    {
+     "id": "c",
+     "text": "Aparece un foco de luz en la oscuridad",
+     "why": "Eso será el tenebrismo de Caravaggio, ya en el Barroco. Aquí la luz es clara y fría, pareja sobre una piel de porcelana."
+    },
+    {
+     "id": "d",
+     "text": "Se dejan los temas religiosos por los paisajes",
+     "why": "No: sigue siendo una Virgen con el Niño. Los paisajes y las escenas de casa fueron cosa del norte protestante."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Virgen_del_cuello_largo"
+  },
+  {
+   "id": "manierismo-comun",
+   "scope": "epoca",
+   "movementId": "manierismo-y-norte",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w500985",
+    "w220859"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Miran el mundo cercano con mucho detalle",
+     "why": "Eso es: el Norte pinta lo que tiene alrededor, una alcoba o una aldea nevada, y no se le escapa ni un clavo ni un perro."
+    },
+    {
+     "id": "b",
+     "text": "Figuras de belleza ideal, como estatuas",
+     "why": "Eso es lo italiano. En el Norte la gente es corriente, con sus caras de siempre y su ropa de abrigo."
+    },
+    {
+     "id": "c",
+     "text": "Dioses y héroes de la mitología antigua",
+     "why": "Ni dioses ni héroes: un matrimonio en su casa y unos cazadores que vuelven al pueblo. El Norte prefería lo cercano."
+    },
+    {
+     "id": "d",
+     "text": "Pinceladas sueltas que se ven de cerca",
+     "why": "Al revés: superficie lisa y detalle casi de miniatura. La pincelada que se ve llegará con los venecianos y, sobre todo, en el siglo XIX."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Renacimiento_nórdico"
+  },
+  {
+   "id": "manierismo-rompe",
+   "scope": "epoca",
+   "movementId": "manierismo-y-norte",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w2546309"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Se pinta de frente, como solo se pintaba a Cristo",
+     "why": "Eso es: Durero se pinta simétrico y solemne, con su melena y su mano sobre el pecho. Un artista que se presenta como alguien importante."
+    },
+    {
+     "id": "b",
+     "text": "Se retrata como un rey, con corona y cetro",
+     "why": "No hay corona ni cetro: solo su melena y un abrigo de piel. La solemnidad viene de la pose de frente, la de las imágenes de Cristo."
+    },
+    {
+     "id": "c",
+     "text": "Lo pintó en un espejo que deforma la cara",
+     "why": "Eso lo hizo Parmigianino, con su cara en un espejo redondo. Durero se pinta de frente, sereno y simétrico."
+    },
+    {
+     "id": "d",
+     "text": "Se muestra trabajando en su taller con pinceles",
+     "why": "Aquí no hay pinceles ni taller: solo Durero, de frente, con su abrigo de piel. La pose bastaba como declaración."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Autorretrato_con_abrigo_de_piel"
+  },
+  {
+   "id": "barroco-cual",
+   "scope": "epoca",
+   "movementId": "barroco",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es barroco?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w984058",
+     "why": "Sí: primer plano en penumbra y, al fondo, una sala que se llena de luz. Velázquez juega con el contraste y la profundidad, muy del Barroco."
+    },
+    {
+     "id": "b",
+     "work": "w1167178",
+     "why": "Es realismo: Courbet en su estudio, rodeado de amigos y vecinos. Colores de tierra, sí, pero sin el teatro de penumbra y luz barroco."
+    },
+    {
+     "id": "c",
+     "work": "w3821820",
+     "why": "Es impresionismo: Degas en una sala de ensayo de París, con pinceladas ligeras y la luz pareja de las ventanas."
+    },
+    {
+     "id": "d",
+     "work": "w6402081",
+     "why": "Es manierismo: El Greco en Toledo, a finales del siglo XVI. Cara alargada y pálida, gola blanca y un gesto casi de juramento, sin el juego de luz y profundidad de Velázquez."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_del_Barroco"
+  },
+  {
+   "id": "barroco-cambia",
+   "scope": "epoca",
+   "movementId": "barroco",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w2714617",
+    "w24118"
+   ],
+   "labels": [
+    "Manierismo",
+    "Barroco"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Las figuras estiradas dejan paso a gente real",
+     "why": "Eso es: Ribera pinta a un niño mendigo de Nápoles, con su pie torcido y su sonrisa abierta, a tamaño de héroe. Nada de cuerpos de llama."
+    },
+    {
+     "id": "b",
+     "text": "Desaparecen los temas religiosos",
+     "why": "No: el Barroco católico pinta más santos que nunca. Lo que cambia es que esos santos tienen cara de vecino."
+    },
+    {
+     "id": "c",
+     "text": "Los colores se vuelven pastel y alegres",
+     "why": "Eso es el rococó, en el siglo XVIII. El Barroco prefiere tonos de tierra y contrastes fuertes de luz y sombra."
+    },
+    {
+     "id": "d",
+     "text": "Se vuelve al dibujo limpio de las estatuas antiguas",
+     "why": "Eso será el neoclasicismo de David, más de un siglo después. El Barroco busca la verdad de la piel y la emoción, no la estatua."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_del_Barroco"
+  },
+  {
+   "id": "barroco-comun",
+   "scope": "epoca",
+   "movementId": "barroco",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w167605",
+    "w17342250"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Gente corriente en su casa",
+     "why": "Eso es: una criada que vierte leche y una familia de fiesta. En Holanda se pintaba la vida de cada día para colgarla en casa."
+    },
+    {
+     "id": "b",
+     "text": "Encargos de la Iglesia para conmover",
+     "why": "No: son cuadros para casas de Holanda, protestante, donde las iglesias no se llenaban de imágenes. Se vendían en tiendas y ferias."
+    },
+    {
+     "id": "c",
+     "text": "Héroes y dioses de la Antigüedad",
+     "why": "Ni romanos ni dioses: una mujer con su jarra y una familia que canta. Los héroes antiguos volverán con el neoclasicismo."
+    },
+    {
+     "id": "d",
+     "text": "Luz de pleno sol al aire libre",
+     "why": "Son interiores con luz de ventana. Pintar a pleno sol, fuera del taller, será cosa de los impresionistas."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_neerlandesa_del_Siglo_de_Oro"
+  },
+  {
+   "id": "barroco-rompe",
+   "scope": "epoca",
+   "movementId": "barroco",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w969377"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Un milagro en una taberna, con gente de la calle",
+     "why": "Eso es: Cristo llama a Mateo entre jugadores con plumas y monedas. Caravaggio usaba modelos reales vestidos como en su tiempo."
+    },
+    {
+     "id": "b",
+     "text": "Renuncia a la perspectiva y al espacio profundo",
+     "why": "No: el espacio sigue ahí, aunque oscuro. Lo nuevo es la luz que entra de lado y la escena de calle."
+    },
+    {
+     "id": "c",
+     "text": "Pinta a Cristo como un rey en su trono de gloria",
+     "why": "Al revés: Cristo está casi en la sombra, a un lado, señalando. La fuerza no viene del trono, sino de la luz que sigue su mano."
+    },
+    {
+     "id": "d",
+     "text": "Usa colores ácidos y cuerpos muy alargados",
+     "why": "Eso era el manierismo, justo lo que Caravaggio dejó atrás: él pinta cuerpos normales, con peso, ropa gastada y caras corrientes."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/La_vocación_de_San_Mateo"
+  },
+  {
+   "id": "rococo-cual",
+   "scope": "epoca",
+   "movementId": "rococo-neoclasicismo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es rococó?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w2629559",
+     "why": "Sí: tonos pastel, un jardín de cuento y un juego amoroso. Es el rococó del siglo XVIII, el arte de una nobleza que quiere divertirse."
+    },
+    {
+     "id": "b",
+     "work": "w1118456",
+     "why": "Mismo tema, otro siglo: es impresionismo. Renoir pinta a gente corriente de París con manchas de sol que se cuelan entre los árboles."
+    },
+    {
+     "id": "c",
+     "work": "w2268524",
+     "why": "Es barroco: cuerpos rotundos, con peso, y un tono solemne de alegoría. El rococó es más ligero y juguetón."
+    },
+    {
+     "id": "d",
+     "work": "w9295442",
+     "why": "Es de finales del XIX: Waterhouse cuenta un mito con colores intensos y detalle preciso. Ninfas misteriosas, no el juego galante del rococó."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Rococó"
+  },
+  {
+   "id": "rococo-cambia",
+   "scope": "epoca",
+   "movementId": "rococo-neoclasicismo",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w531329",
+    "w476458"
+   ],
+   "labels": [
+    "Rococó",
+    "Neoclasicismo"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "De la fiesta galante a los héroes severos",
+     "why": "Eso es: David pinta a tres hermanos romanos que juran morir por su patria. Gestos rígidos, arcos firmes y una lección de virtud."
+    },
+    {
+     "id": "b",
+     "text": "Los colores se vuelven claros y pastel",
+     "why": "Al revés: el pastel era lo del rococó. David usa colores firmes, rojos y blancos, y una luz que recorta las figuras como estatuas."
+    },
+    {
+     "id": "c",
+     "text": "Las pinceladas se vuelven sueltas y rápidas",
+     "why": "Al revés: el neoclasicismo pule la superficie y manda el dibujo. La pincelada suelta será romántica e impresionista."
+    },
+    {
+     "id": "d",
+     "text": "Se pinta la vida cotidiana de la gente",
+     "why": "No: los Horacios son héroes de la antigua Roma. La vida corriente tendrá que esperar al realismo del siglo XIX."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Neoclasicismo"
+  },
+  {
+   "id": "rococo-comun",
+   "scope": "epoca",
+   "movementId": "rococo-neoclasicismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w445627",
+    "w27765779"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "La vida sencilla, con detalle y luz clara",
+     "why": "Eso es: una criada con su bandeja de chocolate y una mesa de cocina. Junto a las fiestas, el siglo XVIII también pinta lo cotidiano."
+    },
+    {
+     "id": "b",
+     "text": "Héroes y virtudes de la antigua Roma",
+     "why": "Ni romanos ni lecciones de moral: una sirvienta y unos besugos. Lo heroico es lo del neoclasicismo."
+    },
+    {
+     "id": "c",
+     "text": "Fiestas galantes en jardines de recreo",
+     "why": "Eso es Watteau, de la misma época. Aquí no hay jardines ni enamorados: solo objetos y gestos de cada día."
+    },
+    {
+     "id": "d",
+     "text": "Pinceladas sueltas y manchas de color vivo",
+     "why": "Nada de manchas: cada textura, del pescado a la porcelana, es precisa. Liotard pintó al pastel (barras de color en polvo) sin que se vea un trazo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Luis_Egidio_Meléndez"
+  },
+  {
+   "id": "rococo-rompe",
+   "scope": "epoca",
+   "movementId": "rococo-neoclasicismo",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w636537"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Un crimen real, como un mártir antiguo",
+     "why": "Eso es: Marat, revolucionario asesinado en su bañera, aparece como un Cristo muerto. David convierte la actualidad en heroísmo clásico."
+    },
+    {
+     "id": "b",
+     "text": "Suaviza la muerte con tonos pastel y flores",
+     "why": "Al contrario: fondo vacío y oscuro, luz cruda y ni una flor. Es la seriedad neoclásica frente al rococó."
+    },
+    {
+     "id": "c",
+     "text": "Abandona el dibujo y pinta con manchas",
+     "why": "No: el dibujo es nítido y el cuerpo, liso como el mármol. Lo nuevo no es la técnica, sino pintar a un político de su tiempo como un héroe."
+    },
+    {
+     "id": "d",
+     "text": "Llena la escena de movimiento y drama de color",
+     "why": "Eso sería romántico, como Delacroix. David elige la calma: un cuerpo quieto, una carta en la mano y un fondo desnudo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/La_muerte_de_Marat"
+  },
+  {
+   "id": "romanticismo-cual",
+   "scope": "epoca",
+   "movementId": "romanticismo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es romántico?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w257580",
+     "why": "Sí: un viejo barco de guerra remolcado a su final bajo un atardecer en llamas. Turner pinta la emoción y la nostalgia con el color."
+    },
+    {
+     "id": "b",
+     "work": "w19905366",
+     "why": "Es impresionismo: Pissarro pinta el puerto de Ruan con toques rápidos de color, humo y reflejos. No cuenta una historia triste, solo la luz de ese día."
+    },
+    {
+     "id": "c",
+     "work": "w19660427",
+     "why": "Es del siglo XVIII: una vista de Venecia nítida y precisa, casi una postal de recuerdo. Nada de cielos que arden ni emociones desatadas."
+    },
+    {
+     "id": "d",
+     "work": "w523974",
+     "why": "Es barroco holandés: Vermeer pinta su ciudad en calma, con nubes y reflejos serenos. Una mirada tranquila y exacta, no un drama."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_del_Romanticismo"
+  },
+  {
+   "id": "romanticismo-cambia",
+   "scope": "epoca",
+   "movementId": "romanticismo",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w476458",
+    "w29530"
+   ],
+   "labels": [
+    "Neoclasicismo",
+    "Romanticismo"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "El orden deja paso al color y al drama",
+     "why": "Eso es: frente a los romanos quietos de David, la Libertad avanza en diagonal entre humo, banderas y cuerpos. Manda la emoción."
+    },
+    {
+     "id": "b",
+     "text": "Se dejan de lado los temas políticos y de guerra",
+     "why": "Al revés: los dos son políticos. David exalta el deber; Delacroix, una revolución que acababa de pasar en las calles de París."
+    },
+    {
+     "id": "c",
+     "text": "Vuelve el fondo oscuro con un foco de luz",
+     "why": "No es tenebrismo: la Libertad avanza entre humo y polvo bajo un cielo claro. Lo que manda es el color y la diagonal de la marcha."
+    },
+    {
+     "id": "d",
+     "text": "Las figuras se vuelven planas, sin volumen",
+     "why": "No: los cuerpos siguen teniendo peso. Cambia la composición, en diagonal, y el color, que pesa más que el dibujo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/La_Libertad_guiando_al_pueblo"
+  },
+  {
+   "id": "romanticismo-comun",
+   "scope": "epoca",
+   "movementId": "romanticismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w311243",
+    "w2339059"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Una naturaleza inmensa que nos sobrecoge",
+     "why": "Eso es: la niebla sin fin y la tormenta que se traga al tren. Es lo «sublime», lo inmenso que da miedo y fascina a la vez."
+    },
+    {
+     "id": "b",
+     "text": "Paisajes copiados del natural con exactitud",
+     "why": "No buscan exactitud: Friedrich compone su paisaje en el taller y Turner deshace el tren en vapor. Importa lo que se siente."
+    },
+    {
+     "id": "c",
+     "text": "La luz cambiante de un instante cualquiera",
+     "why": "Eso será lo de los impresionistas, que pintan sin drama. Aquí la niebla y la tormenta están cargadas de emoción."
+    },
+    {
+     "id": "d",
+     "text": "Ciudades y fábricas modernas como tema",
+     "why": "Turner sí pinta un tren, el gran invento de su tiempo; pero en el caminante de Friedrich no hay ni rastro de ciudad. Comparten una naturaleza inmensa."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Sublime_(filosofía)"
+  },
+  {
+   "id": "romanticismo-rompe",
+   "scope": "epoca",
+   "movementId": "romanticismo",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w212616"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Un naufragio real pintado como gran historia",
+     "why": "Eso es: el naufragio era de 1816 y avergonzaba al gobierno. Géricault lo pintó en un lienzo gigante, el tamaño de reyes y héroes."
+    },
+    {
+     "id": "b",
+     "text": "Exalta a un capitán heroico y victorioso",
+     "why": "No hay héroe vencedor: la Medusa naufragó por la torpeza de su capitán. Son náufragos desesperados que hacen señas a un barco lejano."
+    },
+    {
+     "id": "c",
+     "text": "Abandona el dibujo y pinta solo con manchas",
+     "why": "No: Géricault estudió los cuerpos con rigor, hasta en el hospital. La novedad está en el tema y el drama, no en la técnica."
+    },
+    {
+     "id": "d",
+     "text": "Pinta un mito griego con una emoción nueva",
+     "why": "No es un mito: son marineros reales de un barco francés, la Medusa. Por eso escandalizó: era una vergüenza reciente del país."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/La_balsa_de_la_Medusa"
+  },
+  {
+   "id": "realismo-cual",
+   "scope": "epoca",
+   "movementId": "realismo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es realista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w1368055",
+     "why": "Sí: tres campesinas pobres recogen restos de la siega, en colores de tierra. Millet cuenta el trabajo duro sin adornos ni dramatismo."
+    },
+    {
+     "id": "b",
+     "work": "w594477",
+     "why": "Trampa: una campesina también, pero es Van Gogh en Auvers: trigo de pinceladas en remolino y colores que no copian, expresan."
+    },
+    {
+     "id": "c",
+     "work": "w5659824",
+     "why": "Es barroco, de Murillo en la Sevilla del siglo XVII: un niño de la calle con luz que entra de lado en la penumbra, pintado con ternura."
+    },
+    {
+     "id": "d",
+     "work": "w5407253",
+     "why": "Es impresionismo: Pissarro pinta el campo con pinceladas cortas y luz vibrante. Le importa más el sol sobre la hierba que el peso del trabajo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Realismo_pictórico"
+  },
+  {
+   "id": "realismo-cambia",
+   "scope": "epoca",
+   "movementId": "realismo",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w29530",
+    "w540488"
+   ],
+   "labels": [
+    "Romanticismo",
+    "Realismo"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Ni héroes ni alegorías: gente de un pueblo",
+     "why": "Eso es: Courbet pinta el entierro de un vecino de Ornans, con el cura, el perro y los aldeanos, en un lienzo de seis metros."
+    },
+    {
+     "id": "b",
+     "text": "Se dejan los lienzos enormes para los reyes",
+     "why": "Al contrario: el Entierro mide más de seis metros. El escándalo fue ese, un tamaño de héroes para gente corriente."
+    },
+    {
+     "id": "c",
+     "text": "Vuelven los temas de la antigua Roma",
+     "why": "Eso sería neoclásico. Courbet decía que no pintaba ángeles porque nunca había visto uno: solo lo que tenía delante."
+    },
+    {
+     "id": "d",
+     "text": "Los colores se vuelven vivos y luminosos",
+     "why": "No: el Entierro es de negros y tierras, como el luto de los aldeanos. El color luminoso llegará con los impresionistas."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Un_entierro_en_Ornans"
+  },
+  {
+   "id": "realismo-comun",
+   "scope": "epoca",
+   "movementId": "realismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w175628",
+    "w3212566"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "El trabajo duro como tema",
+     "why": "Eso es: hombres que arrastran una barcaza por el Volga y campesinos que recogen patatas. El protagonista es quien trabaja."
+    },
+    {
+     "id": "b",
+     "text": "Escenas gloriosas de la historia nacional",
+     "why": "No hay reyes ni batallas: sirgadores y campesinos. Su historia es la de todos los días."
+    },
+    {
+     "id": "c",
+     "text": "Paisajes que expresan emociones",
+     "why": "El paisaje es solo el lugar del trabajo. Importan las personas y su esfuerzo, no una naturaleza que sobrecoge."
+    },
+    {
+     "id": "d",
+     "text": "Pinceladas rápidas al aire libre",
+     "why": "Están pintados con calma y detalle, en el taller y a partir de apuntes. La prisa por atrapar la luz llegará con los impresionistas."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Realismo_pictórico"
+  },
+  {
+   "id": "realismo-rompe",
+   "scope": "epoca",
+   "movementId": "realismo",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w2354080"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Cristo como un hombre agotado, sin halo",
+     "why": "Eso es: sentado en las piedras, con las manos apretadas. El realismo mira incluso lo sagrado como algo humano."
+    },
+    {
+     "id": "b",
+     "text": "Sitúa a Cristo en un paisaje que sobrecoge",
+     "why": "El desierto es pelado y gris, sin tormentas. Kramskói no busca lo sublime: muestra a un hombre cansado que piensa."
+    },
+    {
+     "id": "c",
+     "text": "Usa el fondo de oro de los iconos rusos",
+     "why": "Ni oro ni halo: piedras y un cielo frío de amanecer. Rompe con el icono para pintar a un hombre de carne y hueso."
+    },
+    {
+     "id": "d",
+     "text": "Usa colores irreales para expresar angustia",
+     "why": "Eso harían los expresionistas, como Munch. Aquí los colores son los de la luz real de un amanecer en el desierto."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Cristo_en_el_desierto"
+  },
+  {
+   "id": "impresionismo-cual",
+   "scope": "epoca",
+   "movementId": "impresionismo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es impresionista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w683274",
+     "why": "Sí: gente corriente que baila al aire libre, con manchas de sol que caen entre los árboles. Renoir lo pintó allí mismo, en Montmartre."
+    },
+    {
+     "id": "b",
+     "work": "w1044742",
+     "why": "Trampa: un domingo al aire libre también, pero las figuras están quietas como estatuas y todo son puntitos ordenados. Es Seurat, ya postimpresionismo."
+    },
+    {
+     "id": "c",
+     "work": "w5861788",
+     "why": "Es rococó: una fiesta galante con sedas y aristócratas en un jardín soñado. Ligera, sí, pero inventada en el taller."
+    },
+    {
+     "id": "d",
+     "work": "w4892369",
+     "why": "Es del realismo español: Fortuny pinta una boda en un interior, con pincelada brillante y menuda llena de detalles, no la luz de fuera."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Impresionismo"
+  },
+  {
+   "id": "impresionismo-cambia",
+   "scope": "epoca",
+   "movementId": "impresionismo",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w540488",
+    "w2395218"
+   ],
+   "labels": [
+    "Realismo",
+    "Impresionismo"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Del taller al aire libre: la luz de un instante",
+     "why": "Eso es: Monet pinta a su mujer en un prado, a contraluz, con el viento moviendo el velo. Pinceladas rápidas para atrapar ese momento."
+    },
+    {
+     "id": "b",
+     "text": "Se vuelve a pintar a héroes y dioses",
+     "why": "Nada de héroes: una mujer y un niño de paseo. Como los realistas, pintan su tiempo, pero ahora el tema es la luz."
+    },
+    {
+     "id": "c",
+     "text": "Los colores se oscurecen para dar dramatismo",
+     "why": "Al revés: desaparecen los negros y las sombras se llenan de azules y violetas. La paleta se aclara como nunca."
+    },
+    {
+     "id": "d",
+     "text": "El dibujo se vuelve preciso y la superficie, lisa",
+     "why": "Al contrario: se ven las pinceladas, sueltas y rápidas. Si se pierde un detalle, da igual: importa la impresión."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Impresionismo"
+  },
+  {
+   "id": "impresionismo-comun",
+   "scope": "epoca",
+   "movementId": "impresionismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w328523",
+    "w2843906"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Pinceladas sueltas que se ven a simple vista",
+     "why": "Eso es: de cerca, toques rápidos de color; de lejos, un puerto con niebla o unos tejados entre árboles. Pintan la impresión, no el detalle."
+    },
+    {
+     "id": "b",
+     "text": "Escenas de la historia de Francia",
+     "why": "Ni batallas ni reyes: un puerto al amanecer y unas casas de campo. Cuentan cómo se ve la luz en ese momento."
+    },
+    {
+     "id": "c",
+     "text": "Puntitos de color puro colocados con método",
+     "why": "Eso es el puntillismo de Seurat, más lento y calculado. Aquí las pinceladas son rápidas y espontáneas, cada una distinta."
+    },
+    {
+     "id": "d",
+     "text": "Contornos marcados y colores planos",
+     "why": "Eso harán Gauguin o Toulouse-Lautrec. Aquí no hay contornos: las formas se deshacen en pinceladas de color."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Impresionismo"
+  },
+  {
+   "id": "impresionismo-rompe",
+   "scope": "epoca",
+   "movementId": "impresionismo",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w152509"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Un desnudo entre señores de su época, sin mito",
+     "why": "Eso es: si fuera una ninfa, nadie se habría quejado. Pero eran parisinos de pícnic, y Manet pintó con manchas planas, sin degradados."
+    },
+    {
+     "id": "b",
+     "text": "Está pintado al aire libre, en un bosque real",
+     "why": "No: Manet lo pintó en su taller. Lo nuevo era el tema, de su tiempo y sin disfraz de mito, y la pintura plana, sin el acabado del Salón."
+    },
+    {
+     "id": "c",
+     "text": "Convierte el bosque en el gran protagonista",
+     "why": "El bosque es casi un decorado de teatro. Escandalizó el primer plano: una mujer desnuda que mira al espectador sin vergüenza."
+    },
+    {
+     "id": "d",
+     "text": "Copia una obra antigua sin cambiar nada",
+     "why": "Manet sí se inspiró en un grabado del Renacimiento, pero cambió lo esencial: los dioses se volvieron gente de su tiempo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Almuerzo_sobre_la_hierba"
+  },
+  {
+   "id": "postimpresionismo-cual",
+   "scope": "epoca",
+   "movementId": "postimpresionismo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es postimpresionista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w3956440",
+     "why": "Sí: la mesa se inclina, la botella se tuerce y las manzanas parecen montañas. Cézanne construye con planos de color, no copia la vista."
+    },
+    {
+     "id": "b",
+     "work": "w26699645",
+     "why": "Es del siglo XVIII: Meléndez pinta cada fruta con precisión, desde un solo punto de vista y con sombras limpias. Nada se tuerce."
+    },
+    {
+     "id": "c",
+     "work": "w19922323",
+     "why": "Es cubismo, el paso siguiente: los objetos se rompen en planos y se recomponen. Cézanne abrió esa puerta, pero sin partir las cosas."
+    },
+    {
+     "id": "d",
+     "work": "w2610936",
+     "why": "Es barroco: un muchacho con un cesto de fruta bajo una luz fuerte y real. La fruta es tan exacta que se ven hasta las hojas secas."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Postimpresionismo"
+  },
+  {
+   "id": "postimpresionismo-cambia",
+   "scope": "epoca",
+   "movementId": "postimpresionismo",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w2395218",
+    "w45585"
+   ],
+   "labels": [
+    "Impresionismo",
+    "Postimpresionismo"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Se pinta lo que se siente",
+     "why": "Eso es: el cielo de Van Gogh gira en remolinos que nadie ha visto. Lo pintó de memoria e imaginación, para expresar."
+    },
+    {
+     "id": "b",
+     "text": "Las pinceladas desaparecen y la superficie queda lisa",
+     "why": "Al contrario: Van Gogh las hace más gruesas y visibles, en remolinos. La pintura espesa ya forma parte de la emoción."
+    },
+    {
+     "id": "c",
+     "text": "Se pinta la noche en lugar del día",
+     "why": "También hay noches impresionistas. La diferencia está en el cielo: Van Gogh lo inventa, algo que no se ve, sino que se siente."
+    },
+    {
+     "id": "d",
+     "text": "Vuelven los temas religiosos",
+     "why": "No hay santos: un pueblo, un ciprés y un cielo. Lo nuevo es la manera de pintar la emoción."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/La_noche_estrellada"
+  },
+  {
+   "id": "postimpresionismo-comun",
+   "scope": "epoca",
+   "movementId": "postimpresionismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w930535",
+    "w21948567"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Colores intensos que expresan, no copian",
+     "why": "Eso es: los amarillos de los girasoles y los colores planos de Tahití no copian lo que se ve. Van Gogh y Gauguin usan el color para expresar."
+    },
+    {
+     "id": "b",
+     "text": "Puntitos de color puro que mezcla el ojo",
+     "why": "Eso es el puntillismo de Seurat. Aquí hay pinceladas espesas y manchas planas, sin método de puntos."
+    },
+    {
+     "id": "c",
+     "text": "Escenas exóticas de lugares lejanos",
+     "why": "Solo una: Tahití sí, pero los girasoles están en un jarrón de Arles, en Francia. Lo que los une es el color, fuerte y libre."
+    },
+    {
+     "id": "d",
+     "text": "La luz natural de un instante, al aire libre",
+     "why": "Aquí el color no copia la luz del momento: los amarillos de Van Gogh y los rosas de Gauguin están pensados para expresar."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Postimpresionismo"
+  },
+  {
+   "id": "postimpresionismo-rompe",
+   "scope": "epoca",
+   "movementId": "postimpresionismo",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w1044742"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Puntitos de color que el ojo mezcla",
+     "why": "Eso es: de cerca, miles de puntos de colores puros; de lejos, una tarde de domingo. Seurat lo llamaba pintura científica."
+    },
+    {
+     "id": "b",
+     "text": "Muestra a gente corriente en su día de descanso",
+     "why": "Los impresionistas ya pintaban domingos y bailes: el tema no es nuevo. Lo nuevo es el método, miles de puntos colocados uno a uno."
+    },
+    {
+     "id": "c",
+     "text": "Atrapa un instante rápido de luz",
+     "why": "Al contrario: Seurat tardó dos años y sus figuras parecen congeladas. Frente a la prisa impresionista, quiere orden y permanencia."
+    },
+    {
+     "id": "d",
+     "text": "Rodea las figuras con contornos negros",
+     "why": "Eso hacían Gauguin y sus amigos. Seurat no traza contornos: las formas salen del contraste de miles de puntos de color."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Tarde_de_domingo_en_la_isla_de_la_Grande_Jatte"
+  },
+  {
+   "id": "simbolismo-cual",
+   "scope": "epoca",
+   "movementId": "simbolismo-modernismo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es simbolista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w698487",
+     "why": "Sí: oro de verdad, mantos llenos de dibujos geométricos y un abrazo que flota en un fondo sin espacio. Es Klimt en Viena."
+    },
+    {
+     "id": "b",
+     "work": "w15974342",
+     "why": "Es gótico: fondo de oro también, pero al servicio de lo sagrado, con una Virgen en su trono. Siglos después, Klimt volvería a los dorados."
+    },
+    {
+     "id": "c",
+     "work": "w1430990",
+     "why": "Es manierismo: un amor alegórico con pieles frías como porcelana. Erótico y lleno de símbolos, sí, pero sin oro ni dibujos planos."
+    },
+    {
+     "id": "d",
+     "work": "w1282840",
+     "why": "Es neoclasicismo: Napoleón en su trono, de frente, entre oro y armiño. Todo tiene volumen y está dibujado con precisión: nada flota."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Simbolismo_(arte)"
+  },
+  {
+   "id": "simbolismo-cambia",
+   "scope": "epoca",
+   "movementId": "simbolismo-modernismo",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w45585",
+    "w2990634"
+   ],
+   "labels": [
+    "Postimpresionismo",
+    "Vanguardias"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Ya no se representan cosas",
+     "why": "Eso es: en Composición VII no hay nada que reconocer. Kandinsky quería que la pintura emocionara como la música, sin objetos."
+    },
+    {
+     "id": "b",
+     "text": "El color sirve para expresar las emociones fuertes",
+     "why": "Eso ya lo hacía Van Gogh. El paso nuevo es quitar el objeto entero: que no quede un pueblo ni un ciprés que reconocer."
+    },
+    {
+     "id": "c",
+     "text": "Los cuadros se hacen con puntitos de color",
+     "why": "Eso era Seurat. Kandinsky pinta manchas, líneas y formas de todos los tamaños, sin ningún método de puntos."
+    },
+    {
+     "id": "d",
+     "text": "Se pegan objetos reales en el lienzo",
+     "why": "Eso es el collage de Juan Gris o Picasso. En Composición VII todo es pintura: manchas y líneas sin nada que reconocer."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Arte_abstracto"
+  },
+  {
+   "id": "simbolismo-comun",
+   "scope": "epoca",
+   "movementId": "simbolismo-modernismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w16939042",
+    "w3818663"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Sentimientos y visiones, no lo que se ve",
+     "why": "Eso es: los celos de Munch y la cabeza que flota ante Salomé no son escenas reales. Los simbolistas pintan miedos, deseos y visiones."
+    },
+    {
+     "id": "b",
+     "text": "Escenas de la vida moderna en la ciudad",
+     "why": "Nada de cafés ni bulevares: una visión bíblica y un hombre devorado por los celos. Lo importante ocurre dentro de la cabeza."
+    },
+    {
+     "id": "c",
+     "text": "Formas geométricas sin nada que reconocer",
+     "why": "Aún se reconocen personas. La abstracción llegará con Kandinsky o Malévich, que quitarán todo objeto."
+    },
+    {
+     "id": "d",
+     "text": "Historias contadas con detalle real",
+     "why": "Moreau toma una historia de la Biblia, pero la convierte en visión, con una cabeza que flota y brilla. Nada de reconstruir el pasado."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Simbolismo_(arte)"
+  },
+  {
+   "id": "simbolismo-rompe",
+   "scope": "epoca",
+   "movementId": "simbolismo-modernismo",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w1170315"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Ya no representa nada",
+     "why": "Eso es: un cuadrado negro sobre blanco. Malévich quería una pintura pura, que no copiara ni contara nada."
+    },
+    {
+     "id": "b",
+     "text": "Es un detalle ampliado de un cuadro mayor",
+     "why": "No es un recorte de nada: Malévich pintó el cuadrado como obra completa, el «grado cero» de una pintura que ya no copia el mundo."
+    },
+    {
+     "id": "c",
+     "text": "Es un boceto sin terminar",
+     "why": "Malévich lo dio por acabado y lo colgó en el lugar de honor, la esquina alta donde en Rusia se ponían los iconos. Era un manifiesto."
+    },
+    {
+     "id": "d",
+     "text": "Pega objetos reales sobre el lienzo",
+     "why": "No hay nada pegado: solo pintura negra sobre fondo blanco. El collage era otro camino de la época, el de Juan Gris y Picasso."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Cuadrado_negro"
+  },
+  {
+   "id": "t-nace-ren-comun",
+   "scope": "tramo",
+   "movementId": "renacimiento",
+   "tramo": "Nace el Renacimiento",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w1212920",
+    "w3947827"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Espacios medidos y cuerpos con peso real",
+     "why": "Eso es: calles y columnas que se alejan con reglas de geometría y figuras que pisan firme. Masaccio abrió el camino y Piero lo hizo matemática."
+    },
+    {
+     "id": "b",
+     "text": "Fondos de oro que sitúan la escena en el cielo",
+     "why": "El oro ya no está: hay calles, columnas y un cielo de verdad. Es justo lo que este siglo deja atrás."
+    },
+    {
+     "id": "c",
+     "text": "Pinceladas sueltas de color, a la veneciana",
+     "why": "Eso llegará después, con Tiziano. Aquí manda el dibujo y la superficie es lisa, de temple o de fresco."
+    },
+    {
+     "id": "d",
+     "text": "Figuras alargadas con poses imposibles",
+     "why": "Eso es el manierismo, un siglo después. Aquí los cuerpos son sólidos y tranquilos, casi como columnas."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Quattrocento"
+  },
+  {
+   "id": "t-nace-ren-cual",
+   "scope": "tramo",
+   "movementId": "renacimiento",
+   "tramo": "Nace el Renacimiento",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos retratos es del primer Renacimiento italiano?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w1227359",
+     "why": "Sí: perfiles nítidos como en una medalla antigua y, detrás, un paisaje inmenso medido hasta el horizonte. Es Piero della Francesca en Urbino."
+    },
+    {
+     "id": "b",
+     "work": "w2392901",
+     "why": "Es flamenco, del mismo siglo: Van Eyck pinta al óleo cada arruga sobre fondo negro, sin paisaje. Detalle del Norte, no geometría italiana."
+    },
+    {
+     "id": "c",
+     "work": "w3625842",
+     "why": "Es manierismo, la última etapa del Renacimiento, ya en el siglo XVI: un Médici con armadura brillante, pose rígida y piel fría como la porcelana."
+    },
+    {
+     "id": "d",
+     "work": "w118859377",
+     "why": "Es del Renacimiento del Norte: Holbein, alemán en Londres, retrata de frente al rey de Inglaterra con joyas y telas pintadas con lupa."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Díptico_de_los_duques_de_Urbino"
+  },
+  {
+   "id": "t-genios-comun",
+   "scope": "tramo",
+   "movementId": "renacimiento",
+   "tramo": "Los tres genios",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w563727",
+    "w966681"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Equilibrio y belleza ideal",
+     "why": "Eso es: figuras que encajan como en una pirámide o un círculo, con cuerpos perfectos y gestos tiernos. Es el Renacimiento en su madurez."
+    },
+    {
+     "id": "b",
+     "text": "Gente de la calle haciendo de santos",
+     "why": "Eso será Caravaggio, un siglo después. Aquí la Virgen es bella e ideal, más perfecta que cualquier vecina."
+    },
+    {
+     "id": "c",
+     "text": "Colores irreales y cuerpos estirados",
+     "why": "Eso vendrá justo después, con los manieristas. Aquí todo busca la armonía y la proporción."
+    },
+    {
+     "id": "d",
+     "text": "Una luz fuerte que sale de la oscuridad",
+     "why": "La luz es suave y envolvente; Leonardo funde las sombras como humo. El foco dramático es cosa del Barroco."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Alto_Renacimiento"
+  },
+  {
+   "id": "t-genios-cambia",
+   "scope": "tramo",
+   "movementId": "renacimiento",
+   "tramo": "Los tres genios",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w1212920",
+    "w12418"
+   ],
+   "labels": [
+    "Antes",
+    "Leonardo"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Los contornos se funden como el humo",
+     "why": "Eso es el sfumato: Leonardo borra las líneas que recortan la cara con capas finísimas de pintura. Antes, Piero dibujaba perfiles nítidos."
+    },
+    {
+     "id": "b",
+     "text": "Las figuras se recortan con líneas nítidas",
+     "why": "Al revés: Piero dibujaba perfiles nítidos y Leonardo los borra. Ningún contorno está trazado: todo pasa de la luz a la sombra."
+    },
+    {
+     "id": "c",
+     "text": "Se pinta al aire libre, del natural",
+     "why": "La Gioconda se pintó en el taller durante años; el paisaje del fondo es inventado, casi de ensueño."
+    },
+    {
+     "id": "d",
+     "text": "Los colores se vuelven planos y vivos",
+     "why": "Al contrario: Leonardo apaga los colores en tonos suaves y transiciones lentas. Lo plano y vivo llegará con Gauguin y Matisse."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Sfumato"
+  },
+  {
+   "id": "t-venecia-cambia",
+   "scope": "tramo",
+   "movementId": "renacimiento",
+   "tramo": "El color de Venecia",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w186953",
+    "w727875"
+   ],
+   "labels": [
+    "Roma",
+    "Venecia"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "El color manda más que el dibujo",
+     "why": "Eso es: en Florencia y Roma se dibuja primero; en Venecia, Tiziano construye la piel y las telas con capas de color cálido."
+    },
+    {
+     "id": "b",
+     "text": "Desaparecen los temas mitológicos",
+     "why": "Al revés: Venecia adora los mitos y las diosas. Cambia la manera: piel cálida hecha con capas de color."
+    },
+    {
+     "id": "c",
+     "text": "La luz se vuelve fría y los cuerpos se estiran",
+     "why": "Eso es el manierismo. Tiziano prefiere tonos cálidos, dorados y rojizos, y cuerpos de proporciones naturales."
+    },
+    {
+     "id": "d",
+     "text": "Se deja el óleo por el fresco",
+     "why": "Al contrario: los venecianos se pasan al óleo sobre lienzo, que aguanta mejor la humedad de la ciudad y permite capas de color."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Escuela_veneciana_(pintura)"
+  },
+  {
+   "id": "t-venecia-cual",
+   "scope": "tramo",
+   "movementId": "renacimiento",
+   "tramo": "El color de Venecia",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es de la Venecia del Renacimiento?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w1123378",
+     "why": "Sí: Tiziano construye con color el cielo rojizo, el brillo de la armadura y la pincelada que se adivina. Venecia, en pleno siglo XVI."
+    },
+    {
+     "id": "b",
+     "work": "w3937482",
+     "why": "Es barroco: Van Dyck retrata al rey de Inglaterra un siglo después, con elegancia y un gran arco de palacio. Le debe mucho a Tiziano."
+    },
+    {
+     "id": "c",
+     "work": "w2749266",
+     "why": "Es neoclasicismo: David dibuja caballo y jinete con línea limpia y color frío, casi como un relieve antiguo."
+    },
+    {
+     "id": "d",
+     "work": "w3349704",
+     "why": "Es romanticismo: el caballo se encabrita en plena batalla, entre humo y pinceladas nerviosas. Movimiento y emoción, no calma solemne."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Carlos_V_en_Mühlberg"
+  },
+  {
+   "id": "t-flandes-comun",
+   "scope": "tramo",
+   "movementId": "manierismo-y-norte",
+   "tramo": "El óleo en Flandes",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w1516449",
+    "w568847"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Detalle minucioso y brillo de esmaltes",
+     "why": "Eso es: con capas finas de óleo, cada joya, lágrima y pliegue brilla como un esmalte. Así pintaban Van Eyck y Van der Weyden."
+    },
+    {
+     "id": "b",
+     "text": "Espacios medidos con reglas de geometría",
+     "why": "Eso era la obsesión de Florencia. En Flandes la profundidad se consigue a ojo, sumando detalles, no con reglas de perspectiva."
+    },
+    {
+     "id": "c",
+     "text": "Figuras alargadas con poses imposibles",
+     "why": "Las poses del Descendimiento son dramáticas, pero los cuerpos tienen proporciones reales. El estiramiento manierista llegará después."
+    },
+    {
+     "id": "d",
+     "text": "Pinceladas sueltas que se ven de cerca",
+     "why": "No se ve ni un trazo: las capas de óleo son finas y transparentes como cristal. La pincelada visible llegará con los venecianos."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Primitivos_flamencos"
+  },
+  {
+   "id": "t-flandes-rompe",
+   "scope": "tramo",
+   "movementId": "manierismo-y-norte",
+   "tramo": "El óleo en Flandes",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w321303"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Un mundo inventado de criaturas y sueños",
+     "why": "Eso es: personas dentro de frutas, pájaros gigantes y monstruos. El Bosco usa la precisión flamenca para pintar lo que no existe."
+    },
+    {
+     "id": "b",
+     "text": "Deja de lado la religión y las lecciones morales",
+     "why": "No: es un tríptico con el paraíso y el infierno a los lados, una lección moral. Lo nuevo es la imaginación desbordada."
+    },
+    {
+     "id": "c",
+     "text": "Pinta con exactitud paisajes reales de Flandes",
+     "why": "El paisaje es fantástico: fuentes de cristal y rocas imposibles. Las aldeas reales serán cosa de Brueghel, después."
+    },
+    {
+     "id": "d",
+     "text": "Deja el detalle y pinta con manchas",
+     "why": "Al contrario: cada criatura diminuta está pintada con detalle de miniaturista. Hay que acercarse mucho para verlo todo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/El_jardín_de_las_delicias"
+  },
+  {
+   "id": "t-alemania-comun",
+   "scope": "tramo",
+   "movementId": "manierismo-y-norte",
+   "tramo": "Alemania y Flandes",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w21129709",
+    "w699388"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Precisión del Norte: todo pintado con lupa",
+     "why": "Eso es: los pelos de la liebre de Durero y los objetos del escritorio de Gisze están pintados uno a uno."
+    },
+    {
+     "id": "b",
+     "text": "Belleza ideal y serena al estilo italiano",
+     "why": "Ni dioses ni cuerpos perfectos: un mercader con sus papeles y una liebre. El Norte aprendió de Italia, pero miraba lo concreto."
+    },
+    {
+     "id": "c",
+     "text": "Escenas religiosas para altares e iglesias",
+     "why": "Ninguno es religioso: el retrato de un comerciante y un animal estudiado del natural. Con la Reforma, los encargos de santos bajaban."
+    },
+    {
+     "id": "d",
+     "text": "Luz dramática que sale de la sombra",
+     "why": "La luz es clara y pareja, para que se vea todo. El contraste dramático es cosa de Caravaggio, ya en el Barroco."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Renacimiento_nórdico"
+  },
+  {
+   "id": "t-alemania-cambia",
+   "scope": "tramo",
+   "movementId": "manierismo-y-norte",
+   "tramo": "Alemania y Flandes",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w220859",
+    "w603751"
+   ],
+   "labels": [
+    "Antes",
+    "Después"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "De los ricos a los campesinos de aldea",
+     "why": "Eso es: Van Eyck retrata a un rico mercader; de Brueghel se contaba que se disfrazaba de campesino para colarse en las bodas de pueblo."
+    },
+    {
+     "id": "b",
+     "text": "Se deja el óleo y se vuelve al temple",
+     "why": "Los dos pintan al óleo. Lo que cambia es la mirada: del lujo de un mercader a la fiesta de un pueblo."
+    },
+    {
+     "id": "c",
+     "text": "Las figuras se vuelven alargadas e irreales",
+     "why": "Los campesinos de Brueghel son rechonchos y muy reales. El estiramiento es cosa de los manieristas italianos."
+    },
+    {
+     "id": "d",
+     "text": "Aparecen los temas mitológicos",
+     "why": "Ni rastro de dioses: una boda de pueblo con sopa y cerveza. El Norte prefirió lo cercano a la mitología."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pieter_Brueghel_el_Viejo"
+  },
+  {
+   "id": "t-manierismo-cual",
+   "scope": "tramo",
+   "movementId": "manierismo-y-norte",
+   "tramo": "Manierismo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es manierista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w1430990",
+     "why": "Sí: piel fría como porcelana, cuerpos retorcidos en poses imposibles y un espacio apretado. Bronzino, en la Florencia de los Médici, es manierismo puro."
+    },
+    {
+     "id": "b",
+     "work": "w3632485",
+     "why": "Es del Renacimiento veneciano: Tiziano pinta una fiesta de dioses al aire libre, con color cálido y cuerpos de proporción natural."
+    },
+    {
+     "id": "c",
+     "work": "w941416",
+     "why": "Trampa: el cuello de Tetis se estira como en el manierismo, pero es Ingres, neoclásico del siglo XIX: línea pura y un Júpiter de estatua."
+    },
+    {
+     "id": "d",
+     "work": "w644936",
+     "why": "Es barroco: Rubens lanza caballos y cuerpos carnosos en espiral, con fuerza y peso. El manierismo estira y enfría; el Barroco empuja."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Alegoría_del_triunfo_de_Venus"
+  },
+  {
+   "id": "t-manierismo-comun",
+   "scope": "tramo",
+   "movementId": "manierismo-y-norte",
+   "tramo": "Manierismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w1328065",
+    "w3937542"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Elegancia distante, piel fría y pose estudiada",
+     "why": "Eso es: miradas que no se rinden, ropas lujosísimas y piel lisa como porcelana. Es la elegancia de corte del manierismo."
+    },
+    {
+     "id": "b",
+     "text": "Gente corriente, con todas sus arrugas y defectos",
+     "why": "Son una duquesa y un conde, y no enseñan ni una arruga. La gente corriente con su verdad llegará con el Barroco."
+    },
+    {
+     "id": "c",
+     "text": "Pincelada suelta que se ve de cerca",
+     "why": "La superficie es lisa como esmalte: no se ve el pincel. La pincelada suelta es de Venecia o, más tarde, de Velázquez."
+    },
+    {
+     "id": "d",
+     "text": "Luz cálida, gestos amables y sonrisas cercanas",
+     "why": "Nada de calidez: luz fría y gestos contenidos. Quieren parecer inalcanzables, no simpáticos."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Manierismo"
+  },
+  {
+   "id": "t-luz-comun",
+   "scope": "tramo",
+   "movementId": "barroco",
+   "tramo": "Luz en la oscuridad",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w318947",
+    "w2247406"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Fondo negro y una luz dura que cae de lado",
+     "why": "Eso es el tenebrismo: la escena sale de la oscuridad como en un escenario, iluminada por un foco que no se ve."
+    },
+    {
+     "id": "b",
+     "text": "Escenas de la vida diaria, sin religión",
+     "why": "Las dos son historias de la Biblia: la cena de Emaús y Judit. Parecen de calle por sus modelos reales, pero son temas sagrados."
+    },
+    {
+     "id": "c",
+     "text": "Figuras ideales, más bellas que las reales",
+     "why": "Al contrario: modelos de la calle, con arrugas, ropa gastada y manos de trabajo. Esa verdad escandalizaba a algunos."
+    },
+    {
+     "id": "d",
+     "text": "Colores pastel y escenas ligeras",
+     "why": "Lo ligero será el rococó, un siglo después. Aquí todo es drama: un milagro y una decapitación."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Tenebrismo"
+  },
+  {
+   "id": "t-luz-cual",
+   "scope": "tramo",
+   "movementId": "barroco",
+   "tramo": "Luz en la oscuridad",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es barroco?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w4693305",
+     "why": "Sí: un cordero atado sobre fondo negro, iluminado como una reliquia. Zurbarán, en Sevilla, convierte un animal en símbolo de Cristo."
+    },
+    {
+     "id": "b",
+     "work": "w4388208",
+     "why": "Es del siglo XVIII: Greuze pinta a una muchacha con luz suave y colores claros, y una moraleja sentimental. Nada del foco que corta la sombra."
+    },
+    {
+     "id": "c",
+     "work": "w2349666",
+     "why": "Es postimpresionismo: Cézanne inclina la mesa y construye las frutas con planos de color. No busca el foco dramático, sino la solidez."
+    },
+    {
+     "id": "d",
+     "work": "w7536969",
+     "why": "Es Van Gogh joven: una calavera con un cigarro, casi una broma. Fondo oscuro, pero con pinceladas sueltas y sin el foco barroco."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Agnus_Dei_(Zurbarán)"
+  },
+  {
+   "id": "t-reyes-comun",
+   "scope": "tramo",
+   "movementId": "barroco",
+   "tramo": "Pintores de reyes",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w3937485",
+    "w1240092"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Majestad sin perder a la persona",
+     "why": "Eso es: un rey y un papa con toda su autoridad, pero con su cara de verdad. Velázquez no esconde la mirada desconfiada de Inocencio X."
+    },
+    {
+     "id": "b",
+     "text": "Retratos idealizados, como estatuas antiguas",
+     "why": "Van Dyck favorecía al rey, que era bajito, pero no lo convierte en estatua; y Velázquez no esconde la mirada desconfiada del papa."
+    },
+    {
+     "id": "c",
+     "text": "Detalle minucioso, sin rastro de pincelada",
+     "why": "Fíjate en las telas: de cerca son pinceladas sueltas, casi manchas; de lejos, seda y terciopelo. Esa es su maestría."
+    },
+    {
+     "id": "d",
+     "text": "Escenas de corte llenas de fiestas galantes",
+     "why": "Eso será el rococó de Watteau. Aquí el retrato es solemne: poder, no diversión."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Retrato_de_Inocencio_X"
+  },
+  {
+   "id": "t-reyes-cual",
+   "scope": "tramo",
+   "movementId": "barroco",
+   "tramo": "Pintores de reyes",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es barroco?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w2268524",
+     "why": "Sí: cuerpos rotundos y carnosos, piel que vibra con el color y un movimiento en corro. Rubens se quedó estas Gracias hasta su muerte."
+    },
+    {
+     "id": "b",
+     "work": "w2360329",
+     "why": "Mismo tema, un siglo antes: Rafael pinta unas Gracias pequeñas, serenas y simétricas, con la armonía del Renacimiento."
+    },
+    {
+     "id": "c",
+     "work": "w1283024",
+     "why": "Es del siglo XIX: un pintor académico de pieles lisas como porcelana y acabado perfecto. Rubens, en cambio, deja ver la vida de la pincelada."
+    },
+    {
+     "id": "d",
+     "work": "w3829156",
+     "why": "Es simbolismo: Klimt habla de las edades de la vida con cuerpos sobre un fondo decorativo y plano. Otra manera de pintar la piel."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Las_tres_Gracias_(Rubens)"
+  },
+  {
+   "id": "t-vida-cual",
+   "scope": "tramo",
+   "movementId": "barroco",
+   "tramo": "La vida de cada día",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es barroco?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w2450139",
+     "why": "Sí: dos pilluelos de Sevilla comen fruta en la penumbra, con luz de lado y mucha ternura. Murillo pinta la calle como un tesoro."
+    },
+    {
+     "id": "b",
+     "work": "w6043567",
+     "why": "Es de Sorolla, a pleno sol: niños tumbados en la orilla de Valencia, con la luz que rebota en el agua y en la piel mojada."
+    },
+    {
+     "id": "c",
+     "work": "w27780847",
+     "why": "Es del siglo XIX: Fortuny pinta a sus hijos en un salón decorado a la japonesa, con color brillante y pincelada menuda."
+    },
+    {
+     "id": "d",
+     "work": "w604761",
+     "why": "Es del siglo XVIII inglés: Gainsborough viste a un muchacho rico de seda azul brillante. Elegancia de retrato, no vida de la calle."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Bartolomé_Esteban_Murillo"
+  },
+  {
+   "id": "t-vida-comun",
+   "scope": "tramo",
+   "movementId": "barroco",
+   "tramo": "La vida de cada día",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w650635",
+    "w3757652"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Gente corriente en un momento vivo",
+     "why": "Eso es: un bebedor que levanta la copa y dos mujeres que se ríen en la ventana. Escenas pequeñas pintadas como si pasaran ahora."
+    },
+    {
+     "id": "b",
+     "text": "Retratos solemnes por encargo de la corte",
+     "why": "Nada de pompa: risas, una copa de más y una ventana abierta. Ni reyes ni nobles posando."
+    },
+    {
+     "id": "c",
+     "text": "Personajes de la mitología antigua",
+     "why": "No son dioses disfrazados: son vecinos de Haarlem y de Sevilla. El Barroco del norte y el del sur coinciden en mirar la calle."
+    },
+    {
+     "id": "d",
+     "text": "Contornos marcados y colores planos",
+     "why": "Las formas se modelan con luz y sombra y pinceladas vivas. Los contornos y colores planos llegarán con Gauguin."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_de_género"
+  },
+  {
+   "id": "t-rococo-comun",
+   "scope": "tramo",
+   "movementId": "rococo-neoclasicismo",
+   "tramo": "Rococó",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w531329",
+    "w2629559"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Amores y juegos de la nobleza",
+     "why": "Eso es: enamorados que embarcan hacia la isla del amor y una joven en un columpio. El placer de vivir de una aristocracia ociosa."
+    },
+    {
+     "id": "b",
+     "text": "Lecciones de virtud con héroes antiguos",
+     "why": "Eso es lo que vendrá después, con David. Aquí no hay deber ni sacrificio: solo galanteo y jardines."
+    },
+    {
+     "id": "c",
+     "text": "La vida dura del campo",
+     "why": "Los campos son jardines de recreo y la ropa es de seda. El trabajo del campo como tema esperará al realismo."
+    },
+    {
+     "id": "d",
+     "text": "Escenas sagradas para conmover",
+     "why": "No hay santos ni milagros: hay enamorados. El rococó decora salones privados, no iglesias."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Rococó"
+  },
+  {
+   "id": "t-rococo-cual",
+   "scope": "tramo",
+   "movementId": "rococo-neoclasicismo",
+   "tramo": "Rococó",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es rococó?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w2629423",
+     "why": "Sí: una joven absorta en su libro, con un vestido amarillo hecho de pinceladas rápidas y ligeras. Fragonard pinta el placer de un momento íntimo."
+    },
+    {
+     "id": "b",
+     "work": "w185372",
+     "why": "Es barroco holandés: Vermeer hace brillar una perla con dos toques de luz sobre fondo oscuro. Calma y misterio, no juego ligero."
+    },
+    {
+     "id": "c",
+     "work": "w3808227",
+     "why": "Es impresionismo, un siglo después: Renoir pinta a dos chicas de su tiempo con colores suaves y contornos que se funden."
+    },
+    {
+     "id": "d",
+     "work": "w1990128",
+     "why": "Es manierismo, del siglo XVI: una dama florentina rígida y distante, con piel de porcelana y cada joya en su sitio. Nada de pincelada ligera."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/La_lectora_(Fragonard)"
+  },
+  {
+   "id": "t-bodegon-comun",
+   "scope": "tramo",
+   "movementId": "rococo-neoclasicismo",
+   "tramo": "El bodegón español",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w5731132",
+    "w26699645"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Objetos humildes, cada textura distinta",
+     "why": "Eso es: la piel del pescado, la corteza de la naranja y el barro de las vasijas, con luz fuerte y sombras limpias."
+    },
+    {
+     "id": "b",
+     "text": "Flores y objetos de lujo que presumen de riqueza",
+     "why": "Nada de lujo: barro, pescado y fruta de mercado. Meléndez convierte lo humilde en protagonista."
+    },
+    {
+     "id": "c",
+     "text": "Formas simplificadas en planos de color",
+     "why": "Eso hará Cézanne más de un siglo después. Aquí cada objeto es exacto, con su peso, su brillo y su sombra."
+    },
+    {
+     "id": "d",
+     "text": "Calaveras que recuerdan que todo pasa",
+     "why": "No hay calaveras ni relojes de arena: solo comida y cacharros de cocina, pintados por el gusto de mirarlos."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Luis_Egidio_Meléndez"
+  },
+  {
+   "id": "t-bodegon-cambia",
+   "scope": "tramo",
+   "movementId": "rococo-neoclasicismo",
+   "tramo": "El bodegón español",
+   "kind": "cambia",
+   "prompt": "¿Qué cambia respecto a lo anterior?",
+   "works": [
+    "w4693305",
+    "w27760630"
+   ],
+   "labels": [
+    "Barroco",
+    "Siglo XVIII"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "El objeto ya no es símbolo: vale por sí mismo",
+     "why": "Eso es: el cordero de Zurbarán simboliza a Cristo; la chocolatera de Meléndez es solo una chocolatera, mirada con cariño."
+    },
+    {
+     "id": "b",
+     "text": "Desaparece el fondo oscuro de la tradición",
+     "why": "Meléndez mantiene los fondos oscuros de la tradición española. Cambia el sentido: de la devoción al gusto por lo cotidiano."
+    },
+    {
+     "id": "c",
+     "text": "Las pinceladas se vuelven sueltas y rápidas",
+     "why": "Meléndez es minucioso: se distingue cada bollo y cada veta de la madera. La pincelada suelta tardará aún un siglo."
+    },
+    {
+     "id": "d",
+     "text": "Se pintan objetos de lujo para presumir",
+     "why": "Aquí no hay oro ni plata: barro, madera, una chocolatera y unos bollos. Lo cotidiano, no la ostentación."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Bodegón"
+  },
+  {
+   "id": "t-neoclasicismo-comun",
+   "scope": "tramo",
+   "movementId": "rococo-neoclasicismo",
+   "tramo": "Neoclasicismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w1752990",
+    "w1282840"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Dibujo preciso y superficie lisa",
+     "why": "Eso es: los contornos son nítidos y no se ve el pincel. Para David e Ingres, el dibujo manda y el color solo lo rellena."
+    },
+    {
+     "id": "b",
+     "text": "Colores pastel y juegos amorosos",
+     "why": "Nada de juegos: un filósofo que muere por sus ideas y un emperador en su trono. Es arte serio, de lecciones y de poder."
+    },
+    {
+     "id": "c",
+     "text": "Pinceladas rápidas al aire libre",
+     "why": "Están pensados y pulidos en el taller durante meses. Lo rápido y al aire libre llegará con los impresionistas."
+    },
+    {
+     "id": "d",
+     "text": "La vida cotidiana de la gente",
+     "why": "Son un sabio de Atenas y Napoleón: héroes y poder. La gente corriente tendrá que esperar al realismo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_del_Neoclasicismo"
+  },
+  {
+   "id": "t-neoclasicismo-cual",
+   "scope": "tramo",
+   "movementId": "rococo-neoclasicismo",
+   "tramo": "Neoclasicismo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es neoclásico?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w1314013",
+     "why": "Sí: una mujer detiene la lucha entre romanos y sabinos. Cuerpos de estatua, dibujo nítido y un mensaje de reconciliación: David en estado puro."
+    },
+    {
+     "id": "b",
+     "work": "w644936",
+     "why": "Es barroco: caballos encabritados, cuerpos carnosos en espiral y pura energía. Una historia antigua contada con movimiento, no con orden."
+    },
+    {
+     "id": "c",
+     "work": "w1133821",
+     "why": "Es romanticismo: Delacroix desborda el cuadro de color, caos y violencia. Un tema antiguo, pero sin ninguna lección de virtud."
+    },
+    {
+     "id": "d",
+     "work": "w7733345",
+     "why": "Es del Renacimiento veneciano: una escena de la Antigüedad con ropas del siglo XVI y mucho color. David, en cambio, imita las estatuas romanas."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Las_sabinas_(David)"
+  },
+  {
+   "id": "t-paisaje-cual",
+   "scope": "tramo",
+   "movementId": "romanticismo",
+   "tramo": "El paisaje romántico",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos paisajes es romántico?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w693746",
+     "why": "Sí: una figura diminuta ante un mar y un cielo inmensos y vacíos. Friedrich pinta la soledad y lo sublime, lo que nos supera."
+    },
+    {
+     "id": "b",
+     "work": "w646337",
+     "why": "Es del estadounidense Whistler, más de medio siglo después y cerca de los impresionistas: fuegos artificiales de noche, casi abstractos."
+    },
+    {
+     "id": "c",
+     "work": "w2666439",
+     "why": "Es realismo ruso: un bosque de pinos con osos, pintado con detalle de naturalista. Sin dramas: la naturaleza tal como es."
+    },
+    {
+     "id": "d",
+     "work": "w500985",
+     "why": "Es del siglo XVI: Brueghel pinta una aldea nevada llena de vida, con cazadores y patinadores. El paisaje es el escenario de la gente."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Monje_a_la_orilla_del_mar"
+  },
+  {
+   "id": "t-paisaje-comun",
+   "scope": "tramo",
+   "movementId": "romanticismo",
+   "tramo": "El paisaje romántico",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w16038731",
+    "w194137"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Una naturaleza que nos supera",
+     "why": "Eso es: un barco perdido en la ventisca y otro aplastado por el hielo. Frente a la naturaleza, las obras humanas son frágiles."
+    },
+    {
+     "id": "b",
+     "text": "Vistas exactas de lugares concretos y reales",
+     "why": "No retratan un lugar: el hielo de Friedrich se compuso en el taller y la tormenta de Turner es casi un remolino de color."
+    },
+    {
+     "id": "c",
+     "text": "La alegría de la luz en un día de sol",
+     "why": "Ni rastro de sol alegre: ventisca, hielo y naufragio. La luz alegre al aire libre será cosa de los impresionistas."
+    },
+    {
+     "id": "d",
+     "text": "Grandes batallas de la historia",
+     "why": "No hay ejércitos: el enemigo es la naturaleza. Aun así, cuentan un drama, como la pintura de historia."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/El_mar_de_hielo"
+  },
+  {
+   "id": "t-historia-comun",
+   "scope": "tramo",
+   "movementId": "romanticismo",
+   "tramo": "Pintar la historia",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w2290433",
+    "w212616"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Tragedias de su tiempo, pintadas con pasión",
+     "why": "Eso es: una matanza en la guerra de Grecia y un naufragio francés, sucedidos hacía poco. Pintan la actualidad con drama y color."
+    },
+    {
+     "id": "b",
+     "text": "Héroes de la antigua Roma que dan ejemplo",
+     "why": "No son romanos: son víctimas de su propia época. Frente a las lecciones de David, aquí manda la emoción."
+    },
+    {
+     "id": "c",
+     "text": "Composiciones tranquilas y ordenadas",
+     "why": "Todo es caos: cuerpos amontonados, diagonales y gestos desesperados. Rompen a propósito con la calma neoclásica."
+    },
+    {
+     "id": "d",
+     "text": "Gente corriente en su trabajo diario",
+     "why": "No hay faenas de cada día: hay guerra y naufragio. El trabajo como tema será lo del realismo, unos años más tarde."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_del_Romanticismo"
+  },
+  {
+   "id": "t-historia-rompe",
+   "scope": "tramo",
+   "movementId": "romanticismo",
+   "tramo": "Pintar la historia",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w1133821"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "El color y el caos mandan sobre el orden",
+     "why": "Eso es: un rey mira impasible cómo todo se destruye a su alrededor, en un torbellino de rojos. El desorden era deliberado."
+    },
+    {
+     "id": "b",
+     "text": "Descubre a los pintores el lejano Oriente",
+     "why": "El gusto por Oriente venía de antes. Lo que escandalizó en el Salón fue la forma: una avalancha de color sin centro ni calma."
+    },
+    {
+     "id": "c",
+     "text": "Cuenta una noticia reciente de su época",
+     "why": "No: Sardanápalo es un rey legendario de Asiria, sacado de un drama del poeta Byron. Lo nuevo no es la actualidad, sino el color desatado."
+    },
+    {
+     "id": "d",
+     "text": "Imita las estatuas de la Antigüedad",
+     "why": "Al contrario: los cuerpos se retuercen y se desparraman. Imitar estatuas era lo de David e Ingres, contra lo que reaccionan."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/La_muerte_de_Sardanápalo"
+  },
+  {
+   "id": "t-campo-cual",
+   "scope": "tramo",
+   "movementId": "realismo",
+   "tramo": "La vida del campo",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es realista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w2571560",
+     "why": "Sí: dos campesinos paran el trabajo para rezar al toque de campana, al atardecer. Millet pinta su dignidad sin adornos."
+    },
+    {
+     "id": "b",
+     "work": "w603751",
+     "why": "Es del siglo XVI: Brueghel pinta una fiesta de aldea con humor y mil detalles. Campesinos, sí, pero vistos con ojos de cronista curioso."
+    },
+    {
+     "id": "c",
+     "work": "w1764395",
+     "why": "Trampa: campesinas bretonas rezando, pero el campo es rojo puro y una lucha bíblica aparece al fondo. Es Gauguin: color inventado y símbolo."
+    },
+    {
+     "id": "d",
+     "work": "w2366825",
+     "why": "Es romanticismo inglés, treinta años antes: Constable pinta el campo que amaba, con nubes enormes y luz cambiante. Manda el paisaje, no el trabajo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/El_Ángelus_(Millet)"
+  },
+  {
+   "id": "t-campo-comun",
+   "scope": "tramo",
+   "movementId": "realismo",
+   "tramo": "La vida del campo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w2914912",
+    "w20540661"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "El trabajo duro del campo, con dignidad de héroe",
+     "why": "Eso es: picapedreros con la ropa rota y un sembrador que avanza a zancadas. Courbet y Millet dan a los trabajadores la dignidad de los héroes."
+    },
+    {
+     "id": "b",
+     "text": "Paisajes idílicos de una vida feliz en el campo",
+     "why": "No hay idilio: ropa rota, tierra dura y cansancio. Esa sinceridad molestó a muchos en su tiempo."
+    },
+    {
+     "id": "c",
+     "text": "Santos de la Biblia vestidos de campesinos",
+     "why": "No hay santos disfrazados: son trabajadores de verdad. El realismo no necesita la Biblia para dar importancia a la gente."
+    },
+    {
+     "id": "d",
+     "text": "Manchas de luz rápidas, al aire libre",
+     "why": "Son pinturas sólidas, de colores de tierra, hechas con calma. Las manchas de luz son lo de los impresionistas, poco después."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Realismo_pictórico"
+  },
+  {
+   "id": "t-historia-grande-comun",
+   "scope": "tramo",
+   "movementId": "realismo",
+   "tramo": "Historia a lo grande",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w3155095",
+    "w4195595"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "La historia contada como si la viéramos",
+     "why": "Eso es: una reina que dicta su testamento y un zar que abraza al hijo que acaba de herir. El pasado, con caras y telas de verdad."
+    },
+    {
+     "id": "b",
+     "text": "Mitos de dioses y héroes antiguos",
+     "why": "Son personajes reales de España y Rusia, no dioses. La pintura de historia del XIX mira al pasado de cada país."
+    },
+    {
+     "id": "c",
+     "text": "Noticias recientes de su propio tiempo",
+     "why": "Son hechos de siglos atrás: la muerte de Isabel la Católica y la de un hijo del zar. Se reconstruyen con documentación, como una película."
+    },
+    {
+     "id": "d",
+     "text": "Visiones de sueños y símbolos",
+     "why": "Todo es concreto y verosímil, con detalle de vestidos y muebles. Los sueños y símbolos son lo de los simbolistas, poco después."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Pintura_de_historia"
+  },
+  {
+   "id": "t-historia-grande-cual",
+   "scope": "tramo",
+   "movementId": "realismo",
+   "tramo": "Historia a lo grande",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es del realismo?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w2814164",
+     "why": "Sí: una batalla de la guerra de África. Fortuny viajó a esa guerra como cronista y la contó con luz brillante y mil detalles. Historia del siglo XIX."
+    },
+    {
+     "id": "b",
+     "work": "w1133420",
+     "why": "Es barroco: Velázquez pinta la rendición de una ciudad con un gesto de respeto entre generales y un bosque de lanzas."
+    },
+    {
+     "id": "c",
+     "work": "w3055367",
+     "why": "Es romanticismo: Delacroix imagina la entrada de los cruzados con colores intensos y drama. El pasado lejano visto con pasión, no con documentación."
+    },
+    {
+     "id": "d",
+     "work": "w1237250",
+     "why": "Es del Renacimiento veneciano: la batalla abajo y, arriba, santos que interceden entre nubes. Una alegoría, no la crónica de un testigo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/La_batalla_de_Tetuán"
+  },
+  {
+   "id": "t-nace-imp-comun",
+   "scope": "tramo",
+   "movementId": "impresionismo",
+   "tramo": "Nace el impresionismo",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w775407",
+    "w432253"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Gente de su tiempo, sin historia que contar",
+     "why": "Eso es: en el balcón de Manet posa su amiga, la pintora Berthe Morisot; en la terraza de Monet, su familia. Sin mito ni moraleja."
+    },
+    {
+     "id": "b",
+     "text": "Héroes y grandes episodios de la historia",
+     "why": "Ni batallas ni reyes: un balcón y una terraza. Pintan la vida moderna de la burguesía."
+    },
+    {
+     "id": "c",
+     "text": "Acabado pulido, sin pinceladas a la vista",
+     "why": "Las pinceladas se ven, rápidas y planas. El acabado pulido era lo que exigía el Salón oficial, y ellos se negaron."
+    },
+    {
+     "id": "d",
+     "text": "Paisajes sublimes que sobrecogen",
+     "why": "Un balcón de París y una terraza junto al mar: nada sobrecoge. Lo sublime era romántico; esto es la vida moderna."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Impresionismo"
+  },
+  {
+   "id": "t-nace-imp-rompe",
+   "scope": "tramo",
+   "movementId": "impresionismo",
+   "tramo": "Nace el impresionismo",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w328523"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Una impresión rápida, no un paisaje acabado",
+     "why": "Eso es: unas manchas para el agua, un sol naranja y barcas que se adivinan. Un crítico se burló del título y el insulto dio nombre al grupo."
+    },
+    {
+     "id": "b",
+     "text": "Retrata con detalle el puerto de su ciudad",
+     "why": "Nada de detalle: unas manchas para el agua y barcas que se adivinan. Los puertos se pintaban desde hacía siglos; así, nunca."
+    },
+    {
+     "id": "c",
+     "text": "Muestra con orgullo la industria del puerto",
+     "why": "Hay grúas y humo al fondo, pero apenas se ven. El protagonista no es el progreso: es la luz del amanecer sobre el agua."
+    },
+    {
+     "id": "d",
+     "text": "Usa contornos negros y colores planos y vivos",
+     "why": "No hay contornos: el sol y las barcas se deshacen en el agua. Los contornos llegarán con Gauguin."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Impresión,_sol_naciente"
+  },
+  {
+   "id": "t-impresionistas-cual",
+   "scope": "tramo",
+   "movementId": "impresionismo",
+   "tramo": "Los impresionistas",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es impresionista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w14942039",
+     "why": "Sí: dos mujeres en una barca, con el agua y los vestidos hechos de pinceladas rápidas en zigzag. Es Berthe Morisot, la gran pintora del grupo."
+    },
+    {
+     "id": "b",
+     "work": "w2445726",
+     "why": "Es de los prerrafaelitas ingleses: una dama de leyenda en su barca, con cada flor pintada con precisión. Cuenta un poema, no un día de verano."
+    },
+    {
+     "id": "c",
+     "work": "w3793238",
+     "why": "Es puntillismo: Seurat pinta el canal con puntitos ordenados y un silencio casi geométrico. Calma calculada frente a la pincelada espontánea."
+    },
+    {
+     "id": "d",
+     "work": "w1214313",
+     "why": "Es romanticismo: Friedrich mira unos barcos que se alejan al atardecer como las etapas de la vida. Símbolo y melancolía, no la luz de un momento."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Berthe_Morisot"
+  },
+  {
+   "id": "t-impresionistas-comun",
+   "scope": "tramo",
+   "movementId": "impresionismo",
+   "tramo": "Los impresionistas",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w278722",
+    "w3235227"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "La luz y el tiempo de un momento concreto",
+     "why": "Eso es: un día de lluvia en Ruan y una regata en el Támesis, con banderas al aire. Les importa la atmósfera de ese día: el cielo, el aire y el reflejo en el agua."
+    },
+    {
+     "id": "b",
+     "text": "Grandes acontecimientos que hacen historia",
+     "why": "Una regata de domingo y un puente bajo la lluvia no son historia: son momentos cualquiera, elegidos por cómo se ve la luz ese día."
+    },
+    {
+     "id": "c",
+     "text": "Vistas detalladas para recordar un viaje",
+     "why": "No hay precisión de postal: los edificios se deshacen en toques de color. Una vista de Canaletto era exacta; esto es una impresión."
+    },
+    {
+     "id": "d",
+     "text": "La vida dura de los trabajadores",
+     "why": "Hay barcos, remeros y gente con paraguas, pero el tema no es su esfuerzo: es la luz y el tiempo que hace."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Impresionismo"
+  },
+  {
+   "id": "t-sorolla-comun",
+   "scope": "tramo",
+   "movementId": "impresionismo",
+   "tramo": "Luz mediterránea",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w6065609",
+    "w6043567"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "El sol que rebota en el agua y la piel",
+     "why": "Eso es: vestidos blancos que se vuelven azules y lilas en la sombra y piel mojada que brilla. Sorolla pintaba a pleno sol, deprisa."
+    },
+    {
+     "id": "b",
+     "text": "Escenas soñadas, llenas de símbolos",
+     "why": "Todo es real: su mujer y su hija de paseo y unos chicos en la orilla de Valencia. Sorolla pinta lo que tiene delante."
+    },
+    {
+     "id": "c",
+     "text": "Tormentas que sobrecogen",
+     "why": "El mar está tranquilo y luminoso: nada de tempestades románticas. Lo que fascina a Sorolla es la luz."
+    },
+    {
+     "id": "d",
+     "text": "Retratos de estudio sobre un fondo oscuro",
+     "why": "Ni estudio ni fondos oscuros: arena, mar y sol directo. Sorolla llevaba lienzos enormes a la playa."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Joaquín_Sorolla"
+  },
+  {
+   "id": "t-sorolla-cual",
+   "scope": "tramo",
+   "movementId": "impresionismo",
+   "tramo": "Luz mediterránea",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es impresionista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w5642417",
+     "why": "Sí: niños enfermos se bañan en el mar de Valencia con un fraile. Un tema duro, pero pintado a pleno sol, con agua y piel que brillan."
+    },
+    {
+     "id": "b",
+     "work": "w2450139",
+     "why": "Es barroco: dos niños de la calle en la penumbra de un interior, con luz de lado. La ternura de Murillo, sin el sol abierto del mar."
+    },
+    {
+     "id": "c",
+     "work": "w1070896",
+     "why": "Es romanticismo: el ruso Aivazovski pinta náufragos ante una ola gigante al amanecer. Mar y luz, sí, pero con drama, y pintado en el taller."
+    },
+    {
+     "id": "d",
+     "work": "w2270938",
+     "why": "Es postimpresionismo: Cézanne inventa a sus bañistas en el taller, construidas con planos de color. No busca la luz real de una playa."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Triste_herencia"
+  },
+  {
+   "id": "t-orden-comun",
+   "scope": "tramo",
+   "movementId": "postimpresionismo",
+   "tramo": "Poner orden en la luz",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w2349666",
+    "w3823444"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Orden y solidez por debajo de la luz",
+     "why": "Eso es: Cézanne levanta su frutero con planos de color y Seurat ordena el circo con puntos y líneas. Quieren algo sólido tras el impresionismo."
+    },
+    {
+     "id": "b",
+     "text": "La impresión rápida de un instante",
+     "why": "Al revés: los dos trabajaban despacio y con método. Querían dejar atrás la prisa impresionista."
+    },
+    {
+     "id": "c",
+     "text": "El color para expresar emociones fuertes",
+     "why": "Eso es lo de Van Gogh y Gauguin. Cézanne y Seurat son más fríos: buscan estructura y orden, no desahogo."
+    },
+    {
+     "id": "d",
+     "text": "Las cosas tal cual, con detalle realista",
+     "why": "Nada de detalle fotográfico: la mesa se inclina y las figuras son siluetas geométricas. Construyen la imagen, no la copian."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Postimpresionismo"
+  },
+  {
+   "id": "t-orden-rompe",
+   "scope": "tramo",
+   "movementId": "postimpresionismo",
+   "tramo": "Poner orden en la luz",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w2270938"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Construye cuerpos y árboles con planos de color",
+     "why": "Eso es: los árboles forman un arco de catedral y los cuerpos son volúmenes sencillos. Picasso y el cubismo partirán de aquí."
+    },
+    {
+     "id": "b",
+     "text": "Es un desnudo mitológico a la manera clásica",
+     "why": "No hay diosas ni mito: son bañistas sin nombre, simplificadas. Cézanne mira a los clásicos, pero los reconstruye con color."
+    },
+    {
+     "id": "c",
+     "text": "Pinta del natural a unas bañistas reales al aire libre",
+     "why": "Cézanne no pintaba modelos desnudas al aire libre: inventaba las figuras en el taller, a partir de dibujos y recuerdos."
+    },
+    {
+     "id": "d",
+     "text": "Usa puntitos de color puro",
+     "why": "Eso es Seurat, que buscaba lo mismo por otro camino. Cézanne pinta con pinceladas planas y anchas, como ladrillos de color."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Las_grandes_bañistas_(Cézanne)"
+  },
+  {
+   "id": "t-color-cual",
+   "scope": "tramo",
+   "movementId": "postimpresionismo",
+   "tramo": "El color desatado",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es postimpresionista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w2504917",
+     "why": "Sí: un Calvario de piedra verde ante el mar de Bretaña, con contornos marcados y colores planos que no copian la realidad. Gauguin expresa, no imita."
+    },
+    {
+     "id": "b",
+     "work": "w1054459",
+     "why": "Es del primer Renacimiento: Masaccio pinta la Crucifixión sobre fondo de oro, pero con cuerpos de peso real y una Magdalena desesperada."
+    },
+    {
+     "id": "c",
+     "work": "w2528741",
+     "why": "Es barroco: Cristo solo sobre fondo negro, con un cuerpo sereno modelado por la luz. Velázquez busca la verdad y la calma, no el color inventado."
+    },
+    {
+     "id": "d",
+     "work": "w546297",
+     "why": "Es del Renacimiento: Cristo muerto visto desde los pies, en escorzo (la figura acortada por la perspectiva) y con colores apagados de piedra."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Paul_Gauguin"
+  },
+  {
+   "id": "t-color-comun",
+   "scope": "tramo",
+   "movementId": "postimpresionismo",
+   "tramo": "El color desatado",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w1025704",
+    "w3607521"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "El color expresa, no copia",
+     "why": "Eso es: el amarillo del café de Arles y los verdes de las caras del Moulin Rouge no son los reales. El color ya no copia: expresa."
+    },
+    {
+     "id": "b",
+     "text": "La luz natural del día, captada al aire libre",
+     "why": "Las dos son noches con luz de gas o de farol. Y los colores están exagerados a propósito, no observados como hacían los impresionistas."
+    },
+    {
+     "id": "c",
+     "text": "Puntitos de color colocados con método",
+     "why": "Hay pinceladas cortas en la terraza, pero ningún método de puntos: Van Gogh y Lautrec trazan con libertad y contornos marcados."
+    },
+    {
+     "id": "d",
+     "text": "Escenas de sueños y mitos",
+     "why": "Son lugares reales que ellos frecuentaban: un café de Arles y un cabaré de Montmartre. El sueño y el mito serán de los simbolistas."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Postimpresionismo"
+  },
+  {
+   "id": "t-suenos-comun",
+   "scope": "tramo",
+   "movementId": "simbolismo-modernismo",
+   "tramo": "Sueños y símbolos",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w2324643",
+    "w1683743"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Deseo y peligro, con símbolos",
+     "why": "Eso es: Judit con la cabeza de Holofernes y una mujer que besa a un hombre en el cuello. Amor y peligro, pintados para inquietar."
+    },
+    {
+     "id": "b",
+     "text": "Escenas bíblicas contadas al pie de la letra",
+     "why": "Judit es bíblica, pero Klimt la vuelve una femme fatale (la mujer que seduce y destruye, un mito de la época), con oro y mirada desafiante."
+    },
+    {
+     "id": "c",
+     "text": "Escenas de la vida moderna y su ocio",
+     "why": "No son cafés ni bailes: son visiones de amor y peligro. Lo importante está dentro de la cabeza."
+    },
+    {
+     "id": "d",
+     "text": "Formas abstractas, sin figuras",
+     "why": "Hay figuras reconocibles, aunque el fondo de Klimt se vuelva decorado. La abstracción total llegará con Kandinsky y Malévich."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Simbolismo_(arte)"
+  },
+  {
+   "id": "t-suenos-cual",
+   "scope": "tramo",
+   "movementId": "simbolismo-modernismo",
+   "tramo": "Sueños y símbolos",
+   "kind": "cual",
+   "prompt": "¿Cuál de estos cuadros es simbolista?",
+   "options": [
+    {
+     "id": "a",
+     "work": "w15093245",
+     "why": "Sí: un desnudo de espaldas al que miran unas viejas con aire de presagio. Romero de Torres convierte a Venus en símbolo del deseo y del pecado."
+    },
+    {
+     "id": "b",
+     "work": "w275349",
+     "why": "Es barroco: Velázquez pinta a Venus de espaldas mientras Cupido le sostiene el espejo. Una diosa sensual y serena, sin inquietud simbolista."
+    },
+    {
+     "id": "c",
+     "work": "w152867",
+     "why": "Es de Goya, entre dos siglos: una mujer real, sin disfraz de diosa, que nos mira de frente. Fue tan atrevida que la Inquisición la investigó."
+    },
+    {
+     "id": "d",
+     "work": "w737062",
+     "why": "Es Manet: una mujer moderna de París que mira sin pudor, pintada con manchas planas. Escándalo de realidad, no de símbolo."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres"
+  },
+  {
+   "id": "t-romper-comun",
+   "scope": "tramo",
+   "movementId": "simbolismo-modernismo",
+   "tramo": "Romper las reglas",
+   "kind": "comun",
+   "prompt": "¿Qué tienen en común estos cuadros?",
+   "works": [
+    "w1437492",
+    "w3609042"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Color y forma libres, sin imitar la realidad",
+     "why": "Eso es: una cara verde y lila y unos círculos que no representan nada. El color y la forma valen por sí mismos."
+    },
+    {
+     "id": "b",
+     "text": "Sueños y miedos contados con símbolos",
+     "why": "No cuentan historias secretas: les interesa el color y la forma en sí. El simbolismo aún contaba algo; ellos rompen con la imitación."
+    },
+    {
+     "id": "c",
+     "text": "Puntitos de color que mezcla el ojo",
+     "why": "No hay método de puntos: Matisse da brochazos de color puro y Kandinsky traza círculos limpios."
+    },
+    {
+     "id": "d",
+     "text": "El volumen construido con planos de color sólido",
+     "why": "Cézanne aún quería volumen. Aquí el color es plano y libre: una cara verde y círculos que flotan sin peso."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Vanguardia_artística"
+  },
+  {
+   "id": "t-romper-rompe",
+   "scope": "tramo",
+   "movementId": "simbolismo-modernismo",
+   "tramo": "Romper las reglas",
+   "kind": "rompe",
+   "prompt": "Este cuadro rompe con lo anterior. ¿Por qué?",
+   "works": [
+    "w19922323"
+   ],
+   "options": [
+    {
+     "id": "a",
+     "text": "Trocea los objetos y los ve desde varios lados",
+     "why": "Eso es el cubismo: la guitarra y la mesa, troceadas y recompuestas como un rompecabezas. Juan Gris lo ordenó con geometría."
+    },
+    {
+     "id": "b",
+     "text": "Pinta solo formas, sin ningún objeto",
+     "why": "Aquí sí hay objetos: una guitarra sobre una mesa. La abstracción total es la de Kandinsky o Malévich."
+    },
+    {
+     "id": "c",
+     "text": "Usa el color para expresar angustia",
+     "why": "No hay angustia: es un bodegón tranquilo. Lo nuevo es cómo se construye, desde varios puntos de vista a la vez."
+    },
+    {
+     "id": "d",
+     "text": "Simplifica las frutas a la manera de Cézanne",
+     "why": "Cézanne abrió el camino inclinando la mesa, pero no partía las cosas. Juan Gris da el paso: rompe la guitarra en planos."
+    }
+   ],
+   "answer": "a",
+   "source": "https://es.wikipedia.org/wiki/Cubismo"
+  }
+ ]
+}
