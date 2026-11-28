@@ -1814,7 +1814,7 @@ challengeText = await page.evaluate(() => navigator.clipboard.readText());
 const second = index.steps[1];
 check(await page.locator('[data-chip="goal"]').count() === 1, 'el cierre del día no dice que la meta está cumplida');
 check(!/Siguiente etapa|La próxima vez/.test(await page.locator('.res').innerText()), 'el cierre del día lleva la siguiente etapa');
-check(!/Repetir|Repasar|Sigue:/.test(await page.locator('.res-foot').innerText()), 'el cierre del día lleva llamadas a seguir jugando');
+check(!/Repetir|Repasar/.test(await page.locator('.res-foot').innerText()) && /Volver al camino/.test(await page.locator('.res-foot').innerText()), 'el cierre del día lleva otras llamadas a jugar o le falta «Volver al camino»');
 check(/Por hoy, hecho/.test(await page.locator('.res-title').innerText()), 'el cierre del día no dice «Por hoy, hecho»');
 await page.goto(`${base}#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`);
 await page.waitForSelector('.learn, .intro, .story[open]');

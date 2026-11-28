@@ -20,7 +20,7 @@ import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, GATE_Y, pathLayout, eraLayout, walkedD } from './path-layout.js';
 import { trailSvg, eraArch, startBlock, museumBlock, branchSpot, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
-import { eraLore, tramoLore, loreHere, tramoFresh } from './path-lore.js';
+import { eraLore, tramoLore, loreHere, tramoFresh, doorLock } from './path-lore.js';
 import { eraGate, bridgeRails, eraPlace, startPlace } from './path-art.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout, DORMANT_TEXT };
@@ -123,14 +123,13 @@ function eraBlock(ctx, era, prevEra, keys) {
     const sec = era.sections.find((s) => s.at === i);
     const head = sec ? tramoNode(ctx, era, sec, keys) : '';
     const spur = branches.filter((b) => b.spot.at === i).map((b) => branchSpot(b.spot, b.branch, b.st, index, era.h)).join('');
-    const after = node.key === keys.current && keys.here ? ' is-after-lore' : '';
-    return `${head}<li class="stage-spot is-${side}${state}${after}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
+    return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
   }).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';
   const place = era.gate ? eraPlace(era.gate.x, era.gate.y) : null;
   const sign = era.arch ? archHtml(ctx, era, place ? { ...era.arch, ...place.box } : era.arch, era.h) : '';
-  const gateStop = era.gate ? medallion(ctx, era, era.gate.stop, era.h, keys, 'li', prevEra) : '';
+  const gateStop = era.gate ? medallion(ctx, era, era.gate.stop, era.h, keys, 'li') : '';
   const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}${era.gate ? ' has-gate' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--gate-y:${GATE_Y};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
@@ -153,14 +152,14 @@ function archHtml(ctx, era, arch, h) {
 
 // Medallón de la época en el arco de su puerta (stop: su sitio en el tramo de alto h): nombre, paradas dominadas (las
 // mismas que se ven en el camino, sin el repaso) y si su presentación está sin ver.
-function medallion(ctx, era, stop, h, keys, tag = 'li', prevEra = null) {
+function medallion(ctx, era, stop, h, keys, tag = 'li') {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const sala = index.isSala(era.id);
   const states = sala ? [salaStatus(p, index, era.id)] : index.stageArtists(era.id).map((a) => artistStatus(p, index, a.id));
   return eraLore({
-    movement: index.movement(era.id), status: movementStatus(p, index, era.id), sealed: Boolean(p.medals[`movement-${era.id}`]),
-    done: states.filter((st) => st === 'mastered').length, total: states.length, prevName: prevEra ? index.movement(prevEra.id).name : '', stop, h, tag,
+    movement: index.movement(era.id), door: doorLock(p, index, index.movement(era.id)), sealed: Boolean(p.medals[`movement-${era.id}`]),
+    done: states.filter((st) => st === 'mastered').length, total: states.length, stop, h, tag,
     fresh: needsIntro(p, index, era.id), here: keys.here === `era:${era.id}`,
   });
 }
@@ -172,7 +171,7 @@ function tramoNode(ctx, era, sec, keys) {
   const here = keys.here === `tramo:${sec.key}`;
   return tramoLore({
     sec, info: sectionInfo(ctx, era.id, sec), h: era.h, here, next: first ? first.id : '',
-    fresh: tramoFresh(p, ctx.index, first?.id), locked: !first || artistStatus(p, ctx.index, first.id) === 'locked',
+    fresh: tramoFresh(p, ctx.index, first?.id), door: doorLock(p, ctx.index, ctx.index.movement(era.id)),
   });
 }
 

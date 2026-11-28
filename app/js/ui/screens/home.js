@@ -3,14 +3,14 @@
 import { esc, onAction, accentStyle } from '../dom.js';
 import { icons } from '../icons.js';
 import { page } from '../shell.js';
-import { artFrame, coverOf, tinySrc } from '../art.js';
+import { artFrame } from '../art.js';
 import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode, HOME_MAP } from './path-map.js';
 import { rememberMap } from './map-memory.js';
 import { liveArt } from '../map-land.js';
-import { watchReturn, guideButton } from './map-return.js';
-import { goToStep } from './path-actions.js';
+import { watchReturn } from './map-return.js';
+import { placeCue } from './map-cue.js';
 import { startMapLife } from '../map-life.js';
-import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } from '../../engine/progress.js';
+import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus, artistStatus } from '../../engine/progress.js';
 import { playEra } from '../audio-bridge.js';
 import { weekOf, isoWeek } from '../../engine/dates.js';
 import { addLevelRings } from '../deep-badges.js';
@@ -18,9 +18,6 @@ import { watchStoryPrefetch } from '../story-prefetch.js';
 import { coachSeen } from '../../state/store.js';
 import { allMissingEssentials, essentialNeed, essentialOpen } from '../../engine/essentials.js';
 import { deepRoute, stageRoute } from '../router.js';
-
-// Guías que van a su ruta directamente (engine/next-step.js), no a la parada del pintor: «Repasar a…» y los niveles «a fondo».
-const DIRECT_GUIDES = ['recall', 'deepen', 'essential'];
 
 export function renderHome(ctx, el) {
   const { index } = ctx;
@@ -89,27 +86,26 @@ export function renderHome(ctx, el) {
   // Al salir, se guarda dónde estaba la vista: se vuelve exactamente ahí (map-memory.js).
   // Historias de la parada actual y de los pintores con niveles a la vista: su tarjeta se pinta sin esperar (story-prefetch.js).
   let stories = null;
-  // «Tú» (map-return.js) y, si lo que recomienda el juego es otra cosa (engine/next-step.js, cargado después de pintar: no
-  // pesa en el arranque), el mismo botón pasa a ser esa acción.
-  const returnStop = watchReturn(el);
-  let guideStop = () => {};
+  // Lo que recomienda el itinerario (engine/next-step.js, cargado después de pintar: no pesa en el arranque) lleva una burbuja con
+  // un verbo sobre su parada (map-cue.js); el botón flotante (map-return.js) lleva hasta ella.
+  const returnBtn = watchReturn(el);
+  let recommended = null;
+  const showCue = () => {
+    if (!recommended || !el.isConnected) return;
+    const status = recommended.artistId ? artistStatus(ctx.store.get().progress, index, recommended.artistId) : '';
+    placeCue(el, recommended, status === 'started');
+    returnBtn.retarget();
+  };
   Promise.all([import('../../engine/next-step.js'), import('../last-step.js'), import('../../engine/deepen.js')]).then(([m, last, deepen]) => {
-    const guide = guideFor(ctx, el, m.mapGuide, last.lastStep());
-    if (!guide || !el.isConnected) return;
+    recommended = m.mapRecommendation(ctx.store.get().progress, index, ctx.today(), { week: isoWeek(ctx.dailyDay()).key, prevStep: last.lastStep() });
+    if (!recommended || !el.isConnected) return;
+    showCue();
     // Lo que enseña el mapa cuenta como recomendado: lo de atrás no sale justo después en el resultado.
-    last.rememberStep(guide.kind);
+    if (recommended.kind !== 'stop') last.rememberStep(recommended.kind);
     // «Profundiza en…» a la vista: cuenta para la rotación (jugar otra cosa la salta: engine/deepen.js).
-    if (guide.kind === 'deepen') ctx.store.update((s) => ({ ...s, progress: deepen.noteOffer(s.progress, ctx.index, guide.offer) }));
-    guideStop = guideButton(el, guide, guide.kind === 'recall' && guide.artistId ? guideFace(ctx, guide.artistId) : '', (g) => {
-      ctx.audio.sfx('tap');
-      // «Repasar a…», los niveles «a fondo» (y la Prueba de época) van a su ruta, no a la parada del pintor o la sala.
-      const key = DIRECT_GUIDES.includes(g.kind) ? '' : g.artistId ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
-      // Una parada del camino: el camino va hasta ella y se toca (su tarjeta o su ronda), como «Ir»; si no, la acción.
-      if (key && el.querySelector(`.stage-spot[data-step="${key}"]`)) return goToStep(key);
-      return ctx.go(g.to);
-    });
+    if (recommended.kind === 'deepen') ctx.store.update((s) => ({ ...s, progress: deepen.noteOffer(s.progress, ctx.index, recommended.offer) }));
   }).catch((err) => console.error(err));
-  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, () => returnStop(), () => guideStop(), () => stories?.stop()];
+  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); showCue(); }), watchMapMode(map), life.stop, () => returnBtn.stop(), () => stories?.stop()];
   addLevelRings(ctx, el);
   stories = watchStoryPrefetch(el);
   // Desplazamiento rápido por épocas (map-scrubber.js), cargado después de pintar: no pesa en el arranque.
@@ -202,15 +198,3 @@ function sideNow(ctx) {
 }
 
 export { scrollToCurrent };
-
-// La cara del pintor en la píldora de «Repasar a …» (su cuadro más conocido, en miniatura redonda).
-function guideFace(ctx, artistId) {
-  const work = coverOf(ctx.index, artistId);
-  return work ? `<img src="${esc(tinySrc(work))}" alt="" decoding="async">` : '';
-}
-
-// Lo que recomienda el juego cuando no es la parada actual (engine/next-step.js): el botón «Tú» se convierte en él.
-function guideFor(ctx, el, mapGuide, prevStep) {
-  const current = el.querySelector('.stage-spot.is-current')?.dataset.step || '';
-  return mapGuide(ctx.store.get().progress, ctx.index, ctx.today(), { currentKey: current, week: isoWeek(ctx.dailyDay()).key, prevStep });
-}

@@ -153,7 +153,6 @@
   --map-post-in: 12px;
   --map-return-b: 5.6rem;
   --map-return-size: 48px;
-  --map-guide-room: 24px;
   --map-moon: #dfe6fb;             /* luz de luna sobre la piedra de las puertas */
   --gate-moon-w: 1.1;
   --gate-moon-o: .8;
@@ -163,8 +162,8 @@
   --map-seam: 80px;
   /* Sistema de carteles (mapa-carteles.css): arco de época, tablillas de tramo y rama, tarjeta de la parada actual. */
   --map-frontier-solid: 80%;
-  --you-lift: 20px;                /* marca «Tú» sobre la parada actual */
-  --you-pad: 3px 10px 4px;
+  --cue-lift: 20px;                /* burbuja con el verbo sobre la parada recomendada */
+  --cue-pad: 4px 11px 5px;
   --radius-pill: 999px;
   --map-ribbon: 3px;
   /* Inscripción de la época en el ático de su puerta (mapa-carteles.css), en la letra de la app: semibold, capitales y
@@ -183,7 +182,6 @@
   --lore-gem: 42px;                /* lado del rombo del tramo (en diagonal, unos 59 px) */
   --lore-hit: 56px;                /* zona táctil de las dos (nunca menos de 48 px) */
   --lore-ping: 12px;               /* puntito de «sin ver» */
-  --lore-breathe: 2.6s;
   --plaque-r: 4px;                 /* placa del nombre en la puerta */
   --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
   --map-z-sign-start: 4;
@@ -217,18 +215,17 @@
   --scrub-pic: 28px;
   --scrub-out: 8px;                /* lo que se aparta al esconderse */
   --scrub-fade: .22s;
-  --lock-note-w: 232px;            /* globo de lo cerrado */
+  --lock-note-w: 232px;            /* pastilla de lo cerrado */
+  --lock-note-r: 14px;             /* esquinas de la pastilla de lo cerrado (el botón «Ir» es redondo por dentro) */
+  --lock-note-go-h: 32px;          /* alto visible de «Ir» */
   --lock-note-gap: 6px;               /* cinta de oro en el canto de lo completado */
   --map-tablet-hit: 11px;          /* la tablilla mide unos 26 px: con esto, el toque llega a --hit */
-  --map-current-dot: 70px;
-  --map-halo-dur: 3.2s;
-  --map-bob-dur: 2.8s;
+  --map-cue-dur: 2.2s;             /* pulso de la burbuja recomendada */
   --map-line-x: 30px;
   --map-indent: 16px;
   /* Aro de niveles (ui/deep-badges.js): cuánto sale del retrato, grosor del tramo hecho y del siguiente (en la caja de 100 del
      SVG), y el respiro del halo. */
   --ri-face: 112px;    /* cara del pintor en la entrada del repaso */
-  --guide-face: 24px;  /* cara del pintor en la píldora «Repasar a …» del mapa */
   --fb-face: 40px;     /* cara del pintor en la hoja tras «No lo sé» */
   --recall-face: 104px; /* cara del pintor en la sesión «Repasar a …» */
   --chip-dot: 9px;      /* punto de aviso de los botones de la cabecera (Cuadro del día, «Repasar») */
@@ -255,7 +252,6 @@
   --zoom-scale: 1.6;
   --ring-w: 4.6;
   --ring-w-next: 6.4;
-  --dur-breathe: 2.6s;
   /* Tarjeta del nodo (ui/level-card.js) e historias destacadas (ui/level-row.js): círculo, su portada, entrada y temblor. */
   --hl: 64px;
   --hl-lg: 68px;

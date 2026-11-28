@@ -7,7 +7,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
-import { emptyProgress, hasMovementReview, nextStep } from '../app/js/engine/progress.js';
+import { emptyProgress, hasMovementReview, nextStep, hasTramoSign } from '../app/js/engine/progress.js';
 import { firstTramo } from '../app/js/engine/branches.js';
 import { icons } from '../app/js/ui/icons.js';
 import { renderPathMap, pathLayout, eraLayout, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
@@ -93,8 +93,8 @@ test('mapa: cada tramo tiene su paisaje aparte (sin src hasta acercarse), el sen
   assert.equal((html.match(/<h2 class="era-arch"/g) || []).length, real.visibleMovements.length, 'un dintel por época');
   assert.ok(!html.includes('class="road-sign is-left"><button type="button" class="sign-plate" data-action="intro"'), 'queda la placa de época antigua');
   const locked = real.visibleMovements[2];
-  assert.ok(html.includes(`data-action="era-lock" data-id="${locked.id}"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el cartel cerrado no abre su hoja');
-  assert.ok(html.includes('Cerrada: se abre al terminar el Manierismo y el Renacimiento del Norte'), 'una época cerrada no dice cómo se abre (con su artículo)');
+  assert.ok(html.includes(`data-action="lore-lock" data-status="locked" data-lock="Se abre al cruzar la puerta del Manierismo y el Renacimiento del Norte"`) && !html.includes(`data-action="intro" data-id="${locked.id}"`), 'el medallón cerrado no avisa como un pintor cerrado');
+  assert.ok(html.includes('Cerrada: Se abre al cruzar la puerta del Manierismo y el Renacimiento del Norte'), 'una época cerrada no dice cómo se abre (con su artículo)');
   assert.ok(!html.includes('Termina ') && !html.includes('movement-head'), 'queda la cartela antigua');
 });
 
@@ -106,18 +106,18 @@ test('mapa: sin personaje ni cofres (vuelven en la v2 con premios de verdad)', (
   assert.ok(!/path-chest|path-character|\.pc-/.test(readFileSync(join(app, 'css', 'main.css'), 'utf8')), 'quedan estilos del personaje o los cofres');
 });
 
-test('mapa: el nodo actual se distingue por el nodo y la marca «Tú», sin botón aparte; los demás, solo el nombre', () => {
+test('mapa: la parada actual no lleva marca propia (sin «Tú»); la señala la burbuja del itinerario, que se pone tras pintar', () => {
   let html = renderPathMap(ctxWith(real));
   const first = real.steps[0];
   assert.equal((html.match(/stage-spot is-(left|right) is-current/g) || []).length, 1);
-  assert.ok(html.includes(`is-current is-after-lore" data-step="${first.type}:${first.id}"`), 'el nodo actual no es la primera parada');
-  // Sin abrir la presentación de la época, «Tú» está en su medallón (es lo primero del camino), no en el pintor.
-  assert.ok((html.match(/class="stage-you"/g) || []).length === 1 && /lore-spot is-(left|right) is-here" data-lore="era:/.test(html), 'la marca «Tú» no está en el medallón de la primera época');
+  assert.ok(html.includes(`is-current" data-step="${first.type}:${first.id}"`), 'el nodo actual no es la primera parada');
+  // Sin abrir la presentación de la época, lo siguiente es su medallón (es lo primero del camino), no el pintor.
+  assert.ok(/lore-spot is-(left|right) is-here" data-lore="era:/.test(html) && !html.includes('stage-you'), 'lo siguiente no es el medallón de la primera época o queda la marca «Tú»');
   const seen = emptyProgress();
   seen.intros[first.movementId] = TODAY;
   seen.signs = Object.fromEntries(real.path.filter((a) => a.section).map((a) => [a.section, TODAY]));
   html = renderPathMap(ctxWith(real, seen));
-  assert.ok(html.includes('<span class="stage-you" aria-hidden="true">Tú</span>') && (html.match(/class="stage-you"/g) || []).length === 1 && html.includes(`is-current" data-step="${first.type}:${first.id}"`), 'sin la marca «Tú» en la parada actual');
+  assert.ok(!html.includes('stage-you') && html.includes(`is-current" data-step="${first.type}:${first.id}"`) && !html.includes('is-here'), 'queda la marca «Tú» o la parada actual no es la primera');
   assert.ok(!html.includes('Empezar') && !html.includes('>Seguir<'), 'queda el botón «Empezar» junto al nodo');
   assert.ok(!html.includes('1483–1520') && !html.includes('Dominado'), 'los nodos sin jugar o dominados no llevan texto de más');
   const p = masterFirst(real, 1);
@@ -223,9 +223,9 @@ test('mapa: puerta de ciudad de la época sobre el sendero (sin plaza); rombos d
   assert.equal((html.match(/class="road-sign is-(left|right)"/g) || []).length, 1, 'solo la placa del museo (las épocas llevan dintel)');
   // Primer tramo: rombo con su nombre en la pastilla, sin emoji; para el lector, «dominados de paradas» (todas, también
   // las extra), justo antes de su parada en el DOM.
-  const first = real.artist(real.steps[0].id);
-  const n = real.stageArtists(first.movementId).filter((a) => a.section === first.section).length;
-  const at = html.indexOf(`aria-label="Tramo ${first.section}: 1 de ${n} pintores. Ver cartel"`);
+  // El primer tramo de cada época no sale: el primer rombo es el del segundo tramo, antes de su primer pintor.
+  const first = real.path.find((a) => hasTramoSign(real, a.id) && a.movementId === real.steps[0].movementId);
+  const at = html.indexOf(`aria-label="Tramo ${first.section}:`);
   assert.ok(at >= 0 && at < html.indexOf(`data-step="artist:${first.id}"`), 'el cartel del tramo no va antes de su primera parada');
   assert.ok(html.includes(`data-action="cartel" data-kind="tramo" data-id="${first.section}"`), 'el cartel del tramo no abre sus tarjetas');
   assert.ok(html.includes(`<span class="stage-name">${first.section}</span>`) && !html.includes('📖'), 'el rombo no lleva su nombre en la pastilla de los pintores');
@@ -312,8 +312,8 @@ test('mapa: jerarquía de nodos (actual, siguiente cerrado y el resto cerrado m�
   assert.ok(px(/\.stage\.is-locked \{ --dot: (\d+)px/) < base, 'el cerrado no es más pequeño');
   const signs = readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
   const brand = readFileSync(join(app, 'css', 'brand.css'), 'utf8');
-  assert.ok(/\.stage-spot\.is-current \.stage \{ --dot: var\(--map-current-dot\); \}/.test(signs) && Number(brand.match(/--map-current-dot: (\d+)px/)[1]) > base, 'el actual no es el mayor');
-  assert.ok(/prefers-reduced-motion: reduce\) \{ \.stage-you/.test(signs), 'la marca «Tú» se mece aunque se pidan menos animaciones');
+  assert.ok(!/--map-current-dot/.test(signs + brand), 'la parada actual sigue siendo mayor que las demás (solo se destaca la recomendada)');
+  assert.ok(/prefers-reduced-motion: reduce\) \{ \.map-cue \{ animation: none/.test(signs), 'la burbuja pulsa aunque se pidan menos animaciones');
   assert.ok(!/\.(stage-name|branch-name)[^{]*\{[^}]*overflow-wrap: anywhere/.test(css), 'nombres partidos por cualquier letra');
   // Camino en línea por encima del 150 % y, por debajo, letra sin tope (crece con la del navegador) y trazado
   // estirado en vertical con --k.

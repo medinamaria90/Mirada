@@ -200,7 +200,7 @@ export function renderResult(ctx, el, opts) {
       <div class="res-head">
         ${medalHtml(ctx, heroMedal, deepDone, work)}
         <p class="res-kicker">${esc(kicker)}</p>
-        <h1 class="res-title">${next.kind === 'done' ? DONE_TITLE : headline(outcome.accuracy)}</h1>
+        <h1 class="res-title">${goalJustMet && !duel && next.kind !== 'retry' ? DONE_TITLE : headline(outcome.accuracy)}</h1>
         ${lineHtml(ctx, { plan, outcome, low, gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry, rankUp: events.find((e) => e.type === 'rank') })}
       </div>
       <dl class="res-tally">
