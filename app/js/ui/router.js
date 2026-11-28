@@ -38,6 +38,11 @@ export const storyRoute = (artistId, level) => `historia-${artistId}-${level}`;
 
 // Época compartida (tarjetas «Descubre la época», h/epoca-<id>.html): la ve cualquiera, juegue o no, sin tocar su progreso.
 export const eraRoute = (movementId) => `epoca-${movementId}`;
+// Preguntas de concepto de un tramo abiertas desde su cartel del mapa (#preguntas-tramo-<slug>[--<pintor>]); con pintor, al
+// terminar se sigue a su etapa (el cartel era el paso siguiente del camino).
+export const tramoSlug = (key) => String(key).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+export const conceptsRoute = (key, next = '') => `preguntas-tramo-${tramoSlug(key)}${next ? `--${next}` : ''}`;
 
 // Pantalla de una rama (su propio paisaje y sus pintores): rama-<id>.
 export const branchRoute = (branchId) => `rama-${branchId}`;
@@ -75,6 +80,9 @@ export function parseRoute(hash, opts = {}) {
   if (m) return { name: 'works', spec: { kind: 'guests', movementId: m[1] } };
   m = /^obras-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'works', spec: { kind: 'artist', artistId: m[1] } };
+  // Preguntas de un tramo desde su cartel del mapa (conceptsRoute).
+  m = /^preguntas-tramo-([a-z0-9]+(?:-[a-z0-9]+)*)(?:--([a-z0-9]+(?:-[a-z0-9]+)*))?$/.exec(name);
+  if (m) return { name: 'concepts', slug: m[1], next: m[2] || '' };
   // «Repasar a Vermeer» / «Repasar el Barroco» (ui/screens/recall.js): repasar-<pintor> y repasar-epoca-<movimiento>.
   m = /^repasar-epoca-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'recall', recallType: 'movement', id: m[1] };

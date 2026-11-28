@@ -9,9 +9,9 @@ import { createRound, answerRound } from '../app/js/engine/round.js';
 import { xpForAnswer } from '../app/js/engine/progress.js';
 import { migrate, SCHEMA_VERSION } from '../app/js/state/schema.js';
 import {
-  logAnswers, recallStats, forgottenSubject, forgetSlips, RECALL_SLIPS, RECALL_DUNNO_WEIGHT, RECALL_LOG_MAX, CONFUSION_MIN,
+  logAnswers, recallStats, forgottenSubject, forgetSlips, RECALL_SLIPS, RECALL_DUNNO_WEIGHT, RECALL_LOG_MAX, CONFUSION_MIN, RECALL_WAIT_ROUNDS,
 } from '../app/js/engine/recall.js';
-import { recallParts, planRecall, suggestedStory, firstStoryLevel, eraKeyCards, contrastLine, RECALL_ROUND } from '../app/js/engine/recall-session.js';
+import { recallParts, planRecall, recallHints, eraKeyCards, contrastLine, RECALL_ROUND, RECALL_TRAITS } from '../app/js/engine/recall-session.js';
 import { parseRoute } from '../app/js/ui/router.js';
 
 const index = realIndex();
@@ -175,16 +175,22 @@ test('sesión de época: tarjetas clave y contraste con un cuadro de cada una', 
   assert.equal(contrastLine('artist', { traits: [] }, { traits: ['x'] }), '');
 });
 
-test('historia sugerida: la etapa donde se concentran los fallos; si no, la primera sin ver; solo una', () => {
-  assert.equal(suggestedStory([1]), null);
-  assert.equal(suggestedStory([1, 2, 3, 4], [3, 3, 1]), 3);
-  assert.equal(suggestedStory([1, 2, 3, 4], [1, 1, 3]), 2);
-  assert.equal(suggestedStory([1, 2, 3], [], (l) => l === 2), 3);
-  assert.equal(suggestedStory([1, 2, 3], [], () => true), 2);
-  // «Repasar a X» empieza por la historia del nivel donde se concentran los fallos; si no, por la de nivel 1.
-  assert.equal(firstStoryLevel([1, 2, 3, 4], [3, 3, 1]), 3);
-  assert.equal(firstStoryLevel([1, 2, 3, 4], [1, 2, 3]), 1);
-  assert.equal(firstStoryLevel([1], [1, 1, 1]), 1);
+test('«Cómo reconocer»: «Fíjate en…» distintos entre sí, sin nombrar al pintor, y parecidos ya conocidos', () => {
+  for (const id of ['botticelli', A, 'velazquez', 'el-greco']) {
+    const artist = index.artist(id);
+    const hints = recallHints(artist);
+    assert.ok(hints.length >= 2 && hints.length <= RECALL_TRAITS, `${id}: ${hints.length}`);
+    assert.equal(new Set(hints).size, hints.length);
+    assert.ok(hints.every((h) => !h.toLowerCase().includes((artist.short || artist.name).toLowerCase())), id);
+  }
+  // El Greco: «colores ácidos» no sale dos veces.
+  assert.ok(recallHints(index.artist('el-greco')).filter((h) => /ácido/.test(h)).length <= 1);
+  // «No lo confundas con»: solo los parecidos que ya conoce.
+  const p = learned(A);
+  const parts = recallParts(p, index, { type: 'artist', id: A, confused: null }, TODAY, { seen: index.worksOf(A) });
+  assert.deepEqual(parts.twins, []);
+  const known = recallParts(learned(A, B), index, { type: 'artist', id: A, confused: null }, TODAY, { seen: index.worksOf(A) });
+  assert.deepEqual(known.twins, [B]);
 });
 
 test('al terminar «Recordar», la cuenta de ese pintor vuelve a cero y queda como último', () => {
@@ -270,4 +276,53 @@ test('tarjetas de la sesión: «Seguir» destacado e «Ir a las preguntas» en c
   const watch = copyHtml(card, null, { last: true, endLabel: 'Volver', questions });
   assert.match(watch, /data-deck="play">Volver/);
   assert.match(watch, /data-deck="questions">Ir a las preguntas/);
+});
+
+// ---------------------------------------------------------------- espera tras jugar
+test('espera: tras repaso general y avanzar en Botticelli, no «Repasar a Botticelli» enseguida, pero sí más adelante', () => {
+  const BOT = 'botticelli';
+  let p = learned(BOT, A, B);
+  // El repaso general: falla a Botticelli varias veces.
+  const general = Array.from({ length: RECALL_SLIPS }, (_, k) => wrong(who(BOT, [B, 'goya', 'murillo'], k % 2), B));
+  p = finishRound(p, index, { kind: 'srs', answers: general, firstTry: general.map(() => false) }, TODAY).progress;
+  // Justo después del repaso sí se propondría (no lo ha jugado).
+  assert.equal(nextStep(p, index, TODAY, { plan: { kind: 'srs' } }).artistId, BOT);
+  // Avanza en Botticelli (su ronda, con su historia): el resultado no propone repasarlo.
+  const own = [right(who(BOT)), right(who(BOT, undefined, 1))];
+  p = finishRound(p, index, { kind: 'stage', artistId: BOT, answers: own, firstTry: [true, true] }, TODAY).progress;
+  const after = nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: BOT }, outcome: { accuracy: 1, events: [] } });
+  assert.notEqual(after.label, 'Repasar a Botticelli');
+  assert.ok(!(after.kind === 'recall' && after.artistId === BOT));
+  // Otras rondas entre medias: hasta RECALL_WAIT_ROUNDS no vuelve; después, sí.
+  const other = [right(who(A))];
+  for (let i = 1; i < RECALL_WAIT_ROUNDS; i += 1) {
+    p = finishRound(p, index, { kind: 'srs', answers: other, firstTry: [true] }, TODAY).progress;
+    assert.notEqual(forgottenSubject(p, index, TODAY)?.id, BOT);
+  }
+  p = finishRound(p, index, { kind: 'srs', answers: other, firstTry: [true] }, TODAY).progress;
+  const later = nextStep(p, index, TODAY, { plan: { kind: 'srs' } });
+  assert.deepEqual([later.kind, later.label], ['recall', 'Repasar a Botticelli']);
+});
+
+test('espera: una época recién vista (una ronda de uno de sus pintores) tampoco se propone repasar enseguida', () => {
+  let p = learned(A, B);
+  p.slips = logAnswers([], Array.from({ length: RECALL_SLIPS }, () => wrong(movementQ(A), 'romanticismo')), index, TODAY);
+  assert.equal(forgottenSubject(p, index, TODAY).id, 'barroco');
+  p = finishRound(p, index, { kind: 'stage', artistId: B, answers: [right(who(B))], firstTry: [true] }, TODAY).progress;
+  assert.equal(forgottenSubject(p, index, TODAY), null);
+  for (let i = 0; i < RECALL_WAIT_ROUNDS; i += 1) p = finishRound(p, index, { kind: 'srs', answers: [], firstTry: [] }, TODAY).progress;
+  assert.equal(forgottenSubject(p, index, TODAY).id, 'barroco');
+  // El registro no crece: solo las últimas rondas.
+  assert.equal(p.recent.length, RECALL_WAIT_ROUNDS);
+});
+
+test('espera: justo tras jugar a cualquier pintor que se le olvidaba, nextStep no devuelve «Repasar a» ese pintor (Rafael, Vermeer…)', () => {
+  for (const id of ['rafael', A, 'velazquez']) {
+    let p = learned(id, B, 'goya');
+    p.slips = logAnswers([], Array.from({ length: RECALL_SLIPS + 1 }, () => wrong(who(id, [B, 'goya', 'murillo']), B)), index, TODAY);
+    assert.equal(forgottenSubject(p, index, TODAY)?.id, id, `${id} se le olvida`);
+    p = finishRound(p, index, { kind: 'stage', artistId: id, answers: [right(who(id))], firstTry: [true] }, TODAY).progress;
+    const step = nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: id }, outcome: { accuracy: 0.78, events: [] } });
+    assert.ok(!(step.kind === 'recall' && step.artistId === id), `${id}: ${step.label}`);
+  }
 });

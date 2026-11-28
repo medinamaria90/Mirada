@@ -1,7 +1,7 @@
 // Acciones del mapa del camino (portada y ramas): paradas, carteles, desvíos y el aviso de lo que falta en lo cerrado.
 
 import { $, announce, prefersReducedMotion } from '../dom.js';
-import { branchRoute, stageRoute, deepRoute, go } from '../router.js';
+import { branchRoute, stageRoute, deepRoute, conceptsRoute, go } from '../router.js';
 import { zoomInto } from '../map-zoom.js';
 import { loreBefore } from './path-lore.js';
 
@@ -62,7 +62,9 @@ export function pathActions(ctx) {
     cartel: (b) => {
       ctx.audio.sfx('tap');
       const next = b.dataset.next;
-      const opts = { title: b.dataset.title || '', onDone: next ? () => ctx.go(stageRoute(next)) : null };
+      // «Ir a las preguntas» (tramos con preguntas de concepto): salen en su pantalla y, si era el paso siguiente, después el pintor.
+      const onQuestions = b.dataset.kind === 'tramo' ? () => ctx.go(conceptsRoute(b.dataset.id, next)) : null;
+      const opts = { title: b.dataset.title || '', onDone: next ? () => ctx.go(stageRoute(next)) : null, onQuestions };
       import('../sign-cards.js').then((m) => m.openSignCards(ctx, b.dataset.kind, b.dataset.id, b, opts)).catch((err) => console.error(err));
     },
     // Rama abierta: se entra en su pantalla con un acercamiento; cerrada, una nota con lo que falta.
@@ -115,6 +117,23 @@ function noteFor(button) {
   return note;
 }
 
+// Dentro de la pantalla y sin pisar la barra rápida del lateral (.scrub): si asoma por un lado, se corre; si aun así no cabe, se estrecha.
+function fitNote(note) {
+  const rail = document.querySelector('.scrub');
+  const right = Math.min(window.innerWidth - EDGE, rail && rail.getClientRects().length ? rail.getBoundingClientRect().left - EDGE : Infinity);
+  const place = () => {
+    const r = note.getBoundingClientRect();
+    const shift = r.left < EDGE ? EDGE - r.left : r.right > right ? right - r.right : 0;
+    note.style.translate = shift ? `${Math.round(shift)}px 0` : '';
+  };
+  place();
+  const r = note.getBoundingClientRect();
+  if (r.left >= EDGE - 0.5 && r.right <= right + 0.5) return;
+  note.style.maxWidth = `${Math.floor(right - EDGE)}px`;
+  note.style.translate = '';
+  place();
+}
+
 export function showLockNote(button) {
   closeLockNote();
   shake(button);
@@ -126,11 +145,9 @@ export function showLockNote(button) {
   goBtn.hidden = !unlock;
   if (unlock) goBtn.setAttribute('aria-label', `Ir: ${text}`);
   note.style.translate = '';
+  note.style.maxWidth = '';
   note.classList.add('is-visible');
-  // Dentro de la pantalla: si asoma por un lado, se corre.
-  const r = note.getBoundingClientRect();
-  const shift = r.left < EDGE ? EDGE - r.left : r.right > window.innerWidth - EDGE ? window.innerWidth - EDGE - r.right : 0;
-  if (shift) note.style.translate = `${Math.round(shift)}px 0`;
+  fitNote(note);
   announce(text);
   const top0 = button.getBoundingClientRect().top;
   const onDown = (e) => { if (!note.contains(e.target) && !button.contains(e.target)) closeLockNote(); };
@@ -158,7 +175,9 @@ export function showLockNote(button) {
   };
 }
 
-const GO_SETTLE_MS = 450;   // lo que tarda el camino en llegar a la parada antes de tocarla
+const GO_MIN_MS = 120;      // espera mínima antes de dar el camino por quieto
+const GO_MAX_MS = 2500;     // y máxima: pasado esto se toca igualmente
+const STILL_FRAMES = 6;     // cuadros seguidos sin moverse para darlo por quieto
 
 // A la parada que abre lo cerrado: en esta pantalla, el camino baja (o sube) hasta ella y se toca; si no está, a jugarla.
 export function goToStep(key) {
@@ -170,5 +189,23 @@ export function goToStep(key) {
   const reduce = prefersReducedMotion();
   target.scrollIntoView({ block: 'center', behavior: reduce ? 'instant' : 'smooth' });
   target.focus({ preventScroll: true });
-  return setTimeout(() => { if (target.isConnected) target.click(); }, reduce ? 0 : GO_SETTLE_MS);
+  // Se toca cuando el camino ha dejado de moverse: una tarjeta abierta con el desplazamiento en curso se cerraba sola.
+  return whenStill(target, reduce).then(() => { if (target.isConnected) target.click(); });
+}
+
+// Resuelve cuando la parada lleva STILL_FRAMES cuadros sin moverse (o pasado GO_MAX_MS).
+function whenStill(target, reduce) {
+  return new Promise((resolve) => {
+    const t0 = performance.now();
+    let last = NaN;
+    let still = 0;
+    const tick = () => {
+      const top = target.getBoundingClientRect().top;
+      still = top === last ? still + 1 : 0;
+      last = top;
+      if ((still >= STILL_FRAMES && (reduce || performance.now() - t0 > GO_MIN_MS)) || performance.now() - t0 > GO_MAX_MS) return resolve();
+      return requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
 }

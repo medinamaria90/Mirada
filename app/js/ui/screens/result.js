@@ -175,7 +175,7 @@ export function renderResult(ctx, el, opts) {
   // Ronda elegida desde un pintor: repetirla queda como secundario discreto, «Repetir <pintor>».
   const replay = opts.contextArtist && plan.kind === 'stage' && plan.artistId === opts.contextArtist && index.artist(plan.artistId)
     ? { to: isDeep ? deepRoute(plan.artistId, plan.level) : stageRoute(plan.artistId, inBranch?.branch.id), name: index.artist(plan.artistId).short || index.artist(plan.artistId).name } : null;
-  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to, weak: outcome.accuracy < MASTERY, replay });
+  const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to, mainLabel: next.label, weak: outcome.accuracy < MASTERY, replay });
   // La guía propone el Cuadro del día una sola vez al día.
   if (practice?.to === CUADRO_ROUTE) ctx.store.update((s) => ({ ...s, progress: markNudged(s.progress, ctx.dailyDay()) }));
   const shareLabel = isDaily ? 'Copiar resultado' : 'Devolver el reto';

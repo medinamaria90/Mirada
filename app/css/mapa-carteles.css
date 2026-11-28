@@ -74,19 +74,21 @@ html.reduce-motion .map-cue { animation: none; }
 .path-map.is-linear .arch-band { position: relative; inset: auto; display: block; width: 100%; }
 .path-map.is-linear .arch-name { position: static; translate: none; width: auto; height: auto; min-height: var(--hit); }
 
-/* ---------- Ir a lo recomendado (screens/map-return.js) ---------- */
-/* Círculo con una flecha hacia donde queda lo que recomienda el itinerario (arriba o abajo). Solo se ve cuando eso no está a la vista. */
-.map-return {
-  position: fixed; right: max(16px, calc(50% - var(--col) / 2 + 16px)); bottom: calc(var(--map-return-b) + var(--safe-b)); z-index: var(--map-z-float);
-  display: grid; place-items: center; width: var(--map-return-size); height: var(--map-return-size); padding: 0; border: 0; border-radius: 999px;
-  background: var(--surface); color: var(--brand-text); box-shadow: var(--shadow-card), 0 0 0 2px var(--brand); cursor: pointer;
+/* ---------- Píldora del itinerario (screens/map-return.js) ---------- */
+/* Lo que recomienda el itinerario cuando su parada no está a la vista o no tiene parada: texto corto que lo lanza, con una flecha
+   hacia donde queda. Abajo, en el hueco de la fila que no tapa carteles ni paradas (la izquierda la fija el script). */
+.map-pill {
+  position: fixed; left: 0; bottom: calc(var(--map-return-b) + var(--safe-b)); z-index: var(--map-z-float);
+  display: flex; align-items: center; gap: .4rem; max-width: calc(100vw - 2 * var(--map-pill-edge)); min-height: var(--map-return-size); padding: 0 1rem 0 .7rem; border: 0; border-radius: var(--radius-pill);
+  background: var(--brand); color: var(--on-brand); font: 600 .9rem/1.15 var(--font); text-align: left; box-shadow: var(--shadow-pop); cursor: pointer;
 }
-.map-return[hidden] { display: none; }
-.map-return:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
-.map-return:active { transform: translateY(1px); }
-.map-return-arrow { display: grid; place-items: center; rotate: 90deg; transition: rotate .2s var(--ease); }
-.map-return.is-up .map-return-arrow { rotate: -90deg; }
-@media (hover: hover) { .map-return:hover { background: color-mix(in srgb, var(--surface) 92%, var(--ink)); } }
+.map-pill[hidden] { display: none; }
+.map-pill-text { min-width: 0; text-wrap: balance; }
+.map-pill-arrow { display: grid; flex: none; rotate: 90deg; transition: rotate .2s var(--ease); }
+.map-pill-arrow[hidden] { display: none; }
+.map-pill.is-up .map-pill-arrow { rotate: -90deg; }
+.map-pill:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
+.map-pill:active { transform: translateY(1px); }
 
 
 /* ---------- 2. Paradas que cuentan: medallón y rombo ---------- */
