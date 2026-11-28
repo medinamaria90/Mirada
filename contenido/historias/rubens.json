@@ -24,55 +24,11 @@
   },
   {
    "level": 2,
-   "stage": "Italia",
-   "title": "Italia",
-   "cards": [
-    {
-     "text": "En 1600 llega a Italia y el duque de Mantua lo nombra pintor de corte. Debe retratarlos, copiar a grandes maestros y cuidar sus palacios. Aquí, una obra de su etapa romana.",
-     "artwork": "w1134060",
-     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Italia_%281600-1608%29"
-    },
-    {
-     "text": "En 1603 viaja a España como diplomático. En Valladolid pinta el retrato ecuestre del duque de Lerma: el caballo, en escorzo muy logrado, y el duque, que mira al espectador.",
-     "artwork": "w16038514",
-     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Italia_%281600-1608%29"
-    },
-    {
-     "text": "En Génova pinta muchos retratos, como el de la marquesa Brígida Spinola-Doria. Ese estilo influyó después en Van Dyck, Reynolds y Gainsborough.",
-     "artwork": "w3399422",
-     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Italia_%281600-1608%29"
-    }
-   ]
-  },
-  {
-   "level": 3,
-   "stage": "Amberes",
-   "title": "Amberes",
-   "cards": [
-    {
-     "text": "A finales de 1608 vuelve a Amberes porque su madre está enferma, y se queda. En 1609 es pintor de cámara de los archiduques Alberto e Isabel Clara Eugenia.",
-     "artwork": "w5961888",
-     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Amberes_%28finales_de_1608-1621%29"
-    },
-    {
-     "text": "Rubens era un humanista: dominaba varios idiomas, incluido el latín, y amaba la Antigüedad. En 1610 se mudó a su propia casa, que diseñó él mismo con modelos italianos.",
-     "artwork": "w2894005",
-     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Amberes_%28finales_de_1608-1621%29"
-    },
-    {
-     "text": "Montó un gran taller con ayudantes y aprendices; su discípulo más famoso fue Van Dyck. Contrataba además a pintores especializados para ciertas partes de sus obras.",
-     "artwork": "w2529962",
-     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Amberes_%28finales_de_1608-1621%29"
-    }
-   ]
-  },
-  {
-   "level": 4,
    "stage": "Diplomacia",
    "title": "María de Médici y las misiones diplomáticas",
    "cards": [
     {
-     "text": "En 1621, María de Médici le encarga dos ciclos para el Palacio del Luxemburgo, en París. El suyo, de 21 lienzos, se terminó en 1624. Aquí, su desembarco en Marsella.",
+     "text": "Ya famoso en toda Europa, en 1621 Rubens recibe de María de Médici, reina madre de Francia, un ciclo de 21 lienzos sobre su vida. Aquí, su desembarco en Marsella.",
      "artwork": "w2843410",
      "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#El_ciclo_de_Mar%C3%ADa_de_M%C3%A9dici_y_las_misiones_diplom%C3%A1ticas_%281621-1630%29"
     },
@@ -85,16 +41,48 @@
      "text": "En Madrid, en 1628-1629, conoce a Velázquez y traba gran amistad con él. Según la biografía, fue Rubens quien lo animó a viajar a Italia. Aquí, su Adán y Eva, de hacia 1628.",
      "artwork": "w3605057",
      "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#El_ciclo_de_Mar%C3%ADa_de_M%C3%A9dici_y_las_misiones_diplom%C3%A1ticas_%281621-1630%29"
+    },
+    {
+     "text": "Fíjate en los angelotes que revolotean empujando a las parejas hacia el amor. Rubens lo pintó poco después de casarse con Hélène.",
+     "artwork": "w1195238",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
     }
    ]
   },
   {
-   "level": 5,
+   "level": 3,
+   "stage": "Amberes",
+   "title": "Amberes",
+   "cards": [
+    {
+     "text": "Retrocedemos a 1608: con 31 años vuelve a Amberes porque su madre está enferma, y se queda. En 1609 es pintor de cámara de los archiduques Alberto e Isabel Clara Eugenia.",
+     "artwork": "w5961888",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Amberes_%28finales_de_1608-1621%29"
+    },
+    {
+     "text": "Rubens era un humanista: dominaba varios idiomas, incluido el latín, y amaba la Antigüedad. En 1610 se mudó a su propia casa, que diseñó él mismo con modelos italianos.",
+     "artwork": "w2894005",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Amberes_%28finales_de_1608-1621%29"
+    },
+    {
+     "text": "Montó un gran taller con ayudantes y aprendices; su discípulo más famoso fue Van Dyck. Contrataba además a pintores especializados para ciertas partes de sus obras.",
+     "artwork": "w2529962",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Amberes_%28finales_de_1608-1621%29"
+    },
+    {
+     "text": "Fíjate en el puente: amazonas y griegos luchan encima y caen al río con sus caballos. Todo da vueltas, como un torbellino.",
+     "artwork": "w3636299",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
+    }
+   ]
+  },
+  {
+   "level": 4,
    "stage": "Hélène",
    "title": "Última década",
    "cards": [
     {
-     "text": "En 1630 se casa con Hélène Fourment, de 16 años; él tenía 53. Tuvieron cinco hijos. Aquí, Helena Fourment saliendo del baño.",
+     "text": "Su última década: en 1630, ya viudo, se casa con Hélène Fourment, de 16 años; él tenía 53. Tuvieron cinco hijos. Aquí, Helena Fourment saliendo del baño.",
      "artwork": "w3788158",
      "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#%C3%9Altima_d%C3%A9cada_%281630-1640%29"
     },
@@ -107,6 +95,38 @@
      "text": "Exploró caminos más personales: pintó cuadros sin intención de venderlos, que conservó hasta su muerte. Murió en Amberes el 30 de mayo de 1640, con 62 años.",
      "artwork": "w3885854",
      "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#%C3%9Altima_d%C3%A9cada_%281630-1640%29"
+    },
+    {
+     "text": "Fíjate en el águila de Júpiter, que se lleva por los aires al joven Ganímedes envuelto en un manto rojo. Era para un pabellón de caza de Felipe IV.",
+     "artwork": "w3930498",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
+    }
+   ]
+  },
+  {
+   "level": 5,
+   "stage": "Italia",
+   "title": "Italia",
+   "cards": [
+    {
+     "text": "Retrocedemos a su juventud: en 1600 llega a Italia y el duque de Mantua lo nombra pintor de corte. Debe retratarlos, copiar a grandes maestros y cuidar sus palacios.",
+     "artwork": "w1134060",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Italia_%281600-1608%29"
+    },
+    {
+     "text": "En 1603 viaja a España como diplomático. En Valladolid pinta el retrato ecuestre del duque de Lerma: el caballo, en escorzo muy logrado, y el duque, que mira al espectador.",
+     "artwork": "w16038514",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Italia_%281600-1608%29"
+    },
+    {
+     "text": "En Génova pinta muchos retratos, como el de la marquesa Brígida Spinola-Doria. Ese estilo influyó después en Van Dyck, Reynolds y Gainsborough.",
+     "artwork": "w3399422",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens#Italia_%281600-1608%29"
+    },
+    {
+     "text": "Fíjate en el caballo blanco que se encabrita sobre el dragón y en la princesa que mira detrás: Rubens ya pinta el movimiento a lo grande.",
+     "artwork": "w3825684",
+     "source": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
     }
    ]
   }

@@ -1,10 +1,11 @@
 // Feedback que enseña (puro): qué mirar en ESE cuadro (`look`) y el rasgo del pintor.
 // Para no repetir el mismo texto, el rasgo rota entre la pista y los rasgos del pintor.
-// Tras un fallo se dice también de quién era lo elegido (`chosen`), y la pista nunca es un rasgo
+// Tras un fallo se devuelve también lo elegido (`chosen`, se marca en su opción), y la pista nunca es un rasgo
 // que el cuadro elegido también cumpla: se apoya en las etiquetas visuales del catálogo (`tags` de
 // obra, `traitTags` de pintor, `tagLabels` y `negableTags`), que llegan con data/catalog-text.json.
 
 import { BEFORE_TYPE, beforeFeedback } from './question-before.js';
+import { SCOPE_STYLE, SCOPE_TAGS } from './catalog.js';
 
 // --- Elección de la pista ---------------------------------------------------------------
 // Tipos de cuadro: el típico enseña el rasgo del autor; el atípico se reconoce por otra cosa
@@ -48,34 +49,91 @@ export function traitTagsOf(artist, count) {
 const disjoint = (tags, set) => tags.every((t) => !set.has(t));
 const subset = (tags, set) => tags.every((t) => set.has(t));
 
+// ¿La frase `i` del pintor ([pista, ...rasgos]) está excluida para esta obra? (contenido/fijate.json:
+// obras de juventud, copias, retratos… donde ese rasgo no se ve). `skipTraits`: true (todos) o posiciones.
+export function skipsTrait(work, i) {
+  const skip = work?.skipTraits;
+  return skip === true || (Array.isArray(skip) && skip.includes(i));
+}
+
+// ¿La frase `i` del pintor puede verse en `work` según su alcance (`traitScope`, contenido/rasgos.json)? «estilo»: en
+// cualquier obra suya; lista de géneros: solo en obras de ese género; «etiquetas»: solo si las etiquetas lo confirman
+// (`verified`). Sin alcance declarado no hay certeza: no. Un pintor sin `traitScope` (datos antiguos) no se filtra.
+export function scopeFits(artist, work, i, verified = false) {
+  if (!Array.isArray(artist?.traitScope)) return true;
+  return fits(artist.traitScope[i], work, verified);
+}
+
+function fits(scope, work, verified) {
+  if (scope === SCOPE_STYLE) return true;
+  if (scope === SCOPE_TAGS) return verified;
+  return Array.isArray(scope) && Boolean(work?.genre) && scope.includes(work.genre);
+}
+
+// Versión general de la frase `i` (sin su detalle concreto) si encaja en `work`; '' si no hay o no encaja.
+export function generalLine(artist, work, i) {
+  const g = Array.isArray(artist?.traitGeneral) ? artist.traitGeneral[i] : null;
+  return g && fits(g.scope, work, false) ? sentence(g.text) : '';
+}
+
 // Frases del pintor que sirven para enseñar `work`, en orden de preferencia: primero las que
 // se ven seguro en ese cuadro; con `avoidWork` (el cuadro elegido por error) solo las que no
-// comparte ese cuadro, y de esas, las verificadas en el correcto. Puede devolver [].
+// comparte ese cuadro, y de esas, las verificadas en el correcto. Nunca las que no encajan con la obra
+// (alcance, exclusiones de contenido/fijate.json) ni, si el cuadro está etiquetado, las que piden algo que no
+// tiene. Puede devolver [].
 export function teachingLines(lines, artist, work, avoidWork = null) {
   const tags = traitTagsOf(artist, lines.length);
   const seen = tagsOf(work);
   const avoid = avoidWork ? tagsOf(avoidWork) : null;
   const verified = (t) => Boolean(t && t.length && seen.size && subset(t, seen));
-  const ranked = lines.map((line, i) => ({ line, tags: tags[i], ok: verified(tags[i]) }));
-  if (!avoid) return [...ranked.filter((r) => r.ok), ...ranked.filter((r) => !r.ok)].map((r) => r.line);
+  const all = lines.map((line, i) => ({ line, i, tags: tags[i], ok: verified(tags[i]) })).filter((r) => !skipsTrait(work, r.i));
+  const ranked = all.filter((r) => scopeFits(artist, work, r.i, r.ok));
+  // Sin verificar: la frase sin etiquetas o el cuadro sin revisar (no se sabe; vale). Desmentida: no.
+  const unknown = (r) => !r.ok && !(seen.size && r.tags && r.tags.length);
+  if (!avoid) {
+    // La frase cuyo detalle no se ve aquí cede su sitio a su versión general (si la tiene y encaja).
+    const kept = new Set([...ranked.filter((r) => r.ok), ...ranked.filter(unknown)]);
+    const general = all.filter((r) => !kept.has(r)).map((r) => generalLine(artist, work, r.i)).filter(Boolean);
+    return [...new Set([...[...kept].map((r) => r.line), ...general])];
+  }
   const safe = ranked.filter((r) => r.tags && r.tags.length && disjoint(r.tags, avoid));
   // Sin etiquetas en el cuadro correcto no hay forma de verificar: vale con que no sea del otro.
   return safe.filter((r) => r.ok || !seen.size).map((r) => r.line);
 }
 
-// Rasgo del pintor `artist` (el elegido por error) que seguro NO está en `work`: la etiqueta
-// humana de una de sus señas (`tagLabels`, solo las negables) ausente del cuadro. '' si no hay
-// forma de afirmarlo (cuadro sin etiquetar o pintor sin señas negables).
-export function absentTrait(index, artist, work) {
-  const labels = index?.tagLabels && typeof index.tagLabels === 'object' ? index.tagLabels : {};
-  const negable = new Set(Array.isArray(index?.negableTags) ? index.negableTags : []);
+// ¿Dos frases dicen casi lo mismo? Comparación simple de palabras clave (de 6 letras o más, sin «Fíjate»):
+// parecidas si comparten al menos la mitad de las de la más corta.
+const SIMILAR_SHARE = 0.5;
+const keywords = (t) => new Set(String(t || '').toLowerCase().match(/[a-záéíóúüñ]{6,}/g)?.filter((w) => w !== 'fíjate') || []);
+export function similar(a, b) {
+  const ka = keywords(a);
+  const kb = keywords(b);
+  const small = Math.min(ka.size, kb.size);
+  if (!small) return false;
+  let shared = 0;
+  for (const w of ka) if (kb.has(w)) shared++;
+  return shared / small >= SIMILAR_SHARE;
+}
+
+// ¿El refuerzo de estilo `i` está excluido para esta obra? (contenido/fijate.json «sinPistas»).
+export function skipsHint(work, i) {
+  const skip = work?.skipHints;
+  return skip === true || (Array.isArray(skip) && skip.includes(i));
+}
+
+// Refuerzos de estilo del pintor (contenido/pistas.json) que encajan en `work`: su alcance (estilo, géneros o
+// etiquetas), no excluidos para esa obra y, si el cuadro está etiquetado, sin pedir algo que no tiene. Con
+// `avoidWork` (el elegido por error), solo los etiquetados que ese cuadro no cumple, como las frases del pintor.
+export function styleLines(artist, work, avoidWork = null) {
+  const hints = Array.isArray(artist?.styleHints) ? artist.styleHints : [];
   const seen = tagsOf(work);
-  if (!seen.size) return '';
-  const own = Array.isArray(artist?.traitTags) ? artist.traitTags.flat() : [];
-  for (const tag of own) {
-    if (negable.has(tag) && typeof labels[tag] === 'string' && !seen.has(tag)) return labels[tag];
-  }
-  return '';
+  const avoid = avoidWork ? tagsOf(avoidWork) : null;
+  return hints
+    .map((h, i) => ({ ...h, i, ok: Boolean(h.tags.length && seen.size && subset(h.tags, seen)) }))
+    .filter((h) => !skipsHint(work, h.i) && fits(h.scope, work, h.ok))
+    .filter((h) => h.ok || !(seen.size && h.tags.length))
+    .filter((h) => !avoid || (h.tags.length && disjoint(h.tags, avoid)))
+    .map((h) => sentence(h.text));
 }
 
 // --- Títulos y montaje ------------------------------------------------------------------
@@ -124,15 +182,16 @@ function chosenOf(index, q, chosenId) {
   return null;
 }
 
-// Una sola frase que enseña: el `look` de ESE cuadro o, si no hay, un rasgo del pintor (que rota
-// para no repetir el mismo texto). En las de movimiento, al fallar, la línea del movimiento.
-// memo: Map artistId → veces que ya se ha mostrado un rasgo de ese pintor en la ronda; y
-// `look:<obra>` → pistas propias ya dichas de esa obra (la segunda vez sale la segunda pista).
+// Una sola frase que enseña: el `look` de ESE cuadro o, si no hay, una frase o un refuerzo de estilo del
+// pintor (que rota sin repetir el último). En las de movimiento, al fallar, la línea del movimiento.
+// memo: Map `look:<obra>` → pistas propias ya dichas de esa obra en la ronda (la segunda vez sale la segunda).
+// opts.recent: Map `last:<artistId>` → última frase mostrada de ese pintor y `lastKind:<artistId>` → si fue la propia
+// de una obra ('look') o de estilo ('trait'), para alternar y no repetir (por defecto, el propio memo).
 // opts.retry: la pregunta es la repetición de una fallada en esta ronda (el elogio de «cuadro nuevo»
-// solo vale la primera vez que se ve). opts.chosenId: la opción elegida (para decir de quién era).
+// solo vale la primera vez que se ve). opts.chosenId: la opción elegida (para marcar de quién era).
 // Devuelve { title, who, lines[], kind, source, chosen } con una línea como mucho (texto plano; la
-// UI escapa). chosen: { artistId, name, artworkId, title, line } tras un fallo de autor; si no, null.
-export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { retry = false, chosenId = null } = {}) {
+// UI escapa). chosen: { artistId, name, artworkId, title } tras un fallo de autor; si no, null.
+export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { retry = false, chosenId = null, recent = memo } = {}) {
   if (q.type === BEFORE_TYPE) {
     const fb = beforeFeedback(index, q, correct, rng ? rng.pick(PRAISE) : PRAISE[0]);
     return { ...fb, who: '', artistId: null, kind: kindOf(null), source: '', chosen: null };
@@ -144,25 +203,49 @@ export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { r
   const pick = (list) => (rng ? rng.pick(list) : list[0]);
   let source = '';
   // Las pistas propias de la obra se dicen una vez cada una por ronda; después, un rasgo del pintor.
-  const nextLook = () => {
+  // Solo se alterna con la memoria de sesión (`recent` propio); con el memo de la ronda, la propia va primero.
+  const alternate = recent !== memo;
+  const lastKey = `last:${q.artistId}`;
+  const kindKey = `lastKind:${q.artistId}`;
+  const last = recent.get(lastKey) || '';
+  // Pista propia de la obra que toca (sin gastarla aún) y la que se gasta al mostrarla.
+  const lookKey = subject ? `look:${subject.id}` : '';
+  const pendingLook = () => {
     const looks = looksOf(subject);
-    const key = subject ? `look:${subject.id}` : '';
-    const n = key ? memo.get(key) || 0 : 0;
-    if (!key || n >= looks.length) return '';
-    memo.set(key, n + 1);
-    source = looks[n].source;
-    return sentence(looks[n].text);
+    const n = lookKey ? memo.get(lookKey) || 0 : 0;
+    return lookKey && n < looks.length ? looks[n] : null;
   };
-  const nextTrait = (avoidWork) => {
-    const pool = teachingLines(artistLines(artist), artist, subject, avoidWork);
+  const takeLook = () => {
+    const look = pendingLook();
+    memo.set(lookKey, (memo.get(lookKey) || 0) + 1);
+    source = look.source;
+    return sentence(look.text);
+  };
+  // Frases del pintor y refuerzos de estilo que encajan; rota sin repetir el último que se vio de ese pintor
+  // (`recent`, que puede durar más que la ronda) ni uno muy parecido: con `rng`, al azar entre los demás;
+  // sin él, el siguiente.
+  const traitLine = (avoidWork) => {
+    const pool = [...new Set([...teachingLines(artistLines(artist), artist, subject, avoidWork), ...styleLines(artist, subject, avoidWork)])];
     if (!pool.length) return '';
-    const n = memo.get(q.artistId) || 0;
-    memo.set(q.artistId, n + 1);
-    return pool[n % pool.length];
+    const fresh = pool.filter((l) => l !== last && !similar(l, last));
+    const choices = fresh.length ? fresh : pool.length > 1 ? pool.filter((l) => l !== last) : pool;
+    return rng ? rng.pick(choices) : choices.find((l) => pool.indexOf(l) > pool.indexOf(last)) || choices[0];
   };
   // avoidWork: el cuadro elegido por error (no se enseña un rasgo que ese cuadro también tenga).
   // En cuadros atípicos o «de memoria» los rasgos genéricos del pintor no se ven: no se dicen.
-  const teach = (avoidWork = null) => nextLook() || (kindOf(subject) === 'tipico' ? nextTrait(avoidWork) : '');
+  // La pista propia de la obra va primero, salvo que lo último visto de ese pintor fuera también una pista
+  // propia o se parezca mucho a ella: entonces, una frase de estilo (alternan) y la propia espera su turno.
+  const teach = (avoidWork = null) => {
+    const look = pendingLook();
+    const trait = kindOf(subject) === 'tipico' ? traitLine(avoidWork) : '';
+    const preferTrait = alternate && trait && look && (recent.get(kindKey) === 'look' || similar(look.text, last));
+    const line = look && !preferTrait ? takeLook() : trait;
+    if (line) {
+      recent.set(lastKey, line);
+      recent.set(kindKey, look && !preferTrait ? 'look' : 'trait');
+    }
+    return line;
+  };
   let title;
   let who = artist ? artist.name : '';
   let line;
@@ -182,18 +265,16 @@ export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { r
     who = '';
     line = teach();
   }
-  return { title, who, artistId: artist ? artist.id : null, lines: line ? [line] : [], kind: kindOf(subject), source, chosen: chosen ? chosenLine(index, chosen, subject, line) : null };
+  return { title, who, artistId: artist ? artist.id : null, lines: line ? [line] : [], kind: kindOf(subject), source, chosen: chosen ? chosenInfo(chosen) : null };
 }
 
-// Línea sobre lo elegido por error: en «¿Cuál?», de quién es ese cuadro; en «¿Quién?», que no es
-// de ese pintor y, si se sabe seguro, qué seña suya falta aquí.
-function chosenLine(index, chosen, subject, mainLine) {
-  const name = shortName(chosen.artist);
-  if (chosen.work) {
-    return { artistId: chosen.artist.id, name, artworkId: chosen.work.id, title: chosen.work.title, line: `El que has elegido es de ${name} · ${chosen.work.title}` };
-  }
-  const missing = absentTrait(index, chosen.artist, subject);
-  // Si la pista ya empieza por «Fíjate…», no se repite la muletilla.
-  const tail = !missing ? '' : /^Fíjate/.test(mainLine || '') ? `: aquí no hay ${missing}` : `: fíjate en que aquí no hay ${missing}`;
-  return { artistId: chosen.artist.id, name, artworkId: null, title: '', line: `No es de ${name}${tail}` };
+// Lo elegido por error, para marcarlo en su propia opción (sin línea aparte en la hoja): en «¿Cuál?»,
+// el cuadro y su pintor; en «¿Quién?», el pintor.
+function chosenInfo(chosen) {
+  return {
+    artistId: chosen.artist.id,
+    name: shortName(chosen.artist),
+    artworkId: chosen.work ? chosen.work.id : null,
+    title: chosen.work ? chosen.work.title : '',
+  };
 }

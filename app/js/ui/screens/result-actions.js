@@ -1,26 +1,31 @@
-// Acciones secundarias del resultado: como mucho una para seguir practicando (repetir, repasar o el reto
-// semanal) además de compartir. Un solo botón principal («Seguir») y nada repetido.
+// Acciones secundarias del resultado: como mucho una para seguir practicando (repetir, el Cuadro del día, repasar o el reto semanal)
+// además de «Volver al camino» y compartir. Un solo botón principal (engine/next-step.js) y nada repetido.
 
 import { isPathMastered } from '../../engine/progress.js';
-import { review5Works, review5Label, REVIEW5_MIN } from '../../engine/review.js';
+import { reviewSession, REVIEW_MIN, REVIEW_NAME } from '../../engine/review.js';
+import { isReviewKind } from '../../engine/next-step.js';
 import { isoWeek } from '../../engine/dates.js';
+import { cuadroNudge, CUADRO_ROUTE } from '../../engine/cuadro-dia.js';
 
-// Otras rondas a mano, ya que la franja «Hoy» no existe: el repaso de lo aprendido (si hay material) y el reto
-// semanal (con el camino dominado y sin hacer esta semana). No se ofrece la que se acaba de jugar.
-export function extraRounds(ctx, plan) {
+// Otras rondas a mano: el Cuadro del día (pendiente, una vez al día y nunca tras una ronda floja: `weak`), «Repasar» (si hay
+// material y no se viene de un repaso: nunca dos seguidos) y el reto semanal (con el camino dominado y sin hacer esta semana).
+// No se ofrece la que se acaba de jugar.
+export function extraRounds(ctx, plan, { prevKind = null, weak = false } = {}) {
   const p = ctx.store.get().progress;
   const list = [];
-  const ids = plan.kind === 'review5' ? [] : review5Works(p, ctx.index, ctx.today());
-  if (ids.length >= REVIEW5_MIN) list.push({ to: 'repaso5', label: review5Label(p, ids), icon: 'repeat' });
+  if (typeof ctx.dailyDay === 'function' && cuadroNudge(p, ctx.dailyDay(), { weak })) list.push({ to: CUADRO_ROUTE, label: 'Cuadro del día', icon: 'frames' });
+  const reviewed = isReviewKind(plan.kind) || isReviewKind(prevKind);
+  if (!reviewed && reviewSession(p, ctx.index, ctx.today()).works.length >= REVIEW_MIN) list.push({ to: 'repaso', label: REVIEW_NAME, icon: 'repeat' });
   if (plan.kind !== 'weekly' && isPathMastered(p, ctx.index) && !p.weekly?.[isoWeek(ctx.dailyDay()).key]) list.push({ to: 'reto-semanal', label: 'Reto semanal', icon: 'target' });
   return list;
 }
 
-// La acción para seguir practicando, una sola y por prioridad: repetir la ronda si no salió, lo que pida el
-// flujo (p. ej. «Repasar más» tras el repaso rápido) y, si no, otra ronda. Ninguna al cerrar el día ni en un reto.
-export function practiceAction(ctx, plan, { retry = null, more = null, closing = false, duel = false } = {}) {
+// La acción para seguir practicando, una sola y por prioridad: repetir la ronda si no salió y, si no, otra ronda. Ninguna
+// al cerrar el día ni en un duelo; nunca la misma que el botón principal (`main`: su ruta).
+// replay: { to, name } si la ronda se eligió desde un pintor: repetirla, «Repetir <pintor>», en lugar de otra ronda.
+export function practiceAction(ctx, plan, { retry = null, closing = false, duel = false, prevKind = null, main = '', weak = false, replay = null } = {}) {
   if (closing || duel) return null;
-  if (retry) return { to: retry, label: 'Repetir', icon: 'repeat' };
-  if (more) return { to: more.to, label: more.label, icon: 'repeat' };
-  return extraRounds(ctx, plan)[0] || null;
+  if (retry && retry !== main) return { to: retry, label: replay ? `Repetir ${replay.name}` : 'Repetir' };
+  if (replay) return replay.to !== main ? { to: replay.to, label: `Repetir ${replay.name}` } : null;
+  return extraRounds(ctx, plan, { prevKind, weak }).find((r) => r.to !== main) || null;
 }

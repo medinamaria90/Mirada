@@ -1,0 +1,50 @@
+{
+ "n": 5,
+ "artwork": "w969377",
+ "artistId": "caravaggio",
+ "focus": [
+  0.72,
+  0.45
+ ],
+ "options": [
+  "artemisia",
+  "velazquez",
+  "ribera",
+  "rembrandt",
+  "zurbaran",
+  "caravaggio"
+ ],
+ "hints": {
+  "era": "Barroco · s. XVII",
+  "year": "1600",
+  "museum": "Iglesia de San Luis de los Franceses, Roma"
+ },
+ "cards": [
+  {
+   "text": "La mano del principio copia la de Adán que pintó el gran Miguel Ángel en la Capilla Sixtina (la del Papa, en Roma). Era Caravaggio, el rebelde de la luz y la sombra.",
+   "artwork": "w969377",
+   "region": [
+    0.574,
+    0.22,
+    0.866,
+    0.72
+   ]
+  },
+  {
+   "text": "Mira la luz: entra en diagonal desde arriba, como el foco de un teatro, y cae sobre la mesa de Mateo, el cobrador de impuestos, y sus ayudantes.",
+   "artwork": "w969377",
+   "region": [
+    0.267,
+    0.188,
+    0.633,
+    0.812
+   ]
+  },
+  {
+   "text": "Fue su primer gran encargo para una iglesia y lo hizo famoso de golpe. Sigue en la misma capilla de Roma: si echas una moneda, se enciende una luz unos minutos.",
+   "artwork": "w969377",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/La_vocaci%C3%B3n_de_San_Mateo"
+}

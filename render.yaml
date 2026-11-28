@@ -24,6 +24,13 @@ services:
       - path: /data/*
         name: Cache-Control
         value: no-cache
+      # La página también: un index.html viejo en caché dejaba fuera hojas de estilo nuevas (el mapa salía sin carteles).
+      - path: /
+        name: Cache-Control
+        value: no-cache
+      - path: /*.html
+        name: Cache-Control
+        value: no-cache
   # Dirección antigua: redirige todo a la nueva.
   - type: web
     name: mirada

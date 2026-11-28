@@ -1,4 +1,5 @@
-"""Imágenes HD de las obras que las historias enseñan en detalle (`region` o `focus` con zoom grande).
+"""Imágenes HD de las obras que las historias enseñan en detalle (`region` o `focus` con zoom grande) y de las del Cuadro del día
+(contenido/cuadro-del-dia/calendario.json: su detalle del paso 1 se ve a zoom ×3).
 
 La imagen normal de la app (1200 px, pack.py) se queda corta para un trozo de la obra a sangre: un panel del tríptico de El
 Bosco saldría a 0,7 píxeles de imagen por píxel CSS. Este paso calcula, con tools/nitidez.py, qué obras de
@@ -14,6 +15,7 @@ from lib import *
 
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import nitidez as N  # noqa: E402
+import sync_cuadro_dia as C  # noqa: E402  (detalle del paso 1 del Cuadro del día)
 
 MAX_PIXELS = 120_000_000           # tope de seguridad al abrir lo que llega de Commons
 MAX_BYTES = 60_000_000
@@ -43,6 +45,16 @@ def needs():
                 side = min(N.side_needed(c, W, H), N.HD_MAX_SIDE, max(W, H))
                 if side > N.APP_SIDE:
                     out[e["id"]] = max(out.get(e["id"], 0), side)
+    # Cuadro del día: el detalle del paso 1 (zoom ×3 en un marco cuadrado) pide HD_DENSITY píxeles por píxel CSS.
+    for d in load(C.SRC, {}).get("days", []):
+        e = sel.get(d.get("artwork"))
+        if not e or not d.get("focus"):
+            continue
+        W, H = e["srcW"], e["srcH"]
+        full = C.density(W, H, d["focus"], C.ZOOM_STEPS[0])
+        side = min(int(-(-max(W, H) * N.HD_DENSITY / full // 100) * 100), N.HD_MAX_SIDE, max(W, H))
+        if side > N.APP_SIDE:
+            out[e["id"]] = max(out.get(e["id"], 0), side)
     return out, sel
 
 

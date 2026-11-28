@@ -13,8 +13,8 @@ import { createRng } from '../app/js/engine/rng.js';
 import { buildBolsa, shownWorks, TIER_CUTS, tierForScore } from '../app/js/test/bolsa.js';
 import { drawGame, startHistory, markSeen, MIN_PER_KIND, MIN_ERAS, MIN_SPANISH as MIN_SPANISH_PER_TIER, RECENT_GAMES, HISTORY_KEEP } from '../app/js/test/sorteo.js';
 import {
-  TIERS, PER_TIER, BLOCK, UP_FROM, STOP_BELOW, PAUSE_FROM, MAX_QUESTIONS, KINDS,
-  createTest, answer, advance, resume, finish, summary, simulate, perfectScore, isAnswered,
+  TIERS, PER_TIER, BLOCK, UP_FROM, STOP_BELOW, MAX_QUESTIONS, KINDS,
+  createTest, answer, advance, finish, summary, simulate, perfectScore, isAnswered,
 } from '../app/js/test/motor.js';
 import { percentileFor, levelForScore, TEST_LEVELS, buildResult, shareText, PERCENTILE_BANDS, GRID_OK, GRID_OFF } from '../app/js/test/resultado.js';
 import { validateBank, viewOf, prefixImages } from '../app/js/test/preguntas.js';
@@ -110,8 +110,8 @@ test('regla del bloque: 3-4 sube, 2 repite, 0-1 para; y «Ver mi resultado» en 
   assert.equal(d.answers.length, 1);
 });
 
-test('jugador perfecto: llega al friki, agota el banco con 24 preguntas, suma el máximo y ve la pausa desde la 20', () => {
-  const { state, pauses } = simulate(questions, () => true);
+test('jugador perfecto: llega al friki, agota el banco con 24 preguntas y suma el máximo, sin pausas', () => {
+  const { state } = simulate(questions, () => true);
   const s = summary(state);
   assert.equal(s.top.key, 'friki');
   assert.equal(s.reason, 'bank');
@@ -119,18 +119,16 @@ test('jugador perfecto: llega al friki, agota el banco con 24 preguntas, suma el
   assert.equal(s.correct, s.asked);
   assert.equal(s.score, perfectScore(questions));
   assert.equal(s.score, BLOCK * TIERS.reduce((n, t) => n + t.points, 0) + BLOCK * TIERS[TIERS.length - 1].points);
-  // Pausa al cerrar cada bloque desde PAUSE_FROM mientras el test siga (20; en la 24 ya no queda banco).
-  const expected = [];
-  for (let n = PAUSE_FROM; n < s.asked; n += BLOCK) expected.push(n);
-  assert.deepEqual(pauses, expected);
-  // Quien se para en la pausa termina con lo jugado.
-  const stopped = simulate(questions, () => true, { stopAtPause: true });
-  assert.equal(summary(stopped.state).asked, PAUSE_FROM);
-  assert.equal(stopped.state.reason, 'user');
-  // Y quien repite dos bloques de cada tramo ve la pausa en la 20, 24, 28, 32 y 36 (40 preguntas).
-  const slow = simulate(questions, (q) => (questions.filter((x) => x.tier === q.tier).indexOf(q) % BLOCK) < STOP_BELOW);
-  assert.equal(summary(slow.state).asked, MAX_QUESTIONS);
-  assert.deepEqual(slow.pauses, [20, 24, 28, 32, 36]);
+  // Quien repite dos bloques de cada tramo llega al máximo (40 preguntas) de un tirón: nunca hay pausa.
+  let slow = createTest(questions);
+  while (slow.status !== 'done') {
+    assert.equal(slow.status, 'playing', 'el test no se para a preguntar');
+    const q = slow.current;
+    const hit = (questions.filter((x) => x.tier === q.tier).indexOf(q) % BLOCK) < STOP_BELOW;
+    slow = advance(answer(slow, hit ? q.answer : q.options.find((o) => o !== q.answer)));
+  }
+  assert.equal(summary(slow).asked, MAX_QUESTIONS);
+  assert.equal(MAX_QUESTIONS, 40, 'la portada dice «o a las 40»');
   const r = buildResult(s, perfectScore(questions));
   assert.equal(r.level, TEST_LEVELS[TEST_LEVELS.length - 1]);
   assert.equal(r.percentile, 99);
@@ -182,7 +180,9 @@ test('puntuación acumulada: cada acierto suma los puntos de su tramo (1-5); ver
   assert.deepEqual(TIERS.map((t) => t.points), [1, 2, 3, 4, 5]);
   // Quien pasa todo con 3 de 4 (y llega al friki) suma más que quien se queda en el fácil con 4 de 4.
   const steady = summary(simulate(questions, (q) => (questions.filter((x) => x.tier === q.tier).indexOf(q) % BLOCK) < UP_FROM).state);
-  const brief = summary(finish(simulate(questions, () => true, { stopAtPause: true }).state));
+  let early = createTest(questions);
+  for (let i = 0; i < 20; i++) early = advance(answer(early, early.current.answer));
+  const brief = summary(finish(early));
   assert.ok(steady.asked > BLOCK && steady.score > 4, `${steady.score} puntos en ${steady.asked} preguntas`);
   assert.ok(brief.score > steady.score / 2);
   // Un acierto en el friki vale 5; en el fácil, 1.
@@ -234,28 +234,31 @@ test('resultado y texto para compartir: «n de m», nivel, percentil, cuadrados 
   const r = buildResult(summary(state), perfectScore(questions));
   assert.equal(r.asked, 2 * BLOCK);
   assert.equal(r.correct, BLOCK);
-  assert.equal(r.topLabel, 'Has llegado al tramo media');
   assert.equal([...r.grid].length, TIERS.length);
   assert.ok(r.grid.endsWith(GRID_OFF.repeat(3)));
-  const text = shareText(r, 'https://mirada.onrender.com/test/');
-  assert.match(text, new RegExp(`^He acertado ${r.correct} de ${r.asked} en el test de Sfumato · ${r.level}\\n`));
-  assert.match(text, new RegExp(`Sé más de pintura que el ${r.percentile} % de la gente `));
+  const text = shareText({ ...r, percentile: 78 }, 'https://mirada.onrender.com/test/');
+  assert.equal(text, 'Sfumato · Sé más de pintura que el 78 % de la gente. ¿Y tú?\nhttps://mirada.onrender.com/test/');
+  assert.equal(shareText({ correct: 3, asked: 4, percentile: 15 }, 'https://x/test/'), 'Sfumato · He acertado 3 de 4 en el test de pintura. ¿Y tú?\nhttps://x/test/', 'con un percentil bajo, los aciertos');
+  assert.equal(shareText({ correct: 3, asked: 4 }, 'https://x/test/'), 'Sfumato · He acertado 3 de 4 en el test de pintura. ¿Y tú?\nhttps://x/test/', 'sin percentil, los aciertos');
   assert.ok(text.endsWith('https://mirada.onrender.com/test/'));
   assert.doesNotMatch(text, /\b(ayer|mañana)\b/i);
-  assert.equal(advance(resume(state)), state, 'un test terminado no se mueve');
+  assert.equal(advance(state), state, 'un test terminado no se mueve');
 });
 
 test('index.html: SEO y vista previa (título, descripción, canonical, Open Graph, Twitter), sin recursos remotos', () => {
   assert.match(html, /<html lang="es">/);
-  assert.match(html, /<title>¿Cuánta pintura reconoces\?/);
+  assert.match(html, /<title>¿Distinguirías un Velázquez de un Murillo\?/);
   assert.match(html, /<meta name="description" content="[^"]{50,}">/);
   assert.match(html, /<link rel="canonical" href="https:\/\/sfumato\.dibulios\.com\/test\/">/);
   for (const p of ['og:title', 'og:description', 'og:image', 'og:url', 'og:type', 'twitter:card', 'twitter:image']) {
     assert.ok(html.includes(`"${p}"`), p);
   }
   assert.match(html, /og:image" content="https:\/\/sfumato\.dibulios\.com\/test\/portada\.jpg"/);
-  assert.match(html, /<h1[^>]*>¿Cuánta pintura reconoces\?<\/h1>/, 'texto real en el HTML');
-  assert.match(html, /Entre 8 y 40 preguntas/);
+  assert.match(html, /<h1[^>]*>¿Distinguirías un Velázquez de un Murillo\?<\/h1>/, 'texto real en el HTML');
+  assert.match(html, /fallas 3 de cada 4, o a las 40 preguntas/, 'la portada dice el máximo de preguntas (el e2e lo busca)');
+  assert.doesNotMatch(html, /Cuadros de verdad|Sin registro|según cómo vayas/i, 'sin frases de folleto');
+  assert.doesNotMatch(html, /\b(confirm|alert|prompt)\(/, 'sin diálogos del navegador');
+  assert.match(html, /id="test-leave"[\s\S]*¿Dejar el test\?[\s\S]*data-action="leave-stay">Seguir jugando<[\s\S]*data-action="leave-go">Salir</, 'hoja propia para salir');
   // Sin recursos remotos: las URL absolutas solo en metadatos (canonical, OG), nunca en lo que se carga.
   for (const m of html.matchAll(/<(?:script|img|link)\b[^>]*>/g)) {
     if (m[0].includes('rel="canonical"')) continue;

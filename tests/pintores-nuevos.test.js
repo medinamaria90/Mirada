@@ -94,9 +94,9 @@ test('pintores nuevos: partida nueva conoce a todos (sin avisos ni extra) y la p
 });
 
 test('pintores nuevos: migración 9 → 10 deja la semilla de partida antigua; el resto se conserva', () => {
-  assert.equal(SCHEMA_VERSION, 10);
+  assert.ok(SCHEMA_VERSION >= 10);
   const out = migrate({ version: 9, onboarded: true, progress: { xp: 50, artists: { botticelli: { ...done } } } });
-  assert.equal(out.version, 10);
+  assert.equal(out.version, SCHEMA_VERSION);
   assert.equal(out.progress.roster.seed, 'legacy');
   assert.equal(out.progress.xp, 50);
   assert.equal(defaultState().progress.roster.seed, 'new');

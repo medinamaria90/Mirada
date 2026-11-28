@@ -192,7 +192,7 @@
    "mime": "image/jpeg",
    "license": "CC BY-SA 4.0"
   },
-  "etapa": 3
+  "etapa": 2
  },
  "Q1165042": {
   "level": 1
@@ -221,21 +221,21 @@
   "anioSort": 1508
  },
  "Q1118295": {
-  "etapa": 4,
+  "etapa": 2,
   "nota": "Silla con pipa: pintada en Arlés (dic. 1888); Wikidata la fecha en 1889"
  },
  "Q734197": {
-  "etapa": 3
+  "etapa": 2
  },
  "Q61989282": {
-  "etapa": 3,
+  "etapa": 2,
   "titulo": "La Virgen de la Anunciación"
  },
  "Q3276180": {
-  "etapa": 2
+  "etapa": 3
  },
  "Q3276171": {
-  "etapa": 2
+  "etapa": 3
  },
  "Q19911414": {
   "etapa": 4
@@ -247,10 +247,10 @@
   "etapa": 4
  },
  "Q3504778": {
-  "etapa": 3
+  "etapa": 2
  },
  "Q2067212": {
-  "etapa": 3
+  "etapa": 2
  },
  "Q3769209": {
   "archivo": "Last Judgement - Capella degli Scrovegni - Padua 2016 (2).jpg",
@@ -262,7 +262,7 @@
    "artist": "José Luiz",
    "credit": "Own work"
   },
-  "etapa": 3
+  "etapa": 2
  },
  "Q1215809": {
   "archivo": "Fra Angelico — San Marco Altarpiece.jpg",
@@ -309,5 +309,28 @@
    "artist": "Simone Martini",
    "credit": "Google Arts & Culture"
   }
+ },
+ "Q3999132": {
+  "etapa": 2
+ },
+ "Q3850304": {
+  "etapa": 2
+ },
+ "Q3842651": {
+  "etapa": 2,
+  "titulo": "Virgen de la humildad"
+ },
+ "Q151047": {
+  "anio": "c. 1485",
+  "anioSort": 1485
+ },
+ "Q2914912": {
+  "titulo": "Los picapedreros"
+ },
+ "Q23499014": {
+  "titulo": "Retrato en busto del pintor Mariano Fortuny"
+ },
+ "Q4889277": {
+  "titulo": "Ramón Casas y Pere Romeu en un tándem"
  }
 }

@@ -1,0 +1,50 @@
+{
+ "n": 4,
+ "artwork": "w1091086",
+ "artistId": "goya",
+ "focus": [
+  0.62,
+  0.7
+ ],
+ "options": [
+  "madrazo",
+  "goya",
+  "delacroix",
+  "manet",
+  "velazquez",
+  "gericault"
+ ],
+ "hints": {
+  "era": "Romanticismo · finales s. XVIII–mediados s. XIX",
+  "year": "1814",
+  "museum": "Museo del Prado, Madrid"
+ },
+ "cards": [
+  {
+   "text": "Ese farol del suelo es la única luz de la noche, y cae sobre el hombre de blanco que abre los brazos. Era Goya, el pintor que contó la guerra sin adornos.",
+   "artwork": "w1091086",
+   "region": [
+    0.302,
+    0.238,
+    0.598,
+    0.863
+   ]
+  },
+  {
+   "text": "Fíjate en los soldados franceses: de espaldas, en fila y sin cara. No parecen personas, sino una máquina de matar frente a gente corriente.",
+   "artwork": "w1091086",
+   "region": [
+    0.632,
+    0.188,
+    0.928,
+    0.812
+   ]
+  },
+  {
+   "text": "Picasso, siglo y medio después, retomó esta escena en su Masacre en Corea, de 1951: los fusiles a un lado y la gente indefensa al otro.",
+   "artwork": "w1091086",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/El_3_de_mayo_en_Madrid"
+}

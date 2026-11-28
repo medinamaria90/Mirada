@@ -2,6 +2,11 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; } /* sin el destello azul de Android al tocar: cada elemento pulsable ya tiene su respuesta propia */
+/* Como app nativa: nada se selecciona ni saca menú al mantener pulsado (Android: Traducir/Copiar/diccionario). Se hereda desde html. */
+html { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+img { -webkit-user-drag: none; }
+/* Excepciones: escribir (campos) y leer-copiar (créditos y «Acerca de»: copiar un enlace o una fuente es útil). */
+input, textarea, [contenteditable]:not([contenteditable="false"]), .cr-body, .ab-text { -webkit-user-select: text; user-select: text; }
 body {
   margin: 0;
   font-variant-numeric: lining-nums;
@@ -107,8 +112,8 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
   position: sticky; top: 0; z-index: 5; box-sizing: border-box; min-height: var(--topbar-h);
   display: flex; align-items: center; justify-content: space-between; gap: .5rem;
   padding: .5rem .6rem .5rem 1rem;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  /* Opaca: translúcida, un nodo del mapa que pasaba por debajo se veía como una mancha borrosa. */
+  background: var(--bg);
   border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
 }
 .brand { display: inline-flex; align-items: center; gap: .35rem; min-height: 48px; font: 500 1.4rem/1 var(--font); text-decoration: none; letter-spacing: var(--track); padding: 0 .1rem; border-radius: 10px; flex: none; }
@@ -133,14 +138,30 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .chip:hover .chip-pill { box-shadow: 0 2px 0 var(--line-2), inset 0 0 0 1px var(--line-2); }
 .chip:active .chip-pill { transform: translateY(2px); box-shadow: inset 0 0 0 1px var(--line); }
 .chip .icon { color: var(--brand-text); }
-.chip-goal .chip-pill { padding: 0 .4rem 0 .2rem; gap: .2rem; }
-.chip-goal-text { font-size: .74rem; color: var(--ink-2); }
 /* Racha: el número con «día(s)» debajo, como el nivel lleva su barra: cabe en una línea de 390 px. */
-.chip-daily .chip-pill { position: relative; padding: 0 .5rem; gap: .25rem; }
-.chip-daily-text { font-size: .74rem; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
-.chip-daily.is-done .icon { color: var(--ok); }
-.chip-dot { position: absolute; top: 5px; right: 5px; width: 9px; height: 9px; border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
-.chip-streak .chip-pill { padding: 0 .5rem 0 .4rem; }
+/* Cuadro del día (shell.js): redondo; pendiente, el detalle de hoy en un círculo con el punto coral; hecho, la miniatura con ✓. */
+.chip-cuadro .chip-pill { position: relative; padding: 0; width: var(--cuadro-chip); min-height: var(--cuadro-chip); height: var(--cuadro-chip); justify-content: center; }
+.chip-cuadro-img { position: absolute; inset: var(--cuadro-chip-inset); border-radius: 999px; background-color: var(--surface-2); background-repeat: no-repeat; background-size: cover; background-position: center; }
+.chip-cuadro-ok { position: absolute; right: calc(var(--chip-dot-at) - 2px); bottom: calc(var(--chip-dot-at) - 2px); display: grid; place-items: center; width: var(--cuadro-chip-ok); height: var(--cuadro-chip-ok); border-radius: 999px; background: var(--ok); color: var(--on-ok); box-shadow: 0 0 0 2px var(--surface); }
+.chip-cuadro-ok .icon { color: inherit; }
+.chip-cuadro .chip-dot { z-index: 1; }
+/* «Repasar» (shell.js): redondo con ↻, como el Cuadro del día; el punto coral si hay algo pendiente. */
+.chip-review .chip-pill { position: relative; padding: 0 .5rem; }
+.chip-dot { position: absolute; top: var(--chip-dot-at); right: var(--chip-dot-at); width: var(--chip-dot); height: var(--chip-dot); border-radius: 999px; background: var(--brand); box-shadow: 0 0 0 2px var(--surface); }
+.chip-streak { padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.chip-streak .chip-pill { padding: 0 .55rem 0 .2rem; }
+/* La llama dentro del aro de la meta de hoy; con la meta cumplida, el aro entero. */
+.ring-inner { display: grid; place-items: center; }
+.ring-inner .icon { color: var(--brand-text); }
+/* «Repasar» con su nombre al lado del ↻ cuando cabe (con la cabecera estrecha, solo el icono). */
+.chip-review-text { font-size: .9rem; padding-inline-end: .2rem; }
+.chip-review .chip-dot { top: var(--chip-dot-edge); right: var(--chip-dot-edge); }
+@container (max-width: 26em) { .topbar:has(.chip-streak) .chip-review-text { display: none; } }
+/* Explicación de una línea al tocar una pieza de la cabecera (shell.js installHeaderTips). */
+.chip-tip {
+  position: fixed; z-index: 30; max-width: min(20rem, calc(100vw - 24px)); margin: 0; padding: .6rem .8rem; border-radius: var(--radius-sm);
+  background: var(--ink); color: var(--bg); font: 500 .9rem/1.35 var(--font); box-shadow: var(--shadow-pop);
+}
 .chip-stack { display: grid; justify-items: center; line-height: 1; }
 .chip-num { font-size: .95rem; }
 .chip-unit { font-size: .66rem; font-weight: 500; color: var(--ink-2); letter-spacing: .01em; }
@@ -186,6 +207,9 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .map-probe { position: absolute; width: 1rem; height: 1px; visibility: hidden; pointer-events: none; }
 /* Suelo bajo el inicio: ocupa el hueco de la barra de abajo para que el mapa llegue hasta el borde. */
 .path-foot { position: relative; height: calc(84px + var(--safe-b)); background: var(--era-tint); }
+/* Bajo la salida, el prado y el sendero siguen hasta el borde, con sitio para el botón flotante:
+   la salida nunca queda debajo de ellos y no hay franja vacía. */
+.page-home:not(.page-branch) .path-foot { height: calc(84px + var(--map-return-size) + var(--safe-b)); }
 .page-home:has(.path-foot) { padding-bottom: 0; }
 .path-era, .path-museum, .path-start { position: relative; width: 100%; min-width: 0; background: var(--era-tint); }
 .path-era, .path-museum { margin-bottom: -1px; }
@@ -201,23 +225,21 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .path-museum-art, .path-start-art { z-index: 0; }
 .path-start-art.is-front, .path-movers.is-front, .path-gate { z-index: 2; }
 .path-movers .path-bit { position: absolute; display: block; overflow: visible; }
-/* Caseta de «Información» junto a la puerta (dibujada en el paisaje): un botón transparente de 56 px la cubre. */
-.start-kiosk { position: absolute; z-index: 3; width: var(--kiosk-hit); height: var(--kiosk-hit); margin: 0; padding: 0; translate: -50% -50%; border: 0; border-radius: var(--radius-sm); background: none; cursor: pointer; }
-.start-kiosk:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
-.start-kiosk-text { display: none; }
-/* Camino en línea (sin dibujos): la caseta pasa a ser una placa con su nombre. */
-.path-map.is-linear .start-kiosk { position: static; translate: none; width: auto; height: auto; min-height: 48px; align-self: flex-start; padding: 0 var(--map-fs); border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); color: var(--map-sign-ink); font: 600 var(--map-fs)/1.2 var(--font); }
-.path-map.is-linear .start-kiosk-text { display: inline; }
-.trail-shade, .trail-edge, .trail-fill, .trail-thread, .spur-edge, .spur-fill { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.trail-shade, .trail-rim, .trail-edge, .trail-fill, .trail-grain, .spur-edge, .spur-fill { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 /* Trazado estirado (letra grande): el trazo conserva su grosor. */
 .path-map.is-tall .path-trail path { vector-effect: non-scaling-stroke; }
-/* Sendero de tierra (sin raya): sombra suave hacia abajo a la derecha, borde y firme; lo recorrido, con un hilo de oro. */
+/* Sendero de tierra (sin raya): sombra suave hacia abajo a la derecha, borde algo irregular (dos filas de piedras
+   redondas que asoman del borde a ritmos distintos), firme y piedrecitas sueltas; lo recorrido, en tierra más cálida. */
 .trail-shade { stroke: var(--map-shade); stroke-width: 28; transform: translate(2px, 3px); }
 .trail-edge { stroke: var(--map-trail-edge); stroke-width: 26; }
 .trail-fill { stroke: var(--map-trail); stroke-width: 20; }
-.trail-thread { stroke: var(--map-trail-thread); stroke-width: 3; }
+.trail-rim { stroke: var(--map-trail-edge); stroke-width: var(--trail-rim-w); stroke-dasharray: 0 var(--trail-rim-gap); }
+.trail-rim.is-b { stroke-width: var(--trail-rim-w-b); stroke-dasharray: 0 var(--trail-rim-gap-b); stroke-dashoffset: var(--trail-rim-off); }
+.trail-grain { stroke: var(--map-trail-edge); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); opacity: var(--trail-grain-o); transform: translateX(calc(-1 * var(--trail-grain-x))); }
+.trail-grain.is-b { stroke-dasharray: 0 var(--trail-grain-gap-b); stroke-dashoffset: var(--trail-grain-off); transform: translateX(var(--trail-grain-x)); }
 /* Desvío de una rama: sendero estrecho; cerrado, más fino y apagado. */
 .spur-edge { stroke: var(--map-trail-edge); stroke-width: 15; }
+.spur-grain { fill: none; stroke: var(--map-trail-edge); stroke-width: var(--trail-grain-w); stroke-dasharray: 0 var(--trail-grain-gap); stroke-linecap: round; opacity: var(--trail-grain-o); }
 .spur-fill { stroke: var(--map-trail); stroke-width: 10; }
 .spur-edge.is-locked { stroke-width: 9; opacity: .75; }
 .spur-fill.is-locked { stroke-width: 5; opacity: .75; }
@@ -230,6 +252,10 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .land-top { fill: var(--map-stone-top); }
 .land-window { fill: var(--map-window); }
 .land-shade { fill: var(--map-shade); }
+/* Sombra de la puerta de ciudad en el suelo y en el vano del arco (path-art.js); el filo de luna solo se ve de noche. */
+.gate-shadow, .gate-vault { fill: var(--map-shade); }
+.gate-vault { opacity: var(--gate-vault-o); }
+.gate-moon { fill: none; stroke: var(--map-moon); stroke-width: var(--gate-moon-w); stroke-linecap: round; opacity: 0; }
 .land-leaf { fill: var(--map-leaf); }
 .land-leaf-2 { fill: var(--map-leaf-2); }
 
@@ -249,9 +275,7 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 /* Carteles de tramo y de rama: más pequeños y bajos que el de la época. */
 .road-sign.is-tramo, .road-sign.branch-spot { --map-post-h: var(--map-post-h-low); }
 .road-sign.branch-spot { z-index: 2; }
-.is-tramo .sign-plate, .sign-plate.branch { min-height: 44px; padding: calc(.4 * var(--map-fs)) calc(.65 * var(--map-fs)); }
-.is-tramo .sign-plate:has(.sign-more) { padding-right: calc(1.4 * var(--map-fs)); }
-.is-tramo .sign-name, .sign-plate.branch .sign-name { font-size: calc(.82 * var(--map-fs)); }
+/* Tamaño y letra de mojones y tablillas de rama: mapa-carteles.css. */
 .sign-plate.is-static { cursor: default; }
 .sign-plate {
   position: relative; z-index: 1; display: grid; gap: 3px; justify-items: start; min-width: 0; max-width: min(100%, calc(15 * var(--map-fs))); min-height: 48px;
@@ -288,10 +312,10 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .ring-arc { fill: none; stroke: var(--ring-locked); stroke-width: var(--ring-w); stroke-linecap: round; }
 .ring-arc.is-done { stroke: var(--gold); }
 .ring-arc.is-next { stroke: var(--brand); stroke-width: var(--ring-w-next); }
-.ring-halo { fill: var(--brand-soft); transform-origin: center; animation: ring-breathe var(--dur-breathe) var(--ease) infinite; }
-@keyframes ring-breathe { 50% { transform: scale(1.08); opacity: .55; } }
-@media (prefers-reduced-motion: reduce) { .ring-halo { animation: none; } }
-html.reduce-motion .ring-halo { animation: none; }
+/* A medias (deep-badges.js scoreRingSvg): el aro lleno en coral hasta su nota, sobre el aro apagado, y la muesca del 75 %. */
+.ring-arc.is-partial { stroke: var(--brand); stroke-width: var(--ring-w-next); }
+.ring-arc.is-mark { stroke: var(--surface); stroke-width: calc(var(--ring-w-next) + 1); stroke-linecap: butt; }
+.ring-halo { fill: var(--brand-soft); }
 .stage {
   --dot: 58px; --hit: max(var(--dot), 48px);
   position: absolute; top: calc(var(--hit) / -2); left: calc(var(--dot) / -2); display: flex; align-items: center; gap: calc(.75 * var(--map-fs)); min-height: var(--hit); width: max-content;
@@ -313,7 +337,7 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage:active .stage-dot { transform: translateY(3px); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--line), 0 2px 0 5px var(--line-2); }
 .stage-thumb { position: absolute; inset: 0; border-radius: 999px; aspect-ratio: auto; box-shadow: none; }
 .stage-thumb.is-broken::after { font: 600 calc(1.15 * var(--map-fs))/1 var(--font); color: var(--ink); }
-/* Texto del nodo: etiquetas pequeñas apiladas (tramo, nombre, «Empezar»/«Repite»), sin placa común. */
+/* Texto del nodo: etiquetas pequeñas apiladas (tramo y nombre), sin placa común. */
 .stage-text { display: grid; gap: 5px; justify-items: start; min-width: 0; max-width: min(210px, 50vw); color: var(--ink); font: 500 calc(.86 * var(--map-fs))/1.15 var(--font); }
 .stage-spot.is-right .stage-text { justify-items: end; }
 .stage-name { max-width: 100%; padding: calc(.2 * var(--map-fs)) calc(.5 * var(--map-fs)) calc(.24 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-label); overflow-wrap: break-word; hyphens: auto; }
@@ -328,15 +352,10 @@ html.reduce-motion .ring-halo { animation: none; }
 /* Siguiente parada: algo más presente que el resto de lo cerrado (anillo fino). */
 .stage-spot.is-next .stage.is-locked .stage-dot { background: var(--map-tag); box-shadow: 0 0 0 2px var(--map-tag), 0 0 0 3.5px var(--map-post); }
 .stage-spot.is-next .stage.is-locked .stage-name { color: var(--ink); font-size: calc(.84 * var(--map-fs)); background: var(--map-label); }
-/* Disponible: anillo coral y halo (la parada actual, más marcada: mapa-carteles.css). */
-.stage.is-available .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--brand), 0 0 0 16px var(--brand-soft); }
-.stage.is-available:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--brand), 0 0 0 12px var(--brand-soft); }
+/* Disponible: un nodo más (la recomendada lleva su burbuja, screens/map-cue.js; la frontera, solo un anillo fino si lo recomendado queda atrás). */
+.stage.is-available .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px var(--line-2); }
+.stage.is-available:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 2px 0 3px var(--line-2); }
 .stage.is-started .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--brand), 0 var(--relief-node) 0 6px var(--line-2); }
-/* Jugado pero no dominado: «Repite · n %» como botón suave, para que se vea qué hacer. */
-.stage.is-started .stage-meta {
-  padding: calc(.28 * var(--map-fs)) calc(.55 * var(--map-fs)); border-radius: var(--map-r); background: var(--brand-soft); color: var(--brand-text);
-  font: 600 calc(.78 * var(--map-fs))/1 var(--font); box-shadow: 0 2px 0 var(--brand-shadow);
-}
 /* Dominado: anillo de oro y sello con la marca de hecho. */
 .stage.is-mastered .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--gold), 0 var(--relief-node) 0 6px var(--line-2); }
 .stage-badge {
@@ -348,6 +367,8 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage.has-ring { gap: calc(.75 * var(--map-fs) + var(--ring-out)); }
 .stage.has-ring .stage-dot, .stage.is-mastered.is-dormant.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px var(--line-2); }
 .stage.has-ring:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 2px 0 3px var(--line-2); }
+/* Parada actual a medias: el aro manda (sin el anillo coral entero encima), con su halo. */
+.stage-spot.is-current .stage.is-started.has-ring .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 16px var(--brand-soft); }
 .stage-badge.is-next { min-width: 23px; width: auto; padding: 0 6px; background: var(--brand); color: var(--on-brand); font: 600 13px/1 var(--font); font-variant-numeric: lining-nums tabular-nums; }
 /* Dormido: dominado y sin salir en una semana. Se apaga (anillo y cuadro) sin perder el sello de hecho. */
 .stage.is-dormant .stage-thumb { filter: saturate(var(--map-dormant-saturate)); }
@@ -374,15 +395,31 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage-spot-aside.is-right .stage { right: -24px; align-items: flex-end; flex-direction: column; }
 .stage-spot-aside .stage-text { justify-items: center; }
 .stage-gallery .stage-dot { border-radius: 14px; color: var(--on-accent); background: var(--accent); box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px color-mix(in srgb, var(--accent) 72%, var(--ink)); }
-@keyframes halo { 0% { opacity: .6; transform: scale(.92); } 70%, 100% { opacity: 0; transform: scale(1.12); } }
-/* Aviso al pulsar una parada cerrada (se crea al tocar): bajo el nodo. */
+/* Aviso al pulsar una parada cerrada (screens/path-actions.js): una pastilla bajo el nodo, de la familia de los nombres del mapa,
+   con «Ir» como pastilla pequeña dentro. Se cierra al tocar fuera o al mover el mapa (sin cruz). */
 .lock-note {
-  position: absolute; top: 26px; left: 44px; z-index: 4; width: max-content; max-width: min(200px, calc(100vw - 32px)); margin: 0; padding: calc(.35 * var(--map-fs)) calc(.65 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-tag); box-shadow: 0 2px 0 var(--map-sign-line), inset 0 0 0 1px var(--map-sign-line);
-  font-size: calc(.8 * var(--map-fs)); line-height: 1.25; color: var(--ink); text-align: center; opacity: 0; pointer-events: none;
-  transition: opacity .25s;
+  position: absolute; top: 26px; left: 44px; z-index: var(--map-z-sign-start); display: flex; align-items: center; gap: calc(.5 * var(--map-fs)); width: max-content; max-width: min(var(--lock-note-w), calc(100vw - 32px)); margin: 0;
+  padding: calc(.3 * var(--map-fs)) calc(.3 * var(--map-fs)) calc(.3 * var(--map-fs)) calc(.75 * var(--map-fs)); border-radius: var(--lock-note-r); background: var(--map-tag); box-shadow: 0 1.5px 0 var(--map-sign-line), inset 0 0 0 1px var(--map-sign-line);
+  color: var(--ink); opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .2s, visibility 0s .2s;
 }
+.lock-note-text { margin: 0; font-size: calc(.8 * var(--map-fs)); line-height: 1.25; text-align: left; }
+.lock-note-go { position: relative; flex: none; min-height: var(--lock-note-go-h); padding: 0 calc(.8 * var(--map-fs)); border: 0; border-radius: var(--radius-pill); background: var(--brand); color: var(--on-brand); font: 600 calc(.8 * var(--map-fs))/1 var(--font); cursor: pointer; }
+/* La pastilla es pequeña, pero se acierta como un botón de 48 px. */
+.lock-note-go::after { content: ""; position: absolute; inset: calc((var(--lock-note-go-h) - var(--hit)) / 2) -4px; }
+.lock-note-go[hidden] { display: none; }
+.lock-note-go:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 .stage-spot.is-right .lock-note { left: auto; right: 44px; }
-.lock-note.is-visible { opacity: 1; }
+/* En un cartel de rama, debajo de él (nunca sobre su texto ni sobre el mojón que puede ir encima). */
+.branch-spot .lock-note { top: calc(100% + var(--lock-note-gap)); }
+.branch-spot.is-left .lock-note { left: auto; right: 0; }
+.branch-spot.is-right .lock-note { left: 0; }
+.lock-note.is-visible { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .2s; }
+/* El candado tiembla como un cofre cerrado al tocarlo. */
+.is-shaking { animation: lock-shake var(--dur-lock-shake) var(--ease); }
+@keyframes lock-shake { 15% { rotate: -7deg; } 35% { rotate: 6deg; } 55% { rotate: -4deg; } 75% { rotate: 2deg; } }
+@media (prefers-reduced-motion: reduce) { .is-shaking { animation: none; } }
+html.reduce-motion .is-shaking { animation: none; }
 
 
 /* Camino en línea (.is-linear, lo pone path-map.js → watchMapMode): con letra de más del 150 % o una ventana de
@@ -404,6 +441,9 @@ html.reduce-motion .ring-halo { animation: none; }
     width: calc(100% - var(--map-line-x) + var(--dot) / 2); margin-left: calc(var(--map-line-x) - var(--dot) / 2);
   }
 .path-map.is-linear .stage-spot.is-current { margin-block: 14px; }
+/* El sitio en el mapa ilustrado va en línea (left/top): en el camino en línea no cuenta. */
+.path-map.is-linear .stage-spot, .path-map.is-linear .road-sign { left: auto !important; right: auto !important; top: auto !important; bottom: auto !important; }
+.path-map.is-linear .stage-spot { height: auto; }
 .path-map.is-linear .stage-text, .path-map.is-linear .stage-spot.is-right .stage-text, .path-map.is-linear .stage-spot-aside .stage-text { flex: 1; max-width: none; justify-items: start; }
 .path-map.is-linear .stage-text > .stage-meta, .path-map.is-linear .stage-spot.is-right .stage-text > .stage-meta { margin-inline: 0; }
 .path-map.is-linear .lock-note { position: static; transform: none; width: auto; max-width: none; margin: calc(.4 * var(--map-fs)) 0 0 calc(var(--map-line-x) + 30px); }
@@ -494,8 +534,9 @@ html.reduce-motion .ring-halo { animation: none; }
 .q-tag::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--brand); }
 .q-prompt { font: 500 1.6rem/1.1 var(--font); letter-spacing: var(--track); margin-bottom: .9rem; }
 .q-art { display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 0 1.1rem; min-height: 0; }
-/* Título bajo el cuadro antes de responder (solo si no delata): pie de foto discreto. */
-.q-title { margin-top: .5rem; max-width: 100%; text-align: center; font-size: .85rem; line-height: 1.3; color: var(--ink-2); text-wrap: balance; }
+/* Título bajo el cuadro: hueco reservado (dos líneas) y vacío hasta responder; entonces aparece suave. */
+.q-title { margin-top: .5rem; max-width: 100%; min-height: 2.6em; text-align: center; font-size: .85rem; line-height: 1.3; color: var(--ink-2); text-wrap: balance; opacity: 0; transition: opacity var(--dur-title-in) var(--ease); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.q-title.is-on { opacity: 1; }
 .art-hero {
   --h: min(44svh, 420px);
   width: min(100%, calc(var(--h) * var(--arw) / var(--arh)));
@@ -537,12 +578,30 @@ html.reduce-motion .ring-halo { animation: none; }
 .option .opt-text { display: grid; gap: .1rem; min-width: 0; }
 .option .opt-sub { font-size: .8rem; font-weight: 400; line-height: 1.2; color: var(--ink-2); }
 .option.is-correct .opt-sub, .option.is-wrong .opt-sub { color: inherit; }
-/* Miniatura elegida por error en «¿Cuál es de X?»: etiqueta con el nombre de su pintor. */
+/* Miniatura elegida por error en «¿Cuál es de X?»: etiqueta con el nombre de su pintor (solo el nombre). */
 .option-tag {
   position: absolute; left: 10px; bottom: 10px; z-index: 2; max-width: calc(100% - 20px);
   padding: .15rem .55rem; border-radius: 999px; background: var(--bad); color: var(--surface);
   font-size: .74rem; font-weight: 600; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* Entra cayendo con un pequeño rebote y el marco tiembla al recibirla (ui/wrong-tag.js), para que se
+   vea; con «reducir animaciones», solo un fundido (gana a la regla general por especificidad). */
+.option-tag { animation: tag-drop var(--dur-tag-in) var(--ease) both; }
+.option-art.is-tagged .marco { animation: tag-nudge var(--dur-tag-in) ease both; }
+@keyframes tag-drop {
+  0% { opacity: 0; transform: translateY(var(--tag-drop)); }
+  55% { opacity: 1; transform: translateY(12%); }
+  78% { transform: translateY(-6%); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes tag-nudge { 50% { transform: rotate(-1.2deg); } 70% { transform: rotate(.9deg); } 88% { transform: rotate(-.4deg); } }
+@keyframes tag-fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .option-tag { animation: tag-fade var(--dur-tag-in) ease both !important; }
+  .option-art.is-tagged .marco { animation: none !important; }
+}
+html.reduce-motion .option-tag { animation: tag-fade var(--dur-tag-in) ease both !important; }
+html.reduce-motion .option-art.is-tagged .marco { animation: none !important; }
 @keyframes pop { 40% { transform: scale(1.03); } }
 @keyframes nudge { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 
@@ -617,6 +676,16 @@ html.reduce-motion .ring-halo { animation: none; }
 .fb-text .fb-work { margin-bottom: 0; }
 .fb-inner > .btn { flex: none; }
 .options.is-trimmed .option:not(.is-correct):not(.is-wrong) { display: none; }
+/* «No lo sé»: un enlace discreto bajo las opciones, que no compite con ellas. */
+.q-dunno { justify-self: center; display: block; min-height: 48px; margin: .1rem auto 0; padding: 0 1rem; border: 0; border-radius: var(--radius-pill); background: none; color: var(--ink-2); font: 500 .95rem/1 var(--font); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; cursor: pointer; }
+.q-dunno:hover { color: var(--ink); }
+.q-dunno:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+.options.is-trimmed .q-dunno { display: none; }
+/* Tras «No lo sé»: tono amable (sin rojo), con la cara del pintor. */
+.feedback.is-dunno { background: color-mix(in srgb, var(--accent-soft) 70%, var(--surface)); }
+.is-dunno .fb-mark { background: var(--accent-soft); color: var(--accent-ui); }
+.fb-face { flex: none; }
+.fb-face .fb-av { width: var(--fb-face); height: var(--fb-face); }
 .fb-head { display: flex; align-items: center; gap: .6rem; }
 .fb-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 999px; flex: none; }
 .is-correct .fb-mark { background: var(--ok); color: var(--surface); }
@@ -784,10 +853,14 @@ html.reduce-motion .ring-halo { animation: none; }
 .empty-icon { display: grid; place-items: center; width: 80px; height: 80px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
 
 .card-dialog {
-  width: min(92vw, 520px); max-height: 92dvh; padding: 0; border: 0; border-radius: 20px;
+  width: min(92vw, 520px); max-height: 92dvh; overflow-y: auto; padding: 0; border: 0; border-radius: 20px;
   background: var(--surface); color: var(--ink); box-shadow: var(--shadow-pop);
 }
 .card-dialog::backdrop { background: var(--scrim); }
+/* Con cualquier diálogo modal abierto el fondo no se mueve: el documento deja de desplazarse (conserva su posición, sin saltos
+   al cerrar) y el scroll no se encadena desde el diálogo hacia lo de detrás. */
+html:has(dialog[open]) { overflow: hidden; }
+dialog { overscroll-behavior: contain; }
 .card-dialog[open] { animation: rise .3s var(--ease); }
 .dlg-body { display: grid; gap: .4rem; padding: 1.2rem; }
 .art-dialog { --h: min(52dvh, 460px); width: min(100%, calc(var(--h) * var(--arw) / var(--arh))); justify-self: center; margin-bottom: .7rem; }
@@ -837,7 +910,6 @@ html.reduce-motion .ring-halo { animation: none; }
 .ring.is-met .ring-fill { stroke: var(--ok); }
 .ring-mark { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ok); }
 .ring-mark .icon { stroke-width: 2.4; }
-.chip-goal { padding: 0; }
 
 /* Feedback que enseña */
 .fb-who { font-weight: 600; color: var(--ink); }
@@ -1224,3 +1296,17 @@ button.art:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px;
 @media (prefers-reduced-motion: reduce) { .viewer, .viewer-lens.is-on, .viewer-zoom { animation: none; } .viewer-img, .viewer-frame.is-settling { transition: none; } }
 .reduce-motion .viewer, .reduce-motion .viewer-lens.is-on, .reduce-motion .viewer-zoom { animation: none; }
 .reduce-motion .viewer-frame.is-settling { transition: none; }
+
+/* Entrada del repaso (screens/review-intro.js): la cara del pintor a medias (o el ↻), «Repaso» y la frase. */
+.review-intro { position: relative; }
+.review-intro h1 { text-wrap: balance; }
+.ri-bar { position: absolute; top: 0; left: 0; right: 0; }
+.ri-face { padding: 0; border: 0; background: none; border-radius: 999px; cursor: pointer; }
+.ri-face:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
+.ri-av { display: block; overflow: hidden; width: var(--ri-face); height: var(--ri-face); border-radius: 999px; background: var(--surface-2); box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--brand); }
+.ri-av img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ri-icon { display: grid; place-items: center; width: var(--ri-face); height: var(--ri-face); border-radius: 999px; background: var(--brand-soft); color: var(--brand-text); }
+
+/* Velo sobre firmas legibles (ui/signature-veil.js y Cuadro del día). */
+.cdd-veil { position: absolute; overflow: hidden; pointer-events: none; border-radius: var(--cuadro-veil-radius); background: var(--surface-2); transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
+.cdd-veil-img { position: absolute; max-width: none; filter: blur(var(--cuadro-veil-blur)); transform: scale(var(--cuadro-veil-grow)); }

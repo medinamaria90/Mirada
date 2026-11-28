@@ -39,33 +39,11 @@
   },
   {
    "level": 2,
-   "stage": "Leiden",
-   "title": "Leiden",
-   "cards": [
-    {
-     "text": "Tras seis meses con Pieter Lastman, abre su propio taller en Leiden en 1624 o 1625, con su amigo Jan Lievens. En 1627 ya da clases; entre sus alumnos destaca Gerrit Dou.",
-     "artwork": "w3905873",
-     "source": "https://es.wikipedia.org/wiki/Rembrandt#Biograf%C3%ADa"
-    },
-    {
-     "text": "Sus cuadros de esta etapa son pequeños pero ricos en detalles, sobre todo en ropas y joyas. En 1626 hace sus primeros grabados, que le dan fama internacional.",
-     "artwork": "w2488726",
-     "source": "https://es.wikipedia.org/wiki/Rembrandt#Leiden_%281625-1631%29"
-    },
-    {
-     "text": "En 1629 lo descubre Constantijn Huygens, que le consigue encargos de la corte de La Haya. El príncipe Federico Enrique le compró obras hasta 1646.",
-     "artwork": "w3630753",
-     "source": "https://es.wikipedia.org/wiki/Rembrandt#Biograf%C3%ADa"
-    }
-   ]
-  },
-  {
-   "level": 3,
    "stage": "Ámsterdam",
    "title": "Primer periodo en Ámsterdam",
    "cards": [
     {
-     "text": "A finales de 1631 se muda a Ámsterdam, rica y en pleno crecimiento, y se hace retratista profesional. En 1632 pinta La lección de anatomía del doctor Tulp.",
+     "text": "Con 25 años, a finales de 1631, Rembrandt se muda a Ámsterdam, rica y en pleno crecimiento, y se hace retratista. En 1632 pinta La lección de anatomía del doctor Tulp.",
      "artwork": "w661378",
      "source": "https://es.wikipedia.org/wiki/Rembrandt#Biograf%C3%ADa"
     },
@@ -78,6 +56,38 @@
      "text": "En 1634 se casa con su prima Saskia, de buena familia, y en 1635 se mudan a una casa elegante. Aquí, Flora, de 1634, el año de su boda.",
      "artwork": "w2225699",
      "source": "https://es.wikipedia.org/wiki/Rembrandt#Biograf%C3%ADa"
+    },
+    {
+     "text": "Fíjate en la pareja: Rembrandt, con espada y sombrero de plumas, alza la copa con Saskia sentada en sus rodillas. Se pintó como el hijo pródigo de la Biblia.",
+     "artwork": "w1111394",
+     "source": "https://es.wikipedia.org/wiki/Rembrandt"
+    }
+   ]
+  },
+  {
+   "level": 3,
+   "stage": "Vejez",
+   "title": "Periodo tardío",
+   "cards": [
+    {
+     "text": "Saltamos a sus últimos veinte años: hacia 1650 su estilo cambia otra vez, con grandes formatos, colores intensos y pinceladas marcadas. Pedía no mirar sus cuadros muy de cerca.",
+     "artwork": "w2404992",
+     "source": "https://es.wikipedia.org/wiki/Rembrandt#Per%C3%ADodo_tard%C3%ADo_%281650-1669%29"
+    },
+    {
+     "text": "Siempre gastó más de lo que tenía. En 1656 vendió sus pinturas y colecciones en subasta, y en 1660 su casa. Aun así, hacia 1662 recibía grandes retratos, como Los síndicos.",
+     "artwork": "w1170480",
+     "source": "https://es.wikipedia.org/wiki/Rembrandt#Biograf%C3%ADa"
+    },
+    {
+     "text": "Murió el 4 de octubre de 1669, un año después de su hijo Titus, y lo enterraron en una tumba sin nombre en el Westerkerk de Ámsterdam. Aquí, La novia judía.",
+     "artwork": "w766782",
+     "source": "https://es.wikipedia.org/wiki/Rembrandt#Biograf%C3%ADa"
+    },
+    {
+     "text": "Fíjate en el buey abierto en canal y colgado: Rembrandt lo pinta con la misma atención que a un rey. Siglos después fascinó a pintores modernos como Soutine.",
+     "artwork": "w3646498",
+     "source": "https://es.wikipedia.org/wiki/Rembrandt"
     }
    ]
   },
@@ -87,7 +97,7 @@
    "title": "Segundo periodo en Ámsterdam",
    "cards": [
     {
-     "text": "Desde 1640 su estilo se vuelve más sombrío y comedido, quizá por sus tragedias personales. Pinta paisajes dramáticos, con árboles arrancados y nubes ominosas. Aquí, El molino.",
+     "text": "Retrocedemos a la década de 1640: su estilo se vuelve más sombrío, quizá por sus tragedias personales. Pinta paisajes dramáticos, con nubes ominosas. Aquí, El molino.",
      "artwork": "w3224802",
      "source": "https://es.wikipedia.org/wiki/Rembrandt#Segundo_per%C3%ADodo_en_%C3%81msterdam_%281636-1650%29"
     },
@@ -105,28 +115,38 @@
       1.6
      ],
      "source": "https://es.wikipedia.org/wiki/Rembrandt#La_ronda_de_noche"
+    },
+    {
+     "text": "Fíjate en la luz que cae sobre el puente y los árboles mientras el cielo se oscurece: un instante entre dos tormentas.",
+     "artwork": "w4211284",
+     "source": "https://es.wikipedia.org/wiki/Rembrandt"
     }
    ]
   },
   {
    "level": 5,
-   "stage": "Vejez",
-   "title": "Periodo tardío",
+   "stage": "Leiden",
+   "title": "Leiden",
    "cards": [
     {
-     "text": "Hacia 1650 su estilo cambia otra vez: grandes formatos, colores intensos y pinceladas marcadas. Avisaba de que no se mirasen sus cuadros demasiado de cerca. Aquí, Aristóteles.",
-     "artwork": "w2404992",
-     "source": "https://es.wikipedia.org/wiki/Rembrandt#Per%C3%ADodo_tard%C3%ADo_%281650-1669%29"
-    },
-    {
-     "text": "Siempre gastó más de lo que tenía. En 1656 vendió sus pinturas y colecciones en subasta, y en 1660 su casa. Aun así, hacia 1662 recibía grandes retratos, como Los síndicos.",
-     "artwork": "w1170480",
+     "text": "Volvemos a sus comienzos, en Leiden, su ciudad. Tras seis meses con el pintor Pieter Lastman, abre taller hacia 1625 con su amigo Jan Lievens. En 1627 ya da clases.",
+     "artwork": "w3905873",
      "source": "https://es.wikipedia.org/wiki/Rembrandt#Biograf%C3%ADa"
     },
     {
-     "text": "Murió el 4 de octubre de 1669, un año después de su hijo Titus, y lo enterraron en una tumba sin nombre en el Westerkerk de Ámsterdam. Aquí, La novia judía.",
-     "artwork": "w766782",
+     "text": "Sus cuadros de esta etapa son pequeños pero ricos en detalles, sobre todo en ropas y joyas. En 1626 hace sus primeros grabados, que le dan fama internacional.",
+     "artwork": "w2488726",
+     "source": "https://es.wikipedia.org/wiki/Rembrandt#Leiden_%281625-1631%29"
+    },
+    {
+     "text": "En 1629 lo descubre Constantijn Huygens, que le consigue encargos de la corte de La Haya. El príncipe Federico Enrique le compró obras hasta 1646.",
+     "artwork": "w3630753",
      "source": "https://es.wikipedia.org/wiki/Rembrandt#Biograf%C3%ADa"
+    },
+    {
+     "text": "Fíjate en la cabeza que asoma justo encima del santo: se cree que es el propio Rembrandt, con 18 años, en su primer cuadro fechado.",
+     "artwork": "w2646680",
+     "source": "https://es.wikipedia.org/wiki/Rembrandt"
     }
    ]
   }

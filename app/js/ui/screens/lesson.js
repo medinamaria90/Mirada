@@ -4,21 +4,32 @@ import { artistLink } from '../artist-link.js';
 import { curioHtml, toggleCurio, loadCurioCss } from '../fb-curio.js';
 import { esc, onAction, accentStyle, announce, focusHeading, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
-import { artFrame, onArtworkError, isBroken, preload } from '../art.js';
+import { artFrame, onArtworkError, isBroken, preload, coverOf } from '../art.js';
 import { marcoHtml, upgradeMarcos } from '../marco.js';
 import { createRng } from '../../engine/rng.js';
 import { isCorrect, questionAlt, optionText, makeQuestion, makeWhichQuestion, artworksInQuestion, retryQuestion } from '../../engine/questions.js';
 import { createRound, currentItem, answerRound, roundDone, roundProgress } from '../../engine/planner.js';
 import { xpForAnswer } from '../../engine/progress.js';
 import { feedbackFor } from '../../engine/feedback.js';
-import { revealedTitle } from '../../engine/title-reveal.js';
+import { titleSlotHtml, revealTitle } from '../title-slot.js';
+import { veilsHtml, unveil } from '../signature-veil.js';
+import { tagWrongArt, chosenSpeech } from '../wrong-tag.js';
 import { beforeQuestionHtml, beforeRibbonHtml } from '../before-question.js';
 import { loadRibbonCss } from '../chrono-ribbon.js';
+import { guestCardHtml, loadGuestCss } from '../guest-card.js';
+import { askableIds, introNeeded, knownOnly, guestIntro, roundWorkIds } from '../../engine/guest-intro.js';
+import { metArtistIds, seenOf, avatarWork, avatarCrop } from '../../engine/painters.js';
+import { avatarHtml } from '../avatar.js';
 
 const MAX_SUBSTITUTIONS = 3;
 const COMBO_SHOW = 3; // aciertos seguidos a partir de los que se ve el indicador
+const DUNNO_LABEL = 'No lo sé';
+// Último refuerzo «Fíjate en…» visto de cada pintor, para no repetirlo en la ronda siguiente (dura la sesión).
+const recentHints = new Map();
 
-// config: { questions, extras?, accent, seed, kind, label, interlude?, onDone(summary), onQuit(), resume?, onSave? }
+// config: { questions, extras?, accent, seed, kind, label, interlude?, dunno?, onDone(summary), onQuit(), resume?, onSave? }
+// dunno: true pone «No lo sé» bajo las opciones (modo aprender; nunca en retos ni en el test): enseña la respuesta sin sonido
+// ni rojo de fallo, no da puntos y cuenta como fallo (rompe «seguidas», vuelve al final y pesa doble en engine/recall.js).
 // extras: preguntas que no cuentan, al final (cuadros fallados en rondas anteriores).
 // resume: { round, answers, xpLive, freshIntroShown } de una ronda guardada (state/session.js).
 // onSave(snapshot) se llama tras cada respuesta para poder retomar la ronda.
@@ -26,7 +37,20 @@ export function runLesson(ctx, el, config) {
   const { index } = ctx;
   const rng = createRng(`lesson:${config.seed}:${Date.now() % 100000}`);
   const resume = config.resume || null;
-  let round = resume ? resume.round : createRound(config.questions, config.extras || []);
+  // Pintores por los que se puede preguntar ahora: los jugados y los invitados ya presentados.
+  const progressNow = () => ctx.store?.get().progress || {};
+  const metNow = () => metArtistIds(progressNow(), index);
+  const askable = () => askableIds(metNow(), progressNow());
+  // Solo se pregunta por pintores conocidos, el de la ronda o un invitado (uno por ronda) que se presenta antes; las demás
+  // preguntas se cambian por otras de conocidos (engine/guest-intro.js knownOnly). Sin ninguna válida, la ronda tal cual.
+  function knownRound() {
+    const base = config.questions;
+    const extras = config.extras || [];
+    const checked = knownOnly(index, [...base, ...extras], askable(), rng);
+    const questions = checked.slice(0, base.length).filter(Boolean);
+    return questions.length ? createRound(questions, checked.slice(base.length).filter(Boolean)) : createRound(base, extras);
+  }
+  let round = resume ? resume.round : knownRound();
   const answers = resume ? resume.answers.slice() : [];
   let xpLive = resume ? resume.xpLive : 0;
   let answered = false;
@@ -67,6 +91,7 @@ export function runLesson(ctx, el, config) {
   </div>`;
 
   loadCurioCss();
+  if (round.queue.some((it) => introNeeded(index, it.q, askable()))) loadGuestCss();
   if (round.queue.some((it) => it.q.type === 'before')) loadRibbonCss();
   const stage = $('.lesson-stage', el);
   const feedback = $('.feedback', el);
@@ -92,7 +117,7 @@ export function runLesson(ctx, el, config) {
   function render() {
     answered = false;
     window.scrollTo(0, 0);
-    feedback.classList.remove('is-open', 'is-correct', 'is-wrong');
+    feedback.classList.remove('is-open', 'is-correct', 'is-wrong', 'is-dunno');
     feedback.innerHTML = '';
     stage.style.paddingBottom = '';
     updateBar();
@@ -100,6 +125,8 @@ export function runLesson(ctx, el, config) {
     const item = currentItem(round);
     if (!freshIntroShown && item.q.phase === 'fresh') return renderFreshIntro();
     ensureVisible(item);
+    const guestId = introNeeded(index, currentItem(round).q, askable());
+    if (guestId) return renderGuest(guestId);
     const q = currentItem(round).q;
     stage.innerHTML = questionHtml(q, item.retry);
     stage.dataset.type = q.type;
@@ -127,15 +154,53 @@ export function runLesson(ctx, el, config) {
     $('[data-action="continue"]', stage).focus({ preventScroll: true });
   }
 
+  // Tarjeta del invitado antes de su primera pregunta: con el cuadro más famoso suyo que no sale en la ronda.
+  let guestShown = null;
+  function renderGuest(guestId) {
+    const host = round.queue.find((it) => it.q.host)?.q.host || '';
+    const intro = guestIntro(index, guestId, { hostId: host, met: metNow(), avoid: roundWorkIds(round.queue) });
+    guestShown = intro;
+    stage.innerHTML = guestCardHtml(intro);
+    stage.dataset.type = 'guest';
+    upgradeMarcos(stage);
+    stage.classList.remove('enter');
+    void stage.offsetWidth;
+    stage.classList.add('enter');
+    focusHeading(stage);
+  }
+
+  // «Seguir»: queda presentado (cuenta como conocido solo para preguntarle) y sale su pregunta.
+  function guestContinue() {
+    const id = guestShown?.artistId;
+    guestShown = null;
+    ctx.audio.sfx('tap');
+    if (id && ctx.store) {
+      const day = ctx.today ? ctx.today() : '';
+      ctx.store.update((s) => ({ ...s, progress: { ...s.progress, guests: { ...(s.progress.guests || {}), [id]: day } } }));
+    }
+    render();
+  }
+
+  function guestZoom(opener) {
+    const work = guestShown?.work;
+    if (!work) return;
+    ctx.audio.sfx('tap');
+    loadViewer().then((m) => {
+      if (cleaned || !guestShown) return;
+      m.openViewer({ index, works: [work], start: 0, reveal: true, opener, label: null, title: null, pick: null });
+    }).catch((err) => console.error(err));
+  }
+
   function questionHtml(q, retry) {
     const tag = retry ? 'Otra vez' : q.isNew ? 'Cuadro nuevo' : '';
     const head = `${tag ? `<p class="q-tag">${tag}</p>` : ''}<h1 class="q-prompt">${esc(q.prompt)}</h1>`;
     if (q.type === 'before') return beforeQuestionHtml(index, q, head);
     if (q.type === 'which') {
       // Pulsar una miniatura abre el visor con las 4 («Es este» responde); 1-4 responden directo.
+      // Las firmas, veladas también en las miniaturas hasta responder: a su tamaño se leen.
       const opts = q.options.map((o, i) => `<button class="option option-art" data-action="pick" data-id="${esc(o.id)}" data-pos="${i}" aria-label="Opción ${i + 1}" aria-haspopup="dialog">
-          ${marcoHtml(index.artwork(o.artworkId), { alt: '', eager: true, label: o.artworkId })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
-      return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>`;
+          ${marcoHtml(index.artwork(o.artworkId), { alt: '', eager: true, label: `Opción ${i + 1}`, veils: veilsHtml(index.artwork(o.artworkId)) })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
+      return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>${dunnoHtml(q)}`;
     }
     const art = index.artwork(q.artworkId);
     // En las de movimiento, el periodo debajo del nombre («s. XV–XVI»), en tinta secundaria.
@@ -145,11 +210,15 @@ export function runLesson(ctx, el, config) {
     };
     const opts = q.options.map((o, i) => `<button class="option" data-action="answer" data-id="${esc(o.id)}"><span class="key" aria-hidden="true">${i + 1}</span>${optText(o)}</button>`).join('');
     // En escritorio, el cuadro a la izquierda y la pregunta con las opciones a la derecha.
-    // El título va bajo el cuadro antes de responder, salvo que delate la respuesta.
-    const title = revealedTitle(index, art, q.type);
-    const titleLine = title ? `<p class="q-title">${esc(title)}</p>` : '';
-    return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}${titleLine}</div>
-      <div class="options options-list" role="group" aria-label="Respuestas">${opts}</div>`;
+    // El título (hueco reservado) se escribe tras responder: antes delataría autor, época o movimiento.
+    const titleLine = titleSlotHtml();
+    return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', veils: veilsHtml(art), label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}${titleLine}</div>
+      <div class="options options-list" role="group" aria-label="Respuestas">${opts}${dunnoHtml(q)}</div>`;
+  }
+
+  // «No lo sé»: discreto, bajo las opciones, para no contestar al azar.
+  function dunnoHtml(q) {
+    return config.dunno && q.type !== 'before' ? `<button type="button" class="q-dunno" data-action="dunno">${DUNNO_LABEL}</button>` : '';
   }
 
   // Si la imagen principal no carga, se cambia por otra obra del mismo pintor.
@@ -211,17 +280,19 @@ export function runLesson(ctx, el, config) {
     }).catch((err) => console.error(err));
   }
 
-  function answer(optionId, button) {
+  // dunno: «No lo sé» (sin opción elegida): como un fallo para la ronda, sin sonido ni rojo y sin puntos.
+  function answer(optionId, button, { dunno = false } = {}) {
     if (answered) return;
     answered = true;
     const item = currentItem(round);
     const q = item.q;
-    const correct = isCorrect(q, optionId);
+    const correct = !dunno && isCorrect(q, optionId);
     round = answerRound(round, correct, (qq) => retryQuestion(index, qq, rng));
     const gained = xpForAnswer({ correct, isNew: q.isNew, combo: round.combo, retry: item.retry });
     xpLive += gained;
-    answers.push({ q, correct, retry: item.retry, combo: round.combo });
+    answers.push({ q, correct, retry: item.retry, combo: round.combo, chosen: dunno ? null : optionId, ...(dunno ? { dunno: true } : {}) });
     if (!roundDone(round)) save();
+    $('.q-dunno', stage)?.remove();
 
     $$('.option', stage).forEach((b) => {
       // Las miniaturas siguen activas tras responder: abren el visor (ya con título y autor).
@@ -231,47 +302,53 @@ export function runLesson(ctx, el, config) {
       } else b.setAttribute('aria-disabled', 'true');
       if (b.dataset.id === q.answerId) b.classList.add('is-correct');
     });
-    if (!correct) button.classList.add('is-wrong');
+    if (dunno) { /* sin marca de fallo: solo se ve la buena */ } else if (!correct) button.classList.add('is-wrong');
     else button.classList.add('is-picked');
+    unveil(stage);
+    if (q.type !== 'which') revealTitle(stage, index.artwork(q.artworkId)?.title);
 
     // Combo: cada 3 seguidas suena la pequeña fanfarria ascendente en lugar del acierto.
     const milestone = correct && round.combo >= COMBO_SHOW && round.combo % COMBO_SHOW === 0;
     if (correct) ctx.audio.sfx(milestone ? 'streak' : 'correct');
-    else ctx.audio.sfx('wrong');
-    showFeedback(q, correct, gained, item.retry, optionId);
+    else if (!dunno) ctx.audio.sfx('wrong');
+    showFeedback(q, correct, gained, item.retry, dunno ? null : optionId, dunno);
     updateBar(milestone);
   }
 
-  function showFeedback(q, correct, gained, retry, chosenId) {
+  function showFeedback(q, correct, gained, retry, chosenId, dunno = false) {
     const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
-    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId });
+    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId, recent: recentHints });
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
     // El nombre del pintor abre su ficha: la línea «quién» o, en «Es de X», el propio título.
     const who = fb.who ? `<p class="fb-who">${artistLink(fb.artistId, fb.who)}</p>` : '';
     const titleLinked = !fb.who && fb.artistId && /^Es de /.test(fb.title);
     const title = titleLinked ? artistLink(fb.artistId, fb.title, 'fb-title') : `<p class="fb-title">${esc(fb.title)}</p>`;
-    // Tras un fallo de autor: de quién era lo elegido («No es de X…» / «El que has elegido es de X · título»).
-    const chosen = fb.chosen ? `<p class="fb-line-2">${artistLink(fb.chosen.artistId, fb.chosen.line)}</p>` : '';
-    const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('') + chosen;
-    // En «¿Cuál es de X?», la miniatura elegida por error lleva el nombre de su pintor.
-    const wrongArt = fb.chosen && fb.chosen.artworkId ? $('.option-art.is-wrong', stage) : null;
-    if (wrongArt) {
-      ($('.marco', wrongArt) || wrongArt).insertAdjacentHTML('beforeend', `<span class="option-tag">${esc(fb.chosen.name)}</span>`);
-      wrongArt.setAttribute('aria-label', `${wrongArt.getAttribute('aria-label')}, de ${fb.chosen.name}`);
-    }
+    const lines = fb.lines.slice(0, 1).map((t) => `<p class="fb-line">${esc(t)}</p>`).join('');
+    // Tras un fallo de autor, lo elegido se marca en su propia opción (sin línea aparte en la hoja);
+    // el lector de pantalla lo oye en la hoja. En «¿Cuál es de X?», la miniatura lleva el pintor.
+    const chosenSr = fb.chosen ? `<p class="sr-only fb-chosen">${esc(chosenSpeech(fb.chosen))}</p>` : '';
+    if (fb.chosen && fb.chosen.artworkId) tagWrongArt(stage, fb.chosen.name);
     // El texto se desplaza dentro de la hoja si no cabe (zoom de texto); «Seguir» siempre a la vista.
     feedback.innerHTML = `<div class="fb-inner">
       <div class="fb-text">
-        <div class="fb-head"><span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>
-        ${title}${gained ? `<span class="fb-xp">+${gained} XP</span>` : ''}</div>
-        ${who}${lines}${beforeRibbonHtml(ctx, fb)}${caption}${curioHtml(subject, curioOpen)}
+        <div class="fb-head">${dunno ? dunnoMark(q) : `<span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>`}
+        ${title}${gained ? `<span class="fb-xp">+${gained} puntos</span>` : ''}</div>
+        ${who}${chosenSr}${lines}${beforeRibbonHtml(ctx, fb)}${caption}${curioHtml(subject, curioOpen)}
       </div>
       <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>
     </div>`;
-    feedback.classList.add('is-open', correct ? 'is-correct' : 'is-wrong');
+    feedback.classList.add('is-open', correct ? 'is-correct' : dunno ? 'is-dunno' : 'is-wrong');
     const btn = $('[data-action="continue"]', feedback);
     requestAnimationFrame(revealAnswers);
     setTimeout(() => btn.focus({ preventScroll: true }), 340);
+  }
+
+  // Tras «No lo sé», en las de autor, la cara del pintor (su autorretrato visto o su cuadro más conocido); si no, el ojo.
+  function dunnoMark(q) {
+    const artist = q.type !== 'movement' ? index.artist(q.artistId) : null;
+    const cover = artist ? coverOf(index, artist.id) : null;
+    const face = artist ? avatarWork(seenOf(progressNow(), index, artist.id)) || (cover ? { work: cover, ...avatarCrop(cover) } : null) : null;
+    return face ? `<span class="fb-face" aria-hidden="true">${avatarHtml(artist, face, 'fb-av')}</span>` : `<span class="fb-mark" aria-hidden="true">${icons.eye(20)}</span>`;
   }
 
   // La opción elegida y la correcta quedan a la vista por encima de la hoja de feedback: se deja
@@ -325,12 +402,15 @@ export function runLesson(ctx, el, config) {
 
   const offActions = onAction(el, {
     answer: (b) => answer(b.dataset.id, b),
+    dunno: (b) => answer(null, b, { dunno: true }),
     pick: (b) => zoom(b, Number(b.dataset.pos) || 0),
     zoom: (b) => zoom(b),
     continue: () => {
       ctx.audio.sfx('tap');
       render();
     },
+    'guest-continue': guestContinue,
+    'guest-zoom': (b) => guestZoom(b),
     curio: (b) => {
       ctx.audio.sfx('tap');
       curioOpen = toggleCurio(b);

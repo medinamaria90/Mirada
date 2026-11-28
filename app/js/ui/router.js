@@ -5,10 +5,8 @@ import { decodeChallenge } from '../engine/challenge.js';
 export const ROUTES = {
   home: 'inicio',
   welcome: 'bienvenida',
-  daily: 'reto-diario',
+  cuadro: 'cuadro-del-dia',
   srs: 'repaso',
-  quick: 'repaso-rapido',
-  review5: 'repaso5',
   collection: 'coleccion',
   painters: 'coleccion-pintores',
   allWorks: 'coleccion-cuadros',
@@ -22,6 +20,10 @@ export const ROUTES = {
 
 // Nombre antiguo de la pantalla de logros: los enlaces que ya lo usan siguen valiendo.
 const OLD_MEDALS = 'medallas';
+// El reto diario ya no existe: su ruta y sus enlaces de reto (token d<AAAAMMDD>) llevan al Cuadro del día.
+const OLD_DAILY = 'reto-diario';
+// Rutas antiguas del repaso: redirigen a la sesión única (#repaso).
+const OLD_REVIEWS = new Set(['repaso5', 'repaso-rapido']);
 
 // Ronda «a fondo» de un pintor: a-fondo-<pintor>-<nivel> (nivel 2 en adelante).
 export const deepRoute = (artistId, level) => `a-fondo-${artistId}-${level}`;
@@ -44,17 +46,21 @@ export const branchRoute = (branchId) => `rama-${branchId}`;
 // aunque la pantalla anterior sea otra etapa de la misma rama); si no, a la ficha del pintor o su galería.
 export function stageReturnTo(branchId, prev) {
   if (branchId) return branchRoute(branchId);
+  if (GOAL_SCREENS.has(prev)) return prev;
   return /^(pintor|obras|rama)-[a-z0-9-]+$/.test(prev) ? prev : null;
 }
+
+// Pantallas con un objetivo (el rango del Perfil, los logros): si se entra a jugar desde ellas, el resultado vuelve ahí.
+export const GOAL_SCREENS = new Set([ROUTES.profile, ROUTES.medals]);
+export const isGoalScreen = (route) => GOAL_SCREENS.has(route);
 
 export function parseRoute(hash, opts = {}) {
   const name = String(hash || '').replace(/^#/, '');
   if (name === '' || name === ROUTES.home) return { name: 'home' };
   if (!/^[a-z0-9-]*$/.test(name)) return { name: 'invalid' };
-  if (name === ROUTES.quick) return { name: 'quick' };
-  if (name === ROUTES.review5) return { name: 'review5' };
+  if (OLD_REVIEWS.has(name)) return { name: 'srs', redirect: ROUTES.srs };
   if (name === ROUTES.welcome) return { name: 'welcome' };
-  if (name === ROUTES.daily) return { name: 'daily' };
+  if (name === ROUTES.cuadro || name === OLD_DAILY) return { name: 'cuadro' };
   if (name === ROUTES.srs) return { name: 'srs' };
   if (name === ROUTES.collection) return { name: 'collection' };
   if (name === ROUTES.painters) return { name: 'collection' };
@@ -69,6 +75,11 @@ export function parseRoute(hash, opts = {}) {
   if (m) return { name: 'works', spec: { kind: 'guests', movementId: m[1] } };
   m = /^obras-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'works', spec: { kind: 'artist', artistId: m[1] } };
+  // «Repasar a Vermeer» / «Repasar el Barroco» (ui/screens/recall.js): repasar-<pintor> y repasar-epoca-<movimiento>.
+  m = /^repasar-epoca-([a-z0-9-]+)$/.exec(name);
+  if (m) return { name: 'recall', recallType: 'movement', id: m[1] };
+  m = /^repasar-([a-z0-9-]+)$/.exec(name);
+  if (m) return { name: 'recall', recallType: 'artist', id: m[1] };
   m = /^pintor-([a-z0-9-]+)-etapas$/.exec(name);
   if (m) return { name: 'artist', artistId: m[1], focus: 'stages' };
   m = /^pintor-([a-z0-9-]+)$/.exec(name);
@@ -89,10 +100,12 @@ export function parseRoute(hash, opts = {}) {
   if (m) return { name: 'sala', movementId: m[1] };
   m = /^galeria-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'gallery', movementId: m[1] };
+  m = /^cierre-([a-z0-9-]+)$/.exec(name);
+  if (m) return { name: 'closure', key: m[1] };
   m = /^movimiento-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'intro', movementId: m[1] };
   const challenge = decodeChallenge(name, opts);
-  if (challenge) return { name: 'challenge', challenge };
+  if (challenge) return challenge.kind === 'daily' ? { name: 'cuadro' } : { name: 'challenge', challenge };
   return { name: 'invalid' };
 }
 

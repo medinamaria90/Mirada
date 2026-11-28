@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Museo_de_Bellas_Artes_de_Ruan"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Ríos",
+   "title": "Sisley, de Corot a Moret",
+   "cards": [
+    {
+     "text": "A los 23 años entró en el taller del pintor Gleyre y conoció a Monet y a Renoir. Salían juntos a pintar al bosque, y sus primeros cuadros aún recuerdan a Corot.",
+     "artwork": "w19820361",
+     "source": "https://es.wikipedia.org/wiki/Alfred_Sisley"
+    },
+    {
+     "text": "Fíjate en el puente de Hampton Court visto desde abajo, como si fuéramos en barca. Lo pintó en 1874, en un viaje a Inglaterra que le pagó un cantante coleccionista, Faure.",
+     "artwork": "w3492138",
+     "source": "https://es.wikipedia.org/wiki/Alfred_Sisley"
+    },
+    {
+     "text": "Pasó sus últimos años en Moret-sur-Loing, un pueblo junto al río, pintando sus álamos y su iglesia. Murió allí, pocos meses después que su compañera.",
+     "artwork": "w2838937",
+     "source": "https://es.wikipedia.org/wiki/Alfred_Sisley"
+    }
+   ]
   }
  ]
 }

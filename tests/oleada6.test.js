@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { planStage, planMovementReview, planSrsReview, planGeneral } from '../app/js/engine/planner.js';
-import { planDaily, planWeekly, planFree, dailyPool, WEEKLY_SIZE } from '../app/js/engine/daily.js';
+import { planWeekly, planFree, dailyPool, WEEKLY_SIZE } from '../app/js/engine/daily.js';
 import { decodeChallenge, encodeChallenge, tokenForRound } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
 import { emptyProgress, stageRoundMastered, isPathMastered, isPathComplete, stepsToMaster, hasEye, MASTERY, OWN_MASTERY, needed, EYE_BOX } from '../app/js/engine/progress.js';
@@ -104,7 +104,7 @@ test('obra atribuida (atributed: true): «(atribuida)» en el título y nunca en
     assert.ok(!authorIds(planGeneral(idx, idx.worksOf('leonardo'), `g${s}`)).includes(id));
   }
   assert.ok(!authorIds(planSrsReview(idx, [`art:${id}`, 'artist:leonardo'], 1).questions).includes(id));
-  for (let d = 1; d <= 28; d++) assert.ok(!authorIds(planDaily(idx, `2026-02-${String(d).padStart(2, '0')}`).questions).includes(id));
+  for (let w = 1; w <= 20; w++) assert.ok(!authorIds(planWeekly(idx, `2026-W${String(w).padStart(2, '0')}`).questions).includes(id));
 });
 
 // --- Reto semanal ----------------------------------------------------------------------------

@@ -63,3 +63,11 @@ test('superusuario: se recuerda, sale y migra de la barra ya encendida; el regis
   for (const o of SU_OPTIONS) assert.ok(o.label && typeof o.get === 'function' && typeof o.set === 'function', o.id);
   delete globalThis.localStorage;
 });
+
+test('afinar música: la pieza del test tiene nombre legible y es la principal de su lista', async () => {
+  const { listName } = await import('../app/js/audio/list-names.js');
+  assert.deepEqual(pieceInfo('test/reto', 'test'),
+    { id: 'test/reto', title: 'Sala de entrada (piano del reto)', author: '', key: 'test', role: 'principal' });
+  assert.equal(listName('test'), 'Test de cultura pictórica');
+  assert.deepEqual(allPieces('test'), ['test/reto']);
+});

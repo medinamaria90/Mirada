@@ -28,7 +28,8 @@ test('guía: la tarjeta nunca se sale de la pantalla en horizontal', () => {
   }
 });
 
-test('guía: tres pasos, una frase cada uno y sin «ayer» ni «mañana»', () => {
-  assert.equal(COACH_STEPS.length, 3);
+test('guía: tres pasos (el primero, en el medallón o en el pintor, donde esté «Tú»), una frase cada uno y sin «ayer» ni «mañana»', () => {
+  assert.equal(new Set(COACH_STEPS.map((s, i) => s.group || i)).size, 3);
+  assert.ok(COACH_STEPS[0].target.includes('.lore-spot.is-here'), 'el primer paso no señala el medallón cuando «Tú» está en él');
   for (const s of COACH_STEPS) assert.ok(s.text.length < 90 && !/ayer|mañana/i.test(s.text));
 });

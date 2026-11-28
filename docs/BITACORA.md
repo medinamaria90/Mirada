@@ -203,3 +203,249 @@ Los cuadros de la Colección, de «Ver los n» y de la ficha del pintor abren el
 «Ver más» que lleva a la página de la obra (al deslizar cambia el texto: lo que María pidió el 24/11). La página de la obra
 termina con «Más de <pintor>», sus otras obras vistas, para pasar de una a otra sin cerrarla. Dentro de una ronda, el visor
 sigue igual. Código: `ui/viewer-more.js` (`data-zoom-more` en `artFrame`), `ui/artwork-sheet.js`.
+
+## El mapa sigue la luz del día aunque el móvil vaya en oscuro (27/11)
+María entró a las 8:11 con el móvil en oscuro y el mapa se veía de noche. No era el reloj (a las 8:11 da día): el tema oscuro
+pintaba el paisaje con su paleta oscura. Ahora, con «Como el móvil», el mapa (`.path-map`) recupera los colores claros de todo
+lo que el oscuro cambia (bloque propio en `brand.css`, comprobado en `tests/mapa-tema.test.js`) y la luz la pone el reloj del
+juego: amanecer, día, atardecer y noche. Menús, barra de arriba y pestañas siguen oscuros. Si se fuerza un tema en Ajustes,
+manda el tema: «Oscuro» deja el mapa de noche (paleta oscura, estrellas y luces) y «Claro», de día (`mapLight` en
+`engine/daylight.js`). La música sigue al reloj en todos los casos.
+De paso, los edificios de día ganan contraste (encargo de María, 8:13): muros arena con el lado en sombra marcado, ventanas
+oscuras, tejados de terracota más vivos, pizarra más definida y sombras en el suelo algo más hondas. Los SVG de reserva de
+`app/img/mapa` se han regenerado con la paleta nueva.
+
+## Camino rediseñado: lápida, mojones, sendero de tierra, salida y ramas (27/11)
+
+Encargo de María («horrible el cartel de renacimientos», «lengua de autopista», tablilla con una V suelta, amontonamiento
+en Leonardo, avisos de candado apilados, «Tu parada» poco claro, ramas sin vuelta natural). Plan de un planificador de UX
+(`docs/eval/plan-composicion-camino.md`, con el estudio de cómo lo resuelven Duolingo, Candy Crush, Two Dots…) y cuatro
+evaluadores independientes (`docs/eval/eval-camino-r1..r4.md`; aprueba la r4).
+- Antes de todo: el mapa salía sin estilos en el móvil de María (un index.html viejo en caché sin `mapa-carteles.css`):
+  `main.js` pide las hojas del arranque que falten (`ui/lazy-css.js`) y la página va sin caché.
+- La época, su nombre grabado en el dintel de piedra de su puerta (sin caja blanca: la lápida grande no gustó), con una
+  ranura que se llena; completa, se dora. El tramo, una sola tablilla en un hueco propio antes de sus pintores; completo,
+  se dora (el mojón de al lado duplicaba). Siguiente ronda: la época como lugar (plaza) en el sendero.
+- Espaciado por elementos (`GAP` en `path-layout.js`): el hueco entre paradas suma lo que lleva (puente, rama, mojón).
+- Sendero de tierra sin raya, con borde irregular y piedrecitas; nace de una plaza empedrada con fuente, arco y la caseta
+  «Cómo se juega». Desvíos tangentes con poste de flecha; en cada rama, «Volver al camino» del lado del camino común.
+- Candados: tiembla, vibra y un solo globo con cruz. «Tú»: círculo con flecha que sigue a la parada actual.
+- Luz: arrebol rosa al amanecer y ámbar al atardecer, encima de la noche; ningún edificio pisa un río.
+
+## Cuadro del día (27/11)
+
+Diseño aprobado por María: sustituye al reto diario de la cabecera. Un cuadro famoso al día, igual para todos (día de
+Madrid): «¿De quién es?», 6 pintores, 4 intentos; cada fallo apaga el nombre y enseña más (detalle ×3 → ×1,6 y época →
+entero y año → museo). Al acabar, una historia de 3 tarjetas (gancho que vuelve al detalle, «Fíjate en», anécdota) con el
+núcleo de las historias sacado de `story-viewer.js` (`ui/story-core.js`). Calendario curado de 14 días desde el 27/11
+(Botticelli, Van Eyck, Velázquez, Goya, Caravaggio, Leonardo, Vermeer, El Greco, Monet, el Bosco, Van Gogh, Sorolla,
+Murillo y Rembrandt), validado por `tools/sync_cuadro_dia.py` (nitidez del detalle con la HD que ahora pide también
+`pipeline/hd.py`, reparto, pistas sin destripes) con alarma desde el 08/12. Compartir con cuadritos y página
+`h/cuadro-<n>.html` con el detalle como vista previa. 10 XP si acierta, 5 si no; cuenta para la racha general; medallas
+`daily-1` y `daily-perfect` renombradas. Estado v11. Fuera `planDaily` y la ronda diaria; `#reto-diario` y los enlaces `d…`
+llevan al Cuadro del día.
+
+## «Fíjate en» que encaja con la obra (27/11)
+
+María acertó «Los tormentos de San Antonio» y le salió «Fíjate en los cuerpos musculosos» (la pista genérica de Miguel
+Ángel, que rota con sus rasgos en `engine/feedback.js`). Ahora `contenido/fijate.json` da a una obra su propio «fíjate»
+(≤ 100 letras, con fuente) y/o excluye rasgos del pintor que en ella no se ven (`sin`: posiciones en [pista, *rasgos] o
+«todos»); llega como `looks` y `skipTraits` y el motor no enseña nunca un rasgo excluido (tampoco en la ficha del pintor).
+En obras etiquetadas, tampoco un rasgo cuyas etiquetas faltan. Mejor sin línea que una que no encaja. Auditoría: 192
+obras (juventud de El Greco, Velázquez sevillano, Caravaggio temprano, Van Gogh holandés, retratos de Tiziano…).
+Segundo caso («el llanto» de Van der Weyden en un retrato): el filtro pasa a ser seguro por defecto. Cada obra tiene
+género (Wikidata reducido a retrato, figuras, paisaje, bodegón o abstracto; 213 a mano en `contenido/generos.json`) y cada
+una de las ~600 frases de los 174 pintores declara su alcance en `contenido/rasgos.json` (estilo, géneros o etiquetas).
+Unas 265 obras se quedan sin «fíjate» genérico (antes enseñaban algo que quizá no se veía).
+Tercer caso (Masaccio: «figuras que pisan firme» en una Virgen sentada y en un San Andrés de medio cuerpo): lo que se
+señala tiene que estar a la vista en ESE cuadro. Una frase con un detalle concreto (de pie, paisaje, ruinas, llanto…) va
+en `rasgos.json` como {donde, general, generalDonde}: entera solo donde se ve y, si no, su versión general sin el detalle
+(«Fíjate en el volumen macizo, como de escultura, y en la luz que llega de un lado»). 49 pintores con versión general;
+San Andrés con «fíjate» propio (el manto y la luz lateral, sólido aunque sobre oro).
+Relleno (27/11): 173 obras que se habían quedado sin «fíjate» llevan uno propio en `contenido/fijate.json` (≤ 100 letras,
+con fuente, sin nombrar al autor ni el título: lo comprueba `validate_catalog.py`), empezando por la fama alta y por
+Goya, el Bosco, Géricault, El Greco y Degas; tres Caravaggio pasan a «figuras» en `generos.json`. Quedan 65 sin línea
+(61 de fama 1), donde no había certeza de qué señalar.
+
+## Tarjetas de época y de cartel: el cuadro entero (27/11)
+
+«La creación de Adán» salía en cuadrado y a Adán le faltaba la cabeza: la caja tenía alto fijo y recortaba toda obra más
+apaisada que ella. Ahora la caja toma la proporción de la obra (`--card-ar`, hasta `--era-art-h` de alto y el ancho de la
+tarjeta, con el hueco reservado): ninguna obra se recorta. Solo una tarjeta con `region` enseña un detalle a propósito
+(`cardFrame` en `engine/framing.js`); hoy ninguna lo necesita. Revisadas con capturas a 360 px las 81 tarjetas de época
+visibles y las de los 54 carteles. Prueba: `tests/epocas-encuadre.test.js`.
+
+## La época, una puerta de ciudad en el camino (27/11)
+
+Tras el prototipo y varias vueltas con evaluadores y directores de arte (`docs/eval/eval-camino-r5*`, `eval-proto-r5*`),
+María eligió la puerta de ciudad: cada época entra por una puerta del mismo tamaño (dos torreones de tejado cónico) y el
+sendero cruza su arco; cerrada, lleva portón. El nombre va grabado en el ático en la letra de la app, semibold y en
+capitales, tinta oscura de día y casi blanca de noche, sin partir palabras («Manierismo y Renacimiento del Norte» se
+graba «Renacimiento del Norte»; «Manierismo» sigue en su tramo y en la presentación). La puerta proyecta su sombra
+(de noche, la de la luna) y de noche se ilumina un poco con filo de luna y dos faroles. Sin plaza ni fuente (se probó y
+se quitó). La salida usa la misma puerta en la muralla, con el sendero desde abajo y la caseta de información sin
+rótulo (la «i» basta). El tramo es un hito de piedra con el nombre al lado; las ramas por época se llaman «Más del …»;
+los pintores dormidos ya no llevan «¿Lo recuerdas?» bajo el nombre; la guía dice «Prueba del Renacimiento» y cabe entera.
+
+## Test de pintura depurado (27/11)
+Portada con gancho («¿Distinguirías un Velázquez de un Murillo?») y una línea práctica; fuera «Cuadros de verdad» y
+«Sin registro». Sin pausa a mitad: sigue mientras aciertes (máx. 40) y avisa «Sube la dificultad» sin parar. Niveles
+nuevos («Primera visita al museo» … «Ojo clínico»; los guardados con el nombre de antes se traducen). Resultado con la
+cifra grande del percentil (estimación de `docs/eval/reconocimiento-fuentes.md`, sin cambios) y texto para compartir
+con reto («Sfumato · Sé más de pintura que el 78 % de la gente. ¿Y tú?»; por debajo del 40 %, los aciertos). Salir a
+medias (aspa, Esc o «atrás») pide confirmación con hoja propia (`app/js/test/salida.js`). Efectos de sonido de la app
+con el ajuste «Sonidos» (`app/js/test/sonido.js`). Los pintores rusos ya no salen en el tramo fácil ni en el medio
+(`LOCAL_FAME` en `bolsa.js`). Vista previa (`app/test/portada.jpg`) rehecha con la marca Sfumato.
+
+## Medallón y rombo: paradas que cuentan (28/11)
+
+Pedido de María: la puerta y el tramo se leían como decoración. Ahora son paradas del sendero, de la misma familia
+(terracota con un libro en crema, `ui/screens/path-lore.js`), distinta de los círculos de los pintores:
+- **Medallón de la época**, en el arco de su puerta y sobre el sendero (Candy Crush): es lo único que se pulsa de la
+  puerta. El nombre va en una placa de la misma piedra, algo saliente (filete y sombra corta), sin botón. Abre la
+  presentación; si aún no se ha visto, cuenta como vista y «Seguir» continúa al cartel del tramo y al pintor, como la guía.
+  Cerrada, la hoja de lo que falta. En la salida, el medallón de la primera época va en la puerta de la muralla.
+- **Rombo del tramo**, sobre el sendero antes de su primer pintor, con su nombre en la pastilla de los pintores (sin 📖).
+  Abre el cartel; si es lo siguiente del camino, como paso («Saltar»/«Seguir») y después el pintor.
+- Sin ver: puntito coral y un respiro suave (sin él con «Reducir animaciones»). Completos: sello de oro. Al tocarlos se
+  hunden y suena el toque; zona táctil de 56 px. «Tú» se posa en el medallón o en el rombo cuando son lo siguiente (en
+  el medallón cuelga debajo, porque encima está la placa); el botón «Tú», la vista inicial y la guía de bienvenida van ahí.
+- **Ritmo:** medallón → rombo → pintores → … → prueba de época, todas las paradas a 180 de distancia vertical, también entre
+  épocas y desde la salida (`stops` en `path-layout.js`). Puentes y carteles de rama caben en el hueco sin romperlo. Prueba
+  en `tests/camino-forma.test.js`. El mapa es algo más largo; paisajes regenerados (`tools/mapa_svg.py`).
+- **Fuera la caseta** de información de la salida: «Cómo se juega» pasa a Perfil → Ajustes, junto a «Acerca de Sfumato»
+  (nunca salía sola; la guía de bienvenida sigue igual).
+- De paso, el camino en línea (letra muy grande o ventana estrecha) ya no amontona las paradas.
+
+## «Fíjate en…»: variedad y ninguna obra sin pista (28/11)
+
+María veía casi siempre la misma frase tras fallar con un pintor. Ahora cada uno de los 174 pintores tiene 4-5 refuerzos
+de estilo en `contenido/pistas.json` (760 en total: color, pincelada, luz, rostros, composición, temas), sin nombrar al
+pintor ni títulos para poder usarlos algún día como pistas antes de responder. Llevan alcance (estilo, géneros o
+etiquetas) y, cuando se puede, etiquetas visuales para servir también tras un fallo en «¿Cuál es de X?». `feedbackFor`
+da primero el «fíjate» propio de la obra y luego rota entre frases y refuerzos sin repetir el último visto de ese pintor
+(`recent`, que dura toda la sesión en `lesson.js`). Las obras atípicas excluyen los refuerzos que no les cuadran
+(`sinPistas` en `fijate.json`). El 100 % de las 1.469 obras tiene al menos una línea aplicable (prueba en
+`tests/fijate.test.js`). La individualización por cuadro sí funciona (sale primero en las 290 obras que la tienen, también
+tras fallar); si se nota poco es porque solo el 22 % de las obras del camino tiene «fíjate» propio.
+Revisión independiente (una vuelta, 6,5/10): reescritos unos 60 refuerzos (frases genéricas, ángulos repetidos dentro de un
+pintor o entre Degas, Lautrec y Cassatt, rasgos de «estilo» que no valían en toda la obra, términos sin explicar). Ahora:
+757 refuerzos; mediana de 6 líneas aplicables por obra; 1.469 de 1.469 obras con al menos una.
+
+## Cierre de época: capítulo terminado (28/11)
+
+- **Cuándo:** una época del camino se cierra al ganar su medalla (todas sus paradas dominadas; la Prueba de época se abre
+  justo entonces y no es requisito); una rama, al dominar todos sus pintores propios. `engine/era-end.js`.
+- **Pantalla** `#cierre-<época>` / `#cierre-rama-<id>` (`ui/screens/era-end.js`, `css/cierre.css`): «Has terminado el
+  Renacimiento», la medalla, los pintores en un mosaico de retratos (llevan a su ficha), cuadros vistos y acertados, la frase
+  puente y «Cruzar al <época>» (medallón y presentación; si ya entró, su parada abierta) o «Volver al camino». Tras la última
+  época, «Ver tu colección». Compartir manda `h/epoca-<id>.html` con «He terminado el Renacimiento en Sfumato». Sonido
+  `complete` + `medal` y un brillo breve que no sale con «reducir animaciones».
+- **Guía:** regla 1 ter de `nextStep` («Cerrar el Renacimiento»), en el resultado y en el mapa, hasta que se ve. Sale una vez.
+- **Frases puente** en `data/cierres.json` (8 transiciones del camino, el final y las 14 ramas), ≤ 180 caracteres, con fuente
+  (solo en «Fuentes y créditos», grupo «Carteles y cierres del camino»).
+- **Estado:** `progress.closures = { seeded, seen }`, sin subir la versión. Quien ya traía épocas cerradas se siembra al cargar:
+  cuentan como vistas salvo la última si aún no ha cruzado a la siguiente. Pruebas en `tests/cierre-epoca.test.js`.
+## «Repasar a…»: lo que se olvida vuelve con contexto, y «No lo sé» (28/11)
+
+Pedido de María: con muchos pintores aprendidos, al jugar a uno nuevo le preguntaban por los antiguos y ya no se acordaba;
+repetir cuadros sin contexto acaba en memorizar imágenes.
+- **Detección** (`engine/recall.js`): cada respuesta de autor o de época queda en un registro corto (`progress.slips`,
+  últimas 80; un estado anterior lo recibe vacío). Un fallo cuenta para el que era la respuesta y para el elegido por error;
+  lo del propio pintor (o sala) de la ronda no cuenta. Olvidado: `RECALL_SLIPS` (3) fallos en `RECALL_WINDOW_DAYS` (14)
+  días, o menos del 50 % con 6 preguntas o más, y solo si ya lo había dominado. «No lo sé» pesa doble (`RECALL_DUNNO_WEIGHT`).
+- **Guía** (`engine/next-step.js`, regla 2 bis): «Repasar a Velázquez» / «Repasar el Barroco», con su cara, detrás de
+  «Repetir» y «Por hoy, hecho» y delante del repaso general; nunca el mismo dos veces seguidas ni tras otra sesión así. Si
+  coinciden un pintor y una época, gana lo que más falla. También en la píldora del mapa.
+- **Una sola sesión por pintor** (`ui/screens/recall.js`, `engine/recall-session.js`), la misma desde la ruta y desde la
+  ficha: primera tarjeta de su historia de nivel 1 (o la del nivel donde se concentran los fallos) con «Seguir» destacado e
+  «Ir a las preguntas» al lado; al final, una sugerencia de otra historia suya («Más de Velázquez: Sevilla ›»), «Cómo
+  reconocer a…» (2-3 rasgos y 2-3 cuadros que se abren en grande) y, si lo confunde con alguien, «Velázquez o Zurbarán»
+  con un cuadro de cada uno y una frase hecha con sus rasgos. Después, 5 preguntas con sus cuadros (primero los fallados)
+  frente a otros. La cuenta vuelve a cero al terminar. Épocas: sus tarjetas «Cuándo y dónde», «Qué cambia» y «Fíjate en»,
+  el contraste y preguntas de época.
+- **Niveles**: su historia con el mismo patrón («Seguir» / «Ir a las preguntas») y después sus preguntas.
+- **Ficha**: un único botón con lo que toca («Nivel 2 de Vermeer» o «Repasar a Vermeer»), sin la insignia de categoría (el
+  aro ya enseña el progreso); tocar un círculo hecho enseña solo su historia, con «Volver» y «Preguntas de este nivel».
+  Las etiquetas de los círculos ya no parten palabras («Comienzos»).
+- **«No lo sé»** (`ui/screens/lesson.js`), solo en el modo aprender (camino, ramas, salas, Prueba de época, repasos y
+  «Repasar a…»; nunca en retos ni en el test): enseña la buena con su «Fíjate en…» y la cara del pintor, sin sonido ni
+  rojo de fallo y sin puntos; cuenta como fallo (rompe «seguidas», vuelve al final).
+- Pruebas en `tests/recordar.test.js`.
+Cobertura (28/11): 408 «fíjate» propios nuevos para obras de fama 3 y 2 del camino (y algunas de fama 1), cada uno con
+algo que se ve en ese cuadro y su fuente: del 22 % al 63 % de las obras del camino (629 de 1.002). Siguen dejando que
+salgan después las frases del pintor (`sin: []`). Unos 45 pintores menores con refuerzos más concretos.
+
+## 28/11 · Niveles «a fondo» en el itinerario: imprescindibles y «Profundiza en…»
+
+- **Imprescindibles por época** (`contenido/imprescindibles.json` → `essentials` del catálogo, `engine/essentials.js`): 2-4
+  niveles por época con peso 1-3, título («las pinturas negras de Goya»), motivo y fuente. Se abren con el nivel 1 del pintor
+  dominado, sin pasar por los niveles anteriores (si no, cruzar el Romanticismo pediría cinco rondas de Goya).
+- **Puerta de época**: cruzar a la siguiente pide los imprescindibles de ESA época (`progress.js isStepUnlocked`). Candado de
+  la parada y hoja de la época: «Te falta conocer Las Meninas de Velázquez (nivel 5)» con «Ir»; guía «Te falta conocer…»
+  (regla 5 ter); el cierre de época lleva a lo que falta. Quien ya entró en la época (presentación vista o parada jugada) no
+  queda cerrado. «Camino completo» y «Museo completo» piden todos. Ramas y demás niveles nunca bloquean.
+- **«Profundiza en Rafael: nivel 3»** (`engine/deepen.js`, regla 5 quater): cada `DEEPEN_EVERY` (3) pintores nuevos, un nivel
+  pendiente de cualquier época ya recorrida, ponderado (imprescindible 1 + 2 × peso; ×2 si su época ya se cruzó sin él), con
+  rotación (`ROTATION` 4: tras saltar A nunca A, y A no vuelve hasta ofrecer otros) y enfriamiento (desde el 2.º salto en
+  `COOL_DAYS` 21, el peso se divide; nunca baja de `COOL_FLOOR`). «Ahora no» en el resultado o jugar otra cosa = salto con su
+  día (`progress.deepen`). Pruebas en `tests/imprescindibles.test.js`.
+Segunda revisión independiente (una vuelta; 7,5/10 los «fíjate» por obra, 7/10 los refuerzos): corregidos 9 «fíjate»
+(datos dudosos como la «piel tostada» de la mujer en las olas o el cielo «casi de noche» de la casa amarilla, y títulos casi
+literales) y 24 refuerzos que eran de un tema o una etapa y no de toda la obra, o que sonaban genéricos.
+«Fíjate en» = rasgo del pintor (28/11). Muchos «fíjate» por obra eran curiosidades (la calavera de Los embajadores, el
+guante de Los jugadores de cartas), que ya están en la curiosidad de cada obra. Criterio nuevo: el «Fíjate en…» enseña
+siempre a reconocer al pintor con un rasgo de su estilo que se ve en ese cuadro. De los 629 de obras del camino, 124 ya lo
+hacían (109 antiguos de catalog_data y 15 propios) y 505 se reescribieron. Las curiosidades que contenían ya estaban en la
+curiosidad de su obra (de ahí se habían sacado), así que no se ha perdido ninguna.
+
+## 28/11 — Foco del mapa, burbuja del itinerario y primer tramo fuera
+
+- Partida nueva (y tras «Borrar progreso»): lo primero es el medallón de la primera época; el pintor que va detrás ya no lleva el
+  aro de «actual». Se quita «Tú»: lo que recomienda el itinerario (`mapRecommendation`, engine/next-step.js) lleva una burbuja con
+  verbo («Abrir», «Conocer», «Empezar», «Seguir», «Repasar», «Profundizar») sobre su parada, con pulso suave (`ui/screens/map-cue.js`);
+  es lo único animado de los nodos. Sin recomendación atrás no hay marca en la frontera; con ella, un anillo fino. El botón flotante es
+  una flecha hacia lo recomendado y la píldora de guía desaparece.
+- Tocar un pintor cuya época o tramo no se han visto abre su tarjeta con «Empezar · antes, el Renacimiento» (`ui/lore-first-card.js`):
+  nada se salta sin avisar. El «Ir» del globo de candado lleva a esa tarjeta. Globo rediseñado: pastilla compacta, «Ir» como pastilla
+  pequeña, sin cruz.
+- Decisión de María: el primer tramo de cada época (el que sigue a su puerta) no sale en el camino (`hasTramoSign`). Sigue en los datos
+  porque abre las ramas y agrupa a los nuevos. Su cartel se conserva en `data/carteles/tramos.json` por si hay tarjetas que rescatar.
+  Paisajes regenerados.
+- Medallón y rombo por delante del progreso: cerrados con candado y el mismo globo («Se abre al cruzar la puerta del Barroco»); al
+  llegar a la época se abren sus rombos aunque sus pintores sigan cerrados.
+- Prueba general del itinerario (`tests/itinerario.test.js`): una partida que solo sigue `nextStep` recorre todo el camino en orden.
+Revisión independiente con ese criterio («¿ayuda a reconocer al pintor la próxima vez?»): ~80 % lo cumplía (7/10).
+Corregidos 47: curiosidades que quedaban (gato y jilguero, perro carlino, esqueleto gigante…), datos dudosos (rayos del
+atardecer en la cruz de Friedrich, el «con espátula» de La novia judía) y más variedad en Van Eyck, Bronzino, Courbet,
+Berruguete y Degas.
+Alternancia (28/11): con la memoria de sesión de `lesson.js`, el «fíjate» de la obra ya no sale siempre primero: si lo
+último visto de ese pintor fue otra pista propia, o se le parece (comparación de palabras clave, `similar`), toca una frase
+de estilo, y viceversa. Más variedad en los «fíjate» de Rafael, Rembrandt y Tiziano y 9 que solo describían la escena.
+
+## 28/11 · Visores de tarjetas: misma forma de avanzar, volver y salir
+Criterio de María: época, tramo e historia de pintor pueden verse distintos (claro / oscuro sobre el cuadro), pero se
+recorren igual. Componente común `app/js/ui/deck-nav.js` (+ `css/deck.css`): barras arriba, etiqueta discreta («Época»,
+«Tramo» o el pintor), compartir y X; tocar a la derecha avanza, a la izquierda vuelve, y deslizar; abajo «Seguir» y, como
+atajo, «Saltar» (paso del camino) o «Ir a las preguntas». En la última tarjeta el principal es lo que toca (Seguir en el
+itinerario, «Ir a las preguntas», «Volver al camino», «Volver», «Empezar») y el secundario, «Más sobre… ›» (la ficha del
+pintor; en época y tramo, la ficha de época cuando exista: `eraFichaRoute` en `era-cards.js`). Fuera «Descubre la época»,
+«Descubre más», los puntos, el avance solo con pausa y la insignia del rango en la cabecera. La X sale al camino sin seguir.
+
+## 28/11 · Niveles «a fondo» por importancia
+
+- **Decisión de María:** los niveles de un pintor se ordenan por importancia, no por etapa. Lo imprescindible es el nivel 2
+  (las pinturas negras de Goya pasan del 6 al 2; Las Meninas, del 5 al 2) y, si hay varios, los siguientes; después, lo de
+  más fama; el resto por fama media. El nivel 1 no cambia y las obras de cada nivel siguen juntas: solo cambia el número.
+- 13 pintores cambian de orden (Caravaggio ya estaba bien). Fuente: `pipeline/etapas.json` (el `nivel` es la importancia;
+  la lista sigue en orden cronológico para el corte por `hasta`, y `seleccionar.py` ya no la ordena por nivel),
+  `ajustes.json` (`etapa`), `seleccion.json`, historias, títulos cortos e `imprescindibles.json`. Volver a seleccionar con
+  `seleccionar.py` da exactamente el mismo reparto.
+- Sin atajo: un imprescindible ya no se abre saltándose los niveles anteriores (no hace falta: es el nivel 2, y los de
+  nivel 3 o 4 van detrás de los anteriores de su pintor, también en el orden de «Te falta conocer…»).
+- Cada historia movida dice en su primera tarjeta en qué momento de la vida estamos («Ya anciano y sordo…»,
+  «Retrocedemos a sus primeros años en Sevilla…»).
+- **Progreso:** `state/level-order.js` traduce al cargar (en `schema.migrate`, sin versión nueva para no romper móviles con
+  la app en caché) los niveles hechos (`progress.deep`), la rotación de «Profundiza» y las historias vistas; marca
+  `progress.levelOrder` (y `@orden:1` en la lista de historias) para hacerlo una sola vez. Una ronda «a fondo» a medias de
+  esos pintores se descarta. Pruebas en `tests/niveles-importancia.test.js`.

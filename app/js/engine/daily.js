@@ -1,5 +1,5 @@
-// Reto diario: las mismas 5 preguntas para todo el mundo en una fecha dada.
-// Solo usa pintores con etapa propia y obras conocidas (nivel general).
+// Rondas mezcladas de todo el camino: la ronda libre, el reto semanal y los retos por enlace. Solo usa pintores con etapa propia
+// y obras conocidas (nivel general). El reto diario ya no existe: lo sustituye el Cuadro del día (engine/cuadro-dia.js).
 
 import { planGeneral, planStage, planMovementReview, planSala } from './planner.js';
 
@@ -16,15 +16,8 @@ export function planFree(index, seed) {
   return { kind: 'general', seed, questions: planGeneral(index, dailyPool(index), `general:${seed}`, FREE_DIFFICULTY) };
 }
 
-export const DAILY_SIZE = 5;
-
-export function planDaily(index, dateKey) {
-  const questions = planGeneral(index, dailyPool(index), `daily:${dateKey}`, [0.2, 0.55], DAILY_SIZE);
-  return { kind: 'daily', date: dateKey, questions };
-}
-
 // Reto semanal: 15 preguntas de todo el camino, iguales para todos en una semana ISO
-// (semilla = semana, p. ej. '2026-W48'). Se comparte por enlace como el diario (`w202648`).
+// (semilla = semana, p. ej. '2026-W48'). Se comparte por enlace (`w202648`).
 export const WEEKLY_SIZE = 15;
 export const WEEKLY_DIFFICULTY = [0.35, 0.75];
 
@@ -33,7 +26,7 @@ export function planWeekly(index, weekKey) {
   return { kind: 'weekly', week: weekKey, questions };
 }
 
-// Cuadrícula compartible: una fila con una casilla por pregunta (5 en el reto diario).
+// Cuadrícula compartible del reto semanal: una fila con una casilla por pregunta.
 export function dailyGrid(firstTry) {
   return firstTry.map((ok) => (ok ? '🟩' : '⬜')).join('');
 }
@@ -68,7 +61,6 @@ function buildChallengePlan(index, descriptor) {
     const m = index.movements[descriptor.idx];
     return m && index.isSala(m.id) ? planSala(index, m.id, descriptor.seed) : null;
   }
-  if (descriptor.kind === 'daily') return planDaily(index, descriptor.date);
   if (descriptor.kind === 'weekly') return planWeekly(index, descriptor.week);
   if (descriptor.kind === 'general') {
     return planFree(index, descriptor.seed);

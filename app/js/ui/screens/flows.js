@@ -1,5 +1,5 @@
 // Flujos de juego: etapa de pintor, sala de movimiento, intro de movimiento, repasos,
-// reto diario, reto de un amigo y ronda retomada.
+// reto semanal, reto de un amigo y ronda retomada (el Cuadro del día va en ui/screens/cuadro-dia.js).
 
 import { esc, onAction, accentStyle, defaultAccent, focusHeading, announce, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
@@ -9,25 +9,24 @@ import { renderResult, copyText } from './result.js';
 import { loadCss } from '../lazy-css.js';
 import { playEra } from '../audio-bridge.js';
 import { randomSeed } from '../../engine/rng.js';
-import { planStage, planMovementReview, planSrsReview, planReview5, planSala, salaLearnWorks, QUICK_REVIEW } from '../../engine/planner.js';
+import { planStage, planMovementReview, planReviewSession, planSala, salaLearnWorks } from '../../engine/planner.js';
 import { knownArtists } from '../../engine/chrono.js';
-import { planDaily, planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
+import { planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, needsTramo, isPathMastered, unseenArtists, isKnownArtist, nextStep, movementStatus } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
-import { storyKey } from '../../engine/stories.js';
-import { storySeen } from '../../state/stories-seen.js';
 import { avatarHtml } from '../avatar.js';
+import { DECK_LABEL } from '../deck-nav.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
-import { contrabandWork, review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
+import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_TITLE } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
-import { dueKeys } from '../../engine/srs.js';
-import { stageReturnTo } from '../router.js';
+import { stageReturnTo, isGoalScreen, stageRoute } from '../router.js';
+import { takePlayContext } from '../play-context.js';
 import { makeSession, withSession, clearSession } from '../../state/session.js';
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
@@ -53,12 +52,20 @@ function complete(ctx, result) {
 }
 
 function planMeta(plan) {
-  return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week, level: plan.level };
+  return { kind: plan.kind, seed: plan.seed, artistId: plan.artistId, movementId: plan.movementId, date: plan.date, week: plan.week, level: plan.level, started: plan.started };
 }
 
 // Rondas que no llevan al final un cuadro fallado antes: los retos con un amigo y el semanal (iguales
-// para todos) y el repaso de 5 (ya lleva los fallados entre sus preguntas).
-const NO_EXTRA = new Set(['challenge', 'weekly', 'review5']);
+// para todos) y el repaso (ya lleva los fallados entre sus preguntas).
+const NO_EXTRA = new Set(['challenge', 'weekly', 'srs']);
+
+// «No lo sé» solo en el modo aprender: camino y ramas (stage), salas, Prueba de época (review), repasos (srs) y «Repasar a…».
+// Nunca en los retos (semanal, con un amigo, ronda libre): allí sería una ventaja.
+export const DUNNO_KINDS = new Set(['stage', 'sala', 'review', 'srs', 'recall']);
+
+// Tipo de la sesión anterior terminada (en memoria, sin tocar el estado): el siguiente paso nunca propone dos repasos
+// seguidos (engine/next-step.js).
+let lastKind = null;
 
 function falladoExtras(ctx, kind, plan) {
   if (NO_EXTRA.has(kind)) return [];
@@ -68,8 +75,8 @@ function falladoExtras(ctx, kind, plan) {
 }
 
 // Ejecuta una ronda y la guarda tras cada respuesta para poder retomarla (state/session.js).
-function play(ctx, el, opts) {
-  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, more = null, returnTo = null } = opts;
+export function play(ctx, el, opts) {
+  const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, returnTo = null, contextArtist = '' } = opts;
   const home = returnTo || 'inicio';
   const meta = { route: opts.route || currentRoute(), title, accent, kind, extra, friendScore, shareTopic, plan: planMeta(plan) };
   const questions = resume ? resume.round.queue.map((it) => it.q) : plan.questions;
@@ -82,6 +89,7 @@ function play(ctx, el, opts) {
     seed: plan.seed || plan.date || 1,
     label: title,
     interlude: plan.kind === 'sala',
+    dunno: DUNNO_KINDS.has(kind),
     resume,
     onSave: (snapshot) => ctx.store.update((s) => withSession(s, makeSession(meta, snapshot, Date.now()))),
     onQuit: () => {
@@ -92,20 +100,34 @@ function play(ctx, el, opts) {
     onDone: (summary) => {
       const before = ctx.store.get().progress;
       const outcome = complete(ctx, { kind, ...extra, answers: summary.answers, firstTry: summary.firstTry, challenge: friendScore != null });
-      // «Repasar más» tras el repaso rápido; las otras rondas (repasar lo aprendido, reto semanal) las ofrece el resultado.
-      const moreReview = friendScore == null && typeof more === 'function' && more();
+      const prevKind = lastKind;
+      lastKind = kind;
+      const goalJustMet = outcome.events.some((e) => e.type === 'goal');
       resultCss.then(() => renderResult(ctx, el, {
-        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before,
-        more: moreReview ? { label: 'Repasar más', to: 'repaso' } : null,
+        plan, outcome, title, accent, firstTry: summary.firstTry, friendScore, shareTopic, branchId: extra.branchId, before, prevKind, goalJustMet,
+        origin: isGoalScreen(returnTo) ? returnTo : '', contextArtist,
       }));
     },
   });
+}
+
+// El contexto manda: si se entró desde un pintor (su ficha o galería, o su tarjeta del mapa), el resultado ofrece algo
+// sobre él (engine/next-step.js artistStep).
+function contextOf(returnTo, artistId) {
+  const fromPainter = /^(pintor|obras)-/.test(returnTo || '');
+  return takePlayContext(artistId) || fromPainter ? artistId : '';
 }
 
 // Si la ronda se lanzó desde la ficha de un pintor (o su galería) o desde la pantalla de una rama, atrás y «Salir»
 // vuelven a ella y no al camino.
 function cameFrom(ctx, branchId = '') {
   return stageReturnTo(branchId, ctx.prevRoute());
+}
+
+// «Repasar a» un pintor o una época (ui/screens/recall.js, aparte: carga sus piezas al entrar).
+export function renderRecall(ctx, el, type, id) {
+  import('./recall.js').then((m) => { if (el.isConnected) m.renderRecall(ctx, el, type, id, { play, leave }); })
+    .catch((err) => { console.error(err); leave(ctx); });
 }
 
 // --- Ronda retomada -----------------------------------------------------------
@@ -150,21 +172,31 @@ export function introWorks(index, movementId) {
   return picks;
 }
 
-// Texto del botón de la presentación según cómo se llega a ella.
-const INTRO_ENTER = { first: 'Entrar', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
+// Botón de la última tarjeta de la presentación según cómo se llega a ella: desde el camino sigue la secuencia («Seguir»).
+const INTRO_ENTER = { first: DECK_LABEL.next, again: DECK_LABEL.toPath, shared: DECK_LABEL.toPath, guest: DECK_LABEL.start };
 
-// mode 'first': se ve al entrar por primera vez y el botón continúa; 'again': desde el mapa; 'shared': desde un enlace
-// compartido (#epoca-<id>), sin tocar la partida; a quien aún no juega, el botón le invita a empezar.
-export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
+// Lo que la presentación espera a sus tarjetas antes de pintarse; con una red peor, sale sin ellas y llegan con fundido.
+const ERA_CARDS_WAIT_MS = 1200;
+const waitMs = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+
+// mode 'first': se ve al entrar por primera vez, como un paso del camino, y «Seguir» continúa a lo que se iba a jugar
+// (onEnter); 'again': desde el mapa; 'shared': desde un enlace compartido (#epoca-<id>), sin tocar la partida; a quien aún
+// no juega, el botón le invita a empezar.
+export async function renderIntro(ctx, el, movementId, { mode: asked = 'again', onEnter: then = null } = {}) {
   const { index } = ctx;
   const movement = index.movement(movementId);
   if (!movement || !index.visibleMovements.includes(movement)) return leave(ctx);
+  const { mode, onEnter } = fromMedallion(ctx, movementId, asked, then);
   const n = index.visibleMovements.indexOf(movement);
   const works = introWorks(index, movementId);
   const order = works.length === 3 ? [works[1], works[0], works[2]] : works;
   const wall = order.map((w, i) => `<span class="wall-item wall-${i}">${artFrame(w, { alt: '', eager: true, label: '', thumb: true, zoom: { group: 'intro' } })}</span>`).join('');
   const guest = mode === 'shared' && !ctx.store.get().onboarded;
   playEra(movement.era);
+  // Tarjetas y su hoja antes de pintar: así la pantalla sale una sola vez, ya con el carrusel.
+  const eraCards = import('./era-cards.js').then((m) => m.prepareEraCards(movementId).then((cards) => ({ m, cards })));
+  const early = await Promise.race([eraCards.catch(() => null), waitMs(ERA_CARDS_WAIT_MS)]);
+  if (!el.isConnected) return;
   el.innerHTML = `<div class="welcome intro" style="${accentStyle(movement.accent)}">
     <main class="welcome-body" id="main">
       <div class="wall">${wall}</div>
@@ -174,8 +206,12 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
       <button class="btn btn-primary btn-wide" data-action="enter" data-primary>${INTRO_ENTER[guest ? 'guest' : mode]}</button>
     </main>
   </div>`;
+  const intro = $('.intro', el);
+  // Como paso del camino, «Saltar» va directo a lo siguiente.
+  const skip = mode === 'first';
+  if (early) early.m.mountEraCards(ctx, intro, movementId, early.cards, { skip });
+  else eraCards.then(({ m, cards }) => m.mountEraCards(ctx, intro, movementId, cards, { late: true, skip })).catch((err) => console.error(err));
   focusHeading(el);
-  import('./era-cards.js').then((m) => m.mountEraCards(ctx, $('.intro', el), movementId)).catch((err) => console.error(err));
   const off = onAction(el, {
     enter: () => {
       ctx.audio.sfx('tap');
@@ -188,9 +224,20 @@ export function renderIntro(ctx, el, movementId, { mode = 'again' } = {}) {
         ctx.audio.unlock();
         ctx.store.update((s) => ({ ...s, onboarded: true }));
       }
-      ctx.go('inicio');
+      if (onEnter) return onEnter();
+      return ctx.go('inicio');
     },
   });
+}
+
+// Desde el medallón del mapa, la primera vez: es la parada de la época en el camino, así que cuenta como vista y «Seguir»
+// continúa a lo siguiente de la época (el cartel del tramo y el pintor), como cuando la trae la guía.
+function fromMedallion(ctx, movementId, mode, onEnter) {
+  const p = ctx.store.get().progress;
+  if (mode !== 'again' || !needsIntro(p, ctx.index, movementId) || movementStatus(p, ctx.index, movementId) === 'locked') return { mode, onEnter };
+  const step = nextStep(p, ctx.index);
+  const go = step && step.movementId === movementId ? (step.type === 'sala' ? `sala-${step.id}` : stageRoute(step.id)) : 'inicio';
+  return { mode: 'first', onEnter: () => ctx.go(go) };
 }
 
 // --- Pantalla «Conoce…» compartida (pintor y sala) -------------------------------
@@ -283,27 +330,42 @@ function gap(track) {
   return parseFloat(getComputedStyle(track).columnGap) || 0;
 }
 
-// Si es la primera vez en el movimiento, se muestra su intro en lugar de la parada: «Entrar» deja en el camino, donde se
-// elige el pintor. Las ramas-movimiento (Gótico, Estampa japonesa) no tienen presentación propia: se entra directo.
+// La primera vez en el movimiento, su presentación sale como un paso más del camino, en lugar de la parada; «Seguir» la
+// cierra y continúa a la parada (venga de la guía, de «Siguiente» o del mapa). Las ramas-movimiento (Gótico, Estampa
+// japonesa) no tienen presentación propia: se entra directo.
 function withIntro(ctx, el, movementId, show) {
   const visible = ctx.index.visibleMovements.some((m) => m.id === movementId);
   if (visible && needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
-    return renderIntro(ctx, el, movementId, { mode: 'first' });
+    return renderIntro(ctx, el, movementId, { mode: 'first', onEnter: show });
   }
   return show();
+}
+
+// Igual con el tramo: la primera vez que se entra en uno, su cartel en tarjetas (sign-cards.js) antes del pintor;
+// «Saltar» (o «Seguir», al final) lo cierra y sigue al pintor; la X vuelve al camino. Salir de la pantalla (atrás) no continúa.
+function withTramo(ctx, el, artistId, show) {
+  if (!needsTramo(ctx.store.get().progress, ctx.index, artistId)) return show();
+  const key = ctx.index.artist(artistId).section;
+  return import('../sign-cards.js')
+    .then((m) => m.openSignCards(ctx, 'tramo', key, null, { title: key, onDone: () => { if (el.isConnected) show(); }, onExit: () => { if (el.isConnected) ctx.go('inicio', { replace: true }); } }))
+    .then((handle) => { if (!handle && el.isConnected) show(); })
+    .catch((err) => { console.error(err); if (el.isConnected) show(); });
 }
 
 // La historia sale siempre al entrar en un pintor (decisión de María, 26/11) y el embudo es historia → preguntas:
 // «Jugar» (o pasar de la última tarjeta) llama a show(shown, true) con los cuadros que ha enseñado (la ronda no abre con
 // ellos); sin historia, show([], false) y quien llama decide qué enseñar antes. La X, Esc o deslizar abajo vuelven al
-// camino; «Ver más» deja en la ficha y atrás, donde lleve el navegador.
+// camino; «Más sobre <pintor> ›» deja en la ficha y atrás, donde lleve el navegador.
+// Historia antes de las preguntas de un nivel: en cada tarjeta «Seguir» (destacado) e «Ir a las preguntas» (ui/story-card.js).
+export const LEVEL_STORY_STEPS = { questions: DECK_LABEL.questions, end: 'questions' };
+
 function withStory(ctx, el, artistId, level, show, { look = '', returnTo = null } = {}) {
   import('../story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look })
+    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look, steps: LEVEL_STORY_STEPS, onPlay: () => {} })
       .then(({ shown, ended }) => {
         if (!el.isConnected) return;
         if (ended === m.STORY_END.CLOSE) ctx.go(returnTo || 'inicio', { replace: true });
-        else if (ended === m.STORY_END.PLAY) show(shown, true);
+        else if (ended === m.STORY_END.PLAY || ended === m.STORY_END.QUESTIONS) show(shown, true);
         else if (ended === m.STORY_END.NONE) show([], false);
       }))
     .catch((err) => { console.error(err); if (el.isConnected) show([], false); });
@@ -320,15 +382,16 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   if (status === 'locked') return leave(ctx, 'Aún no está abierta');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx, branchId);
-  withIntro(ctx, el, movement.id, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
+  const contextArtist = contextOf(returnTo, artistId);
+  withIntro(ctx, el, movement.id, () => withTramo(ctx, el, artistId, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
     // Tras la historia no hay «Conoce a»: lo recién visto son solo los cuadros de la historia.
-    const met = metArtistIds(ctx.store.get().progress, index, (id) => storySeen(storyKey(id, 1)));
+    const met = metArtistIds(ctx.store.get().progress, index);
     const plan = planStage(index, artistId, randomSeed(), { review: review ? [review] : [], seen, shown, learnShown: !fromStory, branchId, met });
     playEra(movement.era);
-    const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo }));
+    const start = () => ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: artist.name, kind: 'stage', extra: branchId ? { artistId, branchId } : { artistId }, shareTopic: artist.name, returnTo, contextArtist }));
     if (fromStory) return start();
     const years = artist.born && artist.died ? `${artist.born}–${artist.died}` : '';
     learnScreen(ctx, el, {
@@ -345,7 +408,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
       carouselLabel: `Obras de ${artist.short || artist.name}`,
       onPractice: start,
     });
-  }, { look: artist.hint, returnTo }));
+  }, { look: artist.hint, returnTo })));
 }
 
 // --- Nivel «a fondo» de un pintor: la historia de su etapa y la ronda (no toca la parada del camino) ---
@@ -358,13 +421,14 @@ export function renderDeep(ctx, el, artistId, level) {
   if (deepStatus(ctx.store.get().progress, index, artistId, level) === 'locked') return leave(ctx, 'Aún no está abierto');
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx);
+  const contextArtist = contextOf(returnTo, artistId);
   withStory(ctx, el, artistId, level, (shown) => {
     const progress = ctx.store.get().progress;
-    const met = metArtistIds(progress, index, (id) => storySeen(storyKey(id, 1)));
+    const met = metArtistIds(progress, index);
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown, met });
     playEra(movement.era);
-    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo }));
-  }, { look: artist.hint, returnTo });
+    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo, contextArtist }));
+  }, { returnTo }); // sin la pista del nivel 1: cada «a fondo» trae su «Fíjate en…»
 }
 
 // --- Sala de movimiento (sin pintores con etapa) ---------------------------------
@@ -405,54 +469,30 @@ export function renderMovementReview(ctx, el, movementId) {
   const movement = index.movement(movementId);
   if (!movement) return leave(ctx);
   if (!isReviewUnlocked(ctx.store.get().progress, index, movementId)) return leave(ctx, 'Aún no está abierto');
-  const plan = planMovementReview(index, movementId, randomSeed());
+  const plan = planMovementReview(index, movementId, randomSeed(), { met: metArtistIds(ctx.store.get().progress, index) });
   if (!plan.questions.length) return ctx.go('inicio');
   playEra(movement.era);
-  ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `Repaso de ${movement.name}`, kind: 'review', extra: { movementId }, shareTopic: movement.name }));
+  ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `Prueba de época · ${movement.name}`, kind: 'review', extra: { movementId }, shareTopic: movement.name }));
 }
 
-// --- Repaso espaciado (completo o rápido de 3 preguntas desde el inicio) ----------------
+// --- Repasar: la sesión automática (fallados, pintor a medias, vencidos, apagado y relleno) -------------
 
-// Pintores para «¿Quién fue antes?» en los repasos: conocidos de verdad (historia vista o nivel jugado), como en las
+// Pintores para «¿Quién fue antes?» en los repasos: conocidos de verdad (los ya jugados), como en las
 // preguntas por autor.
 function reviewKnown(ctx) {
   const progress = ctx.store.get().progress;
-  return knownArtists(progress, ctx.index, '', metArtistIds(progress, ctx.index, (id) => storySeen(storyKey(id, 1))));
+  return knownArtists(progress, ctx.index, '', metArtistIds(progress, ctx.index));
 }
 
-export function renderSrsReview(ctx, el, { quick = false } = {}) {
-  const { index } = ctx;
-  const due = dueKeys(ctx.store.get().progress.srs, ctx.today());
-  const plan = planSrsReview(index, due, randomSeed(), quick ? QUICK_REVIEW : undefined, { known: reviewKnown(ctx) });
-  if (!plan.questions.length) return leave(ctx, 'Hoy no hay nada que repasar');
+export function renderReview(ctx, el) {
+  const session = reviewSession(ctx.store.get().progress, ctx.index, ctx.today());
+  const plan = planReviewSession(ctx.index, session, randomSeed(), { known: reviewKnown(ctx) });
+  if (session.works.length < REVIEW_MIN || plan.questions.length < REVIEW_MIN) return leave(ctx, 'Aún no hay cuadros que repasar');
   playEra('menu');
-  ctx.setCleanup(play(ctx, el, {
-    plan, accent: defaultAccent(), title: quick ? 'Repaso rápido' : 'Repaso', kind: 'srs',
-    more: quick ? () => dueKeys(ctx.store.get().progress.srs, ctx.today()).length > 0 : null,
-  }));
-}
-
-// --- Repaso de 5: cuadros fallados, vencidos y antiguos de pintores dominados ------------------
-
-export function renderReview5(ctx, el) {
-  const ids = review5Works(ctx.store.get().progress, ctx.index, ctx.today());
-  const plan = planReview5(ctx.index, ids, randomSeed(), { known: reviewKnown(ctx) });
-  if (ids.length < REVIEW5_MIN || plan.questions.length < REVIEW5_MIN) return leave(ctx, 'Hoy no hay nada que repasar');
-  playEra('menu');
-  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW5_NAME, kind: 'review5' }));
-}
-
-// --- Reto diario ------------------------------------------------------------
-
-export function renderDaily(ctx, el) {
-  const { index } = ctx;
-  const today = ctx.dailyDay();
-  const plan = planDaily(index, today);
-  const done = ctx.store.get().progress.daily[today];
-  playEra('menu');
-  if (done) return renderDailyDone(ctx, el, plan, done);
-  if (plan.questions.length < 4) return ctx.go('inicio');
-  ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Reto diario', kind: 'daily', extra: { date: today } }));
+  // Antes, en una frase, qué se va a repasar (screens/review-intro.js).
+  import('./review-intro.js')
+    .then((m) => { if (el.isConnected) m.showReviewIntro(ctx, el, session, () => ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_TITLE, kind: 'srs' }))); })
+    .catch((err) => { console.error(err); ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: REVIEW_TITLE, kind: 'srs' })); });
 }
 
 // --- Reto semanal (camino dominado): 15 preguntas de todo el camino, iguales para todos ---------
@@ -463,31 +503,29 @@ export function weekKey(ctx) {
 
 export function renderWeekly(ctx, el) {
   const { index } = ctx;
-  if (!isPathMastered(ctx.store.get().progress, index)) return leave(ctx, 'Se abre al dominar todo el camino');
+  if (!isPathMastered(ctx.store.get().progress, index)) return leave(ctx, 'Se abre al terminar el camino');
   const week = weekKey(ctx);
   const plan = planWeekly(index, week);
   const done = ctx.store.get().progress.weekly?.[week];
   playEra('menu');
-  if (done) return renderDailyDone(ctx, el, plan, done);
+  if (done) return renderWeeklyDone(ctx, el, plan, done);
   if (plan.questions.length < 4) return ctx.go('inicio');
   ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Reto semanal', kind: 'weekly', extra: { week } }));
 }
 
 export function gridTitle(plan) {
-  if (plan.kind === 'weekly') return `Sfumato · Reto semanal ${plan.week.slice(6)}`;
-  return `Sfumato · Reto diario ${plan.date.slice(8)}/${plan.date.slice(5, 7)}`;
+  return `Sfumato · Reto semanal ${plan.week.slice(6)}`;
 }
 
-function renderDailyDone(ctx, el, plan, done) {
+function renderWeeklyDone(ctx, el, plan, done) {
   const firstTry = done.firstTry || [];
-  const weekly = plan.kind === 'weekly';
   el.innerHTML = `<div class="result">
     <main class="result-body" id="main">
-      <p class="result-kicker">${weekly ? 'Reto semanal' : 'Reto diario'}</p>
-      <h1 class="result-title">${weekly ? 'Hecho esta semana' : 'Hecho por hoy'}</h1>
+      <p class="result-kicker">Reto semanal</p>
+      <h1 class="result-title">Hecho esta semana</h1>
       <dl class="tally"><div><dt>Aciertos</dt><dd>${done.score}/${done.total}</dd></div></dl>
       <div class="grid-row" role="img" aria-label="${done.score} aciertos de ${done.total}">${firstTry.map((ok) => `<span class="sq ${ok ? 'is-ok' : ''}"></span>`).join('')}</div>
-      <p class="result-note">${weekly ? 'Hay uno nuevo cada lunes.' : 'Hay uno nuevo cada día.'}</p>
+      <p class="result-note">Hay uno nuevo cada lunes.</p>
       <div class="result-actions">
         <button class="btn btn-primary btn-wide" data-action="share">${icons.copy(20)}<span>Copiar resultado</span></button>
         <button class="btn btn-secondary btn-wide" data-action="home">Volver al camino</button>
@@ -501,7 +539,7 @@ function renderDailyDone(ctx, el, plan, done) {
     home: () => { ctx.audio.sfx('tap'); ctx.go('inicio'); },
     share: () => {
       ctx.audio.sfx('tap');
-      const token = weekly ? `w${plan.week.replace('-W', '')}` : `d${plan.date.replace(/-/g, '')}`;
+      const token = `w${plan.week.replace('-W', '')}`;
       const url = `${location.href.split('#')[0]}#${encodeChallenge(token, done.score)}`;
       copyText(el, shareText({ title: gridTitle(plan), score: done.score, total: done.total, grid: dailyGrid(firstTry), url }));
     },
@@ -520,13 +558,13 @@ export function renderChallenge(ctx, el, challenge) {
   const total = plan.questions.length;
   const topic = plan.kind === 'stage' ? index.artist(plan.artistId).name
     : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).name
-      : plan.kind === 'daily' ? 'Reto diario' : plan.kind === 'weekly' ? 'Reto semanal' : 'Ronda variada';
+      : plan.kind === 'weekly' ? 'Reto semanal' : 'Ronda variada';
   const accent = plan.kind === 'stage' ? index.movementOf(plan.artistId).accent
     : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).accent : defaultAccent();
   const friendScore = Math.min(challenge.score, total);
   // Reto de todo el camino con pintores que aún no ha visto: se avisa (sin bloquear) y esas preguntas
   // no cuentan para su precisión.
-  const unseen = ['daily', 'weekly', 'general'].includes(plan.kind)
+  const unseen = ['weekly', 'general'].includes(plan.kind)
     && unseenArtists(ctx.store.get().progress, index, plan.questions).length > 0;
   el.innerHTML = `<div class="welcome welcome-duel" style="${accentStyle(accent)}">
     <main class="welcome-body" id="main">
@@ -555,11 +593,10 @@ export function renderChallenge(ctx, el, challenge) {
       const era = plan.kind === 'stage' ? index.movementOf(plan.artistId).era : plan.kind === 'review' || plan.kind === 'sala' ? index.movement(plan.movementId).era : 'menu';
       playEra(era);
       const prog = ctx.store.get().progress;
-      const isTodayDaily = plan.kind === 'daily' && plan.date === ctx.dailyDay() && !prog.daily[plan.date];
       // El semanal de esta semana cuenta como propio si el camino está dominado y aún no se ha jugado.
       const isThisWeekly = plan.kind === 'weekly' && plan.week === weekKey(ctx) && !prog.weekly?.[plan.week] && isPathMastered(prog, index);
-      const kind = isTodayDaily ? 'daily' : isThisWeekly ? 'weekly' : 'challenge';
-      const extra = { ...(isTodayDaily ? { date: plan.date } : isThisWeekly ? { week: plan.week } : {}), ...(unseen ? { unseen: true } : {}) };
+      const kind = isThisWeekly ? 'weekly' : 'challenge';
+      const extra = { ...(isThisWeekly ? { week: plan.week } : {}), ...(unseen ? { unseen: true } : {}) };
       const start = () => ctx.setCleanup(play(ctx, el, {
         plan, accent, title: `Reto · ${topic}`, kind, extra, friendScore, shareTopic: topic,
       }));
@@ -619,7 +656,7 @@ function lookFirst(ctx, el, plan, accent, start) {
 export function renderFree(ctx, el) {
   const { index } = ctx;
   const plan = planFree(index, randomSeed());
-  if (!isPathMastered(ctx.store.get().progress, index) || plan.questions.length < 4) return leave(ctx, 'Se abre al dominar todo el camino');
+  if (!isPathMastered(ctx.store.get().progress, index) || plan.questions.length < 4) return leave(ctx, 'Se abre al terminar el camino');
   playEra('menu');
   ctx.setCleanup(play(ctx, el, { plan, accent: defaultAccent(), title: 'Ronda libre', kind: 'general', shareTopic: 'ronda libre' }));
 }

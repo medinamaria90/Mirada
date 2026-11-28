@@ -4,8 +4,9 @@ import { emptyProgress, DEFAULT_GOAL } from '../engine/progress.js';
 import { addDays, isDayKey } from '../engine/dates.js';
 import { LEGACY_IDS } from './legacy-ids.js';
 import { emptyRoster } from '../engine/roster.js';
+import { migrateLevelOrder, LEVEL_ORDER } from './level-order.js';
 
-export const SCHEMA_VERSION = 10;
+export const SCHEMA_VERSION = 11;
 
 // Pintores que pasan a ser una sola parada (8 → 9): id antiguo → id de la parada conjunta.
 export const MERGED_ARTISTS = { 'pietro-lorenzetti': 'lorenzetti', 'ambrogio-lorenzetti': 'lorenzetti' };
@@ -38,7 +39,7 @@ export function normalizeName(value) {
   return graphemes(clean).slice(0, NAME_MAX).join('').trim();
 }
 
-// Portada y avatar del perfil (settings.cover / settings.avatar): id de un cuadro de la colección o ''.
+// Avatar del perfil (settings.avatar): id de un cuadro de la colección o ''.
 export function normalizeArtworkId(value) {
   return typeof value === 'string' && /^w\d+$/.test(value) ? value : '';
 }
@@ -48,8 +49,9 @@ export function defaultState() {
     version: SCHEMA_VERSION,
     onboarded: false,
     // roster: pintores conocidos del camino y ramas (engine/roster.js); en una partida nueva, todos.
-    progress: { ...emptyProgress(), roster: emptyRoster('new') },
-    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '', cover: '', avatar: '' },
+    // levelOrder: niveles «a fondo» ya numerados por importancia (state/level-order.js).
+    progress: { ...emptyProgress(), roster: emptyRoster('new'), levelOrder: LEVEL_ORDER },
+    settings: { music: true, sfx: true, volume: 0.6, reducedMotion: false, dailyGoal: DEFAULT_GOAL, theme: DEFAULT_THEME, name: '', avatar: '' },
     // Ronda en curso para retomarla al volver ({} = ninguna). Ver state/session.js.
     session: {},
   };
@@ -159,6 +161,13 @@ export const MIGRATIONS = {
     ...old,
     progress: { ...(isPlain(old.progress) ? old.progress : {}), roster: emptyRoster('legacy') },
   }),
+  // 10 → 11 (Cuadro del día): sus partidas y el último día que la guía lo propuso. El reto diario de antes (progress.daily)
+  // se conserva tal cual; una ronda suya a medias se descarta. Lo demás se conserva.
+  10: (old) => ({
+    ...old,
+    session: isPlain(old.session) && old.session.kind === 'daily' ? {} : old.session,
+    progress: { ...(isPlain(old.progress) ? old.progress : {}), cuadros: {}, cuadroNudge: '' },
+  }),
 };
 
 // Une las claves de `dict` que `rename` cambia (las demás quedan igual); si dos caen en la misma, `pick` decide.
@@ -198,11 +207,15 @@ export function migrate(raw, migrations = MIGRATIONS, target = SCHEMA_VERSION, d
     v += 1;
     data.version = v;
   }
-  const out = mergeDefaults(defaults, data);
+  // Niveles por importancia (28/11): se traduce antes de completar con los valores por defecto, que ya traen la marca.
+  // Sin versión nueva, por lo mismo que la portada de abajo.
+  const out = mergeDefaults(defaults, migrateLevelOrder(data));
   // Lo que llegue sin pasar por la interfaz (estado importado o editado a mano) también se limpia.
   if (isPlain(out.settings)) {
     out.settings.name = normalizeName(out.settings.name);
-    out.settings.cover = normalizeArtworkId(out.settings.cover);
+    // La portada del perfil ya no existe (27/11): su elección guardada se descarta sin tocar nada más. Va aquí y no
+    // en una migración con versión nueva para que un móvil con la app en caché no rechace un estado «del futuro».
+    delete out.settings.cover;
     out.settings.avatar = normalizeArtworkId(out.settings.avatar);
   }
   return out;

@@ -5,6 +5,8 @@ La usan `catalog_from_pipeline.py` (escribe `thumb` y `atlas` en catalog.json), 
 vengan de donde vengan las imágenes. Mismo formato que el atlas de la oleada 5:
 `thumb: [hoja, x, y, w, h]`, `atlas: {cell, sheets, size}`.
 """
+import hashlib
+import json
 import math
 
 CELL, THUMB = 288, 280
@@ -86,4 +88,8 @@ def layout(cat):
         thumbs[wid] = [index[src], x, y, tw, th]
     atlas = {"cell": CELL, "sheets": names,
              "size": [[sheets[s]["cols"] * CELL, sheets[s]["rows"] * CELL] for s in names]}
+    # Versión de la disposición: hash de hojas + coordenadas. La app la añade como ?v= a la URL de cada hoja, así un
+    # móvil con hojas viejas en caché (service worker o caché HTTP) las pide de nuevo en cuanto cambian las coordenadas.
+    blob = json.dumps([atlas, thumbs], sort_keys=True, separators=(",", ":")).encode()
+    atlas["v"] = hashlib.sha1(blob).hexdigest()[:10]
     return atlas, thumbs

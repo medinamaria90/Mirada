@@ -45,7 +45,7 @@ test('migración 5 → 6: cola de fallados, último día visto y días de gracia
   assert.equal(out.progress.streak.graceOn, '2026-11-19');
   assert.deepEqual(out.progress.artists, v5.progress.artists);
   assert.deepEqual(out.progress.srs, v5.progress.srs);
-  assert.deepEqual(out.settings, { ...v5.settings, name: '', cover: '', avatar: '' });
+  assert.deepEqual(out.settings, { ...v5.settings, name: '', avatar: '' });
   // Sin gracia antigua, la lista empieza vacía; datos sin progreso llegan con los valores por defecto.
   assert.deepEqual(migrate({ ...v5, progress: { ...v5.progress, streak: { current: 1, last: '2026-11-23', graceOn: null } } }, MIGRATIONS, 6).progress.streak.graceDays, []);
   assert.deepEqual(migrate({ version: 5, onboarded: true }, MIGRATIONS, 6).progress.fallados, []);
@@ -63,7 +63,7 @@ test('migración 4 → 5: añade settings.theme «como el móvil» y conserva el
   assert.equal(out.version, 5);
   assert.equal(out.settings.theme, DEFAULT_THEME);
   assert.equal(out.settings.theme, 'system');
-  assert.deepEqual(out.settings, { music: false, sfx: true, volume: 0.3, reducedMotion: true, dailyGoal: 100, theme: 'system', name: '', cover: '', avatar: '' });
+  assert.deepEqual(out.settings, { music: false, sfx: true, volume: 0.3, reducedMotion: true, dailyGoal: 100, theme: 'system', name: '', avatar: '' });
   assert.equal(out.progress.xp, 510);
   assert.deepEqual(out.progress.artists, v4.progress.artists);
   assert.deepEqual(out.progress.weekly, v4.progress.weekly);

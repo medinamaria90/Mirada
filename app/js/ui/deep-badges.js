@@ -4,7 +4,8 @@
 // de «dominado» en los pintores con niveles. Se añade al DOM ya pintado (los nodos los dibuja el mapa o la rama) y tocar el
 // nodo abre su tarjeta (ui/level-card.js). El mismo aro, más grande, va en el avatar de la ficha.
 
-import { levelRing, ringLabel } from '../engine/level-ring.js';
+import { levelRing, startedRing, ringLabel } from '../engine/level-ring.js';
+import { MASTERY } from '../engine/progress.js';
 
 const RING_R = 47;      // radio del aro en su caja de 100
 const RING_LEN = 100;   // longitud de la circunferencia (pathLength)
@@ -23,23 +24,34 @@ export function ringSvg(levels, cls = 'level-ring') {
   return `${halo}<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">${arcs}</svg>`;
 }
 
+const MARK_LEN = 2;      // largo de la muesca del 75 % (sobre RING_LEN)
+
+// Aro de un pintor a medias: entero, lleno en coral hasta su nota y con una muesca en el 75 % (lo que hace falta).
+export function scoreRingSvg(best, mastery, cls = 'level-ring') {
+  const len = Math.max(0, Math.min(1, best)) * RING_LEN;
+  const at = mastery * RING_LEN;
+  const arc = (state, from, size) => `<circle class="ring-arc is-${state}" cx="50" cy="50" r="${RING_R}" pathLength="${RING_LEN}" stroke-dasharray="${size.toFixed(2)} ${(RING_LEN - size).toFixed(2)}" stroke-dashoffset="${(-from).toFixed(2)}"/>`;
+  return `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">${arc('locked', 0, RING_LEN)}${len > 0 ? arc('partial', 0, len) : ''}${arc('mark', at - MARK_LEN / 2, MARK_LEN)}</svg>`;
+}
+
 export function addLevelRings(ctx, root) {
   const progress = ctx.store.get().progress;
   for (const spot of root.querySelectorAll('.stage-spot[data-step^="artist:"]')) {
     const id = spot.dataset.step.slice('artist:'.length);
     const button = spot.querySelector('.stage');
     if (!button || button.dataset.card || !ctx.index.artist(id)) continue;
-    const ring = levelRing(progress, ctx.index, id);
+    const ring = levelRing(progress, ctx.index, id) || startedRing(progress, ctx.index, id);
     if (!ring) continue;
     // Con más de un nivel, tocar el retrato abre su tarjeta.
     button.dataset.card = '1';
     if (!button.classList.contains('is-onpath')) button.setAttribute('aria-haspopup', 'dialog');
-    button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${ringLabel(ring)}`);
+    // A medias, el nodo ya dice su nota y la que hace falta (path-nodes.js startedLabel).
+    if (!ring.started) button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${ringLabel(ring)}`);
     button.classList.add('has-ring');
     const dot = button.querySelector('.stage-dot');
-    dot?.insertAdjacentHTML('afterbegin', ringSvg(ring.levels));
+    dot?.insertAdjacentHTML('afterbegin', ring.started ? scoreRingSvg(ring.best, MASTERY) : ringSvg(ring.levels));
     const badge = dot?.querySelector('.stage-badge');
-    if (badge && !ring.done) {
+    if (badge && !ring.done && !ring.started) {
       badge.classList.add('is-next');
       badge.textContent = String(ring.at);
     }

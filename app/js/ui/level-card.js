@@ -10,8 +10,9 @@ import { icons } from './icons.js';
 import { loadCss } from './lazy-css.js';
 import { loadStory, peekStory } from './story-data.js';
 import { modalSlot, mountSheet } from './modal-slot.js';
-import { levelRing } from '../engine/level-ring.js';
+import { levelRing, startedRing, startedLine } from '../engine/level-ring.js';
 import { rowLevels, rowHtml, wireRow, levelRoute } from './level-row.js';
+import { setPlayContext } from './play-context.js';
 
 const slot = modalSlot();
 const EDGE = 16;        // margen de la tarjeta con los bordes de la ventana
@@ -22,23 +23,25 @@ const MOVE_CLOSE_PX = 40; // el mapa se ha movido bajo la tarjeta: se cierra (me
 
 const px = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
 
+// A medias (ring.started): una línea con lo que falta («67 % · dominas con 75 %» o «Te faltan n cuadros por ver») y «Repetir».
 function cardHtml(artist, ring, levels) {
   const next = ring.levels.find((l) => l.state === 'next');
-  const play = next ? `Empezar <small>· ${esc(next.short)}</small>` : 'Repasar';
-  const pill = ring.done ? 'Completo' : `Nivel ${ring.at} de ${ring.total}`;
+  const play = ring.started ? 'Repetir' : next ? `Empezar <small>· ${esc(next.short)}</small>` : 'Repasar';
+  const pill = ring.done ? 'Completo' : ring.total < 2 ? '' : `Nivel ${ring.at} de ${ring.total}`;
   return `<div class="lc-card">
       <div class="lc-head">
         <button type="button" class="lc-name" id="lc-name" data-lc="profile">${esc(artist.short || artist.name)}${icons.next(20)}</button>
-        <span class="lc-level${ring.done ? ' is-done' : ''}">${pill}</span>
+        ${pill ? `<span class="lc-level${ring.done ? ' is-done' : ''}">${pill}</span>` : ''}
       </div>
-      ${rowHtml(levels)}
+      ${ring.started ? `<p class="lc-line">${esc(startedLine(ring))}</p>` : ''}
+      ${ring.started && ring.total < 2 ? '' : rowHtml(levels)}
       <div class="hl-more" hidden></div>
       <button type="button" class="btn btn-primary btn-wide lc-play" data-lc="play">${play}</button>
     </div>`;
 }
 
 // Coloca el retrato encendido sobre el original y la tarjeta debajo (o encima, si no cabe), con el pico hacia el retrato.
-function place(dlg, dot) {
+export function place(dlg, dot) {
   const out = px('--ring-out');
   let r = dot.getBoundingClientRect();
   const card = dlg.querySelector('.lc-card');
@@ -73,18 +76,21 @@ export async function openLevelCard(ctx, button, branchId = '') {
   const artistId = button.dataset.id;
   const { index } = ctx;
   const artist = index.artist(artistId);
-  const ring = artist && levelRing(ctx.store.get().progress, index, artistId);
+  const progress = ctx.store.get().progress;
+  const ring = artist && (levelRing(progress, index, artistId) || startedRing(progress, index, artistId));
   if (!ring) return null;
   const turn = slot.begin();
   await loadCss('css/niveles.css');
   if (slot.stale(turn) || !button.isConnected) return null;
   const known = peekStory(artistId);
-  const levels = rowLevels(index, artistId, known ?? null, ring.levels);
+  // En la fila, el nivel a medias se toca como el siguiente (lo vuelve a jugar).
+  const rowStates = ring.levels.map((l) => (l.state === 'partial' ? { ...l, state: 'next' } : l));
+  const levels = rowLevels(index, artistId, known ?? null, rowStates);
   const dot = button.querySelector('.stage-dot');
   const dlg = document.createElement('dialog');
   dlg.className = 'lc';
   dlg.setAttribute('aria-labelledby', 'lc-name');
-  dlg.innerHTML = `<div class="lc-lit" aria-hidden="true"><span class="stage is-mastered${button.classList.contains('has-ring') ? ' has-ring' : ''}">${dot.outerHTML}</span></div>${cardHtml(artist, ring, levels)}`;
+  dlg.innerHTML = `<div class="lc-lit" aria-hidden="true"><span class="stage ${ring.started ? 'is-started' : 'is-mastered'}${button.classList.contains('has-ring') ? ' has-ring' : ''}">${dot.outerHTML}</span></div>${cardHtml(artist, ring, levels)}`;
   document.body.appendChild(dlg);
   const handle = { dlg };
   const close = mountSheet(dlg, { slot, handle, opener: button, closeSelector: '.lc-lit' });
@@ -106,17 +112,18 @@ export async function openLevelCard(ctx, button, branchId = '') {
     window.removeEventListener('resize', onResize);
   });
   const go = (route) => { close({ silent: true }); ctx.go(route); };
-  const play = (level) => go(levelRoute(artistId, level, branchId));
+  // Lo que se juega desde la tarjeta de un pintor cierra con algo sobre él (ui/play-context.js).
+  const play = (level) => { setPlayContext(artistId); go(levelRoute(artistId, level, branchId)); };
   wireRow(ctx, dlg, artistId, dlg.querySelector('.hl-more'), { play, replay: play });
   dlg.addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-lc]');
     if (!b) return;
     ctx.audio.sfx('tap');
     if (b.dataset.lc === 'profile') go(`pintor-${artistId}`);
-    else go(levelRoute(artistId, ring.next || 1, branchId));
+    else play(ring.next || 1);
   });
   dlg.querySelector('.lc-play').focus({ preventScroll: true });
-  if (known === undefined) loadStory(artistId).then((story) => { if (story && dlg.open) fillStories(dlg, rowLevels(index, artistId, story, ring.levels)); });
+  if (known === undefined) loadStory(artistId).then((story) => { if (story && dlg.open) fillStories(dlg, rowLevels(index, artistId, story, rowStates)); });
   return handle;
 }
 

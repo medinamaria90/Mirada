@@ -4,8 +4,9 @@
 import { createRng } from './rng.js';
 import { makeQuestion, makeWhoQuestion, makeMovementQuestion, isSpoiler, noAuthorQuestion } from './questions.js';
 import { salaLearnWorks, SALA_LEARN, levelOf, RELAX_MAX } from './catalog.js';
-import { REVIEW5_SIZE } from './review.js';
+import { REVIEW_SIZE } from './review.js';
 import { withBeforeQuestion } from './question-before.js';
+import { guestAskableWorks, GUEST_INTRO_MAX } from './guest-intro.js';
 
 // Ejecución de una ronda (cola, reintentos y puntuación): engine/round.js.
 export { createRound, currentItem, answerRound, roundDone, roundProgress, roundScore } from './round.js';
@@ -75,8 +76,8 @@ export function allowsOtherQuestions(count) {
 export const MOVEMENT_CURRENT_SHARE = 0.34;
 
 // Pintores anteriores que de verdad ya han salido: las preguntas por autor («¿Quién lo pintó?» con él de respuesta,
-// «¿Cuál es de X?») y el repaso solo usan a estos. `met`: ids de los pintores conocidos (historia vista o nivel
-// jugado); sin él, se dan por conocidos todos los anteriores.
+// «¿Cuál es de X?») y el repaso solo usan a estos. `met`: ids de los pintores conocidos (los ya jugados:
+// engine/painters.js metArtistIds); sin él, se dan por conocidos todos los anteriores.
 export function metOnly(before, met) {
   if (!met) return before;
   const ids = new Set(met);
@@ -114,7 +115,8 @@ export function planStage(index, artistId, seed, opts = {}) {
   // no. Las dos van mezcladas en la ronda (sin pantalla intermedia).
   const built = buildSlots(index, slots, base, rng, avoid);
   const questions = (onlyWhich ? balanceAnswerPositions(built, rng) : built)
-    .map((q) => ({ ...q, phase: index.artwork(subjectOf(q))?.role === 'learn' ? 'practice' : 'fresh' }));
+    // `host`: el pintor de la ronda (se le pregunta aunque aún no cuente como conocido; engine/guest-intro.js).
+    .map((q) => ({ ...q, host: artistId, phase: index.artwork(subjectOf(q))?.role === 'learn' ? 'practice' : 'fresh' }));
   const practice = questions.filter((q) => q.phase === 'practice');
   const fresh = questions.filter((q) => q.phase === 'fresh');
   return { kind: 'stage', artistId, seed, ...(level > 1 ? { level } : {}), learn, practice, fresh, questions };
@@ -216,6 +218,14 @@ function stageRoundSize(before, index) {
   return before.length < 2 ? size - 1 : size;
 }
 
+// Obra para la pregunta del invitado de una ronda: de un solo invitado del camino (GUEST_INTRO_MAX) que tenga otra obra para
+// su tarjeta de presentación. Se baraja la bolsa entera de sus obras, como siempre, para no alterar el resto del sorteo.
+function guestCandidates(index, artistId, rng) {
+  const all = rng.shuffle(index.guestsUpTo(artistId).flatMap((g) => guestAskableWorks(index, g.id)));
+  const pick = all.find((w) => index.worksOf(w.artistId).length >= 2);
+  return { works: pick ? [pick].slice(0, GUEST_INTRO_MAX) : [], rolls: all.length > 0 };
+}
+
 function stageSlots(index, artist, learn, before, rng, reviewIds, selection) {
   const { warm, fresh: ownFresh, reserve } = selection;
   // Calentamiento (obra vista) primero; luego sus obras no vistas.
@@ -247,8 +257,9 @@ function stageSlots(index, artist, learn, before, rng, reviewIds, selection) {
   let cursor = 0;
   const beforeIds = new Set(before.map((a) => a.id));
   const hints = reviewIds.map((id) => index.artwork(id)).filter((w) => w && beforeIds.has(w.artistId) && !noAuthorQuestion(w));
-  // Invitados del camino ya presentados: sus obras (nunca enseñadas) salen intercaladas en el repaso.
-  const guestPool = index.hasLevels ? rng.shuffle(index.guestsUpTo(artist.id).flatMap((g) => clean(index.worksOf(g.id)).filter((w) => w.role === 'new'))) : [];
+  // Invitados del camino: una obra suya (nunca enseñada) puede salir en el repaso, de uno solo por ronda (GUEST_INTRO_MAX).
+  // Si aún no se ha presentado, la ronda lo presenta antes con su tarjeta (engine/guest-intro.js), que enseña otra obra suya.
+  const { works: guestPool, rolls: guestRolls } = index.hasLevels ? guestCandidates(index, artist.id, rng) : { works: [], rolls: false };
   const pickWork = (prefer, filter = () => true) => {
     const h = hints.findIndex((w) => !used.has(w.id) && filter(index.artist(w.artistId)));
     if (h >= 0) {
@@ -276,7 +287,7 @@ function stageSlots(index, artist, learn, before, rng, reviewIds, selection) {
   // vez en cuando, una obra de un invitado del camino, que nunca se ha enseñado.
   const phaseAt = (i) => (index.hasLevels ? 'practice' : i % 2 ? 'fresh' : 'practice');
   for (let i = 0; i < reviewWho; i++) {
-    const guest = guestPool.length && rng.next() < GUEST_SHARE ? guestPool.shift() : null;
+    const guest = guestRolls && rng.next() < GUEST_SHARE ? guestPool.shift() || null : null;
     if (guest) used.add(guest.id);
     const w = guest || pickWork(phaseAt(i) === 'practice' ? 'learn' : 'new');
     // Con el de la etapa y otro pintor ya aprendido de distractores: elegir siempre al aprendido
@@ -473,11 +484,12 @@ export function planSala(index, movementId, seed) {
 // Repaso de un movimiento: «¿Quién lo pintó?» y «¿Cuál es de X?» con obras de sus pintores y
 // «¿De qué movimiento es?» con obras de movimientos anteriores (el repasado sale entre las opciones;
 // preguntar siempre por él sería regalar el punto). En el primer movimiento no hay preguntas de movimiento.
-export function planMovementReview(index, movementId, seed) {
+// opts.met: solo se pregunta por autor a los pintores ya jugados (metOnly); sin él, a todos los del movimiento.
+export function planMovementReview(index, movementId, seed, opts = {}) {
   const movement = index.movement(movementId);
   if (!movement) return null;
   const rng = createRng(`review:${movementId}:${seed}`);
-  const stage = index.stageArtists(movementId);
+  const stage = metOnly(index.stageArtists(movementId), opts.met);
   const works = rng.shuffle(stage.flatMap((a) => index.worksOf(a.id)).filter((w) => !noAuthorQuestion(w)));
   const types = ['who', 'who', 'movement', 'which', 'who', 'movement', 'who', 'which', 'who', 'movement'];
   const contrast = contrastWorks(index, movementId, types.filter((t) => t === 'movement').length, rng);
@@ -537,9 +549,19 @@ export function planSrsReview(index, dueKeys, seed, max = SRS_MAX, opts = {}) {
   return { kind: 'srs', seed, questions: all };
 }
 
-// «Repaso de 5» (engine/review.js elige los cuadros): las mismas preguntas que el repaso espaciado.
-export function planReview5(index, workIds, seed, opts = {}) {
-  return { ...planSrsReview(index, workIds.map((id) => `art:${id}`), seed, REVIEW5_SIZE, opts), kind: 'review5' };
+// «Repasar» (engine/review.js reviewSession elige los cuadros, por prioridad): las preguntas del repaso espaciado,
+// REVIEW_SIZE en total (si entra un «¿Quién fue antes?», sale el cuadro de menos prioridad). `started`: el pintor a medias
+// que trae la sesión (el resultado ofrece volver a él).
+export function planReviewSession(index, session, seed, opts = {}) {
+  const ids = session.works.slice(0, REVIEW_SIZE);
+  const plan = planSrsReview(index, ids.map((id) => `art:${id}`), seed, REVIEW_SIZE, opts);
+  let questions = plan.questions;
+  if (questions.length > REVIEW_SIZE) {
+    const drop = ids[ids.length - 1];
+    const at = questions.findIndex((q) => q.type !== 'before' && subjectOf(q) === drop);
+    questions = questions.filter((_, i) => i !== (at < 0 ? questions.length - 1 : at));
+  }
+  return { ...plan, questions, started: session.started || null };
 }
 
 // Ronda general de 10 preguntas sobre un conjunto de obras (reto diario y retos).

@@ -56,7 +56,7 @@ artist("botticelli", "Sandro Botticelli", "Botticelli", "renacimiento", 1445, 15
        "Fíjate en la línea fina y elegante de figuras ligeras y casi flotantes.")
 artist("miguel-angel", "Miguel Ángel", "Miguel Ángel", "renacimiento", 1475, 1564, "Italia", 6,
        "Fíjate en los cuerpos musculosos, casi de escultor.")
-artist("bellini", "Giovanni Bellini", "Bellini", "renacimiento", 1430, 1516, "Italia", 7,
+artist("bellini", "Giovanni Bellini", "Giovanni Bellini", "renacimiento", 1430, 1516, "Italia", 7,
        "Fíjate en la luz suave y los paisajes serenos de la escuela veneciana.")
 artist("correggio", "Correggio", "Correggio", "renacimiento", 1489, 1534, "Italia", 8,
        "Fíjate en la sensualidad suave de las carnes y las figuras en escorzo.")
@@ -110,7 +110,7 @@ artist("vermeer", "Johannes Vermeer", "Vermeer", "barroco", 1632, 1675, "Países
        "Fíjate en la luz de una ventana a la izquierda y en el azul intenso y el amarillo limón de las ropas.",
        ["luz de ventana a la izquierda", "azul intenso y amarillo limón", "puntitos de luz que brillan"],
        ["rembrandt"])
-artist("hals", "Frans Hals", "Hals", "barroco", 1582, 1666, "Países Bajos", 5,
+artist("hals", "Frans Hals", "Frans Hals", "barroco", 1582, 1666, "Países Bajos", 5,
        "Fíjate en la pincelada rápida y suelta de los retratos: gente que sonríe o ríe, con encajes hechos a brochazos.",
        ["pincelada suelta y rápida", "caras que sonríen o ríen", "negros y blancos de encajes y cuellos"],
        ["rembrandt", "velazquez"])
@@ -126,7 +126,7 @@ artist("zurbaran", "Francisco de Zurbarán", "Zurbarán", "barroco", 1598, 1664,
        "Fíjate en los hábitos blancos de pliegues duros, como esculpidos, con una sola luz lateral sobre fondo oscuro.",
        ["blancos de pliegues duros, como de escultura", "fondo oscuro y una sola luz", "objetos y telas de realidad casi táctil"],
        ["ribera", "caravaggio"])
-artist("van-dyck", "Antoon van Dyck", "Van Dyck", "barroco", 1599, 1641, "Flandes", 7,
+artist("van-dyck", "Anton van Dyck", "Van Dyck", "barroco", 1599, 1641, "Flandes", 7,
        "Fíjate en la elegancia fluida de telas y retratos aristocráticos.")
 artist("poussin", "Nicolas Poussin", "Poussin", "barroco", 1594, 1665, "Francia", 8,
        "Fíjate en los paisajes ordenados como un teatro, con figuras clásicas.")
@@ -146,7 +146,7 @@ artist("melendez", "Luis Meléndez", "Meléndez", "rococo-neoclasicismo", 1716, 
        "Fíjate en la cocina: frutas, pan y cacharros de barro sobre una mesa, con luz lateral en cada textura.",
        ["frutas, pan y cacharros de barro", "mesa de madera y fondo oscuro", "cada textura, casi palpable"],
        ["zurbaran"])
-artist("david", "Jacques-Louis David", "David", "rococo-neoclasicismo", 1748, 1825, "Francia", 2,
+artist("david", "Jacques-Louis David", "Jacques-Louis David", "rococo-neoclasicismo", 1748, 1825, "Francia", 2,
        "Fíjate en las figuras quietas como estatuas, de contorno duro, en fila delante de un fondo sobrio.",
        ["figuras como estatuas", "contornos duros y nítidos", "fondos sobrios y vacíos"],
        ["ingres", "rafael"])
@@ -195,11 +195,11 @@ artist("constable", "John Constable", "Constable", "romanticismo", 1776, 1837, "
        "Fíjate en los cielos con nubes vivas y el campo inglés pintado al natural.")
 artist("delaroche", "Paul Delaroche", "Delaroche", "romanticismo", 1797, 1856, "Francia", 9,
        "Fíjate en la escena histórica congelada como en teatro, con acabado pulido.")
-artist("ivanov", "Alexander Ivánov", "Ivánov", "romanticismo", 1806, 1858, "Rusia", 10,
+artist("ivanov", "Alexander Ivánov", "Alexander Ivánov", "romanticismo", 1806, 1858, "Rusia", 10,
        "Fíjate en la gran composición clásica con muchos cuerpos al aire libre.")
 artist("tropinin", "Vasili Tropinin", "Tropinin", "romanticismo", 1776, 1857, "Rusia", 11,
        "Fíjate en los retratos de gente corriente con mirada viva y luz cálida.")
-artist("madrazo", "Federico de Madrazo", "Madrazo", "romanticismo", 1815, 1894, "España", 11,
+artist("madrazo", "Federico de Madrazo", "Federico de Madrazo", "romanticismo", 1815, 1894, "España", 11,
        "Fíjate en el acabado liso y pulido de los retratos: caras suaves, sedas y elegancia aprendida de Ingres.",
        ["acabado liso, sin pincelada visible", "vestidos de seda y encajes", "caras serenas sobre fondos neutros"],
        ["ingres"])
@@ -222,11 +222,11 @@ artist("millet", "Jean-François Millet", "Millet", "realismo", 1814, 1875, "Fra
        "Fíjate en los campesinos, pesados y con la cara en sombra, inclinados sobre la tierra bajo cielos de atardecer.",
        ["campesinos inclinados sobre la tierra", "figuras pesadas, con la cara en sombra", "campos llanos y luz de atardecer"],
        ["courbet", "pissarro"])
-artist("rosales", "Eduardo Rosales", "Rosales", "realismo", 1836, 1873, "España", 14,
+artist("rosales", "Eduardo Rosales", "Eduardo Rosales", "realismo", 1836, 1873, "España", 14,
        "Fíjate en lo abocetado: zonas a manchas junto a caras y manos acabadas, en tonos sobrios.",
        ["historia de España en escenas íntimas", "pincelada amplia, zonas solo esbozadas", "tonos sobrios: ocres, grises y negros"],
        ["velazquez", "madrazo"])
-artist("fortuny", "Marià Fortuny", "Fortuny", "realismo", 1838, 1874, "España", 16,
+artist("fortuny", "Mariano Fortuny", "Fortuny", "realismo", 1838, 1874, "España", 16,
        "Fíjate en el formato pequeño y el detalle minucioso: trajes, alfombras y objetos con toques de luz brillantes.",
        ["cuadros pequeños llenos de detalle", "trajes y telas de toques brillantes", "luz de sol intensa, casi cegadora"],
        ["madrazo", "sorolla"])
@@ -318,7 +318,7 @@ artist("seurat", "Georges Seurat", "Seurat", "postimpresionismo", 1859, 1891, "F
        "Fíjate en los puntitos de color puro que, de lejos, se mezclan en el ojo.",
        ["puntitos de color", "figuras quietas y de perfil", "domingos al aire libre"],
        ["monet", "cezanne"])
-artist("rousseau", "Henri Rousseau", "Rousseau", "postimpresionismo", 1844, 1910, "Francia", 6,
+artist("rousseau", "Henri Rousseau", "Henri Rousseau", "postimpresionismo", 1844, 1910, "Francia", 6,
        "Fíjate en el estilo ingenuo y plano, con selvas y sueños.")
 
 # --- Simbolismo y vanguardias
@@ -396,7 +396,7 @@ artist("cranach", "Lucas Cranach el Viejo", "Cranach", "manierismo-y-norte", 147
        "Fíjate en los desnudos esbeltos y pálidos sobre fondo negro, con sombreros y collares por todo adorno.",
        ["cuerpos pálidos y esbeltos", "fondos negros o bosques oscuros", "sombreros, velos finos y collares"],
        ["durero", "holbein"])
-artist("morales", "Luis de Morales", "Morales", "manierismo-y-norte", 1510, 1586, "España", 9,
+artist("morales", "Luis de Morales", "Luis de Morales", "manierismo-y-norte", 1510, 1586, "España", 9,
        "Fíjate en el modelado suavísimo, sin bordes, de Vírgenes y Cristos dolientes, con velos transparentes.",
        ["esfumado suave, a lo Leonardo", "velos finos y transparentes", "rostros de dolor tierno sobre fondo oscuro"],
        ["leonardo", "juan-de-juanes"])
@@ -428,7 +428,7 @@ artist("leyster", "Judith Leyster", "Leyster", "barroco", 1609, 1660, "Países B
        "Fíjate en los músicos y bebedores que ríen, pintados con pincelada rápida sobre un fondo liso.",
        ["gente alegre que ríe o toca música", "pincelada suelta a lo Hals", "fondos lisos y neutros"],
        ["hals", "steen"])
-artist("pereda", "Antonio de Pereda", "Pereda", "barroco", 1611, 1678, "España", 19,
+artist("pereda", "Antonio de Pereda", "Antonio de Pereda", "barroco", 1611, 1678, "España", 19,
        "Fíjate en las mesas llenas de calaveras, relojes, joyas y monedas: todo dice que la vida se acaba.",
        ["calaveras, relojes y velas apagadas", "joyas, monedas y armas al detalle", "fondo oscuro y luz sobre los objetos"],
        ["valdes-leal", "zurbaran"])
@@ -440,7 +440,7 @@ artist("valdes-leal", "Juan de Valdés Leal", "Valdés Leal", "barroco", 1622, 1
        "Fíjate en el dramatismo: pincelada rápida, figuras agitadas y la muerte presente en calaveras.",
        ["calaveras y escenas de muerte", "pincelada nerviosa y rápida", "figuras en movimiento agitado"],
        ["murillo", "pereda"])
-artist("steen", "Jan Steen", "Steen", "barroco", 1626, 1679, "Países Bajos", 22,
+artist("steen", "Jan Steen", "Jan Steen", "barroco", 1626, 1679, "Países Bajos", 22,
        "Fíjate en las casas alborotadas: niños, borrachos, animales y cacharros por el suelo, todo en desorden.",
        ["casas llenas de gente y desorden", "caras pícaras y risueñas", "cacharros y objetos por el suelo"],
        ["leyster", "vermeer"])
@@ -464,7 +464,7 @@ artist("reynolds", "Joshua Reynolds", "Reynolds", "rococo-neoclasicismo", 1723, 
        "Fíjate en los retratos de pose noble, a lo maestro antiguo, con fondos de paisaje y cielos oscuros.",
        ["poses de estatua clásica", "fondos de paisaje y cielos de tormenta", "tonos cálidos y dorados"],
        ["gainsborough", "van-dyck"])
-artist("paret", "Luis Paret y Alcázar", "Paret", "rococo-neoclasicismo", 1746, 1799, "España", 14,
+artist("paret", "Luis Paret y Alcázar", "Luis Paret", "rococo-neoclasicismo", 1746, 1799, "España", 14,
        "Fíjate en las escenas pequeñas y finas, llenas de figuritas elegantes de colores vivos, como joyas.",
        ["escenas diminutas y minuciosas", "figuritas elegantes con trajes de colores", "puertos y fiestas de España"],
        ["watteau", "fragonard"])
@@ -500,7 +500,7 @@ artist("gisbert", "Antonio Gisbert", "Gisbert", "realismo", 1834, 1901, "España
        "Fíjate en la historia de España a gran escala: figuras a tamaño natural, en fila y con gesto grave.",
        ["episodios de la historia de España", "lienzos enormes con muchas figuras", "escenas graves al aire libre"],
        ["rosales", "pradilla"])
-artist("homer", "Winslow Homer", "Homer", "realismo", 1836, 1910, "Estados Unidos", 16,
+artist("homer", "Winslow Homer", "Winslow Homer", "realismo", 1836, 1910, "Estados Unidos", 16,
        "Fíjate en el mar del norte: olas que rompen contra las rocas y barcas escoradas que luchan con el agua.",
        ["olas contra las rocas", "barcas y marineros", "acuarelas frescas y seguras"],
        ["sargent", "aivazovski"])
@@ -572,7 +572,7 @@ artist("signac", "Paul Signac", "Signac", "postimpresionismo", 1863, 1935, "Fran
        "Fíjate en los puertos y las velas hechos con toques cuadrados de color puro, como un mosaico de luz.",
        ["toques de color en forma de teselas", "puertos, barcos y mar", "colores puros y vibrantes"],
        ["seurat", "regoyos"])
-artist("mir", "Joaquim Mir", "Mir", "postimpresionismo", 1873, 1940, "España", 8,
+artist("mir", "Joaquín Mir", "Joaquín Mir", "postimpresionismo", 1873, 1940, "España", 8,
        "Fíjate en la explosión de color: paisajes casi abstractos con manchas encendidas de luz mediterránea.",
        ["colores encendidos e irreales", "paisajes que rozan la abstracción", "grutas, rocas y calas de Mallorca"],
        ["sorolla", "rusinol"])
@@ -592,7 +592,7 @@ artist("hammershoi", "Vilhelm Hammershøi", "Hammershøi", "simbolismo-modernism
        "Fíjate en las habitaciones casi vacías, grises y en silencio, con luz de ventana y una mujer de espaldas.",
        ["habitaciones vacías y grises", "luz suave de ventana", "una mujer de espaldas"],
        ["vermeer"])
-artist("casas", "Ramon Casas", "Casas", "simbolismo-modernismo", 1866, 1932, "España", 12,
+artist("casas", "Ramón Casas", "Ramón Casas", "simbolismo-modernismo", 1866, 1932, "España", 12,
        "Fíjate en el dibujo seguro y en la gente moderna de Barcelona, con grises y negros elegantes.",
        ["dibujo firme y seguro", "gente de la Barcelona moderna", "grises y negros elegantes"],
        ["rusinol", "sargent"])
@@ -600,7 +600,7 @@ artist("zuloaga", "Ignacio Zuloaga", "Zuloaga", "simbolismo-modernismo", 1870, 1
        "Fíjate en la España dura: toreros, campesinos y pueblos de Castilla, en tonos terrosos y cielos de tormenta.",
        ["tipos populares y toreros", "colores terrosos y negros", "cielos oscuros sobre Castilla"],
        ["goya", "velazquez"])
-artist("nonell", "Isidre Nonell", "Nonell", "simbolismo-modernismo", 1872, 1911, "España", 14,
+artist("nonell", "Isidro Nonell", "Nonell", "simbolismo-modernismo", 1872, 1911, "España", 14,
        "Fíjate en las figuras encogidas de gitanas y mendigos, hechas con trazos gruesos y tonos sombríos.",
        ["gitanas y marginados encogidos", "trazos gruesos y cortos", "tonos azulados y sombríos"],
        ["casas"])
@@ -703,7 +703,7 @@ MIN_STAGE_WORKS = 3
 # (contenido/historias) y las de nombre corto («Más obras», «Florencia»), de su nombre (tools/catalog_from_pipeline.py).
 STAGE_SHORT_MAX = 12
 STAGE_SHORT = {
-    ("giotto", 2): "Asís", ("giotto", 3): "Padua", ("giotto", 4): "Florencia",
+    ("giotto", 3): "Asís", ("giotto", 2): "Padua", ("giotto", 4): "Florencia",
     ("berruguete", 2): "Castilla", ("durero", 2): "Aprendizaje", ("bruegel", 2): "Comienzos",
     ("van-dyck", 2): "Amberes", ("vermeer", 2): "Comienzos", ("david", 2): "Comienzos",
     ("delacroix", 2): "Juventud", ("millet", 2): "París", ("courbet", 2): "Inicios", ("fortuny", 2): "Roma",

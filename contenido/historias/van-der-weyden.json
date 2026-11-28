@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Rogier_van_der_Weyden"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Bruselas",
+   "title": "Van der Weyden, pintor de Bruselas",
+   "cards": [
+    {
+     "text": "En 1436 Bruselas creó para él el cargo de pintor de la ciudad. Pintó para el ayuntamiento cuatro enormes escenas de justicia, que ardieron en 1695 bajo las bombas francesas.",
+     "artwork": "w1395192",
+     "source": "https://en.wikipedia.org/wiki/Rogier_van_der_Weyden"
+    },
+    {
+     "text": "Para los Médici, banqueros de Florencia, pintó esta Virgen con san Cosme y san Damián, santos médicos y patronos de la familia. Fíjate en el lirio rojo de Florencia del escudo.",
+     "artwork": "w3276176",
+     "source": "https://es.wikipedia.org/wiki/Rogier_van_der_Weyden"
+    },
+    {
+     "text": "Francesco d'Este, hijo del señor de Ferrara, sujeta un martillo y un anillo: quizá premios de un torneo. El anillo estuvo tapado hasta que una limpieza lo descubrió en 1934.",
+     "artwork": "w3399428",
+     "source": "https://en.wikipedia.org/wiki/Portrait_of_Francesco_d%27Este"
+    }
+   ]
   }
  ]
 }

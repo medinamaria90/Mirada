@@ -1,10 +1,10 @@
-// Datos del perfil que no necesitan DOM: avance al siguiente rango, portada y avatar, metal
+// Datos del perfil que no necesitan DOM: avance al siguiente rango, cuadro de la tarjeta y avatar, metal
 // de los logros, inicial del avatar y último resultado del test. Puro.
 
 import { artKey } from './srs.js';
 import { STREAK_MEDALS } from './progress.js';
-import { TEST_LEVELS } from '../test/resultado.js';
-import { rankConditions } from './rank-goals.js';
+import { testLevelName } from '../test/resultado.js';
+import { rankConditions, fmtXp } from './rank-goals.js';
 
 // Metal de cada logro (oro, plata o bronce) según lo difícil que es.
 export const TIERS = ['gold', 'silver', 'bronze'];
@@ -51,13 +51,12 @@ export function compactNumber(n) {
 // fila por condición: el rango no sube hasta cumplirlas todas, así que una barra única engañaba) y, de las
 // pendientes, lo que falta en una frase (`parts`). Rango máximo: sin siguiente ni nada pendiente.
 export const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
-const fmt = (n) => n.toLocaleString('es-ES');
 const NEED_TEXT = {
-  xp: (n) => `Ganar ${fmt(n)} XP más`,
-  deep: (n) => `Dominar ${plural(n, 'nivel «a fondo»', 'niveles «a fondo»')} más`,
+  xp: (n) => `Ganar ${fmtXp(n)} puntos más`,
+  deep: (n) => `Superar ${plural(n, 'nivel «a fondo»', 'niveles «a fondo»')} más`,
   eras: (n) => `«A fondo» en ${plural(n, 'época', 'épocas')} más`,
   complete: (n) => `Completar ${plural(n, 'gran maestro', 'grandes maestros')} más`,
-  grand: (n, grand) => `${plural(n, 'gran maestro', 'grandes maestros')} más hasta el nivel ${grand.upTo}`,
+  grand: (n, grand) => `El nivel ${grand.upTo} de ${plural(n, 'gran maestro', 'grandes maestros')} más`,
 };
 
 export function rankProgress(rank) {
@@ -82,13 +81,13 @@ export function collectionWorks(progress, index) {
   return rev.map((e) => index.artwork(e.id));
 }
 
-// Portada de muestra para quien aún no tiene cuadros: la más famosa, apaisada y con foco revisado.
+// Cuadro de muestra (tarjeta que se comparte) para quien aún no tiene cuadros: el más famoso, apaisado y con foco revisado.
 export function sampleCover(index) {
   const score = (w) => (w.fame || 0) * 10 + (w.w > w.h ? 4 : 0) + (w.focus ? 2 : 0);
   return index.artworks.slice().sort((a, b) => score(b) - score(a) || a.id.localeCompare(b.id))[0] || null;
 }
 
-// Portada: la elegida si está en la colección; si no, la obra de la colección con más fama (a igualdad, del
+// Cuadro que representa la colección: el elegido si está en ella; si no, la obra de la colección con más fama (a igualdad, del
 // pintor con más cuadros, apaisada y de repaso más avanzado). null si no hay colección.
 export function coverWork(progress, index, chosen = '') {
   const owned = collectionIds(progress, index).map((id) => index.artwork(id));
@@ -101,7 +100,7 @@ export function coverWork(progress, index, chosen = '') {
     || count.get(b.artistId) - count.get(a.artistId) || (b.w > b.h) - (a.w > a.h) || box(b) - box(a) || a.id.localeCompare(b.id))[0];
 }
 
-// Cuadro de la tarjeta que se comparte: la portada, la elegida o la automática.
+// Cuadro de la tarjeta que se comparte: el del avatar, si hay; si no, el automático de la colección.
 export const shareCover = (progress, index, chosen = '') => coverWork(progress, index, chosen) || sampleCover(index);
 
 // Avatar elegido (cuadro de la colección) o null: entonces va el logo o la inicial.
@@ -126,7 +125,8 @@ export function initialOf(name) {
 }
 
 // Último resultado del test de cultura (localStorage['mirada.test.last']): null si no hay o no vale. El
-// nombre del nivel solo se da por bueno si es uno de los del test (resultados antiguos usaban los de los rangos).
+// nombre del nivel solo se da por bueno si es uno de los del test (los de antes se traducen al nombre nuevo; los
+// resultados más antiguos usaban los de los rangos y no se enseñan).
 export function parseLastTest(raw) {
   let v = null;
   try { v = JSON.parse(raw); } catch { return null; }
@@ -134,5 +134,5 @@ export function parseLastTest(raw) {
   const pct = Number.isFinite(v.percentile) && v.percentile >= 1 && v.percentile <= 99 ? Math.round(v.percentile) : null;
   const date = typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) ? v.date : '';
   const grid = typeof v.grid === 'string' && /^[🟩🟨⬜]{1,8}$/u.test(v.grid) ? v.grid : '';
-  return { correct: v.correct, asked: v.asked, level: TEST_LEVELS.includes(v.level) ? v.level : '', percentile: pct, date, grid };
+  return { correct: v.correct, asked: v.asked, level: testLevelName(v.level), percentile: pct, date, grid };
 }

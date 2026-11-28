@@ -20,6 +20,17 @@ const isolated = (fn) => async () => {
   }
 };
 
+// Espera a que algo ocurra (sondeo corto con tope), en vez de un tiempo fijo que falla si la máquina va lenta.
+async function until(cond, msg, limit = 3000) {
+  const start = Date.now();
+  while (!cond()) {
+    if (Date.now() - start > limit) assert.fail(msg);
+    await sleep(5);
+  }
+}
+// Margen tras lo esperado para comprobar que algo NO ocurre (los tiempos del precargador son de 0 ms).
+const settle = () => sleep(80);
+
 const STORY = { artistId: 'botticelli', levels: [{ level: 1, cards: [{ artwork: 'w1', text: 'Hola' }] }] };
 
 function fakeFetch(index) {
@@ -91,15 +102,15 @@ test('mapa: precarga la historia de la parada actual y de los pintores con nivel
   const map = fakeMap();
   const watch = watchStoryPrefetch(map);
   assert.deepEqual(observed.map((n) => n.dataset.id), ['botticelli', 'goya'], 'no vigila a los pintores con niveles');
-  await sleep(60);
-  assert.ok(calls.includes('masaccio.json'), 'no precarga la parada actual');
+  await until(() => calls.includes('masaccio.json'), 'no precarga la parada actual');
+  await settle();
   assert.ok(!calls.includes('botticelli.json'), 'precarga lo que aún no se ve');
   fire([map.nodes.near]);
-  await sleep(60);
-  assert.ok(calls.includes('botticelli.json'), 'no precarga el pintor que se acerca');
+  await until(() => calls.includes('botticelli.json'), 'no precarga el pintor que se acerca');
+  await settle();
   assert.ok(!calls.includes('goya.json'));
   watch.stop();
   fire([map.nodes.far]);
-  await sleep(60);
+  await settle();
   assert.ok(!calls.includes('goya.json'), 'sigue precargando tras salir del mapa');
 }));

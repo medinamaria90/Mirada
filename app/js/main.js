@@ -15,6 +15,7 @@ import { toast, replayToast, routeChanged } from './ui/toast.js';
 import { readSession } from './state/session.js';
 import { applyTheme } from './ui/theme.js';
 import { shouldAutoReload } from './ui/load-recovery.js';
+import { ensureBootCss } from './ui/lazy-css.js';
 
 const root = document.getElementById('app');
 // Mudanza de dirección: fragmento con el progreso y dirección antigua, iguales que MOVE_PREFIX y OLD_HOST de
@@ -28,10 +29,10 @@ const SIGN_IN_FAILED = 'No se ha podido entrar';
 // Módulos del inicio fuera de la cadena estática: al abrir en el inicio se precargan a la vez (sin cascada de
 // importaciones). La lista la da tools/home-graph.mjs y tests/arranque-mapa.test.js comprueba que coincide.
 const HOME_MODULES = [
-  'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/level-ring.js', 'engine/levels.js', 'engine/questions.js', 'engine/review.js', 'state/game-clock.js', 'ui/deep-badges.js',
+  'engine/branches.js', 'engine/daylight.js', 'engine/goals.js', 'engine/level-ring.js', 'engine/questions.js', 'engine/review.js', 'state/game-clock.js', 'ui/deep-badges.js',
   'ui/icons.js', 'ui/map-actor.js', 'ui/map-critters.js', 'ui/map-land.js', 'ui/map-life.js', 'ui/map-scene.js', 'ui/map-sky.js', 'ui/map-zoom.js', 'ui/screens/home.js', 'ui/screens/map-memory.js',
-  'ui/screens/map-return.js',
-  'ui/screens/map-scroll.js', 'ui/screens/path-actions.js', 'ui/screens/path-art.js', 'ui/screens/path-curve.js', 'ui/screens/path-layout.js', 'ui/screens/path-map.js', 'ui/screens/path-nodes.js',
+  'ui/screens/map-cue.js', 'ui/screens/map-return.js',
+  'ui/screens/map-scroll.js', 'ui/screens/path-actions.js', 'ui/screens/path-art.js', 'ui/screens/path-curve.js', 'ui/screens/path-layout.js', 'ui/screens/path-lore.js', 'ui/screens/path-map.js', 'ui/screens/path-nodes.js',
   'ui/screens/path-signs.js', 'ui/shell.js', 'ui/story-prefetch.js',
 ];
 function preloadModules(list) {
@@ -54,6 +55,9 @@ const loadArtistPage = () => import('./ui/screens/artist-page.js');
 const loadArtistWorks = () => import('./ui/screens/artist-works.js');
 const loadCredits = () => import('./ui/screens/credits.js');
 const loadAbout = () => import('./ui/screens/about.js');
+const loadCuadro = () => import('./ui/screens/cuadro-dia.js');
+const loadCuadroData = () => import('./ui/cuadro-data.js');
+const loadEraEnd = () => import('./ui/screens/era-end.js');
 
 async function loadJson(path) {
   const res = await fetch(path, { cache: 'no-cache' });
@@ -151,6 +155,7 @@ function blockPageZoom() {
 }
 
 async function boot() {
+  ensureBootCss();
   blockPageZoom();
   installArtListeners(document);
   const storage = safeStorage(() => window.localStorage);
@@ -217,6 +222,19 @@ async function boot() {
     return textPromise;
   };
 
+  // Calendario del Cuadro del día: llega tras el catálogo y pinta el detalle de hoy en la cabecera (sin él, el icono).
+  let cuadroMod = null;
+  const refreshCuadroChip = () => {
+    if (!document.querySelector('.chip-cuadro')) return;
+    import('./ui/shell.js').then((shell) => {
+      const today = ctx.cuadroToday();
+      const html = shell.cuadroChip(today, store.get().progress.cuadros?.[ctx.dailyDay()], today ? index.artwork(today.artwork) : null);
+      document.querySelectorAll('.chip-cuadro').forEach((el) => { el.outerHTML = html; });
+    }).catch(() => {});
+  };
+  const loadCuadroChip = () => loadCuadroData().then((m) => m.ensureCuadroIndex().then(() => { cuadroMod = m; refreshCuadroChip(); }))
+    .catch((err) => console.info('Cuadro del día no disponible:', err.message));
+
   let cleanup = null;
   // Ruta de la pantalla anterior (p. ej. para que «Volver» de una sala lleve a Colección).
   let prevRoute = '';
@@ -227,8 +245,15 @@ async function boot() {
     store,
     audio,
     today: () => dayKey(new Date()),
-    // El reto diario va por el día de Madrid para que sea el mismo para todos.
+    // El Cuadro del día (y el reto semanal) van por el día de Madrid para que sean los mismos para todos.
     dailyDay: () => madridDayKey(new Date()),
+    // El cuadro de hoy ({ n, slot, artwork, focus }) cuando ha llegado su calendario (ui/cuadro-data.js); si no, null.
+    cuadroToday: () => {
+      if (!cuadroMod) return null;
+      const day = madridDayKey(new Date());
+      const today = cuadroMod.cuadroToday(day);
+      return today && cuadroMod.cuadroToday(day, index.artwork(today.artwork));
+    },
     go,
     toast,
     ensureText,
@@ -248,7 +273,7 @@ async function boot() {
   window.addEventListener('pointerup', unlockOnce, true);
   window.addEventListener('keydown', unlockOnce, true);
 
-  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'quick', 'review5', 'daily', 'weekly', 'challenge', 'free']);
+  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'weekly', 'challenge', 'free', 'recall']);
   let firstRender = true;
   let renderToken = 0;
 
@@ -323,8 +348,11 @@ async function boot() {
       toast('Ese enlace no vale', { carry: true });
       return go('inicio', { replace: true });
     }
+    // Rutas antiguas del repaso (#repaso5, #repaso-rapido): a la sesión única, #repaso.
+    if (route.redirect) return go(route.redirect, { replace: true });
     const welcome = () => lazy(token, screen, loadWelcome, (m) => m.renderWelcome(ctx, screen));
-    if (!onboarded && route.name !== 'challenge' && route.name !== 'era') return welcome();
+    // Un reto, una época o el Cuadro del día compartidos se pueden ver sin pasar por la bienvenida.
+    if (!onboarded && route.name !== 'challenge' && route.name !== 'cuadro' && route.name !== 'era') return welcome();
 
     // Ronda a medias: se retoma en su ruta y, al abrir la app en el inicio, se vuelve a ella.
     const session = readSession(store.get(), index, Date.now());
@@ -348,10 +376,9 @@ async function boot() {
       case 'intro': return flow((m) => m.renderIntro(ctx, screen, route.movementId));
       case 'era': return flow((m) => m.renderIntro(ctx, screen, route.movementId, { mode: 'shared' }));
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));
-      case 'srs': return flow((m) => m.renderSrsReview(ctx, screen));
-      case 'quick': return flow((m) => m.renderSrsReview(ctx, screen, { quick: true }));
-      case 'review5': return flow((m) => m.renderReview5(ctx, screen));
-      case 'daily': return flow((m) => m.renderDaily(ctx, screen));
+      case 'srs': return flow((m) => m.renderReview(ctx, screen));
+      case 'recall': return flow((m) => m.renderRecall(ctx, screen, route.recallType, route.id));
+      case 'cuadro': return lazy(token, screen, loadCuadro, (m) => m.renderCuadro(ctx, screen), true);
       case 'weekly': return flow((m) => m.renderWeekly(ctx, screen));
       case 'artist': return lazy(token, screen, loadArtistPage, (m) => m.renderArtistPage(ctx, screen, route.artistId, { focus: route.focus }), true);
       case 'works': return lazy(token, screen, loadArtistWorks, (m) => m.renderArtistWorks(ctx, screen, route.spec), true);
@@ -362,6 +389,7 @@ async function boot() {
       case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen), true);
       case 'profile': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen));
       case 'medals': return lazy(token, screen, loadProfile, (m) => m.renderMedals(ctx, screen));
+      case 'closure': return lazy(token, screen, loadEraEnd, (m) => m.renderEraEnd(ctx, screen, route.key), true);
       case 'credits': return lazy(token, screen, loadCredits, (m) => m.renderCredits(ctx, screen), true);
       case 'about': return lazy(token, screen, loadAbout, (m) => m.renderAbout(ctx, screen), true);
       default:
@@ -381,7 +409,10 @@ async function boot() {
   // Después de pintar: textos del catálogo, audio y las pantallas que vendrán.
   whenIdle(() => {
     ensureText();
+    // Cierres de época: quien ya traía épocas cerradas no los ve de golpe (engine/era-end.js; fuera del arranque).
+    import('./engine/era-end.js').then((m) => store.update((s) => { const progress = m.seedClosures(s.progress, index); return progress === s.progress ? s : { ...s, progress }; })).catch((err) => console.error(err));
     loadFlows().catch(() => {});
+    loadCuadroChip(); // el detalle de hoy en la cabecera (hasta entonces, el icono)
     import('./ui/dj-mode.js').then((m) => m.startDjIfOn()).catch(() => {}); // modo secreto «afinar música»
     import('./ui/warm-up.js').then((m) => m.warmUp()).catch((err) => console.info('Sin precarga:', err.message)); // lo que se toca después, sin esperar a la red
     startCloudWhenReady(store, storage, () => {

@@ -1,0 +1,109 @@
+/* Cuadro del día (ui/screens/cuadro-dia.js, cuadro-dia-hecho.js, ui/cuadro-frame.js). Se carga al abrirlo (lazy-css). Colores y
+   medidas, de brand.css. */
+
+.cdd { min-height: var(--screen-h, 100dvh); display: flex; flex-direction: column; background: var(--bg); }
+.cdd-bar {
+  position: sticky; top: 0; z-index: 4; display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: .5rem;
+  padding: calc(.35rem + var(--safe-t, 0px)) .9rem .35rem .4rem; background: var(--bg);
+}
+.cdd-bar .icon-btn { width: 48px; height: 48px; }
+.cdd-kicker { margin: 0; color: var(--ink-2); font-size: .85rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.cdd-bar .cdd-kicker { text-align: center; }
+
+/* Intentos: cuatro casillas que se tiñen (fallo, acierto). */
+.cdd-tries { display: inline-flex; gap: .25rem; }
+.cdd-try, .cdd-sq { width: .8rem; height: .8rem; border-radius: 3px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-2); transition: background-color .2s; }
+.cdd-try.is-miss, .cdd-sq.is-miss { background: var(--bad); box-shadow: none; }
+.cdd-try.is-hit, .cdd-sq.is-hit { background: var(--ok); box-shadow: none; }
+
+.cdd-body { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--cuadro-gap); padding: .25rem 1rem calc(1.1rem + var(--safe-b, 0px)); width: 100%; max-width: 34rem; margin: 0 auto; }
+.cdd-title { margin: 0; font-size: 1.45rem; font-weight: 600; text-align: center; outline: none; }
+
+/* El marco cuadrado: el recorte cambia de caja con cada paso (transición suave salvo con movimiento reducido). */
+.cdd-frame {
+  position: relative; display: block; width: min(100%, var(--cuadro-frame-max), var(--cuadro-frame-vh)); aspect-ratio: 1; padding: 0; border: 0;
+  overflow: hidden; border-radius: var(--cuadro-radius); background: var(--surface-2); box-shadow: var(--shadow-frame); cursor: zoom-in;
+}
+.cdd-frame:focus-visible { outline: 3px solid var(--accent-ui, var(--brand)); outline-offset: 3px; }
+.cdd-bg { position: absolute; inset: -10%; width: 120%; height: 120%; object-fit: cover; filter: blur(18px) saturate(.9); opacity: 0; transition: opacity .4s; }
+.cdd-frame:not(.is-detail) .cdd-bg { opacity: .55; }
+.cdd-frame { -webkit-touch-callout: none; }
+.cdd-img, .cdd-bg { pointer-events: none; }
+.cdd-img { position: absolute; max-width: none; object-fit: fill; transition: left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); user-select: none; -webkit-user-drag: none; }
+.cdd-hi { opacity: 0; transition: opacity .3s, left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
+.cdd-hi.is-ready { opacity: 1; }
+.cdd-det { opacity: 0; transition: opacity .45s, left .55s var(--ease), top .55s var(--ease), width .55s var(--ease), height .55s var(--ease); }
+.cdd-det.is-on.is-ready { opacity: 1; }
+.cdd-zoom-badge { position: absolute; right: .5rem; bottom: .5rem; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 999px; background: var(--scrim); color: var(--viewer-ink); }
+.reduce-motion .cdd-img, .reduce-motion .cdd-hi, .reduce-motion .cdd-det { transition: opacity .2s; }
+@media (prefers-reduced-motion: reduce) { .cdd-img, .cdd-hi, .cdd-det { transition: opacity .2s; } }
+
+/* Pistas: pastillas que se suman con cada fallo. */
+.cdd-hints { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem; margin: 0; padding: 0; list-style: none; min-height: 0; }
+.cdd-hints:empty { display: none; }
+.cdd-hint { display: inline-flex; align-items: baseline; gap: .35rem; padding: .3rem .7rem; border-radius: var(--radius-pill, 999px); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); font-size: .88rem; animation: cdd-in .3s var(--ease) both; }
+.cdd-hint-k { color: var(--ink-2); font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+@keyframes cdd-in { from { opacity: 0; transform: translateY(4px); } }
+
+/* Seis nombres en dos columnas. */
+.cdd-options { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; width: 100%; margin-top: .25rem; }
+.cdd-opt { min-height: 48px; padding: .55rem .6rem; background: var(--surface); color: var(--ink); box-shadow: var(--lift); font-size: .98rem; line-height: 1.2; text-wrap: balance; }
+.cdd-opt:hover:not(:disabled) { background: var(--bg); }
+.cdd-opt:active:not(:disabled) { box-shadow: var(--lift-down); }
+.cdd-opt:disabled { cursor: default; }
+.cdd-opt.is-off { background: var(--surface-2); color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line); text-decoration: line-through; text-decoration-color: var(--bad); opacity: .75; }
+.cdd-opt.is-right { background: var(--ok); color: var(--on-ok); box-shadow: 0 3px 0 var(--ok-shadow); }
+.cdd-opt.is-shake { animation: cdd-shake var(--dur-shake, .35s) var(--ease); }
+@keyframes cdd-shake { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+.reduce-motion .cdd-opt.is-shake { animation: none; }
+@media (prefers-reduced-motion: reduce) { .cdd-opt.is-shake { animation: none; } }
+.cdd-left { margin: 0; min-height: 1.3em; color: var(--ink-2); font-size: .88rem; }
+
+/* Hecho. */
+.cdd-done { display: flex; flex-direction: column; align-items: center; gap: var(--cuadro-gap); max-width: 30rem; margin: 0 auto; text-align: center; }
+.cdd-done .cdd-title { font-size: 1.6rem; }
+.cdd-answer { margin: -.2rem 0 .2rem; font-size: 1.05rem; color: var(--ink-2); }
+.cdd-answer strong { color: var(--ink); font-weight: 600; }
+.cdd-done .cdd-frame { cursor: zoom-in; width: min(100%, var(--cuadro-frame-max), calc(var(--cuadro-done-vh) * var(--frame-ratio, 1))); }
+.cdd-squares.is-in .cdd-sq { animation: cdd-pop .35s var(--ease) both; }
+.cdd-squares.is-in .cdd-sq:nth-child(2) { animation-delay: .08s; }
+.cdd-squares.is-in .cdd-sq:nth-child(3) { animation-delay: .16s; }
+.cdd-squares.is-in .cdd-sq:nth-child(4) { animation-delay: .24s; }
+@keyframes cdd-pop { from { opacity: 0; transform: scale(.4); } }
+.reduce-motion .cdd-squares.is-in .cdd-sq { animation: none; }
+@media (prefers-reduced-motion: reduce) { .cdd-squares.is-in .cdd-sq { animation: none; } }
+.cdd-caption { margin: 0; color: var(--ink-2); font-size: .9rem; }
+.cdd-squares { display: inline-flex; gap: .3rem; margin-top: .2rem; }
+.cdd-squares .cdd-sq { width: 1.1rem; height: 1.1rem; border-radius: 4px; }
+.cdd-count { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .2rem .8rem; margin: 0; font-weight: 600; }
+.cdd-tally { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .4rem .6rem; }
+.cdd-tally .cdd-squares { margin-top: 0; }
+.cdd-gains { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem; margin: 0; padding: 0; list-style: none; }
+.cdd-gain { display: inline-flex; align-items: center; gap: .3rem; padding: .25rem .65rem; border-radius: var(--radius-pill, 999px); background: var(--brand-soft); color: var(--brand-text); font-size: .88rem; font-weight: 600; animation: cdd-in .35s var(--ease) both; }
+.cdd-gain.is-extra { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.cdd-gain .icon { color: var(--gold-text, var(--brand-text)); }
+.cdd-actions { display: grid; gap: .5rem; width: 100%; margin-top: .4rem; }
+.cdd-row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.cdd-row .btn { min-height: 48px; padding-inline: .6rem; font-size: .92rem; line-height: 1.2; text-wrap: balance; }
+.cdd-next { display: inline-flex; align-items: center; gap: .35rem; color: var(--ink-2); font-size: .88rem; font-weight: 400; }
+.cdd-guest { min-height: var(--screen-h, 100dvh); background: var(--bg); padding-top: var(--safe-t, 0px); }
+
+/* Lupa del detalle (pasos 1 y 2): el mismo recorte, lo más grande que quepa. */
+.cdd-loupe { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--viewer-bg); display: grid; place-items: center; }
+.cdd-loupe::backdrop { background: var(--viewer-bg); }
+.cdd-loupe-box { width: min(96vw, calc((100dvh - 7rem) * var(--loupe-ratio, 1))); }
+.cdd-loupe-box .cdd-frame { width: 100%; max-width: none; cursor: zoom-out; box-shadow: var(--shadow-viewer, none); }
+.cdd-loupe-close { position: absolute; top: calc(.5rem + var(--safe-t, 0px)); right: .5rem; width: 48px; height: 48px; display: grid; place-items: center; border: 0; border-radius: 999px; background: transparent; color: var(--viewer-ink); cursor: pointer; }
+
+/* Historia del cuadro (ui/story-core.js): un icono en lugar de la cara del pintor. */
+.story-avatar-icon { display: grid; place-items: center; color: var(--on-accent, var(--viewer-ink)); background: var(--accent); }
+
+@media (min-width: 48em) {
+  .cdd-done { --cuadro-done-vh: var(--cuadro-done-vh-lg); }
+  .cdd-body { gap: .7rem; max-width: 40rem; }
+  .cdd-frame { width: min(100%, var(--cuadro-frame-max-lg), var(--cuadro-frame-vh)); }
+  .cdd-options { grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+}
+
+/* En la historia del cuadro el título ya va en la cabecera: sin el pie repetido. */
+.story-cuadro .story-caption { display: none; }

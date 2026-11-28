@@ -5,7 +5,6 @@
 import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { medalInfo } from '../../engine/medal-info.js';
-import { stageTitle } from '../../engine/painters.js';
 import { branchRoute } from '../router.js';
 
 // Fichas visibles de entrada (la tercera es «+N» cuando hay más de tres).
@@ -23,7 +22,7 @@ export function roundChips(index, r) {
   const deep = find('deep-mastered');
   const artist = deep ? index.artist(deep.artistId) : null;
   const stage = artist ? index.deepLevels(artist.id).find((l) => l.id === deep.level) : null;
-  if (stage) out.push({ key: 'deep', icon: 'check', tone: 'gold', title: stageTitle(artist, stage), sub: 'Nivel superado', to: `pintor-${artist.id}` });
+  if (stage) out.push({ key: 'deep', icon: 'check', tone: 'gold', title: artist.short || artist.name, sub: `Nivel ${stage.id} superado`, to: `pintor-${artist.id}` });
   if (branch) {
     out.push({ key: 'branch', icon: 'fork', tone: 'brand', title: branch.branch.name, sub: branch.done ? 'Rama completa' : `Rama · ${branch.mastered}/${branch.total}`, to: branchRoute(branch.branch.id) });
   }
@@ -39,11 +38,18 @@ export function roundChips(index, r) {
   if (streak) out.push({ key: 'streak', icon: 'flame', tone: 'brand', title: streak.value === 1 ? '1 día' : `${streak.value} días`, sub: streak.grace ? 'Racha a salvo' : 'Racha', to: 'perfil' });
   const rank = find('rank');
   if (rank) out.push({ key: 'rank', icon: 'gem', tone: 'gold', title: rank.name, sub: 'Rango', to: 'perfil' });
-  // El nombre de la medalla suele ser largo: la ficha dice «Medalla · Nueva» y el nombre va en su etiqueta.
-  for (const m of otherMedals) out.push({ key: `medal-${m.id}`, icon: 'medal', tone: 'gold', title: 'Medalla', sub: 'Nueva', label: `Medalla nueva: ${medalInfo(m.id, index).title}`, to: 'medallas' });
+  // El nombre de la medalla suele ser largo: la ficha dice «Medalla · Nueva» y el nombre va en su etiqueta. Varias, en una
+  // sola ficha («2 medallas · Nuevas»): fichas iguales en fila no dicen nada.
+  if (otherMedals.length === 1) {
+    const [m] = otherMedals;
+    out.push({ key: `medal-${m.id}`, icon: 'medal', tone: 'gold', title: 'Medalla', sub: 'Nueva', label: `Medalla nueva: ${medalInfo(m.id, index).title}`, to: 'medallas' });
+  } else if (otherMedals.length > 1) {
+    const names = otherMedals.map((m) => medalInfo(m.id, index).title).join(', ');
+    out.push({ key: 'medals', icon: 'medal', tone: 'gold', title: `${otherMedals.length} medallas`, sub: 'Nuevas', label: `${otherMedals.length} medallas nuevas: ${names}`, to: 'medallas' });
+  }
   const review = find('review-unlock');
   const reviewed = review && !find('goal') && index.movement(review.movementId);
-  if (reviewed) out.push({ key: 'review', icon: 'repeat', tone: 'brand', title: reviewed.name, sub: 'Repaso', to: `repaso-${review.movementId}` });
+  if (reviewed) out.push({ key: 'review', icon: 'repeat', tone: 'brand', title: reviewed.name, sub: 'Prueba de época', to: `repaso-${review.movementId}` });
   return out;
 }
 

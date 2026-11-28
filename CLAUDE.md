@@ -73,6 +73,8 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
   Si en el camino un pintor aparece después de otro pero vivió antes (una generación o más), la primera
   tarjeta de su nivel 1 lo dice como un salto atrás en el tiempo («Retrocedemos a 1425…») y, si se puede,
   muestra el contraste con lo anterior. Decisión de María, 26/11.
+  Todo pintor con niveles de ampliación tiene historias nuevas en cada nivel (decisión de María, 28/11): otra etapa
+  de su vida, una obra clave, una anécdota o ampliar algo que el nivel 1 solo apuntó; nunca repetirlo.
 - Datos de arte: se pueden escribir de memoria; solo se busca lo dudoso (fechas, lugares, anécdotas
   de las que no se esté seguro), y lo que siga dudoso se deja fuera. Cada texto lleva una fuente de
   referencia (Wikipedia del pintor o de la época, el museo de la obra). Decisión de María, 26/11.

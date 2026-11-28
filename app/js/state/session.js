@@ -8,7 +8,8 @@ const WEEK_RE = /^\d{4}-W\d{2}$/;
 // 'before': «¿Quién fue antes?» (engine/question-before.js). Sin importar el motor: este módulo va en el arranque.
 const BEFORE = 'before';
 const TYPES = new Set(['who', 'movement', 'which', BEFORE]);
-const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'review5', 'daily', 'weekly', 'general', 'challenge']);
+// Sin 'daily': una ronda del reto diario (ya no existe) que quedara a medias se descarta sin error.
+const KINDS = new Set(['stage', 'sala', 'review', 'srs', 'weekly', 'general', 'challenge']);
 
 // meta: { route, title, accent, kind, extra, friendScore, shareTopic, plan:{kind,seed,artistId,movementId,date} }
 // lesson: { round, answers, xpLive, freshIntroShown }
@@ -126,6 +127,8 @@ function cleanQuestion(q, index) {
     isNew: Boolean(q.isNew),
     phase: typeof q.phase === 'string' ? q.phase.replace(/[^a-z]/g, '').slice(0, 12) : '',
   };
+  // Pintor de la ronda (engine/guest-intro.js): se conserva si existe.
+  if (typeof q.host === 'string' && index.artist(q.host)) out.host = q.host;
   if (q.type === 'which') {
     const target = index.artwork(q.targetArtworkId);
     if (!target || target.artistId !== artist.id || q.answerId !== target.id) throw new Error('obra');
@@ -141,7 +144,7 @@ function cleanQuestion(q, index) {
 function pickPlan(p) {
   const out = { kind: KINDS.has(p.kind) ? p.kind : 'general' };
   if (Number.isFinite(p.seed)) out.seed = p.seed;
-  for (const k of ['artistId', 'movementId', 'date']) if (typeof p[k] === 'string' && ROUTE_RE.test(p[k])) out[k] = p[k];
+  for (const k of ['artistId', 'movementId', 'date', 'started']) if (typeof p[k] === 'string' && ROUTE_RE.test(p[k])) out[k] = p[k];
   if (typeof p.week === 'string' && WEEK_RE.test(p.week)) out.week = p.week;
   if (Number.isInteger(p.level) && p.level >= 2 && p.level <= 9) out.level = p.level;
   return out;

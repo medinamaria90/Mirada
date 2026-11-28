@@ -7,16 +7,27 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
-import { planDaily, DAILY_SIZE, dailyGrid } from '../app/js/engine/daily.js';
+import { dailyGrid } from '../app/js/engine/daily.js';
 import { extraRounds } from '../app/js/ui/screens/result.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const real = buildIndex(JSON.parse(readFileSync(join(here, '..', 'app', 'data', 'catalog.json'), 'utf8')));
 const DAY = '2026-11-24';
 
-function ctxWith(progress) {
-  return { index: real, store: { get: () => ({ progress }) }, today: () => DAY, dailyDay: () => DAY };
+// Por defecto, la guía ya propuso hoy el Cuadro del día (así no se cuela en las pruebas de las otras rondas).
+function ctxWith(progress, { cuadro = false } = {}) {
+  if (!cuadro && !progress.cuadroNudge) progress.cuadroNudge = DAY;
+  return { index: real, store: { get: () => ({ progress }), update() {} }, today: () => DAY, dailyDay: () => DAY };
 }
+
+test('resultado: el Cuadro del día, pendiente, se propone como acción secundaria una vez al día y nunca tras una ronda floja', () => {
+  const p = emptyProgress();
+  assert.deepEqual(extraRounds(ctxWith(p, { cuadro: true }), { kind: 'stage' }).map((r) => r.to), ['cuadro-del-dia']);
+  assert.deepEqual(extraRounds(ctxWith(p, { cuadro: true }), { kind: 'stage' }, { weak: true }), []);
+  p.cuadros = { [DAY]: { n: 1, guesses: ['x'], won: true, tries: 1 } };
+  assert.deepEqual(extraRounds(ctxWith(p, { cuadro: true }), { kind: 'stage' }), [], 'ya hecho');
+  assert.equal(extraRounds(ctxWith(emptyProgress(), { cuadro: true }), { kind: 'stage' }).find((r) => r.to !== 'inicio').to, 'cuadro-del-dia');
+});
 
 function masteredAll() {
   const p = emptyProgress();
@@ -38,21 +49,19 @@ test('resultado: con el camino dominado se ofrece el reto semanal, salvo si ya e
   assert.ok(!ids({ kind: 'stage' }).includes('reto-semanal'));
 });
 
-test('reto diario: 5 preguntas y 5 casillas al compartir', () => {
-  assert.equal(DAILY_SIZE, 5);
-  const plan = planDaily(real, DAY);
-  assert.equal(plan.questions.length, 5);
-  assert.equal(dailyGrid(plan.questions.map(() => true)), '🟩🟩🟩🟩🟩');
+test('reto semanal: una casilla por pregunta al compartir', () => {
+  assert.equal(dailyGrid([true, false, true, true, true]), '🟩⬜🟩🟩🟩');
 });
 
 // ---------------------------------------------------------------- Acciones del resultado sin duplicados
 const { renderResult } = await import('../app/js/ui/screens/result.js');
 const { practiceAction } = await import('../app/js/ui/screens/result-actions.js');
-const { REVIEW5_NAME, REVIEW5_MISSED } = await import('../app/js/engine/review.js');
+const { REVIEW_NAME } = await import('../app/js/engine/review.js');
 
 // Pintores dominados con cuadros ya vistos: hay material para repasar lo aprendido.
 function withReview() {
   const p = emptyProgress();
+  p.deepen.at = 3; // «Profundiza en…» recién propuesto: no toca otro (engine/deepen.js)
   for (const a of real.path.slice(0, 3)) {
     p.artists[a.id] = { plays: 1, best: 1, mastered: true, last: '2026-11-20' };
     for (const w of real.worksOf(a.id)) p.collection[w.id] = '2026-11-20';
@@ -65,38 +74,63 @@ function resultHtmlOf(progress, plan, outcome, opts = {}) {
   globalThis.window = { scrollTo() {}, matchMedia: () => ({ matches: true }) };
   globalThis.document = { documentElement: { classList: { contains: () => true } }, getElementById: () => null };
   globalThis.getComputedStyle = () => ({ getPropertyValue: () => '' });
-  const ctx = { ...ctxWith(progress), store: { get: () => ({ progress, settings: { dailyGoal: 50 } }) }, audio: { sfx() {} } };
+  let state = { progress, settings: { dailyGoal: 50 } };
+  const ctx = { ...ctxWith(progress), store: { get: () => state, update: (fn) => { state = fn(state); } }, audio: { sfx() {} }, today: () => '2026-11-28' };
   renderResult(ctx, el, { plan, outcome, title: 'Ronda', accent: '', firstTry: [true, true, true], ...opts });
   return el.innerHTML;
 }
 const resultActions = (...args) => resultHtmlOf(...args).match(/<footer class="res-foot">[^]*?<\/footer>/)?.[0] || '';
 
-test('resultado: tras dominar a un pintor, un solo botón para repasar (no dos iguales) y con nombre que se entiende', () => {
+test('resultado: tras dominar a un pintor, un solo botón principal (el siguiente paso) y «Repasar» una sola vez', () => {
   const p = withReview();
   const veronese = real.artist('veronese');
   const outcome = { xp: 60, score: 8, total: 8, accuracy: 1, mastered: true, events: [] };
   const actions = resultActions(p, { kind: 'stage', artistId: veronese.id, seed: 3 }, outcome);
-  assert.equal((actions.match(/data-to="repaso5"/g) || []).length, 1, actions);
-  assert.ok(actions.includes(`<span>${REVIEW5_NAME}</span>`));
-  assert.doesNotMatch(actions, /Repaso de 5/);
+  assert.ok((actions.match(/data-to="repaso"/g) || []).length <= 1, actions);
+  assert.doesNotMatch(actions, /repaso5|Repaso de 5|Repasar lo aprendido/);
   assert.equal((actions.match(/data-primary/g) || []).length, 1, 'un solo botón principal');
+  assert.match(actions, /Sigue: /, 'la parada abierta, como principal');
+  assert.match(actions, /data-action="done"[^>]*><span>Volver al camino<\/span>/, '«Volver al camino» como secundario');
 });
 
-test('resultado: una sola acción para practicar, por prioridad (repetir, la del flujo, otra ronda)', () => {
+test('resultado: «Profundiza en…» como principal cuando toca, con «Ahora no» como secundario', () => {
+  const p = withReview();
+  p.deepen.at = 0;
+  const outcome = { xp: 60, score: 8, total: 8, accuracy: 1, mastered: true, events: [] };
+  const actions = resultActions(p, { kind: 'stage', artistId: 'veronese', seed: 3 }, outcome);
+  assert.match(actions.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Profundiza en [^<]+: nivel \d/);
+  assert.match(actions, /data-action="not-now"[^>]*><span>Ahora no<\/span>/);
+});
+
+test('resultado: una sola acción para practicar, por prioridad (repetir y, si no, otra ronda), nunca la del principal', () => {
   const p = withReview();
   const ctx = ctxWith(p);
-  assert.equal(practiceAction(ctx, { kind: 'stage' }, { retry: 'etapa-x', more: { to: 'repaso', label: 'Repasar más' } }).label, 'Repetir');
-  assert.equal(practiceAction(ctx, { kind: 'srs' }, { more: { to: 'repaso', label: 'Repasar más' } }).to, 'repaso');
-  assert.equal(practiceAction(ctx, { kind: 'stage' }).to, 'repaso5');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { retry: 'etapa-x' }).label, 'Repetir');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }).to, 'repaso');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }).label, REVIEW_NAME);
+  assert.equal(practiceAction(ctx, { kind: 'srs' }), null, 'tras un repaso no se ofrece otro');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { prevKind: 'srs' }), null, 'nunca dos repasos seguidos');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { main: 'repaso' }), null, 'no repite el botón principal');
   assert.equal(practiceAction(ctx, { kind: 'stage' }, { closing: true }), null, 'al cerrar el día, sin llamadas a seguir jugando');
   assert.equal(practiceAction(ctx, { kind: 'stage' }, { duel: true }), null);
 });
 
-test('resultado: si entre los cuadros del repaso hay fallados, el botón lo dice', () => {
+test('resultado: con 50-74 % «Repetir» va como secundario y el principal es el siguiente paso; con menos del 50 %, principal', () => {
   const p = withReview();
-  const w = real.worksOf(real.path[0].id)[0];
-  p.fallados = [{ id: w.id, date: '2026-11-20', hits: 0 }];
-  assert.equal(practiceAction(ctxWith(p), { kind: 'stage' }).label, REVIEW5_MISSED);
+  const c = real.path[3];
+  p.artists[c.id] = { plays: 1, best: 0.6, mastered: false, last: '2026-11-24' };
+  const mid = resultActions(p, { kind: 'stage', artistId: c.id, seed: 3 }, { xp: 30, score: 5, total: 8, accuracy: 0.62, mastered: false, events: [] });
+  assert.doesNotMatch(mid.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Repetir/);
+  assert.match(mid, /res-btn2[^>]*data-to="etapa-[^"]+"><span>Repetir<\/span>/);
+  const low = resultActions(p, { kind: 'stage', artistId: c.id, seed: 3 }, { xp: 10, score: 2, total: 8, accuracy: 0.25, mastered: false, events: [] });
+  assert.match(low.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Repetir/);
+});
+
+test('resultado: al subir de rango, una línea con lo conseguido y lo que viene; desde el Perfil, «Volver al perfil»', () => {
+  const p = withReview();
+  const html = resultHtmlOf(p, { kind: 'stage', artistId: 'rafael', level: 2, seed: 3 }, { xp: 60, score: 8, total: 8, accuracy: 1, mastered: true, events: [{ type: 'rank', index: 2, name: 'Copista' }] }, { origin: 'perfil' });
+  assert.match(html, /class="res-line res-rank">[^]*?¡Ya eres Copista! Ahora, a por Oficial de taller</);
+  assert.match(html, /data-to="perfil" data-primary><span>Volver al perfil<\/span>/);
 });
 
 test('momento de dominar a un maestro: se queda hasta cerrarlo (X, «Seguir», Esc o fuera), sin cierre automático', () => {

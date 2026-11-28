@@ -2,7 +2,7 @@
 // el mismo (estado + claves sfumato.*) y, al juntar dos, gana el más avanzado.
 // - pull: trae lo de la nube; si va por delante, sustituye lo de aquí (conserva la ronda en curso) y avisa.
 // - Cada cambio del almacén se sube con espera (SAVE_DELAY_MS) y, al ocultar la página, al momento.
-// - La base solo guarda si no tiene algo más avanzado; si lo tiene, se trae. «Empezar de cero» (el XP baja)
+// - La base solo guarda si no tiene algo más avanzado; si lo tiene, se trae. «Borrar progreso» (el XP baja)
 //   se sube forzado. En el modo prueba no se sube ni se trae nada.
 
 import { collectPayload, validatePayload, applyMove, hasProgress, isAhead } from '../state/mudanza.js';
@@ -57,7 +57,7 @@ export function createSync({ store, storage, stateKey, auth, remote, onRemote = 
     return true;
   }
 
-  async function save({ keepalive = false } = {}) {
+  async function save({ keepalive = false, force = false } = {}) {
     timers.clearTimeout(timer);
     timer = null;
     if (store.inTrial()) return;
@@ -65,7 +65,7 @@ export function createSync({ store, storage, stateKey, auth, remote, onRemote = 
       const payload = collectPayload(storage, stateKey);
       const xp = xpOf(payload.s);
       setStatus(STATUS.SAVING);
-      const saved = await remote.save(s, payload, { force: syncedXp !== null && xp < syncedXp, keepalive });
+      const saved = await remote.save(s, payload, { force: force || (syncedXp !== null && xp < syncedXp), keepalive });
       if (saved) syncedXp = xp;
       else await pullWith(s);
       setStatus(STATUS.OK);

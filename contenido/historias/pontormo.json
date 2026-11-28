@@ -38,6 +38,28 @@
      "source": "https://es.wikipedia.org/wiki/Jacopo_da_Pontormo"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Colores",
+   "title": "Pontormo, el raro de Florencia",
+   "cards": [
+    {
+     "text": "Fíjate en el niño sentado en los escalones, abajo a la derecha: según el biógrafo Vasari, es Bronzino, su alumno, que luego sería el pintor de los Médici.",
+     "artwork": "w1706136",
+     "source": "https://en.wikipedia.org/wiki/Agnolo_Bronzino"
+    },
+    {
+     "text": "En su Descendimiento (Cristo bajado de la cruz) no hay cruz ni paisaje: solo cuerpos rosas y azules que flotan. El barbudo de la derecha, que nos mira, sería el propio Pontormo.",
+     "artwork": "w3705703",
+     "source": "https://es.wikipedia.org/wiki/Jacopo_da_Pontormo"
+    },
+    {
+     "text": "La Visitación (el encuentro de la Virgen con su prima Isabel) parece un baile. Detrás, dos mujeres nos miran fijamente: quizá las mismas dos, vistas de frente.",
+     "artwork": "w1109475",
+     "source": "https://es.wikipedia.org/wiki/Jacopo_da_Pontormo"
+    }
+   ]
   }
  ]
 }

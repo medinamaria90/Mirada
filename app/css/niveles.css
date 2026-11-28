@@ -9,7 +9,7 @@
 .hl-row::-webkit-scrollbar { display: none; }
 .hl-row > li { flex: 0 0 auto; }
 .hl {
-  display: flex; flex-direction: column; align-items: center; gap: 7px; width: calc(var(--hl) - 2px); min-height: var(--hit); padding: 0; border: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 7px; width: auto; min-width: calc(var(--hl) - 2px); min-height: var(--hit); padding: 0; border: 0;
   background: none; color: var(--ink); font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
 .hl-c { position: relative; display: grid; place-items: center; width: var(--hl); height: var(--hl); border-radius: 999px; transition: transform var(--dur-pop) var(--ease); }
@@ -28,8 +28,9 @@
 }
 .hl-play .icon { fill: currentColor; stroke: none; }
 .hl-t {
-  display: -webkit-box; max-width: calc(var(--hl) + 10px); overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
-  font-size: .875rem; line-height: 1.15; text-align: center; overflow-wrap: anywhere; text-wrap: balance;
+  /* Las etiquetas (hasta 12 letras) no parten palabras: el círculo se ensancha lo justo para que quepan. */
+  display: -webkit-box; max-width: var(--hl-label-max); overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  font-size: .875rem; line-height: 1.15; text-align: center; overflow-wrap: normal; word-break: normal; hyphens: manual; text-wrap: balance;
 }
 .hl.is-next .hl-t { font-weight: 600; }
 .hl.is-locked .hl-t { color: var(--ink-2); }
@@ -78,6 +79,8 @@ html.reduce-motion .lc[open] .lc-card { animation: none; }
 .lc-card .hl-row { gap: 12px; margin: 12px -12px 2px; padding: 0 4px; }
 .lc-play { margin-top: 14px; font-size: 1.125rem; }
 .lc-play small { font-size: 1rem; font-weight: 400; }
+/* A medias: lo que falta, en una línea («67 % · dominas con 75 %»). */
+.lc-line { margin: 8px 4px 0; color: var(--ink-2); font: 500 1rem/1.35 var(--font); font-variant-numeric: lining-nums tabular-nums; }
 @media (hover: hover) { .lc-name:hover { text-decoration: underline; text-underline-offset: 4px; } }
 
 /* ---------- Ficha: las mismas historias bajo el nombre; el avatar con el aro de niveles ---------- */

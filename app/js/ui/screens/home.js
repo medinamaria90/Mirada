@@ -8,24 +8,26 @@ import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendi
 import { rememberMap } from './map-memory.js';
 import { liveArt } from '../map-land.js';
 import { watchReturn } from './map-return.js';
+import { placeCue } from './map-cue.js';
 import { startMapLife } from '../map-life.js';
-import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus } from '../../engine/progress.js';
-import { dueKeys } from '../../engine/srs.js';
+import { isPathMastered, stepsToMaster, isPathComplete, nextStep, stepStatus, artistStatus } from '../../engine/progress.js';
 import { playEra } from '../audio-bridge.js';
-import { weekOf } from '../../engine/dates.js';
+import { weekOf, isoWeek } from '../../engine/dates.js';
 import { addLevelRings } from '../deep-badges.js';
 import { watchStoryPrefetch } from '../story-prefetch.js';
 import { coachSeen } from '../../state/store.js';
+import { allMissingEssentials, essentialNeed, essentialOpen } from '../../engine/essentials.js';
+import { deepRoute, stageRoute } from '../router.js';
 
 export function renderHome(ctx, el) {
   const { index } = ctx;
   const state = ctx.store.get();
   const p = state.progress;
-  const today = ctx.today();
-  const due = dueKeys(p.srs, today).length;
   const complete = isPathComplete(p, index);
   // «Camino completo» solo con todo dominado; si quedan paradas por repasar, se dice cuántas.
-  const mastered = isPathMastered(p, index);
+  // El final del camino pide, además, todos los imprescindibles (engine/essentials.js): si falta alguno, se dice cuál.
+  const must = isPathMastered(p, index) ? allMissingEssentials(p, index) : [];
+  const mastered = isPathMastered(p, index) && !must.length;
   const pending = complete && !mastered ? stepsToMaster(p, index) : [];
 
   // Los cuadros vistos: los mismos que cuentan Colección y el perfil (una sola palabra y una sola cifra).
@@ -39,17 +41,24 @@ export function renderHome(ctx, el) {
       <div class="finale-actions">
         <button class="btn btn-primary btn-wide" data-action="free">${icons.shuffle(20)}<span>Ronda libre</span></button>
         <button class="btn btn-secondary btn-wide" data-action="weekly">${icons.target(20)}<span>Reto semanal</span></button>
-        ${due > 0 ? `<button class="btn btn-secondary btn-wide" data-action="srs">${icons.repeat(20)}<span>Repaso</span></button>` : ''}
+      </div>
+    </section>`;
+  } else if (must.length) {
+    finale = `<section class="finale" aria-label="Por terminar">
+      <span class="finale-icon">${icons.lock(26)}</span>
+      <h2 class="finale-title">${esc(essentialNeed(must[0]))}</h2>
+      <div class="finale-actions">
+        <button class="btn btn-primary btn-wide" data-action="essential" data-to="${esc(essentialOpen(p, index, must[0]) ? deepRoute(must[0].artistId, must[0].level) : stageRoute(must[0].artistId))}">Ir</button>
       </div>
     </section>`;
   } else if (pending.length) {
     const first = pending[0];
     const firstName = first.type === 'sala' ? index.movement(first.id).name : index.artist(first.id).name;
-    finale = `<section class="finale" aria-label="Por dominar">
+    finale = `<section class="finale" aria-label="Por terminar">
       <span class="finale-icon">${icons.repeat(28)}</span>
-      <h2 class="finale-title">${pending.length === 1 ? 'Te queda 1 por dominar' : `Te quedan ${pending.length} por dominar`}</h2>
+      <h2 class="finale-title">${pending.length === 1 ? 'Te queda 1 parada' : `Te quedan ${pending.length} paradas`}</h2>
       <div class="finale-actions">
-        <button class="btn btn-primary btn-wide" data-action="${first.type === 'sala' ? 'sala' : 'stage'}" data-id="${esc(first.id)}">${icons.repeat(20)}<span>Repasar ${esc(firstName)}</span></button>
+        <button class="btn btn-primary btn-wide" data-action="${first.type === 'sala' ? 'sala' : 'stage'}" data-id="${esc(first.id)}">${icons.repeat(20)}<span>Volver a ${esc(firstName)}</span></button>
       </div>
     </section>`;
   }
@@ -77,9 +86,33 @@ export function renderHome(ctx, el) {
   // Al salir, se guarda dónde estaba la vista: se vuelve exactamente ahí (map-memory.js).
   // Historias de la parada actual y de los pintores con niveles a la vista: su tarjeta se pinta sin esperar (story-prefetch.js).
   let stories = null;
-  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); }), watchMapMode(map), life.stop, watchReturn(el), () => stories?.stop()];
+  // Lo que recomienda el itinerario (engine/next-step.js, cargado después de pintar: no pesa en el arranque) lleva una burbuja con
+  // un verbo sobre su parada (map-cue.js); el botón flotante (map-return.js) lleva hasta ella.
+  const returnBtn = watchReturn(el);
+  let recommended = null;
+  const showCue = () => {
+    if (!recommended || !el.isConnected) return;
+    const status = recommended.artistId ? artistStatus(ctx.store.get().progress, index, recommended.artistId) : '';
+    placeCue(el, recommended, status === 'started');
+    returnBtn.retarget();
+  };
+  Promise.all([import('../../engine/next-step.js'), import('../last-step.js'), import('../../engine/deepen.js')]).then(([m, last, deepen]) => {
+    recommended = m.mapRecommendation(ctx.store.get().progress, index, ctx.today(), { week: isoWeek(ctx.dailyDay()).key, prevStep: last.lastStep() });
+    if (!recommended || !el.isConnected) return;
+    showCue();
+    // Lo que enseña el mapa cuenta como recomendado: lo de atrás no sale justo después en el resultado.
+    if (recommended.kind !== 'stop') last.rememberStep(recommended.kind);
+    // «Profundiza en…» a la vista: cuenta para la rotación (jugar otra cosa la salta: engine/deepen.js).
+    if (recommended.kind === 'deepen') ctx.store.update((s) => ({ ...s, progress: deepen.noteOffer(s.progress, ctx.index, recommended.offer) }));
+  }).catch((err) => console.error(err));
+  const stops = [() => rememberMap(HOME_MAP, map), fillPendingEras(ctx, el, () => { watchLandscapes(el); addLevelRings(ctx, el); tagNew(); life.refresh(); stories?.refresh(); showCue(); }), watchMapMode(map), life.stop, () => returnBtn.stop(), () => stories?.stop()];
   addLevelRings(ctx, el);
   stories = watchStoryPrefetch(el);
+  // Desplazamiento rápido por épocas (map-scrubber.js), cargado después de pintar: no pesa en el arranque.
+  let scrubStop = () => {};
+  let scrubLeft = false;
+  import('./map-scrubber-items.js').then((m) => { if (!scrubLeft) scrubStop = m.mountHomeScrubber(ctx, el); }).catch((err) => console.error(err));
+  stops.push(() => { scrubLeft = true; scrubStop(); });
   tagNew();
   news?.then((m) => m.tellNewPainters(ctx, el)).catch((err) => console.error(err));
   // Primera vez: guía de tres pasos (se retira al salir de la pantalla).
@@ -93,13 +126,13 @@ export function renderHome(ctx, el) {
 
   onAction(el, {
     ...pathActions(ctx),
-    srs: () => {
-      ctx.audio.sfx('tap');
-      ctx.go('repaso');
-    },
     collection: () => {
       ctx.audio.sfx('tap');
       ctx.go('coleccion');
+    },
+    essential: (b) => {
+      ctx.audio.sfx('tap');
+      ctx.go(b.dataset.to);
     },
     free: () => {
       ctx.audio.sfx('tap');
@@ -158,7 +191,7 @@ function sideNow(ctx) {
   const name = cur.type === 'sala' ? 'Conoce el movimiento' : index.artist(cur.id).name;
   return `<section class="side-now" style="${accentStyle(m.accent)}" aria-labelledby="side-now-h">
       <span class="side-head"><span class="side-title" id="side-now-h">${esc(m.name)}</span><span class="side-count">${done}/${steps.length}</span></span>
-      <span class="side-bar" role="img" aria-label="${done} de ${steps.length} dominados"><span style="width:${Math.round((done / steps.length) * 100)}%"></span></span>
+      <span class="side-bar" role="img" aria-label="${done} de ${steps.length} paradas"><span style="width:${Math.round((done / steps.length) * 100)}%"></span></span>
       <p class="side-next">Siguiente: <strong>${esc(name)}</strong></p>
       <button class="btn btn-primary btn-wide" data-action="${cur.type === 'sala' ? 'sala' : 'stage'}" data-id="${esc(cur.id)}" data-status="${status}">${status === 'started' ? 'Seguir' : 'Empezar'}</button>
     </section>`;

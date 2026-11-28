@@ -27,16 +27,16 @@ test('historia compartida: el enlace va a su página, en la misma dirección de 
   assert.equal(storyUrl('goya', 1, 'https://x.test/app/?a=1#perfil'), 'https://x.test/app/h/goya-1.html');
 });
 
-test('historia compartida: sin «Jugar» ni «Ver más», la última tarjeta no lleva acciones', () => {
-  const html = copyHtml({ text: 'Hola' }, null, { last: true, play: false, more: false });
-  assert.ok(!html.includes('story-actions'));
-  assert.ok(copyHtml({ text: 'Hola' }, null, { last: true, play: true }).includes('data-st="more"'));
+test('historia compartida: la última tarjeta acaba en «Seguir», sin «Más sobre…» ni preguntas', () => {
+  const html = copyHtml({ text: 'Hola' }, null, { last: true });
+  assert.match(html, /deck-primary" data-deck="play">Seguir/);
+  assert.doesNotMatch(html, /deck-secondary/);
 });
 
 test('historia compartida: cada historia de nivel 1 tiene su página con su imagen ligera, la primera frase y el salto a la app', () => {
   const index = json('data/historias/index.json');
   const works = new Map(json('data/catalog.json').artworks.map((w) => [w.id, w]));
-  const pages = new Set(readdirSync(join(app, 'h')).filter((f) => !f.startsWith('epoca-')));
+  const pages = new Set(readdirSync(join(app, 'h')).filter((f) => !f.startsWith('epoca-') && !f.startsWith('cuadro-')));
   const expected = Object.keys(index).filter((id) => index[id].includes(SHARE_LEVEL));
   assert.equal(pages.size, expected.length, 'páginas de más o de menos: python3 -I tools/share_pages.py');
   for (const id of expected) {

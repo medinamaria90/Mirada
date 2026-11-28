@@ -1,11 +1,12 @@
 {
- "Primer Renacimiento": {
-  "title": "Primer Renacimiento",
+ "Nace el Renacimiento": {
+  "title": "Nace el Renacimiento",
   "lead": "Florencia descubre la perspectiva y Castilla la aprende: el siglo XV que puso el mundo en tres dimensiones.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Espacios medidos con reglas de geometría, cuerpos con peso y luz de un solo lado. Masaccio abre el camino; Piero lo convierte en matemática."
+    "text": "Espacios medidos con reglas de geometría, cuerpos con peso y luz de un solo lado. Masaccio abre el camino; Piero lo convierte en matemática.",
+    "artwork": "w1212920"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -20,17 +21,19 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Pedro_Berruguete"
  },
- "Alto Renacimiento": {
-  "title": "Alto Renacimiento",
-  "lead": "Tres genios en veinte años: Leonardo, Miguel Ángel y Rafael llevan la pintura a su punto más alto.",
+ "Los tres genios": {
+  "title": "Los tres genios",
+  "lead": "Leonardo, Miguel Ángel y Rafael: en solo veinte años llevan la pintura a su punto más alto.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Equilibrio, cuerpos perfectos y escenas ordenadas como una arquitectura. Lo aprendido en el siglo XV llega aquí a su madurez."
+    "text": "Equilibrio, cuerpos perfectos y escenas ordenadas como una arquitectura. Lo aprendido en el siglo XV llega aquí a su madurez.",
+    "artwork": "w563727"
    },
    {
     "kicker": "Cuándo y dónde",
-    "text": "De 1490 a 1520, entre Florencia, Milán y la Roma de los papas, que encargan la Capilla Sixtina y las Estancias del Vaticano."
+    "text": "De 1490 a 1520, entre Florencia, Milán y la Roma de los papas, que encargan la Capilla Sixtina y las Estancias del Vaticano.",
+    "artwork": "w567861"
    },
    {
     "kicker": "Curiosidad",
@@ -40,13 +43,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/La_escuela_de_Atenas"
  },
- "Venecia": {
-  "title": "Venecia",
+ "El color de Venecia": {
+  "title": "El color de Venecia",
   "lead": "En la ciudad del agua, el color manda más que el dibujo. Y Felipe II se llevó lo mejor al Prado.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Óleo sobre lienzo, capas de color cálido y pincelada que se ve. En Florencia se dibuja primero; en Venecia se construye con color."
+    "text": "Óleo sobre lienzo, capas de color cálido y pincelada que se ve. En Florencia se dibuja primero; en Venecia se construye con color.",
+    "artwork": "w727875"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -61,13 +65,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Escuela_veneciana"
  },
- "Primitivos flamencos": {
-  "title": "Primitivos flamencos",
+ "El óleo en Flandes": {
+  "title": "El óleo en Flandes",
   "lead": "En Flandes el óleo hace milagros: cada pelo, cada joya y cada reflejo, pintados con lupa.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Detalle minucioso, colores brillantes como esmaltes y capas finas de óleo que dejan pasar la luz. Ricos mercaderes y duques pagan la cuenta."
+    "text": "Detalle minucioso, colores brillantes como esmaltes y capas finas de óleo que dejan pasar la luz. Ricos mercaderes y duques pagan la cuenta.",
+    "artwork": "w1516449"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -88,7 +93,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Unen la precisión del norte con lo aprendido en Italia. Y miran a su alrededor: humanistas, mercaderes, campesinos y fiestas de pueblo."
+    "text": "Unen la precisión del norte con lo aprendido en Italia. Y miran a su alrededor: humanistas, mercaderes, campesinos y fiestas de pueblo.",
+    "artwork": "w2546309"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -109,7 +115,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Tras Rafael y Miguel Ángel, la perfección ya está hecha. Ellos estiran las figuras, enfrían la piel y buscan lo raro y lo refinado."
+    "text": "Tras Rafael y Miguel Ángel, la perfección ya está hecha. Ellos estiran las figuras, enfrían la piel y buscan lo raro y lo refinado.",
+    "artwork": "w699319"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -124,13 +131,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Manierismo"
  },
- "Claroscuro": {
-  "title": "Claroscuro",
-  "lead": "Un foco de luz en la oscuridad y gente de la calle haciendo de santos: Caravaggio y sus herederos.",
+ "Luz en la oscuridad": {
+  "title": "Luz en la oscuridad",
+  "lead": "Un foco que corta la sombra y gente de la calle haciendo de santos: Caravaggio y sus herederos.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Fondos negros, luz dura que cae de lado y modelos reales, con arrugas y pies sucios. Es el tenebrismo, y se extiende de Roma a Sevilla."
+    "text": "Fondos negros, luz dura que cae de lado y modelos reales, con arrugas y pies sucios. Es el tenebrismo, y se extiende de Roma a Sevilla.",
+    "artwork": "w318947"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -145,13 +153,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Tenebrismo"
  },
- "Pintores de corte": {
-  "title": "Pintores de corte",
+ "Pintores de reyes": {
+  "title": "Pintores de reyes",
   "lead": "Pintaban para reyes y se trataban casi como iguales: Rubens, Van Dyck y Velázquez.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Retratos de reyes y nobles, y grandes encargos para palacios. Saben dar majestad sin perder a la persona, cada uno con su pincelada."
+    "text": "Retratos de reyes y nobles, y grandes encargos para palacios. Saben dar majestad sin perder a la persona, cada uno con su pincelada.",
+    "artwork": "w3937485"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -160,18 +169,20 @@
    },
    {
     "kicker": "Curiosidad",
-    "text": "En 1628 Rubens pasó meses en Madrid como diplomático. Allí trató a un Velázquez joven, que lo acompañó a ver los Tizianos de El Escorial."
+    "text": "En 1628 Rubens pasó meses en Madrid como diplomático. Allí trató a un Velázquez joven, que lo acompañó a ver los Tizianos de El Escorial.",
+    "artwork": "w2268524"
    }
   ],
   "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
  },
- "Vida cotidiana": {
-  "title": "Vida cotidiana",
+ "La vida de cada día": {
+  "title": "La vida de cada día",
   "lead": "Lecheras, bebedores y niños de la calle: el Barroco que mira la vida de todos los días.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "La gente corriente se vuelve protagonista: risas, faenas de casa, una carta, una ventana. Escenas pequeñas pintadas con enorme cuidado."
+    "text": "La gente corriente se vuelve protagonista: risas, faenas de casa, una carta, una ventana. Escenas pequeñas pintadas con enorme cuidado.",
+    "artwork": "w650635"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -192,7 +203,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Fiestas al aire libre, enamorados y colores claros. Pincelada ligera y nada de dramas: el arte de una aristocracia que quiere divertirse."
+    "text": "Fiestas al aire libre, enamorados y colores claros. Pincelada ligera y nada de dramas: el arte de una aristocracia que quiere divertirse.",
+    "artwork": "w3228069"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -207,13 +219,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/El_columpio_(Fragonard)"
  },
- "Bodegón": {
-  "title": "Bodegón",
+ "El bodegón español": {
+  "title": "El bodegón español",
   "lead": "Besugos, naranjas y cacharros de barro tan reales que dan hambre: Luis Meléndez, el gran bodegonista español.",
   "cards": [
    {
     "kicker": "Qué lo hace único",
-    "text": "Objetos humildes vistos muy de cerca, con luz fuerte y sombras limpias. Cada textura cuenta: la piel del pescado, la corteza del pan, el barro."
+    "text": "Objetos humildes vistos muy de cerca, con luz fuerte y sombras limpias. Cada textura cuenta: la piel del pescado, la corteza del pan, el barro.",
+    "artwork": "w5731132"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -222,7 +235,8 @@
    },
    {
     "kicker": "Curiosidad",
-    "text": "Meléndez nunca logró ser pintor de cámara y murió pobre, aunque hoy es uno de los grandes del bodegón europeo."
+    "text": "Meléndez nunca logró ser pintor de cámara y murió pobre, aunque hoy es uno de los grandes del bodegón europeo.",
+    "artwork": "w19911689"
    }
   ],
   "source": "https://es.wikipedia.org/wiki/Luis_Egidio_Mel%C3%A9ndez"
@@ -233,7 +247,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Dibujo preciso, colores sobrios y héroes de la Antigüedad. Contra la frivolidad del rococó, una pintura seria que da lecciones de moral."
+    "text": "Dibujo preciso, colores sobrios y héroes de la Antigüedad. Contra la frivolidad del rococó, una pintura seria que da lecciones de moral.",
+    "artwork": "w1752990"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -248,17 +263,19 @@
   ],
   "source": "https://es.wikipedia.org/wiki/La_gran_odalisca"
  },
- "Paisaje": {
-  "title": "Paisaje",
+ "El paisaje romántico": {
+  "title": "El paisaje romántico",
   "lead": "La naturaleza como espejo del alma: brumas, montañas y tormentas que sobrecogen.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "El paisaje deja de ser fondo y se vuelve protagonista. Friedrich lo llena de silencio y misterio; Turner, de luz, viento y fuego."
+    "text": "El paisaje deja de ser fondo y se vuelve protagonista. Friedrich lo llena de silencio y misterio; Turner, de luz, viento y fuego.",
+    "artwork": "w1787143"
    },
    {
     "kicker": "Cuándo y dónde",
-    "text": "Primera mitad del siglo XIX, en Alemania e Inglaterra. Es la época de lo «sublime»: lo inmenso que da miedo y fascina a la vez."
+    "text": "Primera mitad del siglo XIX, en Alemania e Inglaterra. Es la época de lo «sublime»: lo inmenso que da miedo y fascina a la vez.",
+    "artwork": "w194137"
    },
    {
     "kicker": "Fíjate en",
@@ -268,13 +285,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/El_caminante_sobre_el_mar_de_nubes"
  },
- "Historia": {
-  "title": "Historia",
+ "Pintar la historia": {
+  "title": "Pintar la historia",
   "lead": "Naufragios, revoluciones y retratos de una época: la historia contada con pasión.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Temas actuales y dramáticos, color intenso y movimiento. Géricault y Delacroix rompen con la calma neoclásica; Madrazo lleva esa época a Madrid."
+    "text": "Temas actuales y dramáticos, color intenso y movimiento. Géricault y Delacroix rompen con la calma neoclásica; Madrazo lleva esa época a Madrid.",
+    "artwork": "w2290433"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -289,13 +307,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/La_balsa_de_la_Medusa"
  },
- "Campo": {
-  "title": "Campo",
+ "La vida del campo": {
+  "title": "La vida del campo",
   "lead": "Campesinos que se doblan sobre la tierra, pintados a tamaño de héroe.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Pintan lo que ven, sin embellecer: el trabajo duro, la gente de su pueblo, el barro. Y lo hacen en lienzos enormes, antes solo para reyes y dioses."
+    "text": "Pintan lo que ven, sin embellecer: el trabajo duro, la gente de su pueblo, el barro. Y lo hacen en lienzos enormes, antes solo para reyes y dioses.",
+    "artwork": "w540488"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -310,13 +329,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Gustave_Courbet"
  },
- "Historia y luz": {
-  "title": "Historia y luz",
+ "Historia a lo grande": {
+  "title": "Historia a lo grande",
   "lead": "Dos españoles y un ruso: la gran pintura de historia, y la luz que empieza a brillar en ella.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Saben contar una historia en un solo cuadro y la pintan con pincelada cada vez más suelta y luminosa. Son el puente hacia la pintura moderna."
+    "text": "Saben contar una historia en un solo cuadro y la pintan con pincelada cada vez más suelta y luminosa. Son el puente hacia la pintura moderna.",
+    "artwork": "w478271"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -331,17 +351,19 @@
   ],
   "source": "https://es.wikipedia.org/wiki/La_vicar%C3%ADa"
  },
- "Pioneros": {
-  "title": "Pioneros",
-  "lead": "Un escándalo en el salón y un amanecer en el puerto: así empezó el impresionismo.",
+ "Nace el impresionismo": {
+  "title": "Nace el impresionismo",
+  "lead": "Un escándalo en el salón y un amanecer en el puerto: los dos cuadros con los que empezó todo.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Manet rompe las normas del salón oficial con temas de su tiempo y manchas planas. Monet da el paso siguiente: pintar la luz que cambia."
+    "text": "Manet rompe las normas del salón oficial con temas de su tiempo y manchas planas. Monet da el paso siguiente: pintar la luz que cambia.",
+    "artwork": "w152509"
    },
    {
     "kicker": "Cuándo y dónde",
-    "text": "París y la costa de Normandía, de 1860 a 1880. En 1874 un grupo de artistas rechazados monta su propia exposición."
+    "text": "París y la costa de Normandía, de 1860 a 1880. En 1874 un grupo de artistas rechazados monta su propia exposición.",
+    "artwork": "w2734892"
    },
    {
     "kicker": "Curiosidad",
@@ -351,13 +373,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Impresi%C3%B3n,_sol_naciente"
  },
- "El grupo": {
-  "title": "El grupo",
+ "Los impresionistas": {
+  "title": "Los impresionistas",
   "lead": "Cinco amigos que salieron a pintar al aire libre y cambiaron la manera de mirar.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Pincelada rápida, colores claros, sombras de color y escenas de su día a día: bailes, ríos, jardines y bailarinas."
+    "text": "Pincelada rápida, colores claros, sombras de color y escenas de su día a día: bailes, ríos, jardines y bailarinas.",
+    "artwork": "w1167907"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -366,7 +389,8 @@
    },
    {
     "kicker": "Curiosidad",
-    "text": "Pissarro fue el único que expuso en las ocho muestras del grupo. Era el mayor y hacía de padre de todos, también de Cézanne y Gauguin."
+    "text": "Pissarro fue el único que expuso en las ocho muestras del grupo. Era el mayor y hacía de padre de todos, también de Cézanne y Gauguin.",
+    "artwork": "w5407253"
    }
   ],
   "source": "https://es.wikipedia.org/wiki/Impresionismo"
@@ -377,7 +401,8 @@
   "cards": [
    {
     "kicker": "Qué lo hace único",
-    "text": "Pinta al aire libre y deprisa, persiguiendo el reflejo del sol en el agua y en las telas blancas. Nadie pintó la luz del Mediterráneo como él."
+    "text": "Pinta al aire libre y deprisa, persiguiendo el reflejo del sol en el agua y en las telas blancas. Nadie pintó la luz del Mediterráneo como él.",
+    "artwork": "w58336269"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -386,22 +411,25 @@
    },
    {
     "kicker": "Curiosidad",
-    "text": "Sorolla pintaba en la misma arena, a pleno sol, lienzos de más de dos metros. Para no perder la luz, trabajaba a toda velocidad."
+    "text": "Sorolla pintaba en la misma arena, a pleno sol, lienzos de más de dos metros. Para no perder la luz, trabajaba a toda velocidad.",
+    "artwork": "w5642417"
    }
   ],
   "source": "https://es.wikipedia.org/wiki/Museo_Sorolla"
  },
- "Forma y método": {
-  "title": "Forma y método",
-  "lead": "Manzanas que parecen montañas y cuadros hechos de puntitos: dos maneras de poner orden en la luz.",
+ "Poner orden en la luz": {
+  "title": "Poner orden en la luz",
+  "lead": "Manzanas que parecen montañas y cuadros hechos de puntitos: Cézanne y Seurat buscan algo sólido tras el impresionismo.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Después del impresionismo, quieren algo más sólido. Cézanne construye con planos de color; Seurat, con puntos colocados con método científico."
+    "text": "Después del impresionismo, quieren algo más sólido. Cézanne construye con planos de color; Seurat, con puntos colocados con método científico.",
+    "artwork": "w3138984"
    },
    {
     "kicker": "Cuándo y dónde",
-    "text": "De 1880 a 1906, en París y en la Provenza de Cézanne, que pintó una y otra vez la montaña Sainte-Victoire."
+    "text": "De 1880 a 1906, en París y en la Provenza de Cézanne, que pintó una y otra vez la montaña Sainte-Victoire.",
+    "artwork": "w2270938"
    },
    {
     "kicker": "Fíjate en",
@@ -411,13 +439,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Tarde_de_domingo_en_la_isla_de_la_Grande_Jatte"
  },
- "Color y expresión": {
-  "title": "Color y expresión",
+ "El color desatado": {
+  "title": "El color desatado",
   "lead": "Girasoles en llamas, Tahití y el Moulin Rouge: el color ya no copia, expresa.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Colores intensos, contornos marcados y formas simplificadas. Lo que importa es lo que sienten, no lo que ven, y eso abre la puerta al siglo XX."
+    "text": "Colores intensos, contornos marcados y formas simplificadas. Lo que importa es lo que sienten, no lo que ven, y eso abre la puerta al siglo XX.",
+    "artwork": "w500951"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -432,13 +461,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"
  },
- "Simbolismo": {
-  "title": "Simbolismo",
+ "Sueños y símbolos": {
+  "title": "Sueños y símbolos",
   "lead": "Oro de Viena, gritos de Noruega y mujeres de Córdoba: pintar lo que no se ve.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Amor, deseo, celos y muerte contados con símbolos. Klimt los cubre de oro, Munch de angustia y Romero de Torres de misterio andaluz."
+    "text": "Amor, deseo, celos y muerte contados con símbolos. Klimt los cubre de oro, Munch de angustia y Romero de Torres de misterio andaluz.",
+    "artwork": "w354396"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -453,13 +483,14 @@
   ],
   "source": "https://es.wikipedia.org/wiki/Julio_Romero_de_Torres"
  },
- "Vanguardias": {
-  "title": "Vanguardias",
+ "Romper las reglas": {
+  "title": "Romper las reglas",
   "lead": "Colores salvajes, formas puras y guitarras en pedazos: la pintura se reinventa del todo.",
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Rompen con siglos de imitar la realidad: Matisse libera el color, Kandinsky llega a la abstracción y Juan Gris ordena el cubismo."
+    "text": "Rompen con siglos de imitar la realidad: Matisse libera el color, Kandinsky llega a la abstracción y Juan Gris ordena el cubismo.",
+    "artwork": "w3609042"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -480,7 +511,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Mezclan el detalle flamenco con el espacio italiano, y aún usan oro en los fondos. Pintan sobre todo retablos para iglesias."
+    "text": "Mezclan el detalle flamenco con el espacio italiano, y aún usan oro en los fondos. Pintan sobre todo retablos para iglesias.",
+    "artwork": "w11947062"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -501,7 +533,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "La España de Felipe II: religión intensa y retrato de corte. Cada uno a su modo, ternura, majestad o éxtasis."
+    "text": "La España de Felipe II: religión intensa y retrato de corte. Cada uno a su modo, ternura, majestad o éxtasis.",
+    "artwork": "w2714617"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -522,7 +555,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Realismo profundo, luz que esculpe y un tono serio, muy de la Contrarreforma. Pintan santos, reyes, bodegones y gente de la calle."
+    "text": "Realismo profundo, luz que esculpe y un tono serio, muy de la Contrarreforma. Pintan santos, reyes, bodegones y gente de la calle.",
+    "artwork": "w4693305"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -543,7 +577,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Pintan para la nueva corte borbónica: encargos del rey, vistas de ciudades y retratos. Detalle exacto y una elegancia muy del siglo."
+    "text": "Pintan para la nueva corte borbónica: encargos del rey, vistas de ciudades y retratos. Detalle exacto y una elegancia muy del siglo.",
+    "artwork": "w27766413"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -564,7 +599,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Del sueño y la pesadilla de Goya a los retratos de Madrazo: la emoción entra en la pintura española, con Madrid como escenario."
+    "text": "Del sueño y la pesadilla de Goya a los retratos de Madrazo: la emoción entra en la pintura española, con Madrid como escenario.",
+    "artwork": "w23073062"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -585,7 +621,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Cuadros enormes con escenas de la historia de España, para las Exposiciones Nacionales. Y, al lado, vistas y escenas con pincelada brillante."
+    "text": "Cuadros enormes con escenas de la historia de España, para las Exposiciones Nacionales. Y, al lado, vistas y escenas con pincelada brillante.",
+    "artwork": "w2814164"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -606,7 +643,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Salen a pintar fuera del taller y buscan la luz de su tierra: la meseta de Beruete, el mar de Pinazo y Sorolla, la lluvia del norte de Regoyos."
+    "text": "Salen a pintar fuera del taller y buscan la luz de su tierra: la meseta de Beruete, el mar de Pinazo y Sorolla, la lluvia del norte de Regoyos.",
+    "artwork": "w107308907"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -622,12 +660,13 @@
   "source": "https://es.wikipedia.org/wiki/Aureliano_de_Beruete"
  },
  "maestros-espanoles/postimpresionismo": {
-  "title": "Joaquim Mir",
+  "title": "Joaquín Mir",
   "lead": "Un catalán que pintó la luz de Mallorca hasta convertirla en pura mancha de color.",
   "cards": [
    {
     "kicker": "Qué lo hace único",
-    "text": "Colores intensos, casi sin dibujo. Mir se olvida del contorno y deja que el amarillo y el azul construyan el paisaje."
+    "text": "Colores intensos, casi sin dibujo. Mir se olvida del contorno y deja que el amarillo y el azul construyan el paisaje.",
+    "artwork": "w27574036"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -643,7 +682,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Buscan la modernidad: unos en París, otros en lo más hondo de España. De los cafés de Barcelona al cubismo, en solo treinta años."
+    "text": "Buscan la modernidad: unos en París, otros en lo más hondo de España. De los cafés de Barcelona al cubismo, en solo treinta años.",
+    "artwork": "w4889277"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -664,7 +704,8 @@
   "cards": [
    {
     "kicker": "Qué lo hace único",
-    "text": "Retratos suaves, en tonos plata y rosa, con la naturaleza al fondo. Buscan el sentimiento más que la pompa."
+    "text": "Retratos suaves, en tonos plata y rosa, con la naturaleza al fondo. Buscan el sentimiento más que la pompa.",
+    "artwork": "w12110766"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -680,7 +721,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Grandes emociones en grandes formatos: catástrofes, el mar y la fe. Varios se formaron en Italia, que les dio la luz y la escala."
+    "text": "Grandes emociones en grandes formatos: catástrofes, el mar y la fe. Varios se formaron en Italia, que les dio la luz y la escala.",
+    "artwork": "w1070896"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -701,7 +743,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Pintan la vida rusa tal cual: la pobreza, la historia, los paisajes del norte. Quieren que el arte sirva al pueblo y llegue a todos."
+    "text": "Pintan la vida rusa tal cual: la pobreza, la historia, los paisajes del norte. Quieren que el arte sirva al pueblo y llegue a todos.",
+    "artwork": "w2666439"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -722,7 +765,8 @@
   "cards": [
    {
     "kicker": "Qué lo hace único",
-    "text": "Pincelada fresca, luz que entra por la ventana y retratos llenos de vida. Serov fue el gran retratista de la Rusia de 1900."
+    "text": "Pincelada fresca, luz que entra por la ventana y retratos llenos de vida. Serov fue el gran retratista de la Rusia de 1900.",
+    "artwork": "w4373329"
    },
    {
     "kicker": "Curiosidad",
@@ -738,7 +782,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Buscan algo más allá de lo visible: la leyenda, lo espiritual, la forma pura. Rusia se pone en la primera fila del arte moderno."
+    "text": "Buscan algo más allá de lo visible: la leyenda, lo espiritual, la forma pura. Rusia se pone en la primera fila del arte moderno.",
+    "artwork": "w4157667"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -759,7 +804,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Por fin una pintura propia en Inglaterra. Hogarth critica las costumbres; Reynolds y Gainsborough retratan a la buena sociedad."
+    "text": "Por fin una pintura propia en Inglaterra. Hogarth critica las costumbres; Reynolds y Gainsborough retratan a la buena sociedad.",
+    "artwork": "w604761"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -780,7 +826,8 @@
   "cards": [
    {
     "kicker": "Qué los une",
-    "text": "Dos generaciones: Turner y Constable reinventan el paisaje; Rossetti y Millais vuelven al detalle y a las leyendas medievales."
+    "text": "Dos generaciones: Turner y Constable reinventan el paisaje; Rossetti y Millais vuelven al detalle y a las leyendas medievales.",
+    "artwork": "w477764"
    },
    {
     "kicker": "Cuándo y dónde",
@@ -801,7 +848,8 @@
   "cards": [
    {
     "kicker": "Qué lo hace único",
-    "text": "Pincelada rápida y brillante, aprendida de Velázquez, y un ojo infalible para la elegancia. Retrató a media alta sociedad de su época."
+    "text": "Pincelada rápida y brillante, aprendida de Velázquez, y un ojo infalible para la elegancia. Retrató a media alta sociedad de su época.",
+    "artwork": "w644106"
    },
    {
     "kicker": "Curiosidad",
@@ -817,7 +865,8 @@
   "cards": [
    {
     "kicker": "Qué lo hace único",
-    "text": "Mitos y leyendas con el detalle prerrafaelita y una pincelada más libre. Sus heroínas suelen estar al borde del agua y del destino."
+    "text": "Mitos y leyendas con el detalle prerrafaelita y una pincelada más libre. Sus heroínas suelen estar al borde del agua y del destino.",
+    "artwork": "w9295442"
    },
    {
     "kicker": "Curiosidad",

@@ -34,60 +34,11 @@
   },
   {
    "level": 2,
-   "stage": "Italia",
-   "title": "Creta, Venecia y Roma",
-   "cards": [
-    {
-     "text": "Nace en Creta, entonces de Venecia. Allí pinta iconos de estilo posbizantino, con reglas fijas y fondo de oro. A los 22 años ya figura en un documento como «maestro».",
-     "artwork": "w3078569",
-     "source": "https://es.wikipedia.org/wiki/El_Greco#Creta"
-    },
-    {
-     "text": "Hacia 1567 va a Venecia, donde trabajaba Tiziano. Aprende a pintar sin dibujo previo, fijando la composición con pinceladas negras, y a usar el color como recurso expresivo.",
-     "artwork": "w3208041",
-     "source": "https://es.wikipedia.org/wiki/El_Greco#Venecia"
-    },
-    {
-     "text": "En 1570 llega a Roma con una carta del miniaturista Giulio Clovio, a quien retrata. Estudia a Miguel Ángel, pero como extranjero no recibe encargos importantes.",
-     "artwork": "w3937561",
-     "source": "https://es.wikipedia.org/wiki/El_Greco#Roma"
-    }
-   ]
-  },
-  {
-   "level": 3,
-   "stage": "Toledo",
-   "title": "Llegada y madurez en Toledo",
-   "cards": [
-    {
-     "text": "Llega a Toledo en 1577 queriendo ganarse a Felipe II. No lo logra y se queda. Su primer gran encargo: el retablo de Santo Domingo el Antiguo, con esta Asunción en el centro.",
-     "artwork": "w11837891",
-     "source": "https://es.wikipedia.org/wiki/El_Greco#Llegada_a_Toledo_y_primeras_obras_maestras"
-    },
-    {
-     "text": "En La Trinidad (1577) aún se nota Italia: figuras como esculturas, a lo Miguel Ángel. En sus 37 años en Toledo su estilo cambia mucho, hasta hacerse muy dramático.",
-     "artwork": "w6553555",
-     "source": "https://es.wikipedia.org/wiki/El_Greco#Estilo_y_t%C3%A9cnica_pict%C3%B3rica"
-    },
-    {
-     "text": "En 1586 le encargan El entierro del conde de Orgaz, hoy su obra más conocida. En la comitiva incluyó a gente de su tiempo, y también a su hijo.",
-     "artwork": "w94802",
-     "focus": [
-      0.5,
-      0.82,
-      1
-     ],
-     "source": "https://es.wikipedia.org/wiki/El_Greco#Madurez"
-    }
-   ]
-  },
-  {
-   "level": 4,
    "stage": "Plenitud",
    "title": "El último periodo",
    "cards": [
     {
-     "text": "Desde 1596 no para de recibir encargos. La visión del Apocalipsis, de sus últimos años, es su estilo más extremo: un san Juan gigante de manto azul luminoso.",
+     "text": "En su última etapa en Toledo, desde 1596, no para de recibir encargos. La visión del Apocalipsis es su estilo más extremo: un san Juan gigante de manto azul luminoso.",
      "artwork": "w1220013",
      "source": "https://es.wikipedia.org/wiki/El_Greco#La_visi%C3%B3n_del_Apocalipsis"
     },
@@ -105,6 +56,70 @@
       1.8
      ],
      "source": "https://es.wikipedia.org/wiki/El_Greco#Estilo_y_t%C3%A9cnica_pict%C3%B3rica"
+    },
+    {
+     "text": "Fíjate en san Martín, a caballo, que corta con la espada su capa verde para compartirla con un mendigo desnudo. El caballo blanco parece de mármol.",
+     "artwork": "w6119366",
+     "source": "https://es.wikipedia.org/wiki/El_Greco"
+    }
+   ]
+  },
+  {
+   "level": 3,
+   "stage": "Italia",
+   "title": "Creta, Venecia y Roma",
+   "cards": [
+    {
+     "text": "Retrocedemos a su juventud. Nace en Creta, entonces de Venecia, y pinta iconos posbizantinos, con reglas fijas y fondo de oro. A los 22 años ya figura como «maestro».",
+     "artwork": "w3078569",
+     "source": "https://es.wikipedia.org/wiki/El_Greco#Creta"
+    },
+    {
+     "text": "Hacia 1567 va a Venecia, donde trabajaba Tiziano. Aprende a pintar sin dibujo previo, fijando la composición con pinceladas negras, y a usar el color como recurso expresivo.",
+     "artwork": "w3208041",
+     "source": "https://es.wikipedia.org/wiki/El_Greco#Venecia"
+    },
+    {
+     "text": "En 1570 llega a Roma con una carta del miniaturista Giulio Clovio, a quien retrata. Estudia a Miguel Ángel, pero como extranjero no recibe encargos importantes.",
+     "artwork": "w3937561",
+     "source": "https://es.wikipedia.org/wiki/El_Greco#Roma"
+    },
+    {
+     "text": "Fíjate en el muchacho que sopla una brasa para encender una vela: la luz le ilumina la cara desde abajo. Un ejercicio de luz que aprendió en Italia.",
+     "artwork": "w3929380",
+     "source": "https://es.wikipedia.org/wiki/El_Greco"
+    }
+   ]
+  },
+  {
+   "level": 4,
+   "stage": "Toledo",
+   "title": "Llegada y madurez en Toledo",
+   "cards": [
+    {
+     "text": "Con 36 años, en 1577, llega a Toledo queriendo ganarse a Felipe II. No lo logra y se queda. Su primer gran encargo: el retablo de Santo Domingo el Antiguo, con esta Asunción.",
+     "artwork": "w11837891",
+     "source": "https://es.wikipedia.org/wiki/El_Greco#Llegada_a_Toledo_y_primeras_obras_maestras"
+    },
+    {
+     "text": "En La Trinidad (1577) aún se nota Italia: figuras como esculturas, a lo Miguel Ángel. En sus 37 años en Toledo su estilo cambia mucho, hasta hacerse muy dramático.",
+     "artwork": "w6553555",
+     "source": "https://es.wikipedia.org/wiki/El_Greco#Estilo_y_t%C3%A9cnica_pict%C3%B3rica"
+    },
+    {
+     "text": "En 1586 le encargan El entierro del conde de Orgaz, hoy su obra más conocida. En la comitiva incluyó a gente de su tiempo, y también a su hijo.",
+     "artwork": "w94802",
+     "focus": [
+      0.5,
+      0.82,
+      1
+     ],
+     "source": "https://es.wikipedia.org/wiki/El_Greco#Madurez"
+    },
+    {
+     "text": "Fíjate en los dos apóstoles: Pedro, de amarillo, con las llaves; Pablo, de rojo, con la mano sobre un libro. Dos caracteres opuestos, uno junto al otro.",
+     "artwork": "w9396559",
+     "source": "https://es.wikipedia.org/wiki/El_Greco"
     }
    ]
   }

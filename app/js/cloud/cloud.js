@@ -59,6 +59,12 @@ export const account = {
     parts.sync?.stop();
     await parts.auth.signOut();
   },
+  // Sube ya, a la fuerza, lo guardado en este dispositivo (tras «Borrar progreso»). false si no ha podido.
+  async pushNow() {
+    if (!parts?.sync) return false;
+    await parts.sync.save({ force: true });
+    return parts.sync.status() !== STATUS.OFFLINE;
+  },
   // Borra la cuenta y su fila en la nube. El progreso de este dispositivo se queda.
   async deleteAccount() {
     const s = await parts.auth.session();

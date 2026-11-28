@@ -36,7 +36,9 @@ export function medalBadge(ctx, id, animate = false, size = 'sm') {
     accent = cssVar('--medal-streak');
     cls = 'medal-streak';
     inner = `<span class="medal-stack">${icons.flame(size === 'lg' ? 26 : 16)}<span class="medal-num">${esc(ref)}</span></span>`;
-  } else if (kind === 'daily' || kind === 'weekly') {
+  } else if (kind === 'daily') {
+    inner = icons.frames(size === 'lg' ? 32 : 20);
+  } else if (kind === 'weekly') {
     inner = icons.calendar(size === 'lg' ? 32 : 20);
   } else if (kind === 'challenge') {
     inner = icons.duel(size === 'lg' ? 32 : 20);
@@ -72,14 +74,14 @@ export function allMedalIds(index) {
 export function medalHow(id) {
   const [kind, ...rest] = id.split('-');
   const ref = rest.join('-');
-  if (kind === 'artist') return 'Domina su etapa del camino';
-  if (kind === 'movement') return 'Domina todas sus paradas del camino';
+  if (kind === 'artist') return 'Supera su parada del camino con 3 de cada 4';
+  if (kind === 'movement') return 'Supera todas sus paradas del camino';
   if (kind === 'streak') return `Practica ${ref} días seguidos`;
   if (kind === 'eye') return 'Acierta cada cuadro suyo en repasos de días distintos, hasta reconocerlos todos';
   if (id === 'weekly-1') return 'Juega un reto semanal';
   if (id === 'goal-1') return 'Cumple la meta del día';
-  if (id === 'daily-1') return 'Juega un reto diario';
-  if (id === 'daily-perfect') return 'Acierta todo un reto diario';
+  if (id === 'daily-1') return 'Juega un cuadro del día';
+  if (id === 'daily-perfect') return 'Acierta un cuadro del día a la primera';
   if (id === 'challenge-1') return 'Juega un reto que te mande alguien';
   if (id === 'new-1') return 'Acierta un cuadro que no habías visto';
   return '';

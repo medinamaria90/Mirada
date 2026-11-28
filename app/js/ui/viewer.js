@@ -2,8 +2,10 @@
 // la ventana de la app (dentro del iframe del artifact no hay Fullscreen API garantizada).
 // Fondo oscuro neutro, cuadro entero (contain) con la imagen grande y la miniatura del atlas
 // mientras carga; varios cuadros se pasan deslizando, con las flechas o con el teclado.
-// Se cierra con el aspa, Esc, el botón atrás del navegador y tocando fuera del cuadro (no al
-// deslizar). Sin zoom de página: para mirar detalles se amplía el cuadro dentro del visor (pellizco,
+// Se cierra con el aspa, Esc, el botón atrás del navegador, deslizando el cuadro hacia abajo y tocando
+// fuera del cuadro (no al deslizar ni ampliado; el toque espera TAP_GAP_MS por si es el primero de un
+// doble toque, que amplía). Al cerrarse, guardGhostTaps() descarta un momento los toques sobre lo de
+// debajo (las respuestas de la pregunta). Sin zoom de página: para mirar detalles se amplía el cuadro dentro del visor (pellizco,
 // doble toque, Ctrl+rueda o teclado + − 0; viewer-gestures.js) entre 1× y 4×; ampliado, el dedo
 // desplaza el cuadro y no cambia de cuadro; al pasar de cuadro, cerrar o activar la lupa vuelve a 1×.
 // Queda también la lupa (lente circular que amplía la zona bajo el dedo con la imagen grande; con la
@@ -17,8 +19,10 @@ import { esc, prefersReducedMotion } from './dom.js';
 import { artFrame, isBroken } from './art.js';
 import { icons } from './icons.js';
 import { attachZoom } from './viewer-gestures.js';
-import { formatZoom, isRest } from './viewer-zoom.js';
+import { TAP_GAP_MS, formatZoom, isRest } from './viewer-zoom.js';
+import { guardGhostTaps } from './tap-guard.js';
 import { moreHtml } from './viewer-more.js';
+import { veilsHtml, touchesSign } from './signature-veil.js';
 
 const CLOSE = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const PREV = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>';
@@ -188,6 +192,10 @@ export function openViewer(opts) {
     const r = frame.getBoundingClientRect();
     const d = lensSize();
     const z = zoomFor(img, r);
+    // Sin responder, la lente no pasa por una firma legible (enseñaría lo que el velo tapa).
+    const halfU = d / 2 / (r.width * z);
+    const halfV = d / 2 / (r.height * z);
+    if (!reveal && touchesSign(works[pos], [u - halfU, v - halfV, u + halfU, v + halfV])) { hideLens(); return; }
     const fx = r.left + u * r.width;
     const fy = r.top + v * r.height;
     let cx = px ?? fx;
@@ -264,6 +272,7 @@ export function openViewer(opts) {
     slide: () => ({ pos, n }),
     snapTo: (k) => goTo(k, true),
     onPinch: () => setLoupe(false),
+    onDrop: () => close(),
     onZoom(state) {
       clearTimeout(zoomTimer);
       if (isRest(state)) { zoomTag.hidden = true; return; }
@@ -275,8 +284,12 @@ export function openViewer(opts) {
   });
 
   // Tocar fuera cierra, pero no si el dedo se ha movido (deslizar entre cuadros).
+  // El cierre por toque espera a descartar un doble toque: un dedo nuevo antes de TAP_GAP_MS lo anula.
   let down = null;
+  let closeTimer = 0;
+  let lastTapAt = -Infinity;
   function onDown(ev) {
+    clearTimeout(closeTimer);
     down = { x: ev.clientX, y: ev.clientY, left: track.scrollLeft };
   }
   const wasDrag = (ev) => down && (Math.hypot(ev.clientX - down.x, ev.clientY - down.y) > 10 || Math.abs(track.scrollLeft - down.left) > 4);
@@ -297,8 +310,14 @@ export function openViewer(opts) {
       return;
     }
     if (wasDrag(ev)) return;
-    // Tocar el fondo (todo lo que no es el cuadro ni un botón) cierra.
-    if (!ev.target.closest('.viewer-frame, button')) close();
+    // Tocar el fondo (todo lo que no es el cuadro ni un botón) cierra, salvo ampliado o si es el segundo
+    // toque de un doble toque. Con teclado (detail 0) no hay doble toque que esperar.
+    const now = ev.timeStamp;
+    const second = now - lastTapAt <= TAP_GAP_MS;
+    lastTapAt = now;
+    if (second || zoom.scale > 1 || ev.target.closest('.viewer-frame, button')) return;
+    if (ev.detail === 0) close();
+    else closeTimer = setTimeout(() => close(), TAP_GAP_MS);
   }
 
   function focusables() {
@@ -357,6 +376,8 @@ export function openViewer(opts) {
     current = null;
     clearTimeout(targetTimer);
     clearTimeout(zoomTimer);
+    clearTimeout(closeTimer);
+    guardGhostTaps();
     document.removeEventListener('keydown', onKey, true);
     window.removeEventListener('popstate', onPop);
     window.removeEventListener('hashchange', onHash);
@@ -426,7 +447,7 @@ function slideHtml(index, w, i, n, reveal, eager, more) {
   const thumb = artFrame(w, { thumb: true, cls: 'viewer-thumb', alt: '', label: reveal ? w.title : '' });
   const big = broken ? '' : `<img class="viewer-img" data-src="${esc(w.img)}" alt="${esc(alt)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async"${eager ? ` src="${esc(w.img)}"` : ''}>`;
   return `<figure class="viewer-slide" role="group" aria-roledescription="cuadro" aria-label="${esc(slideLabel)}">
-      <div class="viewer-stage"><div class="viewer-frame" style="--arw:${Math.max(1, w.w || 4)};--arh:${Math.max(1, w.h || 3)}">${thumb}${big}</div></div>
+      <div class="viewer-stage"><div class="viewer-frame" style="--arw:${Math.max(1, w.w || 4)};--arh:${Math.max(1, w.h || 3)}">${thumb}${big}${reveal ? '' : veilsHtml(w)}</div></div>
       ${reveal ? `<figcaption class="viewer-caption"><span class="viewer-name">${esc(w.title)}</span><span class="viewer-meta">${esc(caption)}</span><span class="viewer-museum">${esc(museumLine(w))}</span>${more ? moreHtml(w) : ''}</figcaption>` : ''}
     </figure>`;
 }

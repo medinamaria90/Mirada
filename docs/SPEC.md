@@ -206,6 +206,94 @@ fallecidos antes de 1956 y obras anteriores a 1930. Movimientos previstos (ids):
   si se acierta (cuenta para la meta, no para la racha).
 - Estado v4 (`state/schema.js`, migración 3 → 4): `progress.weekly` y `progress.detail`.
 
+## 4 bis bis. Un único repaso y el siguiente paso (27/11, diseño aprobado por María)
+
+- **Repasar (botón ↻):** la única sesión de repaso a mano, en `#repaso` (`#repaso5` y `#repaso-rapido` redirigen).
+  `engine/review.js reviewSession(progress, index, today)` elige 7 cuadros sin repetir, por este orden: fallados de la
+  cola de cualquier pintor jugado (como mucho 3, los más antiguos), 2 vistos del pintor a medias con peor `best`, vencidos
+  del repaso espaciado (caja más baja primero), 1 de un pintor apagado y relleno con lo que lleva más tiempo sin salir.
+  Nunca pintores sin jugar. `planner.planReviewSession`: preguntas del repaso espaciado (dificultad 0,6, reintento de lo
+  fallado), `kind: 'srs'`; da XP, meta y racha y no cambia el dominio. El botón aparece desde 3 cuadros vistos
+  (`hasReview`), nunca con candado, y lleva un punto coral sin número si hay fallados, vencidos o pintores a medias
+  (`reviewPending`). Va en la cabecera (`shell.js`, `REVIEW_PLACE`) entre la racha y el Cuadro del día.
+- **Mapa:** sin «Repite». El pintor a medias llena el tramo del nivel 1 de su aro en proporción a `best / 0,75`
+  (`level-ring.js startedRing`, `deep-badges.js`), con insignia ↻; aria-label «X, a medias, 67 %. Dominas con 75 %». Su
+  tarjeta (`level-card.js`) dice «67 % · dominas con 75 %» o «Te faltan n cuadros por ver» y «Repetir». El nodo de época
+  se llama «Prueba de época». Los repasos invisibles (cuadro de repaso en cada ronda, fallado extra, apagado) siguen igual.
+- **Siguiente paso** (`engine/next-step.js nextStep`): un solo botón principal al cerrar nivel, sala, repaso y retos
+  diario y semanal, y en la última tarjeta de una historia repetida desde un nodo; los duelos no lo llevan. Reglas, gana la
+  primera: (1) etapa o sala < 50 % → «Repetir»; (1 bis) se entró desde el Perfil o los logros → «Volver al perfil»;
+  (2) la sesión cumple la meta → «Por hoy, hecho» y «Volver al camino»; (3) repaso con un pintor a medias → «Volver a X»;
+  (4) ≥ 3 a medias o ≥ 5 fallados, sin repaso ni ahora ni antes → «Repasar»; (5) «a fondo» o rama con siguiente;
+  (6) parada abierta sin jugar → «Sigue: X» con su miniatura; (7) camino dominado y semanal pendiente → «Reto semanal»;
+  si no, el nivel que pide el rango y, con el camino dominado, «Repasar». Con 50-74 % «Repetir» va como secundario. Frenos:
+  nada arranca solo, nunca dos repasos seguidos (`prevKind` en memoria), siempre «Volver al camino» como secundario.
+- **Rango del Perfil** (`rank-goals.js`): `deepChoices` solo ofrece niveles «a fondo» que, aprobados, cuentan de verdad
+  (ordenados por cercanía); `rankFocus` elige una sola acción (el nivel que suma a más condiciones; «Jugar» si solo falta
+  XP); el resto, filas discretas; si nada cuenta aún, `whyNoChoice` en una línea sin botón. Lo jugado desde el Perfil o
+  los logros vuelve allí (`router.js GOAL_SCREENS`); al subir de rango, «¡Ya eres X! Ahora, a por Y».
+
+## 4 bis ter. Cuadro del día (27/11, diseño aprobado por María; sustituye al reto diario)
+
+- **Mecánica** (`engine/cuadro-dia.js`, puro): un cuadro famoso al día, el mismo para todos (día de Madrid,
+  `madridDayKey`). «¿De quién es?» con 6 pintores en 2 columnas y 4 intentos (`CUADRO_TRIES`). Cada fallo apaga el nombre
+  y enseña más (`CUADRO_STEPS`): paso 1, el detalle elegido a mano a ×3 (nunca la firma ni un texto); paso 2, ×1,6 y la
+  época; paso 3, el cuadro entero y el año; paso 4, el museo (`catalog-ficha.json` o `museum` a mano si su nombre delata al
+  pintor). Si falla los cuatro, «Era X». La imagen se abre en grande sin enseñar más de lo que permite el paso (lupa con
+  el mismo recorte en los pasos 1-2 y el cuadro entero con su proporción en los 3-4; el visor, solo al acabar). La partida a medias se recuerda en el
+  navegador (`mirada.cuadro`).
+- **Firmas e imagen**: la firma o inscripción legible de cada día (`signature` en el calendario: Van Eyck, El Greco, Monet,
+  Sorolla) va tapada con un velo desenfocado hasta acabar, en el marco y en la vista grande (antes de acabar, la lupa del
+  juego, nunca el visor); el validador comprueba que los recortes de los pasos 1 y 2 no la tocan. Los pasos 1 y 2 usan
+  `img/dia/<n>.jpg` (el recorte del paso 2 a 1.200 px, ~200 KB, pintado al desplegar por `share_pages.py --images`); la
+  imagen de 1.200 px de la obra se pide desde el paso 2. `era` en un día cambia la pista de época si la del camino confunde
+  (Van Eyck y el Bosco: «Pintura flamenca»).
+- **Al acabar** (`finishCuadro`, una vez al día): `progress.cuadros[día] = { n, guesses, won, tries }`, 10 XP si acierta y
+  5 si no (en la app, «puntos»), cuenta para la meta y la racha general (sin racha propia), medallas `daily-1` («Primer cuadro del día») y
+  `daily-perfect` («A la primera»). Pantalla de hecho (`ui/screens/cuadro-dia-hecho.js`): cuadro entero, «A la segunda» o
+  «Esta vez no», cuadritos con lo ganado (+10/+5 puntos, racha, medallas nuevas), «Llevas n cuadros del día», «Compartir», «Ver la historia», «Conocer a X» (ficha) o «Lo
+  conocerás en el camino» (`ui/locked-painter-sheet.js`) y «El siguiente, en 6 h». Música de la portada.
+- **Historia**: 3 tarjetas (≤ 180 caracteres, una idea cada una): la respuesta («Era X…») y el gancho volviendo al detalle del paso 1, «Fíjate en» con otro foco y la anécdota con la obra entera. Las abre `ui/story-core.js` (el núcleo
+  sacado de `story-viewer.js`, que acepta tarjetas sueltas). Las tarjetas con `[x, y, zoom]` se vuelcan como `region`.
+  Fuente en los datos, nunca en las tarjetas.
+- **Calendario curado** (`contenido/cuadro-del-dia/calendario.json` → `app/data/dia/index.json` + `<n>.json` con
+  `tools/sync_cuadro_dia.py`): el día de estreno (`start`) es el n.º 1 y cada día usa `calendario[(n - 1) % largo]`
+  (añadir obras al catálogo no mueve los días; si se acaba, vuelve a empezar). Requisitos que valida la herramienta (y
+  `validate_catalog.py`): fama 3 (o 2 si es español), explicaciones, 6 pintores distintos con la respuesta, nitidez del
+  detalle ≥ 1,5 px de imagen por px CSS en un marco de 420 px (HD de `pipeline/hd.py`, que lee el calendario), pistas
+  que no nombran al pintor y reparto contando la vuelta (mismo pintor, como mucho una vez cada 10 días; misma época, no
+  más de 2 días seguidos; un español en cada 4 días). **Alarma**: la herramienta (código 2) y `tests/cuadro-dia.test.js`
+  fallan cuando quedan menos de 3 días de calendario por delante. Los cuadros nuevos se añaden AL FINAL.
+- **Compartir**: «Sfumato · Cuadro del día 37 / 🖼️ 🟥🟥🟩⬛ / enlace», sin pintor, título ni año. El enlace es
+  `h/cuadro-<n>.html` (`tools/share_pages.py`, og:image = recorte del detalle del paso 1, pintado al desplegar ≤ 250 KB)
+  y abre siempre el cuadro de hoy (`#cuadro-del-dia`); quien no juega lo juega sin bienvenida y al final ve la
+  invitación de `ui/story-link.js` (`inviteToPlay`).
+- **Dónde vive**: chip `cuadroChip` de la cabecera (pendiente, círculo con el detalle y punto; hecho, miniatura con ✓). El
+  calendario se pide en reposo tras pintar (`ui/cuadro-data.js`); hasta entonces, el icono. `#reto-diario` y los enlaces
+  de reto `d<AAAAMMDD>` llevan aquí. La guía de «siguiente paso» lo propone como acción secundaria una vez al día
+  (`cuadroNudge`, `progress.cuadroNudge`), nunca tras una ronda floja (< 75 %). Estadística sin datos: `cuadro/termina`,
+  `cuadro/comparte`.
+- **Fuera el reto diario**: sin `planDaily`, `DAILY_SIZE`, `renderDaily` ni la rama `daily` de `finish.js`, `result.js` y
+  `state/session.js` (una ronda suya a medias se descarta). `dailyPool` sigue (ronda libre y reto semanal). Estado v11:
+  `progress.cuadros` y `progress.cuadroNudge`; `progress.daily` se conserva, solo de lectura.
+
+- **Ajustes posteriores (27/11, tras probarlo María):**
+  - Entrada del repaso (`screens/review-intro.js`): «Repasamos a Miguel Ángel y 4 cuadros más» con su cara (o un detalle
+    de su cuadro; al tocarla, su ficha) y «Empezar».
+  - El botón principal del resultado siempre avanza: la regla 3 es «Sigue: <pintor>» (su ronda), y lo que no tiene a
+    dónde avanzar es «Volver al camino». Regla 5 bis, «lo pendiente atrás»: si la parada abierta ya es de una época
+    posterior y en una anterior queda su Prueba de época abierta sin superar, o un pintor a medias que es lo único que la
+    cierra, se recomienda eso, nunca dos veces seguidas (`backDebt`, `prevStep` en memoria).
+  - Mapa: el botón «Tú» se convierte en la acción recomendada cuando no es la parada actual (`mapGuide`, cargado tras
+    pintar). Los candados dicen qué falta («Te falta Miguel Ángel») y llevan «Ir» a la parada que lo abre (`data-unlock`).
+  - Pintor a medias: el aro entero se llena con su nota, con una muesca en el 75 %, y «Vas por el 67 %» bajo el nombre;
+    su tarjeta, «Has acertado el 50 %; hace falta un 75 %» («Te falta poco» desde el 65 %).
+  - Cabecera: «Sfumato», la llama de la racha dentro del aro de la meta de hoy (al tocarla, una línea: «Llevas 4 días
+    seguidos jugando. El aro se llena con tu meta de hoy: 20 de 50 puntos.»), «Repasar» y el Cuadro del día; un solo
+    punto rojo a la vez.
+  - Vocabulario: nada de «dominar»; frases como se habla («Pintores que reconoces», «Faltan 2 pintores», «Se abre
+    después de Leonardo», «Ya reconoces sus cuadros», neutra para pintoras). Lo vigila `tests/vocabulario.test.js`.
+
 ## 4 ter. Catálogo grande (migración de 24/11, `catalog.json` versión 2)
 
 Lo genera `tools/catalog_from_pipeline.py` desde `catalogo/obras.json` + `catalogo/pintores.json` (proceso `pipeline/`),
@@ -213,7 +301,13 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
 1.315 obras (ids `w<QID>`), 162 pintores, 9 movimientos del camino + 2 ramas-movimiento, 14 ramas.
 
 - **Archivos** (`app/data/`): `catalog.json` (lo mínimo para pintar), `catalog-text.json` (versión 3: `look`, `looks`, `kind`,
-  `tags`, `traits`, `traitTags`, vocabulario) y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
+  `tags`, `genre`, `skipTraits`, `skipHints`, `traits`, `traitTags`, `traitScope`, `traitGeneral`, `styleHints`, vocabulario). Un rasgo del pintor solo se enseña en una
+  obra donde se ve: `traitScope` (`contenido/rasgos.json`) dice de cada frase si es de «estilo» (vale en todas), de unos
+  géneros (`genre` de la obra: retrato, figuras, paisaje, bodegon, abstracto; Wikidata o `contenido/generos.json`) o de
+  «etiquetas» (solo si las de la obra lo confirman), y una frase con un detalle concreto puede traer su versión general
+  (`traitGeneral`) para las obras donde el detalle no se ve; `contenido/fijate.json` da «fíjate» propios y `skipTraits` (rasgos
+  excluidos en obras de juventud, copias o atípicas). Además, cada pintor tiene 4-6 refuerzos de estilo (`styleHints`,
+  `contenido/pistas.json`) que rotan sin repetir el último visto; `sinPistas` (→ `skipHints`) los excluye en una obra. Sin certeza, no hay línea y `catalog-ficha.json` (ficha de museo de cada obra: `museum`, `city`, `country`,
   `technique`, `dimensions`, `source {wikidata, file, license}`; se pide aparte por peso, `mergeCatalogFicha` la une a las obras).
 - **Obra**: `id, artistId, title, year, yearSort, img, thumb, w, h, role, fame, confidence, level, stage?, inSpain, spoiler?,
   attributed?, focus?`. `w`/`h` son los de la imagen empaquetada a 1200 px. `level`: 1 = básico, 2..n = «a fondo» (etapa
@@ -257,7 +351,9 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   todas sus obras desbloqueadas (abren el visor) y huecos discretos «n de m». Atrás devuelve a donde estabas, con su desplazamiento
   (`main.js`: número en `history.state`). Colección tiene dos rutas, `#coleccion` (Cuadros) y `#coleccion-pintores`.
   **Historias servidas desde la app**: `tools/sync_historias.py` copia y valida `contenido/historias/` en `app/data/historias/`
-  (con `index.json`); `tests/ficha-pintor.test.js` falla si la copia se desfasa. Museo y ciudad (`catalog-ficha.json`, diferido,
+  (con `index.json`); `tests/ficha-pintor.test.js` falla si la copia se desfasa. Todo pintor con niveles «a fondo» tiene historia en cada uno, nueva y
+  sin repetir el nivel 1 (decisión de María, 28/11; `tests/historias-ampliacion.test.js`, con una lista `PENDING` de excepciones
+  justificadas que debe quedar vacía). Museo y ciudad (`catalog-ficha.json`, diferido,
   `ui/ficha-data.js`) salen bajo el cuadro en el visor solo con la obra revelada.
 - **Obras desbloqueadas** = vistas (colección o enseñadas en rondas, `engine/collection.js` `unlockedMap`): una sola definición para las franjas
   de Colección, la ficha (galería completa: miniaturas que abren el visor y huecos discretos «n de m» sin imagen ni título) y la lista de

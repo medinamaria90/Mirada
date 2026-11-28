@@ -1,12 +1,12 @@
 // Pistas que no engañan (feedback de María, 24/11): tras un fallo en «¿Cuál es de X?» la pista
 // apunta al cuadro correcto y nunca es un rasgo que el cuadro elegido también cumpla; tras un fallo
-// se dice de quién era lo elegido; las pistas rotan (segunda pista con fuente); textos cortos y sin
+// se devuelve lo elegido para marcarlo en su opción (sin línea «has elegido»); las pistas rotan (segunda pista con fuente); textos cortos y sin
 // «ayer»/«mañana». Recorre con el motor real TODAS las combinaciones (pintor, cuadro correcto,
 // distractor) del catálogo publicado.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { realIndex, realCatalogJson, realTextJson, W } from './helpers-real.js';
-import { feedbackFor, artistLines, looksOf, tagsOf, teachingLines, absentTrait } from '../app/js/engine/feedback.js';
+import { feedbackFor, artistLines, looksOf, tagsOf, teachingLines, generalLine, styleLines } from '../app/js/engine/feedback.js';
 import { noAuthorQuestion, optionText, makeMovementQuestion } from '../app/js/engine/questions.js';
 import { buildIndex, mergeCatalogText } from '../app/js/engine/catalog.js';
 import { createRng } from '../app/js/engine/rng.js';
@@ -29,19 +29,21 @@ const whoQ = (work, others) => ({
 });
 
 // La pista tras agotar las propias del cuadro: una frase del pintor verdadera en el correcto y que el
-// elegido no comparte; si no la hay, ninguna (lo que contrasta a los dos pintores es la línea del elegido).
+// elegido no comparte; si no la hay, ninguna (el pintor del elegido va en la etiqueta de su miniatura).
 function checkTraitLine(fb, artist, work, chosenWork, counters) {
   assert.equal(fb.lines.length <= 1, true);
   if (!fb.lines.length) {
     counters.neutral++;
-    assert.ok(fb.chosen && fb.chosen.line.includes(short(real.artist(chosenWork.artistId))));
+    assert.ok(fb.chosen && fb.chosen.artistId === chosenWork.artistId);
     return;
   }
   counters.trait++;
   const lines = artistLines(artist);
   const i = lines.indexOf(fb.lines[0]);
-  assert.ok(i >= 0, `la frase no es del pintor: ${fb.lines[0]}`);
-  const tags = artist.traitTags[i];
+  // Un refuerzo de estilo (contenido/pistas.json) cumple lo mismo con sus propias etiquetas.
+  const hint = (artist.styleHints || []).find((h) => fb.lines[0] === `${h.text.replace(/[.!?…]$/, '')}.` || fb.lines[0] === h.text);
+  assert.ok(i >= 0 || hint, `la frase no es del pintor: ${fb.lines[0]}`);
+  const tags = i >= 0 ? artist.traitTags[i] : hint.tags;
   assert.ok(Array.isArray(tags) && tags.length, `${artist.id}: frase sin etiquetas usada tras un fallo`);
   const avoid = tagsOf(chosenWork);
   for (const t of tags) assert.ok(!avoid.has(t), `${work.id}/${chosenWork.id}: «${fb.lines[0]}» también se cumple en el elegido (${t})`);
@@ -63,10 +65,11 @@ test('«¿Cuál es de X?» tras un fallo, todas las combinaciones: look del corr
         const first = feedbackFor(real, q, false, memo, null, { chosenId: d.id });
         assert.equal(first.title, 'Era este');
         assert.equal(first.who, a.name);
-        assert.ok(first.chosen, 'hay línea del elegido');
+        assert.ok(first.chosen, 'se sabe lo elegido');
         assert.equal(first.chosen.artistId, d.artistId);
         assert.equal(first.chosen.artworkId, d.id);
-        assert.equal(first.chosen.line, `El que has elegido es de ${short(real.artist(d.artistId))} · ${d.title}`);
+        assert.equal(first.chosen.name, short(real.artist(d.artistId)));
+        assert.equal('line' in first.chosen, false, 'sin línea «El que has elegido…»');
         if (looks.length) {
           counters.look++;
           assert.ok(first.lines[0].startsWith(looks[0].text), `${w.id}: la primera pista es el look`);
@@ -94,7 +97,7 @@ test('el caso de María: Tiziano con Carlos V correcto y la Virgen del canciller
   for (let i = 0; i < 4; i++) {
     const fb = feedbackFor(real, q, false, memo, null, { chosenId: d.id });
     seen.push(...fb.lines);
-    assert.equal(fb.chosen.line, 'El que has elegido es de Van Eyck · Virgen del canciller Rolin');
+    assert.deepEqual(fb.chosen, { artistId: d.artistId, name: 'Van Eyck', artworkId: d.id, title: 'Virgen del canciller Rolin' });
     for (const line of fb.lines) assert.doesNotMatch(line, /roj|dorad/i, line);
   }
   assert.ok(seen.length >= 2, 'dos pistas propias y, después, un rasgo seguro o nada');
@@ -102,32 +105,14 @@ test('el caso de María: Tiziano con Carlos V correcto y la Virgen del canciller
   assert.ok(seen[1].startsWith('Mira al jinete solo ante el río'));
 });
 
-test('«¿Quién lo pintó?» tras un fallo: «No es de X» y, solo si es seguro, qué seña de X falta aquí', () => {
-  let negations = 0;
-  const labels = real.tagLabels;
-  const negable = new Set(real.negableTags);
-  for (const a of real.path) {
-    for (const w of real.worksOf(a.id).filter(askable)) {
-      for (const c of real.artists) {
-        if (c.id === a.id) continue;
-        const fb = feedbackFor(real, whoQ(w, [c.id]), false, new Map(), null, { chosenId: c.id });
-        assert.equal(fb.title, `Es de ${a.name}`);
-        assert.ok(fb.chosen && fb.chosen.artistId === c.id && fb.chosen.artworkId === null);
-        assert.ok(fb.chosen.line.startsWith(`No es de ${short(c)}`), fb.chosen.line);
-        const m = fb.chosen.line.match(/aquí no hay (.+)$/);
-        if (!m) continue;
-        negations++;
-        const tag = Object.keys(labels).find((k) => labels[k] === m[1]);
-        assert.ok(tag && negable.has(tag), `etiqueta no negable: ${m[1]}`);
-        assert.ok((c.traitTags || []).flat().includes(tag), `${c.id}: la seña negada no es suya (${tag})`);
-        assert.ok(!tagsOf(w).has(tag), `${w.id}: se niega una seña que sí está (${tag})`);
-        assert.equal(absentTrait(real, c, w), m[1]);
-        // Nunca «Fíjate…» dos veces: si la pista ya empieza así, la negación va sin muletilla.
-        if (/^Fíjate/.test(fb.lines[0] || '')) assert.ok(!fb.chosen.line.includes('fíjate'));
-      }
-    }
-  }
-  assert.ok(negations > 100, `negaciones seguras: ${negations}`);
+test('«¿Quién lo pintó?» tras un fallo: lo elegido se marca en su opción, sin línea «No es de X»', () => {
+  const a = real.path[0];
+  const w = real.worksOf(a.id).find(askable);
+  const c = real.artists.find((x) => x.id !== a.id);
+  const fb = feedbackFor(real, whoQ(w, [c.id]), false, new Map(), null, { chosenId: c.id });
+  assert.equal(fb.title, `Es de ${a.name}`);
+  assert.deepEqual(fb.chosen, { artistId: c.id, name: short(c), artworkId: null, title: '' });
+  for (const line of fb.lines) assert.doesNotMatch(line, /^No es de/);
 });
 
 test('al acertar no hay línea del elegido; al fallar el movimiento tampoco, y el título lleva el periodo', () => {
@@ -175,7 +160,9 @@ test('rotación de pistas: primera, segunda (con fuente = verificada) y después
   assert.equal(first.source, 'Museo de prueba');
   assert.equal(second.lines[0], 'Mira dos.');
   assert.equal(second.source, '');
-  assert.ok(artistLines(real.artist(base.artistId)).includes(third.lines[0]));
+  const artist = real.artist(base.artistId);
+  const own = [...artistLines(artist), ...artistLines(artist).map((_, i) => generalLine(artist, base, i)), ...styleLines(artist, base)];
+  assert.ok(!third.lines.length || own.includes(third.lines[0]), 'después, una frase del pintor (o su versión general) o nada');
   // Compatibilidad: una obra con solo `look` (texto) se comporta como antes.
   assert.deepEqual(looksOf({ look: 'Mira algo' }), [{ text: 'Mira algo', source: '', verified: false }]);
   assert.deepEqual(looksOf({}), []);

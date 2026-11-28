@@ -12,13 +12,16 @@ export function resolveThumb(thumb, atlas) {
   const src = atlas.sheets[k];
   const size = Array.isArray(atlas.size) ? atlas.size[k] : null;
   if (typeof src !== 'string' || !SAFE_SRC.test(src) || !size || ![x, y, w, h].every(Number.isFinite) || w <= 0 || h <= 0) return null;
-  return { src, x, y, w, h, sw: Number(size[0]), sh: Number(size[1]) };
+  // `atlas.v` (hash de la disposición): la URL de la hoja cambia con las coordenadas, sin hojas viejas en caché.
+  const v = typeof atlas.v === 'string' && /^[a-f0-9]{6,40}$/.test(atlas.v) ? `?v=${atlas.v}` : '';
+  return { src: src + v, x, y, w, h, sw: Number(size[0]), sh: Number(size[1]) };
 }
 
 // Textos que llegan después de pintar (data/catalog-text.json): `look`/`looks` (pistas con
-// fuente), `kind` y `tags` de obra; `traits`, `traitTags` y `why` («por qué importa», con fuente) de pintor; `tagLabels` y `negableTags`
+// fuente), `kind`, `tags`, `genre`, `skipTraits` y `skipHints` de obra; `traits`, `traitTags`, `traitScope`, `traitGeneral`, `styleHints`, `why` («por qué importa», con fuente) y `who` (quién era un invitado) de pintor; `tagLabels` y `negableTags`
 // del vocabulario visual. Se añaden a los objetos del índice; lo que no encaja se ignora.
 const MAX_TEXT = 140;
+const MAX_WHO = 110;
 // Dato curioso de una obra (hoja de feedback) y explicación larga (página de la obra).
 const MAX_CURIO = 240;
 const MAX_ABOUT_PARAS = 8;
@@ -27,6 +30,19 @@ const MAX_TAGS = 12;
 const MAX_NEGABLE = 60;
 const MAX_LOOKS = 2;
 const KINDS = ['tipico', 'atipico', 'memoria'];
+const SKIP_ALL = 'todos';
+export const GENRES = ['retrato', 'figuras', 'paisaje', 'bodegon', 'abstracto'];
+export const SCOPE_STYLE = 'estilo';
+export const SCOPE_TAGS = 'etiquetas';
+const scopeOf = (v) => {
+  if (v === SCOPE_STYLE || v === SCOPE_TAGS) return v;
+  const list = Array.isArray(v) ? v.filter((g) => GENRES.includes(g)) : [];
+  return list.length ? list : null;
+};
+// Frases de un pintor: la pista y hasta seis rasgos.
+const MAX_LINES = 7;
+// Refuerzos de estilo por pintor (4-6).
+const MAX_HINTS = 6;
 const SAFE_TAG = /^[a-z-]{2,24}$/;
 // Etiquetas: lista o cadena separada por espacios (así viaja en el archivo); '' = sin etiquetas.
 const tagList = (v) => {
@@ -59,6 +75,25 @@ export function mergeCatalogText(index, text) {
     const list = tagList(tags);
     if (w && list) { w.tags = list; n++; }
   }
+  // Rasgos del pintor que no se ven en esa obra: «todos» o posiciones en [pista, ...rasgos] (contenido/fijate.json).
+  for (const [id, skip] of Object.entries(text.skipTraits || {})) {
+    const w = index.artwork(id);
+    if (!w) continue;
+    if (skip === SKIP_ALL) { w.skipTraits = true; n++; continue; }
+    const list = Array.isArray(skip) ? skip.filter((i) => Number.isInteger(i) && i >= 0 && i < MAX_LINES) : [];
+    if (list.length) { w.skipTraits = list; n++; }
+  }
+  for (const [id, genre] of Object.entries(text.genre || {})) {
+    const w = index.artwork(id);
+    if (w && GENRES.includes(genre)) { w.genre = genre; n++; }
+  }
+  for (const [id, skip] of Object.entries(text.skipHints || {})) {
+    const w = index.artwork(id);
+    if (!w) continue;
+    if (skip === SKIP_ALL) { w.skipHints = true; n++; continue; }
+    const list = Array.isArray(skip) ? skip.filter((i) => Number.isInteger(i) && i >= 0 && i < MAX_HINTS) : [];
+    if (list.length) { w.skipHints = list; n++; }
+  }
   for (const [id, curio] of Object.entries(text.curio || {})) {
     const w = index.artwork(id);
     if (w && curio && typeof curio.text === 'string' && curio.text.length <= MAX_CURIO) { w.curio = { text: curio.text, source: typeof curio.source === 'string' ? curio.source : '' }; n++; }
@@ -70,6 +105,37 @@ export function mergeCatalogText(index, text) {
   for (const [id, why] of Object.entries(text.why || {})) {
     const a = index.artist(id);
     if (a && why && typeof why.text === 'string' && why.text.length <= MAX_TEXT) { a.why = { text: why.text, source: typeof why.source === 'string' ? why.source : '' }; n++; }
+  }
+  // Quién era un invitado del camino, en pocas palabras (tarjeta de presentación: engine/guest-intro.js).
+  for (const [id, who] of Object.entries(text.who || {})) {
+    const a = index.artist(id);
+    if (a && who && typeof who.text === 'string' && who.text.length <= MAX_WHO) { a.who = { text: who.text, source: typeof who.source === 'string' ? who.source : '' }; n++; }
+  }
+  // Dónde se ve cada frase del pintor: «estilo», «etiquetas» o lista de géneros (lo que no encaja: null, no se enseña).
+  for (const [id, scopes] of Object.entries(text.traitScope || {})) {
+    const a = index.artist(id);
+    if (a && Array.isArray(scopes)) { a.traitScope = scopes.slice(0, MAX_LINES).map(scopeOf); n++; }
+  }
+  // Versión general de una frase con un detalle concreto: { text, scope } (sin etiquetas) o null, alineada igual.
+  for (const [id, generals] of Object.entries(text.traitGeneral || {})) {
+    const a = index.artist(id);
+    if (!a || !Array.isArray(generals)) continue;
+    a.traitGeneral = generals.slice(0, MAX_LINES).map((g) => {
+      const scope = g && scopeOf(g.scope);
+      return scope && scope !== SCOPE_TAGS && typeof g.text === 'string' && g.text.length <= MAX_TEXT ? { text: g.text, scope } : null;
+    });
+    n++;
+  }
+  // Refuerzos de estilo del pintor (contenido/pistas.json): { text, tags, scope }; los que no encajan se ignoran.
+  for (const [id, hints] of Object.entries(text.styleHints || {})) {
+    const a = index.artist(id);
+    if (!a || !Array.isArray(hints)) continue;
+    a.styleHints = hints.slice(0, MAX_HINTS).map((h) => {
+      const scope = h && scopeOf(h.scope);
+      const tags = tagList(h?.tags) || [];
+      return scope && typeof h.text === 'string' && h.text.length <= MAX_TEXT && (scope !== SCOPE_TAGS || tags.length) ? { text: h.text, tags, scope } : null;
+    }).filter(Boolean);
+    n++;
   }
   for (const [id, tags] of Object.entries(text.traitTags || {})) {
     const a = index.artist(id);
@@ -248,6 +314,10 @@ export function buildIndex(catalog) {
   };
 
   const families = buildFamilies(catalog, artistById, worksByArtist);
+  const essentials = (Array.isArray(catalog.essentials) ? catalog.essentials : [])
+    .filter((e) => artistById.has(e.artistId) && Number.isInteger(e.level))
+    .map((e) => ({ ...e, movementId: artistById.get(e.artistId).movementId }));
+  const essentialByKey = new Map(essentials.map((e) => [`${e.artistId}:${e.level}`, e]));
 
   return {
     movements,
@@ -272,6 +342,9 @@ export function buildIndex(catalog) {
       .map((s) => ({ ...s, works: (worksByArtist.get(artistId) || []).filter((w) => levelOf(w) === s.id) }))
       .filter((s) => s.id >= 2 && s.works.length)
       .sort((a, b) => a.id - b.id),
+    // Niveles «a fondo» imprescindibles (contenido/imprescindibles.json): [{ artistId, level, weight, title, movementId }].
+    essentials,
+    essential: (artistId, level) => essentialByKey.get(`${artistId}:${level}`) || null,
     branches,
     branch: (id) => branchById.get(id),
     branchesOf: (artistId) => branches.filter((b) => b.artists.includes(artistId)),

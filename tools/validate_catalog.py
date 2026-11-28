@@ -14,8 +14,9 @@ from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from atlas_layout import layout, packed_size  # noqa: E402
+from monocromo import monochrome_works  # noqa: E402
 
-FIRST_TRAMO = 4  # «Primer Renacimiento»: Botticelli, Masaccio, Piero y Berruguete
+FIRST_TRAMO = 4  # «Nace el Renacimiento»: Botticelli, Masaccio, Piero y Berruguete
 # Techo de archivos de app/ ya desplegada. El número original (512 por versión) era de cuando la app era un artifact; en Render
 # (sitio estático) no hay límite de archivos. Hoy es un techo de cordura: repo (~630) + 86 hojas del atlas + ~190 imágenes og
 # de compartir, generadas al desplegar, rondan los 900.
@@ -62,7 +63,7 @@ def check_look(wid, look, kind, title, artist):
         bad = [t for t in name_tokens(artist) if (t in words if " " not in t else t in low)]
         check(not bad, f"{wid}: el look nombra al autor ({bad})")
     t = re.sub(r"\s*\(.*?\)", "", title).strip().lower()
-    check(t not in low, f"{wid}: el look nombra el título")
+    check(not t or t not in low, f"{wid}: el look nombra el título")
 
 
 def check_level_ring(app, artist, ws):
@@ -80,6 +81,29 @@ def check_level_ring(app, artist, ws):
     shorts = [s.get("short") for s in deep]
     check(len(shorts) == len(set(shorts)), f"{artist['id']}: dos niveles con el mismo título corto {shorts}")
     check(all(lv == 1 or any(s["id"] == lv for s in deep) for lv in told), f"{artist['id']}: historia de un nivel sin etapa")
+
+
+FIRMAS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "contenido", "firmas.json")
+
+
+def check_firmas(known, calendar):
+    """contenido/firmas.json: {"obras": {id: [[x0, y0, x1, y1], …]}} con obras del catálogo y cajas dentro de la imagen
+    (fracciones de 0 a 1, x0 < x1, y0 < y1). Las firmas que ya tapa el Cuadro del día (`signature`) tienen que estar."""
+    firmas = json.load(open(FIRMAS, encoding="utf-8"))
+    obras = firmas.get("obras")
+    check(isinstance(obras, dict) and obras, "firmas.json: falta «obras»")
+    for wid, boxes in (obras or {}).items():
+        check(wid in known, f"firmas.json: {wid} no está en el catálogo")
+        if not (isinstance(boxes, list) and boxes):
+            err(f"firmas.json: {wid} sin cajas")
+            continue
+        for b in boxes:
+            ok = isinstance(b, list) and len(b) == 4 and all(isinstance(v, (int, float)) and 0 <= v <= 1 for v in b)
+            check(ok and b[0] < b[2] and b[1] < b[3], f"firmas.json: {wid} caja inválida {b}")
+    for d in calendar.get("days", []):
+        if d.get("signature"):
+            check(d["signature"] in (obras or {}).get(d["artwork"], []),
+                  f"firmas.json: falta la firma del Cuadro del día de {d['artwork']}")
 
 
 def main():
@@ -235,6 +259,19 @@ def main():
     for wid, look in text.get("look", {}).items():
         w = work_by_id[wid]
         check_look(wid, look, text.get("kind", {}).get(wid), w["title"], by_id.get(w["artistId"]))
+    # Pistas de estilo de cada pintor (contenido/pistas.json): las mismas reglas que un look (sin autor ni título de sus obras).
+    titles_of = {}
+    for w in cat["artworks"]:
+        titles_of.setdefault(w["artistId"], []).append(w["title"])
+    for aid, hints in text.get("styleHints", {}).items():
+        check(aid in by_id, f"styleHints: pintor desconocido {aid}")
+        check(4 <= len(hints) <= 6, f"{aid}: entre 4 y 6 pistas de estilo ({len(hints)})")
+        for i, h in enumerate(hints):
+            check_look(f"{aid}#{i}", h["text"], None, "", by_id.get(aid))
+            for title in titles_of.get(aid, []):
+                tl = re.sub(r"\s*\(.*?\)", "", title).strip().lower()
+                check(len(tl) < 6 or tl not in h["text"].lower(), f"{aid}#{i}: la pista nombra el título «{title}»")
+            check(all(t in labels for t in h.get("tags", [])), f"{aid}#{i}: tags fuera del vocabulario")
     for wid, kind in text.get("kind", {}).items():
         check(kind in ("tipico", "atipico", "memoria"), f"{wid}: kind desconocido")
     for wid, looks in text.get("looks", {}).items():
@@ -278,12 +315,22 @@ def main():
                     continue
                 with Image.open(hd_path) as im:
                     check(list(im.size) == [hd["w"], hd["h"]], f"{w['id']}: la HD mide {im.size}, el catálogo espera {hd['w']}x{hd['h']}")
+        for wid, c in monochrome_works(app, imgs):
+            err(f"{wid}: imagen casi monocroma (colorido {c}): foto en blanco y negro o dibujo; exclúyela en pipeline/excluir.json "
+                "o, si de verdad vale, añádela a tools/monocromas_permitidas.json")
         for k, src in enumerate(atlas["sheets"]):
             p = f"{app}/{src}"
             if os.path.isfile(p):
                 with Image.open(p) as im:
                     check(list(im.size) == atlas["size"][k], f"{src}: tamaño {im.size} ≠ {atlas['size'][k]}")
                     check(im.format == "JPEG" and not im.getexif(), f"{src}: no es JPEG limpio")
+    # --- Cuadro del día: el calendario sigue valiendo con este catálogo (tools/sync_cuadro_dia.py) ---
+    import sync_cuadro_dia as cdd  # noqa: E402
+    cal_errors, _rows = cdd.validate(cdd.read(cdd.SRC), cat, ficha["ficha"], cdd.read(cdd.EXPLAIN))
+    check_firmas(set(wids), cdd.read(cdd.SRC))
+    for e in cal_errors:
+        err(f"cuadro del día: {e}")
+
     app_files = sum(len(fs) for _, _, fs in os.walk(app))
     check(app_files < MAX_APP_FILES, f"{app_files} archivos en {app} (límite {MAX_APP_FILES})")
 

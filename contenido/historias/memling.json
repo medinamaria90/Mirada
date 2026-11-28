@@ -27,6 +27,28 @@
      "source": "https://es.wikipedia.org/wiki/Hans_Memling"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Leyendas",
+   "title": "Memling cuenta historias",
+   "cards": [
+    {
+     "text": "En una sola tabla cuenta la Pasión y la Resurrección de Cristo en 23 escenitas, repartidas por las calles de una Jerusalén imaginaria. Se recorre con la vista como un plano.",
+     "artwork": "w2446983",
+     "source": "https://en.wikipedia.org/wiki/Scenes_from_the_Passion_of_Christ"
+    },
+    {
+     "text": "María Portinari era la mujer de Tommaso, que dirigía el banco de los Médici en Brujas. Memling los retrató a los dos y los coló, rezando, en las esquinas de esa misma Pasión.",
+     "artwork": "w3937623",
+     "source": "https://en.wikipedia.org/wiki/Tommaso_Portinari"
+    },
+    {
+     "text": "Fíjate en esta arqueta con forma de iglesia: guarda reliquias (restos) de santa Úrsula. En sus lados pintó su viaje a Roma y su martirio en Colonia, con la catedral a medio hacer.",
+     "artwork": "w2628587",
+     "source": "https://en.wikipedia.org/wiki/St._Ursula_Shrine"
+    }
+   ]
   }
  ]
 }

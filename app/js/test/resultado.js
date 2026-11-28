@@ -24,7 +24,7 @@ export const PERCENTILE_BANDS = [
 ];
 export const PERCENTILE_MIN = 1;
 export const PERCENTILE_MAX = 99;
-export const PERCENTILE_SOURCES = 'estimación a partir de encuestas de reconocimiento (YouGov 2020, Cotter 2023, Hábitos Culturales 2024-25)';
+export const PERCENTILE_SOURCES = 'Cálculo aproximado con encuestas sobre cuadros famosos';
 
 export function percentileFor(score) {
   const last = PERCENTILE_BANDS[PERCENTILE_BANDS.length - 1];
@@ -35,10 +35,18 @@ export function percentileFor(score) {
   return Math.min(PERCENTILE_MAX, Math.max(PERCENTILE_MIN, Math.round(value)));
 }
 
-// Nivel del test: nombres propios («Mirada…») que no chocan con los rangos de la app (engine/ranks.js).
+// Nivel del test: nombres propios, de la primera visita a un museo al ojo clínico, que no chocan con los
+// rangos de la app (engine/ranks.js).
 // La puntuación se proyecta sobre la escala de XP del motor (0 → máximo honesto) y se reparte en
 // tantos niveles como nombres hay; manda la frase del percentil, el nombre es solo una etiqueta.
-export const TEST_LEVELS = ['Mirada de principiante', 'Mirada curiosa', 'Mirada atenta', 'Mirada entrenada', 'Mirada fina', 'Mirada experta'];
+export const TEST_LEVELS = ['Primera visita al museo', 'De paseo por las salas', 'Sabes lo que miras', 'Como en casa en el Prado', 'Ojo de galerista', 'Ojo clínico'];
+// Nombres de antes (resultados guardados): se leen como el nivel nuevo de la misma posición.
+export const OLD_TEST_LEVELS = ['Mirada de principiante', 'Mirada curiosa', 'Mirada atenta', 'Mirada entrenada', 'Mirada fina', 'Mirada experta'];
+export function testLevelName(name) {
+  if (TEST_LEVELS.includes(name)) return name;
+  const old = OLD_TEST_LEVELS.indexOf(name);
+  return old >= 0 ? TEST_LEVELS[old] : '';
+}
 
 export function levelForScore(score, maxScore) {
   const top = LEVELS[LEVELS.length - 1].min;
@@ -50,11 +58,11 @@ export function levelForScore(score, maxScore) {
 
 // Una frase según el tramo más alto jugado.
 const PHRASES = {
-  1: 'Empiezas por aquí: en Sfumato se aprende mirando',
-  2: 'Reconoces lo más famoso; lo demás se aprende',
-  3: 'Distingues a los grandes; los parecidos aún te lían',
-  4: 'Ojo entrenado: separas pintores que se confunden',
-  5: 'Nivel friki: muy poca gente llega hasta aquí',
+  1: 'Todos empezamos por algún sitio. Lo bueno viene ahora: cada cuadro esconde una historia',
+  2: 'Te sabes los cuadros famosos. Falta lo mejor: los pintores que no salen en las postales',
+  3: 'Distingues a los grandes; los que se parecen todavía te la juegan',
+  4: 'Separas pintores que casi todo el mundo confunde. Te queda un escalón',
+  5: 'Aquí dudan hasta los especialistas, y muy poca gente llega',
 };
 export function phraseFor(summary) {
   return PHRASES[summary.top.id] || PHRASES[1];
@@ -83,15 +91,14 @@ export function buildResult(summary, maxScore) {
     percentile: percentileFor(summary.score),
     phrase: phraseFor(summary),
     grid: gridFor(summary),
-    topLabel: `Has llegado al tramo ${summary.top.name.toLowerCase()}`,
   };
 }
 
-// Texto para compartir (el mismo en el test y en el perfil). `level`, `percentile` y `grid` pueden faltar.
+// Texto para compartir (el mismo en el test y en el perfil): un reto corto y el enlace al test, que se abre directo
+// (app/test/, con su vista previa). Sin percentil (resultados antiguos) o con uno bajo, que nadie presume de «más
+// que el 15 %», los aciertos.
+export const SHARE_PCT_MIN = 40;
 export function shareText(result, url) {
-  return [
-    `He acertado ${result.correct} de ${result.asked} en el test de Sfumato${result.level ? ` · ${result.level}` : ''}`,
-    result.percentile != null ? `Sé más de pintura que el ${result.percentile} % de la gente${result.grid ? ` ${result.grid}` : ''}` : '',
-    url,
-  ].filter(Boolean).join('\n');
+  const what = result.percentile != null && result.percentile >= SHARE_PCT_MIN ? `Sé más de pintura que el ${result.percentile} % de la gente` : `He acertado ${result.correct} de ${result.asked} en el test de pintura`;
+  return [`Sfumato · ${what}. ¿Y tú?`, url].filter(Boolean).join('\n');
 }

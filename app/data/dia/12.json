@@ -1,0 +1,56 @@
+{
+ "n": 12,
+ "artwork": "w6065609",
+ "artistId": "sorolla",
+ "focus": [
+  0.68,
+  0.55
+ ],
+ "options": [
+  "degas",
+  "morisot",
+  "sorolla",
+  "renoir",
+  "monet",
+  "fortuny"
+ ],
+ "hints": {
+  "era": "Pintura española · hacia 1900",
+  "year": "1909",
+  "museum": "Una casa-museo de Madrid"
+ },
+ "cards": [
+  {
+   "text": "Ese sombrero del principio es de una de las dos paseantes, la mujer y la hija del pintor, en la playa de Valencia. Era Sorolla, el gran pintor valenciano.",
+   "artwork": "w6065609",
+   "region": [
+    0.503,
+    0.25,
+    0.817,
+    0.75
+   ]
+  },
+  {
+   "text": "¿Ves las sombras de los vestidos blancos? No son grises, son azules y moradas. Sorolla pintaba la luz que veía, no la que se suponía.",
+   "artwork": "w6065609",
+   "region": [
+    0.074,
+    0.188,
+    0.466,
+    0.812
+   ]
+  },
+  {
+   "text": "Pintaba al aire libre y muy deprisa, con lienzos enormes en plena playa, para atrapar la luz antes de que cambiara. Lo llamaban «el pintor de la luz».",
+   "artwork": "w6065609",
+   "whole": true
+  }
+ ],
+ "source": "https://es.wikipedia.org/wiki/Paseo_a_orillas_del_mar",
+ "veil": [
+  0.0,
+  0.94,
+  0.16,
+  1.0
+ ]
+}

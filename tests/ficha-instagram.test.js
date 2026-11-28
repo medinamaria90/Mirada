@@ -11,7 +11,6 @@ import { parseRoute } from '../app/js/ui/router.js';
 import { coverWork, previewCells, avatarCrop, avatarWork, seenOf, PREVIEW_CELLS, missingNote, stageTitle, openingWork } from '../app/js/engine/painters.js';
 import { frameFor } from '../app/js/engine/stories.js';
 import { periodStart, movementsChrono } from '../app/js/engine/movements.js';
-import { cardDuration, CARD_BASE_MS } from '../app/js/engine/stories.js';
 import { worksSpec } from '../app/js/ui/screens/artist-works.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -67,7 +66,7 @@ test('lo que falta: una frase («Te faltan 24 · se desbloquean en sus etapas»)
 
 test('etapas: su nombre es el título corto del catálogo (el del aro); sin él, el de los datos', () => {
   const a = real.artist('hals');
-  assert.equal(stageTitle(a, real.deepLevels('hals')[0]), 'Más obras');
+  assert.equal(stageTitle(a, real.deepLevels('hals')[0]), 'Grupos');
   assert.equal(stageTitle(real.artist('berruguete'), real.deepLevels('berruguete')[0]), 'Castilla');
   assert.equal(stageTitle(real.artist('goya'), { id: 2, name: 'Formación y cartones' }), 'Formación y cartones');
 });
@@ -87,12 +86,6 @@ test('avatar: detalle del cuadro según su focus, o la parte alta del centro', (
   assert.deepEqual(avatarCrop({ focus: [0.2, 0.8] }), { x: 20, y: 80 });
   assert.deepEqual(avatarCrop({}), { x: 50, y: 35 });
   assert.deepEqual(avatarCrop(null), { x: 50, y: 35 });
-});
-
-test('historia: cada tarjeta dura lo que se tarda en leerla', () => {
-  assert.equal(cardDuration({ text: '' }), CARD_BASE_MS);
-  assert.ok(cardDuration({ text: 'x'.repeat(180) }) > cardDuration({ text: 'x'.repeat(20) }));
-  assert.ok(cardDuration({ text: 'x'.repeat(180) }) < 15000, 'ni eterna');
 });
 
 test('galería del pintor: todas las vistas por orden cronológico y el total; invitados juntos', () => {

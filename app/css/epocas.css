@@ -1,11 +1,14 @@
-/* Tarjetas de la época en su presentación (ui/screens/era-cards.js): un carrusel a pantalla completa con puntos. */
-:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, calc(var(--screen-h) * .38), 340px); --era-dot-box: 16px; --era-share-gap: .5rem; }
+/* Tarjetas de la época en su presentación (ui/screens/era-cards.js): un carrusel a pantalla completa con la navegación común
+   de los visores de tarjetas (deck.css): cabecera arriba, carrusel en medio y botones abajo. */
+:root { --era-dur: .18s; --era-pad: 1.4rem; --era-art-h: clamp(200px, calc(var(--screen-h) * .36), 330px); --era-max: 440px; --era-late-dur: .32s; }
 
-.has-era-cards { position: relative; align-items: stretch; padding-left: 0; padding-right: 0; }
-.era-share { position: absolute; top: calc(env(safe-area-inset-top, 0px) + var(--era-share-gap)); right: var(--era-share-gap); color: var(--ink-2); }
-.era-share:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 0; }
-.has-era-cards .welcome-body { max-width: 440px; align-content: center; gap: .9rem; }
-.has-era-cards .welcome-body > .btn { width: calc(100% - 2 * var(--era-pad)); }
+.has-era-cards { position: relative; display: flex; flex-direction: column; align-items: stretch; padding: 0 0 calc(1.1rem + var(--safe-b)); }
+.has-era-cards > .deck-head, .has-era-cards > .deck-actions { width: min(100%, var(--era-max)); margin: 0 auto; }
+/* Tarjetas que llegan con la pantalla ya pintada (red muy lenta): la presentación reaparece con un fundido en vez de un salto. */
+.era-late > * { animation: era-late-in var(--era-late-dur) var(--ease) both; }
+@keyframes era-late-in { from { opacity: 0; } }
+.has-era-cards [hidden] { display: none; }
+.has-era-cards .welcome-body { flex: 1; max-width: var(--era-max); margin: 0 auto; align-content: center; gap: .9rem; }
 
 .era-track {
   display: flex; width: 100%; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory;
@@ -18,17 +21,12 @@
   display: grid; justify-items: center; align-content: center; gap: .9rem; padding: 0 var(--era-pad); text-align: center;
 }
 .era-cover .welcome-line { margin-bottom: 0; }
-.era-more {
-  display: inline-flex; align-items: center; gap: .35rem; min-height: var(--hit); padding: 0 1.1rem; border: 0; border-radius: 999px;
-  background: var(--accent-soft); color: var(--ink); font: 600 1rem/1 var(--font); cursor: pointer;
-}
-.era-more .icon { color: var(--accent-ui); transition: transform var(--era-dur) var(--ease); }
-.era-more:hover .icon { transform: translateX(3px); }
-.era-more:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 3px; }
-
 .era-card { text-align: left; justify-items: stretch; }
-.era-card-art { display: grid; place-items: center; height: var(--era-art-h); }
-.era-card-art .art { max-height: 100%; max-width: 100%; width: auto; height: 100%; aspect-ratio: var(--arw) / var(--arh); border-radius: var(--radius-sm); box-shadow: var(--frame-shadow); }
+/* El cuadro entero, con su proporción (--card-ar, de era-cards.js): la caja se adapta a la obra hasta --era-art-h de alto
+   y el ancho de la tarjeta, sin recortar nada. Con un detalle a propósito (.is-region), la imagen se sale por los lados. */
+.era-card-art { display: grid; place-items: center; }
+.era-card-art .art { width: min(100%, calc(var(--era-art-h) * var(--card-ar))); height: auto; aspect-ratio: var(--card-ar); border-radius: var(--radius-sm); box-shadow: var(--frame-shadow); }
+.era-card-art.is-region .art img { inset: auto; left: var(--rl); top: var(--rt); width: var(--rw); height: var(--rh); max-width: none; object-fit: fill; }
 .era-card-work { margin: -.3rem 0 0; color: var(--ink-2); font: 400 .9rem/1.3 var(--font); text-align: center; }
 .era-chip {
   justify-self: start; margin: .2rem 0 0; padding: .3rem .7rem; border-radius: 999px; background: var(--accent-soft);
@@ -36,9 +34,4 @@
 }
 .era-text { margin: 0; color: var(--ink); font: 400 clamp(1.15rem, 4.8vw, 1.3rem)/1.45 var(--font); text-wrap: pretty; }
 
-.era-dots { display: flex; justify-content: center; gap: .85rem; }
-.era-dot { display: grid; place-items: center; min-width: var(--era-dot-box); height: var(--era-dot-box); }
-.era-dot span { width: 8px; height: 8px; border-radius: 999px; background: var(--line-2); transition: width var(--era-dur) var(--ease), background var(--era-dur) var(--ease); }
-.era-dot.is-now span { width: 22px; background: var(--accent-ui); }
-
-@media (prefers-reduced-motion: reduce) { .era-more .icon, .era-dot span { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .era-late > * { animation: none; } }

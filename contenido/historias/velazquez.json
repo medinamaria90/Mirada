@@ -34,87 +34,11 @@
   },
   {
    "level": 2,
-   "stage": "Sevilla",
-   "title": "Sevilla: el joven maestro",
-   "cards": [
-    {
-     "text": "Sevilla, 1618. Con 18 años se casa con Juana, la hija de su maestro Pacheco. Y ya pinta Vieja friendo huevos, un bodegón con figuras distinto a todo lo que se hacía allí.",
-     "artwork": "w2471800",
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Sus_comienzos_como_pintor"
-    },
-    {
-     "text": "Aquí manda la luz: fuerte y dirigida, hace brillar las texturas. En El aguador, el gran jarro de barro capta la luz en sus estrías y por él resbalan gotas transparentes.",
-     "artwork": "w2627810",
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Sus_comienzos_como_pintor"
-    },
-    {
-     "text": "Sus clientes sevillanos eran sobre todo religiosos, y también pintó santos. En este San Pablo los especialistas ven la huella del Greco y de su discípulo Luis Tristán.",
-     "artwork": "w3075292",
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Sus_comienzos_como_pintor"
-    }
-   ]
-  },
-  {
-   "level": 3,
-   "stage": "La corte",
-   "title": "Pintor del rey y primer viaje a Italia",
-   "cards": [
-    {
-     "text": "En 1623 se muda a Madrid y retrata a Felipe IV, seis años menor que él. Al rey le gusta tanto que lo nombra pintor del rey. Con los años llegaría a pintor de cámara.",
-     "artwork": "w1115403",
-     "focus": [
-      0.5,
-      0.3,
-      1.8
-     ],
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#R%C3%A1pido_reconocimiento_en_la_corte"
-    },
-    {
-     "text": "En Los borrachos, su primera pintura mitológica, el dios Baco comparte vino con campesinos de su tiempo. La antigüedad clásica, contada con gente corriente.",
-     "artwork": "w123935",
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#R%C3%A1pido_reconocimiento_en_la_corte"
-    },
-    {
-     "text": "Viaja a Italia (1629-1631) y estudia a Tintoretto y los frescos de Miguel Ángel y Rafael. En La fragua de Vulcano, la pincelada se vuelve más fluida y la luz, más libre.",
-     "artwork": "w247282",
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Primer_viaje_a_Italia"
-    }
-   ]
-  },
-  {
-   "level": 4,
-   "stage": "Madrid",
-   "title": "Madurez en Madrid",
-   "cards": [
-    {
-     "text": "En La rendición de Breda, el general Espínola recibe las llaves de la ciudad de manos del vencido. Las condiciones fueron muy benignas. Colgaba en el Salón de Reinos.",
-     "artwork": "w1133420",
-     "focus": [
-      0.5,
-      0.55,
-      1.75
-     ],
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#La_rendici%C3%B3n_de_Breda"
-    },
-    {
-     "text": "Los años treinta son los más activos: casi un tercio de su obra. Entre ellos, el Cristo crucificado de San Plácido: un cuerpo sereno, de formas bellas y sosegadas.",
-     "artwork": "w2528741",
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Madurez_en_Madrid"
-    },
-    {
-     "text": "Retrató a los bufones y «hombres de placer» de la corte. Con ellos se permitió las mayores libertades de pincelada, más que con la familia real.",
-     "artwork": "w1113763",
-     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Madurez_en_Madrid"
-    }
-   ]
-  },
-  {
-   "level": 5,
    "stage": "Roma",
    "title": "Roma, Palacio y Las meninas",
    "cards": [
     {
-     "text": "En Roma, en 1650, lo eligen miembro de la Academia de San Lucas. Ese año expone en el Panteón el retrato de su esclavo y ayudante, Juan de Pareja.",
+     "text": "Ya en la cumbre, en su segundo viaje a Roma, en 1650, lo eligen miembro de la Academia de San Lucas. Ese año expone el retrato de su esclavo y ayudante, Juan de Pareja.",
      "artwork": "w4717953",
      "focus": [
       0.44,
@@ -142,6 +66,102 @@
       1.8
      ],
      "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#%C3%9Altima_d%C3%A9cada%3A_su_cumbre_pict%C3%B3rica"
+    },
+    {
+     "text": "Fíjate en el vestido azul de la infanta Margarita: de cerca son manchas sueltas. Estos retratos viajaban a Viena para que su futuro marido la viera crecer.",
+     "artwork": "w2264914",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+    }
+   ]
+  },
+  {
+   "level": 3,
+   "stage": "Madrid",
+   "title": "Madurez en Madrid",
+   "cards": [
+    {
+     "text": "Antes, en su madurez en Madrid, pinta La rendición de Breda: el general Espínola recibe las llaves de la ciudad de manos del vencido. Colgaba en el Salón de Reinos.",
+     "artwork": "w1133420",
+     "focus": [
+      0.5,
+      0.55,
+      1.75
+     ],
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#La_rendici%C3%B3n_de_Breda"
+    },
+    {
+     "text": "Los años treinta son los más activos: casi un tercio de su obra. Entre ellos, el Cristo crucificado de San Plácido: un cuerpo sereno, de formas bellas y sosegadas.",
+     "artwork": "w2528741",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Madurez_en_Madrid"
+    },
+    {
+     "text": "Retrató a los bufones y «hombres de placer» de la corte. Con ellos se permitió las mayores libertades de pincelada, más que con la familia real.",
+     "artwork": "w1113763",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Madurez_en_Madrid"
+    },
+    {
+     "text": "Fíjate en la cara de Venus en el espejo: borrosa, apenas una sombra. Es el único desnudo de Velázquez que conservamos.",
+     "artwork": "w275349",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+    }
+   ]
+  },
+  {
+   "level": 4,
+   "stage": "Sevilla",
+   "title": "Sevilla: el joven maestro",
+   "cards": [
+    {
+     "text": "Retrocedemos a sus primeros años en Sevilla. En 1618, con 18 años, se casa con Juana, la hija de su maestro Pacheco. Y ya pinta Vieja friendo huevos, distinto a todo lo de allí.",
+     "artwork": "w2471800",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Sus_comienzos_como_pintor"
+    },
+    {
+     "text": "Aquí manda la luz: fuerte y dirigida, hace brillar las texturas. En El aguador, el gran jarro de barro capta la luz en sus estrías y por él resbalan gotas transparentes.",
+     "artwork": "w2627810",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Sus_comienzos_como_pintor"
+    },
+    {
+     "text": "Sus clientes sevillanos eran sobre todo religiosos, y también pintó santos. En este San Pablo los especialistas ven la huella del Greco y de su discípulo Luis Tristán.",
+     "artwork": "w3075292",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Sus_comienzos_como_pintor"
+    },
+    {
+     "text": "Fíjate en el chico que nos mira sonriendo mientras los otros tocan, y en el pan, el queso y el vino de la mesa: Sevilla en un instante.",
+     "artwork": "w389198",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+    }
+   ]
+  },
+  {
+   "level": 5,
+   "stage": "La corte",
+   "title": "Pintor del rey y primer viaje a Italia",
+   "cards": [
+    {
+     "text": "En 1623, con 24 años, se muda a Madrid y retrata a Felipe IV, seis años menor que él. Al rey le gusta tanto que lo nombra pintor del rey. Con los años llegaría a pintor de cámara.",
+     "artwork": "w1115403",
+     "focus": [
+      0.5,
+      0.3,
+      1.8
+     ],
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#R%C3%A1pido_reconocimiento_en_la_corte"
+    },
+    {
+     "text": "En Los borrachos, su primera pintura mitológica, el dios Baco comparte vino con campesinos de su tiempo. La antigüedad clásica, contada con gente corriente.",
+     "artwork": "w123935",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#R%C3%A1pido_reconocimiento_en_la_corte"
+    },
+    {
+     "text": "Viaja a Italia (1629-1631) y estudia a Tintoretto y los frescos de Miguel Ángel y Rafael. En La fragua de Vulcano, la pincelada se vuelve más fluida y la luz, más libre.",
+     "artwork": "w247282",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Primer_viaje_a_Italia"
+    },
+    {
+     "text": "Fíjate en este jardín de Roma: pintado al aire libre, con manchas rápidas, mucho antes de que eso se pusiera de moda.",
+     "artwork": "w1133844",
+     "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
     }
    ]
   }

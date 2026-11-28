@@ -4,6 +4,7 @@
 import { artKey } from './srs.js';
 import { noAuthorQuestion } from './catalog.js';
 import { daysBetween, addDays, weekOf } from './dates.js';
+import { gateEssentials } from './essentials.js';
 
 // Niveles con nombres del mundo del arte. Tras el último, la curva sigue: «Gran maestro II»,
 // «III»… cada LEVEL_STEP_AFTER puntos, para que nunca se agote.
@@ -107,15 +108,24 @@ export function emptyProgress() {
     artists: {},
     salas: {},
     intros: {},
+    // Carteles de tramo ya vistos: { tramo: 'AAAA-MM-DD' } (el camino enseña cada uno una vez, antes de su primer pintor).
+    signs: {},
     reviews: {},
     srs: {},
     collection: {},
     medals: {},
     stats: { answered: 0, correct: 0, newCorrect: 0, rounds: 0 },
+    // Reto diario de antes (ya no existe): se conserva tal cual, solo de lectura.
     daily: {},
     weekly: {},
+    // Cuadro del día: { 'AAAA-MM-DD': { n, guesses, won, tries } } y el último día que la guía lo propuso (engine/cuadro-dia.js).
+    cuadros: {},
+    cuadroNudge: '',
     // Niveles «a fondo»: { 'pintor:nivel': { plays, best, mastered, last } } (engine/levels.js).
     deep: {},
+    // Propuestas de profundizar (engine/deepen.js): pintores del camino jugados en la última, las últimas ofrecidas, la que
+    // está a la vista y los saltos de cada nivel con su día (rotación y enfriamiento).
+    deepen: { at: 0, count: 0, recent: [], pending: '', skips: {} },
     // Rango más alto alcanzado (índice en engine/ranks.js): nunca baja.
     rank: 0,
     challenges: { played: 0 },
@@ -124,6 +134,16 @@ export function emptyProgress() {
     fallados: [],
     // Último día en que salió cada pintor en una pregunta: { artistId: 'AAAA-MM-DD' } (engine/review.js).
     seen: {},
+    // Cierres de época y de rama ya vistos: { seeded, seen: { clave: 'AAAA-MM-DD' } } (engine/era-end.js). Un estado anterior
+    // lo recibe sin sembrar y se siembra al cargar el catálogo: sus cierres de antes cuentan como vistos (como mucho, el último).
+    closures: { seeded: false, seen: {} },
+    // Invitados ya presentados con su tarjeta: { artistId: 'AAAA-MM-DD' } (engine/guest-intro.js). Solo valen para
+    // preguntar por ellos, no para el camino. Un estado anterior lo recibe vacío (state/schema.js mergeDefaults).
+    guests: {},
+    // «Repasar a…» (engine/recall.js): últimas respuestas de autor y de época [{ t, a, c?, w, ok, d, r? }] y el último pintor o
+    // época recordados. Un estado anterior los recibe vacíos (state/schema.js mergeDefaults), sin perder nada.
+    slips: [],
+    recall: { last: '', date: '' },
   };
 }
 
@@ -277,7 +297,9 @@ export function isStepUnlocked(progress, index, step) {
   if (i < 0) return false;
   if (isExtraStep(progress, step)) return true;
   const gate = gateBefore(progress, index, step);
-  return !gate || stepPassed(progress, gate);
+  if (!gate) return true;
+  // Puerta de época: además, los imprescindibles de la época que se deja (engine/essentials.js).
+  return stepPassed(progress, gate) && !gateEssentials(progress, index, step, gate).length;
 }
 
 export function stepStatus(progress, index, step) {
@@ -355,6 +377,22 @@ export function nextStep(progress, index) {
 export function needsIntro(progress, index, movementId) {
   if (progress.intros?.[movementId]) return false;
   return !index.stepsOf(movementId).some((s) => stepPlayed(progress, s));
+}
+
+// ¿Su tramo sale en el camino (rombo y cartel)? El primer tramo de cada época, el que sigue a su puerta, no: tras las tarjetas
+// de la época no aporta nada (decisión de María, 28/11). Sigue existiendo en los datos (abre las ramas, agrupa a los nuevos).
+export function hasTramoSign(index, artistId) {
+  const artist = index.artist(artistId);
+  const first = artist && index.stageArtists(artist.movementId)[0];
+  return Boolean(artist?.section) && artist.section !== first?.section;
+}
+
+// El cartel de un tramo sale una vez, al entrar por primera vez en él (como la presentación de la época): un paso más del
+// camino antes del pintor. Nunca si ya se vio o si ya se jugó algún pintor del tramo.
+export function needsTramo(progress, index, artistId) {
+  const key = index.artist(artistId)?.section;
+  if (!key || progress.signs?.[key] || !hasTramoSign(index, artistId)) return false;
+  return !index.path.some((a) => a.section === key && stepPlayed(progress, { type: 'artist', id: a.id }));
 }
 
 // ¿Ya ha visto a este pintor? Con etapa: jugada alguna vez. Invitado: alguna parada de su movimiento

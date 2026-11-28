@@ -1,4 +1,4 @@
-// Perfil nuevo: datos puros (rango, portada, museo, metales, test), nombre con su migración y HTML sin navegador.
+// Perfil nuevo: datos puros (rango, cuadro de la tarjeta, museo, metales, test), nombre con su migración y HTML sin navegador.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -59,12 +59,12 @@ test('migración 7 → 8: nombre, portada y avatar vacíos, conserva el resto; y
   const v7 = { version: 7, onboarded: true, progress: { xp: 500 }, settings: { music: false, sfx: true, volume: 0.2, reducedMotion: true, dailyGoal: 100, theme: 'dark' }, session: {} };
   const out = migrate(v7);
   assert.equal(out.version, SCHEMA_VERSION);
-  assert.deepEqual(out.settings, { ...v7.settings, name: '', cover: '', avatar: '' });
+  assert.deepEqual(out.settings, { ...v7.settings, name: '', avatar: '' });
   assert.equal(out.progress.xp, 500);
   assert.equal(migrate({ version: 8, settings: { name: 'Ana' } }).settings.name, 'Ana');
   const dirty = migrate({ version: 8, settings: { name: `  ${'x'.repeat(50)}\n`, cover: '<script>', avatar: 'w9' } });
   assert.equal(dirty.settings.name.length, NAME_MAX);
-  assert.equal(dirty.settings.cover, '');
+  assert.equal('cover' in dirty.settings, false, 'la portada ya no existe');
   assert.equal(dirty.settings.avatar, 'w9');
   assert.equal(defaultState().settings.name, '');
 });
@@ -74,32 +74,33 @@ test('rango: una fila por condición, cumplidas y pendientes (sin barra única q
   let bar = P.rankProgress(rankFor(p, index));
   assert.equal(bar.next, 'Aficionado');
   assert.deepEqual(bar.conds.map((c) => [c.key, c.have, c.need, c.done]), [['xp', 0, 300, false]]);
-  assert.deepEqual(bar.parts, ['Ganar 300 XP más']);
+  assert.deepEqual(bar.parts, ['Ganar 300 puntos más']);
   p.xp = 1877;
   p.rank = 1;
   bar = P.rankProgress(rankFor(p, index));
   assert.equal(bar.next, 'Copista');
-  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1200 XP', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
+  assert.deepEqual(bar.conds.map((c) => [c.key, c.label, c.have, c.done]), [['xp', '1.200 puntos', 1877, true], ['deep', 'Un nivel «a fondo»', 0, false]],
     'con el XP cumplido se ve cumplido, y lo que falta aparte');
-  assert.match(bar.parts[0], /^Dominar 1 nivel «a fondo» más$/);
+  assert.match(bar.parts[0], /^Superar 1 nivel «a fondo» más$/);
   assert.equal('fraction' in bar, false, 'ya no hay barra del mínimo');
   assert.deepEqual(P.rankProgress({ next: null, stats: {}, missing: [] }), { next: null, conds: [], parts: [] });
   const ladder = rankLadder();
   assert.equal(ladder.length, RANKS.length);
   assert.deepEqual(ladder[0].conds, [], 'el primero no pide nada');
-  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3000 XP', '4 niveles «a fondo»', 'Un gran maestro hasta el nivel 2']);
+  assert.deepEqual(ladder[3].conds.map((c) => c.label), ['3.000 puntos', '4 niveles «a fondo»', 'El nivel 2 de un gran maestro (los más grandes, como Rafael)']);
   assert.deepEqual(rankConditions(RANKS[6]).map((c) => c.key), ['xp', 'deep', 'eras', 'complete']);
 });
 
-test('rango: «Elegir» ofrece los pintores dominados con un nivel «a fondo» abierto; sin ninguno, la tarjeta manda a jugar', () => {
+test('rango: una sola acción recomendada (el nivel que cuenta, a lo ancho); sin ninguno que cuente, por qué y sin botón', () => {
   const p = { ...emptyProgress(), xp: 1500, rank: 1 };
   const card = rankCardHtml(ctxFor(p));
   assert.match(card, /Aficionado/);
   assert.match(card, /Rango 2 de 8/);
   assert.match(card, /Para ser <strong>Copista<\/strong>/);
-  assert.match(card, /pf-cond is-done[\s\S]*1200 XP[\s\S]*1500/);
+  assert.match(card, /pf-cond is-done[\s\S]*<span class="pf-cond-val">1\.500<\/span>\/1\.200 puntos/, 'el XP cumplido se lee como «1.500/1.200 XP», no «1200 XP … 1500»');
   assert.match(card, /Un nivel «a fondo» <span class="pf-cond-val">0\/1<\/span>/);
-  assert.match(card, /href="#inicio"[^>]*>Jugar</, 'sin pintores dominados, se juega el camino');
+  assert.doesNotMatch(card, />Jugar<|>Elegir</, 'sin nada que cuente, ningún botón que no cumpliría');
+  assert.match(card, /class="pf-cond-why">Termina una parada del camino y se abre su nivel 2</);
   assert.equal((card.match(/class="pf-ladder/g) || []).length, 1);
   assert.equal((card.match(/<li class="is-on"><\/li>/g) || []).length, 2);
   assert.equal((card.match(/is-next/g) || []).length, 1);
@@ -108,8 +109,15 @@ test('rango: «Elegir» ofrece los pintores dominados con un nivel «a fondo» a
   const withDeep = real.path.find((a) => real.deepLevels(a.id).length);
   assert.ok(withDeep, 'el catálogo tiene niveles «a fondo»');
   p.artists[withDeep.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
-  assert.deepEqual(deepChoices(p, real, 'deep', RANKS[2]), [{ artistId: withDeep.id, level: real.deepLevels(withDeep.id)[0].id }]);
-  assert.match(rankCardHtml({ ...ctxFor(p), index: real }), /data-action="rank-choose" data-key="deep"[^>]*>Elegir</);
+  assert.deepEqual(deepChoices(p, real, 'deep', RANKS[2]).map((c) => [c.artistId, c.level]), [[withDeep.id, real.deepLevels(withDeep.id)[0].id]]);
+  const one = rankCardHtml({ ...ctxFor(p), index: real });
+  assert.match(one, new RegExp(`data-action="rank-play" data-artist="${withDeep.id}" data-level="${real.deepLevels(withDeep.id)[0].id}"`));
+  assert.equal((one.match(/btn-primary/g) || []).length, 1, 'un solo botón principal');
+  // Con varias condiciones pendientes, una sola acción grande y el resto en filas discretas.
+  const many = { ...p, xp: 2325, rank: 2 };
+  const card3 = rankCardHtml({ ...ctxFor(many), index: real });
+  assert.equal((card3.match(/btn-primary/g) || []).length, 1, card3);
+  assert.ok((card3.match(/pf-cond is-quiet/g) || []).length >= 1);
   assert.deepEqual(deepChoices(p, real, 'complete', RANKS[6]).length, withDeep.category === 'gran-maestro' ? 1 : 0);
   assert.match(rankCardHtml(ctxFor({ ...emptyProgress(), xp: 30000, rank: 7 })), /El rango más alto/);
 });
@@ -143,7 +151,7 @@ test('cuatro cifras pulsables: racha (su logro), pintores dominados, cuadros vis
   assert.deepEqual(profileStats(ctx), { streak: 5, painters: 3, works: 12, eras: 1, erasTotal: index.visibleMovements.length });
   const html = statsHtml(ctx);
   assert.match(html, /data-action="medal" data-id="streak-7"/, 'la racha abre el logro de racha que toca');
-  assert.match(html, /href="#coleccion-pintores"[^>]*aria-label="3 pintores dominados"/);
+  assert.match(html, /href="#coleccion-pintores"[^>]*aria-label="3 pintores que reconoces"/);
   assert.match(html, /href="#coleccion"[^>]*aria-label="12 cuadros vistos"/);
   assert.match(html, new RegExp(`href="#inicio"[^>]*aria-label="Épocas completas: 1 de ${index.visibleMovements.length}"`));
   assert.equal((html.match(/class="pf-stat /g) || []).length, 4);
@@ -194,8 +202,9 @@ test('logros: oro, plata y bronce; reparto por clases; inicial (primera letra); 
   assert.equal(P.parseLastTest(`{"correct":24,"asked":40,"level":"${lvl}"}`).percentile, null);
   assert.equal(P.parseLastTest(`{"correct":1,"asked":2,"level":"${lvl}","grid":"🟩🟨⬜⬜⬜"}`).grid, '🟩🟨⬜⬜⬜');
   assert.equal(P.parseLastTest(`{"correct":1,"asked":2,"level":"${lvl}","grid":"<img>"}`).grid, '');
-  assert.match(shareText({ correct: 24, asked: 40, level: lvl, percentile: 78, grid: '🟩🟩🟨⬜⬜' }, 'https://x/test/'), /24 de 40[^\n]*\n[^\n]*78 % de la gente 🟩🟩🟨⬜⬜\nhttps:\/\/x\/test\//);
-  assert.doesNotMatch(shareText({ correct: 1, asked: 40, level: '', percentile: null, grid: '' }, 'u'), /·|%/, 'sin nivel ni percentil no quedan huecos');
+  assert.equal(shareText({ correct: 24, asked: 40, level: lvl, percentile: 78, grid: '🟩🟩🟨⬜⬜' }, 'https://x/test/'), 'Sfumato · Sé más de pintura que el 78 % de la gente. ¿Y tú?\nhttps://x/test/');
+  assert.equal(P.parseLastTest('{"correct":24,"asked":40,"level":"Mirada entrenada","percentile":78}').level, lvl, 'un nombre de nivel de antes se lee con el nuevo');
+  assert.doesNotMatch(shareText({ correct: 1, asked: 40, level: '', percentile: null, grid: '' }, 'u'), /%|undefined|null|· ·/, 'sin nivel ni percentil no quedan huecos');
   assert.deepEqual(cardLines({ correct: 24, asked: 40, level: lvl, percentile: 78 }), { level: lvl, score: '24 de 40', percentile: 'Sé más de pintura que el 78 % de la gente' }, 'la tarjeta habla en primera persona, como el texto que se comparte');
 });
 
@@ -206,13 +215,13 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.match(hero, /Ponte un nombre/);
   assert.match(hero, /class="logo"/);
   assert.doesNotMatch(hero, /Curioso|role="progressbar"/, 'el rango va en su tarjeta');
-  assert.match(hero, /pf-cover-cap/, 'portada de muestra con su pie');
-  assert.doesNotMatch(hero, /pf-look/, 'sin cuadros no hay nada que elegir');
+  assert.doesNotMatch(hero, /pf-cover/, 'sin portada');
+  assert.doesNotMatch(hero, /open-look|pf-avatar-btn/, 'sin cuadros no hay nada que elegir');
   assert.match(hero, /data-action="open-settings"[^>]*aria-label="Ajustes"/);
   const card = rankCardHtml(ctx);
   assert.match(card, /Curioso/);
   assert.match(card, /Para ser <strong>Aficionado<\/strong>/);
-  assert.match(card, /300 XP/);
+  assert.match(card, /300 puntos/);
   const welcome = welcomeHtml();
   assert.match(welcome, /Tu perfil empieza aquí/);
   assert.match(welcome, /btn-primary[^>]*href="#inicio"/);
@@ -220,12 +229,12 @@ test('HTML del perfil nuevo: título «Perfil», logo, bienvenida con propósito
   assert.match(practice, />Practicar</);
   assert.match(practice, /href="test\/"[\s\S]*Test de pintura[\s\S]*Mide lo que sabes/);
   assert.doesNotMatch(practice, /btn-primary|share-test/, 'el test ya no compite como botón principal');
-  assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al dominar el camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
+  assert.match(practice, /is-locked[\s\S]*Reto semanal[\s\S]*Se abre al final del camino/, 'sin ninguna parada dominada no se da una cifra que desanime');
   assert.doesNotMatch(practice, /quedan \d+/);
   const started = emptyProgress();
   const firstStep = index.steps[0];
   (firstStep.type === 'sala' ? started.salas : started.artists)[firstStep.id] = { plays: 1, best: 1, mastered: true, last: TODAY };
-  assert.match(practiceHtml(ctxFor(started)), /Domina el camino: te quedan \d+ paradas?/);
+  assert.match(practiceHtml(ctxFor(started)), /Se abre al final del camino \(te quedan \d+ paradas?\)/);
   assert.doesNotMatch(practice, /data-action="weekly"/);
 });
 
@@ -245,8 +254,8 @@ test('concordancia: 0, 1 y 2 en cifras, requisitos del rango y logros', () => {
   assert.match(need('eras', 2, { eras: 2 }), /en 2 épocas más/);
   assert.match(need('complete', 1, { complete: 1 }), /1 gran maestro más/);
   assert.match(need('complete', 2, { complete: 2 }), /2 grandes maestros más/);
-  assert.match(need('grand', 1, { grand: { count: 1, upTo: 2 } }), /1 gran maestro más hasta/);
-  assert.match(need('grand', 2, { grand: { count: 2, upTo: 2 } }), /2 grandes maestros más hasta/);
+  assert.match(need('grand', 1, { grand: { count: 1, upTo: 2 } }), /^El nivel 2 de 1 gran maestro más$/);
+  assert.match(need('grand', 2, { grand: { count: 2, upTo: 2 } }), /^El nivel 2 de 2 grandes maestros más$/);
   assert.equal(P.plural(0, 'cuadro', 'cuadros'), '0 cuadros');
   assert.equal(P.plural(1, 'cuadro', 'cuadros'), '1 cuadro');
   assert.equal(P.plural(2, 'cuadro', 'cuadros'), '2 cuadros');
@@ -266,27 +275,24 @@ test('los XP junto al rango: exactos hasta 9 999 y abreviados hacia abajo («31,
   assert.match(read('../app/css/profile-cards.css').match(/\.pf-cond-val \{[^}]*\}/)[0], /white-space: nowrap/);
 });
 
-test('texto al 200 %: el saludo no se recorta (sin line-clamp ni overflow oculto), baja bajo el avatar si no cabe y el avatar no come el ancho', () => {
+test('texto al 200 %: el saludo no se recorta (sin line-clamp ni overflow oculto), baja a su fila si no cabe y el avatar no come el ancho', () => {
   const css = read('../app/css/profile.css');
   const name = css.match(/\.pf-name-text \{[^}]*\}/)[0];
   assert.doesNotMatch(name, /line-clamp|overflow: hidden/);
-  assert.match(css.match(/\.pf-id \{[^}]*\}/)[0], /flex-wrap: wrap/);
-  assert.match(css.match(/\.pf-greeting \{[^}]*\}/)[0], /flex: 1 1 11rem/);
-  assert.match(css, /--pf-avatar: min\(5\.5rem, 22vw\)/);
+  assert.match(css.match(/\.pf-id \{[^}]*\}/)[0], /grid-template-areas: "avatar name gear"/);
+  assert.match(css, /\.pf-hero \{ container: pf-hero \/ inline-size; \}/);
+  assert.match(css, /@container pf-hero \(max-width: 20em\) \{\s*\.pf-id \{[^}]*"avatar gear" "name name"/, 'con letra grande el saludo baja a su fila');
+  assert.match(css, /--pf-avatar: min\(4\.5rem, 20vw\)/);
 });
 
 test('el móvil apaisado gana a las reglas de ancho (va después de ellas) y el escritorio va por filas del DOM', () => {
   const css = read('../app/css/profile.css');
-  assert.ok(css.indexOf('max-height: 500px') > css.indexOf('min-width: 1024px'), 'el bloque apaisado debe ir al final');
+  assert.ok(css.indexOf('max-height: 500px') > css.indexOf('min-width: 720px') && css.indexOf('min-width: 720px') > 0, 'el bloque apaisado debe ir al final');
   assert.match(css, /grid-template-areas: "hero hero" "rank stats" "medals practice"/);
 });
 
 test('las pestañas Portada y Avatar siguen el patrón ARIA: flechas, Inicio y Fin, y solo la activa en el orden de Tab', () => {
-  const src = read('../app/js/ui/screens/profile-look.js');
-  for (const key of ['ArrowRight', 'ArrowLeft', 'Home', 'End']) assert.match(src, new RegExp(key));
-  assert.match(src, /tabs\[go\]\.focus\(\)/);
-  assert.match(src, /b\.tabIndex = on \? 0 : -1/);
-  assert.match(read('../app/js/ui/screens/profile-look.js'), /aria-pressed', String\(!now\)/, '«Automática» marca cuándo está activa');
+  assert.match(read('../app/js/ui/screens/profile-look.js'), /aria-pressed', String\(!now\)/, '«Usar mi inicial» marca cuándo está activa');
 });
 
 test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de portada, último test en su fila con «Compartir»; nombre escapado', () => {
@@ -295,8 +301,7 @@ test('HTML con nombre y progreso: saludo, inicial, avatar de cuadro, pie de port
   const hero = heroHtml(ctxFor(p, { name: '<b>Ana</b>' }));
   assert.doesNotMatch(hero, /<b>Ana/);
   assert.match(hero, /Hola, &lt;b&gt;Ana/);
-  assert.match(hero, /pf-cover-cap/);
-  assert.match(hero, /data-action="open-look"/);
+  assert.match(hero, /<button[^>]*class="pf-avatar-slot pf-avatar-btn"[^>]*data-action="open-look"[^>]*aria-label="Cambiar avatar"/);
   assert.match(heroHtml(ctxFor(p, { name: 'María' })), /pf-initial">M</);
   const withAvatar = heroHtml(ctxFor(p, { name: 'María', avatar: index.artworks[1].id }));
   assert.match(withAvatar, /pf-avatar has-art/);
@@ -313,9 +318,9 @@ test('logros: pantalla con grupos y filtros, nombres cortos y, para lectores, «
   const ctx = ctxFor(p);
   const all = medalGroupsHtml(ctx, 'all');
   for (const g of ['Pintores', 'Movimientos', 'Rachas', 'Ojo de…', 'Retos y metas']) assert.match(all, new RegExp(g));
-  assert.match(all, /aria-label="[^"]* dominado, Bronce, conseguida"/);
-  assert.match(all, /aria-label="Domina a [^"]*, pendiente"/, 'el pendiente es una meta, no un hecho');
-  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]* dominado</, 'el nombre de la casilla es corto');
+  assert.match(all, /aria-label="[^"]*: ya reconoces sus cuadros, Bronce, conseguida"/);
+  assert.match(all, /aria-label="[^"]*: reconocer sus cuadros, pendiente"/, 'el pendiente es una meta, no un hecho');
+  assert.doesNotMatch(all, /pf-medal-name[^>]*>[^<]*: ya reconoces sus cuadros</, 'el nombre de la casilla es corto');
   assert.match(all, /aria-label="Racha de 3 días, Bronce, conseguida"/);
   assert.doesNotMatch(all, /pf-tier/);
   const got = medalGroupsHtml(ctx, 'got');
@@ -347,22 +352,20 @@ test('logros del perfil: una fila de cuatro (tres últimas y la más cercana con
   assert.equal((fresh.match(/<li>/g) || []).length, 4, 'sin logros, cuatro pendientes');
 });
 
-test('hojas: ajustes con todo, nombre con contador y nota, portada y avatar en pestañas; sin «ayer» ni «mañana»', () => {
+test('hojas: ajustes con todo, nombre con contador y nota, avatar; sin «ayer» ni «mañana»', () => {
   const html = settingsHtml(ctxFor(emptyProgress()));
   for (const k of ['music', 'sfx', 'volume', 'reducedMotion']) assert.match(html, new RegExp(`data-setting="${k}"`));
   assert.match(html, /data-action="theme"/);
   assert.match(html, /data-action="goal"/);
-  const su = html.indexOf('class="su-section"');
-  assert.ok(su > 0 && html.indexOf('data-action="ask-reset"') > su && html.indexOf('data-action="reset"') > su, '«Empezar de cero» solo en la sección «Superusuario»');
-  assert.ok(html.indexOf('data-action="reset"') < html.indexOf('</section>', su), 'y dentro de ella');
+  assert.doesNotMatch(html, /ask-reset|Empezar de cero/, 'sin «Empezar de cero»: lo hace «Borrar progreso»');
+  assert.match(html, /data-action="wipe-ask"/);
   const name = nameSheetHtml();
   assert.doesNotMatch(name, /maxlength/, 'el máximo se cuenta por caracteres en JavaScript, no por unidades de texto');
   assert.match(name, /Solo se guarda en este dispositivo/);
   assert.match(name, /pf-counter/);
   assert.match(read('../app/js/ui/screens/profile-name.js'), /graphemes\(/, 'el contador cuenta caracteres, no puntos de código');
   const look = lookSheetHtml();
-  assert.match(look, /role="tablist"/);
-  assert.match(look, /role="tab"[^>]*data-target="avatar"/);
+  assert.match(look, /look-grid/);
   const ctx = ctxFor(emptyProgress());
   for (const h of [html, name, look, heroHtml(ctx), welcomeHtml(), practiceHtml(ctx), rankCardHtml(ctx), statsHtml(ctx), medalsHtml(ctx), medalGroupsHtml(ctx, 'all')]) assert.doesNotMatch(h, FORBIDDEN);
 });
@@ -372,13 +375,6 @@ test('el foco se queda: las hojas repintan solo lo que cambia, no la cabecera en
   const look = read('../app/js/ui/screens/profile-look.js');
   assert.doesNotMatch(look.slice(look.indexOf('const save'), look.indexOf('return {', look.indexOf('const save'))), /innerHTML/, 'elegir no reescribe la rejilla');
   assert.doesNotMatch(read('../app/js/ui/screens/profile-name.js'), /\.focus\(\{ preventScroll/, 'el foco vuelve en el cierre de la hoja, no antes');
-});
-
-test('«Empezar de cero» borra también el nombre, la portada, el avatar y el último test', () => {
-  const src = read('../app/js/ui/screens/profile-settings.js');
-  assert.match(src, /name: '', cover: '', avatar: ''/);
-  assert.match(src, /'mirada\.test\.last'/);
-  assert.match(src, /localStorage\.removeItem/);
 });
 
 test('compartir: el código de la tarjeta se pide al pulsar, con botón en espera, JPEG y recorte al rectángulo del cuadro', () => {
@@ -426,21 +422,19 @@ test('último test: rechaza aciertos mayores que preguntas o negativos', () => {
   assert.ok(P.parseLastTest(`{"correct":12,"asked":12,"level":"${lvl}"}`));
 });
 
-test('el foco de la portada gana a main.css y va por encima de la imagen; las hojas se comportan como dicen', () => {
+test('el avatar y el engranaje llevan su anillo de foco; las hojas se comportan como dicen', () => {
   const css = read('../app/css/profile.css');
-  assert.match(css, /\.pf-cover \.pf-cover-art:focus-visible \{ outline: none; \}/);
-  const ring = css.match(/\.pf-cover \.pf-cover-art:focus-visible::after \{[^}]*\}/)[0];
-  assert.match(ring, /z-index: 3/);
-  assert.match(ring, /border: 4px solid var\(--ink\)/);
+  assert.match(css, /\.pf-avatar-btn:focus-visible \{ outline: 2\.5px solid var\(--ink\)/);
+  assert.match(css, /\.pf-gear:focus-visible \{ outline: 2\.5px solid var\(--ink\)/);
   assert.doesNotMatch(css.match(/\.look-panel \{[^}]*\}/)[0], /overflow|max-height/, 'un solo scroll: el de la hoja');
   assert.match(css, /\.look-body > \.btn \{ position: sticky; bottom: 0/);
   assert.match(css, /\.pf-layout \{[^}]*\}[\s\S]*@media \(min-width: 720px\)[\s\S]*grid-template-areas: "hero hero" "rank stats" "medals practice"/);
 });
 
-test('el repaso se ve siempre (bloqueado y con el motivo) y el logro pendiente no se da por hecho', () => {
+test('Practicar ya no lleva la fila del repaso (va en el botón ↻) y el logro pendiente no se da por hecho', () => {
   const practice = practiceHtml(ctxFor(emptyProgress()));
-  assert.match(practice, /is-locked[\s\S]*Repasar lo aprendido[\s\S]*Vuelve cuando tengas 3 cuadros que repasar/);
-  assert.doesNotMatch(practice, /data-action="review5"/);
+  assert.doesNotMatch(practice, /Repasar|review5|repaso/i);
+  assert.doesNotMatch(read('../app/js/ui/screens/profile.js'), /review5|repaso5/);
   const medals = read('../app/js/ui/screens/profile-medals.js');
   assert.match(medals, /date \? info\.sub : KIND_NAMES\[kindOf\(id\)\]/);
 });
@@ -474,5 +468,44 @@ test('«vistos» en toda la app: el final del camino y la Colección vacía no h
   assert.match(read('../app/js/ui/screens/home.js'), /cuadros vistos/);
   assert.doesNotMatch(read('../app/js/ui/screens/collection.js'), /reconozcas/);
   assert.doesNotMatch(read('../app/js/ui/screens/profile-hero.js'), /pf-mini/, 'sin barra duplicada por requisito');
-  assert.match(read('../app/css/profile.css'), /\.pf-cover\.cap-bottom \.pf-cover-cap/, 'el pie baja si lo que hay que ver está arriba');
+});
+
+test('cabecera sin portada (27/11): avatar, saludo y engranaje en una fila; el avatar abre su hoja, que ya no tiene pestañas', () => {
+  const p = emptyProgress();
+  index.artworks.slice(0, 3).forEach((w, i) => { p.collection[w.id] = `2026-11-2${i}`; });
+  const hero = heroHtml(ctxFor(p, { name: 'Meri', cover: index.artworks[0].id }));
+  assert.doesNotMatch(hero, /pf-cover|pf-look|zoom/, 'ni portada, ni su pie, ni pantalla completa, ni el botón de cuadrícula');
+  const row = hero.match(/<div class="pf-id">([\s\S]*)<\/div>\s*<\/header>/)[1];
+  const order = ['pf-avatar-btn', 'pf-name-btn', 'pf-gear'].map((c) => row.indexOf(c));
+  assert.ok(order.every((i, k) => i >= 0 && (k === 0 || i > order[k - 1])), `orden avatar → saludo → engranaje: ${order}`);
+  const sheet = lookSheetHtml();
+  assert.match(sheet, />Tu avatar</);
+  assert.doesNotMatch(sheet, /role="tab|Portada/);
+  assert.match(sheet, />Usar mi inicial</);
+  assert.doesNotMatch(read('../app/css/profile.css'), /pf-cover|look-tabs/, 'sin estilos huérfanos');
+});
+
+test('estado guardado con portada elegida: se descarta al cargar sin tocar el progreso ni el avatar', () => {
+  const saved = { ...defaultState(), onboarded: true, progress: { ...emptyProgress(), xp: 1932, collection: { w1: '2026-11-20' } }, settings: { ...defaultState().settings, name: 'Meri', cover: 'w1', avatar: 'w1' } };
+  const out = migrate(JSON.parse(JSON.stringify(saved)));
+  assert.equal(out.version, SCHEMA_VERSION, 'sin versión nueva: un móvil con la app vieja en caché no la rechaza');
+  assert.equal('cover' in out.settings, false);
+  assert.equal(out.settings.avatar, 'w1');
+  assert.equal(out.settings.name, 'Meri');
+  assert.equal(out.progress.xp, 1932);
+  assert.deepEqual(out.progress.collection, { w1: '2026-11-20' });
+  assert.equal('cover' in defaultState().settings, false);
+});
+
+test('compartir: la tarjeta usa el cuadro del avatar (ya no hay portada)', () => {
+  const src = read('../app/js/ui/screens/profile.js');
+  assert.match(src, /shareCover\(st\.progress, ctx\.index, st\.settings\.avatar\)/);
+  assert.doesNotMatch(src, /settings\.cover/);
+});
+
+test('letra al 200 %: la cabecera del rango no se sale (su rejilla se encoge) y la hoja del avatar usa casillas cuadradas', () => {
+  const cards = read('../app/css/profile-cards.css');
+  for (const sel of ['pf-rank-card', 'pf-conds', 'pf-rank-titles']) assert.match(cards.match(new RegExp(`\\.${sel} \\{[^}]*\\}`))[0], /grid-template-columns: minmax\(0, 1fr\)/, `${sel} sin columna encogible`);
+  assert.match(cards, /@container pf-stats \(max-width: 16em\)/);
+  assert.match(read('../app/css/profile.css'), /\.look-grid \.pf-tile \{ aspect-ratio: 1; \}/);
 });

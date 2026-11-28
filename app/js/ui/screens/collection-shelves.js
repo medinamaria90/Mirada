@@ -25,7 +25,7 @@ function knownCard({ artist, state, seen, total, cover }) {
     ? `<img data-src="${esc(smallSrc(cover))}" alt="" loading="lazy" decoding="async" style="object-position:${pos.x}% ${pos.y}%">`
     : `<span class="cx-mono" aria-hidden="true">${esc(initials(artist.name))}</span>`;
   const done = state === 'mastered';
-  return `<li><button type="button" class="cx-card${done ? ' is-mastered' : ''}" data-artist="${esc(artist.id)}" aria-label="${esc(`${artist.name}, ${seen} de ${total} cuadros${done ? ', dominado' : ''}`)}">
+  return `<li><button type="button" class="cx-card${done ? ' is-mastered' : ''}" data-artist="${esc(artist.id)}" aria-label="${esc(`${artist.name}, ${seen} de ${total} cuadros${done ? ', ya reconoces sus cuadros' : ''}`)}">
     <span class="cx-cover">${img}${done ? `<span class="cx-badge" aria-hidden="true">${icons.check(12)}</span>` : ''}</span>
     <span class="cx-name">${esc(artist.short || artist.name)}</span><span class="cx-sub">${seen} de ${total}</span></button></li>`;
 }

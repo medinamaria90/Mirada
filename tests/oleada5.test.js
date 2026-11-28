@@ -8,7 +8,7 @@ import { buildIndex } from '../app/js/engine/catalog.js';
 import { planStage, planSrsReview, QUICK_REVIEW } from '../app/js/engine/planner.js';
 import { decodeChallenge, encodeChallenge, tokenForRound } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
-import { planDaily } from '../app/js/engine/daily.js';
+import { planWeekly } from '../app/js/engine/daily.js';
 import { emptyProgress, artistStatus, isStepUnlocked, stepPassed, nextStep, UNLOCK_MIN } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { isSpoiler } from '../app/js/engine/questions.js';
@@ -56,11 +56,11 @@ test('retos por enlace: fechas reales, no futuras, desde 2026 y puntuación dent
   assert.equal(decodeChallenge('reto-d20251231-9', { today }), null, 'antes de 2026');
   assert.equal(decodeChallenge('reto-d20260230-9', { today }), null, 'fecha que no existe');
   assert.equal(decodeChallenge('reto-gzzzzzzzz-1'), null, 'semilla fuera de rango');
-  const daily = planDaily(real, '2026-11-23');
-  const total = daily.questions.length;
-  const okHash = encodeChallenge(tokenForRound(real, daily), total);
+  const weekly = planWeekly(real, '2026-W47');
+  const total = weekly.questions.length;
+  const okHash = encodeChallenge(tokenForRound(real, weekly), total);
   assert.ok(planChallenge(real, decodeChallenge(okHash, { today })));
-  const tooMany = decodeChallenge(`reto-d20261123-${total + 1}`, { today });
+  const tooMany = decodeChallenge(`reto-w202647-${total + 1}`, { today });
   assert.ok(tooMany, 'el formato es válido…');
   assert.equal(planChallenge(real, tooMany), null, '…pero la puntuación no cabe en la ronda');
   const stage = planStage(real, real.path[3].id, 77);
@@ -70,11 +70,11 @@ test('retos por enlace: fechas reales, no futuras, desde 2026 y puntuación dent
   assert.equal(planChallenge(real, decodeChallenge('reto-szzx1-2')), null, 'etapa que no existe');
 });
 
-test('rutas: nombres válidos, repaso rápido y enlaces que no valen', () => {
+test('rutas: nombres válidos, el repaso rápido redirige a #repaso y enlaces que no valen', () => {
   const today = '2026-11-24';
   assert.deepEqual(parseRoute('', { today }), { name: 'home' });
   assert.deepEqual(parseRoute('#inicio', { today }), { name: 'home' });
-  assert.deepEqual(parseRoute('#repaso-rapido', { today }), { name: 'quick' });
+  assert.deepEqual(parseRoute('#repaso-rapido', { today }), { name: 'srs', redirect: 'repaso' });
   assert.deepEqual(parseRoute('#repaso', { today }), { name: 'srs' });
   assert.equal(parseRoute('#repaso-barroco', { today }).name, 'review');
   assert.equal(parseRoute('#etapa-leonardo', { today }).name, 'stage');
@@ -112,6 +112,8 @@ test('catálogo en dos partes: lo mínimo para pintar y los textos después; atl
   // Región del atlas y rutas seguras.
   const atlas = { sheets: ['img/s/c0.jpg'], size: [[864, 864]] };
   assert.deepEqual(resolveThumb([0, 4, 8, 280, 200], atlas), { src: 'img/s/c0.jpg', x: 4, y: 8, w: 280, h: 200, sw: 864, sh: 864 });
+  // Con versión de disposición, la URL de la hoja la lleva (invalida cachés viejas).
+  assert.equal(resolveThumb([0, 4, 8, 280, 200], { ...atlas, v: 'abc123def0' }).src, 'img/s/c0.jpg?v=abc123def0');
   assert.equal(resolveThumb([3, 4, 8, 280, 200], atlas), null);
   assert.equal(resolveThumb('https://x.y/a.jpg', atlas), null);
   assert.deepEqual(resolveThumb('img/a1.jpg', atlas), { src: 'img/a1.jpg' });

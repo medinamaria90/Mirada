@@ -5,6 +5,7 @@
 import { esc, accentStyle } from './dom.js';
 import { mediaHtml } from './story-card.js';
 import { isShareable } from '../engine/stories.js';
+import { guardGhostTaps } from './tap-guard.js';
 
 const INVITE = Object.freeze({ PLAY: 'play', LATER: 'later' });
 
@@ -24,8 +25,8 @@ function invite(ctx, artist, work) {
           <h2 class="story-ask" id="story-invite-title">¿Te ha gustado?</h2>
           <p class="story-text">Aprende a reconocer a ${esc(name)} y a los grandes maestros jugando.</p>
         </div>
-        <div class="story-actions">
-          <button type="button" class="btn story-more" data-st="later">Ahora no</button>
+        <div class="deck-actions">
+          <button type="button" class="btn deck-secondary" data-st="later">Ahora no</button>
           <button type="button" class="btn btn-primary" data-st="play">Empezar a jugar</button>
         </div>
       </div>
@@ -41,6 +42,7 @@ function invite(ctx, artist, work) {
       window.removeEventListener('popstate', onPop);
       if (dlg.open) dlg.close();
       dlg.remove();
+      guardGhostTaps();
       if (pushed && !fromPop) {
         window.addEventListener('popstate', () => resolve(choice), { once: true });
         history.back();
@@ -65,10 +67,16 @@ export async function playSharedStory(ctx, artistId, level) {
   const { playStory, STORY_END } = await import('./story-viewer.js');
   const { shown, ended } = await playStory(ctx, artistId, level, { force: true, guest: true, onPlay: false, onMore: false });
   if (ended === STORY_END.NONE) { ctx.toast('Ese enlace no vale'); return; }
-  if (ctx.store.get().onboarded) return;
-  const work = ctx.index.artwork(shown[shown.length - 1]);
-  if (!work || (await invite(ctx, artist, work)) !== INVITE.PLAY) return;
+  await inviteToPlay(ctx, artist, ctx.index.artwork(shown[shown.length - 1]));
+}
+
+// Para quien aún no juega (también al acabar el Cuadro del día que le han compartido): la invitación con ese cuadro de fondo.
+// «Empezar a jugar» empieza la partida y lleva al camino; «Ahora no» le deja donde está. Devuelve true si empieza.
+export async function inviteToPlay(ctx, artist, work, { home = 'inicio' } = {}) {
+  if (ctx.store.get().onboarded || !artist || !work) return false;
+  if ((await invite(ctx, artist, work)) !== INVITE.PLAY) return false;
   ctx.audio.unlock();
   ctx.store.update((s) => ({ ...s, onboarded: true }));
-  ctx.go('inicio');
+  ctx.go(home);
+  return true;
 }

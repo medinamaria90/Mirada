@@ -60,6 +60,7 @@ test('mapa: el sendero recorrido va de otro color hasta la parada actual (entero
   const first = real.visibleMovements[0].id;
   real.stepsOf(first).forEach((s) => { if (s.type === 'artist') p.artists[s.id] = { plays: 1, best: 0.9, mastered: true, last: '2026-11-20' }; });
   p.medals[`movement-${first}`] = '2026-11-20';
+  for (const e of real.essentials.filter((x) => x.movementId === first)) p.deep[`${e.artistId}:${e.level}`] = { plays: 1, best: 1, mastered: true, last: '2026-11-20' };
   const html = renderPathMap({ index: real, store: { get: () => ({ progress: p }) } });
   const layout = pathLayout(real);
   const block = (id) => html.slice(html.indexOf(`data-era="${id}"`), html.indexOf('</li>\n  </li>', html.indexOf(`data-era="${id}"`)) + 1 || undefined);
@@ -70,7 +71,7 @@ test('mapa: el sendero recorrido va de otro color hasta la parada actual (entero
   assert.ok(walkedD(layout.eras[1], 1).length > walkedD(layout.eras[1], 0).length);
 });
 
-test('mapa: la salida es corta y con encanto (muralla con puerta, plaza con fuente) y el primer tramo arranca enseguida', () => {
+test('mapa: la salida es corta y con encanto (muralla con su puerta de ciudad, sin plaza) y el primer tramo arranca enseguida', () => {
   const layout = pathLayout(real);
   assert.ok(START_H <= 150, 'el hito de salida vuelve a ser largo');
   const [a, b] = layout.eras;
@@ -80,7 +81,7 @@ test('mapa: la salida es corta y con encanto (muralla con puerta, plaza con fuen
   const start = html.slice(html.indexOf('<li class="path-start"'), html.indexOf('</li>', html.indexOf('<li class="path-start"')));
   assert.ok((start.match(/data-lamp/g) || []).length >= 4, 'la puerta de salida no tiene ventanas que se enciendan');
   assert.ok((start.match(/data-sway/g) || []).length >= 3, 'la salida no tiene árboles que se mezan');
-  assert.ok(start.includes('class="land-water"') && start.includes('data-jet'), 'la plaza no tiene fuente');
+  assert.ok(!start.includes('plaza') && !start.includes('data-jet'), 'queda la plaza o la fuente (María las quitó)');
 });
 
 test('paisajes: listos para vivir — clases del tema (k-*), árboles, luces, agua y detalles esparcidos', () => {
@@ -176,8 +177,8 @@ test('vida de paso: CSS solo de transform y opacity con el mapa vivo, colores de
   assert.ok(!/#[0-9a-f]{3,8}\b|rgba?\(/i.test(css), 'colores escritos a mano en mapa-vida.css');
   assert.ok(/\.path-map\.is-linear \.path-stars, \.path-map\.is-linear \.map-critter \{ display: none; \}/.test(css), 'en línea quedan estrellas o figuras');
   const brand = readFileSync(join(app, 'css', 'brand.css'), 'utf8');
-  assert.equal((brand.match(/--map-star:/g) || []).length, 3, '--map-star sin tema claro y oscuro');
-  assert.equal((brand.match(/--map-cloud:/g) || []).length, 3, '--map-cloud sin tema claro y oscuro');
+  assert.equal((brand.match(/--map-star:/g) || []).length, 4, '--map-star sin tema claro, oscuro y mapa claro con el móvil en oscuro');
+  assert.equal((brand.match(/--map-cloud:/g) || []).length, 4, '--map-cloud sin tema claro, oscuro y mapa claro con el móvil en oscuro');
   assert.ok(readFileSync(join(app, 'index.html'), 'utf8').includes('href="css/mapa-vida.css"'));
 });
 

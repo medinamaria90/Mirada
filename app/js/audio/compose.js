@@ -199,7 +199,8 @@ export function sectionDyn(piece, ev, bpb) {
 /**
  * Eventos de una vuelta concreta del bucle: pequeña humanización de velocidad y tiempo,
  * ornamentos ocasionales (más en la repetición conclusiva) y, en vueltas impares, la
- * sección B se dobla suavemente a la octava para que el bucle no sea idéntico.
+ * sección B se dobla suavemente a la octava para que el bucle no sea idéntico (salvo `octaveB: false`,
+ * para las piezas que no deben pasar del registro de su melodía).
  */
 export function varyLoop(compiled, loopIdx, rng) {
   const { piece } = compiled;
@@ -216,7 +217,7 @@ export function varyLoop(compiled, loopIdx, rng) {
       if (orn && rng() < orn.prob * (loopIdx === 0 ? 0.5 : 1) * (base.sec === 'close' ? 1.6 : 1)) {
         list = ornament(list[0], piece, rng, orn.kind);
       }
-      if (loopIdx % 2 === 1 && base.sec === 'B' && base.midi <= 84 && base.dur >= 1) {
+      if (piece.octaveB !== false && loopIdx % 2 === 1 && base.sec === 'B' && base.midi <= 84 && base.dur >= 1) {
         list.push({ ...base, midi: base.midi + 12, vel: base.vel * 0.3 });
       }
     } else {

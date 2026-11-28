@@ -4,17 +4,12 @@
 // Con la hoja de compartir del móvil (Web Share API) si la hay; si no, copia el enlace y lo avisa (en la historia, dentro de ella:
 // el aviso general quedaría debajo).
 
-import { icons } from './icons.js';
-
 const APP_NAME = 'Sfumato';
 const NOTE_MS = 2600; // lo que se ve el aviso «Enlace copiado»
 
 let noteTimer = null;
 
 export const SHARE_RESULT = Object.freeze({ SHARED: 'shared', COPIED: 'copied', CANCELLED: 'cancelled', FAILED: 'failed' });
-
-export const shareButtonHtml = () =>
-  `<button type="button" class="story-icon" data-st="share" aria-label="Compartir">${icons.share(20)}</button>`;
 
 export const noteHtml = () => '<p class="story-note" role="status" aria-live="polite"></p>';
 
@@ -24,11 +19,12 @@ export const storyUrl = (artistId, level, href = location.href) => new URL(`h/${
 // Enlace a la página de las tarjetas de una época, igual que el de las historias.
 export const eraUrl = (movementId, href = location.href) => new URL(`h/epoca-${movementId}.html`, href).href;
 
-// title: lo que se comparte («Quién fue Velázquez», «Barroco»). Devuelve SHARE_RESULT.
-export async function shareLink({ url, title }) {
+// title: lo que se comparte («Quién fue Velázquez», «Barroco»); text: la frase, si no es «<title>, en Sfumato» (el cierre de
+// una época: «He terminado el Barroco en Sfumato»). Sin hoja de compartir se copia la frase con el enlace. Devuelve SHARE_RESULT.
+export async function shareLink({ url, title, text = '' }) {
   if (navigator.share) {
     try {
-      await navigator.share({ title: `${title} · ${APP_NAME}`, text: `${title}, en ${APP_NAME}`, url });
+      await navigator.share({ title: `${title} · ${APP_NAME}`, text: text || `${title}, en ${APP_NAME}`, url });
       return SHARE_RESULT.SHARED;
     } catch (err) {
       if (err?.name === 'AbortError') return SHARE_RESULT.CANCELLED;
@@ -36,7 +32,7 @@ export async function shareLink({ url, title }) {
     }
   }
   try {
-    await navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(text ? `${text}\n${url}` : url);
     return SHARE_RESULT.COPIED;
   } catch (err) {
     console.info('No se ha podido copiar:', err?.message);

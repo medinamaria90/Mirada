@@ -10,10 +10,10 @@ import { makeWhoQuestion, makeWhichQuestion, makeMovementQuestion, makeQuestion,
 import {
   planStage, planSala, planMovementReview, planSrsReview, planGeneral, salaLearnWorks, createRound, answerRound,
 } from '../app/js/engine/planner.js';
-import { planDaily, dailyPool } from '../app/js/engine/daily.js';
+import { planWeekly, dailyPool } from '../app/js/engine/daily.js';
 import { tokenForRound, encodeChallenge, decodeChallenge } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
-import { emptyProgress, salaStatus, artistStatus, movementStatus, isReviewUnlocked, nextStep, needsIntro, MASTERY } from '../app/js/engine/progress.js';
+import { emptyProgress, salaStatus, artistStatus, movementStatus, isReviewUnlocked, nextStep, needsIntro, needsTramo, hasTramoSign, MASTERY } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { migrate, defaultState, SCHEMA_VERSION } from '../app/js/state/schema.js';
 import { createStore, STORAGE_KEY } from '../app/js/state/store.js';
@@ -215,8 +215,8 @@ test('reto a un amigo: semilla de sala r<idx>x<seed> reconstruye la misma ronda;
   assert.equal(planChallenge(salas, { kind: 'sala', idx: 0, seed: 1 }), null);
   const stage = planStage(real, real.path.at(-1).id, 99);
   assert.deepEqual(planChallenge(real, decodeChallenge(encodeChallenge(tokenForRound(real, stage), 4))).questions, stage.questions);
-  const daily = planDaily(real, '2026-11-23');
-  assert.deepEqual(planChallenge(real, decodeChallenge(encodeChallenge(tokenForRound(real, daily), 4))).questions, daily.questions);
+  const weekly = planWeekly(real, '2026-W48');
+  assert.deepEqual(planChallenge(real, decodeChallenge(encodeChallenge(tokenForRound(real, weekly), 4))).questions, weekly.questions);
   const stage2 = planStage(salas, 'p22', 99);
   assert.deepEqual(planChallenge(salas, decodeChallenge(encodeChallenge(tokenForRound(salas, stage2), 4))).questions, stage2.questions);
 });
@@ -232,6 +232,20 @@ test('intro: se necesita la primera vez y no si ya se vio o ya se jugó en el mo
   assert.equal(needsIntro({ ...p, artists: { [FIRST]: { plays: 1 } } }, real, m1), false);
   assert.equal(needsIntro({ ...p, salas: { [ROCOCO]: { plays: 1 } } }, salas, ROCOCO), false);
   assert.equal(needsIntro({ ...p, intros: undefined }, real, m2), true);
+});
+
+test('el cartel del tramo sale una sola vez antes de su primer pintor: ni visto, ni con un pintor del tramo jugado', () => {
+  const p = emptyProgress();
+  // El primer tramo de cada época no sale en el camino (hasTramoSign): el cartel es el del primer tramo que sí sale.
+  const first = real.path.find((a) => hasTramoSign(real, a.id));
+  assert.equal(needsTramo(emptyProgress(), real, real.path.find((a) => a.section).id), false, 'el primer tramo de la época no lleva cartel');
+  const mate = real.path.find((a) => a.section === first.section && a.id !== first.id);
+  const plain = { artist: () => ({ id: 'x' }), path: [] };
+  assert.equal(needsTramo(p, real, first.id), true);
+  assert.equal(needsTramo({ ...p, signs: { [first.section]: '2026-11-27' } }, real, first.id), false);
+  if (mate) assert.equal(needsTramo({ ...p, artists: { [first.id]: { plays: 1 } } }, real, mate.id), false);
+  assert.equal(needsTramo({ ...p, signs: undefined }, real, first.id), true);
+  assert.equal(needsTramo(p, plain, 'x'), false);
 });
 
 // --- Tramos del mapa ----------------------------------------------------------------

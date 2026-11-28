@@ -68,7 +68,7 @@ export function artFrame(artwork, opts = {}) {
     failed
       ? ''
       : `<img ${opts.defer ? 'data-src' : 'src'}="${esc(opts.small ? smallSrc(artwork) : opts.tiny ? tinySrc(artwork) : artSrc(artwork, opts.thumb))}" alt="${z ? '' : esc(opts.alt ?? '')}" ${size} loading="${opts.eager ? 'eager' : 'lazy'}" decoding="async"${opts.eager ? ' fetchpriority="high"' : ''}>`
-  }${z && z.badge !== false ? ZOOM_BADGE : ''}</${tag}>`;
+  }${opts.veils || ''}${z && z.badge !== false ? ZOOM_BADGE : ''}</${tag}>`;
 }
 
 // Delegación global de carga y error (los eventos load/error no burbujean: captura).

@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Retrato_de_Giovanni_Arnolfini_y_su_esposa"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Letras",
+   "title": "Van Eyck escribe en sus cuadros",
+   "cards": [
+    {
+     "text": "Bajo este hombre se lee «Léal Souvenir», «recuerdo leal», en letras que parecen grabadas a cincel en la piedra. Están pintadas. Aún no sabemos quién era el retratado.",
+     "artwork": "w1150782",
+     "source": "https://es.wikipedia.org/wiki/Jan_van_Eyck"
+    },
+    {
+     "text": "En el marco, el propio retrato de su mujer habla: «Mi marido Jan me acabó de pintar el 17 de junio de 1439. Tenía 33 años». Y debajo, el lema de Van Eyck: «Como yo pueda».",
+     "artwork": "w3399452",
+     "source": "https://en.wikipedia.org/wiki/Portrait_of_Margaret_van_Eyck"
+    },
+    {
+     "text": "Fíjate en las palabras que salen de la boca del ángel y de la Virgen. La respuesta de ella está escrita boca abajo: va dirigida a Dios, que la lee desde arriba.",
+     "artwork": "w2734881",
+     "source": "https://en.wikipedia.org/wiki/Annunciation_(van_Eyck,_Washington)"
+    }
+   ]
   }
  ]
 }

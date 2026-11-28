@@ -49,6 +49,28 @@
      "source": "https://es.wikipedia.org/wiki/La_gran_ola_de_Kanagawa"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Fuji",
+   "title": "Hokusai y sus vistas del Fuji",
+   "cards": [
+    {
+     "text": "Fíjate en el tonelero (el que hace barriles): trabaja dentro de un barril gigante y, por el hueco, se ve el Fuji. Hokusai lo escondía en los lugares más raros.",
+     "artwork": "w17210582",
+     "source": "https://es.wikipedia.org/wiki/Treinta_y_seis_vistas_del_monte_Fuji"
+    },
+    {
+     "text": "Las Treinta y seis vistas del monte Fuji se vendieron tanto que añadió diez más. Aquí, un pescador tira del sedal desde una roca, contra las olas.",
+     "artwork": "w17227585",
+     "source": "https://es.wikipedia.org/wiki/Treinta_y_seis_vistas_del_monte_Fuji"
+    },
+    {
+     "text": "Con más de 70 años sacó Mares de sabiduría, una serie sobre la pesca: barcas diminutas rodean a una ballena enorme. Seguía probando cosas nuevas.",
+     "artwork": "w2963437",
+     "source": "https://es.wikipedia.org/wiki/Katsushika_Hokusai"
+    }
+   ]
   }
  ]
 }

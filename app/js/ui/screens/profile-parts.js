@@ -1,4 +1,4 @@
-// Piezas del perfil (HTML): bienvenida y «Practicar» (repaso, test de pintura y reto semanal). La identidad está
+// Piezas del perfil (HTML): bienvenida y «Practicar» (test de pintura y reto semanal; el repaso va en el botón ↻). La identidad está
 // en profile-hero.js, el rango en profile-rank.js, las cifras en profile-stats.js, los logros en profile-medals.js
 // y los ajustes en profile-settings.js.
 
@@ -6,7 +6,6 @@ import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { plural } from '../../engine/profile.js';
 import { isPathMastered, pathProgress } from '../../engine/progress.js';
-import { review5Works, REVIEW5_MIN, REVIEW5_NAME } from '../../engine/review.js';
 import { isoWeek } from '../../engine/dates.js';
 
 const QUESTION = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6"/><path d="M12 17h.01"/></svg>';
@@ -16,12 +15,12 @@ const SHARE = '<svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill
 export function welcomeHtml() {
   return `<section class="pf-sec pf-welcome-sec" aria-labelledby="pf-welcome-h">
     <h2 id="pf-welcome-h">Tu perfil empieza aquí</h2>
-    <p class="pf-lead">Juega y cada cuadro que veas irá a tu Colección. Con ellos podrás elegir tu portada y tu avatar.</p>
+    <p class="pf-lead">Juega y cada cuadro que veas irá a tu Colección. Con ellos podrás elegir tu avatar.</p>
     <a class="btn btn-primary btn-wide" href="#inicio">Ir al camino</a>
   </section>`;
 }
 
-// «Practicar»: el repaso de 5 (bloqueado y con el motivo si no hay qué repasar), el test de pintura (con el
+// «Practicar»: el test de pintura (con el
 // último resultado y «Compartir» al lado, si lo hay) y el reto semanal; sin el camino dominado, el reto se ve
 // bloqueado y dice lo que falta (una fila que no se pulsa y lo parece: candado y sin flecha).
 export function practiceHtml(ctx, last = null) {
@@ -38,12 +37,6 @@ export function practiceHtml(ctx, last = null) {
       ${it.done ? `<span class="pf-go-done"><span class="sr-only">Hecho: </span>${icons.check(16)}${esc(it.done)}</span>` : ''}
       <span class="pf-go-next" aria-hidden="true">${icons.next(20)}</span></button></li>`);
   const items = [];
-  // El repaso se ve siempre: sin cuadros que repasar, bloqueado y con el motivo.
-  if (review5Works(p, index, ctx.today()).length >= REVIEW5_MIN) {
-    items.push({ action: 'review5', icon: icons.repeat(24), name: REVIEW5_NAME, done: '' });
-  } else {
-    items.push({ locked: true, name: REVIEW5_NAME, sub: `Vuelve cuando tengas ${REVIEW5_MIN} cuadros que repasar` });
-  }
   items.push({ test: true });
   if (isPathMastered(p, index)) {
     const week = p.weekly?.[isoWeek(ctx.dailyDay()).key];
@@ -52,7 +45,7 @@ export function practiceHtml(ctx, last = null) {
     const pp = pathProgress(p, index);
     const left = pp.total - pp.mastered;
     // Sin ninguna parada dominada, una cifra grande desanima: solo se dice cómo se abre.
-    const sub = pp.mastered === 0 ? 'Se abre al dominar el camino' : `Domina el camino: te ${left === 1 ? 'queda' : 'quedan'} ${plural(left, 'parada', 'paradas')}`;
+    const sub = pp.mastered === 0 ? 'Se abre al final del camino' : `Se abre al final del camino (te ${left === 1 ? 'queda' : 'quedan'} ${plural(left, 'parada', 'paradas')})`;
     items.push({ locked: true, name: 'Reto semanal', sub });
   }
   return `<section class="pf-sec pf-practice-sec" aria-labelledby="pf-practice-h">

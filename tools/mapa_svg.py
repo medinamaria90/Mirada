@@ -38,6 +38,7 @@ sys.path.insert(0, os.path.join(ROOT, 'marca', 'tools'))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mapa as M  # noqa: E402
 import mapa_agua as A  # noqa: E402
+import mapa_ramas as R  # noqa: E402  (paisajes de rama y sus piezas: olivos, iglesia de aguja, casa blanca)
 
 OUT = os.path.join(ROOT, 'app', 'img', 'mapa')
 MAX_KB = 64   # en la página va comprimido (~10 KB el mayor)
@@ -88,9 +89,9 @@ def tinte(h, tint_class):
 
 # Huecos de la época que se está pintando (los fija build): paradas con rama y cajas de los rótulos de cada parada
 # (nombre, lado ancho) y de los carteles.
-LIBRE = {'ramas': set(), 'rotulos': [], 'road': None}
+LIBRE = {'ramas': set(), 'estrecho': set(), 'rotulos': [], 'road': None}
 # Lo ya pintado en la época (base de cada pieza y ríos), para que el esparcido no se le monte encima.
-OCUPADO = {'piezas': [], 'rios': [], 'agua': []}
+OCUPADO = {'piezas': [], 'rios': [], 'agua': [], 'edificios': []}
 # Puentes del tramo que se está pintando (los da el trazado) y errores de agua de todos los tramos.
 PUENTES = []
 ERRORES = []
@@ -147,6 +148,39 @@ def _libre(nombre):
         return res
     return envuelta
 
+
+# ---- edificios fuera del agua -----------------------------------------------------------------------------------
+# Ningún edificio toca un río (las barcas lo recorren de lado a lado por su centro y pasarían por encima de él): si su
+# caja cae en la banda del río (con su onda), se corre a la orilla más cercana. Su caja: de la base (y) al tejado.
+RIO_MEDIO = 27       # medio ancho de la banda de un río: medio cauce, la onda y algo de aire
+ORILLA = 3           # aire entre la orilla y el edificio que se corre
+ALTO_EDIFICIO = {
+    'caja': lambda a: a[3] + a[4] * .5, 'casa': lambda a: a[3] + a[2] * .6 + a[4] * .5, 'casa_larga': lambda a: a[3] + a[2] * .4 + a[4] * .5,
+    'arcada': lambda a: a[3] + a[4] * .5, 'torre': lambda a: a[3] + a[2] * 1.6, 'molino': lambda a: (a[3] if len(a) > 3 else 30) + 22,
+}
+
+
+def _fuera_del_agua(nombre):
+    pieza = getattr(M, nombre)
+
+    def envuelta(*a, **k):
+        if len(a) < 2 or (nombre != 'molino' and len(a) < 4):
+            return pieza(*a, **k)
+        x, y = a[0], a[1]
+        alto = ALTO_EDIFICIO[nombre](a)
+        for b in PUENTES:
+            arriba, abajo = b['y'] - RIO_MEDIO, b['y'] + RIO_MEDIO
+            if y - alto < abajo and y > arriba:
+                y = arriba - ORILLA if (y - alto / 2) < b['y'] else abajo + alto + ORILLA
+        res = pieza(x, y, *a[2:], **k)
+        if res[1]:
+            OCUPADO['edificios'].append((nombre, x, y - alto, y))
+        return res
+    return envuelta
+
+
+for _n in ALTO_EDIFICIO:
+    setattr(M, _n, _fuera_del_agua(_n))
 
 for _n in SOBRE_ROTULO:
     setattr(M, _n, _libre(_n))
@@ -262,7 +296,7 @@ def margenes(p, h, arbol):
     a las paradas con rama."""
     out = []
     for i, q in enumerate(p):
-        if i in LIBRE['ramas']:
+        if i in LIBRE['ramas'] or i in LIBRE['estrecho']:
             continue
         xm = mismo(q)
         out.append(arbol(xm, q[1] + 12 + (i % 2) * 6, i))
@@ -294,6 +328,55 @@ def conos(x, y, i):
     return M.cono(x, y, 18 + (i % 2) * 6)
 
 
+
+# ---- paradas sin viñeta propia (las que pasan de las primeras de cada época) -----------------------------------
+# Antes repetían la misma viñeta en la misma columna (la misma casita, una encima de otra). Ahora salen de una lista de
+# viñetas de la época (edificios del lugar: molinos y canales en Flandes y Holanda, olivos en España…), alternando lado, sin repetir la anterior ni la de dos más arriba, a distancias algo irregulares y con algún hueco
+# de prado vacío para que respire. Determinista por época (mismo SVG en cada generación).
+RELLENO = {'hueco_primero': (2, 4), 'hueco_cada': (4, 6), 'dx': 10, 'dy': 14}
+ESTRECHO = {'left': 54, 'right': 336}   # centro de las viñetas en el margen estrecho de una parada (del lado contrario a su rótulo)
+
+
+def plan_relleno(columnas, opciones, semilla):
+    """Para cada parada (columnas: el lado de su viñeta), el índice de la viñeta (o None: prado vacío). Nunca la misma que
+    la anterior, que la de dos más arriba (si hay donde elegir) ni que la última de su columna; un hueco cada pocas."""
+    import random
+    rnd = random.Random(f'relleno-{semilla}')
+    out, hueco, ultima = [], rnd.randint(*RELLENO['hueco_primero']), {}
+    for k, col in enumerate(columnas):
+        if k == hueco:
+            out.append(None)
+            hueco += rnd.randint(*RELLENO['hueco_cada'])
+            continue
+        hechas = [j for j in out if j is not None]
+        evita = set(hechas[-2:] if opciones > 3 else hechas[-1:]) | ({ultima[col]} if col in ultima else set())
+        j = rnd.choice([j for j in range(opciones) if j not in evita])
+        out.append(j)
+        ultima[col] = j
+    return out
+
+
+def seguidas(p, desde, pool, semilla):
+    """Viñetas de las paradas desde «desde»: cada una de pool(x, y, i), alternando el lado ancho de la parada (el de su
+    rótulo, algo más arriba) y el margen estrecho (sin el arbolito de margenes), algo desplazadas y nunca hacia el rótulo."""
+    import random
+    rnd = random.Random(f'sitio-{semilla}')
+    sitios = []
+    for k, q in enumerate(p[desde:]):
+        x = (ESTRECHO['left'] if q[0] < W / 2 else ESTRECHO['right']) if k % 2 else lado(q)
+        sitios.append(x)
+    out = []
+    for k, j in enumerate(plan_relleno([x > W / 2 for x in sitios], len(pool), semilla)):
+        i, x = desde + k, sitios[k]
+        dx, dy = rnd.randint(0, RELLENO['dx']), -rnd.randint(0, RELLENO['dy'])
+        if j is None:
+            continue
+        if k % 2:
+            LIBRE['estrecho'].add(i)
+        out += pool[j](x - dx if x > W / 2 else x + dx, p[i][1] + dy, i)
+    return out
+
+
 # ---- paisaje por época (p: nodos de abajo arriba) --------------------------------------------------------------
 
 def deco_renacimiento(p, h):
@@ -317,9 +400,13 @@ def deco_renacimiento(p, h):
         x = lado(p[4])  # villa con jardín
         out += [M.casa_larga(x - 30, p[4][1] + 12, 56, 20, 14, win=(4, 1), arco=True), M.cipres(x - 44, p[4][1] + 14, 30), M.cipres(x + 38, p[4][1] + 12, 32),
                 M.podado(x - 20, p[4][1] + 28, 12, 10), M.podado(x + 8, p[4][1] + 28, 12, 10)]
-    for i in range(5, len(p)):
-        x = lado(p[i])
-        out += [M.casa(x - 16, p[i][1] + 16, 24, 16, 12), M.cipres(x + 24, p[i][1] + 14, 30), M.arbol(x - 36, p[i][1] + 20, 8)]
+    out += seguidas(p, 5, [
+        lambda x, y, i: [M.casa(x - 16, y + 16, 24, 16, 12), M.cipres(x + 24, y + 14, 30), M.arbol(x - 36, y + 20, 8)],
+        lambda x, y, i: [M.casa_larga(x - 26, y + 14, 36, 14, 12, win=(2, 1)), M.almiar(x + 22, y + 16, 14), M.campos(x - 40, y + 34, 64, 14)],
+        lambda x, y, i: [M.torre(x + 4, y + 12, 13, 44, 'plano', win=(1, 2)), M.casa(x - 22, y + 18, 20, 12, 10), M.cipres(x + 32, y + 18, 26)],
+        lambda x, y, i: R.olivar(x - 22, y + 26) + [M.cipres(x + 36, y + 10, 28)],
+        lambda x, y, i: [rebano(x - 16, y + 24), M.arbol(x + 26, y + 12, 9), M.cipres(x - 38, y + 14, 24)],
+    ], 'renacimiento')
     return out + margenes(p, h, cipreses)
 
 
@@ -346,9 +433,13 @@ def deco_norte(p, h):
         out += [M.casa_larga(x - 20, p[4][1] + 14, 40, 26, 14, win=(2, 1), arco=True, teja=M.PIZARRA, teja2=M.PIZARRA2),
                 M.torre(x - 32, p[4][1] + 14, 12, 50, 'aguja', ar=28, win=(1, 2)), M.torre(x + 20, p[4][1] + 14, 12, 50, 'aguja', ar=28, win=(1, 2)),
                 M.arbol_desnudo(x + 44, p[4][1] + 18, 26), M.arbol(x - 46, p[4][1] + 20, 8)]
-    for i in range(5, len(p)):
-        x = lado(p[i])
-        out += [M.casa(x - 10, p[i][1] + 16, 20, 20, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.arbol_desnudo(x + 24, p[i][1] + 14, 24), M.arbol(x - 34, p[i][1] + 18, 8)]
+    out += seguidas(p, 5, [
+        lambda x, y, i: [M.casa(x - 10, y + 16, 20, 20, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.arbol_desnudo(x + 24, y + 14, 24), M.arbol(x - 34, y + 18, 8)],
+        lambda x, y, i: [M.molino(x - 6, y + 12, 18, 30), M.campos(x - 42, y + 32, 60, 14), M.arbol(x + 32, y + 18, 8)],
+        lambda x, y, i: R.iglesia_aguja(x, y + 12) + [M.arbol(x - 40, y + 22, 8)],
+        lambda x, y, i: [M.casa_larga(x - 24, y + 14, 34, 14, 12, win=(2, 1), teja=M.PIZARRA, teja2=M.PIZARRA2), M.almiar(x + 22, y + 18, 14), M.arbol_desnudo(x - 38, y + 14, 22)],
+        lambda x, y, i: [M.lago(x, y + 22, 34, 8), M.barca(x - 8, y + 21, 12), M.arbol(x + 38, y + 10, 8)],
+    ], 'norte')
     return out + margenes(p, h, lambda x, y, i: M.arbol(x, y, 7 + (i % 2)))
 
 
@@ -379,9 +470,15 @@ def deco_barroco(p, h):
         x = lado(p[6])  # canal holandés con casas altas
         out += [M.casa(x - 30, p[6][1] + 14, 16, 28, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.casa(x - 12, p[6][1] + 16, 16, 32, 10, teja=M.PIZARRA, teja2=M.PIZARRA2),
                 M.casa(x + 6, p[6][1] + 14, 16, 26, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.molino(x + 30, p[6][1] + 18, 16, 26), M.lago(x - 4, p[6][1] + 30, 40, 7), M.barca(x - 12, p[6][1] + 30, 14)]
-    for i in range(7, len(p)):
-        x = lado(p[i])
-        out += [M.casa_larga(x - 20, p[i][1] + 12, 40, 18, 12, win=(3, 1), arco=True), M.naranjo(x + 34, p[i][1] + 16), M.naranjo(x - 34, p[i][1] + 18)]
+    # España, Flandes y Holanda: palacio con naranjos, molino y canal, olivar con casa blanca, iglesia, granja, huerto.
+    out += seguidas(p, 7, [
+        lambda x, y, i: [M.casa_larga(x - 20, y + 12, 40, 18, 12, win=(3, 1), arco=True), M.naranjo(x + 34, y + 16), M.naranjo(x - 34, y + 18)],
+        lambda x, y, i: [M.molino(x + 10, y + 12, 18, 30), M.lago(x - 14, y + 26, 30, 7), M.casa(x - 34, y + 12, 14, 22, 9, teja=M.PIZARRA, teja2=M.PIZARRA2)],
+        lambda x, y, i: R.olivar(x - 24, y + 28) + [R.casa_blanca(x + 22, y + 8)],
+        lambda x, y, i: [M.torre(x - 4, y + 10, 13, 46, 'cupulin', win=(1, 2)), M.casa(x + 14, y + 16, 20, 12, 10), M.naranjo(x - 30, y + 18, 7)],
+        lambda x, y, i: [M.campos(x - 42, y + 32, 64, 16), M.almiar(x - 16, y + 18, 14), M.casa(x + 18, y + 14, 20, 13, 10)],
+        lambda x, y, i: [R.casa_blanca(x - 6, y + 12, 22, 13, 10), M.naranjo(x - 32, y + 16, 8), M.naranjo(x + 26, y + 20, 7), M.naranjo(x + 8, y + 30, 7)],
+    ], 'barroco')
     return out + margenes(p, h, naranjos)
 
 
@@ -398,9 +495,13 @@ def deco_rococo(p, h):
         x = lado(p[2])  # templete neoclásico
         out += [M.arcada(x - 22, p[2][1] + 12, 44, 28, 14, 1), (p[2][1] + 13, M.R(x - 16, p[2][1] - 22, 32, 6, M.T3)), M.columna(x - 32, p[2][1] + 12, 28),
                 M.columna(x + 32, p[2][1] + 12, 28), M.cono(x - 48, p[2][1] + 14, 24), M.cono(x + 48, p[2][1] + 14, 24)]
-    for i in range(3, len(p)):
-        x = lado(p[i])
-        out += [M.casa_larga(x - 24, p[i][1] + 12, 48, 20, 14, win=(3, 1), arco=True, teja=M.PIZARRA, teja2=M.PIZARRA2), M.cono(x - 38, p[i][1] + 16, 22), M.cono(x + 38, p[i][1] + 16, 22)]
+    out += seguidas(p, 3, [
+        lambda x, y, i: [M.casa_larga(x - 24, y + 12, 48, 20, 14, win=(3, 1), arco=True, teja=M.PIZARRA, teja2=M.PIZARRA2), M.cono(x - 38, y + 16, 22), M.cono(x + 38, y + 16, 22)],
+        lambda x, y, i: [M.casa(x - 20, y + 14, 20, 13, 10), M.campos(x - 40, y + 32, 60, 14), M.almiar(x + 20, y + 18, 13), M.arbol(x + 40, y + 8, 8)],
+        lambda x, y, i: [M.columna(x - 14, y + 10, 30), M.columna(x + 14, y + 10, 30), M.cono(x - 36, y + 14, 22), M.podado(x + 30, y + 26, 12, 10)],
+        lambda x, y, i: [M.molino(x - 8, y + 12, 18, 30), M.arbol(x + 26, y + 16, 9), M.arbol(x - 36, y + 20, 7)],
+        lambda x, y, i: [M.lago(x, y + 18, 30, 9), M.fuente(x, y + 8, 16), M.podado(x - 42, y + 16), M.podado(x + 34, y + 16)],
+    ], 'rococo')
     return out + margenes(p, h, lambda x, y, i: conos(x, y, i) if i % 2 else M.podado(x - 6, y, 12, 10))
 
 
@@ -423,9 +524,12 @@ def deco_romanticismo(p, h):
         x = lado(p[4])  # acantilado con faro
         out += [M.montana(x, p[4][1] + 16, 90, 40, M.T2, M.T3), M.torre(x - 8, p[4][1] - 22, 10, 28, 'plano', win=(1, 1), arco=False), M.lago(x + 10, p[4][1] + 26, 46, 9),
                 M.barca(x + 20, p[4][1] + 24, 12), M.abeto(x - 46, p[4][1] + 16, 24)]
-    for i in range(5, len(p)):
-        x = lado(p[i])
-        out += [M.montana(x, p[i][1] + 14, 80, 50), M.abeto(x - 36, p[i][1] + 18, 24), M.abeto(x + 36, p[i][1] + 18, 22)]
+    out += seguidas(p, 5, [
+        lambda x, y, i: [M.montana(x, y + 14, 80, 50), M.abeto(x - 36, y + 18, 24), M.abeto(x + 36, y + 18, 22)],
+        lambda x, y, i: [M.casa(x - 12, y + 14, 20, 13, 10, teja=M.PIZARRA, teja2=M.PIZARRA2), M.abeto(x + 22, y + 16, 26), M.abeto(x - 34, y + 20, 22)],
+        lambda x, y, i: [M.lago(x, y + 20, 36, 9), M.barca(x + 6, y + 19, 12), M.abeto(x - 42, y + 12, 26)],
+        lambda x, y, i: [M.molino(x - 4, y + 12, 18, 30), M.arbol_desnudo(x + 30, y + 14, 26), M.niebla(x, y + 24, 50, .6)],
+    ], 'romanticismo')
     return out + margenes(p, h, abetos)
 
 
@@ -446,9 +550,13 @@ def deco_realismo(p, h):
         x = lado(p[3])  # aldea con iglesia y campos
         out += [M.campos(x - 40, p[3][1] + 30, 70, 18, surcos=5), M.casa(x - 30, p[3][1] + 14, 22, 14, 10), M.casa(x - 4, p[3][1] + 18, 20, 12, 10),
                 M.torre(x + 22, p[3][1] + 14, 12, 30, 'aguja', ar=14, win=(1, 1)), M.arbol(x + 44, p[3][1] + 20, 9)]
-    for i in range(4, len(p)):
-        x = lado(p[i])
-        out += [M.campos(x - 40, p[i][1] + 28, 70, 18), M.almiar(x - 10, p[i][1] + 16), M.casa(x + 16, p[i][1] + 14, 20, 14, 10)]
+    out += seguidas(p, 4, [
+        lambda x, y, i: [M.campos(x - 40, y + 28, 70, 18), M.almiar(x - 10, y + 16), M.casa(x + 16, y + 14, 20, 14, 10)],
+        lambda x, y, i: [M.casa_larga(x - 26, y + 14, 44, 16, 12, win=(3, 1), teja=M.PIZARRA, teja2=M.PIZARRA2), M.chimenea(x + 22, y + 10, 34, 6), M.arbol(x - 40, y + 18, 8)],
+        lambda x, y, i: R.iglesia_aguja(x, y + 12) + [M.arbol(x + 40, y + 22, 9)],
+        lambda x, y, i: [rebano(x - 14, y + 22), M.arbol(x + 28, y + 12, 10), M.almiar(x - 36, y + 12, 12)],
+        lambda x, y, i: [M.molino(x + 6, y + 12, 18, 30), M.campos(x - 42, y + 30, 54, 14), M.arbol(x - 30, y + 8, 8)],
+    ], 'realismo')
     return out + margenes(p, h, lambda x, y, i: arboles(x, y, i) if i % 2 else M.almiar(x, y, 10))
 
 
@@ -473,9 +581,12 @@ def deco_impresionismo(p, h):
     if len(p) > 4:
         x = lado(p[4])  # ópera y café con toldo
         out += [M.cafe(x - 26, p[4][1] + 10), M.caja(x + 20, p[4][1] + 10, 30, 26, 14, win=(2, 2), cornisa=True), M.arbol(x - 44, p[4][1] + 14, 9), M.farola(x + 50, p[4][1] + 24, 14)]
-    for i in range(5, len(p)):
-        x = lado(p[i])
-        out += [M.caja(x - 30, p[i][1] + 12, 60, 24, 16, win=(4, 1), cornisa=True), M.arbol(x + 40, p[i][1] + 14, 8), M.arbol(x - 40, p[i][1] + 16, 8)]
+    out += seguidas(p, 5, [
+        lambda x, y, i: [M.caja(x - 30, y + 12, 60, 24, 16, win=(4, 1), cornisa=True), M.arbol(x + 40, y + 14, 8), M.arbol(x - 40, y + 16, 8)],
+        lambda x, y, i: [M.casa(x - 16, y + 14, 22, 14, 10), M.campos(x - 42, y + 32, 62, 14, surcos=5), M.almiar(x + 24, y + 18, 13)],
+        lambda x, y, i: [M.lago(x, y + 20, 38, 9), M.barca(x - 10, y + 19, 12), M.arbol(x + 40, y + 10, 9), M.arbol(x - 40, y + 12, 8)],
+        lambda x, y, i: [M.quiosco(x, y + 24), M.arbol(x - 32, y + 14, 9), M.farola(x + 30, y + 24, 12)],
+    ], 'impresionismo')
     return out + margenes(p, h, arboles)
 
 
@@ -498,9 +609,12 @@ def deco_postimpresionismo(p, h):
     if len(p) > 4:
         x = lado(p[4])  # playa del sur con palmeras
         out += [M.lago(x, p[4][1] + 24, 50, 9), M.palmera(x - 40, p[4][1] + 14, 30), M.palmera(x + 40, p[4][1] + 12, 28), M.barca(x + 4, p[4][1] + 22, 14), M.casa(x - 10, p[4][1] + 4, 20, 12, 10)]
-    for i in range(5, len(p)):
-        x = lado(p[i])
-        out += [M.girasoles(x - 36, p[i][1] + 26, 70, 18), M.cipres(x + 36, p[i][1] + 8, 30), M.casa(x - 16, p[i][1] + 2, 20, 14, 10)]
+    out += seguidas(p, 5, [
+        lambda x, y, i: [M.girasoles(x - 36, y + 26, 70, 18), M.cipres(x + 36, y + 8, 30), M.casa(x - 16, y + 2, 20, 14, 10)],
+        lambda x, y, i: R.olivar(x - 22, y + 26) + [M.cipres(x + 38, y + 12, 28)],
+        lambda x, y, i: [M.casa(x - 22, y + 14, 20, 13, 10), M.torre(x + 6, y + 12, 12, 34, 'plano', win=(1, 2)), M.cipres(x + 34, y + 16, 26)],
+        lambda x, y, i: [M.campos(x - 40, y + 30, 66, 16, surcos=5), M.almiar(x + 16, y + 14, 14), M.arbol(x - 30, y + 10, 8)],
+    ], 'postimpresionismo')
     return out + margenes(p, h, lambda x, y, i: cipreses(x, y, i) if i % 2 else M.arbol(x, y, 7))
 
 
@@ -518,9 +632,12 @@ def deco_modernismo(p, h):
         x = lado(p[3])  # ciudad nueva con cúpula
         out += [M.torre(x - 22, p[3][1] + 12, 16, 52, 'cupulin', win=(1, 3)), M.caja(x + 2, p[3][1] + 12, 38, 30, 14, win=(3, 2), cornisa=True), M.arbol(x + 50, p[3][1] + 14, 8),
                 M.farola(x - 36, p[3][1] + 28, 14)]
-    for i in range(4, len(p)):
-        x = lado(p[i])
-        out += [M.caja(x - 28, p[i][1] + 12, 56, 28, 14, win=(4, 2), cornisa=True), M.palmera(x + 40, p[i][1] + 14, 28), M.arbol(x - 40, p[i][1] + 16, 8)]
+    out += seguidas(p, 4, [
+        lambda x, y, i: [M.caja(x - 28, y + 12, 56, 28, 14, win=(4, 2), cornisa=True), M.palmera(x + 40, y + 14, 28), M.arbol(x - 40, y + 16, 8)],
+        lambda x, y, i: [M.torre(x - 6, y + 12, 14, 46, 'cupulin', win=(1, 3)), M.casa(x + 14, y + 16, 20, 13, 10), M.arbol(x - 34, y + 18, 8)],
+        lambda x, y, i: [M.arbol(x - 22, y + 14, 10), M.arbol(x + 6, y + 18, 9), M.farola(x + 30, y + 26, 12), M.fuente(x - 4, y + 32, 18)],
+        lambda x, y, i: [M.casa(x - 20, y + 14, 18, 12, 10), M.casa(x + 2, y + 18, 20, 13, 10), M.palmera(x + 36, y + 12, 26)],
+    ], 'modernismo')
     return out + margenes(p, h, lambda x, y, i: M.palmera(x - 4, y, 22) if i % 3 == 0 else arboles(x, y, i))
 
 
@@ -536,9 +653,8 @@ DECO = {
     'simbolismo-modernismo': deco_modernismo,
 }
 
-import mapa_ramas  # noqa: E402  (paisajes de las pantallas de rama)
 
-_deco_ramas, _esparcido_ramas = mapa_ramas.registrar(sys.modules[__name__])
+_deco_ramas, _esparcido_ramas = R.registrar(sys.modules[__name__])
 DECO.update(_deco_ramas)
 
 COLOR_ATTR = re.compile(r'\b(fill|stroke)="(#[0-9A-Fa-f]{6}|rgba?\([^)]*\))"')
@@ -719,15 +835,19 @@ def brillos(era):
 def build(era, light, dark):
     pts = [(q['x'], q['y']) for q in era['points']]
     LIBRE['ramas'] = set(era.get('branchAt', []))
+    LIBRE['estrecho'] = set()
     LIBRE['rotulos'] = era.get('labels', [])
     LIBRE['road'] = lambda y: A.x_en(era, y)
-    OCUPADO['piezas'], OCUPADO['rios'], OCUPADO['agua'] = [], [], []
+    OCUPADO['piezas'], OCUPADO['rios'], OCUPADO['agua'], OCUPADO['edificios'] = [], [], [], []
     PUENTES[:] = era.get('bridges', [])
     deco = era.get('deco', era['id'])
     # Las viñetas de cada parada, entre ella y la siguiente (el hueco sin rótulos), no a su altura: así no las tapa su nombre.
     vinetas = [(x, y - VINETA_SUBE) for x, y in pts]
     pieces = [tinte(era['h'], CLASS['tint'])] + DECO[deco](vinetas, era['h']) + A.seto(M, W, era.get('gate'))
     ERRORES.extend(A.comprobar(era, OCUPADO['agua']))
+    # Las barcas recorren cada río por su centro: ningún edificio en su banda.
+    ERRORES.extend(f'{era["id"]}: {n} en el río de y={b["y"]:.0f} (barcas encima)' for n, x, top, foot in OCUPADO['edificios']
+                   for b in PUENTES if top < b['y'] + RIO_MEDIO and foot > b['y'] - RIO_MEDIO)
     pieces += esparcir(era)
     pieces.sort(key=lambda t: t[0])
     body = classify(''.join(t[1] for t in pieces))

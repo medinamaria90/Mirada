@@ -100,9 +100,25 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
   let step = 0;
   let answered = 0;
   const seenTypes = new Set();
+  const guestCards = []; // invitados presentados en esta ronda (artistId); el siguiente paso debe preguntar por el último
+  let pendingGuest = null;
   while (step < maxSteps) {
     await page.waitForTimeout(110);
     if (await page.locator('.res').count()) return step;
+    // «Te presentamos a…»: tarjeta de invitado antes de su primera pregunta. No es pregunta ni puntúa: se pulsa «Seguir».
+    const guestCard = page.locator('.guest-card');
+    if (await guestCard.count()) {
+      const title = (await guestCard.locator('.guest-title').innerText()).replace(/\s+/g, ' ').trim();
+      const name = (await guestCard.locator('.guest-name').innerText()).trim();
+      const who = [...artist.values()].find((a) => a.name === name);
+      check(title === `Te presentamos a ${name}`, `tarjeta de invitado con título raro: ${title}`);
+      check(Boolean(who) && (who.guest || who.category === 'invitado'), `la tarjeta presenta a alguien que no es invitado: ${name}`);
+      check(who && !guestCards.includes(who.id), `la tarjeta de ${name} sale dos veces en la ronda`);
+      check(await guestCard.locator('[data-action="guest-continue"][data-primary]').innerText() === 'Seguir', 'la tarjeta de invitado no tiene «Seguir»');
+      if (who) { guestCards.push(who.id); pendingGuest = who; }
+      await guestCard.locator('[data-action="guest-continue"]').click();
+      continue;
+    }
     const look = page.locator('.look-first [data-action="go"]');
     if (await look.count()) { await look.click(); continue; }
     const interlude = page.locator('.interlude [data-action="continue"]');
@@ -152,6 +168,13 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
         }
       }
     }
+    if (pendingGuest) {
+      // La tarjeta sale justo antes de la primera pregunta sobre ese invitado.
+      const asked = type === 'which' ? target != null && art.get(await options.nth(target).locator('.art').getAttribute('data-art')).artistId
+        : artist.get(art.get(await page.locator('.q-art .art').getAttribute('data-art')).artistId).id;
+      check(asked === pendingGuest.id, `tras la tarjeta de ${pendingGuest.name} la pregunta no es sobre él: ${prompt}`);
+      pendingGuest = null;
+    }
     const key = `q-${type}`;
     if (shotsFor[key] && !seenTypes.has(type)) { seenTypes.add(type); await shot(page, shotsFor[key]); }
     check(target != null, `no se encontró respuesta para: ${prompt}`);
@@ -182,29 +205,38 @@ async function playRound(page, { wrongAt = [], shotsFor = {}, maxSteps = 40, sto
   throw new Error('La ronda no terminó');
 }
 
-// Tras un fallo de autor, la hoja dice de quién era lo elegido («No es de X…» en «¿Quién?»; «El que
-// has elegido es de X · título» en «¿Cuál?», donde además la miniatura elegida lleva su pintor).
-// En las de movimiento no hay línea del elegido.
+// Tras un fallo de autor, lo elegido se marca en su propia opción, sin línea aparte en la hoja
+// (ni «El que has elegido es de X» ni «No es de X»); el lector de pantalla oye «Elegiste…». En
+// «¿Cuál?», la miniatura elegida lleva solo el nombre de su pintor y, abierta en el visor tras
+// responder, enseña pintor y título.
 async function assertChosenFeedback(page, type, label) {
-  const line = page.locator('.feedback .fb-line-2');
+  const sheet = (await page.locator('.feedback .fb-inner').innerText()).trim();
+  check(!/has elegido|^No es de/m.test(sheet) && await page.locator('.feedback .fb-line-2').count() === 0, `${label}: la hoja aún tiene la línea del elegido`);
+  const sr = page.locator('.feedback .fb-chosen');
   if (type === 'movement') {
-    check(await line.count() === 0, `${label}: línea del elegido en una pregunta de movimiento`);
+    check(await sr.count() === 0, `${label}: «Elegiste…» en una pregunta de movimiento`);
     return;
   }
-  check(await line.count() === 1, `${label}: falta la línea de quién era lo elegido`);
-  const text = (await line.innerText()).trim();
   const wrongOpt = page.locator('.lesson-stage .option.is-wrong');
+  const speech = (await sr.textContent() || '').trim();
   if (type === 'which') {
     const id = await wrongOpt.locator('.art').getAttribute('data-art');
     const w = art.get(id);
     const a = artist.get(w.artistId);
     const name = a.short || a.name;
-    check(text === `El que has elegido es de ${name} · ${w.title}`, `${label}: la línea no nombra al pintor del cuadro elegido: ${text}`);
+    check(speech === `Elegiste un cuadro de ${name}.`, `${label}: el lector no oye de quién es el cuadro elegido: ${speech}`);
     const tag = wrongOpt.locator('.option-tag');
     check(await tag.count() === 1 && (await tag.innerText()).trim() === name, `${label}: la miniatura elegida no lleva su pintor`);
+    // El visor, tras responder, enseña pintor y título de la elegida.
+    await wrongOpt.click();
+    await page.waitForSelector('.viewer .viewer-caption', { timeout: 3000 }).catch(() => {});
+    const caption = (await page.locator('.viewer .viewer-caption').allTextContents()).join(' | ');
+    check(caption.includes(w.title) && caption.includes(w.by || a.name), `${label}: el visor no enseña pintor y título tras responder: ${caption}`);
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('.viewer', { state: 'detached', timeout: 3000 }).catch(() => {});
   } else {
     const a = artist.get(await wrongOpt.getAttribute('data-id'));
-    check(Boolean(a) && text.startsWith(`No es de ${a.short || a.name}`), `${label}: la línea no nombra al pintor elegido: ${text}`);
+    check(Boolean(a) && speech === `Elegiste a ${a.short || a.name}.`, `${label}: el lector no oye a quién se eligió: ${speech}`);
   }
 }
 
@@ -538,11 +570,11 @@ async function viewerZoomCheck(page, cdp, label, opener) {
 }
 const ZOOM_TAG_HIDE_MS = 1100;
 
-// Pasa la historia del pintor tarjeta a tarjeta hasta «Jugar» (cerrarla con la X devolvería al mapa).
+// Pasa la historia del pintor tarjeta a tarjeta hasta el botón final («Ir a las preguntas»; la X devolvería al mapa).
 async function skipStory(page) {
   const MAX_CARDS = 20;
-  for (let k = 0; k < MAX_CARDS && !(await page.locator('.story[open] .story-play').count()); k++) await page.keyboard.press('ArrowRight');
-  await page.click('.story[open] .story-play');
+  for (let k = 0; k < MAX_CARDS && !(await page.locator('.story[open] [data-deck="play"]').count()); k++) await page.keyboard.press('ArrowRight');
+  await page.click('.story[open] [data-deck="play"]');
 }
 
 // Hasta «Conoce a»: pasa la presentación del movimiento (Entrar) y la historia del pintor, que sale siempre (se salta).
@@ -550,10 +582,10 @@ async function toLearn(page) {
   const STEP_MS = 15000;
   const PASSES = 4;
   for (let k = 0; k < PASSES; k++) {
-    await page.waitForSelector('.learn, .intro [data-action="enter"], .story[open] .story-next', { timeout: STEP_MS });
+    await page.waitForSelector('.learn, .intro .deck-primary, .story[open] .story-text', { timeout: STEP_MS });
     if (await page.locator('.learn').count()) return;
     if (await page.locator('.story[open]').count()) await skipStory(page);
-    else await page.click('.intro [data-action="enter"]');
+    else await page.$eval('.intro [data-action="enter"]', (b) => b.click());
     await page.waitForTimeout(250);
   }
   await page.waitForSelector('.learn', { timeout: STEP_MS });
@@ -570,7 +602,7 @@ async function closeMatchMoment(page) {
 // Hasta la ronda de un pintor: su historia sale siempre y «Jugar» empieza la ronda, sin «Conoce a» (decisión de María, 26/11).
 async function toRound(page) {
   const STEP_MS = 15000;
-  await page.waitForSelector('.story[open] .story-next', { timeout: STEP_MS });
+  await page.waitForSelector('.story[open] .story-text', { timeout: STEP_MS });
   await skipStory(page);
   await page.waitForSelector('.lesson .option', { timeout: STEP_MS });
   check(await page.locator('.learn').count() === 0, `tras la historia sale «Conoce a» (${page.url()})`);
@@ -806,6 +838,25 @@ async function writeState(pg, state) {
   await pg.waitForSelector('#app .screen > *');
   await pg.evaluate((st) => localStorage.setItem('mirada.state', JSON.stringify(st)), state);
 }
+// Cuadro del día en pantalla: falla `misses` veces (comprueba que el nombre se apaga) y acierta; espera a la historia.
+async function playCuadro(pg, misses = 1) {
+  const { answer } = await pg.evaluate(async () => {
+    const data = await import('./js/ui/cuadro-data.js');
+    const dates = await import('./js/engine/dates.js');
+    await data.ensureCuadroIndex();
+    const today = data.cuadroToday(dates.madridDayKey(new Date()));
+    return { answer: (await data.loadCuadroDay(today.slot)).artistId };
+  });
+  const wrong = (await pg.$$eval('.cdd-opt', (bs) => bs.map((b) => b.dataset.id))).filter((id) => id !== answer);
+  for (let k = 0; k < misses; k++) {
+    await pg.click(`.cdd-opt[data-id="${wrong[k]}"]`);
+    await pg.waitForTimeout(250);
+    check(await pg.locator(`.cdd-opt.is-off[data-id="${wrong[k]}"]`).count() === 1, 'el nombre fallado no se apaga');
+    check(await pg.locator('.cdd-hint').count() === k + 1, `tras ${k + 1} fallos no hay ${k + 1} pistas`);
+  }
+  await pg.click(`.cdd-opt[data-id="${answer}"]`);
+  await pg.waitForSelector('.story[open] .story-text');
+}
 async function seed(pg, state, hash = 'inicio') {
   await pg.goto(base);
   await writeState(pg, state);
@@ -842,7 +893,9 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // de build): medidos 31 peticiones en la bienvenida (3 hojas del mapa que el HTML pide antes de saber la pantalla, roster,
 // encuadre) y 58 en el inicio (≈25 módulos del mapa y la precarga de historias). Por HTTP/2 y con el service worker eso cuesta poco; lo que manda
 // es el peso, y ese presupuesto no cambia.
-const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 58, kb: 440 } };
+// Inicio +1: ui/lazy-css.js en la cadena estática (pide las hojas del arranque si un index.html viejo no las enlaza).
+// 27/11 (tarde): main sin cambios ya medía 59 en el inicio (oscila con el orden de carga): 60 de margen; los KB no cambian.
+const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 60, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -885,20 +938,22 @@ await page.waitForSelector('.path');
 await shot(page, '02-mapa');
 await audit(page, '390 mapa');
 check(await page.locator('.today-strip, .lupa-dialog').count() === 0, 'quedan la franja «Hoy» o la lupa del día');
-check(await page.locator('.topbar .chip-daily').count() === 1 && await page.locator('.chip-level').count() === 0, 'la cabecera lleva el reto diario y ya no el rango');
-check((await page.locator('.chip-daily').getAttribute('aria-label')) === 'Reto diario, pendiente', 'el reto diario de la cabecera no dice «pendiente»');
+check(await page.locator('.topbar .chip-cuadro').count() === 1 && await page.locator('.chip-level, .chip-daily').count() === 0, 'la cabecera lleva el Cuadro del día (y ni rango ni reto diario)');
+check((await page.locator('.chip-cuadro').getAttribute('aria-label')) === 'Cuadro del día, pendiente', 'el Cuadro del día de la cabecera no dice «pendiente»');
 check(await page.locator('.overall-bar, .card-daily, .card-continue, .card-review, .today-block').count() === 0, 'quedan tarjetas de arriba del camino');
 // Cabecera: objetivos táctiles ≥ 48 px
 for (const box of await page.$$eval('.topbar a', (els) => els.map((e) => { const r = e.getBoundingClientRect(); return { w: r.width, h: r.height, t: e.getAttribute('aria-label') }; }))) {
   check(box.w >= 48 && box.h >= 48, `cabecera: ${box.t} mide ${Math.round(box.w)}×${Math.round(box.h)}`);
 }
-const ringLabel = await page.locator('.chip-goal').getAttribute('aria-label');
-check(/Meta de hoy: 0 de 50 XP/.test(ringLabel), `anillo de meta: ${ringLabel}`);
-check(/\b0\/50\b/.test(await page.locator('.chip-goal').innerText()), 'el anillo de meta no lleva la cifra 0/50');
-// Racha: llama y «n día(s)» (el sol con un número parecía el interruptor de modo claro).
-const streakChip = await page.locator('.chip-streak').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), icon: Boolean(a.querySelector('.icon')) }));
-check(/^Racha: \d+ días?$/.test(streakChip.label) && streakChip.icon, `chip de racha: ${JSON.stringify(streakChip)}`);
-check(/\d+\s*días?$/.test(streakChip.text), `chip de racha sin «n día(s)»: ${streakChip.text}`);
+// Meta y racha en una pieza: la llama dentro del aro de la meta y «n día(s)»; al tocarla, su explicación en una línea.
+const streakChip = await page.locator('.chip-streak').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), icon: Boolean(a.querySelector('.ring .icon')) }));
+check(/^Racha: \d+ días?\. Meta de hoy: 0 de 50 puntos$/.test(streakChip.label) && streakChip.icon, `pieza de racha y meta: ${JSON.stringify(streakChip)}`);
+check(/\d+\s*días?$/.test(streakChip.text), `racha sin «n día(s)»: ${streakChip.text}`);
+await page.locator('.chip-streak').click();
+check(/meta de hoy: 0 de 50 puntos/.test(await page.locator('.chip-tip').innerText()), 'la racha no se explica al tocarla');
+await page.mouse.click(5, 400);
+check(await page.locator('.chip-tip').count() === 0, 'la explicación de la racha no se cierra al tocar fuera');
+check(await page.locator('.brand > span').isVisible(), 'la cabecera no lleva el nombre «Sfumato» a 390 px');
 check(!/\bsol\b/i.test(await page.locator('.topbar').evaluate((e) => e.innerHTML)), 'la cabecera sigue hablando de un sol');
 check((await page.locator('.topbar').boundingBox()).height < 80, 'la cabecera salta a dos líneas a 390 px');
 const mapSrcs = await page.$$eval('.stage-thumb img, .card-thumb img', (els) => els.map((e) => e.getAttribute('src')));
@@ -929,7 +984,8 @@ const mapV10 = await page.evaluate(() => {
     // El paisaje se mete en la página como SVG (map-land.js); si falla, queda como imagen.
     loaded: eras.filter((e) => land(e).tagName === 'svg' || land(e).getAttribute('src')).map((e) => e.dataset.era),
     currentLoaded: Boolean(cur) && (land(cur.closest('.path-era')).tagName === 'svg' || (land(cur.closest('.path-era')).complete && land(cur.closest('.path-era')).naturalWidth > 0)),
-    ringText: [...document.querySelectorAll('.stage-spot.is-current .stage-you')].map((e) => e.textContent.trim()),
+    // Sin abrir la presentación de la época, «Tú» está en su medallón (path-lore.js); si no, en la parada actual.
+    ringText: [...document.querySelectorAll('.lore-spot.is-here .stage-you, .stage-spot.is-current .stage-you')].map((e) => e.textContent.trim()),
   };
 });
 check(mapV10.bottomUp, 'el mapa no va de abajo arriba');
@@ -968,15 +1024,14 @@ if (introGroup > 1) {
   await page.keyboard.press('Escape');
   await page.waitForSelector('.viewer', { state: 'detached' });
 }
-// Teclado: con el foco en el título, Enter pulsa el único botón principal («Entrar»), que deja en el camino.
-await page.locator('.intro h1').focus();
-await page.keyboard.press('Enter');
-await page.waitForSelector('.stage-spot.is-current .stage-you');
-check(page.url().endsWith('#inicio'), `«Entrar» no deja en el camino: ${page.url()}`);
-// La época ya está presentada: la parada abre la historia del pintor, no otra vez la presentación.
-await page.click('.stage-spot.is-current .stage');
-await page.waitForSelector('.intro, .story[open] .story-next');
-check(await page.locator('.intro').count() === 0, 'tras «Entrar», la parada vuelve a abrir la presentación de la época');
+// Como paso del camino, «Saltar» sigue el camino: el cartel del tramo (también con «Saltar») y después la historia del
+// pintor, sin volver a la presentación.
+await page.click('.intro .deck-secondary');
+await page.waitForSelector('dialog.sign-cards[open] .deck-secondary');
+check(page.url().includes('#etapa-'), `«Saltar» no sigue hacia el pintor: ${page.url()}`);
+await page.click('dialog.sign-cards .deck-secondary');
+await page.waitForSelector('.story[open] .story-text');
+check(await page.locator('.story[open]').count() === 1, 'tras el cartel del tramo no sale la historia del pintor');
 await page.waitForTimeout(400);
 await shot(page, '05-historia');
 await toRound(page);
@@ -1025,6 +1080,26 @@ if (SMOKE) {
   check(await page.locator('.stage-spot.is-current .stage-you').count() === 1 && await page.locator('.stage-spot.is-current .stage-meta').count() === 0, 'la parada nueva no lleva la marca «Tú» (o aún lleva botón)');
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
+  // Presentación de una época en un móvil lento: sale una sola vez, ya con sus tarjetas, sin saltos de maquetación
+  // (antes el carrusel se montaba sobre la portada ya pintada y todo se movía).
+  const eraCdp = await page.context().newCDPSession(page);
+  await eraCdp.send('Network.enable');
+  await eraCdp.send('Network.emulateNetworkConditions', { offline: false, latency: 150, downloadThroughput: 400 * 1024, uploadThroughput: 200 * 1024 });
+  await eraCdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  await page.evaluate(() => {
+    window.__eraShift = 0;
+    new PerformanceObserver((list) => { for (const e of list.getEntries()) window.__eraShift += e.value; }).observe({ type: 'layout-shift' });
+  });
+  await page.evaluate((id) => { location.hash = `movimiento-${id}`; }, index.visibleMovements[0].id);
+  await page.waitForSelector('.intro .era-track .era-card');
+  await page.waitForTimeout(1500);
+  const eraShift = await page.evaluate(() => window.__eraShift);
+  check(eraShift < 0.01, `la presentación de la época salta al abrirse (Layout Shift ${eraShift.toFixed(3)})`);
+  await eraCdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
+  await eraCdp.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 });
+  await eraCdp.detach();
+  await page.goto(`${base}#inicio`);
+  await page.waitForSelector('.stage-spot.is-current .stage-you');
   // Rama jugable: cerrada el primer día (tocarla dice qué falta); con el primer tramo del Renacimiento dominado, el
   // desvío del Gótico entra en su pantalla (#rama-gotico): su paisaje, sus pintores como paradas y la marca «Tú» en el
   // primero propio. La ronda sabe que viene del Gótico (#etapa-<pintor>--gotico) y su resultado sigue en él.
@@ -1033,7 +1108,7 @@ if (SMOKE) {
   await page.locator(goticoSign).scrollIntoViewIfNeeded();
   await page.click(goticoSign);
   await page.waitForSelector('.branch-spot .lock-note.is-visible');
-  check(/^Se abre al dominar a /.test(await page.locator('.branch-spot .lock-note.is-visible').innerText()), 'la rama cerrada no dice qué falta');
+  check(/^Se abre después de /.test(await page.locator('.branch-spot .lock-note.is-visible').innerText()), 'la rama cerrada no dice qué falta');
   check(page.url().endsWith('#inicio'), 'una rama cerrada deja entrar');
   const ownGotico = index.branch('gotico').artists.filter((id) => index.pathIndex(id) < 0);
   const tramo1 = index.steps.filter((x) => x.movementId === index.steps[0].movementId).findIndex((x) => index.artist(x.id).section !== index.artist(index.steps[0].id).section);
@@ -1051,7 +1126,10 @@ if (SMOKE) {
     }
     await page.waitForSelector('.page-branch .stage-spot .stage');
   };
-  await seed(page, seededState({ upTo: tramo1 }));
+  // Meta alta: si la ronda cumpliera la meta, el siguiente paso sería «Por hoy, hecho» (engine/next-step.js, regla 2).
+  const branchState = seededState({ upTo: tramo1 });
+  branchState.settings.dailyGoal = 200;
+  await seed(page, branchState);
   await page.waitForSelector(`${goticoSign}.is-open`);
   await openGotico();
   check(page.url().endsWith('#rama-gotico'), `el desvío no entra en la pantalla de la rama: ${page.url()}`);
@@ -1105,7 +1183,7 @@ if (SMOKE) {
   check(await page.locator(branchNode('giotto')).getAttribute('data-status') === 'locked', 'la rama no marca a Giotto cerrado');
   await page.click(branchNode('giotto'));
   await page.waitForSelector('.page-branch .lock-note.is-visible');
-  check(/mitad de aciertos en duccio/i.test(await page.locator('.page-branch .lock-note.is-visible').innerText()), 'la parada de Giotto en el Gótico no dice qué falta');
+  check(/acierta la mitad con duccio/i.test(await page.locator('.page-branch .lock-note.is-visible').innerText()), 'la parada de Giotto en el Gótico no dice qué falta');
   check(page.url().endsWith('#rama-gotico'), 'tocar un pintor cerrado de la rama cambia de pantalla');
   await audit(page, '390 parada cerrada en la rama');
   // Doble toque (muy habitual en el móvil) en un cartel: una sola entrada en el historial y ninguna hoja.
@@ -1119,13 +1197,18 @@ if (SMOKE) {
   await page.goBack();
   await page.waitForSelector(goticoSign);
   check(page.url().endsWith('#inicio'), `doble toque: atrás no vuelve al mapa (${page.url()})`);
-  // La caseta de «Información» de la salida abre «Cómo se juega» y «Vamos» lo cierra.
-  await page.click('[data-action="start"]');
+  // Sin caseta en la salida: «Cómo se juega» está en Perfil → Ajustes y «Vamos» lo cierra.
+  check(await page.locator('[data-action="start"], .start-kiosk').count() === 0, 'queda la caseta de la salida');
+  await page.goto(`${base}#perfil`);
+  await page.click('[data-action="open-settings"]');
+  await page.click('.settings-dialog [data-action="how"]');
   await page.waitForSelector('dialog.map-sheet[open] .ms-how');
   await audit(page, '390 cómo se juega');
   await page.click('dialog.map-sheet .ms-ok');
   await page.waitForTimeout(300);
   check((await openDialogs()).length === 0, '«Vamos» no cierra «Cómo se juega»');
+  await page.goto(`${base}#inicio`);
+  await page.waitForSelector('.path-map .stage');
   // Un pintor del camino común dentro de una rama se ve «En el camino» y lleva a su parada (Berruguete en Maestros
   // españoles).
   await enterBranch('maestros-espanoles');
@@ -1140,7 +1223,7 @@ if (SMOKE) {
   const firstDiscover = index.branch('descubre-renacimiento').artists[0];
   await enterBranch('descubre-renacimiento');
   await page.click(branchNode(firstDiscover));
-  await page.waitForSelector('.story[open] .story-next');
+  await page.waitForSelector('.story[open] .story-text');
   check(page.url().endsWith(`#etapa-${firstDiscover}--descubre-renacimiento`), `la rama no juega en ella: ${page.url()}`);
   await page.goto(`${base}#perfil`);
   await page.waitForSelector('.pf-hero');
@@ -1183,15 +1266,9 @@ if (SMOKE) {
   await page.locator('.hl-row .hl[data-hl="1"][data-state="done"]').click();
   await page.waitForSelector('.story[open] .story-text');
   await page.waitForTimeout(300);
-  check(await page.locator('.story-bar.is-now').count() === 1, 'la historia no avanza sola (barra de progreso)');
+  check(await page.locator('.story .deck-bar.is-done').count() === 1 && await page.locator('.story .deck-primary').innerText() === 'Seguir', 'la historia no empieza en la primera tarjeta con «Seguir»');
   await shot(page, '14m-ficha-historia');
-  // Pausa visible; Espacio pausa o reanuda esté donde esté el foco (no avanza); atrás cierra la historia y deja en la ficha.
-  check(await page.locator('.story [data-st="pause"]').getAttribute('aria-pressed') === 'false', 'la historia no tiene botón visible de pausa');
-  await page.keyboard.press('Space');
-  check(await page.locator('.story.is-paused').count() === 1 && await page.locator('.story-bar.is-now').count() === 1, 'Espacio no pausa la historia (o avanza en vez de pausar)');
-  check(await page.locator('.story [data-st="pause"]').getAttribute('aria-label') === 'Reanudar', 'la pausa no cambia a «Reanudar»');
-  await page.keyboard.press('Space');
-  check(await page.locator('.story.is-paused').count() === 0, 'Espacio no reanuda');
+  // Atrás cierra la historia y deja en la ficha.
   const storyUrl = page.url();
   await page.goBack();
   await page.waitForSelector('.story', { state: 'detached' });
@@ -1215,16 +1292,16 @@ if (SMOKE) {
   await sp.goto(`${base}#etapa-${storyArtist.id}`);
   await sp.reload();
   await sp.waitForSelector('.intro, .story[open]');
-  // La primera vez sale la presentación de la época: «Entrar» deja en el camino y la parada abre la historia.
+  // La primera vez sale la presentación de la época: «Saltar» pasa por el cartel del tramo («Saltar») y abre la historia.
   if (await sp.locator('.intro').count()) {
-    await sp.click('.intro [data-action="enter"]');
-    await sp.waitForSelector('.stage-spot.is-current .stage-you');
-    await sp.click('.stage-spot.is-current .stage');
+    await sp.click('.intro .deck-secondary');
+    await sp.waitForSelector('dialog.sign-cards[open] .deck-secondary, .story[open]');
+    if (await sp.locator('dialog.sign-cards[open]').count()) await sp.click('dialog.sign-cards .deck-secondary');
   }
   await sp.waitForSelector('.story[open] .story-text');
   // De 1 a 5 tarjetas (decisión de María, 26/11).
   const MAX_STORY_CARDS = 5;
-  const nCards = await sp.locator('.story-bar').count();
+  const nCards = await sp.locator('.story .deck-bar').count();
   check(nCards >= 1 && nCards <= MAX_STORY_CARDS, `la historia tiene ${nCards} tarjetas`);
   check(await sp.locator('.story-img').count() === 1 && await sp.locator('.story-text').innerText() !== '', 'la tarjeta no enseña cuadro y texto');
   await sp.waitForTimeout(400);
@@ -1233,19 +1310,20 @@ if (SMOKE) {
   // Teclado: una flecha, exactamente una tarjeta (antes saltaba de dos en dos: el manejador del documento la contaba otra vez).
   if (nCards >= 3) {
     await sp.keyboard.press('ArrowRight');
-    check(await sp.locator('.story-bar.is-done').count() === 2, `→ no avanza exactamente una tarjeta (${await sp.locator('.story-bar.is-done').count()} barras)`);
+    check(await sp.locator('.story .deck-bar.is-done').count() === 2, `→ no avanza exactamente una tarjeta (${await sp.locator('.story .deck-bar.is-done').count()} barras)`);
     await sp.keyboard.press('ArrowLeft');
-    check(await sp.locator('.story-bar.is-done').count() === 1, `← no retrocede exactamente una tarjeta (${await sp.locator('.story-bar.is-done').count()} barras)`);
+    check(await sp.locator('.story .deck-bar.is-done').count() === 1, `← no retrocede exactamente una tarjeta (${await sp.locator('.story .deck-bar.is-done').count()} barras)`);
   }
   for (let k = 0; k < nCards - 1; k++) {
     await sp.keyboard.press('ArrowRight');
     await sp.waitForTimeout(150);
   }
-  check(await sp.locator('.story-bar.is-done').count() === nCards && await sp.locator('.story-play').count() === 1 && await sp.locator('.story-more').count() === 1, 'la última tarjeta no ofrece «Jugar» y «Ver más»');
+  check(await sp.locator('.story .deck-bar.is-done').count() === nCards && await sp.locator('.story [data-deck="play"]').count() === 1 && await sp.locator('.story [data-deck="more"]').count() === 1, 'la última tarjeta no ofrece «Ir a las preguntas» y «Más sobre…»');
   check(await sp.locator('.story-caption').count() === 1, 'la tarjeta no lleva el pie con el título de la obra');
-  // «Jugar» empieza la ronda: sin «Conoce a» tras la historia.
-  await sp.click('.story-play');
+  // «Ir a las preguntas» empieza la ronda: sin «Conoce a» tras la historia.
+  await sp.click('.story [data-deck="play"]');
   await sp.waitForSelector('.lesson .option');
+  await sp.waitForTimeout(500); // pasado el margen contra toques fantasma al cerrar la historia (ui/tap-guard.js)
   check(await sp.locator('.story').count() === 0, 'la historia no se cierra al terminar');
   check(await sp.locator('.learn').count() === 0, 'tras la historia sale «Conoce a»');
   // Sale de la ronda (si no, al volver a la parada se retoma la ronda guardada).
@@ -1307,7 +1385,7 @@ if (SMOKE) {
   check(page.url().endsWith('#inicio'), `cerrar la tarjeta cambia de pantalla: ${page.url()}`);
   await page.locator(deepNode).click();
   await page.click('.lc-play');
-  await page.waitForSelector('.story[open] .story-next');
+  await page.waitForSelector('.story[open] .story-text');
   await skipStory(page);
   await page.waitForSelector('.lesson');
   check(page.url().endsWith('#a-fondo-' + deepArtist.id + '-' + deepLevel.id), `la etapa no lleva a su ronda: ${page.url()}`);
@@ -1317,7 +1395,7 @@ if (SMOKE) {
   check(await page.locator('.res-foot [data-to="a-fondo-' + deepArtist.id + '-' + deepLevel.id + '"]').count() === 1 || await page.locator('[data-chip="deep"]').count() === 1, 'sin «Repetir» en el nivel a fondo');
   await shot(page, '14j-resultado-a-fondo-faltan', true);
   await seed(page, seededState({ upTo: deepUpTo, extra: deepSeen(true) }), `a-fondo-${deepArtist.id}-${deepLevel.id}`);
-  await page.waitForSelector('.story[open] .story-next');
+  await page.waitForSelector('.story[open] .story-text');
   await skipStory(page);
   await page.waitForSelector('.lesson');
   await playRound(page);
@@ -1349,7 +1427,7 @@ if (SMOKE) {
       await spg.goto(`${base}#a-fondo-${stageStoryArtist.id}-2`);
       await spg.reload();
     }
-    await spg.waitForSelector('.story[open] .story-next');
+    await spg.waitForSelector('.story[open] .story-text');
     if (how === 'esc') {
       await spg.keyboard.press('Escape');
       await spg.waitForSelector('.story', { state: 'detached' });
@@ -1361,14 +1439,14 @@ if (SMOKE) {
     const MAX_CARDS = 8;
     if (how === 'saltar' || how === 'desde la ficha') await skipStory(spg);
     else {
-      // Tocando a la derecha de la tarjeta hasta la última, que no se cierra sola: allí, «Jugar».
+      // Tocando a la derecha de la tarjeta hasta la última, que no se cierra sola: allí, el botón final.
       const frame = spg.locator('.story[open] .story-frame');
       const box = await frame.boundingBox();
-      for (let k = 0; k < MAX_CARDS && !(await spg.locator('.story[open] .story-play').count()); k++) {
+      for (let k = 0; k < MAX_CARDS && !(await spg.locator('.story[open] [data-deck="play"]').count()); k++) {
         await frame.click({ position: { x: box.width * 0.85, y: box.height * 0.3 } });
         await spg.waitForTimeout(150);
       }
-      await spg.click('.story[open] .story-play');
+      await spg.click('.story[open] [data-deck="play"]');
     }
     await spg.waitForSelector('.lesson');
     await spg.waitForTimeout(800);
@@ -1499,13 +1577,12 @@ if (SMOKE) {
   // Pintor dominado: su historia, desde el círculo de su nivel hecho (el avatar juega el siguiente nivel).
   await bp.waitForSelector('.hl-row .hl[data-hl="1"][data-state="done"]');
   await bp.locator('.hl-row .hl[data-hl="1"][data-state="done"]').click();
-  await bp.waitForSelector('.story[open] .story-next');
+  await bp.waitForSelector('.story[open] .story-text');
   await bp.waitForTimeout(300);
-  const st200 = await bp.evaluate(() => { const n = document.querySelector('.story-next').getBoundingClientRect(); const bar = document.querySelector('.story-bar.is-now'); return { nextBottom: n.bottom, vh: innerHeight, dur: bar ? parseFloat(bar.style.getPropertyValue('--dur')) : 0, headOverlap: document.querySelector('.story-head').getBoundingClientRect().bottom > document.querySelector('.story-copy').getBoundingClientRect().top + 1 }; });
-  const stHead = await bp.evaluate(() => { const who = document.querySelector('.story-who-text, .story-who'); const w = who.getBoundingClientRect(); return [...document.querySelectorAll('.story-head button')].map((b) => { const r = b.getBoundingClientRect(); return r.width > 0 && r.left < w.right - 1 && r.right > w.left + 1 && r.top < w.bottom - 1 && r.bottom > w.top + 1; }); });
-  check(!stHead.some(Boolean), `historia al 200 %: pausa o «Saltar» pisan el subtítulo ${JSON.stringify(stHead)}`);
+  const st200 = await bp.evaluate(() => { const n = document.querySelector('.story .deck-primary').getBoundingClientRect(); return { nextBottom: n.bottom, vh: innerHeight, headOverlap: document.querySelector('.story .deck-head').getBoundingClientRect().bottom > document.querySelector('.story-copy').getBoundingClientRect().top + 1 }; });
+  const stHead = await bp.evaluate(() => { const who = document.querySelector('.story-who-text, .story-who'); const w = who.getBoundingClientRect(); return [...document.querySelectorAll('.story .deck-head button')].map((b) => { const r = b.getBoundingClientRect(); return r.width > 0 && r.left < w.right - 1 && r.right > w.left + 1 && r.top < w.bottom - 1 && r.bottom > w.top + 1; }); });
+  check(!stHead.some(Boolean), `historia al 200 %: compartir o la X pisan el subtítulo ${JSON.stringify(stHead)}`);
   check(st200.nextBottom <= st200.vh && !st200.headOverlap, `historia al 200 %: ${JSON.stringify(st200)}`);
-  check(st200.dur > 2 * 3500, `historia al 200 %: la duración no crece con la letra (${st200.dur} ms)`);
   for (let k = 0; k < 6; k++) {
     await bp.keyboard.press('Tab');
     check(await bp.evaluate(() => Boolean(document.activeElement.closest('.story'))), 'el foco sale de la historia con Tab');
@@ -1537,24 +1614,34 @@ if (SMOKE) {
   await cp.waitForTimeout(600);
   check(await cp.locator('.coach-card').count() === 0, 'la guía vuelve a salir');
   await coachCtx.close();
-  // Reto diario en la cabecera: hecho con «n/5» y verde; pendiente, solo el icono. Lleva al reto de 5 preguntas.
-  const dayKeyNow = madridDayKey(new Date());
-  await seed(page, seededState({ upTo: 0, extra: { daily: { [dayKeyNow]: { score: 4, total: 5 } } } }));
-  await page.waitForSelector('.path');
-  const doneChip = await page.locator('.chip-daily').evaluate((a) => ({ label: a.getAttribute('aria-label'), text: a.textContent.trim(), w: a.getBoundingClientRect().width, h: a.getBoundingClientRect().height }));
-  check(doneChip.label === 'Reto diario, hecho: 4 de 5' && doneChip.text === '4/5', `reto diario hecho en la cabecera: ${JSON.stringify(doneChip)}`);
-  check(doneChip.w >= 48 && doneChip.h >= 48, `el reto diario de la cabecera mide ${Math.round(doneChip.w)}×${Math.round(doneChip.h)}`);
-  check((await page.locator('.topbar').boundingBox()).height < 80, 'la cabecera salta a dos líneas con el reto diario');
-  await shot(page, '14b-cabecera-reto-hecho');
-  await audit(page, '390 cabecera reto hecho');
+  // Cuadro del día desde la cabecera: abrir, fallar una vez (el nombre se apaga, sale la época), acertar, ver la historia de
+  // 3 tarjetas, cerrarla y comprobar la pantalla de hecho y el chip hecho (miniatura con ✓).
   await seed(page, seededState({ upTo: 0 }));
   await page.waitForSelector('.path');
-  await page.locator('.chip-daily').click();
-  await page.waitForSelector('.lesson, .result');
-  check(page.url().endsWith('#reto-diario'), `el reto de la cabecera lleva a ${page.url()}`);
-  const dailySteps = await playRound(page);
-  check(dailySteps === 5, `el reto diario no es de 5 preguntas: ${dailySteps}`);
-  check(await page.locator('.grid-row .sq').count() === 5, 'el reto diario no muestra 5 casillas');
+  await page.waitForSelector('.chip-cuadro .chip-cuadro-img');
+  await page.locator('.chip-cuadro').click();
+  await page.waitForSelector('.cdd-opt');
+  check(page.url().endsWith('#cuadro-del-dia'), `el Cuadro del día de la cabecera lleva a ${page.url()}`);
+  check(await page.locator('.cdd-opt').count() === 6, 'el Cuadro del día no ofrece 6 pintores');
+  await shot(page, '14b-cuadro-paso1');
+  await audit(page, '390 cuadro del día');
+  await playCuadro(page, 1);
+  check(await page.locator('.story .deck-bar').count() === 3, 'la historia del Cuadro del día no lleva 3 tarjetas');
+  check(/^Era |\. Era /.test(await page.locator('.story-text').innerText()), 'la primera tarjeta no dice de quién era');
+  await shot(page, '14b-cuadro-historia');
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.cdd-done');
+  check(/A la segunda/.test(await page.locator('.cdd-done .cdd-title').innerText()), 'el hecho no dice «A la segunda»');
+  check(/Llevas 1 cuadro del día/.test(await page.locator('.cdd-count').innerText()), 'el hecho no cuenta los cuadros');
+  check(await page.locator('.cdd-done [data-action="story"]').count() === 1 && await page.locator('.cdd-done [data-action="meet"]').count() === 1, 'faltan «Ver la historia» o «Conocer…»');
+  await audit(page, '390 cuadro del día hecho');
+  const cuadroChipDone = await page.locator('.chip-cuadro').evaluate((a) => ({ label: a.getAttribute('aria-label'), done: a.classList.contains('is-done'), ok: Boolean(a.querySelector('.chip-cuadro-ok')), w: a.getBoundingClientRect().width, h: a.getBoundingClientRect().height }));
+  check(cuadroChipDone.done && cuadroChipDone.ok && cuadroChipDone.label === 'Cuadro del día, hecho: a la segunda', `Cuadro del día hecho en la cabecera: ${JSON.stringify(cuadroChipDone)}`);
+  check(cuadroChipDone.w >= 48 && cuadroChipDone.h >= 48, `el Cuadro del día de la cabecera mide ${Math.round(cuadroChipDone.w)}×${Math.round(cuadroChipDone.h)}`);
+  await shot(page, '14b-cuadro-hecho');
+  // #reto-diario (los enlaces antiguos) lleva al mismo sitio.
+  await page.goto(`${base}#reto-diario`);
+  await page.waitForSelector('.cdd-done');
   await page.goto(`${base}#inicio`);
   await page.waitForSelector('.path');
 
@@ -1581,17 +1668,23 @@ if (SMOKE) {
     watch(tp, `test-${scheme}`);
     await tp.goto(`${base}test/`);
     await tp.waitForFunction(() => document.fonts.status === 'loaded');
-    check(/¿Cuánta pintura reconoces\?/.test(await tp.title()), L(`título «${await tp.title()}»`));
+    check(/¿Distinguirías un Velázquez de un Murillo\?/.test(await tp.title()), L(`título «${await tp.title()}»`));
     const meta = await tp.evaluate(() => Object.fromEntries([...document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], link[rel="canonical"]')].map((m) => [m.getAttribute('property') || m.getAttribute('name') || m.getAttribute('rel'), m.getAttribute('content') || m.getAttribute('href')])));
     for (const k of ['og:title', 'og:description', 'og:image', 'og:url', 'twitter:card', 'description', 'canonical']) check(Boolean(meta[k]), L(`falta la meta ${k}`));
     check(/\/test\/portada\.jpg$/.test(meta['og:image'] || ''), L(`og:image ${meta['og:image']}`));
     const cover = await tp.request.get(`${base}test/portada.jpg`);
     check(cover.ok() && (await cover.body()).length <= 150 * 1024, L('portada.jpg no se sirve o pesa más de 150 KB'));
-    check(/Entre 8 y 40 preguntas/.test(await tp.locator('.test-home').innerText()), L('la portada no dice cuántas preguntas'));
+    check(/o a las 40 preguntas/.test(await tp.locator('.test-home').innerText()), L('la portada no dice cuántas preguntas'));
     await audit(tp, L('portada'));
     if (scheme === 'light') await shot(tp, '15-test-portada');
     await tp.click('[data-action="start"]');
     await tp.waitForSelector('.lesson-stage .option');
+    // «Atrás» (gesto de Android o botón del navegador) a mitad de test pide confirmación y no sale; «Seguir jugando» vuelve.
+    await tp.evaluate(() => history.back());
+    await tp.waitForSelector('#test-leave:not([hidden])');
+    check(await tp.locator('.lesson-stage .option').count() > 0 && new URL(tp.url()).pathname.endsWith('/test/'), L('«atrás» saca del test sin preguntar'));
+    await tp.locator('#test-leave [data-action="leave-stay"]').tap();
+    await tp.waitForSelector('#test-leave', { state: 'hidden' });
     // La pregunta en pantalla: mecánica, opciones y, del catálogo, la respuesta.
     const questionOnScreen = async () => {
       const kind = await tp.locator('.lesson-stage').getAttribute('data-type');
@@ -1655,7 +1748,7 @@ if (SMOKE) {
       await tp.waitForSelector('.feedback.is-open');
       await tp.waitForTimeout(400);
       const fb = await tp.locator('.feedback').innerText();
-      check(i === 0 ? /No era esa/.test(fb) && /Era /.test(fb) : /¡Eso es!/.test(fb), L(`feedback ${i + 1}: «${fb.replace(/\s+/g, ' ').slice(0, 60)}»`));
+      check(i === 0 ? /Esta vez no/.test(fb) && /Era /.test(fb) : /¡Eso es!/.test(fb), L(`feedback ${i + 1}: «${fb.replace(/\s+/g, ' ').slice(0, 60)}»`));
       const line = (await tp.locator('.feedback .fb-line').innerText()).trim();
       check(line && hintsFor(q).some((h) => h.trim() === line), L(`feedback ${i + 1}: pista «${line}» que no es de la obra ni del pintor`));
       await assertAnswersVisible(tp, L(`feedback ${i + 1}`));
@@ -1678,15 +1771,14 @@ if (SMOKE) {
     await tp.waitForTimeout(500);
     const rt = await tp.locator('.test-result').innerText();
     check(/Has acertado 3 de 4/.test(rt), L(`resultado sin «n de 4»: «${rt.replace(/\s+/g, ' ').slice(0, 80)}»`));
-    check(/Sabes más de pintura que el \d+ % de la gente/.test(rt) && /estimación/.test(rt), L('resultado sin percentil estimado'));
-    check(/Has llegado al tramo fácil/.test(rt), L('resultado sin el tramo'));
-    check(await tp.locator('.test-result a[href="../#inicio"]').count() >= 1, L('falta «Sigue aprendiendo en Sfumato»'));
+    check(/\d+ %\s*de la gente sabe menos pintura que tú/.test(rt) && /aproximado/.test(rt), L('resultado sin percentil estimado'));
+    check(await tp.locator('.test-result a[href="../#inicio"]').count() >= 1, L('falta «Aprende a mirar en Sfumato»'));
     await audit(tp, L('resultado'));
     if (scheme === 'light') await shot(tp, '15-test-resultado', true);
     await tp.locator('[data-action="share"]').tap();
     await tp.waitForTimeout(400);
     const shared = await tp.evaluate(() => navigator.clipboard.readText());
-    check(/^He acertado 3 de 4 en el test de Sfumato · /.test(shared) && /\nSé más de pintura que el \d+ % de la gente/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
+    check(/^Sfumato · (Sé más de pintura que el \d+ % de la gente|He acertado 3 de 4 en el test de pintura)\. ¿Y tú\?\n/.test(shared) && shared.includes(`${base}test/`), L(`texto compartido «${shared}»`));
     check(/Copiado/.test(await tp.locator('.copy-status').innerText()), L('no avisa de que se ha copiado'));
     // El último resultado se recuerda en la portada.
     await tp.goto(`${base}test/`);
@@ -1714,7 +1806,8 @@ challengeText = await page.evaluate(() => navigator.clipboard.readText());
 const second = index.steps[1];
 check(await page.locator('[data-chip="goal"]').count() === 1, 'el cierre del día no dice que la meta está cumplida');
 check(!/Siguiente etapa|La próxima vez/.test(await page.locator('.res').innerText()), 'el cierre del día lleva la siguiente etapa');
-check(!/Repetir|Repaso de 5|Repasar más/.test(await page.locator('.res-foot').innerText()), 'el cierre del día lleva llamadas a seguir jugando');
+check(!/Repetir|Repasar/.test(await page.locator('.res-foot').innerText()) && /Volver al camino/.test(await page.locator('.res-foot').innerText()), 'el cierre del día lleva otras llamadas a jugar o le falta «Volver al camino»');
+check(/Por hoy, hecho/.test(await page.locator('.res-title').innerText()), 'el cierre del día no dice «Por hoy, hecho»');
 await page.goto(`${base}#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`);
 await page.waitForSelector('.learn, .intro, .story[open]');
 check(page.url().endsWith(`#${second.type === 'sala' ? 'sala' : 'etapa'}-${second.id}`), `la tarjeta lleva a ${page.url()}`);
@@ -1725,14 +1818,19 @@ await playRound(page);
 await page.goBack();
 await page.waitForSelector('.path');
 
-// Reto diario
-await page.click('.chip-daily');
-await playRound(page, { wrongAt: [3, 7] });
-await shot(page, '15-reto-diario-fin', true);
+// Cuadro del día (fallando dos veces) y su texto para compartir
+await page.click('.chip-cuadro');
+await page.waitForSelector('.cdd-opt');
+await playCuadro(page, 2);
+await page.keyboard.press('Escape');
+await page.waitForSelector('.cdd-done');
+await shot(page, '15-cuadro-del-dia-fin', true);
+await page.evaluate(() => { navigator.share = undefined; });
 await page.click('[data-action="share"]');
 await page.waitForTimeout(300);
 dailyText = await page.evaluate(() => navigator.clipboard.readText());
-await page.click('[data-action="done"]');
+check(/^Sfumato · Cuadro del día \d+\n🖼️ 🟥🟥🟩⬛\nhttp/.test(dailyText), `texto del Cuadro del día «${dailyText}»`);
+await page.goto(`${base}#inicio`);
 await page.waitForSelector('.path');
 await shot(page, '16-mapa-tras-jugar');
 
@@ -1757,7 +1855,7 @@ await page.waitForSelector('.settings-dialog[open]');
 const range = await page.locator('[data-setting="volume"]').boundingBox();
 check(range.height >= 48, `deslizador de volumen de ${Math.round(range.height)} px`);
 await page.click('[data-action="goal"][data-goal="100"]');
-check((await page.locator('.chip-goal').getAttribute('aria-label')).includes('de 100 XP'), 'la cabecera no refleja la nueva meta');
+check((await page.locator('.chip-streak').getAttribute('aria-label')).includes('de 100 puntos'), 'la cabecera no refleja la nueva meta');
 check(await page.evaluate(() => JSON.parse(localStorage.getItem('mirada.state')).settings.dailyGoal) === 100, 'meta no persistida');
 check(await page.locator('.pf-medal.is-got .medal-art img').count() >= 1, 'medalla de pintor sin miniatura');
 await page.goto(`${base}#coleccion`);
@@ -1819,7 +1917,7 @@ check(savedName.length <= 24 && savedName.startsWith('María'), `nombre guardado
 check((await page.locator('.pf-greeting').innerText()).includes('Hola, María'), 'el saludo no usa el nombre');
 check((await page.locator('.pf-initial').innerText()) === 'M', 'el avatar no muestra la inicial');
 await noHorizontalScroll(page, 'perfil con nombre largo');
-// Perfil: pestañas Portada/Avatar con teclado, texto al 200 % sin recortes y móvil apaisado.
+// Perfil: cabecera sin portada (avatar, saludo y engranaje en una fila), hoja del avatar, texto al 200 % y móvil apaisado.
 {
   const collection = Object.fromEntries(index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).map((w) => [w.id, '2026-11-20']));
   const st = seededState({ upTo: 3, extra: { collection } });
@@ -1827,32 +1925,21 @@ await noHorizontalScroll(page, 'perfil con nombre largo');
   const pctx = await browser.newContext(ctxOpts);
   const pp = await pctx.newPage();
   await seed(pp, st, 'perfil');
-  await pp.waitForSelector('.pf-look');
-  await pp.click('.pf-look');
+  await pp.waitForSelector('.pf-avatar-btn');
+  const row = await pp.evaluate(() => {
+    const r = (s) => document.querySelector(s).getBoundingClientRect();
+    const av = r('.pf-avatar'); const gear = r('.pf-gear'); const name = r('.pf-name-btn');
+    return { cover: document.querySelectorAll('.pf-cover, .pf-look').length, gearRight: gear.left > name.left, sameRow: Math.abs((gear.top + gear.bottom) / 2 - (av.top + av.bottom) / 2) < 12 };
+  });
+  check(row.cover === 0 && row.gearRight && row.sameRow, `cabecera del perfil: ${JSON.stringify(row)}`);
+  await pp.click('.pf-avatar-btn');
   await pp.waitForSelector('.look-dialog[open]');
-  await pp.focus('#look-tab-cover');
-  const tab = () => pp.evaluate(() => ({ id: document.activeElement.id, sel: document.querySelector('[role="tab"][aria-selected="true"]')?.id, idx: [...document.querySelectorAll('[role="tab"]')].map((t) => t.tabIndex) }));
-  await pp.keyboard.press('ArrowRight');
-  let t = await tab();
-  check(t.id === 'look-tab-avatar' && t.sel === 'look-tab-avatar' && t.idx.join() === '-1,0', `→ no pasa a «Avatar»: ${JSON.stringify(t)}`);
-  await pp.keyboard.press('ArrowRight');
-  check((await tab()).id === 'look-tab-cover', '→ en la última pestaña no da la vuelta');
-  await pp.keyboard.press('End');
-  check((await tab()).id === 'look-tab-avatar', 'Fin no va a la última pestaña');
-  await pp.keyboard.press('Home');
-  check((await tab()).id === 'look-tab-cover', 'Inicio no va a la primera pestaña');
-  await pp.keyboard.press('ArrowLeft');
-  check((await tab()).id === 'look-tab-avatar', '← en la primera pestaña no da la vuelta');
+  check(await pp.locator('.look-dialog [role="tab"]').count() === 0, 'la hoja del avatar aún tiene pestañas');
+  await pp.locator('.look-dialog .pf-pick').first().click();
+  check(await pp.evaluate(() => Boolean(JSON.parse(localStorage.getItem('mirada.state')).settings.avatar)), 'elegir un cuadro no guarda el avatar');
+  check(await pp.locator('.pf-avatar.has-art').count() === 1, 'el avatar elegido no se ve en la cabecera');
   await pp.keyboard.press('Escape');
   await pp.waitForTimeout(450);
-  // Foco de la portada: el anillo existe de verdad (pseudoelemento por encima de la imagen), no el de main.css, que se recortaba.
-  const ring = await pp.evaluate(() => {
-    const a = document.querySelector('.pf-cover-art');
-    a.focus();
-    const after = getComputedStyle(a, '::after');
-    return { visible: a.matches(':focus-visible'), outline: getComputedStyle(a).outlineStyle, border: after.borderTopWidth, style: after.borderTopStyle, z: after.zIndex, pos: after.position };
-  });
-  check(ring.visible && ring.outline === 'none' && ring.border === '4px' && ring.style === 'solid' && ring.z === '3' && ring.pos === 'absolute', `foco de la portada sin anillo propio: ${JSON.stringify(ring)}`);
   // Texto al 200 %: el nombre se ve entero (sin recorte ni puntos suspensivos) y sin desplazamiento horizontal.
   await pp.addStyleTag({ content: 'html{font-size:200%}' });
   await pp.waitForTimeout(300);
@@ -1863,23 +1950,23 @@ await noHorizontalScroll(page, 'perfil con nombre largo');
   });
   check(clip.w <= 1 && clip.h <= 1 && !clip.ellipsis && !clip.clamp && clip.boxW >= 150, `al 200 % el nombre se recorta: ${JSON.stringify(clip)}`);
   await noHorizontalScroll(pp, 'perfil al 200 %');
-  await pp.click('.pf-look');
+  await pp.click('.pf-avatar-btn');
   await pp.waitForSelector('.look-dialog[open]');
   const look200 = await pp.evaluate(() => ({ reset: document.querySelector('[data-action="look-reset"]').getBoundingClientRect().bottom, vh: innerHeight, inner: document.querySelector('.look-panel').scrollHeight - document.querySelector('.look-panel').clientHeight }));
-  check(look200.reset <= look200.vh + 1 && look200.inner <= 1, `hoja de portada al 200 %: botón fuera de vista o segundo scroll ${JSON.stringify(look200)}`);
+  check(look200.reset <= look200.vh + 1 && look200.inner <= 1, `hoja del avatar al 200 %: botón fuera de vista o segundo scroll ${JSON.stringify(look200)}`);
   await pp.keyboard.press('Escape');
   await pctx.close();
-  // Móvil apaisado: la portada y el avatar no se comen la pantalla.
+  // Móvil apaisado: el avatar no se come la pantalla.
   const lctx = await browser.newContext({ ...ctxOpts, viewport: { width: 844, height: 390 } });
   const lp = await lctx.newPage();
   await seed(lp, st, 'perfil');
   await lp.waitForSelector('.pf-hero');
-  const land = await lp.evaluate(() => ({ cover: Math.round(document.querySelector('.pf-cover').getBoundingClientRect().height), avatar: Math.round(document.querySelector('.pf-avatar').getBoundingClientRect().width) }));
-  check(land.cover <= 120 && land.avatar <= 80, `perfil apaisado con portada de ${land.cover} px y avatar de ${land.avatar} px`);
-  await lp.click('.pf-look');
+  const land = await lp.evaluate(() => Math.round(document.querySelector('.pf-avatar').getBoundingClientRect().width));
+  check(land <= 64, `perfil apaisado con avatar de ${land} px`);
+  await lp.click('.pf-avatar-btn');
   await lp.waitForSelector('.look-dialog[open]');
   const landLook = await lp.evaluate(() => ({ reset: document.querySelector('[data-action="look-reset"]').getBoundingClientRect().bottom, vh: innerHeight, cols: getComputedStyle(document.querySelector('.look-grid')).gridTemplateColumns.split(' ').length }));
-  check(landLook.reset <= landLook.vh + 1 && landLook.cols >= 5, `hoja de portada apaisada: ${JSON.stringify(landLook)}`);
+  check(landLook.reset <= landLook.vh + 1 && landLook.cols >= 5, `hoja del avatar apaisada: ${JSON.stringify(landLook)}`);
   await lctx.close();
   // Tableta: dos columnas desde 720 px.
   const tctx = await browser.newContext({ ...ctxOpts, viewport: { width: 768, height: 1024 } });
@@ -1925,7 +2012,7 @@ await playRound(spage);
 await spage.waitForTimeout(1600);
 await shot(spage, '23-sello-movimiento');
 check(await spage.locator('.res-medal .medal-lg').count() === 1, 'no se estampa la medalla');
-check(/Dominado/.test(await spage.locator('.res-kicker').innerText()), 'no se dice que el movimiento está dominado');
+check(/Completo/.test(await spage.locator('.res-kicker').innerText()), 'no se dice que el movimiento está completo');
 await spage.click('[data-action="done"]');
 await spage.waitForSelector('.path');
 check(await spage.locator('.movement.is-sealed').count() >= 1, 'el mapa no muestra el sello');
@@ -1957,7 +2044,7 @@ watch(hpage, 'por-dominar');
   check(await hpage.locator('[data-action="free"]').count() === 0, 'ronda libre sin tener todo dominado');
   check(!/Camino completo/.test(await hpage.locator('#main').innerText()), '«Camino completo» con paradas por repasar');
   const fin = hpage.locator('.finale');
-  check(/Te quedan 2 por dominar/.test(await fin.innerText()), `final sin cuántas quedan: ${await fin.innerText()}`);
+  check(/Te quedan 2 paradas/.test(await fin.innerText()), `final sin cuántas quedan: ${await fin.innerText()}`);
   check(await fin.locator(`[data-action="stage"][data-id="${pend[0].id}"]`).count() === 1, 'el final no lleva al primero por repasar');
   await fin.scrollIntoViewIfNeeded();
   await shot(hpage, '27a-por-dominar');
@@ -2074,8 +2161,9 @@ watch(epage, 'ojo');
   const works = index.worksOf(who.id).filter((w) => !w.spoiler && !w.attributed);
   const srsEye = Object.fromEntries(works.map((w, i) => [`art:${w.id}`, i === 0 ? { box: 3, due: '2026-11-01' } : { box: i % 2 ? 4 : 5, due: '2027-01-30' }]));
   await seed(epage, seededState({ upTo: 8, extra: { srs: srsEye } }));
-  // Con pintores dominados, el repaso de la portada es el «Repaso de 5» (v12).
-  await epage.goto(`${base}#repaso5`);
+  // Con pintores dominados y un cuadro vencido, el repaso (botón ↻) lo trae.
+  await epage.goto(`${base}#repaso`);
+  await epage.click('.review-intro [data-action="start"]');
   await playRound(epage);
   await epage.waitForTimeout(900);
   const eyeCard = epage.locator(`[data-chip="medal-eye-${who.id}"]`);
@@ -2241,42 +2329,30 @@ check(bpage.url().endsWith('#inicio'), 'reto con 99 aciertos aceptado');
 await bpage.goto(`${base}#etapa-${index.path.at(-1).id}`);
 await toastOk(bpage, 'etapa cerrada', 'Aún no');
 
-// ---------------------------------------------------------------- Repaso rápido (SRS vencido)
-const quickCtx = await browser.newContext(ctxOpts);
-const kq = await quickCtx.newPage();
-watch(kq, 'repaso-rapido');
+// ---------------------------------------------------------------- Repasar (botón ↻, sesión automática)
+// Las rutas antiguas redirigen a #repaso; 7 preguntas como mucho; cuenta para meta y racha y, al cumplir la meta, cierra
+// con «Por hoy, hecho».
 const dueWorks = index.path.slice(0, 4).flatMap((a) => index.learnWorks(a.id)).filter((w) => !w.spoiler).slice(0, 6);
 const srs = Object.fromEntries(dueWorks.map((w) => [`art:${w.id}`, { box: 1, due: '2026-11-01' }]));
-// Sin pintores dominados (si no, sale el «Repaso de 5») y con meta de 200 (si no, el cierre del día
-// quita «Repasar más»).
-const quickState = seededState({ upTo: 4, mastered: false, extra: { srs } });
-quickState.settings.dailyGoal = 200;
-await seed(kq, quickState);
-await kq.waitForSelector('.path');
-await kq.goto(`${base}#repaso-rapido`);
-await kq.waitForSelector('.lesson .option');
-const qSteps = await playRound(kq);
-check(qSteps === 3, `el repaso rápido tiene ${qSteps} preguntas`);
-await kq.waitForTimeout(900);
-check(/1 día/.test(await kq.locator('[data-chip="streak"]').innerText()), 'el repaso rápido no cuenta para la racha');
-check(Number((await kq.locator('.countup').getAttribute('data-to')) || 0) > 0, 'el repaso rápido no da XP para la meta');
-check(await kq.locator('.res-foot [data-to="repaso"]').count() === 1, 'falta «Repasar más» con cuadros pendientes');
-await shot(kq, '39-repaso-rapido-fin', true);
-// Repaso de 5 (v12): con pintores dominados y cuadros vistos, en la portada; cuenta para meta y racha
-// y, al cumplir la meta, cierra con el bloque «Hoy».
 const r5Ctx = await browser.newContext(ctxOpts);
 const r5 = await r5Ctx.newPage();
-watch(r5, 'repaso-5');
+watch(r5, 'repasar');
 await seed(r5, seededState({ upTo: 4, extra: { srs } }));
 await r5.waitForSelector('.path');
+check(/pendientes/.test(await r5.locator('.chip-review').getAttribute('aria-label')), 'el botón «Repasar» no avisa de cuadros vencidos');
 await r5.goto(`${base}#repaso5`);
+await r5.waitForSelector('.review-intro');
+check(r5.url().endsWith('#repaso'), `#repaso5 no redirige a #repaso: ${r5.url()}`);
+check(/^Repasamos /.test(await r5.locator('.review-intro h1').innerText()), 'la entrada del repaso no dice qué se repasa');
+await audit(r5, '390 entrada del repaso');
+await r5.click('.review-intro [data-action="start"]');
 await r5.waitForSelector('.lesson .option');
-check(await playRound(r5) === 5, 'el repaso de 5 no tiene 5 preguntas');
+const rSteps = await playRound(r5);
+check(rSteps >= 3 && rSteps <= 7, `el repaso tiene ${rSteps} preguntas`);
 await r5.waitForTimeout(900);
-check(r5.url().endsWith('#repaso5'), `el repaso de 5 no va en su ruta: ${r5.url()}`);
-check(/1 día/.test(await r5.locator('[data-chip="streak"]').innerText()), 'el repaso de 5 no cuenta para la racha');
-check(await r5.locator('[data-chip="goal"]').count() === 1, 'el repaso de 5 no cumple la meta');
-await shot(r5, '39c-repaso-5-fin', true);
+check(/1 día/.test(await r5.locator('[data-chip="streak"]').innerText()), 'el repaso no cuenta para la racha');
+check(await r5.locator('[data-chip="goal"]').count() === 1, 'el repaso no cumple la meta');
+await shot(r5, '39c-repaso-fin', true);
 await audit(r5, '390 cierre del día');
 await r5Ctx.close();
 
@@ -2351,7 +2427,7 @@ await npage.click('[data-action="practice"]');
 await playRound(npage);
 await npage.click('[data-action="done"]');
 check(await npage.locator('.path-character, .path-chest').count() === 0, 'sin storage: quedan personaje o cofres');
-check((await npage.locator('.chip-goal').getAttribute('aria-label')).includes('50 de 50'), 'sin storage: la meta no avanza en memoria');
+check((await npage.locator('.chip-streak').getAttribute('aria-label')).includes('50 de 50'), 'sin storage: la meta no avanza en memoria');
 
 // ---------------------------------------------------------------- Escritorio 1280×800
 const desk = await browser.newContext({ ...ctxOpts, viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1, hasTouch: false });
@@ -2444,9 +2520,9 @@ for (const scheme of ['light', 'dark']) {
       const c7 = await browser.newContext({ ...ctxOpts, viewport: { width, height: width === 390 ? 844 : 640 }, colorScheme: scheme });
       const p7 = await c7.newPage();
       watch(p7, `o7-${tag}`);
-      // Inicio avanzado: reto diario en la cabecera y el mapa asomando.
+      // Inicio avanzado: Cuadro del día en la cabecera y el mapa asomando.
       await seed(p7, st7);
-      await p7.waitForSelector('.chip-daily');
+      await p7.waitForSelector('.chip-cuadro');
       if (width === 390) {
         const top = await p7.evaluate(() => ({ t: document.querySelector('.path').getBoundingClientRect().top, n: document.querySelector('.bottomnav').getBoundingClientRect().top }));
         check(top.t < top.n - 40, `[${tag}] el mapa no asoma (${Math.round(top.t)} / ${Math.round(top.n)})`);
@@ -2469,7 +2545,7 @@ for (const scheme of ['light', 'dark']) {
       await p7.waitForSelector('.medal-dialog[open]');
       await p7.waitForTimeout(400);
       check(/7 días seguidos/.test(await p7.locator('.medal-dialog').innerText()), `[${tag}] la hoja de medalla no dice cómo se gana`);
-      check(!/dominado/i.test(await p7.locator('.medal-dialog .dlg-meta').innerText()), `[${tag}] el logro pendiente se da por hecho en su subtítulo`);
+      check(!/ya lo reconoces/i.test(await p7.locator('.medal-dialog .dlg-meta').innerText()), `[${tag}] el logro pendiente se da por hecho en su subtítulo`);
       await shot(p7, `medalla-hoja-${tag}`);
       await audit(p7, `o7 ${tag} hoja de medalla`);
       for (let k = 0; k < 3; k++) await p7.keyboard.press('Tab');
@@ -2493,7 +2569,7 @@ for (const scheme of ['light', 'dark']) {
       await p7.goto(`${base}#perfil`);
       await p7.waitForSelector('.pf-hero');
       check((await p7.locator('.pf-rank-name').innerText()).length > 0, `[${tag}] Perfil sin rango`);
-      check(!/cuadros? vistos?|pintores? dominados?|Mi museo/i.test(await p7.locator('.pf-layout').innerText()), `[${tag}] el perfil repite lo que ya está en la Colección`);
+      check(!/cuadros? vistos?|pintores? que reconoces|Mi museo/i.test(await p7.locator('.pf-layout').innerText()), `[${tag}] el perfil repite lo que ya está en la Colección`);
       await shot(p7, `perfil-${tag}`);
       await c7.close();
       // Reto semanal aceptado por un jugador nuevo: aviso breve, sin bloquear.
