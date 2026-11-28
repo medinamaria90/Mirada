@@ -18,13 +18,14 @@ export function currentItem(round) {
   return round.queue[round.pos] || null;
 }
 
+// reshuffle: null, sin reintento al final (las preguntas de concepto, engine/concepts.js).
 export function answerRound(round, correct, reshuffle = (q) => q) {
   const item = currentItem(round);
   if (!item) return round;
   const queue = round.queue.slice();
   const firstTry = round.firstTry.slice();
   if (!item.retry) firstTry[item.base] = correct;
-  if (!correct && !item.retry) queue.push({ q: reshuffle(item.q), base: item.base, retry: true });
+  if (!correct && !item.retry && reshuffle) queue.push({ q: reshuffle(item.q), base: item.base, retry: true });
   const combo = correct ? round.combo + 1 : 0;
   return { ...round, queue, firstTry, pos: round.pos + 1, combo, bestCombo: Math.max(round.bestCombo, combo) };
 }

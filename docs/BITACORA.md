@@ -450,6 +450,32 @@ pintor; en época y tramo, la ficha de época cuando exista: `eraFichaRoute` en 
   `progress.levelOrder` (y `@orden:1` en la lista de historias) para hacerlo una sola vez. Una ronda «a fondo» a medias de
   esos pintores se descarta. Pruebas en `tests/niveles-importancia.test.js`.
 
+## 28/11 — Siempre hay una guía en el mapa
+
+El botón flotante de flecha pasa a píldora con texto («Sigue: Leonardo», «Repasar»…): sale cuando la parada recomendada no se ve
+y siempre que el paso no tiene parada en el mapa, y al tocarla lanza el paso (lo mismo que el botón del resultado). Si la parada
+está a la vista, basta su burbuja. Se coloca en el hueco de la fila (izquierda, centro o derecha) donde no tape carteles ni paradas.
+Antes no salía nada si el paso no era una parada («Repasar» general, reto semanal…). `guideFor` en `ui/screens/map-cue.js`; prueba
+general en `tests/itinerario.test.js`.
+## 28/11 · Preguntas de concepto tras las tarjetas de época y de tramo
+
+- **Decisión de María:** la época (medallón) y el tramo (rombo) llevan preguntas tras sus tarjetas, como los pintores.
+- **Banco** (`contenido/preguntas-concepto.json` → `app/data/`, con `tools/sync_preguntas.py`): 82 preguntas diseñadas
+  como experto, 4 por época y 2 por tramo del camino, de cuatro tipos y siempre con cuadros del catálogo: «¿Cuál de estos
+  cuadros es…?», «¿Qué tienen en común?», «¿Qué cambia respecto a lo anterior?» y «¿Por qué rompe con lo anterior?». Cada
+  opción, con su porqué (≤180) y fuente. Revisión independiente en `docs/eval/preguntas-concepto-revision.md` (82: 56 bien,
+  20 a corregir, 6 a cambiar, más dos fallos de sistema: la buena siempre la primera y casi siempre la más larga); todo
+  aplicado y la comprobación rechaza ya opciones desequilibradas en longitud.
+- **Al llegar a la última tarjeta**, «Ir a las preguntas» (en la época, «Seguir» pasa a secundario): 3 en la época (2
+  «¿De qué época es?» con cuadros de pintores ya conocidos, si los hay; si no, del banco, prefiriendo los cuadros de las
+  tarjetas recién vistas, y 1 de concepto) y 2 en el tramo. El primer tramo de cada época no tiene cartel (va con el
+  medallón): sus preguntas entran en la tanda de la época. Desde el cartel del mapa, ruta propia
+  `#preguntas-tramo-<slug>[--<pintor>]`.
+- **Reglas:** se pueden saltar (la X sigue adelante), sin puntos, sin reintentos y sin desbloquear nada; sus fallos cuentan
+  para «Repasar el Barroco» (`engine/recall.js`; una época aún no aprendida no cuenta como olvido); ni títulos ni firmas
+  antes de responder; rotan por las menos recientes (`progress.concepts.recent`) y nunca repiten la última. Código en
+  `engine/concepts.js`, `ui/concept-quiz.js`, `ui/concept-question.js`; pruebas en `tests/preguntas-concepto.test.js`.
+
 ## 28/11 · «Repasar a…»: espera tras jugar y directo a «Cómo reconocer»
 
 - **Caso de María:** repaso general → avanzar en Botticelli (con su historia) → la guía proponía «Repasar a Botticelli».

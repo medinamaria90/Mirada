@@ -153,6 +153,7 @@
   --map-post-in: 12px;
   --map-return-b: 5.6rem;
   --map-return-size: 48px;
+  --map-pill-edge: 16px;           /* aire de la píldora del itinerario con el borde de la pantalla */
   --map-moon: #dfe6fb;             /* luz de luna sobre la piedra de las puertas */
   --gate-moon-w: 1.1;
   --gate-moon-o: .8;

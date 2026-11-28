@@ -9,6 +9,15 @@ export const CUE_VERB = { start: 'Empezar', resume: 'Seguir', review: 'Repasar',
 const REVIEW_KINDS = ['recall', 'debt'];
 const DEEP_KINDS = ['deepen', 'deep', 'essential', 'rank'];
 
+// Siempre hay una guía visible: la burbuja sobre la parada (cueFor) y, además, la píldora flotante con su texto (map-return.js)
+// cuando la parada queda fuera de la vista o lo recomendado no es una parada del mapa («Repasar», el reto semanal, el cierre…).
+// guideFor devuelve { bubble: cue } | { pill: texto } | null (nada que recomendar y ninguna parada abierta: camino terminado).
+export function guideFor(step, frontier, started = false) {
+  if (!step) return frontier.step ? { bubble: cueFor({ kind: 'stop', artistId: frontier.step.startsWith('artist:') ? frontier.step.slice(7) : '', movementId: frontier.step.startsWith('sala:') ? frontier.step.slice(5) : '', to: '' }, frontier, started) } : null;
+  const cue = cueFor(step, frontier, started);
+  return cue ? { bubble: cue } : { pill: step.label };
+}
+
 // Dónde y qué dice la burbuja para una recomendación: { host (selector del punto del nodo), verb, back } o null si la
 // recomendación no es una parada del mapa (cierre de época, «Repasar» general, reto semanal…).
 // frontier: { lore: «era:<id>»/«tramo:<clave>» o '', step: «artist:<id>»/«sala:<id>» de la parada actual }.
@@ -33,15 +42,16 @@ export function cueFor(step, frontier, started = false) {
   return null;
 }
 
-// Pone (o quita) la burbuja en el mapa ya pintado. Devuelve si hay burbuja.
+// Pone la burbuja en el mapa ya pintado (y quita la anterior). Devuelve el nodo con la burbuja o null si la guía no tiene parada
+// pintada (la píldora flotante de map-return.js lo cubre).
 export function placeCue(root, step, started) {
   root.querySelector('.map-cue')?.remove();
   const map = $('.path-map', root);
   map?.classList.remove('is-rec-back');
   const frontier = { lore: $('.lore-spot.is-here', root)?.dataset.lore || '', step: $('.stage-spot.is-current', root)?.dataset.step || '' };
-  const cue = cueFor(step, frontier, started);
+  const cue = guideFor(step, frontier, started)?.bubble;
   const host = cue && $(cue.host, root);
-  if (!host) return false;
+  if (!host) return null;
   const bubble = document.createElement('span');
   bubble.className = 'map-cue';
   bubble.setAttribute('aria-hidden', 'true');
@@ -50,5 +60,5 @@ export function placeCue(root, step, started) {
   const button = host.closest('button');
   if (button) button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${cue.verb}`);
   if (cue.back) map?.classList.add('is-rec-back');
-  return true;
+  return host;
 }

@@ -17,8 +17,8 @@
 //   5 bis. pendiente atrás: si la parada abierta ya es de una época posterior y en una anterior queda su Prueba de época
 //      abierta y sin superar, o un pintor a medias que es lo único que la tiene cerrada, se recomienda eso («Prueba de
 //      época: Renacimiento», «Sigue: Miguel Ángel»). No siempre: nunca dos veces seguidas (`prevStep`), para no frenar;
-//   5 ter. puerta de época cerrada solo por sus imprescindibles (engine/essentials.js) y nada abierto → «Te falta conocer
-//      las pinturas negras de Goya» (al nivel o, si su pintor está a medias, a su ronda);
+//   5 ter. puerta de época cerrada solo por sus imprescindibles (engine/essentials.js) y nada abierto → «Sigue: Goya · nivel 2»
+//      (al nivel o, si su pintor está a medias, a su ronda);
 //   5 quater. cada DEEPEN_EVERY pintores nuevos, un nivel «a fondo» pendiente de cualquier época ya recorrida, ponderado y en
 //      rotación (engine/deepen.js): «Profundiza en Rafael: nivel 3». Siempre saltable;
 //   6. una parada abierta y sin jugar → «Sigue: <pintor>» (con su miniatura);
@@ -28,7 +28,7 @@
 // Devuelve { kind, to, label, artistId? }. Puro (las rutas son texto: ui/router.js no toca el DOM al importarse).
 
 import { UNLOCK_MIN, MASTERY, gateSteps, gateBefore, stepPassed, stepStatus, isPathMastered, artistStatus, hasMovementReview, isReviewUnlocked } from './progress.js';
-import { gateEssentials, essentialNeed, essentialOpen } from './essentials.js';
+import { gateEssentials, essentialStepLabel, essentialOpen, STEP_LABEL_MAX } from './essentials.js';
 import { currentOffer } from './deepen.js';
 import { deepStatus } from './levels.js';
 import { pendingClosure, closureRoute, closureLabel } from './era-end.js';
@@ -51,6 +51,11 @@ export const FALLADOS_FOR_REVIEW = 5;
 export const isReviewKind = (kind) => kind === 'srs';
 
 const shortName = (artist) => artist.short || artist.name;
+const fit = (full, short) => (full.length <= STEP_LABEL_MAX ? full : short);
+// «Profundiza en Rafael: nivel 3»; si no cabe en una línea, sin el nivel.
+export const deepenLabel = (name, level) => fit(`Profundiza en ${name}: nivel ${level}`, `Profundiza en ${name}`);
+// «Siguiente: Rafael · nivel 3»; si no cabe, sin el nivel.
+export const rankLabel = (name, level) => fit(`Siguiente: ${name} · nivel ${level}`, `Siguiente: ${name}`);
 
 function stepRoute(index, step) {
   return step.type === 'sala' ? `sala-${step.id}` : stageRoute(step.id);
@@ -172,14 +177,14 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   const open = gateSteps(progress, index.steps).find((s) => stepStatus(progress, index, s) === 'available');
   // 5 ter. Puerta cerrada por sus imprescindibles.
   const must = open ? null : gateEssential(progress, index);
-  if (must) return { kind: 'essential', to: essentialRoute(progress, index, must), label: essentialNeed(must), artistId: must.artistId };
+  if (must) return { kind: 'essential', to: essentialRoute(progress, index, must), label: essentialStepLabel(index, must), artistId: must.artistId };
   // 5 bis. Pendiente atrás, de vez en cuando (nunca dos veces seguidas).
   const debt = prevStep === 'debt' ? null : backDebt(progress, index, open);
   if (debt) return debt;
   // 5 quater. Profundizar, intercalado.
   const offer = currentOffer(progress, index, today);
   if (offer && index.artist(offer.artistId)) {
-    return { kind: 'deepen', to: deepRoute(offer.artistId, offer.level), label: `Profundiza en ${shortName(index.artist(offer.artistId))}: nivel ${offer.level}`, artistId: offer.artistId, offer: offer.key };
+    return { kind: 'deepen', to: deepRoute(offer.artistId, offer.level), label: deepenLabel(shortName(index.artist(offer.artistId)), offer.level), artistId: offer.artistId, offer: offer.key };
   }
   // 6. Parada abierta y sin jugar.
   if (open) {
@@ -195,7 +200,7 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   const same = focus?.choice && plan.artistId === focus.choice.artistId && plan.level === focus.choice.level;
   if (focus?.choice && !same && index.artist(focus.choice.artistId)) {
     const a = index.artist(focus.choice.artistId);
-    return { kind: 'rank', to: deepRoute(a.id, focus.choice.level), label: `Siguiente: ${shortName(a)} · nivel ${focus.choice.level}`, artistId: a.id };
+    return { kind: 'rank', to: deepRoute(a.id, focus.choice.level), label: rankLabel(shortName(a), focus.choice.level), artistId: a.id };
   }
   if (mastered && canReview(count, plan, prevKind)) return review();
   return { kind: goalJustMet ? 'done' : 'path', to: HOME_ROUTE, label: BACK_LABEL };
