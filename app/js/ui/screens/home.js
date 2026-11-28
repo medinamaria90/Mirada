@@ -3,7 +3,7 @@
 import { esc, onAction, accentStyle } from '../dom.js';
 import { icons } from '../icons.js';
 import { page } from '../shell.js';
-import { artFrame } from '../art.js';
+import { artFrame, coverOf, tinySrc } from '../art.js';
 import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode, HOME_MAP } from './path-map.js';
 import { rememberMap } from './map-memory.js';
 import { liveArt } from '../map-land.js';
@@ -83,9 +83,10 @@ export function renderHome(ctx, el) {
     if (!guide || !el.isConnected) return;
     // Lo que enseña el mapa cuenta como recomendado: lo de atrás no sale justo después en el resultado.
     last.rememberStep(guide.kind);
-    guideStop = guideButton(el, guide, (g) => {
+    guideStop = guideButton(el, guide, guide.kind === 'recall' && guide.artistId ? guideFace(ctx, guide.artistId) : '', (g) => {
       ctx.audio.sfx('tap');
-      const key = g.artistId ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
+      // «Repasar a…» (y la Prueba de época) van a su ruta, no a la parada del pintor o la sala.
+      const key = g.kind === 'recall' ? '' : g.artistId ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
       // Una parada del camino: el camino va hasta ella y se toca (su tarjeta o su ronda), como «Ir»; si no, la acción.
       if (key && el.querySelector(`.stage-spot[data-step="${key}"]`)) return goToStep(key);
       return ctx.go(g.to);
@@ -180,6 +181,12 @@ function sideNow(ctx) {
 }
 
 export { scrollToCurrent };
+
+// La cara del pintor en la píldora de «Repasar a …» (su cuadro más conocido, en miniatura redonda).
+function guideFace(ctx, artistId) {
+  const work = coverOf(ctx.index, artistId);
+  return work ? `<img src="${esc(tinySrc(work))}" alt="" decoding="async">` : '';
+}
 
 // Lo que recomienda el juego cuando no es la parada actual (engine/next-step.js): el botón «Tú» se convierte en él.
 function guideFor(ctx, el, mapGuide, prevStep) {

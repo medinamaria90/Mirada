@@ -4,7 +4,7 @@ import { artistLink } from '../artist-link.js';
 import { curioHtml, toggleCurio, loadCurioCss } from '../fb-curio.js';
 import { esc, onAction, accentStyle, announce, focusHeading, $, $$ } from '../dom.js';
 import { icons } from '../icons.js';
-import { artFrame, onArtworkError, isBroken, preload } from '../art.js';
+import { artFrame, onArtworkError, isBroken, preload, coverOf } from '../art.js';
 import { marcoHtml, upgradeMarcos } from '../marco.js';
 import { createRng } from '../../engine/rng.js';
 import { isCorrect, questionAlt, optionText, makeQuestion, makeWhichQuestion, artworksInQuestion, retryQuestion } from '../../engine/questions.js';
@@ -18,14 +18,18 @@ import { beforeQuestionHtml, beforeRibbonHtml } from '../before-question.js';
 import { loadRibbonCss } from '../chrono-ribbon.js';
 import { guestCardHtml, loadGuestCss } from '../guest-card.js';
 import { askableIds, introNeeded, knownOnly, guestIntro, roundWorkIds } from '../../engine/guest-intro.js';
-import { metArtistIds } from '../../engine/painters.js';
+import { metArtistIds, seenOf, avatarWork, avatarCrop } from '../../engine/painters.js';
+import { avatarHtml } from '../avatar.js';
 
 const MAX_SUBSTITUTIONS = 3;
 const COMBO_SHOW = 3; // aciertos seguidos a partir de los que se ve el indicador
+const DUNNO_LABEL = 'No lo sé';
 // Último refuerzo «Fíjate en…» visto de cada pintor, para no repetirlo en la ronda siguiente (dura la sesión).
 const recentHints = new Map();
 
-// config: { questions, extras?, accent, seed, kind, label, interlude?, onDone(summary), onQuit(), resume?, onSave? }
+// config: { questions, extras?, accent, seed, kind, label, interlude?, dunno?, onDone(summary), onQuit(), resume?, onSave? }
+// dunno: true pone «No lo sé» bajo las opciones (modo aprender; nunca en retos ni en el test): enseña la respuesta sin sonido
+// ni rojo de fallo, no da puntos y cuenta como fallo (rompe «seguidas», vuelve al final y pesa doble en engine/recall.js).
 // extras: preguntas que no cuentan, al final (cuadros fallados en rondas anteriores).
 // resume: { round, answers, xpLive, freshIntroShown } de una ronda guardada (state/session.js).
 // onSave(snapshot) se llama tras cada respuesta para poder retomar la ronda.
@@ -113,7 +117,7 @@ export function runLesson(ctx, el, config) {
   function render() {
     answered = false;
     window.scrollTo(0, 0);
-    feedback.classList.remove('is-open', 'is-correct', 'is-wrong');
+    feedback.classList.remove('is-open', 'is-correct', 'is-wrong', 'is-dunno');
     feedback.innerHTML = '';
     stage.style.paddingBottom = '';
     updateBar();
@@ -196,7 +200,7 @@ export function runLesson(ctx, el, config) {
       // Las firmas, veladas también en las miniaturas hasta responder: a su tamaño se leen.
       const opts = q.options.map((o, i) => `<button class="option option-art" data-action="pick" data-id="${esc(o.id)}" data-pos="${i}" aria-label="Opción ${i + 1}" aria-haspopup="dialog">
           ${marcoHtml(index.artwork(o.artworkId), { alt: '', eager: true, label: `Opción ${i + 1}`, veils: veilsHtml(index.artwork(o.artworkId)) })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
-      return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>`;
+      return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>${dunnoHtml(q)}`;
     }
     const art = index.artwork(q.artworkId);
     // En las de movimiento, el periodo debajo del nombre («s. XV–XVI»), en tinta secundaria.
@@ -209,7 +213,12 @@ export function runLesson(ctx, el, config) {
     // El título (hueco reservado) se escribe tras responder: antes delataría autor, época o movimiento.
     const titleLine = titleSlotHtml();
     return `<div class="q-head">${head}</div><div class="q-art">${artFrame(art, { alt: questionAlt(q), eager: true, cls: 'art-hero', veils: veilsHtml(art), label: 'Cuadro sin imagen', zoom: { action: 'zoom', label: `${questionAlt(q)}: ver en grande` } })}${titleLine}</div>
-      <div class="options options-list" role="group" aria-label="Respuestas">${opts}</div>`;
+      <div class="options options-list" role="group" aria-label="Respuestas">${opts}${dunnoHtml(q)}</div>`;
+  }
+
+  // «No lo sé»: discreto, bajo las opciones, para no contestar al azar.
+  function dunnoHtml(q) {
+    return config.dunno && q.type !== 'before' ? `<button type="button" class="q-dunno" data-action="dunno">${DUNNO_LABEL}</button>` : '';
   }
 
   // Si la imagen principal no carga, se cambia por otra obra del mismo pintor.
@@ -271,17 +280,19 @@ export function runLesson(ctx, el, config) {
     }).catch((err) => console.error(err));
   }
 
-  function answer(optionId, button) {
+  // dunno: «No lo sé» (sin opción elegida): como un fallo para la ronda, sin sonido ni rojo y sin puntos.
+  function answer(optionId, button, { dunno = false } = {}) {
     if (answered) return;
     answered = true;
     const item = currentItem(round);
     const q = item.q;
-    const correct = isCorrect(q, optionId);
+    const correct = !dunno && isCorrect(q, optionId);
     round = answerRound(round, correct, (qq) => retryQuestion(index, qq, rng));
     const gained = xpForAnswer({ correct, isNew: q.isNew, combo: round.combo, retry: item.retry });
     xpLive += gained;
-    answers.push({ q, correct, retry: item.retry, combo: round.combo });
+    answers.push({ q, correct, retry: item.retry, combo: round.combo, chosen: dunno ? null : optionId, ...(dunno ? { dunno: true } : {}) });
     if (!roundDone(round)) save();
+    $('.q-dunno', stage)?.remove();
 
     $$('.option', stage).forEach((b) => {
       // Las miniaturas siguen activas tras responder: abren el visor (ya con título y autor).
@@ -291,7 +302,7 @@ export function runLesson(ctx, el, config) {
       } else b.setAttribute('aria-disabled', 'true');
       if (b.dataset.id === q.answerId) b.classList.add('is-correct');
     });
-    if (!correct) button.classList.add('is-wrong');
+    if (dunno) { /* sin marca de fallo: solo se ve la buena */ } else if (!correct) button.classList.add('is-wrong');
     else button.classList.add('is-picked');
     unveil(stage);
     if (q.type !== 'which') revealTitle(stage, index.artwork(q.artworkId)?.title);
@@ -299,12 +310,12 @@ export function runLesson(ctx, el, config) {
     // Combo: cada 3 seguidas suena la pequeña fanfarria ascendente en lugar del acierto.
     const milestone = correct && round.combo >= COMBO_SHOW && round.combo % COMBO_SHOW === 0;
     if (correct) ctx.audio.sfx(milestone ? 'streak' : 'correct');
-    else ctx.audio.sfx('wrong');
-    showFeedback(q, correct, gained, item.retry, optionId);
+    else if (!dunno) ctx.audio.sfx('wrong');
+    showFeedback(q, correct, gained, item.retry, dunno ? null : optionId, dunno);
     updateBar(milestone);
   }
 
-  function showFeedback(q, correct, gained, retry, chosenId) {
+  function showFeedback(q, correct, gained, retry, chosenId, dunno = false) {
     const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
     const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId, recent: recentHints });
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
@@ -320,16 +331,24 @@ export function runLesson(ctx, el, config) {
     // El texto se desplaza dentro de la hoja si no cabe (zoom de texto); «Seguir» siempre a la vista.
     feedback.innerHTML = `<div class="fb-inner">
       <div class="fb-text">
-        <div class="fb-head"><span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>
+        <div class="fb-head">${dunno ? dunnoMark(q) : `<span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>`}
         ${title}${gained ? `<span class="fb-xp">+${gained} puntos</span>` : ''}</div>
         ${who}${chosenSr}${lines}${beforeRibbonHtml(ctx, fb)}${caption}${curioHtml(subject, curioOpen)}
       </div>
       <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>
     </div>`;
-    feedback.classList.add('is-open', correct ? 'is-correct' : 'is-wrong');
+    feedback.classList.add('is-open', correct ? 'is-correct' : dunno ? 'is-dunno' : 'is-wrong');
     const btn = $('[data-action="continue"]', feedback);
     requestAnimationFrame(revealAnswers);
     setTimeout(() => btn.focus({ preventScroll: true }), 340);
+  }
+
+  // Tras «No lo sé», en las de autor, la cara del pintor (su autorretrato visto o su cuadro más conocido); si no, el ojo.
+  function dunnoMark(q) {
+    const artist = q.type !== 'movement' ? index.artist(q.artistId) : null;
+    const cover = artist ? coverOf(index, artist.id) : null;
+    const face = artist ? avatarWork(seenOf(progressNow(), index, artist.id)) || (cover ? { work: cover, ...avatarCrop(cover) } : null) : null;
+    return face ? `<span class="fb-face" aria-hidden="true">${avatarHtml(artist, face, 'fb-av')}</span>` : `<span class="fb-mark" aria-hidden="true">${icons.eye(20)}</span>`;
   }
 
   // La opción elegida y la correcta quedan a la vista por encima de la hoja de feedback: se deja
@@ -383,6 +402,7 @@ export function runLesson(ctx, el, config) {
 
   const offActions = onAction(el, {
     answer: (b) => answer(b.dataset.id, b),
+    dunno: (b) => answer(null, b, { dunno: true }),
     pick: (b) => zoom(b, Number(b.dataset.pos) || 0),
     zoom: (b) => zoom(b),
     continue: () => {

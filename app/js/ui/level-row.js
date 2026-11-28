@@ -12,7 +12,6 @@ import { tinySrc } from './art.js';
 import { levelStory, cropOf, regionOf } from '../engine/stories.js';
 import { focusOf } from '../engine/framing.js';
 import { deepRoute, stageRoute } from './router.js';
-import { artistStep } from '../engine/next-step.js';
 import { setPlayContext } from './play-context.js';
 
 const LABEL = { done: 'hecho, volver a ver su historia', next: 'empezar', locked: 'cerrado' };
@@ -54,13 +53,14 @@ export function rowHtml(levels, cls = '') {
 // Ruta que juega un nivel (su historia y después las preguntas).
 export const levelRoute = (artistId, level, branchId = '') => (level === 1 ? stageRoute(artistId, branchId) : deepRoute(artistId, level));
 
-// Vuelve a poner la historia de un nivel, sin ronda; con `replay`, su última tarjeta ofrece algo sobre ESE pintor (el contexto
-// manda): su siguiente nivel «a fondo» abierto («Nivel 2 de Botticelli») o «Practicar a Botticelli». Nunca un repaso general.
+// Solo ver la historia de un nivel, sin preguntas: al final, «Volver» (destacado) y, con `replay` (la ficha), repasar ESE nivel
+// («Preguntas de este nivel»: su historia y sus preguntas, ui/screens/flows.js).
+export const BACK_LABEL = 'Volver';
+export const LEVEL_QUESTIONS = 'Preguntas de este nivel';
 export function watchStory(ctx, artistId, level, replay = null) {
-  const step = replay ? artistStep(ctx.store.get().progress, ctx.index, artistId) : null;
-  const onPlay = step ? () => { setPlayContext(artistId); ctx.go(step.to); } : false;
+  const onMore = replay ? () => { setPlayContext(artistId); replay(level); } : false;
   return import('./story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { force: true, onPlay, playLabel: step ? step.label : '' }))
+    .then((m) => m.playStory(ctx, artistId, level, { force: true, onPlay: () => {}, playLabel: BACK_LABEL, onMore, moreLabel: LEVEL_QUESTIONS }))
     .catch((err) => console.error(err));
 }
 

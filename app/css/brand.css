@@ -228,6 +228,9 @@
   /* Aro de niveles (ui/deep-badges.js): cuánto sale del retrato, grosor del tramo hecho y del siguiente (en la caja de 100 del
      SVG), y el respiro del halo. */
   --ri-face: 112px;    /* cara del pintor en la entrada del repaso */
+  --guide-face: 24px;  /* cara del pintor en la píldora «Repasar a …» del mapa */
+  --fb-face: 40px;     /* cara del pintor en la hoja tras «No lo sé» */
+  --recall-face: 104px; /* cara del pintor en la sesión «Repasar a …» */
   --chip-dot: 9px;      /* punto de aviso de los botones de la cabecera (Cuadro del día, «Repasar») */
   /* Cuadro del día: el chip redondo de la cabecera (main.css) y su pantalla (cuadro-dia.css). */
   --cuadro-chip: 36px;
@@ -256,6 +259,7 @@
   /* Tarjeta del nodo (ui/level-card.js) e historias destacadas (ui/level-row.js): círculo, su portada, entrada y temblor. */
   --hl: 64px;
   --hl-lg: 68px;
+  --hl-label-max: 104px; /* ancho máximo de la etiqueta de un círculo de nivel: «Comienzos» o «Su jardín» sin cortes */
   --hl-photo: 54px;
   --hl-photo-lg: 58px;
   --radius-pop: 24px;

@@ -8,17 +8,17 @@
 import { esc, joinNames } from './dom.js';
 import { icons } from './icons.js';
 import { artFrame, tinySrc, smallSrc, mediumSrc } from './art.js';
-import { deepRoute, stageRoute } from './router.js';
+import { stageRoute } from './router.js';
 import { loadCss } from './lazy-css.js';
 import { ringSvg } from './deep-badges.js';
 import { rowLevels, rowHtml, wireRow, watchStory, levelRoute } from './level-row.js';
-import { levelStates, levelRing, FIRST_LEVEL_SHORT } from '../engine/level-ring.js';
+import { levelStates, levelRing } from '../engine/level-ring.js';
 import { branchLockReason } from '../engine/branches.js';
 import { avatarHtml, initials } from './avatar.js';
 import { loadStory } from './story-data.js';
 import { levelStory, storyKey } from '../engine/stories.js';
 import { storySeen } from '../state/stories-seen.js';
-import { sealHtml } from './seal.js';
+import { artistStep } from '../engine/next-step.js';
 import { traitDetails, lookAlikes } from '../engine/ficha.js';
 import { timeHtml, fitTimeNames } from './ficha-tiempo.js';
 import { lifeSpan, seenOf, playTargets, coverWork, previewCells, avatarCrop, avatarWork, isMastered, missingNote } from '../engine/painters.js';
@@ -101,7 +101,8 @@ function avatarEl(artist, seen, cover, story) {
     : `<span class="ap-avatar">${ring}</span>`;
 }
 
-function heroHtml(artist, movement, seen, story, tag, leadControl) {
+// actions: el botón de la ficha, entre la frase y sus historias.
+function heroHtml(artist, movement, seen, story, tag, leadControl, actions = '') {
   const cover = coverWork(seen);
   const cx = avatarCrop(cover);
   const meta = [lifeSpan(artist), artist.country].filter(Boolean).join(' · ');
@@ -112,8 +113,9 @@ function heroHtml(artist, movement, seen, story, tag, leadControl) {
       <div class="ap-who"><${tag} class="ap-name" id="ap-name">${esc(artist.name)}</${tag}>
         <p class="ap-meta">${esc(meta)}</p></div>
     </div>
-    <div class="ap-tags">${sealHtml(artist)}${movement ? `<span class="ap-era">${esc(movement.name)}</span>` : ''}</div>
+    ${movement ? `<div class="ap-tags"><span class="ap-era">${esc(movement.name)}</span></div>` : ''}
     ${whyHtml(artist)}
+    ${actions}
     ${story.row ? `${story.row}<div class="hl-more" hidden></div>` : ''}
   </header>`;
 }
@@ -143,12 +145,17 @@ export async function profileHtml(ctx, artistId, opts) {
   const levels = known ? rowLevels(index, artistId, story, levelStates(progress, index, artistId)) : [];
   const ring = known ? levelRing(progress, index, artistId) : null;
   // Un único botón: «Empezar · <nivel>» (el siguiente, como su círculo: su historia y las preguntas) o, con todo hecho, «Repasar».
-  const actions = !target ? '' : `<div class="ap-actions">${play.next
-    ? `<button type="button" class="btn btn-primary" data-ap="deep" data-level="${play.next.id}">Empezar <small>· ${esc(play.next.name)}</small></button>`
-    : `<button type="button" class="btn btn-primary" data-ap="play" data-branch="${esc(branchId)}">${target === 'mastered' ? 'Repasar' : `Empezar <small>· ${esc(FIRST_LEVEL_SHORT)}</small>`}</button>`}</div>`;
+  // Una sola acción, que dice qué hace (engine/next-step.js artistStep): «Nivel 2 de Vermeer» con un nivel nuevo abierto y,
+  // si no (o si se le está olvidando), «Repasar a Vermeer»; sin dominar, «Nivel 1 de Vermeer».
+  const step = target === 'mastered' && !branchId ? artistStep(progress, index, artistId, ctx.today()) : null;
+  const who = artist.short || artist.name;
+  const main = step
+    ? `<button type="button" class="btn btn-primary" data-ap="go" data-to="${esc(step.to)}">${esc(step.label)}</button>`
+    : `<button type="button" class="btn btn-primary" data-ap="play" data-branch="${esc(branchId)}">${esc(target === 'mastered' ? `Repasar a ${who}` : `Nivel 1 de ${who}`)}</button>`;
+  const actions = !target ? '' : `<div class="ap-actions">${main}</div>`;
   const storyInfo = { has: hasStory, isNew: !storySeen(storyKey(artistId, 1)), ring, playable: Boolean(opts.playable), row: levels.length > 1 || levels.some((l) => l.story) ? rowHtml(levels, opts.playable ? '' : 'is-watch') : '' };
-  return `${heroHtml(artist, movement, seen, storyInfo, opts.tag || 'h2', opts.leadControl || '')}
-    ${lock}${actions}
+  // La categoría («Maestro») ya no se muestra aquí: el aro del retrato enseña el progreso.
+  return `${heroHtml(artist, movement, seen, storyInfo, opts.tag || 'h2', opts.leadControl || '', `${lock}${actions}`)}
     ${galleryHtml(artist, seen, total, opts.navigate)}
     ${lookHtml(artist, seen)}
     ${known ? timeHtml(ctx, artistId, (id) => faceOf(progress, index, id), Boolean(opts.navigate)) : ''}
@@ -185,8 +192,8 @@ export function wireProfile(ctx, root, artistId, hooks = {}) {
         .then(() => root.querySelector('.ap-ring.is-new')?.classList.replace('is-new', 'is-seen'))
         .catch((err) => console.error(err));
     } else if (what === 'play') go(stageRoute(artistId, b.dataset.branch || ''));
-    else if (what === 'deep') go(deepRoute(artistId, Number(b.dataset.level)));
     else if (what === 'gallery') go(`obras-${artistId}`);
+    else if (what === 'go') go(b.dataset.to);
     else if (what === 'artist') go(`pintor-${b.dataset.id}`);
   });
 }
