@@ -57,3 +57,13 @@ test('historias: una historia de ampliación no repite tarjetas del nivel 1', ()
   }
   assert.deepEqual(repeated, []);
 });
+
+test('historias: cada historia de ampliación trae su propio «Fíjate en…» (la app ya no cierra con la pista del nivel 1)', () => {
+  const missing = [];
+  for (const id of Object.keys(told)) {
+    for (const lv of (story(id)?.levels || []).filter((l) => l.level >= 2)) {
+      if (!lv.cards.some((c) => /f[ií]jate/i.test(c.text))) missing.push(`${id} nivel ${lv.level}`);
+    }
+  }
+  assert.deepEqual(missing, []);
+});

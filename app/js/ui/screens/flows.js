@@ -425,7 +425,7 @@ export function renderDeep(ctx, el, artistId, level) {
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown, met });
     playEra(movement.era);
     ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo, contextArtist }));
-  }, { look: artist.hint, returnTo });
+  }, { returnTo }); // sin la pista del nivel 1: cada «a fondo» trae su «Fíjate en…»
 }
 
 // --- Sala de movimiento (sin pintores con etapa) ---------------------------------
