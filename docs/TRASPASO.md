@@ -234,6 +234,11 @@ Decisiones de la tarde del 24/11:
     pintor. Texto con fuente (museo o monografía). Fase 1: ~55 historias de pintor + ~90 de etapa;
     orden: grandes maestros, maestros, invitados con una tarjeta. Base: piloto de
     `contenido/lecciones/`. Entra en la migración con la ficha de pintor.
+    **Ampliación (28/11, decisión de María):** todo pintor con niveles «a fondo» (nivel 2 o siguientes)
+    tiene una historia NUEVA en cada uno: otra etapa de su vida, otra faceta, una obra clave, una anécdota o
+    ampliar algo que el nivel 1 solo apuntó; lo único que no vale es repetir. Cada una lleva su «Fíjate en…»
+    propio (si no, la app añade al final la pista del nivel 1). Lo vigila `tests/historias-ampliacion.test.js`
+    (falta de historia por nivel, salvo la lista `PENDING`, y tarjetas que repiten el nivel 1).
 20. **Medieval, clásico y asiático (23:25; decidido 23:35):** **arte clásico antiguo, fuera** (ni v1
     ni v2). En la v1, rama
     **medieval y gótica** (Cimabue, Duccio, Giotto, Simone Martini, Lorenzetti, Van Eyck; ya en el

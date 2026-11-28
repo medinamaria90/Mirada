@@ -351,7 +351,9 @@ con los textos curados de `tools/catalog_data.py` cruzados por `tools/ids_antigu
   todas sus obras desbloqueadas (abren el visor) y huecos discretos «n de m». Atrás devuelve a donde estabas, con su desplazamiento
   (`main.js`: número en `history.state`). Colección tiene dos rutas, `#coleccion` (Cuadros) y `#coleccion-pintores`.
   **Historias servidas desde la app**: `tools/sync_historias.py` copia y valida `contenido/historias/` en `app/data/historias/`
-  (con `index.json`); `tests/ficha-pintor.test.js` falla si la copia se desfasa. Museo y ciudad (`catalog-ficha.json`, diferido,
+  (con `index.json`); `tests/ficha-pintor.test.js` falla si la copia se desfasa. Todo pintor con niveles «a fondo» tiene historia en cada uno, nueva y
+  sin repetir el nivel 1 (decisión de María, 28/11; `tests/historias-ampliacion.test.js`, con una lista `PENDING` de excepciones
+  justificadas que debe quedar vacía). Museo y ciudad (`catalog-ficha.json`, diferido,
   `ui/ficha-data.js`) salen bajo el cuadro en el visor solo con la obra revelada.
 - **Obras desbloqueadas** = vistas (colección o enseñadas en rondas, `engine/collection.js` `unlockedMap`): una sola definición para las franjas
   de Colección, la ficha (galería completa: miniaturas que abren el visor y huecos discretos «n de m» sin imagen ni título) y la lista de
