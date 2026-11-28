@@ -13,7 +13,7 @@ import {
 import { planWeekly, dailyPool } from '../app/js/engine/daily.js';
 import { tokenForRound, encodeChallenge, decodeChallenge } from '../app/js/engine/challenge.js';
 import { planChallenge } from '../app/js/engine/daily.js';
-import { emptyProgress, salaStatus, artistStatus, movementStatus, isReviewUnlocked, nextStep, needsIntro, needsTramo, MASTERY } from '../app/js/engine/progress.js';
+import { emptyProgress, salaStatus, artistStatus, movementStatus, isReviewUnlocked, nextStep, needsIntro, needsTramo, hasTramoSign, MASTERY } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { migrate, defaultState, SCHEMA_VERSION } from '../app/js/state/schema.js';
 import { createStore, STORAGE_KEY } from '../app/js/state/store.js';
@@ -236,7 +236,9 @@ test('intro: se necesita la primera vez y no si ya se vio o ya se jugó en el mo
 
 test('el cartel del tramo sale una sola vez antes de su primer pintor: ni visto, ni con un pintor del tramo jugado', () => {
   const p = emptyProgress();
-  const first = real.path.find((a) => a.section);
+  // El primer tramo de cada época no sale en el camino (hasTramoSign): el cartel es el del primer tramo que sí sale.
+  const first = real.path.find((a) => hasTramoSign(real, a.id));
+  assert.equal(needsTramo(emptyProgress(), real, real.path.find((a) => a.section).id), false, 'el primer tramo de la época no lleva cartel');
   const mate = real.path.find((a) => a.section === first.section && a.id !== first.id);
   const plain = { artist: () => ({ id: 'x' }), path: [] };
   assert.equal(needsTramo(p, real, first.id), true);

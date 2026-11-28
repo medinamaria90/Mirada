@@ -1,20 +1,25 @@
 // Acciones del mapa del camino (portada y ramas): paradas, carteles, desvíos y el aviso de lo que falta en lo cerrado.
 
 import { $, announce, prefersReducedMotion } from '../dom.js';
-import { icons } from '../icons.js';
 import { branchRoute, stageRoute, deepRoute, go } from '../router.js';
 import { zoomInto } from '../map-zoom.js';
-
-// La hoja del mapa (época cerrada) se carga al primer toque: no cuenta en el arranque.
-const sheet = (ctx, fn, b) => {
-  ctx.audio.sfx('tap');
-  import('../map-sheet.js').then((m) => m[fn](ctx, b.dataset.id, b)).catch((err) => console.error(err));
-};
+import { loreBefore } from './path-lore.js';
 
 // La tarjeta del nodo de un pintor con niveles se carga al primer toque. branchId: rama desde la que se abre.
 export const levelCard = (ctx, b, branchId = '') => {
   ctx.audio.sfx('tap');
   import('../level-card.js').then((m) => m.openLevelCard(ctx, b, branchId)).catch((err) => console.error(err));
+};
+
+// Un pintor abierto cuya época o tramo aún no se han visto: su tarjeta avisa de qué va antes («Empezar · antes, el
+// Renacimiento») y su botón lleva a esa secuencia (época, tramo, pintor). Devuelve si ha abierto la tarjeta.
+export const loreFirstCard = (ctx, b, branchId = '') => {
+  if (b.dataset.status === 'locked') return false;
+  const before = loreBefore(ctx.store.get().progress, ctx.index, b.dataset.id);
+  if (!before) return false;
+  ctx.audio.sfx('tap');
+  import('../lore-first-card.js').then((m) => m.openLoreFirstCard(ctx, b, before, branchId)).catch((err) => console.error(err));
+  return true;
 };
 
 // Donde está «Tú»: el medallón o el rombo si son lo siguiente del camino; si no, la parada actual.
@@ -29,18 +34,22 @@ export function pathActions(ctx) {
   };
   return {
     // Dominado con niveles (aro): su tarjeta, con sus historias y «Jugar».
-    stage: (b, ev) => (b.dataset.card ? levelCard(ctx, b) : guarded('etapa')(b, ev)),
+    stage: (b, ev) => (b.dataset.card ? levelCard(ctx, b) : loreFirstCard(ctx, b) || guarded('etapa')(b, ev)),
     sala: guarded('sala'),
     review: guarded('repaso'),
     intro: (b) => {
       ctx.audio.sfx('tap');
       ctx.go(`movimiento-${b.dataset.id}`);
     },
+    // Medallón o rombo por delante del progreso: el mismo aviso que un pintor cerrado.
+    'lore-lock': (b) => {
+      ctx.audio.sfx('tap');
+      showLockNote(b);
+    },
     gallery: (b) => {
       ctx.audio.sfx('tap');
       ctx.go(`galeria-${b.dataset.id}`);
     },
-    'era-lock': (b) => sheet(ctx, 'openEraSheet', b),
     'goto-current': (_, ev) => {
       ev.preventDefault();
       const target = $(HERE) || $('.stage.is-available, .stage.is-started');
@@ -66,9 +75,9 @@ export function pathActions(ctx) {
 }
 
 // Aviso de lo cerrado: al tocar un candado, la parada tiembla como un cofre cerrado (y el móvil vibra un instante, si
-// puede) y sale UN globo pequeño con lo que falta, «Ir» (a la parada que lo abre: data-unlock) y su cruz. «Ir» lleva el
+// puede) y sale UNA pastilla pequeña con lo que falta y «Ir» (a la parada que lo abre: data-unlock). «Ir» lleva el
 // camino hasta esa parada y la toca (su tarjeta o su ronda); si no está en esta pantalla, va a jugarla. Nunca hay dos: el nuevo sustituye al anterior. Se cierra
-// con la cruz, al tocar fuera, al desplazar el mapa, con Esc o al cambiar de pantalla. Sin temporizador.
+// al tocar fuera, al desplazar el mapa, con Esc o al cambiar de pantalla. Sin temporizador.
 
 const SHAKE_MS = 420;       // lo que dura el temblor (como --dur-lock-shake)
 const VIBRATE_MS = 14;      // un toque corto, no un zumbido
@@ -100,7 +109,7 @@ function noteFor(button) {
   if (!note) {
     note = document.createElement('div');
     note.className = 'lock-note';
-    note.innerHTML = `<p class="lock-note-text"></p><button type="button" class="lock-note-go" hidden>Ir</button><button type="button" class="lock-note-close" aria-label="Cerrar">${icons.close(16)}</button>`;
+    note.innerHTML = `<p class="lock-note-text"></p><button type="button" class="lock-note-go" hidden>Ir</button>`;
     button.after(note);
   }
   return note;
@@ -127,8 +136,6 @@ export function showLockNote(button) {
   const onDown = (e) => { if (!note.contains(e.target) && !button.contains(e.target)) closeLockNote(); };
   const onScroll = () => { if (Math.abs(button.getBoundingClientRect().top - top0) > SCROLL_CLOSE) closeLockNote(); };
   const onKey = (e) => { if (e.key === 'Escape') closeLockNote(); };
-  const onClose = (e) => { e.stopPropagation(); closeLockNote(); button.focus({ preventScroll: true }); };
-  const closer = note.querySelector('.lock-note-close');
   document.addEventListener('pointerdown', onDown, true);
   document.addEventListener('scroll', onScroll, { capture: true, passive: true });
   document.addEventListener('keydown', onKey);
@@ -138,7 +145,6 @@ export function showLockNote(button) {
     closeLockNote();
     goToStep(unlock);
   };
-  closer.addEventListener('click', onClose);
   goBtn.addEventListener('click', onGo);
   open = {
     note,
@@ -147,7 +153,6 @@ export function showLockNote(button) {
       document.removeEventListener('scroll', onScroll, { capture: true });
       document.removeEventListener('keydown', onKey);
       window.removeEventListener('hashchange', closeLockNote);
-      closer.removeEventListener('click', onClose);
       goBtn.removeEventListener('click', onGo);
     },
   };

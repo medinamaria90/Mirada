@@ -314,7 +314,7 @@ test('cuadros nuevos: los que la ronda ha añadido a la colección', () => {
   assert.equal(newWorksCount({ collection: {} }, {}), 0);
 });
 
-test('cierre del día: «Por hoy, hecho», tres cifras (sin precisión), fichas de meta y racha y solo «Volver al camino» y compartir', () => {
+test('cierre del día: «Por hoy, hecho», tres cifras (sin precisión), fichas de meta y racha; se puede seguir («Sigue: …») y «Volver al camino» es secundario', () => {
   const today = '2026-11-24';
   const [a, b, c] = big.path;
   const before = masteredProgress({ [a.id]: { on: '2026-11-20' }, [b.id]: { on: today } });
@@ -332,9 +332,9 @@ test('cierre del día: «Por hoy, hecho», tres cifras (sin precisión), fichas 
   assert.doesNotMatch(html, /ayer|mañana/i);
   const foot = footOf(html);
   assert.match(html, /<h1 class="res-title">Por hoy, hecho<\/h1>/);
-  assert.match(foot, /data-action="done"[^>]*>Volver al camino</);
-  assert.doesNotMatch(foot, /Repetir|Repasar|Sigue:/, 'en el cierre, sin llamadas a seguir jugando');
-  assert.deepEqual([...foot.matchAll(/data-action="([a-z]+)"/g)].map((m) => m[1]), ['done', 'share'], 'solo «Volver al camino» (primero al leer, abajo al verse) y compartir');
+  assert.match(foot, /data-action="go"[^>]*data-primary>[^]*?<span>Sigue: /, 'el principal sigue con lo que toca');
+  assert.match(foot, /res-btn2" data-action="done"><span>Volver al camino<\/span>/, '«Volver al camino», secundario');
+  assert.doesNotMatch(foot, /Repetir|Repasar/, 'sin otras llamadas a jugar más');
 });
 
 test('resultado sin meta cumplida: una sola acción para practicar y la racha a salvo en su ficha', () => {

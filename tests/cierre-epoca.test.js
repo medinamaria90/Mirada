@@ -9,7 +9,7 @@ import { emptyProgress } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { planStage } from '../app/js/engine/planner.js';
 import { seenWorks } from '../app/js/engine/levels.js';
-import { nextStep, mapGuide } from '../app/js/engine/next-step.js';
+import { nextStep, mapRecommendation } from '../app/js/engine/next-step.js';
 import {
   pendingClosure, markClosureSeen, seedClosures, closedBranches, crossRoute, closureTitle, eraAfter, parseClosureKey, SEED_MARK,
 } from '../app/js/engine/era-end.js';
@@ -58,7 +58,7 @@ test('cierre y nextStep: el resultado lleva al cierre («Cerrar el Renacimiento�
   const s = nextStep(p, real, TODAY, { plan, outcome: out, goalJustMet: true });
   assert.deepEqual([s.kind, s.to, s.label], ['closure', 'cierre-renacimiento', 'Cerrar el Renacimiento']);
   assert.deepEqual(parseRoute('#cierre-renacimiento'), { name: 'closure', key: 'renacimiento' });
-  assert.equal(mapGuide(p, real, TODAY).kind, 'closure', 'el mapa también lo propone mientras no se vea');
+  assert.equal(mapRecommendation(p, real, TODAY).kind, 'closure', 'el mapa también lo propone mientras no se vea');
   const closed = markClosureSeen(p, real, 'renacimiento', TODAY);
   // Sin los imprescindibles del Renacimiento, la puerta sigue cerrada y la guía lleva a ellos (engine/essentials.js).
   assert.equal(nextStep(closed, real, TODAY, { plan, outcome: out, prevStep: 'debt' }).kind, 'essential');

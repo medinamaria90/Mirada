@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { realIndex } from './helpers-real.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
-import { nextStep, mapGuide, artistStep } from '../app/js/engine/next-step.js';
+import { nextStep, mapRecommendation, artistStep } from '../app/js/engine/next-step.js';
 import { createRound, answerRound } from '../app/js/engine/round.js';
 import { xpForAnswer } from '../app/js/engine/progress.js';
 import { migrate, SCHEMA_VERSION } from '../app/js/state/schema.js';
@@ -107,15 +107,15 @@ test('nextStep: «Recordar» va detrás de «Repetir» y de «Por hoy, hecho» y
   // Ronda floja de una etapa: primero repetir.
   const retry = nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: NEW }, outcome: { accuracy: 0.3, events: [] } });
   assert.equal(retry.kind, 'retry');
-  // Meta del día cumplida: «Por hoy, hecho».
-  assert.equal(nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: NEW }, outcome: { accuracy: 0.9, events: [] }, goalJustMet: true }).kind, 'done');
+  // Meta del día cumplida: se celebra en el resultado, pero el paso sigue siendo lo que toca.
+  assert.equal(nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: NEW }, outcome: { accuracy: 0.9, events: [] }, goalJustMet: true }).kind, 'recall');
   // Con mucho pendiente (repaso general), «Recordar» va antes.
   p.fallados = index.worksOf(B).slice(0, 6).map((w) => ({ id: w.id, date: TODAY, times: 1, hits: 0 }));
   assert.equal(nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: NEW }, outcome: { accuracy: 0.9, events: [] } }).kind, 'recall');
   // Justo tras una sesión «Recordar», no otra.
   assert.notEqual(nextStep(p, index, TODAY, { plan: { kind: 'recall', artistId: B }, outcome: { accuracy: 1, events: [] } }).kind, 'recall');
   // El mapa también la propone, con su ruta.
-  assert.equal(mapGuide(p, index, TODAY, {}).to, `repasar-${A}`);
+  assert.equal(mapRecommendation(p, index, TODAY, {}).to, `repasar-${A}`);
 });
 
 test('una sola acción por pintor: «Repasar a X» (con prioridad si se le olvida) o «Nivel N de X» si tiene uno nuevo', () => {
