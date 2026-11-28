@@ -1,5 +1,5 @@
-/* Cartel del mapa en tarjetas (ui/sign-cards.js): a pantalla completa, con el carrusel y los puntos de las tarjetas de
-   época (epocas.css). Se carga al primer toque. Todo color sale de las variables de brand.css. */
+/* Cartel del mapa en tarjetas (ui/sign-cards.js): a pantalla completa, con el carrusel de las tarjetas de época (epocas.css)
+   y la navegación común (deck.css). Se carga al primer toque. Todo color sale de las variables de brand.css. */
 .sign-cards {
   box-sizing: border-box; position: fixed; inset: 0; width: 100%; max-width: 100%; height: 100dvh; max-height: 100dvh; margin: 0;
   padding: 0; border: 0; background: var(--bg); color: var(--ink); overflow: hidden;
@@ -8,21 +8,12 @@
 .sign-cards[open] { display: grid; animation: sc-in var(--era-dur) var(--ease); }
 @keyframes sc-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 .sc-body {
-  position: relative; display: grid; grid-template-rows: minmax(0, 1fr) auto; align-content: center; gap: .9rem;
-  width: min(100%, 440px); margin: 0 auto; padding: calc(3.4rem + var(--safe-t)) 0 calc(1.2rem + var(--safe-b));
+  position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: .9rem;
+  width: min(100%, 440px); height: 100dvh; margin: 0 auto; padding: 0 0 calc(1.1rem + var(--safe-b));
 }
-.sc-close { position: absolute; top: calc(.5rem + var(--safe-t)); right: .5rem; z-index: 1; }
-/* Como paso del camino (antes del primer pintor del tramo): «Saltar», y «Seguir» en la última tarjeta, en vez de la cruz. */
-.sc-skip {
-  position: absolute; top: calc(.5rem + var(--safe-t)); right: .5rem; z-index: 1; min-width: var(--hit); min-height: var(--hit);
-  padding: 0 1rem; border: 0; border-radius: var(--radius-pill); background: none; color: var(--ink-2); font: 600 1rem/1 var(--font); cursor: pointer;
-}
-.sc-skip:active { transform: scale(.97); }
-.sc-skip:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 .sc-body .era-track { height: 100%; }
-.sc-body .era-dots { grid-row: 2; }
-.sc-cover .era-chip { justify-self: center; }
 .sc-wall { margin-bottom: 0; }
 .sc-title { margin: 0; font: 500 clamp(1.7rem, 7vw, 2.1rem)/1.12 var(--font); letter-spacing: var(--track); text-wrap: balance; }
+.sc-title:focus { outline: none; }
 .sc-lead { margin: 0; color: var(--ink-2); font: 400 clamp(1.15rem, 4.8vw, 1.3rem)/1.45 var(--font); text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) { .sign-cards[open] { animation: none; } }

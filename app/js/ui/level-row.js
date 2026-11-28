@@ -13,6 +13,7 @@ import { levelStory, cropOf, regionOf } from '../engine/stories.js';
 import { focusOf } from '../engine/framing.js';
 import { deepRoute, stageRoute } from './router.js';
 import { setPlayContext } from './play-context.js';
+import { DECK_LABEL } from './deck-nav.js';
 
 const LABEL = { done: 'hecho, volver a ver su historia', next: 'empezar', locked: 'cerrado' };
 const LABEL_BARE = { ...LABEL, done: 'hecho, repetir' };
@@ -53,14 +54,15 @@ export function rowHtml(levels, cls = '') {
 // Ruta que juega un nivel (su historia y después las preguntas).
 export const levelRoute = (artistId, level, branchId = '') => (level === 1 ? stageRoute(artistId, branchId) : deepRoute(artistId, level));
 
-// Solo ver la historia de un nivel, sin preguntas: al final, «Volver» (destacado) y, con `replay` (la ficha), repasar ESE nivel
-// («Preguntas de este nivel»: su historia y sus preguntas, ui/screens/flows.js).
-export const BACK_LABEL = 'Volver';
-export const LEVEL_QUESTIONS = 'Preguntas de este nivel';
+// Solo ver la historia de un nivel, sin preguntas: al final, «Volver» (destacado) y, con `replay` (la ficha), «Ir a las
+// preguntas» en cada tarjeta, que repasa ESE nivel (su historia y sus preguntas, ui/screens/flows.js).
 export function watchStory(ctx, artistId, level, replay = null) {
-  const onMore = replay ? () => { setPlayContext(artistId); replay(level); } : false;
+  const steps = replay ? { questions: DECK_LABEL.questions } : null;
   return import('./story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { force: true, onPlay: () => {}, playLabel: BACK_LABEL, onMore, moreLabel: LEVEL_QUESTIONS }))
+    .then(async (m) => {
+      const { ended } = await m.playStory(ctx, artistId, level, { force: true, onPlay: () => {}, playLabel: DECK_LABEL.back, steps, onMore: false });
+      if (replay && ended === m.STORY_END.QUESTIONS) { setPlayContext(artistId); replay(level); }
+    })
     .catch((err) => console.error(err));
 }
 

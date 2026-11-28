@@ -570,11 +570,11 @@ async function viewerZoomCheck(page, cdp, label, opener) {
 }
 const ZOOM_TAG_HIDE_MS = 1100;
 
-// Pasa la historia del pintor tarjeta a tarjeta hasta «Jugar» (cerrarla con la X devolvería al mapa).
+// Pasa la historia del pintor tarjeta a tarjeta hasta el botón final («Ir a las preguntas»; la X devolvería al mapa).
 async function skipStory(page) {
   const MAX_CARDS = 20;
-  for (let k = 0; k < MAX_CARDS && !(await page.locator('.story[open] .story-play').count()); k++) await page.keyboard.press('ArrowRight');
-  await page.click('.story[open] .story-play');
+  for (let k = 0; k < MAX_CARDS && !(await page.locator('.story[open] [data-deck="play"]').count()); k++) await page.keyboard.press('ArrowRight');
+  await page.click('.story[open] [data-deck="play"]');
 }
 
 // Hasta «Conoce a»: pasa la presentación del movimiento (Entrar) y la historia del pintor, que sale siempre (se salta).
@@ -582,10 +582,10 @@ async function toLearn(page) {
   const STEP_MS = 15000;
   const PASSES = 4;
   for (let k = 0; k < PASSES; k++) {
-    await page.waitForSelector('.learn, .intro [data-action="enter"], .story[open] .story-next', { timeout: STEP_MS });
+    await page.waitForSelector('.learn, .intro .deck-primary, .story[open] .story-text', { timeout: STEP_MS });
     if (await page.locator('.learn').count()) return;
     if (await page.locator('.story[open]').count()) await skipStory(page);
-    else await page.click('.intro [data-action="enter"]');
+    else await page.$eval('.intro [data-action="enter"]', (b) => b.click());
     await page.waitForTimeout(250);
   }
   await page.waitForSelector('.learn', { timeout: STEP_MS });
@@ -602,7 +602,7 @@ async function closeMatchMoment(page) {
 // Hasta la ronda de un pintor: su historia sale siempre y «Jugar» empieza la ronda, sin «Conoce a» (decisión de María, 26/11).
 async function toRound(page) {
   const STEP_MS = 15000;
-  await page.waitForSelector('.story[open] .story-next', { timeout: STEP_MS });
+  await page.waitForSelector('.story[open] .story-text', { timeout: STEP_MS });
   await skipStory(page);
   await page.waitForSelector('.lesson .option', { timeout: STEP_MS });
   check(await page.locator('.learn').count() === 0, `tras la historia sale «Conoce a» (${page.url()})`);
@@ -1024,14 +1024,13 @@ if (introGroup > 1) {
   await page.keyboard.press('Escape');
   await page.waitForSelector('.viewer', { state: 'detached' });
 }
-// Teclado: con el foco en el título, Enter pulsa el único botón principal («Seguir»), que sigue el camino: el cartel del
-// tramo como paso («Saltar») y después la historia del pintor, sin volver a la presentación.
-await page.locator('.intro h1').focus();
-await page.keyboard.press('Enter');
-await page.waitForSelector('dialog.sign-cards[open] .sc-skip');
-check(page.url().includes('#etapa-'), `«Seguir» no sigue hacia el pintor: ${page.url()}`);
-await page.click('dialog.sign-cards .sc-skip');
-await page.waitForSelector('.story[open] .story-next');
+// Como paso del camino, «Saltar» sigue el camino: el cartel del tramo (también con «Saltar») y después la historia del
+// pintor, sin volver a la presentación.
+await page.click('.intro .deck-secondary');
+await page.waitForSelector('dialog.sign-cards[open] .deck-secondary');
+check(page.url().includes('#etapa-'), `«Saltar» no sigue hacia el pintor: ${page.url()}`);
+await page.click('dialog.sign-cards .deck-secondary');
+await page.waitForSelector('.story[open] .story-text');
 check(await page.locator('.story[open]').count() === 1, 'tras el cartel del tramo no sale la historia del pintor');
 await page.waitForTimeout(400);
 await shot(page, '05-historia');
@@ -1224,7 +1223,7 @@ if (SMOKE) {
   const firstDiscover = index.branch('descubre-renacimiento').artists[0];
   await enterBranch('descubre-renacimiento');
   await page.click(branchNode(firstDiscover));
-  await page.waitForSelector('.story[open] .story-next');
+  await page.waitForSelector('.story[open] .story-text');
   check(page.url().endsWith(`#etapa-${firstDiscover}--descubre-renacimiento`), `la rama no juega en ella: ${page.url()}`);
   await page.goto(`${base}#perfil`);
   await page.waitForSelector('.pf-hero');
@@ -1267,15 +1266,9 @@ if (SMOKE) {
   await page.locator('.hl-row .hl[data-hl="1"][data-state="done"]').click();
   await page.waitForSelector('.story[open] .story-text');
   await page.waitForTimeout(300);
-  check(await page.locator('.story-bar.is-now').count() === 1, 'la historia no avanza sola (barra de progreso)');
+  check(await page.locator('.story .deck-bar.is-done').count() === 1 && await page.locator('.story .deck-primary').innerText() === 'Seguir', 'la historia no empieza en la primera tarjeta con «Seguir»');
   await shot(page, '14m-ficha-historia');
-  // Pausa visible; Espacio pausa o reanuda esté donde esté el foco (no avanza); atrás cierra la historia y deja en la ficha.
-  check(await page.locator('.story [data-st="pause"]').getAttribute('aria-pressed') === 'false', 'la historia no tiene botón visible de pausa');
-  await page.keyboard.press('Space');
-  check(await page.locator('.story.is-paused').count() === 1 && await page.locator('.story-bar.is-now').count() === 1, 'Espacio no pausa la historia (o avanza en vez de pausar)');
-  check(await page.locator('.story [data-st="pause"]').getAttribute('aria-label') === 'Reanudar', 'la pausa no cambia a «Reanudar»');
-  await page.keyboard.press('Space');
-  check(await page.locator('.story.is-paused').count() === 0, 'Espacio no reanuda');
+  // Atrás cierra la historia y deja en la ficha.
   const storyUrl = page.url();
   await page.goBack();
   await page.waitForSelector('.story', { state: 'detached' });
@@ -1299,16 +1292,16 @@ if (SMOKE) {
   await sp.goto(`${base}#etapa-${storyArtist.id}`);
   await sp.reload();
   await sp.waitForSelector('.intro, .story[open]');
-  // La primera vez sale la presentación de la época: «Seguir» pasa por el cartel del tramo («Saltar») y abre la historia.
+  // La primera vez sale la presentación de la época: «Saltar» pasa por el cartel del tramo («Saltar») y abre la historia.
   if (await sp.locator('.intro').count()) {
-    await sp.click('.intro [data-action="enter"]');
-    await sp.waitForSelector('dialog.sign-cards[open] .sc-skip, .story[open]');
-    if (await sp.locator('dialog.sign-cards[open] .sc-skip').count()) await sp.click('dialog.sign-cards .sc-skip');
+    await sp.click('.intro .deck-secondary');
+    await sp.waitForSelector('dialog.sign-cards[open] .deck-secondary, .story[open]');
+    if (await sp.locator('dialog.sign-cards[open]').count()) await sp.click('dialog.sign-cards .deck-secondary');
   }
   await sp.waitForSelector('.story[open] .story-text');
   // De 1 a 5 tarjetas (decisión de María, 26/11).
   const MAX_STORY_CARDS = 5;
-  const nCards = await sp.locator('.story-bar').count();
+  const nCards = await sp.locator('.story .deck-bar').count();
   check(nCards >= 1 && nCards <= MAX_STORY_CARDS, `la historia tiene ${nCards} tarjetas`);
   check(await sp.locator('.story-img').count() === 1 && await sp.locator('.story-text').innerText() !== '', 'la tarjeta no enseña cuadro y texto');
   await sp.waitForTimeout(400);
@@ -1317,18 +1310,18 @@ if (SMOKE) {
   // Teclado: una flecha, exactamente una tarjeta (antes saltaba de dos en dos: el manejador del documento la contaba otra vez).
   if (nCards >= 3) {
     await sp.keyboard.press('ArrowRight');
-    check(await sp.locator('.story-bar.is-done').count() === 2, `→ no avanza exactamente una tarjeta (${await sp.locator('.story-bar.is-done').count()} barras)`);
+    check(await sp.locator('.story .deck-bar.is-done').count() === 2, `→ no avanza exactamente una tarjeta (${await sp.locator('.story .deck-bar.is-done').count()} barras)`);
     await sp.keyboard.press('ArrowLeft');
-    check(await sp.locator('.story-bar.is-done').count() === 1, `← no retrocede exactamente una tarjeta (${await sp.locator('.story-bar.is-done').count()} barras)`);
+    check(await sp.locator('.story .deck-bar.is-done').count() === 1, `← no retrocede exactamente una tarjeta (${await sp.locator('.story .deck-bar.is-done').count()} barras)`);
   }
   for (let k = 0; k < nCards - 1; k++) {
     await sp.keyboard.press('ArrowRight');
     await sp.waitForTimeout(150);
   }
-  check(await sp.locator('.story-bar.is-done').count() === nCards && await sp.locator('.story-play').count() === 1 && await sp.locator('.story-more').count() === 1, 'la última tarjeta no ofrece «Jugar» y «Ver más»');
+  check(await sp.locator('.story .deck-bar.is-done').count() === nCards && await sp.locator('.story [data-deck="play"]').count() === 1 && await sp.locator('.story [data-deck="more"]').count() === 1, 'la última tarjeta no ofrece «Ir a las preguntas» y «Más sobre…»');
   check(await sp.locator('.story-caption').count() === 1, 'la tarjeta no lleva el pie con el título de la obra');
-  // «Jugar» empieza la ronda: sin «Conoce a» tras la historia.
-  await sp.click('.story-play');
+  // «Ir a las preguntas» empieza la ronda: sin «Conoce a» tras la historia.
+  await sp.click('.story [data-deck="play"]');
   await sp.waitForSelector('.lesson .option');
   await sp.waitForTimeout(500); // pasado el margen contra toques fantasma al cerrar la historia (ui/tap-guard.js)
   check(await sp.locator('.story').count() === 0, 'la historia no se cierra al terminar');
@@ -1392,7 +1385,7 @@ if (SMOKE) {
   check(page.url().endsWith('#inicio'), `cerrar la tarjeta cambia de pantalla: ${page.url()}`);
   await page.locator(deepNode).click();
   await page.click('.lc-play');
-  await page.waitForSelector('.story[open] .story-next');
+  await page.waitForSelector('.story[open] .story-text');
   await skipStory(page);
   await page.waitForSelector('.lesson');
   check(page.url().endsWith('#a-fondo-' + deepArtist.id + '-' + deepLevel.id), `la etapa no lleva a su ronda: ${page.url()}`);
@@ -1402,7 +1395,7 @@ if (SMOKE) {
   check(await page.locator('.res-foot [data-to="a-fondo-' + deepArtist.id + '-' + deepLevel.id + '"]').count() === 1 || await page.locator('[data-chip="deep"]').count() === 1, 'sin «Repetir» en el nivel a fondo');
   await shot(page, '14j-resultado-a-fondo-faltan', true);
   await seed(page, seededState({ upTo: deepUpTo, extra: deepSeen(true) }), `a-fondo-${deepArtist.id}-${deepLevel.id}`);
-  await page.waitForSelector('.story[open] .story-next');
+  await page.waitForSelector('.story[open] .story-text');
   await skipStory(page);
   await page.waitForSelector('.lesson');
   await playRound(page);
@@ -1434,7 +1427,7 @@ if (SMOKE) {
       await spg.goto(`${base}#a-fondo-${stageStoryArtist.id}-2`);
       await spg.reload();
     }
-    await spg.waitForSelector('.story[open] .story-next');
+    await spg.waitForSelector('.story[open] .story-text');
     if (how === 'esc') {
       await spg.keyboard.press('Escape');
       await spg.waitForSelector('.story', { state: 'detached' });
@@ -1446,14 +1439,14 @@ if (SMOKE) {
     const MAX_CARDS = 8;
     if (how === 'saltar' || how === 'desde la ficha') await skipStory(spg);
     else {
-      // Tocando a la derecha de la tarjeta hasta la última, que no se cierra sola: allí, «Jugar».
+      // Tocando a la derecha de la tarjeta hasta la última, que no se cierra sola: allí, el botón final.
       const frame = spg.locator('.story[open] .story-frame');
       const box = await frame.boundingBox();
-      for (let k = 0; k < MAX_CARDS && !(await spg.locator('.story[open] .story-play').count()); k++) {
+      for (let k = 0; k < MAX_CARDS && !(await spg.locator('.story[open] [data-deck="play"]').count()); k++) {
         await frame.click({ position: { x: box.width * 0.85, y: box.height * 0.3 } });
         await spg.waitForTimeout(150);
       }
-      await spg.click('.story[open] .story-play');
+      await spg.click('.story[open] [data-deck="play"]');
     }
     await spg.waitForSelector('.lesson');
     await spg.waitForTimeout(800);
@@ -1584,13 +1577,12 @@ if (SMOKE) {
   // Pintor dominado: su historia, desde el círculo de su nivel hecho (el avatar juega el siguiente nivel).
   await bp.waitForSelector('.hl-row .hl[data-hl="1"][data-state="done"]');
   await bp.locator('.hl-row .hl[data-hl="1"][data-state="done"]').click();
-  await bp.waitForSelector('.story[open] .story-next');
+  await bp.waitForSelector('.story[open] .story-text');
   await bp.waitForTimeout(300);
-  const st200 = await bp.evaluate(() => { const n = document.querySelector('.story-next').getBoundingClientRect(); const bar = document.querySelector('.story-bar.is-now'); return { nextBottom: n.bottom, vh: innerHeight, dur: bar ? parseFloat(bar.style.getPropertyValue('--dur')) : 0, headOverlap: document.querySelector('.story-head').getBoundingClientRect().bottom > document.querySelector('.story-copy').getBoundingClientRect().top + 1 }; });
-  const stHead = await bp.evaluate(() => { const who = document.querySelector('.story-who-text, .story-who'); const w = who.getBoundingClientRect(); return [...document.querySelectorAll('.story-head button')].map((b) => { const r = b.getBoundingClientRect(); return r.width > 0 && r.left < w.right - 1 && r.right > w.left + 1 && r.top < w.bottom - 1 && r.bottom > w.top + 1; }); });
-  check(!stHead.some(Boolean), `historia al 200 %: pausa o «Saltar» pisan el subtítulo ${JSON.stringify(stHead)}`);
+  const st200 = await bp.evaluate(() => { const n = document.querySelector('.story .deck-primary').getBoundingClientRect(); return { nextBottom: n.bottom, vh: innerHeight, headOverlap: document.querySelector('.story .deck-head').getBoundingClientRect().bottom > document.querySelector('.story-copy').getBoundingClientRect().top + 1 }; });
+  const stHead = await bp.evaluate(() => { const who = document.querySelector('.story-who-text, .story-who'); const w = who.getBoundingClientRect(); return [...document.querySelectorAll('.story .deck-head button')].map((b) => { const r = b.getBoundingClientRect(); return r.width > 0 && r.left < w.right - 1 && r.right > w.left + 1 && r.top < w.bottom - 1 && r.bottom > w.top + 1; }); });
+  check(!stHead.some(Boolean), `historia al 200 %: compartir o la X pisan el subtítulo ${JSON.stringify(stHead)}`);
   check(st200.nextBottom <= st200.vh && !st200.headOverlap, `historia al 200 %: ${JSON.stringify(st200)}`);
-  check(st200.dur > 2 * 3500, `historia al 200 %: la duración no crece con la letra (${st200.dur} ms)`);
   for (let k = 0; k < 6; k++) {
     await bp.keyboard.press('Tab');
     check(await bp.evaluate(() => Boolean(document.activeElement.closest('.story'))), 'el foco sale de la historia con Tab');
@@ -1634,7 +1626,7 @@ if (SMOKE) {
   await shot(page, '14b-cuadro-paso1');
   await audit(page, '390 cuadro del día');
   await playCuadro(page, 1);
-  check(await page.locator('.story .story-bar').count() === 3, 'la historia del Cuadro del día no lleva 3 tarjetas');
+  check(await page.locator('.story .deck-bar').count() === 3, 'la historia del Cuadro del día no lleva 3 tarjetas');
   check(/^Era |\. Era /.test(await page.locator('.story-text').innerText()), 'la primera tarjeta no dice de quién era');
   await shot(page, '14b-cuadro-historia');
   await page.keyboard.press('Escape');
