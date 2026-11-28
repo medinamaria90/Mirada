@@ -1,0 +1,35 @@
+/* Preguntas de concepto en la ronda (ui/concept-question.js): «¿Cuál de estos cuadros es…?» usa la rejilla de «¿Cuál es
+   de X?»; las demás, uno o dos cuadros arriba (con su etiqueta, si la llevan) y las respuestas de texto debajo. El título
+   de cada cuadro tiene su hueco reservado y aparece al responder. Se carga con la primera ronda que las trae. */
+:root {
+  --cq-h: min(30svh, 300px); --cq-h-pair: min(24svh, 230px);
+  --cq-gap: .7rem; --cq-gap-sm: .35rem; --cq-space: 1rem; --cq-chip-pad: .15rem .6rem;
+}
+
+.lesson-stage[data-type="concept"] .options-grid {
+  width: 100%; max-width: 400px; margin-inline: auto; margin-block: auto;
+  gap: var(--marco-gap); align-content: center; align-items: center;
+}
+.lesson-stage[data-type="concept"] .q-prompt { text-wrap: balance; }
+
+.cq-works { display: flex; justify-content: center; align-items: flex-end; gap: var(--cq-gap); margin: 0 0 var(--cq-space); }
+.cq-work { display: flex; flex-direction: column; align-items: center; gap: var(--cq-gap-sm); min-width: 0; margin: 0; }
+.cq-works.is-pair .cq-work { flex: 1 1 0; }
+.cq-art {
+  width: min(100%, calc(var(--cq-h) * var(--arw) / var(--arh))); max-height: var(--cq-h);
+  border-radius: var(--radius-sm); box-shadow: var(--frame-shadow);
+}
+.cq-works.is-pair .cq-art { width: min(100%, calc(var(--cq-h-pair) * var(--arw) / var(--arh))); max-height: var(--cq-h-pair); }
+.cq-label {
+  padding: var(--cq-chip-pad); border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--ink);
+  font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+}
+.cq-title {
+  max-width: 100%; min-height: 2.6em; margin: 0; text-align: center; font-size: .82rem; line-height: 1.3; color: var(--ink-2);
+  opacity: 0; transition: opacity var(--dur-title-in) var(--ease); text-wrap: balance;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.cq-work.is-told .cq-title { opacity: 1; }
+.lesson-stage[data-type="concept"] .option .opt-text { font-size: .98rem; line-height: 1.25; }
+@media (prefers-reduced-motion: reduce) { .cq-title { transition: none; } }
+html.reduce-motion .cq-title { transition: none; }

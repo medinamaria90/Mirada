@@ -59,7 +59,9 @@ export function signSlides(index, kind, sign, fallbackTitle, id = '') {
 // kind: «rama» o «tramo»; id: la rama o la clave del tramo; opener: el cartel tocado (recupera el foco al cerrar).
 // onDone: abierto como paso del camino (flows.js withTramo): abajo, «Saltar» y, en la última tarjeta, «Seguir», que continúan al
 // pintor; la X (o Esc) no continúa: avisa a onExit, si lo hay. Salir de la pantalla no avisa a ninguno.
-export async function openSignCards(ctx, kind, id, opener, { title: fallback = '', onDone = null, onExit = null } = {}) {
+// onQuestions(cards): en un tramo con preguntas de concepto, el principal de la última tarjeta es «Ir a las preguntas»;
+// cierra las tarjetas sin avisar a onDone ni a onExit y quien abrió decide dónde salen las preguntas.
+export async function openSignCards(ctx, kind, id, opener, { title: fallback = '', onDone = null, onExit = null, onQuestions = null } = {}) {
   const turn = slot.begin();
   const [signs] = await Promise.all([loadSigns(kind), loadCss('css/epocas.css'), loadCss('css/deck.css'), loadCss('css/carteles.css')]);
   if (slot.stale(turn)) return null;
@@ -84,13 +86,16 @@ export async function openSignCards(ctx, kind, id, opener, { title: fallback = '
   }
   // Cómo se cierra: «Saltar» o el final siguen el camino; la X, Esc o tocar fuera, no.
   let done = false;
+  let toQuestions = false;
   const onClose = ({ silent }) => {
-    if (silent) return;
+    if (silent || toQuestions) return;
     if (done) onDone?.();
     else onExit?.();
   };
   const close = mountSheet(dlg, { slot, handle, opener, closeSelector: '[data-deck="close"]', onClose });
   const finish = () => { done = Boolean(onDone); close(); };
+  const cards = signs[id]?.cards || [];
+  const questions = kind === 'tramo' && onQuestions ? tramoQuestions(id, () => { toQuestions = true; close({ silent: true }); onQuestions(cards); }) : null;
   wireDeck(ctx, {
     scope: dlg.querySelector('.sc-body'),
     track: dlg.querySelector('.era-track'),
@@ -99,8 +104,19 @@ export async function openSignCards(ctx, kind, id, opener, { title: fallback = '
     onSkip: onDone ? finish : null,
     // «Más sobre este tramo ›»: la ficha de su época, para ampliar (si la hay).
     more: kind === 'tramo' ? eraMore(ctx, ctx.index.artists.find((a) => a.section === id)?.movementId, MORE_TRAMO) : null,
+    questions,
   });
   // La X la cierra mountSheet (closeSelector). El foco, en el título (como en la presentación de la época).
   dlg.querySelector('#sc-title').focus({ preventScroll: true });
   return handle;
+}
+
+// «Ir a las preguntas» en la última tarjeta si el tramo tiene preguntas de concepto (ui/concept-quiz.js); se mira al abrir.
+function tramoQuestions(key, go) {
+  const questions = { ready: false, go, refresh: () => {} };
+  import('./concept-quiz.js').then((cq) => cq.hasConcepts('tramo', key)).then((yes) => {
+    questions.ready = yes;
+    questions.refresh();
+  }).catch((err) => console.error(err));
+  return questions;
 }

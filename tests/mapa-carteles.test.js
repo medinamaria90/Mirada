@@ -112,9 +112,12 @@ test('volver a tu parada: la flecha apunta a donde queda, también tras un salto
   assert.ok(ret.includes("addEventListener('scroll'") && ret.includes('.news-card'), 'la flecha no se recalcula al desplazar o el botón queda bajo la tarjeta de novedades');
 });
 
-test('ir a lo recomendado: círculo solo con la flecha (sin «Tú» ni cuadro volando); los colores de carteles, solo en variables', async () => {
+test('píldora del itinerario: texto que lanza el paso (no solo desplaza el mapa); los colores de carteles, solo en variables', async () => {
   const ret = readFileSync(join(app, 'js', 'ui', 'screens', 'map-return.js'), 'utf8');
-  assert.ok(ret.includes('map-return-arrow') && !ret.includes('map-return-text') && !ret.includes('Tú') && !ret.includes('map-return-art') && ret.includes("'Ir a lo recomendado'"));
+  assert.ok(ret.includes('map-pill-text') && ret.includes('launch(step)') && !ret.includes('Tú') && !ret.includes('scrollIntoView'), 'la píldora no lanza el paso o sigue desplazando el mapa');
+  assert.ok(ret.includes('elementsFromPoint') && ret.includes('.sign-plate') && ret.includes('.stage'), 'la píldora no busca hueco que no tape carteles ni paradas');
+  const home = readFileSync(join(app, 'js', 'ui', 'screens', 'home.js'), 'utf8');
+  assert.ok(/watchReturn\(el, \(step\) => \{[^}]*ctx\.go\(step\.to\)/.test(home), 'la píldora no lleva a la ruta del paso');
   const css = readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
   assert.ok(!/#[0-9a-f]{3,8}\b|rgba?\(/i.test(css), 'colores escritos a mano en mapa-carteles.css');
   assert.ok(readFileSync(join(app, 'index.html'), 'utf8').includes('href="css/mapa-carteles.css"'));

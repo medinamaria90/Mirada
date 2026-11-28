@@ -6,10 +6,13 @@
 import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { MAP_W } from './path-layout.js';
-import { pct, ofEra, withArticle } from './path-signs.js';
+import { pct, withArticle } from './path-signs.js';
 import { lockOf } from './path-nodes.js';
-import { needsTramo, artistStatus, movementStatus } from '../../engine/progress.js';
+import { gateEssentials, essentialOpen } from '../../engine/essentials.js';
+import { needsTramo, artistStatus, movementStatus, stepStatus, stepPassed } from '../../engine/progress.js';
 import { pendingLore, loreKey } from '../../engine/lore.js';
+
+const artistOrSalaOpen = (progress, index, step) => stepStatus(progress, index, step) !== 'locked';
 
 const BOOK = { era: 26, tramo: 20 };
 
@@ -50,12 +53,27 @@ export function loreNode({ kind, key, x, y, h, state = 'open', fresh = false, he
 
 // Lo que cierra la lectura (medallón y rombos) de una época por delante del progreso: no se ha cruzado su puerta. Al llegar
 // se abre todo lo suyo para leer, aunque sus pintores sigan su desbloqueo normal. null si la época ya está alcanzada.
-// { lock: el aviso del globo, unlock: la parada que la abre (el «Ir» del globo) }.
+// { lock: el aviso del globo, unlock: la parada que la abre (el «Ir» del globo) }. El medallón ES la puerta: no dice «la puerta
+// de…». Con la parada anterior superada, lo que falta conocer («Antes, conoce las pinturas negras de Goya», y «y 2 más» si hay
+// más) y «Ir» a su nivel; con la anterior en juego, acertar la mitad con ella; más lejos, «Se abre al llegar aquí» sin «Ir»
+// (nombrar paradas que aún no se han visto sería hablar de lo que no se conoce).
 export function doorLock(progress, index, movement) {
   if (!movement || movementStatus(progress, index, movement.id) !== 'locked') return null;
   const first = index.stepsOf(movement.id)[0];
   const prev = first ? index.steps[index.stepIndex(first.type, first.id) - 1] : null;
-  return { lock: `Se abre al cruzar la puerta ${ofEra(movement.name)}`, unlock: first ? lockOf(progress, index, first, prev).unlock : '' };
+  const must = first && prev && stepPassed(progress, prev) ? gateEssentials(progress, index, first, prev) : [];
+  if (must.length) {
+    const [next] = must;
+    return {
+      lock: `Antes, conoce ${next.title}${must.length > 1 ? ` y ${must.length - 1} más` : ''}`,
+      unlock: essentialOpen(progress, index, next) ? `deep:${next.artistId}:${next.level}` : `artist:${next.artistId}`,
+    };
+  }
+  if (first && prev && artistOrSalaOpen(progress, index, prev)) {
+    const { text, unlock } = lockOf(progress, index, first, prev);
+    return { lock: text, unlock };
+  }
+  return { lock: 'Se abre al llegar aquí', unlock: '' };
 }
 
 const lockAttrs = (door) => `data-action="lore-lock" data-status="locked" data-lock="${esc(door.lock)}" data-unlock="${esc(door.unlock)}"`;

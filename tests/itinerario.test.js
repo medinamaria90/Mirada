@@ -6,11 +6,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { realIndex } from './helpers-real.js';
-import { emptyProgress, hasTramoSign, needsTramo, needsIntro } from '../app/js/engine/progress.js';
+import { emptyProgress, hasTramoSign, needsTramo, needsIntro, nextStep as currentStop } from '../app/js/engine/progress.js';
+import { guideFor } from '../app/js/ui/screens/map-cue.js';
+import { loreHere } from '../app/js/ui/screens/path-lore.js';
 import { finishRound } from '../app/js/engine/finish.js';
 import { planStage, planSala, planMovementReview } from '../app/js/engine/planner.js';
 import { seenWorks } from '../app/js/engine/levels.js';
-import { nextStep } from '../app/js/engine/next-step.js';
+import { nextStep, mapRecommendation } from '../app/js/engine/next-step.js';
 import { markClosureSeen } from '../app/js/engine/era-end.js';
 import { finishRecall, ARTIST, MOVEMENT } from '../app/js/engine/recall.js';
 import { pendingLore, loreStops, loreKey, loreSeen, stepTarget } from '../app/js/engine/lore.js';
@@ -66,6 +68,11 @@ function checkPlay(p, target) {
   assert.equal(stop, null, `se juega ${target.type}:${target.id} con ${stop ? loreKey(stop) : ''} sin ver`);
 }
 
+const mapFrontier = (p) => {
+  const cur = currentStop(p, real);
+  return { lore: cur ? loreHere(p, real, cur) : '', step: cur ? `${cur.type}:${cur.id}` : '' };
+};
+
 const pathDone = (p) => real.steps.every((s) => (s.type === 'sala' ? p.salas?.[s.id]?.mastered : p.artists?.[s.id]?.mastered) || (s.type === 'artist' && p.artists?.[s.id]?.plays));
 
 // Recorre nextStep desde `start`. rng: con él, rondas flojas (fail) y desvíos del mapa (detour: un «a fondo» abierto o
@@ -97,6 +104,9 @@ function walk(start = emptyProgress(), { rng = null, fail = 0, detour = 0, until
     const step = nextStep(p, real, TODAY, { plan, outcome, prevKind, prevStep });
     checkStep(p, step);
     kinds.push(step.kind);
+    // En el mapa, tras cualquier paso, hay una guía (burbuja o píldora): nunca queda sin decir qué toca.
+    const map = nextStep(p, real, TODAY, { plan: { kind: 'map' }, prevKind: null, prevStep: null });
+    if (map.kind !== 'path') assert.ok(guideFor(map, mapFrontier(p)), `sin guía en el mapa para «${map.kind}» (${map.to})`);
     prevKind = plan.kind === 'srs' ? 'srs' : null;
     prevStep = step.kind;
     outcome = null;
@@ -245,4 +255,45 @@ test('recorridos al azar con fallos, repasos y «a fondo»: nunca se juega nada 
     const { seen } = walk(start, { rng, fail: 0.2, detour: 0.15, until: (q) => real.steps.slice(0, stopAt + 1).every((st) => st.type === 'sala' ? q.salas?.[st.id]?.plays : q.artists?.[st.id]?.plays) });
     assert.ok(seen.includes(`tramo:${TRAMO}`), `semilla ${s}: «${TRAMO}» visto`);
   }
+});
+
+test('guía del mapa: en estados realistas a mitad del Renacimiento (Tiziano a medias) siempre hay exactamente una guía', () => {
+  const ren = real.stepsOf('renacimiento').filter((s) => s.type === 'artist').map((s) => s.id);
+  const upTo = ren.indexOf('tiziano');
+  const base = () => {
+    let p = { ...emptyProgress(), intros: { renacimiento: TODAY } };
+    for (const id of ren.slice(0, upTo)) p = { ...p, artists: { ...p.artists, [id]: { plays: 1, best: 1, mastered: true, works: real.worksOf(id).map((w) => w.id), last: TODAY } } };
+    return { ...p, artists: { ...p.artists, tiziano: { plays: 1, best: 0.6, mastered: false, works: [], last: TODAY } } };
+  };
+  const states = {
+    'Tiziano a medias': base(),
+    'con varios pintores a medias': (() => { const p = base(); for (const id of ren.slice(0, 3)) p.artists[id] = { plays: 1, best: 0.6, mastered: false, works: [], last: TODAY }; return p; })(),
+    'con fallos recientes': (() => { const p = base(); p.fallados = Object.fromEntries(real.worksOf('botticelli').slice(0, 6).map((w) => [`art:${w.id}`, { last: TODAY, n: 2 }])); return p; })(),
+    'sin cuadros vistos de nadie': (() => { const p = base(); for (const id of ren.slice(0, upTo)) p.artists[id] = { plays: 1, best: 1, mastered: true, works: [] }; return p; })(),
+  };
+  for (const [name, p] of Object.entries(states)) {
+    const rec = mapRecommendation(p, real, TODAY, {});
+    const guide = guideFor(rec, mapFrontier(p));
+    assert.ok(guide, `${name}: sin guía (${rec?.kind})`);
+    assert.equal(Object.keys(guide).length, 1, `${name}: más de una guía`);
+    assert.ok(guide.bubble?.host || guide.pill, `${name}: la guía no dice dónde ni qué`);
+  }
+  // Pasos sin parada en el mapa: una píldora con su texto.
+  for (const step of [{ kind: 'review', to: 'repaso', label: 'Repasar' }, { kind: 'weekly', to: 'reto-semanal', label: 'Reto semanal' }, { kind: 'closure', to: 'cierre-renacimiento', label: 'Cerrar el Renacimiento' }]) {
+    assert.deepEqual(guideFor(step, { lore: '', step: 'artist:tiziano' }), { pill: step.label });
+  }
+});
+
+test('tras «Volver al camino» con un «Profundiza en…» de un pintor anterior: píldora que lanza ese paso, y burbuja en su parada', () => {
+  const ren = real.stepsOf('renacimiento').filter((x) => x.type === 'artist').map((x) => x.id);
+  const upTo = ren.indexOf('veronese');
+  let p = { ...emptyProgress(), intros: { renacimiento: TODAY } };
+  for (const id of ren.slice(0, upTo)) p = { ...p, artists: { ...p.artists, [id]: { plays: 1, best: 1, mastered: true, works: real.worksOf(id).map((w) => w.id), last: TODAY } } };
+  // Con la ronda de Veronés recién jugada, el itinerario propone profundizar (si no, el paso que toque): siempre con texto y ruta.
+  const rec = nextStep(p, real, TODAY, { plan: { kind: 'stage', artistId: 'veronese' }, outcome: { accuracy: 1, events: [] } });
+  assert.ok(rec.label && rec.to, 'el paso no dice qué es ni adónde va');
+  const guide = guideFor(rec, mapFrontier(p));
+  assert.ok(guide && (guide.bubble || guide.pill), 'sin guía');
+  const deepen = { kind: 'deepen', to: 'a-fondo-leonardo-2', label: 'Profundiza en Leonardo: nivel 2', artistId: 'leonardo' };
+  assert.deepEqual(guideFor(deepen, { lore: '', step: 'artist:veronese' }).bubble, { host: '.stage-spot[data-step="artist:leonardo"] .stage-dot', verb: 'Profundizar', back: true });
 });

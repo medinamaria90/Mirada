@@ -19,10 +19,14 @@ export const RECALL_LOG_MAX = 80;
 export const RECALL_DUNNO_WEIGHT = 2;
 // Confusión: elegir Y siendo X (o al revés) al menos estas veces.
 export const CONFUSION_MIN = 2;
+// Espera: lo jugado en las últimas RECALL_WAIT_ROUNDS rondas (un pintor, su época, una sala…) no se propone repasar aún: se
+// acaba de ver. Entre medias, la guía propone otra cosa (progress.recent: las claves de cada ronda, la última al final).
+export const RECALL_WAIT_ROUNDS = 2;
 
 export const ARTIST = 'artist';
 export const MOVEMENT = 'movement';
-const TYPE_OF_QUESTION = { who: ARTIST, which: ARTIST, movement: MOVEMENT };
+// Las de concepto (engine/concepts.js) cuentan para la época por la que preguntan.
+const TYPE_OF_QUESTION = { who: ARTIST, which: ARTIST, movement: MOVEMENT, concept: MOVEMENT };
 const CODE = { [ARTIST]: 'a', [MOVEMENT]: 'm' };
 
 export const recallKey = (type, id) => `${type}:${id}`;
@@ -38,6 +42,8 @@ export function cleanSlips(list) {
 // De quién (pintor) o de qué época era lo elegido; null si no se sabe.
 function chosenOf(index, q, chosen) {
   if (!chosen || chosen === q.answerId) return null;
+  // En las de concepto, solo las opciones con cuadro dicen de qué época era lo elegido.
+  if (q.type === 'concept') return (q.options || []).find((o) => o.id === chosen)?.movementId || null;
   if (q.type === 'which') {
     const option = (q.options || []).find((o) => o.id === chosen);
     const work = option ? index.artwork(option.artworkId || option.id) : null;
@@ -55,7 +61,7 @@ export function logAnswers(list, answers, index, today, { skip = () => false, ro
     const q = ans?.q;
     const type = q && TYPE_OF_QUESTION[q.type];
     if (!type || ans.retry || skip(ans)) continue;
-    const subject = type === ARTIST ? q.artistId : q.answerId;
+    const subject = type === ARTIST ? q.artistId : q.type === 'concept' ? q.movementId : q.answerId;
     if (!subject) continue;
     const own = type === ARTIST ? round.artistId : round.movementId;
     const entry = { t: CODE[type], a: subject, d: today, ok: ans.correct ? 1 : 0, w: q.type === 'which' ? q.targetArtworkId : q.artworkId };
@@ -122,12 +128,35 @@ export function confusedWith(progress, index, stat) {
   return null;
 }
 
-// Lo que más se le olvida: { type, id, slips, confused } o null. A igualdad, el que era la respuesta antes que el elegido. Nunca el último que recordó (progress.recall.last).
+// Registro de las últimas rondas: [[clave, …], …] (recallKey), como mucho RECALL_WAIT_ROUNDS.
+export function cleanRecent(list) {
+  return (Array.isArray(list) ? list : []).filter(Array.isArray).map((keys) => keys.filter((k) => typeof k === 'string')).slice(-RECALL_WAIT_ROUNDS);
+}
+
+// Lo que toca una ronda terminada: su pintor y su época (ronda de pintor), su época (sala, Prueba de época) o lo repasado.
+// result: { kind, artistId?, movementId?, recallType? } (engine/finish.js). Una ronda sin sujeto (repaso general) cuenta
+// igual como un paso, con la lista vacía.
+export function roundKeys(index, result) {
+  const { kind, artistId, movementId } = result || {};
+  if (kind === 'stage' && artistId && index.artist(artistId)) return [recallKey(ARTIST, artistId), recallKey(MOVEMENT, index.artist(artistId).movementId)];
+  if ((kind === 'sala' || kind === 'review') && movementId) return [recallKey(MOVEMENT, movementId)];
+  if (kind === 'recall' && (artistId || movementId)) return [recallKey(result.recallType === MOVEMENT ? MOVEMENT : ARTIST, artistId || movementId)];
+  return [];
+}
+
+export const noteRound = (list, keys) => cleanRecent([...cleanRecent(list), keys]);
+
+// Claves jugadas hace muy poco (en espera).
+export const waitingKeys = (progress) => new Set(cleanRecent(progress.recent).flat());
+
+// Lo que más se le olvida: { type, id, slips, confused } o null. A igualdad, el que era la respuesta antes que el elegido. Nunca el
+// último que recordó (progress.recall.last) ni lo jugado en las últimas rondas (RECALL_WAIT_ROUNDS).
 export function forgottenSubject(progress, index, today) {
   if (!cleanSlips(progress.slips).length) return null;
   const last = progress.recall?.last || '';
+  const waiting = waitingKeys(progress);
   const list = [...recallStats(progress.slips, today).values()]
-    .filter((s) => recallKey(s.type, s.id) !== last && isForgotten(s) && isLearned(progress, index, s.type, s.id))
+    .filter((s) => recallKey(s.type, s.id) !== last && !waiting.has(recallKey(s.type, s.id)) && isForgotten(s) && isLearned(progress, index, s.type, s.id))
     .sort((a, b) => b.slips - a.slips || (b.asked - b.ok) - (a.asked - a.ok) || a.ok / Math.max(1, a.asked) - b.ok / Math.max(1, b.asked) || (a.type === ARTIST ? -1 : 1));
   const top = list[0];
   return top ? { type: top.type, id: top.id, slips: top.slips, confused: confusedWith(progress, index, top) } : null;
