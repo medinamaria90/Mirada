@@ -18,6 +18,12 @@ export function markCoachSeen() {
   try { window.localStorage.setItem(COACH_KEY, '1'); } catch { /* sin almacenamiento: vale la marca de la sesión */ }
 }
 
+/** Olvida la marca de la guía de bienvenida (al borrar el progreso). */
+export function forgetCoachSeen() {
+  coachShown = false;
+  try { window.localStorage.removeItem(COACH_KEY); } catch { /* sin almacenamiento: nada que olvidar */ }
+}
+
 export function safeStorage(getStorage) {
   try {
     const s = getStorage();
