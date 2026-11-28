@@ -83,6 +83,29 @@ def check_level_ring(app, artist, ws):
     check(all(lv == 1 or any(s["id"] == lv for s in deep) for lv in told), f"{artist['id']}: historia de un nivel sin etapa")
 
 
+FIRMAS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "contenido", "firmas.json")
+
+
+def check_firmas(known, calendar):
+    """contenido/firmas.json: {"obras": {id: [[x0, y0, x1, y1], …]}} con obras del catálogo y cajas dentro de la imagen
+    (fracciones de 0 a 1, x0 < x1, y0 < y1). Las firmas que ya tapa el Cuadro del día (`signature`) tienen que estar."""
+    firmas = json.load(open(FIRMAS, encoding="utf-8"))
+    obras = firmas.get("obras")
+    check(isinstance(obras, dict) and obras, "firmas.json: falta «obras»")
+    for wid, boxes in (obras or {}).items():
+        check(wid in known, f"firmas.json: {wid} no está en el catálogo")
+        if not (isinstance(boxes, list) and boxes):
+            err(f"firmas.json: {wid} sin cajas")
+            continue
+        for b in boxes:
+            ok = isinstance(b, list) and len(b) == 4 and all(isinstance(v, (int, float)) and 0 <= v <= 1 for v in b)
+            check(ok and b[0] < b[2] and b[1] < b[3], f"firmas.json: {wid} caja inválida {b}")
+    for d in calendar.get("days", []):
+        if d.get("signature"):
+            check(d["signature"] in (obras or {}).get(d["artwork"], []),
+                  f"firmas.json: falta la firma del Cuadro del día de {d['artwork']}")
+
+
 def main():
     app = sys.argv[1]
     imgs = sys.argv[2] if len(sys.argv) > 2 else None
@@ -291,6 +314,7 @@ def main():
     # --- Cuadro del día: el calendario sigue valiendo con este catálogo (tools/sync_cuadro_dia.py) ---
     import sync_cuadro_dia as cdd  # noqa: E402
     cal_errors, _rows = cdd.validate(cdd.read(cdd.SRC), cat, ficha["ficha"], cdd.read(cdd.EXPLAIN))
+    check_firmas(set(wids), cdd.read(cdd.SRC))
     for e in cal_errors:
         err(f"cuadro del día: {e}")
 
