@@ -41,7 +41,7 @@ function cardHtml(artist, ring, levels) {
 }
 
 // Coloca el retrato encendido sobre el original y la tarjeta debajo (o encima, si no cabe), con el pico hacia el retrato.
-function place(dlg, dot) {
+export function place(dlg, dot) {
   const out = px('--ring-out');
   let r = dot.getBoundingClientRect();
   const card = dlg.querySelector('.lc-card');

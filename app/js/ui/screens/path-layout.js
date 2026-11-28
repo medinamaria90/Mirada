@@ -5,7 +5,7 @@
 // Forma (docs/eval/camino-experto.md): un sendero de tierra que deriva despacio de un lado a otro, unas cuatro paradas
 // por pantalla, recto donde cruza un puente y por la puerta de cada época.
 
-import { hasMovementReview } from '../../engine/progress.js';
+import { hasMovementReview, hasTramoSign } from '../../engine/progress.js';
 import { spline, segmentsD, roadX, f } from './path-curve.js';
 
 export { segmentsD, roadX, f };
@@ -280,7 +280,7 @@ export function pathLayout(index) {
     const artists = index.isSala(m.id) ? [] : index.stageArtists(m.id);
     const n = index.stepsOf(m.id).length + (hasMovementReview(index, m.id) ? 1 : 0);
     if (!n) continue;
-    const heads = artists.map((a, i) => (a.section && a.section !== artists[i - 1]?.section ? i : -1)).filter((i) => i >= 0);
+    const heads = artists.map((a, i) => (hasTramoSign(index, a.id) && a.section !== artists[i - 1]?.section ? i : -1)).filter((i) => i >= 0);
     const branches = branchesAt(index, m.id);
     const era = eraLayout(n, phase, xIn, eras.length ? ENTRY : FIRST_ENTRY, RIVERS[m.id] || 0, { tramos: heads, branches: branches.length });
     const sections = heads.map((i) => ({ at: i, name: artists[i].section, key: artists[i].section, sign: tramoSign(era, i) }));

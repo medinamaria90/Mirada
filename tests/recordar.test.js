@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { realIndex } from './helpers-real.js';
 import { emptyProgress } from '../app/js/engine/progress.js';
 import { finishRound } from '../app/js/engine/finish.js';
-import { nextStep, mapGuide, artistStep } from '../app/js/engine/next-step.js';
+import { nextStep, mapRecommendation, artistStep } from '../app/js/engine/next-step.js';
 import { createRound, answerRound } from '../app/js/engine/round.js';
 import { xpForAnswer } from '../app/js/engine/progress.js';
 import { migrate, SCHEMA_VERSION } from '../app/js/state/schema.js';
@@ -115,7 +115,7 @@ test('nextStep: «Recordar» va detrás de «Repetir» y de «Por hoy, hecho» y
   // Justo tras una sesión «Recordar», no otra.
   assert.notEqual(nextStep(p, index, TODAY, { plan: { kind: 'recall', artistId: B }, outcome: { accuracy: 1, events: [] } }).kind, 'recall');
   // El mapa también la propone, con su ruta.
-  assert.equal(mapGuide(p, index, TODAY, {}).to, `repasar-${A}`);
+  assert.equal(mapRecommendation(p, index, TODAY, {}).to, `repasar-${A}`);
 });
 
 test('una sola acción por pintor: «Repasar a X» (con prioridad si se le olvida) o «Nivel N de X» si tiene uno nuevo', () => {

@@ -379,11 +379,19 @@ export function needsIntro(progress, index, movementId) {
   return !index.stepsOf(movementId).some((s) => stepPlayed(progress, s));
 }
 
+// ¿Su tramo sale en el camino (rombo y cartel)? El primer tramo de cada época, el que sigue a su puerta, no: tras las tarjetas
+// de la época no aporta nada (decisión de María, 28/11). Sigue existiendo en los datos (abre las ramas, agrupa a los nuevos).
+export function hasTramoSign(index, artistId) {
+  const artist = index.artist(artistId);
+  const first = artist && index.stageArtists(artist.movementId)[0];
+  return Boolean(artist?.section) && artist.section !== first?.section;
+}
+
 // El cartel de un tramo sale una vez, al entrar por primera vez en él (como la presentación de la época): un paso más del
 // camino antes del pintor. Nunca si ya se vio o si ya se jugó algún pintor del tramo.
 export function needsTramo(progress, index, artistId) {
   const key = index.artist(artistId)?.section;
-  if (!key || progress.signs?.[key]) return false;
+  if (!key || progress.signs?.[key] || !hasTramoSign(index, artistId)) return false;
   return !index.path.some((a) => a.section === key && stepPlayed(progress, { type: 'artist', id: a.id }));
 }
 

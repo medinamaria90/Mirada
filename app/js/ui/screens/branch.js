@@ -15,7 +15,7 @@ import { branchStatus, branchLockReason, branchProgress } from '../../engine/bra
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { eraPlace } from './path-art.js';
 import { trailSvg, branchEntrySign, backSpot, branchShort, stepName, pct, FOOT_H } from './path-signs.js';
-import { tramoLore, branchLore } from './path-lore.js';
+import { tramoLore, branchLore, doorLock } from './path-lore.js';
 import { STATE_LABEL, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
@@ -63,15 +63,15 @@ function node(ctx, branch, row, current) {
 
 function mapHtml(ctx, branch) {
   const { index } = ctx;
-  const rows = branchStatus(ctx.store.get().progress, index, branch.id);
+  const p = ctx.store.get().progress;
+  const rows = branchStatus(p, index, branch.id);
   const layout = branchLayout(index, branch);
   const at = rows.findIndex((r) => !r.onPath && (r.status === 'available' || r.status === 'started'));
   // Cartel de cada tramo (época en la que se abre un grupo de pintores), antes de su primera parada; cuenta los pintores
   // propios de la rama, como su cartel de entrada y la cabecera (los «En el camino» cuentan en el camino común).
   const tramo = (s) => {
     const group = rows.filter((r) => r.opensAt === s.movementId && !r.onPath);
-    const first = rows[s.at];
-    return tramoLore({ sec: s, info: { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, h: layout.h, locked: !first || first.status === 'locked' });
+    return tramoLore({ sec: s, info: { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, h: layout.h, door: doorLock(p, index, index.movement(s.movementId)) });
   };
   const items = rows.map((row, i) => {
     const pt = layout.points[i];

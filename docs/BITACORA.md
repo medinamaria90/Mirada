@@ -398,3 +398,20 @@ guante de Los jugadores de cartas), que ya están en la curiosidad de cada obra.
 siempre a reconocer al pintor con un rasgo de su estilo que se ve en ese cuadro. De los 629 de obras del camino, 124 ya lo
 hacían (109 antiguos de catalog_data y 15 propios) y 505 se reescribieron. Las curiosidades que contenían ya estaban en la
 curiosidad de su obra (de ahí se habían sacado), así que no se ha perdido ninguna.
+
+## 28/11 — Foco del mapa, burbuja del itinerario y primer tramo fuera
+
+- Partida nueva (y tras «Borrar progreso»): lo primero es el medallón de la primera época; el pintor que va detrás ya no lleva el
+  aro de «actual». Se quita «Tú»: lo que recomienda el itinerario (`mapRecommendation`, engine/next-step.js) lleva una burbuja con
+  verbo («Abrir», «Conocer», «Empezar», «Seguir», «Repasar», «Profundizar») sobre su parada, con pulso suave (`ui/screens/map-cue.js`);
+  es lo único animado de los nodos. Sin recomendación atrás no hay marca en la frontera; con ella, un anillo fino. El botón flotante es
+  una flecha hacia lo recomendado y la píldora de guía desaparece.
+- Tocar un pintor cuya época o tramo no se han visto abre su tarjeta con «Empezar · antes, el Renacimiento» (`ui/lore-first-card.js`):
+  nada se salta sin avisar. El «Ir» del globo de candado lleva a esa tarjeta. Globo rediseñado: pastilla compacta, «Ir» como pastilla
+  pequeña, sin cruz.
+- Decisión de María: el primer tramo de cada época (el que sigue a su puerta) no sale en el camino (`hasTramoSign`). Sigue en los datos
+  porque abre las ramas y agrupa a los nuevos. Su cartel se conserva en `data/carteles/tramos.json` por si hay tarjetas que rescatar.
+  Paisajes regenerados.
+- Medallón y rombo por delante del progreso: cerrados con candado y el mismo globo («Se abre al cruzar la puerta del Barroco»); al
+  llegar a la época se abren sus rombos aunque sus pintores sigan cerrados.
+- Prueba general del itinerario (`tests/itinerario.test.js`): una partida que solo sigue `nextStep` recorre todo el camino en orden.
