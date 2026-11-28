@@ -255,7 +255,7 @@ test('index.html: SEO y vista previa (título, descripción, canonical, Open Gra
   }
   assert.match(html, /og:image" content="https:\/\/sfumato\.dibulios\.com\/test\/portada\.jpg"/);
   assert.match(html, /<h1[^>]*>¿Distinguirías un Velázquez de un Murillo\?<\/h1>/, 'texto real en el HTML');
-  assert.match(html, /fallas 3 de cada 4 preguntas, o a las 40/);
+  assert.match(html, /fallas 3 de cada 4, o a las 40 preguntas/, 'la portada dice el máximo de preguntas (el e2e lo busca)');
   assert.doesNotMatch(html, /Cuadros de verdad|Sin registro|según cómo vayas/i, 'sin frases de folleto');
   assert.doesNotMatch(html, /\b(confirm|alert|prompt)\(/, 'sin diálogos del navegador');
   assert.match(html, /id="test-leave"[\s\S]*¿Dejar el test\?[\s\S]*data-action="leave-stay">Seguir jugando<[\s\S]*data-action="leave-go">Salir</, 'hoja propia para salir');

@@ -207,8 +207,8 @@
   --scrub-mark: 8px;               /* época: un puntito del color de su suelo… */
   --scrub-mark-on: 1.25;           /* …de 10 px la que se ve */
   --scrub-mark-ring: 1.5px;
-  --scrub-mark-hit: 24px;          /* alto de la zona táctil de una marca */
-  --scrub-mark-hit-w: 28px;        /* y su ancho: no llega a los carteles del borde */
+  --scrub-mark-hit: var(--hit);    /* zona táctil de una marca (el puntito no cambia): 48 × 48, el mínimo táctil; */
+  --scrub-mark-hit-w: var(--hit);  /* el asa va encima en el DOM, así que no le roba el toque */
   --scrub-here: 10px;              /* tu parada */
   --scrub-here-ring: 2.5px;
   --scrub-bubble-gap: 8px;         /* de la burbuja al asa */
@@ -325,11 +325,12 @@
   --scrub-veil: color-mix(in srgb, var(--ink) 6%, transparent);
   --scrub-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 18%, transparent), 0 4px 10px -4px color-mix(in srgb, var(--ink) 30%, transparent);
 }
-/* En oscuro, asa y burbuja en la superficie elevada, con borde de tinta suave (el mismo carácter que en claro). */
+/* En oscuro, burbuja en la superficie elevada con borde de tinta suave; el asa, algo más clara que el carril, con borde
+   y rayitas de tinta marcados, para que en reposo se distinga sobre la franja oscura. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .scrub { --scrub-grip-fill: var(--surface-2); --scrub-bubble: var(--surface-2); --scrub-bubble-edge: color-mix(in srgb, var(--ink) 12%, transparent); }
+  :root:not([data-theme="light"]) .scrub { --scrub-grip-fill: color-mix(in srgb, var(--ink) 22%, var(--surface-2)); --scrub-grip-edge: color-mix(in srgb, var(--ink) 55%, transparent); --scrub-grip-tick: var(--ink-2); --scrub-bubble: var(--surface-2); --scrub-bubble-edge: color-mix(in srgb, var(--ink) 12%, transparent); }
 }
-:root[data-theme="dark"] .scrub { --scrub-grip-fill: var(--surface-2); --scrub-bubble: var(--surface-2); --scrub-bubble-edge: color-mix(in srgb, var(--ink) 12%, transparent); }
+:root[data-theme="dark"] .scrub { --scrub-grip-fill: color-mix(in srgb, var(--ink) 22%, var(--surface-2)); --scrub-grip-edge: color-mix(in srgb, var(--ink) 55%, transparent); --scrub-grip-tick: var(--ink-2); --scrub-bubble: var(--surface-2); --scrub-bubble-edge: color-mix(in srgb, var(--ink) 12%, transparent); }
 
 /* Tema oscuro. Vale en dos casos: el móvil va en oscuro y no se ha forzado «Claro» en Ajustes, o se ha
    elegido «Oscuro» (data-theme en <html>, lo pone ui/theme.js). CSS no permite escribirlo una sola vez
