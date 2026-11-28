@@ -26,6 +26,28 @@
      "source": "https://es.wikipedia.org/wiki/Los_cazadores_en_la_nieve"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Comienzos",
+   "title": "Bruegel, el segundo Bosco",
+   "cards": [
+    {
+     "text": "Durante siglos, esta Caída de los ángeles rebeldes se tomó por un cuadro del Bosco. De joven, a Bruegel lo llamaban «el segundo Bosco» por sus monstruos medio pez, medio insecto.",
+     "artwork": "w594406",
+     "source": "https://en.wikipedia.org/wiki/The_Fall_of_the_Rebel_Angels"
+    },
+    {
+     "text": "Un gordo a lomos de un tonel de cerveza contra una vieja flaca con dos arenques en una pala: es la pelea del Carnaval y la Cuaresma (los cuarenta días de ayuno antes de Pascua).",
+     "artwork": "w689236",
+     "source": "https://en.wikipedia.org/wiki/The_Fight_Between_Carnival_and_Lent"
+    },
+    {
+     "text": "Fíjate en los niños: zancos, aros, la gallina ciega, el pino... Se han contado más de ochenta juegos distintos, y los críos se adueñan hasta del gran edificio de la plaza.",
+     "artwork": "w697332",
+     "source": "https://en.wikipedia.org/wiki/Children%27s_Games_(Bruegel)"
+    }
+   ]
   }
  ]
 }

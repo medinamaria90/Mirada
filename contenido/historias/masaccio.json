@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Masaccio"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Pisa",
+   "title": "Masaccio antes de la capilla Brancacci",
+   "cards": [
+    {
+     "text": "Su primera obra conocida apareció en 1961 en una iglesita cerca de Florencia: un tríptico (tres tablas unidas) fechado en 1422. Masaccio tenía 20 años y sus figuras ya pesaban.",
+     "artwork": "w3999132",
+     "source": "https://es.wikipedia.org/wiki/Masaccio"
+    },
+    {
+     "text": "En 1426 pintó un gran retablo (cuadro de altar) para Pisa. Lo desmontaron y sus tablas están hoy repartidas por media Europa; esta, con san Pedro cabeza abajo, era de la base.",
+     "artwork": "w3698230",
+     "source": "https://es.wikipedia.org/wiki/Masaccio"
+    },
+    {
+     "text": "Fíjate en el verdugo de san Juan Bautista, de espaldas y con el arma en alto: un cuerpo macizo que gira en el espacio. La tabla mide un palmo y Masaccio ya piensa como escultor.",
+     "artwork": "w3850304",
+     "source": "https://es.wikipedia.org/wiki/Masaccio"
+    }
+   ]
   }
  ]
 }

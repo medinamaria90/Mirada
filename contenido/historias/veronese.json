@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Veron%C3%A9s"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Sedas",
+   "title": "Veronés, el pintor de las telas",
+   "cards": [
+    {
+     "text": "Esta Magdalena es de hacia 1548, antes de instalarse en Venecia. Ya tiene sus colores claros, tan distintos de las sombras de Tintoretto, el otro gran pintor de la ciudad.",
+     "artwork": "w19574577",
+     "source": "https://es.wikipedia.org/wiki/Veron%C3%A9s"
+    },
+    {
+     "text": "Fíjate en el vestido de santa Catalina: un brocado blanco y azul que brilla como seda de verdad. En Venecia, ciudad de mercaderes que traían telas de Oriente, eso enamoraba.",
+     "artwork": "w16038642",
+     "source": "https://es.wikipedia.org/wiki/Veron%C3%A9s"
+    },
+    {
+     "text": "También pintó heroínas antiguas, como Lucrecia, la romana que se quitó la vida tras ser violada. Veronés la pinta en el instante del puñal, mirando al cielo, sin sangre.",
+     "artwork": "w1103170",
+     "source": "https://es.wikipedia.org/wiki/Veron%C3%A9s"
+    }
+   ]
   }
  ]
 }

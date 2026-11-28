@@ -26,6 +26,28 @@
      "source": "https://es.wikipedia.org/wiki/Sandro_Botticelli"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Savonarola",
+   "title": "Botticelli, del taller a Savonarola",
+   "cards": [
+    {
+     "text": "Aprendió con Filippo Lippi, un fraile pintor famoso por sus Vírgenes cercanas y humanas. En esta, de hacia 1465, aún se nota la mano del maestro: el mismo velo transparente.",
+     "artwork": "w580853",
+     "source": "https://es.wikipedia.org/wiki/Sandro_Botticelli"
+    },
+    {
+     "text": "Fíjate en la granada que sostiene el Niño, abierta y llena de granos rojos: anunciaba su muerte en la cruz. Sus Madonas están llenas de símbolos que el público sabía leer.",
+     "artwork": "w2269291",
+     "source": "https://es.wikipedia.org/wiki/Virgen_de_la_granada"
+    },
+    {
+     "text": "Hacia 1494 Florencia siguió a Savonarola, un fraile que anunciaba el fin del mundo y quemaba lujos en la plaza. Botticelli se volvió grave y místico, como en esta Natividad.",
+     "artwork": "w974674",
+     "source": "https://es.wikipedia.org/wiki/Sandro_Botticelli"
+    }
+   ]
   }
  ]
 }
