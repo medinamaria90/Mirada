@@ -372,3 +372,6 @@ repetir cuadros sin contexto acaba en memorizar imágenes.
   «Repasar a…»; nunca en retos ni en el test): enseña la buena con su «Fíjate en…» y la cara del pintor, sin sonido ni
   rojo de fallo y sin puntos; cuenta como fallo (rompe «seguidas», vuelve al final).
 - Pruebas en `tests/recordar.test.js`.
+Cobertura (28/11): 408 «fíjate» propios nuevos para obras de fama 3 y 2 del camino (y algunas de fama 1), cada uno con
+algo que se ve en ese cuadro y su fuente: del 22 % al 63 % de las obras del camino (629 de 1.002). Siguen dejando que
+salgan después las frases del pintor (`sin: []`). Unos 45 pintores menores con refuerzos más concretos.
