@@ -9,6 +9,7 @@ import { esc, joinNames } from './dom.js';
 import { icons } from './icons.js';
 import { artFrame, tinySrc, smallSrc, mediumSrc } from './art.js';
 import { stageRoute } from './router.js';
+import { DECK_LABEL } from './deck-nav.js';
 import { loadCss } from './lazy-css.js';
 import { ringSvg } from './deep-badges.js';
 import { rowLevels, rowHtml, wireRow, watchStory, levelRoute } from './level-row.js';
@@ -185,10 +186,8 @@ export function wireProfile(ctx, root, artistId, hooks = {}) {
     ctx.audio.sfx('tap');
     const what = b.dataset.ap;
     if (what === 'story') {
-      // «Jugar» de la última tarjeta hace lo mismo que el botón de jugar de la ficha; «Ver más» deja en la ficha.
-      const playBtn = root.querySelector('.ap-actions [data-ap]');
-      const onPlay = playBtn ? () => playBtn.click() : false;
-      import('./story-viewer.js').then((m) => m.playStory(ctx, artistId, 1, { force: true, onPlay, onMore: () => {} }))
+      // Desde la ficha, la historia acaba en «Volver»: deja en la ficha, con su botón de jugar a mano.
+      import('./story-viewer.js').then((m) => m.playStory(ctx, artistId, 1, { force: true, onPlay: () => {}, playLabel: DECK_LABEL.back, onMore: false }))
         .then(() => root.querySelector('.ap-ring.is-new')?.classList.replace('is-new', 'is-seen'))
         .catch((err) => console.error(err));
     } else if (what === 'play') go(stageRoute(artistId, b.dataset.branch || ''));

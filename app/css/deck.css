@@ -1,0 +1,35 @@
+/* Navegación común de los visores de tarjetas (ui/deck-nav.js): presentación de época, cartel de tramo o rama e historia de
+   pintor. Barras arriba, la etiqueta de tipo, compartir y la X; abajo, el secundario y «Seguir». El aspecto lo pone cada
+   visor con sus tintas: .deck-light (época y cartel, sobre el fondo de la app) y .story (pintor, siempre de noche). */
+:root { --deck-gutter: 1.1rem; --deck-bar-h: 3px; --deck-bar-gap: 4px; --deck-icon: var(--hit); }
+.deck-light { --deck-ink: var(--ink); --deck-ink-2: var(--ink-2); --deck-fill: var(--accent-ui); }
+.story { --deck-ink: var(--viewer-ink); --deck-ink-2: var(--viewer-ink-2); --deck-fill: var(--viewer-ink); }
+
+.deck-head { padding: calc(var(--safe-t) + .6rem) .6rem 0 var(--deck-gutter); }
+.deck-bars { display: flex; gap: var(--deck-bar-gap); margin-right: calc(var(--deck-gutter) - .6rem); }
+.deck-bar { flex: 1; height: var(--deck-bar-h); border-radius: var(--deck-bar-h); background: color-mix(in srgb, var(--deck-ink) 22%, transparent); overflow: hidden; }
+.deck-bar > span { display: block; width: 0; height: 100%; background: var(--deck-fill); }
+.deck-bar.is-done > span { width: 100%; }
+/* Con letra grande, la etiqueta baja a su propia fila bajo los botones (wrap-reverse) en vez de partirse letra a letra. */
+.deck-top { display: flex; flex-wrap: wrap-reverse; justify-content: flex-end; align-items: center; gap: .2rem; min-height: var(--deck-icon); padding-top: .45rem; }
+.deck-top > :first-child { flex: 1 1 10rem; min-width: 0; }
+.deck-label { margin: 0; color: var(--deck-ink-2); font: 600 .78rem/1.2 var(--font); letter-spacing: .08em; text-transform: uppercase; }
+.deck-icon { flex: none; display: grid; place-items: center; width: var(--deck-icon); height: var(--deck-icon); border: 0; border-radius: var(--radius-pill); background: none; color: var(--deck-ink); cursor: pointer; }
+.deck-icon:hover { background: color-mix(in srgb, var(--deck-ink) 12%, transparent); }
+.deck-icon:focus-visible { outline: 2.5px solid var(--deck-ink); outline-offset: 0; }
+
+/* Anterior / siguiente: para el teclado y el lector; solo se ven con el foco (al tocar mandan las zonas de la pantalla). */
+.deck-step { position: absolute; z-index: 3; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: var(--deck-icon); height: var(--deck-icon); border: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--deck-ink) 14%, transparent); color: var(--deck-ink); opacity: 0; pointer-events: none; }
+.deck-step:focus-visible { opacity: 1; outline: 2.5px solid var(--deck-ink); }
+.deck-step[hidden] { display: none; }
+.deck-back { left: .5rem; }
+.deck-next { right: .5rem; }
+
+/* Pie: el principal se lleva casi todo el sitio que sobra. Si los dos no caben en una fila («Más sobre Botticelli ›» e «Ir a
+   las preguntas»), el secundario sube a la suya y cada uno ocupa el ancho entero. */
+.deck-actions { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; padding: 1rem var(--deck-gutter) 0; }
+.deck-actions .btn { flex: 3 1 auto; min-width: 0; }
+.deck-actions .deck-secondary { flex: 1 1 auto; }
+.deck-actions [hidden] { display: none; }
+.deck-secondary { --btn-shadow: transparent; background: color-mix(in srgb, var(--deck-ink) 10%, transparent); color: var(--deck-ink); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--deck-ink) 30%, transparent); }
+.deck-secondary:hover { background: color-mix(in srgb, var(--deck-ink) 18%, transparent); }

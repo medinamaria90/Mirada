@@ -9,11 +9,6 @@ export const MAX_TEXT = 180;
 export const ZOOM_MIN = 1;
 export const ZOOM_MAX = 3;
 
-// Cuánto dura una tarjeta si avanza sola (como las historias de Instagram): lo que se tarda en leerla.
-export const CARD_BASE_MS = 3500;
-export const CARD_MS_PER_CHAR = 28;
-export const cardDuration = (card) => CARD_BASE_MS + CARD_MS_PER_CHAR * String(card?.text || '').length;
-
 export const storyKey = (artistId, level) => `${artistId}:${level}`;
 
 // Historias que se comparten con un enlace: las del nivel 1 (presentan al pintor y no destripan nada de lo que viene).

@@ -94,7 +94,7 @@ export async function renderCuadroDone(ctx, el, data, record, { fresh = false, e
 // La historia del cuadro: 3 tarjetas sueltas con el núcleo de las historias. Quien aún no juega ve después la invitación.
 export async function playCuadroStory(ctx, data) {
   const { today, entry, work, artist } = data;
-  const [{ runStory }] = await Promise.all([import('../story-core.js'), loadCss('css/historias.css')]);
+  const [{ runStory }] = await Promise.all([import('../story-core.js'), loadCss('css/historias.css'), loadCss('css/deck.css')]);
   const { shown } = await runStory(ctx, {
     cards: entry.cards,
     name: artist.name,
