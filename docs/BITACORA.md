@@ -390,3 +390,6 @@ salgan después las frases del pintor (`sin: []`). Unos 45 pintores menores con 
   rotación (`ROTATION` 4: tras saltar A nunca A, y A no vuelve hasta ofrecer otros) y enfriamiento (desde el 2.º salto en
   `COOL_DAYS` 21, el peso se divide; nunca baja de `COOL_FLOOR`). «Ahora no» en el resultado o jugar otra cosa = salto con su
   día (`progress.deepen`). Pruebas en `tests/imprescindibles.test.js`.
+Segunda revisión independiente (una vuelta; 7,5/10 los «fíjate» por obra, 7/10 los refuerzos): corregidos 9 «fíjate»
+(datos dudosos como la «piel tostada» de la mujer en las olas o el cielo «casi de noche» de la casa amarilla, y títulos casi
+literales) y 24 refuerzos que eran de un tema o una etapa y no de toda la obra, o que sonaban genéricos.
