@@ -434,6 +434,7 @@
   ],
   "por": "obra de juventud: fondo claro, sin foco dramático",
   "sinPistas": [
+   1,
    4
   ]
  },
@@ -445,6 +446,7 @@
   ],
   "por": "obra de juventud: fondo claro, sin foco dramático",
   "sinPistas": [
+   1,
    4
   ]
  },
@@ -456,6 +458,7 @@
   ],
   "por": "obra de juventud: fondo claro, sin foco dramático",
   "sinPistas": [
+   1,
    4
   ]
  },
@@ -467,6 +470,7 @@
   ],
   "por": "obra de juventud: fondo claro, sin foco dramático",
   "sinPistas": [
+   1,
    4
   ]
  },
@@ -478,6 +482,7 @@
   ],
   "por": "obra de juventud: fondo claro, sin foco dramático",
   "sinPistas": [
+   1,
    4
   ]
  },
@@ -597,49 +602,73 @@
   "sin": [
    3
   ],
-  "por": "obra de juventud, de pintura lisa"
+  "por": "obra de juventud, de pintura lisa",
+  "sinPistas": [
+   3
+  ]
  },
  "w2488726": {
   "sin": [
    3
   ],
-  "por": "obra de juventud, de pintura lisa"
+  "por": "obra de juventud, de pintura lisa",
+  "sinPistas": [
+   3
+  ]
  },
  "w3905873": {
   "sin": [
    3
   ],
-  "por": "obra de juventud, de pintura lisa"
+  "por": "obra de juventud, de pintura lisa",
+  "sinPistas": [
+   3
+  ]
  },
  "w1130734": {
   "sin": [
    3
   ],
-  "por": "obra de juventud, de pintura lisa"
+  "por": "obra de juventud, de pintura lisa",
+  "sinPistas": [
+   3
+  ]
  },
  "w7759351": {
   "sin": [
    3
   ],
-  "por": "obra de juventud, de pintura lisa"
+  "por": "obra de juventud, de pintura lisa",
+  "sinPistas": [
+   3
+  ]
  },
  "w661378": {
   "sin": [
    3
   ],
-  "por": "obra de juventud, de pintura lisa"
+  "por": "obra de juventud, de pintura lisa",
+  "sinPistas": [
+   3
+  ]
  },
  "w17343012": {
   "sin": [
    3
   ],
-  "por": "obra de juventud, de pintura lisa"
+  "por": "obra de juventud, de pintura lisa",
+  "sinPistas": [
+   3
+  ]
  },
  "w2225699": {
   "sin": [
    3
   ],
-  "por": "obra de juventud, de pintura lisa"
+  "por": "obra de juventud, de pintura lisa",
+  "sinPistas": [
+   3
+  ]
  },
  "w1243299": {
   "sin": "todos",
@@ -649,7 +678,7 @@
   "sinPistas": [
    0,
    1,
-   4
+   3
   ]
  },
  "w2246489": {
@@ -662,7 +691,8 @@
   "text": "Fíjate en la luz que entra por la izquierda y deja medio barco en penumbra, como un foco.",
   "source": "Museo Isabella Stewart Gardner, «La tormenta en el mar de Galilea»",
   "sinPistas": [
-   1
+   1,
+   3
   ]
  },
  "w63692": {
@@ -1210,8 +1240,7 @@
   "sinPistas": [
    0,
    1,
-   2,
-   4
+   3
   ]
  },
  "w3965263": {

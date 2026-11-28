@@ -328,3 +328,6 @@ da primero el «fíjate» propio de la obra y luego rota entre frases y refuerzo
 (`sinPistas` en `fijate.json`). El 100 % de las 1.469 obras tiene al menos una línea aplicable (prueba en
 `tests/fijate.test.js`). La individualización por cuadro sí funciona (sale primero en las 290 obras que la tienen, también
 tras fallar); si se nota poco es porque solo el 22 % de las obras del camino tiene «fíjate» propio.
+Revisión independiente (una vuelta, 6,5/10): reescritos unos 60 refuerzos (frases genéricas, ángulos repetidos dentro de un
+pintor o entre Degas, Lautrec y Cassatt, rasgos de «estilo» que no valían en toda la obra, términos sin explicar). Ahora:
+757 refuerzos; mediana de 6 líneas aplicables por obra; 1.469 de 1.469 obras con al menos una.

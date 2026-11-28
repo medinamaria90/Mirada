@@ -40,41 +40,41 @@
   {"text": "Fíjate en que manda el color y no la línea: los bordes se funden en la pintura."},
   {"text": "Fíjate en los rojos profundos de las telas junto a blancos luminosos.", "tags": ["rojo"], "donde": ["figuras"]},
   {"text": "Fíjate en la mirada directa y segura de los retratados, que te observan.", "tags": ["mirada"], "donde": ["retrato"]},
-  {"text": "Fíjate en la pincelada libre, que de cerca deja ver los trazos.", "tags": ["suelta"]}
+  {"text": "Fíjate en los cielos de atardecer, azul y oro, detrás de las figuras.", "tags": ["cielo"], "donde": "etiquetas"}
  ]},
  "veronese": {"pistas": [
   {"text": "Fíjate en las sedas y brocados que brillan en colores claros.", "tags": ["sedas"], "donde": ["figuras"]},
   {"text": "Fíjate en los colores frescos y plateados: verdes, rosas y amarillos claros.", "tags": ["claro"]},
   {"text": "Fíjate en las figuras grandes y elegantes, de gestos teatrales.", "donde": ["figuras"]},
-  {"text": "Fíjate en las mujeres rubias de piel clara, con joyas y trenzas.", "donde": ["figuras"]},
-  {"text": "Fíjate en el lujo veneciano: perlas, terciopelos y telas bordadas.", "tags": ["sedas"], "donde": ["figuras"]}
+  {"text": "Fíjate en las figuras de piel clara, con joyas y peinados trenzados.", "donde": ["figuras"]},
+  {"text": "Fíjate en las columnas y balaustradas de mármol.", "tags": ["arquitectura"], "donde": "etiquetas"}
  ]},
  "van-eyck": {"pistas": [
   {"text": "Fíjate en el detalle microscópico: cada pelo, joya o reflejo pintado uno a uno.", "tags": ["nitido"]},
   {"text": "Fíjate en el brillo del óleo, con capas transparentes que hacen relucir los colores."},
-  {"text": "Fíjate en las telas pesadas, de pliegues rotos y angulosos."},
   {"text": "Fíjate en las caras sin idealizar, con arrugas y venas, como de verdad.", "donde": ["retrato"]},
-  {"text": "Fíjate en los reflejos: en metales, perlas u ojos brilla la luz de una ventana."}
+  {"text": "Fíjate en los reflejos: en metales, perlas u ojos brilla la luz de una ventana."},
+  {"text": "Fíjate en los objetos de la casa pintados como en una lupa: cada uno cuenta algo.", "tags": ["interior"], "donde": "etiquetas"}
  ]},
  "van-der-weyden": {"pistas": [
-  {"text": "Fíjate en las telas de pliegues duros y angulosos, como tallados en madera.", "tags": ["nitido"]},
+  {"text": "Fíjate en las telas de pliegues duros, como talladas en madera.", "tags": ["nitido"]},
   {"text": "Fíjate en las caras alargadas y pálidas, de expresión contenida.", "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en las manos finas y huesudas, de dedos largos.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en los contornos precisos y el acabado liso del óleo flamenco.", "tags": ["nitido"]},
+  {"text": "Fíjate en el dolor contenido: lágrimas finas en caras pálidas.", "tags": ["expresion"], "donde": "etiquetas"},
   {"text": "Fíjate en los colores intensos y puros: rojos, azules y blancos.", "donde": ["figuras"]}
  ]},
  "bosco": {"pistas": [
   {"text": "Fíjate en las figuras pequeñas y delgadas, de miembros finos, como dibujadas a pluma.", "donde": ["figuras"]},
   {"text": "Fíjate en las caras grotescas y burlonas: así se pinta aquí el mal.", "donde": ["figuras"]},
   {"text": "Fíjate en la pintura fina y ligera, casi transparente, que deja ver el dibujo."},
-  {"text": "Fíjate en los avisos morales escondidos: cada detalle señala un pecado.", "donde": ["figuras"]},
+  {"text": "Fíjate en las escenitas que pasan a la vez, como en un hormiguero.", "tags": ["diminutas"], "donde": "etiquetas"},
   {"text": "Fíjate en los seres imposibles, mezcla de animal, persona y objeto.", "tags": ["monstruos"], "donde": "etiquetas"}
  ]},
  "durero": {"pistas": [
   {"text": "Fíjate en la precisión de grabador: cada pelo, hoja o pluma dibujado uno a uno.", "tags": ["nitido"]},
-  {"text": "Fíjate en los contornos firmes y el dibujo seguro, sin nada borroso.", "tags": ["nitido"]},
+  {"text": "Fíjate en la firma: un monograma con sus iniciales, una dentro de otra."},
   {"text": "Fíjate en las caras serias y concentradas, de mirada intensa.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en el detalle de naturalista, como si lo estudiara con lupa.", "tags": ["nitido"]},
+  {"text": "Fíjate en la naturaleza estudiada como un científico.", "tags": ["nitido"], "donde": ["bodegon"]},
   {"text": "Fíjate en los colores claros y exactos, aplicados sin pincelada visible."}
  ]},
  "holbein": {"pistas": [
@@ -92,17 +92,17 @@
   {"text": "Fíjate en el humor: siempre hay alguien haciendo algo raro o gracioso.", "donde": ["figuras"]}
  ]},
  "parmigianino": {"pistas": [
-  {"text": "Fíjate en la elegancia estirada: cuellos y dedos más largos de lo normal.", "tags": ["alargado"], "donde": ["retrato", "figuras"]},
+  {"text": "Fíjate en la pose en S, con el cuello y los dedos larguísimos.", "tags": ["alargado"], "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en la piel pálida y pulida, como de porcelana.", "tags": ["nitido"], "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en las poses rebuscadas y refinadas, nada naturales.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en las miradas frías y distantes, un poco altivas.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en el acabado liso y brillante, sin pincelada visible.", "tags": ["nitido"]}
+  {"text": "Fíjate en las miradas un poco altivas.", "donde": ["retrato", "figuras"]},
+  {"text": "Fíjate en la deformación buscada, para ganar elegancia."}
  ]},
  "bronzino": {"pistas": [
-  {"text": "Fíjate en la superficie lisa y fría, como esmaltada.", "tags": ["nitido"]},
-  {"text": "Fíjate en las caras serias y distantes, sin una pizca de emoción.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en las sedas y brocados, pintados con un brillo metálico.", "tags": ["sedas"], "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en las manos de dedos largos, colocadas con estudio.", "donde": ["retrato", "figuras"]},
+  {"text": "Fíjate en la superficie fría, como esmaltada.", "tags": ["nitido"]},
+  {"text": "Fíjate en las miradas de hielo, sin una pizca de emoción.", "donde": ["retrato", "figuras"]},
+  {"text": "Fíjate en las sedas y brocados, de brillo metálico.", "tags": ["sedas"], "donde": ["retrato", "figuras"]},
+  {"text": "Fíjate en los fondos de color liso o de arquitectura.", "donde": ["retrato"]},
   {"text": "Fíjate en los contornos duros y nítidos, que recortan cada forma.", "tags": ["nitido"]}
  ]},
  "el-greco": {"pistas": [
@@ -114,17 +114,17 @@
  ]},
  "caravaggio": {"pistas": [
   {"text": "Fíjate en la gente corriente, muy real: uñas sucias, arrugas y pies descalzos."},
-  {"text": "Fíjate en las figuras de medio cuerpo, muy cerca de ti, como en un escenario.", "donde": ["figuras"]},
+  {"text": "Fíjate en la luz que cae de un lado, como un foco, y deja el resto en penumbra.", "tags": ["foco"], "donde": ["figuras"]},
   {"text": "Fíjate en el realismo sin adornos: ni los santos son guapos.", "donde": ["figuras"]},
   {"text": "Fíjate en el instante: todo pasa justo ahora, en plena acción.", "donde": ["figuras"]},
-  {"text": "Fíjate en el contraste de luz y sombra, que se llama claroscuro.", "tags": ["oscuro"], "donde": ["figuras"]}
+  {"text": "Fíjate en el claroscuro (luz y sombra muy marcadas) sobre fondo oscuro.", "tags": ["oscuro"], "donde": ["figuras"]}
  ]},
  "artemisia": {"pistas": [
-  {"text": "Fíjate en las mujeres fuertes y decididas, protagonistas del cuadro."},
+  {"text": "Fíjate en las heroínas que actúan, de brazos firmes y gesto decidido.", "donde": ["figuras"]},
   {"text": "Fíjate en la luz dura que recorta las figuras sobre un fondo oscuro.", "tags": ["oscuro"]},
-  {"text": "Fíjate en las telas pesadas de colores ricos, amarillos, rojos y azules."},
-  {"text": "Fíjate en los brazos fuertes y las manos en tensión.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en las caras serias y concentradas, de mujeres que actúan o piensan.", "donde": ["retrato", "figuras"]}
+  {"text": "Fíjate en las telas pesadas de colores ricos: amarillos, rojos y azules."},
+  {"text": "Fíjate en las manos en tensión, que trabajan, sujetan o luchan.", "donde": ["retrato", "figuras"]},
+  {"text": "Fíjate en las caras serias y concentradas, de mujeres que piensan por sí mismas.", "donde": ["retrato", "figuras"]}
  ]},
  "rubens": {"pistas": [
   {"text": "Fíjate en la pincelada fluida y rápida, llena de energía.", "tags": ["suelta"]},
@@ -135,7 +135,7 @@
  ]},
  "velazquez": {"pistas": [
   {"text": "Fíjate en la pincelada que de cerca son manchas y de lejos forma la imagen.", "tags": ["suelta"]},
-  {"text": "Fíjate en los grises plateados y los negros de la paleta.", "tags": ["gris"]},
+  {"text": "Fíjate en los grises plateados y los negros de los trajes.", "tags": ["gris"], "donde": ["retrato"]},
   {"text": "Fíjate en la naturalidad: nadie posa, parecen sorprendidos en su vida.", "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en el aire que parece haber alrededor de las figuras.", "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en las caras pintadas con verdad, sin embellecer a nadie.", "donde": ["retrato", "figuras"]}
@@ -144,15 +144,15 @@
   {"text": "Fíjate en la luz dorada que sale de la penumbra y señala lo importante.", "tags": ["oscuro"]},
   {"text": "Fíjate en los marrones y ocres cálidos que dominan el cuadro."},
   {"text": "Fíjate en las caras con arrugas, ojeras y verdad, sin embellecer.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en las miradas pensativas, como si la figura estuviera sola con sus ideas.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en el claroscuro (luz y sombra muy marcadas) que crea misterio.", "tags": ["oscuro"]}
+  {"text": "Fíjate en la pintura espesa en las zonas de luz.", "tags": ["grueso"]},
+  {"text": "Fíjate en los trajes y turbantes exóticos de sus personajes.", "donde": ["figuras"]}
  ]},
  "vermeer": {"pistas": [
   {"text": "Fíjate en la luz suave que entra de lado y acaricia cada objeto."},
   {"text": "Fíjate en los puntitos de luz que brillan en panes, perlas y metales."},
   {"text": "Fíjate en el silencio: escenas tranquilas de casa, con una o dos personas.", "tags": ["interior"], "donde": ["figuras"]},
   {"text": "Fíjate en el azul intenso, hecho con lapislázuli, una piedra carísima.", "tags": ["azul"], "donde": "etiquetas"},
-  {"text": "Fíjate en la calma: nadie se mueve, como un instante detenido."}
+  {"text": "Fíjate en la ventana a la izquierda por donde entra la luz.", "tags": ["ventana"], "donde": "etiquetas"}
  ]},
  "fragonard": {"pistas": [
   {"text": "Fíjate en la pincelada rápida y espumosa, que parece hecha en un momento.", "tags": ["suelta"]},
@@ -163,23 +163,23 @@
  ]},
  "david": {"pistas": [
   {"text": "Fíjate en los contornos duros y nítidos, de dibujo perfecto.", "tags": ["nitido"]},
-  {"text": "Fíjate en las figuras quietas como estatuas, de poses clásicas.", "tags": ["estatua"], "donde": ["figuras"]},
+  {"text": "Fíjate en las poses clásicas, aprendidas de las estatuas romanas.", "tags": ["estatua"], "donde": ["figuras"]},
   {"text": "Fíjate en el acabado liso y pulido, sin pinceladas a la vista.", "tags": ["nitido"]},
   {"text": "Fíjate en la luz clara y fría que define cada volumen."},
   {"text": "Fíjate en los fondos sobrios, que dejan solas a las figuras.", "donde": ["retrato"]}
  ]},
  "ingres": {"pistas": [
   {"text": "Fíjate en la línea pura y perfecta que recorta las figuras.", "tags": ["nitido"]},
-  {"text": "Fíjate en las pieles lisas como porcelana, sin una arruga.", "tags": ["nitido"], "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en el acabado pulido, en el que no se ve ninguna pincelada.", "tags": ["nitido"]},
+  {"text": "Fíjate en la piel pulida, sin una pincelada visible.", "tags": ["nitido"], "donde": ["retrato", "figuras"]},
+  {"text": "Fíjate en el acabado liso, como de esmalte.", "tags": ["nitido"]},
   {"text": "Fíjate en las telas, encajes y joyas pintados al detalle.", "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en los cuerpos alargados con libertad para que sean más bellos.", "donde": ["figuras"]}
  ]},
  "goya": {"pistas": [
   {"text": "Fíjate en la pincelada libre y rápida, que de cerca son manchas.", "tags": ["suelta"]},
   {"text": "Fíjate en las caras pintadas con verdad, sin halagar a nadie.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en los negros profundos que hacen saltar los colores claros."},
-  {"text": "Fíjate en la expresión: miedo, burla o dolor sin disimulo.", "donde": ["figuras"]},
+  {"text": "Fíjate en los fondos oscuros que hacen saltar la figura clara.", "tags": ["oscuro"], "donde": ["retrato"]},
+  {"text": "Fíjate en la expresión: miedo, burla o dolor sin disimulo.", "tags": ["expresion"], "donde": ["figuras"]},
   {"text": "Fíjate en los ojos vivos de los retratados, que parecen hablar.", "donde": ["retrato"]}
  ]},
  "friedrich": {"pistas": [
@@ -193,15 +193,15 @@
   {"text": "Fíjate en la luz que lo envuelve todo, más importante que las formas.", "tags": ["difuminado"]},
   {"text": "Fíjate en los amarillos y dorados de un sol que todo lo disuelve."},
   {"text": "Fíjate en la atmósfera: niebla, vapor, humo o espuma."},
-  {"text": "Fíjate en la naturaleza poderosa, con el hombre pequeño frente a ella."},
-  {"text": "Fíjate en los contornos que se pierden en el aire.", "tags": ["difuminado"]}
+  {"text": "Fíjate en los cielos incendiados de amarillos y rosas que se comen el horizonte.", "tags": ["cielo"], "donde": "etiquetas"},
+  {"text": "Fíjate en la pintura en capas finas, como velos de color."}
  ]},
  "gericault": {"pistas": [
-  {"text": "Fíjate en la energía: músculos tensos y cuerpos al límite.", "tags": ["dinamico"]},
+  {"text": "Fíjate en la energía: músculos tensos y cuerpos al límite.", "tags": ["dinamico"], "donde": ["figuras"]},
   {"text": "Fíjate en los tonos oscuros y terrosos, con luces de tormenta.", "tags": ["oscuro"]},
   {"text": "Fíjate en la piel y los músculos pintados con fuerza, casi esculpidos.", "donde": ["figuras"]},
-  {"text": "Fíjate en el dramatismo: nada es tranquilo."},
-  {"text": "Fíjate en las caras de verdad, sin embellecer, que miran al vacío.", "donde": ["retrato"]}
+  {"text": "Fíjate en el dramatismo de cada escena.", "donde": ["figuras"]},
+  {"text": "Fíjate en las caras reales, de mirada perdida, sin embellecer.", "donde": ["retrato"]}
  ]},
  "delacroix": {"pistas": [
   {"text": "Fíjate en la pincelada agitada y visible, llena de movimiento.", "tags": ["suelta"]},
@@ -242,20 +242,20 @@
   {"text": "Fíjate en las pinceladas cortas y separadas, como toques de color.", "tags": ["suelta"]},
   {"text": "Fíjate en la luz del momento, que cambia según la hora."},
   {"text": "Fíjate en las sombras de colores: azules y violetas, nunca negras."},
-  {"text": "Fíjate en los contornos que se deshacen en luz.", "tags": ["suelta"]},
+  {"text": "Fíjate en el agua y sus reflejos.", "tags": ["agua"], "donde": "etiquetas"},
   {"text": "Fíjate en la vida al aire libre: jardines, ríos y paseos.", "donde": ["paisaje"]}
  ]},
  "degas": {"pistas": [
   {"text": "Fíjate en el encuadre cortado, como una foto tomada al vuelo.", "tags": ["cortado"]},
-  {"text": "Fíjate en las figuras vistas de lado, de espaldas o desde arriba."},
+  {"text": "Fíjate en las bailarinas de ensayo, cansadas o atándose las zapatillas.", "tags": ["baile"], "donde": "etiquetas"},
   {"text": "Fíjate en el dibujo seguro, que capta un gesto en un momento."},
-  {"text": "Fíjate en la vida moderna: ensayos, cafés y oficinas.", "donde": ["figuras"]},
+  {"text": "Fíjate en la vida moderna: cafés, teatros y oficinas.", "donde": ["figuras"]},
   {"text": "Fíjate en la naturalidad: nadie posa, como si no supieran que los miras."}
  ]},
  "renoir": {"pistas": [
   {"text": "Fíjate en las mejillas rosadas y la piel luminosa.", "tags": ["rosa"], "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en la pincelada suave y suelta, como algodón.", "tags": ["suelta"]},
-  {"text": "Fíjate en la alegría: gente feliz, nunca triste.", "donde": ["retrato", "figuras"]},
+  {"text": "Fíjate en los rostros risueños, de gente que disfruta.", "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en la luz que cae a manchas entre las hojas.", "tags": ["suelta", "claro"], "donde": "etiquetas"},
   {"text": "Fíjate en los colores cálidos y alegres."}
  ]},
@@ -269,21 +269,20 @@
  "seurat": {"pistas": [
   {"text": "Fíjate en los puntitos de color puro que se mezclan en tu ojo.", "tags": ["puntos"]},
   {"text": "Fíjate en las figuras quietas y geométricas, como recortadas.", "donde": ["figuras"]},
-  {"text": "Fíjate en la luz clara y vibrante, hecha de colores.", "tags": ["claro"]},
-  {"text": "Fíjate en la calma: nadie se mueve, todo está ordenado."},
-  {"text": "Fíjate en las figuras de perfil, como en un friso.", "donde": ["figuras"]}
+  {"text": "Fíjate en la luz construida con toques de color sin mezclar en la paleta."},
+  {"text": "Fíjate en las figuras de perfil, en fila.", "donde": ["figuras"]}
  ]},
  "van-gogh": {"pistas": [
-  {"text": "Fíjate en las pinceladas que se ven una a una, gruesas y con dirección.", "tags": ["grueso"]},
+  {"text": "Fíjate en las pinceladas gruesas que se ven una a una, con dirección.", "tags": ["grueso"]},
   {"text": "Fíjate en los amarillos y azules muy intensos.", "tags": ["azul", "amarillo"], "donde": "etiquetas"},
-  {"text": "Fíjate en la pintura en relieve, aplicada a trazos cortos.", "tags": ["grueso"]},
+  {"text": "Fíjate en las líneas que giran en remolinos.", "tags": ["grueso"], "donde": "etiquetas"},
   {"text": "Fíjate en la emoción: todo parece vibrar o temblar."},
   {"text": "Fíjate en los contornos marcados que encierran el color."}
  ]},
  "gauguin": {"pistas": [
   {"text": "Fíjate en las zonas de color plano, sin sombras.", "tags": ["plano"]},
   {"text": "Fíjate en los contornos oscuros que rodean las formas.", "tags": ["plano"]},
-  {"text": "Fíjate en los colores irreales: suelos rojos o caras amarillas.", "tags": ["plano"]},
+  {"text": "Fíjate en los colores elegidos por su efecto, no por su parecido.", "tags": ["plano"]},
   {"text": "Fíjate en la calma misteriosa, con figuras que parecen soñar.", "donde": ["figuras"]},
   {"text": "Fíjate en las formas simplificadas, casi decorativas."}
  ]},
@@ -305,15 +304,13 @@
   {"text": "Fíjate en la piel arrugada y real, con vello y marcas.", "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en la luz dura sobre fondo oscuro.", "tags": ["oscuro"]},
   {"text": "Fíjate en la pintura espesa, casi en relieve.", "tags": ["grueso"]},
-  {"text": "Fíjate en las caras de gente humilde, con su verdad.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en el realismo crudo, sin embellecer."}
+  {"text": "Fíjate en los filósofos y santos con cara de mendigo de Nápoles.", "donde": ["retrato", "figuras"]}
  ]},
  "zurbaran": {"pistas": [
   {"text": "Fíjate en las telas de pliegues duros, como de escultura.", "tags": ["nitido"]},
   {"text": "Fíjate en la luz lateral sobre fondo oscuro.", "tags": ["oscuro"]},
   {"text": "Fíjate en los objetos de realidad casi táctil.", "tags": ["nitido"]},
-  {"text": "Fíjate en la quietud: todo está en silencio."},
-  {"text": "Fíjate en las figuras sólidas y sencillas, sin movimiento.", "donde": ["figuras"]}
+  {"text": "Fíjate en las figuras solas, sin paisaje ni distracciones.", "donde": ["figuras"]}
  ]},
  "van-dyck": {"pistas": [
   {"text": "Fíjate en la elegancia aristocrática: manos finas y poses distinguidas.", "donde": ["retrato", "figuras"]},
@@ -333,8 +330,8 @@
   {"text": "Fíjate en la dulzura de las caras, amables y cercanas.", "tags": ["dulzura"], "donde": ["figuras"]},
   {"text": "Fíjate en los contornos suaves y vaporosos.", "tags": ["difuminado"]},
   {"text": "Fíjate en los colores cálidos y luminosos."},
-  {"text": "Fíjate en la ternura: niños y madres cercanos.", "donde": ["figuras"]},
-  {"text": "Fíjate en la luz dorada que envuelve las figuras.", "donde": ["figuras"]}
+  {"text": "Fíjate en la ternura de las escenas, con niños y madres cercanos.", "donde": ["figuras"]},
+  {"text": "Fíjate en las nubes doradas con angelitos.", "tags": ["oro", "difuminado"], "donde": "etiquetas"}
  ]},
  "watteau": {"pistas": [
   {"text": "Fíjate en las sedas tornasoladas que brillan en tonos suaves.", "tags": ["sedas"], "donde": ["retrato", "figuras"]},
@@ -345,9 +342,9 @@
  ]},
  "pissarro": {"pistas": [
   {"text": "Fíjate en las pinceladas pequeñas y rápidas.", "tags": ["suelta"]},
-  {"text": "Fíjate en la vida sencilla del campo o la ciudad."},
+  {"text": "Fíjate en la gente pequeña, ocupada en sus tareas, bajo un cielo amplio."},
   {"text": "Fíjate en los colores luminosos y matizados."},
-  {"text": "Fíjate en la luz del momento, de un día concreto."},
+  {"text": "Fíjate en la luz de un día concreto: lluvia, niebla o sol."},
   {"text": "Fíjate en los caminos y calles que llevan la mirada al fondo.", "donde": ["paisaje"]}
  ]},
  "morisot": {"pistas": [
@@ -367,9 +364,9 @@
  "lautrec": {"pistas": [
   {"text": "Fíjate en el dibujo nervioso, de líneas largas.", "tags": ["lineas"]},
   {"text": "Fíjate en los personajes de los cafés y cabarés de París.", "tags": ["interior"], "donde": "etiquetas"},
-  {"text": "Fíjate en los colores planos y atrevidos."},
+  {"text": "Fíjate en la silueta de línea nerviosa y colores planos, como un cartel."},
   {"text": "Fíjate en las caras casi caricaturescas.", "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en el encuadre cortado, a la japonesa.", "tags": ["cortado"]}
+  {"text": "Fíjate en la pintura diluida que deja ver el cartón de debajo."}
  ]},
  "munch": {"pistas": [
   {"text": "Fíjate en la angustia: caras pálidas y miradas perdidas.", "tags": ["expresion"], "donde": "etiquetas"},
@@ -379,11 +376,11 @@
   {"text": "Fíjate en la pintura emocional, a veces rascada."}
  ]},
  "matisse": {"pistas": [
-  {"text": "Fíjate en el color puro, plano y a veces inventado.", "tags": ["plano"]},
-  {"text": "Fíjate en las formas simplificadas, con contorno.", "tags": ["plano"]},
-  {"text": "Fíjate en los fondos decorativos y planos.", "tags": ["plano"]},
-  {"text": "Fíjate en la alegría del color."},
-  {"text": "Fíjate en los colores elegidos por emoción, no por parecerse a la realidad."}
+  {"text": "Fíjate en los colores puros y planos, como una cara verde o un suelo rosa.", "tags": ["plano"]},
+  {"text": "Fíjate en las siluetas sencillas, con un contorno grueso y seguro.", "tags": ["plano"]},
+  {"text": "Fíjate en los fondos decorativos, con estampados que compiten con las figuras.", "tags": ["plano"]},
+  {"text": "Fíjate en el color elegido por la emoción, no por la realidad."},
+  {"text": "Fíjate en el espacio plano, casi sin profundidad.", "tags": ["plano"]}
  ]},
  "kandinsky": {"pistas": [
   {"text": "Fíjate en las formas geométricas: círculos, triángulos y líneas.", "donde": ["abstracto"]},
@@ -407,17 +404,16 @@
   {"text": "Fíjate en el orden sencillo sobre una mesa.", "donde": ["bodegon"]}
  ]},
  "madrazo": {"pistas": [
-  {"text": "Fíjate en el acabado liso y pulido.", "tags": ["nitido"]},
-  {"text": "Fíjate en las sedas y encajes.", "tags": ["sedas"], "donde": ["retrato"]},
-  {"text": "Fíjate en las caras serenas sobre fondo neutro.", "donde": ["retrato"]},
-  {"text": "Fíjate en la elegancia de la alta sociedad.", "donde": ["retrato"]},
-  {"text": "Fíjate en la precisión del dibujo.", "tags": ["nitido"]}
+  {"text": "Fíjate en el acabado liso, sin pincelada visible.", "tags": ["nitido"]},
+  {"text": "Fíjate en las sedas y encajes de brillo exacto.", "tags": ["sedas"], "donde": ["retrato"]},
+  {"text": "Fíjate en las caras serenas sobre un fondo neutro.", "donde": ["retrato"]},
+  {"text": "Fíjate en la elegancia de la alta sociedad de su tiempo.", "donde": ["retrato"]},
+  {"text": "Fíjate en la precisión del dibujo, de contorno limpio.", "tags": ["nitido"]}
  ]},
  "rosales": {"pistas": [
-  {"text": "Fíjate en las zonas solo esbozadas junto a caras acabadas.", "tags": ["suelta"]},
+  {"text": "Fíjate en las caras rematadas y el resto apenas esbozado.", "tags": ["suelta"]},
   {"text": "Fíjate en la pincelada amplia y suelta.", "tags": ["suelta"]},
   {"text": "Fíjate en los tonos sobrios: ocres, grises y negros."},
-  {"text": "Fíjate en la sencillez de la composición."},
   {"text": "Fíjate en la emoción contenida.", "donde": ["retrato", "figuras"]}
  ]},
  "fortuny": {"pistas": [
@@ -428,18 +424,18 @@
   {"text": "Fíjate en la pincelada rápida y segura.", "tags": ["suelta"]}
  ]},
  "sisley": {"pistas": [
-  {"text": "Fíjate en los cielos grandes y nublados.", "tags": ["cielo"]},
+  {"text": "Fíjate en los cielos que ocupan media tela, con nubes que se mueven.", "tags": ["cielo"]},
   {"text": "Fíjate en la pincelada suave y vaporosa.", "tags": ["suelta"]},
-  {"text": "Fíjate en el agua de ríos y canales.", "tags": ["agua"], "donde": "etiquetas"},
-  {"text": "Fíjate en los colores suaves y luminosos."},
-  {"text": "Fíjate en la tranquilidad de los pueblos."}
+  {"text": "Fíjate en el agua tranquila que duplica el paisaje.", "tags": ["agua"], "donde": "etiquetas"},
+  {"text": "Fíjate en los colores suaves y luminosos de un día cualquiera."},
+  {"text": "Fíjate en los pueblos y caminos pequeños bajo tanto cielo."}
  ]},
  "romero-de-torres": {"pistas": [
   {"text": "Fíjate en las mujeres morenas de mirada seria.", "donde": ["retrato", "figuras"]},
   {"text": "Fíjate en la penumbra y el acabado liso."},
   {"text": "Fíjate en los tonos oscuros y cálidos."},
   {"text": "Fíjate en la quietud misteriosa."},
-  {"text": "Fíjate en la piel oscura y aceitunada.", "donde": ["retrato", "figuras"]}
+  {"text": "Fíjate en los fondos con vistas de Córdoba.", "tags": ["paisaje", "arquitectura"], "donde": "etiquetas"}
  ]},
  "juan-gris": {"pistas": [
   {"text": "Fíjate en los objetos partidos en planos geométricos.", "tags": ["plano"]},
@@ -458,12 +454,12 @@
   {"text": "Fíjate en la luz suave y dorada que envuelve las figuras."},
   {"text": "Fíjate en el misterio: nadie sabe bien qué pasa en la escena."},
   {"text": "Fíjate en las figuras quietas y pensativas, como absortas.", "donde": ["figuras"]},
-  {"text": "Fíjate en los contornos suaves, que se funden con el aire.", "tags": ["difuminado"]}
+  {"text": "Fíjate en el paisaje, tan importante como las figuras.", "tags": ["paisaje"], "donde": "etiquetas"}
  ]},
  "memling": {"pistas": [
   {"text": "Fíjate en las caras serenas y suaves, de expresión tranquila.", "tags": ["dulzura"], "donde": ["retrato", "figuras"]},
-  {"text": "Fíjate en los colores limpios y luminosos del óleo flamenco.", "tags": ["claro"]},
-  {"text": "Fíjate en el orden y la calma de cada escena."},
+  {"text": "Fíjate en los colores limpios y luminosos del óleo flamenco (de Flandes).", "tags": ["claro"]},
+  {"text": "Fíjate en el paisaje que asoma tras la ventana o el trono.", "tags": ["paisaje"], "donde": "etiquetas"},
   {"text": "Fíjate en el detalle fino de telas, joyas y cabellos.", "tags": ["nitido"]}
  ]},
  "gainsborough": {"pistas": [
@@ -487,7 +483,7 @@
  "aivazovski": {"pistas": [
   {"text": "Fíjate en el mar que brilla desde dentro, con olas transparentes.", "tags": ["mar"]},
   {"text": "Fíjate en los cielos luminosos, como iluminados por una lámpara.", "tags": ["cielo"]},
-  {"text": "Fíjate en el agua pintada de memoria, sin modelo delante.", "tags": ["mar"]},
+  {"text": "Fíjate en las olas translúcidas, con la luz atravesándolas como un cristal.", "tags": ["mar"]},
   {"text": "Fíjate en la luz dorada o plateada que se refleja en las olas.", "tags": ["mar"]}
  ]},
  "millais": {"pistas": [
@@ -521,7 +517,7 @@
   {"text": "Fíjate en la sencillez de la composición, casi japonesa."}
  ]},
  "sargent": {"pistas": [
-  {"text": "Fíjate en la pincelada veloz y segura, a lo maestro antiguo.", "tags": ["suelta"]},
+  {"text": "Fíjate en las pinceladas largas y atrevidas, sobre todo en telas y manos.", "tags": ["suelta"]},
   {"text": "Fíjate en los blancos luminosos de telas y vestidos.", "donde": ["retrato"]},
   {"text": "Fíjate en las poses elegantes y naturales.", "donde": ["retrato"]},
   {"text": "Fíjate en los contrastes de claros y oscuros muy marcados."}
@@ -575,7 +571,7 @@
   {"text": "Fíjate en los detalles refinados, como de orfebre."}
  ]},
  "fra-angelico": {"pistas": [
-  {"text": "Fíjate en los colores limpios y claros, como de acuarela.", "tags": ["claro"]},
+  {"text": "Fíjate en los colores limpios y claros, que parecen recién pintados.", "tags": ["claro"]},
   {"text": "Fíjate en las caras dulces y serenas.", "tags": ["dulzura"], "donde": ["figuras"]},
   {"text": "Fíjate en el oro y los azules luminosos."},
   {"text": "Fíjate en la calma espiritual de cada escena.", "donde": ["figuras"]}
@@ -677,9 +673,9 @@
   {"text": "Fíjate en las telas de colores brillantes.", "donde": ["figuras"]}
  ]},
  "canaletto": {"pistas": [
-  {"text": "Fíjate en Venecia con exactitud de foto.", "donde": ["paisaje"]},
-  {"text": "Fíjate en la luz clara y limpia.", "tags": ["claro"]},
-  {"text": "Fíjate en los palacios y canales dibujados con precisión.", "tags": ["arquitectura"], "donde": ["paisaje"]},
+  {"text": "Fíjate en las vistas de ciudad dibujadas con regla: cada palacio, cada reflejo.", "tags": ["arquitectura"], "donde": ["paisaje"]},
+  {"text": "Fíjate en la luz clara y limpia de un día despejado.", "tags": ["claro"]},
+  {"text": "Fíjate en el cielo azul que ocupa media tela.", "tags": ["cielo"], "donde": ["paisaje"]},
   {"text": "Fíjate en las figuras diminutas por todas partes.", "tags": ["diminutas"], "donde": ["paisaje"]}
  ]},
  "hogarth": {"pistas": [
@@ -695,16 +691,16 @@
   {"text": "Fíjate en los tonos suaves y cálidos."}
  ]},
  "liotard": {"pistas": [
-  {"text": "Fíjate en el acabado liso y casi sin sombras.", "tags": ["nitido"]},
-  {"text": "Fíjate en los contornos muy limpios.", "tags": ["nitido"]},
+  {"text": "Fíjate en el acabado liso y casi sin sombras, del pastel (barra de color en polvo).", "tags": ["nitido"]},
   {"text": "Fíjate en la luz clara y suave.", "tags": ["claro"]},
-  {"text": "Fíjate en los detalles de telas y porcelanas."}
+  {"text": "Fíjate en los detalles de telas y porcelanas."},
+  {"text": "Fíjate en la sencillez del fondo, casi vacío."}
  ]},
  "boucher": {"pistas": [
-  {"text": "Fíjate en los tonos rosados y azules."},
-  {"text": "Fíjate en la piel de porcelana."},
-  {"text": "Fíjate en la gracia y la elegancia."},
-  {"text": "Fíjate en las telas, lazos y flores."}
+  {"text": "Fíjate en los cuerpos rosados y mullidos, entre telas, nubes y flores.", "donde": ["figuras"]},
+  {"text": "Fíjate en los tonos de caramelo: rosas, azules y celestes."},
+  {"text": "Fíjate en la piel de porcelana, sin una mancha."},
+  {"text": "Fíjate en los lazos, puntillas y flores de los vestidos."}
  ]},
  "reynolds": {"pistas": [
   {"text": "Fíjate en la pose noble, como de estatua clásica.", "donde": ["retrato"]},
@@ -755,10 +751,10 @@
   {"text": "Fíjate en la pincelada suave."}
  ]},
  "kuindzhi": {"pistas": [
-  {"text": "Fíjate en la luz casi irreal."},
-  {"text": "Fíjate en los fuertes contrastes de luz."},
-  {"text": "Fíjate en los colores saturados."},
-  {"text": "Fíjate en el paisaje sencillo y amplio.", "tags": ["paisaje"]}
+  {"text": "Fíjate en la luna o el sol que parecen encendidos por dentro."},
+  {"text": "Fíjate en el contraste entre una zona muy iluminada y el resto en sombra."},
+  {"text": "Fíjate en los colores intensos, casi de esmalte."},
+  {"text": "Fíjate en el paisaje sencillo y amplio, sin figuras.", "tags": ["paisaje"]}
  ]},
  "vereshchagin": {"pistas": [
   {"text": "Fíjate en el realismo seco, casi de foto.", "tags": ["nitido"]},
@@ -799,7 +795,7 @@
  "cassatt": {"pistas": [
   {"text": "Fíjate en las escenas íntimas de mujeres y niños."},
   {"text": "Fíjate en los colores claros.", "tags": ["claro"]},
-  {"text": "Fíjate en el encuadre cortado, a la japonesa.", "tags": ["cortado"], "donde": "etiquetas"},
+  {"text": "Fíjate en cómo las figuras llenan el cuadro, con poca sombra."},
   {"text": "Fíjate en la pincelada rápida y segura.", "tags": ["suelta"]}
  ]},
  "caillebotte": {"pistas": [
@@ -815,10 +811,10 @@
   {"text": "Fíjate en la calma de una tarde de verano."}
  ]},
  "serov": {"pistas": [
-  {"text": "Fíjate en la luz fresca sobre los retratos.", "tags": ["claro"]},
-  {"text": "Fíjate en la naturalidad espontánea."},
-  {"text": "Fíjate en la pincelada libre.", "tags": ["suelta"]},
-  {"text": "Fíjate en las miradas vivas."}
+  {"text": "Fíjate en las pinceladas sueltas en trajes y fondos, con la cara bien acabada.", "tags": ["suelta"]},
+  {"text": "Fíjate en la luz fresca que entra en la escena, como en un día claro.", "tags": ["claro"]},
+  {"text": "Fíjate en las poses naturales, como si no posaran."},
+  {"text": "Fíjate en la mirada directa de los retratados."}
  ]},
  "utamaro": {"pistas": [
   {"text": "Fíjate en las mujeres elegantes como protagonistas."},
@@ -851,10 +847,10 @@
   {"text": "Fíjate en la luz suave."}
  ]},
  "modigliani": {"pistas": [
-  {"text": "Fíjate en los cuellos largos y caras ovaladas.", "tags": ["alargado"]},
-  {"text": "Fíjate en los ojos almendrados."},
+  {"text": "Fíjate en los cuellos largos y las caras ovaladas.", "tags": ["alargado"]},
+  {"text": "Fíjate en los ojos a veces sin pupila, como almendras vacías."},
   {"text": "Fíjate en los colores cálidos y planos.", "tags": ["plano"]},
-  {"text": "Fíjate en las formas simplificadas."}
+  {"text": "Fíjate en las formas simplificadas, casi de escultura africana."}
  ]},
  "schiele": {"pistas": [
   {"text": "Fíjate en los contornos nerviosos y quebrados.", "tags": ["lineas"]},
@@ -881,7 +877,7 @@
   {"text": "Fíjate en los colores brillantes y limpios de las telas."}
  ]},
  "morales": {"pistas": [
-  {"text": "Fíjate en el modelado suavísimo, sin bordes, como esfumado.", "tags": ["difuminado"]},
+  {"text": "Fíjate en las caras suaves, sin bordes, como esfumadas con humo.", "tags": ["difuminado"]},
   {"text": "Fíjate en los velos finos y transparentes.", "donde": ["figuras"]},
   {"text": "Fíjate en el dolor tierno de los rostros, con ojos húmedos.", "donde": ["figuras"]},
   {"text": "Fíjate en el fondo oscuro, que deja solas a las figuras.", "tags": ["oscuro"]}
@@ -893,9 +889,9 @@
   {"text": "Fíjate en las caras pálidas y distantes, de mirada seria."}
  ]},
  "sanchez-cotan": {"pistas": [
-  {"text": "Fíjate en las frutas y verduras sobre un fondo negro profundo.", "tags": ["oscuro"]},
-  {"text": "Fíjate en el hueco de piedra que sirve de marco, como una ventana."},
-  {"text": "Fíjate en el orden casi geométrico, como si cada pieza tuviera su sitio exacto.", "tags": ["nitido"]},
+  {"text": "Fíjate en las frutas y verduras sobre un fondo negro profundo.", "tags": ["oscuro"], "donde": ["bodegon"]},
+  {"text": "Fíjate en el hueco de piedra que sirve de marco, como una ventana.", "donde": ["bodegon"]},
+  {"text": "Fíjate en el orden casi geométrico, como si cada pieza tuviera su sitio exacto.", "tags": ["nitido"], "donde": ["bodegon"]},
   {"text": "Fíjate en la luz que entra de lado y hace brillar cada piel."}
  ]},
  "ribalta": {"pistas": [
@@ -905,26 +901,27 @@
   {"text": "Fíjate en la composición sencilla, con pocas figuras."}
  ]},
  "maino": {"pistas": [
-  {"text": "Fíjate en la luz dirigida, a lo Caravaggio, pero con colores claros."},
+  {"text": "Fíjate en la luz dirigida, como un foco, pero con colores claros."},
   {"text": "Fíjate en las figuras de volumen firme, como esculpidas.", "tags": ["estatua"]},
   {"text": "Fíjate en las telas brillantes de colores vivos.", "tags": ["sedas"]},
-  {"text": "Fíjate en la claridad del cuadro, sin las sombras negras del tenebrismo.", "tags": ["claro"]}
+  {"text": "Fíjate en la claridad del cuadro, sin las sombras negras del tenebrismo (sombras muy negras).", "tags": ["claro"]}
  ]},
  "alonso-cano": {"pistas": [
   {"text": "Fíjate en la belleza serena e idealizada de las figuras.", "tags": ["dulzura"]},
   {"text": "Fíjate en los tonos claros, de raíz veneciana.", "tags": ["claro"]},
-  {"text": "Fíjate en los volúmenes de escultor: también tallaba madera.", "tags": ["estatua"]},
+  {"text": "Fíjate en las figuras redondeadas, casi talladas, de gestos serenos.", "tags": ["estatua"]},
   {"text": "Fíjate en la elegancia tranquila de los gestos."}
  ]},
  "pereda": {"pistas": [
-  {"text": "Fíjate en el detalle de cada objeto, pintado con precisión.", "tags": ["nitido"]},
-  {"text": "Fíjate en el fondo oscuro que hace resaltar las cosas.", "tags": ["oscuro"]},
-  {"text": "Fíjate en la luz que se posa sobre los objetos, uno a uno."},
+  {"text": "Fíjate en el detalle de cada objeto, pintado con precisión.", "tags": ["nitido"], "donde": ["bodegon"]},
+  {"text": "Fíjate en el fondo oscuro que hace resaltar las cosas.", "tags": ["oscuro"], "donde": ["bodegon"]},
+  {"text": "Fíjate en la luz que se posa sobre los objetos, uno a uno.", "donde": ["bodegon"]},
+  {"text": "Fíjate en el detalle minucioso de telas, metales y armaduras.", "tags": ["nitido"]},
   {"text": "Fíjate en las calaveras, relojes y velas: recuerdan que la vida se acaba.", "tags": ["oscuro", "nitido"], "donde": "etiquetas"}
  ]},
  "carreno": {"pistas": [
-  {"text": "Fíjate en el retrato de corte, con el modelo de pie y serio.", "tags": ["retrato"], "donde": ["retrato"]},
-  {"text": "Fíjate en la pincelada suelta, aprendida de los grandes maestros de la corte.", "tags": ["suelta"]},
+  {"text": "Fíjate en los modelos de pie, muy altos y serios.", "tags": ["retrato"], "donde": ["retrato"]},
+  {"text": "Fíjate en la pincelada suelta, aprendida de los maestros de la corte.", "tags": ["suelta"]},
   {"text": "Fíjate en los cortinajes rojos y los salones de palacio.", "tags": ["rojo"], "donde": "etiquetas"},
   {"text": "Fíjate en los colores ricos y oscuros."}
  ]},
@@ -1026,7 +1023,7 @@
  ]},
  "beruete": {"pistas": [
   {"text": "Fíjate en los cielos amplios y luminosos.", "tags": ["cielo"]},
-  {"text": "Fíjate en la pincelada suelta, a lo impresionista.", "tags": ["suelta"]},
+  {"text": "Fíjate en la pincelada suelta, en toques rápidos.", "tags": ["suelta"]},
   {"text": "Fíjate en la luz seca de la meseta."},
   {"text": "Fíjate en el paisaje abierto, sin figuras protagonistas.", "tags": ["paisaje"]}
  ]},
@@ -1067,9 +1064,9 @@
   {"text": "Fíjate en los puertos, barcos y mar.", "tags": ["barcos", "mar"], "donde": "etiquetas"}
  ]},
  "mir": {"pistas": [
-  {"text": "Fíjate en la explosión de color."},
+  {"text": "Fíjate en el color, que manda sobre las formas hasta casi disolverlas."},
   {"text": "Fíjate en los paisajes que rozan la abstracción.", "tags": ["paisaje"]},
-  {"text": "Fíjate en la luz mediterránea de Mallorca."},
+  {"text": "Fíjate en la luz mediterránea de la isla de Mallorca."},
   {"text": "Fíjate en la pincelada libre y espesa.", "tags": ["suelta"]}
  ]},
  "rusinol": {"pistas": [
