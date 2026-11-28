@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { realIndex, realTextJson } from './helpers-real.js';
-import { feedbackFor, looksOf, artistLines, teachingLines, skipsTrait, scopeFits, tagsOf, generalLine, styleLines, skipsHint } from '../app/js/engine/feedback.js';
+import { feedbackFor, looksOf, artistLines, teachingLines, skipsTrait, scopeFits, tagsOf, generalLine, styleLines, skipsHint, similar } from '../app/js/engine/feedback.js';
 import { traitDetails } from '../app/js/engine/ficha.js';
 import { buildIndex, mergeCatalogText, GENRES } from '../app/js/engine/catalog.js';
 
@@ -244,4 +244,22 @@ test('el «fíjate» propio de la obra sale primero también tras un fallo, en t
     const fb = feedbackFor(real, q, false, new Map(), null, { chosenId: other.id });
     assert.ok(fb.lines[0]?.startsWith(looksOf(w)[0].text), `${w.id}: «${fb.lines[0]}»`);
   }
+});
+
+test('con memoria de sesión, el «fíjate» propio alterna con las frases de estilo y no se repite una muy parecida', () => {
+  const real = realIndex();
+  assert.ok(similar('Fíjate en las caras ovaladas y serenas.', 'Fíjate en la calma de las caras ovaladas.'));
+  assert.ok(!similar('Fíjate en la luz dorada en la penumbra.', 'Fíjate en los marrones y ocres cálidos.'));
+  const works = real.worksOf('rafael').filter((w) => looksOf(w).length).slice(0, 4);
+  const recent = new Map();
+  const kinds = [];
+  let prev = '';
+  for (const w of works) {
+    const line = feedbackFor(real, whoQ(w), true, new Map(), null, { recent }).lines[0];
+    assert.ok(line && !similar(line, prev), `«${line}» se parece a «${prev}»`);
+    kinds.push(looksOf(w).some((l) => line.startsWith(l.text.replace(/[.!?…]$/, ''))) ? 'obra' : 'estilo');
+    prev = line;
+  }
+  assert.equal(kinds[0], 'obra', 'la primera vez, la propia de la obra');
+  for (let i = 1; i < kinds.length; i++) assert.ok(!(kinds[i] === 'obra' && kinds[i - 1] === 'obra'), `dos propias seguidas: ${kinds}`);
 });

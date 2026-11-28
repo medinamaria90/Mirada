@@ -101,6 +101,20 @@ export function teachingLines(lines, artist, work, avoidWork = null) {
   return safe.filter((r) => r.ok || !seen.size).map((r) => r.line);
 }
 
+// ¿Dos frases dicen casi lo mismo? Comparación simple de palabras clave (de 6 letras o más, sin «Fíjate»):
+// parecidas si comparten al menos la mitad de las de la más corta.
+const SIMILAR_SHARE = 0.5;
+const keywords = (t) => new Set(String(t || '').toLowerCase().match(/[a-záéíóúüñ]{6,}/g)?.filter((w) => w !== 'fíjate') || []);
+export function similar(a, b) {
+  const ka = keywords(a);
+  const kb = keywords(b);
+  const small = Math.min(ka.size, kb.size);
+  if (!small) return false;
+  let shared = 0;
+  for (const w of ka) if (kb.has(w)) shared++;
+  return shared / small >= SIMILAR_SHARE;
+}
+
 // ¿El refuerzo de estilo `i` está excluido para esta obra? (contenido/fijate.json «sinPistas»).
 export function skipsHint(work, i) {
   const skip = work?.skipHints;
@@ -171,7 +185,8 @@ function chosenOf(index, q, chosenId) {
 // Una sola frase que enseña: el `look` de ESE cuadro o, si no hay, una frase o un refuerzo de estilo del
 // pintor (que rota sin repetir el último). En las de movimiento, al fallar, la línea del movimiento.
 // memo: Map `look:<obra>` → pistas propias ya dichas de esa obra en la ronda (la segunda vez sale la segunda).
-// opts.recent: Map `last:<artistId>` → último refuerzo mostrado (para no repetirlo; por defecto, el propio memo).
+// opts.recent: Map `last:<artistId>` → última frase mostrada de ese pintor y `lastKind:<artistId>` → si fue la propia
+// de una obra ('look') o de estilo ('trait'), para alternar y no repetir (por defecto, el propio memo).
 // opts.retry: la pregunta es la repetición de una fallada en esta ronda (el elogio de «cuadro nuevo»
 // solo vale la primera vez que se ve). opts.chosenId: la opción elegida (para marcar de quién era).
 // Devuelve { title, who, lines[], kind, source, chosen } con una línea como mucho (texto plano; la
@@ -188,30 +203,49 @@ export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { r
   const pick = (list) => (rng ? rng.pick(list) : list[0]);
   let source = '';
   // Las pistas propias de la obra se dicen una vez cada una por ronda; después, un rasgo del pintor.
-  const nextLook = () => {
+  // Solo se alterna con la memoria de sesión (`recent` propio); con el memo de la ronda, la propia va primero.
+  const alternate = recent !== memo;
+  const lastKey = `last:${q.artistId}`;
+  const kindKey = `lastKind:${q.artistId}`;
+  const last = recent.get(lastKey) || '';
+  // Pista propia de la obra que toca (sin gastarla aún) y la que se gasta al mostrarla.
+  const lookKey = subject ? `look:${subject.id}` : '';
+  const pendingLook = () => {
     const looks = looksOf(subject);
-    const key = subject ? `look:${subject.id}` : '';
-    const n = key ? memo.get(key) || 0 : 0;
-    if (!key || n >= looks.length) return '';
-    memo.set(key, n + 1);
-    source = looks[n].source;
-    return sentence(looks[n].text);
+    const n = lookKey ? memo.get(lookKey) || 0 : 0;
+    return lookKey && n < looks.length ? looks[n] : null;
+  };
+  const takeLook = () => {
+    const look = pendingLook();
+    memo.set(lookKey, (memo.get(lookKey) || 0) + 1);
+    source = look.source;
+    return sentence(look.text);
   };
   // Frases del pintor y refuerzos de estilo que encajan; rota sin repetir el último que se vio de ese pintor
-  // (`recent`, que puede durar más que la ronda): con `rng`, al azar entre los demás; sin él, el siguiente.
-  const nextTrait = (avoidWork) => {
+  // (`recent`, que puede durar más que la ronda) ni uno muy parecido: con `rng`, al azar entre los demás;
+  // sin él, el siguiente.
+  const traitLine = (avoidWork) => {
     const pool = [...new Set([...teachingLines(artistLines(artist), artist, subject, avoidWork), ...styleLines(artist, subject, avoidWork)])];
     if (!pool.length) return '';
-    const lastKey = `last:${q.artistId}`;
-    const last = recent.get(lastKey);
-    const fresh = pool.length > 1 ? pool.filter((l) => l !== last) : pool;
-    const line = rng ? rng.pick(fresh) : pool[(pool.indexOf(last) + 1) % pool.length];
-    recent.set(lastKey, line);
-    return line;
+    const fresh = pool.filter((l) => l !== last && !similar(l, last));
+    const choices = fresh.length ? fresh : pool.length > 1 ? pool.filter((l) => l !== last) : pool;
+    return rng ? rng.pick(choices) : choices.find((l) => pool.indexOf(l) > pool.indexOf(last)) || choices[0];
   };
   // avoidWork: el cuadro elegido por error (no se enseña un rasgo que ese cuadro también tenga).
   // En cuadros atípicos o «de memoria» los rasgos genéricos del pintor no se ven: no se dicen.
-  const teach = (avoidWork = null) => nextLook() || (kindOf(subject) === 'tipico' ? nextTrait(avoidWork) : '');
+  // La pista propia de la obra va primero, salvo que lo último visto de ese pintor fuera también una pista
+  // propia o se parezca mucho a ella: entonces, una frase de estilo (alternan) y la propia espera su turno.
+  const teach = (avoidWork = null) => {
+    const look = pendingLook();
+    const trait = kindOf(subject) === 'tipico' ? traitLine(avoidWork) : '';
+    const preferTrait = alternate && trait && look && (recent.get(kindKey) === 'look' || similar(look.text, last));
+    const line = look && !preferTrait ? takeLook() : trait;
+    if (line) {
+      recent.set(lastKey, line);
+      recent.set(kindKey, look && !preferTrait ? 'look' : 'trait');
+    }
+    return line;
+  };
   let title;
   let who = artist ? artist.name : '';
   let line;
