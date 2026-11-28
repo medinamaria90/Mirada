@@ -56,7 +56,16 @@ export function gateEssentials(progress, index, step, gate) {
 // ¿Se puede jugar ya su nivel? (si no, primero el nivel 1 de su pintor y, si es su nivel 3 o 4, los imprescindibles de antes).
 export const essentialOpen = (progress, index, e) => deepStatus(progress, index, e.artistId, e.level) !== 'locked';
 
-// Lo que falta, sin tiempo ni nivel (botón de la guía): «Te falta conocer las pinturas negras de Goya».
+// Botón de la guía, en positivo como el resto de pasos: «Sigue: Leonardo» (nivel 1) o «Sigue: Goya · nivel 2».
+// Si con el nivel no cabe en una línea (STEP_LABEL_MAX), solo «Sigue: Goya».
+export const STEP_LABEL_MAX = 38;
+export const essentialStepLabel = (index, e) => {
+  const a = index.artist(e.artistId);
+  const name = `Sigue: ${a.short || a.name}`;
+  const full = e.level > 1 ? `${name} · nivel ${e.level}` : name;
+  return full.length <= STEP_LABEL_MAX ? full : name;
+};
+// Lo que falta, sin tiempo ni nivel (solo para el candado): «Te falta conocer las pinturas negras de Goya».
 export const essentialNeed = (e) => `Te falta conocer ${e.title}`;
 // Texto del candado, con el nivel: «Te falta conocer las pinturas negras de Goya (nivel 2)».
 export const essentialLock = (e) => `${essentialNeed(e)} (nivel ${e.level})`;
