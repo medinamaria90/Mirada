@@ -10,6 +10,7 @@ import {
   DEEPEN_EVERY, ROTATION, COOL_DAYS, COOL_FLOOR, currentOffer, pickOffer, noteOffer, skipOffer, settleOffer, offerWeight, deepenCandidates, deepenState,
 } from '../app/js/engine/deepen.js';
 import { nextStep } from '../app/js/engine/next-step.js';
+import { doorLock, eraLore } from '../app/js/ui/screens/path-lore.js';
 import { addDays } from '../app/js/engine/dates.js';
 import { realIndex } from './helpers-real.js';
 
@@ -184,4 +185,32 @@ test('itinerario: «Profundiza en <pintor>: nivel N» entra antes de la parada s
   p = skipOffer(noteOffer(p, real, step.offer), TODAY);
   assert.equal(nextStep(p, real, TODAY, { plan: { kind: 'map' } }).kind, 'stop', 'saltada, sigue el camino');
   assert.deepEqual(missingEssentials(p, real, 'romanticismo'), []);
+});
+
+test('globo de la época cerrada: sin «la puerta de…» (el medallón es la puerta); con imprescindibles pendientes, dice cuál y «Ir» va a su nivel', () => {
+  const upTo = eras.slice(0, eras.indexOf('barroco') + 1);
+  const rococo = real.movement('rococo-neoclasicismo');
+  const p = masterEssentials(masterEras(emptyProgress(), upTo), upTo.filter((id) => id !== 'barroco'));
+  const missing = missingEssentials(p, real, 'barroco');
+  assert.ok(missing.length >= 2, 'el caso necesita varios imprescindibles pendientes');
+  const door = doorLock(p, real, rococo);
+  assert.equal(door.lock, `Antes, conoce ${missing[0].title} y ${missing.length - 1} más`);
+  assert.equal(door.unlock, `deep:${missing[0].artistId}:${missing[0].level}`, 'Ir, a su nivel (su pintor ya está dominado)');
+  const html = eraLore({ movement: rococo, sealed: false, done: 0, total: 5, door, stop: { x: 100, y: 100 }, h: 1000, fresh: false, here: false });
+  assert.ok(html.includes(`data-lock="Antes, conoce ${missing[0].title}`) && html.includes(`Cerrada: Antes, conoce `), 'el medallón lleva la línea y su etiqueta la lee');
+  assert.ok(door.lock.length <= 70, 'cabe en el globo (232 px) en pocas líneas');
+  // Con uno solo pendiente, sin «y n más».
+  const one = masterEssentials(masterEras(emptyProgress(), upTo), upTo);
+  delete one.deep[`${missing[0].artistId}:${missing[0].level}`];
+  assert.equal(doorLock(one, real, rococo).lock, `Antes, conoce ${missing[0].title}`);
+  assert.equal(doorLock(masterEssentials(masterEras(emptyProgress(), upTo), upTo), real, rococo), null, 'con todo hecho la puerta se abre');
+  // Sin imprescindibles pendientes: lejos, «Se abre al llegar aquí» sin «Ir» ni cuadros sin presentar.
+  const far = doorLock(emptyProgress(), real, rococo);
+  assert.deepEqual(far, { lock: 'Se abre al llegar aquí', unlock: '' });
+  // Con la parada anterior en juego (sin superar), se pide acertar la mitad con ella y «Ir» va a ella.
+  const gate = real.steps[real.stepIndex(firstOf('rococo-neoclasicismo').type, firstOf('rococo-neoclasicismo').id) - 1];
+  const near = masterEras(emptyProgress(), upTo.slice(0, -1));
+  for (const s of real.stepsOf('barroco')) if (s !== gate && s.id !== gate.id) (s.type === 'sala' ? near.salas : near.artists)[s.id] = done();
+  const prevDoor = doorLock(near, real, rococo);
+  assert.ok(prevDoor.lock.startsWith('Antes, acierta la mitad con ') && prevDoor.unlock === `${gate.type}:${gate.id}`, JSON.stringify(prevDoor));
 });
