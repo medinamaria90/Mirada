@@ -74,6 +74,14 @@ html.reduce-motion .map-cue { animation: none; }
 .path-map.is-linear .arch-band { position: relative; inset: auto; display: block; width: 100%; }
 .path-map.is-linear .arch-name { position: static; translate: none; width: auto; height: auto; min-height: var(--hit); }
 
+/* Guía sin parada en el mapa («Repasar», el reto semanal…): una píldora flotante con su texto, junto a la flecha. */
+.map-pill {
+  position: fixed; right: calc(max(16px, calc(50% - var(--col) / 2 + 16px)) + var(--map-return-size) + 8px); bottom: calc(var(--map-return-b) + var(--safe-b)); z-index: var(--map-z-float);
+  display: flex; align-items: center; max-width: min(60vw, calc(var(--col) * .6)); min-height: var(--map-return-size); padding: 0 1rem; border: 0; border-radius: var(--radius-pill);
+  background: var(--brand); color: var(--on-brand); font: 600 .9rem/1.15 var(--font); text-wrap: balance; box-shadow: var(--shadow-pop); cursor: pointer;
+}
+.map-pill:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 4px; }
+.map-pill:active { transform: translateY(1px); }
 /* ---------- Ir a lo recomendado (screens/map-return.js) ---------- */
 /* Círculo con una flecha hacia donde queda lo que recomienda el itinerario (arriba o abajo). Solo se ve cuando eso no está a la vista. */
 .map-return {

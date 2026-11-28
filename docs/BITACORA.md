@@ -449,3 +449,9 @@ pintor; en época y tramo, la ficha de época cuando exista: `eraFichaRoute` en 
   la app en caché) los niveles hechos (`progress.deep`), la rotación de «Profundiza» y las historias vistas; marca
   `progress.levelOrder` (y `@orden:1` en la lista de historias) para hacerlo una sola vez. Una ronda «a fondo» a medias de
   esos pintores se descarta. Pruebas en `tests/niveles-importancia.test.js`.
+
+## 28/11 — Siempre hay una guía en el mapa
+
+Si lo que recomienda el itinerario no es una parada del mapa («Repasar» general, reto semanal, cierre de época…) o su parada no está
+pintada, el mapa enseña una píldora flotante con su texto que lo lanza (`map-pill`, `guideFor` en `ui/screens/map-cue.js`). Antes
+no salía nada (ni burbuja ni flecha). Prueba general en `tests/itinerario.test.js`.

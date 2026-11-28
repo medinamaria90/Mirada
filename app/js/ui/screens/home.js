@@ -91,15 +91,15 @@ export function renderHome(ctx, el) {
   const returnBtn = watchReturn(el);
   let recommended = null;
   const showCue = () => {
-    if (!recommended || !el.isConnected) return;
-    const status = recommended.artistId ? artistStatus(ctx.store.get().progress, index, recommended.artistId) : '';
-    placeCue(el, recommended, status === 'started');
+    if (!el.isConnected) return;
+    const status = recommended?.artistId ? artistStatus(ctx.store.get().progress, index, recommended.artistId) : '';
+    placeCue(el, recommended, status === 'started', (step) => { ctx.audio.sfx('tap'); ctx.go(step.to); });
     returnBtn.retarget();
   };
   Promise.all([import('../../engine/next-step.js'), import('../last-step.js'), import('../../engine/deepen.js')]).then(([m, last, deepen]) => {
     recommended = m.mapRecommendation(ctx.store.get().progress, index, ctx.today(), { week: isoWeek(ctx.dailyDay()).key, prevStep: last.lastStep() });
-    if (!recommended || !el.isConnected) return;
     showCue();
+    if (!recommended || !el.isConnected) return;
     // Lo que enseña el mapa cuenta como recomendado: lo de atrás no sale justo después en el resultado.
     if (recommended.kind !== 'stop') last.rememberStep(recommended.kind);
     // «Profundiza en…» a la vista: cuenta para la rotación (jugar otra cosa la salta: engine/deepen.js).
