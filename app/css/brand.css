@@ -257,6 +257,7 @@
   --hl-photo-lg: 58px;
   --radius-pop: 24px;
   --dur-pop: 220ms;
+  --dur-title-in: 400ms;          /* aparición del título del cuadro tras responder (ui/title-slot.js) */
   --press-scale: .96;             /* lo que se encoge al tocarlo lo que no tiene relieve propio */
   --dur-shake: 360ms;
   --dur-lock-shake: 420ms;        /* temblor del candado (screens/lock-note.js, SHAKE_MS) */

@@ -22,6 +22,7 @@ import { attachZoom } from './viewer-gestures.js';
 import { TAP_GAP_MS, formatZoom, isRest } from './viewer-zoom.js';
 import { guardGhostTaps } from './tap-guard.js';
 import { moreHtml } from './viewer-more.js';
+import { veilsHtml, touchesSign } from './signature-veil.js';
 
 const CLOSE = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const PREV = '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>';
@@ -191,6 +192,10 @@ export function openViewer(opts) {
     const r = frame.getBoundingClientRect();
     const d = lensSize();
     const z = zoomFor(img, r);
+    // Sin responder, la lente no pasa por una firma legible (enseñaría lo que el velo tapa).
+    const halfU = d / 2 / (r.width * z);
+    const halfV = d / 2 / (r.height * z);
+    if (!reveal && touchesSign(works[pos], [u - halfU, v - halfV, u + halfU, v + halfV])) { hideLens(); return; }
     const fx = r.left + u * r.width;
     const fy = r.top + v * r.height;
     let cx = px ?? fx;
@@ -442,7 +447,7 @@ function slideHtml(index, w, i, n, reveal, eager, more) {
   const thumb = artFrame(w, { thumb: true, cls: 'viewer-thumb', alt: '', label: reveal ? w.title : '' });
   const big = broken ? '' : `<img class="viewer-img" data-src="${esc(w.img)}" alt="${esc(alt)}" width="${w.w || 4}" height="${w.h || 3}" decoding="async"${eager ? ` src="${esc(w.img)}"` : ''}>`;
   return `<figure class="viewer-slide" role="group" aria-roledescription="cuadro" aria-label="${esc(slideLabel)}">
-      <div class="viewer-stage"><div class="viewer-frame" style="--arw:${Math.max(1, w.w || 4)};--arh:${Math.max(1, w.h || 3)}">${thumb}${big}</div></div>
+      <div class="viewer-stage"><div class="viewer-frame" style="--arw:${Math.max(1, w.w || 4)};--arh:${Math.max(1, w.h || 3)}">${thumb}${big}${reveal ? '' : veilsHtml(w)}</div></div>
       ${reveal ? `<figcaption class="viewer-caption"><span class="viewer-name">${esc(w.title)}</span><span class="viewer-meta">${esc(caption)}</span><span class="viewer-museum">${esc(museumLine(w))}</span>${more ? moreHtml(w) : ''}</figcaption>` : ''}
     </figure>`;
 }
