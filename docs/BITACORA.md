@@ -449,3 +449,14 @@ pintor; en época y tramo, la ficha de época cuando exista: `eraFichaRoute` en 
   la app en caché) los niveles hechos (`progress.deep`), la rotación de «Profundiza» y las historias vistas; marca
   `progress.levelOrder` (y `@orden:1` en la lista de historias) para hacerlo una sola vez. Una ronda «a fondo» a medias de
   esos pintores se descarta. Pruebas en `tests/niveles-importancia.test.js`.
+
+## 28/11 · El itinerario nunca se salta un cartel ni una época
+
+- **Fallo que vio María:** con «Siguiente», Leonardo, Miguel Ángel y Rafael sin el cartel «Los tres genios». Causa: el
+  cartel (y la presentación de la época) contaba como visto si ya se había jugado a algún pintor del tramo. Su partida
+  traía a Rafael jugado del 26/11, cuando él abría el tramo y el cartel aún no era un paso.
+- **Regla de María:** visto es solo abierto (`progress.signs`, `progress.intros`); jugar no cuenta. Si quedó atrás, sale
+  antes del siguiente pintor de ese tramo o de los que vienen detrás, venga de «Siguiente», del mapa, de un «a fondo», de
+  «Repasar a» o de una prueba de época (`engine/lore.js` `pendingLore`, `withLore` en `ui/screens/flows.js`). `nextStep`
+  lo dice en `lore`. El modo prueba los da por vistos. Pruebas en `tests/itinerario.test.js` (partidas antiguas, migradas,
+  a medias y recorridos al azar con fallos, repasos y «a fondo»).
