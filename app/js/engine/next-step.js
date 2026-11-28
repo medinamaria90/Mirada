@@ -24,7 +24,7 @@
 //   7. camino dominado y reto semanal pendiente → «Reto semanal»; si no, el nivel que recomienda el rango del Perfil
 //      (rank-goals.js rankFocus: «Siguiente: <pintor> · nivel N») y, con el camino dominado, «Repasar» (nunca dos seguidos).
 // Si no, «Volver al camino». El botón principal siempre avanza en el juego (empieza la ronda, sin pasar por el mapa). Con 50-74 % no se recomienda repetir: eso va como acción secundaria (result-actions.js).
-// Devuelve { kind, to, label, artistId? }. Puro (las rutas son texto: ui/router.js no toca el DOM al importarse).
+// Devuelve { kind, to, label, artistId?, lore? }. Puro (las rutas son texto: ui/router.js no toca el DOM al importarse).
 
 import { UNLOCK_MIN, MASTERY, gateSteps, gateBefore, stepPassed, stepStatus, isPathMastered, artistStatus, hasMovementReview, isReviewUnlocked } from './progress.js';
 import { gateEssentials, essentialNeed, essentialOpen } from './essentials.js';
@@ -38,6 +38,7 @@ import { rankFor } from './ranks.js';
 import { rankConditions, rankFocus } from './rank-goals.js';
 import { deepRoute, stageRoute } from '../ui/router.js';
 import { forgottenSubject, recallRoute, recallLabel, ARTIST, MOVEMENT } from './recall.js';
+import { pendingLore, stepTarget, loreKey } from './lore.js';
 
 export const REVIEW_ROUTE = 'repaso';
 export const HOME_ROUTE = 'inicio';
@@ -128,7 +129,7 @@ export function artistStep(progress, index, artistId, today = '') {
   return { kind: 'practice', to: stageRoute(artistId), label: `Nivel 1 de ${shortName(a)}`, artistId };
 }
 
-export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '' } = {}) {
+function pathStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '' } = {}) {
   const kind = plan.kind;
   let reviewCount = null;
   const count = () => (reviewCount ??= reviewSession(progress, index, today).works.length);
@@ -198,6 +199,19 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   }
   if (mastered && canReview(count, plan, prevKind)) return review();
   return { kind: goalJustMet ? 'done' : 'path', to: HOME_ROUTE, label: BACK_LABEL };
+}
+
+// Pasos que no llevan a jugar: el cierre de una época y la vuelta a la pantalla de origen.
+const NO_LORE = new Set(['closure', 'origin']);
+
+// El paso recomendado. Si lleva a un pintor o a una época con una parada didáctica sin ver antes (la presentación de una
+// época o el cartel de un tramo, engine/lore.js), lo dice en `lore` («tramo:Los tres genios»): la interfaz la enseña antes
+// del destino (ui/screens/flows.js withLore), así que el itinerario nunca se salta un cartel ni una época.
+export function nextStep(progress, index, today, opts = {}) {
+  const step = pathStep(progress, index, today, opts);
+  const target = NO_LORE.has(step.kind) ? null : stepTarget(step);
+  const lore = target && pendingLore(progress, index, target);
+  return lore ? { ...step, lore: loreKey(lore) } : step;
 }
 
 // Lo que recomienda el mapa (el mismo criterio que el resultado, sin una ronda recién jugada): la parada abierta, «Repasar»

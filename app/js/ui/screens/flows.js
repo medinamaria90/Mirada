@@ -13,9 +13,10 @@ import { planStage, planMovementReview, planReviewSession, planSala, salaLearnWo
 import { knownArtists } from '../../engine/chrono.js';
 import { planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { salaStatus, isReviewUnlocked, needsIntro, needsTramo, isPathMastered, unseenArtists, isKnownArtist, nextStep, movementStatus } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, isPathMastered, unseenArtists, isKnownArtist, nextStep, movementStatus } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
+import { pendingLore } from '../../engine/lore.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
 import { avatarHtml } from '../avatar.js';
 import { playStatusFrom } from '../../engine/branches.js';
@@ -125,8 +126,9 @@ function cameFrom(ctx, branchId = '') {
 
 // «Repasar a» un pintor o una época (ui/screens/recall.js, aparte: carga sus piezas al entrar).
 export function renderRecall(ctx, el, type, id) {
-  import('./recall.js').then((m) => { if (el.isConnected) m.renderRecall(ctx, el, type, id, { play, leave }); })
-    .catch((err) => { console.error(err); leave(ctx); });
+  const target = { type: type === 'movement' ? 'movement' : 'artist', id };
+  withLore(ctx, el, target, () => import('./recall.js').then((m) => { if (el.isConnected) m.renderRecall(ctx, el, type, id, { play, leave }); })
+    .catch((err) => { console.error(err); leave(ctx); }));
 }
 
 // --- Ronda retomada -----------------------------------------------------------
@@ -327,24 +329,18 @@ function gap(track) {
   return parseFloat(getComputedStyle(track).columnGap) || 0;
 }
 
-// La primera vez en el movimiento, su presentación sale como un paso más del camino, en lugar de la parada; «Seguir» la
-// cierra y continúa a la parada (venga de la guía, de «Siguiente» o del mapa). Las ramas-movimiento (Gótico, Estampa
-// japonesa) no tienen presentación propia: se entra directo.
-function withIntro(ctx, el, movementId, show) {
-  const visible = ctx.index.visibleMovements.some((m) => m.id === movementId);
-  if (visible && needsIntro(ctx.store.get().progress, ctx.index, movementId)) {
-    return renderIntro(ctx, el, movementId, { mode: 'first', onEnter: show });
-  }
-  return show();
-}
-
-// Igual con el tramo: la primera vez que se entra en uno, su cartel en tarjetas (sign-cards.js) antes del pintor;
-// «Saltar» (o «Seguir», al final) lo cierra y sigue al pintor. Salir de la pantalla (atrás) no continúa.
-function withTramo(ctx, el, artistId, show) {
-  if (!needsTramo(ctx.store.get().progress, ctx.index, artistId)) return show();
-  const key = ctx.index.artist(artistId).section;
+// Antes de un pintor, una sala o una época, las paradas didácticas sin ver hasta ahí (engine/lore.js): la presentación de
+// la época («Seguir») o el cartel del tramo en tarjetas («Saltar», «Seguir» en la última), una tras otra, y después el
+// destino; venga de la guía, de «Siguiente» o del mapa. Cada una cuenta como vista al abrirla, así que nunca se repite.
+// Salir de la pantalla (atrás) no continúa. Si el cartel no llega a abrirse, se sigue al destino (vuelve a salir la próxima vez).
+// target: { type: 'artist' | 'sala' | 'movement', id }.
+function withLore(ctx, el, target, show) {
+  const lore = pendingLore(ctx.store.get().progress, ctx.index, target);
+  if (!lore) return show();
+  const again = () => { if (el.isConnected) withLore(ctx, el, target, show); };
+  if (lore.type === 'era') return renderIntro(ctx, el, lore.id, { mode: 'first', onEnter: again });
   return import('../sign-cards.js')
-    .then((m) => m.openSignCards(ctx, 'tramo', key, null, { title: key, onDone: () => { if (el.isConnected) show(); } }))
+    .then((m) => m.openSignCards(ctx, 'tramo', lore.key, null, { title: lore.key, onDone: again }))
     .then((handle) => { if (!handle && el.isConnected) show(); })
     .catch((err) => { console.error(err); if (el.isConnected) show(); });
 }
@@ -380,7 +376,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx, branchId);
   const contextArtist = contextOf(returnTo, artistId);
-  withIntro(ctx, el, movement.id, () => withTramo(ctx, el, artistId, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
+  withLore(ctx, el, { type: 'artist', id: artistId }, () => withStory(ctx, el, artistId, 1, (shown, fromStory) => {
     // Una de las preguntas de repaso, de un pintor dominado hace días (sin anunciarlo).
     const review = contrabandWork(ctx.store.get().progress, index, artistId, ctx.today());
     const seen = [...seenWorks(ctx.store.get().progress, artistId)];
@@ -405,7 +401,7 @@ export function renderStage(ctx, el, artistId, branchId = '') {
       carouselLabel: `Obras de ${artist.short || artist.name}`,
       onPractice: start,
     });
-  }, { look: artist.hint, returnTo })));
+  }, { look: artist.hint, returnTo }));
 }
 
 // --- Nivel «a fondo» de un pintor: la historia de su etapa y la ronda (no toca la parada del camino) ---
@@ -419,13 +415,13 @@ export function renderDeep(ctx, el, artistId, level) {
   const movement = index.movement(artist.movementId);
   const returnTo = cameFrom(ctx);
   const contextArtist = contextOf(returnTo, artistId);
-  withStory(ctx, el, artistId, level, (shown) => {
+  withLore(ctx, el, { type: 'artist', id: artistId }, () => withStory(ctx, el, artistId, level, (shown) => {
     const progress = ctx.store.get().progress;
     const met = metArtistIds(progress, index);
     const plan = planStage(index, artistId, randomSeed(), { level, seen: [...seenWorks(progress, artistId)], shown, met });
     playEra(movement.era);
     ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: stageTitle(artist, stage), kind: 'stage', extra: { artistId, level }, shareTopic: `${artist.name}, ${stageTitle(artist, stage)}`, returnTo, contextArtist }));
-  }, { returnTo }); // sin la pista del nivel 1: cada «a fondo» trae su «Fíjate en…»
+  }, { returnTo })); // sin la pista del nivel 1: cada «a fondo» trae su «Fíjate en…»
 }
 
 // --- Sala de movimiento (sin pintores con etapa) ---------------------------------
@@ -435,7 +431,7 @@ export function renderSala(ctx, el, movementId) {
   const movement = index.movement(movementId);
   if (!movement || !index.isSala(movementId)) return leave(ctx);
   if (salaStatus(ctx.store.get().progress, index, movementId) === 'locked') return leave(ctx, 'Aún no está abierta');
-  withIntro(ctx, el, movementId, () => {
+  withLore(ctx, el, { type: 'sala', id: movementId }, () => {
     const plan = planSala(index, movementId, randomSeed());
     if (!plan || plan.questions.length < 4) return ctx.go('inicio');
     playEra(movement.era);
@@ -466,10 +462,12 @@ export function renderMovementReview(ctx, el, movementId) {
   const movement = index.movement(movementId);
   if (!movement) return leave(ctx);
   if (!isReviewUnlocked(ctx.store.get().progress, index, movementId)) return leave(ctx, 'Aún no está abierto');
-  const plan = planMovementReview(index, movementId, randomSeed(), { met: metArtistIds(ctx.store.get().progress, index) });
-  if (!plan.questions.length) return ctx.go('inicio');
-  playEra(movement.era);
-  ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `Prueba de época · ${movement.name}`, kind: 'review', extra: { movementId }, shareTopic: movement.name }));
+  withLore(ctx, el, { type: 'movement', id: movementId }, () => {
+    const plan = planMovementReview(index, movementId, randomSeed(), { met: metArtistIds(ctx.store.get().progress, index) });
+    if (!plan.questions.length) return ctx.go('inicio');
+    playEra(movement.era);
+    ctx.setCleanup(play(ctx, el, { plan, accent: movement.accent, title: `Prueba de época · ${movement.name}`, kind: 'review', extra: { movementId }, shareTopic: movement.name }));
+  });
 }
 
 // --- Repasar: la sesión automática (fallados, pintor a medias, vencidos, apagado y relleno) -------------

@@ -223,18 +223,18 @@ test('reto a un amigo: semilla de sala r<idx>x<seed> reconstruye la misma ronda;
 
 // --- Intro de movimiento -----------------------------------------------------------
 
-test('intro: se necesita la primera vez y no si ya se vio o ya se jugó en el movimiento', () => {
+test('intro: se necesita mientras no se ha visto, aunque ya se haya jugado en el movimiento', () => {
   const p = emptyProgress();
   const m1 = real.movement(real.artist(FIRST).movementId).id;
   const m2 = real.visibleMovements.find((m) => m.id !== m1).id;
   assert.equal(needsIntro(p, real, m1), true);
   assert.equal(needsIntro({ ...p, intros: { [m1]: '2026-11-23' } }, real, m1), false);
-  assert.equal(needsIntro({ ...p, artists: { [FIRST]: { plays: 1 } } }, real, m1), false);
-  assert.equal(needsIntro({ ...p, salas: { [ROCOCO]: { plays: 1 } } }, salas, ROCOCO), false);
+  assert.equal(needsIntro({ ...p, artists: { [FIRST]: { plays: 1 } } }, real, m1), true);
+  assert.equal(needsIntro({ ...p, salas: { [ROCOCO]: { plays: 1 } } }, salas, ROCOCO), true);
   assert.equal(needsIntro({ ...p, intros: undefined }, real, m2), true);
 });
 
-test('el cartel del tramo sale una sola vez antes de su primer pintor: ni visto, ni con un pintor del tramo jugado', () => {
+test('el cartel del tramo sale mientras no se ha abierto, aunque ya se haya jugado a un pintor del tramo', () => {
   const p = emptyProgress();
   // El primer tramo de cada época no sale en el camino (hasTramoSign): el cartel es el del primer tramo que sí sale.
   const first = real.path.find((a) => hasTramoSign(real, a.id));
@@ -243,7 +243,7 @@ test('el cartel del tramo sale una sola vez antes de su primer pintor: ni visto,
   const plain = { artist: () => ({ id: 'x' }), path: [] };
   assert.equal(needsTramo(p, real, first.id), true);
   assert.equal(needsTramo({ ...p, signs: { [first.section]: '2026-11-27' } }, real, first.id), false);
-  if (mate) assert.equal(needsTramo({ ...p, artists: { [first.id]: { plays: 1 } } }, real, mate.id), false);
+  if (mate) assert.equal(needsTramo({ ...p, artists: { [first.id]: { plays: 1 } } }, real, mate.id), true);
   assert.equal(needsTramo({ ...p, signs: undefined }, real, first.id), true);
   assert.equal(needsTramo(p, plain, 'x'), false);
 });

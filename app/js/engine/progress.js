@@ -373,10 +373,10 @@ export function nextStep(progress, index) {
   return find(main, 'available') || find(main, 'started') || find(extra, 'available') || find(extra, 'started') || null;
 }
 
-// La intro de un movimiento se muestra la primera vez que se entra en él.
+// La intro de un movimiento sale mientras no se ha visto (jugar sus paradas no cuenta: el itinerario nunca se la salta,
+// engine/lore.js).
 export function needsIntro(progress, index, movementId) {
-  if (progress.intros?.[movementId]) return false;
-  return !index.stepsOf(movementId).some((s) => stepPlayed(progress, s));
+  return !progress.intros?.[movementId];
 }
 
 // ¿Su tramo sale en el camino (rombo y cartel)? El primer tramo de cada época, el que sigue a su puerta, no: tras las tarjetas
@@ -387,12 +387,12 @@ export function hasTramoSign(index, artistId) {
   return Boolean(artist?.section) && artist.section !== first?.section;
 }
 
-// El cartel de un tramo sale una vez, al entrar por primera vez en él (como la presentación de la época): un paso más del
-// camino antes del pintor. Nunca si ya se vio o si ya se jugó algún pintor del tramo.
+// El cartel de un tramo sale una vez (como la presentación de la época): un paso más del camino antes del pintor, mientras
+// no se ha abierto. Jugar a un pintor del tramo no cuenta como visto: antes, una partida que ya había jugado a alguno (de
+// antes de que el cartel fuera un paso, o con el tramo reordenado) no lo veía nunca (engine/lore.js).
 export function needsTramo(progress, index, artistId) {
   const key = index.artist(artistId)?.section;
-  if (!key || progress.signs?.[key] || !hasTramoSign(index, artistId)) return false;
-  return !index.path.some((a) => a.section === key && stepPlayed(progress, { type: 'artist', id: a.id }));
+  return Boolean(key) && !progress.signs?.[key] && hasTramoSign(index, artistId);
 }
 
 // ¿Ya ha visto a este pintor? Con etapa: jugada alguna vez. Invitado: alguna parada de su movimiento
