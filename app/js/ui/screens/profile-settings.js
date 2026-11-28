@@ -1,9 +1,9 @@
 // Ajustes del perfil, en una hoja aparte (botón ⚙ de la cabecera): meta del día, tema, música,
-// sonidos, volumen, reducir animaciones, la sección «Superusuario» (con «Empezar de cero» y su confirmación) y,
+// sonidos, volumen, reducir animaciones, la sección «Superusuario» y
 // «Tu cuenta» (ui/account-section.js) y, al final, «Cómo se juega», los enlaces a «Acerca de Sfumato» y «Fuentes y créditos»
 // y «Borrar progreso» (ui/wipe-section.js).
 
-import { $, announce } from '../dom.js';
+import { $ } from '../dom.js';
 import { icons } from '../icons.js';
 import { goalRing, headerStreakChip } from '../shell.js';
 import { todayXp, normalizeGoal, GOAL_OPTIONS } from '../../engine/progress.js';
@@ -17,20 +17,6 @@ import { wipeButtonHtml, wipeDialogHtml, wireWipe } from '../wipe-section.js';
 
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
 const RING = 56;
-const TEST_KEYS = ['mirada.test.last', 'mirada.test.recent']; // los guarda el test de cultura (js/test/main.js)
-
-// «Empezar de cero» no está en los ajustes de siempre: va en la sección «Superusuario», con su confirmación.
-const RESET_HTML = `<div class="setting-reset">
-        <button type="button" class="btn btn-quiet btn-wide" data-action="ask-reset">Empezar de cero</button>
-        <div class="confirm" hidden>
-          <p>Se borrará todo tu progreso.</p>
-          <div class="sheet-actions">
-            <button type="button" class="btn btn-secondary" data-action="cancel-reset">Cancelar</button>
-            <button type="button" class="btn btn-danger" data-action="reset">Borrar todo</button>
-          </div>
-        </div>
-      </div>`;
-
 const toggle = (key, label, on) => `<label class="setting">
     <span>${label}</span>
     <input type="checkbox" role="switch" class="switch" data-setting="${key}" ${on ? 'checked' : ''}>
@@ -56,7 +42,7 @@ export function settingsHtml(ctx) {
       </label>
       ${toggle('reducedMotion', 'Reducir animaciones', s.reducedMotion)}
       ${accountHtml()}
-      ${superHtml(RESET_HTML)}
+      ${superHtml()}
       <button type="button" class="settings-credits" data-action="how" aria-haspopup="dialog">Cómo se juega</button>
       <button type="button" class="settings-credits" data-action="about">Acerca de Sfumato</button>
       <button type="button" class="settings-credits" data-action="credits">Fuentes y créditos</button>
@@ -87,7 +73,6 @@ function onSettingChange(ctx, ev) {
 export function wireSettings(ctx, el) {
   const dialog = $('.settings-dialog', el);
   const sheet = bindSheet(dialog);
-  const confirm = $('.confirm', dialog);
   el.addEventListener('change', (ev) => onSettingChange(ctx, ev));
   bindDjTaps($('#settings-title', dialog));
   wireSuper(dialog, ctx, () => sheet.close());
@@ -129,31 +114,6 @@ export function wireSettings(ctx, el) {
       ctx.audio.sfx('tap');
       sheet.close();
       ctx.go('fuentes');
-    },
-    'ask-reset': (b) => {
-      ctx.audio.sfx('tap');
-      confirm.hidden = false;
-      b.hidden = true;
-      $('[data-action="cancel-reset"]', dialog).focus();
-    },
-    'cancel-reset': () => {
-      ctx.audio.sfx('tap');
-      confirm.hidden = true;
-      const ask = $('[data-action="ask-reset"]', dialog);
-      ask.hidden = false;
-      ask.focus();
-    },
-    reset: () => {
-      // Se queda con los ajustes (tema, sonido…), pero el nombre, el avatar y el último
-      // resultado del test son tuyos y se van con el progreso.
-      const keepSettings = { ...ctx.store.get().settings, name: '', avatar: '' };
-      for (const key of TEST_KEYS) {
-        try { localStorage.removeItem(key); } catch { /* sin almacenamiento: nada que borrar */ }
-      }
-      ctx.store.reset();
-      ctx.store.update((st) => ({ ...st, settings: keepSettings, onboarded: true }));
-      announce('Progreso borrado');
-      ctx.go('inicio');
     },
   };
 }

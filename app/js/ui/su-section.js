@@ -11,11 +11,9 @@ const optionHtml = (ctx, o) => `<label class="setting">
     <input type="checkbox" role="switch" class="switch" data-su="${o.id}" ${o.get(ctx) ? 'checked' : ''}>
   </label>`;
 
-// `extra`: acciones de la sección que no son interruptores (p. ej. «Empezar de cero», de profile-settings.js).
-export const superHtml = (extra = '') => `<section class="su-section" aria-labelledby="su-title" hidden>
+export const superHtml = () => `<section class="su-section" aria-labelledby="su-title" hidden>
     <h3 id="su-title" class="su-title">Superusuario</h3>
     <div class="su-options"></div>
-    ${extra}
     <button type="button" class="btn btn-quiet btn-wide" data-su-exit>Salir del modo superusuario</button>
   </section>`;
 

@@ -357,9 +357,8 @@ test('hojas: ajustes con todo, nombre con contador y nota, avatar; sin «ayer» 
   for (const k of ['music', 'sfx', 'volume', 'reducedMotion']) assert.match(html, new RegExp(`data-setting="${k}"`));
   assert.match(html, /data-action="theme"/);
   assert.match(html, /data-action="goal"/);
-  const su = html.indexOf('class="su-section"');
-  assert.ok(su > 0 && html.indexOf('data-action="ask-reset"') > su && html.indexOf('data-action="reset"') > su, '«Empezar de cero» solo en la sección «Superusuario»');
-  assert.ok(html.indexOf('data-action="reset"') < html.indexOf('</section>', su), 'y dentro de ella');
+  assert.doesNotMatch(html, /ask-reset|Empezar de cero/, 'sin «Empezar de cero»: lo hace «Borrar progreso»');
+  assert.match(html, /data-action="wipe-ask"/);
   const name = nameSheetHtml();
   assert.doesNotMatch(name, /maxlength/, 'el máximo se cuenta por caracteres en JavaScript, no por unidades de texto');
   assert.match(name, /Solo se guarda en este dispositivo/);
@@ -376,13 +375,6 @@ test('el foco se queda: las hojas repintan solo lo que cambia, no la cabecera en
   const look = read('../app/js/ui/screens/profile-look.js');
   assert.doesNotMatch(look.slice(look.indexOf('const save'), look.indexOf('return {', look.indexOf('const save'))), /innerHTML/, 'elegir no reescribe la rejilla');
   assert.doesNotMatch(read('../app/js/ui/screens/profile-name.js'), /\.focus\(\{ preventScroll/, 'el foco vuelve en el cierre de la hoja, no antes');
-});
-
-test('«Empezar de cero» borra también el nombre, el avatar y el último test', () => {
-  const src = read('../app/js/ui/screens/profile-settings.js');
-  assert.match(src, /name: '', avatar: ''/);
-  assert.match(src, /'mirada\.test\.last'/);
-  assert.match(src, /localStorage\.removeItem/);
 });
 
 test('compartir: el código de la tarjeta se pide al pulsar, con botón en espera, JPEG y recorte al rectángulo del cuadro', () => {
