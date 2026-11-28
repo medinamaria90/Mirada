@@ -16,6 +16,8 @@ import { veilsHtml, unveil } from '../signature-veil.js';
 import { tagWrongArt, chosenSpeech } from '../wrong-tag.js';
 import { beforeQuestionHtml, beforeRibbonHtml } from '../before-question.js';
 import { loadRibbonCss } from '../chrono-ribbon.js';
+import { conceptQuestionHtml, revealConcept, conceptLinesHtml, loadConceptCss } from '../concept-question.js';
+import { conceptFeedback, conceptWorks, CUAL } from '../../engine/concepts.js';
 import { guestCardHtml, loadGuestCss } from '../guest-card.js';
 import { askableIds, introNeeded, knownOnly, guestIntro, roundWorkIds } from '../../engine/guest-intro.js';
 import { metArtistIds, seenOf, avatarWork, avatarCrop } from '../../engine/painters.js';
@@ -27,7 +29,8 @@ const DUNNO_LABEL = 'No lo sé';
 // Último refuerzo «Fíjate en…» visto de cada pintor, para no repetirlo en la ronda siguiente (dura la sesión).
 const recentHints = new Map();
 
-// config: { questions, extras?, accent, seed, kind, label, interlude?, dunno?, onDone(summary), onQuit(), resume?, onSave? }
+// config: { questions, extras?, accent, seed, kind, label, interlude?, dunno?, noRetry?, noPoints?, onDone(summary), onQuit(), resume?, onSave? }
+// noRetry: los fallos no vuelven al final; noPoints: sin puntos (las preguntas de concepto, que se pueden saltar).
 // dunno: true pone «No lo sé» bajo las opciones (modo aprender; nunca en retos ni en el test): enseña la respuesta sin sonido
 // ni rojo de fallo, no da puntos y cuenta como fallo (rompe «seguidas», vuelve al final y pesa doble en engine/recall.js).
 // extras: preguntas que no cuentan, al final (cuadros fallados en rondas anteriores).
@@ -93,6 +96,7 @@ export function runLesson(ctx, el, config) {
   loadCurioCss();
   if (round.queue.some((it) => introNeeded(index, it.q, askable()))) loadGuestCss();
   if (round.queue.some((it) => it.q.type === 'before')) loadRibbonCss();
+  if (round.queue.some((it) => it.q.type === 'concept')) loadConceptCss();
   const stage = $('.lesson-stage', el);
   const feedback = $('.feedback', el);
   const bar = $('.progress', el);
@@ -195,6 +199,7 @@ export function runLesson(ctx, el, config) {
     const tag = retry ? 'Otra vez' : q.isNew ? 'Cuadro nuevo' : '';
     const head = `${tag ? `<p class="q-tag">${tag}</p>` : ''}<h1 class="q-prompt">${esc(q.prompt)}</h1>`;
     if (q.type === 'before') return beforeQuestionHtml(index, q, head);
+    if (q.type === 'concept') return conceptQuestionHtml(index, q, head, dunnoHtml(q));
     if (q.type === 'which') {
       // Pulsar una miniatura abre el visor con las 4 («Es este» responde); 1-4 responden directo.
       // Las firmas, veladas también en las miniaturas hasta responder: a su tamaño se leen.
@@ -258,8 +263,10 @@ export function runLesson(ctx, el, config) {
     const item = currentItem(round);
     const q = answered ? answers[answers.length - 1]?.q : item?.q;
     if (!q) return;
-    const which = q.type === 'which';
-    const works = which ? q.options.map((o) => index.artwork(o.artworkId)) : [index.artwork(q.artworkId)];
+    const concept = q.type === 'concept';
+    const which = q.type === 'which' || (concept && q.kind === CUAL);
+    const works = concept ? conceptWorks(q).map((id) => index.artwork(id))
+      : which ? q.options.map((o) => index.artwork(o.artworkId)) : [index.artwork(q.artworkId)];
     const reveal = answered;
     const askedAt = round.pos;
     ctx.audio.sfx('tap');
@@ -267,8 +274,8 @@ export function runLesson(ctx, el, config) {
       if (cleaned || round.pos !== askedAt || answered !== reveal) return;
       m.openViewer({
         index, works, start, reveal, opener,
-        label: which ? q.prompt : reveal ? null : 'Cuadro para identificar',
-        title: which ? q.prompt : null,
+        label: which || concept ? q.prompt : reveal ? null : 'Cuadro para identificar',
+        title: which || concept ? q.prompt : null,
         pick: which && !reveal ? {
           label: 'Es este',
           onPick: (i) => {
@@ -287,8 +294,8 @@ export function runLesson(ctx, el, config) {
     const item = currentItem(round);
     const q = item.q;
     const correct = !dunno && isCorrect(q, optionId);
-    round = answerRound(round, correct, (qq) => retryQuestion(index, qq, rng));
-    const gained = xpForAnswer({ correct, isNew: q.isNew, combo: round.combo, retry: item.retry });
+    round = answerRound(round, correct, config.noRetry ? null : (qq) => retryQuestion(index, qq, rng));
+    const gained = config.noPoints ? 0 : xpForAnswer({ correct, isNew: q.isNew, combo: round.combo, retry: item.retry });
     xpLive += gained;
     answers.push({ q, correct, retry: item.retry, combo: round.combo, chosen: dunno ? null : optionId, ...(dunno ? { dunno: true } : {}) });
     if (!roundDone(round)) save();
@@ -305,7 +312,8 @@ export function runLesson(ctx, el, config) {
     if (dunno) { /* sin marca de fallo: solo se ve la buena */ } else if (!correct) button.classList.add('is-wrong');
     else button.classList.add('is-picked');
     unveil(stage);
-    if (q.type !== 'which') revealTitle(stage, index.artwork(q.artworkId)?.title);
+    if (q.type === 'concept') revealConcept(stage, index, q, dunno ? null : optionId);
+    else if (q.type !== 'which') revealTitle(stage, index.artwork(q.artworkId)?.title);
 
     // Combo: cada 3 seguidas suena la pequeña fanfarria ascendente en lugar del acierto.
     const milestone = correct && round.combo >= COMBO_SHOW && round.combo % COMBO_SHOW === 0;
@@ -316,6 +324,7 @@ export function runLesson(ctx, el, config) {
   }
 
   function showFeedback(q, correct, gained, retry, chosenId, dunno = false) {
+    if (q.type === 'concept') return showConceptFeedback(q, correct, gained, chosenId, dunno);
     const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
     const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId, recent: recentHints });
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
@@ -341,6 +350,22 @@ export function runLesson(ctx, el, config) {
     const btn = $('[data-action="continue"]', feedback);
     requestAnimationFrame(revealAnswers);
     setTimeout(() => btn.focus({ preventScroll: true }), 340);
+  }
+
+  // De concepto: el acierto o por qué la elegida no era, y el porqué de la buena (engine/concepts.js).
+  function showConceptFeedback(q, correct, gained, chosenId, dunno) {
+    const fb = conceptFeedback(q, correct, chosenId, rng.pick(['¡Bien visto!', 'Exacto', 'Eso es', 'Buen ojo']));
+    feedback.innerHTML = `<div class="fb-inner">
+      <div class="fb-text">
+        <div class="fb-head">${dunno ? dunnoMark(q) : `<span class="fb-mark" aria-hidden="true">${correct ? icons.check(20) : icons.eye(20)}</span>`}
+        <p class="fb-title">${esc(fb.title)}</p>${gained ? `<span class="fb-xp">+${gained} puntos</span>` : ''}</div>
+        ${conceptLinesHtml(fb)}
+      </div>
+      <button class="btn btn-primary btn-wide" data-action="continue">Seguir</button>
+    </div>`;
+    feedback.classList.add('is-open', correct ? 'is-correct' : dunno ? 'is-dunno' : 'is-wrong');
+    requestAnimationFrame(revealAnswers);
+    setTimeout(() => $('[data-action="continue"]', feedback).focus({ preventScroll: true }), 340);
   }
 
   // Tras «No lo sé», en las de autor, la cara del pintor (su autorretrato visto o su cuadro más conocido); si no, el ojo.
@@ -405,6 +430,7 @@ export function runLesson(ctx, el, config) {
     dunno: (b) => answer(null, b, { dunno: true }),
     pick: (b) => zoom(b, Number(b.dataset.pos) || 0),
     zoom: (b) => zoom(b),
+    'cq-zoom': (b) => zoom(b, Number(b.closest('[data-pos]')?.dataset.pos) || 0),
     continue: () => {
       ctx.audio.sfx('tap');
       render();

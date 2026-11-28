@@ -2,7 +2,7 @@
 
 import { $, announce, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
-import { branchRoute, stageRoute, deepRoute, go } from '../router.js';
+import { branchRoute, stageRoute, deepRoute, conceptsRoute, go } from '../router.js';
 import { zoomInto } from '../map-zoom.js';
 
 // La hoja del mapa (época cerrada) se carga al primer toque: no cuenta en el arranque.
@@ -53,7 +53,9 @@ export function pathActions(ctx) {
     cartel: (b) => {
       ctx.audio.sfx('tap');
       const next = b.dataset.next;
-      const opts = { title: b.dataset.title || '', onDone: next ? () => ctx.go(stageRoute(next)) : null };
+      // «Ir a las preguntas» (tramos con preguntas de concepto): salen en su pantalla y, si era el paso siguiente, después el pintor.
+      const onQuestions = b.dataset.kind === 'tramo' ? () => ctx.go(conceptsRoute(b.dataset.id, next)) : null;
+      const opts = { title: b.dataset.title || '', onDone: next ? () => ctx.go(stageRoute(next)) : null, onQuestions };
       import('../sign-cards.js').then((m) => m.openSignCards(ctx, b.dataset.kind, b.dataset.id, b, opts)).catch((err) => console.error(err));
     },
     // Rama abierta: se entra en su pantalla con un acercamiento; cerrada, una nota con lo que falta.

@@ -58,7 +58,9 @@ export function signSlides(index, kind, sign, fallbackTitle, id = '') {
 // kind: «rama» o «tramo»; id: la rama o la clave del tramo; opener: el cartel tocado (recupera el foco al cerrar).
 // onDone: abierto como paso del camino (flows.js withTramo): en vez de la cruz, «Saltar» (y «Seguir» en la última
 // tarjeta), y al cerrarlo se continúa al pintor; salir de la pantalla no continúa.
-export async function openSignCards(ctx, kind, id, opener, { title: fallback = '', onDone = null } = {}) {
+// onQuestions(cards): en un tramo con preguntas de concepto, «Ir a las preguntas» al llegar a la última tarjeta; cierra
+// las tarjetas sin continuar (onDone no se llama) y quien abrió decide dónde salen las preguntas.
+export async function openSignCards(ctx, kind, id, opener, { title: fallback = '', onDone = null, onQuestions = null } = {}) {
   const turn = slot.begin();
   const [signs] = await Promise.all([loadSigns(kind), loadCss('css/epocas.css'), loadCss('css/carteles.css')]);
   if (slot.stale(turn)) return null;
@@ -82,14 +84,28 @@ export async function openSignCards(ctx, kind, id, opener, { title: fallback = '
       ctx.store.update((s) => ({ ...s, progress: { ...s.progress, signs: { ...(s.progress.signs || {}), [id]: today } } }));
     }
   }
-  const onClose = onDone ? ({ silent }) => { if (!silent) onDone(); } : null;
-  mountSheet(dlg, { slot, handle, opener, closeSelector: '[data-sc="close"]', onClose });
+  let toQuestions = false;
+  const onClose = onDone ? ({ silent }) => { if (!silent && !toQuestions) onDone(); } : null;
+  const close = mountSheet(dlg, { slot, handle, opener, closeSelector: '[data-sc="close"]', onClose });
   const body = dlg.querySelector('.sc-body');
   const track = dlg.querySelector('.era-track');
   if (total > 1) wireCards(ctx, body, track, total);
   if (onDone) relabelAtEnd(track, dlg.querySelector('.sc-skip'));
+  if (kind === 'tramo' && onQuestions) offerQuestions(ctx, id, body, total > 1 ? track : null, signs[id]?.cards || [], () => {
+    toQuestions = true;
+    close({ silent: true });
+    onQuestions(signs[id]?.cards || []);
+  });
   dlg.querySelector('[data-sc="close"]').focus({ preventScroll: true });
   return handle;
+}
+
+// «Ir a las preguntas» bajo las tarjetas del tramo, al llegar a la última (ui/concept-quiz.js), si el tramo tiene preguntas.
+function offerQuestions(ctx, key, body, track, cards, go) {
+  import('./concept-quiz.js').then(async (cq) => {
+    if (!(await cq.hasConcepts('tramo', key)) || !body.isConnected) return;
+    cq.offerAtEnd(track, (b) => { b.classList.add('sc-cq'); body.append(b); }, () => { ctx.audio.sfx('tap'); go(); });
+  }).catch((err) => console.error(err));
 }
 
 // Como paso del camino, el botón de arriba dice «Saltar» mientras quedan tarjetas y «Seguir» en la última.

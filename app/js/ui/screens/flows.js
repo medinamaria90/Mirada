@@ -24,7 +24,7 @@ import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_TITLE } from '../../e
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
-import { stageReturnTo, isGoalScreen, stageRoute } from '../router.js';
+import { stageReturnTo, isGoalScreen, stageRoute, tramoSlug } from '../router.js';
 import { takePlayContext } from '../play-context.js';
 import { makeSession, withSession, clearSession } from '../../state/session.js';
 
@@ -129,6 +129,22 @@ export function renderRecall(ctx, el, type, id) {
     .catch((err) => { console.error(err); leave(ctx); });
 }
 
+// Preguntas de un tramo abiertas desde su cartel en el mapa (#preguntas-tramo-<slug>[--<pintor>]): al terminar, a la etapa
+// del pintor si el cartel era el paso siguiente; si no, de vuelta a donde se estaba.
+export function renderConcepts(ctx, el, slug, next = '') {
+  import('../concept-quiz.js').then(({ runConceptQuiz }) => {
+    const first = ctx.index.path.find((a) => a.section && tramoSlug(a.section) === slug);
+    const key = first?.section || '';
+    if (!key || !first || !el.isConnected) return leave(ctx);
+    const movement = ctx.index.movement(first.movementId);
+    playEra(movement.era);
+    return runConceptQuiz(ctx, el, {
+      scope: 'tramo', id: key, movement,
+      onEnd: () => (next ? ctx.go(stageRoute(next), { replace: true }) : ctx.go('inicio', { replace: true })),
+    });
+  }).catch((err) => { console.error(err); leave(ctx); });
+}
+
 // --- Ronda retomada -----------------------------------------------------------
 
 export function resumeSession(ctx, el, session) {
@@ -206,25 +222,51 @@ export async function renderIntro(ctx, el, movementId, { mode: asked = 'again', 
     </main>
   </div>`;
   const intro = $('.intro', el);
-  if (early) early.m.mountEraCards(ctx, intro, movementId, early.cards);
-  else eraCards.then(({ m, cards }) => m.mountEraCards(ctx, intro, movementId, cards, { late: true })).catch((err) => console.error(err));
+  // Al acabar las tarjetas, «Ir a las preguntas» (no en una época compartida: no toca la partida).
+  const offer = (cards) => { if (mode !== 'shared') offerEraQuestions(ctx, el, intro, movement, cards, () => { off(); markSeen(); }, proceed); };
+  if (early) {
+    early.m.mountEraCards(ctx, intro, movementId, early.cards);
+    offer(early.cards);
+  } else {
+    eraCards.then(({ m, cards }) => { m.mountEraCards(ctx, intro, movementId, cards, { late: true }); offer(cards); }).catch((err) => console.error(err));
+  }
   focusHeading(el);
+  const markSeen = () => {
+    if (mode !== 'first') return;
+    const today = ctx.today();
+    ctx.store.update((s) => ({ ...s, progress: { ...s.progress, intros: { ...(s.progress.intros || {}), [movementId]: today } } }));
+  };
+  function proceed() {
+    if (onEnter) return onEnter();
+    return ctx.go('inicio');
+  }
   const off = onAction(el, {
     enter: () => {
       ctx.audio.sfx('tap');
       off();
-      if (mode === 'first') {
-        const today = ctx.today();
-        ctx.store.update((s) => ({ ...s, progress: { ...s.progress, intros: { ...(s.progress.intros || {}), [movementId]: today } } }));
-      }
+      markSeen();
       if (guest) {
         ctx.audio.unlock();
         ctx.store.update((s) => ({ ...s, onboarded: true }));
       }
-      if (onEnter) return onEnter();
-      return ctx.go('inicio');
+      return proceed();
     },
   });
+}
+
+// «Ir a las preguntas» al llegar a la última tarjeta de la época (ui/concept-quiz.js): «Seguir» pasa a secundario. Las
+// preguntas salen en esta pantalla y, al terminar o salir, se sigue como con «Seguir» (then).
+function offerEraQuestions(ctx, el, intro, movement, cards, before, then) {
+  import('../concept-quiz.js').then(async (cq) => {
+    const enter = $('[data-action="enter"]', intro);
+    if (!enter || !(await cq.hasConcepts('epoca', movement.id)) || !enter.isConnected) return;
+    enter.parentElement.classList.add('has-cq');
+    cq.offerAtEnd($('.era-track', intro), (b) => enter.before(b), () => {
+      ctx.audio.sfx('tap');
+      before();
+      cq.runConceptQuiz(ctx, el, { scope: 'epoca', id: movement.id, movement, cardWorks: cq.cardWorksOf(cards), onEnd: then });
+    }, { onShow: () => enter.classList.replace('btn-primary', 'btn-secondary') });
+  }).catch((err) => console.error(err));
 }
 
 // Desde el medallón del mapa, la primera vez: es la parada de la época en el camino, así que cuenta como vista y «Seguir»
@@ -340,11 +382,16 @@ function withIntro(ctx, el, movementId, show) {
 
 // Igual con el tramo: la primera vez que se entra en uno, su cartel en tarjetas (sign-cards.js) antes del pintor;
 // «Saltar» (o «Seguir», al final) lo cierra y sigue al pintor. Salir de la pantalla (atrás) no continúa.
+// Al final de sus tarjetas, «Ir a las preguntas» las abre en esta pantalla y después se sigue al pintor.
 function withTramo(ctx, el, artistId, show) {
   if (!needsTramo(ctx.store.get().progress, ctx.index, artistId)) return show();
   const key = ctx.index.artist(artistId).section;
+  const movement = ctx.index.movement(ctx.index.artist(artistId).movementId);
+  const onQuestions = (cards) => import('../concept-quiz.js')
+    .then((cq) => cq.runConceptQuiz(ctx, el, { scope: 'tramo', id: key, movement, cardWorks: cq.cardWorksOf(cards), onEnd: () => { if (el.isConnected) show(); } }))
+    .catch((err) => { console.error(err); if (el.isConnected) show(); });
   return import('../sign-cards.js')
-    .then((m) => m.openSignCards(ctx, 'tramo', key, null, { title: key, onDone: () => { if (el.isConnected) show(); } }))
+    .then((m) => m.openSignCards(ctx, 'tramo', key, null, { title: key, onDone: () => { if (el.isConnected) show(); }, onQuestions }))
     .then((handle) => { if (!handle && el.isConnected) show(); })
     .catch((err) => { console.error(err); if (el.isConnected) show(); });
 }
