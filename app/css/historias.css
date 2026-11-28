@@ -5,8 +5,6 @@
   --story-pan-dur: 6s;
   --story-gutter: 1.1rem;
   --story-avatar: 40px;
-  --story-who-min: 10rem;
-  --story-step: var(--hit);
   --story-shade: color-mix(in srgb, var(--viewer-bg) 82%, transparent);
   --story-shade-soft: color-mix(in srgb, var(--viewer-bg) 45%, transparent);
   --story-target-x: 50%; --story-target-y: 40%; /* STORY_TARGET de engine/stories.js: donde cae el punto de interés */
@@ -21,8 +19,8 @@
 .story[open] { display: grid; justify-items: center; animation: rise .25s var(--ease); }
 .story::backdrop { background: var(--viewer-bg); }
 .story-frame { position: relative; width: min(100%, calc(100dvh * 9 / 16)); height: 100dvh; overflow: hidden; background: var(--viewer-frame); cursor: pointer; touch-action: none; }
-/* El dedo apoyado pausa: sin gestos del navegador (selección, menú de la imagen, desplazar) que lo cancelen o tapen la
-   historia; el lector de pantalla sigue leyendo el texto. El texto largo sí se desplaza. */
+/* Sin gestos del navegador (selección, menú de la imagen, desplazar) que tapen la historia o se coman los deslizamientos;
+   el lector de pantalla sigue leyendo el texto. El texto largo sí se desplaza. */
 .story, .story * { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
 .story-img, .story-bg { -webkit-user-drag: none; pointer-events: none; }
 .story-copy.is-scrollable { touch-action: pan-y; }
@@ -41,39 +39,21 @@
 @keyframes story-pan-right { from { transform: scale(1.1) translateX(-2.5%); } to { transform: scale(1.1) translateX(2.5%); } }
 @keyframes story-fit-in { from { transform: scale(1); } to { transform: scale(var(--story-fit-zoom)); } }
 @keyframes story-fit-out { from { transform: scale(var(--story-fit-zoom)); } to { transform: scale(1); } }
-.story.is-paused .story-pan { animation-play-state: paused; }
 .story-img { position: absolute; max-width: none; }
 .story-art.is-crop .story-img { left: var(--bl); top: var(--bt); width: var(--bw); height: var(--bh); object-fit: fill; }
 .story-art.is-fit { --fit-bottom: calc(min(var(--story-text-h, 30%), var(--story-fit-max)) + var(--story-fit-gap)); }
 .story-art.is-fit .story-img { left: 0; top: var(--story-fit-top); width: 100%; height: calc(100% - var(--story-fit-top) - var(--fit-bottom)); object-fit: contain; }
 .story-bg { position: absolute; inset: -6%; width: 112%; height: 112%; max-width: none; object-fit: cover; filter: blur(22px) brightness(.55) saturate(1.1); }
 
-/* Cabecera encima del cuadro. */
-.story-head { position: absolute; z-index: 2; inset: 0 0 auto; padding: calc(env(safe-area-inset-top, 0px) + .6rem) .6rem 2.2rem var(--story-gutter); background: linear-gradient(to bottom, var(--story-shade), transparent); pointer-events: none; }
-.story-head button { pointer-events: auto; }
-.story-bars { display: flex; gap: 4px; margin-right: calc(var(--story-gutter) - .6rem); }
-.story-bar { flex: 1; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--viewer-ink) 32%, transparent); overflow: hidden; }
-.story-bar > span { display: block; width: 0; height: 100%; background: var(--viewer-ink); }
-.story-bar.is-done > span { width: 100%; }
-.story-bar.is-now > span { animation: story-fill var(--dur, 6s) linear forwards; }
-.story.is-paused .story-bar.is-now > span { animation-play-state: paused; }
-@keyframes story-fill { from { width: 0; } to { width: 100%; } }
-/* Con letra grande, quién habla baja a su propia fila bajo los botones (wrap-reverse) en vez de partir el nombre letra a letra. */
-.story-top { display: flex; flex-wrap: wrap-reverse; justify-content: flex-end; align-items: center; gap: .2rem; padding-top: .45rem; }
-.story-who { flex: 1 1 var(--story-who-min); min-width: 0; display: flex; align-items: center; gap: .6rem; }
+/* Cabecera encima del cuadro (la común de deck.css, sobre un degradado). */
+.story .deck-head { position: absolute; z-index: 2; inset: 0 0 auto; padding-bottom: 2.2rem; background: linear-gradient(to bottom, var(--story-shade), transparent); pointer-events: none; }
+.story .deck-head button { pointer-events: auto; }
+.story-who { display: flex; align-items: center; gap: .6rem; }
 .story-avatar { flex: none; width: var(--story-avatar); height: var(--story-avatar); border-radius: 999px; box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--viewer-ink) 70%, transparent); }
 .story-who-text { display: grid; min-width: 0; line-height: 1.15; }
 .story-name { font: 600 .95rem/1.15 var(--font); overflow-wrap: anywhere; }
 .story-title { font-size: .8rem; color: var(--viewer-ink-2); overflow-wrap: anywhere; }
-.story-icon { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border: 0; border-radius: 999px; background: none; color: var(--viewer-ink); cursor: pointer; }
-.story-icon:hover { background: color-mix(in srgb, var(--viewer-ink) 14%, transparent); }
-
-/* Anterior / siguiente: para el teclado y el lector; solo se ven con el foco (al tocar mandan las zonas de la pantalla). */
-.story-step { position: absolute; z-index: 3; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: var(--story-step); height: var(--story-step); border: 0; border-radius: 999px; background: var(--story-shade); color: var(--viewer-ink); opacity: 0; pointer-events: none; }
-.story-step:focus-visible { opacity: 1; outline-color: var(--viewer-ink); }
-.story-step[hidden] { display: none; }
-.story-back { left: .5rem; }
-.story-next { right: .5rem; }
+.story .deck-step { background: var(--story-shade); }
 
 /* Texto encima del cuadro, sobre un degradado que lo hace legible. */
 .story-bottom { position: absolute; z-index: 2; inset: auto 0 0; display: flex; flex-direction: column; max-height: 62%; padding: 4.5rem 0 calc(env(safe-area-inset-bottom, 0px) + 1.1rem); background: linear-gradient(to top, var(--viewer-bg) 0%, var(--story-shade) 45%, var(--story-shade-soft) 75%, transparent); }
@@ -85,23 +65,14 @@
 .story-look { display: flex; align-items: flex-start; gap: .5rem; margin: 0; padding-top: .55rem; border-top: 1px solid color-mix(in srgb, var(--viewer-ink) 22%, transparent); font: 500 .95rem/1.4 var(--font); color: var(--viewer-ink); text-shadow: 0 1px 12px var(--story-shade-soft); }
 .story-look svg { flex: none; margin-top: .1rem; color: var(--viewer-ink-2); }
 
-/* Última tarjeta: las dos acciones. */
-.story-actions { flex: none; display: flex; align-items: center; gap: .6rem; padding: 1rem var(--story-gutter) 0; }
-.story-actions .btn { flex: 1 1 auto; min-width: 0; }
-/* «Seguir» se lleva el sitio que sobra: es lo destacado; «Ir a las preguntas», a su medida. */
-.story-actions .story-more { flex: 0 1 auto; }
-.story-more { background: color-mix(in srgb, var(--viewer-ink) 14%, transparent); color: var(--viewer-ink); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--viewer-ink) 35%, transparent); }
 /* Sesión «Repasar»: la otra historia sugerida, como enlace sobre las dos acciones. */
 .story-suggest { flex: none; align-self: flex-start; min-height: 48px; margin: .3rem var(--story-gutter) -.4rem; padding: 0; border: 0; background: none; color: var(--viewer-ink); font: 600 1rem/1.3 var(--font); text-align: left; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; cursor: pointer; }
 .story-suggest:focus-visible { outline: 2px solid var(--viewer-ink); outline-offset: 2px; }
-.story-more:hover { background: color-mix(in srgb, var(--viewer-ink) 22%, transparent); }
 
 @media (prefers-reduced-motion: reduce) {
   .story[open], .story-pan { animation: none; }
-  .story-bar.is-now > span { animation: none; width: 100%; }
 }
 html.reduce-motion .story[open], html.reduce-motion .story-pan { animation: none; }
-html.reduce-motion .story-bar.is-now > span { animation: none; width: 100%; }
 
 /* Compartir (ui/story-share.js): el aviso «Enlace copiado», bajo la cabecera. */
 .story-note { position: absolute; z-index: 4; top: calc(env(safe-area-inset-top, 0px) + 5.4rem); left: 50%; translate: -50% 0; margin: 0; padding: .5rem 1rem; border-radius: 999px; background: var(--story-shade); color: var(--viewer-ink); font: 500 .9rem/1.3 var(--font); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity var(--dur-pop) var(--ease); }

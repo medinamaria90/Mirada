@@ -112,6 +112,8 @@ test('catálogo en dos partes: lo mínimo para pintar y los textos después; atl
   // Región del atlas y rutas seguras.
   const atlas = { sheets: ['img/s/c0.jpg'], size: [[864, 864]] };
   assert.deepEqual(resolveThumb([0, 4, 8, 280, 200], atlas), { src: 'img/s/c0.jpg', x: 4, y: 8, w: 280, h: 200, sw: 864, sh: 864 });
+  // Con versión de disposición, la URL de la hoja la lleva (invalida cachés viejas).
+  assert.equal(resolveThumb([0, 4, 8, 280, 200], { ...atlas, v: 'abc123def0' }).src, 'img/s/c0.jpg?v=abc123def0');
   assert.equal(resolveThumb([3, 4, 8, 280, 200], atlas), null);
   assert.equal(resolveThumb('https://x.y/a.jpg', atlas), null);
   assert.deepEqual(resolveThumb('img/a1.jpg', atlas), { src: 'img/a1.jpg' });

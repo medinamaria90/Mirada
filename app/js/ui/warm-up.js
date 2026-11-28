@@ -14,7 +14,7 @@ const MODULES = [
   () => import('./screens/collection.js'),
   () => import('./screens/profile.js'),
 ];
-const STYLES = ['css/niveles.css', 'css/mapa-hoja.css', 'css/epocas.css', 'css/carteles.css', 'css/historias.css', 'css/sello.css', 'css/coleccion.css'];
+const STYLES = ['css/niveles.css', 'css/mapa-hoja.css', 'css/epocas.css', 'css/carteles.css', 'css/historias.css', 'css/deck.css', 'css/sello.css', 'css/coleccion.css'];
 const IDLE_TIMEOUT_MS = 3000;
 
 const idle = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: IDLE_TIMEOUT_MS }) : setTimeout(fn, 0));
