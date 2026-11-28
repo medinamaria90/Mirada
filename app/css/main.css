@@ -225,14 +225,6 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .path-museum-art, .path-start-art { z-index: 0; }
 .path-start-art.is-front, .path-movers.is-front, .path-gate { z-index: 2; }
 .path-movers .path-bit { position: absolute; display: block; overflow: visible; }
-/* Caseta de «Información» junto a la puerta (dibujada en el paisaje): un botón transparente de 56 px la cubre. */
-.start-kiosk { position: absolute; z-index: 3; width: max(var(--kiosk-hit), var(--kiosk-share)); height: max(var(--kiosk-hit), var(--kiosk-share)); margin: 0; padding: 0; translate: -50% -50%; border: 0; border-radius: var(--radius-sm); background: none; cursor: pointer; }
-.start-kiosk:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
-/* Sin rótulo en el mapa: la «i» dorada de la caseta lo dice (el nombre va en su aria-label). */
-.start-kiosk-text { display: none; }
-/* Camino en línea (sin dibujos): la caseta pasa a ser una placa con su nombre. */
-.path-map.is-linear .start-kiosk { position: static; translate: none; width: auto; height: auto; min-height: 48px; align-self: flex-start; padding: 0 var(--map-fs); border: 1px solid var(--map-sign-line); border-radius: var(--map-r); background: var(--map-sign); color: var(--map-sign-ink); font: 600 var(--map-fs)/1.2 var(--font); }
-.path-map.is-linear .start-kiosk-text { display: inline; }
 .trail-shade, .trail-rim, .trail-edge, .trail-fill, .trail-grain, .spur-edge, .spur-fill { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 /* Trazado estirado (letra grande): el trazo conserva su grosor. */
 .path-map.is-tall .path-trail path { vector-effect: non-scaling-stroke; }
@@ -451,6 +443,9 @@ html.reduce-motion .is-shaking { animation: none; }
     width: calc(100% - var(--map-line-x) + var(--dot) / 2); margin-left: calc(var(--map-line-x) - var(--dot) / 2);
   }
 .path-map.is-linear .stage-spot.is-current { margin-block: 14px; }
+/* El sitio en el mapa ilustrado va en línea (left/top): en el camino en línea no cuenta. */
+.path-map.is-linear .stage-spot, .path-map.is-linear .road-sign { left: auto !important; right: auto !important; top: auto !important; bottom: auto !important; }
+.path-map.is-linear .stage-spot { height: auto; }
 .path-map.is-linear .stage-text, .path-map.is-linear .stage-spot.is-right .stage-text, .path-map.is-linear .stage-spot-aside .stage-text { flex: 1; max-width: none; justify-items: start; }
 .path-map.is-linear .stage-text > .stage-meta, .path-map.is-linear .stage-spot.is-right .stage-text > .stage-meta { margin-inline: 0; }
 .path-map.is-linear .lock-note { position: static; transform: none; width: auto; max-width: none; margin: calc(.4 * var(--map-fs)) 0 0 calc(var(--map-line-x) + 30px); }

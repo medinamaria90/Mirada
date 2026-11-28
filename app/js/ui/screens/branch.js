@@ -1,5 +1,5 @@
 // Pantalla de una rama (#rama-<id>): su propio tramo de mapa, con su paisaje, su música y la luz de la hora. Sus
-// pintores son las paradas (mismos nodos que el camino común), con el arco de la rama a la entrada y una tablilla por tramo.
+// pintores son las paradas (mismos nodos que el camino común), con el medallón de la rama en su puerta y un rombo por tramo.
 // Los que también están en el camino común se ven como
 // «En el camino» y llevan a su parada allí. Jugar usa las rutas de siempre (#etapa-<pintor>--<rama>). Arriba,
 // «Camino» vuelve al mapa donde estaba. Se entra con un acercamiento desde el desvío (map-zoom.js).
@@ -14,7 +14,8 @@ import { PLAYLISTS } from '../../audio/playlists.js';
 import { branchStatus, branchLockReason, branchProgress } from '../../engine/branches.js';
 import { MAP_W, GATE_Y, branchLayout, branchLand, walkedD } from './path-layout.js';
 import { eraPlace } from './path-art.js';
-import { trailSvg, tramoSign, branchEntrySign, backSpot, branchShort, stepName, pct, FOOT_H } from './path-signs.js';
+import { trailSvg, branchEntrySign, backSpot, branchShort, stepName, pct, FOOT_H } from './path-signs.js';
+import { tramoLore, branchLore } from './path-lore.js';
 import { STATE_LABEL, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import { placeMap } from './map-scroll.js';
 import { rememberMap, recallMap, forgetMap } from './map-memory.js';
@@ -69,7 +70,8 @@ function mapHtml(ctx, branch) {
   // propios de la rama, como su cartel de entrada y la cabecera (los «En el camino» cuentan en el camino común).
   const tramo = (s) => {
     const group = rows.filter((r) => r.opensAt === s.movementId && !r.onPath);
-    return tramoSign(s, { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, layout.h);
+    const first = rows[s.at];
+    return tramoLore({ sec: s, info: { total: group.length, got: group.filter((r) => r.status === 'mastered').length }, h: layout.h, locked: !first || first.status === 'locked' });
   };
   const items = rows.map((row, i) => {
     const pt = layout.points[i];
@@ -83,6 +85,7 @@ function mapHtml(ctx, branch) {
   const { mastered, total } = branchProgress(ctx.store.get().progress, index, branch.id);
   const place = eraPlace(layout.gate.x, layout.gate.y);
   const sign = branchEntrySign(branch, { ...layout.arch, ...place.box }, layout.h, mastered, total, branchShort(branch, index));
+  const medal = branchLore({ branch, stop: layout.gate.stop, h: layout.h, mastered, total });
   const walked = at >= 0 ? walkedD(layout, at) : done ? walkedD(layout) : '';
   const land = branchLand(branch);
   const tint = `var(--map-tint-${esc(land)})`;
@@ -94,7 +97,7 @@ function mapHtml(ctx, branch) {
       ${trailSvg(layout.h, layout.trail, [{ spur: layout.back.spur, open: true }], walked)}
       ${frontSvg(layout)}
       ${sign}
-      <ol class="stages">${backSpot(layout.back, index.movement(branch.opensAt)?.name || '', layout.h)}${items}</ol>
+      <ol class="stages">${backSpot(layout.back, index.movement(branch.opensAt)?.name || '', layout.h)}${medal}${items}</ol>
     </li>`;
 }
 

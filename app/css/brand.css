@@ -141,6 +141,9 @@
   --map-locked: #ece6dc;
   --map-sign-ink: #23201c;
   --map-sign-ink-2: #5e574f;
+  --lore: #b4604a;              /* terracota de las paradas que cuentan: medallón de la época y rombo del tramo */
+  --lore-deep: #8c4433;         /* su canto, en relieve */
+  --lore-ink: #fbf1e2;          /* el libro, en crema */
   --map-tag: #fbf8f2;
   --map-label: color-mix(in srgb, var(--map-tag) 88%, transparent);
   --map-label-soft: color-mix(in srgb, var(--map-tag) 72%, transparent);
@@ -176,10 +179,12 @@
   --inscr-weight: 600;
   --inscr-line: 1.12;
   --inscr-track: .06em;
-  --milestone-w: 15px;
-  --milestone-h: 25px;
-  --milestone-gap: 6px;
-  --milestone-label-max: 9.5rem;
+  --lore-dot: 60px;                /* medallón de la época (en su puerta) */
+  --lore-gem: 42px;                /* lado del rombo del tramo (en diagonal, unos 59 px) */
+  --lore-hit: 56px;                /* zona táctil de las dos (nunca menos de 48 px) */
+  --lore-ping: 12px;               /* puntito de «sin ver» */
+  --lore-breathe: 2.6s;
+  --plaque-r: 4px;                 /* placa del nombre en la puerta */
   --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
   --map-z-sign-start: 4;
   --map-z-float: 5;
@@ -213,8 +218,6 @@
   --chip-dot-edge: 1px; /* en la esquina, cuando el botón lleva texto al lado */
   --ring-out: 12px;
   --ring-out-lg: 10px;
-  --kiosk-hit: 56px;
-  --kiosk-share: 12cqi;            /* la caseta crece con el mapa en pantallas anchas */
   --hit: 48px;                     /* objetivo táctil mínimo (Material 3) */
   --dur-zoom: 420ms;
   --zoom-scale: 1.6;
@@ -362,6 +365,9 @@
     --map-sign-line: #5e5348;
     --map-sign-ink: #f2ece2;
     --map-sign-ink-2: #cdc3b5;
+    --lore: #a9573f;
+    --lore-deep: #6a3123;
+    --lore-ink: #f8ead5;
     --map-tag: #2b2621;
     --map-post: #6e604f;
     --map-locked: #322c26;
@@ -455,6 +461,9 @@
   --map-sign-line: #5e5348;
   --map-sign-ink: #f2ece2;
   --map-sign-ink-2: #cdc3b5;
+  --lore: #a9573f;
+  --lore-deep: #6a3123;
+  --lore-ink: #f8ead5;
   --map-tag: #2b2621;
   --map-post: #6e604f;
   --map-locked: #322c26;
@@ -552,6 +561,9 @@
     --map-sign-line: #e2d9cb;
     --map-sign-ink: #23201c;
     --map-sign-ink-2: #5e574f;
+    --lore: #b4604a;              /* terracota de las paradas que cuentan: medallón de la época y rombo del tramo */
+    --lore-deep: #8c4433;         /* su canto, en relieve */
+    --lore-ink: #fbf1e2;          /* el libro, en crema */
     --map-tag: #fbf8f2;
     --map-post: #b5a68f;
     --map-locked: #ece6dc;

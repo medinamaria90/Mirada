@@ -1,14 +1,13 @@
-// Señalética del mapa del camino, en tres familias: el arco de cada época (rótulo grande sobre su puerta, centrado en
-// el sendero), las tablillas pequeñas de tramo y de rama al borde del camino (placa sobre dos postes) y las placas de
-// salida y de «Tu museo». También los desvíos de las ramas y el sendero en SVG. Solo HTML (sin DOM ni estado propio).
+// Señalética del mapa del camino: la placa con el nombre de cada época en el ático de su puerta, las tablillas de rama al
+// borde del camino (placa sobre dos postes) y la placa de «Tu museo». Las paradas que cuentan (medallón y rombo) van en
+// path-lore.js. También los desvíos de las ramas y el sendero en SVG. Solo HTML (sin DOM ni estado propio).
 
 import { esc, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { MAP_W, f } from './path-layout.js';
-import { startArt, museumArt, KIOSK, inscription } from './path-art.js';
+import { startArt, museumArt, inscription } from './path-art.js';
 import { branchProgress, branchStatus, tramoOpen, tramoPending } from '../../engine/branches.js';
 
-const KIOSK_SIGN = 8;      // el botón de la caseta abarca también su letrero
 export const pct = (v, total) => `${f((v / total) * 100)}%`;
 
 // Nombre corto de una parada (pintor o sala), para frases como «se abre al dominar a Botticelli y Berruguete».
@@ -51,11 +50,11 @@ export function signBox(sign, h, extra = '') {
   return `class="road-sign is-${sign.side}${extra ? ` ${extra}` : ''}" style="${across};bottom:${pct(h - sign.y, h)};max-width:${pct(sign.room, MAP_W)}"`;
 }
 
-// Puerta de la época (o de la rama): su caja es toda la puerta, pulsable; el ático, donde va el nombre, en fracciones de
+// Puerta de la época (o de la rama): su caja es toda la puerta; el ático, donde va el nombre, en fracciones de
 // ella (path-art.js, eraPlace). tone: estilo del acento de la época (la primera va en la salida, fuera de su tramo).
 const archBox = (arch, h, tone = '') => `class="era-arch" style="left:${pct(arch.x0, MAP_W)};right:${pct(MAP_W - arch.x1, MAP_W)};bottom:${pct(h - arch.y, h)};top:${pct(arch.top, h)};--attic-at:${f(arch.atticAt * 100)}%;--attic-h:${f(arch.atticH * 100)}%;--attic-w:${f(arch.atticW * 100)}%${tone ? `;${tone}` : ''}"`;
 
-// Nombre grabado en el ático, en capitales (una o dos líneas, por palabras enteras). Los largos, algo más pequeños, pero
+// Nombre en la placa del ático, en capitales (una o dos líneas, por palabras enteras). Los largos, algo más pequeños, pero
 // nunca por debajo de 10,5 px (--fit en mapa-carteles.css); la puerta no crece.
 const INSCR_CHARS = 12;   // letras por línea que caben a tamaño completo
 const INSCR_MIN = 0.88;   // 10,5 px de 12
@@ -65,22 +64,15 @@ export const inscriptionHtml = (word) => {
   return `<span class="arch-name" style="--fit:${f(fit)}${fit < 1 ? ';--track-on:0' : ''}">${esc(word)}</span>`;
 };
 
-// Puerta de una época: toda la puerta se pulsa; abierta, lleva a la presentación (con el nombre completo); cerrada, el
-// portón lo dice (path-art.js) y una hoja cuenta qué hay que hacer.
-export function eraArch({ movement, status, sealed, done, total, prevName, arch, h, tone = '' }) {
-  const locked = status === 'locked';
-  const name = inscriptionHtml(inscription(movement.name));
-  const why = prevName ? `se abre ${afterEra('terminar', prevName)}` : 'aún cerrada';
-  const count = `${done} de ${total} ${total === 1 ? 'pintor' : 'pintores'}`;
-  const button = locked
-    ? `<button type="button" class="arch-band is-locked" data-action="era-lock" data-id="${esc(movement.id)}" aria-haspopup="dialog" aria-label="${esc(movement.name)}, ${esc(movement.period)}. Cerrada: ${esc(why)}">${name}</button>`
-    : `<button type="button" class="arch-band${sealed ? ' is-done' : ''}" data-action="intro" data-id="${esc(movement.id)}" aria-label="${esc(movement.name)}, ${esc(movement.period)}, ${sealed ? 'completa' : count}: ver presentación">${name}</button>`;
-  return `<h2 ${archBox(arch, h, tone)}>${button}</h2>`;
+// Puerta de una época: el nombre, en la placa de piedra del ático (un rótulo, no un botón: lo que se pulsa es el medallón
+// del arco, path-lore.js). Completa, en oro; cerrada, el portón lo dice (path-art.js).
+export function eraArch({ movement, status, sealed, arch, h, tone = '' }) {
+  const cls = `arch-band${sealed ? ' is-done' : ''}${status === 'locked' ? ' is-locked' : ''}`;
+  return `<h2 ${archBox(arch, h, tone)}><span class="${cls}">${inscriptionHtml(inscription(movement.name))}</span></h2>`;
 }
 
-// Salida: la puerta de la muralla, que es también la entrada de la primera época (archHtml: su arco, encima); junto a la
-// puerta, la caseta de «Información» (dibujada en el paisaje, path-art.js) abre «Cómo se juega»: un botón transparente
-// la cubre.
+// Salida: la puerta de la muralla, que es también la entrada de la primera época (archHtml: su placa, encima, y su
+// medallón en el arco).
 // Alto de la franja bajo el mapa (.path-foot en main.css): el sendero sigue por ella hasta el borde.
 export const FOOT_H = 84;
 export function startBlock(start, tint, archHtml = '') {
@@ -90,7 +82,7 @@ export function startBlock(start, tint, archHtml = '') {
   const foot = `M${f(x)} 0V${FOOT_H}`;
   return `<li class="path-foot" style="--era-tint:${tint}" aria-hidden="true">${trailSvg(FOOT_H, foot, [], foot)}</li><li class="path-start" style="--era-tint:${tint};aspect-ratio:${MAP_W}/calc(${start.h} * var(--k, 1))">
     ${art('path-start-art', startArt().back)}${trailSvg(start.h, start.trail, [], start.trail)}${art('path-start-art is-front', startArt().front)}
-    ${archHtml}<button type="button" class="start-kiosk" data-action="start" style="left:${pct(KIOSK.x + KIOSK.w / 2, MAP_W)};top:${pct(KIOSK.y - KIOSK.h / 2 - KIOSK_SIGN, start.h)}" aria-haspopup="dialog" aria-label="Cómo se juega"><span class="start-kiosk-text" aria-hidden="true">Cómo se juega</span></button>
+    ${archHtml}
   </li>`;
 }
 
@@ -173,20 +165,8 @@ export function backSpot(back, eraName, h) {
     </button></li>`;
 }
 
-// Tablilla de un tramo (unidad de pintores), en su hueco justo antes de su primer pintor, al borde del sendero: un solo
-// objeto con el nombre (la cuenta va en el dintel de la época). Completo, se dora, sin iconos sueltos. Se lee siempre,
-// aunque sus pintores estén cerrados: abre su cartel en tarjetas (sign-cards.js).
-export function tramoSign(sec, info, h) {
-  const done = info.total > 0 && info.got === info.total;
-  const label = `Tramo ${sec.name}: ${done ? 'completo' : `${info.got} de ${info.total} pintores`}. Ver cartel`;
-  return `<li ${signBox(sec.sign, h, 'is-tramo')}><button type="button" class="sign-plate is-tramo${done ? ' is-done' : ''}" data-action="cartel" data-kind="tramo" data-id="${esc(sec.key)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      <span class="tramo-stone" aria-hidden="true"></span><span class="sign-name">${esc(sec.name)}</span></button></li>`;
-}
-
-// Puerta de la rama en su pantalla, a la entrada: su nombre corto grabado (la cuenta ya está en la cabecera); abre el cartel de la
-// rama en tarjetas.
+// Puerta de la rama en su pantalla, a la entrada: su nombre corto en la placa (la cuenta ya está en la cabecera); su cartel
+// en tarjetas lo abre el medallón del arco (path-lore.js branchLore).
 export function branchEntrySign(branch, arch, h, mastered, total, short = branch.name) {
-  const label = `${branch.name}, ${mastered} de ${total} pintores. Ver cartel`;
-  return `<h2 ${archBox(arch, h)}><button type="button" class="arch-band${total && mastered === total ? ' is-done' : ''}" data-action="cartel" data-kind="rama" data-id="${esc(branch.id)}" aria-haspopup="dialog" aria-label="${esc(label)}">
-      ${inscriptionHtml(inscription(short))}</button></h2>`;
+  return `<h2 ${archBox(arch, h)}><span class="arch-band${total && mastered === total ? ' is-done' : ''}">${inscriptionHtml(inscription(short))}</span></h2>`;
 }

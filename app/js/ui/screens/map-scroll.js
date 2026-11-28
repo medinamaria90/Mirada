@@ -24,7 +24,7 @@ const yFor = (node, at) => {
 // Devuelve cómo dejar de vigilarla.
 export function placeMap(el, { branchId = '', step = '', jump = false, restore = null } = {}) {
   const map = $('.path-map', el);
-  const current = () => $('.stage-spot.is-current .stage', el) || $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
+  const current = () => $('.lore-spot.is-here .lore', el) || $('.stage-spot.is-current .stage', el) || $('.stage.is-available:not(.stage-review)', el) || $('.stage.is-started', el);
   const from = () => (step && $(`.stage-spot[data-step="${step}"] .stage`, el))
     || (branchId && $(`.branch[data-id="${branchId}"]`, el)) || null;
   const target = () => {

@@ -1,5 +1,5 @@
-// Hoja del mapa: se abre desde abajo al tocar el cartel de una época cerrada (qué falta y qué espera) o la caseta de
-// «Cómo se juega». Se carga al primer toque.
+// Hoja del mapa: se abre desde abajo al tocar el medallón de una época cerrada (qué falta y qué espera) y, desde Perfil →
+// Ajustes, «Cómo se juega». Se carga al primer toque.
 
 import { esc, accentStyle, joinNames } from './dom.js';
 import { icons } from './icons.js';
@@ -26,9 +26,10 @@ export async function openSheet(ctx, opener, accent, body) {
   return handle;
 }
 
-// «Cómo se juega» (caseta de «Información» de la salida), en tres líneas. Es el único sitio donde la app se explica.
+// «Cómo se juega» (Perfil → Ajustes), en cuatro líneas. Es el único sitio donde la app se explica.
 const HOW = [
-  ['arch', 'Cada parada es un pintor: miras sus cuadros y aprendes a reconocerlo.'],
+  ['book', 'Cada época empieza en el medallón de su puerta, y cada tramo, en un rombo: ahí se cuenta su historia.'],
+  ['arch', 'Cada parada redonda es un pintor: miras sus cuadros y aprendes a reconocerlo.'],
   ['eye', 'Después, preguntas rápidas: ¿quién lo pintó? Aciertas y la parada se ilumina.'],
   ['fork', 'Al terminar una época se abre la siguiente, y ramas con más pintores.'],
 ];

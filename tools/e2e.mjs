@@ -975,7 +975,8 @@ const mapV10 = await page.evaluate(() => {
     // El paisaje se mete en la página como SVG (map-land.js); si falla, queda como imagen.
     loaded: eras.filter((e) => land(e).tagName === 'svg' || land(e).getAttribute('src')).map((e) => e.dataset.era),
     currentLoaded: Boolean(cur) && (land(cur.closest('.path-era')).tagName === 'svg' || (land(cur.closest('.path-era')).complete && land(cur.closest('.path-era')).naturalWidth > 0)),
-    ringText: [...document.querySelectorAll('.stage-spot.is-current .stage-you')].map((e) => e.textContent.trim()),
+    // Sin abrir la presentación de la época, «Tú» está en su medallón (path-lore.js); si no, en la parada actual.
+    ringText: [...document.querySelectorAll('.lore-spot.is-here .stage-you, .stage-spot.is-current .stage-you')].map((e) => e.textContent.trim()),
   };
 });
 check(mapV10.bottomUp, 'el mapa no va de abajo arriba');
@@ -1014,15 +1015,15 @@ if (introGroup > 1) {
   await page.keyboard.press('Escape');
   await page.waitForSelector('.viewer', { state: 'detached' });
 }
-// Teclado: con el foco en el título, Enter pulsa el único botón principal («Entrar»), que deja en el camino.
+// Teclado: con el foco en el título, Enter pulsa el único botón principal («Seguir»), que sigue el camino: el cartel del
+// tramo como paso («Saltar») y después la historia del pintor, sin volver a la presentación.
 await page.locator('.intro h1').focus();
 await page.keyboard.press('Enter');
-await page.waitForSelector('.stage-spot.is-current .stage-you');
-check(page.url().endsWith('#inicio'), `«Entrar» no deja en el camino: ${page.url()}`);
-// La época ya está presentada: la parada abre la historia del pintor, no otra vez la presentación.
-await page.click('.stage-spot.is-current .stage');
+await page.waitForSelector('dialog.sign-cards[open] .sc-skip');
+check(page.url().includes('#etapa-'), `«Seguir» no sigue hacia el pintor: ${page.url()}`);
+await page.click('dialog.sign-cards .sc-skip');
 await page.waitForSelector('.intro, .story[open] .story-next');
-check(await page.locator('.intro').count() === 0, 'tras «Entrar», la parada vuelve a abrir la presentación de la época');
+check(await page.locator('.intro').count() === 0, 'tras «Seguir», vuelve a salir la presentación de la época');
 await page.waitForTimeout(400);
 await shot(page, '05-historia');
 await toRound(page);
@@ -1188,13 +1189,18 @@ if (SMOKE) {
   await page.goBack();
   await page.waitForSelector(goticoSign);
   check(page.url().endsWith('#inicio'), `doble toque: atrás no vuelve al mapa (${page.url()})`);
-  // La caseta de «Información» de la salida abre «Cómo se juega» y «Vamos» lo cierra.
-  await page.click('[data-action="start"]');
+  // Sin caseta en la salida: «Cómo se juega» está en Perfil → Ajustes y «Vamos» lo cierra.
+  check(await page.locator('[data-action="start"], .start-kiosk').count() === 0, 'queda la caseta de la salida');
+  await page.goto(`${base}#perfil`);
+  await page.click('[data-action="open-settings"]');
+  await page.click('.settings-dialog [data-action="how"]');
   await page.waitForSelector('dialog.map-sheet[open] .ms-how');
   await audit(page, '390 cómo se juega');
   await page.click('dialog.map-sheet .ms-ok');
   await page.waitForTimeout(300);
   check((await openDialogs()).length === 0, '«Vamos» no cierra «Cómo se juega»');
+  await page.goto(`${base}#inicio`);
+  await page.waitForSelector('.path-map .stage');
   // Un pintor del camino común dentro de una rama se ve «En el camino» y lleva a su parada (Berruguete en Maestros
   // españoles).
   await enterBranch('maestros-espanoles');
@@ -1284,11 +1290,11 @@ if (SMOKE) {
   await sp.goto(`${base}#etapa-${storyArtist.id}`);
   await sp.reload();
   await sp.waitForSelector('.intro, .story[open]');
-  // La primera vez sale la presentación de la época: «Entrar» deja en el camino y la parada abre la historia.
+  // La primera vez sale la presentación de la época: «Seguir» pasa por el cartel del tramo («Saltar») y abre la historia.
   if (await sp.locator('.intro').count()) {
     await sp.click('.intro [data-action="enter"]');
-    await sp.waitForSelector('.stage-spot.is-current .stage-you');
-    await sp.click('.stage-spot.is-current .stage');
+    await sp.waitForSelector('dialog.sign-cards[open] .sc-skip, .story[open]');
+    if (await sp.locator('dialog.sign-cards[open] .sc-skip').count()) await sp.click('dialog.sign-cards .sc-skip');
   }
   await sp.waitForSelector('.story[open] .story-text');
   // De 1 a 5 tarjetas (decisión de María, 26/11).

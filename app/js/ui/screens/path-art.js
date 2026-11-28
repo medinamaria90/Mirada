@@ -3,7 +3,7 @@
 // variables --map-* de brand.css); los árboles llevan data-sway (se mecen con el viento) y las ventanas que se
 // encienden de noche, data-lamp (map-land.js las copia a la capa de luces).
 
-import { START_PLAZA, START_GATE_X, f } from './path-layout.js';
+import { START_PLAZA, START_GATE_X, START_GATE_Y, f } from './path-layout.js';
 
 const KX = 0.5;   // falsa 3D: la profundidad va hacia arriba y a la derecha
 const KY = 0.3;
@@ -21,39 +21,18 @@ const wall = (x0, x1, y, h) => {
 };
 const roof = (x, y, w, h) => `<rect class="land-front" x="${f(x)}" y="${f(y - h)}" width="${f(w)}" height="${f(h)}"/><path class="land-tile" d="M${f(x - 1)} ${f(y - h)}H${f(x + w + 1)}L${f(x + w - 2 + 6 * KX)} ${f(y - h - 9)}H${f(x + 2)}Z"/><rect class="land-window" data-lamp x="${f(x + w / 2 - 2)}" y="${f(y - h + 3)}" width="4" height="5" rx="1"/>`;
 
-// Caseta de «Información» a la izquierda de la puerta, delante de la muralla (su «i» dorada, entera a la vista) y lejos
-// del botón «Tú» de la esquina: caseta con tejadillo y un letrero con la «i» dorada. Tocarla abre
-// «Cómo se juega» (el botón transparente que la cubre lo pone path-signs.js con KIOSK).
-export const KIOSK = { x: 74, y: 136, w: 32, h: 22 };
-const kiosk = ({ x, y, w, h }) => {
-  const d = 10 * KX;
-  const top = y - h;
-  return `<ellipse class="land-shade" cx="${f(x + w / 2 + 3)}" cy="${f(y + 1.5)}" rx="${f(w * .75)}" ry="4"/>
-      <path class="land-side" d="M${f(x + w)} ${f(y)}V${f(top)}L${f(x + w + d)} ${f(top - d * KY / KX)}V${f(y - d * KY / KX)}Z"/>
-      <rect class="land-front" x="${f(x)}" y="${f(top)}" width="${f(w)}" height="${f(h)}"/>
-      <rect class="land-window" data-lamp x="${f(x + 4)}" y="${f(top + 5)}" width="${f(w - 8)}" height="7" rx="1"/>
-      <rect class="land-side" x="${f(x + 2)}" y="${f(top + 13)}" width="${f(w - 4)}" height="2"/>
-      <path class="land-tile" d="M${f(x - 3)} ${f(top)}H${f(x + w + 3)}L${f(x + w + 3 + d)} ${f(top - 7)}H${f(x - 3 + d)}Z"/>
-      <path class="land-tile-2" d="M${f(x - 3)} ${f(top)}H${f(x + w + 3)}V${f(top + 2.4)}H${f(x - 3)}Z"/>
-      <rect class="land-side" x="${f(x + w / 2 + d / 2 - .8)}" y="${f(top - 17)}" width="1.6" height="11"/>
-      <circle class="land-top" cx="${f(x + w / 2 + d / 2)}" cy="${f(top - 21)}" r="8.6"/>
-      <circle class="land-gold" cx="${f(x + w / 2 + d / 2)}" cy="${f(top - 21)}" r="7"/>
-      <circle class="land-top" cx="${f(x + w / 2 + d / 2)}" cy="${f(top - 24.4)}" r="1.3"/>
-      <rect class="land-top" x="${f(x + w / 2 + d / 2 - .9)}" y="${f(top - 22.4)}" width="2" height="6" rx=".7"/>`;
-};
-
 const PY = START_PLAZA.y;
-const GATE = { left: 173, right: 231, y: 96, tower: 14, h: 38 };   // la puerta, donde el sendero va casi recto
+const GATE = { left: 173, right: 231, y: START_GATE_Y, tower: 14, h: 38 };   // la puerta, donde el sendero va casi recto
 const START_BACK = `${cypress(28, 80, 30)}${cypress(112, 82, 24)}${roof(262, 80, 22, 10)}${roof(296, 79, 26, 12)}${roof(352, 80, 20, 9)}
       <rect class="land-front" x="326" y="44" width="12" height="36"/><path class="land-side" d="M338 80V44L344 40.4V76.4Z"/><path class="land-top" d="M326 44H338L344 40.4H332Z"/><path class="land-tile-2" d="M326 44H338L335 22Z"/><path class="land-tile" d="M338 44L344 40.4L335 22Z"/><path class="land-window" data-lamp d="M330 56V51a2 2 0 0 1 4 0V56Z"/>
       ${wall(-10, GATE.left, GATE.y, 18)}${wall(GATE.right + GATE.tower, 400, GATE.y, 18)}
       ${tree(30, PY + 6, 8)}${tree(134, PY + 2, 7)}${cypress(132, PY + 20, 22)}
-      ${flowers(232, PY + 28)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${flowers(KIOSK.x + 62, KIOSK.y + 6)}`;
-// La primera época entra por la misma puerta de ciudad que las demás, abierta en la muralla (delante del sendero, con la
-// caseta de «Información»); el sendero llega desde abajo y cruza su arco.
+      ${flowers(232, PY + 28)}${flowers(340, PY + 24)}${flowers(176, PY + 26)}${flowers(136, PY + 24)}`;
+// La primera época entra por la misma puerta de ciudad que las demás, abierta en la muralla (delante del sendero); el
+// sendero llega desde abajo y cruza su arco, donde está su medallón.
 const START_GATE = { x: START_GATE_X, y: GATE.y };
 export const startPlace = () => eraPlace(START_GATE.x, START_GATE.y).box;
-export const startArt = () => ({ back: START_BACK, front: `${kiosk(KIOSK)}${eraGate(START_GATE.x, START_GATE.y)}` });
+export const startArt = () => ({ back: START_BACK, front: eraGate(START_GATE.x, START_GATE.y) });
 
 // «Tu museo»: cúpula y columnas; sus ventanas se encienden de noche.
 export function museumArt() {
@@ -73,18 +52,18 @@ export function museumArt() {
 }
 
 // Puerta de ciudad al entrar en cada época (la época es un lugar, docs/eval/plan-camino-r5.md): dos torreones de tejado
-// cónico, el sendero pasa por su arco y el nombre va grabado en el ático (path-signs.js, misma piedra entre dos
-// molduras). Mismo tamaño en todas las épocas; el sendero cruza el arco. Cerrada: portón de madera en el arco. x, y:
-// centro del paso, al pie.
-const CITY = { half: 68, body: 42, side: 7, arch: 15, tower: 17, towerH: 72, roof: 19, attic: 28 };
+// cónico, el sendero pasa por su arco, donde va el medallón de la época (path-lore.js), y el nombre va en una placa en el
+// ático (path-signs.js). Mismo tamaño en todas las épocas. Cerrada: portón de madera en el arco. x, y: centro del paso,
+// al pie.
+const CITY = { half: 68, body: 50, side: 7, arch: 15, tower: 17, towerH: 80, roof: 19, attic: 28 };
 const CITY_W = (CITY.half + CITY.tower) * 2;
 const GATE_SHADOW = { drop: 9, reach: 10 };   // cuánto cae la sombra de la puerta hacia abajo y a la derecha
-// Nombre grabado en el ático: el de la época sin paréntesis, en una o dos líneas de capitales. Si no cabe, uno corto
+// Nombre de la placa del ático: el de la época sin paréntesis, en una o dos líneas de capitales. Si no cabe, uno corto
 // fiel a lo que hay al cruzar la puerta (la época de Van Eyck empieza por el Renacimiento del Norte; «Manierismo» sigue
 // en su tramo y en la presentación). Nunca se parte una palabra: dos líneas por palabras enteras.
 const SHORT = { 'Manierismo y Renacimiento del Norte': 'Renacimiento del Norte' };
 export const inscription = (name) => SHORT[name] || String(name).replace(/\s*\(.*\)\s*$/, '');
-// Caja pulsable de la puerta (toda ella), con el sitio del ático en fracciones de la caja.
+// Caja de la puerta (toda ella), con el sitio del ático en fracciones de la caja.
 export function eraPlace(x, y) {
   const top = y - CITY.towerH - CITY.roof;
   const hh = y - top;

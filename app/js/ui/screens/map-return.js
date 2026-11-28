@@ -14,7 +14,8 @@ export const pointsUp = (dotTop, viewH) => dotTop < viewH / 2;
 export const RETURN_TEXT = 'Tú';
 
 export function watchReturn(el) {
-  const dot = $('.stage-spot.is-current .stage-dot', el);
+  // «Tú» está en el medallón o el rombo si son lo siguiente del camino; si no, en la parada actual.
+  const dot = $('.lore-spot.is-here .lore-dot', el) || $('.stage-spot.is-current .stage-dot', el);
   if (!dot || typeof IntersectionObserver !== 'function') return () => {};
   const button = document.createElement('button');
   button.type = 'button';
@@ -24,7 +25,7 @@ export function watchReturn(el) {
   button.innerHTML = `<span class="map-return-arrow" aria-hidden="true">${icons.next(18)}</span><span class="map-return-text" aria-hidden="true">${RETURN_TEXT}</span>`;
   el.append(button);
   button.addEventListener('click', () => {
-    const stage = dot.closest('.stage');
+    const stage = dot.closest('.stage, .lore');
     stage.scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
     stage.focus({ preventScroll: true });
   });

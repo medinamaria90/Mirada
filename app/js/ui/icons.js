@@ -11,6 +11,8 @@ export const icons = {
   // Racha: una llama (no un sol, que parecía el interruptor de modo claro). Lengua exterior e interior.
   flame: (s) => svg('<path d="M12 3.2c.9 3 3.1 4.5 4.6 6.5a6.5 6.5 0 0 1 1.8 4.4 6.4 6.4 0 0 1-12.8 0c0-1.7.6-3.2 1.7-4.4.4 1.2 1.1 2 2 2.5C8.9 9.1 10.3 6.1 12 3.2Z"/><path d="M12 20.5a3 3 0 0 1-3-3c0-1.9 1.6-2.9 3-5.1 1.4 2.2 3 3.2 3 5.1a3 3 0 0 1-3 3Z"/>', s),
   gem: (s) => svg('<path d="M6 4h12l3 5-9 11L3 9z"/><path d="M3 9h18M9 4l3 16M15 4l-3 16"/>', s),
+  // Libro abierto: las paradas que cuentan (medallón de la época y rombo del tramo en el mapa).
+  book: (s) => svg('<path d="M12 6.6C9.8 5 7 4.6 3.8 5.1v13.2c3.2-.5 6 0 8.2 1.6 2.2-1.6 5-2.1 8.2-1.6V5.1C17 4.6 14.2 5 12 6.6Z"/><path d="M12 6.6v13.3"/>', s),
   arch: (s) => svg('<path d="M6.5 20.5V11a5.5 5.5 0 0 1 11 0v9.5"/><path d="M4 20.5h16"/><circle cx="12" cy="14.5" r="1.6"/>', s),
   frames: (s) => svg('<rect x="3" y="4" width="8" height="10" rx="1"/><rect x="13" y="4" width="8" height="6" rx="1"/><rect x="13" y="12" width="8" height="8" rx="1"/><rect x="3" y="16" width="8" height="4" rx="1"/>', s),
   user: (s) => svg('<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.3-3.8 4.2-5.6 7.5-5.6s6.2 1.8 7.5 5.6"/>', s),

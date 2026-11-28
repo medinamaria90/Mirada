@@ -1,19 +1,20 @@
-// Sistema de carteles del mapa y vuelta al mismo sitio: lápida de época con la única cuenta (una ranura), mojones de
-// tramo sin contador (completos, dorados), la parada actual sin botón «Empezar» y la vista que vuelve exactamente a donde
-// estaba (map-memory.js), sin recentrar a la fuerza en la parada actual.
+// Sistema de carteles del mapa y vuelta al mismo sitio: placa de época en su puerta, medallón y rombos de tramo como
+// paradas (sin ver, con puntito; completos, con sello), la parada actual sin botón «Empezar» y la vista que vuelve
+// exactamente a donde estaba (map-memory.js), sin recentrar a la fuerza en la parada actual.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { anchorOf, scrollForAnchor } from '../app/js/ui/screens/map-memory.js';
-import { tramoSign, eraArch, branchEntrySign } from '../app/js/ui/screens/path-signs.js';
+import { eraArch, branchEntrySign } from '../app/js/ui/screens/path-signs.js';
+import { tramoLore, eraLore, branchLore } from '../app/js/ui/screens/path-lore.js';
 import { eraPlace, eraGate, inscription } from '../app/js/ui/screens/path-art.js';
 import { nodeHtml } from '../app/js/ui/screens/path-nodes.js';
 import { pointsUp } from '../app/js/ui/screens/map-return.js';
 
 const app = join(dirname(fileURLToPath(import.meta.url)), '..', 'app');
-const SIGN = { side: 'right', edge: 220, y: 500, top: 452, room: 150 };
+const SIGN = { side: 'right', x: 240, y: 500 };
 
 test('vuelta al mapa: el ancla guarda el punto del centro de la pantalla y vuelve a dejarlo ahí', () => {
   const items = [{ top: -900, height: 1000 }, { top: 100, height: 2000 }, { top: 2100, height: 150 }];
@@ -45,28 +46,40 @@ test('vuelta al mapa: solo se centra en la parada actual al abrir o con «Tu par
   assert.ok(/prevRoute\(\) === 'inicio'\) forgetMap\(memo\)/.test(branch), 'entrar en una rama desde el camino no empieza en su parada actual');
 });
 
-test('carteles: mojón de tramo (un solo objeto, sin caja ni cifra); completo, en oro; la puerta de la época, con su nombre grabado', () => {
-  const half = tramoSign({ name: 'Venecia', key: 'Venecia', sign: SIGN }, { got: 1, total: 3 }, 1000);
-  assert.ok(half.includes('>Venecia</span>') && half.includes('tramo-stone') && !/\d\/\d/.test(half) && !half.includes('is-done'), 'el mojón a medias lleva cifra o va en oro');
-  assert.ok(half.includes('aria-label="Tramo Venecia: 1 de 3 pintores. Ver cartel"'));
-  const done = tramoSign({ name: 'Venecia', key: 'Venecia', sign: SIGN }, { got: 3, total: 3 }, 1000);
-  assert.ok(done.includes('sign-plate is-tramo is-done') && !done.includes('<svg') && done.includes('Tramo Venecia: completo'), 'el completo no va en oro o lleva un icono suelto');
+test('carteles: rombo de tramo y medallón de época, paradas de la misma familia; placa de la puerta sin botón', () => {
+  const half = tramoLore({ sec: { name: 'Venecia', key: 'Venecia', sign: SIGN }, info: { got: 1, total: 3 }, h: 1000 });
+  assert.ok(half.includes('<span class="stage-name">Venecia</span>') && half.includes('class="lore lore-tramo is-open"') && !/\d\/\d/.test(half) && !half.includes('📖'), 'el rombo a medias lleva cifra o emoji');
+  assert.ok(half.includes('aria-label="Tramo Venecia: 1 de 3 pintores. Ver cartel"') && half.includes('data-action="cartel"'));
+  const done = tramoLore({ sec: { name: 'Venecia', key: 'Venecia', sign: SIGN }, info: { got: 3, total: 3 }, h: 1000 });
+  assert.ok(done.includes('lore-tramo is-done') && done.includes('stage-badge') && done.includes('Tramo Venecia: completo'), 'el completo no lleva sello');
+  const fresh = tramoLore({ sec: { name: 'Venecia', key: 'Venecia', sign: SIGN }, info: { got: 0, total: 3 }, h: 1000, fresh: true, here: true, next: 'tiziano' });
+  assert.ok(fresh.includes('lore-ping') && fresh.includes('is-fresh') && fresh.includes('Sin ver') && fresh.includes('data-next="tiziano"') && fresh.includes('stage-you'), 'el rombo sin ver no lo dice o no sigue al pintor');
   const arch = { x: 200, y: 900, ...eraPlace(200, 900).box };
   const movement = { id: 'barroco', name: 'Barroco', period: 's. XVII' };
-  const open = eraArch({ movement, status: 'available', sealed: false, done: 4, total: 9, prevName: 'Renacimiento', arch, h: 1000 });
-  assert.ok(open.includes('class="era-arch"') && open.includes('data-action="intro"') && open.includes('>Barroco</span>') && open.includes('4 de 9 pintores'), 'la puerta abierta no lleva su nombre o no abre la presentación');
-  assert.ok(!open.includes('4/9') && !open.includes('arch-progress') && !open.includes('arch-meta'), 'cifra, ranura o siglos sobre la puerta');
-  const sealed = eraArch({ movement, status: 'mastered', sealed: true, done: 9, total: 9, prevName: '', arch, h: 1000 });
-  assert.ok(sealed.includes('arch-band is-done') && sealed.includes('completa'), 'la completa no lo dice');
-  const locked = eraArch({ movement, status: 'locked', sealed: false, done: 0, total: 9, prevName: 'el Manierismo', arch, h: 1000 });
-  assert.ok(locked.includes('data-action="era-lock"') && !locked.includes('0/9') && !locked.includes('icon'), 'la cerrada lleva cifra o candado en el ático (lo dice el portón)');
+  const plate = eraArch({ movement, status: 'available', sealed: false, arch, h: 1000 });
+  assert.ok(plate.includes('class="era-arch"') && plate.includes('>Barroco</span>') && !plate.includes('<button') && !plate.includes('data-action'), 'la placa es un botón o no lleva el nombre');
+  const stop = { x: 200, y: 890 };
+  const open = eraLore({ movement, status: 'available', sealed: false, done: 4, total: 9, prevName: 'Renacimiento', stop, h: 1000, fresh: false, here: false });
+  assert.ok(open.includes('lore lore-era is-open') && open.includes('data-action="intro"') && open.includes('4 de 9 pintores') && !open.includes('lore-ping'), 'el medallón abierto no abre la presentación');
+  assert.ok(open.includes(`top:${(890 / 10).toFixed(0)}%`), 'el medallón no va en su sitio');
+  const sealed = eraLore({ movement, status: 'mastered', sealed: true, done: 9, total: 9, stop, h: 1000 });
+  assert.ok(sealed.includes('lore-era is-done') && sealed.includes('completa'), 'la completa no lo dice');
+  assert.ok(eraArch({ movement, status: 'mastered', sealed: true, arch, h: 1000 }).includes('arch-band is-done'), 'la placa de la completa no va en oro');
+  const locked = eraLore({ movement, status: 'locked', sealed: false, done: 0, total: 9, prevName: 'el Manierismo', stop, h: 1000, fresh: true });
+  assert.ok(locked.includes('data-action="era-lock"') && locked.includes('is-locked') && !locked.includes('lore-ping'), 'la cerrada abre la presentación o lleva el puntito');
   assert.ok(eraGate(200, 900, { locked: true }).length > eraGate(200, 900).length, 'la puerta cerrada no lleva portón');
   // El nombre corto de la época de Van Eyck, fiel a lo que hay al cruzar la puerta; el resto, entero y sin paréntesis.
   assert.equal(inscription('Manierismo y Renacimiento del Norte'), 'Renacimiento del Norte');
   assert.equal(inscription('Estampa japonesa (ukiyo-e)'), 'Estampa japonesa');
   assert.equal(inscription('Rococó y Neoclasicismo'), 'Rococó y Neoclasicismo');
   const rama = branchEntrySign({ id: 'gotico', name: 'Gótico' }, arch, 1000, 2, 5);
-  assert.ok(rama.includes('class="era-arch"') && rama.includes('data-kind="rama"') && !rama.includes('2/5'), 'la puerta de la rama repite la cuenta de la cabecera');
+  assert.ok(rama.includes('class="era-arch"') && !rama.includes('2/5'), 'la puerta de la rama repite la cuenta de la cabecera');
+  assert.ok(branchLore({ branch: { id: 'gotico', name: 'Gótico' }, stop, h: 1000, mastered: 2, total: 5 }).includes('data-kind="rama"'), 'el medallón de la rama no abre su cartel');
+  // Sin ver: respira, salvo con «Reducir animaciones»; zona táctil de 48 px como mínimo.
+  const cssC = readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
+  assert.ok(/prefers-reduced-motion: reduce\) \{ \.lore\.is-fresh \.lore-face \{ animation: none/.test(cssC) && /html\.reduce-motion \.lore\.is-fresh/.test(cssC), 'el respiro no respeta «Reducir animaciones»');
+  const brandC = readFileSync(join(app, 'css', 'brand.css'), 'utf8');
+  assert.ok(Number(brandC.match(/--lore-hit: (\d+)px/)[1]) >= 48, 'zona táctil del medallón y el rombo por debajo de 48 px');
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8') + readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
   assert.ok(!css.includes('sign-check') && !css.includes('trail-thread') && !css.includes('proto-'), 'queda el sello suelto, la raya central o restos del prototipo');
   const brand = readFileSync(join(app, 'css', 'brand.css'), 'utf8');

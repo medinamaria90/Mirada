@@ -1,7 +1,8 @@
 // Trazado del mapa del camino en JSON, para que tools/mapa_svg.py pinte los paisajes con las mismas
 // medidas que la app (ui/screens/path-layout.js es la única fuente del trazado): alto de cada tramo, nodos,
 // puentes (el agua sale de ellos), puerta de la época, desvíos de las ramas y, por parada, la caja aproximada de su
-// rótulo; también las cajas del arco de la época y de las tablillas de tramo y de rama: ahí no se pinta nada.
+// rótulo; también las cajas de la puerta de la época (con su medallón), de los rombos de tramo con su nombre y de las
+// tablillas de rama: ahí no se pinta nada.
 //   node tools/mapa-layout.mjs app/data/catalog.json
 import { readFileSync } from 'node:fs';
 import { buildIndex } from '../app/js/engine/catalog.js';
@@ -17,7 +18,9 @@ const SIGN_PX = 7.2;      // ancho medio de una letra en los carteles de tramo y
 const SIGN_PAD = 30;      // relleno y flecha de la placa
 const SIGN_H = 62;        // alto de un cartel de tramo o de rama, postes incluidos
 const PLACE_HALF = 94;    // medio ancho de la puerta de ciudad de la época (torreones incluidos)
-const PLACE_UP = 98;      // de su pie a la punta de los tejados
+const PLACE_UP = 102;     // de su pie a la punta de los tejados
+const PLACE_DOWN = 26;    // el medallón del arco asoma por debajo del pie de la puerta
+const GEM_HALF = 32;      // medio rombo de un tramo (en diagonal) con su aire
 function eraNames(era) {
   const names = (index.isSala(era.id) ? [] : index.stageArtists(era.id)).map((a) => a.name);
   if (hasMovementReview(index, era.id)) names.push('Repaso · faltan 10');
@@ -39,8 +42,16 @@ function signBox(sign, text, extra = 0) {
   return { x0: Math.round(x0), x1: Math.round(x1), y0: Math.round(sign.y - SIGN_H), y1: Math.round(sign.y) };
 }
 // Caja de la puerta de ciudad de la época (path-art.js): ahí no se pinta nada.
-const archBox = (e) => (e.gate ? [{ x0: Math.max(0, Math.round(e.gate.x - PLACE_HALF)), x1: Math.min(MAP_W, Math.round(e.gate.x + PLACE_HALF)), y0: Math.round(e.gate.y - PLACE_UP), y1: Math.round(e.gate.y + 4) }] : []);
-const signBoxes = (e) => [...archBox(e), ...(e.sections || []).map((s) => signBox(s.sign, s.name)), ...(e.branches || []).map((b) => signBox(b.sign, 'Más del Renacimiento'))];
+const archBox = (e) => (e.gate ? [{ x0: Math.max(0, Math.round(e.gate.x - PLACE_HALF)), x1: Math.min(MAP_W, Math.round(e.gate.x + PLACE_HALF)), y0: Math.round(e.gate.y - PLACE_UP), y1: Math.round(e.gate.y + PLACE_DOWN) }] : []);
+// Rombo de un tramo, sobre el sendero, y su nombre en la pastilla, hacia el lado ancho (como el rótulo de un pintor).
+function gemBoxes(s) {
+  const p = s.sign;
+  const w = s.name.length * NAME_PX + 18;
+  const left = p.x < MAP_W / 2;
+  const label = { x0: Math.round(left ? p.x + GAP : Math.max(0, p.x - GAP - w)), x1: Math.round(left ? Math.min(MAP_W, p.x + GAP + w) : p.x - GAP), y0: Math.round(p.y - 18), y1: Math.round(p.y + 18) };
+  return [{ x0: Math.round(p.x - GEM_HALF), x1: Math.round(p.x + GEM_HALF), y0: Math.round(p.y - GEM_HALF), y1: Math.round(p.y + GEM_HALF) }, label];
+}
+const signBoxes = (e) => [...archBox(e), ...(e.sections || []).flatMap(gemBoxes), ...(e.branches || []).map((b) => signBox(b.sign, 'Más del Renacimiento'))];
 // x del sendero cada ROAD_STEP de alto (el esparcido de detalles no cae sobre él).
 const ROAD_STEP = 8;
 const road = (e) => Array.from({ length: Math.floor(e.h / ROAD_STEP) + 1 }, (_, i) => Math.round(roadX(e.segs, i * ROAD_STEP)));

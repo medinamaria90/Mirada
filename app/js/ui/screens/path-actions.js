@@ -5,7 +5,7 @@ import { icons } from '../icons.js';
 import { branchRoute, stageRoute, go } from '../router.js';
 import { zoomInto } from '../map-zoom.js';
 
-// La hoja del mapa (época cerrada, cómo se juega) se carga al primer toque: no cuenta en el arranque.
+// La hoja del mapa (época cerrada) se carga al primer toque: no cuenta en el arranque.
 const sheet = (ctx, fn, b) => {
   ctx.audio.sfx('tap');
   import('../map-sheet.js').then((m) => m[fn](ctx, b.dataset.id, b)).catch((err) => console.error(err));
@@ -16,6 +16,9 @@ export const levelCard = (ctx, b, branchId = '') => {
   ctx.audio.sfx('tap');
   import('../level-card.js').then((m) => m.openLevelCard(ctx, b, branchId)).catch((err) => console.error(err));
 };
+
+// Donde está «Tú»: el medallón o el rombo si son lo siguiente del camino; si no, la parada actual.
+export const HERE = '.lore-spot.is-here .lore, .stage-spot.is-current .stage';
 
 // Acciones de las paradas, para onAction en la portada.
 export function pathActions(ctx) {
@@ -38,18 +41,20 @@ export function pathActions(ctx) {
       ctx.go(`galeria-${b.dataset.id}`);
     },
     'era-lock': (b) => sheet(ctx, 'openEraSheet', b),
-    start: (b) => sheet(ctx, 'openIntroSheet', b),
     'goto-current': (_, ev) => {
       ev.preventDefault();
-      const target = $('.stage-spot.is-current .stage') || $('.stage.is-available, .stage.is-started');
+      const target = $(HERE) || $('.stage.is-available, .stage.is-started');
       if (!target) return;
       target.scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
       target.focus({ preventScroll: true });
     },
-    // Cartel de un tramo o de una rama: sus tarjetas (sign-cards.js, cargado al primer toque).
+    // Cartel de un tramo o de una rama: sus tarjetas (sign-cards.js, cargado al primer toque). Si es lo siguiente del
+    // camino (data-next: su primer pintor), va como un paso más: «Saltar»/«Seguir» y después, el pintor.
     cartel: (b) => {
       ctx.audio.sfx('tap');
-      import('../sign-cards.js').then((m) => m.openSignCards(ctx, b.dataset.kind, b.dataset.id, b)).catch((err) => console.error(err));
+      const next = b.dataset.next;
+      const opts = { title: b.dataset.title || '', onDone: next ? () => ctx.go(stageRoute(next)) : null };
+      import('../sign-cards.js').then((m) => m.openSignCards(ctx, b.dataset.kind, b.dataset.id, b, opts)).catch((err) => console.error(err));
     },
     // Rama abierta: se entra en su pantalla con un acercamiento; cerrada, una nota con lo que falta.
     branch: (b) => {

@@ -13,7 +13,7 @@ import { planStage, planMovementReview, planReviewSession, planSala, salaLearnWo
 import { knownArtists } from '../../engine/chrono.js';
 import { planFree, planWeekly, planChallenge, dailyGrid, shareText } from '../../engine/daily.js';
 import { encodeChallenge } from '../../engine/challenge.js';
-import { salaStatus, isReviewUnlocked, needsIntro, needsTramo, isPathMastered, unseenArtists, isKnownArtist } from '../../engine/progress.js';
+import { salaStatus, isReviewUnlocked, needsIntro, needsTramo, isPathMastered, unseenArtists, isKnownArtist, nextStep, movementStatus } from '../../engine/progress.js';
 import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
@@ -24,7 +24,7 @@ import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_TITLE } from '../../e
 import { isoWeek } from '../../engine/dates.js';
 import { mainTrait } from '../../engine/feedback.js';
 import { eyeLabel } from './medals.js';
-import { stageReturnTo, isGoalScreen } from '../router.js';
+import { stageReturnTo, isGoalScreen, stageRoute } from '../router.js';
 import { takePlayContext } from '../play-context.js';
 import { makeSession, withSession, clearSession } from '../../state/session.js';
 
@@ -170,10 +170,11 @@ const waitMs = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
 // mode 'first': se ve al entrar por primera vez, como un paso del camino, y «Seguir» continúa a lo que se iba a jugar
 // (onEnter); 'again': desde el mapa; 'shared': desde un enlace compartido (#epoca-<id>), sin tocar la partida; a quien aún
 // no juega, el botón le invita a empezar.
-export async function renderIntro(ctx, el, movementId, { mode = 'again', onEnter = null } = {}) {
+export async function renderIntro(ctx, el, movementId, { mode: asked = 'again', onEnter: then = null } = {}) {
   const { index } = ctx;
   const movement = index.movement(movementId);
   if (!movement || !index.visibleMovements.includes(movement)) return leave(ctx);
+  const { mode, onEnter } = fromMedallion(ctx, movementId, asked, then);
   const n = index.visibleMovements.indexOf(movement);
   const works = introWorks(index, movementId);
   const order = works.length === 3 ? [works[1], works[0], works[2]] : works;
@@ -213,6 +214,16 @@ export async function renderIntro(ctx, el, movementId, { mode = 'again', onEnter
       return ctx.go('inicio');
     },
   });
+}
+
+// Desde el medallón del mapa, la primera vez: es la parada de la época en el camino, así que cuenta como vista y «Seguir»
+// continúa a lo siguiente de la época (el cartel del tramo y el pintor), como cuando la trae la guía.
+function fromMedallion(ctx, movementId, mode, onEnter) {
+  const p = ctx.store.get().progress;
+  if (mode !== 'again' || !needsIntro(p, ctx.index, movementId) || movementStatus(p, ctx.index, movementId) === 'locked') return { mode, onEnter };
+  const step = nextStep(p, ctx.index);
+  const go = step && step.movementId === movementId ? (step.type === 'sala' ? `sala-${step.id}` : stageRoute(step.id)) : 'inicio';
+  return { mode: 'first', onEnter: () => ctx.go(go) };
 }
 
 // --- Pantalla «Conoce…» compartida (pintor y sala) -------------------------------

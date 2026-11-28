@@ -12,13 +12,14 @@ import { icons } from '../icons.js';
 import { coverOf } from '../art.js';
 import { STATE_LABEL, DORMANT_TEXT, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
 import {
-  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered,
+  artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered, needsIntro,
 } from '../../engine/progress.js';
 import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
 import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, GATE_Y, pathLayout, eraLayout, walkedD } from './path-layout.js';
-import { trailSvg, eraArch, startBlock, museumBlock, branchSpot, tramoSign, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
+import { trailSvg, eraArch, startBlock, museumBlock, branchSpot, branchState, tramoState, stepName, ofEra, pct } from './path-signs.js';
+import { eraLore, tramoLore, loreHere, tramoFresh } from './path-lore.js';
 import { eraGate, bridgeRails, eraPlace, startPlace } from './path-art.js';
 
 export { MAP_W, STEP, pathLayout, eraLayout, DORMANT_TEXT };
@@ -29,14 +30,15 @@ export { watchLandscapes } from '../map-land.js';
 
 // ---------- HTML ----------
 
-// Parada actual y la siguiente cerrada (algo más presente que el resto de lo cerrado).
+// Parada actual, la siguiente cerrada (algo más presente que el resto de lo cerrado) y, si lo siguiente es la
+// presentación de la época o el cartel del tramo, su medallón o su rombo (here: ahí se posa «Tú»).
 function mapKeys(ctx) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const current = nextStep(p, index);
   const at = current ? index.steps.indexOf(current) : -1;
   const after = at >= 0 ? index.steps.slice(at + 1).find((s) => stepStatus(p, index, s) === 'locked') : null;
-  return { current: current ? `${current.type}:${current.id}` : '', next: after ? `${after.type}:${after.id}` : '', era: current ? current.movementId : '' };
+  return { current: current ? `${current.type}:${current.id}` : '', next: after ? `${after.type}:${after.id}` : '', era: current ? current.movementId : '', here: loreHere(p, index, current) };
 }
 
 // lazy: solo se pintan del todo la época actual y sus vecinas; las demás quedan como hueco de su altura y
@@ -68,9 +70,10 @@ export function renderPathMap(ctx, { lazy = false } = {}) {
     : `<li class="path-era is-pending" data-era="${esc(era.id)}" style="--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))"></li>`)).join('');
   const firstTint = layout.eras.length ? `var(--map-tint-${esc(layout.eras[0].id)})` : 'transparent';
   const done = isPathMastered(ctx.store.get().progress, index);
-  // El arco de la primera época va sobre la puerta de la muralla de salida.
+  // La placa y el medallón de la primera época van en la puerta de la muralla de salida.
   const first = layout.eras[0];
-  const firstArch = first && !first.arch ? archHtml(ctx, first, null, { ...layout.start.arch, ...startPlace() }, layout.start.h) : '';
+  const firstArch = first && !first.arch
+    ? `${archHtml(ctx, first, { ...layout.start.arch, ...startPlace() }, layout.start.h)}${medallion(ctx, first, layout.start.stop, layout.start.h, keys, 'div')}` : '';
   return `${startBlock(layout.start, firstTint, firstArch)}${html}${museumBlock(layout.museum, index.visibleMovements.length, done)}`;
 }
 
@@ -116,35 +119,58 @@ function eraBlock(ctx, era, prevEra, keys) {
     // --room: parte del ancho que queda hacia donde cuelga el nombre (el rótulo nunca pasa del margen de 8 px).
     const state = node.key === keys.current ? ' is-current' : node.key === keys.next ? ' is-next' : '';
     const sec = era.sections.find((s) => s.at === i);
-    const head = sec ? tramoSign(sec, sectionInfo(ctx, era.id, sec), era.h) : '';
+    const head = sec ? tramoNode(ctx, era, sec, keys) : '';
     const spur = branches.filter((b) => b.spot.at === i).map((b) => branchSpot(b.spot, b.branch, b.st, index, era.h)).join('');
-    return `${head}<li class="stage-spot is-${side}${state}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
+    const after = node.key === keys.current && keys.here ? ' is-after-lore' : '';
+    return `${head}<li class="stage-spot is-${side}${state}${after}" data-step="${esc(node.key)}" style="left:${pct(pt.x, MAP_W)};top:${pct(pt.y, era.h)};--room:${((side === 'left' ? MAP_W - pt.x : pt.x) / MAP_W).toFixed(3)}">${node.html}</li>${spur}`;
   }).join('');
   const last = era.points[era.points.length - 1];
   const gallery = isGalleryOpen(p, index, era.id) ? galleryNode(ctx, movement, last, era.h) : '';
   const place = era.gate ? eraPlace(era.gate.x, era.gate.y) : null;
-  const sign = era.arch ? archHtml(ctx, era, prevEra, place ? { ...era.arch, ...place.box } : era.arch, era.h) : '';
+  const sign = era.arch ? archHtml(ctx, era, place ? { ...era.arch, ...place.box } : era.arch, era.h) : '';
+  const gateStop = era.gate ? medallion(ctx, era, era.gate.stop, era.h, keys, 'li', prevEra) : '';
   const prevTint = prevEra ? `var(--map-tint-${esc(prevEra.id)})` : 'var(--era-tint)';
   return `<li class="path-era movement movement-${status}${sala ? ' movement-sala' : ''}${sealed ? ' is-sealed' : ''}${era.gate ? ' has-gate' : ''}" data-era="${esc(era.id)}" style="${accentStyle(movement.accent)};--gate-y:${GATE_Y};--era-tint:var(--map-tint-${esc(era.id)});--era-prev:${prevTint};--era-h:${era.h};aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))">
     <img class="path-land" alt="" width="${MAP_W}" height="${era.h}" decoding="async" data-src="img/mapa/${esc(era.id)}.svg">
     ${trailSvg(era.h, era.trail, branches.map((b) => ({ spur: b.spot.spur, tail: b.spot.tail, open: b.st.open })), walked(index, era, nodes, keys))}
     ${frontSvg(era, status === 'locked')}
     ${sign}
-    <ol class="stages">${items}${gallery}</ol>
+    <ol class="stages">${gateStop}${items}${gallery}</ol>
   </li>`;
 }
 
-// Arco de una época (arch: su caja en el tramo de alto h): nombre, siglos y paradas dominadas (las mismas que se ven en
-// el camino, sin el repaso).
-function archHtml(ctx, era, prevEra, arch, h) {
+// Placa de una época en su puerta (arch: su caja en el tramo de alto h).
+function archHtml(ctx, era, arch, h) {
+  const { index } = ctx;
+  const p = ctx.store.get().progress;
+  return eraArch({
+    movement: index.movement(era.id), status: movementStatus(p, index, era.id), sealed: Boolean(p.medals[`movement-${era.id}`]),
+    arch, h, tone: accentStyle(index.movement(era.id).accent),
+  });
+}
+
+// Medallón de la época en el arco de su puerta (stop: su sitio en el tramo de alto h): nombre, paradas dominadas (las
+// mismas que se ven en el camino, sin el repaso) y si su presentación está sin ver.
+function medallion(ctx, era, stop, h, keys, tag = 'li', prevEra = null) {
   const { index } = ctx;
   const p = ctx.store.get().progress;
   const sala = index.isSala(era.id);
   const states = sala ? [salaStatus(p, index, era.id)] : index.stageArtists(era.id).map((a) => artistStatus(p, index, a.id));
-  return eraArch({
+  return eraLore({
     movement: index.movement(era.id), status: movementStatus(p, index, era.id), sealed: Boolean(p.medals[`movement-${era.id}`]),
-    done: states.filter((st) => st === 'mastered').length, total: states.length,
-    prevName: prevEra ? index.movement(prevEra.id).name : '', arch, h, tone: accentStyle(index.movement(era.id).accent),
+    done: states.filter((st) => st === 'mastered').length, total: states.length, prevName: prevEra ? index.movement(prevEra.id).name : '', stop, h, tag,
+    fresh: needsIntro(p, index, era.id), here: keys.here === `era:${era.id}`,
+  });
+}
+
+// Rombo de un tramo, sobre el sendero antes de su primer pintor.
+function tramoNode(ctx, era, sec, keys) {
+  const p = ctx.store.get().progress;
+  const first = ctx.index.stageArtists(era.id)[sec.at];
+  const here = keys.here === `tramo:${sec.key}`;
+  return tramoLore({
+    sec, info: sectionInfo(ctx, era.id, sec), h: era.h, here, next: first ? first.id : '',
+    fresh: tramoFresh(p, ctx.index, first?.id), locked: !first || artistStatus(p, ctx.index, first.id) === 'locked',
   });
 }
 
@@ -184,7 +210,7 @@ function artistNode(ctx, artist, keys) {
   // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
   const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
-    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, current: key === keys.current,
+    cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, current: key === keys.current && !keys.here,
     unlock: status === 'locked' && prevStep ? `${prevStep.type}:${prevStep.id}` : '',
     label: status === 'started' ? startedLabel(artist.name, p.artists[artist.id]?.best)
       : `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
@@ -203,7 +229,7 @@ function salaNode(ctx, movement, keys) {
   const prev = index.steps[index.stepIndex('sala', movement.id) - 1];
   const lock = prev ? `Antes, acierta la mitad con ${stepName(index, prev)}` : '';
   const html = nodeHtml({
-    cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current,
+    cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current && !keys.here,
     unlock: status === 'locked' && prev ? `${prev.type}:${prev.id}` : '',
     label: status === 'started' ? startedLabel(`Conoce el movimiento ${movement.name}`, p.salas?.[movement.id]?.best)
       : `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,

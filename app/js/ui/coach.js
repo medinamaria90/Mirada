@@ -1,4 +1,4 @@
-// Guía de bienvenida: tres «coach marks» que señalan el nodo actual, el Cuadro del día y la pestaña
+// Guía de bienvenida: tres «coach marks» que señalan donde está «Tú» (el medallón de la primera época o el pintor), el Cuadro del día y la pestaña
 // Colección (el botón ↻ «Repasar» aún no está: aparece con 3 cuadros vistos). Solo la primera vez (marca propia en localStorage), saltable con «Saltar» o Esc, sin
 // tapar lo que señala y sin bloquear la pantalla.
 
@@ -8,7 +8,9 @@ import { coachPlacement } from './coach-place.js';
 import { coachSeen, markCoachSeen } from '../state/store.js';
 
 export const COACH_STEPS = [
-  { target: '.stage-spot.is-current .stage, .stage-spot.is-current .stage-text', text: 'Aquí empieza tu camino. Toca el cuadro y conoce a tu primer pintor.' },
+  // El primer paso señala donde está «Tú»: el medallón de la primera época si aún no se ha abierto; si no, el pintor.
+  { target: '.lore-spot.is-here .lore-dot', text: 'Aquí empieza tu camino. Toca el medallón y entra en la primera época.', group: 'start' },
+  { target: '.stage-spot.is-current .stage, .stage-spot.is-current .stage-text', text: 'Aquí empieza tu camino. Toca el cuadro y conoce a tu primer pintor.', group: 'start' },
   { target: '.chip-cuadro', text: 'Cada día, un cuadro famoso: ¿de quién es?' },
   { target: '.bottomnav a[href="#coleccion"]', text: 'Cada cuadro que reconozcas se guarda en Colección.' },
 ];
@@ -27,7 +29,8 @@ function targetRect(root, selector) {
 // Arranca la guía si es la primera vez. Devuelve una función que la cierra (para la limpieza).
 export function maybeStartCoach(root = document) {
   if (coachSeen()) return () => {};
-  const steps = COACH_STEPS.filter((s) => visible(root.querySelector(s.target)));
+  const steps = COACH_STEPS.filter((s) => visible(root.querySelector(s.target)))
+    .filter((s, i, all) => !s.group || all.findIndex((x) => x.group === s.group) === i);
   if (!steps.length) return () => {};
   markCoachSeen();
   let stop = () => {};

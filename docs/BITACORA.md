@@ -296,3 +296,23 @@ con reto («Sfumato · Sé más de pintura que el 78 % de la gente. ¿Y tú?»; 
 medias (aspa, Esc o «atrás») pide confirmación con hoja propia (`app/js/test/salida.js`). Efectos de sonido de la app
 con el ajuste «Sonidos» (`app/js/test/sonido.js`). Los pintores rusos ya no salen en el tramo fácil ni en el medio
 (`LOCAL_FAME` en `bolsa.js`). Vista previa (`app/test/portada.jpg`) rehecha con la marca Sfumato.
+
+## Medallón y rombo: paradas que cuentan (28/11)
+
+Pedido de María: la puerta y el tramo se leían como decoración. Ahora son paradas del sendero, de la misma familia
+(terracota con un libro en crema, `ui/screens/path-lore.js`), distinta de los círculos de los pintores:
+- **Medallón de la época**, en el arco de su puerta y sobre el sendero (Candy Crush): es lo único que se pulsa de la
+  puerta. El nombre va en una placa de la misma piedra, algo saliente (filete y sombra corta), sin botón. Abre la
+  presentación; si aún no se ha visto, cuenta como vista y «Seguir» continúa al cartel del tramo y al pintor, como la guía.
+  Cerrada, la hoja de lo que falta. En la salida, el medallón de la primera época va en la puerta de la muralla.
+- **Rombo del tramo**, sobre el sendero antes de su primer pintor, con su nombre en la pastilla de los pintores (sin 📖).
+  Abre el cartel; si es lo siguiente del camino, como paso («Saltar»/«Seguir») y después el pintor.
+- Sin ver: puntito coral y un respiro suave (sin él con «Reducir animaciones»). Completos: sello de oro. Al tocarlos se
+  hunden y suena el toque; zona táctil de 56 px. «Tú» se posa en el medallón o en el rombo cuando son lo siguiente (en
+  el medallón cuelga debajo, porque encima está la placa); el botón «Tú», la vista inicial y la guía de bienvenida van ahí.
+- **Ritmo:** medallón → rombo → pintores → … → prueba de época, todas las paradas a 180 de distancia vertical, también entre
+  épocas y desde la salida (`stops` en `path-layout.js`). Puentes y carteles de rama caben en el hueco sin romperlo. Prueba
+  en `tests/camino-forma.test.js`. El mapa es algo más largo; paisajes regenerados (`tools/mapa_svg.py`).
+- **Fuera la caseta** de información de la salida: «Cómo se juega» pasa a Perfil → Ajustes, junto a «Acerca de Sfumato»
+  (nunca salía sola; la guía de bienvenida sigue igual).
+- De paso, el camino en línea (letra muy grande o ventana estrecha) ya no amontona las paradas.

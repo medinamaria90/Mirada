@@ -1,6 +1,6 @@
 // Ajustes del perfil, en una hoja aparte (botón ⚙ de la cabecera): meta del día, tema, música,
 // sonidos, volumen, reducir animaciones, la sección «Superusuario» (con «Empezar de cero» y su confirmación) y,
-// «Tu cuenta» (ui/account-section.js) y, al final, los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
+// «Tu cuenta» (ui/account-section.js) y, al final, «Cómo se juega» y los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
 
 import { $, announce } from '../dom.js';
 import { icons } from '../icons.js';
@@ -55,6 +55,7 @@ export function settingsHtml(ctx) {
       ${toggle('reducedMotion', 'Reducir animaciones', s.reducedMotion)}
       ${accountHtml()}
       ${superHtml(RESET_HTML)}
+      <button type="button" class="settings-credits" data-action="how" aria-haspopup="dialog">Cómo se juega</button>
       <button type="button" class="settings-credits" data-action="about">Acerca de Sfumato</button>
       <button type="button" class="settings-credits" data-action="credits">Fuentes y créditos</button>
     </div>
@@ -107,6 +108,12 @@ export function wireSettings(ctx, el) {
     theme: (b) => {
       ctx.audio.sfx('tap');
       markThemePicker(dialog, chooseTheme(ctx.store, b.dataset.value));
+    },
+    // «Cómo se juega» (antes, en la caseta de la salida del mapa): su hoja, sobre el perfil.
+    how: () => {
+      ctx.audio.sfx('tap');
+      sheet.close();
+      import('../map-sheet.js').then((m) => m.openIntroSheet(ctx, '', $('[data-action="open-settings"]', el))).catch((err) => console.error(err));
     },
     about: () => {
       ctx.audio.sfx('tap');
