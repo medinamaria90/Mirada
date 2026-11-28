@@ -27,13 +27,28 @@ export function mediaHtml(work, focus, pos, artistName, frame, region = null) {
 
 // Texto de la tarjeta y su pie. En la última, además, la pista «Fíjate en…» (look, si la hay) y las acciones (play: false
 // si no hay nada que jugar; playLabel, su texto: «Repetir nivel» al volver a ver la de un nivel hecho; more: false sin «Ver más»).
-export function copyHtml(card, work, { last, look = '', play, playLabel = 'Jugar', more = true }) {
+// moreLabel: otro texto para «Ver más» (en «Repasar a…», la otra historia sugerida). card.kicker: un antetítulo (tarjetas de época).
+// steps: { next, questions, end? } (sesión «Repasar» y niveles): en TODAS las tarjetas, «Seguir» (destacado) e «Ir a las
+// preguntas»; en la última, encima, la otra historia sugerida (more + moreLabel) como enlace. Con `end: 'questions'` (después
+// solo vienen las preguntas), la última lleva solo «Ir a las preguntas», destacado.
+export function copyHtml(card, work, { last, look = '', play, playLabel = 'Jugar', more = true, moreLabel = 'Ver más', steps = null }) {
   const caption = captionOf(work);
-  const foot = !last || (!play && !more) ? '' : `<div class="story-actions">
-      ${more ? '<button type="button" class="btn story-more" data-st="more">Ver más</button>' : ''}
+  const foot = steps ? stepsHtml(steps, last, more ? moreLabel : '') : !last || (!play && !more) ? '' : `<div class="story-actions">
+      ${more ? `<button type="button" class="btn story-more" data-st="more">${esc(moreLabel)}</button>` : ''}
       ${play ? `<button type="button" class="btn btn-primary story-play" data-st="play">${esc(playLabel)}</button>` : ''}
     </div>`;
-  return `<div class="story-copy" tabindex="-1"><p class="story-text">${esc(card.text)}</p>
+  const kicker = card.kicker ? `<p class="story-kicker">${esc(card.kicker)}</p>` : '';
+  return `<div class="story-copy" tabindex="-1">${kicker}<p class="story-text">${esc(card.text)}</p>
       ${caption ? `<p class="story-caption">${esc(caption)}</p>` : ''}
       ${last && look ? `<p class="story-look">${icons.eye(18)}<span>${esc(look)}</span></p>` : ''}</div>${foot}`;
+}
+
+function stepsHtml(steps, last, suggest) {
+  if (last && steps.end === 'questions' && !suggest) {
+    return `<div class="story-actions"><button type="button" class="btn btn-primary story-play" data-st="play">${esc(steps.questions)}</button></div>`;
+  }
+  return `${last && suggest ? `<button type="button" class="story-suggest" data-st="more">${esc(suggest)}</button>` : ''}<div class="story-actions">
+      <button type="button" class="btn story-more" data-st="questions">${esc(steps.questions)}</button>
+      <button type="button" class="btn btn-primary story-play" data-st="${last ? 'play' : 'next'}">${esc(steps.next)}</button>
+    </div>`;
 }

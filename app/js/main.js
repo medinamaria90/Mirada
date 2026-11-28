@@ -272,7 +272,7 @@ async function boot() {
   window.addEventListener('pointerup', unlockOnce, true);
   window.addEventListener('keydown', unlockOnce, true);
 
-  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'weekly', 'challenge', 'free']);
+  const FLOW_ROUTES = new Set(['stage', 'deep', 'sala', 'review', 'srs', 'weekly', 'challenge', 'free', 'recall']);
   let firstRender = true;
   let renderToken = 0;
 
@@ -376,6 +376,7 @@ async function boot() {
       case 'era': return flow((m) => m.renderIntro(ctx, screen, route.movementId, { mode: 'shared' }));
       case 'review': return flow((m) => m.renderMovementReview(ctx, screen, route.movementId));
       case 'srs': return flow((m) => m.renderReview(ctx, screen));
+      case 'recall': return flow((m) => m.renderRecall(ctx, screen, route.recallType, route.id));
       case 'cuadro': return lazy(token, screen, loadCuadro, (m) => m.renderCuadro(ctx, screen), true);
       case 'weekly': return flow((m) => m.renderWeekly(ctx, screen));
       case 'artist': return lazy(token, screen, loadArtistPage, (m) => m.renderArtistPage(ctx, screen, route.artistId, { focus: route.focus }), true);

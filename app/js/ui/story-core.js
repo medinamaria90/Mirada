@@ -32,17 +32,19 @@ export const STORY_END = Object.freeze({
   MORE: 'more', // «Ver más»
   CLOSE: 'close', // la X, Esc o deslizar hacia abajo
   BACK: 'back', // atrás del navegador o cambio de ruta
+  QUESTIONS: 'questions', // «Ir a las preguntas» (sesión «Repasar», opts.steps)
 });
 
 // Abre la historia y devuelve una promesa que se cumple al cerrarla con { shown, ended }: los cuadros que ha enseñado y cómo
 // se cerró. opts: { cards, label (nombre accesible), accent, whoHtml (la cabecera), name (el pintor, para el texto alternativo),
 // className, override(pos, card) → otra obra para esa tarjeta, look (pista «Fíjate en…» de la última), onPlay (función, o false
 // sin botón principal), playLabel, onMore (función, o false sin «Ver más»), guest (la abre un enlace compartido: en la última
-// tarjeta tocar la cierra), shareable + onShare() → nota, history: false (no entra en el historial) }.
+// tarjeta tocar la cierra), shareable + onShare() → nota, history: false (no entra en el historial), moreLabel (otro texto para «Ver más»), steps ({ next,
+// questions }: en cada tarjeta «Seguir» e «Ir a las preguntas», sin avance solo, para leer con calma) }.
 export function runStory(ctx, opts) {
   const { index } = ctx;
   const { cards, name = '', guest = false, look = '', shareable = false } = opts;
-  const auto = !prefersReducedMotion();
+  const auto = !prefersReducedMotion() && !opts.steps;
   const useHistory = opts.history !== false;
   const opener = document.activeElement;
   const more = opts.onMore || (() => {});
@@ -102,7 +104,7 @@ export function runStory(ctx, opts) {
       // `whole`: la obra entera (sobre su fondo desenfocado), sin recorte.
       const work = base && card.whole && !override ? { ...base, whole: true } : base;
       if (work) shownIds.push(work.id);
-      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, playLabel: opts.playLabel, more: opts.onMore !== false });
+      bottom.innerHTML = copyHtml(card, work, { last, look, play: opts.onPlay !== false, playLabel: opts.playLabel, more: opts.onMore !== false, moreLabel: opts.moreLabel, steps: opts.steps || null });
       // La obra entera se coloca en el hueco que deja el texto (sin su degradado de arriba): el texto no tapa nada.
       const textH = bottom.offsetHeight - parseFloat(getComputedStyle(bottom).paddingTop || '0');
       media.style.setProperty('--story-text-h', `${Math.max(0, Math.round(textH))}px`);
@@ -180,6 +182,7 @@ export function runStory(ctx, opts) {
         else if (what === 'share') share();
         else if (what === 'play') finish(STORY_END.PLAY, typeof opts.onPlay === 'function' ? opts.onPlay : null);
         else if (what === 'more') finish(STORY_END.MORE, more);
+        else if (what === 'questions') finish(STORY_END.QUESTIONS);
         else go(what === 'next' ? 1 : -1);
         return;
       }

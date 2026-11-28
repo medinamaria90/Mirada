@@ -58,6 +58,10 @@ function planMeta(plan) {
 // para todos) y el repaso (ya lleva los fallados entre sus preguntas).
 const NO_EXTRA = new Set(['challenge', 'weekly', 'srs']);
 
+// «No lo sé» solo en el modo aprender: camino y ramas (stage), salas, Prueba de época (review), repasos (srs) y «Repasar a…».
+// Nunca en los retos (semanal, con un amigo, ronda libre): allí sería una ventaja.
+export const DUNNO_KINDS = new Set(['stage', 'sala', 'review', 'srs', 'recall']);
+
 // Tipo de la sesión anterior terminada (en memoria, sin tocar el estado): el siguiente paso nunca propone dos repasos
 // seguidos (engine/next-step.js).
 let lastKind = null;
@@ -70,7 +74,7 @@ function falladoExtras(ctx, kind, plan) {
 }
 
 // Ejecuta una ronda y la guarda tras cada respuesta para poder retomarla (state/session.js).
-function play(ctx, el, opts) {
+export function play(ctx, el, opts) {
   const { plan, accent, title, kind, extra = {}, friendScore = null, shareTopic = '', resume = null, returnTo = null, contextArtist = '' } = opts;
   const home = returnTo || 'inicio';
   const meta = { route: opts.route || currentRoute(), title, accent, kind, extra, friendScore, shareTopic, plan: planMeta(plan) };
@@ -84,6 +88,7 @@ function play(ctx, el, opts) {
     seed: plan.seed || plan.date || 1,
     label: title,
     interlude: plan.kind === 'sala',
+    dunno: DUNNO_KINDS.has(kind),
     resume,
     onSave: (snapshot) => ctx.store.update((s) => withSession(s, makeSession(meta, snapshot, Date.now()))),
     onQuit: () => {
@@ -116,6 +121,12 @@ function contextOf(returnTo, artistId) {
 // vuelven a ella y no al camino.
 function cameFrom(ctx, branchId = '') {
   return stageReturnTo(branchId, ctx.prevRoute());
+}
+
+// «Repasar a» un pintor o una época (ui/screens/recall.js, aparte: carga sus piezas al entrar).
+export function renderRecall(ctx, el, type, id) {
+  import('./recall.js').then((m) => { if (el.isConnected) m.renderRecall(ctx, el, type, id, { play, leave }); })
+    .catch((err) => { console.error(err); leave(ctx); });
 }
 
 // --- Ronda retomada -----------------------------------------------------------
@@ -342,13 +353,16 @@ function withTramo(ctx, el, artistId, show) {
 // «Jugar» (o pasar de la última tarjeta) llama a show(shown, true) con los cuadros que ha enseñado (la ronda no abre con
 // ellos); sin historia, show([], false) y quien llama decide qué enseñar antes. La X, Esc o deslizar abajo vuelven al
 // camino; «Ver más» deja en la ficha y atrás, donde lleve el navegador.
+// Historia antes de las preguntas de un nivel: en cada tarjeta «Seguir» (destacado) e «Ir a las preguntas» (ui/story-card.js).
+export const LEVEL_STORY_STEPS = { next: 'Seguir', questions: 'Ir a las preguntas', end: 'questions' };
+
 function withStory(ctx, el, artistId, level, show, { look = '', returnTo = null } = {}) {
   import('../story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look })
+    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look, steps: LEVEL_STORY_STEPS, onPlay: () => {}, onMore: false })
       .then(({ shown, ended }) => {
         if (!el.isConnected) return;
         if (ended === m.STORY_END.CLOSE) ctx.go(returnTo || 'inicio', { replace: true });
-        else if (ended === m.STORY_END.PLAY) show(shown, true);
+        else if (ended === m.STORY_END.PLAY || ended === m.STORY_END.QUESTIONS) show(shown, true);
         else if (ended === m.STORY_END.NONE) show([], false);
       }))
     .catch((err) => { console.error(err); if (el.isConnected) show([], false); });

@@ -48,12 +48,13 @@ export function watchReturn(el) {
 
 // Guía (engine/next-step.js mapGuide): lo que recomienda el juego cuando no es la parada actual, en una píldora junto al
 // «Tú» y siempre a la vista («▷ Sigue: Miguel Ángel», «▷ Repasar»). onGuide la cumple. Devuelve cómo quitarla.
-export function guideButton(el, guide, onGuide) {
+// lead: lo que va delante del texto (la cara del pintor en «Repasar a …»); sin él, ▷.
+export function guideButton(el, guide, lead, onGuide) {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'map-guide';
   button.setAttribute('aria-label', guide.label);
-  button.innerHTML = `<span class="map-guide-icon" aria-hidden="true">${icons.play(16)}</span><span class="map-guide-label">${esc(guide.label)}</span>`;
+  button.innerHTML = `<span class="map-guide-icon${lead ? ' has-face' : ''}" aria-hidden="true">${lead || icons.play(16)}</span><span class="map-guide-label">${esc(guide.label)}</span>`;
   button.addEventListener('click', () => onGuide(guide));
   el.append(button);
   return () => button.remove();

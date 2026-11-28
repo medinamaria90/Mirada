@@ -316,3 +316,30 @@ Pedido de María: la puerta y el tramo se leían como decoración. Ahora son par
 - **Fuera la caseta** de información de la salida: «Cómo se juega» pasa a Perfil → Ajustes, junto a «Acerca de Sfumato»
   (nunca salía sola; la guía de bienvenida sigue igual).
 - De paso, el camino en línea (letra muy grande o ventana estrecha) ya no amontona las paradas.
+
+## «Repasar a…»: lo que se olvida vuelve con contexto, y «No lo sé» (28/11)
+
+Pedido de María: con muchos pintores aprendidos, al jugar a uno nuevo le preguntaban por los antiguos y ya no se acordaba;
+repetir cuadros sin contexto acaba en memorizar imágenes.
+- **Detección** (`engine/recall.js`): cada respuesta de autor o de época queda en un registro corto (`progress.slips`,
+  últimas 80; un estado anterior lo recibe vacío). Un fallo cuenta para el que era la respuesta y para el elegido por error;
+  lo del propio pintor (o sala) de la ronda no cuenta. Olvidado: `RECALL_SLIPS` (3) fallos en `RECALL_WINDOW_DAYS` (14)
+  días, o menos del 50 % con 6 preguntas o más, y solo si ya lo había dominado. «No lo sé» pesa doble (`RECALL_DUNNO_WEIGHT`).
+- **Guía** (`engine/next-step.js`, regla 2 bis): «Repasar a Velázquez» / «Repasar el Barroco», con su cara, detrás de
+  «Repetir» y «Por hoy, hecho» y delante del repaso general; nunca el mismo dos veces seguidas ni tras otra sesión así. Si
+  coinciden un pintor y una época, gana lo que más falla. También en la píldora del mapa.
+- **Una sola sesión por pintor** (`ui/screens/recall.js`, `engine/recall-session.js`), la misma desde la ruta y desde la
+  ficha: primera tarjeta de su historia de nivel 1 (o la del nivel donde se concentran los fallos) con «Seguir» destacado e
+  «Ir a las preguntas» al lado; al final, una sugerencia de otra historia suya («Más de Velázquez: Sevilla ›»), «Cómo
+  reconocer a…» (2-3 rasgos y 2-3 cuadros que se abren en grande) y, si lo confunde con alguien, «Velázquez o Zurbarán»
+  con un cuadro de cada uno y una frase hecha con sus rasgos. Después, 5 preguntas con sus cuadros (primero los fallados)
+  frente a otros. La cuenta vuelve a cero al terminar. Épocas: sus tarjetas «Cuándo y dónde», «Qué cambia» y «Fíjate en»,
+  el contraste y preguntas de época.
+- **Niveles**: su historia con el mismo patrón («Seguir» / «Ir a las preguntas») y después sus preguntas.
+- **Ficha**: un único botón con lo que toca («Nivel 2 de Vermeer» o «Repasar a Vermeer»), sin la insignia de categoría (el
+  aro ya enseña el progreso); tocar un círculo hecho enseña solo su historia, con «Volver» y «Preguntas de este nivel».
+  Las etiquetas de los círculos ya no parten palabras («Comienzos»).
+- **«No lo sé»** (`ui/screens/lesson.js`), solo en el modo aprender (camino, ramas, salas, Prueba de época, repasos y
+  «Repasar a…»; nunca en retos ni en el test): enseña la buena con su «Fíjate en…» y la cara del pintor, sin sonido ni
+  rojo de fallo y sin puntos; cuenta como fallo (rompe «seguidas», vuelve al final).
+- Pruebas en `tests/recordar.test.js`.

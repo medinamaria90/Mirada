@@ -133,6 +133,10 @@ export function emptyProgress() {
     // Invitados ya presentados con su tarjeta: { artistId: 'AAAA-MM-DD' } (engine/guest-intro.js). Solo valen para
     // preguntar por ellos, no para el camino. Un estado anterior lo recibe vacío (state/schema.js mergeDefaults).
     guests: {},
+    // «Repasar a…» (engine/recall.js): últimas respuestas de autor y de época [{ t, a, c?, w, ok, d, r? }] y el último pintor o
+    // época recordados. Un estado anterior los recibe vacíos (state/schema.js mergeDefaults), sin perder nada.
+    slips: [],
+    recall: { last: '', date: '' },
   };
 }
 
