@@ -410,6 +410,9 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 .lock-note-go[hidden] { display: none; }
 .lock-note-go:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
 .stage-spot.is-right .lock-note { left: auto; right: 44px; }
+/* El medallón de una época está al pie de su sección (que recorta lo que sobresale): su globo sale hacia arriba. */
+.lore-spot:has(.lore-era) .lock-note { top: auto; bottom: 26px; }
+.stages:has(.lock-note.is-visible) { z-index: var(--map-z-sign-start); }
 /* En un cartel de rama, debajo de él (nunca sobre su texto ni sobre el mojón que puede ir encima). */
 .branch-spot .lock-note { top: calc(100% + var(--lock-note-gap)); }
 .branch-spot.is-left .lock-note { left: auto; right: 0; }
