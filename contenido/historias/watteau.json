@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Peregrinaci%C3%B3n_a_la_isla_de_Citera"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Teatro",
+   "title": "Watteau entre bastidores",
+   "cards": [
+    {
+     "text": "En París trabajó con Claude Gillot, que pintaba escenas de teatro, y luego con un decorador del palacio del Luxemburgo, donde colgaban los grandes Rubens. Allí aprendió el color.",
+     "artwork": "w3201763",
+     "source": "https://en.wikipedia.org/wiki/Antoine_Watteau"
+    },
+    {
+     "text": "Muchas de sus damas nos dan la espalda. En Las dos primas, la protagonista mira al lago y no vemos su cara: Watteau pinta la nostalgia sin decir de qué.",
+     "artwork": "w17633041",
+     "source": "https://es.wikipedia.org/wiki/Antoine_Watteau"
+    },
+    {
+     "text": "Fíjate en Mezzetin, un criado de la comedia, que canta a una ventana con su guitarra. Detrás, una estatua de mujer le da la espalda: nadie le escucha.",
+     "artwork": "w17635065",
+     "source": "https://es.wikipedia.org/wiki/Antoine_Watteau"
+    }
+   ]
   }
  ]
 }

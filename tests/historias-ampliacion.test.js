@@ -16,9 +16,6 @@ const story = (id) => (existsSync(join(dataDir, `${id}.json`)) ? JSON.parse(read
 
 // Pintores con niveles de ampliación que aún no tienen su historia, con el motivo. Se vacía por tandas.
 const PENDING = {
-  // Tanda 2 (barroco a romanticismo, en el camino)
-  ...Object.fromEntries(['artemisia', 'ribera', 'van-dyck', 'hals', 'vermeer', 'watteau', 'fragonard', 'melendez', 'david',
-    'ingres', 'friedrich', 'turner', 'gericault', 'delacroix', 'madrazo'].map((id) => [id, 'tanda 2'])),
   // Tanda 3 (realismo a vanguardias, en el camino)
   ...Object.fromEntries(['millet', 'courbet', 'rosales', 'fortuny', 'repin', 'manet', 'degas', 'renoir', 'pissarro', 'morisot',
     'sisley', 'cezanne', 'seurat', 'gauguin', 'lautrec', 'klimt', 'munch', 'romero-de-torres', 'matisse', 'kandinsky',

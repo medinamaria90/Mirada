@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Caballero_sonriente"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Grupos",
+   "title": "Hals y los retratos de grupo",
+   "cards": [
+    {
+     "text": "En Holanda, las milicias de cada ciudad se hacían retratar en grupo tras sus banquetes. Hals los pintó brindando y charlando, no en fila como hasta entonces.",
+     "artwork": "w8242264",
+     "source": "https://es.wikipedia.org/wiki/Frans_Hals"
+    },
+    {
+     "text": "Fíjate en Isaac Massa y Beatrix, recién casados: sonríen, relajados, y ella le apoya la mano en el hombro. Pocas parejas se habían dejado pintar tan a gusto.",
+     "artwork": "w2311238",
+     "source": "https://es.wikipedia.org/wiki/Frans_Hals"
+    },
+    {
+     "text": "Con más de 80 años, pobre y con una pensión de la ciudad, pintó a las regentes del asilo de ancianos de Haarlem: cuatro señoras de negro y una criada, serias como jueces.",
+     "artwork": "w5971284",
+     "source": "https://en.wikipedia.org/wiki/Frans_Hals"
+    }
+   ]
   }
  ]
 }

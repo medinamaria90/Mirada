@@ -21,6 +21,33 @@
      "source": "https://es.wikipedia.org/wiki/Carlos_I_de_Inglaterra_(Van_Dyck)"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Amberes",
+   "title": "Van Dyck, el joven de Amberes",
+   "cards": [
+    {
+     "text": "Se pintó con unos 21 años: melena, mirada segura y una mano de dedos largos. Van Dyck cuidaba su imagen como la de un caballero, aunque era hijo de un comerciante de sedas.",
+     "artwork": "w3630737",
+     "source": "https://es.wikipedia.org/wiki/Anton_van_Dyck"
+    },
+    {
+     "text": "En el taller de Rubens aprendió a pintar como él hasta confundirse. Este San Ambrosio es una versión de un cuadro de su maestro: el obispo cierra la puerta al emperador.",
+     "artwork": "w3948693",
+     "source": "https://en.wikipedia.org/wiki/Anthony_van_Dyck"
+    },
+    {
+     "text": "Fíjate en los ojos húmedos de Cornelis van der Geest, un coleccionista amigo de Rubens, y en su gorguera (el cuello de encaje), tan blanca que parece de verdad.",
+     "artwork": "w3937501",
+     "source": "https://es.wikipedia.org/wiki/Anton_van_Dyck"
+    },
+    {
+     "text": "En 1621 se fue a Italia y pasó allí seis años, sobre todo en Génova, retratando a la nobleza. Volvió convertido en el retratista más elegante de Europa.",
+     "artwork": "w3960488",
+     "source": "https://en.wikipedia.org/wiki/Anthony_van_Dyck"
+    }
+   ]
   }
  ]
 }
