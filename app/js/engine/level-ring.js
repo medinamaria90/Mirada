@@ -2,7 +2,7 @@
 // mismo en el mapa, en la tarjeta del nodo y en la ficha: los tramos del aro, los círculos de la fila y el «Nivel N de M»
 // cuentan lo mismo. El título corto de cada etapa (`short`) viene en el catálogo (tools/catalog_from_pipeline.py). Puro.
 
-import { deepStatus } from './levels.js';
+import { levelPassed, levelOpen } from './levels.js';
 import { MASTERY } from './progress.js';
 
 export const FIRST_LEVEL_SHORT = 'Quién fue';
@@ -17,17 +17,12 @@ export function levelShort(index, artistId, level) {
   return ringLevels(index, artistId).find((l) => l.level === level)?.short || '';
 }
 
-// Estado de cada nivel: 'done' (hecho), 'next' (el siguiente, solo uno) o 'locked'. El 1 está hecho con el pintor dominado;
-// los demás, con su nivel «a fondo» dominado.
+// Estado de cada nivel: 'done' (superado), 'next' (el siguiente) o 'locked', con la misma regla que todo lo demás
+// (engine/levels.js levelPassed y levelOpen).
 export function levelStates(progress, index, artistId) {
-  const mastered = Boolean(progress.artists?.[artistId]?.mastered);
-  let nextGiven = false;
   return ringLevels(index, artistId).map((l) => {
-    const done = l.level === 1 ? mastered : deepStatus(progress, index, artistId, l.level) === 'mastered';
-    if (done) return { ...l, state: 'done' };
-    if (nextGiven) return { ...l, state: 'locked' };
-    nextGiven = true;
-    return { ...l, state: 'next' };
+    if (levelPassed(progress, artistId, l.level)) return { ...l, state: 'done' };
+    return { ...l, state: levelOpen(progress, index, artistId, l.level) ? 'next' : 'locked' };
   });
 }
 

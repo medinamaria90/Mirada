@@ -81,14 +81,19 @@ export function deepRecord(progress, artistId, level) {
   return progress.deep?.[deepKey(artistId, level)] || null;
 }
 
-// Estado de un nivel «a fondo»: bloqueado hasta dominar el básico y el nivel anterior (lo empezado sigue abierto).
+// ¿Está abierto este nivel? La única regla, para el aro, la ficha, el mapa, el itinerario e imprescindibles: el 1 siempre
+// (si su pintor se puede jugar, cosa del camino); los «a fondo», con todos los niveles anteriores superados (aprobados).
+export function levelOpen(progress, index, artistId, level) {
+  if (level === 1) return true;
+  return levelPassed(progress, artistId, 1) && index.deepLevels(artistId).filter((l) => l.id < level).every((l) => levelPassed(progress, artistId, l.id));
+}
+
+// Estado de un nivel «a fondo»: 'mastered' (superado), 'locked' (levelOpen no lo abre), 'started' o 'available'.
 export function deepStatus(progress, index, artistId, level) {
   const rec = deepRecord(progress, artistId, level);
   if (rec?.mastered) return 'mastered';
-  if (rec?.plays) return 'started';
-  if (!progress.artists?.[artistId]?.mastered) return 'locked';
-  const prev = index.deepLevels(artistId).filter((l) => l.id < level).pop();
-  return !prev || deepRecord(progress, artistId, prev.id)?.mastered ? 'available' : 'locked';
+  if (!levelOpen(progress, index, artistId, level)) return 'locked';
+  return rec?.plays ? 'started' : 'available';
 }
 
 // Avance «a fondo» de un pintor: { total, mastered, next } (next: el primer nivel por hacer).
