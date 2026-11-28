@@ -57,7 +57,7 @@ export function createSync({ store, storage, stateKey, auth, remote, onRemote = 
     return true;
   }
 
-  async function save({ keepalive = false } = {}) {
+  async function save({ keepalive = false, force = false } = {}) {
     timers.clearTimeout(timer);
     timer = null;
     if (store.inTrial()) return;
@@ -65,7 +65,7 @@ export function createSync({ store, storage, stateKey, auth, remote, onRemote = 
       const payload = collectPayload(storage, stateKey);
       const xp = xpOf(payload.s);
       setStatus(STATUS.SAVING);
-      const saved = await remote.save(s, payload, { force: syncedXp !== null && xp < syncedXp, keepalive });
+      const saved = await remote.save(s, payload, { force: force || (syncedXp !== null && xp < syncedXp), keepalive });
       if (saved) syncedXp = xp;
       else await pullWith(s);
       setStatus(STATUS.OK);

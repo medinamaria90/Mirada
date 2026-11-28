@@ -1,6 +1,7 @@
 // Ajustes del perfil, en una hoja aparte (botón ⚙ de la cabecera): meta del día, tema, música,
 // sonidos, volumen, reducir animaciones, la sección «Superusuario» (con «Empezar de cero» y su confirmación) y,
-// «Tu cuenta» (ui/account-section.js) y, al final, «Cómo se juega» y los enlaces a «Acerca de Sfumato» y «Fuentes y créditos».
+// «Tu cuenta» (ui/account-section.js) y, al final, «Cómo se juega», los enlaces a «Acerca de Sfumato» y «Fuentes y créditos»
+// y «Borrar progreso» (ui/wipe-section.js).
 
 import { $, announce } from '../dom.js';
 import { icons } from '../icons.js';
@@ -12,6 +13,7 @@ import { bindSheet } from './profile-sheet.js';
 import { bindDjTaps } from '../dj-sheet.js';
 import { superHtml, wireSuper } from '../su-section.js';
 import { accountHtml, wireAccount } from '../account-section.js';
+import { wipeButtonHtml, wipeDialogHtml, wireWipe } from '../wipe-section.js';
 
 const GOAL_NAMES = { 50: 'Tranquila', 100: 'Constante', 200: 'Intensa' };
 const RING = 56;
@@ -58,6 +60,8 @@ export function settingsHtml(ctx) {
       <button type="button" class="settings-credits" data-action="how" aria-haspopup="dialog">Cómo se juega</button>
       <button type="button" class="settings-credits" data-action="about">Acerca de Sfumato</button>
       <button type="button" class="settings-credits" data-action="credits">Fuentes y créditos</button>
+      ${wipeButtonHtml()}
+      ${wipeDialogHtml()}
     </div>
   </dialog>`;
 }
@@ -89,6 +93,7 @@ export function wireSettings(ctx, el) {
   wireSuper(dialog, ctx, () => sheet.close());
   return {
     ...wireAccount(ctx, dialog),
+    ...wireWipe(ctx, dialog),
     'open-settings': (b) => { ctx.audio.sfx('tap'); sheet.open(b, '[data-action="close-sheet"]'); },
     goal: (b) => {
       ctx.audio.sfx('tap');
