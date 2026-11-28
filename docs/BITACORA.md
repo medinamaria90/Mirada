@@ -398,3 +398,7 @@ guante de Los jugadores de cartas), que ya están en la curiosidad de cada obra.
 siempre a reconocer al pintor con un rasgo de su estilo que se ve en ese cuadro. De los 629 de obras del camino, 124 ya lo
 hacían (109 antiguos de catalog_data y 15 propios) y 505 se reescribieron. Las curiosidades que contenían ya estaban en la
 curiosidad de su obra (de ahí se habían sacado), así que no se ha perdido ninguna.
+Revisión independiente con ese criterio («¿ayuda a reconocer al pintor la próxima vez?»): ~80 % lo cumplía (7/10).
+Corregidos 47: curiosidades que quedaban (gato y jilguero, perro carlino, esqueleto gigante…), datos dudosos (rayos del
+atardecer en la cruz de Friedrich, el «con espátula» de La novia judía) y más variedad en Van Eyck, Bronzino, Courbet,
+Berruguete y Degas.
