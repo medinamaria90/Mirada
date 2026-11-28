@@ -101,7 +101,7 @@ const secondaryBtn = (b) => (b.iconOnly
   : `<button class="btn btn-secondary res-btn2" data-action="${b.action}"${b.to ? ` data-to="${esc(b.to)}"` : ''}>${b.icon ? icons[b.icon](20) : ''}<span>${esc(b.label)}</span></button>`);
 
 // ↻ solo para «Repasar»; «Repetir» va sin icono.
-const STEP_ICON = { review: 'repeat', weekly: 'target', closure: 'laurel' };
+const STEP_ICON = { review: 'repeat', weekly: 'target', closure: 'laurel', recall: 'repeat' };
 
 
 // Botón principal: el siguiente paso. Al camino («Seguir», «Volver al camino») cierra como siempre; el resto va a su ruta.
@@ -110,7 +110,7 @@ function mainButtonHtml(ctx, step, primaryText) {
   if (step.kind === 'path' || step.kind === 'done') {
     return `<button class="btn btn-primary btn-wide" data-action="done" data-primary>${esc(step.kind === 'path' ? primaryText || step.label : step.label)}</button>`;
   }
-  const work = ['stop', 'debt', 'practice', 'deep', 'deepen', 'essential'].includes(step.kind) && step.artistId ? coverOf(ctx.index, step.artistId) : null;
+  const work = ['stop', 'debt', 'practice', 'deep', 'recall', 'deepen', 'essential'].includes(step.kind) && step.artistId ? coverOf(ctx.index, step.artistId) : null;
   const lead = work ? `<span class="res-next-art" aria-hidden="true"><img src="${esc(tinySrc(work))}" alt="" decoding="async"></span>`
     : STEP_ICON[step.kind] ? icons[STEP_ICON[step.kind]](20) : '';
   return `<button class="btn btn-primary btn-wide" data-action="go" data-to="${esc(step.to)}" data-primary>${lead}<span>${esc(step.label)}</span></button>`;

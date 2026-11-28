@@ -3,7 +3,7 @@
 import { esc, onAction, accentStyle } from '../dom.js';
 import { icons } from '../icons.js';
 import { page } from '../shell.js';
-import { artFrame } from '../art.js';
+import { artFrame, coverOf, tinySrc } from '../art.js';
 import { renderPathMap, pathActions, watchLandscapes, scrollToCurrent, fillPendingEras, watchMapMode, HOME_MAP } from './path-map.js';
 import { rememberMap } from './map-memory.js';
 import { liveArt } from '../map-land.js';
@@ -19,8 +19,8 @@ import { coachSeen } from '../../state/store.js';
 import { allMissingEssentials, essentialNeed, essentialOpen } from '../../engine/essentials.js';
 import { deepRoute, stageRoute } from '../router.js';
 
-// Guías que van a un nivel «a fondo» (engine/next-step.js): a su ronda directamente, no a la parada del pintor.
-const DEEP_GUIDES = ['deepen', 'essential'];
+// Guías que van a su ruta directamente (engine/next-step.js), no a la parada del pintor: «Repasar a…» y los niveles «a fondo».
+const DIRECT_GUIDES = ['recall', 'deepen', 'essential'];
 
 export function renderHome(ctx, el) {
   const { index } = ctx;
@@ -100,9 +100,10 @@ export function renderHome(ctx, el) {
     last.rememberStep(guide.kind);
     // «Profundiza en…» a la vista: cuenta para la rotación (jugar otra cosa la salta: engine/deepen.js).
     if (guide.kind === 'deepen') ctx.store.update((s) => ({ ...s, progress: deepen.noteOffer(s.progress, ctx.index, guide.offer) }));
-    guideStop = guideButton(el, guide, (g) => {
+    guideStop = guideButton(el, guide, guide.kind === 'recall' && guide.artistId ? guideFace(ctx, guide.artistId) : '', (g) => {
       ctx.audio.sfx('tap');
-      const key = g.artistId && !DEEP_GUIDES.includes(g.kind) ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
+      // «Repasar a…», los niveles «a fondo» (y la Prueba de época) van a su ruta, no a la parada del pintor o la sala.
+      const key = DIRECT_GUIDES.includes(g.kind) ? '' : g.artistId ? `artist:${g.artistId}` : g.movementId && !g.to.startsWith('repaso-') ? `sala:${g.movementId}` : '';
       // Una parada del camino: el camino va hasta ella y se toca (su tarjeta o su ronda), como «Ir»; si no, la acción.
       if (key && el.querySelector(`.stage-spot[data-step="${key}"]`)) return goToStep(key);
       return ctx.go(g.to);
@@ -201,6 +202,12 @@ function sideNow(ctx) {
 }
 
 export { scrollToCurrent };
+
+// La cara del pintor en la píldora de «Repasar a …» (su cuadro más conocido, en miniatura redonda).
+function guideFace(ctx, artistId) {
+  const work = coverOf(ctx.index, artistId);
+  return work ? `<img src="${esc(tinySrc(work))}" alt="" decoding="async">` : '';
+}
 
 // Lo que recomienda el juego cuando no es la parada actual (engine/next-step.js): el botón «Tú» se convierte en él.
 function guideFor(ctx, el, mapGuide, prevStep) {

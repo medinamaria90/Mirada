@@ -678,6 +678,16 @@ html.reduce-motion .option-art.is-tagged .marco { animation: none !important; }
 .fb-text .fb-work { margin-bottom: 0; }
 .fb-inner > .btn { flex: none; }
 .options.is-trimmed .option:not(.is-correct):not(.is-wrong) { display: none; }
+/* «No lo sé»: un enlace discreto bajo las opciones, que no compite con ellas. */
+.q-dunno { justify-self: center; display: block; min-height: 48px; margin: .1rem auto 0; padding: 0 1rem; border: 0; border-radius: var(--radius-pill); background: none; color: var(--ink-2); font: 500 .95rem/1 var(--font); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; cursor: pointer; }
+.q-dunno:hover { color: var(--ink); }
+.q-dunno:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+.options.is-trimmed .q-dunno { display: none; }
+/* Tras «No lo sé»: tono amable (sin rojo), con la cara del pintor. */
+.feedback.is-dunno { background: color-mix(in srgb, var(--accent-soft) 70%, var(--surface)); }
+.is-dunno .fb-mark { background: var(--accent-soft); color: var(--accent-ui); }
+.fb-face { flex: none; }
+.fb-face .fb-av { width: var(--fb-face); height: var(--fb-face); }
 .fb-head { display: flex; align-items: center; gap: .6rem; }
 .fb-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 999px; flex: none; }
 .is-correct .fb-mark { background: var(--ok); color: var(--surface); }

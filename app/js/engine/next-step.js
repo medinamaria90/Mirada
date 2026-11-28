@@ -7,6 +7,8 @@
 // (El contexto de un pintor manda ANTES de jugar: la última tarjeta de su historia ofrece artistStep. Al TERMINAR su ronda la
 // intención está cumplida y vale la guía global; repetirlo va como secundario, «Repetir <pintor>», en result-actions.js.)
 //   2. esta sesión cumple la meta del día → «Por hoy, hecho», con «Volver al camino»;
+//   2 bis. un pintor o una época que se le está olvidando (engine/recall.js: fallos recientes) → «Repasar a Vermeer» /
+//      «Repasar el Barroco» (nunca tras otra sesión así ni el mismo dos veces seguidas);
 //   3. repaso que traía un pintor a medias (y sigue a medias) → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»);
 //   4. 3 o más pintores a medias, o 5 o más fallados, sin repaso ni ahora ni en la sesión anterior → «Repasar»;
 //   5. nivel «a fondo» superado con el siguiente abierto, o rama con siguiente → «Siguiente: <etapa>» / «Siguiente en la rama»;
@@ -34,6 +36,7 @@ import { isoWeek } from './dates.js';
 import { rankFor } from './ranks.js';
 import { rankConditions, rankFocus } from './rank-goals.js';
 import { deepRoute, stageRoute } from '../ui/router.js';
+import { forgottenSubject, recallRoute, recallLabel, ARTIST, MOVEMENT } from './recall.js';
 
 export const REVIEW_ROUTE = 'repaso';
 export const HOME_ROUTE = 'inicio';
@@ -59,6 +62,15 @@ function canReview(count, plan, prevKind) {
 }
 
 const review = () => ({ kind: 'review', to: REVIEW_ROUTE, label: 'Repasar' });
+
+// La sesión «Repasar a Vermeer» / «Repasar el Barroco» (ui/screens/recall.js).
+const recallOf = (index, type, id) => ({ kind: 'recall', to: recallRoute(type, id), label: recallLabel(index, type, id), ...(type === MOVEMENT ? { movementId: id } : { artistId: id }) });
+
+// Regla 2 bis: lo que se le está olvidando, o null.
+export function recallStep(progress, index, today) {
+  const s = forgottenSubject(progress, index, today);
+  return s ? recallOf(index, s.type, s.id) : null;
+}
 
 // Vuelta a la pantalla con un objetivo desde la que se entró a jugar (ui/router.js GOAL_SCREENS).
 export const ORIGIN_LABEL = { perfil: 'Volver al perfil', logros: 'Volver a logros' };
@@ -99,16 +111,20 @@ export function gateEssential(progress, index) {
   return gateEssentials(progress, index, step, gate)[0] || null;
 }
 
-// Lo que toca con un pintor concreto: su siguiente nivel «a fondo» abierto o, si no, practicarlo (su ronda: sus cuadros ya
-// vistos y alguno nuevo si lo hay). Siempre dice de quién.
-export function artistStep(progress, index, artistId) {
+// Lo que toca con un pintor concreto, una sola acción que dice de quién: si se le está olvidando (con `today`), «Repasar a
+// Vermeer»; si no, su siguiente nivel «a fondo» abierto («Nivel 2 de Vermeer») o, ya dominado, «Repasar a Vermeer» (la misma
+// sesión: su historia, cómo reconocerlo y sus preguntas). Sin dominar, su nivel 1.
+export function artistStep(progress, index, artistId, today = '') {
   const a = index.artist(artistId);
   if (!a) return null;
+  const recall = today ? recallStep(progress, index, today) : null;
+  if (recall && recall.artistId === artistId) return recall;
   if (progress.artists?.[artistId]?.mastered) {
     const next = index.deepLevels(artistId).find((l) => !['mastered', 'locked'].includes(deepStatus(progress, index, artistId, l.id)));
     if (next) return { kind: 'deep', to: deepRoute(artistId, next.id), label: `Nivel ${next.id} de ${shortName(a)}`, artistId };
   }
-  return { kind: 'practice', to: stageRoute(artistId), label: `Practicar a ${shortName(a)}`, artistId };
+  if (progress.artists?.[artistId]?.mastered) return recallOf(index, ARTIST, artistId);
+  return { kind: 'practice', to: stageRoute(artistId), label: `Nivel 1 de ${shortName(a)}`, artistId };
 }
 
 export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '' } = {}) {
@@ -128,6 +144,9 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   if (ORIGIN_LABEL[origin]) return { kind: 'origin', to: origin, label: ORIGIN_LABEL[origin] };
   // 2. Meta del día cumplida en esta sesión.
   if (goalJustMet) return { kind: 'done', to: HOME_ROUTE, label: BACK_LABEL };
+  // 2 bis. Algo que se le está olvidando.
+  const recall = kind === 'recall' ? null : recallStep(progress, index, today);
+  if (recall) return recall;
   // 3. Repaso con un pintor a medias.
   if (isReviewKind(kind) && plan.started && index.artist(plan.started) && artistStatus(progress, index, plan.started) === 'started') {
     return { kind: 'stop', to: stageRoute(plan.started), label: `Sigue: ${shortName(index.artist(plan.started))}`, artistId: plan.started };

@@ -204,13 +204,14 @@ test('el contexto manda antes de jugar (sobre el pintor); al terminar su ronda, 
   const { practiceAction } = await import('../app/js/ui/screens/result-actions.js');
   const p = base();
   // Antes de jugar (última tarjeta de su historia): sobre él, diciendo de quién.
-  assert.deepEqual(artistStep(p, big, a.id), { kind: 'practice', to: `etapa-${a.id}`, label: `Practicar a ${a.short || a.name}`, artistId: a.id });
+  // Dominado y sin nivel nuevo: «Repasar a X», la sesión única (ui/screens/recall.js).
+  assert.deepEqual(artistStep(p, big, a.id), { kind: 'recall', to: `repasar-${a.id}`, label: `Repasar a ${a.short || a.name}`, artistId: a.id });
   const levels = [{ id: 2, name: 'La corte', short: 'La corte' }];
   const deepIndex = { ...big, deepLevels: (id) => (id === a.id ? levels : []), levelWorks: () => [] };
   assert.equal(artistStep(p, deepIndex, a.id).label, `Nivel 2 de ${a.short || a.name}`);
   // Al terminar: el principal es la guía global (no «Practicar a…» otra vez)…
   const s = step(p, { plan: { kind: 'stage', artistId: a.id }, outcome: outcome(0.9) });
-  assert.ok(!/^Practicar a/.test(s.label), s.label);
+  assert.ok(!/^Repasar a/.test(s.label), s.label);
   // …y repetirlo va como secundario discreto, con su nombre.
   const ctx = { index: big, today: () => TODAY, dailyDay: () => TODAY, store: { get: () => ({ progress: p }) } };
   const replay = { to: `etapa-${a.id}`, name: a.short || a.name };

@@ -67,6 +67,8 @@ export async function playStory(ctx, artistId, level, opts = {}) {
     override: (pos, card) => (level === 1 && pos === 0 && !card.region ? opening : null),
     onPlay: opts.onPlay,
     playLabel: opts.playLabel,
+    steps: opts.steps,
+    moreLabel: opts.moreLabel,
     onMore: opts.onMore === false ? false : more,
     onShare: () => shareStory({ artistId, level, title: lv.title || name }),
   });

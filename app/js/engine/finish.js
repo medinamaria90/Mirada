@@ -2,6 +2,7 @@
 // día visto, dominio de etapas y salas, medallas, meta diaria, racha y nivel. Puro.
 
 import { recordAnswer, artKey, artistKey, updateFallados } from './srs.js';
+import { logAnswers, finishRecall } from './recall.js';
 import { rankFor, RANKS } from './ranks.js';
 import { settleOffer } from './deepen.js';
 import { seenAfterRound, levelCovered, deepKey, LEVELS_MASTERY } from './levels.js';
@@ -46,6 +47,13 @@ export function finishRound(progress, index, result, today, opts = {}) {
 
   p.fallados = updateFallados(p.fallados, result.answers, today, (a) => unseen.has(a.q.artistId));
   p.seen = markSeen(p.seen, index, result.answers, today, unseen);
+  // «Repasar a…»: la sesión terminada pone a cero la cuenta de su pintor o época; las demás rondas apuntan sus respuestas.
+  if (result.kind === 'recall' && (result.artistId || result.movementId)) {
+    Object.assign(p, finishRecall(p, result.recallType, result.artistId || result.movementId, today));
+  } else {
+    const round = { artistId: result.kind === 'stage' ? result.artistId : '', movementId: result.kind === 'sala' ? result.movementId : '' };
+    p.slips = logAnswers(p.slips, result.answers, index, today, { skip: (a) => unseen.has(a.q.artistId), round });
+  }
 
   const total = result.firstTry.length;
   const score = result.firstTry.filter((v) => v === true).length;
