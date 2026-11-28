@@ -38,15 +38,17 @@ test('datos: cada época del camino tiene 2-4 imprescindibles de pintores del ca
       assert.ok(real.deepLevels(e.artistId).some((l) => l.id === e.level), `${e.artistId} sin nivel ${e.level}`);
     }
   }
-  assert.ok(essentialsOf(real, 'romanticismo').some((e) => e.artistId === 'goya' && e.level === 6), 'las pinturas negras');
+  assert.ok(essentialsOf(real, 'romanticismo').some((e) => e.artistId === 'goya' && e.level === 2), 'las pinturas negras, su nivel 2');
 });
 
-test('un imprescindible se abre con el nivel 1 dominado, sin pasar por los niveles anteriores', () => {
+test('un imprescindible es el primer «a fondo» de su pintor: se abre con el nivel 1 dominado y los siguientes, en orden', () => {
   const p = emptyProgress();
-  assert.equal(deepStatus(p, real, 'goya', 6), 'locked');
+  assert.equal(deepStatus(p, real, 'goya', 2), 'locked');
   p.artists.goya = done();
-  assert.equal(deepStatus(p, real, 'goya', 6), 'available');
-  assert.equal(deepStatus(p, real, 'goya', 3), 'locked', 'los no imprescindibles siguen en orden');
+  assert.equal(deepStatus(p, real, 'goya', 2), 'available');
+  assert.equal(deepStatus(p, real, 'goya', 3), 'locked', 'sin atajos: el nivel 3 espera al 2 aunque sea imprescindible');
+  p.deep['goya:2'] = done();
+  assert.equal(deepStatus(p, real, 'goya', 3), 'available');
 });
 
 test('puerta de época: cruzar pide los imprescindibles de ESA época; el candado dice cuál y la guía lleva a él', () => {
@@ -83,8 +85,8 @@ test('las ramas y los niveles no imprescindibles nunca bloquean; el final del ca
   for (const id of eras) assert.notEqual(stepStatus(p, real, firstOf(id)), 'locked', id);
   assert.equal(isPathMastered(p, real), true);
   assert.deepEqual(allMissingEssentials(p, real), []);
-  delete p.deep['goya:6'];
-  assert.deepEqual(allMissingEssentials(p, real).map((e) => `${e.artistId}:${e.level}`), ['goya:6']);
+  delete p.deep['goya:2'];
+  assert.deepEqual(allMissingEssentials(p, real).map((e) => `${e.artistId}:${e.level}`), ['goya:2']);
   assert.equal(stepStatus(p, real, firstOf('realismo')), 'mastered', 'lo ya jugado no se cierra');
 });
 
@@ -94,6 +96,8 @@ function midway() {
   const p = masterEras(emptyProgress(), upTo);
   masterEssentials(p, upTo.slice(0, -1));
   for (const id of upTo) p.reviews[id] = { best: 1 }; // Pruebas de época superadas: nada pendiente atrás
+  // Sin atajos, solo el nivel 2 de Goya estaría abierto: los otros dos imprescindibles, ya empezados (siguen abiertos).
+  for (const lv of [3, 4]) p.deep[`goya:${lv}`] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
   return p;
 }
 
@@ -150,9 +154,9 @@ test('rotación: tras saltar A la siguiente no es A, y A no vuelve hasta haber o
 
 test('enfriamiento: muchos saltos bajan su peso, nunca a cero, y se recupera con el tiempo', () => {
   const p = midway();
-  const c = { artistId: 'goya', level: 6, key: 'goya:6' };
+  const c = { artistId: 'goya', level: 2, key: 'goya:2' };
   const fresh = offerWeight(p, real, c, TODAY);
-  const withSkips = (n, day) => ({ ...deepenState(p), skips: { 'goya:6': Array.from({ length: n }, () => day) } });
+  const withSkips = (n, day) => ({ ...deepenState(p), skips: { 'goya:2': Array.from({ length: n }, () => day) } });
   assert.equal(offerWeight(p, real, c, TODAY, withSkips(1, TODAY)), fresh, 'un salto no enfría');
   const cold = offerWeight(p, real, c, TODAY, withSkips(3, TODAY));
   const colder = offerWeight(p, real, c, TODAY, withSkips(8, TODAY));
@@ -162,12 +166,12 @@ test('enfriamiento: muchos saltos bajan su peso, nunca a cero, y se recupera con
 });
 
 test('jugar la propuesta la acepta; jugar otra cosa cuenta como salto con su día', () => {
-  const p = noteOffer(midway(), real, 'goya:6');
-  const accepted = settleOffer(p, { kind: 'stage', artistId: 'goya', level: 6 }, TODAY);
+  const p = noteOffer(midway(), real, 'goya:2');
+  const accepted = settleOffer(p, { kind: 'stage', artistId: 'goya', level: 2 }, TODAY);
   assert.equal(deepenState(accepted).pending, '');
-  assert.equal(deepenState(accepted).skips['goya:6'], undefined);
+  assert.equal(deepenState(accepted).skips['goya:2'], undefined);
   const skipped = settleOffer(p, { kind: 'stage', artistId: 'goya' }, TODAY);
-  assert.deepEqual(deepenState(skipped).skips['goya:6'], [TODAY]);
+  assert.deepEqual(deepenState(skipped).skips['goya:2'], [TODAY]);
 });
 
 test('itinerario: «Profundiza en <pintor>: nivel N» entra antes de la parada siguiente, solo cuando toca', () => {

@@ -125,3 +125,9 @@ html.reduce-motion .res-title, html.reduce-motion .res-chip, html.reduce-motion 
 
 /* El botón principal va primero en el orden de lectura y del foco, y se ve abajo, a mano del pulgar. */
 .res-foot > [data-primary] { order: 1; }
+
+/* Medallón y nombre del pintor: abren su ficha (objetivo táctil de 48 px, foco visible por el estilo global). */
+.res-ficha-medal { display: block; padding: 0; border: 0; background: none; border-radius: 999px; cursor: pointer; margin-bottom: .85rem; }
+.res-ficha-medal .res-medal { margin-bottom: 0; }
+.res-ficha { display: inline-flex; align-items: center; gap: .3rem; min-height: 48px; padding: 0 .5rem; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.res-ficha-go { color: var(--ink-2); font-size: 1.1em; }

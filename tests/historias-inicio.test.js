@@ -73,11 +73,12 @@ test('historias: la marca de vistas se guarda por pintor y nivel (y vale en la s
   const store = {};
   globalThis.window = { localStorage: { getItem: (k) => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); } } };
   const { storySeen, markStorySeen, STORIES_KEY } = await import('../app/js/state/stories-seen.js');
+  const { STORIES_ORDER_MARK } = await import('../app/js/state/level-order.js');
   assert.equal(storySeen('x:1'), false);
   markStorySeen('x:1');
   assert.equal(storySeen('x:1'), true);
   assert.equal(storySeen('x:2'), false);
-  assert.deepEqual(JSON.parse(store[STORIES_KEY]), ['x:1']);
+  assert.deepEqual(JSON.parse(store[STORIES_KEY]), [STORIES_ORDER_MARK, 'x:1'], 'con la marca de la numeración por importancia');
   globalThis.window = { get localStorage() { throw new Error('bloqueado'); } };
   markStorySeen('y:1');
   assert.equal(storySeen('y:1'), true);

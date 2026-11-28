@@ -65,17 +65,17 @@
   "stages": [
    {
     "nivel": 2,
-    "nombre": "Formación y Asís",
-    "desde": null,
-    "hasta": 1300,
-    "fuente": "https://es.wikipedia.org/wiki/Giotto"
-   },
-   {
-    "nivel": 3,
     "nombre": "Padua y la capilla Scrovegni",
     "desde": 1301,
     "hasta": 1310,
     "fuente": "https://es.wikipedia.org/wiki/Capilla_de_los_Scrovegni"
+   },
+   {
+    "nivel": 3,
+    "nombre": "Formación y Asís",
+    "desde": null,
+    "hasta": 1300,
+    "fuente": "https://es.wikipedia.org/wiki/Giotto"
    },
    {
     "nivel": 4,
@@ -626,18 +626,18 @@
   "stages": [
    {
     "nivel": 2,
+    "nombre": "Periodo florentino",
+    "desde": 1504,
+    "hasta": 1508,
+    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio"
+   },
+   {
+    "nivel": 3,
     "nombre": "Primeros años en Umbría",
     "desde": null,
     "hasta": 1504,
     "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio",
     "nota": "Roma se parte en dos: Estancias y últimos años."
-   },
-   {
-    "nivel": 3,
-    "nombre": "Periodo florentino",
-    "desde": 1504,
-    "hasta": 1508,
-    "fuente": "https://es.wikipedia.org/wiki/Rafael_Sanzio"
    },
    {
     "nivel": 4,
@@ -673,30 +673,30 @@
   "stages": [
    {
     "nivel": 2,
-    "nombre": "Primeros años",
-    "desde": null,
-    "hasta": 1516,
+    "nombre": "Años finales",
+    "desde": 1550,
+    "hasta": 1576,
     "fuente": "https://es.wikipedia.org/wiki/Tiziano"
    },
    {
     "nivel": 3,
-    "nombre": "Madurez",
-    "desde": 1516,
-    "hasta": 1530,
-    "fuente": "https://es.wikipedia.org/wiki/Tiziano"
-   },
-   {
-    "nivel": 4,
     "nombre": "Consolidación",
     "desde": 1530,
     "hasta": 1550,
     "fuente": "https://es.wikipedia.org/wiki/Tiziano"
    },
    {
+    "nivel": 4,
+    "nombre": "Primeros años",
+    "desde": null,
+    "hasta": 1516,
+    "fuente": "https://es.wikipedia.org/wiki/Tiziano"
+   },
+   {
     "nivel": 5,
-    "nombre": "Años finales",
-    "desde": 1550,
-    "hasta": 1576,
+    "nombre": "Madurez",
+    "desde": 1516,
+    "hasta": 1530,
     "fuente": "https://es.wikipedia.org/wiki/Tiziano"
    }
   ],
@@ -1004,6 +1004,13 @@
   "stages": [
    {
     "nivel": 2,
+    "nombre": "Último periodo",
+    "desde": 1596,
+    "hasta": 1614,
+    "fuente": "https://es.wikipedia.org/wiki/El_Greco"
+   },
+   {
+    "nivel": 3,
     "nombre": "Creta, Venecia y Roma",
     "desde": null,
     "hasta": 1576,
@@ -1011,17 +1018,10 @@
     "nota": "Creta y Venecia no llegan a 5 obras: van con Roma. La llegada a Toledo se une a la madurez."
    },
    {
-    "nivel": 3,
+    "nivel": 4,
     "nombre": "Llegada y madurez en Toledo",
     "desde": 1577,
     "hasta": 1596,
-    "fuente": "https://es.wikipedia.org/wiki/El_Greco"
-   },
-   {
-    "nivel": 4,
-    "nombre": "Último periodo",
-    "desde": 1596,
-    "hasta": 1614,
     "fuente": "https://es.wikipedia.org/wiki/El_Greco"
    }
   ],
@@ -1118,11 +1118,10 @@
   "stages": [
    {
     "nivel": 2,
-    "nombre": "Italia",
-    "desde": 1600,
-    "hasta": 1608,
-    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens",
-    "nota": "«Primeros años» no tiene obras entre las candidatas."
+    "nombre": "María de Médici y misiones diplomáticas",
+    "desde": 1621,
+    "hasta": 1630,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
    },
    {
     "nivel": 3,
@@ -1133,17 +1132,18 @@
    },
    {
     "nivel": 4,
-    "nombre": "María de Médici y misiones diplomáticas",
-    "desde": 1621,
-    "hasta": 1630,
-    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
-   },
-   {
-    "nivel": 5,
     "nombre": "Última década",
     "desde": 1630,
     "hasta": 1640,
     "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Italia",
+    "desde": 1600,
+    "hasta": 1608,
+    "fuente": "https://es.wikipedia.org/wiki/Pedro_Pablo_Rubens",
+    "nota": "«Primeros años» no tiene obras entre las candidatas."
    }
   ],
   "level1": 8
@@ -1294,18 +1294,18 @@
   "stages": [
    {
     "nivel": 2,
+    "nombre": "Década prodigiosa",
+    "desde": 1630,
+    "hasta": 1640,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n"
+   },
+   {
+    "nivel": 3,
     "nombre": "Primera etapa",
     "desde": null,
     "hasta": 1629,
     "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n",
     "nota": "Sube a gran maestro (decisión de María). La propuesta indica que 1641-1658 solo tiene 2 candidatas y lo une al final."
-   },
-   {
-    "nivel": 3,
-    "nombre": "Década prodigiosa",
-    "desde": 1630,
-    "hasta": 1640,
-    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Zurbar%C3%A1n"
    },
    {
     "nivel": 4,
@@ -1334,30 +1334,30 @@
   "stages": [
    {
     "nivel": 2,
-    "nombre": "Sevilla",
-    "desde": null,
-    "hasta": 1622,
+    "nombre": "2.º viaje a Italia y última década",
+    "desde": 1649,
+    "hasta": 1660,
     "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
    },
    {
     "nivel": 3,
-    "nombre": "Corte joven y 1.er viaje a Italia",
-    "desde": 1623,
-    "hasta": 1631,
-    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
-   },
-   {
-    "nivel": 4,
     "nombre": "Madurez en Madrid",
     "desde": 1631,
     "hasta": 1648,
     "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
    },
    {
+    "nivel": 4,
+    "nombre": "Sevilla",
+    "desde": null,
+    "hasta": 1622,
+    "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
+   },
+   {
     "nivel": 5,
-    "nombre": "2.º viaje a Italia y última década",
-    "desde": 1649,
-    "hasta": 1660,
+    "nombre": "Corte joven y 1.er viaje a Italia",
+    "desde": 1623,
+    "hasta": 1631,
     "fuente": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez"
    }
   ],
@@ -1441,16 +1441,16 @@
   "stages": [
    {
     "nivel": 2,
-    "nombre": "Leiden",
-    "desde": 1625,
-    "hasta": 1631,
+    "nombre": "Primer periodo en Ámsterdam",
+    "desde": 1632,
+    "hasta": 1636,
     "fuente": "https://es.wikipedia.org/wiki/Rembrandt"
    },
    {
     "nivel": 3,
-    "nombre": "Primer periodo en Ámsterdam",
-    "desde": 1632,
-    "hasta": 1636,
+    "nombre": "Periodo tardío",
+    "desde": 1650,
+    "hasta": 1669,
     "fuente": "https://es.wikipedia.org/wiki/Rembrandt"
    },
    {
@@ -1462,9 +1462,9 @@
    },
    {
     "nivel": 5,
-    "nombre": "Periodo tardío",
-    "desde": 1650,
-    "hasta": 1669,
+    "nombre": "Leiden",
+    "desde": 1625,
+    "hasta": 1631,
     "fuente": "https://es.wikipedia.org/wiki/Rembrandt"
    }
   ],
@@ -1538,11 +1538,10 @@
   "stages": [
    {
     "nivel": 2,
-    "nombre": "Primeros encargos y años de la peste",
-    "desde": null,
-    "hasta": 1655,
-    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo",
-    "nota": "Formación y peste se unen (la fuente las enlaza). La división «frío, cálido y vaporoso» no está en el artículo de Wikipedia (decisión de María: por secciones de Wikipedia)."
+    "nombre": "Los grandes encargos",
+    "desde": 1662,
+    "hasta": 1672,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
    },
    {
     "nivel": 3,
@@ -1553,10 +1552,11 @@
    },
    {
     "nivel": 4,
-    "nombre": "Los grandes encargos",
-    "desde": 1662,
-    "hasta": 1672,
-    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo"
+    "nombre": "Primeros encargos y años de la peste",
+    "desde": null,
+    "hasta": 1655,
+    "fuente": "https://es.wikipedia.org/wiki/Bartolom%C3%A9_Esteban_Murillo",
+    "nota": "Formación y peste se unen (la fuente las enlaza). La división «frío, cálido y vaporoso» no está en el artículo de Wikipedia (decisión de María: por secciones de Wikipedia)."
    },
    {
     "nivel": 5,
@@ -1904,17 +1904,16 @@
   "stages": [
    {
     "nivel": 2,
-    "nombre": "Formación y cartones",
-    "desde": 1763,
-    "hasta": 1792,
-    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya",
-    "nota": "Zaragoza se une a los cartones; Restauración y Burdeos, a las pinturas negras (propuesta, apartado Goya). Los años se solapan en 1790-1792: gana la etapa anterior."
+    "nombre": "Restauración, Quinta del Sordo y Burdeos",
+    "desde": 1815,
+    "hasta": 1828,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
    },
    {
     "nivel": 3,
-    "nombre": "Década de los noventa",
-    "desde": 1790,
-    "hasta": 1799,
+    "nombre": "Los desastres de la guerra",
+    "desde": 1808,
+    "hasta": 1814,
     "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
    },
    {
@@ -1926,16 +1925,17 @@
    },
    {
     "nivel": 5,
-    "nombre": "Los desastres de la guerra",
-    "desde": 1808,
-    "hasta": 1814,
-    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
+    "nombre": "Formación y cartones",
+    "desde": 1763,
+    "hasta": 1792,
+    "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya",
+    "nota": "Zaragoza se une a los cartones; Restauración y Burdeos, a las pinturas negras (propuesta, apartado Goya). Los años se solapan en 1790-1792: gana la etapa anterior."
    },
    {
     "nivel": 6,
-    "nombre": "Restauración, Quinta del Sordo y Burdeos",
-    "desde": 1815,
-    "hasta": 1828,
+    "nombre": "Década de los noventa",
+    "desde": 1790,
+    "hasta": 1799,
     "fuente": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
    }
   ],
@@ -2990,18 +2990,18 @@
   "stages": [
    {
     "nivel": 2,
+    "nombre": "Exposiciones impresionistas",
+    "desde": 1871,
+    "hasta": 1882,
+    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet"
+   },
+   {
+    "nivel": 3,
     "nombre": "Formación y Salón",
     "desde": null,
     "hasta": 1870,
     "fuente": "https://es.wikipedia.org/wiki/Claude_Monet",
     "nota": "Formación y Salón van juntos (la fuente los separa sin años y son seguidos)."
-   },
-   {
-    "nivel": 3,
-    "nombre": "Exposiciones impresionistas",
-    "desde": 1871,
-    "hasta": 1882,
-    "fuente": "https://es.wikipedia.org/wiki/Claude_Monet"
    },
    {
     "nivel": 4,
@@ -3408,22 +3408,6 @@
   "stages": [
    {
     "nivel": 2,
-    "nombre": "Países Bajos",
-    "desde": 1880,
-    "hasta": 1885,
-    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
-    "nota": "Los años de la propuesta (1886-1888, 1888-1889, 1889-1890, 1890) se solapan: los cortes de mes (feb. 1888, mayo 1889, mayo 1890) son de la biografía del Museo Van Gogh; las obras fechadas solo por año se reparten a mano en ajustes.json (clave `etapa`)."
-   },
-   {
-    "nivel": 3,
-    "nombre": "Amberes y París",
-    "desde": 1886,
-    "hasta": "1888-02",
-    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
-    "corteInferido": true
-   },
-   {
-    "nivel": 4,
     "nombre": "Arlés",
     "desde": 1888,
     "hasta": "1889-05",
@@ -3431,7 +3415,7 @@
     "corteInferido": true
    },
    {
-    "nivel": 5,
+    "nivel": 3,
     "nombre": "Saint-Rémy",
     "desde": 1889,
     "hasta": "1890-05",
@@ -3439,11 +3423,27 @@
     "corteInferido": true
    },
    {
-    "nivel": 6,
+    "nivel": 4,
     "nombre": "Auvers",
     "desde": 1890,
     "hasta": 1890,
     "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh"
+   },
+   {
+    "nivel": 5,
+    "nombre": "Países Bajos",
+    "desde": 1880,
+    "hasta": 1885,
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "nota": "Los años de la propuesta (1886-1888, 1888-1889, 1889-1890, 1890) se solapan: los cortes de mes (feb. 1888, mayo 1889, mayo 1890) son de la biografía del Museo Van Gogh; las obras fechadas solo por año se reparten a mano en ajustes.json (clave `etapa`)."
+   },
+   {
+    "nivel": 6,
+    "nombre": "Amberes y París",
+    "desde": 1886,
+    "hasta": "1888-02",
+    "fuente": "https://es.wikipedia.org/wiki/Vincent_van_Gogh",
+    "corteInferido": true
    }
   ],
   "level1": 8
@@ -3655,18 +3655,18 @@
   "stages": [
    {
     "nivel": 2,
+    "nombre": "Culminación",
+    "desde": 1900,
+    "hasta": 1910,
+    "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla"
+   },
+   {
+    "nivel": 3,
     "nombre": "Formación y consolidación",
     "desde": 1863,
     "hasta": 1899,
     "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla",
     "nota": "Formación se une a la consolidación."
-   },
-   {
-    "nivel": 3,
-    "nombre": "Culminación",
-    "desde": 1900,
-    "hasta": 1910,
-    "fuente": "https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla"
    },
    {
     "nivel": 4,
