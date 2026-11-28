@@ -20,11 +20,11 @@ const masterAll = (p, id) => { for (const l of real.deepLevels(id)) p.deep[`${id
 
 test('niveles del aro: el 1 («Quién fue») y las etapas con historia, con el título corto de su historia', () => {
   const levels = ringLevels(real, 'velazquez');
-  assert.deepEqual(levels.map((l) => l.short), [FIRST_LEVEL_SHORT, 'Sevilla', 'La corte', 'Madrid', 'Roma']);
+  assert.deepEqual(levels.map((l) => l.short), [FIRST_LEVEL_SHORT, 'Roma', 'Madrid', 'Sevilla', 'La corte']);
   const told = story('velazquez').levels.filter((l) => l.level >= 2);
   assert.deepEqual(levels.slice(1).map((l) => [l.level, l.short]), told.map((l) => [l.level, l.stage]), 'el mismo título en catálogo e historia');
-  assert.equal(levelShort(real, 'velazquez', 3), 'La corte');
-  assert.equal(stageTitle(real.artist('velazquez'), real.deepLevels('velazquez')[1]), 'La corte', 'la ronda usa el mismo título');
+  assert.equal(levelShort(real, 'velazquez', 3), 'Madrid');
+  assert.equal(stageTitle(real.artist('velazquez'), real.deepLevels('velazquez')[1]), 'Madrid', 'la ronda usa el mismo título');
 });
 
 test('un pintor con una sola etapa «a fondo» tiene dos tramos y dos círculos, con su título corto (Berruguete, Botticelli)', () => {

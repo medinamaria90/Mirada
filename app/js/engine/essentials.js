@@ -4,7 +4,10 @@
 //   · el final del camino («Camino completo», «Museo completo») exige todos;
 //   · quien ya cruzó una puerta no queda bloqueado hacia atrás (eraCrossed): lo que le falte solo se le ofrece antes;
 //   · los demás niveles y las ramas nunca bloquean.
+// Son los primeros «a fondo» de su pintor (los niveles van por importancia): se abren en orden, sin atajos.
 // Puro y sin depender de progress.js (que lo usa para las puertas).
+
+import { deepStatus } from './levels.js';
 
 const isPlayed = (rec) => (Number(rec?.plays) || 0) > 0;
 
@@ -50,11 +53,10 @@ export function gateEssentials(progress, index, step, gate) {
   return missingEssentials(progress, index, from);
 }
 
-// ¿Se puede jugar ya su nivel? (si no, primero hay que terminar el nivel 1 de su pintor).
-// (engine/levels.js deepStatus: un imprescindible se abre con el nivel 1 dominado; lo empezado sigue abierto).
-export const essentialOpen = (progress, index, e) => Boolean(progress.artists?.[e.artistId]?.mastered || progress.deep?.[essentialKey(e)]?.plays);
+// ¿Se puede jugar ya su nivel? (si no, primero el nivel 1 de su pintor y, si es su nivel 3 o 4, los imprescindibles de antes).
+export const essentialOpen = (progress, index, e) => deepStatus(progress, index, e.artistId, e.level) !== 'locked';
 
 // Lo que falta, sin tiempo ni nivel (botón de la guía): «Te falta conocer las pinturas negras de Goya».
 export const essentialNeed = (e) => `Te falta conocer ${e.title}`;
-// Texto del candado, con el nivel: «Te falta conocer las pinturas negras de Goya (nivel 6)».
+// Texto del candado, con el nivel: «Te falta conocer las pinturas negras de Goya (nivel 2)».
 export const essentialLock = (e) => `${essentialNeed(e)} (nivel ${e.level})`;

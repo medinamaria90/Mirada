@@ -1,5 +1,8 @@
 // Niveles de un pintor en el catálogo grande: el básico (nivel 1, «Conoce a» + ronda) y los «a fondo»
 // (2..n, una ronda propia por etapa de su vida). Cobertura de obras vistas, estado y avance. Puro.
+// Los «a fondo» van por importancia, no por fecha (decisión de María, 28/11): los imprescindibles
+// (contenido/imprescindibles.json) son el nivel 2 y, si el pintor tiene varios, los siguientes; cada historia dice en
+// qué momento de su vida estamos.
 //
 // Regla de dominio (decisión de María): un nivel se domina viendo TODAS sus obras (las de «Conoce a»,
 // al jugar, y las preguntadas en las rondas) y con ≥ 75 % de aciertos en la ronda.
@@ -49,14 +52,12 @@ export function deepRecord(progress, artistId, level) {
   return progress.deep?.[deepKey(artistId, level)] || null;
 }
 
-// Estado de un nivel «a fondo»: bloqueado hasta dominar el básico y el nivel anterior.
+// Estado de un nivel «a fondo»: bloqueado hasta dominar el básico y el nivel anterior (lo empezado sigue abierto).
 export function deepStatus(progress, index, artistId, level) {
   const rec = deepRecord(progress, artistId, level);
   if (rec?.mastered) return 'mastered';
   if (rec?.plays) return 'started';
   if (!progress.artists?.[artistId]?.mastered) return 'locked';
-  // Un imprescindible se abre con el nivel 1 dominado, sin pasar por los anteriores (engine/essentials.js).
-  if (index.essential?.(artistId, level)) return 'available';
   const prev = index.deepLevels(artistId).filter((l) => l.id < level).pop();
   return !prev || deepRecord(progress, artistId, prev.id)?.mastered ? 'available' : 'locked';
 }
