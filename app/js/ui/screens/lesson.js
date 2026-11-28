@@ -22,6 +22,8 @@ import { metArtistIds } from '../../engine/painters.js';
 
 const MAX_SUBSTITUTIONS = 3;
 const COMBO_SHOW = 3; // aciertos seguidos a partir de los que se ve el indicador
+// Último refuerzo «Fíjate en…» visto de cada pintor, para no repetirlo en la ronda siguiente (dura la sesión).
+const recentHints = new Map();
 
 // config: { questions, extras?, accent, seed, kind, label, interlude?, onDone(summary), onQuit(), resume?, onSave? }
 // extras: preguntas que no cuentan, al final (cuadros fallados en rondas anteriores).
@@ -304,7 +306,7 @@ export function runLesson(ctx, el, config) {
 
   function showFeedback(q, correct, gained, retry, chosenId) {
     const subject = index.artwork(q.type === 'which' ? q.targetArtworkId : q.artworkId);
-    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId });
+    const fb = feedbackFor(index, q, correct, traitMemo, rng, { retry, chosenId, recent: recentHints });
     const caption = subject ? `<p class="fb-work"><em>${esc(subject.title)}</em>${subject.year ? ` · ${esc(subject.year)}` : ''}</p>` : '';
     // El nombre del pintor abre su ficha: la línea «quién» o, en «Es de X», el propio título.
     const who = fb.who ? `<p class="fb-who">${artistLink(fb.artistId, fb.who)}</p>` : '';

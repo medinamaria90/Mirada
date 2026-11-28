@@ -57,6 +57,7 @@ const loadCredits = () => import('./ui/screens/credits.js');
 const loadAbout = () => import('./ui/screens/about.js');
 const loadCuadro = () => import('./ui/screens/cuadro-dia.js');
 const loadCuadroData = () => import('./ui/cuadro-data.js');
+const loadEraEnd = () => import('./ui/screens/era-end.js');
 
 async function loadJson(path) {
   const res = await fetch(path, { cache: 'no-cache' });
@@ -387,6 +388,7 @@ async function boot() {
       case 'collection': return lazy(token, screen, loadCollection, (m) => m.renderCollection(ctx, screen), true);
       case 'profile': return lazy(token, screen, loadProfile, (m) => m.renderProfile(ctx, screen));
       case 'medals': return lazy(token, screen, loadProfile, (m) => m.renderMedals(ctx, screen));
+      case 'closure': return lazy(token, screen, loadEraEnd, (m) => m.renderEraEnd(ctx, screen, route.key), true);
       case 'credits': return lazy(token, screen, loadCredits, (m) => m.renderCredits(ctx, screen), true);
       case 'about': return lazy(token, screen, loadAbout, (m) => m.renderAbout(ctx, screen), true);
       default:
@@ -406,6 +408,8 @@ async function boot() {
   // Después de pintar: textos del catálogo, audio y las pantallas que vendrán.
   whenIdle(() => {
     ensureText();
+    // Cierres de época: quien ya traía épocas cerradas no los ve de golpe (engine/era-end.js; fuera del arranque).
+    import('./engine/era-end.js').then((m) => store.update((s) => { const progress = m.seedClosures(s.progress, index); return progress === s.progress ? s : { ...s, progress }; })).catch((err) => console.error(err));
     loadFlows().catch(() => {});
     loadCuadroChip(); // el detalle de hoy en la cabecera (hasta entonces, el icono)
     import('./ui/dj-mode.js').then((m) => m.startDjIfOn()).catch(() => {}); // modo secreto «afinar música»

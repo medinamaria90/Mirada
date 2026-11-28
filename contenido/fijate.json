@@ -3,7 +3,8 @@
  "w2327759": {
   "text": "Fíjate en los demonios que zarandean a san Antonio en el aire: escamas, púas, alas y plumas.",
   "source": "Kimbell Art Museum, «The Torment of Saint Anthony»",
-  "por": "obra de juventud copiada de un grabado de Schongauer: no hay cuerpos de escultor"
+  "por": "obra de juventud copiada de un grabado de Schongauer: no hay cuerpos de escultor",
+  "sinPistas": "todos"
  },
  "w1142058": {
   "sin": [
@@ -15,13 +16,21 @@
   "sin": "todos",
   "por": "sin terminar: solo el dibujo y la primera capa parda",
   "text": "Fíjate en el cuerpo flaco del santo, estudiado como por un anatomista, y en el león apenas esbozado.",
-  "source": "Museos Vaticanos, «San Jerónimo»"
+  "source": "Museos Vaticanos, «San Jerónimo»",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w1638622": {
   "sin": "todos",
   "por": "sin terminar: solo el dibujo y la primera capa parda",
   "text": "Fíjate en el corro de caras asombradas alrededor de la Virgen, que salen de la sombra sin contorno.",
-  "source": "Galería Uffizi, «Adoración de los Magos»"
+  "source": "Galería Uffizi, «Adoración de los Magos»",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w186953": {
   "sin": [
@@ -36,7 +45,10 @@
    0,
    3
   ],
-  "por": "abajo, gente agitada en penumbra: nada de calma"
+  "por": "abajo, gente agitada en penumbra: nada de calma",
+  "sinPistas": [
+   3
+  ]
  },
  "w1848811": {
   "sin": [
@@ -310,59 +322,109 @@
   "sin": "todos",
   "por": "etapa de Creta o de Italia, antes de su estilo de Toledo",
   "text": "Fíjate en el oro y las figuras quietas, como en un icono: así pintaba en Creta, antes de Italia.",
-  "source": "Syros, Agios Nikolaos in Ermoupolis, «Tránsito de la Virgen»"
+  "source": "Syros, Agios Nikolaos in Ermoupolis, «Tránsito de la Virgen»",
+  "sinPistas": "todos"
  },
  "w15711253": {
   "sin": "todos",
-  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo"
+  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo",
+  "sinPistas": [
+   0,
+   1,
+   3,
+   4
+  ]
  },
  "w3208041": {
   "sin": "todos",
-  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo"
+  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo",
+  "sinPistas": [
+   0,
+   1,
+   3,
+   4
+  ]
  },
  "w9026835": {
   "sin": "todos",
-  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo"
+  "por": "etapa de Creta o de Italia, antes de su estilo de Toledo",
+  "sinPistas": [
+   0,
+   1,
+   3,
+   4
+  ]
  },
  "w3937561": {
   "sin": "todos",
   "por": "retrato: sin cuerpos estirados ni colores ácidos",
   "text": "Fíjate en el libro abierto que nos muestra y en el paisaje de tormenta de la ventana.",
-  "source": "Museo Nacional de Capodimonte, «Retrato de Giulio Clovio»"
+  "source": "Museo Nacional de Capodimonte, «Retrato de Giulio Clovio»",
+  "sinPistas": [
+   0,
+   1,
+   3
+  ]
  },
  "w6402081": {
   "sin": "todos",
   "por": "retrato: sin cuerpos estirados ni colores ácidos",
   "text": "Fíjate en la cara alargada y pálida y en la mano abierta sobre el pecho, de dedos finos.",
-  "source": "Museo del Prado, «El caballero de la mano en el pecho»"
+  "source": "Museo del Prado, «El caballero de la mano en el pecho»",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w5712837": {
   "sin": "todos",
-  "por": "retrato: sin cuerpos estirados ni colores ácidos"
+  "por": "retrato: sin cuerpos estirados ni colores ácidos",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w6106760": {
   "sin": "todos",
   "por": "retrato: sin cuerpos estirados ni colores ácidos",
   "text": "Fíjate en la paleta y los pinceles del hijo del pintor, de cara alargada, sobre fondo oscuro.",
-  "source": "Museo de Bellas Artes de Sevilla, «Retrato de Jorge Manuel Theotocópuli»"
+  "source": "Museo de Bellas Artes de Sevilla, «Retrato de Jorge Manuel Theotocópuli»",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w949323": {
   "sin": "todos",
   "por": "retrato: sin cuerpos estirados ni colores ácidos",
   "text": "Fíjate en el hábito blanco y negro y en la cara alargada y pálida, a pinceladas sueltas.",
-  "source": "Museo de Bellas Artes de Boston, «Retrato de Fray Hortensio Paravicino»"
+  "source": "Museo de Bellas Artes de Boston, «Retrato de Fray Hortensio Paravicino»",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w5966793": {
   "sin": "todos",
   "por": "escena a la luz de una brasa, cálida y sin alargar",
   "text": "Fíjate en la brasa que ilumina las caras desde abajo, en la oscuridad: la luz nace del fuego.",
-  "source": "Museo del Prado, «La fábula»"
+  "source": "Museo del Prado, «La fábula»",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w2293905": {
   "sin": "todos",
   "por": "una cabeza pintada sobre un escudo: sin fondo negro ni gente de la calle",
   "text": "Fíjate en la boca abierta en un grito y en la sangre que salta: pintado en el instante mismo.",
-  "source": "Galería Uffizi, «Cabeza de Medusa»"
+  "source": "Galería Uffizi, «Cabeza de Medusa»",
+  "sinPistas": [
+   0,
+   1,
+   2,
+   4
+  ]
  },
  "w2011510": {
   "sin": [
@@ -370,7 +432,10 @@
    1,
    2
   ],
-  "por": "obra de juventud: fondo claro, sin foco dramático"
+  "por": "obra de juventud: fondo claro, sin foco dramático",
+  "sinPistas": [
+   4
+  ]
  },
  "w2610936": {
   "sin": [
@@ -378,7 +443,10 @@
    1,
    2
   ],
-  "por": "obra de juventud: fondo claro, sin foco dramático"
+  "por": "obra de juventud: fondo claro, sin foco dramático",
+  "sinPistas": [
+   4
+  ]
  },
  "w2610675": {
   "sin": [
@@ -386,7 +454,10 @@
    1,
    2
   ],
-  "por": "obra de juventud: fondo claro, sin foco dramático"
+  "por": "obra de juventud: fondo claro, sin foco dramático",
+  "sinPistas": [
+   4
+  ]
  },
  "w655705": {
   "sin": [
@@ -394,7 +465,10 @@
    1,
    2
   ],
-  "por": "obra de juventud: fondo claro, sin foco dramático"
+  "por": "obra de juventud: fondo claro, sin foco dramático",
+  "sinPistas": [
+   4
+  ]
  },
  "w663133": {
   "sin": [
@@ -402,61 +476,101 @@
    1,
    2
   ],
-  "por": "obra de juventud: fondo claro, sin foco dramático"
+  "por": "obra de juventud: fondo claro, sin foco dramático",
+  "sinPistas": [
+   4
+  ]
  },
  "w2270291": {
   "sin": "todos",
   "por": "bodegón de fondo claro, sin gente",
   "text": "Fíjate en el cesto, que asoma por el borde de la mesa a la altura de tus ojos, sobre un fondo claro.",
-  "source": "Pinacoteca Ambrosiana, «Cesto con frutas»"
+  "source": "Pinacoteca Ambrosiana, «Cesto con frutas»",
+  "sinPistas": "todos"
  },
  "w1087226": {
   "sin": "todos",
   "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
   "text": "Fíjate en los ajos, los huevos y el pescado, con luz dura sobre fondo oscuro.",
-  "source": "National Gallery de Londres, «Cristo en casa de Marta y María»"
+  "source": "National Gallery de Londres, «Cristo en casa de Marta y María»",
+  "sinPistas": [
+   0,
+   1,
+   3
+  ]
  },
  "w2627810": {
   "sin": "todos",
   "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
   "text": "Fíjate en el cántaro enorme y en la luz que cae de lado, con fondo oscuro: la Sevilla de 1620.",
-  "source": "Apsley House, «El aguador de Sevilla»"
+  "source": "Apsley House, «El aguador de Sevilla»",
+  "sinPistas": [
+   0,
+   1,
+   3
+  ]
  },
  "w2471800": {
   "sin": "todos",
   "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
   "text": "Fíjate en la luz dura que cae de la izquierda sobre la mujer y los cacharros, con el fondo negro.",
-  "source": "Galerías nacionales de Escocia, «Vieja friendo huevos»"
+  "source": "Galerías nacionales de Escocia, «Vieja friendo huevos»",
+  "sinPistas": [
+   0,
+   1,
+   3
+  ]
  },
  "w3075292": {
   "sin": "todos",
   "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
   "text": "Fíjate en las manos curtidas y la luz dura de lado: un santo con cara de vecino de Sevilla.",
-  "source": "Museo Nacional de Arte de Cataluña, «San Pablo»"
+  "source": "Museo Nacional de Arte de Cataluña, «San Pablo»",
+  "sinPistas": [
+   0,
+   1,
+   3
+  ]
  },
  "w389198": {
   "sin": "todos",
   "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
   "text": "Fíjate en la luz dura sobre caras y manos, con el fondo oscuro: pintura de Sevilla, de juventud.",
-  "source": "Gemäldegalerie de Berlín, «Tres músicos»"
+  "source": "Gemäldegalerie de Berlín, «Tres músicos»",
+  "sinPistas": [
+   0,
+   1,
+   3
+  ]
  },
  "w4274886": {
   "sin": "todos",
   "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
   "text": "Fíjate en los cacharros de la mesa, con luz dura y fondo oscuro: el bodegón sevillano.",
-  "source": "Instituto de Arte de Chicago, «La mulata»"
+  "source": "Instituto de Arte de Chicago, «La mulata»",
+  "sinPistas": [
+   0,
+   1,
+   3
+  ]
  },
  "w7917255": {
   "sin": "todos",
   "por": "etapa de Sevilla: tenebrista y precisa, sin grises ni manchas",
   "text": "Fíjate en la cara arrugada y la mirada firme, con el crucifijo empuñado: realismo sin adornos.",
-  "source": "Museo del Prado, «La venerable madre Jerónima de la Fuente»"
+  "source": "Museo del Prado, «La venerable madre Jerónima de la Fuente»",
+  "sinPistas": [
+   0,
+   1,
+   3
+  ]
  },
  "w2528741": {
   "sin": "todos",
   "por": "cuerpo liso sobre fondo negro: sin grises ni manchas",
   "text": "Fíjate en el cuerpo sereno sobre el fondo negro, sin paisaje: cuatro clavos y los pies apoyados.",
-  "source": "Museo del Prado, «Cristo crucificado»"
+  "source": "Museo del Prado, «Cristo crucificado»",
+  "sinPistas": "todos"
  },
  "w1240092": {
   "sin": [
@@ -464,14 +578,20 @@
    1,
    3
   ],
-  "por": "un retrato en rojos, no en grises"
+  "por": "un retrato en rojos, no en grises",
+  "sinPistas": [
+   1
+  ]
  },
  "w5971284": {
   "sin": [
    0,
    2
   ],
-  "por": "retrato de grupo serio: nadie sonríe"
+  "por": "retrato de grupo serio: nadie sonríe",
+  "sinPistas": [
+   1
+  ]
  },
  "w2646680": {
   "sin": [
@@ -525,7 +645,12 @@
   "sin": "todos",
   "por": "paisaje claro con agua: sin penumbra dorada",
   "text": "Fíjate en el brillo de las sedas en la orilla y en la ciudad dorada del fondo.",
-  "source": "Museo J. Paul Getty, «El rapto de Europa»"
+  "source": "Museo J. Paul Getty, «El rapto de Europa»",
+  "sinPistas": [
+   0,
+   1,
+   4
+  ]
  },
  "w2246489": {
   "sin": [
@@ -535,7 +660,10 @@
   ],
   "por": "marina de verdes y azules, de pintura lisa",
   "text": "Fíjate en la luz que entra por la izquierda y deja medio barco en penumbra, como un foco.",
-  "source": "Museo Isabella Stewart Gardner, «La tormenta en el mar de Galilea»"
+  "source": "Museo Isabella Stewart Gardner, «La tormenta en el mar de Galilea»",
+  "sinPistas": [
+   1
+  ]
  },
  "w63692": {
   "sin": [
@@ -675,7 +803,11 @@
    1,
    3
   ],
-  "por": "cartón para tapiz: colores claros y alegres"
+  "por": "cartón para tapiz: colores claros y alegres",
+  "sinPistas": [
+   2,
+   3
+  ]
  },
  "w3825327": {
   "sin": [
@@ -685,7 +817,11 @@
   ],
   "por": "cartón para tapiz: colores claros y alegres",
   "text": "Fíjate en los colores claros y alegres: es un cartón, el modelo para un tapiz de palacio.",
-  "source": "Museo del Prado, «La gallina ciega»"
+  "source": "Museo del Prado, «La gallina ciega»",
+  "sinPistas": [
+   2,
+   3
+  ]
  },
  "w3788057": {
   "sin": [
@@ -695,7 +831,11 @@
   ],
   "por": "cartón para tapiz: colores claros y alegres",
   "text": "Fíjate en Madrid al fondo y en el gentío diminuto de fiesta, en colores claros: un boceto de tapiz.",
-  "source": "Museo del Prado, «La pradera de San Isidro»"
+  "source": "Museo del Prado, «La pradera de San Isidro»",
+  "sinPistas": [
+   2,
+   3
+  ]
  },
  "w952796": {
   "sin": [
@@ -705,7 +845,11 @@
   ],
   "por": "cartón para tapiz: colores claros y alegres",
   "text": "Fíjate en el muñeco de trapo por el aire y en las cuatro jóvenes que lo mantean, en colores claros.",
-  "source": "Museo del Prado, «El pelele»"
+  "source": "Museo del Prado, «El pelele»",
+  "sinPistas": [
+   2,
+   3
+  ]
  },
  "w3543898": {
   "sin": [
@@ -715,7 +859,11 @@
   ],
   "por": "obra académica de pintura lisa",
   "text": "Fíjate en el cuerpo pálido y liso sobre el fondo negro: una obra aún académica, de juventud.",
-  "source": "Museo del Prado, «Cristo crucificado»"
+  "source": "Museo del Prado, «Cristo crucificado»",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w3825362": {
   "sin": [
@@ -723,7 +871,11 @@
    1,
    3
   ],
-  "por": "obra académica de pintura lisa"
+  "por": "obra académica de pintura lisa",
+  "sinPistas": [
+   0,
+   1
+  ]
  },
  "w884782": {
   "sin": [
@@ -743,7 +895,10 @@
   "sin": "todos",
   "por": "obra de juventud, oscura y sin bruma dorada",
   "text": "Fíjate en la torre oscura contra el cielo y en la niebla que llena el valle.",
-  "source": "Biblioteca Nacional de Gales, «Castillo Dolbadarn»"
+  "source": "Biblioteca Nacional de Gales, «Castillo Dolbadarn»",
+  "sinPistas": [
+   1
+  ]
  },
  "w7733769": {
   "sin": [
@@ -751,7 +906,10 @@
    2,
    3
   ],
-  "por": "tormenta oscura, sin bruma dorada"
+  "por": "tormenta oscura, sin bruma dorada",
+  "sinPistas": [
+   1
+  ]
  },
  "w3119110": {
   "sin": [
@@ -759,7 +917,10 @@
    2,
    3
   ],
-  "por": "retrato tranquilo, sin rojos ni caos"
+  "por": "retrato tranquilo, sin rojos ni caos",
+  "sinPistas": [
+   3
+  ]
  },
  "w1212737": {
   "sin": [
@@ -788,7 +949,10 @@
    2,
    3
   ],
-  "por": "figuras grandes y sólidas, sin agua"
+  "por": "figuras grandes y sólidas, sin agua",
+  "sinPistas": [
+   3
+  ]
  },
  "w10322900": {
   "sin": [
@@ -796,13 +960,21 @@
    2,
    3
   ],
-  "por": "figuras grandes y sólidas, sin agua"
+  "por": "figuras grandes y sólidas, sin agua",
+  "sinPistas": [
+   3
+  ]
  },
  "w829572": {
   "sin": "todos",
   "por": "retrato de cuerpo entero, oscuro y acabado",
   "text": "Fíjate en la seda verde y negra del vestido, que brilla al girarse: aún antes del impresionismo.",
-  "source": "Galería de arte de Bremen, «Camille»"
+  "source": "Galería de arte de Bremen, «Camille»",
+  "sinPistas": [
+   0,
+   2,
+   3
+  ]
  },
  "w681876": {
   "sin": [
@@ -960,17 +1132,28 @@
   "sin": "todos",
   "por": "obra de juventud, antes del oro",
   "text": "Fíjate en los cientos de caras diminutas del público, cada una un retrato: aún es pintura académica.",
-  "source": "Museo de Viena, «Auditorium of the old Burgtheater»"
+  "source": "Museo de Viena, «Auditorium of the old Burgtheater»",
+  "sinPistas": [
+   3,
+   4
+  ]
  },
  "w107598562": {
   "sin": "todos",
   "por": "obra de juventud, antes del oro",
   "text": "Fíjate en la luz de las velas sobre los vestidos, en manchas suaves y sin nada de oro.",
-  "source": "Museo Leopold, «Schubert at the Piano I»"
+  "source": "Museo Leopold, «Schubert at the Piano I»",
+  "sinPistas": [
+   3,
+   4
+  ]
  },
  "w114573173": {
   "sin": "todos",
-  "por": "obra de juventud, antes del oro"
+  "por": "obra de juventud, antes del oro",
+  "sinPistas": [
+   4
+  ]
  },
  "w18748731": {
   "sin": [
@@ -978,7 +1161,8 @@
    1,
    2
   ],
-  "por": "obra temprana, sin líneas ondulantes ni angustia"
+  "por": "obra temprana, sin líneas ondulantes ni angustia",
+  "sinPistas": "todos"
  },
  "w18753113": {
   "sin": [
@@ -986,11 +1170,15 @@
    1,
    2
   ],
-  "por": "obra temprana, sin líneas ondulantes ni angustia"
+  "por": "obra temprana, sin líneas ondulantes ni angustia",
+  "sinPistas": "todos"
  },
  "w18890744": {
   "sin": "todos",
-  "por": "calle a lo impresionista"
+  "por": "calle a lo impresionista",
+  "sinPistas": "todos",
+  "text": "Fíjate en el bulevar visto desde un balcón, con toques rápidos de color, a lo impresionista.",
+  "source": "Museo Nacional de Arte, Arquitectura y Diseño, «Rue Lafayette»"
  },
  "w18705476": {
   "sin": "todos",
@@ -1018,13 +1206,20 @@
  },
  "w3899880": {
   "sin": "todos",
-  "por": "antes de los puntitos"
+  "por": "antes de los puntitos",
+  "sinPistas": [
+   0,
+   1,
+   2,
+   4
+  ]
  },
  "w3965263": {
   "sin": "todos",
   "por": "antes de los puntitos",
   "text": "Fíjate en los troncos verticales y en los toques de color cruzados: aún no son puntitos.",
-  "source": "Museo Metropolitano de Arte, «The Forest at Pontaubert»"
+  "source": "Museo Metropolitano de Arte, «The Forest at Pontaubert»",
+  "sinPistas": "todos"
  },
  "w2656755": {
   "sin": [
@@ -1032,7 +1227,13 @@
    1,
    2
   ],
-  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques"
+  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques",
+  "sinPistas": [
+   0,
+   1,
+   2,
+   3
+  ]
  },
  "w31702677": {
   "sin": [
@@ -1040,7 +1241,13 @@
    1,
    2
   ],
-  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques"
+  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques",
+  "sinPistas": [
+   0,
+   1,
+   2,
+   3
+  ]
  },
  "w3929306": {
   "sin": [
@@ -1048,7 +1255,13 @@
    1,
    2
   ],
-  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques"
+  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques",
+  "sinPistas": [
+   0,
+   1,
+   2,
+   3
+  ]
  },
  "w50643443": {
   "sin": [
@@ -1056,43 +1269,67 @@
    1,
    2
   ],
-  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques"
+  "por": "obra temprana, oscura y de pincelada gruesa, sin bloques",
+  "sinPistas": [
+   0,
+   1,
+   2,
+   3
+  ]
  },
  "w4528214": {
   "sin": "todos",
   "por": "antes de Bretaña y Tahití: sin colores planos",
   "text": "Fíjate en la piel con pliegues y sombras, sin idealizar: antes de Tahití, su pintura era realista.",
-  "source": "Gliptoteca Ny Carlsberg, «Estudio de un desnudo»"
+  "source": "Gliptoteca Ny Carlsberg, «Estudio de un desnudo»",
+  "sinPistas": "todos"
  },
  "w7617093": {
   "sin": "todos",
   "por": "antes de Bretaña y Tahití: sin colores planos",
   "text": "Fíjate en el perfil cortado de Laval a la derecha, a lo Degas, y en la fruta sobre la mesa.",
-  "source": "Museo de Arte de Indianápolis, «Naturaleza muerta con perfil de Laval»"
+  "source": "Museo de Arte de Indianápolis, «Naturaleza muerta con perfil de Laval»",
+  "sinPistas": "todos"
  },
  "w7617094": {
   "sin": "todos",
   "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos",
   "text": "Fíjate en los tonos oscuros y terrosos: uno de sus primeros óleos, aún sin color ni remolinos.",
-  "source": "Museo Kröller-Müller, «Still Life with Straw Hat»"
+  "source": "Museo Kröller-Müller, «Still Life with Straw Hat»",
+  "sinPistas": [
+   3,
+   4
+  ]
  },
  "w5179827": {
   "sin": "todos",
   "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos",
   "text": "Fíjate en los tonos oscuros de tierra: su etapa holandesa, antes del color.",
-  "source": "Museo Soumaya, «Prado con vacas»"
+  "source": "Museo Soumaya, «Prado con vacas»",
+  "sinPistas": [
+   3,
+   4
+  ]
  },
  "w26220165": {
   "sin": "todos",
   "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos",
   "text": "Fíjate en los marrones y verdes apagados: así pintaba en Holanda, antes del color.",
-  "source": "Groninger Museum, «Jardín rectoral en Nuenen en primavera»"
+  "source": "Groninger Museum, «Jardín rectoral en Nuenen en primavera»",
+  "sinPistas": [
+   3,
+   4
+  ]
  },
  "w7536969": {
   "sin": "todos",
   "por": "etapa holandesa o de Amberes: tonos de tierra, sin remolinos",
   "text": "Fíjate en el fondo oscuro y el dibujo de academia: aún no hay remolinos ni colores vivos.",
-  "source": "Museo van Gogh, «Cráneo con cigarrillo en llamas»"
+  "source": "Museo van Gogh, «Cráneo con cigarrillo en llamas»",
+  "sinPistas": [
+   3,
+   4
+  ]
  },
  "w4110564": {
   "sin": [
@@ -1100,7 +1337,11 @@
    1,
    2
   ],
-  "por": "marina gris de su etapa holandesa"
+  "por": "marina gris de su etapa holandesa",
+  "sinPistas": [
+   3,
+   4
+  ]
  },
  "w4987244": {
   "sin": [
@@ -1874,5 +2115,10 @@
   "text": "Fíjate en el soldado que corre con la mano en el pecho, sin heroísmo, entre el humo.",
   "source": "Galería Tretiakov, «Herido de muerte»",
   "por": "obra sin rasgo genérico que se vea en ella: «fíjate» propio"
+ },
+ "w107645867": {
+  "text": "Fíjate en el marco pintado con adornos dorados a la griega, alrededor de una cara muy realista.",
+  "source": "Museo Estatal del Tirol, «Portrait of the pianist Joseph Pembauer»",
+  "por": "retrato de juventud, antes del oro"
  }
 }
