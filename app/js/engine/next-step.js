@@ -13,13 +13,19 @@
 //   5 bis. pendiente atrás: si la parada abierta ya es de una época posterior y en una anterior queda su Prueba de época
 //      abierta y sin superar, o un pintor a medias que es lo único que la tiene cerrada, se recomienda eso («Prueba de
 //      época: Renacimiento», «Sigue: Miguel Ángel»). No siempre: nunca dos veces seguidas (`prevStep`), para no frenar;
+//   5 ter. puerta de época cerrada solo por sus imprescindibles (engine/essentials.js) y nada abierto → «Te falta conocer
+//      las pinturas negras de Goya» (al nivel o, si su pintor está a medias, a su ronda);
+//   5 quater. cada DEEPEN_EVERY pintores nuevos, un nivel «a fondo» pendiente de cualquier época ya recorrida, ponderado y en
+//      rotación (engine/deepen.js): «Profundiza en Rafael: nivel 3». Siempre saltable;
 //   6. una parada abierta y sin jugar → «Sigue: <pintor>» (con su miniatura);
 //   7. camino dominado y reto semanal pendiente → «Reto semanal»; si no, el nivel que recomienda el rango del Perfil
 //      (rank-goals.js rankFocus: «Siguiente: <pintor> · nivel N») y, con el camino dominado, «Repasar» (nunca dos seguidos).
 // Si no, «Volver al camino». El botón principal siempre avanza en el juego (empieza la ronda, sin pasar por el mapa). Con 50-74 % no se recomienda repetir: eso va como acción secundaria (result-actions.js).
 // Devuelve { kind, to, label, artistId? }. Puro (las rutas son texto: ui/router.js no toca el DOM al importarse).
 
-import { UNLOCK_MIN, MASTERY, gateSteps, stepStatus, isPathMastered, artistStatus, hasMovementReview, isReviewUnlocked } from './progress.js';
+import { UNLOCK_MIN, MASTERY, gateSteps, gateBefore, stepPassed, stepStatus, isPathMastered, artistStatus, hasMovementReview, isReviewUnlocked } from './progress.js';
+import { gateEssentials, essentialNeed, essentialOpen } from './essentials.js';
+import { currentOffer } from './deepen.js';
 import { deepStatus } from './levels.js';
 import { pendingClosure, closureRoute, closureLabel } from './era-end.js';
 import { branchAfterRound } from './branches.js';
@@ -80,6 +86,19 @@ export function backDebt(progress, index, open) {
   return null;
 }
 
+// A dónde lleva un imprescindible: a su nivel o, si su pintor aún no tiene el nivel 1 dominado, a su ronda.
+export function essentialRoute(progress, index, e) {
+  return essentialOpen(progress, index, e) ? deepRoute(e.artistId, e.level) : stageRoute(e.artistId);
+}
+
+// Puerta de época cerrada solo por imprescindibles: el primero que falta (de más peso). null si no es el caso.
+export function gateEssential(progress, index) {
+  const step = gateSteps(progress, index.steps).find((s) => stepStatus(progress, index, s) === 'locked');
+  const gate = step && gateBefore(progress, index, step);
+  if (!gate || !stepPassed(progress, gate)) return null;
+  return gateEssentials(progress, index, step, gate)[0] || null;
+}
+
 // Lo que toca con un pintor concreto: su siguiente nivel «a fondo» abierto o, si no, practicarlo (su ronda: sus cuadros ya
 // vistos y alguno nuevo si lo hay). Siempre dice de quién.
 export function artistStep(progress, index, artistId) {
@@ -131,9 +150,17 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
     }
   }
   const open = gateSteps(progress, index.steps).find((s) => stepStatus(progress, index, s) === 'available');
+  // 5 ter. Puerta cerrada por sus imprescindibles.
+  const must = open ? null : gateEssential(progress, index);
+  if (must) return { kind: 'essential', to: essentialRoute(progress, index, must), label: essentialNeed(must), artistId: must.artistId };
   // 5 bis. Pendiente atrás, de vez en cuando (nunca dos veces seguidas).
   const debt = prevStep === 'debt' ? null : backDebt(progress, index, open);
   if (debt) return debt;
+  // 5 quater. Profundizar, intercalado.
+  const offer = currentOffer(progress, index, today);
+  if (offer && index.artist(offer.artistId)) {
+    return { kind: 'deepen', to: deepRoute(offer.artistId, offer.level), label: `Profundiza en ${shortName(index.artist(offer.artistId))}: nivel ${offer.level}`, artistId: offer.artistId, offer: offer.key };
+  }
   // 6. Parada abierta y sin jugar.
   if (open) {
     const name = open.type === 'sala' ? index.movement(open.id)?.name : index.artist(open.id) && shortName(index.artist(open.id));

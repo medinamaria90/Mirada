@@ -113,6 +113,26 @@ def familias_del_catalogo(movements, artists):
     return dict(cutoff=data["corteAntiguo"], list=[{k: v for k, v in f.items()} for f in data["familias"]])
 
 
+def imprescindibles(movements, artists):
+    """Niveles «a fondo» imprescindibles por época (contenido/imprescindibles.json): [{ artistId, level, weight, title }].
+    Cada uno, de un pintor del camino de esa época y con un nivel que existe; peso 1-3 y con fuente."""
+    data = contenido_opcional("imprescindibles.json")
+    eras = {m["id"] for m in movements}
+    by_id = {a["id"]: a for a in artists}
+    out = []
+    for era, items in data.items():
+        if era.startswith("_"):
+            continue
+        assert era in eras, f"imprescindibles.json: época desconocida {era}"
+        for it in items:
+            a = by_id.get(it["pintor"])
+            assert a and a["onPath"] and a["movementId"] == era, f"imprescindibles.json: {it['pintor']} no está en el camino de {era}"
+            assert any(s["id"] == it["nivel"] for s in a["stages"]) and it["nivel"] >= 2, f"imprescindibles.json: {it['pintor']} sin nivel {it['nivel']}"
+            assert it["peso"] in (1, 2, 3) and it.get("titulo") and it.get("fuente"), f"imprescindibles.json: {it['pintor']} {it['nivel']} incompleto"
+            out.append(dict(artistId=a["id"], level=it["nivel"], weight=it["peso"], title=it["titulo"]))
+    return out
+
+
 def contenido_opcional(name):
     """contenido/<name> si existe (lo escriben otros a su ritmo); si no, vacío."""
     path = os.path.join(ROOT, "contenido", name)
@@ -556,7 +576,8 @@ def main(app):
     cat["atlas"] = atlas
     for item in artworks:
         item["thumb"] = thumbs[item["id"]]
-    core = dict(version=2, atlas=atlas, movements=movements, artists=artists, artworks=artworks, branches=branches, families=families)
+    core = dict(version=2, atlas=atlas, movements=movements, artists=artists, artworks=artworks, branches=branches, families=families,
+                essentials=imprescindibles(movements, artists))
 
     os.makedirs(f"{app}/data", exist_ok=True)
     for name, data in (("catalog.json", core), ("catalog-text.json", text), ("catalog-ficha.json", dict(version=1, ficha=ficha))):

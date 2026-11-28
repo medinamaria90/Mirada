@@ -124,6 +124,9 @@ test('ramas: un tramo se abre al dominar el primer tramo de su época; nunca el 
   const rusa = (q) => branchStatus(q, real, 'escuela-rusa');
   const firstRococo = real.steps.findIndex((s) => real.artist(s.id).movementId === 'rococo-neoclasicismo');
   masterSteps(p, real.steps.slice(0, firstRococo));
+  // Cruzar al Rococó pide también los imprescindibles del Barroco (engine/essentials.js).
+  assert.equal(movementReached(p, real, 'rococo-neoclasicismo'), false);
+  for (const e of real.essentials) p.deep[`${e.artistId}:${e.level}`] = { plays: 1, best: 1, mastered: true, last: TODAY };
   assert.equal(movementReached(p, real, 'rococo-neoclasicismo'), true);
   assert.equal(rusa(p)[0].status, 'locked', 'llegar a la época no basta');
   masterSteps(p, firstTramo(real, 'rococo-neoclasicismo'));

@@ -14,6 +14,8 @@ import { medalBadge } from './medals.js';
 import { loadBridges, bridgeOf } from '../closure-data.js';
 import { shareLink, eraUrl, NOTES } from '../story-share.js';
 import { stageRoute } from '../router.js';
+import { missingEssentials, allMissingEssentials, essentialNeed } from '../../engine/essentials.js';
+import { essentialRoute } from '../../engine/next-step.js';
 import { seenOf, avatarWork, avatarCrop } from '../../engine/painters.js';
 import {
   parseClosureKey, isClosed, markClosureSeen, closureTitle, closurePainters, eraAfter, crossRoute, eraShort, ERA,
@@ -59,6 +61,9 @@ function primaryOf(progress, index, closure, bridge) {
   const stepTo = (s) => (s.type === 'sala' ? `sala-${s.id}` : stageRoute(s.id));
   const route = toEra ? crossRoute(progress, index, toEra, stepTo) : null;
   if (route) return { to: route, label: `Cruzar al ${eraShort(index.movement(toEra))}` };
+  // Época sin cruzar por sus imprescindibles (o el final del camino sin todos): primero, el que falta.
+  const must = closure.type === ERA ? (toEra ? missingEssentials(progress, index, closure.id) : allMissingEssentials(progress, index))[0] : null;
+  if (must) return { to: essentialRoute(progress, index, must), label: essentialNeed(must) };
   if (closure.type === ERA && !toEra) return { to: COLLECTION_ROUTE, label: 'Ver tu colección' };
   return null;
 }

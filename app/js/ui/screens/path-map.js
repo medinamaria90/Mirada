@@ -10,11 +10,12 @@ import { recallMap } from './map-memory.js';
 import { esc, accentStyle, plural, joinNames } from '../dom.js';
 import { icons } from '../icons.js';
 import { coverOf } from '../art.js';
-import { STATE_LABEL, DORMANT_TEXT, startedLabel, dotFor, nodeHtml } from './path-nodes.js';
+import { STATE_LABEL, DORMANT_TEXT, startedLabel, dotFor, nodeHtml, lockOf } from './path-nodes.js';
 import {
   artistStatus, salaStatus, movementStatus, isReviewUnlocked, hasMovementReview, nextStep, stepStatus, isPathMastered, needsIntro,
 } from '../../engine/progress.js';
 import { isGalleryOpen, galleryWorks } from '../../engine/goals.js';
+import { allMissingEssentials } from '../../engine/essentials.js';
 import { isDormant } from '../../engine/review.js';
 import { salaLearnWorks } from '../../engine/catalog.js';
 import { MAP_W, STEP, SIDE_X, GATE_Y, pathLayout, eraLayout, walkedD } from './path-layout.js';
@@ -69,7 +70,8 @@ export function renderPathMap(ctx, { lazy = false } = {}) {
     ? eraBlock(ctx, era, layout.eras[i - 1], keys)
     : `<li class="path-era is-pending" data-era="${esc(era.id)}" style="--era-tint:var(--map-tint-${esc(era.id)});aspect-ratio:${MAP_W}/calc(${era.h} * var(--k, 1))"></li>`)).join('');
   const firstTint = layout.eras.length ? `var(--map-tint-${esc(layout.eras[0].id)})` : 'transparent';
-  const done = isPathMastered(ctx.store.get().progress, index);
+  // «Museo completo»: camino dominado y todos los imprescindibles (engine/essentials.js).
+  const done = isPathMastered(ctx.store.get().progress, index) && !allMissingEssentials(ctx.store.get().progress, index).length;
   // La placa y el medallón de la primera época van en la puerta de la muralla de salida.
   const first = layout.eras[0];
   const firstArch = first && !first.arch
@@ -206,12 +208,12 @@ function artistNode(ctx, artist, keys) {
   const key = `artist:${artist.id}`;
   const prevStep = index.steps[index.stepIndex('artist', artist.id) - 1];
   const dormant = status === 'mastered' && isDormant(p, artist.id, ctx.today ? ctx.today() : null);
-  const lock = prevStep ? `Antes, acierta la mitad con ${stepName(index, prevStep)}` : '';
+  const { text: lock, unlock } = status === 'locked' ? lockOf(p, index, { type: 'artist', id: artist.id }, prevStep) : { text: '', unlock: '' };
   // Cerrado y lejos: solo el nombre corto (pesa menos); la siguiente parada, con el nombre entero.
   const quiet = status === 'locked' && key !== keys.next;
   const html = nodeHtml({
     cls: dormant ? 'is-dormant' : '', action: 'stage', id: artist.id, status, lock, current: key === keys.current && !keys.here,
-    unlock: status === 'locked' && prevStep ? `${prevStep.type}:${prevStep.id}` : '',
+    unlock,
     label: status === 'started' ? startedLabel(artist.name, p.artists[artist.id]?.best)
       : `${artist.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}${dormant ? `. ${DORMANT_TEXT}` : ''}`,
     // Dormido: sin texto bajo el nombre (lo dice la etiqueta, para el lector).
@@ -227,10 +229,10 @@ function salaNode(ctx, movement, keys) {
   const status = salaStatus(p, index, movement.id);
   const key = `sala:${movement.id}`;
   const prev = index.steps[index.stepIndex('sala', movement.id) - 1];
-  const lock = prev ? `Antes, acierta la mitad con ${stepName(index, prev)}` : '';
+  const { text: lock, unlock } = status === 'locked' ? lockOf(p, index, { type: 'sala', id: movement.id }, prev) : { text: '', unlock: '' };
   const html = nodeHtml({
     cls: 'stage-sala', action: 'sala', id: movement.id, status, lock, current: key === keys.current && !keys.here,
-    unlock: status === 'locked' && prev ? `${prev.type}:${prev.id}` : '',
+    unlock,
     label: status === 'started' ? startedLabel(`Conoce el movimiento ${movement.name}`, p.salas?.[movement.id]?.best)
       : `Conoce el movimiento ${movement.name}, ${STATE_LABEL[status]}${status === 'locked' && lock ? `. ${lock}` : ''}`,
     name: 'Conoce el movimiento', meta: '',

@@ -3,6 +3,7 @@
 
 import { recordAnswer, artKey, artistKey, updateFallados } from './srs.js';
 import { rankFor, RANKS } from './ranks.js';
+import { settleOffer } from './deepen.js';
 import { seenAfterRound, levelCovered, deepKey, LEVELS_MASTERY } from './levels.js';
 import { xpForAnswer, unseenArtists, MASTERY, STAGE_MASTERY, XP, stageRoundMastered, movementStatus, isReviewUnlocked, hasEye, normalizeGoal, touchStreak, STREAK_MEDALS, isStepUnlocked, isExtraStep } from './progress.js';
 
@@ -144,7 +145,8 @@ export function finishRound(progress, index, result, today, opts = {}) {
     events.push({ type: 'rank', index: rank.index, name: RANKS[rank.index].name });
   }
 
-  return { progress: p, events, xp, score, total, accuracy, mastered: roundMastered, ownShort, coverShort };
+  // La propuesta de profundizar a la vista: aceptada si era esta ronda; saltada si se ha jugado otra cosa (engine/deepen.js).
+  return { progress: settleOffer(p, result, today), events, xp, score, total, accuracy, mastered: roundMastered, ownShort, coverShort };
 }
 
 // Último día en que salió cada pintor con etapa en una pregunta (sin reintentos ni pintores aún no
