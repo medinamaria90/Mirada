@@ -50,7 +50,7 @@ test('una obra fijada a una etapa (ajustes.json) va a su «a fondo», no al bás
     const sel = JSON.parse(readFileSync(join(dir, 'catalogo', 'seleccion.json'), 'utf8')).filter((s) => s.pintorId === 'giotto');
     const level = (qid) => sel.find((s) => s.qid === qid)?.level;
     // Frescos de la capilla Scrovegni: Huida a Egipto (forzada y fijada), Visitación y la Virgen de la Anunciación.
-    for (const qid of ['Q549172', 'Q734197', 'Q61989282']) assert.equal(level(qid), 3, qid);
+    for (const qid of ['Q549172', 'Q734197', 'Q61989282']) assert.equal(level(qid), 2, qid); // Padua: nivel 2 por importancia (antes 3)
     assert.equal(sel.filter((s) => s.level === 1).length, 8, 'el básico de un gran maestro sigue con 8 obras');
   } finally {
     rmSync(dir, { recursive: true, force: true });

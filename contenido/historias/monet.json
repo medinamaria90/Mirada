@@ -29,38 +29,11 @@
   },
   {
    "level": 2,
-   "stage": "Formación",
-   "title": "Formación y Salón",
-   "cards": [
-    {
-     "text": "De adolescente, en El Havre, era caricaturista. El pintor Eugène Boudin le aconsejó pintar paisajes al aire libre. Así empezó su camino. Aquí, la playa de Sainte-Adresse.",
-     "artwork": "w3966658",
-     "source": "https://es.wikipedia.org/wiki/Claude_Monet#Formaci%C3%B3n"
-    },
-    {
-     "text": "En 1865 muestra dos marinas en el Salón de París. En 1867 el Salón rechaza Mujeres en el jardín, y su amigo Bazille la compra a plazos para ayudarle.",
-     "artwork": "w2734892",
-     "source": "https://es.wikipedia.org/wiki/Claude_Monet#Exposiciones_en_el_Sal%C3%B3n_de_Par%C3%ADs"
-    },
-    {
-     "text": "En 1870 huye a Londres de la guerra. Allí conoce al marchante Durand-Ruel y la pintura de Turner, con los contornos difuminados en la luz. Aquí, La Grenouillère (1869).",
-     "artwork": "w941549",
-     "source": "https://es.wikipedia.org/wiki/Claude_Monet#Exposiciones_en_el_Sal%C3%B3n_de_Par%C3%ADs"
-    },
-    {
-     "text": "Fíjate en el vestido verde de rayas de Camille, que luego sería su mujer: la seda brilla tanto que este cuadro le dio su primer éxito en el Salón.",
-     "artwork": "w829572",
-     "source": "https://es.wikipedia.org/wiki/Claude_Monet"
-    }
-   ]
-  },
-  {
-   "level": 3,
    "stage": "Impresión",
    "title": "Exposiciones impresionistas",
    "cards": [
     {
-     "text": "La primera exposición del grupo fue en 1874, en el estudio del fotógrafo Nadar. Un crítico, burlándose de Impresión, sol naciente, habló de «los impresionistas». Y se quedó.",
+     "text": "Monet tiene 33 años cuando su grupo expone por primera vez, en 1874. Un crítico, burlándose de Impresión, sol naciente, habló de «los impresionistas». Y el nombre se quedó.",
      "artwork": "w328523",
      "focus": [
       0.62,
@@ -87,12 +60,39 @@
    ]
   },
   {
+   "level": 3,
+   "stage": "Formación",
+   "title": "Formación y Salón",
+   "cards": [
+    {
+     "text": "Retrocedemos a su adolescencia en El Havre, donde era caricaturista. El pintor Eugène Boudin le aconsejó pintar paisajes al aire libre. Aquí, la playa de Sainte-Adresse.",
+     "artwork": "w3966658",
+     "source": "https://es.wikipedia.org/wiki/Claude_Monet#Formaci%C3%B3n"
+    },
+    {
+     "text": "En 1865 muestra dos marinas en el Salón de París. En 1867 el Salón rechaza Mujeres en el jardín, y su amigo Bazille la compra a plazos para ayudarle.",
+     "artwork": "w2734892",
+     "source": "https://es.wikipedia.org/wiki/Claude_Monet#Exposiciones_en_el_Sal%C3%B3n_de_Par%C3%ADs"
+    },
+    {
+     "text": "En 1870 huye a Londres de la guerra. Allí conoce al marchante Durand-Ruel y la pintura de Turner, con los contornos difuminados en la luz. Aquí, La Grenouillère (1869).",
+     "artwork": "w941549",
+     "source": "https://es.wikipedia.org/wiki/Claude_Monet#Exposiciones_en_el_Sal%C3%B3n_de_Par%C3%ADs"
+    },
+    {
+     "text": "Fíjate en el vestido verde de rayas de Camille, que luego sería su mujer: la seda brilla tanto que este cuadro le dio su primer éxito en el Salón.",
+     "artwork": "w829572",
+     "source": "https://es.wikipedia.org/wiki/Claude_Monet"
+    }
+   ]
+  },
+  {
    "level": 4,
    "stage": "Giverny",
    "title": "Giverny",
    "cards": [
     {
-     "text": "En 1883 alquila una casa en Giverny y diseña su célebre jardín. En 1890, con mejores ventas, la compra. Aquí, Prados en Giverny (1888).",
+     "text": "Ya maduro, en 1883 alquila una casa en Giverny y diseña su célebre jardín. En 1890, con mejores ventas, la compra. Aquí, Prados en Giverny (1888).",
      "artwork": "w3909928",
      "source": "https://es.wikipedia.org/wiki/Claude_Monet#Giverny"
     },
@@ -119,7 +119,7 @@
    "title": "Últimos años y nenúfares",
    "cards": [
     {
-     "text": "Entre 1899 y 1901 pinta en Londres el Parlamento y la niebla sobre el Támesis. En 1904 expone treinta y siete vistas del río. Aquí, el puente de Waterloo.",
+     "text": "Su última etapa empieza en Londres: entre 1899 y 1901 pinta el Parlamento y la niebla sobre el Támesis. En 1904 expone treinta y siete vistas del río. Aquí, el puente de Waterloo.",
      "artwork": "w3795194",
      "source": "https://es.wikipedia.org/wiki/Claude_Monet#Vistas_de_Londres_%281899-1904%29"
     },

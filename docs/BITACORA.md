@@ -398,6 +398,23 @@ guante de Los jugadores de cartas), que ya están en la curiosidad de cada obra.
 siempre a reconocer al pintor con un rasgo de su estilo que se ve en ese cuadro. De los 629 de obras del camino, 124 ya lo
 hacían (109 antiguos de catalog_data y 15 propios) y 505 se reescribieron. Las curiosidades que contenían ya estaban en la
 curiosidad de su obra (de ahí se habían sacado), así que no se ha perdido ninguna.
+
+## 28/11 — Foco del mapa, burbuja del itinerario y primer tramo fuera
+
+- Partida nueva (y tras «Borrar progreso»): lo primero es el medallón de la primera época; el pintor que va detrás ya no lleva el
+  aro de «actual». Se quita «Tú»: lo que recomienda el itinerario (`mapRecommendation`, engine/next-step.js) lleva una burbuja con
+  verbo («Abrir», «Conocer», «Empezar», «Seguir», «Repasar», «Profundizar») sobre su parada, con pulso suave (`ui/screens/map-cue.js`);
+  es lo único animado de los nodos. Sin recomendación atrás no hay marca en la frontera; con ella, un anillo fino. El botón flotante es
+  una flecha hacia lo recomendado y la píldora de guía desaparece.
+- Tocar un pintor cuya época o tramo no se han visto abre su tarjeta con «Empezar · antes, el Renacimiento» (`ui/lore-first-card.js`):
+  nada se salta sin avisar. El «Ir» del globo de candado lleva a esa tarjeta. Globo rediseñado: pastilla compacta, «Ir» como pastilla
+  pequeña, sin cruz.
+- Decisión de María: el primer tramo de cada época (el que sigue a su puerta) no sale en el camino (`hasTramoSign`). Sigue en los datos
+  porque abre las ramas y agrupa a los nuevos. Su cartel se conserva en `data/carteles/tramos.json` por si hay tarjetas que rescatar.
+  Paisajes regenerados.
+- Medallón y rombo por delante del progreso: cerrados con candado y el mismo globo («Se abre al cruzar la puerta del Barroco»); al
+  llegar a la época se abren sus rombos aunque sus pintores sigan cerrados.
+- Prueba general del itinerario (`tests/itinerario.test.js`): una partida que solo sigue `nextStep` recorre todo el camino en orden.
 Revisión independiente con ese criterio («¿ayuda a reconocer al pintor la próxima vez?»): ~80 % lo cumplía (7/10).
 Corregidos 47: curiosidades que quedaban (gato y jilguero, perro carlino, esqueleto gigante…), datos dudosos (rayos del
 atardecer en la cruz de Friedrich, el «con espátula» de La novia judía) y más variedad en Van Eyck, Bronzino, Courbet,
@@ -405,3 +422,21 @@ Berruguete y Degas.
 Alternancia (28/11): con la memoria de sesión de `lesson.js`, el «fíjate» de la obra ya no sale siempre primero: si lo
 último visto de ese pintor fue otra pista propia, o se le parece (comparación de palabras clave, `similar`), toca una frase
 de estilo, y viceversa. Más variedad en los «fíjate» de Rafael, Rembrandt y Tiziano y 9 que solo describían la escena.
+
+## 28/11 · Niveles «a fondo» por importancia
+
+- **Decisión de María:** los niveles de un pintor se ordenan por importancia, no por etapa. Lo imprescindible es el nivel 2
+  (las pinturas negras de Goya pasan del 6 al 2; Las Meninas, del 5 al 2) y, si hay varios, los siguientes; después, lo de
+  más fama; el resto por fama media. El nivel 1 no cambia y las obras de cada nivel siguen juntas: solo cambia el número.
+- 13 pintores cambian de orden (Caravaggio ya estaba bien). Fuente: `pipeline/etapas.json` (el `nivel` es la importancia;
+  la lista sigue en orden cronológico para el corte por `hasta`, y `seleccionar.py` ya no la ordena por nivel),
+  `ajustes.json` (`etapa`), `seleccion.json`, historias, títulos cortos e `imprescindibles.json`. Volver a seleccionar con
+  `seleccionar.py` da exactamente el mismo reparto.
+- Sin atajo: un imprescindible ya no se abre saltándose los niveles anteriores (no hace falta: es el nivel 2, y los de
+  nivel 3 o 4 van detrás de los anteriores de su pintor, también en el orden de «Te falta conocer…»).
+- Cada historia movida dice en su primera tarjeta en qué momento de la vida estamos («Ya anciano y sordo…»,
+  «Retrocedemos a sus primeros años en Sevilla…»).
+- **Progreso:** `state/level-order.js` traduce al cargar (en `schema.migrate`, sin versión nueva para no romper móviles con
+  la app en caché) los niveles hechos (`progress.deep`), la rotación de «Profundiza» y las historias vistas; marca
+  `progress.levelOrder` (y `@orden:1` en la lista de historias) para hacerlo una sola vez. Una ronda «a fondo» a medias de
+  esos pintores se descarta. Pruebas en `tests/niveles-importancia.test.js`.

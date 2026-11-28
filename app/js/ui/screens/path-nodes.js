@@ -33,7 +33,7 @@ export function dotFor(status, cover, name) {
 // unlock: la parada que lo abre («artist:<id>»), para el botón «Ir» del aviso de lo cerrado (path-actions.js).
 export function nodeHtml({ cls, action, id, status, lock, label, name, meta, dot, current = false, unlock = '' }) {
   return `<button class="stage ${cls} is-${status}" data-action="${action}" data-id="${esc(id)}" data-status="${status}" data-lock="${esc(lock)}"${unlock ? ` data-unlock="${esc(unlock)}"` : ''}${current ? ' aria-current="step"' : ''} aria-label="${esc(label)}">
-      <span class="stage-dot">${dot}${current ? '<span class="stage-you" aria-hidden="true">Tú</span>' : ''}</span>
+      <span class="stage-dot">${dot}</span>
       <span class="stage-text"><span class="stage-name">${esc(name)}</span>${meta ? `<span class="stage-meta">${esc(meta)}</span>` : ''}</span>
     </button>`;
 }

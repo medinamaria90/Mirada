@@ -8,6 +8,7 @@ import { nextStep } from '../app/js/engine/next-step.js';
 
 const big = bigIndex();
 const TODAY = '2026-11-24';
+const isoWeekKey = '2026-W48';
 const [a, b, c, d, e, f] = big.path;
 
 const mastered = (p, ids) => { for (const id of ids) { p.artists[id] = { plays: 1, best: 0.9, mastered: true, last: '2026-11-23' }; p.medals[`artist-${id}`] = '2026-11-23'; } return p; };
@@ -21,9 +22,15 @@ test('regla 1: etapa o sala por debajo del 50 % → «Repetir»', () => {
   assert.deepEqual([s.kind, s.label, s.to], ['retry', 'Repetir', `etapa-${c.id}`]);
 });
 
-test('regla 2: la sesión cumple la meta → «Volver al camino» (el cierre dice «Por hoy, hecho»)', () => {
-  const s = step(base(), { plan: { kind: 'stage', artistId: c.id }, outcome: outcome(0.8), goalJustMet: true });
-  assert.deepEqual([s.kind, s.label, s.to], ['done', 'Volver al camino', 'inicio']);
+test('regla 2: la meta cumplida se celebra pero no quita el siguiente paso; sin nada más, «Volver al camino»', () => {
+  const p = base();
+  p.artists[c.id] = { plays: 1, best: 0.8, mastered: true };
+  const s = step(p, { plan: { kind: 'stage', artistId: c.id }, outcome: outcome(0.8), goalJustMet: true, prevStep: 'debt' });
+  assert.deepEqual([s.kind, s.label, s.to], ['stop', `Sigue: ${d.short || d.name}`, `etapa-${d.id}`], 'sigue habiendo un botón para continuar');
+  const allDone = mastered(emptyProgress(), big.steps.filter((x) => x.type === 'artist').map((x) => x.id));
+  for (const x of big.steps.filter((y) => y.type === 'sala')) allDone.salas[x.id] = { plays: 1, best: 0.9, mastered: true };
+  allDone.weekly = { [isoWeekKey]: { score: 1, total: 15 } };
+  assert.equal(step(allDone, { plan: { kind: 'srs' }, outcome: outcome(0.8), goalJustMet: true, week: isoWeekKey }).kind, 'done');
 });
 
 test('regla 3: repaso que traía un pintor a medias → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»)', () => {
@@ -178,16 +185,17 @@ test('rango: lo jugado desde el Perfil vuelve al Perfil (y desde logros, a logro
   assert.equal(step(p, { plan: { kind: 'stage', artistId: a.id, level: 2 }, outcome: outcome(0.3), origin: 'perfil' }).kind, 'retry', 'con menos del 50 %, primero repetir');
 });
 
-test('guía del mapa: lo de atrás, nunca dos veces seguidas (como el resultado), y el último paso se recuerda', async () => {
-  const { mapGuide } = await import('../app/js/engine/next-step.js');
+test('recomendación del mapa: lo de atrás, nunca dos veces seguidas (como el resultado), y el último paso se recuerda', async () => {
+  const { mapRecommendation } = await import('../app/js/engine/next-step.js');
   const [m1, m2] = big.visibleMovements;
   const own = big.stepsOf(m1.id).filter((st) => st.type === 'artist').map((st) => st.id);
   const p = mastered(emptyProgress(), own.slice(0, -1));
   p.artists[own.at(-1)] = { plays: 1, best: 0.6, mastered: false };
   seenWorksOf(p, own[0]);
   const current = `artist:${big.stepsOf(m2.id)[0].id}`;
-  assert.equal(mapGuide(p, big, TODAY, { currentKey: current })?.kind, 'debt');
-  assert.equal(mapGuide(p, big, TODAY, { currentKey: current, prevStep: 'debt' }), null, 'tras enseñarlo, lo que toca es la parada actual («Tú»)');
+  assert.equal(mapRecommendation(p, big, TODAY)?.kind, 'debt');
+  const after = mapRecommendation(p, big, TODAY, { prevStep: 'debt' });
+  assert.equal(`${after.artistId ? 'artist' : 'sala'}:${after.artistId || after.movementId}`, current, 'tras enseñarlo, lo que toca es la parada actual');
   const store = {};
   globalThis.window = { sessionStorage: { getItem: (k) => store[k] ?? null, setItem: (k, v) => { store[k] = v; }, removeItem: (k) => { delete store[k]; } } };
   const { lastStep, rememberStep } = await import('../app/js/ui/last-step.js');

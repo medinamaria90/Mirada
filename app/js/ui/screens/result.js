@@ -6,13 +6,14 @@
 
 import { esc, onAction, accentStyle, announce, focusHeading, prefersReducedMotion, $ } from '../dom.js';
 import { icons } from '../icons.js';
+import { levelLabel, missingLine, fichaLabel, fichaRoute } from '../../engine/result-labels.js';
 import { mediumSrc, tinySrc, coverOf } from '../art.js';
 import { MASTERY, UNLOCK_MIN, isStepUnlocked, gateSteps } from '../../engine/progress.js';
 import { nextStep, DONE_TITLE } from '../../engine/next-step.js';
 import { RANKS } from '../../engine/ranks.js';
 import { isoWeek } from '../../engine/dates.js';
 import { pendingWorks } from '../../engine/levels.js';
-import { stageTitle, tierOf, isMasterTier, avatarCrop, avatarWork, seenOf } from '../../engine/painters.js';
+import { tierOf, isMasterTier, avatarCrop, avatarWork, seenOf } from '../../engine/painters.js';
 import { deepRoute, stageRoute, branchRoute } from '../router.js';
 import { practiceAction } from './result-actions.js';
 import { markNudged, CUADRO_ROUTE } from '../../engine/cuadro-dia.js';
@@ -77,7 +78,7 @@ function lineHtml(ctx, r) {
   const who = artist ? artist.short || artist.name : '';
   if (outcome.ownShort && artist) return `<p class="res-line">Acierta más cuadros de ${esc(who)} y ganas su medalla</p>`;
   const missing = outcome.coverShort && artist ? pendingWorks(ctx.store.get().progress, index, artist.id, plan.level || 1).length : 0;
-  if (missing) return `<p class="res-line">${missing === 1 ? 'Te falta 1 cuadro suyo por ver' : `Te faltan ${missing} cuadros suyos por ver`}: una ronda más</p>`;
+  if (missing) return `<p class="res-line">${missingLine(missing, r.mainIsRetry)}</p>`;
   const trait = plan.kind === 'stage' && artist ? mainTrait(artist) : '';
   return trait ? `<p class="res-line">${esc(trait)}</p>` : '';
 }
@@ -95,6 +96,9 @@ function medalHtml(ctx, heroMedal, deepDone, topWork) {
   if (heroMedal) return `<div class="res-medal">${medalBadge(ctx, heroMedal.id, true, 'lg')}</div>`;
   return deepDone ? `<div class="res-medal"><span class="res-seal" aria-hidden="true">${icons.check(40)}</span></div>` : '';
 }
+
+const fichaButton = (artist, inner, cls) => (inner && artist
+  ? `<button type="button" class="${cls}" data-action="ficha" aria-label="${esc(fichaLabel(artist))}">${inner}</button>` : inner);
 
 const secondaryBtn = (b) => (b.iconOnly
   ? `<button class="btn btn-secondary res-btn2 is-icon" data-action="${b.action}" aria-label="${esc(b.label)}">${icons[b.icon](20)}</button>`
@@ -174,12 +178,12 @@ export function renderResult(ctx, el, opts) {
   const practice = blocked ? null : practiceAction(ctx, plan, { retry, closing: goalJustMet, duel, prevKind: opts.prevKind, main: next.to, weak: outcome.accuracy < MASTERY, replay });
   // La guía propone el Cuadro del día una sola vez al día.
   if (practice?.to === CUADRO_ROUTE) ctx.store.update((s) => ({ ...s, progress: markNudged(s.progress, ctx.dailyDay()) }));
-  const shareLabel = isDaily ? 'Copiar resultado' : duel ? 'Devolver el reto' : 'Retar';
+  const shareLabel = isDaily ? 'Copiar resultado' : 'Devolver el reto';
   const backLabel = opts.branchId && plan.kind === 'stage' && !isDeep ? 'Volver a la rama' : 'Volver al camino';
   const secondary = [
     toPath ? null : next.kind === 'deepen' ? { action: 'not-now', label: 'Ahora no' } : { action: 'done', label: backLabel },
     practice ? { action: 'go', to: practice.to, label: practice.label, icon: practice.icon } : null,
-    token && !blocked ? { action: 'share', label: shareLabel, icon: isDaily ? 'copy' : 'duel' } : null,
+    token && !blocked && (isDaily || duel) ? { action: 'share', label: shareLabel, icon: isDaily ? 'copy' : 'duel' } : null,
   ].filter(Boolean);
   // Con tres, compartir va solo con su icono.
   if (secondary.length === 3) secondary[2].iconOnly = true;
@@ -189,7 +193,10 @@ export function renderResult(ctx, el, opts) {
   const deepStage = deepDone && index.deepLevels(deepDone.artistId).find((l) => l.id === deepDone.level);
   const kicker = master ? `${master.short || master.name} · Ya reconoces sus cuadros`
     : heroMedal ? `${medalInfo(heroMedal.id, index).title} · Completo`
-      : deepStage ? `${stageTitle(index.artist(deepDone.artistId), deepStage)} · Superado` : opts.title;
+      : deepStage ? levelLabel(index.artist(deepDone.artistId), deepDone.level, true)
+        : plan.kind === 'stage' && plan.level >= 2 && plan.artistId ? levelLabel(index.artist(plan.artistId), plan.level) : opts.title;
+  // En una ronda de un pintor, su medallón y su nombre abren su ficha; sin pintor único, nada pulsable.
+  const ficha = plan.kind === 'stage' && plan.artistId ? index.artist(plan.artistId) : null;
   const work = heroWork(index, plan);
   const art = work ? heroArt(work) : '';
   const reduce = prefersReducedMotion();
@@ -198,10 +205,10 @@ export function renderResult(ctx, el, opts) {
     <main class="res-mid" id="main">
       <div class="res-art">${art}</div>
       <div class="res-head">
-        ${medalHtml(ctx, heroMedal, deepDone, work)}
-        <p class="res-kicker">${esc(kicker)}</p>
-        <h1 class="res-title">${next.kind === 'done' ? DONE_TITLE : headline(outcome.accuracy)}</h1>
-        ${lineHtml(ctx, { plan, outcome, low, gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry, rankUp: events.find((e) => e.type === 'rank') })}
+        ${fichaButton(ficha, medalHtml(ctx, heroMedal, deepDone, work), 'res-ficha-medal')}
+        <p class="res-kicker">${ficha ? `<button type="button" class="res-ficha" data-action="ficha" aria-label="${esc(fichaLabel(ficha))}"><span>${esc(kicker)}</span><span class="res-ficha-go" aria-hidden="true">›</span></button>` : esc(kicker)}</p>
+        <h1 class="res-title">${goalJustMet && !duel && next.kind !== 'retry' ? DONE_TITLE : headline(outcome.accuracy)}</h1>
+        ${lineHtml(ctx, { plan, outcome, low, mainIsRetry: next.kind === 'retry' || (Boolean(plan.artistId) && next.artistId === plan.artistId), gated, isDaily, friendScore: opts.friendScore, firstTry: opts.firstTry, rankUp: events.find((e) => e.type === 'rank') })}
       </div>
       <dl class="res-tally">
         <div><dt>Aciertos</dt><dd>${outcome.score}/${outcome.total}</dd></div>
@@ -230,6 +237,10 @@ export function renderResult(ctx, el, opts) {
   announce(`${headline(outcome.accuracy)}. ${outcome.score} de ${outcome.total}.${goal ? ' Meta del día cumplida.' : ''}${momentText}`);
 
   const actions = {
+    ficha: () => {
+      ctx.audio.sfx('tap');
+      ctx.go(fichaRoute(ficha));
+    },
     'not-now': () => {
       ctx.store.update((s) => ({ ...s, progress: skipOffer(s.progress, ctx.today()) }));
       return actions.done();
