@@ -895,7 +895,9 @@ const ctxOpts = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, l
 // es el peso, y ese presupuesto no cambia.
 // Inicio +1: ui/lazy-css.js en la cadena estática (pide las hojas del arranque si un index.html viejo no las enlaza).
 // 27/11 (tarde): main sin cambios ya medía 59 en el inicio (oscila con el orden de carga): 60 de margen; los KB no cambian.
-const BOOT_BUDGET = { welcome: { requests: 32, kb: 410 }, home: { requests: 60, kb: 440 } };
+// 28/11: el itinerario (engine/essentials.js, engine/levels.js, state/level-order.js) entra en la cadena de progress.js:
+// +3 peticiones en ambas pantallas (medidas 35 y 63); los KB no cambian.
+const BOOT_BUDGET = { welcome: { requests: 35, kb: 410 }, home: { requests: 63, kb: 440 } };
 const boot = {};
 for (const kind of ['welcome', 'home']) {
   const bctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -984,15 +986,16 @@ const mapV10 = await page.evaluate(() => {
     // El paisaje se mete en la página como SVG (map-land.js); si falla, queda como imagen.
     loaded: eras.filter((e) => land(e).tagName === 'svg' || land(e).getAttribute('src')).map((e) => e.dataset.era),
     currentLoaded: Boolean(cur) && (land(cur.closest('.path-era')).tagName === 'svg' || (land(cur.closest('.path-era')).complete && land(cur.closest('.path-era')).naturalWidth > 0)),
-    // Sin abrir la presentación de la época, «Tú» está en su medallón (path-lore.js); si no, en la parada actual.
-    ringText: [...document.querySelectorAll('.lore-spot.is-here .stage-you, .stage-spot.is-current .stage-you')].map((e) => e.textContent.trim()),
+    // Partida nueva: lo recomendado es abrir la época, así que la burbuja con verbo (map-cue.js) está en su medallón (path-lore.js).
+    cues: [...document.querySelectorAll('.map-cue')].map((e) => `${e.textContent.trim()}@${e.closest('.lore-spot.is-here') ? 'medallón' : e.closest('.stage-spot')?.dataset.step || '?'}`),
+    you: document.querySelectorAll('.stage-you').length,
   };
 });
 check(mapV10.bottomUp, 'el mapa no va de abajo arriba');
 check(mapV10.museumOnTop, '«Tu museo» no está arriba del todo');
 check(mapV10.extras === 0, 'quedan el personaje o los cofres en el mapa');
 check(mapV10.currentLoaded && mapV10.loaded.length <= 2, `paisajes cargados al abrir: ${mapV10.loaded.join(', ') || 'ninguno'}`);
-check(mapV10.ringText.join() === 'Tú', `marca del nodo actual: ${mapV10.ringText.join()}`);
+check(mapV10.cues.join() === 'Abrir@medallón' && mapV10.you === 0, `burbuja del itinerario en partida nueva: ${mapV10.cues.join()} (marcas «Tú»: ${mapV10.you})`);
 const locked = page.locator('.stage.is-locked').first();
 await locked.scrollIntoViewIfNeeded();
 await locked.click();
@@ -1002,7 +1005,12 @@ await shot(page, '03-mapa-bloqueado');
 await page.evaluate(() => window.scrollTo(0, 0));
 // Primera etapa: presentación de la época («Entrar» deja en el camino), historia del pintor y ronda (tras la historia
 // no hay «Conoce a»), con un fallo y el botón atrás a mitad.
+// Un pintor cuya época aún no se ha visto abre antes su tarjeta («Empezar · antes, el Renacimiento»), y su botón entra en la secuencia.
 await page.click('.stage-spot.is-current .stage');
+await page.waitForSelector('dialog.lc[open] .lc-play');
+check(/antes, /.test(await page.locator('.lc-play').innerText()), 'la tarjeta del pintor no dice qué va antes');
+await shot(page, '03b-tarjeta-medallon');
+await page.click('.lc-play');
 await page.waitForSelector('.intro');
 await shot(page, '04-intro');
 await audit(page, '390 intro');
@@ -1024,14 +1032,13 @@ if (introGroup > 1) {
   await page.keyboard.press('Escape');
   await page.waitForSelector('.viewer', { state: 'detached' });
 }
-// Como paso del camino, «Saltar» sigue el camino: el cartel del tramo (también con «Saltar») y después la historia del
-// pintor, sin volver a la presentación.
+// Como paso del camino, «Saltar» sigue el camino: el primer tramo de la época no lleva cartel (va fuera del camino), así que
+// va directo a la historia del pintor, sin volver a la presentación.
 await page.click('.intro .deck-secondary');
-await page.waitForSelector('dialog.sign-cards[open] .deck-secondary');
-check(page.url().includes('#etapa-'), `«Saltar» no sigue hacia el pintor: ${page.url()}`);
-await page.click('dialog.sign-cards .deck-secondary');
 await page.waitForSelector('.story[open] .story-text');
-check(await page.locator('.story[open]').count() === 1, 'tras el cartel del tramo no sale la historia del pintor');
+check(page.url().includes('#etapa-'), `«Saltar» no sigue hacia el pintor: ${page.url()}`);
+check(await page.locator('dialog.sign-cards[open]').count() === 0, 'el primer tramo de la época enseña un cartel');
+check(await page.locator('.story[open]').count() === 1, 'tras «Saltar» no sale la historia del pintor');
 await page.waitForTimeout(400);
 await shot(page, '05-historia');
 await toRound(page);
@@ -1075,9 +1082,10 @@ check(!/Precisión/.test(await page.locator('.res-tally').innerText()), 'el resu
 check(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 1 && document.querySelector('.res-foot [data-primary]').getBoundingClientRect().bottom <= innerHeight), 'el resultado se desplaza o «Seguir» no queda a la vista');
 if (SMOKE) {
   await page.goto(`${base}#inicio`);
-  await page.waitForSelector('.stage-spot.is-current .stage-you');
+  await page.waitForSelector('.stage-spot.is-current .stage');
   check(await page.locator('.path-character, .path-chest').count() === 0, '390 vuelta al mapa: quedan personaje o cofres');
-  check(await page.locator('.stage-spot.is-current .stage-you').count() === 1 && await page.locator('.stage-spot.is-current .stage-meta').count() === 0, 'la parada nueva no lleva la marca «Tú» (o aún lleva botón)');
+  const cueAfter = await page.$$eval('.map-cue', (els) => els.map((e) => e.textContent.trim()));
+  check(cueAfter.length === 1 && await page.locator('.stage-you').count() === 0 && await page.locator('.stage-spot.is-current .stage-meta').count() === 0, `la vuelta al mapa no lleva una sola burbuja con verbo (${cueAfter.join()}) o aún hay marca «Tú»`);
   await shot(page, '14c-mapa-parada-nueva');
   await audit(page, '390 mapa parada nueva');
   // Presentación de una época en un móvil lento: sale una sola vez, ya con sus tarjetas, sin saltos de maquetación
@@ -1099,9 +1107,9 @@ if (SMOKE) {
   await eraCdp.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 });
   await eraCdp.detach();
   await page.goto(`${base}#inicio`);
-  await page.waitForSelector('.stage-spot.is-current .stage-you');
+  await page.waitForSelector('.stage-spot.is-current .stage');
   // Rama jugable: cerrada el primer día (tocarla dice qué falta); con el primer tramo del Renacimiento dominado, el
-  // desvío del Gótico entra en su pantalla (#rama-gotico): su paisaje, sus pintores como paradas y la marca «Tú» en el
+  // desvío del Gótico entra en su pantalla (#rama-gotico): su paisaje, sus pintores como paradas y la parada actual en el
   // primero propio. La ronda sabe que viene del Gótico (#etapa-<pintor>--gotico) y su resultado sigue en él.
   const goticoSign = '.branch[data-id="gotico"]';
   check(await page.locator(`${goticoSign}.is-locked`).count() === 1, 'el Gótico está abierto el primer día');
@@ -1133,7 +1141,7 @@ if (SMOKE) {
   await page.waitForSelector(`${goticoSign}.is-open`);
   await openGotico();
   check(page.url().endsWith('#rama-gotico'), `el desvío no entra en la pantalla de la rama: ${page.url()}`);
-  check(await page.locator(`.page-branch .stage-spot.is-current[data-step="artist:${ownGotico[0]}"] .stage-you`).count() === 1, 'la rama no marca al primer pintor como parada actual');
+  check(await page.locator(`.page-branch .stage-spot.is-current[data-step="artist:${ownGotico[0]}"] .stage`).count() === 1, 'la rama no marca al primer pintor como parada actual');
   check(await page.locator(branchNode(ownGotico[1])).getAttribute('data-status') === 'locked', 'la rama deja jugar a un pintor aún cerrado');
   check(await page.locator('.page-branch .path-land:not(.path-movers)').count() === 1, 'la rama no tiene paisaje');
   await shot(page, '14e-rama-pantalla');
@@ -1400,7 +1408,7 @@ if (SMOKE) {
   await page.waitForSelector('.lesson');
   await playRound(page);
   await page.waitForSelector('.res-title');
-  check(await page.locator('.res-seal').count() === 1 && (await page.locator('.res-kicker').innerText()).toLowerCase().includes(stageTitle(deepArtist, deepLevel).toLowerCase()), 'el nivel a fondo superado no se celebra');
+  check(await page.locator('.res-seal').count() === 1 && (await page.locator('.res-kicker').innerText()).toLowerCase().includes(`${deepArtist.short || deepArtist.name} · nivel ${deepLevel.id} superado`.toLowerCase()), 'el nivel a fondo superado no se celebra');
   check(await page.locator('.res .btn-primary').count() === 1, `la celebración a fondo no tiene un solo «siguiente» principal (${await page.locator('.res .btn-primary').count()})`);
   await shot(page, '14k-resultado-a-fondo-superado', true);
   await audit(page, '390 resultado a fondo');
