@@ -17,9 +17,12 @@ export const HOLD_MS = 260;       // mantener pulsada una marca empieza a arrast
 export const DRAG_SLOP = 6;       // px que se mueve el dedo antes de contar como arrastre
 export const GATE_AT = 0.82;      // al ir a una época, su puerta queda a esta altura de la pantalla
 const THUMB_H = 48;               // alto del asa (zona táctil)
+const BUZZ_MS = 8;                // vibración corta al cruzar de una época a otra (al arrastrar)
 const ARM_EVENTS = ['touchstart', 'wheel', 'keydown', 'pointerdown'];
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
+// Color del suelo de una época en el carril: su tinte del mapa, algo más hondo (brand.css --scrub-soil).
+const soil = (it) => (it.tint ? `color-mix(in srgb, var(--map-tint-${esc(it.tint)}), var(--scrub-soil))` : 'var(--scrub-line)');
 
 // ---------- cuentas (sin DOM) ----------
 
@@ -41,6 +44,18 @@ export function itemAt(items, scrollY, viewH) {
 export const gateScroll = (item, viewH, max) => Math.round(Math.min(max, Math.max(0, item.bottom - viewH * GATE_AT)));
 // Marca de una época en el carril: donde el asa deja su puerta en el centro de la pantalla (al cruzarla cambia la burbuja).
 export const markFrac = (item, viewH, max) => fracOf(item.bottom - viewH / 2, max);
+// Carril coloreado por tramos, como una línea del tiempo: cada época, del color de su suelo, entre su marca (su puerta)
+// y la de la siguiente; lo que queda bajo la primera marca, de la primera época. fracs: la marca de cada una (0 arriba).
+export function trackGradient(items, fracs) {
+  if (!items.length) return '';
+  const stops = [];
+  for (let i = items.length - 1; i >= 0; i--) {
+    const from = i === items.length - 1 ? 0 : fracs[i + 1];
+    const to = i === 0 ? 1 : fracs[i];
+    stops.push(`${soil(items[i])} ${(from * 100).toFixed(2)}% ${(to * 100).toFixed(2)}%`);
+  }
+  return `linear-gradient(to bottom, ${stops.join(', ')})`;
+}
 // ¿Vale la pena? Solo con mapa y bastante largo.
 export const worthIt = (mapH, viewH) => mapH > viewH * MIN_SCREENS;
 
@@ -53,7 +68,7 @@ export function mountScrubber(screen, { map, items, label = 'Épocas del camino'
   const nav = document.createElement('nav');
   nav.className = 'scrub';
   nav.setAttribute('aria-label', label);
-  nav.innerHTML = `<span class="scrub-line" aria-hidden="true"></span><ol class="scrub-marks"></ol>
+  nav.innerHTML = `<span class="scrub-veil" aria-hidden="true"></span><span class="scrub-band" aria-hidden="true"></span><span class="scrub-line" aria-hidden="true"></span><ol class="scrub-marks"></ol>
     <span class="scrub-here" aria-hidden="true" hidden></span>
     <span class="scrub-thumb" aria-hidden="true"><span class="scrub-grip"></span></span>
     <span class="scrub-bubble" aria-hidden="true"><span class="scrub-pic"></span><span class="scrub-words"><span class="scrub-name"></span><span class="scrub-sub"></span></span></span>`;
@@ -84,7 +99,9 @@ export function mountScrubber(screen, { map, items, label = 'Épocas del camino'
     geo = { viewH, max, trackTop: r.top, run: Math.max(1, r.height - THUMB_H) };
     list = items();
     if (!built || marks.children.length !== list.length) build();
-    list.forEach((it, i) => { marks.children[i].style.setProperty('--at', `${(markFrac(it, viewH, max) * geo.run + THUMB_H / 2).toFixed(1)}px`); });
+    const fracs = list.map((it) => markFrac(it, viewH, max));
+    fracs.forEach((f, i) => { marks.children[i].style.setProperty('--at', `${(f * geo.run + THUMB_H / 2).toFixed(1)}px`); });
+    nav.style.setProperty('--scrub-track', trackGradient(list, fracs));
     const cur = current();
     here.hidden = cur === null;
     if (cur !== null) here.style.setProperty('--at', `${(fracOf(cur - viewH / 2, max) * geo.run + THUMB_H / 2).toFixed(1)}px`);
@@ -92,7 +109,7 @@ export function mountScrubber(screen, { map, items, label = 'Épocas del camino'
   // Las marcas: botones en el orden del camino (el carril las coloca de abajo arriba).
   const build = () => {
     built = true;
-    marks.innerHTML = list.map((it, i) => `<li class="scrub-mark-row"><button type="button" class="scrub-mark" data-i="${i}" tabindex="${i ? -1 : 0}"${it.tint ? ` style="--dot:var(--map-tint-${esc(it.tint)})"` : ''}><span class="sr-only">Ir a ${esc(it.label)}</span></button></li>`).join('');
+    marks.innerHTML = list.map((it, i) => `<li class="scrub-mark-row"><button type="button" class="scrub-mark" data-i="${i}" tabindex="${i ? -1 : 0}"${it.tint ? ` style="--dot:${soil(it)}"` : ''}><span class="sr-only">Ir a ${esc(it.label)}</span></button></li>`).join('');
   };
   const setThumb = (f) => {
     thumb.style.transform = `translateY(${(f * geo.run).toFixed(1)}px)`;
@@ -100,6 +117,8 @@ export function mountScrubber(screen, { map, items, label = 'Épocas del camino'
   };
   const setBubble = (it) => {
     if (!it || it.id === lastId) return;
+    // Al arrastrar, cruzar a otra época se nota en la mano (sin vibración con «reducir animaciones»).
+    if (drag && lastId && !prefersReducedMotion()) navigator.vibrate?.(BUZZ_MS);
     lastId = it.id;
     name.textContent = it.label;
     sub.textContent = it.sub || '';
