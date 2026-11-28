@@ -27,10 +27,9 @@ test('niveles del aro: el 1 («Quién fue») y las etapas con historia, con el t
   assert.equal(stageTitle(real.artist('velazquez'), real.deepLevels('velazquez')[1]), 'La corte', 'la ronda usa el mismo título');
 });
 
-test('un nivel sin historia también es tramo y círculo, con su título corto (Berruguete, Botticelli)', () => {
-  assert.equal(story('berruguete').levels.some((l) => l.level === 2), false, 'el nivel 2 de Berruguete no tiene historia');
+test('un pintor con una sola etapa «a fondo» tiene dos tramos y dos círculos, con su título corto (Berruguete, Botticelli)', () => {
   assert.deepEqual(ringLevels(real, 'berruguete').map((l) => [l.level, l.short]), [[1, FIRST_LEVEL_SHORT], [2, 'Castilla']]);
-  assert.deepEqual(ringLevels(real, 'botticelli').map((l) => l.short), [FIRST_LEVEL_SHORT, 'Más obras']);
+  assert.deepEqual(ringLevels(real, 'botticelli').map((l) => l.short), [FIRST_LEVEL_SHORT, 'Savonarola']);
   const p = emptyProgress();
   assert.equal(levelRing(p, real, 'berruguete'), null, 'sin dominar, el toque entra directo');
   p.artists.berruguete = { plays: 1, mastered: true };

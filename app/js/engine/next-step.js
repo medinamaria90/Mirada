@@ -1,6 +1,8 @@
 // Siguiente paso recomendado al cerrar una sesión: un solo botón principal, sin arrancar nada solo ni cuentas atrás.
 // Gana la primera regla que se cumple:
 //   1. etapa o sala por debajo del 50 % → «Repetir»;
+//   1 ter. una época (o una rama) recién terminada y su cierre sin ver → «Cerrar el Renacimiento» (engine/era-end.js): la
+//      pantalla de capítulo terminado, una sola vez; desde ella, «Cruzar a <época>» sigue el camino;
 //   1 bis. se entró a jugar desde una pantalla con un objetivo (el rango del Perfil, los logros) → «Volver al perfil»;
 // (El contexto de un pintor manda ANTES de jugar: la última tarjeta de su historia ofrece artistStep. Al TERMINAR su ronda la
 // intención está cumplida y vale la guía global; repetirlo va como secundario, «Repetir <pintor>», en result-actions.js.)
@@ -19,6 +21,7 @@
 
 import { UNLOCK_MIN, MASTERY, gateSteps, stepStatus, isPathMastered, artistStatus, hasMovementReview, isReviewUnlocked } from './progress.js';
 import { deepStatus } from './levels.js';
+import { pendingClosure, closureRoute, closureLabel } from './era-end.js';
 import { branchAfterRound } from './branches.js';
 import { reviewSession, startedArtists, reviewFallados, REVIEW_MIN } from './review.js';
 import { isoWeek } from './dates.js';
@@ -99,6 +102,9 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
     const to = kind === 'sala' ? `sala-${plan.movementId}` : isDeep ? deepRoute(plan.artistId, plan.level) : stageRoute(plan.artistId, branchId);
     return { kind: 'retry', to, label: 'Repetir' };
   }
+  // 1 ter. Capítulo terminado (época o rama) con su cierre sin ver.
+  const closure = pendingClosure(progress, index);
+  if (closure) return { kind: 'closure', to: closureRoute(closure.key), label: closureLabel(index, closure), closure: closure.key };
   // 1 bis. Vuelta al objetivo.
   if (ORIGIN_LABEL[origin]) return { kind: 'origin', to: origin, label: ORIGIN_LABEL[origin] };
   // 2. Meta del día cumplida en esta sesión.

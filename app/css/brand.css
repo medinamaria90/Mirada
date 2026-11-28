@@ -261,6 +261,8 @@
   --radius-pop: 24px;
   --dur-pop: 220ms;
   --dur-title-in: 400ms;          /* aparición del título del cuadro tras responder (ui/title-slot.js) */
+  --dur-tag-in: 420ms;            /* caída de la etiqueta del pintor en la miniatura fallada (ui/wrong-tag.js) */
+  --tag-drop: -180%;              /* desde dónde cae esa etiqueta (sobre su propio alto) */
   --press-scale: .96;             /* lo que se encoge al tocarlo lo que no tiene relieve propio */
   --dur-shake: 360ms;
   --dur-lock-shake: 420ms;        /* temblor del candado (screens/lock-note.js, SHAKE_MS) */

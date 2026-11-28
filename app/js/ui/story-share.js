@@ -24,11 +24,12 @@ export const storyUrl = (artistId, level, href = location.href) => new URL(`h/${
 // Enlace a la página de las tarjetas de una época, igual que el de las historias.
 export const eraUrl = (movementId, href = location.href) => new URL(`h/epoca-${movementId}.html`, href).href;
 
-// title: lo que se comparte («Quién fue Velázquez», «Barroco»). Devuelve SHARE_RESULT.
-export async function shareLink({ url, title }) {
+// title: lo que se comparte («Quién fue Velázquez», «Barroco»); text: la frase, si no es «<title>, en Sfumato» (el cierre de
+// una época: «He terminado el Barroco en Sfumato»). Sin hoja de compartir se copia la frase con el enlace. Devuelve SHARE_RESULT.
+export async function shareLink({ url, title, text = '' }) {
   if (navigator.share) {
     try {
-      await navigator.share({ title: `${title} · ${APP_NAME}`, text: `${title}, en ${APP_NAME}`, url });
+      await navigator.share({ title: `${title} · ${APP_NAME}`, text: text || `${title}, en ${APP_NAME}`, url });
       return SHARE_RESULT.SHARED;
     } catch (err) {
       if (err?.name === 'AbortError') return SHARE_RESULT.CANCELLED;
@@ -36,7 +37,7 @@ export async function shareLink({ url, title }) {
     }
   }
   try {
-    await navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(text ? `${text}\n${url}` : url);
     return SHARE_RESULT.COPIED;
   } catch (err) {
     console.info('No se ha podido copiar:', err?.message);

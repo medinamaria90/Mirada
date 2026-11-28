@@ -130,6 +130,9 @@ export function emptyProgress() {
     fallados: [],
     // Último día en que salió cada pintor en una pregunta: { artistId: 'AAAA-MM-DD' } (engine/review.js).
     seen: {},
+    // Cierres de época y de rama ya vistos: { seeded, seen: { clave: 'AAAA-MM-DD' } } (engine/era-end.js). Un estado anterior
+    // lo recibe sin sembrar y se siembra al cargar el catálogo: sus cierres de antes cuentan como vistos (como mucho, el último).
+    closures: { seeded: false, seen: {} },
     // Invitados ya presentados con su tarjeta: { artistId: 'AAAA-MM-DD' } (engine/guest-intro.js). Solo valen para
     // preguntar por ellos, no para el camino. Un estado anterior lo recibe vacío (state/schema.js mergeDefaults).
     guests: {},
