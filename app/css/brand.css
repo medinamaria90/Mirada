@@ -187,22 +187,24 @@
      ensancha al arrastrar, marcas de época, asa «estás aquí», punto de tu parada y burbuja con la época. */
   --scrub-edge: 2px;               /* del borde de la pantalla (o de la columna) al carril */
   --scrub-gap: 12px;               /* aire bajo la cabecera y sobre el botón «Tú» */
-  --scrub-hit: 40px;               /* ancho de la zona táctil del asa y las marcas (de alto, --hit) */
-  --scrub-line-x: 8px;             /* del borde de la zona táctil al eje del carril */
-  --scrub-line-w: 2px;
-  --scrub-line-grow: 2;            /* el carril, al arrastrar */
-  --scrub-grip-w: 6px;
-  --scrub-grip-h: 34px;
-  --scrub-grip-grow: 1.8;          /* el asa, al arrastrar */
-  --scrub-mark-w: 9px;
-  --scrub-mark-h: 2px;
-  --scrub-mark-grow: 1.6;
+  --scrub-hit: 40px;               /* ancho de la zona táctil del asa (de alto, --hit) */
+  --scrub-line-x: 10px;            /* del borde de la zona táctil al eje del carril */
+  --scrub-line-w: 3px;
+  --scrub-line-grow: 1.6;          /* el carril, al arrastrar */
+  --scrub-grip: 16px;              /* asa: un círculo con borde… */
+  --scrub-grip-grow: 1.35;         /* …algo mayor al arrastrar */
+  --scrub-grip-ring: 2px;
+  --scrub-mark: 6px;               /* época: un puntito del color de su suelo */
+  --scrub-mark-grow: 1.15;
+  --scrub-mark-ring: 1.5px;
   --scrub-mark-hit: 24px;          /* alto de la zona táctil de una marca */
   --scrub-mark-hit-w: 28px;        /* y su ancho: no llega a los carteles del borde */
-  --scrub-here: 8px;
-  --scrub-bubble-gap: 6px;
-  --scrub-bubble-max: 15rem;
-  --scrub-pic: 40px;
+  --scrub-here: 10px;              /* tu parada */
+  --scrub-here-ring: 2.5px;
+  --scrub-bubble-gap: 8px;         /* de la burbuja al asa (la flechita va en medio) */
+  --scrub-bubble-max: 15.5rem;
+  --scrub-arrow: 7px;
+  --scrub-pic: 32px;
   --scrub-out: 8px;                /* lo que se aparta al esconderse */
   --scrub-fade: .22s;
   --lock-note-w: 232px;            /* globo de lo cerrado */
@@ -296,18 +298,20 @@
 /* Colores del desplazamiento rápido del mapa (mapa-rapido.css): se calculan en el propio carril, que va fuera del mapa
    (así siguen al tema de la app y no a la luz del paisaje). */
 .scrub {
-  --scrub-line: color-mix(in srgb, var(--ink) 16%, transparent);
-  --scrub-line-active: color-mix(in srgb, var(--ink) 26%, transparent);
-  --scrub-mark: color-mix(in srgb, var(--ink) 42%, transparent);
-  --scrub-mark-on: var(--ink);
-  --scrub-grip: var(--surface);
-  --scrub-grip-edge: var(--line-2);
+  --scrub-line: color-mix(in srgb, var(--map-trail) 82%, transparent);
+  --scrub-line-edge: color-mix(in srgb, var(--map-trail-edge) 70%, transparent);
+  --scrub-mark-fill: var(--map-sign);
+  --scrub-mark-edge: var(--map-post);
+  --scrub-mark-on: var(--ink-2);
+  --scrub-grip-fill: var(--map-sign);
+  --scrub-grip-edge: var(--map-post);
   --scrub-grip-active: var(--brand);
   --scrub-here-dot: var(--brand);
+  --scrub-here-edge: var(--surface);
   --scrub-bubble: var(--surface);
   --scrub-bubble-ink: var(--ink);
   --scrub-bubble-ink-2: var(--ink-2);
-  --scrub-shadow: var(--shadow-frame);
+  --scrub-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 18%, transparent), 0 4px 10px -4px color-mix(in srgb, var(--ink) 30%, transparent);
 }
 
 /* Tema oscuro. Vale en dos casos: el móvil va en oscuro y no se ha forzado «Claro» en Ajustes, o se ha

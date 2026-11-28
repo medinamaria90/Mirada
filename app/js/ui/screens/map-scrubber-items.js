@@ -43,7 +43,7 @@ export function mountHomeScrubber(ctx, el) {
       const p = ctx.store.get().progress;
       const open = index.stepsOf(id).find((s) => stepStatus(p, index, s) !== 'locked');
       const art = !open ? null : open.type === 'sala' ? salaCover(index, id) : coverOf(index, open.id);
-      meta.set(id, { label: m?.name || id, sub: m?.period || '', thumb: thumbOf(art) });
+      meta.set(id, { label: m?.name || id, sub: m?.period || '', thumb: thumbOf(art), tint: id });
     }
     return meta.get(id);
   };
@@ -74,7 +74,7 @@ export function mountBranchScrubber(ctx, el, branch) {
       const m = index.movement(s.movementId);
       const next = signs[i + 1];
       return {
-        id: s.key, label: s.name || m?.name || '', sub: m?.period || '', thumb: '',
+        id: s.key, label: s.name || m?.name || '', sub: m?.period || '', thumb: '', tint: s.movementId,
         bottom: i === 0 || !signs[i] ? whole.bottom : docBox(signs[i]).bottom,
         top: next ? docBox(next).bottom : whole.top,
         focusEl: () => signs[i],

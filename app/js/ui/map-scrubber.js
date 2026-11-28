@@ -5,8 +5,8 @@
 // queda ahí. Un toque en una marca lleva a la puerta de su época. Con lector de pantalla o teclado, las marcas son una
 // lista de botones (una sola parada de tabulador; las flechas pasan de una a otra).
 // Oculto no cuesta nada: ni bucles ni medidas, solo una escucha pasiva del desplazamiento que lo enciende.
-// items(): las épocas del mapa en el orden del camino, [{ id, label, sub, thumb, top, bottom, focusEl }], con top y
-// bottom en coordenadas del documento y focusEl(), lo que recibe el foco al ir con teclado (las mide el que lo monta: screens/map-scrubber-items.js).
+// items(): las épocas del mapa en el orden del camino, [{ id, label, sub, thumb, tint, top, bottom, focusEl }], con top y
+// bottom en coordenadas del documento, tint (el suelo de la época, para su puntito) y focusEl(), lo que recibe el foco al ir con teclado (las mide el que lo monta: screens/map-scrubber-items.js).
 
 import { esc, prefersReducedMotion } from './dom.js';
 import { loadCss } from './lazy-css.js';
@@ -92,7 +92,7 @@ export function mountScrubber(screen, { map, items, label = 'Épocas del camino'
   // Las marcas: botones en el orden del camino (el carril las coloca de abajo arriba).
   const build = () => {
     built = true;
-    marks.innerHTML = list.map((it, i) => `<li class="scrub-mark-row"><button type="button" class="scrub-mark" data-i="${i}" tabindex="${i ? -1 : 0}"><span class="sr-only">Ir a ${esc(it.label)}</span></button></li>`).join('');
+    marks.innerHTML = list.map((it, i) => `<li class="scrub-mark-row"><button type="button" class="scrub-mark" data-i="${i}" tabindex="${i ? -1 : 0}"${it.tint ? ` style="--dot:var(--map-tint-${esc(it.tint)})"` : ''}><span class="sr-only">Ir a ${esc(it.label)}</span></button></li>`).join('');
   };
   const setThumb = (f) => {
     thumb.style.transform = `translateY(${(f * geo.run).toFixed(1)}px)`;

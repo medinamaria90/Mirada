@@ -1,6 +1,7 @@
-/* Desplazamiento rápido del mapa (ui/map-scrubber.js). Carril fino en el borde derecho, entre la cabecera y el botón
-   «Tú»; oculto, transparente y sin recibir toques (el lector de pantalla sí llega a la lista de épocas). Solo se animan
-   opacity y transform. Colores y medidas en brand.css. */
+/* Desplazamiento rápido del mapa (ui/map-scrubber.js). Un sendero fino en el borde derecho, entre la cabecera y el
+   botón «Tú», con un puntito por época del color de su suelo, el asa redonda y tu parada en coral; oculto, transparente
+   y sin recibir toques (el lector de pantalla sí llega a la lista de épocas). Solo se animan opacity y transform.
+   Colores y medidas en brand.css. */
 
 .scrub {
   position: fixed; z-index: var(--map-z-float);
@@ -13,16 +14,16 @@
 }
 .scrub.is-shown, .scrub:focus-within { opacity: 1; transform: none; }
 
-/* Carril: una línea fina; al arrastrar, algo más gruesa y presente. */
+/* Carril: un sendero fino, del tono del camino, con su borde; al arrastrar, algo más ancho. */
 .scrub-line {
   position: absolute; top: calc(var(--hit) / 2); bottom: calc(var(--hit) / 2);
   right: calc(var(--scrub-line-x) - var(--scrub-line-w) / 2); width: var(--scrub-line-w);
-  border-radius: var(--radius-pill); background: var(--scrub-line);
-  transition: transform var(--scrub-fade) var(--ease), background-color var(--scrub-fade) var(--ease);
+  border-radius: var(--radius-pill); background: var(--scrub-line); box-shadow: 0 0 0 1px var(--scrub-line-edge);
+  transition: transform var(--scrub-fade) var(--ease);
 }
-.scrub.is-active .scrub-line { transform: scaleX(var(--scrub-line-grow)); background: var(--scrub-line-active); }
+.scrub.is-active .scrub-line { transform: scaleX(var(--scrub-line-grow)); }
 
-/* Marcas de época: una raya corta sobre el carril; la de la época a la vista, en tinta. */
+/* Épocas: un puntito redondo del color de su suelo (--dot), con un aro fino; la de la época a la vista, aro en tinta. */
 .scrub-marks { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
 .scrub-mark-row { position: absolute; right: 0; top: var(--at, 0); transform: translateY(-50%); }
 .scrub-mark {
@@ -31,60 +32,70 @@
   -webkit-tap-highlight-color: transparent;
 }
 .scrub-mark::before {
-  content: ""; position: absolute; top: 50%; right: calc(var(--scrub-line-x) - var(--scrub-mark-w) / 2);
-  width: var(--scrub-mark-w); height: var(--scrub-mark-h); margin-top: calc(var(--scrub-mark-h) / -2);
-  border-radius: var(--radius-pill); background: var(--scrub-mark);
+  content: ""; position: absolute; top: 50%; right: calc(var(--scrub-line-x) - var(--scrub-mark) / 2);
+  width: var(--scrub-mark); height: var(--scrub-mark); margin-top: calc(var(--scrub-mark) / -2);
+  border-radius: 50%; background: var(--dot, var(--scrub-mark-fill));
+  box-shadow: 0 0 0 var(--scrub-mark-ring) var(--scrub-mark-edge);
   transition: transform var(--scrub-fade) var(--ease);
 }
-.scrub-mark[aria-current]::before { background: var(--scrub-mark-on); }
-.scrub.is-active .scrub-mark::before { transform: scaleX(var(--scrub-mark-grow)); }
+.scrub-mark[aria-current]::before { box-shadow: 0 0 0 var(--scrub-mark-ring) var(--scrub-mark-on); }
+.scrub.is-active .scrub-mark::before { transform: scale(var(--scrub-mark-grow)); }
 .scrub-mark:focus-visible { outline: none; }
 .scrub-mark:focus-visible::after {
   content: ""; position: absolute; inset: 2px; border-radius: var(--radius-sm); outline: 2.5px solid var(--ink); outline-offset: -2px;
 }
 
-/* Tu parada: un punto coral sobre el carril. */
+/* Tu parada: punto coral con aro claro y sombra (se lee sobre carteles y paisaje). */
 .scrub-here {
   position: absolute; top: var(--at, 0); right: calc(var(--scrub-line-x) - var(--scrub-here) / 2);
   width: var(--scrub-here); height: var(--scrub-here); margin-top: calc(var(--scrub-here) / -2);
-  border-radius: 50%; background: var(--scrub-here-dot); box-shadow: 0 0 0 2px var(--scrub-grip);
+  border-radius: 50%; background: var(--scrub-here-dot);
+  box-shadow: 0 0 0 var(--scrub-here-ring) var(--scrub-here-edge), var(--scrub-shadow);
 }
 .scrub-here[hidden] { display: none; }
 
-/* Asa «estás aquí»: pastilla clara con borde; zona táctil de --hit de alto. Al arrastrar, más ancha y en coral. */
+/* Asa «estás aquí»: un círculo claro con borde y sombra suave (zona táctil de --hit de alto); al arrastrar, algo mayor
+   y en coral. */
 .scrub-thumb {
   position: absolute; top: 0; right: 0; width: var(--scrub-hit); height: var(--hit);
   cursor: grab; touch-action: none; will-change: transform; -webkit-tap-highlight-color: transparent;
 }
 .scrub-grip {
-  position: absolute; top: 50%; right: calc(var(--scrub-line-x) - var(--scrub-grip-w) / 2);
-  width: var(--scrub-grip-w); height: var(--scrub-grip-h); margin-top: calc(var(--scrub-grip-h) / -2);
-  border-radius: var(--radius-pill); background: var(--scrub-grip);
-  box-shadow: inset 0 0 0 1px var(--scrub-grip-edge), var(--scrub-shadow);
-  transition: transform var(--scrub-fade) var(--ease), background-color var(--scrub-fade) var(--ease);
+  position: absolute; top: 50%; right: calc(var(--scrub-line-x) - var(--scrub-grip) / 2);
+  width: var(--scrub-grip); height: var(--scrub-grip); margin-top: calc(var(--scrub-grip) / -2); box-sizing: border-box;
+  border-radius: 50%; background: var(--scrub-grip-fill); border: var(--scrub-grip-ring) solid var(--scrub-grip-edge);
+  box-shadow: var(--scrub-shadow);
+  transition: transform var(--scrub-fade) var(--ease), background-color var(--scrub-fade) var(--ease), border-color var(--scrub-fade) var(--ease);
 }
 .scrub.is-active .scrub-thumb { cursor: grabbing; }
-.scrub.is-active .scrub-grip { transform: scaleX(var(--scrub-grip-grow)); background: var(--scrub-grip-active); box-shadow: var(--scrub-shadow); }
+.scrub.is-active .scrub-grip { transform: scale(var(--scrub-grip-grow)); background: var(--scrub-grip-active); border-color: var(--scrub-here-edge); }
 .scrub.is-shown .scrub-thumb, .scrub.is-shown .scrub-mark { pointer-events: auto; }
 
-/* Burbuja junto al dedo: miniatura, época y siglos. Solo al arrastrar. */
+/* Burbuja pegada al asa por la izquierda, con su flechita: retrato pequeño, época y siglos. Solo al arrastrar. */
 .scrub-bubble {
-  position: absolute; top: 0; right: calc(var(--scrub-hit) + var(--scrub-bubble-gap));
-  display: flex; align-items: center; gap: .6rem; box-sizing: border-box; min-height: var(--hit);
-  width: max-content; max-width: min(var(--scrub-bubble-max), 70vw); padding: 4px 1.1rem 4px 4px;
-  border-radius: calc(var(--hit) / 2); background: var(--scrub-bubble); color: var(--scrub-bubble-ink);
+  position: absolute; top: calc(var(--hit) / 2);
+  right: calc(var(--scrub-line-x) + var(--scrub-grip) * var(--scrub-grip-grow) / 2 + var(--scrub-bubble-gap));
+  display: flex; align-items: center; gap: .5rem; box-sizing: border-box; min-height: calc(var(--scrub-pic) + 6px);
+  width: max-content; max-width: min(var(--scrub-bubble-max), 72vw); padding: 3px .8rem 3px 3px;
+  translate: 0 -50%;
+  border-radius: calc(var(--scrub-pic) / 2 + 3px); background: var(--scrub-bubble); color: var(--scrub-bubble-ink);
   box-shadow: inset 0 0 0 1px var(--line), var(--scrub-shadow);
   pointer-events: none; opacity: 0; will-change: transform;
   transition: opacity var(--scrub-fade) var(--ease);
 }
+.scrub-bubble::after {
+  content: ""; position: absolute; top: 50%; right: calc(var(--scrub-arrow) / -2 + 1px);
+  width: var(--scrub-arrow); height: var(--scrub-arrow); margin-top: calc(var(--scrub-arrow) / -2);
+  background: var(--scrub-bubble); rotate: 45deg; box-shadow: 1px -1px 0 0 var(--line);
+}
 .scrub.is-active .scrub-bubble { opacity: 1; }
-.scrub-bubble:not(:has(.scrub-pic:not([hidden]))) { padding-left: 1rem; }
+.scrub-bubble:not(:has(.scrub-pic:not([hidden]))) { padding-left: .8rem; }
 .scrub-pic { position: relative; flex: none; width: var(--scrub-pic); height: var(--scrub-pic); border-radius: 50%; overflow: hidden; background: var(--surface-2); }
 .scrub-pic[hidden] { display: none; }
 .scrub-art { position: absolute; inset: 0; border-radius: inherit; aspect-ratio: auto; box-shadow: none; }
 .scrub-words { display: grid; min-width: 0; }
-.scrub-name { font: 600 1rem/1.2 var(--font); letter-spacing: var(--track); text-wrap: balance; overflow-wrap: anywhere; }
-.scrub-sub { font: 400 .8rem/1.2 var(--font); color: var(--scrub-bubble-ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.scrub-name { font: 600 .9rem/1.15 var(--font); letter-spacing: var(--track); text-wrap: balance; overflow-wrap: anywhere; }
+.scrub-sub { font: 400 .72rem/1.2 var(--font); color: var(--scrub-bubble-ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .scrub-sub:empty { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
