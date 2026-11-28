@@ -95,6 +95,8 @@ export function parseRoute(hash, opts = {}) {
   if (m) return { name: 'sala', movementId: m[1] };
   m = /^galeria-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'gallery', movementId: m[1] };
+  m = /^cierre-([a-z0-9-]+)$/.exec(name);
+  if (m) return { name: 'closure', key: m[1] };
   m = /^movimiento-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'intro', movementId: m[1] };
   const challenge = decodeChallenge(name, opts);

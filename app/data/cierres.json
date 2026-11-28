@@ -1,0 +1,116 @@
+{
+ "eras": {
+  "renacimiento": {
+   "to": "manierismo-y-norte",
+   "text": "Retrocedemos un siglo: mientras Florencia redescubría la antigua Roma, en Flandes Jan van Eyck pintaba al óleo cada pelo y cada reflejo. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Jan_van_Eyck"
+  },
+  "manierismo-y-norte": {
+   "to": "barroco",
+   "text": "El Greco estiraba las figuras hacia el cielo. Muy pronto, en Roma, un pintor pendenciero, Caravaggio, apagará la luz y encenderá un foco. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Caravaggio"
+  },
+  "barroco": {
+   "to": "rococo-neoclasicismo",
+   "text": "Tras tanta sombra y tanto drama, París se cansa: quiere fiestas en el jardín y colores pastel. Luego llegará la vuelta seria a Grecia y Roma. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Rococó"
+  },
+  "rococo-neoclasicismo": {
+   "to": "romanticismo",
+   "text": "La razón y las líneas limpias de David parecían tenerlo todo claro. Hasta que Goya, pintor del rey de España, se puso a pintar sus pesadillas. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Francisco_de_Goya"
+  },
+  "romanticismo": {
+   "to": "realismo",
+   "text": "Basta de héroes y naufragios: ahora se pinta a quien espiga o pica piedra, tal cual, en cuadros enormes. A muchos les pareció un escándalo. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Realismo_(arte)"
+  },
+  "realismo": {
+   "to": "impresionismo",
+   "text": "Un crítico se burló de un cuadro del joven Monet, «Impresión, sol naciente», y la burla dio nombre al grupo. Pintan la luz antes de que cambie. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Impresión,_sol_naciente"
+  },
+  "impresionismo": {
+   "to": "postimpresionismo",
+   "text": "La luz ya estaba atrapada. Ahora unos pocos quieren más: el provenzal Cézanne, formas sólidas; el holandés Van Gogh, colores que gritan lo que siente. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Postimpresionismo"
+  },
+  "postimpresionismo": {
+   "to": "simbolismo-modernismo",
+   "text": "Fin de siglo: el vienés Klimt cubre de oro a sus figuras, el noruego Munch pinta un grito y, poco después, el ruso Kandinsky deja de pintar cosas. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Arte_abstracto"
+  },
+  "simbolismo-modernismo": {
+   "text": "Del Renacimiento a las vanguardias: cinco siglos de pintura. Tu museo ya está lleno; vuelve a mirarlo, que cada cuadro guarda algo que aún no has visto.",
+   "source": "https://es.wikipedia.org/wiki/Historia_de_la_pintura"
+  }
+ },
+ "branches": {
+  "gotico": {
+   "to": "renacimiento",
+   "text": "Giotto ya hacía llorar a sus figuras. Un siglo después, en Florencia, los pintores aprenderán a abrir el cuadro como una ventana al mundo. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Giotto"
+  },
+  "descubre-renacimiento": {
+   "to": "manierismo-y-norte",
+   "text": "De Fra Angelico a Tintoretto, ya conoces los talleres que rodeaban a los genios. Al norte de los Alpes, otros pintaban al óleo cada pelo. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Renacimiento"
+  },
+  "descubre-manierismo-y-norte": {
+   "to": "barroco",
+   "text": "Arcimboldo hacía caras con frutas y Sofonisba Anguissola retrataba a la corte de Felipe II. Lo que viene es pura sombra y teatro. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Sofonisba_Anguissola"
+  },
+  "descubre-barroco": {
+   "to": "rococo-neoclasicismo",
+   "text": "Bodegones de Sánchez Cotán, velas de La Tour, casas revueltas de Jan Steen: el Barroco daba para mucho. Ahora llegan los colores pastel. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Pintura_del_Barroco"
+  },
+  "descubre-rococo-neoclasicismo": {
+   "to": "romanticismo",
+   "text": "Venecia en las vistas de Canaletto, Londres en las sátiras de Hogarth, la reina María Antonieta en los retratos de Vigée Le Brun. Se acerca una tormenta.",
+   "source": "https://es.wikipedia.org/wiki/Élisabeth_Vigée_Le_Brun"
+  },
+  "descubre-romanticismo": {
+   "to": "realismo",
+   "text": "De las damas medievales de Rossetti a los dramas de la historia de Delaroche, el Romanticismo miraba lejos. Ahora toca mirar lo que hay delante. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Prerrafaelismo"
+  },
+  "descubre-realismo": {
+   "to": "impresionismo",
+   "text": "Rosa Bonheur pintaba caballos en la feria y Corot, la bruma de los bosques. Esa bruma es una pista: lo que viene se pinta con la luz. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Camille_Corot"
+  },
+  "descubre-impresionismo": {
+   "to": "postimpresionismo",
+   "text": "La luz impresionista llegó a una estadounidense, Mary Cassatt, y a un sueco, Anders Zorn. Ahora unos pocos quieren ir más allá de la luz. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
+  },
+  "descubre-postimpresionismo": {
+   "to": "simbolismo-modernismo",
+   "text": "Signac pintaba a puntitos de color puro, como su amigo Seurat, y Joaquín Mir llenaba Mallorca de luz. Lo que viene rompe todas las reglas. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Paul_Signac"
+  },
+  "descubre-simbolismo-modernismo": {
+   "text": "De los mitos dorados de Moreau a los cuellos larguísimos de Modigliani, has visto nacer el arte moderno. Tu museo ya es enorme.",
+   "source": "https://es.wikipedia.org/wiki/Amedeo_Modigliani"
+  },
+  "escuela-rusa": {
+   "text": "Dos siglos de Rusia, de los retratos de la corte al «Cuadrado negro» de Malévich. Pocos saben que allí se pintaba así. Ahora tú sí.",
+   "source": "https://es.wikipedia.org/wiki/Cuadrado_negro"
+  },
+  "pintura-britanica": {
+   "text": "De las sátiras de Hogarth a las damas de Sargent, que triunfó en Londres: dos siglos de pintura británica. Turner y Constable ya no son solo nombres.",
+   "source": "https://es.wikipedia.org/wiki/John_Singer_Sargent"
+  },
+  "maestros-espanoles": {
+   "text": "De Bermejo a Juan Gris, casi cinco siglos de pintura española. La próxima vez que entres en el Prado vas a saludar a muchos viejos conocidos.",
+   "source": "https://es.wikipedia.org/wiki/Pintura_de_España"
+  },
+  "ukiyo-e": {
+   "to": "postimpresionismo",
+   "text": "Monet llenó su casa de estampas japonesas y Van Gogh copió a Hiroshige al óleo. Con ellas cambia la pintura europea. Cruza la puerta.",
+   "source": "https://es.wikipedia.org/wiki/Japonismo"
+  }
+ }
+}
