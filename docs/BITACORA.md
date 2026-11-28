@@ -423,6 +423,15 @@ Alternancia (28/11): con la memoria de sesión de `lesson.js`, el «fíjate» de
 último visto de ese pintor fue otra pista propia, o se le parece (comparación de palabras clave, `similar`), toca una frase
 de estilo, y viceversa. Más variedad en los «fíjate» de Rafael, Rembrandt y Tiziano y 9 que solo describían la escena.
 
+## 28/11 · Visores de tarjetas: misma forma de avanzar, volver y salir
+Criterio de María: época, tramo e historia de pintor pueden verse distintos (claro / oscuro sobre el cuadro), pero se
+recorren igual. Componente común `app/js/ui/deck-nav.js` (+ `css/deck.css`): barras arriba, etiqueta discreta («Época»,
+«Tramo» o el pintor), compartir y X; tocar a la derecha avanza, a la izquierda vuelve, y deslizar; abajo «Seguir» y, como
+atajo, «Saltar» (paso del camino) o «Ir a las preguntas». En la última tarjeta el principal es lo que toca (Seguir en el
+itinerario, «Ir a las preguntas», «Volver al camino», «Volver», «Empezar») y el secundario, «Más sobre… ›» (la ficha del
+pintor; en época y tramo, la ficha de época cuando exista: `eraFichaRoute` en `era-cards.js`). Fuera «Descubre la época»,
+«Descubre más», los puntos, el avance solo con pausa y la insignia del rango en la cabecera. La X sale al camino sin seguir.
+
 ## 28/11 · Niveles «a fondo» por importancia
 
 - **Decisión de María:** los niveles de un pintor se ordenan por importancia, no por etapa. Lo imprescindible es el nivel 2

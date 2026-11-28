@@ -18,6 +18,7 @@ import { finishRound } from '../../engine/finish.js';
 import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
 import { avatarHtml } from '../avatar.js';
+import { DECK_LABEL } from '../deck-nav.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_TITLE } from '../../engine/review.js';
@@ -188,8 +189,8 @@ export function introWorks(index, movementId) {
   return picks;
 }
 
-// Texto del botón de la presentación según cómo se llega a ella.
-const INTRO_ENTER = { first: 'Seguir', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
+// Botón de la última tarjeta de la presentación según cómo se llega a ella: desde el camino sigue la secuencia («Seguir»).
+const INTRO_ENTER = { first: DECK_LABEL.next, again: DECK_LABEL.toPath, shared: DECK_LABEL.toPath, guest: DECK_LABEL.start };
 
 // Lo que la presentación espera a sus tarjetas antes de pintarse; con una red peor, sale sin ellas y llegan con fundido.
 const ERA_CARDS_WAIT_MS = 1200;
@@ -223,14 +224,12 @@ export async function renderIntro(ctx, el, movementId, { mode: asked = 'again', 
     </main>
   </div>`;
   const intro = $('.intro', el);
-  // Al acabar las tarjetas, «Ir a las preguntas» (no en una época compartida: no toca la partida).
-  const offer = (cards) => { if (mode !== 'shared') offerEraQuestions(ctx, el, intro, movement, cards, () => { off(); markSeen(); }, proceed); };
-  if (early) {
-    early.m.mountEraCards(ctx, intro, movementId, early.cards);
-    offer(early.cards);
-  } else {
-    eraCards.then(({ m, cards }) => { m.mountEraCards(ctx, intro, movementId, cards, { late: true }); offer(cards); }).catch((err) => console.error(err));
-  }
+  // Como paso del camino, «Saltar» va directo a lo siguiente. Al acabar las tarjetas, «Ir a las preguntas» (no en una
+  // época compartida: no toca la partida).
+  const skip = mode === 'first';
+  const ask = (cards) => (mode === 'shared' ? null : eraQuestions(ctx, el, movement, cards, () => { off(); markSeen(); }, proceed));
+  if (early) early.m.mountEraCards(ctx, intro, movementId, early.cards, { skip, questions: ask(early.cards) });
+  else eraCards.then(({ m, cards }) => m.mountEraCards(ctx, intro, movementId, cards, { late: true, skip, questions: ask(cards) })).catch((err) => console.error(err));
   focusHeading(el);
   const markSeen = () => {
     if (mode !== 'first') return;
@@ -255,19 +254,19 @@ export async function renderIntro(ctx, el, movementId, { mode: asked = 'again', 
   });
 }
 
-// «Ir a las preguntas» al llegar a la última tarjeta de la época (ui/concept-quiz.js): «Seguir» pasa a secundario. Las
-// preguntas salen en esta pantalla y, al terminar o salir, se sigue como con «Seguir» (then).
-function offerEraQuestions(ctx, el, intro, movement, cards, before, then) {
-  import('../concept-quiz.js').then(async (cq) => {
-    const enter = $('[data-action="enter"]', intro);
-    if (!enter || !(await cq.hasConcepts('epoca', movement.id)) || !enter.isConnected) return;
-    enter.parentElement.classList.add('has-cq');
-    cq.offerAtEnd($('.era-track', intro), (b) => enter.before(b), () => {
-      ctx.audio.sfx('tap');
-      before();
-      cq.runConceptQuiz(ctx, el, { scope: 'epoca', id: movement.id, movement, cardWorks: cq.cardWorksOf(cards), onEnd: then });
-    }, { onShow: () => enter.classList.replace('btn-primary', 'btn-secondary') });
+// «Ir a las preguntas» en la última tarjeta de la época (ui/deck-nav.js `questions`), si la época tiene preguntas: salen
+// en esta pantalla y, al terminar o saltarlas, se sigue como con «Seguir» (then). before(): lo que hace «Seguir» antes.
+function eraQuestions(ctx, el, movement, cards, before, then) {
+  const questions = { ready: false, refresh: () => {} };
+  questions.go = () => import('../concept-quiz.js').then((cq) => {
+    before();
+    cq.runConceptQuiz(ctx, el, { scope: 'epoca', id: movement.id, movement, cardWorks: cq.cardWorksOf(cards), onEnd: then });
+  }).catch((err) => { console.error(err); then(); });
+  import('../concept-quiz.js').then((cq) => cq.hasConcepts('epoca', movement.id)).then((yes) => {
+    questions.ready = yes;
+    questions.refresh();
   }).catch((err) => console.error(err));
+  return questions;
 }
 
 // Desde el medallón del mapa, la primera vez: es la parada de la época en el camino, así que cuenta como vista y «Seguir»
@@ -382,7 +381,7 @@ function withIntro(ctx, el, movementId, show) {
 }
 
 // Igual con el tramo: la primera vez que se entra en uno, su cartel en tarjetas (sign-cards.js) antes del pintor;
-// «Saltar» (o «Seguir», al final) lo cierra y sigue al pintor. Salir de la pantalla (atrás) no continúa.
+// «Saltar» (o «Seguir», al final) lo cierra y sigue al pintor; la X vuelve al camino. Salir de la pantalla (atrás) no continúa.
 // Al final de sus tarjetas, «Ir a las preguntas» las abre en esta pantalla y después se sigue al pintor.
 function withTramo(ctx, el, artistId, show) {
   if (!needsTramo(ctx.store.get().progress, ctx.index, artistId)) return show();
@@ -392,7 +391,7 @@ function withTramo(ctx, el, artistId, show) {
     .then((cq) => cq.runConceptQuiz(ctx, el, { scope: 'tramo', id: key, movement, cardWorks: cq.cardWorksOf(cards), onEnd: () => { if (el.isConnected) show(); } }))
     .catch((err) => { console.error(err); if (el.isConnected) show(); });
   return import('../sign-cards.js')
-    .then((m) => m.openSignCards(ctx, 'tramo', key, null, { title: key, onDone: () => { if (el.isConnected) show(); }, onQuestions }))
+    .then((m) => m.openSignCards(ctx, 'tramo', key, null, { title: key, onDone: () => { if (el.isConnected) show(); }, onExit: () => { if (el.isConnected) ctx.go('inicio', { replace: true }); }, onQuestions }))
     .then((handle) => { if (!handle && el.isConnected) show(); })
     .catch((err) => { console.error(err); if (el.isConnected) show(); });
 }
@@ -400,13 +399,13 @@ function withTramo(ctx, el, artistId, show) {
 // La historia sale siempre al entrar en un pintor (decisión de María, 26/11) y el embudo es historia → preguntas:
 // «Jugar» (o pasar de la última tarjeta) llama a show(shown, true) con los cuadros que ha enseñado (la ronda no abre con
 // ellos); sin historia, show([], false) y quien llama decide qué enseñar antes. La X, Esc o deslizar abajo vuelven al
-// camino; «Ver más» deja en la ficha y atrás, donde lleve el navegador.
+// camino; «Más sobre <pintor> ›» deja en la ficha y atrás, donde lleve el navegador.
 // Historia antes de las preguntas de un nivel: en cada tarjeta «Seguir» (destacado) e «Ir a las preguntas» (ui/story-card.js).
-export const LEVEL_STORY_STEPS = { next: 'Seguir', questions: 'Ir a las preguntas', end: 'questions' };
+export const LEVEL_STORY_STEPS = { questions: DECK_LABEL.questions, end: 'questions' };
 
 function withStory(ctx, el, artistId, level, show, { look = '', returnTo = null } = {}) {
   import('../story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look, steps: LEVEL_STORY_STEPS, onPlay: () => {}, onMore: false })
+    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look, steps: LEVEL_STORY_STEPS, onPlay: () => {} })
       .then(({ shown, ended }) => {
         if (!el.isConnected) return;
         if (ended === m.STORY_END.CLOSE) ctx.go(returnTo || 'inicio', { replace: true });

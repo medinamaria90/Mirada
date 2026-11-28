@@ -140,11 +140,11 @@ test('carteles: portada y tarjetas del cartel; sin textos, solo el nombre', asyn
   assert.deepEqual(ramas, JSON.parse(readFileSync(join(root, 'contenido', 'ramas.json'), 'utf8')), 'app/data/carteles desfasado: python3 -I tools/sync_carteles.py');
   const gotico = signSlides(real, 'rama', ramas.gotico, 'Gótico');
   assert.equal(gotico.total, ramas.gotico.cards.length + 1);
-  assert.ok(gotico.html.includes('>Gótico</h2>') && gotico.html.includes(ramas.gotico.lead) && gotico.html.includes('Descubre más'));
+  assert.ok(gotico.html.includes('>Gótico</h2>') && gotico.html.includes(ramas.gotico.lead) && !gotico.html.includes('Descubre'));
   assert.ok(!gotico.html.includes(ramas.gotico.source), 'la fuente no va en las tarjetas (solo en «Fuentes y créditos»)');
   const empty = signSlides(real, 'tramo', undefined, 'Venecia');
   assert.equal(empty.total, 1);
-  assert.ok(empty.html.includes('>Venecia</h2>') && empty.html.includes('>Tramo</p>') && !empty.html.includes('Descubre más'));
+  assert.ok(empty.html.includes('>Venecia</h2>'));
   // Todos los tramos del camino común y de las escuelas tienen su cartel.
   for (const era of layout.eras) for (const s of era.sections) assert.ok(tramosData[s.key], `sin cartel para el tramo ${s.key}`);
   for (const b of real.branches) {

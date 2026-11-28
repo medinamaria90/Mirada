@@ -1,12 +1,11 @@
-// La tanda de preguntas tras las tarjetas de una época (medallón) o de un tramo (rombo): «Ir a las preguntas» la abre en la
-// pantalla y al terminar (o al salir con la X) se sigue a lo que tocaba. Se puede saltar, no da puntos ni desbloquea nada;
+// La tanda de preguntas tras las tarjetas de una época (medallón) o de un tramo (rombo): «Ir a las preguntas», el principal
+// de la última tarjeta (ui/deck-nav.js), la abre en la pantalla y al terminar (o al salir con la X) se sigue a lo que tocaba. Se puede saltar, no da puntos ni desbloquea nada;
 // sus respuestas cuentan para «Repasar…» (engine/concepts.js finishConcepts). El banco se carga al primer uso.
 
 import { runLesson } from './screens/lesson.js';
 import { randomSeed, createRng } from '../engine/rng.js';
 import { cleanBank, bankFor, planConcepts, finishConcepts } from '../engine/concepts.js';
 
-export const QUESTIONS_LABEL = 'Ir a las preguntas';
 let bankPromise = null;
 
 // El banco ([] si no se puede cargar; se reintenta la próxima vez).
@@ -74,29 +73,6 @@ export async function runConceptQuiz(ctx, el, { scope, id, movement, cardWorks =
     onQuit: () => end(null),
     onBackAfterDone: () => {},
   });
-}
-
-// «Ir a las preguntas» bajo un carrusel de tarjetas: aparece al llegar a la última (y ya se queda); sin carrusel, desde el
-// principio. place(button): lo pone en su sitio; onShow(): al aparecer (p. ej. para pasar «Seguir» a secundario).
-export function offerAtEnd(track, place, onGo, { onShow = () => {} } = {}) {
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'btn btn-primary cq-go';
-  button.textContent = QUESTIONS_LABEL;
-  button.hidden = true;
-  button.addEventListener('click', onGo);
-  place(button);
-  const sync = () => {
-    if (!button.hidden) return;
-    // Con la pantalla aún sin pintar (ancho 0) no se sabe dónde está: se espera al primer desplazamiento.
-    const last = !track || (track.clientWidth > 0 && track.scrollLeft + track.clientWidth >= track.scrollWidth - track.clientWidth / 2);
-    if (!last) return;
-    button.hidden = false;
-    onShow();
-  };
-  sync();
-  track?.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
-  return button;
 }
 
 // Cuadros de unas tarjetas (de época o de tramo), para preferir preguntas sobre lo que se acaba de ver.

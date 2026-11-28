@@ -25,8 +25,8 @@ function invite(ctx, artist, work) {
           <h2 class="story-ask" id="story-invite-title">¿Te ha gustado?</h2>
           <p class="story-text">Aprende a reconocer a ${esc(name)} y a los grandes maestros jugando.</p>
         </div>
-        <div class="story-actions">
-          <button type="button" class="btn story-more" data-st="later">Ahora no</button>
+        <div class="deck-actions">
+          <button type="button" class="btn deck-secondary" data-st="later">Ahora no</button>
           <button type="button" class="btn btn-primary" data-st="play">Empezar a jugar</button>
         </div>
       </div>

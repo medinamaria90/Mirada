@@ -1,15 +1,18 @@
-// Tarjetas de una época (data/epocas/<movimiento>.json): en la presentación de la época se desliza a la derecha
-// para ver la época en ocho tarjetas (o nueve, con una extra) (cuándo y dónde, por qué surge… y una curiosidad). Cada tarjeta, un cuadro de la
-// época (se abre en grande). Su fuente queda en los datos y se ve en «Fuentes y créditos». Sin tarjetas, la presentación
-// queda como estaba. Arriba, «Compartir» manda el enlace a la época en tarjetas (h/epoca-<id>.html, ui/story-share.js).
+// Tarjetas de una época (data/epocas/<movimiento>.json): la presentación de la época se recorre en ocho tarjetas (o nueve,
+// con una extra) (cuándo y dónde, por qué surge… y una curiosidad), con la navegación común de los visores de tarjetas
+// (deck-nav.js). Cada tarjeta, un cuadro de la época (se abre en grande). Su fuente queda en los datos y se ve en «Fuentes y
+// créditos». Sin tarjetas, la portada sola. Arriba, «Compartir» manda el enlace a la época en tarjetas (h/epoca-<id>.html,
+// ui/story-share.js).
 
-import { esc, $, $$ } from '../dom.js';
-import { icons } from '../icons.js';
+import { esc, $ } from '../dom.js';
 import { artFrame } from '../art.js';
 import { loadCss } from '../lazy-css.js';
 import { eraUrl, shareLink, NOTES } from '../story-share.js';
 import { cardFrame } from '../../engine/framing.js';
 import { regionOf } from '../../engine/stories.js';
+import { headHtml, kindLabelHtml, deckFootHtml, wireDeck } from '../deck-nav.js';
+
+const ERA_LABEL = 'Época';
 
 const cache = new Map();
 
@@ -67,18 +70,34 @@ export function cardHtml(index, card, n, total) {
 // Tarjetas listas para montar: los datos y su hoja de estilo. La presentación espera a ambos antes de pintarse, para
 // salir ya en su forma final (montar el carrusel sobre una portada ya pintada la hacía saltar).
 export async function prepareEraCards(movementId) {
-  const [cards] = await Promise.all([loadCards(movementId), loadCss('css/epocas.css')]);
+  const [cards] = await Promise.all([loadCards(movementId), loadCss('css/epocas.css'), loadCss('css/deck.css')]);
   return cards;
 }
 
-// root: el .welcome de la presentación. La portada (cuadros, título, frase) pasa a ser la primera diapositiva. Se llama
-// antes de que la pantalla se pinte (sin salto); si llega tarde (red muy lenta), late la monta con un fundido suave.
-export function mountEraCards(ctx, root, movementId, cards, { late = false } = {}) {
+// Ficha de una época (para ampliar desde la última tarjeta de la época y de sus tramos): aún no existe; cuando la haya, esta
+// función devuelve su ruta y aparece el secundario «Más sobre…». Hasta entonces, sin botón (nada que no lleve a ningún sitio).
+export const eraFichaRoute = () => null;
+
+// «Más sobre…» de la última tarjeta, si la época tiene ficha. label: el texto («Más sobre el Renacimiento ›» por defecto).
+export function eraMore(ctx, movementId, label = '') {
+  const route = movementId ? eraFichaRoute(movementId) : null;
+  const movement = ctx.index.movement(movementId);
+  if (!route || !movement) return null;
+  return { label: label || `Más sobre ${movement.name} ›`, go: () => ctx.go(route) };
+}
+
+// root: el .welcome de la presentación. La portada (cuadros, título, frase) pasa a ser la primera tarjeta, dentro de la
+// navegación común de los visores de tarjetas (deck-nav.js): barras, «Época», compartir y la X arriba; «Seguir» abajo y, en la
+// última tarjeta, el botón de la presentación (Seguir, Volver al camino, Empezar…), que hace lo que hacía. skip: como paso
+// del camino, «Saltar» va directo a lo siguiente. Se llama antes de que la pantalla se pinte (sin salto); si llega tarde (red
+// muy lenta), late la monta con un fundido suave.
+// questions: { ready, go } de las preguntas de concepto (deck-nav.js wireDeck), o null.
+export function mountEraCards(ctx, root, movementId, cards, { late = false, skip = false, questions = null } = {}) {
   const body = $('.welcome-body', root);
-  if (!cards.length || !body || !root.isConnected || $('.era-track', root)) return;
+  if (!body || !root.isConnected || $('.era-track', root)) return;
   const enter = $('[data-action="enter"]', body);
   const cover = [...body.children].filter((c) => c !== enter);
-  // Mover la portada al carrusel le quita el foco (el título lo tiene al abrir): se le devuelve, y Enter sigue entrando.
+  // Mover la portada al carrusel le quita el foco (el título lo tiene al abrir): se le devuelve.
   const focused = root.contains(document.activeElement) ? document.activeElement : null;
   const total = cards.length + 1;
   const track = document.createElement('div');
@@ -91,40 +110,31 @@ export function mountEraCards(ctx, root, movementId, cards, { late = false } = {
   first.setAttribute('role', 'group');
   first.setAttribute('aria-label', `1 de ${total}`);
   first.append(...cover);
-  first.insertAdjacentHTML('beforeend', `<button type="button" class="era-more" data-era="next">Descubre la época${icons.next(16)}</button>`);
   track.append(first);
   track.insertAdjacentHTML('beforeend', cards.map((c, i) => cardHtml(ctx.index, c, i + 2, total)).join(''));
   body.prepend(track);
-  wireCards(ctx, body, track, total);
-  root.classList.add('has-era-cards');
+  // El botón de la presentación queda en la página (lo escucha la pantalla) y lo pulsa el principal de la última tarjeta.
+  enter.hidden = true;
+  enter.removeAttribute('data-primary');
+  body.insertAdjacentHTML('beforebegin', headHtml({ total, labelHtml: kindLabelHtml(ERA_LABEL), share: true }));
+  body.insertAdjacentHTML('afterend', deckFootHtml());
+  $('.deck-primary', root).setAttribute('data-primary', '');
+  root.classList.add('has-era-cards', 'deck-light');
   if (late) root.classList.add('era-late');
   if (focused && !focused.contains(document.activeElement)) focused.focus({ preventScroll: true });
-  root.insertAdjacentHTML('beforeend', `<button type="button" class="icon-btn era-share" aria-label="Compartir">${icons.share(20)}</button>`);
-  $('.era-share', root).addEventListener('click', async () => {
-    ctx.audio.sfx('tap');
-    const note = NOTES[await shareLink({ url: eraUrl(movementId), title: ctx.index.movement(movementId)?.name || '' })];
-    if (note) ctx.toast(note);
-  });
-}
-
-// Puntos y paso de tarjeta: uno por diapositiva (el actual, alargado), solo como indicador (nueve botones no caben con
-// toque de --hit; se pasa deslizando, con las flechas en el carrusel o con «Descubre…», que lleva a la segunda). scope:
-// donde van los puntos (tras el carrusel) y se escuchan los toques.
-export function wireCards(ctx, scope, track, total) {
-  const dots = `<div class="era-dots" aria-hidden="true">${Array.from({ length: total }, () => '<span class="era-dot"><span></span></span>').join('')}</div>`;
-  track.insertAdjacentHTML('afterend', dots);
-  const slides = $$('.era-slide', track);
-  const go = (i) => slides[Math.max(0, Math.min(total - 1, i))].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-  const sync = () => {
-    const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
-    $$('.era-dot', scope).forEach((d, k) => d.classList.toggle('is-now', k === i));
-  };
-  sync();
-  track.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
-  scope.addEventListener('click', (ev) => {
-    const b = ev.target.closest('[data-era]');
-    if (!b) return;
-    ctx.audio.sfx('tap');
-    go(1);
+  wireDeck(ctx, {
+    scope: root,
+    track,
+    endLabel: enter.textContent,
+    onEnd: () => enter.click(),
+    onSkip: skip ? () => enter.click() : null,
+    more: eraMore(ctx, movementId),
+    questions,
+    onClose: () => ctx.go('inicio'),
+    onShare: async () => {
+      ctx.audio.sfx('tap');
+      const note = NOTES[await shareLink({ url: eraUrl(movementId), title: ctx.index.movement(movementId)?.name || '' })];
+      if (note) ctx.toast(note);
+    },
   });
 }

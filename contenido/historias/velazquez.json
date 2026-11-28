@@ -38,13 +38,8 @@
    "title": "Roma, Palacio y Las meninas",
    "cards": [
     {
-     "text": "Ya en la cumbre, en su segundo viaje a Roma, en 1650, lo eligen miembro de la Academia de San Lucas. Ese año expone el retrato de su esclavo y ayudante, Juan de Pareja.",
-     "artwork": "w4717953",
-     "focus": [
-      0.44,
-      0.05,
-      1.8
-     ],
+     "text": "Ya en la cumbre, en 1649 vuelve a Italia a comprar arte para el rey. En Roma, en 1650, entra en la Academia de San Lucas, la de los pintores, y retrata al papa.",
+     "artwork": "w1240092",
      "source": "https://es.wikipedia.org/wiki/Diego_Vel%C3%A1zquez#Segundo_viaje_a_Italia"
     },
     {
@@ -80,7 +75,7 @@
    "title": "Madurez en Madrid",
    "cards": [
     {
-     "text": "Antes, en su madurez en Madrid, pinta La rendición de Breda: el general Espínola recibe las llaves de la ciudad de manos del vencido. Colgaba en el Salón de Reinos.",
+     "text": "Retrocedemos a su madurez en Madrid: hacia 1635 pinta La rendición de Breda, en la que el general Espínola recibe las llaves de la ciudad de manos del vencido.",
      "artwork": "w1133420",
      "focus": [
       0.5,
@@ -139,7 +134,7 @@
    "title": "Pintor del rey y primer viaje a Italia",
    "cards": [
     {
-     "text": "En 1623, con 24 años, se muda a Madrid y retrata a Felipe IV, seis años menor que él. Al rey le gusta tanto que lo nombra pintor del rey. Con los años llegaría a pintor de cámara.",
+     "text": "En 1623, con 24 años, se muda a Madrid y retrata a Felipe IV, seis años menor que él. Al rey le gusta tanto que lo nombra su pintor: lo será el resto de su vida.",
      "artwork": "w1115403",
      "focus": [
       0.5,

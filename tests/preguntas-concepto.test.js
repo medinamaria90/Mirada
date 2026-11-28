@@ -201,15 +201,16 @@ test('se pueden saltar y no desbloquean nada: sin reintentos, sin puntos y sin t
 });
 
 test('salen tras las tarjetas: «Ir a las preguntas» al llegar a la última tarjeta de la época y del tramo', () => {
-  const quiz = src('ui', 'concept-quiz.js');
-  assert.match(quiz, /export const QUESTIONS_LABEL = 'Ir a las preguntas'/);
-  assert.match(quiz, /track\.clientWidth > 0 && track\.scrollLeft \+ track\.clientWidth >= track\.scrollWidth - track\.clientWidth \/ 2/);
+  const deck = src('ui', 'deck-nav.js');
+  assert.match(deck, /const ask = last && Boolean\(questions\?\.ready\) && Boolean\(end\);/, 'solo en la última tarjeta');
+  assert.match(deck, /primary\.textContent = ask \? DECK_LABEL\.questions : last \? endLabel : DECK_LABEL\.next;/);
+  assert.match(deck, /else if \(what === 'end'\) onEnd\(\);/, 'en la última, «Seguir» (o «Volver al camino») salta las preguntas');
   const flows = src('ui', 'screens', 'flows.js');
-  assert.match(flows, /offerEraQuestions\(ctx, el, intro, movement, cards/);
-  assert.match(flows, /mode !== 'shared'/, 'una época compartida no ofrece preguntas');
+  assert.match(flows, /eraQuestions\(ctx, el, movement, cards/);
+  assert.match(flows, /mode === 'shared' \? null/, 'una época compartida no ofrece preguntas');
   assert.match(flows, /onQuestions \}\)\)/, 'el tramo como paso del camino lleva preguntas y luego el pintor');
   const signs = src('ui', 'sign-cards.js');
-  assert.match(signs, /if \(!silent && !toQuestions\) onDone\(\)/, 'ir a las preguntas no salta al pintor sin pasar por ellas');
+  assert.match(signs, /if \(silent \|\| toQuestions\) return;/, 'ir a las preguntas no salta al pintor ni vuelve al camino');
   // Desde el cartel del mapa, su propia ruta.
   const key = 'El óleo en Flandes';
   assert.equal(tramoSlug(key), 'el-oleo-en-flandes');
