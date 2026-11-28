@@ -415,3 +415,10 @@ curiosidad de su obra (de ahí se habían sacado), así que no se ha perdido nin
 - Medallón y rombo por delante del progreso: cerrados con candado y el mismo globo («Se abre al cruzar la puerta del Barroco»); al
   llegar a la época se abren sus rombos aunque sus pintores sigan cerrados.
 - Prueba general del itinerario (`tests/itinerario.test.js`): una partida que solo sigue `nextStep` recorre todo el camino en orden.
+Revisión independiente con ese criterio («¿ayuda a reconocer al pintor la próxima vez?»): ~80 % lo cumplía (7/10).
+Corregidos 47: curiosidades que quedaban (gato y jilguero, perro carlino, esqueleto gigante…), datos dudosos (rayos del
+atardecer en la cruz de Friedrich, el «con espátula» de La novia judía) y más variedad en Van Eyck, Bronzino, Courbet,
+Berruguete y Degas.
+Alternancia (28/11): con la memoria de sesión de `lesson.js`, el «fíjate» de la obra ya no sale siempre primero: si lo
+último visto de ese pintor fue otra pista propia, o se le parece (comparación de palabras clave, `similar`), toca una frase
+de estilo, y viceversa. Más variedad en los «fíjate» de Rafael, Rembrandt y Tiziano y 9 que solo describían la escena.
