@@ -38,7 +38,7 @@ export function questionHtml(view, number, { cheer = '' } = {}) {
     // Como en la ronda de la app: tocar una miniatura NO responde, abre el visor con las 4 («Es este»
     // responde desde dentro); las teclas 1-4 responden directo.
     const opts = view.options.map((o, i) => `<button class="option option-art" data-action="pick" data-id="${esc(o.id)}" data-pos="${i}" aria-label="Opción ${i + 1}" aria-haspopup="dialog">
-        ${marcoHtml(o.artwork, { alt: '', eager: true, label: `Opción ${i + 1}` })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
+        ${marcoHtml(o.artwork, { alt: '', eager: true, label: `Opción ${i + 1}`, veils: veilsHtml(o.artwork) })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
     return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>`;
   }
   const opts = view.options.map((o, i) => `<button class="option" data-action="answer" data-id="${esc(o.id)}"><span class="key" aria-hidden="true">${i + 1}</span><span class="opt-text">${esc(o.label)}${o.detail ? `<span class="opt-sub">${esc(o.detail)}</span>` : ''}</span></button>`).join('');

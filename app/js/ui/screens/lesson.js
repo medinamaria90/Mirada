@@ -190,8 +190,9 @@ export function runLesson(ctx, el, config) {
     if (q.type === 'before') return beforeQuestionHtml(index, q, head);
     if (q.type === 'which') {
       // Pulsar una miniatura abre el visor con las 4 («Es este» responde); 1-4 responden directo.
+      // Las firmas, veladas también en las miniaturas hasta responder: a su tamaño se leen.
       const opts = q.options.map((o, i) => `<button class="option option-art" data-action="pick" data-id="${esc(o.id)}" data-pos="${i}" aria-label="Opción ${i + 1}" aria-haspopup="dialog">
-          ${marcoHtml(index.artwork(o.artworkId), { alt: '', eager: true, label: `Opción ${i + 1}` })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
+          ${marcoHtml(index.artwork(o.artworkId), { alt: '', eager: true, label: `Opción ${i + 1}`, veils: veilsHtml(index.artwork(o.artworkId)) })}<span class="key" aria-hidden="true">${i + 1}</span></button>`).join('');
       return `<div class="q-head">${head}</div><div class="options options-grid" role="group" aria-label="Elige un cuadro">${opts}</div>`;
     }
     const art = index.artwork(q.artworkId);
@@ -289,7 +290,7 @@ export function runLesson(ctx, el, config) {
     });
     if (!correct) button.classList.add('is-wrong');
     else button.classList.add('is-picked');
-    if (q.type !== 'which') unveil(stage);
+    unveil(stage);
     if (q.type !== 'which') revealTitle(stage, index.artwork(q.artworkId)?.title);
 
     // Combo: cada 3 seguidas suena la pequeña fanfarria ascendente en lugar del acierto.

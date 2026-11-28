@@ -229,7 +229,8 @@ function choose(optionId) {
     }
     if (b.dataset.id === optionId) b.classList.add('is-picked');
   }
-  if (view.kind !== 'which') { unveil(root); revealTitle(root, view.artwork.title); }
+  unveil(root);
+  if (view.kind !== 'which') revealTitle(root, view.artwork.title);
   play(correct ? 'correct' : 'wrong');
   const feedback = $('.feedback', root);
   feedback.innerHTML = feedbackHtml(view, correct);

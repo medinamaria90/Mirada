@@ -67,3 +67,10 @@ test('el HTML de una pregunta de autor lleva el velo de la firma del cuadro', ()
   assert.match(questionHtml(view, 1), /cdd-veil/);
   assert.doesNotMatch(questionHtml({ ...view, artwork: index.artwork('w1') }, 1), /cdd-veil/);
 });
+
+test('en «¿Cuál es de X?» las miniaturas con firma llevan su velo hasta responder', () => {
+  const signed = { ...index.artwork('w1'), signs: [[0, 0.9, 0.2, 1]] };
+  const view = { kind: 'which', prompt: '¿Cuál es de A?', options: [{ id: 'a', artwork: signed }, { id: 'b', artwork: index.artwork('w1') }] };
+  const html = questionHtml(view, 1);
+  assert.equal(html.match(/class="cdd-veil"/g)?.length, 1, 'un velo: solo la miniatura con firma');
+});
