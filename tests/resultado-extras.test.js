@@ -111,6 +111,9 @@ test('resultado: una sola acción para practicar, por prioridad (repetir y, si n
   assert.equal(practiceAction(ctx, { kind: 'srs' }), null, 'tras un repaso no se ofrece otro');
   assert.equal(practiceAction(ctx, { kind: 'stage' }, { prevKind: 'srs' }), null, 'nunca dos repasos seguidos');
   assert.equal(practiceAction(ctx, { kind: 'stage' }, { main: 'repaso' }), null, 'no repite el botón principal');
+  // Caso de María (Rafael): con «Repasar a Rafael» de principal, el secundario no puede ser otro «Repasar».
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { main: 'repasar-rafael', mainLabel: 'Repasar a Rafael' }), null, 'nunca dos botones con el mismo verbo');
+  assert.equal(practiceAction(ctx, { kind: 'stage' }, { retry: 'etapa-x', main: 'repasar-rafael', mainLabel: 'Repasar a Rafael' }).label, 'Repetir');
   assert.equal(practiceAction(ctx, { kind: 'stage' }, { closing: true }), null, 'al cerrar el día, sin llamadas a seguir jugando');
   assert.equal(practiceAction(ctx, { kind: 'stage' }, { duel: true }), null);
 });

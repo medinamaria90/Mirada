@@ -9,7 +9,8 @@
 //   2. la meta del día cumplida en esta sesión NO quita el siguiente paso: el resultado lo celebra («Por hoy, hecho») y el
 //      botón principal sigue siendo lo que toca; solo si no hay nada, «Volver al camino» (kind 'done'). Nunca arranca solo;
 //   2 bis. un pintor o una época que se le está olvidando (engine/recall.js: fallos recientes) → «Repasar a Vermeer» /
-//      «Repasar el Barroco» (nunca tras otra sesión así ni el mismo dos veces seguidas);
+//      «Repasar el Barroco» (nunca tras otra sesión así ni el mismo dos veces seguidas, ni lo jugado en las últimas
+//      RECALL_WAIT_ROUNDS rondas: tras avanzar en Botticelli no se propone «Repasar a Botticelli» enseguida);
 //   3. repaso que traía un pintor a medias (y sigue a medias) → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»);
 //   4. 3 o más pintores a medias, o 5 o más fallados, sin repaso ni ahora ni en la sesión anterior → «Repasar»;
 //   5. nivel «a fondo» superado con el siguiente abierto, o rama con siguiente → «Siguiente: <etapa>» / «Siguiente en la rama»;
@@ -114,7 +115,7 @@ export function gateEssential(progress, index) {
 
 // Lo que toca con un pintor concreto, una sola acción que dice de quién: si se le está olvidando (con `today`), «Repasar a
 // Vermeer»; si no, su siguiente nivel «a fondo» abierto («Nivel 2 de Vermeer») o, ya dominado, «Repasar a Vermeer» (la misma
-// sesión: su historia, cómo reconocerlo y sus preguntas). Sin dominar, su nivel 1.
+// sesión: cómo reconocerlo y sus preguntas). Sin dominar, su nivel 1.
 export function artistStep(progress, index, artistId, today = '') {
   const a = index.artist(artistId);
   if (!a) return null;

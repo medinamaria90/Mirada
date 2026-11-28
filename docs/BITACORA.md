@@ -357,7 +357,7 @@ repetir cuadros sin contexto acaba en memorizar imágenes.
 - **Guía** (`engine/next-step.js`, regla 2 bis): «Repasar a Velázquez» / «Repasar el Barroco», con su cara, detrás de
   «Repetir» y «Por hoy, hecho» y delante del repaso general; nunca el mismo dos veces seguidas ni tras otra sesión así. Si
   coinciden un pintor y una época, gana lo que más falla. También en la píldora del mapa.
-- **Una sola sesión por pintor** (`ui/screens/recall.js`, `engine/recall-session.js`), la misma desde la ruta y desde la
+- **Una sola sesión por pintor** (cambiado el 28/11, ver más abajo: ya sin historia) (`ui/screens/recall.js`, `engine/recall-session.js`), la misma desde la ruta y desde la
   ficha: primera tarjeta de su historia de nivel 1 (o la del nivel donde se concentran los fallos) con «Seguir» destacado e
   «Ir a las preguntas» al lado; al final, una sugerencia de otra historia suya («Más de Velázquez: Sevilla ›»), «Cómo
   reconocer a…» (2-3 rasgos y 2-3 cuadros que se abren en grande) y, si lo confunde con alguien, «Velázquez o Zurbarán»
@@ -440,3 +440,18 @@ de estilo, y viceversa. Más variedad en los «fíjate» de Rafael, Rembrandt y 
   la app en caché) los niveles hechos (`progress.deep`), la rotación de «Profundiza» y las historias vistas; marca
   `progress.levelOrder` (y `@orden:1` en la lista de historias) para hacerlo una sola vez. Una ronda «a fondo» a medias de
   esos pintores se descarta. Pruebas en `tests/niveles-importancia.test.js`.
+
+## 28/11 · «Repasar a…»: espera tras jugar y directo a «Cómo reconocer»
+
+- **Caso de María:** repaso general → avanzar en Botticelli (con su historia) → la guía proponía «Repasar a Botticelli».
+- **Espera** (`engine/recall.js`, `RECALL_WAIT_ROUNDS` = 2): cada ronda apunta lo que toca en `progress.recent` (su pintor
+  y su época; la sala o la Prueba de época; lo repasado; un repaso general cuenta como paso vacío). Lo de las 2 últimas
+  rondas no se propone repasar; entre medias, la guía propone otra cosa. Vale igual para las épocas. Sin versión nueva
+  (un estado anterior lo recibe vacío).
+- **Sin historia:** «Repasar a X» va directo a «Cómo reconocer a X» y de ahí a las preguntas (las épocas siguen con sus
+  tarjetas clave). La frase de contraste con quien lo confunde pasa a esa misma tarjeta.
+- **La tarjeta:** arriba solo la ✕ y el título discreto; «Renacimiento · vivió 1445–1510»; 2-3 «Fíjate en…» distintos
+  (pista, refuerzos de estilo de `contenido/pistas.json` y rasgos, sin repetir idea ni nombrar al pintor); cuadros que
+  crecen con el hueco; «No lo confundas con» (parecidos ya conocidos, cada uno abre su ficha). Abajo, fijos: «Ver ficha»
+  (hoja encima: al cerrarla sigue el repaso) e «Ir a las preguntas». Cabe en 360×740 sin scroll.
+- Pruebas en `tests/recordar.test.js` (incluido el caso de Botticelli).

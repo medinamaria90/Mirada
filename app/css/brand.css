@@ -227,7 +227,9 @@
      SVG), y el respiro del halo. */
   --ri-face: 112px;    /* cara del pintor en la entrada del repaso */
   --fb-face: 40px;     /* cara del pintor en la hoja tras «No lo sé» */
-  --recall-face: 104px; /* cara del pintor en la sesión «Repasar a …» */
+  --recall-art-min: 150px; /* alto de los cuadros de «Cómo reconocer a …»: crecen con el hueco */
+  --recall-art-max: 250px;
+  --recall-twin: 40px; /* cara de cada «No lo confundas con» en «Repasar a …» */
   --chip-dot: 9px;      /* punto de aviso de los botones de la cabecera (Cuadro del día, «Repasar») */
   /* Cuadro del día: el chip redondo de la cabecera (main.css) y su pantalla (cuadro-dia.css). */
   --cuadro-chip: 36px;
