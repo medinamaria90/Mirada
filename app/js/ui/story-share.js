@@ -4,17 +4,12 @@
 // Con la hoja de compartir del móvil (Web Share API) si la hay; si no, copia el enlace y lo avisa (en la historia, dentro de ella:
 // el aviso general quedaría debajo).
 
-import { icons } from './icons.js';
-
 const APP_NAME = 'Sfumato';
 const NOTE_MS = 2600; // lo que se ve el aviso «Enlace copiado»
 
 let noteTimer = null;
 
 export const SHARE_RESULT = Object.freeze({ SHARED: 'shared', COPIED: 'copied', CANCELLED: 'cancelled', FAILED: 'failed' });
-
-export const shareButtonHtml = () =>
-  `<button type="button" class="story-icon" data-st="share" aria-label="Compartir">${icons.share(20)}</button>`;
 
 export const noteHtml = () => '<p class="story-note" role="status" aria-live="polite"></p>';
 

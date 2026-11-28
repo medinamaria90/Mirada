@@ -12,6 +12,7 @@ import { avatarHtml } from '../avatar.js';
 import { loadCss } from '../lazy-css.js';
 import { playEra } from '../audio-bridge.js';
 import { loadStory } from '../story-data.js';
+import { DECK_LABEL } from '../deck-nav.js';
 import { randomSeed } from '../../engine/rng.js';
 import { seenOf, avatarWork, avatarCrop, lifeSpan } from '../../engine/painters.js';
 import { storyKey } from '../../engine/stories.js';
@@ -19,9 +20,10 @@ import { storySeen } from '../../state/stories-seen.js';
 import { forgottenSubject, isLearned, recallLabel, movementLabel, ARTIST, MOVEMENT } from '../../engine/recall.js';
 import { recallParts, planRecall, suggestedStory, firstStoryLevel, eraKeyCards, shortName } from '../../engine/recall-session.js';
 
-const NEXT_LABEL = 'Seguir';
-const QUESTIONS_LABEL = 'Ir a las preguntas';
-const STEPS = { next: NEXT_LABEL, questions: QUESTIONS_LABEL };
+// Los mismos textos que los visores de tarjetas (deck-nav.js): en cada tarjeta, «Ir a las preguntas» además de «Seguir».
+const NEXT_LABEL = DECK_LABEL.next;
+const QUESTIONS_LABEL = DECK_LABEL.questions;
+const STEPS = { questions: QUESTIONS_LABEL };
 // La ronda necesita al menos estas preguntas; si no llega, la sesión termina en lo enseñado.
 const MIN_QUESTIONS = 3;
 // Cómo se cerró una historia (ui/story-core.js STORY_END), sin cargarla antes de tiempo.
@@ -159,7 +161,7 @@ async function openStory(ctx, artist, parts) {
 
 // Las tarjetas clave de la época, como una historia, con su antetítulo («Fíjate en»). Devuelve cómo acabó.
 async function openEraCards(ctx, movement) {
-  const [{ loadCards }, { runStory }] = await Promise.all([import('./era-cards.js'), import('../story-core.js'), loadCss('css/historias.css')]);
+  const [{ loadCards }, { runStory }] = await Promise.all([import('./era-cards.js'), import('../story-core.js'), loadCss('css/historias.css'), loadCss('css/deck.css')]);
   const cards = eraKeyCards(await loadCards(movement.id)).map((c) => ({ text: c.text, artwork: c.artwork, kicker: c.kicker, region: c.region, whole: true }));
   if (!cards.length) return ENDED.PLAY;
   const { ended } = await runStory(ctx, {

@@ -39,9 +39,7 @@ puede ser quien construyó y no modifica código. Informes anteriores en `docs/e
 
 - No se veta ninguna obra por su contenido (desnudos, erotismo…): es arte. Lo que se cuida es el lenguaje: nada de expresiones que, leídas hoy, suenen mal (p. ej. «vírgenes dulces»); se describe con naturalidad y contexto. Decisión de María, 27/11.
 - Textos mínimos y en lenguaje humano. Nada de textos de ayuda bajo los botones.
-- Cada término o nombre que un público general no conozca se enseña, no se quita: va con su explicación al lado,
-  para que se aprenda («una Maestà (una Virgen en su trono)», «el gran museo de Florencia (los Uffizi)», «al fresco
-  (pintado sobre el yeso húmedo de la pared)», «sfumato (contornos difuminados como humo)»).
+- Lo que un adulto culto no sepa se enseña, no se quita: va con su explicación al lado («una Maestà (una Virgen en su trono)», «el gran museo de Florencia (los Uffizi)», «sfumato (contornos difuminados como humo)»). Pero se explica solo cuando aporta, sin tratar a nadie como tonto: palabras como archiduque, al fresco o marchante no se explican. En caso de duda, sin explicación. Decisión de María, 28/11.
 - No te apoyes en un pintor que el usuario aún no ha visto en el camino sin presentarlo en la frase («su alumno Giotto,
   que lo superaría»). Si citas a alguien, di quién era en dos palabras («el poeta Dante», «el biógrafo Vasari») y qué
   significa la cita.
