@@ -47,7 +47,7 @@ test('orden: en cada época, un imprescindible de nivel 3 o más va detrás de l
   }
 });
 
-test('orden: sin atajos; un imprescindible de nivel 3 se abre al dominar el 2, y lo empezado sigue abierto', () => {
+test('orden: sin atajos; un imprescindible de nivel 3 se abre al dominar el 2, y lo empezado no salta la regla', () => {
   const e = essentials.find((x) => x.artistId === 'velazquez' && x.level === 3);
   const p = emptyProgress();
   p.artists.velazquez = done();
@@ -57,6 +57,10 @@ test('orden: sin atajos; un imprescindible de nivel 3 se abre al dominar el 2, y
   const q = emptyProgress();
   q.deep['velazquez:4'] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
   q.artists.velazquez = done();
+  // Una sola regla (levels.js levelOpen): lo que el aro enseña cerrado, cerrado para todos; abierto, sigue «empezado».
+  assert.equal(deepStatus(q, real, 'velazquez', 4), 'locked');
+  q.deep['velazquez:2'] = done();
+  q.deep['velazquez:3'] = done();
   assert.equal(deepStatus(q, real, 'velazquez', 4), 'started');
 });
 
