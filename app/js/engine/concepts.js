@@ -84,7 +84,11 @@ export function conceptQuestion(index, item, rng) {
       ...(artist ? { movementId: artist.movementId } : {}),
     };
   }));
-  const right = options.find((o) => o.id === item.answer);
+  // Las letras se reparten tras barajar: ni el orden ni el id delatan la buena.
+  const letters = 'abcdefgh';
+  const answerId = letters[options.findIndex((o) => o.id === item.answer)];
+  options.forEach((o, i) => { o.id = letters[i]; });
+  const right = options.find((o) => o.id === answerId);
   const works = item.works || [];
   return {
     type: CONCEPT_TYPE,
@@ -97,7 +101,7 @@ export function conceptQuestion(index, item, rng) {
     works,
     labels: item.labels || [],
     options,
-    answerId: item.answer,
+    answerId,
     isNew: false,
   };
 }
@@ -122,7 +126,7 @@ export function knownEraQuestions(progress, index, movementId, rng, max = ERA_IM
 // concepto; TRAMO: dos de concepto. cardWorks: cuadros de las tarjetas recién vistas (se prefieren).
 export function planConcepts(progress, index, bank, scope, id, rng, { cardWorks = new Set() } = {}) {
   const recent = recentConcepts(progress);
-  const total = scope === ERA ? ERA_QUIZ : TRAMO_QUIZ;
+  const total = scope === ERA ? ERA_QUIZ : tramoCount(bankFor(bank, TRAMO, id), recent);
   const images = scope === ERA ? knownEraQuestions(progress, index, id, rng) : [];
   const pool = [...bankFor(bank, scope, id), ...(scope === ERA ? bankFor(bank, TRAMO, firstTramo(index, id)) : [])]
     .filter((q) => usable(index, q));
@@ -138,6 +142,12 @@ export function planConcepts(progress, index, bank, scope, id, rng, { cardWorks 
 // entran en la tanda de la época.
 export function firstTramo(index, movementId) {
   return index.stageArtists(movementId)[0]?.section || '';
+}
+
+// En un tramo, dos la primera vez; luego una (la menos reciente) mientras no haya otras sin preguntar: así rota sin
+// repetir las mismas dos cada vez que se reabre el cartel.
+export function tramoCount(list, recent) {
+  return Math.max(1, Math.min(TRAMO_QUIZ, list.filter((q) => !recent.includes(q.id)).length));
 }
 
 export function recentConcepts(progress) {

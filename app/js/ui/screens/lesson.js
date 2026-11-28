@@ -29,8 +29,9 @@ const DUNNO_LABEL = 'No lo sé';
 // Último refuerzo «Fíjate en…» visto de cada pintor, para no repetirlo en la ronda siguiente (dura la sesión).
 const recentHints = new Map();
 
-// config: { questions, extras?, accent, seed, kind, label, interlude?, dunno?, noRetry?, noPoints?, onDone(summary), onQuit(), resume?, onSave? }
-// noRetry: los fallos no vuelven al final; noPoints: sin puntos (las preguntas de concepto, que se pueden saltar).
+// config: { questions, extras?, accent, seed, kind, label, interlude?, dunno?, noRetry?, noPoints?, skippable?, onDone(summary), onQuit(), resume?, onSave? }
+// noRetry: los fallos no vuelven al final; noPoints: sin puntos; skippable: la X salta sin preguntar (las preguntas de
+// concepto, opcionales); «atrás» del navegador sí pregunta, con un texto sin «perderás».
 // dunno: true pone «No lo sé» bajo las opciones (modo aprender; nunca en retos ni en el test): enseña la respuesta sin sonido
 // ni rojo de fallo, no da puntos y cuenta como fallo (rompe «seguidas», vuelve al final y pesa doble en engine/recall.js).
 // extras: preguntas que no cuentan, al final (cuadros fallados en rondas anteriores).
@@ -76,7 +77,7 @@ export function runLesson(ctx, el, config) {
 
   el.innerHTML = `<div class="lesson" style="${accentStyle(config.accent)}">
     <div class="lesson-bar">
-      <button class="icon-btn" data-action="quit" aria-label="Salir de la ronda">${icons.close(22)}</button>
+      <button class="icon-btn" data-action="quit" aria-label="${config.skippable ? 'Saltar las preguntas' : 'Salir de la ronda'}">${icons.close(22)}</button>
       <div class="progress" role="progressbar" aria-label="Progreso de la ronda" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
       <span class="combo" aria-hidden="true"><span class="combo-num"></span><span class="combo-label">seguidas</span></span>
     </div>
@@ -84,8 +85,8 @@ export function runLesson(ctx, el, config) {
     <div class="feedback" role="status" aria-live="polite"></div>
     <div class="sheet-backdrop" hidden></div>
     <div class="sheet quit-sheet" role="dialog" aria-modal="true" aria-labelledby="quit-title" hidden>
-      <h2 id="quit-title">¿Salir de la ronda?</h2>
-      <p>Perderás lo de esta ronda.</p>
+      <h2 id="quit-title">${config.skippable ? '¿Dejar las preguntas?' : '¿Salir de la ronda?'}</h2>
+      ${config.skippable ? '' : '<p>Perderás lo de esta ronda.</p>'}
       <div class="sheet-actions">
         <button class="btn btn-primary" data-action="stay">Seguir</button>
         <button class="btn btn-ghost" data-action="leave">Salir</button>
@@ -419,6 +420,12 @@ export function runLesson(ctx, el, config) {
     });
   }
 
+  function leaveRound() {
+    cleanup();
+    dispose();
+    config.onQuit();
+  }
+
   function openQuit(open) {
     $('.quit-sheet', el).hidden = !open;
     $('.sheet-backdrop', el).hidden = !open;
@@ -446,13 +453,9 @@ export function runLesson(ctx, el, config) {
       ctx.audio.sfx('tap');
       import('../artwork-sheet.js').then((m) => m.openArtworkSheet(ctx, b.dataset.work, { opener: b })).catch((err) => console.error(err));
     },
-    quit: () => openQuit(true),
+    quit: () => (config.skippable ? leaveRound() : openQuit(true)),
     stay: () => openQuit(false),
-    leave: () => {
-      cleanup();
-      dispose();
-      config.onQuit();
-    },
+    leave: () => leaveRound(),
   });
 
   function onKey(ev) {

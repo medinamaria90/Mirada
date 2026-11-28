@@ -1,7 +1,10 @@
 /* Preguntas de concepto en la ronda (ui/concept-question.js): «¿Cuál de estos cuadros es…?» usa la rejilla de «¿Cuál es
    de X?»; las demás, uno o dos cuadros arriba (con su etiqueta, si la llevan) y las respuestas de texto debajo. El título
    de cada cuadro tiene su hueco reservado y aparece al responder. Se carga con la primera ronda que las trae. */
-:root { --cq-h: min(30svh, 300px); --cq-h-pair: min(24svh, 230px); --cq-gap: .7rem; }
+:root {
+  --cq-h: min(30svh, 300px); --cq-h-pair: min(24svh, 230px);
+  --cq-gap: .7rem; --cq-gap-sm: .35rem; --cq-space: 1rem; --cq-chip-pad: .15rem .6rem;
+}
 
 .lesson-stage[data-type="concept"] .options-grid {
   width: 100%; max-width: 400px; margin-inline: auto; margin-block: auto;
@@ -9,8 +12,8 @@
 }
 .lesson-stage[data-type="concept"] .q-prompt { text-wrap: balance; }
 
-.cq-works { display: flex; justify-content: center; align-items: flex-end; gap: var(--cq-gap); margin: 0 0 1rem; }
-.cq-work { display: flex; flex-direction: column; align-items: center; gap: .35rem; min-width: 0; margin: 0; }
+.cq-works { display: flex; justify-content: center; align-items: flex-end; gap: var(--cq-gap); margin: 0 0 var(--cq-space); }
+.cq-work { display: flex; flex-direction: column; align-items: center; gap: var(--cq-gap-sm); min-width: 0; margin: 0; }
 .cq-works.is-pair .cq-work { flex: 1 1 0; }
 .cq-art {
   width: min(100%, calc(var(--cq-h) * var(--arw) / var(--arh))); max-height: var(--cq-h);
@@ -18,7 +21,7 @@
 }
 .cq-works.is-pair .cq-art { width: min(100%, calc(var(--cq-h-pair) * var(--arw) / var(--arh))); max-height: var(--cq-h-pair); }
 .cq-label {
-  padding: .15rem .6rem; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--ink);
+  padding: var(--cq-chip-pad); border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--ink);
   font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
 }
 .cq-title {

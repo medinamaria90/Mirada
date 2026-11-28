@@ -103,6 +103,7 @@ test('tras las tarjetas de un tramo, dos preguntas de concepto de ese tramo', ()
   for (const key of tramos) {
     const qs = planConcepts(emptyProgress(), index, bank, TRAMO, key, createRng(key));
     assert.equal(qs.length, TRAMO_QUIZ, key);
+    assert.ok(qs.every((x) => x.options.map((o) => o.id).join('') === 'abcd'), 'las letras se reparten tras barajar');
     assert.ok(qs.every((q) => q.type === CONCEPT_TYPE && bankFor(bank, TRAMO, key).some((b) => b.id === q.conceptId)), key);
   }
 });
@@ -145,6 +146,12 @@ test('no se repite la misma pregunta seguida: rota por las menos recientes', () 
     prev = qs[qs.length - 1].conceptId;
   }
   assert.ok(recentConcepts(q).length <= 24);
+  // Reabierto el cartel, una sola pregunta (la menos reciente): nunca las mismas dos otra vez.
+  const again = planConcepts(q, index, bank, TRAMO, 'Pintores de reyes', createRng('re'));
+  assert.equal(again.length, 2, 'la primera vez en ese tramo, dos');
+  const after = finishConcepts(q, index, answer(again, () => true), TODAY, 'barroco');
+  const once = planConcepts(after, index, bank, TRAMO, 'Pintores de reyes', createRng('re2'));
+  assert.deepEqual(once.map((x) => x.conceptId), [again[0].conceptId]);
   // pickConcepts por sí solo: lo nunca preguntado va primero.
   const list = bankFor(bank, ERA, 'realismo');
   const picked = pickConcepts(list, 3, createRng('x'), { recent: list.slice(0, 3).map((x) => x.id) });
@@ -187,6 +194,10 @@ test('se pueden saltar y no desbloquean nada: sin reintentos, sin puntos y sin t
   assert.match(quiz, /noRetry: true/);
   assert.match(quiz, /noPoints: true/);
   assert.match(quiz, /onQuit: \(\) => end\(null\)/, 'salir con la X sigue adelante sin apuntar nada');
+  assert.match(quiz, /skippable: true/, 'la X salta sin la hoja «¿Salir de la ronda?»');
+  const lesson = src('ui', 'screens', 'lesson.js');
+  assert.match(lesson, /quit: \(\) => \(config\.skippable \? leaveRound\(\) : openQuit\(true\)\)/);
+  assert.match(lesson, /'Saltar las preguntas'/);
 });
 
 test('salen tras las tarjetas: «Ir a las preguntas» al llegar a la última tarjeta de la época y del tramo', () => {

@@ -56,7 +56,8 @@ export async function runConceptQuiz(ctx, el, { scope, id, movement, cardWorks =
     if (summary) {
       ctx.store.update((s) => ({ ...s, progress: finishConcepts(s.progress, ctx.index, summary.answers, ctx.today(), movement.id) }));
       const right = summary.firstTry.filter(Boolean).length;
-      ctx.toast(`${right} de ${summary.firstTry.length}`);
+      const total = summary.firstTry.length;
+      ctx.toast(right === total ? '¡Todas acertadas!' : `${right} de ${total} acertadas`);
     }
     afterGuard(() => { if (el.isConnected) onEnd(); });
   };
@@ -68,6 +69,7 @@ export async function runConceptQuiz(ctx, el, { scope, id, movement, cardWorks =
     dunno: true,
     noRetry: true,
     noPoints: true,
+    skippable: true,
     onDone: (summary) => end(summary),
     onQuit: () => end(null),
     onBackAfterDone: () => {},

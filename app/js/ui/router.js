@@ -80,10 +80,10 @@ export function parseRoute(hash, opts = {}) {
   if (m) return { name: 'works', spec: { kind: 'guests', movementId: m[1] } };
   m = /^obras-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'works', spec: { kind: 'artist', artistId: m[1] } };
-  // «Repasar a Vermeer» / «Repasar el Barroco» (ui/screens/recall.js): repasar-<pintor> y repasar-epoca-<movimiento>.
   // Preguntas de un tramo desde su cartel del mapa (conceptsRoute).
   m = /^preguntas-tramo-([a-z0-9]+(?:-[a-z0-9]+)*)(?:--([a-z0-9]+(?:-[a-z0-9]+)*))?$/.exec(name);
   if (m) return { name: 'concepts', slug: m[1], next: m[2] || '' };
+  // «Repasar a Vermeer» / «Repasar el Barroco» (ui/screens/recall.js): repasar-<pintor> y repasar-epoca-<movimiento>.
   m = /^repasar-epoca-([a-z0-9-]+)$/.exec(name);
   if (m) return { name: 'recall', recallType: 'movement', id: m[1] };
   m = /^repasar-([a-z0-9-]+)$/.exec(name);

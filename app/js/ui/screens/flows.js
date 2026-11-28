@@ -140,7 +140,8 @@ export function renderConcepts(ctx, el, slug, next = '') {
     playEra(movement.era);
     return runConceptQuiz(ctx, el, {
       scope: 'tramo', id: key, movement,
-      onEnd: () => (next ? ctx.go(stageRoute(next), { replace: true }) : ctx.go('inicio', { replace: true })),
+      // Sin pintor detrás, de vuelta a donde se estaba (sin dejar dos mapas seguidos en el historial).
+      onEnd: () => (next ? ctx.go(stageRoute(next), { replace: true }) : ctx.prevRoute() ? history.back() : ctx.go('inicio', { replace: true })),
     });
   }).catch((err) => { console.error(err); leave(ctx); });
 }
