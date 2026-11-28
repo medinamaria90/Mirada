@@ -201,11 +201,9 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
 }
 
 // Lo que recomienda el mapa (el mismo criterio que el resultado, sin una ronda recién jugada): la parada abierta, «Repasar»
-// con mucho pendiente o lo que pide el rango. null si lo que toca es la parada actual («Tú») o nada.
-export function mapGuide(progress, index, today, { currentKey = '', prevKind = null, prevStep = null, week = '' } = {}) {
+// con mucho pendiente, lo que pide el rango… La interfaz lo señala con una burbuja sobre su parada (ui/screens/map-cue.js).
+// null si no hay nada que recomendar.
+export function mapRecommendation(progress, index, today, { prevKind = null, prevStep = null, week = '' } = {}) {
   const step = nextStep(progress, index, today, { plan: { kind: 'map' }, prevKind, prevStep, week });
-  if (step.kind === 'path') return null;
-  const key = step.artistId ? `artist:${step.artistId}` : step.movementId ? `sala:${step.movementId}` : '';
-  if (step.kind === 'stop' && key === currentKey) return null;
-  return step;
+  return step.kind === 'path' ? null : step;
 }

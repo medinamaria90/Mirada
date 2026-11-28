@@ -207,9 +207,9 @@ html:has(.path-map) { scroll-padding-top: calc(var(--topbar-h) + 16px); scroll-p
 .map-probe { position: absolute; width: 1rem; height: 1px; visibility: hidden; pointer-events: none; }
 /* Suelo bajo el inicio: ocupa el hueco de la barra de abajo para que el mapa llegue hasta el borde. */
 .path-foot { position: relative; height: calc(84px + var(--safe-b)); background: var(--era-tint); }
-/* Bajo la salida, el prado y el sendero siguen hasta el borde, con sitio para los botones flotantes («Tú», la guía):
+/* Bajo la salida, el prado y el sendero siguen hasta el borde, con sitio para el botón flotante:
    la salida nunca queda debajo de ellos y no hay franja vacía. */
-.page-home:not(.page-branch) .path-foot { height: calc(84px + var(--map-return-size) + var(--map-guide-room) + var(--safe-b)); }
+.page-home:not(.page-branch) .path-foot { height: calc(84px + var(--map-return-size) + var(--safe-b)); }
 .page-home:has(.path-foot) { padding-bottom: 0; }
 .path-era, .path-museum, .path-start { position: relative; width: 100%; min-width: 0; background: var(--era-tint); }
 .path-era, .path-museum { margin-bottom: -1px; }
@@ -315,10 +315,7 @@ button.sign-plate:active { transform: translateY(2px); box-shadow: 0 0 0 var(--m
 /* A medias (deep-badges.js scoreRingSvg): el aro lleno en coral hasta su nota, sobre el aro apagado, y la muesca del 75 %. */
 .ring-arc.is-partial { stroke: var(--brand); stroke-width: var(--ring-w-next); }
 .ring-arc.is-mark { stroke: var(--surface); stroke-width: calc(var(--ring-w-next) + 1); stroke-linecap: butt; }
-.ring-halo { fill: var(--brand-soft); transform-origin: center; animation: ring-breathe var(--dur-breathe) var(--ease) infinite; }
-@keyframes ring-breathe { 50% { transform: scale(1.08); opacity: .55; } }
-@media (prefers-reduced-motion: reduce) { .ring-halo { animation: none; } }
-html.reduce-motion .ring-halo { animation: none; }
+.ring-halo { fill: var(--brand-soft); }
 .stage {
   --dot: 58px; --hit: max(var(--dot), 48px);
   position: absolute; top: calc(var(--hit) / -2); left: calc(var(--dot) / -2); display: flex; align-items: center; gap: calc(.75 * var(--map-fs)); min-height: var(--hit); width: max-content;
@@ -355,9 +352,9 @@ html.reduce-motion .ring-halo { animation: none; }
 /* Siguiente parada: algo más presente que el resto de lo cerrado (anillo fino). */
 .stage-spot.is-next .stage.is-locked .stage-dot { background: var(--map-tag); box-shadow: 0 0 0 2px var(--map-tag), 0 0 0 3.5px var(--map-post); }
 .stage-spot.is-next .stage.is-locked .stage-name { color: var(--ink); font-size: calc(.84 * var(--map-fs)); background: var(--map-label); }
-/* Disponible: anillo coral y halo (la parada actual, más marcada: mapa-carteles.css). */
-.stage.is-available .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--brand), 0 0 0 16px var(--brand-soft); }
-.stage.is-available:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 7px var(--brand), 0 0 0 12px var(--brand-soft); }
+/* Disponible: un nodo más (la recomendada lleva su burbuja, screens/map-cue.js; la frontera, solo un anillo fino si lo recomendado queda atrás). */
+.stage.is-available .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px var(--line-2); }
+.stage.is-available:active .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 2px 0 3px var(--line-2); }
 .stage.is-started .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--brand), 0 var(--relief-node) 0 6px var(--line-2); }
 /* Dominado: anillo de oro y sello con la marca de hecho. */
 .stage.is-mastered .stage-dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--gold), 0 var(--relief-node) 0 6px var(--line-2); }
@@ -398,19 +395,20 @@ html.reduce-motion .ring-halo { animation: none; }
 .stage-spot-aside.is-right .stage { right: -24px; align-items: flex-end; flex-direction: column; }
 .stage-spot-aside .stage-text { justify-items: center; }
 .stage-gallery .stage-dot { border-radius: 14px; color: var(--on-accent); background: var(--accent); box-shadow: 0 0 0 3px var(--surface), 0 var(--relief-node) 0 3px color-mix(in srgb, var(--accent) 72%, var(--ink)); }
-@keyframes halo { 0% { opacity: .6; transform: scale(.92); } 70%, 100% { opacity: 0; transform: scale(1.12); } }
-/* Aviso al pulsar una parada cerrada (screens/lock-note.js): un solo globo bajo el nodo, con su cruz. */
+/* Aviso al pulsar una parada cerrada (screens/path-actions.js): una pastilla bajo el nodo, de la familia de los nombres del mapa,
+   con «Ir» como pastilla pequeña dentro. Se cierra al tocar fuera o al mover el mapa (sin cruz). */
 .lock-note {
-  position: absolute; top: 26px; left: 44px; z-index: var(--map-z-sign-start); display: flex; align-items: center; gap: 2px; width: max-content; max-width: min(var(--lock-note-w), calc(100vw - 32px)); margin: 0; padding: 0 0 0 calc(.65 * var(--map-fs)); border-radius: var(--map-r); background: var(--map-tag); box-shadow: 0 2px 0 var(--map-sign-line), inset 0 0 0 1px var(--map-sign-line);
+  position: absolute; top: 26px; left: 44px; z-index: var(--map-z-sign-start); display: flex; align-items: center; gap: calc(.5 * var(--map-fs)); width: max-content; max-width: min(var(--lock-note-w), calc(100vw - 32px)); margin: 0;
+  padding: calc(.3 * var(--map-fs)) calc(.3 * var(--map-fs)) calc(.3 * var(--map-fs)) calc(.75 * var(--map-fs)); border-radius: var(--lock-note-r); background: var(--map-tag); box-shadow: 0 1.5px 0 var(--map-sign-line), inset 0 0 0 1px var(--map-sign-line);
   color: var(--ink); opacity: 0; visibility: hidden; pointer-events: none;
   transition: opacity .2s, visibility 0s .2s;
 }
-.lock-note-text { margin: 0; padding-block: calc(.4 * var(--map-fs)); font-size: calc(.8 * var(--map-fs)); line-height: 1.25; text-align: left; }
-.lock-note-go { flex: none; min-width: var(--hit); min-height: var(--hit); margin: calc(-.25 * var(--map-fs)) 0 calc(-.25 * var(--map-fs)) calc(.4 * var(--map-fs)); padding: 0 calc(.7 * var(--map-fs)); border: 0; border-radius: var(--map-r); background: var(--brand); color: var(--on-brand); font: 600 calc(.8 * var(--map-fs))/1 var(--font); cursor: pointer; }
+.lock-note-text { margin: 0; font-size: calc(.8 * var(--map-fs)); line-height: 1.25; text-align: left; }
+.lock-note-go { position: relative; flex: none; min-height: var(--lock-note-go-h); padding: 0 calc(.8 * var(--map-fs)); border: 0; border-radius: var(--radius-pill); background: var(--brand); color: var(--on-brand); font: 600 calc(.8 * var(--map-fs))/1 var(--font); cursor: pointer; }
+/* La pastilla es pequeña, pero se acierta como un botón de 48 px. */
+.lock-note-go::after { content: ""; position: absolute; inset: calc((var(--lock-note-go-h) - var(--hit)) / 2) -4px; }
 .lock-note-go[hidden] { display: none; }
 .lock-note-go:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
-.lock-note-close { display: grid; flex: none; place-items: center; width: var(--hit); height: var(--hit); margin: calc(-.25 * var(--map-fs)) 0; padding: 0; border: 0; border-radius: var(--map-r); background: none; color: var(--ink-2); cursor: pointer; }
-.lock-note-close:focus-visible { outline: 2.5px solid var(--ink); outline-offset: -4px; }
 .stage-spot.is-right .lock-note { left: auto; right: 44px; }
 /* En un cartel de rama, debajo de él (nunca sobre su texto ni sobre el mojón que puede ir encima). */
 .branch-spot .lock-note { top: calc(100% + var(--lock-note-gap)); }

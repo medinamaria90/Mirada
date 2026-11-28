@@ -53,20 +53,22 @@ test('carteles: rombo de tramo y medallón de época, paradas de la misma famili
   const done = tramoLore({ sec: { name: 'Venecia', key: 'Venecia', sign: SIGN }, info: { got: 3, total: 3 }, h: 1000 });
   assert.ok(done.includes('lore-tramo is-done') && done.includes('stage-badge') && done.includes('Tramo Venecia: completo'), 'el completo no lleva sello');
   const fresh = tramoLore({ sec: { name: 'Venecia', key: 'Venecia', sign: SIGN }, info: { got: 0, total: 3 }, h: 1000, fresh: true, here: true, next: 'tiziano' });
-  assert.ok(fresh.includes('lore-ping') && fresh.includes('is-fresh') && fresh.includes('Sin ver') && fresh.includes('data-next="tiziano"') && fresh.includes('stage-you'), 'el rombo sin ver no lo dice o no sigue al pintor');
+  assert.ok(fresh.includes('lore-ping') && fresh.includes('is-fresh') && fresh.includes('Sin ver') && fresh.includes('data-next="tiziano"') && fresh.includes('is-here'), 'el rombo sin ver no lo dice o no sigue al pintor');
   const arch = { x: 200, y: 900, ...eraPlace(200, 900).box };
   const movement = { id: 'barroco', name: 'Barroco', period: 's. XVII' };
   const plate = eraArch({ movement, status: 'available', sealed: false, arch, h: 1000 });
   assert.ok(plate.includes('class="era-arch"') && plate.includes('>Barroco</span>') && !plate.includes('<button') && !plate.includes('data-action'), 'la placa es un botón o no lleva el nombre');
   const stop = { x: 200, y: 890 };
-  const open = eraLore({ movement, status: 'available', sealed: false, done: 4, total: 9, prevName: 'Renacimiento', stop, h: 1000, fresh: false, here: false });
+  const open = eraLore({ movement, sealed: false, done: 4, total: 9, stop, h: 1000, fresh: false, here: false });
   assert.ok(open.includes('lore lore-era is-open') && open.includes('data-action="intro"') && open.includes('4 de 9 pintores') && !open.includes('lore-ping'), 'el medallón abierto no abre la presentación');
   assert.ok(open.includes(`top:${(890 / 10).toFixed(0)}%`), 'el medallón no va en su sitio');
-  const sealed = eraLore({ movement, status: 'mastered', sealed: true, done: 9, total: 9, stop, h: 1000 });
+  const sealed = eraLore({ movement, sealed: true, done: 9, total: 9, stop, h: 1000 });
   assert.ok(sealed.includes('lore-era is-done') && sealed.includes('completa'), 'la completa no lo dice');
   assert.ok(eraArch({ movement, status: 'mastered', sealed: true, arch, h: 1000 }).includes('arch-band is-done'), 'la placa de la completa no va en oro');
-  const locked = eraLore({ movement, status: 'locked', sealed: false, done: 0, total: 9, prevName: 'el Manierismo', stop, h: 1000, fresh: true });
-  assert.ok(locked.includes('data-action="era-lock"') && locked.includes('is-locked') && !locked.includes('lore-ping'), 'la cerrada abre la presentación o lleva el puntito');
+  const locked = eraLore({ movement, sealed: false, done: 0, total: 9, door: { lock: 'Se abre al cruzar la puerta del Barroco', unlock: 'artist:x' }, stop, h: 1000, fresh: true });
+  assert.ok(locked.includes('data-action="lore-lock"') && locked.includes('data-lock="Se abre al cruzar la puerta del Barroco"') && locked.includes('is-locked') && locked.includes('stage-lock') && !locked.includes('lore-ping'), 'la cerrada abre la presentación, no lleva candado o lleva el puntito');
+  const closedTramo = tramoLore({ sec: { name: 'Venecia', key: 'Venecia', sign: SIGN }, info: { got: 0, total: 3 }, h: 1000, door: { lock: 'Se abre al cruzar la puerta del Barroco', unlock: '' } });
+  assert.ok(closedTramo.includes('lore-tramo is-locked') && closedTramo.includes('stage-lock') && closedTramo.includes('data-action="lore-lock"') && !closedTramo.includes('data-action="cartel"'), 'el rombo de una época por delante abre su cartel o no lleva candado');
   assert.ok(eraGate(200, 900, { locked: true }).length > eraGate(200, 900).length, 'la puerta cerrada no lleva portón');
   // El nombre corto de la época de Van Eyck, fiel a lo que hay al cruzar la puerta; el resto, entero y sin paréntesis.
   assert.equal(inscription('Manierismo y Renacimiento del Norte'), 'Renacimiento del Norte');
@@ -75,9 +77,9 @@ test('carteles: rombo de tramo y medallón de época, paradas de la misma famili
   const rama = branchEntrySign({ id: 'gotico', name: 'Gótico' }, arch, 1000, 2, 5);
   assert.ok(rama.includes('class="era-arch"') && !rama.includes('2/5'), 'la puerta de la rama repite la cuenta de la cabecera');
   assert.ok(branchLore({ branch: { id: 'gotico', name: 'Gótico' }, stop, h: 1000, mastered: 2, total: 5 }).includes('data-kind="rama"'), 'el medallón de la rama no abre su cartel');
-  // Sin ver: respira, salvo con «Reducir animaciones»; zona táctil de 48 px como mínimo.
+  // Sin ver: solo el puntito (lo único que se anima en el mapa es la burbuja del itinerario); zona táctil de 48 px como mínimo.
   const cssC = readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
-  assert.ok(/prefers-reduced-motion: reduce\) \{ \.lore\.is-fresh \.lore-face \{ animation: none/.test(cssC) && /html\.reduce-motion \.lore\.is-fresh/.test(cssC), 'el respiro no respeta «Reducir animaciones»');
+  assert.ok(!/lore-breathe/.test(cssC), 'el medallón sin ver sigue respirando');
   const brandC = readFileSync(join(app, 'css', 'brand.css'), 'utf8');
   assert.ok(Number(brandC.match(/--lore-hit: (\d+)px/)[1]) >= 48, 'zona táctil del medallón y el rombo por debajo de 48 px');
   const css = readFileSync(join(app, 'css', 'main.css'), 'utf8') + readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
@@ -91,14 +93,13 @@ test('candados: un solo aviso a la vez, sin temporizador; se cierra al tocar fue
   const js = readFileSync(join(app, 'js', 'ui', 'screens', 'path-actions.js'), 'utf8');
   assert.ok(/export function showLockNote\(button\) \{\s*closeLockNote\(\);/.test(js), 'un aviso nuevo no cierra el anterior');
   assert.ok(!/setTimeout\(\(\) => note/.test(js), 'el aviso se va solo mientras se lee');
-  assert.ok(js.includes("'pointerdown'") && js.includes("'scroll'") && js.includes("'Escape'") && js.includes('lock-note-close'), 'falta una forma de cerrarlo');
+  assert.ok(js.includes("'pointerdown'") && js.includes("'scroll'") && js.includes("'Escape'"), 'falta una forma de cerrarlo');
   assert.ok(js.includes('navigator.vibrate') && js.includes('prefersReducedMotion()'), 'sin temblor/vibración o sin respetar el movimiento reducido');
 });
 
-test('parada actual: sin botón «Empezar»; marca «Tú» y se toca el propio nodo', () => {
+test('parada actual: sin botón «Empezar» ni marca «Tú»; se toca el propio nodo', () => {
   const html = nodeHtml({ cls: '', action: 'stage', id: 'x', status: 'available', lock: '', label: 'X', name: 'X', meta: '', dot: '', current: true });
-  assert.ok(html.includes('class="stage-you" aria-hidden="true">Tú<') && html.includes('aria-current="step"') && html.includes('data-action="stage"'));
-  assert.ok(!nodeHtml({ cls: '', action: 'stage', id: 'x', status: 'available', lock: '', label: 'X', name: 'X', meta: '', dot: '' }).includes('stage-you'));
+  assert.ok(!html.includes('stage-you') && html.includes('aria-current="step"') && html.includes('data-action="stage"'));
   const coach = readFileSync(join(app, 'js', 'ui', 'coach.js'), 'utf8');
   assert.ok(!coach.includes('«Empezar»'), 'la guía de bienvenida sigue hablando del botón «Empezar»');
 });
@@ -111,9 +112,9 @@ test('volver a tu parada: la flecha apunta a donde queda, también tras un salto
   assert.ok(ret.includes("addEventListener('scroll'") && ret.includes('.news-card'), 'la flecha no se recalcula al desplazar o el botón queda bajo la tarjeta de novedades');
 });
 
-test('volver a tu parada: círculo con flecha y «Tú» (sin cuadro volando); los colores de carteles, solo en variables', async () => {
+test('ir a lo recomendado: círculo solo con la flecha (sin «Tú» ni cuadro volando); los colores de carteles, solo en variables', async () => {
   const ret = readFileSync(join(app, 'js', 'ui', 'screens', 'map-return.js'), 'utf8');
-  assert.ok(/RETURN_TEXT = 'Tú'/.test(ret) && ret.includes('map-return-arrow') && !ret.includes('map-return-art') && ret.includes("'Ir a tu parada'"));
+  assert.ok(ret.includes('map-return-arrow') && !ret.includes('map-return-text') && !ret.includes('Tú') && !ret.includes('map-return-art') && ret.includes("'Ir a lo recomendado'"));
   const css = readFileSync(join(app, 'css', 'mapa-carteles.css'), 'utf8');
   assert.ok(!/#[0-9a-f]{3,8}\b|rgba?\(/i.test(css), 'colores escritos a mano en mapa-carteles.css');
   assert.ok(readFileSync(join(app, 'index.html'), 'utf8').includes('href="css/mapa-carteles.css"'));

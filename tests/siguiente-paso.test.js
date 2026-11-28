@@ -185,16 +185,17 @@ test('rango: lo jugado desde el Perfil vuelve al Perfil (y desde logros, a logro
   assert.equal(step(p, { plan: { kind: 'stage', artistId: a.id, level: 2 }, outcome: outcome(0.3), origin: 'perfil' }).kind, 'retry', 'con menos del 50 %, primero repetir');
 });
 
-test('guía del mapa: lo de atrás, nunca dos veces seguidas (como el resultado), y el último paso se recuerda', async () => {
-  const { mapGuide } = await import('../app/js/engine/next-step.js');
+test('recomendación del mapa: lo de atrás, nunca dos veces seguidas (como el resultado), y el último paso se recuerda', async () => {
+  const { mapRecommendation } = await import('../app/js/engine/next-step.js');
   const [m1, m2] = big.visibleMovements;
   const own = big.stepsOf(m1.id).filter((st) => st.type === 'artist').map((st) => st.id);
   const p = mastered(emptyProgress(), own.slice(0, -1));
   p.artists[own.at(-1)] = { plays: 1, best: 0.6, mastered: false };
   seenWorksOf(p, own[0]);
   const current = `artist:${big.stepsOf(m2.id)[0].id}`;
-  assert.equal(mapGuide(p, big, TODAY, { currentKey: current })?.kind, 'debt');
-  assert.equal(mapGuide(p, big, TODAY, { currentKey: current, prevStep: 'debt' }), null, 'tras enseñarlo, lo que toca es la parada actual («Tú»)');
+  assert.equal(mapRecommendation(p, big, TODAY)?.kind, 'debt');
+  const after = mapRecommendation(p, big, TODAY, { prevStep: 'debt' });
+  assert.equal(`${after.artistId ? 'artist' : 'sala'}:${after.artistId || after.movementId}`, current, 'tras enseñarlo, lo que toca es la parada actual');
   const store = {};
   globalThis.window = { sessionStorage: { getItem: (k) => store[k] ?? null, setItem: (k, v) => { store[k] = v; }, removeItem: (k) => { delete store[k]; } } };
   const { lastStep, rememberStep } = await import('../app/js/ui/last-step.js');

@@ -19,10 +19,10 @@ const thumbOf = (art) => (art ? artFrame(art, { cls: 'scrub-art', alt: '', label
 // Al ir con teclado a una época, el foco pasa a su medallón (la parada de su puerta) o, si no lo hay, a su primera parada.
 const focusIn = (node) => () => (node ? $('.lore-era', node) || $('.stage', node) : null);
 
-// Centro de donde está «Tú» (el medallón o el rombo si van antes; si no, la parada actual), en coordenadas del documento
-// (null si no hay).
+// Centro de lo que recomienda el itinerario (su burbuja; si aún no hay, el medallón, el rombo o la parada actual), en
+// coordenadas del documento (null si no hay).
 function currentY(el) {
-  const spot = $('.lore-spot.is-here .lore-dot', el) || $('.stage-spot.is-current .stage-dot', el);
+  const spot = $('.map-cue', el)?.parentElement || $('.lore-spot.is-here .lore-dot', el) || $('.stage-spot.is-current .stage-dot', el);
   if (!spot) return null;
   const box = docBox(spot);
   return (box.top + box.bottom) / 2;

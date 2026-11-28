@@ -1,61 +1,59 @@
-// Botón «Tú» para volver a la parada actual (como el de Duolingo): un círculo pequeño con una flecha hacia donde queda,
-// arriba o abajo (calculada al moverse), y «Tú», la misma marca que se mece sobre la parada actual. Solo aparece cuando
-// la parada actual sale de la vista. Al tocarlo, el camino vuelve a ella y el
-// foco pasa a su nodo; es, con abrir la app, lo único que centra el mapa en la parada actual. Devuelve cómo quitarlo.
+// Botón flotante para ir a lo que recomienda el itinerario (como el de Duolingo): un círculo con una flecha hacia donde queda,
+// arriba o abajo (calculada al moverse). Solo aparece cuando lo recomendado (la parada con la burbuja de map-cue.js; si aún
+// no hay, el medallón, el rombo o la parada actual) sale de la vista. Al tocarlo, el camino vuelve a ello y el foco pasa a
+// su nodo; es, con abrir la app, lo único que centra el mapa en lo recomendado. Devuelve { retarget, stop }: retarget
+// vuelve a buscar el destino cuando la burbuja cambia de sitio.
 
-import { $, esc, prefersReducedMotion } from '../dom.js';
+import { $, prefersReducedMotion } from '../dom.js';
 import { icons } from '../icons.js';
 
 const VIEW_MARGIN = '-96px 0px -96px 0px';   // la cabecera y la barra de abajo tapan esa franja
 
-// La parada queda por encima del centro de la pantalla: la flecha apunta arriba. Se calcula con cada desplazamiento
-// (no solo cuando la parada entra o sale de la vista: un salto largo nunca la cruza).
+// Lo recomendado queda por encima del centro de la pantalla: la flecha apunta arriba. Se calcula con cada desplazamiento
+// (no solo cuando entra o sale de la vista: un salto largo nunca la cruza).
 export const pointsUp = (dotTop, viewH) => dotTop < viewH / 2;
-export const RETURN_TEXT = 'Tú';
+
+// El nodo al que lleva: el de la burbuja, o la próxima parada didáctica o la parada actual.
+const targetDot = (el) => $('.map-cue', el)?.parentElement || $('.lore-spot.is-here .lore-dot', el) || $('.stage-spot.is-current .stage-dot', el);
 
 export function watchReturn(el) {
-  // «Tú» está en el medallón o el rombo si son lo siguiente del camino; si no, en la parada actual.
-  const dot = $('.lore-spot.is-here .lore-dot', el) || $('.stage-spot.is-current .stage-dot', el);
-  if (!dot || typeof IntersectionObserver !== 'function') return () => {};
+  if (typeof IntersectionObserver !== 'function') return { retarget: () => {}, stop: () => {} };
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'map-return';
   button.hidden = true;
-  button.setAttribute('aria-label', 'Ir a tu parada');
-  button.innerHTML = `<span class="map-return-arrow" aria-hidden="true">${icons.next(18)}</span><span class="map-return-text" aria-hidden="true">${RETURN_TEXT}</span>`;
+  button.setAttribute('aria-label', 'Ir a lo recomendado');
+  button.innerHTML = `<span class="map-return-arrow" aria-hidden="true">${icons.next(22)}</span>`;
   el.append(button);
-  button.addEventListener('click', () => {
-    const stage = dot.closest('.stage, .lore');
-    stage.scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
-    stage.focus({ preventScroll: true });
-  });
+  let dot = null;
   let away = false;
   let frame = 0;
   // Mientras está la tarjeta de pintores nuevos (abajo, en el mismo sitio), el botón se aparta.
   const update = () => {
     frame = 0;
-    button.hidden = !away || Boolean(el.querySelector('.news-card:not(.is-leaving)'));
-    button.classList.toggle('is-up', pointsUp(dot.getBoundingClientRect().top, window.innerHeight));
+    button.hidden = !dot || !away || Boolean(el.querySelector('.news-card:not(.is-leaving)'));
+    if (dot) button.classList.toggle('is-up', pointsUp(dot.getBoundingClientRect().top, window.innerHeight));
   };
   const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
   const io = new IntersectionObserver(([entry]) => { away = !entry.isIntersecting; update(); }, { rootMargin: VIEW_MARGIN });
-  io.observe(dot);
+  const retarget = () => {
+    const next = targetDot(el);
+    if (next === dot) return;
+    if (dot) io.unobserve(dot);
+    dot = next;
+    away = false;
+    if (dot) io.observe(dot);
+    update();
+  };
+  button.addEventListener('click', () => {
+    const stage = dot?.closest('.stage, .lore');
+    if (!stage) return;
+    stage.scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
+    stage.focus({ preventScroll: true });
+  });
   const news = new MutationObserver(onScroll);
   news.observe(el, { childList: true, subtree: false });
   window.addEventListener('scroll', onScroll, { passive: true });
-  return () => { io.disconnect(); news.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(frame); button.remove(); };
-}
-
-// Guía (engine/next-step.js mapGuide): lo que recomienda el juego cuando no es la parada actual, en una píldora junto al
-// «Tú» y siempre a la vista («▷ Sigue: Miguel Ángel», «▷ Repasar»). onGuide la cumple. Devuelve cómo quitarla.
-// lead: lo que va delante del texto (la cara del pintor en «Repasar a …»); sin él, ▷.
-export function guideButton(el, guide, lead, onGuide) {
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'map-guide';
-  button.setAttribute('aria-label', guide.label);
-  button.innerHTML = `<span class="map-guide-icon${lead ? ' has-face' : ''}" aria-hidden="true">${lead || icons.play(16)}</span><span class="map-guide-label">${esc(guide.label)}</span>`;
-  button.addEventListener('click', () => onGuide(guide));
-  el.append(button);
-  return () => button.remove();
+  retarget();
+  return { retarget, stop: () => { io.disconnect(); news.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(frame); button.remove(); } };
 }
