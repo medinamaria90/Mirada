@@ -47,7 +47,7 @@ function veilInner(veil) {
   const origin = `${(((x0 + x1) / 2) * 100).toFixed(2)}% ${(((y0 + y1) / 2) * 100).toFixed(2)}%`;
   return `${boxStyle({ left: -x0 / w, top: -y0 / h, width: 1 / w, height: 1 / h })};transform-origin:${origin}`;
 }
-const veilHtml = (b, veil, work) => (veil
+export const veilHtml = (b, veil, work) => (veil
   ? `<span class="cdd-veil" aria-hidden="true" style="${veilStyle(b, veil)}"><img class="cdd-veil-img" src="${esc(tinySrc(work))}" alt="" style="${veilInner(veil)}" draggable="false"></span>`
   : '');
 

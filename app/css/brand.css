@@ -188,6 +188,35 @@
   --map-z-sign: 3;                 /* capas del mapa: carteles y lápidas, la de la salida, el botón «Tú» */
   --map-z-sign-start: 4;
   --map-z-float: 5;
+  /* Desplazamiento rápido del mapa (ui/map-scrubber.js, mapa-rapido.css): carril fino en el borde derecho que se
+     ensancha al arrastrar, marcas de época, asa «estás aquí», punto de tu parada y burbuja con la época. */
+  --scrub-edge: 8px;               /* del borde de la pantalla (o de la columna): fuera del gesto «atrás» */
+  --scrub-gap: 12px;               /* aire bajo la cabecera y sobre el botón «Tú» */
+  --scrub-hit: 40px;               /* ancho de la zona táctil del asa (de alto, --hit) */
+  --scrub-line-x: 14px;            /* del borde de la zona táctil al eje del carril */
+  --scrub-line-w: 3px;
+  --scrub-band-w: 14px;            /* franja clara detrás del carril (se lee sobre carteles y casas) */
+  --scrub-grip-w: 12px;            /* asa: píldora vertical con dos rayitas… */
+  --scrub-grip-h: 28px;
+  --scrub-grip-grow-x: 1.333;      /* …de 16 × 36 al arrastrar */
+  --scrub-grip-grow-y: 1.286;
+  --scrub-grip-ring: 2px;          /* aro coral al arrastrar */
+  --scrub-grip-tick-w: 6px;
+  --scrub-grip-tick-h: 1.5px;
+  --scrub-grip-tick-gap: 3px;
+  --scrub-mark: 8px;               /* época: un puntito del color de su suelo… */
+  --scrub-mark-on: 1.25;           /* …de 10 px la que se ve */
+  --scrub-mark-ring: 1.5px;
+  --scrub-mark-hit: 24px;          /* alto de la zona táctil de una marca */
+  --scrub-mark-hit-w: 28px;        /* y su ancho: no llega a los carteles del borde */
+  --scrub-here: 10px;              /* tu parada */
+  --scrub-here-ring: 2.5px;
+  --scrub-bubble-gap: 8px;         /* de la burbuja al asa */
+  --scrub-bubble-max: 13rem;
+  --scrub-bubble-in: .96;          /* la burbuja entra creciendo desde aquí */
+  --scrub-pic: 28px;
+  --scrub-out: 8px;                /* lo que se aparta al esconderse */
+  --scrub-fade: .22s;
   --lock-note-w: 232px;            /* globo de lo cerrado */
   --lock-note-gap: 6px;               /* cinta de oro en el canto de lo completado */
   --map-tablet-hit: 11px;          /* la tablilla mide unos 26 px: con esto, el toque llega a --hit */
@@ -231,6 +260,7 @@
   --hl-photo-lg: 58px;
   --radius-pop: 24px;
   --dur-pop: 220ms;
+  --dur-title-in: 400ms;          /* aparición del título del cuadro tras responder (ui/title-slot.js) */
   --press-scale: .96;             /* lo que se encoge al tocarlo lo que no tiene relieve propio */
   --dur-shake: 360ms;
   --dur-lock-shake: 420ms;        /* temblor del candado (screens/lock-note.js, SHAKE_MS) */
@@ -273,6 +303,33 @@
   --screen-h: calc(100dvh - var(--dj-h)); /* pantalla completa descontando esa barra */
   color-scheme: light dark;
 }
+
+/* Colores del desplazamiento rápido del mapa (mapa-rapido.css): se calculan en el propio carril, que va fuera del mapa
+   (así siguen al tema de la app y no a la luz del paisaje). */
+.scrub {
+  --scrub-line: color-mix(in srgb, var(--ink) 20%, transparent);
+  --scrub-band: color-mix(in srgb, var(--surface) 55%, transparent);
+  --scrub-soil: var(--ink) 38%;    /* el suelo de cada época, algo más oscuro para que se vea en el carril y su puntito */
+  --scrub-mark-edge: var(--surface);
+  --scrub-mark-on-edge: var(--ink-2);
+  --scrub-grip-fill: var(--surface);
+  --scrub-grip-edge: var(--line);
+  --scrub-grip-tick: color-mix(in srgb, var(--ink-2) 50%, transparent);
+  --scrub-grip-active: var(--brand);
+  --scrub-here-dot: var(--brand);
+  --scrub-here-edge: var(--surface);
+  --scrub-bubble: var(--surface);
+  --scrub-bubble-edge: var(--line);
+  --scrub-bubble-ink: var(--ink);
+  --scrub-bubble-ink-2: var(--ink-2);
+  --scrub-veil: color-mix(in srgb, var(--ink) 6%, transparent);
+  --scrub-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 18%, transparent), 0 4px 10px -4px color-mix(in srgb, var(--ink) 30%, transparent);
+}
+/* En oscuro, asa y burbuja en la superficie elevada, con borde de tinta suave (el mismo carácter que en claro). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .scrub { --scrub-grip-fill: var(--surface-2); --scrub-bubble: var(--surface-2); --scrub-bubble-edge: color-mix(in srgb, var(--ink) 12%, transparent); }
+}
+:root[data-theme="dark"] .scrub { --scrub-grip-fill: var(--surface-2); --scrub-bubble: var(--surface-2); --scrub-bubble-edge: color-mix(in srgb, var(--ink) 12%, transparent); }
 
 /* Tema oscuro. Vale en dos casos: el móvil va en oscuro y no se ha forzado «Claro» en Ajustes, o se ha
    elegido «Oscuro» (data-theme en <html>, lo pone ui/theme.js). CSS no permite escribirlo una sola vez
