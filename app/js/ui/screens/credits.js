@@ -12,6 +12,7 @@ import { loadStory } from '../story-data.js';
 import { loadCards } from './era-cards.js';
 import { backButton } from './artist-page.js';
 import { loadSigns } from '../sign-cards.js';
+import { loadBridges } from '../closure-data.js';
 import { eraSources, signSources, artistSources, imageCredits, licenseSummary } from '../../engine/credits.js';
 
 const THANKS = 'Gracias a los museos que comparten sus colecciones y a Wikimedia (Wikipedia, Wikidata y Commons), que lo hacen posible.';
@@ -33,7 +34,8 @@ async function eraBody(movementId) {
 }
 
 async function signsBody() {
-  const sources = signSources(...await Promise.all([loadSigns('rama'), loadSigns('tramo')]));
+  const [rama, tramo, bridges] = await Promise.all([loadSigns('rama'), loadSigns('tramo'), loadBridges()]);
+  const sources = signSources(rama, tramo, bridges.eras, bridges.branches);
   return sources.length ? listHtml(sources, sourceItem) : emptyHtml;
 }
 
@@ -76,7 +78,7 @@ export async function renderCredits(ctx, el) {
     <header class="aw-head">${backButton()}<div class="aw-titles"><h1 class="aw-title">Fuentes y créditos</h1></div></header>
     <p class="cr-thanks">${esc(THANKS)}</p>
     <section class="cr-section" aria-labelledby="cr-eras"><h2 id="cr-eras" class="cr-h">Épocas</h2>
-      <div class="cr-groups">${index.movements.map((m) => group('era', m.id, m.name)).join('')}${group('signs', 'mapa', 'Carteles del camino')}</div></section>
+      <div class="cr-groups">${index.movements.map((m) => group('era', m.id, m.name)).join('')}${group('signs', 'mapa', 'Carteles y cierres del camino')}</div></section>
     <section class="cr-section" aria-labelledby="cr-artists"><h2 id="cr-artists" class="cr-h">Pintores</h2>
       <div class="cr-groups">${artists.map((a) => group('artist', a.id, a.name)).join('')}</div></section>
     ${licenses.length ? `<section class="cr-section" aria-labelledby="cr-images"><h2 id="cr-images" class="cr-h">Imágenes</h2>

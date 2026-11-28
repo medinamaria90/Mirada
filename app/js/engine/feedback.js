@@ -1,6 +1,6 @@
 // Feedback que enseña (puro): qué mirar en ESE cuadro (`look`) y el rasgo del pintor.
 // Para no repetir el mismo texto, el rasgo rota entre la pista y los rasgos del pintor.
-// Tras un fallo se dice también de quién era lo elegido (`chosen`), y la pista nunca es un rasgo
+// Tras un fallo se devuelve también lo elegido (`chosen`, se marca en su opción), y la pista nunca es un rasgo
 // que el cuadro elegido también cumpla: se apoya en las etiquetas visuales del catálogo (`tags` de
 // obra, `traitTags` de pintor, `tagLabels` y `negableTags`), que llegan con data/catalog-text.json.
 
@@ -122,21 +122,6 @@ export function styleLines(artist, work, avoidWork = null) {
     .map((h) => sentence(h.text));
 }
 
-// Rasgo del pintor `artist` (el elegido por error) que seguro NO está en `work`: la etiqueta
-// humana de una de sus señas (`tagLabels`, solo las negables) ausente del cuadro. '' si no hay
-// forma de afirmarlo (cuadro sin etiquetar o pintor sin señas negables).
-export function absentTrait(index, artist, work) {
-  const labels = index?.tagLabels && typeof index.tagLabels === 'object' ? index.tagLabels : {};
-  const negable = new Set(Array.isArray(index?.negableTags) ? index.negableTags : []);
-  const seen = tagsOf(work);
-  if (!seen.size) return '';
-  const own = Array.isArray(artist?.traitTags) ? artist.traitTags.flat() : [];
-  for (const tag of own) {
-    if (negable.has(tag) && typeof labels[tag] === 'string' && !seen.has(tag)) return labels[tag];
-  }
-  return '';
-}
-
 // --- Títulos y montaje ------------------------------------------------------------------
 const PRAISE = ['¡Bien visto!', 'Exacto', 'Eso es', 'Buen ojo', '¡Lo tienes!'];
 const PRAISE_NEW = ['¡Y sin haberlo visto antes!', 'Reconocido a la primera', 'Eso es aprender a mirar'];
@@ -188,9 +173,9 @@ function chosenOf(index, q, chosenId) {
 // memo: Map `look:<obra>` → pistas propias ya dichas de esa obra en la ronda (la segunda vez sale la segunda).
 // opts.recent: Map `last:<artistId>` → último refuerzo mostrado (para no repetirlo; por defecto, el propio memo).
 // opts.retry: la pregunta es la repetición de una fallada en esta ronda (el elogio de «cuadro nuevo»
-// solo vale la primera vez que se ve). opts.chosenId: la opción elegida (para decir de quién era).
+// solo vale la primera vez que se ve). opts.chosenId: la opción elegida (para marcar de quién era).
 // Devuelve { title, who, lines[], kind, source, chosen } con una línea como mucho (texto plano; la
-// UI escapa). chosen: { artistId, name, artworkId, title, line } tras un fallo de autor; si no, null.
+// UI escapa). chosen: { artistId, name, artworkId, title } tras un fallo de autor; si no, null.
 export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { retry = false, chosenId = null, recent = memo } = {}) {
   if (q.type === BEFORE_TYPE) {
     const fb = beforeFeedback(index, q, correct, rng ? rng.pick(PRAISE) : PRAISE[0]);
@@ -246,18 +231,16 @@ export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { r
     who = '';
     line = teach();
   }
-  return { title, who, artistId: artist ? artist.id : null, lines: line ? [line] : [], kind: kindOf(subject), source, chosen: chosen ? chosenLine(index, chosen, subject, line) : null };
+  return { title, who, artistId: artist ? artist.id : null, lines: line ? [line] : [], kind: kindOf(subject), source, chosen: chosen ? chosenInfo(chosen) : null };
 }
 
-// Línea sobre lo elegido por error: en «¿Cuál?», de quién es ese cuadro; en «¿Quién?», que no es
-// de ese pintor y, si se sabe seguro, qué seña suya falta aquí.
-function chosenLine(index, chosen, subject, mainLine) {
-  const name = shortName(chosen.artist);
-  if (chosen.work) {
-    return { artistId: chosen.artist.id, name, artworkId: chosen.work.id, title: chosen.work.title, line: `El que has elegido es de ${name} · ${chosen.work.title}` };
-  }
-  const missing = absentTrait(index, chosen.artist, subject);
-  // Si la pista ya empieza por «Fíjate…», no se repite la muletilla.
-  const tail = !missing ? '' : /^Fíjate/.test(mainLine || '') ? `: aquí no hay ${missing}` : `: fíjate en que aquí no hay ${missing}`;
-  return { artistId: chosen.artist.id, name, artworkId: null, title: '', line: `No es de ${name}${tail}` };
+// Lo elegido por error, para marcarlo en su propia opción (sin línea aparte en la hoja): en «¿Cuál?»,
+// el cuadro y su pintor; en «¿Quién?», el pintor.
+function chosenInfo(chosen) {
+  return {
+    artistId: chosen.artist.id,
+    name: shortName(chosen.artist),
+    artworkId: chosen.work ? chosen.work.id : null,
+    title: chosen.work ? chosen.work.title : '',
+  };
 }

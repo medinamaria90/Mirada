@@ -328,3 +328,18 @@ da primero el «fíjate» propio de la obra y luego rota entre frases y refuerzo
 (`sinPistas` en `fijate.json`). El 100 % de las 1.469 obras tiene al menos una línea aplicable (prueba en
 `tests/fijate.test.js`). La individualización por cuadro sí funciona (sale primero en las 290 obras que la tienen, también
 tras fallar); si se nota poco es porque solo el 22 % de las obras del camino tiene «fíjate» propio.
+
+## Cierre de época: capítulo terminado (28/11)
+
+- **Cuándo:** una época del camino se cierra al ganar su medalla (todas sus paradas dominadas; la Prueba de época se abre
+  justo entonces y no es requisito); una rama, al dominar todos sus pintores propios. `engine/era-end.js`.
+- **Pantalla** `#cierre-<época>` / `#cierre-rama-<id>` (`ui/screens/era-end.js`, `css/cierre.css`): «Has terminado el
+  Renacimiento», la medalla, los pintores en un mosaico de retratos (llevan a su ficha), cuadros vistos y acertados, la frase
+  puente y «Cruzar al <época>» (medallón y presentación; si ya entró, su parada abierta) o «Volver al camino». Tras la última
+  época, «Ver tu colección». Compartir manda `h/epoca-<id>.html` con «He terminado el Renacimiento en Sfumato». Sonido
+  `complete` + `medal` y un brillo breve que no sale con «reducir animaciones».
+- **Guía:** regla 1 ter de `nextStep` («Cerrar el Renacimiento»), en el resultado y en el mapa, hasta que se ve. Sale una vez.
+- **Frases puente** en `data/cierres.json` (8 transiciones del camino, el final y las 14 ramas), ≤ 180 caracteres, con fuente
+  (solo en «Fuentes y créditos», grupo «Carteles y cierres del camino»).
+- **Estado:** `progress.closures = { seeded, seen }`, sin subir la versión. Quien ya traía épocas cerradas se siembra al cargar:
+  cuentan como vistas salvo la última si aún no ha cruzado a la siguiente. Pruebas en `tests/cierre-epoca.test.js`.
