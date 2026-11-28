@@ -23,7 +23,7 @@ const MOVE_CLOSE_PX = 40; // el mapa se ha movido bajo la tarjeta: se cierra (me
 
 const px = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
 
-// A medias (ring.started): una línea con lo que falta («67 % · dominas con 75 %» o «Te faltan n cuadros por ver») y «Repetir».
+// A medias (ring.started): una línea con lo que falta («Has acertado el 67 %; hace falta un 75 %») y «Repetir».
 function cardHtml(artist, ring, levels) {
   const next = ring.levels.find((l) => l.state === 'next');
   const play = ring.started ? 'Repetir' : next ? `Empezar <small>· ${esc(next.short)}</small>` : 'Repasar';

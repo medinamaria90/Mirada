@@ -20,12 +20,24 @@ export function extraRounds(ctx, plan, { prevKind = null, weak = false } = {}) {
   return list;
 }
 
+// Primera palabra de un botón («Repasar a Rafael» → «repasar»): dos botones con el mismo verbo confunden.
+const verbOf = (label) => String(label || '').trim().split(/\s+/)[0].toLowerCase();
+export const sameVerb = (a, b) => Boolean(verbOf(a)) && verbOf(a) === verbOf(b);
+
 // La acción para seguir practicando, una sola y por prioridad: repetir la ronda si no salió y, si no, otra ronda. Ninguna
-// al cerrar el día ni en un duelo; nunca la misma que el botón principal (`main`: su ruta).
+// al cerrar el día ni en un duelo; nunca la misma que el botón principal (`main`: su ruta) ni con su mismo verbo
+// (`mainLabel`: con «Repasar a Rafael» de principal, no «Repasar» al lado).
 // replay: { to, name } si la ronda se eligió desde un pintor: repetirla, «Repetir <pintor>», en lugar de otra ronda.
-export function practiceAction(ctx, plan, { retry = null, closing = false, duel = false, prevKind = null, main = '', weak = false, replay = null } = {}) {
+export function practiceAction(ctx, plan, { retry = null, closing = false, duel = false, prevKind = null, main = '', mainLabel = '', weak = false, replay = null } = {}) {
   if (closing || duel) return null;
-  if (retry && retry !== main) return { to: retry, label: replay ? `Repetir ${replay.name}` : 'Repetir' };
-  if (replay) return replay.to !== main ? { to: replay.to, label: `Repetir ${replay.name}` } : null;
-  return extraRounds(ctx, plan, { prevKind, weak }).find((r) => r.to !== main) || null;
+  const fits = (r) => r.to !== main && !sameVerb(r.label, mainLabel);
+  if (retry) {
+    const again = { to: retry, label: replay ? `Repetir ${replay.name}` : 'Repetir' };
+    if (fits(again)) return again;
+  }
+  if (replay) {
+    const again = { to: replay.to, label: `Repetir ${replay.name}` };
+    return fits(again) ? again : null;
+  }
+  return extraRounds(ctx, plan, { prevKind, weak }).find(fits) || null;
 }

@@ -9,25 +9,26 @@
 //   2. la meta del día cumplida en esta sesión NO quita el siguiente paso: el resultado lo celebra («Por hoy, hecho») y el
 //      botón principal sigue siendo lo que toca; solo si no hay nada, «Volver al camino» (kind 'done'). Nunca arranca solo;
 //   2 bis. un pintor o una época que se le está olvidando (engine/recall.js: fallos recientes) → «Repasar a Vermeer» /
-//      «Repasar el Barroco» (nunca tras otra sesión así ni el mismo dos veces seguidas);
+//      «Repasar el Barroco» (nunca tras otra sesión así ni el mismo dos veces seguidas, ni lo jugado en las últimas
+//      RECALL_WAIT_ROUNDS rondas: tras avanzar en Botticelli no se propone «Repasar a Botticelli» enseguida);
 //   3. repaso que traía un pintor a medias (y sigue a medias) → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»);
 //   4. 3 o más pintores a medias, o 5 o más fallados, sin repaso ni ahora ni en la sesión anterior → «Repasar»;
 //   5. nivel «a fondo» superado con el siguiente abierto, o rama con siguiente → «Siguiente: <etapa>» / «Siguiente en la rama»;
 //   5 bis. pendiente atrás: si la parada abierta ya es de una época posterior y en una anterior queda su Prueba de época
 //      abierta y sin superar, o un pintor a medias que es lo único que la tiene cerrada, se recomienda eso («Prueba de
 //      época: Renacimiento», «Sigue: Miguel Ángel»). No siempre: nunca dos veces seguidas (`prevStep`), para no frenar;
-//   5 ter. puerta de época cerrada solo por sus imprescindibles (engine/essentials.js) y nada abierto → «Te falta conocer
-//      las pinturas negras de Goya» (al nivel o, si su pintor está a medias, a su ronda);
+//   5 ter. puerta de época cerrada solo por sus imprescindibles (engine/essentials.js) y nada abierto → «Sigue: Goya · nivel 2»
+//      (al nivel o, si su pintor está a medias, a su ronda);
 //   5 quater. cada DEEPEN_EVERY pintores nuevos, un nivel «a fondo» pendiente de cualquier época ya recorrida, ponderado y en
 //      rotación (engine/deepen.js): «Profundiza en Rafael: nivel 3». Siempre saltable;
 //   6. una parada abierta y sin jugar → «Sigue: <pintor>» (con su miniatura);
 //   7. camino dominado y reto semanal pendiente → «Reto semanal»; si no, el nivel que recomienda el rango del Perfil
 //      (rank-goals.js rankFocus: «Siguiente: <pintor> · nivel N») y, con el camino dominado, «Repasar» (nunca dos seguidos).
 // Si no, «Volver al camino». El botón principal siempre avanza en el juego (empieza la ronda, sin pasar por el mapa). Con 50-74 % no se recomienda repetir: eso va como acción secundaria (result-actions.js).
-// Devuelve { kind, to, label, artistId? }. Puro (las rutas son texto: ui/router.js no toca el DOM al importarse).
+// Devuelve { kind, to, label, artistId?, lore? }. Puro (las rutas son texto: ui/router.js no toca el DOM al importarse).
 
 import { UNLOCK_MIN, MASTERY, gateSteps, gateBefore, stepPassed, stepStatus, isPathMastered, artistStatus, hasMovementReview, isReviewUnlocked } from './progress.js';
-import { gateEssentials, essentialNeed, essentialOpen } from './essentials.js';
+import { gateEssentials, essentialStepLabel, essentialOpen, STEP_LABEL_MAX } from './essentials.js';
 import { currentOffer } from './deepen.js';
 import { deepStatus } from './levels.js';
 import { pendingClosure, closureRoute, closureLabel } from './era-end.js';
@@ -38,6 +39,7 @@ import { rankFor } from './ranks.js';
 import { rankConditions, rankFocus } from './rank-goals.js';
 import { deepRoute, stageRoute } from '../ui/router.js';
 import { forgottenSubject, recallRoute, recallLabel, ARTIST, MOVEMENT } from './recall.js';
+import { pendingLore, stepTarget, loreKey } from './lore.js';
 
 export const REVIEW_ROUTE = 'repaso';
 export const HOME_ROUTE = 'inicio';
@@ -50,6 +52,11 @@ export const FALLADOS_FOR_REVIEW = 5;
 export const isReviewKind = (kind) => kind === 'srs';
 
 const shortName = (artist) => artist.short || artist.name;
+const fit = (full, short) => (full.length <= STEP_LABEL_MAX ? full : short);
+// «Profundiza en Rafael: nivel 3»; si no cabe en una línea, sin el nivel.
+export const deepenLabel = (name, level) => fit(`Profundiza en ${name}: nivel ${level}`, `Profundiza en ${name}`);
+// «Siguiente: Rafael · nivel 3»; si no cabe, sin el nivel.
+export const rankLabel = (name, level) => fit(`Siguiente: ${name} · nivel ${level}`, `Siguiente: ${name}`);
 
 function stepRoute(index, step) {
   return step.type === 'sala' ? `sala-${step.id}` : stageRoute(step.id);
@@ -114,7 +121,7 @@ export function gateEssential(progress, index) {
 
 // Lo que toca con un pintor concreto, una sola acción que dice de quién: si se le está olvidando (con `today`), «Repasar a
 // Vermeer»; si no, su siguiente nivel «a fondo» abierto («Nivel 2 de Vermeer») o, ya dominado, «Repasar a Vermeer» (la misma
-// sesión: su historia, cómo reconocerlo y sus preguntas). Sin dominar, su nivel 1.
+// sesión: cómo reconocerlo y sus preguntas). Sin dominar, su nivel 1.
 export function artistStep(progress, index, artistId, today = '') {
   const a = index.artist(artistId);
   if (!a) return null;
@@ -128,7 +135,7 @@ export function artistStep(progress, index, artistId, today = '') {
   return { kind: 'practice', to: stageRoute(artistId), label: `Nivel 1 de ${shortName(a)}`, artistId };
 }
 
-export function nextStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '' } = {}) {
+function pathStep(progress, index, today, { plan = {}, outcome = null, goalJustMet = false, prevKind = null, prevStep = null, branchId = '', week = '', origin = '' } = {}) {
   const kind = plan.kind;
   let reviewCount = null;
   const count = () => (reviewCount ??= reviewSession(progress, index, today).works.length);
@@ -171,14 +178,14 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   const open = gateSteps(progress, index.steps).find((s) => stepStatus(progress, index, s) === 'available');
   // 5 ter. Puerta cerrada por sus imprescindibles.
   const must = open ? null : gateEssential(progress, index);
-  if (must) return { kind: 'essential', to: essentialRoute(progress, index, must), label: essentialNeed(must), artistId: must.artistId };
+  if (must) return { kind: 'essential', to: essentialRoute(progress, index, must), label: essentialStepLabel(index, must), artistId: must.artistId };
   // 5 bis. Pendiente atrás, de vez en cuando (nunca dos veces seguidas).
   const debt = prevStep === 'debt' ? null : backDebt(progress, index, open);
   if (debt) return debt;
   // 5 quater. Profundizar, intercalado.
   const offer = currentOffer(progress, index, today);
   if (offer && index.artist(offer.artistId)) {
-    return { kind: 'deepen', to: deepRoute(offer.artistId, offer.level), label: `Profundiza en ${shortName(index.artist(offer.artistId))}: nivel ${offer.level}`, artistId: offer.artistId, offer: offer.key };
+    return { kind: 'deepen', to: deepRoute(offer.artistId, offer.level), label: deepenLabel(shortName(index.artist(offer.artistId)), offer.level), artistId: offer.artistId, offer: offer.key };
   }
   // 6. Parada abierta y sin jugar.
   if (open) {
@@ -194,10 +201,23 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   const same = focus?.choice && plan.artistId === focus.choice.artistId && plan.level === focus.choice.level;
   if (focus?.choice && !same && index.artist(focus.choice.artistId)) {
     const a = index.artist(focus.choice.artistId);
-    return { kind: 'rank', to: deepRoute(a.id, focus.choice.level), label: `Siguiente: ${shortName(a)} · nivel ${focus.choice.level}`, artistId: a.id };
+    return { kind: 'rank', to: deepRoute(a.id, focus.choice.level), label: rankLabel(shortName(a), focus.choice.level), artistId: a.id };
   }
   if (mastered && canReview(count, plan, prevKind)) return review();
   return { kind: goalJustMet ? 'done' : 'path', to: HOME_ROUTE, label: BACK_LABEL };
+}
+
+// Pasos que no llevan a jugar: el cierre de una época y la vuelta a la pantalla de origen.
+const NO_LORE = new Set(['closure', 'origin']);
+
+// El paso recomendado. Si lleva a un pintor o a una época con una parada didáctica sin ver antes (la presentación de una
+// época o el cartel de un tramo, engine/lore.js), lo dice en `lore` («tramo:Los tres genios»): la interfaz la enseña antes
+// del destino (ui/screens/flows.js withLore), así que el itinerario nunca se salta un cartel ni una época.
+export function nextStep(progress, index, today, opts = {}) {
+  const step = pathStep(progress, index, today, opts);
+  const target = NO_LORE.has(step.kind) ? null : stepTarget(step);
+  const lore = target && pendingLore(progress, index, target);
+  return lore ? { ...step, lore: loreKey(lore) } : step;
 }
 
 // Lo que recomienda el mapa (el mismo criterio que el resultado, sin una ronda recién jugada): la parada abierta, «Repasar»

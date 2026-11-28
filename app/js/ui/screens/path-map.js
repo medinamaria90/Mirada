@@ -170,7 +170,8 @@ function tramoNode(ctx, era, sec, keys) {
   const first = ctx.index.stageArtists(era.id)[sec.at];
   const here = keys.here === `tramo:${sec.key}`;
   return tramoLore({
-    sec, info: sectionInfo(ctx, era.id, sec), h: era.h, here, next: first ? first.id : '',
+    // Como paso del camino, tras el cartel se sigue a la parada actual (un tramo que se quedó sin ver va antes de ella).
+    sec, info: sectionInfo(ctx, era.id, sec), h: era.h, here, next: here && keys.current.startsWith('artist:') ? keys.current.slice('artist:'.length) : first?.id || '',
     fresh: tramoFresh(p, ctx.index, first?.id), door: doorLock(p, ctx.index, ctx.index.movement(era.id)),
   });
 }

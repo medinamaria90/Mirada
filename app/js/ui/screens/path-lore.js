@@ -9,28 +9,27 @@ import { MAP_W } from './path-layout.js';
 import { pct, withArticle } from './path-signs.js';
 import { lockOf } from './path-nodes.js';
 import { gateEssentials, essentialOpen } from '../../engine/essentials.js';
-import { needsIntro, needsTramo, artistStatus, movementStatus, stepStatus, stepPassed } from '../../engine/progress.js';
+import { needsTramo, artistStatus, movementStatus, stepStatus, stepPassed } from '../../engine/progress.js';
+import { pendingLore, loreKey } from '../../engine/lore.js';
 
 const artistOrSalaOpen = (progress, index, step) => stepStatus(progress, index, step) !== 'locked';
 
 const BOOK = { era: 26, tramo: 20 };
 
-// Qué parada didáctica es lo siguiente del camino («era:<id>» o «tramo:<clave>»), según la parada actual del juego.
+// Qué parada didáctica es lo siguiente del camino («era:<id>» o «tramo:<clave>»), según la parada actual del juego: la
+// primera sin ver hasta ella (engine/lore.js), aunque sea de un tramo ya empezado.
 export function loreHere(progress, index, current) {
   if (!current) return '';
-  if (needsIntro(progress, index, current.movementId) && index.visibleMovements.some((m) => m.id === current.movementId)) return `era:${current.movementId}`;
-  if (current.type === 'artist' && needsTramo(progress, index, current.id)) return `tramo:${index.artist(current.id).section}`;
-  return '';
+  const lore = pendingLore(progress, index, { type: current.type, id: current.id });
+  return lore ? loreKey(lore) : '';
 }
 
-// Lo que va antes de un pintor la primera vez («el Renacimiento», «Nace el Renacimiento»): la presentación de su época o el
-// cartel de su tramo, si aún no se han visto. '' si nada. Al tocar al pintor se avisa de esto, no se salta en silencio.
+// Lo que va antes de un pintor («el Renacimiento», «Los tres genios»): la primera presentación de época o cartel de tramo
+// sin ver hasta él. '' si nada. Al tocar al pintor se avisa de esto, no se salta en silencio.
 export function loreBefore(progress, index, artistId) {
-  const artist = index.artist(artistId);
-  const movement = artist && index.movement(artist.movementId);
-  if (!movement) return '';
-  if (index.visibleMovements.some((m) => m.id === movement.id) && needsIntro(progress, index, movement.id)) return withArticle(movement.name);
-  return needsTramo(progress, index, artistId) ? artist.section : '';
+  const lore = pendingLore(progress, index, { type: 'artist', id: artistId });
+  if (!lore) return '';
+  return lore.type === 'era' ? withArticle(index.movement(lore.id).name) : lore.key;
 }
 
 // Un rombo de tramo está «sin ver» si se puede llegar a él (su primer pintor ya está abierto) y su cartel no se ha abierto.

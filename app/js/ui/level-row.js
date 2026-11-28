@@ -4,7 +4,7 @@
 // en las dos, con el mismo criterio que su botón grande «Empezar · <nivel>»:
 //   · el siguiente (aro coral‑oro y ▶): lo mismo que el botón grande, su historia (si la tiene) y las preguntas;
 //   · hecho (aro de oro): vuelve a poner su historia, con «Repetir nivel» en la última tarjeta; sin historia, repite el nivel;
-//   · cerrado (desenfocado, candado): tiembla y dice «Se abre al terminar <nivel>».
+//   · cerrado (desenfocado, candado): tiembla y dice «Se abre al superar <nivel>».
 
 import { esc, announce } from './dom.js';
 import { icons } from './icons.js';
@@ -35,7 +35,7 @@ export function rowLevels(index, artistId, story, levels) {
   });
 }
 
-const lockText = (levels, i) => `Se abre al terminar ${levels[i - 1]?.short || ''}`.trim();
+const lockText = (levels, i) => `Se abre al superar ${levels[i - 1]?.short || ''}`.trim();
 
 function circle(l, i, levels) {
   const img = l.work ? `<img src="${esc(tinySrc(l.work))}" alt="" decoding="async" style="object-position:${l.crop.x}% ${l.crop.y}%">` : '';
@@ -88,7 +88,7 @@ export function wireRow(ctx, root, artistId, more, hooks) {
       void button.offsetWidth;
       button.classList.add('is-shaking');
       const prev = button.closest('li')?.previousElementSibling?.querySelector('.hl-t')?.textContent || '';
-      return note(`Se abre al terminar ${prev}`.trim());
+      return note(`Se abre al superar ${prev}`.trim());
     }
     if (hasStory) return watchStory(ctx, artistId, level, hooks.replay);
     return hooks.replay ? hooks.replay(level) : note(NO_STORY);

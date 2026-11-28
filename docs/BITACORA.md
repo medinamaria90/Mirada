@@ -357,7 +357,7 @@ repetir cuadros sin contexto acaba en memorizar imágenes.
 - **Guía** (`engine/next-step.js`, regla 2 bis): «Repasar a Velázquez» / «Repasar el Barroco», con su cara, detrás de
   «Repetir» y «Por hoy, hecho» y delante del repaso general; nunca el mismo dos veces seguidas ni tras otra sesión así. Si
   coinciden un pintor y una época, gana lo que más falla. También en la píldora del mapa.
-- **Una sola sesión por pintor** (`ui/screens/recall.js`, `engine/recall-session.js`), la misma desde la ruta y desde la
+- **Una sola sesión por pintor** (cambiado el 28/11, ver más abajo: ya sin historia) (`ui/screens/recall.js`, `engine/recall-session.js`), la misma desde la ruta y desde la
   ficha: primera tarjeta de su historia de nivel 1 (o la del nivel donde se concentran los fallos) con «Seguir» destacado e
   «Ir a las preguntas» al lado; al final, una sugerencia de otra historia suya («Más de Velázquez: Sevilla ›»), «Cómo
   reconocer a…» (2-3 rasgos y 2-3 cuadros que se abren en grande) y, si lo confunde con alguien, «Velázquez o Zurbarán»
@@ -450,6 +450,13 @@ pintor; en época y tramo, la ficha de época cuando exista: `eraFichaRoute` en 
   `progress.levelOrder` (y `@orden:1` en la lista de historias) para hacerlo una sola vez. Una ronda «a fondo» a medias de
   esos pintores se descarta. Pruebas en `tests/niveles-importancia.test.js`.
 
+## 28/11 — Siempre hay una guía en el mapa
+
+El botón flotante de flecha pasa a píldora con texto («Sigue: Leonardo», «Repasar»…): sale cuando la parada recomendada no se ve
+y siempre que el paso no tiene parada en el mapa, y al tocarla lanza el paso (lo mismo que el botón del resultado). Si la parada
+está a la vista, basta su burbuja. Se coloca en el hueco de la fila (izquierda, centro o derecha) donde no tape carteles ni paradas.
+Antes no salía nada si el paso no era una parada («Repasar» general, reto semanal…). `guideFor` en `ui/screens/map-cue.js`; prueba
+general en `tests/itinerario.test.js`.
 ## 28/11 · Preguntas de concepto tras las tarjetas de época y de tramo
 
 - **Decisión de María:** la época (medallón) y el tramo (rombo) llevan preguntas tras sus tarjetas, como los pintores.
@@ -468,3 +475,29 @@ pintor; en época y tramo, la ficha de época cuando exista: `eraFichaRoute` en 
   para «Repasar el Barroco» (`engine/recall.js`; una época aún no aprendida no cuenta como olvido); ni títulos ni firmas
   antes de responder; rotan por las menos recientes (`progress.concepts.recent`) y nunca repiten la última. Código en
   `engine/concepts.js`, `ui/concept-quiz.js`, `ui/concept-question.js`; pruebas en `tests/preguntas-concepto.test.js`.
+
+## 28/11 · «Repasar a…»: espera tras jugar y directo a «Cómo reconocer»
+
+- **Caso de María:** repaso general → avanzar en Botticelli (con su historia) → la guía proponía «Repasar a Botticelli».
+- **Espera** (`engine/recall.js`, `RECALL_WAIT_ROUNDS` = 2): cada ronda apunta lo que toca en `progress.recent` (su pintor
+  y su época; la sala o la Prueba de época; lo repasado; un repaso general cuenta como paso vacío). Lo de las 2 últimas
+  rondas no se propone repasar; entre medias, la guía propone otra cosa. Vale igual para las épocas. Sin versión nueva
+  (un estado anterior lo recibe vacío).
+- **Sin historia:** «Repasar a X» va directo a «Cómo reconocer a X» y de ahí a las preguntas (las épocas siguen con sus
+  tarjetas clave). La frase de contraste con quien lo confunde pasa a esa misma tarjeta.
+- **La tarjeta:** arriba solo la ✕ y el título discreto; «Renacimiento · vivió 1445–1510»; 2-3 «Fíjate en…» distintos
+  (pista, refuerzos de estilo de `contenido/pistas.json` y rasgos, sin repetir idea ni nombrar al pintor); cuadros que
+  crecen con el hueco; «No lo confundas con» (parecidos ya conocidos, cada uno abre su ficha). Abajo, fijos: «Ver ficha»
+  (hoja encima: al cerrarla sigue el repaso) e «Ir a las preguntas». Cabe en 360×740 sin scroll.
+- Pruebas en `tests/recordar.test.js` (incluido el caso de Botticelli).
+
+## 28/11 · El itinerario nunca se salta un cartel ni una época
+
+- **Fallo que vio María:** con «Siguiente», Leonardo, Miguel Ángel y Rafael sin el cartel «Los tres genios». Causa: el
+  cartel (y la presentación de la época) contaba como visto si ya se había jugado a algún pintor del tramo. Su partida
+  traía a Rafael jugado del 26/11, cuando él abría el tramo y el cartel aún no era un paso.
+- **Regla de María:** visto es solo abierto (`progress.signs`, `progress.intros`); jugar no cuenta. Si quedó atrás, sale
+  antes del siguiente pintor de ese tramo o de los que vienen detrás, venga de «Siguiente», del mapa, de un «a fondo», de
+  «Repasar a» o de una prueba de época (`engine/lore.js` `pendingLore`, `withLore` en `ui/screens/flows.js`). `nextStep`
+  lo dice en `lore`. El modo prueba los da por vistos. Pruebas en `tests/itinerario.test.js` (partidas antiguas, migradas,
+  a medias y recorridos al azar con fallos, repasos y «a fondo»).

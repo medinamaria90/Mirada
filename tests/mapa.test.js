@@ -9,6 +9,7 @@ import { dirname, join } from 'node:path';
 import { buildIndex } from '../app/js/engine/catalog.js';
 import { emptyProgress, hasMovementReview, nextStep, hasTramoSign } from '../app/js/engine/progress.js';
 import { firstTramo } from '../app/js/engine/branches.js';
+import { loreStops } from '../app/js/engine/lore.js';
 import { icons } from '../app/js/ui/icons.js';
 import { renderPathMap, pathLayout, eraLayout, MAP_W, STEP } from '../app/js/ui/screens/path-map.js';
 import { roadX, ROAD_HALF, branchSlots, branchLayout, branchLand } from '../app/js/ui/screens/path-layout.js';
@@ -37,6 +38,10 @@ function masterFirst(index, n) {
     const rec = { plays: 1, best: 0.9, mastered: true, last: TODAY };
     if (s.type === 'sala') p.salas[s.id] = rec; else p.artists[s.id] = rec;
   });
+  // Lo jugado desde la app pasó antes por su presentación y su cartel (ui/screens/flows.js withLore).
+  for (const stop of loreStops(index).filter((x) => x.pos < n)) {
+    if (stop.type === 'era') p.intros[stop.id] = TODAY; else p.signs[stop.key] = TODAY;
+  }
   // Sello de época (como lo pone finishRound): todas sus paradas dominadas.
   for (const m of index.visibleMovements) {
     const steps = index.stepsOf(m.id);
@@ -416,6 +421,5 @@ test('mapa: el pintor a medias llena el aro con su nota y una muesca en el 75 %'
   assert.ok(Math.abs(-mark - 75) < 1.5, 'la muesca marca el 75 %');
   assert.equal(startedLine(ring), 'Has acertado el 50\u00a0%; hace falta un 75\u00a0%');
   assert.equal(startedLine({ ...ring, best: 0.7 }), 'Te falta poco: has acertado el 70\u00a0%; hace falta un 75\u00a0%');
-  assert.equal(startedLine({ ...ring, best: 0.8, missing: 3 }), 'Te faltan 3 cuadros por ver');
   assert.equal(startedRing(masterFirst(real, 2), real, id), null, 'dominado: sin aro a medias');
 });

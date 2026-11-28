@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { emptyProgress, stepStatus, isPathMastered } from '../app/js/engine/progress.js';
 import { deepStatus } from '../app/js/engine/levels.js';
-import { essentialsOf, missingEssentials, allMissingEssentials } from '../app/js/engine/essentials.js';
+import { essentialsOf, missingEssentials, allMissingEssentials, essentialStepLabel } from '../app/js/engine/essentials.js';
 import {
   DEEPEN_EVERY, ROTATION, COOL_DAYS, COOL_FLOOR, currentOffer, pickOffer, noteOffer, skipOffer, settleOffer, offerWeight, deepenCandidates, deepenState,
 } from '../app/js/engine/deepen.js';
@@ -59,7 +59,8 @@ test('puerta de época: cruzar pide los imprescindibles de ESA época; el candad
   assert.equal(stepStatus(p, real, next), 'locked');
   const step = nextStep(p, real, TODAY, { plan: { kind: 'map' } });
   assert.equal(step.kind, 'essential');
-  assert.equal(step.label, `Te falta conocer ${essentialsOf(real, 'barroco')[0].title}`);
+  assert.equal(step.label, essentialStepLabel(real, essentialsOf(real, 'barroco')[0]));
+  assert.ok(step.label.startsWith('Sigue: '), 'tono positivo');
   assert.match(step.to, /^a-fondo-/);
   assert.ok(!/ayer|mañana|hace /.test(step.label), 'sin tiempo concreto');
   masterEssentials(p, ['barroco']);
@@ -97,8 +98,11 @@ function midway() {
   const p = masterEras(emptyProgress(), upTo);
   masterEssentials(p, upTo.slice(0, -1));
   for (const id of upTo) p.reviews[id] = { best: 1 }; // Pruebas de época superadas: nada pendiente atrás
-  // Sin atajos, solo el nivel 2 de Goya estaría abierto: los otros dos imprescindibles, ya empezados (siguen abiertos).
-  for (const lv of [3, 4]) p.deep[`goya:${lv}`] = { plays: 1, best: 0.5, mastered: false, last: TODAY };
+  // Imprescindibles abiertos, los dos de una época ya cruzada (que no cierra hacia atrás): el 2 de Caravaggio (peso 3) y el 3
+  // de Velázquez (peso 2). Los de Goya, hechos. (Lo empezado y sin abrir sigue cerrado: una sola regla, levels.js levelOpen.)
+  masterEssentials(p, ['romanticismo']);
+  delete p.deep['caravaggio:2'];
+  delete p.deep['velazquez:3'];
   return p;
 }
 

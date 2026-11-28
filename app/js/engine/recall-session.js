@@ -1,34 +1,61 @@
 // La sesión «Repasar a Vermeer» / «Repasar el Barroco» (ui/screens/recall.js): sus partes. Puro.
-// Pintor: su historia (la de nivel 1 o la del nivel donde se concentran sus fallos, y una sugerencia de otra), «cómo
-// reconocerlo» (rasgos y cuadros), el contraste con quien suele confundirlo y la ronda. Época: sus tarjetas clave, el
-// contraste y la ronda.
+// Pintor (sin historia: ya la conoce): «cómo reconocerlo» (sus «Fíjate en…», cuadros, con quién no confundirlo y, si lo
+// confunde con alguien, la frase de contraste) y la ronda. Época: sus tarjetas clave, el contraste y la ronda.
 
 import { createRng } from './rng.js';
 import { makeQuestion, noAuthorQuestion } from './questions.js';
 import { recallStats, recallKey, ARTIST, MOVEMENT } from './recall.js';
 import { MAX_TEXT } from './stories.js';
+import { similar, traitTagsOf } from './feedback.js';
+import { lookAlikes } from './ficha.js';
 
 export const RECALL_ROUND = 5;
 export const RECALL_TRAITS = 3;
 export const RECALL_WORKS = 3;
+// «No lo confundas con»: como mucho estos pintores.
+export const RECALL_TWINS = 3;
 // De la ronda, como mucho estas preguntas sobre el otro (el que confunde).
 export const RECALL_RIVAL_QUESTIONS = 1;
 export const RECALL_DIFFICULTY = 0.5;
 // Tarjetas de época que mejor la enseñan a reconocer, en este orden (contenido/epocas/README.md).
 export const ERA_KEY_KICKERS = ['Cuándo y dónde', 'Qué cambia', 'Fíjate en'];
-// Una historia «a fondo» se sugiere primero si concentra al menos esta parte de las obras falladas (y dos o más).
-export const STAGE_FOCUS_SHARE = 0.5;
-const STAGE_FOCUS_MIN = 2;
 
 const byFame = (a, b) => (b.fame || 0) - (a.fame || 0) || (a.yearSort || 0) - (b.yearSort || 0);
 const capital = (t) => (t ? t.charAt(0).toUpperCase() + t.slice(1) : '');
 export const shortName = (artist) => artist?.short || artist?.name || '';
 
-// Rasgos de estilo del pintor para «cómo reconocerlo»: sus rasgos cortos o, sin ellos, su pista «Fíjate en…».
-export function recognizeTraits(artist) {
-  const traits = (Array.isArray(artist?.traits) ? artist.traits : []).filter((t) => typeof t === 'string' && t.trim());
-  if (traits.length) return traits.slice(0, RECALL_TRAITS).map((t) => capital(t.trim()));
-  return artist?.hint ? [artist.hint] : [];
+// ¿Dos «Fíjate en…» hablan de lo mismo? Comparten la raíz (sus primeras STEM letras) de alguna palabra con contenido: en una
+// sola tarjeta, «colores ácidos» dos veces o el «aire entre las figuras» repetido ya sobran.
+const STEM = 5;
+const MIN_WORD = 4;
+const GENERIC = new Set(['fíjat', 'figur', 'cuadr', 'color', 'pinta', 'pintu', 'como', 'cada', 'todo', 'toda', 'entre', 'sobre', 'parec', 'hecho', 'hecha', 'donde', 'desde', 'hasta', 'mucho', 'mucha', 'casi', 'poco', 'tiene', 'están']);
+const stems = (t) => new Set((String(t).toLowerCase().match(/[a-záéíóúüñ]+/g) || []).filter((w) => w.length >= MIN_WORD).map((w) => w.slice(0, STEM)).filter((w) => !GENERIC.has(w)));
+function sameIdea(a, b) {
+  const sb = stems(b);
+  return similar(a, b) || [...stems(a)].some((w) => sb.has(w));
+}
+
+// «Fíjate en…» para «cómo reconocerlo»: su pista, sus refuerzos de estilo (contenido/pistas.json; primero los de estilo, que se
+// ven en cualquier cuadro) y, si faltan, sus rasgos cortos. RECALL_TRAITS como mucho, distintos entre sí (ni las mismas
+// etiquetas ni casi las mismas palabras) y sin nombrar al pintor.
+export function recallHints(artist) {
+  if (!artist) return [];
+  const lines = [];
+  const tags = traitTagsOf(artist, 1)[0] || [];
+  if (typeof artist.hint === 'string' && artist.hint.trim()) lines.push({ text: artist.hint.trim(), tags });
+  const hints = (Array.isArray(artist.styleHints) ? artist.styleHints : []).slice().sort((a, b) => Number(b.scope === 'estilo') - Number(a.scope === 'estilo'));
+  for (const h of hints) lines.push({ text: h.text, tags: h.tags || [] });
+  const traits = (Array.isArray(artist.traits) ? artist.traits : []).filter((t) => typeof t === 'string' && t.trim());
+  traits.forEach((t, i) => lines.push({ text: capital(t.trim()), tags: traitTagsOf(artist, traits.length + 1)[i + 1] || [] }));
+  const names = [artist.name, artist.short].filter(Boolean).map((n) => n.toLowerCase());
+  const out = [];
+  for (const l of lines) {
+    if (out.length >= RECALL_TRAITS) break;
+    if (names.some((n) => l.text.toLowerCase().includes(n))) continue;
+    if (out.some((o) => sameIdea(o.text, l.text) || (o.tags.length && l.tags.some((t) => o.tags.includes(t))))) continue;
+    out.push(l);
+  }
+  return out.map((l) => l.text);
 }
 
 // Sus cuadros más característicos: los más famosos de los que ha visto (si no llegan, de los que enseña «Conoce a»).
@@ -69,29 +96,6 @@ export function eraKeyCards(cards) {
   return ERA_KEY_KICKERS.map((k) => list.find((c) => c && c.kicker === k && typeof c.text === 'string' && c.artwork)).filter(Boolean);
 }
 
-const deepLevelsOf = (levels) => [...new Set(levels)].filter((l) => Number.isInteger(l) && l >= 2).sort((a, b) => a - b);
-
-// La etapa «a fondo» donde se concentran los fallos (STAGE_FOCUS_MIN obras o más y al menos STAGE_FOCUS_SHARE de las
-// falladas), o null. levels: niveles con historia; failedLevels: nivel de cada obra fallada.
-export function focusedLevel(levels, failedLevels = []) {
-  const deep = deepLevelsOf(levels);
-  const counts = new Map();
-  for (const l of failedLevels) if (deep.includes(l)) counts.set(l, (counts.get(l) || 0) + 1);
-  const [best] = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
-  return best && best[1] >= STAGE_FOCUS_MIN && best[1] >= failedLevels.length * STAGE_FOCUS_SHARE ? best[0] : null;
-}
-
-// Por qué historia empieza «Repasar a X»: la del nivel donde se concentran los fallos o, si no, la de nivel 1.
-export const firstStoryLevel = (levels, failedLevels = []) => focusedLevel(levels, failedLevels) ?? 1;
-
-// Qué otra historia del pintor se sugiere al final de la de nivel 1 (una sola, o null): la de la etapa donde se concentran
-// los fallos y, si no, la primera «a fondo» aún no vista (o la primera, si ya las vio todas). seen(level): ¿ya la vio?
-export function suggestedStory(levels, failedLevels = [], seen = () => false) {
-  const deep = deepLevelsOf(levels);
-  if (!deep.length) return null;
-  return focusedLevel(levels, failedLevels) ?? deep.find((l) => !seen(l)) ?? deep[0];
-}
-
 // Obras de una época que ya conoce: las vistas de sus pintores y las enseñadas de sus pintores ya jugados.
 function knownMovementWorks(progress, index, movementId) {
   const owned = progress.collection || {};
@@ -124,8 +128,10 @@ export function recallParts(progress, index, subject, today, { seen = [] } = {})
     id: subject.id,
     rival: contrast ? rival : null,
     failedWorks,
-    traits: recognizeTraits(artist),
+    traits: recallHints(artist),
     works,
+    // «No lo confundas con»: con quien lo confunde (si hay frase de contraste) y sus parecidos ya conocidos.
+    twins: [...new Set([contrast ? rival : null, ...lookAlikes(progress, index, artist)])].filter(Boolean).slice(0, RECALL_TWINS),
     contrast,
   };
 }

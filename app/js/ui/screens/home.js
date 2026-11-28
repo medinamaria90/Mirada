@@ -16,7 +16,7 @@ import { weekOf, isoWeek } from '../../engine/dates.js';
 import { addLevelRings } from '../deep-badges.js';
 import { watchStoryPrefetch } from '../story-prefetch.js';
 import { coachSeen } from '../../state/store.js';
-import { allMissingEssentials, essentialNeed, essentialOpen } from '../../engine/essentials.js';
+import { allMissingEssentials, essentialStepLabel, essentialOpen } from '../../engine/essentials.js';
 import { deepRoute, stageRoute } from '../router.js';
 
 export function renderHome(ctx, el) {
@@ -46,7 +46,7 @@ export function renderHome(ctx, el) {
   } else if (must.length) {
     finale = `<section class="finale" aria-label="Por terminar">
       <span class="finale-icon">${icons.lock(26)}</span>
-      <h2 class="finale-title">${esc(essentialNeed(must[0]))}</h2>
+      <h2 class="finale-title">${esc(essentialStepLabel(index, must[0]))}</h2>
       <div class="finale-actions">
         <button class="btn btn-primary btn-wide" data-action="essential" data-to="${esc(essentialOpen(p, index, must[0]) ? deepRoute(must[0].artistId, must[0].level) : stageRoute(must[0].artistId))}">Ir</button>
       </div>
@@ -87,19 +87,20 @@ export function renderHome(ctx, el) {
   // Historias de la parada actual y de los pintores con niveles a la vista: su tarjeta se pinta sin esperar (story-prefetch.js).
   let stories = null;
   // Lo que recomienda el itinerario (engine/next-step.js, cargado después de pintar: no pesa en el arranque) lleva una burbuja con
-  // un verbo sobre su parada (map-cue.js); el botón flotante (map-return.js) lleva hasta ella.
-  const returnBtn = watchReturn(el);
+  // un verbo sobre su parada (map-cue.js); la píldora flotante (map-return.js) lo lanza si su parada no se ve o no la tiene.
+  const returnBtn = watchReturn(el, (step) => { ctx.audio.sfx('tap'); ctx.go(step.to); });
   let recommended = null;
+  let ready = false;   // el itinerario se calcula tras pintar: hasta entonces no se señala nada
   const showCue = () => {
-    if (!recommended || !el.isConnected) return;
-    const status = recommended.artistId ? artistStatus(ctx.store.get().progress, index, recommended.artistId) : '';
-    placeCue(el, recommended, status === 'started');
-    returnBtn.retarget();
+    if (!ready || !el.isConnected) return;
+    const status = recommended?.artistId ? artistStatus(ctx.store.get().progress, index, recommended.artistId) : '';
+    returnBtn.set(recommended, placeCue(el, recommended, status === 'started'));
   };
   Promise.all([import('../../engine/next-step.js'), import('../last-step.js'), import('../../engine/deepen.js')]).then(([m, last, deepen]) => {
     recommended = m.mapRecommendation(ctx.store.get().progress, index, ctx.today(), { week: isoWeek(ctx.dailyDay()).key, prevStep: last.lastStep() });
-    if (!recommended || !el.isConnected) return;
+    ready = true;
     showCue();
+    if (!recommended || !el.isConnected) return;
     // Lo que enseña el mapa cuenta como recomendado: lo de atrás no sale justo después en el resultado.
     if (recommended.kind !== 'stop') last.rememberStep(recommended.kind);
     // «Profundiza en…» a la vista: cuenta para la rotación (jugar otra cosa la salta: engine/deepen.js).
