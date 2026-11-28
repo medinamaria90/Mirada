@@ -18,6 +18,10 @@ MAX_WHY = 180
 MAX_OPTION = 70
 OPTIONS = 4
 YEAR = re.compile(r"\b1[0-9]{3}\b")
+# La buena no se adivina por ser la más larga: como mucho LONGER_SLACK caracteres más que la mala más larga, y en todo el
+# banco es la más larga (o la más corta) en LONGEST_MAX_SHARE de las preguntas de texto o menos (revisión independiente, G2).
+LONGER_SLACK = 2
+LONGEST_MAX_SHARE = 0.4
 
 
 def problems(bank, catalog, tramos):
@@ -26,7 +30,7 @@ def problems(bank, catalog, tramos):
     artists = {a["id"]: a for a in catalog["artists"]}
     movements = {m["id"]: m for m in catalog["movements"]}
     era_of = lambda wid: artists[works[wid]["artistId"]]["movementId"]
-    seen, count = set(), {}
+    seen, count, texts, shorts = set(), {}, [], []
     for q in bank.get("questions", []):
         qid = q.get("id", "?")
         bad = lambda msg: out.append(f"{qid}: {msg}")
@@ -89,10 +93,22 @@ def problems(bank, catalog, tramos):
                 text = o.get("text", "")
                 if not text or len(text) > MAX_OPTION or YEAR.search(text):
                     bad(f"opción {o['id']}: texto vacío, largo o con un año")
+        if kind != "cual":
+            right = len(next(o for o in opts if o["id"] == q["answer"]).get("text", ""))
+            longest = max(len(o.get("text", "")) for o in opts if o["id"] != q["answer"])
+            shortest = min(len(o.get("text", "")) for o in opts if o["id"] != q["answer"])
+            texts.append(right > longest)
+            shorts.append(right < shortest)
+            if right > longest + LONGER_SLACK:
+                bad(f"la buena es {right - longest} caracteres más larga que la mala más larga")
         if kind == "cual":
             wids = [o.get("work") for o in opts]
             if len(set(wids)) != OPTIONS:
                 bad("obras repetidas entre las opciones")
+    if texts and sum(texts) / len(texts) > LONGEST_MAX_SHARE:
+        out.append(f"la buena es la opción más larga en {sum(texts)} de {len(texts)} preguntas de texto")
+    if shorts and sum(shorts) / len(shorts) > LONGEST_MAX_SHARE:
+        out.append(f"la buena es la opción más corta en {sum(shorts)} de {len(shorts)} preguntas de texto")
     for (scope, key), n in count.items():
         lo, hi = SCOPES.get(scope, (0, 99))
         if not lo <= n <= hi:

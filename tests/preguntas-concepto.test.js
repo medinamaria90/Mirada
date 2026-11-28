@@ -90,6 +90,15 @@ test('con pintores de la época ya conocidos: dos «¿De qué época es?» con s
   assert.equal(qs.filter((q) => q.type === CONCEPT_TYPE).length, 1);
 });
 
+test('el primer tramo de cada época va con el medallón: sus preguntas entran en la tanda de la época', () => {
+  const seen = new Set();
+  for (let i = 0; i < 30; i++) {
+    planConcepts(emptyProgress(), index, bank, ERA, 'renacimiento', createRng(`m${i}`)).forEach((q) => seen.add(q.conceptId));
+  }
+  assert.ok(bankFor(bank, TRAMO, 'Nace el Renacimiento').some((q) => seen.has(q.id)));
+  assert.ok(bankFor(bank, ERA, 'renacimiento').some((q) => seen.has(q.id)));
+});
+
 test('tras las tarjetas de un tramo, dos preguntas de concepto de ese tramo', () => {
   for (const key of tramos) {
     const qs = planConcepts(emptyProgress(), index, bank, TRAMO, key, createRng(key));
@@ -195,6 +204,16 @@ test('salen tras las tarjetas: «Ir a las preguntas» al llegar a la última tar
   assert.equal(tramoSlug(key), 'el-oleo-en-flandes');
   assert.deepEqual(parseRoute(conceptsRoute(key, 'van-eyck')), { name: 'concepts', slug: 'el-oleo-en-flandes', next: 'van-eyck' });
   assert.deepEqual(parseRoute(conceptsRoute(key)), { name: 'concepts', slug: 'el-oleo-en-flandes', next: '' });
+});
+
+test('las opciones se barajan: la buena no cae siempre en el mismo sitio (en el banco es siempre la primera)', () => {
+  const item = bank.find((b) => b.id === 'barroco-comun');
+  const spots = new Set();
+  for (let i = 0; i < 40; i++) {
+    const q = conceptQuestion(index, item, createRng(`p${i}`));
+    spots.add(q.options.findIndex((o) => o.id === q.answerId));
+  }
+  assert.equal(spots.size, 4);
 });
 
 test('la hoja explica: al acertar, el porqué de la buena; al fallar, por qué no la elegida y por qué sí la buena', () => {

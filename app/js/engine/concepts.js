@@ -124,13 +124,20 @@ export function planConcepts(progress, index, bank, scope, id, rng, { cardWorks 
   const recent = recentConcepts(progress);
   const total = scope === ERA ? ERA_QUIZ : TRAMO_QUIZ;
   const images = scope === ERA ? knownEraQuestions(progress, index, id, rng) : [];
-  const pool = bankFor(bank, scope, id).filter((q) => usable(index, q));
+  const pool = [...bankFor(bank, scope, id), ...(scope === ERA ? bankFor(bank, TRAMO, firstTramo(index, id)) : [])]
+    .filter((q) => usable(index, q));
   const used = new Set(images.map((q) => q.artworkId));
   const free = pool.filter((q) => !itemWorks(q).some((w) => used.has(w)));
   const concepts = pickConcepts(free, Math.max(0, total - images.length), rng, { recent, cardWorks })
     .map((item) => conceptQuestion(index, item, rng));
   // La de concepto va al final: primero se mira, luego se piensa.
   return [...images, ...concepts];
+}
+
+// El primer tramo de una época no tiene cartel propio (va con el medallón, engine/progress.js hasTramoSign): sus preguntas
+// entran en la tanda de la época.
+export function firstTramo(index, movementId) {
+  return index.stageArtists(movementId)[0]?.section || '';
 }
 
 export function recentConcepts(progress) {

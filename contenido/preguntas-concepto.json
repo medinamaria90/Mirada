@@ -50,13 +50,13 @@
    "options": [
     {
      "id": "a",
-     "text": "El fondo de oro deja paso a un espacio con profundidad",
+     "text": "Del fondo de oro a un espacio con profundidad",
      "why": "Eso es: en la Última Cena las líneas del techo y las paredes se juntan en la cabeza de Cristo. Es la perspectiva, la gran conquista del siglo XV."
     },
     {
      "id": "b",
-     "text": "Las figuras religiosas desaparecen",
-     "why": "No: Cristo, vírgenes y santos siguen siendo el tema principal. Lo que cambia es cómo se pintan: dentro de un espacio que parece real."
+     "text": "Se pierde la simetría y todo se descoloca",
+     "why": "No: Leonardo pone a Cristo en el centro exacto y reparte a los apóstoles en cuatro grupos de tres. Lo nuevo es el espacio que se aleja."
     },
     {
      "id": "c",
@@ -65,7 +65,7 @@
     },
     {
      "id": "d",
-     "text": "Se pinta al aire libre, del natural",
+     "text": "Se pinta al aire libre, del natural, sin taller",
      "why": "Aún no: estas obras se pensaban en el taller, con dibujos y geometría. Salir a pintar al aire libre será cosa del siglo XIX."
     }
    ],
@@ -85,12 +85,12 @@
    "options": [
     {
      "id": "a",
-     "text": "Arquitecturas que crean un espacio en profundidad",
+     "text": "Arquitecturas que abren un espacio profundo",
      "why": "Eso es: arcos y columnas que se alejan con reglas de geometría. Las figuras ya no flotan: viven dentro de un espacio medido."
     },
     {
      "id": "b",
-     "text": "Escenas de la vida de cada día",
+     "text": "Escenas de la vida de cada día en la ciudad",
      "why": "No: una Anunciación y una reunión de sabios de la Antigüedad. Lo que comparten es el espacio en perspectiva, no lo cotidiano."
     },
     {
@@ -100,7 +100,7 @@
     },
     {
      "id": "d",
-     "text": "Figuras alargadas como llamas",
+     "text": "Figuras alargadas como llamas, muy estilizadas",
      "why": "Eso es el manierismo, de El Greco por ejemplo. Aquí los cuerpos tienen proporciones naturales y equilibrio."
     }
    ],
@@ -119,22 +119,22 @@
    "options": [
     {
      "id": "a",
-     "text": "Pinta un mito antiguo en grande, como un tema serio",
+     "text": "Un mito antiguo pintado en grande y en serio",
      "why": "Eso es: una diosa pagana a un tamaño que hasta entonces se reservaba a los temas religiosos. Casi no se veía algo así desde la Antigüedad."
     },
     {
      "id": "b",
-     "text": "Es el primer desnudo de la historia de la pintura",
-     "why": "No: Adán y Eva llevaban siglos desnudos en las iglesias. Lo nuevo es una diosa pagana pintada en grande y con el respeto de un tema sagrado."
+     "text": "Copia una estatua antigua tal cual, sin cambios",
+     "why": "Botticelli toma la pose de las Venus de mármol antiguas, pero la convierte en otra cosa: una diosa ligera, casi sin peso, que llega flotando."
     },
     {
      "id": "c",
-     "text": "Estrena el óleo sobre lienzo",
-     "why": "No: está pintado al temple (color mezclado con huevo) sobre lienzo. El óleo lo habían llevado lejos los flamencos, como Van Eyck."
+     "text": "Estrena el óleo sobre lienzo en Florencia",
+     "why": "No: está pintado al temple (color mezclado con huevo) sobre lienzo. El óleo lo llevaban lejos los pintores flamencos, como Jan van Eyck."
     },
     {
      "id": "d",
-     "text": "Convierte el paisaje en protagonista",
+     "text": "Convierte el paisaje en el protagonista",
      "why": "El mar y la orilla son un decorado sencillo; el paisaje como tema propio tardará siglos. Aquí manda la diosa."
     }
    ],
@@ -180,7 +180,7 @@
    "prompt": "¿Qué cambia respecto a lo anterior?",
    "works": [
     "w186953",
-    "w2714617"
+    "w867403"
    ],
    "labels": [
     "Renacimiento",
@@ -189,27 +189,27 @@
    "options": [
     {
      "id": "a",
-     "text": "Los cuerpos se alargan y los colores se vuelven irreales",
-     "why": "Eso es: tras la armonía de Rafael, el manierismo estira las figuras y usa colores ácidos. En El expolio, el rojo de la túnica casi arde."
+     "text": "Los cuerpos se alargan y se vuelven raros",
+     "why": "Eso es: tras la armonía de Rafael, Parmigianino estira el cuello, los dedos y hasta al Niño. Belleza llevada a lo raro, a propósito."
     },
     {
      "id": "b",
-     "text": "Vuelve el fondo de oro",
-     "why": "No vuelve el oro: el espacio sigue ahí, pero se aprieta. En El expolio las cabezas se amontonan detrás de Cristo sin dejar aire."
+     "text": "Vuelve el fondo de oro de los iconos",
+     "why": "No vuelve el oro: hay espacio, pero no encaja; al fondo, una columna y un profeta diminuto."
     },
     {
      "id": "c",
      "text": "Aparece un foco de luz en la oscuridad",
-     "why": "Eso será el tenebrismo de Caravaggio, ya en el Barroco. Aquí la luz es fría y extraña, no un foco que corta la sombra."
+     "why": "Eso será el tenebrismo de Caravaggio, ya en el Barroco. Aquí la luz es clara y fría, pareja sobre una piel de porcelana."
     },
     {
      "id": "d",
      "text": "Se dejan los temas religiosos por los paisajes",
-     "why": "Eso pasó en el norte protestante, no aquí: El Greco pinta para una Iglesia que quiere cuadros que conmuevan."
+     "why": "No: sigue siendo una Virgen con el Niño. Los paisajes y las escenas de casa fueron cosa del norte protestante."
     }
    ],
    "answer": "a",
-   "source": "https://es.wikipedia.org/wiki/Manierismo"
+   "source": "https://es.wikipedia.org/wiki/Virgen_del_cuello_largo"
   },
   {
    "id": "manierismo-comun",
@@ -224,7 +224,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Miran el mundo cercano con muchísimo detalle",
+     "text": "Miran el mundo cercano con mucho detalle",
      "why": "Eso es: el Norte pinta lo que tiene alrededor, una alcoba o una aldea nevada, y no se le escapa ni un clavo ni un perro."
     },
     {
@@ -234,7 +234,7 @@
     },
     {
      "id": "c",
-     "text": "Temas de la mitología antigua",
+     "text": "Dioses y héroes de la mitología antigua",
      "why": "Ni dioses ni héroes: un matrimonio en su casa y unos cazadores que vuelven al pueblo. El Norte prefería lo cercano."
     },
     {
@@ -258,22 +258,22 @@
    "options": [
     {
      "id": "a",
-     "text": "El pintor se retrata de frente, como solo se pintaba a Cristo",
+     "text": "Se pinta de frente, como solo se pintaba a Cristo",
      "why": "Eso es: Durero se pinta simétrico y solemne, con su melena y su mano sobre el pecho. Un artista que se presenta como alguien importante."
     },
     {
      "id": "b",
-     "text": "Es el primer cuadro firmado de la historia",
-     "why": "No: muchos pintores firmaban antes, como Van Eyck. Lo nuevo es la pose: un artista con la solemnidad de una imagen de Cristo."
+     "text": "Se retrata como un rey, con corona y cetro",
+     "why": "No hay corona ni cetro: solo su melena y un abrigo de piel. La solemnidad viene de la pose de frente, la de las imágenes de Cristo."
     },
     {
      "id": "c",
-     "text": "Lo pintó en un espejo que deforma",
+     "text": "Lo pintó en un espejo que deforma la cara",
      "why": "Eso lo hizo Parmigianino, con su cara en un espejo redondo. Durero se pinta de frente, sereno y simétrico."
     },
     {
      "id": "d",
-     "text": "Muestra al pintor trabajando en su taller",
+     "text": "Se muestra trabajando en su taller con pinceles",
      "why": "Aquí no hay pinceles ni taller: solo Durero, de frente, con su abrigo de piel. La pose bastaba como declaración."
     }
    ],
@@ -305,7 +305,7 @@
     {
      "id": "d",
      "work": "w6402081",
-     "why": "Es manierismo: El Greco en Toledo. Un retrato sobre fondo oscuro, pero plano: no hay salas al fondo ni juego de luces, solo la cara pálida y la mano."
+     "why": "Es manierismo: El Greco en Toledo, a finales del siglo XVI. Cara alargada y pálida, gola blanca y un gesto casi de juramento, sin el juego de luz y profundidad de Velázquez."
     }
    ],
    "answer": "a",
@@ -329,7 +329,7 @@
     {
      "id": "a",
      "text": "Las figuras estiradas dejan paso a gente real",
-     "why": "Eso es: Ribera pinta a un niño mendigo de Nápoles, con su pie torcido y su sonrisa mellada, a tamaño de héroe. Nada de cuerpos de llama."
+     "why": "Eso es: Ribera pinta a un niño mendigo de Nápoles, con su pie torcido y su sonrisa abierta, a tamaño de héroe. Nada de cuerpos de llama."
     },
     {
      "id": "b",
@@ -363,7 +363,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Escenas de la vida en casa de gente corriente",
+     "text": "Gente corriente en su casa",
      "why": "Eso es: una criada que vierte leche y una familia de fiesta. En Holanda se pintaba la vida de cada día para colgarla en casa."
     },
     {
@@ -373,7 +373,7 @@
     },
     {
      "id": "c",
-     "text": "Héroes de la Antigüedad",
+     "text": "Héroes y dioses de la Antigüedad",
      "why": "Ni romanos ni dioses: una mujer con su jarra y una familia que canta. Los héroes antiguos volverán con el neoclasicismo."
     },
     {
@@ -397,22 +397,22 @@
    "options": [
     {
      "id": "a",
-     "text": "Un momento sagrado ocurre en una taberna, con gente de la calle",
+     "text": "Un milagro en una taberna, con gente de la calle",
      "why": "Eso es: Cristo llama a Mateo entre jugadores con plumas y monedas. Caravaggio usaba modelos reales vestidos como en su tiempo."
     },
     {
      "id": "b",
-     "text": "Renuncia a la perspectiva",
+     "text": "Renuncia a la perspectiva y al espacio profundo",
      "why": "No: el espacio sigue ahí, aunque oscuro. Lo nuevo es la luz que entra de lado y la escena de calle."
     },
     {
      "id": "c",
-     "text": "Pinta a Cristo como un rey en su trono",
+     "text": "Pinta a Cristo como un rey en su trono de gloria",
      "why": "Al revés: Cristo está casi en la sombra, a un lado, señalando. La fuerza no viene del trono, sino de la luz que sigue su mano."
     },
     {
      "id": "d",
-     "text": "Usa colores ácidos y cuerpos alargados",
+     "text": "Usa colores ácidos y cuerpos muy alargados",
      "why": "Eso era el manierismo, justo lo que Caravaggio dejó atrás: él pinta cuerpos normales, con peso, ropa gastada y caras corrientes."
     }
    ],
@@ -467,13 +467,13 @@
    "options": [
     {
      "id": "a",
-     "text": "La fiesta galante deja paso a héroes severos y líneas rectas",
+     "text": "De la fiesta galante a los héroes severos",
      "why": "Eso es: David pinta a tres hermanos romanos que juran morir por su patria. Gestos rígidos, arcos firmes y una lección de virtud."
     },
     {
      "id": "b",
-     "text": "Aparece un foco de luz en la oscuridad",
-     "why": "Eso era el Barroco. David usa una luz clara que recorta cada figura como si fuera una estatua."
+     "text": "Los colores se vuelven claros y pastel",
+     "why": "Al revés: el pastel era lo del rococó. David usa colores firmes, rojos y blancos, y una luz que recorta las figuras como estatuas."
     },
     {
      "id": "c",
@@ -502,7 +502,7 @@
    "options": [
     {
      "id": "a",
-     "text": "La vida sencilla, mirada con detalle y luz clara",
+     "text": "La vida sencilla, con detalle y luz clara",
      "why": "Eso es: una criada con su bandeja de chocolate y una mesa de cocina. Junto a las fiestas, el siglo XVIII también pinta lo cotidiano."
     },
     {
@@ -512,13 +512,13 @@
     },
     {
      "id": "c",
-     "text": "Fiestas galantes en jardines",
+     "text": "Fiestas galantes en jardines de recreo",
      "why": "Eso es Watteau, de la misma época. Aquí no hay jardines ni enamorados: solo objetos y gestos de cada día."
     },
     {
      "id": "d",
-     "text": "Pinceladas sueltas y manchas de color",
-     "why": "Nada de manchas: cada textura, del pescado a la porcelana, está pintada con precisión. Liotard ni siquiera deja ver el trazo del pastel."
+     "text": "Pinceladas sueltas y manchas de color vivo",
+     "why": "Nada de manchas: cada textura, del pescado a la porcelana, es precisa. Liotard pintó al pastel (barras de color en polvo) sin que se vea un trazo."
     }
    ],
    "answer": "a",
@@ -536,13 +536,13 @@
    "options": [
     {
      "id": "a",
-     "text": "Un hecho de su tiempo, pintado como un mártir antiguo",
+     "text": "Un crimen real, como un mártir antiguo",
      "why": "Eso es: Marat, revolucionario asesinado en su bañera, aparece como un Cristo muerto. David convierte la actualidad en heroísmo clásico."
     },
     {
      "id": "b",
-     "text": "Suaviza la muerte con tonos pastel",
-     "why": "Al contrario: fondo vacío y oscuro, luz cruda y ningún adorno. Es la seriedad neoclásica frente al rococó."
+     "text": "Suaviza la muerte con tonos pastel y flores",
+     "why": "Al contrario: fondo vacío y oscuro, luz cruda y ni una flor. Es la seriedad neoclásica frente al rococó."
     },
     {
      "id": "c",
@@ -606,12 +606,12 @@
    "options": [
     {
      "id": "a",
-     "text": "El orden y la línea dejan paso al color, el movimiento y el drama",
+     "text": "El orden deja paso al color y al drama",
      "why": "Eso es: frente a los romanos quietos de David, la Libertad avanza en diagonal entre humo, banderas y cuerpos. Manda la emoción."
     },
     {
      "id": "b",
-     "text": "Se abandonan los temas políticos",
+     "text": "Se dejan de lado los temas políticos y de guerra",
      "why": "Al revés: los dos son políticos. David exalta el deber; Delacroix, una revolución que acababa de pasar en las calles de París."
     },
     {
@@ -641,7 +641,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Una naturaleza inmensa que sobrecoge",
+     "text": "Una naturaleza inmensa que nos sobrecoge",
      "why": "Eso es: la niebla sin fin y la tormenta que se traga al tren. Es lo «sublime», lo inmenso que da miedo y fascina a la vez."
     },
     {
@@ -657,7 +657,7 @@
     {
      "id": "d",
      "text": "Ciudades y fábricas modernas como tema",
-     "why": "Hay un tren, pero es casi un fantasma entre la lluvia. Y en el otro no hay rastro de ciudad: domina la naturaleza."
+     "why": "Turner sí pinta un tren, el gran invento de su tiempo; pero en el caminante de Friedrich no hay ni rastro de ciudad. Comparten una naturaleza inmensa."
     }
    ],
    "answer": "a",
@@ -675,17 +675,17 @@
    "options": [
     {
      "id": "a",
-     "text": "Convierte un naufragio reciente en un gran cuadro de historia",
+     "text": "Un naufragio real pintado como gran historia",
      "why": "Eso es: el naufragio era de 1816 y avergonzaba al gobierno. Géricault lo pintó en un lienzo gigante, el tamaño de reyes y héroes."
     },
     {
      "id": "b",
-     "text": "Es el primer cuadro con el mar como tema",
-     "why": "Los holandeses ya pintaban marinas en el siglo XVII. Lo nuevo es la noticia: náufragos de verdad, a tamaño de héroes."
+     "text": "Exalta a un capitán heroico y victorioso",
+     "why": "No hay héroe vencedor: la Medusa naufragó por la torpeza de su capitán. Son náufragos desesperados que hacen señas a un barco lejano."
     },
     {
      "id": "c",
-     "text": "Abandona el dibujo y pinta con manchas",
+     "text": "Abandona el dibujo y pinta solo con manchas",
      "why": "No: Géricault estudió los cuerpos con rigor, hasta en el hospital. La novedad está en el tema y el drama, no en la técnica."
     },
     {
@@ -711,8 +711,8 @@
     },
     {
      "id": "b",
-     "work": "w154469",
-     "why": "Trampa: campesinos también, pero es Van Gogh. Colores oscuros y manos deformadas a propósito para expresar lo que siente."
+     "work": "w594477",
+     "why": "Trampa: una campesina también, pero es Van Gogh en Auvers: trigo de pinceladas en remolino y colores que no copian, expresan."
     },
     {
      "id": "c",
@@ -745,12 +745,12 @@
    "options": [
     {
      "id": "a",
-     "text": "Ni héroes ni alegorías: la gente corriente de un pueblo",
+     "text": "Ni héroes ni alegorías: gente de un pueblo",
      "why": "Eso es: Courbet pinta el entierro de un vecino de Ornans, con el cura, el perro y los aldeanos, en un lienzo de seis metros."
     },
     {
      "id": "b",
-     "text": "Se abandonan los grandes formatos",
+     "text": "Se dejan los lienzos enormes para los reyes",
      "why": "Al contrario: el Entierro mide más de seis metros. El escándalo fue ese, un tamaño de héroes para gente corriente."
     },
     {
@@ -780,12 +780,12 @@
    "options": [
     {
      "id": "a",
-     "text": "El trabajo duro como tema principal",
+     "text": "El trabajo duro como tema",
      "why": "Eso es: hombres que arrastran una barcaza por el Volga y campesinos que recogen patatas. El protagonista es quien trabaja."
     },
     {
      "id": "b",
-     "text": "Escenas de la historia nacional",
+     "text": "Escenas gloriosas de la historia nacional",
      "why": "No hay reyes ni batallas: sirgadores y campesinos. Su historia es la de todos los días."
     },
     {
@@ -814,7 +814,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Cristo es un hombre agotado y solo, sin halo ni milagros",
+     "text": "Cristo como un hombre agotado, sin halo",
      "why": "Eso es: sentado en las piedras, con las manos apretadas. El realismo mira incluso lo sagrado como algo humano."
     },
     {
@@ -884,7 +884,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Del taller al aire libre: se pinta la luz de un instante",
+     "text": "Del taller al aire libre: la luz de un instante",
      "why": "Eso es: Monet pinta a su mujer en un prado, a contraluz, con el viento moviendo el velo. Pinceladas rápidas para atrapar ese momento."
     },
     {
@@ -953,18 +953,18 @@
    "options": [
     {
      "id": "a",
-     "text": "Pone un desnudo entre señores de su época, sin excusa de mito",
+     "text": "Un desnudo entre señores de su época, sin mito",
      "why": "Eso es: si fuera una ninfa, nadie se habría quejado. Pero eran parisinos de pícnic, y Manet pintó con manchas planas, sin degradados."
     },
     {
      "id": "b",
-     "text": "Es el primer cuadro pintado al aire libre",
+     "text": "Está pintado al aire libre, en un bosque real",
      "why": "No: Manet lo pintó en su taller. Lo nuevo era el tema, de su tiempo y sin disfraz de mito, y la pintura plana, sin el acabado del Salón."
     },
     {
      "id": "c",
-     "text": "Convierte el paisaje en protagonista",
-     "why": "El bosque es casi un decorado de teatro. Lo que escandalizó fue el grupo del primer plano, que mira al espectador sin vergüenza."
+     "text": "Convierte el bosque en el gran protagonista",
+     "why": "El bosque es casi un decorado de teatro. Escandalizó el primer plano: una mujer desnuda que mira al espectador sin vergüenza."
     },
     {
      "id": "d",
@@ -1023,7 +1023,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Ya no basta con captar la luz: se pinta lo que se siente",
+     "text": "Se pinta lo que se siente",
      "why": "Eso es: el cielo de Van Gogh gira en remolinos que nadie ha visto. Lo pintó de memoria e imaginación, para expresar."
     },
     {
@@ -1058,7 +1058,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Colores intensos que expresan más de lo que copian",
+     "text": "Colores intensos que expresan, no copian",
      "why": "Eso es: los amarillos de los girasoles y los colores planos de Tahití no copian lo que se ve. Van Gogh y Gauguin usan el color para expresar."
     },
     {
@@ -1092,13 +1092,13 @@
    "options": [
     {
      "id": "a",
-     "text": "Construye la imagen con puntitos de color que el ojo mezcla",
+     "text": "Puntitos de color que el ojo mezcla",
      "why": "Eso es: de cerca, miles de puntos de colores puros; de lejos, una tarde de domingo. Seurat lo llamaba pintura científica."
     },
     {
      "id": "b",
-     "text": "Pinta por primera vez a gente corriente en su ocio",
-     "why": "Los impresionistas ya pintaban domingos y bailes. Lo nuevo es el método: miles de puntos colocados uno a uno, con calma."
+     "text": "Muestra a gente corriente en su día de descanso",
+     "why": "Los impresionistas ya pintaban domingos y bailes: el tema no es nuevo. Lo nuevo es el método, miles de puntos colocados uno a uno."
     },
     {
      "id": "c",
@@ -1162,12 +1162,12 @@
    "options": [
     {
      "id": "a",
-     "text": "Se deja de representar cosas: solo color y forma",
+     "text": "Ya no se representan cosas",
      "why": "Eso es: en Composición VII no hay nada que reconocer. Kandinsky quería que la pintura emocionara como la música, sin objetos."
     },
     {
      "id": "b",
-     "text": "El color sirve para expresar emociones",
+     "text": "El color sirve para expresar las emociones fuertes",
      "why": "Eso ya lo hacía Van Gogh. El paso nuevo es quitar el objeto entero: que no quede un pueblo ni un ciprés que reconocer."
     },
     {
@@ -1197,7 +1197,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Pintan sentimientos y visiones, no lo que se ve",
+     "text": "Sentimientos y visiones, no lo que se ve",
      "why": "Eso es: los celos de Munch y la cabeza que flota ante Salomé no son escenas reales. Los simbolistas pintan miedos, deseos y visiones."
     },
     {
@@ -1231,13 +1231,13 @@
    "options": [
     {
      "id": "a",
-     "text": "Ya no representa nada: es solo una forma",
+     "text": "Ya no representa nada",
      "why": "Eso es: un cuadrado negro sobre blanco. Malévich quería una pintura pura, que no copiara ni contara nada."
     },
     {
      "id": "b",
-     "text": "Es el primer cuadro sin figuras humanas",
-     "why": "Bodegones y paisajes sin personas existían desde hacía siglos. Lo radical es que no hay nada que reconocer: ni mesa, ni cielo, ni objeto."
+     "text": "Es un detalle ampliado de un cuadro mayor",
+     "why": "No es un recorte de nada: Malévich pintó el cuadrado como obra completa, el «grado cero» de una pintura que ya no copia el mundo."
     },
     {
      "id": "c",
@@ -1267,7 +1267,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Espacios medidos con perspectiva y cuerpos con peso",
+     "text": "Espacios medidos y cuerpos con peso real",
      "why": "Eso es: calles y columnas que se alejan con reglas de geometría y figuras que pisan firme. Masaccio abrió el camino y Piero lo hizo matemática."
     },
     {
@@ -1295,7 +1295,7 @@
    "movementId": "renacimiento",
    "tramo": "Nace el Renacimiento",
    "kind": "cual",
-   "prompt": "¿Cuál de estos retratos es del Renacimiento italiano?",
+   "prompt": "¿Cuál de estos retratos es del primer Renacimiento italiano?",
    "options": [
     {
      "id": "a",
@@ -1310,7 +1310,7 @@
     {
      "id": "c",
      "work": "w3625842",
-     "why": "Es manierismo, ya del siglo XVI: un Médici con armadura brillante, pose rígida y piel fría como la porcelana."
+     "why": "Es manierismo, la última etapa del Renacimiento, ya en el siglo XVI: un Médici con armadura brillante, pose rígida y piel fría como la porcelana."
     },
     {
      "id": "d",
@@ -1335,13 +1335,13 @@
    "options": [
     {
      "id": "a",
-     "text": "Equilibrio y belleza ideal en composiciones muy pensadas",
+     "text": "Equilibrio y belleza ideal",
      "why": "Eso es: figuras que encajan como en una pirámide o un círculo, con cuerpos perfectos y gestos tiernos. Es el Renacimiento en su madurez."
     },
     {
      "id": "b",
      "text": "Gente de la calle haciendo de santos",
-     "why": "Eso será Caravaggio, un siglo después. Aquí las vírgenes son bellas e ideales, más perfectas que cualquier vecina."
+     "why": "Eso será Caravaggio, un siglo después. Aquí la Virgen es bella e ideal, más perfecta que cualquier vecina."
     },
     {
      "id": "c",
@@ -1375,13 +1375,13 @@
    "options": [
     {
      "id": "a",
-     "text": "Los contornos se funden en sombras suaves, como humo",
+     "text": "Los contornos se funden como el humo",
      "why": "Eso es el sfumato: Leonardo borra las líneas que recortan la cara con capas finísimas de pintura. Antes, Piero dibujaba perfiles nítidos."
     },
     {
      "id": "b",
-     "text": "Aparece la perspectiva por primera vez",
-     "why": "La perspectiva ya la dominaban Masaccio y Piero. Leonardo la da por sabida y se centra en la luz y la sombra."
+     "text": "Las figuras se recortan con líneas nítidas",
+     "why": "Al revés: Piero dibujaba perfiles nítidos y Leonardo los borra. Ningún contorno está trazado: todo pasa de la luz a la sombra."
     },
     {
      "id": "c",
@@ -1415,7 +1415,7 @@
    "options": [
     {
      "id": "a",
-     "text": "El color manda más que el dibujo, con pincelada que se ve",
+     "text": "El color manda más que el dibujo",
      "why": "Eso es: en Florencia y Roma se dibuja primero; en Venecia, Tiziano construye la piel y las telas con capas de color cálido."
     },
     {
@@ -1483,7 +1483,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Detalle minucioso y colores brillantes como esmaltes",
+     "text": "Detalle minucioso y brillo de esmaltes",
      "why": "Eso es: con capas finas de óleo, cada joya, lágrima y pliegue brilla como un esmalte. Así pintaban Van Eyck y Van der Weyden."
     },
     {
@@ -1518,17 +1518,17 @@
    "options": [
     {
      "id": "a",
-     "text": "Llena el cuadro de un mundo inventado de criaturas y sueños",
+     "text": "Un mundo inventado de criaturas y sueños",
      "why": "Eso es: personas dentro de frutas, pájaros gigantes y monstruos. El Bosco usa la precisión flamenca para pintar lo que no existe."
     },
     {
      "id": "b",
-     "text": "Es el primer cuadro sin tema religioso",
+     "text": "Deja de lado la religión y las lecciones morales",
      "why": "No: es un tríptico con el paraíso y el infierno a los lados, una lección moral. Lo nuevo es la imaginación desbordada."
     },
     {
      "id": "c",
-     "text": "Pinta paisajes reales de Flandes",
+     "text": "Pinta con exactitud paisajes reales de Flandes",
      "why": "El paisaje es fantástico: fuentes de cristal y rocas imposibles. Las aldeas reales serán cosa de Brueghel, después."
     },
     {
@@ -1554,17 +1554,17 @@
    "options": [
     {
      "id": "a",
-     "text": "La precisión del Norte: cada pelo y cada objeto, con lupa",
+     "text": "Precisión del Norte: todo pintado con lupa",
      "why": "Eso es: los pelos de la liebre de Durero y los objetos del escritorio de Gisze están pintados uno a uno."
     },
     {
      "id": "b",
-     "text": "Belleza ideal al estilo italiano",
+     "text": "Belleza ideal y serena al estilo italiano",
      "why": "Ni dioses ni cuerpos perfectos: un mercader con sus papeles y una liebre. El Norte aprendió de Italia, pero miraba lo concreto."
     },
     {
      "id": "c",
-     "text": "Escenas religiosas para iglesias",
+     "text": "Escenas religiosas para altares e iglesias",
      "why": "Ninguno es religioso: el retrato de un comerciante y un animal estudiado del natural. Con la Reforma, los encargos de santos bajaban."
     },
     {
@@ -1594,12 +1594,12 @@
    "options": [
     {
      "id": "a",
-     "text": "Del encargo de los ricos a la vida de los campesinos",
-     "why": "Eso es: Van Eyck retrata a un rico mercader en su casa; Brueghel se sienta en una boda de aldea, con su gente, sus platos y sus gaitas."
+     "text": "De los ricos a los campesinos de aldea",
+     "why": "Eso es: Van Eyck retrata a un rico mercader; de Brueghel se contaba que se disfrazaba de campesino para colarse en las bodas de pueblo."
     },
     {
      "id": "b",
-     "text": "Se deja el óleo por el temple",
+     "text": "Se deja el óleo y se vuelve al temple",
      "why": "Los dos pintan al óleo. Lo que cambia es la mirada: del lujo de un mercader a la fiesta de un pueblo."
     },
     {
@@ -1626,27 +1626,27 @@
    "options": [
     {
      "id": "a",
-     "work": "w867403",
-     "why": "Sí: cuello y dedos larguísimos, un Niño enorme y un espacio que no encaja. Parmigianino estira la belleza hasta lo raro a propósito."
+     "work": "w1430990",
+     "why": "Sí: piel fría como porcelana, cuerpos retorcidos en poses imposibles y un espacio apretado. Bronzino, en la Florencia de los Médici, es manierismo puro."
     },
     {
      "id": "b",
-     "work": "w966681",
-     "why": "Es del Renacimiento: Rafael encaja a la Virgen y al Niño en un círculo perfecto, con proporciones naturales. La armonía que vendrían a estirar."
+     "work": "w3632485",
+     "why": "Es del Renacimiento veneciano: Tiziano pinta una fiesta de dioses al aire libre, con color cálido y cuerpos de proporción natural."
     },
     {
      "id": "c",
-     "work": "w2456003",
-     "why": "Es barroco: Murillo eleva a la Virgen entre nubes y angelitos, con movimiento y luz dorada. Dulce y cercana, sin cuellos imposibles."
+     "work": "w941416",
+     "why": "Trampa: el cuello de Tetis se estira como en el manierismo, pero es Ingres, neoclásico del siglo XIX: línea pura y un Júpiter de estatua."
     },
     {
      "id": "d",
-     "work": "w1978815",
-     "why": "Trampa: le sobran vértebras, pero es Ingres, neoclásico del siglo XIX. Línea pura y fría, sin espacios raros ni Niños gigantes."
+     "work": "w644936",
+     "why": "Es barroco: Rubens lanza caballos y cuerpos carnosos en espiral, con fuerza y peso. El manierismo estira y enfría; el Barroco empuja."
     }
    ],
    "answer": "a",
-   "source": "https://es.wikipedia.org/wiki/Virgen_del_cuello_largo"
+   "source": "https://es.wikipedia.org/wiki/Alegoría_del_triunfo_de_Venus"
   },
   {
    "id": "t-manierismo-comun",
@@ -1662,12 +1662,12 @@
    "options": [
     {
      "id": "a",
-     "text": "Retratos elegantes y distantes, de piel fría y pose rígida",
+     "text": "Elegancia distante, piel fría y pose estudiada",
      "why": "Eso es: miradas que no se rinden, ropas lujosísimas y piel lisa como porcelana. Es la elegancia de corte del manierismo."
     },
     {
      "id": "b",
-     "text": "Gente corriente con todas sus arrugas",
+     "text": "Gente corriente, con todas sus arrugas y defectos",
      "why": "Son una duquesa y un conde, y no enseñan ni una arruga. La gente corriente con su verdad llegará con el Barroco."
     },
     {
@@ -1677,7 +1677,7 @@
     },
     {
      "id": "d",
-     "text": "Luz cálida y sonrisas cercanas",
+     "text": "Luz cálida, gestos amables y sonrisas cercanas",
      "why": "Nada de calidez: luz fría y gestos contenidos. Quieren parecer inalcanzables, no simpáticos."
     }
    ],
@@ -1735,8 +1735,8 @@
     },
     {
      "id": "b",
-     "work": "w5731132",
-     "why": "Es del siglo XVIII: Meléndez pinta un trozo de salmón y unas vasijas. Hereda la luz fuerte española, pero cuenta la textura de la comida, no un símbolo."
+     "work": "w4388208",
+     "why": "Es del siglo XVIII: Greuze pinta a una muchacha con luz suave y colores claros, y una moraleja sentimental. Nada del foco que corta la sombra."
     },
     {
      "id": "c",
@@ -1772,7 +1772,7 @@
     {
      "id": "b",
      "text": "Retratos idealizados, como estatuas antiguas",
-     "why": "Nada de estatuas: Velázquez pinta la mirada desconfiada del papa y Van Dyck, el cansancio elegante del rey."
+     "why": "Van Dyck favorecía al rey, que era bajito, pero no lo convierte en estatua; y Velázquez no esconde la mirada desconfiada del papa."
     },
     {
      "id": "c",
@@ -1866,7 +1866,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Gente corriente, sorprendida en un momento vivo",
+     "text": "Gente corriente en un momento vivo",
      "why": "Eso es: un bebedor que levanta la copa y dos mujeres que se ríen en la ventana. Escenas pequeñas pintadas como si pasaran ahora."
     },
     {
@@ -1902,7 +1902,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Amores y juegos de la nobleza, en colores claros",
+     "text": "Amores y juegos de la nobleza",
      "why": "Eso es: enamorados que embarcan hacia la isla del amor y una joven en un columpio. El placer de vivir de una aristocracia ociosa."
     },
     {
@@ -1970,7 +1970,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Objetos humildes vistos muy de cerca, cada textura distinta",
+     "text": "Objetos humildes, cada textura distinta",
      "why": "Eso es: la piel del pescado, la corteza de la naranja y el barro de las vasijas, con luz fuerte y sombras limpias."
     },
     {
@@ -2010,17 +2010,17 @@
    "options": [
     {
      "id": "a",
-     "text": "El objeto ya no es un símbolo sagrado: vale por sí mismo",
+     "text": "El objeto ya no es símbolo: vale por sí mismo",
      "why": "Eso es: el cordero de Zurbarán simboliza a Cristo; la chocolatera de Meléndez es solo una chocolatera, mirada con cariño."
     },
     {
      "id": "b",
-     "text": "Desaparece el fondo oscuro",
+     "text": "Desaparece el fondo oscuro de la tradición",
      "why": "Meléndez mantiene los fondos oscuros de la tradición española. Cambia el sentido: de la devoción al gusto por lo cotidiano."
     },
     {
      "id": "c",
-     "text": "Las pinceladas se vuelven sueltas",
+     "text": "Las pinceladas se vuelven sueltas y rápidas",
      "why": "Meléndez es minucioso: se distingue cada bollo y cada veta de la madera. La pincelada suelta tardará aún un siglo."
     },
     {
@@ -2046,7 +2046,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Dibujo preciso y superficie lisa, sin pincelada",
+     "text": "Dibujo preciso y superficie lisa",
      "why": "Eso es: los contornos son nítidos y no se ve el pincel. Para David e Ingres, el dibujo manda y el color solo lo rellena."
     },
     {
@@ -2116,7 +2116,7 @@
     {
      "id": "b",
      "work": "w646337",
-     "why": "Es de Whistler, medio siglo después: unos fuegos artificiales de noche como armonía de color, casi abstracta. Busca belleza, no lo inmenso."
+     "why": "Es del estadounidense Whistler, más de medio siglo después y cerca de los impresionistas: fuegos artificiales de noche, casi abstractos."
     },
     {
      "id": "c",
@@ -2146,12 +2146,12 @@
    "options": [
     {
      "id": "a",
-     "text": "La naturaleza como fuerza que puede con el ser humano",
+     "text": "Una naturaleza que nos supera",
      "why": "Eso es: un barco perdido en la ventisca y otro aplastado por el hielo. Frente a la naturaleza, las obras humanas son frágiles."
     },
     {
      "id": "b",
-     "text": "Vistas exactas de lugares concretos",
+     "text": "Vistas exactas de lugares concretos y reales",
      "why": "No retratan un lugar: el hielo de Friedrich se compuso en el taller y la tormenta de Turner es casi un remolino de color."
     },
     {
@@ -2182,7 +2182,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Tragedias de su tiempo, contadas con pasión",
+     "text": "Tragedias de su tiempo, pintadas con pasión",
      "why": "Eso es: una matanza en la guerra de Grecia y un naufragio francés, sucedidos hacía poco. Pintan la actualidad con drama y color."
     },
     {
@@ -2217,17 +2217,17 @@
    "options": [
     {
      "id": "a",
-     "text": "El color y el caos mandan sobre el orden y el dibujo",
+     "text": "El color y el caos mandan sobre el orden",
      "why": "Eso es: un rey mira impasible cómo todo se destruye a su alrededor, en un torbellino de rojos. El desorden era deliberado."
     },
     {
      "id": "b",
-     "text": "Es el primer cuadro de tema oriental",
+     "text": "Descubre a los pintores el lejano Oriente",
      "why": "El gusto por Oriente venía de antes. Lo que escandalizó en el Salón fue la forma: una avalancha de color sin centro ni calma."
     },
     {
      "id": "c",
-     "text": "Cuenta una noticia reciente",
+     "text": "Cuenta una noticia reciente de su época",
      "why": "No: Sardanápalo es un rey legendario de Asiria, sacado de un drama del poeta Byron. Lo nuevo no es la actualidad, sino el color desatado."
     },
     {
@@ -2265,7 +2265,7 @@
     {
      "id": "d",
      "work": "w2366825",
-     "why": "Es romanticismo inglés: Constable pinta el campo que amaba, con nubes y una luz que cambia. Manda el paisaje; el trabajo es casi un detalle."
+     "why": "Es romanticismo inglés, treinta años antes: Constable pinta el campo que amaba, con nubes enormes y luz cambiante. Manda el paisaje, no el trabajo."
     }
    ],
    "answer": "a",
@@ -2285,8 +2285,8 @@
    "options": [
     {
      "id": "a",
-     "text": "El trabajo duro del campo, a tamaño de héroe",
-     "why": "Eso es: picapedreros con la ropa rota y un sembrador que avanza a zancadas. Courbet y Millet dan a los trabajadores la talla de los héroes."
+     "text": "El trabajo duro del campo, con dignidad de héroe",
+     "why": "Eso es: picapedreros con la ropa rota y un sembrador que avanza a zancadas. Courbet y Millet dan a los trabajadores la dignidad de los héroes."
     },
     {
      "id": "b",
@@ -2321,7 +2321,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Un momento de la historia contado como si lo viéramos",
+     "text": "La historia contada como si la viéramos",
      "why": "Eso es: una reina que dicta su testamento y un zar que abraza al hijo que acaba de herir. El pasado, con caras y telas de verdad."
     },
     {
@@ -2354,7 +2354,7 @@
     {
      "id": "a",
      "work": "w2814164",
-     "why": "Sí: una batalla de la guerra de África, que Fortuny vio con sus propios ojos, contada con luz brillante y mil detalles. Historia del siglo XIX."
+     "why": "Sí: una batalla de la guerra de África. Fortuny viajó a esa guerra como cronista y la contó con luz brillante y mil detalles. Historia del siglo XIX."
     },
     {
      "id": "b",
@@ -2368,8 +2368,8 @@
     },
     {
      "id": "d",
-     "work": "w5526647",
-     "why": "Es de la Primera Guerra Mundial: soldados cegados por el gas caminan en fila. Sargent fue testigo, pero ya es otro siglo y otra guerra."
+     "work": "w1237250",
+     "why": "Es del Renacimiento veneciano: la batalla abajo y, arriba, santos que interceden entre nubes. Una alegoría, no la crónica de un testigo."
     }
    ],
    "answer": "a",
@@ -2389,17 +2389,17 @@
    "options": [
     {
      "id": "a",
-     "text": "Gente de su propio tiempo, sin historia que contar",
-     "why": "Eso es: unos vecinos asomados a un balcón de París y una familia en una terraza junto al mar. Sin mito ni moraleja: el presente basta."
+     "text": "Gente de su tiempo, sin historia que contar",
+     "why": "Eso es: en el balcón de Manet posa su amiga, la pintora Berthe Morisot; en la terraza de Monet, su familia. Sin mito ni moraleja."
     },
     {
      "id": "b",
-     "text": "Héroes y episodios de la historia",
+     "text": "Héroes y grandes episodios de la historia",
      "why": "Ni batallas ni reyes: un balcón y una terraza. Pintan la vida moderna de la burguesía."
     },
     {
      "id": "c",
-     "text": "Acabado pulido, sin pinceladas",
+     "text": "Acabado pulido, sin pinceladas a la vista",
      "why": "Las pinceladas se ven, rápidas y planas. El acabado pulido era lo que exigía el Salón oficial, y ellos se negaron."
     },
     {
@@ -2424,22 +2424,22 @@
    "options": [
     {
      "id": "a",
-     "text": "Pinta la impresión de un momento, no un paisaje acabado",
+     "text": "Una impresión rápida, no un paisaje acabado",
      "why": "Eso es: unas manchas para el agua, un sol naranja y barcas que se adivinan. Un crítico se burló del título y el insulto dio nombre al grupo."
     },
     {
      "id": "b",
-     "text": "Es el primer cuadro de un puerto",
-     "why": "Los puertos se pintaban desde hacía siglos. Lo nuevo es pintarlo en un momento de niebla, sin detalle, tal como se ve."
+     "text": "Retrata con detalle el puerto de su ciudad",
+     "why": "Nada de detalle: unas manchas para el agua y barcas que se adivinan. Los puertos se pintaban desde hacía siglos; así, nunca."
     },
     {
      "id": "c",
-     "text": "Muestra la industria con orgullo",
+     "text": "Muestra con orgullo la industria del puerto",
      "why": "Hay grúas y humo al fondo, pero apenas se ven. El protagonista no es el progreso: es la luz del amanecer sobre el agua."
     },
     {
      "id": "d",
-     "text": "Usa contornos negros y colores planos",
+     "text": "Usa contornos negros y colores planos y vivos",
      "why": "No hay contornos: el sol y las barcas se deshacen en el agua. Los contornos llegarán con Gauguin."
     }
    ],
@@ -2487,18 +2487,18 @@
    "prompt": "¿Qué tienen en común estos cuadros?",
    "works": [
     "w278722",
-    "w3204212"
+    "w3235227"
    ],
    "options": [
     {
      "id": "a",
-     "text": "La luz y el tiempo que hace en un momento concreto",
-     "why": "Eso es: un día de lluvia en Ruan y una inundación en Port-Marly. Les importa la atmósfera de ese día, el cielo gris y el reflejo en el agua."
+     "text": "La luz y el tiempo de un momento concreto",
+     "why": "Eso es: un día de lluvia en Ruan y una regata en el Támesis, con banderas al aire. Les importa la atmósfera de ese día: el cielo, el aire y el reflejo en el agua."
     },
     {
      "id": "b",
-     "text": "Desastres que conmueven",
-     "why": "La inundación de Sisley no es una tragedia: la pinta con calma, como un efecto de luz sobre el agua. Nada de drama romántico."
+     "text": "Grandes acontecimientos que hacen historia",
+     "why": "Una regata de domingo y un puente bajo la lluvia no son historia: son momentos cualquiera, elegidos por cómo se ve la luz ese día."
     },
     {
      "id": "c",
@@ -2508,7 +2508,7 @@
     {
      "id": "d",
      "text": "La vida dura de los trabajadores",
-     "why": "Hay barcos y gente, pero el tema no es su esfuerzo: es la luz gris y húmeda de ese día."
+     "why": "Hay barcos, remeros y gente con paraguas, pero el tema no es su esfuerzo: es la luz y el tiempo que hace."
     }
    ],
    "answer": "a",
@@ -2528,7 +2528,7 @@
    "options": [
     {
      "id": "a",
-     "text": "El sol del Mediterráneo, que rebota en el agua y en la piel",
+     "text": "El sol que rebota en el agua y la piel",
      "why": "Eso es: vestidos blancos que se vuelven azules y lilas en la sombra y piel mojada que brilla. Sorolla pintaba a pleno sol, deprisa."
     },
     {
@@ -2543,7 +2543,7 @@
     },
     {
      "id": "d",
-     "text": "Retratos de estudio con fondo oscuro",
+     "text": "Retratos de estudio sobre un fondo oscuro",
      "why": "Ni estudio ni fondos oscuros: arena, mar y sol directo. Sorolla llevaba lienzos enormes a la playa."
     }
    ],
@@ -2570,8 +2570,8 @@
     },
     {
      "id": "c",
-     "work": "w9093618",
-     "why": "Es de Fortuny, del realismo español: un anciano al sol, con la piel arrugada llena de luz. Un precedente de Sorolla, pero sin mar ni playa."
+     "work": "w1070896",
+     "why": "Es romanticismo: el ruso Aivazovski pinta náufragos ante una ola gigante al amanecer. Mar y luz, sí, pero con drama, y pintado en el taller."
     },
     {
      "id": "d",
@@ -2596,7 +2596,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Orden y solidez detrás de la luz",
+     "text": "Orden y solidez por debajo de la luz",
      "why": "Eso es: Cézanne levanta su frutero con planos de color y Seurat ordena el circo con puntos y líneas. Quieren algo sólido tras el impresionismo."
     },
     {
@@ -2631,7 +2631,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Construye cuerpos y árboles con planos de color, como una arquitectura",
+     "text": "Construye cuerpos y árboles con planos de color",
      "why": "Eso es: los árboles forman un arco de catedral y los cuerpos son volúmenes sencillos. Picasso y el cubismo partirán de aquí."
     },
     {
@@ -2647,7 +2647,7 @@
     {
      "id": "d",
      "text": "Usa puntitos de color puro",
-     "why": "Eso es Seurat, su compañero de tramo. Cézanne pinta con pinceladas planas y anchas, como pequeños ladrillos de color."
+     "why": "Eso es Seurat, que buscaba lo mismo por otro camino. Cézanne pinta con pinceladas planas y anchas, como ladrillos de color."
     }
    ],
    "answer": "a",
@@ -2699,7 +2699,7 @@
    "options": [
     {
      "id": "a",
-     "text": "Colores intensos que expresan más de lo que copian",
+     "text": "El color expresa, no copia",
      "why": "Eso es: el amarillo del café de Arles y los verdes de las caras del Moulin Rouge no son los reales. El color ya no copia: expresa."
     },
     {
@@ -2735,13 +2735,13 @@
    "options": [
     {
      "id": "a",
-     "text": "Deseo, peligro y misterio, contados con símbolos",
+     "text": "Deseo y peligro, con símbolos",
      "why": "Eso es: Judit con la cabeza de Holofernes y una mujer que besa a un hombre en el cuello. Amor y peligro, pintados para inquietar."
     },
     {
      "id": "b",
      "text": "Escenas bíblicas contadas al pie de la letra",
-     "why": "Judit es bíblica, pero Klimt la convierte en una mujer fatal de Viena, con oro y mirada desafiante. El tema es el deseo."
+     "why": "Judit es bíblica, pero Klimt la vuelve una femme fatale (la mujer que seduce y destruye, un mito de la época), con oro y mirada desafiante."
     },
     {
      "id": "c",
@@ -2768,7 +2768,7 @@
     {
      "id": "a",
      "work": "w15093245",
-     "why": "Sí: un desnudo rodeado de figuras que lo contemplan, con aire de misterio y una lección escondida. Romero de Torres pinta el deseo como símbolo."
+     "why": "Sí: un desnudo de espaldas al que miran unas viejas con aire de presagio. Romero de Torres convierte a Venus en símbolo del deseo y del pecado."
     },
     {
      "id": "b",
@@ -2803,7 +2803,7 @@
    "options": [
     {
      "id": "a",
-     "text": "El color y la forma se liberan de imitar la realidad",
+     "text": "Color y forma libres, sin imitar la realidad",
      "why": "Eso es: una cara verde y lila y unos círculos que no representan nada. El color y la forma valen por sí mismos."
     },
     {
@@ -2818,7 +2818,7 @@
     },
     {
      "id": "d",
-     "text": "El volumen construido con planos de color",
+     "text": "El volumen construido con planos de color sólido",
      "why": "Cézanne aún quería volumen. Aquí el color es plano y libre: una cara verde y círculos que flotan sin peso."
     }
    ],
@@ -2838,13 +2838,13 @@
    "options": [
     {
      "id": "a",
-     "text": "Rompe los objetos en planos y los ve desde varios lados",
+     "text": "Trocea los objetos y los ve desde varios lados",
      "why": "Eso es el cubismo: la guitarra y la mesa, troceadas y recompuestas como un rompecabezas. Juan Gris lo ordenó con geometría."
     },
     {
      "id": "b",
      "text": "Pinta solo formas, sin ningún objeto",
-     "why": "Aquí sí hay objetos: una guitarra, una mesa, quizá una botella. La abstracción total es la de Kandinsky o Malévich."
+     "why": "Aquí sí hay objetos: una guitarra sobre una mesa. La abstracción total es la de Kandinsky o Malévich."
     },
     {
      "id": "c",
