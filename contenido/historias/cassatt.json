@@ -27,6 +27,28 @@
      "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Mujeres",
+   "title": "Mary Cassatt y las mujeres que miran",
+   "cards": [
+    {
+     "text": "Fíjate en la mujer de negro que mira con sus gemelos, y en el señor del fondo que la mira a ella. Aquí es ella quien observa.",
+     "artwork": "w14915747",
+     "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
+    },
+    {
+     "text": "Su hermana Lydia conduce ella sola el coche de caballos, algo raro en una mujer de 1881, con una niña al lado. El mozo, detrás, va de brazos cruzados.",
+     "artwork": "w18688169",
+     "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
+    },
+    {
+     "text": "A Degas le gustó tanto esta niña que se arregla el pelo que se quedó con el cuadro y lo tuvo en su casa toda la vida.",
+     "artwork": "w3633620",
+     "source": "https://es.wikipedia.org/wiki/Mary_Cassatt"
+    }
+   ]
   }
  ]
 }

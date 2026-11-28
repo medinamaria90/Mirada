@@ -27,6 +27,28 @@
      "source": "https://es.wikipedia.org/wiki/Giuseppe_Arcimboldo"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Estaciones",
+   "title": "Arcimboldo juega con las cabezas",
+   "cards": [
+    {
+     "text": "Pintó las cuatro estaciones como cabezas: la primavera, de flores; el verano, de frutas; el invierno, un tronco viejo. El emperador las regalaba a otros príncipes.",
+     "artwork": "w18572283",
+     "source": "https://es.wikipedia.org/wiki/Giuseppe_Arcimboldo"
+    },
+    {
+     "text": "Fíjate en el invierno: la cara es un tronco agrietado y la oreja, un muñón de rama. Del cuello cuelgan un limón y una naranja, la única fruta de la estación.",
+     "artwork": "w18572291",
+     "source": "https://es.wikipedia.org/wiki/Giuseppe_Arcimboldo"
+    },
+    {
+     "text": "Dale la vuelta a esta cabeza: boca abajo es un cuenco lleno de verduras. Arcimboldo pintaba cuadros reversibles para jugar con quien los miraba.",
+     "artwork": "w18578019",
+     "source": "https://es.wikipedia.org/wiki/Giuseppe_Arcimboldo"
+    }
+   ]
   }
  ]
 }

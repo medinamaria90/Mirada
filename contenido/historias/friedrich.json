@@ -26,6 +26,28 @@
      "source": "https://es.wikipedia.org/wiki/El_caminante_sobre_el_mar_de_nubes"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Formación",
+   "title": "Friedrich encuentra su paisaje",
+   "cards": [
+    {
+     "text": "Su Cruz en la montaña era un retablo (la pintura de un altar) hecho con un paisaje. El crítico Ramdohr protestó: «el paisaje quiere colarse en la iglesia y trepar a los altares».",
+     "artwork": "w884782",
+     "source": "https://en.wikipedia.org/wiki/Cross_in_the_Mountains"
+    },
+    {
+     "text": "Fíjate en el dolmen bajo la nieve: una tumba de piedra de hace miles de años, entre robles retorcidos. Friedrich buscaba en su tierra los restos de un pasado muy antiguo.",
+     "artwork": "w1652361",
+     "source": "https://es.wikipedia.org/wiki/Caspar_David_Friedrich"
+    },
+    {
+     "text": "Caminaba mucho con su cuaderno y luego, en el taller, componía paisajes con trozos de varios sitios. Este es de los Montes de los Gigantes, entre Bohemia y Silesia.",
+     "artwork": "w1587929",
+     "source": "https://es.wikipedia.org/wiki/Caspar_David_Friedrich"
+    }
+   ]
   }
  ]
 }

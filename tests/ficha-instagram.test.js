@@ -67,7 +67,7 @@ test('lo que falta: una frase («Te faltan 24 · se desbloquean en sus etapas»)
 
 test('etapas: su nombre es el título corto del catálogo (el del aro); sin él, el de los datos', () => {
   const a = real.artist('hals');
-  assert.equal(stageTitle(a, real.deepLevels('hals')[0]), 'Más obras');
+  assert.equal(stageTitle(a, real.deepLevels('hals')[0]), 'Grupos');
   assert.equal(stageTitle(real.artist('berruguete'), real.deepLevels('berruguete')[0]), 'Castilla');
   assert.equal(stageTitle(real.artist('goya'), { id: 2, name: 'Formación y cartones' }), 'Formación y cartones');
 });

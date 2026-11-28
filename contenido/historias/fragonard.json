@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/El_columpio_(Fragonard)"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Revolución",
+   "title": "Fragonard, del rococó a la Revolución",
+   "cards": [
+    {
+     "text": "Fíjate en la lección de música: él se inclina sobre ella más de lo necesario. Fragonard cuenta un coqueteo con cuatro pinceladas rápidas, como un boceto.",
+     "artwork": "w5967115",
+     "source": "https://es.wikipedia.org/wiki/Jean-Honor%C3%A9_Fragonard"
+    },
+    {
+     "text": "Madame du Barry, la favorita del rey Luis XV, le encargó cuatro grandes lienzos sobre el progreso del amor. Al verlos colgados los devolvió: quizá ya le parecían pasados de moda.",
+     "artwork": "w18686539",
+     "source": "https://en.wikipedia.org/wiki/The_Progress_of_Love"
+    },
+    {
+     "text": "Con la Revolución se quedó sin clientes: los nobles huían o perdían la cabeza. Su amigo David, el pintor de la Revolución, le consiguió un puesto en el nuevo museo del Louvre.",
+     "artwork": "w8703547",
+     "source": "https://es.wikipedia.org/wiki/Jean-Honor%C3%A9_Fragonard"
+    }
+   ]
   }
  ]
 }
