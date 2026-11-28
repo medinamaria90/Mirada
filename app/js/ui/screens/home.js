@@ -87,17 +87,18 @@ export function renderHome(ctx, el) {
   // Historias de la parada actual y de los pintores con niveles a la vista: su tarjeta se pinta sin esperar (story-prefetch.js).
   let stories = null;
   // Lo que recomienda el itinerario (engine/next-step.js, cargado después de pintar: no pesa en el arranque) lleva una burbuja con
-  // un verbo sobre su parada (map-cue.js); el botón flotante (map-return.js) lleva hasta ella.
-  const returnBtn = watchReturn(el);
+  // un verbo sobre su parada (map-cue.js); la píldora flotante (map-return.js) lo lanza si su parada no se ve o no la tiene.
+  const returnBtn = watchReturn(el, (step) => { ctx.audio.sfx('tap'); ctx.go(step.to); });
   let recommended = null;
+  let ready = false;   // el itinerario se calcula tras pintar: hasta entonces no se señala nada
   const showCue = () => {
-    if (!el.isConnected) return;
+    if (!ready || !el.isConnected) return;
     const status = recommended?.artistId ? artistStatus(ctx.store.get().progress, index, recommended.artistId) : '';
-    placeCue(el, recommended, status === 'started', (step) => { ctx.audio.sfx('tap'); ctx.go(step.to); });
-    returnBtn.retarget();
+    returnBtn.set(recommended, placeCue(el, recommended, status === 'started'));
   };
   Promise.all([import('../../engine/next-step.js'), import('../last-step.js'), import('../../engine/deepen.js')]).then(([m, last, deepen]) => {
     recommended = m.mapRecommendation(ctx.store.get().progress, index, ctx.today(), { week: isoWeek(ctx.dailyDay()).key, prevStep: last.lastStep() });
+    ready = true;
     showCue();
     if (!recommended || !el.isConnected) return;
     // Lo que enseña el mapa cuenta como recomendado: lo de atrás no sale justo después en el resultado.

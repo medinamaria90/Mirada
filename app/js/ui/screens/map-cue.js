@@ -9,8 +9,8 @@ export const CUE_VERB = { start: 'Empezar', resume: 'Seguir', review: 'Repasar',
 const REVIEW_KINDS = ['recall', 'debt'];
 const DEEP_KINDS = ['deepen', 'deep', 'essential', 'rank'];
 
-// Siempre hay una guía visible: la burbuja sobre la parada (cueFor) o, si lo recomendado no es una parada del mapa («Repasar»,
-// el reto semanal, el cierre de una época…) o su parada no está pintada, una píldora flotante con su texto que lo lanza (map-pill).
+// Siempre hay una guía visible: la burbuja sobre la parada (cueFor) y, además, la píldora flotante con su texto (map-return.js)
+// cuando la parada queda fuera de la vista o lo recomendado no es una parada del mapa («Repasar», el reto semanal, el cierre…).
 // guideFor devuelve { bubble: cue } | { pill: texto } | null (nada que recomendar y ninguna parada abierta: camino terminado).
 export function guideFor(step, frontier, started = false) {
   if (!step) return frontier.step ? { bubble: cueFor({ kind: 'stop', artistId: frontier.step.startsWith('artist:') ? frontier.step.slice(7) : '', movementId: frontier.step.startsWith('sala:') ? frontier.step.slice(5) : '', to: '' }, frontier, started) } : null;
@@ -42,27 +42,16 @@ export function cueFor(step, frontier, started = false) {
   return null;
 }
 
-// Pone la guía en el mapa ya pintado (y quita la anterior). Devuelve 'bubble', 'pill' o '' (nada que recomendar). launch: lo que
-// hace la píldora al tocarla.
-export function placeCue(root, step, started, launch = () => {}) {
+// Pone la burbuja en el mapa ya pintado (y quita la anterior). Devuelve el nodo con la burbuja o null si la guía no tiene parada
+// pintada (la píldora flotante de map-return.js lo cubre).
+export function placeCue(root, step, started) {
   root.querySelector('.map-cue')?.remove();
-  root.querySelector('.map-pill')?.remove();
   const map = $('.path-map', root);
   map?.classList.remove('is-rec-back');
   const frontier = { lore: $('.lore-spot.is-here', root)?.dataset.lore || '', step: $('.stage-spot.is-current', root)?.dataset.step || '' };
-  const guide = guideFor(step, frontier, started);
-  const cue = guide?.bubble;
+  const cue = guideFor(step, frontier, started)?.bubble;
   const host = cue && $(cue.host, root);
-  if (guide && !host) {
-    const pill = document.createElement('button');
-    pill.type = 'button';
-    pill.className = 'map-pill';
-    pill.textContent = step?.label || '';
-    pill.addEventListener('click', () => launch(step));
-    root.append(pill);
-    return step ? 'pill' : '';
-  }
-  if (!host) return '';
+  if (!host) return null;
   const bubble = document.createElement('span');
   bubble.className = 'map-cue';
   bubble.setAttribute('aria-hidden', 'true');
@@ -71,5 +60,5 @@ export function placeCue(root, step, started, launch = () => {}) {
   const button = host.closest('button');
   if (button) button.setAttribute('aria-label', `${button.getAttribute('aria-label')}. ${cue.verb}`);
   if (cue.back) map?.classList.add('is-rec-back');
-  return 'bubble';
+  return host;
 }

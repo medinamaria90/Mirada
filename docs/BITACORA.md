@@ -452,6 +452,8 @@ pintor; en época y tramo, la ficha de época cuando exista: `eraFichaRoute` en 
 
 ## 28/11 — Siempre hay una guía en el mapa
 
-Si lo que recomienda el itinerario no es una parada del mapa («Repasar» general, reto semanal, cierre de época…) o su parada no está
-pintada, el mapa enseña una píldora flotante con su texto que lo lanza (`map-pill`, `guideFor` en `ui/screens/map-cue.js`). Antes
-no salía nada (ni burbuja ni flecha). Prueba general en `tests/itinerario.test.js`.
+El botón flotante de flecha pasa a píldora con texto («Sigue: Leonardo», «Repasar»…): sale cuando la parada recomendada no se ve
+y siempre que el paso no tiene parada en el mapa, y al tocarla lanza el paso (lo mismo que el botón del resultado). Si la parada
+está a la vista, basta su burbuja. Se coloca en el hueco de la fila (izquierda, centro o derecha) donde no tape carteles ni paradas.
+Antes no salía nada si el paso no era una parada («Repasar» general, reto semanal…). `guideFor` en `ui/screens/map-cue.js`; prueba
+general en `tests/itinerario.test.js`.

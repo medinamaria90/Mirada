@@ -174,3 +174,17 @@ test('guía del mapa: en estados realistas a mitad del Renacimiento (Tiziano a m
     assert.deepEqual(guideFor(step, { lore: '', step: 'artist:tiziano' }), { pill: step.label });
   }
 });
+
+test('tras «Volver al camino» con un «Profundiza en…» de un pintor anterior: píldora que lanza ese paso, y burbuja en su parada', () => {
+  const ren = real.stepsOf('renacimiento').filter((x) => x.type === 'artist').map((x) => x.id);
+  const upTo = ren.indexOf('veronese');
+  let p = { ...emptyProgress(), intros: { renacimiento: TODAY } };
+  for (const id of ren.slice(0, upTo)) p = { ...p, artists: { ...p.artists, [id]: { plays: 1, best: 1, mastered: true, works: real.worksOf(id).map((w) => w.id), last: TODAY } } };
+  // Con la ronda de Veronés recién jugada, el itinerario propone profundizar (si no, el paso que toque): siempre con texto y ruta.
+  const rec = nextStep(p, real, TODAY, { plan: { kind: 'stage', artistId: 'veronese' }, outcome: { accuracy: 1, events: [] } });
+  assert.ok(rec.label && rec.to, 'el paso no dice qué es ni adónde va');
+  const guide = guideFor(rec, mapFrontier(p));
+  assert.ok(guide && (guide.bubble || guide.pill), 'sin guía');
+  const deepen = { kind: 'deepen', to: 'a-fondo-leonardo-2', label: 'Profundiza en Leonardo: nivel 2', artistId: 'leonardo' };
+  assert.deepEqual(guideFor(deepen, { lore: '', step: 'artist:veronese' }).bubble, { host: '.stage-spot[data-step="artist:leonardo"] .stage-dot', verb: 'Profundizar', back: true });
+});
