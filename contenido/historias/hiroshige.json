@@ -27,6 +27,28 @@
      "source": "https://es.wikipedia.org/wiki/Hiroshige"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Tōkaidō",
+   "title": "Hiroshige por el camino del Tōkaidō",
+   "cards": [
+    {
+     "text": "En 1832 recorrió el Tōkaidō, el camino entre Edo (hoy Tokio) y Kioto, y sacó Las cincuenta y tres estaciones: una estampa por cada parada.",
+     "artwork": "w75089388",
+     "source": "https://es.wikipedia.org/wiki/Las_cincuenta_y_tres_estaciones_de_T%C5%8Dkaid%C5%8D"
+    },
+    {
+     "text": "Fíjate en Kanbara bajo la nieve: viajeros encogidos que suben la cuesta en silencio. Curioso, porque allí casi nunca nieva.",
+     "artwork": "w75089364",
+     "source": "https://es.wikipedia.org/wiki/Las_cincuenta_y_tres_estaciones_de_T%C5%8Dkaid%C5%8D"
+    },
+    {
+     "text": "En Mariko, dos viajeros comen en una casa de té famosa por su sopa de ñame. Hiroshige se fija en esos ratos pequeños del viaje.",
+     "artwork": "w75089437",
+     "source": "https://es.wikipedia.org/wiki/Las_cincuenta_y_tres_estaciones_de_T%C5%8Dkaid%C5%8D"
+    }
+   ]
   }
  ]
 }

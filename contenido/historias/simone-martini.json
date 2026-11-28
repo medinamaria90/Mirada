@@ -21,6 +21,28 @@
      "source": "https://www.britannica.com/topic/The-Annunciation-painting-by-Martini"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Aviñón",
+   "title": "Simone Martini en Aviñón",
+   "cards": [
+    {
+     "text": "En Aviñón pintó un pequeño retablo plegable, para llevar de viaje, para un cardenal de la familia Orsini. Hoy sus tablitas están repartidas entre Amberes, París y Berlín.",
+     "artwork": "w3225814",
+     "source": "https://en.wikipedia.org/wiki/Orsini_Polyptych"
+    },
+    {
+     "text": "Fíjate en el descendimiento: brazos alzados, mantos que se agitan, la Madre que abraza a su hijo muerto. Simone llena el oro de dolor y movimiento.",
+     "artwork": "w21614531",
+     "source": "https://es.wikipedia.org/wiki/Simone_Martini"
+    },
+    {
+     "text": "Su ángel de la Anunciación lleva una rama de olivo y no un lirio: el lirio era el símbolo de Florencia, la rival de Siena.",
+     "artwork": "w20173074",
+     "source": "https://es.wikipedia.org/wiki/Simone_Martini"
+    }
+   ]
   }
  ]
 }

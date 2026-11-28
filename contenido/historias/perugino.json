@@ -27,6 +27,28 @@
      "source": "https://es.wikipedia.org/wiki/Perugino"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Umbría",
+   "title": "Perugino, el maestro de la dulzura",
+   "cards": [
+    {
+     "text": "Fíjate en los arcos: abren el cuadro a un paisaje suave, de colinas y árboles finos. Es el paisaje de Umbría, su tierra, que su alumno Rafael copiaría.",
+     "artwork": "w11129389",
+     "source": "https://es.wikipedia.org/wiki/Perugino"
+    },
+    {
+     "text": "Su fórmula funcionaba tan bien que la repetía: las mismas caras dulces y las mismas posturas. Algunos le reprochaban que se copiaba a sí mismo.",
+     "artwork": "w3207678",
+     "source": "https://es.wikipedia.org/wiki/Perugino"
+    },
+    {
+     "text": "Isabel de Este, marquesa de Mantua, le encargó este combate del Amor contra la Castidad con instrucciones al detalle. Cuando lo recibió, no le gustó.",
+     "artwork": "w3221619",
+     "source": "https://en.wikipedia.org/wiki/Pietro_Perugino"
+    }
+   ]
   }
  ]
 }

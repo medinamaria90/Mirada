@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/William_Hogarth"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Series",
+   "title": "Hogarth, cuadros como capítulos",
+   "cards": [
+    {
+     "text": "Antes de Casamiento a la moda hizo La carrera del libertino: un heredero que se lo gasta todo en juergas como esta y acaba en el manicomio.",
+     "artwork": "w5967685",
+     "source": "https://es.wikipedia.org/wiki/William_Hogarth"
+    },
+    {
+     "text": "Fíjate en la pareja recién casada, agotada tras una noche de fiesta: él, despatarrado; ella, desperezándose. El administrador se va con las facturas sin pagar.",
+     "artwork": "w3944145",
+     "source": "https://es.wikipedia.org/wiki/William_Hogarth"
+    },
+    {
+     "text": "También pintó a seis de sus criados, cabezas sueltas en un mismo lienzo, con cariño y sin adornos. No era un encargo: se lo quedó él.",
+     "artwork": "w5722643",
+     "source": "https://en.wikipedia.org/wiki/William_Hogarth"
+    }
+   ]
   }
  ]
 }

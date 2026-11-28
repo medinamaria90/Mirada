@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/La_danza_de_la_vida_(Munch)"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Inicios",
+   "title": "Munch camino de El grito",
+   "cards": [
+    {
+     "text": "En 1889 una beca le llevó a París, y allí le llegó la noticia de la muerte de su padre. Pintó esta habitación en penumbra, con un hombre solo junto a la ventana.",
+     "artwork": "w18753113",
+     "source": "https://es.wikipedia.org/wiki/Edvard_Munch"
+    },
+    {
+     "text": "En París probó el estilo de los impresionistas: pinceladas sueltas y una calle llena de gente vista desde un balcón. Le duró poco.",
+     "artwork": "w18890744",
+     "source": "https://es.wikipedia.org/wiki/Edvard_Munch"
+    },
+    {
+     "text": "Fíjate en el cielo rojo sobre el fiordo y en el hombre apoyado en la barandilla. Un año después, ese cielo y ese camino serían los de El grito.",
+     "artwork": "w18879691",
+     "source": "https://es.wikipedia.org/wiki/Edvard_Munch"
+    }
+   ]
   }
  ]
 }

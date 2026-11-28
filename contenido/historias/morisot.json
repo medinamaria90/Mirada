@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/La_cuna"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Comienzos",
+   "title": "Berthe y Edma Morisot",
+   "cards": [
+    {
+     "text": "Berthe y su hermana Edma aprendieron a pintar juntas, con Corot, el gran paisajista, que les enseñó a pintar al aire libre.",
+     "artwork": "w20188724",
+     "source": "https://es.wikipedia.org/wiki/Berthe_Morisot"
+    },
+    {
+     "text": "En 1869 Edma se casó y dejó la pintura; Berthe siguió. La pintó así, recién casada, junto a una ventana y mirando su abanico.",
+     "artwork": "w20188714",
+     "source": "https://es.wikipedia.org/wiki/Berthe_Morisot"
+    },
+    {
+     "text": "Fíjate en el fondo: París entero, con la cúpula dorada de los Inválidos. La niña se asoma a la barandilla y Morisot nos deja mirar la ciudad con ella.",
+     "artwork": "w15906838",
+     "source": "https://es.wikipedia.org/wiki/Berthe_Morisot"
+    }
+   ]
   }
  ]
 }

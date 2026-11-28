@@ -27,6 +27,28 @@
      "source": "https://smarthistory.org/duccio-the-rucellai-madonna"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Maestà",
+   "title": "La Maestà por detrás",
+   "cards": [
+    {
+     "text": "La Maestà estaba pintada por las dos caras: delante, la Virgen; detrás y abajo, decenas de escenitas de la vida de Cristo. En 1771 la desmontaron y la serraron en piezas.",
+     "artwork": "w3873252",
+     "source": "https://es.wikipedia.org/wiki/Maest%C3%A0_(Duccio)"
+    },
+    {
+     "text": "Fíjate en el mar: una franja verde y plana bajo el cielo de oro. Duccio aún no pinta el horizonte, pero cuenta la escena con dos gestos: Cristo llama y los pescadores dudan.",
+     "artwork": "w4015930",
+     "source": "https://es.wikipedia.org/wiki/Duccio"
+    },
+    {
+     "text": "Algunas de aquellas escenitas acabaron muy lejos de Siena: esta de Cristo y la samaritana junto al pozo está en el museo Thyssen de Madrid.",
+     "artwork": "w18684720",
+     "source": "https://es.wikipedia.org/wiki/Maest%C3%A0_(Duccio)"
+    }
+   ]
   }
  ]
 }

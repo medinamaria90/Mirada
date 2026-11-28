@@ -26,6 +26,28 @@
      "source": "https://es.wikipedia.org/wiki/Edgar_Degas"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Amigos",
+   "title": "Degas y los suyos",
+   "cards": [
+    {
+     "text": "Fíjate en el fagot: lo toca su amigo Désiré Dihau, músico de la Ópera. Arriba, las bailarinas salen cortadas por el marco, como en una foto mal encuadrada a propósito.",
+     "artwork": "w3819661",
+     "source": "https://es.wikipedia.org/wiki/Edgar_Degas"
+    },
+    {
+     "text": "Regaló este cuadro a Manet, que cortó la parte de su mujer al piano porque no le gustaba. Degas, ofendido, se lo llevó de vuelta. Aún se ve el corte.",
+     "artwork": "w4025363",
+     "source": "https://es.wikipedia.org/wiki/Edgar_Degas"
+    },
+    {
+     "text": "En 1872 visitó a la familia de su madre en Nueva Orleans y pintó la oficina de algodón de su tío. Fue el primer cuadro suyo que compró un museo.",
+     "artwork": "w3794660",
+     "source": "https://es.wikipedia.org/wiki/Edgar_Degas"
+    }
+   ]
   }
  ]
 }

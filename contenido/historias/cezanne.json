@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Época oscura",
+   "title": "Cézanne antes de la manzana",
+   "cards": [
+    {
+     "text": "De joven pintaba con pasta gruesa y oscura, a golpes de espátula. Este es su amigo Achille Emperaire, un pintor de Aix, en un sillón gigante. El Salón lo rechazó en 1870.",
+     "artwork": "w2656755",
+     "source": "https://en.wikipedia.org/wiki/Paul_C%C3%A9zanne"
+    },
+    {
+     "text": "Fíjate en las dos mujeres del salón: una toca el piano y la otra cose, quietas como estatuas. Se llama también Obertura de Tannhäuser, por una ópera de Wagner.",
+     "artwork": "w3929306",
+     "source": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne"
+    },
+    {
+     "text": "En Auvers pintó al aire libre junto a Pissarro, su maestro y amigo, y su paleta se aclaró. La casa del ahorcado colgó en la primera exposición impresionista, en 1874.",
+     "artwork": "w3821663",
+     "source": "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne"
+    }
+   ]
   }
  ]
 }

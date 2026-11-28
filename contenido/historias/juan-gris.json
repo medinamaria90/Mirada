@@ -21,6 +21,33 @@
      "source": "https://es.wikipedia.org/wiki/Retrato_de_Pablo_Picasso"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Papel",
+   "title": "Juan Gris, el arquitecto del cubismo",
+   "cards": [
+    {
+     "text": "Al llegar a París vivía de dibujar viñetas para revistas satíricas. Sus primeros cuadros cubistas, como este retrato de 1911, aún se leen con facilidad.",
+     "artwork": "w20190963",
+     "source": "https://es.wikipedia.org/wiki/Juan_Gris"
+    },
+    {
+     "text": "Fíjate en las vetas del violín: unas veces las pintaba imitando la madera; otras pegaba papeles impresos. Es el papier collé (papel pegado), un invento cubista.",
+     "artwork": "w18687778",
+     "source": "https://es.wikipedia.org/wiki/Juan_Gris"
+    },
+    {
+     "text": "Esta es Josette, su compañera, construida con planos grises y blancos. Gris la pintó en 1916; hoy está en el Museo Reina Sofía de Madrid.",
+     "artwork": "w18687780",
+     "source": "https://es.wikipedia.org/wiki/Juan_Gris"
+    },
+    {
+     "text": "Murió en 1927, con solo 40 años. En sus últimos años pintaba más suelto y llegó a diseñar decorados para los Ballets Rusos, la compañía de danza de moda.",
+     "artwork": "w18687779",
+     "source": "https://es.wikipedia.org/wiki/Juan_Gris"
+    }
+   ]
   }
  ]
 }

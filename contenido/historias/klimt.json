@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Retrato_de_Adele_Bloch-Bauer_I"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Secesión",
+   "title": "Klimt antes del oro",
+   "cards": [
+    {
+     "text": "Antes del oro, Klimt pintaba con precisión de foto. Le encargaron pintar el viejo teatro de Viena antes de derribarlo, con más de cien espectadores reconocibles.",
+     "artwork": "w107534436",
+     "source": "https://es.wikipedia.org/wiki/Gustav_Klimt"
+    },
+    {
+     "text": "Fíjate en el marco del pianista Joseph Pembauer: lo rodean dibujos dorados de la antigua Grecia. Ahí empieza a asomar el oro de Klimt.",
+     "artwork": "w107645867",
+     "source": "https://es.wikipedia.org/wiki/Gustav_Klimt"
+    },
+    {
+     "text": "Con la Secesión se atrevió con esto: mujeres desnudas que flotan en una corriente verde, como peces. La Viena elegante empezó a escandalizarse.",
+     "artwork": "w114573173",
+     "source": "https://es.wikipedia.org/wiki/Gustav_Klimt"
+    }
+   ]
   }
  ]
 }

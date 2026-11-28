@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/En_el_Moulin_Rouge"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Montmartre",
+   "title": "Lautrec y sus vecinas de Montmartre",
+   "cards": [
+    {
+     "text": "Suzanne Valadon empezó como acróbata de circo y luego fue modelo de pintores. Lautrec la retrató, y ella acabaría siendo una pintora importante.",
+     "artwork": "w27954929",
+     "source": "https://es.wikipedia.org/wiki/Henri_de_Toulouse-Lautrec"
+    },
+    {
+     "text": "Fíjate en La resaca: Suzanne otra vez, sola en un café ante una botella, la cara apoyada en la mano y la mirada perdida. Casi todo es dibujo; el color, el justo.",
+     "artwork": "w12899487",
+     "source": "https://es.wikipedia.org/wiki/Henri_de_Toulouse-Lautrec"
+    },
+    {
+     "text": "Pasó temporadas viviendo en burdeles de París y pintó a sus mujeres en la intimidad, sin morbo: aquí, dos de ellas duermen juntas en la misma cama.",
+     "artwork": "w12015473",
+     "source": "https://es.wikipedia.org/wiki/Henri_de_Toulouse-Lautrec"
+    }
+   ]
   }
  ]
 }
