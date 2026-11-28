@@ -142,6 +142,11 @@ export async function renderBranch(ctx, el, branchId) {
   // De vuelta (de una ronda, una ficha…): donde estaba la vista, con el foco en la parada jugada.
   const played = takeBranchFocus();
   if (played || back) stops.push(placeMap(el, { step: played, restore: back }));
+  // Desplazamiento rápido por tramos (map-scrubber.js).
+  let scrubStop = () => {};
+  let scrubLeft = false;
+  import('./map-scrubber-items.js').then((m) => { if (!scrubLeft) scrubStop = m.mountBranchScrubber(ctx, el, branch); }).catch((err) => console.error(err));
+  stops.push(() => { scrubLeft = true; scrubStop(); });
   ctx.setCleanup(() => stops.forEach((fn) => fn()));
   if (!played && !back) {
     requestAnimationFrame(() => {

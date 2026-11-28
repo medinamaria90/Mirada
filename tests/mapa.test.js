@@ -331,7 +331,7 @@ test('textos: «y» → «e» ante /i/ y artículos en las épocas', async () =>
   // En el mapa: el repaso y la hoja de época usan la misma regla.
   const p = masterFirst(real, real.steps.findIndex((x) => x.movementId === 'rococo-neoclasicismo') + 3);
   const html = renderPathMap(ctxWith(real, p));
-  assert.ok(html.includes('Se abre después de David e Ingres'), 'el repaso dice «David y Ingres»');
+  assert.ok(html.includes('Se abre después de Jacques-Louis David e Ingres'), 'el repaso dice «Jacques-Louis David e Ingres»');
 });
 
 test('mapa: «Tu museo» celebra el camino completo y lleva a la Colección', () => {

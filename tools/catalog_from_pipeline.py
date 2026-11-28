@@ -436,6 +436,7 @@ def main(app):
     # Foco revisado de las obras que alguna vista recorta mucho y las que la historia enseña enteras (contenido/focos.json;
     # el «Detalle del día» de tools/catalog_data.py manda donde lo hay). Pendientes: node tools/recortes.mjs.
     focos = {"focos": {}, "enteras": [], **contenido_opcional("focos.json")}
+    firmas = (contenido_opcional("firmas.json") or {}).get("obras", {})  # firmas legibles: cajas [x0,y0,x1,y1] en fracciones
     # «Fíjate en…» propio de una obra y rasgos del pintor que NO se ven en ella (contenido/fijate.json): la excepción
     # a la pista genérica del pintor, para obras de juventud, copias, retratos o atípicas. Véase leer_fijate.
     lines_of = {pid: (1 if (D.A.get(pid) or {}).get("hint") else 0) + len(text_traits.get(pid, [])) for pid in pintores}
@@ -464,6 +465,8 @@ def main(app):
         for k in ("spoiler", "attributed"):
             if w.get(k):
                 item[k] = True
+        if w["id"] in firmas:
+            item["signs"] = firmas[w["id"]]
         if o in getattr(D, "FOCUS", {}):
             item["focus"] = [round(float(v), 3) for v in D.FOCUS[o]]
         elif w["id"] in focos["focos"]:

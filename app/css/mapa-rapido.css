@@ -1,0 +1,123 @@
+/* Desplazamiento rápido del mapa (ui/map-scrubber.js). Un carril fino en el borde derecho, entre la cabecera y el
+   botón «Tú», coloreado por épocas, con un puntito por época, el asa en píldora y tu parada en coral; oculto, transparente
+   y sin recibir toques (el lector de pantalla sí llega a la lista de épocas). Solo se animan opacity y transform.
+   Colores y medidas en brand.css. */
+
+.scrub {
+  position: fixed; z-index: var(--map-z-float);
+  right: max(var(--scrub-edge), calc(50% - var(--col) / 2 + var(--scrub-edge)));
+  top: calc(var(--topbar-h) + var(--dj-h) + var(--scrub-gap));
+  bottom: calc(var(--map-return-b) + var(--map-return-size) + var(--scrub-gap) + var(--safe-b));
+  width: var(--scrub-hit);
+  pointer-events: none; opacity: 0; transform: translateX(var(--scrub-out));
+  transition: opacity var(--scrub-fade) var(--ease), transform var(--scrub-fade) var(--ease);
+}
+.scrub.is-shown, .scrub:focus-within { opacity: 1; transform: none; }
+
+/* Al arrastrar, un velo suave sobre el mapa: la burbuja y el carril mandan. */
+.scrub-veil {
+  position: fixed; inset: calc(var(--topbar-h) + var(--dj-h)) 0 0; background: var(--scrub-veil); opacity: 0; pointer-events: none;
+  transition: opacity var(--scrub-fade) var(--ease);
+}
+.scrub.is-active .scrub-veil { opacity: 1; }
+
+/* Carril: una franja clara en píldora y, encima, la línea fina coloreada por tramos (el suelo de cada época). */
+.scrub-band, .scrub-line { position: absolute; top: calc(var(--hit) / 2); bottom: calc(var(--hit) / 2); border-radius: var(--radius-pill); }
+.scrub-band {
+  right: calc(var(--scrub-line-x) - var(--scrub-band-w) / 2); width: var(--scrub-band-w);
+  margin-block: calc(var(--scrub-band-w) / -2); background: var(--scrub-band);
+}
+.scrub-line {
+  right: calc(var(--scrub-line-x) - var(--scrub-line-w) / 2); width: var(--scrub-line-w);
+  background: var(--scrub-track, var(--scrub-line));
+}
+
+/* Épocas: un puntito del color de su suelo (--dot) con aro claro; la que se ve, algo mayor y con aro en tinta. */
+.scrub-marks { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+.scrub-mark-row { position: absolute; right: 0; top: var(--at, 0); transform: translateY(-50%); }
+.scrub-mark {
+  position: relative; display: block; width: var(--scrub-mark-hit-w); height: var(--scrub-mark-hit);
+  margin: 0; padding: 0; border: 0; background: none; cursor: pointer; touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.scrub-mark::before {
+  content: ""; position: absolute; top: 50%; right: calc(var(--scrub-line-x) - var(--scrub-mark) / 2);
+  width: var(--scrub-mark); height: var(--scrub-mark); margin-top: calc(var(--scrub-mark) / -2); box-sizing: border-box;
+  border-radius: 50%; background: var(--dot, var(--scrub-line)); border: var(--scrub-mark-ring) solid var(--scrub-mark-edge);
+  transition: transform var(--scrub-fade) var(--ease);
+}
+.scrub-mark[aria-current]::before { transform: scale(var(--scrub-mark-on)); border-color: var(--scrub-mark-on-edge); }
+.scrub-mark:focus-visible { outline: none; }
+.scrub-mark:focus-visible::after {
+  content: ""; position: absolute; inset: 2px; border-radius: var(--radius-sm); outline: 2.5px solid var(--ink); outline-offset: -2px;
+}
+
+/* Tu parada: el único coral del carril, con aro claro y sombra (se lee sobre carteles y paisaje). */
+.scrub-here {
+  position: absolute; top: var(--at, 0); right: calc(var(--scrub-line-x) - var(--scrub-here) / 2);
+  width: var(--scrub-here); height: var(--scrub-here); margin-top: calc(var(--scrub-here) / -2);
+  border-radius: 50%; background: var(--scrub-here-dot);
+  box-shadow: 0 0 0 var(--scrub-here-ring) var(--scrub-here-edge), var(--scrub-shadow);
+}
+.scrub-here[hidden] { display: none; }
+
+/* Asa «estás aquí»: píldora vertical clara con dos rayitas (zona táctil de --hit de alto); al arrastrar, algo mayor y
+   con un aro coral (nunca rellena de coral: el coral es tu parada). */
+.scrub-thumb {
+  position: absolute; top: 0; right: 0; width: var(--scrub-hit); height: var(--hit);
+  cursor: grab; touch-action: none; will-change: transform; -webkit-tap-highlight-color: transparent;
+}
+.scrub-grip {
+  position: absolute; top: 50%; right: calc(var(--scrub-line-x) - var(--scrub-grip-w) / 2);
+  width: var(--scrub-grip-w); height: var(--scrub-grip-h); margin-top: calc(var(--scrub-grip-h) / -2); box-sizing: border-box;
+  border-radius: var(--radius-pill); background: var(--scrub-grip-fill); border: 1px solid var(--scrub-grip-edge);
+  box-shadow: var(--scrub-shadow);
+  transition: transform var(--scrub-fade) var(--ease), box-shadow var(--scrub-fade) var(--ease);
+}
+.scrub-grip::before {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: var(--scrub-grip-tick-w); height: var(--scrub-grip-tick-h);
+  margin: calc((var(--scrub-grip-tick-gap) + var(--scrub-grip-tick-h)) / -2) 0 0 calc(var(--scrub-grip-tick-w) / -2);
+  border-radius: var(--radius-pill); background: var(--scrub-grip-tick);
+  box-shadow: 0 var(--scrub-grip-tick-gap) 0 var(--scrub-grip-tick);
+}
+.scrub.is-active .scrub-thumb { cursor: grabbing; }
+.scrub.is-active .scrub-grip {
+  transform: scale(var(--scrub-grip-grow-x), var(--scrub-grip-grow-y));
+  box-shadow: 0 0 0 var(--scrub-grip-ring) var(--scrub-grip-active), var(--scrub-shadow);
+}
+.scrub.is-shown .scrub-thumb, .scrub.is-shown .scrub-mark { pointer-events: auto; }
+
+/* Burbuja pegada al asa por la izquierda: retrato pequeño, época (hasta dos líneas) y siglos. Solo al arrastrar; entra
+   creciendo un poco. */
+.scrub-bubble {
+  position: absolute; top: calc(var(--hit) / 2);
+  right: calc(var(--scrub-line-x) + var(--scrub-grip-w) * var(--scrub-grip-grow-x) / 2 + var(--scrub-bubble-gap));
+  display: flex; align-items: center; gap: .45rem; box-sizing: border-box; min-height: calc(var(--scrub-pic) + 6px);
+  width: max-content; max-width: min(var(--scrub-bubble-max), 68vw); padding: 3px .75rem 3px 3px;
+  translate: 0 -50%; scale: var(--scrub-bubble-in); transform-origin: right center;
+  border-radius: calc(var(--scrub-pic) / 2 + 3px); background: var(--scrub-bubble); color: var(--scrub-bubble-ink);
+  box-shadow: inset 0 0 0 1px var(--scrub-bubble-edge), var(--scrub-shadow);
+  pointer-events: none; opacity: 0; will-change: transform;
+  transition: opacity var(--scrub-fade) var(--ease), scale var(--scrub-fade) var(--ease);
+}
+.scrub.is-active .scrub-bubble { opacity: 1; scale: 1; }
+.scrub-bubble:not(:has(.scrub-pic:not([hidden]))) { padding-left: .75rem; }
+.scrub-pic { position: relative; flex: none; width: var(--scrub-pic); height: var(--scrub-pic); border-radius: 50%; overflow: hidden; background: var(--surface-2); }
+.scrub-pic[hidden] { display: none; }
+.scrub-art { position: absolute; inset: 0; border-radius: inherit; aspect-ratio: auto; box-shadow: none; }
+.scrub-words { display: grid; min-width: 0; }
+.scrub-name {
+  font: 600 .85rem/1.15 var(--font); letter-spacing: var(--track); text-wrap: balance; overflow-wrap: anywhere;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+}
+.scrub-sub { font: 400 .72rem/1.2 var(--font); color: var(--scrub-bubble-ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.scrub-sub:empty { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scrub, .scrub-veil, .scrub-mark::before, .scrub-grip, .scrub-bubble { transition: none; }
+  .scrub-bubble { scale: 1; }
+}
+html.reduce-motion .scrub, html.reduce-motion .scrub-veil, html.reduce-motion .scrub-mark::before,
+html.reduce-motion .scrub-grip, html.reduce-motion .scrub-bubble { transition: none; }
+html.reduce-motion .scrub-bubble { scale: 1; }
