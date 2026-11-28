@@ -28,8 +28,8 @@ const OBSCURE = {
   Estancias: /estancias, sus salas privadas/,
   Hélène: /se casa con Hélène/,
   Quinta: /compra la Quinta del Sordo/,
-  Llerena: /se asentó en Llerena/,
-  Nuenen: /En Nuenen su familia/,
+  Llerena: /Llerena/, // un lugar: basta con que una tarjeta lo nombre en su contexto
+  Nuenen: /Nuenen/,
   Pontoise: /Pontoise/,
 };
 const has = (text, term) => new RegExp(`(^|[^\\p{L}])${term}([^\\p{L}]|$)`, 'iu').test(text);
