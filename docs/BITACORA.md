@@ -372,3 +372,18 @@ repetir cuadros sin contexto acaba en memorizar imágenes.
   «Repasar a…»; nunca en retos ni en el test): enseña la buena con su «Fíjate en…» y la cara del pintor, sin sonido ni
   rojo de fallo y sin puntos; cuenta como fallo (rompe «seguidas», vuelve al final).
 - Pruebas en `tests/recordar.test.js`.
+
+## 28/11 · Niveles «a fondo» en el itinerario: imprescindibles y «Profundiza en…»
+
+- **Imprescindibles por época** (`contenido/imprescindibles.json` → `essentials` del catálogo, `engine/essentials.js`): 2-4
+  niveles por época con peso 1-3, título («las pinturas negras de Goya»), motivo y fuente. Se abren con el nivel 1 del pintor
+  dominado, sin pasar por los niveles anteriores (si no, cruzar el Romanticismo pediría cinco rondas de Goya).
+- **Puerta de época**: cruzar a la siguiente pide los imprescindibles de ESA época (`progress.js isStepUnlocked`). Candado de
+  la parada y hoja de la época: «Te falta conocer Las Meninas de Velázquez (nivel 5)» con «Ir»; guía «Te falta conocer…»
+  (regla 5 ter); el cierre de época lleva a lo que falta. Quien ya entró en la época (presentación vista o parada jugada) no
+  queda cerrado. «Camino completo» y «Museo completo» piden todos. Ramas y demás niveles nunca bloquean.
+- **«Profundiza en Rafael: nivel 3»** (`engine/deepen.js`, regla 5 quater): cada `DEEPEN_EVERY` (3) pintores nuevos, un nivel
+  pendiente de cualquier época ya recorrida, ponderado (imprescindible 1 + 2 × peso; ×2 si su época ya se cruzó sin él), con
+  rotación (`ROTATION` 4: tras saltar A nunca A, y A no vuelve hasta ofrecer otros) y enfriamiento (desde el 2.º salto en
+  `COOL_DAYS` 21, el peso se divide; nunca baja de `COOL_FLOOR`). «Ahora no» en el resultado o jugar otra cosa = salto con su
+  día (`progress.deepen`). Pruebas en `tests/imprescindibles.test.js`.

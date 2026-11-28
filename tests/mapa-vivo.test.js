@@ -60,6 +60,7 @@ test('mapa: el sendero recorrido va de otro color hasta la parada actual (entero
   const first = real.visibleMovements[0].id;
   real.stepsOf(first).forEach((s) => { if (s.type === 'artist') p.artists[s.id] = { plays: 1, best: 0.9, mastered: true, last: '2026-11-20' }; });
   p.medals[`movement-${first}`] = '2026-11-20';
+  for (const e of real.essentials.filter((x) => x.movementId === first)) p.deep[`${e.artistId}:${e.level}`] = { plays: 1, best: 1, mastered: true, last: '2026-11-20' };
   const html = renderPathMap({ index: real, store: { get: () => ({ progress: p }) } });
   const layout = pathLayout(real);
   const block = (id) => html.slice(html.indexOf(`data-era="${id}"`), html.indexOf('</li>\n  </li>', html.indexOf(`data-era="${id}"`)) + 1 || undefined);

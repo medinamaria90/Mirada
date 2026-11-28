@@ -61,6 +61,7 @@ const { REVIEW_NAME } = await import('../app/js/engine/review.js');
 // Pintores dominados con cuadros ya vistos: hay material para repasar lo aprendido.
 function withReview() {
   const p = emptyProgress();
+  p.deepen.at = 3; // «Profundiza en…» recién propuesto: no toca otro (engine/deepen.js)
   for (const a of real.path.slice(0, 3)) {
     p.artists[a.id] = { plays: 1, best: 1, mastered: true, last: '2026-11-20' };
     for (const w of real.worksOf(a.id)) p.collection[w.id] = '2026-11-20';
@@ -73,7 +74,8 @@ function resultHtmlOf(progress, plan, outcome, opts = {}) {
   globalThis.window = { scrollTo() {}, matchMedia: () => ({ matches: true }) };
   globalThis.document = { documentElement: { classList: { contains: () => true } }, getElementById: () => null };
   globalThis.getComputedStyle = () => ({ getPropertyValue: () => '' });
-  const ctx = { ...ctxWith(progress), store: { get: () => ({ progress, settings: { dailyGoal: 50 } }) }, audio: { sfx() {} } };
+  let state = { progress, settings: { dailyGoal: 50 } };
+  const ctx = { ...ctxWith(progress), store: { get: () => state, update: (fn) => { state = fn(state); } }, audio: { sfx() {} }, today: () => '2026-11-28' };
   renderResult(ctx, el, { plan, outcome, title: 'Ronda', accent: '', firstTry: [true, true, true], ...opts });
   return el.innerHTML;
 }
@@ -89,6 +91,15 @@ test('resultado: tras dominar a un pintor, un solo botón principal (el siguient
   assert.equal((actions.match(/data-primary/g) || []).length, 1, 'un solo botón principal');
   assert.match(actions, /Sigue: /, 'la parada abierta, como principal');
   assert.match(actions, /data-action="done"[^>]*><span>Volver al camino<\/span>/, '«Volver al camino» como secundario');
+});
+
+test('resultado: «Profundiza en…» como principal cuando toca, con «Ahora no» como secundario', () => {
+  const p = withReview();
+  p.deepen.at = 0;
+  const outcome = { xp: 60, score: 8, total: 8, accuracy: 1, mastered: true, events: [] };
+  const actions = resultActions(p, { kind: 'stage', artistId: 'veronese', seed: 3 }, outcome);
+  assert.match(actions.match(/<button[^>]*data-primary[^]*?<\/button>/)[0], /Profundiza en [^<]+: nivel \d/);
+  assert.match(actions, /data-action="not-now"[^>]*><span>Ahora no<\/span>/);
 });
 
 test('resultado: una sola acción para practicar, por prioridad (repetir y, si no, otra ronda), nunca la del principal', () => {

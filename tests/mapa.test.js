@@ -349,7 +349,10 @@ test('textos: «y» → «e» ante /i/ y artículos en las épocas', async () =>
 });
 
 test('mapa: «Tu museo» celebra el camino completo y lleva a la Colección', () => {
-  const all = renderPathMap(ctxWith(real, masterFirst(real, real.steps.length)));
+  const full = masterFirst(real, real.steps.length);
+  assert.ok(!renderPathMap(ctxWith(real, full)).includes('Museo completo'), 'sin los imprescindibles, aún no');
+  for (const e of real.essentials) full.deep[`${e.artistId}:${e.level}`] = { plays: 1, best: 1, mastered: true, last: TODAY };
+  const all = renderPathMap(ctxWith(real, full));
   assert.ok(all.includes('class="path-museum is-done"') && all.includes('data-action="collection"') && all.includes('Museo completo'));
   const none = renderPathMap(ctxWith(real));
   assert.ok(!none.includes('Museo completo') && none.includes('Tu museo'));
