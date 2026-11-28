@@ -16,11 +16,13 @@ const docBox = (node) => {
 // Miniatura de la burbuja: el cuadro de la primera parada abierta de la época (el mismo que lleva su nodo); si todas
 // están cerradas, ninguna (como en el mapa, lo cerrado no enseña cuadro).
 const thumbOf = (art) => (art ? artFrame(art, { cls: 'scrub-art', alt: '', label: '', thumb: true }) : '');
-const focusIn = (node) => () => (node ? $('.arch-band', node) || $('.stage', node) : null);
+// Al ir con teclado a una época, el foco pasa a su medallón (la parada de su puerta) o, si no lo hay, a su primera parada.
+const focusIn = (node) => () => (node ? $('.lore-era', node) || $('.stage', node) : null);
 
-// Centro de la parada actual, en coordenadas del documento (null si no hay).
+// Centro de donde está «Tú» (el medallón o el rombo si van antes; si no, la parada actual), en coordenadas del documento
+// (null si no hay).
 function currentY(el) {
-  const spot = $('.stage-spot.is-current .stage-dot', el);
+  const spot = $('.lore-spot.is-here .lore-dot', el) || $('.stage-spot.is-current .stage-dot', el);
   if (!spot) return null;
   const box = docBox(spot);
   return (box.top + box.bottom) / 2;
@@ -69,7 +71,7 @@ export function mountBranchScrubber(ctx, el, branch) {
   const items = () => {
     const whole = docBox(map);
     if (!sections.length) return [{ id: branch.id, label: branch.name, sub: '', thumb: '', ...whole, focusEl: () => $('.stage', map) }];
-    const signs = sections.map((s) => map.querySelector(`.sign-plate.is-tramo[data-id="${s.key}"]`));
+    const signs = sections.map((s) => map.querySelector(`.lore-tramo[data-id="${CSS.escape(s.key)}"]`));
     return sections.map((s, i) => {
       const m = index.movement(s.movementId);
       const next = signs[i + 1];
