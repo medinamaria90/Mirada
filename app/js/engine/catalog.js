@@ -16,7 +16,7 @@ export function resolveThumb(thumb, atlas) {
 }
 
 // Textos que llegan después de pintar (data/catalog-text.json): `look`/`looks` (pistas con
-// fuente), `kind`, `tags`, `genre` y `skipTraits` de obra; `traits`, `traitTags`, `traitScope`, `traitGeneral`, `why` («por qué importa», con fuente) y `who` (quién era un invitado) de pintor; `tagLabels` y `negableTags`
+// fuente), `kind`, `tags`, `genre`, `skipTraits` y `skipHints` de obra; `traits`, `traitTags`, `traitScope`, `traitGeneral`, `styleHints`, `why` («por qué importa», con fuente) y `who` (quién era un invitado) de pintor; `tagLabels` y `negableTags`
 // del vocabulario visual. Se añaden a los objetos del índice; lo que no encaja se ignora.
 const MAX_TEXT = 140;
 const MAX_WHO = 110;
@@ -39,6 +39,8 @@ const scopeOf = (v) => {
 };
 // Frases de un pintor: la pista y hasta seis rasgos.
 const MAX_LINES = 7;
+// Refuerzos de estilo por pintor (4-6).
+const MAX_HINTS = 6;
 const SAFE_TAG = /^[a-z-]{2,24}$/;
 // Etiquetas: lista o cadena separada por espacios (así viaja en el archivo); '' = sin etiquetas.
 const tagList = (v) => {
@@ -83,6 +85,13 @@ export function mergeCatalogText(index, text) {
     const w = index.artwork(id);
     if (w && GENRES.includes(genre)) { w.genre = genre; n++; }
   }
+  for (const [id, skip] of Object.entries(text.skipHints || {})) {
+    const w = index.artwork(id);
+    if (!w) continue;
+    if (skip === SKIP_ALL) { w.skipHints = true; n++; continue; }
+    const list = Array.isArray(skip) ? skip.filter((i) => Number.isInteger(i) && i >= 0 && i < MAX_HINTS) : [];
+    if (list.length) { w.skipHints = list; n++; }
+  }
   for (const [id, curio] of Object.entries(text.curio || {})) {
     const w = index.artwork(id);
     if (w && curio && typeof curio.text === 'string' && curio.text.length <= MAX_CURIO) { w.curio = { text: curio.text, source: typeof curio.source === 'string' ? curio.source : '' }; n++; }
@@ -113,6 +122,17 @@ export function mergeCatalogText(index, text) {
       const scope = g && scopeOf(g.scope);
       return scope && scope !== SCOPE_TAGS && typeof g.text === 'string' && g.text.length <= MAX_TEXT ? { text: g.text, scope } : null;
     });
+    n++;
+  }
+  // Refuerzos de estilo del pintor (contenido/pistas.json): { text, tags, scope }; los que no encajan se ignoran.
+  for (const [id, hints] of Object.entries(text.styleHints || {})) {
+    const a = index.artist(id);
+    if (!a || !Array.isArray(hints)) continue;
+    a.styleHints = hints.slice(0, MAX_HINTS).map((h) => {
+      const scope = h && scopeOf(h.scope);
+      const tags = tagList(h?.tags) || [];
+      return scope && typeof h.text === 'string' && h.text.length <= MAX_TEXT && (scope !== SCOPE_TAGS || tags.length) ? { text: h.text, tags, scope } : null;
+    }).filter(Boolean);
     n++;
   }
   for (const [id, tags] of Object.entries(text.traitTags || {})) {

@@ -101,6 +101,27 @@ export function teachingLines(lines, artist, work, avoidWork = null) {
   return safe.filter((r) => r.ok || !seen.size).map((r) => r.line);
 }
 
+// ¿El refuerzo de estilo `i` está excluido para esta obra? (contenido/fijate.json «sinPistas»).
+export function skipsHint(work, i) {
+  const skip = work?.skipHints;
+  return skip === true || (Array.isArray(skip) && skip.includes(i));
+}
+
+// Refuerzos de estilo del pintor (contenido/pistas.json) que encajan en `work`: su alcance (estilo, géneros o
+// etiquetas), no excluidos para esa obra y, si el cuadro está etiquetado, sin pedir algo que no tiene. Con
+// `avoidWork` (el elegido por error), solo los etiquetados que ese cuadro no cumple, como las frases del pintor.
+export function styleLines(artist, work, avoidWork = null) {
+  const hints = Array.isArray(artist?.styleHints) ? artist.styleHints : [];
+  const seen = tagsOf(work);
+  const avoid = avoidWork ? tagsOf(avoidWork) : null;
+  return hints
+    .map((h, i) => ({ ...h, i, ok: Boolean(h.tags.length && seen.size && subset(h.tags, seen)) }))
+    .filter((h) => !skipsHint(work, h.i) && fits(h.scope, work, h.ok))
+    .filter((h) => h.ok || !(seen.size && h.tags.length))
+    .filter((h) => !avoid || (h.tags.length && disjoint(h.tags, avoid)))
+    .map((h) => sentence(h.text));
+}
+
 // Rasgo del pintor `artist` (el elegido por error) que seguro NO está en `work`: la etiqueta
 // humana de una de sus señas (`tagLabels`, solo las negables) ausente del cuadro. '' si no hay
 // forma de afirmarlo (cuadro sin etiquetar o pintor sin señas negables).
@@ -162,15 +183,15 @@ function chosenOf(index, q, chosenId) {
   return null;
 }
 
-// Una sola frase que enseña: el `look` de ESE cuadro o, si no hay, un rasgo del pintor (que rota
-// para no repetir el mismo texto). En las de movimiento, al fallar, la línea del movimiento.
-// memo: Map artistId → veces que ya se ha mostrado un rasgo de ese pintor en la ronda; y
-// `look:<obra>` → pistas propias ya dichas de esa obra (la segunda vez sale la segunda pista).
+// Una sola frase que enseña: el `look` de ESE cuadro o, si no hay, una frase o un refuerzo de estilo del
+// pintor (que rota sin repetir el último). En las de movimiento, al fallar, la línea del movimiento.
+// memo: Map `look:<obra>` → pistas propias ya dichas de esa obra en la ronda (la segunda vez sale la segunda).
+// opts.recent: Map `last:<artistId>` → último refuerzo mostrado (para no repetirlo; por defecto, el propio memo).
 // opts.retry: la pregunta es la repetición de una fallada en esta ronda (el elogio de «cuadro nuevo»
 // solo vale la primera vez que se ve). opts.chosenId: la opción elegida (para decir de quién era).
 // Devuelve { title, who, lines[], kind, source, chosen } con una línea como mucho (texto plano; la
 // UI escapa). chosen: { artistId, name, artworkId, title, line } tras un fallo de autor; si no, null.
-export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { retry = false, chosenId = null } = {}) {
+export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { retry = false, chosenId = null, recent = memo } = {}) {
   if (q.type === BEFORE_TYPE) {
     const fb = beforeFeedback(index, q, correct, rng ? rng.pick(PRAISE) : PRAISE[0]);
     return { ...fb, who: '', artistId: null, kind: kindOf(null), source: '', chosen: null };
@@ -191,12 +212,17 @@ export function feedbackFor(index, q, correct, memo = new Map(), rng = null, { r
     source = looks[n].source;
     return sentence(looks[n].text);
   };
+  // Frases del pintor y refuerzos de estilo que encajan; rota sin repetir el último que se vio de ese pintor
+  // (`recent`, que puede durar más que la ronda): con `rng`, al azar entre los demás; sin él, el siguiente.
   const nextTrait = (avoidWork) => {
-    const pool = teachingLines(artistLines(artist), artist, subject, avoidWork);
+    const pool = [...new Set([...teachingLines(artistLines(artist), artist, subject, avoidWork), ...styleLines(artist, subject, avoidWork)])];
     if (!pool.length) return '';
-    const n = memo.get(q.artistId) || 0;
-    memo.set(q.artistId, n + 1);
-    return pool[n % pool.length];
+    const lastKey = `last:${q.artistId}`;
+    const last = recent.get(lastKey);
+    const fresh = pool.length > 1 ? pool.filter((l) => l !== last) : pool;
+    const line = rng ? rng.pick(fresh) : pool[(pool.indexOf(last) + 1) % pool.length];
+    recent.set(lastKey, line);
+    return line;
   };
   // avoidWork: el cuadro elegido por error (no se enseña un rasgo que ese cuadro también tenga).
   // En cuadros atípicos o «de memoria» los rasgos genéricos del pintor no se ven: no se dicen.
