@@ -5,7 +5,6 @@
 import { esc } from '../dom.js';
 import { icons } from '../icons.js';
 import { medalInfo } from '../../engine/medal-info.js';
-import { stageTitle } from '../../engine/painters.js';
 import { branchRoute } from '../router.js';
 
 // Fichas visibles de entrada (la tercera es «+N» cuando hay más de tres).
@@ -23,7 +22,7 @@ export function roundChips(index, r) {
   const deep = find('deep-mastered');
   const artist = deep ? index.artist(deep.artistId) : null;
   const stage = artist ? index.deepLevels(artist.id).find((l) => l.id === deep.level) : null;
-  if (stage) out.push({ key: 'deep', icon: 'check', tone: 'gold', title: stageTitle(artist, stage), sub: 'Nivel superado', to: `pintor-${artist.id}` });
+  if (stage) out.push({ key: 'deep', icon: 'check', tone: 'gold', title: artist.short || artist.name, sub: `Nivel ${stage.id} superado`, to: `pintor-${artist.id}` });
   if (branch) {
     out.push({ key: 'branch', icon: 'fork', tone: 'brand', title: branch.branch.name, sub: branch.done ? 'Rama completa' : `Rama · ${branch.mastered}/${branch.total}`, to: branchRoute(branch.branch.id) });
   }
