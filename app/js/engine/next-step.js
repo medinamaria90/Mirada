@@ -6,7 +6,8 @@
 //   1 bis. se entró a jugar desde una pantalla con un objetivo (el rango del Perfil, los logros) → «Volver al perfil»;
 // (El contexto de un pintor manda ANTES de jugar: la última tarjeta de su historia ofrece artistStep. Al TERMINAR su ronda la
 // intención está cumplida y vale la guía global; repetirlo va como secundario, «Repetir <pintor>», en result-actions.js.)
-//   2. esta sesión cumple la meta del día → «Por hoy, hecho», con «Volver al camino»;
+//   2. la meta del día cumplida en esta sesión NO quita el siguiente paso: el resultado lo celebra («Por hoy, hecho») y el
+//      botón principal sigue siendo lo que toca; solo si no hay nada, «Volver al camino» (kind 'done'). Nunca arranca solo;
 //   2 bis. un pintor o una época que se le está olvidando (engine/recall.js: fallos recientes) → «Repasar a Vermeer» /
 //      «Repasar el Barroco» (nunca tras otra sesión así ni el mismo dos veces seguidas);
 //   3. repaso que traía un pintor a medias (y sigue a medias) → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»);
@@ -142,8 +143,7 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
   if (closure) return { kind: 'closure', to: closureRoute(closure.key), label: closureLabel(index, closure), closure: closure.key };
   // 1 bis. Vuelta al objetivo.
   if (ORIGIN_LABEL[origin]) return { kind: 'origin', to: origin, label: ORIGIN_LABEL[origin] };
-  // 2. Meta del día cumplida en esta sesión.
-  if (goalJustMet) return { kind: 'done', to: HOME_ROUTE, label: BACK_LABEL };
+  // 2. Meta del día cumplida: se celebra en el resultado, pero se puede seguir (ver el final).
   // 2 bis. Algo que se le está olvidando.
   const recall = kind === 'recall' ? null : recallStep(progress, index, today);
   if (recall) return recall;
@@ -197,7 +197,7 @@ export function nextStep(progress, index, today, { plan = {}, outcome = null, go
     return { kind: 'rank', to: deepRoute(a.id, focus.choice.level), label: `Siguiente: ${shortName(a)} · nivel ${focus.choice.level}`, artistId: a.id };
   }
   if (mastered && canReview(count, plan, prevKind)) return review();
-  return { kind: 'path', to: HOME_ROUTE, label: BACK_LABEL };
+  return { kind: goalJustMet ? 'done' : 'path', to: HOME_ROUTE, label: BACK_LABEL };
 }
 
 // Lo que recomienda el mapa (el mismo criterio que el resultado, sin una ronda recién jugada): la parada abierta, «Repasar»

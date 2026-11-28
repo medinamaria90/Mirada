@@ -107,8 +107,8 @@ test('nextStep: «Recordar» va detrás de «Repetir» y de «Por hoy, hecho» y
   // Ronda floja de una etapa: primero repetir.
   const retry = nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: NEW }, outcome: { accuracy: 0.3, events: [] } });
   assert.equal(retry.kind, 'retry');
-  // Meta del día cumplida: «Por hoy, hecho».
-  assert.equal(nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: NEW }, outcome: { accuracy: 0.9, events: [] }, goalJustMet: true }).kind, 'done');
+  // Meta del día cumplida: se celebra en el resultado, pero el paso sigue siendo lo que toca.
+  assert.equal(nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: NEW }, outcome: { accuracy: 0.9, events: [] }, goalJustMet: true }).kind, 'recall');
   // Con mucho pendiente (repaso general), «Recordar» va antes.
   p.fallados = index.worksOf(B).slice(0, 6).map((w) => ({ id: w.id, date: TODAY, times: 1, hits: 0 }));
   assert.equal(nextStep(p, index, TODAY, { plan: { kind: 'stage', artistId: NEW }, outcome: { accuracy: 0.9, events: [] } }).kind, 'recall');

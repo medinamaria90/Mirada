@@ -8,6 +8,7 @@ import { nextStep } from '../app/js/engine/next-step.js';
 
 const big = bigIndex();
 const TODAY = '2026-11-24';
+const isoWeekKey = '2026-W48';
 const [a, b, c, d, e, f] = big.path;
 
 const mastered = (p, ids) => { for (const id of ids) { p.artists[id] = { plays: 1, best: 0.9, mastered: true, last: '2026-11-23' }; p.medals[`artist-${id}`] = '2026-11-23'; } return p; };
@@ -21,9 +22,15 @@ test('regla 1: etapa o sala por debajo del 50 % → «Repetir»', () => {
   assert.deepEqual([s.kind, s.label, s.to], ['retry', 'Repetir', `etapa-${c.id}`]);
 });
 
-test('regla 2: la sesión cumple la meta → «Volver al camino» (el cierre dice «Por hoy, hecho»)', () => {
-  const s = step(base(), { plan: { kind: 'stage', artistId: c.id }, outcome: outcome(0.8), goalJustMet: true });
-  assert.deepEqual([s.kind, s.label, s.to], ['done', 'Volver al camino', 'inicio']);
+test('regla 2: la meta cumplida se celebra pero no quita el siguiente paso; sin nada más, «Volver al camino»', () => {
+  const p = base();
+  p.artists[c.id] = { plays: 1, best: 0.8, mastered: true };
+  const s = step(p, { plan: { kind: 'stage', artistId: c.id }, outcome: outcome(0.8), goalJustMet: true, prevStep: 'debt' });
+  assert.deepEqual([s.kind, s.label, s.to], ['stop', `Sigue: ${d.short || d.name}`, `etapa-${d.id}`], 'sigue habiendo un botón para continuar');
+  const allDone = mastered(emptyProgress(), big.steps.filter((x) => x.type === 'artist').map((x) => x.id));
+  for (const x of big.steps.filter((y) => y.type === 'sala')) allDone.salas[x.id] = { plays: 1, best: 0.9, mastered: true };
+  allDone.weekly = { [isoWeekKey]: { score: 1, total: 15 } };
+  assert.equal(step(allDone, { plan: { kind: 'srs' }, outcome: outcome(0.8), goalJustMet: true, week: isoWeekKey }).kind, 'done');
 });
 
 test('regla 3: repaso que traía un pintor a medias → su ronda, «Sigue: <pintor>» (avanza, no «vuelve»)', () => {
