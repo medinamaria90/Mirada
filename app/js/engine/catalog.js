@@ -12,7 +12,9 @@ export function resolveThumb(thumb, atlas) {
   const src = atlas.sheets[k];
   const size = Array.isArray(atlas.size) ? atlas.size[k] : null;
   if (typeof src !== 'string' || !SAFE_SRC.test(src) || !size || ![x, y, w, h].every(Number.isFinite) || w <= 0 || h <= 0) return null;
-  return { src, x, y, w, h, sw: Number(size[0]), sh: Number(size[1]) };
+  // `atlas.v` (hash de la disposición): la URL de la hoja cambia con las coordenadas, sin hojas viejas en caché.
+  const v = typeof atlas.v === 'string' && /^[a-f0-9]{6,40}$/.test(atlas.v) ? `?v=${atlas.v}` : '';
+  return { src: src + v, x, y, w, h, sw: Number(size[0]), sh: Number(size[1]) };
 }
 
 // Textos que llegan después de pintar (data/catalog-text.json): `look`/`looks` (pistas con
