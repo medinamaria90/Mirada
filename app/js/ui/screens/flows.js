@@ -19,6 +19,7 @@ import { seenWorks, deepStatus } from '../../engine/levels.js';
 import { pendingLore } from '../../engine/lore.js';
 import { stageTitle, avatarWork, seenOf, metArtistIds } from '../../engine/painters.js';
 import { avatarHtml } from '../avatar.js';
+import { DECK_LABEL } from '../deck-nav.js';
 import { playStatusFrom } from '../../engine/branches.js';
 import { falladoQuestion } from '../../engine/fallados.js';
 import { contrabandWork, reviewSession, REVIEW_MIN, REVIEW_TITLE } from '../../engine/review.js';
@@ -173,8 +174,8 @@ export function introWorks(index, movementId) {
   return picks;
 }
 
-// Texto del botón de la presentación según cómo se llega a ella.
-const INTRO_ENTER = { first: 'Seguir', again: 'Volver al camino', shared: 'Ir al camino', guest: 'Empezar a jugar' };
+// Botón de la última tarjeta de la presentación según cómo se llega a ella: desde el camino sigue la secuencia («Seguir»).
+const INTRO_ENTER = { first: DECK_LABEL.next, again: DECK_LABEL.toPath, shared: DECK_LABEL.toPath, guest: DECK_LABEL.start };
 
 // Lo que la presentación espera a sus tarjetas antes de pintarse; con una red peor, sale sin ellas y llegan con fundido.
 const ERA_CARDS_WAIT_MS = 1200;
@@ -208,8 +209,10 @@ export async function renderIntro(ctx, el, movementId, { mode: asked = 'again', 
     </main>
   </div>`;
   const intro = $('.intro', el);
-  if (early) early.m.mountEraCards(ctx, intro, movementId, early.cards);
-  else eraCards.then(({ m, cards }) => m.mountEraCards(ctx, intro, movementId, cards, { late: true })).catch((err) => console.error(err));
+  // Como paso del camino, «Saltar» va directo a lo siguiente.
+  const skip = mode === 'first';
+  if (early) early.m.mountEraCards(ctx, intro, movementId, early.cards, { skip });
+  else eraCards.then(({ m, cards }) => m.mountEraCards(ctx, intro, movementId, cards, { late: true, skip })).catch((err) => console.error(err));
   focusHeading(el);
   const off = onAction(el, {
     enter: () => {
@@ -332,7 +335,8 @@ function gap(track) {
 // Antes de un pintor, una sala o una época, las paradas didácticas sin ver hasta ahí (engine/lore.js): la presentación de
 // la época («Seguir») o el cartel del tramo en tarjetas («Saltar», «Seguir» en la última), una tras otra, y después el
 // destino; venga de la guía, de «Siguiente» o del mapa. Cada una cuenta como vista al abrirla, así que nunca se repite.
-// Salir de la pantalla (atrás) no continúa. Si el cartel no llega a abrirse, se sigue al destino (vuelve a salir la próxima vez).
+// La X del cartel vuelve al camino; salir de la pantalla (atrás) no continúa. Si el cartel no llega a abrirse, se sigue
+// al destino (y vuelve a salir la próxima vez).
 // target: { type: 'artist' | 'sala' | 'movement', id }.
 function withLore(ctx, el, target, show) {
   const lore = pendingLore(ctx.store.get().progress, ctx.index, target);
@@ -340,7 +344,7 @@ function withLore(ctx, el, target, show) {
   const again = () => { if (el.isConnected) withLore(ctx, el, target, show); };
   if (lore.type === 'era') return renderIntro(ctx, el, lore.id, { mode: 'first', onEnter: again });
   return import('../sign-cards.js')
-    .then((m) => m.openSignCards(ctx, 'tramo', lore.key, null, { title: lore.key, onDone: again }))
+    .then((m) => m.openSignCards(ctx, 'tramo', lore.key, null, { title: lore.key, onDone: again, onExit: () => { if (el.isConnected) ctx.go('inicio', { replace: true }); } }))
     .then((handle) => { if (!handle && el.isConnected) show(); })
     .catch((err) => { console.error(err); if (el.isConnected) show(); });
 }
@@ -348,13 +352,13 @@ function withLore(ctx, el, target, show) {
 // La historia sale siempre al entrar en un pintor (decisión de María, 26/11) y el embudo es historia → preguntas:
 // «Jugar» (o pasar de la última tarjeta) llama a show(shown, true) con los cuadros que ha enseñado (la ronda no abre con
 // ellos); sin historia, show([], false) y quien llama decide qué enseñar antes. La X, Esc o deslizar abajo vuelven al
-// camino; «Ver más» deja en la ficha y atrás, donde lleve el navegador.
+// camino; «Más sobre <pintor> ›» deja en la ficha y atrás, donde lleve el navegador.
 // Historia antes de las preguntas de un nivel: en cada tarjeta «Seguir» (destacado) e «Ir a las preguntas» (ui/story-card.js).
-export const LEVEL_STORY_STEPS = { next: 'Seguir', questions: 'Ir a las preguntas', end: 'questions' };
+export const LEVEL_STORY_STEPS = { questions: DECK_LABEL.questions, end: 'questions' };
 
 function withStory(ctx, el, artistId, level, show, { look = '', returnTo = null } = {}) {
   import('../story-viewer.js')
-    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look, steps: LEVEL_STORY_STEPS, onPlay: () => {}, onMore: false })
+    .then((m) => m.playStory(ctx, artistId, level, { history: false, force: true, look, steps: LEVEL_STORY_STEPS, onPlay: () => {} })
       .then(({ shown, ended }) => {
         if (!el.isConnected) return;
         if (ended === m.STORY_END.CLOSE) ctx.go(returnTo || 'inicio', { replace: true });

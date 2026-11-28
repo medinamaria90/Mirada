@@ -26,9 +26,8 @@
 /* Lista de Pintores de la Colección. */
 .pl-seal { display: flex; margin-top: 3px; }
 
-/* Sobre la historia y el momento de dominarlo (siempre de noche): el sello, translúcido y con la tinta del visor. */
-.story-name-line { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .45rem; min-width: 0; }
-.story .seal, .match .seal { background: color-mix(in srgb, var(--tier) 30%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tier-hi) 45%, transparent); color: var(--viewer-ink); }
+/* Sobre el momento de dominarlo (siempre de noche): el sello, translúcido y con la tinta del visor. */
+.match .seal { background: color-mix(in srgb, var(--tier) 30%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tier-hi) 45%, transparent); color: var(--viewer-ink); }
 
 /* Momento de dominar por primera vez a un gran maestro o un maestro: su cuadro, el sello que cae y por qué importa.
    Se queda hasta que se cierra (X, «Seguir», Esc o un toque fuera). Con movimiento reducido, quieto. */

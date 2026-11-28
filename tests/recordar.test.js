@@ -253,19 +253,21 @@ test('«No lo sé» pesa doble para «Recordar»', () => {
 test('tarjetas de la sesión: «Seguir» destacado e «Ir a las preguntas» en cada una; ver una historia sola acaba en «Volver»', async () => {
   const { copyHtml } = await import('../app/js/ui/story-card.js');
   const card = { text: 'Hola', artwork: 'w1' };
-  const steps = { next: 'Seguir', questions: 'Ir a las preguntas' };
-  const first = copyHtml(card, null, { last: false, steps });
-  assert.match(first, /btn-primary[^>]*data-st="next">Seguir/);
-  assert.match(first, /data-st="questions">Ir a las preguntas/);
-  const last = copyHtml(card, null, { last: true, steps, more: true, moreLabel: 'Más de Velázquez: La corte ›' });
+  const questions = 'Ir a las preguntas';
+  const first = copyHtml(card, null, { last: false, questions });
+  assert.match(first, /btn-primary[^>]*data-deck="next">Seguir/);
+  assert.match(first, /data-deck="questions">Ir a las preguntas/);
+  const last = copyHtml(card, null, { last: true, questions, suggest: 'Más de Velázquez: La corte ›' });
   assert.match(last, /story-suggest[^>]*>Más de Velázquez: La corte ›/);
-  assert.match(last, /data-st="play">Seguir/);
-  // En un nivel, tras la historia solo vienen las preguntas: la última lleva solo «Ir a las preguntas».
-  const level = copyHtml(card, null, { last: true, steps: { ...steps, end: 'questions' }, more: false });
+  assert.match(last, /data-deck="play">Seguir/);
+  // En un nivel, tras la historia solo vienen las preguntas: la última lleva «Ir a las preguntas» como principal y
+  // «Más sobre…» (la ficha) como secundario.
+  const level = copyHtml(card, null, { last: true, questions, questionsEnd: true, about: 'Más sobre Velázquez ›' });
   assert.doesNotMatch(level, /Seguir/);
-  assert.match(level, /btn-primary[^>]*data-st="play">Ir a las preguntas/);
+  assert.match(level, /btn-primary[^>]*data-deck="play">Ir a las preguntas/);
+  assert.match(level, /deck-secondary" data-deck="more">Más sobre Velázquez ›/);
   // Solo ver: «Volver» y, desde la ficha, repasar ese nivel.
-  const watch = copyHtml(card, null, { last: true, play: true, playLabel: 'Volver', more: true, moreLabel: 'Preguntas de este nivel' });
-  assert.match(watch, /data-st="play">Volver/);
-  assert.match(watch, /data-st="more">Preguntas de este nivel/);
+  const watch = copyHtml(card, null, { last: true, endLabel: 'Volver', questions });
+  assert.match(watch, /data-deck="play">Volver/);
+  assert.match(watch, /data-deck="questions">Ir a las preguntas/);
 });
