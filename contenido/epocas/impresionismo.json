@@ -5,7 +5,8 @@
    "kicker": "Cuándo y dónde",
    "text": "París, 1874: un grupo de pintores expone por su cuenta en el estudio del fotógrafo Nadar. Un crítico se burló de este cuadro de Monet y, sin querer, les puso nombre.",
    "artwork": "w328523",
-   "source": "https://nga.gov/stories/1874-birthday-of-impressionism.html"
+   "source": "https://nga.gov/stories/1874-birthday-of-impressionism.html",
+   "oficial": true
   },
   {
    "kicker": "Por qué surge",
@@ -17,19 +18,22 @@
    "kicker": "Qué cambia",
    "text": "Del taller a la calle. Renoir pintó este baile en el mismo Montmartre, al aire libre, mientras el viento amenazaba con llevarse el lienzo.",
    "artwork": "w683274",
-   "source": "https://www.musee-orsay.fr/es/node/338131"
+   "source": "https://www.musee-orsay.fr/es/node/338131",
+   "oficial": true
   },
   {
    "kicker": "Cómo se pintaba",
    "text": "Los tubos de pintura, patentados en 1841, permiten salir al campo con los colores listos. Según su hijo, Renoir decía que sin ellos no habría habido impresionismo.",
    "artwork": "w2395218",
-   "source": "https://www.smithsonianmag.com/arts-culture/never-underestimate-the-power-of-a-paint-tube-36637764/"
+   "source": "https://www.smithsonianmag.com/arts-culture/never-underestimate-the-power-of-a-paint-tube-36637764/",
+   "oficial": true
   },
   {
    "kicker": "Fíjate en",
    "text": "Pinceladas rápidas y luz de pleno sol. Sorolla pinta a su mujer y a su hija en la playa de Valencia en 1909; los vestidos blancos reciben el sol de lleno.",
    "artwork": "w6065609",
-   "source": "https://en.wikipedia.org/wiki/Walk_on_the_Beach"
+   "source": "https://en.wikipedia.org/wiki/Walk_on_the_Beach",
+   "oficial": true
   },
   {
    "kicker": "Sus grandes temas",
@@ -47,7 +51,46 @@
    "kicker": "Curiosidad",
    "text": "En el Salón de 1865, Olympia de Manet provocó tal escándalo que hubo que poner guardias para protegerla. Hoy es una joya del Museo de Orsay, en París.",
    "artwork": "w737062",
-   "source": "https://www.smithsonianmag.com/smart-news/manet-olympia-comes-to-america-for-the-very-first-time-180982912/"
+   "source": "https://www.smithsonianmag.com/smart-news/manet-olympia-comes-to-america-for-the-very-first-time-180982912/",
+   "oficial": true
   }
- ]
+ ],
+ "ficha": {
+  "corto": "el Impresionismo",
+  "donde": "París y sus alrededores; después, medio mundo",
+  "bloques": [
+   {
+    "titulo": "Qué es",
+    "artwork": "w2395218",
+    "texto": "Un grupo de jóvenes pintores de París decide pintar lo que ve en un instante: no la forma exacta de las cosas, sino la impresión que deja la luz sobre ellas. Un amanecer con niebla, un reflejo en el agua, una sombrilla al viento. Todo pasa rápido, así que hay que pintar rápido.\n\nEl nombre nació de una burla. En 1874 Monet expuso un puerto envuelto en bruma, Impresión, sol naciente, y un crítico tituló su reseña «La exposición de los impresionistas» para reírse de ellos. Se quedaron con el nombre. En Mujer con sombrilla, Monet pinta a su mujer, Camille, y a su hijo desde abajo, contra un cielo que parece moverse: es casi una foto robada."
+   },
+   {
+    "titulo": "Cuándo y dónde",
+    "artwork": "w432253",
+    "texto": "De 1860 a 1890, más o menos, con París como capital. La ciudad acaba de renovarse con grandes bulevares, cafés, estaciones y teatros. El tren permite escaparse el domingo a los pueblos del río Sena o a las playas de Normandía, y los pintores van detrás, con el caballete a cuestas. Monet pintó a su familia en esta terraza junto al mar, cerca de El Havre, la ciudad donde creció.\n\nDe 1874 a 1886 el grupo organiza ocho exposiciones por su cuenta. Después, el estilo se extiende por el mundo. En España, Joaquín Sorolla lo convierte en pura luz del Mediterráneo y Aureliano de Beruete lo lleva a los paisajes de Madrid y Castilla; en Estados Unidos destaca Mary Cassatt, y en Dinamarca, Krøyer y los pintores de la playa de Skagen."
+   },
+   {
+    "titulo": "Qué cambia",
+    "artwork": "w2734892",
+    "texto": "Frente al realismo, que contaba la vida tal como es, el impresionismo casi se olvida del tema: lo que importa es la luz. Y frente a la Academia, que pedía acabado liso, dibujo perfecto y cuadros pintados en el taller, ellos salen al aire libre y dejan la pincelada a la vista.\n\nLas sombras ya no son marrones ni negras, sino azules o violetas, como se ven a pleno sol. Los colores se ponen uno junto a otro, casi sin mezclarlos, y es el ojo el que los mezcla a distancia. Para pintar Mujeres en el jardín, un lienzo de más de dos metros y medio de alto, Monet cavó una zanja en el jardín y bajaba el cuadro con poleas, para llegar a la parte de arriba sin perder el sol."
+   },
+   {
+    "titulo": "Cómo se reconoce",
+    "artwork": "w278722",
+    "texto": "Acércate al cuadro: verás manchas, comas y rayas de color sueltas, casi sin dibujo. Aléjate: aparecen un puente, un río, gente que pasea. Ese juego es la clave.\n\nFíjate también en los temas: nada de reyes ni batallas, sino la vida moderna y su ocio. Domingos en el río, bailes al aire libre, bulevares bajo la lluvia, estaciones llenas de humo, bailarinas que ensayan. Los encuadres parecen fotografías: figuras cortadas por el borde, vistas desde arriba, escenas que parecen robadas. Y la luz cambia con la hora: Monet pintó la catedral de Ruan más de treinta veces, al alba, a mediodía y al atardecer. Pissarro hizo lo mismo con los puentes de esa ciudad, como este, en un día de lluvia."
+   },
+   {
+    "titulo": "Sus grandes nombres",
+    "artwork": "w5966403",
+    "texto": "Claude Monet, el más fiel a la idea: pintó la luz hasta el final, ya con la vista muy dañada, en su jardín de nenúfares. Édouard Manet, algo mayor, admirado por todos, que nunca quiso exponer con el grupo. Edgar Degas, que prefería llamarse realista y pintaba bailarinas, carreras de caballos y cafés. Pierre-Auguste Renoir, el pintor de la alegría, de los bailes y de la piel luminosa.\n\nCamille Pissarro, el mayor y el más generoso, maestro de casi todos. Y dos mujeres que tuvieron que pelear por su sitio: Berthe Morisot, que ya estuvo en la primera exposición del grupo, y la estadounidense Mary Cassatt, invitada por Degas. Morisot pintaba la vida de puertas adentro, como en La cuna, donde su hermana vela el sueño de su bebé."
+   }
+  ],
+  "fuentes": [
+   "https://es.wikipedia.org/wiki/Impresionismo",
+   "https://www.musee-orsay.fr/es",
+   "https://es.wikipedia.org/wiki/Mujeres_en_el_jard%C3%ADn",
+   "https://es.wikipedia.org/wiki/Serie_de_la_catedral_de_Ruan",
+   "https://es.wikipedia.org/wiki/La_cuna_(Morisot)"
+  ]
+ }
 }

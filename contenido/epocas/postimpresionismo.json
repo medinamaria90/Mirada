@@ -5,19 +5,22 @@
    "kicker": "Cuándo y dónde",
    "text": "Francia, de 1886 a 1905. El nombre lo puso el crítico Roger Fry en 1910, para una exposición en Londres con Cézanne, Gauguin y Van Gogh.",
    "artwork": "w3956440",
-   "source": "https://www.britannica.com/topic/Manet-and-the-Post-Impressionists"
+   "source": "https://www.britannica.com/topic/Manet-and-the-Post-Impressionists",
+   "oficial": true
   },
   {
    "kicker": "Por qué surge",
    "text": "El impresionismo atrapaba el instante, pero a algunos les sabía a poco. Cézanne quería hacer de él «algo sólido y duradero, como el arte de los museos».",
    "artwork": "w2270805",
-   "source": "https://nationalgallery.org.uk/artists/paul-cezanne"
+   "source": "https://nationalgallery.org.uk/artists/paul-cezanne",
+   "oficial": true
   },
   {
    "kicker": "Qué cambia",
    "text": "Ya no basta con captar la luz del instante. Van Gogh pinta lo que siente: este cielo nace de la vista desde su ventana en Saint-Rémy, de memoria e imaginación.",
    "artwork": "w45585",
-   "source": "https://www.moma.org/collection/works/79802"
+   "source": "https://www.moma.org/collection/works/79802",
+   "oficial": true
   },
   {
    "kicker": "Cómo se pintaba",
@@ -29,7 +32,8 @@
    "kicker": "Fíjate en",
    "text": "Acércate: todo son puntitos de color que el ojo mezcla a distancia. Seurat tardó dos años en pintar este domingo. Es el puntillismo.",
    "artwork": "w1044742",
-   "source": "https://www.artic.edu/artworks/27992/a-sunday-on-la-grande-jatte-1884"
+   "source": "https://www.artic.edu/artworks/27992/a-sunday-on-la-grande-jatte-1884",
+   "oficial": true
   },
   {
    "kicker": "Sus grandes temas",
@@ -41,7 +45,8 @@
    "kicker": "Qué nos dejó",
    "text": "La puerta al arte moderno. Picasso llamó a Cézanne «el padre de todos nosotros»: sus formas sólidas, hechas de planos de color, prepararon el cubismo.",
    "artwork": "w2270938",
-   "source": "https://www.britannica.com/biography/Paul-Cezanne/Legacy"
+   "source": "https://www.britannica.com/biography/Paul-Cezanne/Legacy",
+   "oficial": true
   },
   {
    "kicker": "Curiosidad",
@@ -49,5 +54,43 @@
    "artwork": "w3633443",
    "source": "https://nga.gov/features/slideshows/toulouse-lautrec-and-montmarte.html"
   }
- ]
+ ],
+ "ficha": {
+  "corto": "el Postimpresionismo",
+  "donde": "Francia: París, la Provenza y la Bretaña; también Tahití",
+  "bloques": [
+   {
+    "titulo": "Qué es",
+    "artwork": "w890678",
+    "texto": "No es un estilo, sino una familia de caminos distintos que salen del mismo punto. Todos pasaron por el impresionismo, aprendieron su color claro y su pincelada suelta, y luego quisieron ir más allá. Unos buscaban orden y solidez; otros, emoción; otros, símbolos y misterio.\n\nLo que los une es que el cuadro deja de ser una ventana a la realidad: se convierte en algo construido por el artista, con sus propias reglas. Gauguin puso a uno de sus cuadros más grandes un título hecho de tres preguntas: ¿De dónde venimos? ¿Quiénes somos? ¿Adónde vamos? Y lo pintó en Tahití, convencido de que sería su obra más importante."
+   },
+   {
+    "titulo": "Cuándo y dónde",
+    "artwork": "w1464531",
+    "texto": "De mediados de la década de 1880 a principios del siglo XX, sobre todo en Francia. En 1886 se celebra la última exposición impresionista, y allí Seurat presenta su enorme Tarde de domingo hecha de puntitos: es casi el pistoletazo de salida.\n\nDespués, cada uno se va a su rincón. Cézanne se encierra en su Provenza natal, en Aix, a pintar una y otra vez la montaña Sainte-Victoire. Van Gogh se marcha a Arlés buscando la luz del sur; allí pintó esta noche estrellada sobre el río Ródano, con las luces de gas reflejadas en el agua. Gauguin se va a Bretaña y luego a Tahití, en la Polinesia. Toulouse-Lautrec se queda en las noches de Montmartre. Y el barcelonés Joaquín Mir pinta Mallorca con colores casi irreales."
+   },
+   {
+    "titulo": "Qué cambia",
+    "artwork": "w2270805",
+    "texto": "Los impresionistas querían atrapar la luz de un instante y, al hacerlo, las cosas se deshacían en manchas. Los postimpresionistas quieren recuperar la forma, pero sin volver atrás.\n\nCézanne aconsejaba ver la naturaleza como cilindros, esferas y conos, y construye el cuadro como un arquitecto, con planos de color. No le importa deformar: si el brazo del Muchacho con chaleco rojo sale demasiado largo, es porque el cuadro lo pide. Van Gogh y Gauguin usan el color para expresar sentimientos, no para copiar: un cielo puede ser amarillo, un campo rojo, un árbol azul. Y Seurat convierte la pincelada en ciencia: puntos de color puro que el ojo mezcla a distancia."
+   },
+   {
+    "titulo": "Cómo se reconoce",
+    "artwork": "w2282256",
+    "texto": "Busca contornos marcados y colores intensos, a veces planos, como en una vidriera o en las estampas japonesas que tanto admiraban. La pintura puede ser espesa y con relieve, como en Van Gogh, o hecha de puntitos, como en Seurat y Signac.\n\nLas formas se simplifican y la perspectiva se tuerce sin miedo: en las mesas de Cézanne, las manzanas parecen a punto de rodar porque cada objeto está visto desde un ángulo distinto. Los temas son cercanos y personales: un dormitorio, un jarrón de flores, una partida de cartas, una noche en el cabaré. Van Gogh pintó Lirios en el jardín del hospital de Saint-Rémy, donde ingresó por voluntad propia en 1889; llamaba a la pintura «el pararrayos de mi enfermedad»."
+   },
+   {
+    "titulo": "Sus grandes nombres",
+    "artwork": "w1219263",
+    "texto": "Paul Cézanne, el solitario de Aix. Vincent van Gogh, holandés, que pintó unos 860 cuadros en apenas diez años y, que se sepa, vendió solo uno en vida. Paul Gauguin, antiguo agente de bolsa que lo dejó todo para pintar y acabó en la Polinesia. Georges Seurat, el del puntillismo, muerto con 31 años.\n\nHenri de Toulouse-Lautrec, aristócrata, cronista de los cabarés de Montmartre y maestro del cartel. Y Henri Rousseau, el Aduanero, que cobraba impuestos en una de las puertas de París y en sus ratos libres pintaba selvas que nunca vio: nunca salió de Francia. Picasso, entonces joven, le organizó un banquete en su taller para homenajearlo."
+   }
+  ],
+  "fuentes": [
+   "https://es.wikipedia.org/wiki/Postimpresionismo",
+   "https://www.britannica.com/art/Post-Impressionism",
+   "https://www.getty.edu/art/collection/object/103JNH",
+   "https://es.wikipedia.org/wiki/Henri_Rousseau",
+   "https://es.wikipedia.org/wiki/Paul_C%C3%A9zanne"
+  ]
+ }
 }

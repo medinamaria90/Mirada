@@ -5,19 +5,22 @@
    "kicker": "Cuándo y dónde",
    "text": "Siglo XVII. Empieza en Roma hacia 1600, con Caravaggio, y se extiende a España, Flandes y Holanda. Este lienzo sigue en la iglesia para la que se pintó.",
    "artwork": "w969377",
-   "source": "https://www.britannica.com/biography/Caravaggio/The-Contarelli-Chapel-and-other-church-commissions"
+   "source": "https://www.britannica.com/biography/Caravaggio/The-Contarelli-Chapel-and-other-church-commissions",
+   "oficial": true
   },
   {
    "kicker": "Por qué surge",
    "text": "La Iglesia católica responde a la Reforma protestante. En el Concilio de Trento (su gran reunión de obispos) pide imágenes claras, cercanas y que emocionen.",
    "artwork": "w3464529",
-   "source": "https://www.britannica.com/art/Western-painting/Baroque"
+   "source": "https://www.britannica.com/art/Western-painting/Baroque",
+   "oficial": true
   },
   {
    "kicker": "Qué cambia",
    "text": "Ya no hay cuerpos estirados ni poses raras: hay gente real. Ribera, valenciano en Nápoles, pinta a un niño mendigo a tamaño de héroe, con su cartel pidiendo limosna.",
    "artwork": "w24118",
-   "source": "https://en.wikipedia.org/wiki/The_Clubfoot"
+   "source": "https://en.wikipedia.org/wiki/The_Clubfoot",
+   "oficial": true
   },
   {
    "kicker": "Cómo se pintaba",
@@ -29,7 +32,8 @@
    "kicker": "Fíjate en",
    "text": "Un primer plano en sombra y, al fondo, una sala llena de luz. Ahí esconde Velázquez la fábula de Aracne, la tejedora que retó a una diosa. Así se reconoce el barroco.",
    "artwork": "w984058",
-   "source": "https://www.museodelprado.es/en/the-collection/art-work/the-spinners-or-the-fable-of-arachne/8c564e3d-a249-4e31-82b3-ac3abce417e8"
+   "source": "https://www.museodelprado.es/en/the-collection/art-work/the-spinners-or-the-fable-of-arachne/8c564e3d-a249-4e31-82b3-ac3abce417e8",
+   "oficial": true
   },
   {
    "kicker": "Sus grandes temas",
@@ -47,7 +51,45 @@
    "kicker": "Curiosidad",
    "text": "En 1715 recortaron La ronda de noche por los cuatro lados para que cupiera en el ayuntamiento de Ámsterdam. En 2021 el gran museo de la ciudad (el Rijksmuseum) recreó lo perdido.",
    "artwork": "w219831",
-   "source": "https://www.rijksmuseum.nl/en/stories/operation-night-watch/story/missing-pieces"
+   "source": "https://www.rijksmuseum.nl/en/stories/operation-night-watch/story/missing-pieces",
+   "oficial": true
   }
- ]
+ ],
+ "ficha": {
+  "corto": "el Barroco",
+  "donde": "Roma, España, Flandes y Holanda",
+  "bloques": [
+   {
+    "titulo": "Qué es",
+    "artwork": "w318947",
+    "texto": "Si el Renacimiento buscaba la calma, el Barroco busca el golpe. Quiere que quien mira se quede sin aliento: que sienta miedo, compasión o asombro, como en un teatro. Por eso hay tanta oscuridad cortada por focos de luz, tantos gestos en pleno movimiento, tantas escenas congeladas en el instante decisivo.\n\nEs también el siglo de la vida real. Los santos tienen manos de campesino; los mendigos, los jugadores y los aguadores entran en los cuadros con toda su dignidad. En Los discípulos de Emaús, Caravaggio pinta a Cristo en una taberna, y uno de los discípulos abre los brazos con tanta fuerza que parece salirse del cuadro."
+   },
+   {
+    "titulo": "Cuándo y dónde",
+    "artwork": "w2627810",
+    "texto": "Todo el siglo XVII. Arranca en Roma hacia 1600, cuando Caravaggio escandaliza y fascina a la vez con su luz de sótano. Sus seguidores, los caravaggistas, la llevan por toda Europa.\n\nPronto cada país lo hace suyo. En la España católica, Sevilla y Madrid viven su Siglo de Oro con Velázquez, Zurbarán y Murillo. En Flandes, también católica, Rubens llena los altares de cuerpos en movimiento. En Holanda, protestante y comerciante, se pintan casas, retratos y paisajes para la burguesía. Velázquez pintó El aguador de Sevilla con poco más de 20 años: un vendedor de agua tratado con la seriedad de un santo."
+   },
+   {
+    "titulo": "Qué cambia",
+    "artwork": "w2247406",
+    "texto": "Tras el manierismo, con sus figuras estiradas y sus colores raros, el Barroco vuelve a la naturaleza, pero le sube el volumen. Su gran herramienta es el claroscuro: contraste fuerte entre luces y sombras. Llevado al extremo se llama tenebrismo (de tinieblas): fondos negros de los que surgen las figuras, como bajo un foco.\n\nTambién cambia el encuadre. Las escenas se cortan como vistas por una ventana, en diagonal, en el momento de máxima tensión. Artemisia Gentileschi, la primera mujer admitida en la academia de dibujo de Florencia, pinta a Judit cortando la cabeza del general Holofernes con una fuerza que todavía sobrecoge."
+   },
+   {
+    "titulo": "Cómo se reconoce",
+    "artwork": "w4693305",
+    "texto": "Mira primero la luz: suele entrar de un lado, fuerte, y deja el resto en penumbra. Después, el movimiento: diagonales, telas que vuelan, cuerpos que giran. Y por último, el detalle de lo real: arrugas, uñas sucias, la piel de una fruta o la miga de un pan.\n\nPero el Barroco también sabe estar quieto. Los bodegones (cuadros de objetos y alimentos) españoles son silenciosos como una oración: Zurbarán pinta un corderito atado sobre fondo negro y lo convierte en símbolo de Cristo, el Cordero de Dios. Si ves sombras profundas, una realidad que casi se puede tocar y una emoción que te busca directamente, piensa en Barroco."
+   },
+   {
+    "titulo": "Sus grandes nombres",
+    "artwork": "w523974",
+    "texto": "En Italia, Caravaggio, genio de vida turbulenta que tuvo que huir de Roma tras matar a un hombre en una pelea, y Artemisia Gentileschi. En España, Velázquez, pintor del rey Felipe IV y quizá el más admirado por los pintores de todos los tiempos; José de Ribera, valenciano triunfante en Nápoles; Zurbarán, el de los monjes y los bodegones; y Murillo, el de las Inmaculadas y los niños de la calle de Sevilla.\n\nEn Flandes reina Rubens, pintor y diplomático, con un taller enorme lleno de ayudantes. En Holanda, Rembrandt, maestro de la luz y del autorretrato, y Vermeer, de quien se conservan apenas unos 35 cuadros, casi todos habitaciones tranquilas con luz de ventana. Su Vista de Delft es el retrato de su ciudad."
+   }
+  ],
+  "fuentes": [
+   "https://es.wikipedia.org/wiki/Pintura_del_Barroco",
+   "https://www.britannica.com/art/Baroque-art-and-architecture",
+   "https://es.wikipedia.org/wiki/Artemisia_Gentileschi",
+   "https://www.museodelprado.es/coleccion/obra-de-arte/agnus-dei/"
+  ]
+ }
 }

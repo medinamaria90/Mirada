@@ -5,19 +5,22 @@
    "kicker": "Cuándo y dónde",
    "text": "De 1885 a 1930, por toda Europa. Los simbolistas pintan sueños y mitos: aquí Moreau muestra a Salomé ante la cabeza flotante de Juan Bautista.",
    "artwork": "w3818663",
-   "source": "https://www.metmuseum.org/es/essays/symbolism"
+   "source": "https://www.metmuseum.org/es/essays/symbolism",
+   "oficial": true
   },
   {
    "kicker": "Por qué surge",
    "text": "Ciencia, fábricas, dinero… y un vacío. Los simbolistas dan la espalda a lo que se ve y pintan lo que no se ve: sueños, miedos y deseos.",
    "artwork": "w4157667",
-   "source": "https://www.metmuseum.org/essays/symbolism"
+   "source": "https://www.metmuseum.org/essays/symbolism",
+   "oficial": true
   },
   {
    "kicker": "Qué cambia",
    "text": "Del color por la emoción se pasa a quitar el objeto entero. Kandinsky acabó esta Composición VII en cuatro días de 1913: nada que reconocer, solo color y forma.",
    "artwork": "w2990634",
-   "source": "https://en.wikipedia.org/wiki/Composition_VII"
+   "source": "https://en.wikipedia.org/wiki/Composition_VII",
+   "oficial": true
   },
   {
    "kicker": "Cómo se pintaba",
@@ -29,7 +32,8 @@
    "kicker": "Fíjate en",
    "text": "Oro de verdad: Klimt cubre los mantos y el fondo con pan de oro y plata. El Estado austriaco lo compró en 1908, aún sin terminar.",
    "artwork": "w698487",
-   "source": "https://www.wien.info/es/arte-y-cultura/modernismo/un-beso-que-hizo-historia-349716"
+   "source": "https://www.wien.info/es/arte-y-cultura/modernismo/un-beso-que-hizo-historia-349716",
+   "oficial": true
   },
   {
    "kicker": "Sus grandes temas",
@@ -41,7 +45,8 @@
    "kicker": "Qué nos dejó",
    "text": "Un cuadrado negro y nada más. Malévich lo colgó en 1915 en lo alto de una esquina, donde en Rusia se ponían los iconos. Un cuadro ya no tiene por qué representar algo.",
    "artwork": "w1170315",
-   "source": "https://tate.org.uk/art/artists/kazimir-malevich-1561/five-ways-look-malevichs-black-square"
+   "source": "https://tate.org.uk/art/artists/kazimir-malevich-1561/five-ways-look-malevichs-black-square",
+   "oficial": true
   },
   {
    "kicker": "Curiosidad",
@@ -49,5 +54,43 @@
    "artwork": "w4889277",
    "source": "https://museupicassobcn.cat/en/whats-on/discover-online/birth-young-promise-quatre-gats"
   }
- ]
+ ],
+ "ficha": {
+  "corto": "el Simbolismo y las vanguardias",
+  "donde": "Toda Europa: París, Viena, Múnich, Barcelona y Moscú",
+  "bloques": [
+   {
+    "titulo": "Qué es",
+    "artwork": "w293990",
+    "texto": "Esta última época recorre un viaje vertiginoso de apenas cuarenta años. Empieza con el simbolismo, hacia 1885: pintores que dan la espalda al mundo visible para pintar el invisible, el de los sueños, los mitos, el deseo y la muerte. No quieren mostrar, sino sugerir.\n\nY termina con las vanguardias, a principios del siglo XX: artistas que rompen, una tras otra, todas las reglas que la pintura seguía desde el Renacimiento. Primero se libera el color; luego la forma se rompe en pedazos; al final, desaparece hasta el objeto. En Edipo y la esfinge, Gustave Moreau pinta el famoso acertijo del mito griego como un duelo de miradas entre el héroe y el monstruo."
+   },
+   {
+    "titulo": "Cuándo y dónde",
+    "artwork": "w354396",
+    "texto": "De 1885 a 1930, en toda Europa, con capitales que se pasan el testigo. París sigue siendo el gran imán: allí llegan Juan Gris o Modigliani. Viena vive su edad de oro: en 1897 Klimt y otros artistas fundan la Secesión, un grupo que se separa del arte oficial con un lema, «A cada época su arte, al arte su libertad».\n\nMúnich ve nacer la abstracción con el ruso Kandinsky. Barcelona tiene su modernismo, con Ramón Casas y Santiago Rusiñol. Y en Rusia, Malévich lleva la pintura a su punto cero. Klimt pintó a Adele Bloch-Bauer cubierta de oro para su marido; los nazis se quedaron el cuadro en 1938, y no volvió a la familia hasta 2006."
+   },
+   {
+    "titulo": "Qué cambia",
+    "artwork": "w1437492",
+    "texto": "Hasta el postimpresionismo, la pintura seguía mirando el mundo, aunque fuera a su manera. Ahora se separa de él. Los simbolistas abren la puerta: lo importante es la idea, el sentimiento, el sueño.\n\nLas vanguardias la cruzan corriendo. En 1905 Matisse expone en París una Mujer con sombrero con la cara verde y el pelo rojo, y a él y a sus amigos los llaman fauves, «fieras». Después, Picasso y Braque rompen las cosas en facetas y las enseñan desde varios lados a la vez: es el cubismo, que el madrileño Juan Gris llevó a su versión más ordenada. Kandinsky llega a la abstracción, colores y formas sin nada que reconocer. Y en 1915 Malévich pinta un cuadrado negro. Más allá ya no se podía ir."
+   },
+   {
+    "titulo": "Cómo se reconoce",
+    "artwork": "w3208135",
+    "texto": "Simbolismo: figuras de leyenda, mujeres fatales, ángeles, esfinges, colores de sueño, oro y adornos que llenan el fondo. Un aire misterioso, a menudo sensual o inquietante. Lo que ves siempre es algo más: un símbolo. Modernismo: líneas curvas como tallos, flores y cabelleras que se enroscan, mucho diseño y decoración.\n\nVanguardias: colores imposibles y planos, formas geométricas, objetos rotos en pedazos, collage o la renuncia total a representar algo. Si un cuadro de principios del siglo XX te hace preguntarte «¿esto qué es?», probablemente sea vanguardia. En La danza de la vida, Munch pinta las edades del amor en una noche de verano junto al mar: la joven de blanco, la pareja que baila y la mujer de negro que mira sola."
+   },
+   {
+    "titulo": "Sus grandes nombres",
+    "artwork": "w2445726",
+    "texto": "Gustav Klimt, el pintor del oro de Viena, y su joven protegido Egon Schiele, de líneas nerviosas. Edvard Munch, noruego, que convirtió la angustia en pintura con El grito. Gustave Moreau, maestro de mitos, y John William Waterhouse, que pintó leyendas del rey Arturo como La señora de Shalott. Mijaíl Vrúbel, ruso, obsesionado con la figura del demonio.\n\nEn las vanguardias, Henri Matisse, el rey del color; Vasili Kandinsky, padre de la abstracción; Kazimir Malévich, el del cuadrado negro; y Amedeo Modigliani, el de los cuellos largos. Y muchos españoles: el cubista Juan Gris; el cordobés Julio Romero de Torres, con sus mujeres de mirada misteriosa; Ignacio Zuloaga; y Ramón Casas, Santiago Rusiñol e Isidre Nonell, del modernismo catalán."
+   }
+  ],
+  "fuentes": [
+   "https://es.wikipedia.org/wiki/Simbolismo_(arte)",
+   "https://es.wikipedia.org/wiki/Vanguardismo",
+   "https://es.wikipedia.org/wiki/Secesi%C3%B3n_de_Viena",
+   "https://es.wikipedia.org/wiki/Retrato_de_Adele_Bloch-Bauer_I",
+   "https://es.wikipedia.org/wiki/Fauvismo"
+  ]
+ }
 }

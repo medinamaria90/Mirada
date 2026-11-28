@@ -5,19 +5,22 @@
    "kicker": "Cuándo y dónde",
    "text": "Mediados del siglo XIX, Francia. Courbet pinta a los vecinos de su pueblo, Ornans, en un lienzo de más de seis metros, un tamaño reservado a los grandes temas.",
    "artwork": "w540488",
-   "source": "https://www.musee-orsay.fr/es/obras/un-enterrement-ornans-924"
+   "source": "https://www.musee-orsay.fr/es/obras/un-enterrement-ornans-924",
+   "oficial": true
   },
   {
    "kicker": "Por qué surge",
    "text": "En 1848 una revolución tumba al rey de Francia. Muchos pintores se preguntan: ¿para qué pintar dioses, si la historia está pasando ahí fuera?",
    "artwork": "w3212566",
-   "source": "https://www.metmuseum.org/essays/nineteenth-century-french-realism"
+   "source": "https://www.metmuseum.org/essays/nineteenth-century-french-realism",
+   "oficial": true
   },
   {
    "kicker": "Qué cambia",
    "text": "Se acaban los héroes y las tormentas del alma. Los protagonistas son quienes trabajan: Repin pinta a once hombres arrastrando una barcaza por el Volga, agotados.",
    "artwork": "w175628",
-   "source": "https://en.wikipedia.org/wiki/Barge_Haulers_on_the_Volga"
+   "source": "https://en.wikipedia.org/wiki/Barge_Haulers_on_the_Volga",
+   "oficial": true
   },
   {
    "kicker": "Cómo se pintaba",
@@ -29,7 +32,8 @@
    "kicker": "Fíjate en",
    "text": "Tres campesinas encorvadas recogen lo que queda tras la siega. Colores de tierra, nada de adornos. Trabajo duro contado sin dramatismo: eso es realismo.",
    "artwork": "w1368055",
-   "source": "https://www.musee-orsay.fr/es/obras/des-glaneuses-342"
+   "source": "https://www.musee-orsay.fr/es/obras/des-glaneuses-342",
+   "oficial": true
   },
   {
    "kicker": "Sus grandes temas",
@@ -47,7 +51,46 @@
    "kicker": "Curiosidad",
    "text": "En 1855 la Exposición Universal de París rechazó El taller del pintor. Courbet no se rindió: levantó su propio pabellón al lado y lo llamó «Del Realismo».",
    "artwork": "w1167178",
-   "source": "https://www.metmuseum.org/essays/gustave-courbet-1819-1877"
+   "source": "https://www.metmuseum.org/essays/gustave-courbet-1819-1877",
+   "oficial": true
   }
- ]
+ ],
+ "ficha": {
+  "corto": "el Realismo",
+  "donde": "Francia, Rusia y España",
+  "bloques": [
+   {
+    "titulo": "Qué es",
+    "artwork": "w2571560",
+    "texto": "El realismo nace de una pregunta incómoda: ¿por qué solo merecen un cuadro los dioses, los reyes y los héroes? Hacia 1850, un grupo de pintores decide mirar alrededor y pintar lo que ve: campesinos, obreros, entierros de pueblo, mujeres que planchan. La vida corriente, sin embellecerla y sin convertirla en drama.\n\nEl francés Gustave Courbet lo resumió en una frase famosa: «Enséñame un ángel y lo pintaré». Es decir, solo se pinta lo que existe y se puede ver. En El Ángelus, Jean-François Millet pinta a una pareja de campesinos que deja de trabajar para rezar al oír la campana. Sin milagros ni santos: solo la fe sencilla de dos personas al atardecer."
+   },
+   {
+    "titulo": "Cuándo y dónde",
+    "artwork": "w2666439",
+    "texto": "De mediados a finales del siglo XIX. Empieza en Francia hacia 1848, el año en que las revoluciones sacuden Europa. Millet se instala en Barbizon, junto al bosque de Fontainebleau, con otros paisajistas que pintan del natural.\n\nDesde ahí el realismo viaja. En Rusia es casi una misión: los Ambulantes llevan sus exposiciones de ciudad en ciudad para que el arte llegue a todos, con pintores como Repin, Kramskói o Shishkin, el gran pintor de bosques. En España se mezcla con la pintura de historia, con Eduardo Rosales o Francisco Pradilla, y con la mirada luminosa de Mariano Fortuny. Por cierto: los osos de este bosque de Shishkin los pintó otro artista, Konstantín Savitski, especialista en animales."
+   },
+   {
+    "titulo": "Qué cambia",
+    "artwork": "w540488",
+    "texto": "Frente al romanticismo, con sus pasiones, tormentas y escenas exóticas, el realismo baja la temperatura. Nada de héroes que mueren con gloria ni de paisajes de ensueño: el mundo tal como es, con su barro y su cansancio.\n\nEl cambio más atrevido es el tamaño. Hasta entonces, los lienzos gigantes se reservaban para la historia, la religión o la mitología. Courbet pinta el entierro de un vecino cualquiera de su pueblo, Ornans, en un lienzo de más de seis metros, con los aldeanos a tamaño natural. Cuando se expuso en el Salón (la gran exposición oficial de París), muchos lo vieron como una provocación: tanta grandeza para gente tan corriente. Esa era, justamente, la idea."
+   },
+   {
+    "titulo": "Cómo se reconoce",
+    "artwork": "w40432",
+    "texto": "Colores de tierra, ocres, marrones y verdes apagados, como el campo en invierno. Gente trabajadora, a menudo de espaldas o absorta en su tarea, sin posar para nosotros. Escenas sin moraleja aparente: alguien siega, alguien carga, alguien espera.\n\nLa pincelada aún es cuidadosa, pero ya no busca el acabado de porcelana de la Academia: deja ver la materia, el peso de las cosas. Y hay una enorme atención a la verdad: Rosa Bonheur pasó meses en el mercado de caballos de París, vestida de hombre para moverse sin llamar la atención, antes de pintar La feria de caballos, un lienzo de cinco metros lleno de músculo y polvo. Si un cuadro del siglo XIX te enseña el trabajo sin adornos ni lágrimas, piensa en realismo."
+   },
+   {
+    "titulo": "Sus grandes nombres",
+    "artwork": "w19032360",
+    "texto": "Gustave Courbet, el agitador, que acabó en la cárcel por participar en la Comuna de París, un gobierno revolucionario de 1871. Jean-François Millet, hijo de campesinos, el pintor del trabajo en el campo. Camille Corot, puente entre el paisaje clásico y el pintado del natural. Rosa Bonheur, la pintora de animales más famosa de su tiempo y la primera mujer artista que recibió la Legión de Honor, la gran condecoración de Francia.\n\nEn Rusia, Iliá Repin, el gran narrador, e Iván Shishkin. En España, Eduardo Rosales, que murió joven; el catalán Mariano Fortuny, admirado en París y Roma; y Francisco Pradilla, que pintó grandes escenas de historia con detalle real, como esta Rendición de Granada, encargada por el Senado."
+   }
+  ],
+  "fuentes": [
+   "https://es.wikipedia.org/wiki/Realismo_pict%C3%B3rico",
+   "https://www.britannica.com/art/Realism-art",
+   "https://es.wikipedia.org/wiki/Ma%C3%B1ana_en_un_bosque_de_pinos",
+   "https://es.wikipedia.org/wiki/Rosa_Bonheur",
+   "https://es.wikipedia.org/wiki/La_rendici%C3%B3n_de_Granada_(Pradilla)"
+  ]
+ }
 }

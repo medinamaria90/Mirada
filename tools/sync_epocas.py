@@ -1,7 +1,7 @@
 """Copia las tarjetas de época de contenido/epocas/ a app/data/epocas/ (lo que sirve la app) y escribe su índice.
 
-Valida cada archivo (formato de contenido/epocas/README.md): las 8 tarjetas con los ocho «kickers» en orden y, como
-mucho, una tarjeta extra con «kicker» propio en cualquier sitio (p. ej. «Mientras, en el sur»), texto de hasta 180 caracteres, fuente con URL y, si hay catálogo en app/data/catalog.json, que el movimiento exista y que
+Valida cada archivo (formato de contenido/epocas/README.md): las 8 tarjetas con los ocho «kickers» en orden, cinco de
+ellas «oficiales», la ficha de la época (artículo en cinco bloques con su fuente) y, como mucho, una tarjeta extra con «kicker» propio en cualquier sitio (p. ej. «Mientras, en el sur»), texto de hasta 180 caracteres, fuente con URL y, si hay catálogo en app/data/catalog.json, que el movimiento exista y que
 cada obra exista, sea «learn» y pertenezca al movimiento. Uso: python3 -I tools/sync_epocas.py
 El índice (`index.json`) es la lista de ids de movimiento con tarjetas: así la app no pide archivos que no existen.
 """
@@ -19,6 +19,9 @@ KICKERS = [
 ]
 MAX_EXTRA = 1  # tarjetas de más, con su propio «kicker», para épocas que necesitan contar dos caminos
 FORBIDDEN_WORDS = ("ayer", "mañana")
+OFFICIAL = 5  # tarjetas «oficiales» («oficial»: true): las que enseña la presentación en el camino; el resto, en la ficha
+FICHA_BLOCKS = ["Qué es", "Cuándo y dónde", "Qué cambia", "Cómo se reconoce", "Sus grandes nombres"]
+FICHA_MAX_WORDS = 900
 
 
 def load_catalog():
@@ -31,6 +34,56 @@ def load_catalog():
     artist_movement = {a["id"]: a["movementId"] for a in cat["artists"]}
     works = {w["id"]: (artist_movement.get(w["artistId"]), w.get("role")) for w in cat["artworks"]}
     return movements, works
+
+
+def forbidden(text):
+    words = {w.strip(".,;:!?¡¿«»()").lower() for w in text.split()}
+    return bool(words & set(FORBIDDEN_WORDS))
+
+
+def check_work(tag, work_id, name, works):
+    if works is None:
+        return []
+    info = works.get(work_id)
+    if info is None:
+        return [f"{tag}: obra {work_id} fuera del catálogo"]
+    mov, role = info
+    errors = []
+    if mov != name:
+        errors.append(f"{tag}: obra {work_id} es de «{mov}», no de «{name}»")
+    if role != "learn":
+        errors.append(f"{tag}: obra {work_id} no es «learn» (es «{role}»)")
+    return errors
+
+
+# Ficha de la época (ui/screens/era-page.js): nombre corto, dónde, los cinco bloques del artículo en su orden (cada uno con
+# su cuadro y su texto) y sus fuentes, que solo salen en «Fuentes y créditos».
+def check_ficha(ficha, name, works):
+    if not isinstance(ficha, dict):
+        return [f"{name}: falta la ficha de la época"]
+    errors = []
+    for key in ("corto", "donde"):
+        if not str(ficha.get(key, "")).strip():
+            errors.append(f"{name} ficha: falta «{key}»")
+    blocks = ficha.get("bloques") or []
+    if [b.get("titulo") for b in blocks] != FICHA_BLOCKS:
+        errors.append(f"{name} ficha: los bloques deben ser {FICHA_BLOCKS}, en orden")
+    total = 0
+    for b in blocks:
+        tag = f"{name} ficha «{b.get('titulo')}»"
+        text = b.get("texto") or ""
+        total += len(text.split())
+        if not text.strip():
+            errors.append(f"{tag}: sin texto")
+        if forbidden(text):
+            errors.append(f"{tag}: contiene «ayer» o «mañana»")
+        errors += check_work(tag, b.get("artwork"), name, works)
+    if total > FICHA_MAX_WORDS:
+        errors.append(f"{name} ficha: {total} palabras, como mucho {FICHA_MAX_WORDS}")
+    sources = ficha.get("fuentes") or []
+    if not sources or not all(str(u).startswith("http") for u in sources):
+        errors.append(f"{name} ficha: sin fuentes")
+    return errors
 
 
 def check(data, name, movements, works):
@@ -54,24 +107,17 @@ def check(data, name, movements, works):
         text = c.get("text") or ""
         if not text or len(text) > MAX_TEXT:
             errors.append(f"{tag}: texto vacío o de más de {MAX_TEXT} caracteres")
-        words = {w.strip(".,;:!?¡¿«»()").lower() for w in text.split()}
-        if words & set(FORBIDDEN_WORDS):
+        if forbidden(text):
             errors.append(f"{tag}: contiene «ayer» o «mañana»")
         if not str(c.get("source", "")).startswith("http"):
             errors.append(f"{tag}: sin fuente")
-        if works is not None:
-            info = works.get(c.get("artwork"))
-            if info is None:
-                errors.append(f"{tag}: obra {c.get('artwork')} fuera del catálogo")
-            else:
-                mov, role = info
-                if mov != name:
-                    errors.append(f"{tag}: obra {c['artwork']} es de «{mov}», no de «{name}»")
-                if role != "learn":
-                    errors.append(f"{tag}: obra {c['artwork']} no es «learn» (es «{role}»)")
+        errors += check_work(tag, c.get("artwork"), name, works)
     if expected < len(KICKERS):
         errors.append(f"{name}: falta la tarjeta «{KICKERS[expected]}» (los ocho kickers, en orden)")
-    return errors
+    official = sum(1 for c in cards if c.get("oficial") is True)
+    if official != OFFICIAL:
+        errors.append(f"{name}: {official} tarjetas oficiales, deben ser {OFFICIAL}")
+    return errors + check_ficha(data.get("ficha"), name, works)
 
 
 def main():

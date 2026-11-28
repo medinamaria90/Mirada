@@ -5,7 +5,8 @@
    "kicker": "Cuándo y dónde",
    "text": "De finales del XVIII a mediados del XIX, en Alemania, Inglaterra, Francia y España. Friedrich pone a un hombre de espaldas ante la niebla: miramos con él.",
    "artwork": "w311243",
-   "source": "https://en.wikipedia.org/wiki/Wanderer_above_the_Sea_of_Fog"
+   "source": "https://en.wikipedia.org/wiki/Wanderer_above_the_Sea_of_Fog",
+   "oficial": true
   },
   {
    "kicker": "Por qué surge",
@@ -17,7 +18,8 @@
    "kicker": "Qué cambia",
    "text": "Frente al orden y la línea de David, Delacroix elige el color, el movimiento y el drama. Pintó esta Libertad a finales de 1830, pocos meses después de la revolución.",
    "artwork": "w29530",
-   "source": "https://smarthistory.org/delacroix-liberty-leading-the-people"
+   "source": "https://smarthistory.org/delacroix-liberty-leading-the-people",
+   "oficial": true
   },
   {
    "kicker": "Cómo se pintaba",
@@ -29,13 +31,15 @@
    "kicker": "Fíjate en",
    "text": "Casi todo es lluvia, vapor y color; el tren apenas se adivina. Busca la liebre que corre delante de la locomotora: emoción y velocidad antes que detalle.",
    "artwork": "w2339059",
-   "source": "https://www.nationalgallery.org.uk/paintings/joseph-mallord-william-turner-rain-steam-and-speed-the-great-western-railway"
+   "source": "https://www.nationalgallery.org.uk/paintings/joseph-mallord-william-turner-rain-steam-and-speed-the-great-western-railway",
+   "oficial": true
   },
   {
    "kicker": "Sus grandes temas",
    "text": "Lo que asusta y atrae a la vez: tormentas, naufragios, noche y brujas. Goya pintó este Vuelo de brujas para la casa de campo de los duques de Osuna.",
    "artwork": "w15728649",
-   "source": "https://fundaciongoyaenaragon.es/eng/obra/vuelo-de-brujas/525"
+   "source": "https://fundaciongoyaenaragon.es/eng/obra/vuelo-de-brujas/525",
+   "oficial": true
   },
   {
    "kicker": "Qué nos dejó",
@@ -47,7 +51,46 @@
    "kicker": "Curiosidad",
    "text": "En 1815 estalló el volcán Tambora, en Indonesia. Sus cenizas enrojecieron los atardeceres de Europa durante años, y hay científicos que lo miden en los cielos de Turner.",
    "artwork": "w257580",
-   "source": "https://www.egu.eu/news/106/"
+   "source": "https://www.egu.eu/news/106/",
+   "oficial": true
   }
- ]
+ ],
+ "ficha": {
+  "corto": "el Romanticismo",
+  "donde": "Alemania, Inglaterra, Francia y España",
+  "bloques": [
+   {
+    "titulo": "Qué es",
+    "artwork": "w194137",
+    "texto": "El romanticismo es una revuelta del corazón. Tras un siglo que lo fiaba todo a la razón, los artistas reivindican lo que no se puede medir: la emoción, el misterio, el miedo, la nostalgia, el amor imposible. Y sobre todo la libertad: la del pueblo frente al tirano y la del artista frente a las normas.\n\nLa naturaleza deja de ser un decorado: es una fuerza inmensa ante la que el ser humano se siente diminuto. Lo llamaban lo sublime, esa mezcla de terror y fascinación que se siente ante una tormenta o un abismo. En El mar de hielo, Caspar David Friedrich apila placas de hielo como una tumba gigante sobre un barco hundido, del que apenas asoma la popa."
+   },
+   {
+    "titulo": "Cuándo y dónde",
+    "artwork": "w2366825",
+    "texto": "De finales del siglo XVIII a mediados del XIX, en plena era de revoluciones: la francesa, las guerras de Napoleón y la industrial. Cada país tiene su versión. En Alemania es espiritual y silencioso, con Friedrich y sus paisajes de niebla. En Inglaterra, paisajista: Constable pinta su campo natal con amor de granjero y Turner convierte la luz en tormenta. Constable pintó La carreta de heno junto al molino del valle donde se crio, y en París ganó con ella una medalla de oro.\n\nEn Francia es político y apasionado, con Géricault y Delacroix pintando naufragios y revoluciones. En España, el gran adelantado es Goya, que pasó de pintar cartones para tapices alegres a retratar los horrores de la guerra. Y en Rusia, Aivazovski pinta el mar en miles de cuadros."
+   },
+   {
+    "titulo": "Qué cambia",
+    "artwork": "w2290433",
+    "texto": "El neoclasicismo pedía dibujo limpio, calma y virtudes romanas. El romanticismo responde con color, movimiento y emoción desbordada. Las composiciones se agitan en diagonales, las pinceladas se ven, la luz es dramática.\n\nTambién cambian los héroes. Ya no son romanos ejemplares, sino víctimas, rebeldes y gente corriente atrapada por la historia. Delacroix pinta La matanza de Quíos sobre un hecho de 1822, cuando tropas otomanas arrasaron esa isla griega: no hay gloria, solo dolor. El pintor Gros, alumno de David, la llamó «la matanza de la pintura». Y es que el artista romántico no sigue modelos: cuenta lo que siente, aunque incomode."
+   },
+   {
+    "titulo": "Cómo se reconoce",
+    "artwork": "w1070896",
+    "texto": "Busca la naturaleza desatada: mares embravecidos, montañas, tormentas, niebla, ruinas a la luz de la luna. Figuras pequeñas ante paisajes enormes, a menudo de espaldas, mirando lo mismo que nosotros. O, al contrario, multitudes en plena acción: barricadas, naufragios, batallas.\n\nLa pincelada es libre y el color, intenso. Hay gusto por lo exótico, como Oriente o el norte de África, y por la Edad Media, que se mira con nostalgia. Y un aire de melancolía, de pasión o de pesadilla. En La novena ola, Aivazovski pinta a unos náufragos agarrados a un mástil tras la tormenta, bajo un amanecer dorado: según los marineros, la novena ola es la más terrible."
+   },
+   {
+    "titulo": "Sus grandes nombres",
+    "artwork": "w3035829",
+    "texto": "Francisco de Goya, aragonés, pintor de la corte que se quedó sordo y acabó pintando sus pesadillas en las paredes de su casa: las Pinturas negras. Aquí retrata al niño Manuel Osorio con su urraca, y detrás, tres gatos que la miran sin pestañear. Caspar David Friedrich, el poeta alemán de la soledad. J. M. W. Turner, inglés, que en sus últimos cuadros disolvió barcos y trenes en pura luz. Y John Constable, el pintor de las nubes.\n\nEn Francia, Théodore Géricault, que estudió cadáveres en un hospital para pintar La balsa de la Medusa, y Eugène Delacroix, cabeza de la escuela romántica. En España, Federico de Madrazo, retratista de la sociedad madrileña, y en Inglaterra, ya hacia 1850, los jóvenes prerrafaelitas como Millais, el de Ofelia."
+   }
+  ],
+  "fuentes": [
+   "https://es.wikipedia.org/wiki/Pintura_del_Romanticismo",
+   "https://www.britannica.com/art/Romanticism",
+   "https://es.wikipedia.org/wiki/La_matanza_de_Qu%C3%ADos",
+   "https://es.wikipedia.org/wiki/La_carreta_de_heno",
+   "https://www.metmuseum.org/art/collection/search/436545"
+  ]
+ }
 }

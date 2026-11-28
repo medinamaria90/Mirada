@@ -5,7 +5,8 @@
    "kicker": "Cuándo y dónde",
    "text": "Japón, periodo Edo (siglos XVII–XIX). Ukiyo-e significa «imágenes del mundo flotante»: estampas grabadas en madera, populares y baratas. Utamaro fue el maestro de las bellezas.",
    "artwork": "w18210019",
-   "source": "https://www.nippon.com/es/nipponblog/m00062/"
+   "source": "https://www.nippon.com/es/nipponblog/m00062/",
+   "oficial": true
   },
   {
    "kicker": "Por qué surge",
@@ -17,19 +18,22 @@
    "kicker": "Qué cambia",
    "text": "Mientras Europa pinta sombras y profundidad, aquí no hay sombras: color plano, línea limpia, lluvia a rayas. Van Gogh copió este puente de Hiroshige en 1887.",
    "artwork": "w5826309",
-   "source": "https://www.vangoghmuseum.nl/en/collection/s0114V1962"
+   "source": "https://www.vangoghmuseum.nl/en/collection/s0114V1962",
+   "oficial": true
   },
   {
    "kicker": "Cómo se pintaba",
    "text": "Trabajo en equipo: el editor encarga, el artista dibuja, el tallador graba planchas de cerezo, una por color, y el impresor frota el papel encima.",
    "artwork": "w21127606",
-   "source": "https://www.metmuseum.org/essays/woodblock-prints-in-the-ukiyo-e-style"
+   "source": "https://www.metmuseum.org/essays/woodblock-prints-in-the-ukiyo-e-style",
+   "oficial": true
   },
   {
    "kicker": "Fíjate en",
    "text": "La ola lo llena todo y el monte Fuji queda pequeñito al fondo. Ese azul intenso es azul de Prusia, un pigmento llegado de Europa.",
    "artwork": "w252485",
-   "source": "https://www.nippon.com/es/japan-topics/b11603/"
+   "source": "https://www.nippon.com/es/japan-topics/b11603/",
+   "oficial": true
   },
   {
    "kicker": "Sus grandes temas",
@@ -47,7 +51,46 @@
    "kicker": "Curiosidad",
    "text": "Una estampa costaba más o menos lo mismo que un cuenco de fideos. Arte barato para llevar a casa, que hoy se guarda como un tesoro en los museos.",
    "artwork": "w59915220",
-   "source": "https://mag.uchicago.edu/node/430"
+   "source": "https://mag.uchicago.edu/node/430",
+   "oficial": true
   }
- ]
+ ],
+ "ficha": {
+  "corto": "el ukiyo-e",
+  "donde": "Japón, sobre todo Edo (la actual Tokio)",
+  "bloques": [
+   {
+    "titulo": "Qué es",
+    "artwork": "w18210019",
+    "texto": "Ukiyo-e significa «imágenes del mundo flotante». El mundo flotante era el del placer pasajero: teatros, casas de té, paseos, fiestas, la moda de la temporada. Algo bonito precisamente porque dura poco, como las flores del cerezo.\n\nSon sobre todo estampas: imágenes grabadas en planchas de madera e impresas en papel, en muchas copias. Eso las hacía baratas y populares, al alcance de cualquier comerciante o artesano de la ciudad. Eran como los carteles de cine o las revistas de moda de hoy: retratos de actores famosos, bellezas a la última, recuerdos de viajes. Lo que en Japón se compraba por poco dinero acabó colgado en los museos de Europa."
+   },
+   {
+    "titulo": "Cuándo y dónde",
+    "artwork": "w62029258",
+    "texto": "Del siglo XVII a mediados del XIX, en el periodo Edo, cuando Japón vivió más de dos siglos de paz bajo los shogunes (los jefes militares que gobernaban en nombre del emperador) y casi cerrado al extranjero. Su capital, Edo, la actual Tokio, se convirtió en una de las ciudades más grandes del mundo.\n\nAllí, en los barrios de teatros y casas de té, florecen los talleres de grabado. Sharaku es un misterio: publicó unos 140 retratos de actores de kabuki (teatro de actores maquillados) en apenas diez meses, entre 1794 y 1795, y desapareció sin dejar rastro. Nadie sabe con seguridad quién era. Sus actores, con gestos exagerados y caras casi de caricatura, no gustaron a todos en su tiempo; hoy son tesoros."
+   },
+   {
+    "titulo": "Qué cambia",
+    "artwork": "w21127606",
+    "texto": "Mientras la pintura europea perseguía la ilusión de profundidad con perspectiva, sombras y volumen, el ukiyo-e va por otro camino: contornos limpios, colores planos sin sombrear, composiciones asimétricas y mucho espacio vacío. Las cosas se cortan por el borde, y algo cercano y enorme puede tapar medio paisaje.\n\nEn el siglo XIX cambia también el tema: además de actores y bellezas, triunfan los paisajes. Hokusai y Hiroshige convierten en éxitos de venta las vistas del monte Fuji y de los caminos de Japón. En el Jardín de ciruelos de Kameido, Hiroshige pone delante un tronco gigante que cruza la imagen y deja a la gente al fondo, diminuta. Van Gogh lo copió al óleo."
+   },
+   {
+    "titulo": "Cómo se reconoce",
+    "artwork": "w252485",
+    "texto": "Líneas negras finas y seguras que dibujan los contornos. Colores planos, sin sombras, aunque a veces el cielo o el agua pasan suavemente de un tono a otro. Mucho papel en blanco, sin miedo al vacío. Y en un rincón, cartelas con letras japonesas: el título, la firma del artista y el sello del editor.\n\nFíjate también en los temas: mujeres elegantes que se peinan o pasean, actores en plena función, olas, puentes bajo la lluvia, nieve sobre los tejados, guerreros y fantasmas. Y en el azul: hacia 1830 se puso de moda el azul de Prusia, un pigmento llegado de Europa, intenso y duradero. La gran ola de Hokusai es el ejemplo más famoso."
+   },
+   {
+    "titulo": "Sus grandes nombres",
+    "artwork": "w7678417",
+    "texto": "Kitagawa Utamaro, el maestro de las bellezas, que retrataba a las mujeres de cerca, de medio cuerpo, como nadie antes. Sharaku, el retratista misterioso de los actores. Katsushika Hokusai, que vivió casi 90 años, cambió de nombre artístico más de treinta veces y firmó sus últimas obras como «el viejo loco por la pintura». Utagawa Hiroshige, el poeta de la lluvia, la nieve y los caminos.\n\nY Utagawa Kuniyoshi, el más fantasioso: guerreros tatuados, gatos y monstruos. Aquí, un esqueleto gigante asoma sobre un palacio en ruinas, invocado por la princesa hechicera Takiyasha. Sus estampas llegaron a Europa en el siglo XIX y cambiaron la forma de mirar de Monet, Degas o Van Gogh."
+   }
+  ],
+  "fuentes": [
+   "https://es.wikipedia.org/wiki/Ukiyo-e",
+   "https://www.britannica.com/art/ukiyo-e",
+   "https://es.wikipedia.org/wiki/Sharaku",
+   "https://es.wikipedia.org/wiki/Hokusai",
+   "https://www.vangoghmuseum.nl/en/collection/s0115V1962"
+  ]
+ }
 }
