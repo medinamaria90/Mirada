@@ -227,3 +227,23 @@ test('el contexto manda antes de jugar (sobre el pintor); al terminar su ronda, 
   // Ronda floja: «Repetir» sigue siendo el principal (regla 1).
   assert.equal(step(p, { plan: { kind: 'stage', artistId: a.id }, outcome: outcome(0.3) }).kind, 'retry');
 });
+
+// Tono de los botones del itinerario: nada de reproche («Te falta…») y que quepan en una línea a 360 px.
+test('etiquetas de pasos del itinerario: en positivo y cortas', async () => {
+  const { essentialStepLabel, STEP_LABEL_MAX: MAX_LABEL } = await import('../app/js/engine/essentials.js');
+  const { recallLabel, ARTIST } = await import('../app/js/engine/recall.js');
+  const { deepenLabel, rankLabel } = await import('../app/js/engine/next-step.js');
+  const { closureLabel } = await import('../app/js/engine/era-end.js');
+  const { realIndex } = await import('./helpers-real.js');
+  const real = realIndex();
+  const labels = [
+    ...real.essentials.map((x) => essentialStepLabel(real, x)),
+    ...real.artists.flatMap((x) => [`Sigue: ${x.short || x.name}`, deepenLabel(x.short || x.name, 3), rankLabel(x.short || x.name, 3), recallLabel(real, ARTIST, x.id)]),
+    ...real.visibleMovements.flatMap((m) => [closureLabel(real, { type: 'era', id: m.id })]),
+  ];
+  assert.ok(labels.length > 100);
+  for (const l of labels) {
+    assert.ok(!/^te falta/i.test(l), `reproche: ${l}`);
+    assert.ok(l.length <= MAX_LABEL, `larga (${l.length}): ${l}`);
+  }
+});

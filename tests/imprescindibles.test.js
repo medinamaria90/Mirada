@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { emptyProgress, stepStatus, isPathMastered } from '../app/js/engine/progress.js';
 import { deepStatus } from '../app/js/engine/levels.js';
-import { essentialsOf, missingEssentials, allMissingEssentials } from '../app/js/engine/essentials.js';
+import { essentialsOf, missingEssentials, allMissingEssentials, essentialStepLabel } from '../app/js/engine/essentials.js';
 import {
   DEEPEN_EVERY, ROTATION, COOL_DAYS, COOL_FLOOR, currentOffer, pickOffer, noteOffer, skipOffer, settleOffer, offerWeight, deepenCandidates, deepenState,
 } from '../app/js/engine/deepen.js';
@@ -59,7 +59,8 @@ test('puerta de época: cruzar pide los imprescindibles de ESA época; el candad
   assert.equal(stepStatus(p, real, next), 'locked');
   const step = nextStep(p, real, TODAY, { plan: { kind: 'map' } });
   assert.equal(step.kind, 'essential');
-  assert.equal(step.label, `Te falta conocer ${essentialsOf(real, 'barroco')[0].title}`);
+  assert.equal(step.label, essentialStepLabel(real, essentialsOf(real, 'barroco')[0]));
+  assert.ok(step.label.startsWith('Sigue: '), 'tono positivo');
   assert.match(step.to, /^a-fondo-/);
   assert.ok(!/ayer|mañana|hace /.test(step.label), 'sin tiempo concreto');
   masterEssentials(p, ['barroco']);

@@ -16,7 +16,7 @@ import { weekOf, isoWeek } from '../../engine/dates.js';
 import { addLevelRings } from '../deep-badges.js';
 import { watchStoryPrefetch } from '../story-prefetch.js';
 import { coachSeen } from '../../state/store.js';
-import { allMissingEssentials, essentialNeed, essentialOpen } from '../../engine/essentials.js';
+import { allMissingEssentials, essentialStepLabel, essentialOpen } from '../../engine/essentials.js';
 import { deepRoute, stageRoute } from '../router.js';
 
 export function renderHome(ctx, el) {
@@ -46,7 +46,7 @@ export function renderHome(ctx, el) {
   } else if (must.length) {
     finale = `<section class="finale" aria-label="Por terminar">
       <span class="finale-icon">${icons.lock(26)}</span>
-      <h2 class="finale-title">${esc(essentialNeed(must[0]))}</h2>
+      <h2 class="finale-title">${esc(essentialStepLabel(index, must[0]))}</h2>
       <div class="finale-actions">
         <button class="btn btn-primary btn-wide" data-action="essential" data-to="${esc(essentialOpen(p, index, must[0]) ? deepRoute(must[0].artistId, must[0].level) : stageRoute(must[0].artistId))}">Ir</button>
       </div>
