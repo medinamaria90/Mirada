@@ -21,6 +21,28 @@
      "source": "https://es.wikipedia.org/wiki/Agnolo_Bronzino"
     }
    ]
+  },
+  {
+   "level": 2,
+   "stage": "Niños",
+   "title": "Bronzino y los niños de los Médici",
+   "cards": [
+    {
+     "text": "Con 14 años entró en el taller de Pontormo, un pintor genial y raro de Florencia. Se cree que su maestro lo retrató de niño, sentado en un escalón, en uno de sus cuadros.",
+     "artwork": "w18683039",
+     "source": "https://en.wikipedia.org/wiki/Agnolo_Bronzino"
+    },
+    {
+     "text": "Bia era hija de Cosme de Médici, nacida antes de su boda, y murió con cinco años. Fíjate en su medallón de oro: lleva el perfil de su padre, como una firma de quién era.",
+     "artwork": "w3937472",
+     "source": "https://en.wikipedia.org/wiki/Portrait_of_Bia_de%27_Medici"
+    },
+    {
+     "text": "Y este bebé risueño con un jilguero en la mano es Giovanni, hijo de Cosme y Leonor de Toledo. Bronzino casi nunca deja sonreír a sus modelos: aquí, sí.",
+     "artwork": "w3784272",
+     "source": "https://es.wikipedia.org/wiki/Agnolo_Bronzino"
+    }
+   ]
   }
  ]
 }
